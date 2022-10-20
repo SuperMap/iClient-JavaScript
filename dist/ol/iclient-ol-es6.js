@@ -3,7 +3,7 @@
  *          iclient-ol.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.0.0
+ *          version: v11.0.1
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -558,7 +558,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 148:
+/***/ 794:
 /***/ ((module, exports, __webpack_require__) => {
 
 /* module decorator */ module = __webpack_require__.nmd(module);
@@ -4074,7 +4074,7 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduMap, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HillshadeParameter, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageSuperMapRest, ImageTileSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, getMeterPerMapUnit, getWrapNum, isCORS, lineMap, lineStyle, pointMap, pointStyle, polygonMap, polygonStyle, setCORS
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduMap, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HillshadeParameter, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageSuperMapRest, ImageTileSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, getMeterPerMapUnit, getWrapNum, initMap, isCORS, lineMap, lineStyle, pointMap, pointStyle, polygonMap, polygonStyle, setCORS, viewOptionsFromMapJSON
 
 ;// CONCATENATED MODULE: ./src/common/SuperMap.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
@@ -12754,6 +12754,7 @@ class JSONFormat extends Format {
                 object = JSON.parse(json, filter);
             } catch (e) {
                 // Fall through if the regexp test fails.
+                return { data: json}
             }
         }
 
@@ -14697,6 +14698,7 @@ class GeoJSON extends JSONFormat {
             feature.bounds = Bounds.fromArray(bbox);
         }
         if (obj.id) {
+            feature.geometry.id = obj.id;
             feature.fid = obj.id;
         }
         return feature;
@@ -16217,7 +16219,7 @@ var FetchRequest = {
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
         } else {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), Util.getParameters(url), options);
         }
     },
     /**
@@ -16242,7 +16244,7 @@ var FetchRequest = {
             return RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), Util.getParameters(url), options);
         }
         return this._fetch(url, params, options, type);
     },
@@ -18138,6 +18140,7 @@ class CommonServiceBase {
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
+        options.withoutFormatSuffix = options.scope.withoutFormatSuffix || false;
         //为url添加安全认证信息片段
         options.url = SecurityManager.appendCredential(options.url);
 
@@ -18272,6 +18275,7 @@ class CommonServiceBase {
         }
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
+            withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
@@ -23202,6 +23206,7 @@ class EditFeaturesParameters {
 
 
 
+
 /**
  * @class EditFeaturesService
  * @deprecatedclass SuperMap.EditFeaturesService
@@ -23286,9 +23291,16 @@ class EditFeaturesService extends CommonServiceBase {
         jsonParameters = EditFeaturesParameters.toJsonParameters(params);
         if (editType === EditType.DELETE) {
             ids = Util.toJSON(params.IDs);
-            me.url = Util.urlAppend(me.url, Util.getParameterString({ids}));
-            method = "DELETE";
             jsonParameters = ids;
+            var urlWithIds = Util.urlAppend(me.url, Util.getParameterString({ids}))
+            if(FetchRequest.urlIsLong(urlWithIds)) {
+                me.url = Util.urlAppend(me.url, Util.getParameterString({_method: 'DELETE'}));
+                method = "POST";
+            } else{
+                me.url = urlWithIds;
+                method = "DELETE";
+            }
+           
         } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
@@ -46564,6 +46576,114 @@ function conversionDegree(degrees) {
     fraction = parseInt(fraction / 10) === 0 ? `0${fraction}` : fraction;
     second = parseInt(second / 10) === 0 ? `0${second}` : second;
     return `${degree}°${fraction}'${second}`;
+}
+
+/**
+  * @function scalesToResolutions
+  * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
+  * @version 11.0.1
+  * @param {Array} scales - 比例尺数组。
+  * @param {Object} bounds - 地图范围。
+  * @param {number} dpi - 屏幕分辨率。
+  * @param {string} mapUnit - 地图单位。
+  * @param {number} [level=22] - 地图最大级别。
+  * @returns {number} 分辨率。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { scalesToResolutions } from '{npm}';
+  *
+  * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
+  * ```
+ */
+ function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
+  var resolutions = [];
+  if (scales && scales.length > 0) {
+    for (let i = 0; i < scales.length; i++) {
+      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+    }
+  } else {
+    const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
+    for (let i = 0; i < level; i++) {
+      resolutions.push(maxReolution / Math.pow(2, i));
+    }
+  }
+  return resolutions.sort(function (a, b) {
+    return b - a;
+  });
+}
+/**
+  * @function getZoomByResolution
+  * @description 通过分辨率获取地图级别。
+  * @version 11.0.1
+  * @param {number} resolution - 分辨率。
+  * @param {Array} resolutions - 分辨率数组。
+  * @returns {number} 地图级别。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { getZoomByResolution } from '{npm}';
+  *
+  * const result = getZoomByResolution(resolution, resolutions);
+  * ```
+ */
+function getZoomByResolution(resolution, resolutions) {
+  let zoom = 0;
+  let minDistance;
+  for (let i = 0; i < resolutions.length; i++) {
+    if (i === 0) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+    }
+    if (minDistance > Math.abs(resolution - resolutions[i])) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+      zoom = i;
+    }
+  }
+  return zoom;
+}
+
+/**
+  * @function scaleToResolution
+  * @description 通过比例尺计算分辨率。
+  * @version 11.0.1
+  * @param {number} scale - 比例尺。
+  * @param {number} dpi - 屏幕分辨率。
+  * @param {string} mapUnit - 地图单位。
+  * @returns {number} 分辨率。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { scaleToResolution } from '{npm}';
+  *
+  * const result = scaleToResolution(scale, dpi, mapUnit);
+  * ```
+ */
+function scaleToResolution(scale, dpi, mapUnit) {
+  const inchPerMeter = 1 / 0.0254;
+  const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+  const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
+  return resolution;
 }
 
 ;// CONCATENATED MODULE: ./src/common/util/index.js
@@ -72350,7 +72470,6 @@ class ServiceBase extends (external_ol_Observable_default()) {
 
 
 
-
 /**
  * @class MapService
  * @category  iServer Map
@@ -72369,54 +72488,77 @@ class ServiceBase extends (external_ol_Observable_default()) {
  * @usage
  */
 class MapService extends ServiceBase {
+  constructor(url, options) {
+    super(url, options);
+  }
 
-    constructor(url, options) {
-        super(url, options);
-    }
+  /**
+   * @function MapService.prototype.getMapInfo
+   * @description 地图信息查询服务。
+   * @param {RequestCallback} callback - 回调函数。
+   * @returns {MapService} 获取服务信息。
+   */
+  getMapInfo(callback) {
+    var me = this;
+    var getMapStatusService = new MapService_MapService(me.url, {
+      proxy: me.options.proxy,
+      withCredentials: me.options.withCredentials,
+      crossOrigin: me.options.crossOrigin,
+      headers: me.options.headers,
+      eventListeners: {
+        scope: me,
+        processCompleted: callback,
+        processFailed: callback
+      },
+      projection: me.options.projection
+    });
+    getMapStatusService.processAsync();
+  }
 
-    /**
-     * @function MapService.prototype.getMapInfo
-     * @description 地图信息查询服务。
-     * @param {RequestCallback} callback - 回调函数。
-     * @returns {MapService} 获取服务信息。
-     */
-    getMapInfo(callback) {
-        var me = this;
-        var getMapStatusService = new MapService_MapService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }, projection: me.options.projection
-        });
-        getMapStatusService.processAsync();
-    }
+  /**
+   * @function  MapService.prototype.getWkt
+   * @description 获取WKT。
+   * @param {RequestCallback} callback - 回调函数。
+   */
+  getWkt(callback) {
+    var me = this;
+    var getMapStatusService = new MapService_MapService(`${me.url}/prjCoordSys.wkt`, {
+      proxy: me.options.proxy,
+      withCredentials: me.options.withCredentials,
+      withoutFormatSuffix: true,
+      crossOrigin: me.options.crossOrigin,
+      headers: me.options.headers,
+      eventListeners: {
+        scope: me,
+        processCompleted: callback,
+        processFailed: callback
+      },
+      projection: me.options.projection
+    });
+    getMapStatusService.processAsync();
+  }
 
-    /**
-     * @function MapService.prototype.getTilesets
-     * @description 切片列表信息查询服务。
-     * @param {RequestCallback} callback - 回调函数。
-     * @returns {MapService} 获取服务信息。
-     */
-    getTilesets(callback) {
-        var me = this;
-        var tilesetsService = new TilesetsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        tilesetsService.processAsync();
-    }
+  /**
+   * @function MapService.prototype.getTilesets
+   * @description 切片列表信息查询服务。
+   * @param {RequestCallback} callback - 回调函数。
+   * @returns {MapService} 获取服务信息。
+   */
+  getTilesets(callback) {
+    var me = this;
+    var tilesetsService = new TilesetsService(me.url, {
+      proxy: me.options.proxy,
+      withCredentials: me.options.withCredentials,
+      crossOrigin: me.options.crossOrigin,
+      headers: me.options.headers,
+      eventListeners: {
+        scope: me,
+        processCompleted: callback,
+        processFailed: callback
+      }
+    });
+    tilesetsService.processAsync();
+  }
 }
 
 ;// CONCATENATED MODULE: external "ol.control.Control"
@@ -73546,10 +73688,15 @@ const external_ol_style_namespaceObject = ol.style;
 ;// CONCATENATED MODULE: external "ol.Feature"
 const external_ol_Feature_namespaceObject = ol.Feature;
 var external_ol_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol_Feature_namespaceObject);
+;// CONCATENATED MODULE: external "ol.proj.Projection"
+const external_ol_proj_Projection_namespaceObject = ol.proj.Projection;
+var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(external_ol_proj_Projection_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/core/Util.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
  
  
  
@@ -73966,7 +74113,27 @@ var external_ol_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol
     * @version 10.1.0
     * @param {ol.layer.Layer|Array.<ol.layer.Layer>} layers 图层
     */
-   unsetMask
+   unsetMask,
+   getZoomByResolution(scale, scales) {
+    return getZoomByResolution(scale, scales);
+   },
+   scalesToResolutions(scales, bounds, dpi, unit, mapobj, level) {
+    return scalesToResolutions(scales, bounds, dpi, unit, mapobj, level);
+   },
+   getProjection(prjCoordSys, extent) {
+    let projection = (0,external_ol_proj_namespaceObject.get)(`EPSG:${prjCoordSys.epsgCode}`);
+    if (prjCoordSys.type == 'PCS_NON_EARTH') {
+      projection = new (external_ol_proj_Projection_default())({
+        extent,
+        units: 'm',
+        code: '0'
+      });
+    }
+    if (!projection) {
+      console.error(`The projection of EPSG:${prjCoordSys.epsgCode} is missing, please register the projection of EPSG:${prjCoordSys.epsgCode} first, refer to the documentation: https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection`);
+    }
+    return projection;
+  }
  }
 
 function isString(str) {
@@ -76004,7 +76171,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
 
         options.format = options.format ? options.format : 'png';
 
-        super({
+        super({ 
             attributions: options.attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
@@ -76280,42 +76447,8 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
         options.url = url;
         options.crossOrigin = 'anonymous';
         var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
-        var resolutions = getResolutions();
-
-        function getResolutions() {
-            var level = 22;
-            var dpi = 96;
-            var width = extent[2] - extent[0];
-            var height = extent[3] - extent[1];
-            var tileSize = width >= height ? width : height;
-            var maxReolution;
-            if (tileSize === width) {
-                maxReolution = tileSize / mapJSONObj.viewer.width;
-            } else {
-                maxReolution = tileSize / mapJSONObj.viewer.height;
-            }
-            var resolutions = [];
-            var unit = Unit.METER;
-            if (mapJSONObj.coordUnit === Unit.DEGREE) {
-                unit = Unit.DEGREE;
-            }
-            if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
-                for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
-                    resolutions.push(core_Util_Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
-                }
-            } else {
-                for (let i = 0; i < level; i++) {
-                    resolutions.push(maxReolution / Math.pow(2, i));
-                }
-            }
-
-            function sortNumber(a, b) {
-                return b - a;
-            }
-
-            return resolutions.sort(sortNumber);
-        }
-
+        const { visibleScales, bounds, dpi, coordUnit } = mapJSONObj;
+        var resolutions = core_Util_Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit);
         options.tileGrid = new (external_ol_tilegrid_TileGrid_default())({
             extent: extent,
             resolutions: resolutions
@@ -90573,9 +90706,6 @@ var external_ol_source_VectorTile_default = /*#__PURE__*/__webpack_require__.n(e
 ;// CONCATENATED MODULE: external "ol.format.MVT"
 const external_ol_format_MVT_namespaceObject = ol.format.MVT;
 var external_ol_format_MVT_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_MVT_namespaceObject);
-;// CONCATENATED MODULE: external "ol.proj.Projection"
-const external_ol_proj_Projection_namespaceObject = ol.proj.Projection;
-var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(external_ol_proj_Projection_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/VectorTileSuperMapRest.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -91898,7 +92028,7 @@ var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(ext
  window.olExtends = olExtends;
  
 // EXTERNAL MODULE: ./node_modules/lodash.remove/index.js
-var lodash_remove = __webpack_require__(148);
+var lodash_remove = __webpack_require__(794);
 var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/MapboxStyles.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
@@ -101234,10 +101364,145 @@ class ImageTileSuperMapRest extends (external_ol_source_XYZ_default()) {
     }
 }
 
+;// CONCATENATED MODULE: external "ol.layer.Tile"
+const external_ol_layer_Tile_namespaceObject = ol.layer.Tile;
+var external_ol_layer_Tile_default = /*#__PURE__*/__webpack_require__.n(external_ol_layer_Tile_namespaceObject);
+;// CONCATENATED MODULE: ./src/openlayers/mapping/InitMap.js
+
+
+
+
+
+
+
+
+
+
+window.proj4 = lib;
+
+/**
+ * @function initMap
+ * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务，创建的图层为 ol.Tile。
+ * @category BaseTypes Util 
+ * @version 11.0.1
+ * @param {number} url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Object} options - 参数。
+ * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_Map-Map.html}。
+ * @param {Object} [options.viewOptions] - 视图配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_View-View.html} ，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
+ * @param {Object} [options.layerOptions] - 图层配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_layer_Tile-TileLayer.html} ，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
+ * @param {Object} [options.sourceOptions] - 数据源配置，参数设置参考 {@link TileSuperMapRest} ，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
+ * @returns {Object} 实例对象，对象包括地图实例，图层实例，数据源实例。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const initMap = {namespace}.initMap;
+ *
+ * </script>
+ * // ES6 Import
+ * import { initMap } from '{npm}';
+ *
+ * initMap(url, { mapOptions, viewOptions, layerOptions, sourceOptions })
+ * ```
+ * */
+function initMap(url, options = {}) {
+  const { mapOptions, viewOptions, layerOptions, sourceOptions } = options;
+  return new Promise((resolve, reject) => {
+    new MapService(url).getMapInfo(async function (serviceResult) {
+      if (!serviceResult || !serviceResult.result) {
+        reject('service is not work!');
+      }
+      let { prjCoordSys, bounds } = serviceResult.result;
+      if (!(0,external_ol_proj_namespaceObject.get)(`EPSG:${prjCoordSys.epsgCode}`) && prjCoordSys.type !== 'PCS_NON_EARTH') {
+        const wkt = await getWkt(url);
+        registerProj(prjCoordSys.epsgCode, wkt, bounds);
+      }
+
+      let map = createMap(serviceResult.result, mapOptions, viewOptions);
+      let { layer, source } = createLayer(url, serviceResult.result, sourceOptions, layerOptions);
+      map.addLayer(layer);
+      resolve({
+        map,
+        source,
+        layer
+      });
+    });
+  });
+}
+
+/**
+ * @function  viewOptionsFromMapJSON
+ * @category BaseTypes Util
+ * @version 11.0.1
+ * @description 通过 iServer REST 地图参数构造 ol 视图对象。
+ * @param {Object} mapJSONObj - 地图 JSON 对象。
+ * @param {number} [level=22] - 地图最大级别。
+ * @returns {Object} ol视图参数，包括中心点、投影、级别、分辨率数组。
+ */
+
+function viewOptionsFromMapJSON(mapJSONObj, level = 22) {
+  let { bounds, dpi, center, visibleScales, scale, coordUnit, prjCoordSys } = mapJSONObj;
+  const mapCenter =
+    center.x && center.y ? [center.x, center.y] : [(bounds.left + bounds.right) / 2, (bounds.bottom + bounds.top) / 2];
+  const extent = [bounds.left, bounds.bottom, bounds.right, bounds.top];
+  let projection = core_Util_Util.getProjection(prjCoordSys, extent);
+  var resolutions = core_Util_Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit, level);
+  const zoom = core_Util_Util.getZoomByResolution(core_Util_Util.scaleToResolution(scale, dpi, coordUnit), resolutions);
+  return {
+    center: mapCenter,
+    projection,
+    zoom,
+    resolutions
+  };
+}
+
+function createMap(result, mapOptions, viewOptions) {
+  let view = viewOptionsFromMapJSON(result);
+  var map = new (external_ol_Map_default())({
+    target: 'map',
+    view: new (external_ol_View_default())({ ...view, ...viewOptions }),
+    ...mapOptions
+  });
+  return map;
+}
+
+function registerProj(epsgCode, wkt, bounds) {
+  const extent = [bounds.left, bounds.bottom, bounds.right, bounds.top];
+  let epsgCodeStr = `EPSG:${epsgCode}`;
+  !(0,external_ol_proj_namespaceObject.get)(epsgCodeStr) && lib.defs(epsgCodeStr, wkt);
+  if (external_ol_proj_proj4_namespaceObject && external_ol_proj_proj4_namespaceObject.register) {
+    external_ol_proj_proj4_namespaceObject.register(lib);
+    var prj = (0,external_ol_proj_namespaceObject.get)(epsgCodeStr);
+    prj.setExtent(extent);
+  }
+}
+
+function createLayer(url, result, sourceOptions, layerOptions) {
+  let options = TileSuperMapRest.optionsFromMapJSON(url, result, true);
+  options = { ...options, ...sourceOptions };
+  var source = new TileSuperMapRest(options);
+  var layer = new (external_ol_layer_Tile_default())({
+    source,
+    ...layerOptions
+  });
+  return { layer, source };
+}
+
+function getWkt(url) {
+  return new Promise((resolve) => {
+    new MapService(url).getWkt(function (res) {
+      let wkt = res.result.data;
+      resolve(wkt);
+    });
+  });
+}
+
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/index.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -101340,6 +101605,8 @@ if (window && window.ol) {
   ol.supermap.WebPrintingJobService = WebPrintingJobService;
   ol.supermap.ImageService = ImageService;
   ol.supermap.ImageCollectionService = ImageCollectionService;
+  ol.supermap.initMap = initMap;
+  ol.supermap.viewOptionsFromMapJSON = viewOptionsFromMapJSON;
 
   // 处理命名空间重名问题
   ol.supermap.CommonUtil = Util;
