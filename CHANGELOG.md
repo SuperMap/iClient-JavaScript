@@ -1,3 +1,22 @@
+# 11.0.1 #
+## Fixed
+
+### for Leaflet
+
+- 优化 SuperMap iClient for Lealfet 出图示例，更具代表性，使iServer缓存利用率更高
+- 修复当浏览器缩放比例不是100%时，`L.supermap.MapVLayer` 热力图偏移的问题
+- 修复当 `L.supermap.FeatureService` 删除要素过多时，删除失败的问题
+- 修复 `L.supermap.WMTSLayer` 加载带认证参数的WMTS出图失败的问题
+
+### for OpenLayers
+
+- 优化 SuperMap iClient for OpenLayers 出图示例，更具代表性，使iServer缓存利用率更高
+- 修复当 `ol.supermap.FeatureService` 删除要素过多时，删除失败的问题
+
+### for MapboxGL
+
+- 修复当 `mapboxgl.supermap.FeatureService` 删除要素过多时，删除失败的问题
+
 # 11.0.0 #
 
 ## 新特性
