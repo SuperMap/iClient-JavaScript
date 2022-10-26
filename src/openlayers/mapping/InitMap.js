@@ -1,5 +1,5 @@
 import { MapService } from '../services/MapService';
-import Map from 'ol/Map';
+import olMap from 'ol/Map';
 import View from 'ol/View';
 import Tile from 'ol/layer/Tile';
 import { TileSuperMapRest } from './TileSuperMapRest';
@@ -89,7 +89,7 @@ export function viewOptionsFromMapJSON(mapJSONObj, level = 22) {
 
 function createMap(result, mapOptions, viewOptions) {
   let view = viewOptionsFromMapJSON(result);
-  var map = new Map({
+  var map = new olMap({
     target: 'map',
     view: new View({ ...view, ...viewOptions }),
     ...mapOptions
