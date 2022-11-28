@@ -1473,7 +1473,6 @@ export class WebMap extends Observable {
             let capabilities = format.read(capabilitiesText);
             if (that.isValidResponse(capabilities)) {
                 let content = capabilities.Contents;
-                console.log('+++++++', content);
                 let tileMatrixSet = content.TileMatrixSet,
                     layers = content.Layer,
                     layer, idx, layerFormat, style = 'default';
@@ -1497,7 +1496,6 @@ export class WebMap extends Observable {
                 for (let i = 0; i < tileMatrixSet.length; i++) {
                     if (tileMatrixSet[i].Identifier === layerInfo.tileMatrixSet) {
                         let wmtsLayerEpsg = `EPSG:${tileMatrixSet[i].SupportedCRS.split('::')[1]}`;
-                        console.log('tileMatrixSet[i].TileMatrix', tileMatrixSet[i].TileMatrix);
                         for (let h = 0; h < tileMatrixSet[i].TileMatrix.length; h++) {
                             scales.push(tileMatrixSet[i].TileMatrix[h].ScaleDenominator);
                             matrixIds.push(tileMatrixSet[i].TileMatrix[h].Identifier);
