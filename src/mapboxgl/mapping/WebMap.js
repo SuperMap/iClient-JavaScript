@@ -16,7 +16,7 @@ import { Lang } from '@supermap/iclient-common/lang/Lang';
 import { Util } from '../core/Util';
 import { QueryService } from '../services/QueryService';
 import convert from 'xml-js';
-import canvg from 'canvg';
+import Canvg from 'canvg';
 
 
 const MB_SCALEDENOMINATOR_3857 = [
@@ -99,7 +99,13 @@ export class WebMap extends mapboxgl.Evented {
 		this.credentialValue = options.credentialValue;
 		this.withCredentials = options.withCredentials || false;
 		this.target = options.target || 'map';
+    this._canvgsV = [];
 		this._createWebMap();
+    this.on('mapinitialized', () => {
+      this.map.on('remove', () => {
+        this._stopCanvg();
+      });
+    });
 	}
 	/**
 	 * @function WebMap.prototype.resize
@@ -1902,21 +1908,26 @@ export class WebMap extends mapboxgl.Evented {
 		canvas.id = 'dataviz-canvas-' + Util.newGuid(8);
 		canvas.style.display = 'none';
 		divDom.appendChild(canvas);
-		let canvgs = window.canvg ? window.canvg : canvg;
-		canvgs(canvas.id, svgUrl, {
-			ignoreMouse: true,
-			ignoreAnimation: true,
-			renderCallback: () => {
-				if (canvas.width > 300 || canvas.height > 300) {
-					return;
-				}
-				callBack(canvas);
-			},
-			forceRedraw: () => {
-				return false;
-			}
-		});
+    const canvgs = window.canvg && window.canvg.default ? window.canvg.default : Canvg;
+    const ctx = canvas.getContext('2d');
+    canvgs.from(ctx, svgUrl, {
+      ignoreMouse: true,
+      ignoreAnimation: true,
+      forceRedraw: () => false
+    }).then(v => {
+      v.start();
+      this._canvgsV.push(v);
+      if (canvas.width > 300 || canvas.height > 300) {
+        return;
+      }
+      callBack(canvas);
+    });
 	}
+
+  _stopCanvg() {
+    this._canvgsV.forEach(v => v.stop());
+    this._canvgsV = [];
+  }
 	/**
 	 * @private
 	 * @function WebMap.prototype._addOverlayToMap
