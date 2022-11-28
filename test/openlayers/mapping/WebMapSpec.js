@@ -737,7 +737,7 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("http://localhost:9876/iserver/services/maps/wmts100?") > -1) {
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
               return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
@@ -759,7 +759,7 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("http://localhost:9876/iserver/services/maps/wmts100?") > -1) {
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
               return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
@@ -827,7 +827,7 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("http://localhost:9876/iserver/services/maps/wmts100?") > -1) {
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
               return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
@@ -854,7 +854,7 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("/iserver/services/maps/wmts100?") > -1) {
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
                 return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
@@ -875,7 +875,7 @@ describe('openlayers_WebMap', () => {
             done();
           }, 0);
         function errorCallback(error) {
-          console.log('---------', error)
+          console.log(error);
         }
     });
 
@@ -885,7 +885,7 @@ describe('openlayers_WebMap', () => {
             if (url === requestUrl) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("http://localhost:9876/iserver/services/maps/wmts100?") > -1) {
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
                 return Promise.resolve(new Response(wmtsInfo2));
             } else {
                 let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://support.supermap.com:8090/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
@@ -1047,7 +1047,7 @@ describe('openlayers_WebMap', () => {
         if (url.indexOf('map.json') > -1) {
           var mapJson = datavizWebMap_WMTS;
           return Promise.resolve(new Response(mapJson));
-        } else if (url.includes("http://localhost:9876/iserver/services/maps/wmts100?") > -1) {
+        } else if (url.includes("/iserver/services/maps/wmts100?")) {
             return Promise.resolve(new Response(wmtsInfo2));
         }
         return Promise.resolve();
@@ -1073,7 +1073,7 @@ describe('openlayers_WebMap', () => {
         if (url.indexOf('map.json') > -1) {
           var mapJson = datavizWebMap_WMTS;
           return Promise.resolve(new Response(mapJson));
-        } else if (url.includes("http://localhost:9876/iserver/services/maps/wmts100?") > -1) {
+        } else if (url.includes("/iserver/services/maps/wmts100?")) {
             return Promise.resolve(new Response(wmtsInfo2));
         }
         return Promise.resolve();
@@ -1093,4 +1093,45 @@ describe('openlayers_WebMap', () => {
         done();
       }, 0);
     });
+    it('svg canvg', (done) => {
+      let options = {
+        server: server,
+        successCallback,
+        errorCallback: function () {}
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(markerData));
+          }
+          return Promise.resolve();
+      });
+      
+      var datavizWebmap = new WebMap(id, options);
+      function successCallback() {
+          expect(datavizWebmap.server).toBe(server);
+          datavizWebmap.stop
+          done();
+      }
+    });
+
+    it('vector_svg', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG1;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { server, successCallback });
+      function successCallback() {
+        expect(datavizWebmap.credentialKey).toBeUndefined();
+        expect(datavizWebmap.credentialValue).toBeUndefined();
+        done();
+      }
+  });
 });

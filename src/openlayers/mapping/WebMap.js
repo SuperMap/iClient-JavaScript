@@ -619,7 +619,7 @@ export class WebMap extends Observable {
         let capabilities = format.read(capabilitiesText);
 
         let content = capabilities.Contents;
-        let  tileMatrixSet = content.TileMatrixSet;
+        let tileMatrixSet = content.TileMatrixSet;
         let scales = [];
         for (let i = 0; i < tileMatrixSet.length; i++) {
             if (tileMatrixSet[i].Identifier === identifier) {
