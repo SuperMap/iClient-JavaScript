@@ -106,7 +106,7 @@
             inputScript('https://iclient.supermap.io/web/libs/geostats/geostats.js');
         }
         if (inArray(includes, 'canvg')) {
-            inputScript('https://iclient.supermap.io/web/libs/canvg/canvg.min.js');
+          inputScript('https://iclient.supermap.io/web/libs/canvg/3.0.10/umd.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
           inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');

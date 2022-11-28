@@ -129,7 +129,7 @@
       inputScript('https://iclient.supermap.io/web/libs/geostats/geostats.js');
     }
     if (inArray(includes, 'canvg')) {
-      inputScript('https://iclient.supermap.io/web/libs/canvg/canvg.min.js');
+      inputScript('https://iclient.supermap.io/web/libs/canvg/3.0.10/umd.min.js');
     }
     if (inArray(includes, 'convert')) {
       inputScript('https://iclient.supermap.io/web/libs/xml-js/1.6.8/xml-js.min.js');

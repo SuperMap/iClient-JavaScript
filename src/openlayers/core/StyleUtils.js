@@ -6,7 +6,7 @@ import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
 import { StyleMap } from '../overlay/vectortile/StyleMap';
 import { DeafultCanvasStyle } from '../overlay/vectortile/DeafultCanvasStyle';
 import { Util } from '../core/Util';
-import canvg from 'canvg';
+import Canvg from 'canvg';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import CircleStyle from 'ol/style/Circle';
@@ -23,7 +23,6 @@ const ZERO = 0.0000001;
  * @private
  */
 export class StyleUtils {
-
   /**
    * @function StyleUtils.getValidStyleFromLayerInfo
    * @description 通过图层信息获取有效的样式。
@@ -595,9 +594,9 @@ export class StyleUtils {
    * @description 将样式对象转换成openlayer要求的ol.style
    * @param {string} style - 样式对象
    * @param {string} type - feature的类型
-   * @returns {ol.style.Style}
+   * @returns {Promise<ol.style.Style>}
    */
-  static toOpenLayersStyle(style, type) {
+  static async toOpenLayersStyle(style, type) {
     style = style || this.getDefaultStyle();
     let olStyle = new Style();
     let newImage, newFill, newStroke;
@@ -633,7 +632,7 @@ export class StyleUtils {
             this.svgDiv = document.createElement('div');
             document.body.appendChild(this.svgDiv);
           }
-          this.getCanvasFromSVG(src, this.svgDiv, (canvas) => {
+          await this.getCanvasFromSVG(src, this.svgDiv, (canvas) => {
             newImage = new Icon({
               img: canvas,
               scale: radius / canvas.width,
@@ -965,31 +964,37 @@ export class StyleUtils {
    * @param {Object} divDom - div的dom对象
    * @param {function} callBack - 转换成功执行的回调函数
    */
-  static getCanvasFromSVG(svgUrl, divDom, callBack) {
+  static async getCanvasFromSVG(svgUrl, divDom, callBack) {
     //一个图层对应一个canvas
-    let canvgs = window.canvg ? window.canvg : canvg;
+    const canvgs = window.canvg && window.canvg.default ? window.canvg.default : Canvg;
     let canvas = document.createElement('canvas');
     canvas.id = 'dataviz-canvas-' + Util.newGuid(8);
     canvas.style.display = "none";
     divDom.appendChild(canvas);
     try {
-      canvgs(canvas.id, svgUrl, {
+      const ctx = canvas.getContext('2d');
+      const v = await canvgs.from(ctx, svgUrl, {
         ignoreMouse: true,
         ignoreAnimation: true,
-        renderCallback: function () {
-          if (canvas.width > 300 || canvas.height > 300) {
-            // Util.showMessage(DataViz.Language.sizeIsWrong,'WARNING');
-            return;
-          }
-          callBack(canvas);
-        },
-        forceRedraw: function () {
-          return false
-        }
-      });
+        forceRedraw: () => false
+      })
+      v.start();
+      if (canvas.width > 300 || canvas.height > 300) {
+        return;
+      }
+      callBack(canvas);
     } catch (e) {
       return;
     }
+  }
+
+  /**
+   * @function StyleUtils.stopCanvg
+   * @description 调用Canvg实例的stop();
+   */
+  static stopCanvg() {
+    this.canvgsV.forEach(v => v.stop());
+    this.canvgsV = [];
   }
 
   /**
@@ -1041,16 +1046,16 @@ export class StyleUtils {
    * @param {string} styleParams 样式参数
    * @param {string} featureType feature类型
    * @param {boolean} isRank 是否为等级符号
-   * @returns {Object} style对象
+   * @returns {Promise<ol.style.Style>}
    */
-  static getOpenlayersStyle(styleParams, featureType, isRank) {
+  static async getOpenlayersStyle(styleParams, featureType, isRank) {
     let style;
     if (styleParams.type === "BASIC_POINT") {
-      style = this.toOpenLayersStyle(styleParams, featureType);
+      style = await this.toOpenLayersStyle(styleParams, featureType);
     } else if (styleParams.type === "SYMBOL_POINT") {
       style = this.getSymbolStyle(styleParams, isRank);
     } else if (styleParams.type === "SVG_POINT") {
-      style = this.getSVGStyle(styleParams);
+      style = await this.getSVGStyle(styleParams);
     } else if (styleParams.type === 'IMAGE_POINT') {
       style = this.getImageStyle(styleParams);
     }
@@ -1103,9 +1108,9 @@ export class StyleUtils {
   /**
    * @function StyleUtils.getSVGStyle 获取svg的样式
    * @param {Object} styleParams - 样式参数
-   * @returns {Object} style对象
+   * @returns {Promise<ol.style.Style>}
    */
-  static getSVGStyle(styleParams) {
+  static async getSVGStyle(styleParams) {
     let style, that = this;
     if (!that.svgDiv) {
       that.svgDiv = document.createElement('div');
@@ -1113,7 +1118,7 @@ export class StyleUtils {
     }
     const { url, radius, offsetX, offsetY, fillOpacity, rotation } = styleParams;
     let anchor = this.getIconAnchor(offsetX, offsetY);
-    StyleUtils.getCanvasFromSVG(url, that.svgDiv, function (canvas) {
+    await StyleUtils.getCanvasFromSVG(url, that.svgDiv, function (canvas) {
       style = new Style({
         image: new Icon({
           img: that.setColorToCanvas(canvas, styleParams),

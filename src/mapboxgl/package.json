@@ -20,7 +20,7 @@
     "mapbox-gl": "1.13.2",
     "three": "0.129.0",
     "@supermap/iclient-common": "11.0.1",
-    "canvg": "3.0.7",
+    "canvg": "3.0.10",
     "xml-js": "1.6.11"
   }
 }
