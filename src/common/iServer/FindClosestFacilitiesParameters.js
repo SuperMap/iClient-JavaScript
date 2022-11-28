@@ -60,7 +60,7 @@ export class FindClosestFacilitiesParameters {
 
         /**
          * @member {number} [FindClosestFacilitiesParameters.prototype.maxWeight=0]
-         * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
+         * @description 权值的最大限值。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
          *              例如事件发生点是一起交通事故，要求查找在 10 分钟内能到达的最近医院，超过 10 分钟能到达的都不予考虑。
          *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
          */
