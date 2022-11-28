@@ -15,7 +15,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。
  * @param {boolean} [options.fromEvent=false] - 是否从事件点到设施点进行查找。
  * @param {boolean} [options.isAnalyzeById=false] - 事件点和设施点是否通过节点 ID 号来指定。
- * @param {number} [options.maxWeight=0] - 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
+ * @param {number} [options.maxWeight=0] - 权值的最大限值。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
  * @param {TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  * @usage
  */
