@@ -1044,7 +1044,6 @@ describe('openlayers_WebMap', () => {
     it('getScales EPSG:1', (done) => {
       //第二次请求wmts参数值太大
       spyOn(FetchRequest, 'get').and.callFake((url) => {
-        console.log('=====url', url)
         if (url.indexOf('map.json') > -1) {
           var mapJson = datavizWebMap_WMTS;
           return Promise.resolve(new Response(mapJson));
