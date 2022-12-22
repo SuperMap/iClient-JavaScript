@@ -11,7 +11,9 @@ module.exports = {
         /*check element exist*/
         browser.waitForElementPresent('.leaflet-popup-content', 10000);
         /*check the info showing in leaflet-popup is equal to our expectation*/
-        var fieldsInfo = 'SmID,\ SmSdriW,\ SmSdriN,\ SmSdriE,\ SmSdriS,\ SmUserID,\ SmGeometrySize';
+        // 线上站点
+        // var fieldsInfo = 'SmID,\ SmSdriW,\ SmSdriN,\ SmSdriE,\ SmSdriS,\ SmUserID,\ SmGeometrySize';
+        var fieldsInfo = 'SmID,\ SmUserID,\ SmIndexKey,\ SmGeometry';
         browser.expect.element('.leaflet-popup-content').text.to.equal(fieldsInfo);
         browser.click('.leaflet-popup-close-button', function () {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
