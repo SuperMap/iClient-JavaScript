@@ -4,7 +4,7 @@ module.exports = {
     console.log('Closing down...');
     browser.end();
   },
-  leaflet_02_getFeatureByGeometry: function (browser) {
+  leaflet_02_getFeatureByGeometry: async function (browser) {
     var type = 'leaflet';
     var exampleName = '02_getFeatureByGeometry';
     commonTools.openExampleAndLoadMap(browser, type, exampleName);
@@ -14,19 +14,27 @@ module.exports = {
     browser.waitForElementPresent('.leaflet-popup-content', 10000);
     var popupContent = '空间查询模式：INTERSECT';
     browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent);
+    //
+    const resultElement = await browser.findElement('.leaflet-popup-content');
+    console.log('Element Id:', resultElement.getId());
+    //
+    // browser.click('.leaflet-popup-close-button', function () {
+    //   browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
+    // });
+    browser.pause(1000).moveTo(resultElement.getId(), 0, 0);
     browser.click('.leaflet-popup-close-button', function () {
       browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
     });
     browser
-      .pause(1000)
-      .moveTo(null, 40, -40)
+      .moveTo(null, 10, -10)
       .pause(500)
       .mouseButtonClick()
       .waitForElementPresent('.leaflet-popup-content-wrapper', 10000)
       .waitForElementPresent('.leaflet-popup-content', 10000)
       .expect.element('.leaflet-popup-content')
       .text.to.be.contain('国家：刚果（金）');
-    browser.click('.leaflet-popup-close-button').waitForElementNotPresent('.leaflet-popup-content', 10000);
+    browser.pause(5000);
+    // browser.click('.leaflet-popup-close-button').waitForElementNotPresent('.leaflet-popup-content', 10000);
 
     // browser.moveTo(null,-40,40, function () {
     //     browser.pause(1000);
