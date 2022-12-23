@@ -8,6 +8,7 @@ import { ColorsPickerUtil } from '@supermap/iclient-common/util/ColorsPickerUtil
 import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
 import { Events } from '@supermap/iclient-common/commontypes/Events';
 import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/util/FilterCondition';
 import {
     Util
 } from '../core/Util';
@@ -2749,15 +2750,16 @@ export class WebMap extends Observable {
      */
     getFiterFeatures(filterCondition, allFeatures) {
         let condition = this.parseFilterCondition(filterCondition);
-        let sql = "select * from json where (" + condition + ")";
         let filterFeatures = [];
         for (let i = 0; i < allFeatures.length; i++) {
             let feature = allFeatures[i];
             let filterResult = false;
             try {
-                filterResult = window.jsonsql.query(sql, {
-                    attributes: feature.get('attributes')
-                });
+              const properties = feature.get('attributes');
+              const conditions = parseCondition(condition, Object.keys(properties));
+              const filterFeature = parseConditionFeature(properties);
+              const sql = 'select * from json where (' + conditions + ')';
+              filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
                 continue;
@@ -3459,11 +3461,12 @@ export class WebMap extends Observable {
                 });
                 if (layerInfo.filterCondition) {
                     //过滤条件
-                    let condition = that.parseFilterCondition(layerInfo.filterCondition);
-                    let sql = "select * from json where (" + condition + ")";
-                    let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.get('attributes')
-                    });
+                    const condition = that.parseFilterCondition(layerInfo.filterCondition);
+                    const properties = feature.get('attributes');
+                    const conditions = parseCondition(condition, Object.keys(properties));
+                    const filterFeature = parseConditionFeature(properties);
+                    const sql = 'select * from json where (' + conditions + ')';
+                    let filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
                             dataflowSource: source,
@@ -3610,10 +3613,11 @@ export class WebMap extends Observable {
                 if (layerInfo.filterCondition) {
                     //过滤条件
                     let condition = that.parseFilterCondition(layerInfo.filterCondition);
-                    let sql = "select * from json where (" + condition + ")";
-                    let filterResult = window.jsonsql.query(sql, {
-                        attributes: feature.get('attributes')
-                    });
+                    const properties = feature.get('attributes');
+                    const conditions = parseCondition(condition, Object.keys(properties));
+                    const filterFeature = parseConditionFeature(properties);
+                    const sql = 'select * from json where (' + conditions + ')';
+                    let filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
                             dataflowSource: source,
