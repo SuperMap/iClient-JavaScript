@@ -13,6 +13,7 @@ import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFea
 import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQLParameters';
 import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
 import { Lang } from '@supermap/iclient-common/lang/Lang';
+import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/util/FilterCondition';
 import { Util } from '../core/Util';
 import { QueryService } from '../services/QueryService';
 import convert from 'xml-js';
@@ -1497,15 +1498,16 @@ export class WebMap extends mapboxgl.Evented {
 			return allFeatures;
 		}
 		let condition = this._replaceFilterCharacter(filterCondition);
-		let sql = 'select * from json where (' + condition + ')';
 		let filterFeatures = [];
 		for (let i = 0; i < allFeatures.length; i++) {
 			let feature = allFeatures[i];
 			let filterResult = false;
 			try {
-				filterResult = window.jsonsql.query(sql, {
-					properties: feature.properties
-				});
+        const properties = feature.properties;
+        const conditions = parseCondition(condition, Object.keys(properties));
+        const filterFeature = parseConditionFeature(properties);
+        const sql = 'select * from json where (' + conditions + ')';
+        filterResult = window.jsonsql.query(sql, { attr: filterFeature });
 			} catch (err) {
 				//必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
 				continue;

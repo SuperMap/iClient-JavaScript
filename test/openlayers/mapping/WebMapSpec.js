@@ -21,6 +21,8 @@ import * as olControl from 'ol/control';
 import Feature from 'ol/Feature';
 import * as olProj from 'ol/proj';
 
+window.jsonsql = { query: () => {} };
+
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
     var server = "http://127.0.0.1:8090/iportal/";
@@ -176,6 +178,28 @@ describe('openlayers_WebMap', () => {
             
             done();
         }
+    });
+
+    it('jsonsql', (done) => {
+      let options = {
+          server: server,
+          successCallback,
+          errorCallback: function () {}
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_BAIDU;
+              return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, options);
+
+      function successCallback() {
+        datavizWebmap.getFiterFeatures('2020年人口数> 20', [{ get: () => ({ '2020年人口数': 30 }) }]);
+        datavizWebmap.createDataflowLayer({filterCondition:'2020年人口数> 20', pointStyle:{}}, [{ get: () => ({ '2020年人口数': 30 }) }]);
+        done();
+      }
     });
     it('initialize_OPENSTREET', (done) => {
         let options = {

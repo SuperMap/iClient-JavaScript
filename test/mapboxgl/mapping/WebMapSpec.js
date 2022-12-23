@@ -2,12 +2,8 @@ import mapboxgl from 'mapbox-gl';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
-import { ColorsPickerUtil } from '../../../src/common/util/ColorsPickerUtil';
 import '../../resources/WebMapV5.js';
-import img from '../../resources/img/baiduTileTest.png';
-import convert from 'xml-js';
-import jsonsql from 'jsonsql';
-import canvg from 'canvg';
+window.jsonsql = { query: () => {} };
 
 describe('mapboxgl_WebMap', () => {
     var originalTimeout, testDiv;
@@ -98,6 +94,23 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapId).toEqual('testID');
             done();
         });
+    });
+    it('jsonsql', (done) => {
+      let options = {
+          server: server
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_CLOUD;
+              return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+      });
+      datavizWebmap = new WebMap(id, options);
+      datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 }}]);
+        done();
+      });
     });
     it('setWebMapOptions', (done) => {
         let options = {
