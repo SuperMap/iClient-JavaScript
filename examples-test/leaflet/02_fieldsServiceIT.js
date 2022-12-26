@@ -13,8 +13,8 @@ module.exports = {
         /*check the info showing in leaflet-popup is equal to our expectation*/
         // 线上站点
         // var fieldsInfo = 'SmID,\ SmSdriW,\ SmSdriN,\ SmSdriE,\ SmSdriS,\ SmUserID,\ SmGeometrySize';
-        var fieldsInfo = 'SmID,\ SmUserID,\ SmIndexKey,\ SmGeometry';
-        browser.expect.element('.leaflet-popup-content').text.to.equal(fieldsInfo);
+        var fieldsInfo = 'SmID';
+        browser.expect.element('.leaflet-popup-content').text.to.contain(fieldsInfo);
         browser.click('.leaflet-popup-close-button', function () {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
         });
