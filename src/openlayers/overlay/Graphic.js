@@ -111,7 +111,6 @@ export class Graphic extends ImageCanvasSource {
           me.map.on('pointermove', function(e) {
               const graphic = me.findGraphicByPixel(e, me);
               if (graphic) {
-                console.log('moveeeeeeeee')
                 if (me.isDeckGLRender) {
                   if (options.highlightColor) {
                     me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
@@ -191,8 +190,7 @@ export class Graphic extends ImageCanvasSource {
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
             let graphics = me.getGraphicsInExtent();
             // FIX 无法高亮元素
-            // me._highLightClose();
-            console.log('foreach')
+            me._highLightClose();
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
                 if (!me.isDeckGLRender && !style) {
