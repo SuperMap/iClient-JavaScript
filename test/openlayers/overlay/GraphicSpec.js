@@ -576,7 +576,7 @@ describe('openlayers_GraphicLayer', () => {
         });
     });
 
-   it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
+    it('forEachFeatureAtCoordinate_ICL_1047', (done) => {
         //三叶草的生成坐标
         var coordinate = [
             [50.154958667070076, -0.89592969754775]
@@ -650,4 +650,40 @@ describe('openlayers_GraphicLayer', () => {
             }
         });
     });
+    it('onCLick', (done) => {
+      map = new Map({
+        target: 'map',
+        view: new View({
+            center: [0, 0],
+            zoom: 2,
+            projection: 'EPSG:4326'
+        }),
+        renderer: ['canvas']
+      });
+      var graphics = [new GraphicObj(new Point([0, 0]))];
+      var graphicStyle = {
+          color: [0, 255, 128, 255],
+          highlightColor: [255, 0, 0, 255],
+          radius: 20
+      };
+      map.once('postrender', function () {
+        var graphicLayer = new ImageLayer({
+            source: new GraphicSource({
+                render: "webgl",
+                graphics: graphics,
+                color: graphicStyle.color,
+                highlightColor: graphicStyle.highlightColor,
+                radius: graphicStyle.radius,
+                map: map,
+                onClick: function (graphic) {
+                    if (graphic) {
+                      graphic.lngLat;
+                    }
+                }
+            })
+        });
+        map.addLayer(graphicLayer);
+        done();
+      })
+    })
 });

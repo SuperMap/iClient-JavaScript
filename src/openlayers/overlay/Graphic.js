@@ -17,6 +17,7 @@ import * as olExtent from 'ol/extent';
 import Polygon from 'ol/geom/Polygon';
 import Point from 'ol/geom/Point';
 import ImageLayer from 'ol/layer/Image';
+import { transform } from 'ol/proj';
 
 const defaultProps = {
     color: [0, 0, 0, 255],
@@ -79,33 +80,47 @@ export class Graphic extends ImageCanvasSource {
         this.isHighLight = typeof options.isHighLight === 'undefined' ? true : options.isHighLight;
         this.hitGraphicLayer = null;
         this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
-
+        this._options = options;
         const me = this;
 
         if (options.onClick) {
             me.map.on('click', function(e) {
-                if (me.renderer instanceof GraphicWebGLRenderer) {
-                    return;
-                }
-                const features = me.map.getFeaturesAtPixel(e.pixel) || [];
-                for (let index = 0; index < features.length; index++) {
-                    const graphic = features[index];
-                    if (me.graphics.indexOf(graphic) > -1) {
-                        options.onClick(graphic, e);
-                        if (me.isHighLight) {
-                            me._highLight(
-                                graphic.getGeometry().getCoordinates(),
-                                new Style({
-                                    image: graphic.getStyle()
-                                }).getImage(),
-                                graphic,
-                                e.pixel
-                            );
-                        }
-                        break;
+                const graphic = me.findGraphicByPixel(e, me);
+                if (graphic) {
+                  if (me.isDeckGLRender) {
+                    const params = me.getDeckglArguments(me, e, graphic);
+                    options.onClick(params);
+                  } else {
+                    options.onClick(graphic, e);
+                    if (me.isHighLight) {
+                      me._highLight(
+                          graphic.getGeometry().getCoordinates(),
+                          new Style({
+                              image: graphic.getStyle()
+                          }).getImage(),
+                          graphic,
+                          e.pixel
+                      );
                     }
+                  }
+                  
                 }
             });
+        }
+        if (options.onHover || options.highlightColor) {
+          me.map.on('pointermove', function(e) {
+              const graphic = me.findGraphicByPixel(e, me);
+              if (graphic) {
+                console.log('moveeeeeeeee')
+                if (me.isDeckGLRender) {
+                  if (options.highlightColor) {
+                    me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+                  }
+                  const params = me.getDeckglArguments(me, e, graphic);
+                  options.onHover && options.onHover(params);
+                }
+              }
+          });
         }
         //eslint-disable-next-line no-unused-vars
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
@@ -124,6 +139,7 @@ export class Graphic extends ImageCanvasSource {
             me.renderer._clearBuffer();
             me.renderer.selected = this.selected;
             me.renderer.drawGraphics(graphics);
+            me.isDeckGLRender = me.renderer instanceof GraphicWebGLRenderer;
             return me.renderer.getCanvas();
         }
 
@@ -175,11 +191,12 @@ export class Graphic extends ImageCanvasSource {
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
             let graphics = me.getGraphicsInExtent();
             // FIX 无法高亮元素
-            me._highLightClose();
+            // me._highLightClose();
+            console.log('foreach')
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
-                if (!style) {
-                    return;
+                if (!me.isDeckGLRender && !style) {
+                  return;
                 }
                 //已经被高亮的graphics 不被选选中
                 if (style instanceof HitCloverShape) {
@@ -214,7 +231,7 @@ export class Graphic extends ImageCanvasSource {
                     if (geo.intersectsCoordinate(this.map.getCoordinateFromPixel(evtPixel))) {
                         contain = true;
                     }
-                } else {
+                } else if (image) {
                     let extent = [];
                     extent[0] = center[0] - image.getAnchor()[0] * resolution;
                     extent[2] = center[0] + image.getAnchor()[0] * resolution;
@@ -223,6 +240,15 @@ export class Graphic extends ImageCanvasSource {
                     if (olExtent.containsCoordinate(extent, coordinate)) {
                         contain = true;
                     }
+                } else {
+                  let extent = [];
+                  extent[0] = center[0] - me._options.radius * resolution;
+                  extent[2] = center[0] + me._options.radius * resolution;
+                  extent[1] = center[1] - me._options.radius * resolution;
+                  extent[3] = center[1] + me._options.radius * resolution;
+                  if (olExtent.containsCoordinate(extent, coordinate)) {
+                      contain = true;
+                  }
                 }
 
                 if (contain === true) {
@@ -237,6 +263,35 @@ export class Graphic extends ImageCanvasSource {
             }
             return undefined;
         }
+    }
+
+    findGraphicByPixel(e, me) {
+      const features = me.map.getFeaturesAtPixel(e.pixel) || [];
+      for (let index = 0; index < features.length; index++) {
+          const graphic = features[index];
+          if (me.graphics.indexOf(graphic) > -1) {
+            return graphic;
+          }
+      }
+      return undefined;
+    }
+
+    getDeckglArguments(me, e, graphic) {
+      const view = me.map.getView();
+      const projection = view.getProjection().getCode();
+      return {
+        object: graphic,
+        layer: me.renderer._renderLayer,
+        pixel: e.pixel,
+        x: e.pixel[0],
+        y: e.pixel[1],
+        pixelRatio: me.renderer.pixelRatio,
+        lngLat: transform(graphic.getGeometry().getCoordinates(), projection, 'EPSG:4326'),
+        picked: true,
+        index:1,
+        color: me._options.color,
+        devicePixel: e.devicePixel
+      }
     }
 
     /**
@@ -477,7 +532,7 @@ export class Graphic extends ImageCanvasSource {
             this.map.removeLayer(this.hitGraphicLayer);
             this.hitGraphicLayer = null;
         }
-        this.changed();
+        !this.isDeckGLRender && this.changed();
     }
 
     /**
