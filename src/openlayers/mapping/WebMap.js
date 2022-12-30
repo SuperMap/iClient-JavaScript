@@ -1927,8 +1927,8 @@ export class WebMap extends Observable {
                                   fileterAttrs.push(value);
                               }
                           }
-                          that.getFeatures(fileterAttrs, layer, async function (features) {
-                              await that.addLayer(layer, features, layerIndex);
+                          that.getFeatures(fileterAttrs, layer, async function (params) {
+                              await that.addLayer(layer, params, layerIndex);
                               that.layerAdded++;
                               that.sendMapToUser(len);
                           }, function (e) {
@@ -2029,8 +2029,7 @@ export class WebMap extends Observable {
         let that = this;
         let isMapService = info ? !info.isMvt : layer.layerType === 'HOSTED_TILE',
             isAdded = false;
-        for (let i = 0; i < dataItemServices.length; i++) {
-          const service = dataItemServices[i];
+        for (const service of dataItemServices) {
           if (isAdded) {
               return;
           }
@@ -2074,8 +2073,6 @@ export class WebMap extends Observable {
                   that.sendMapToUser(len);
 
               } else {
-                  //数据服务
-                  isAdded = true;
                   //关系型文件发布的数据服务
                   that.getDatasources(service.address).then(function (datasourceName) {
                       layer.dataSource.dataSourceName = datasourceName + ":" + datasetName;
@@ -2702,7 +2699,7 @@ export class WebMap extends Observable {
             });
         };
         let featureType = layerInfo.featureType;
-        let style = await StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);
+        const style = await StyleUtils.toOpenLayersStyle(this.getDataVectorTileStyle(featureType), featureType);
         return new olLayer.VectorTile({
             //设置避让参数
             source: new VectorTileSuperMapRest({
@@ -2758,7 +2755,7 @@ export class WebMap extends Observable {
               const properties = feature.get('attributes');
               const conditions = parseCondition(condition, Object.keys(properties));
               const filterFeature = parseConditionFeature(properties);
-              const sql = 'select * from json where (' + conditions + ')';
+              const sql = `select * from json where (${conditions})`;
               filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
             } catch (err) {
                 //必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
@@ -2831,9 +2828,9 @@ export class WebMap extends Observable {
      * @return {Array} 大数据图层要素数组
      */
     async getGraphicsFromFeatures(features, style, featureType) {
-        let olStyle = await StyleUtils.getOpenlayersStyle(style, featureType),
+        const olStyle = await StyleUtils.getOpenlayersStyle(style, featureType),
             shape = olStyle.getImage();
-        let graphics = [];
+        const graphics = [];
         //构建graphic
         for (let i in features) {
             let graphic = new OverlayGraphic(features[i].getGeometry());
@@ -3089,7 +3086,7 @@ export class WebMap extends Observable {
      * @param {Array} features - 所有feature结合
      */
     async createUniqueLayer(layerInfo, features) {
-        let styleSource = await this.createUniqueSource(layerInfo, features);
+        const styleSource = await this.createUniqueSource(layerInfo, features);
         let layer = new olLayer.Vector({
             styleSource: styleSource,
             source: new Vector({
@@ -3120,7 +3117,7 @@ export class WebMap extends Observable {
      */
     async createUniqueSource(parameters, features) {
         //找到合适的专题字段
-        let styleGroup = await this.getUniqueStyleGroup(parameters, features);
+        const styleGroup = await this.getUniqueStyleGroup(parameters, features);
         return {
             map: this.map, //必传参数 API居然不提示
             style: parameters.style,
@@ -3224,7 +3221,7 @@ export class WebMap extends Observable {
      */
     async createRangeLayer(layerInfo, features) {
         //这里获取styleGroup要用所以的feature
-        let styleSource = await this.createRangeSource(layerInfo, features);
+        const styleSource = await this.createRangeSource(layerInfo, features);
         let layer = new olLayer.Vector({
             styleSource: styleSource,
             source: new Vector({
@@ -3266,7 +3263,7 @@ export class WebMap extends Observable {
      */
     async createRangeSource(parameters, features) {
         //找到合适的专题字段
-        let styleGroup = await this.getRangeStyleGroup(parameters, features);
+        const styleGroup = await this.getRangeStyleGroup(parameters, features);
         if (styleGroup) {
             return {
                 style: parameters.style,
@@ -3378,7 +3375,7 @@ export class WebMap extends Observable {
                 }
 
                 // 转化成 ol 样式
-                let olStyle = await StyleUtils.toOpenLayersStyle(style, featureType);
+                const olStyle = await StyleUtils.toOpenLayersStyle(style, featureType);
 
                 let start = segements[i];
                 let end = segements[i + 1];
@@ -3423,9 +3420,9 @@ export class WebMap extends Observable {
      * @returns {ol.layer.Vector} 数据流图层
      */
     async createDataflowLayer(layerInfo, layerIndex) {
-        let layerStyle = layerInfo.pointStyle, style;
+        let layerStyle = layerInfo.pointStyle;
         //获取样式
-        style = await StyleUtils.getOpenlayersStyle(layerStyle, layerInfo.featureType);
+        const style = await StyleUtils.getOpenlayersStyle(layerStyle, layerInfo.featureType);
 
         let source = new Vector({
             wrapX: false
@@ -3465,8 +3462,8 @@ export class WebMap extends Observable {
                     const properties = feature.get('attributes');
                     const conditions = parseCondition(condition, Object.keys(properties));
                     const filterFeature = parseConditionFeature(properties);
-                    const sql = 'select * from json where (' + conditions + ')';
-                    let filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
+                    const sql = `select * from json where (${conditions})`;
+                    const filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
                             dataflowSource: source,
@@ -3616,8 +3613,8 @@ export class WebMap extends Observable {
                     const properties = feature.get('attributes');
                     const conditions = parseCondition(condition, Object.keys(properties));
                     const filterFeature = parseConditionFeature(properties);
-                    const sql = 'select * from json where (' + conditions + ')';
-                    let filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
+                    const sql = `select * from json where (${conditions})`;
+                    const filterResult = window.jsonsql.query(sql, { attributes: filterFeature });
                     if (filterResult && filterResult.length > 0) {
                         that.addDataflowFeature(feature, layerInfo.identifyField, {
                             dataflowSource: source,
@@ -3696,8 +3693,7 @@ export class WebMap extends Observable {
     async setEachFeatureDefaultStyle(features) {
         let that = this;
         features = (Util.isArray(features) || features instanceof Collection) ? features : [features];
-        for(let i = 0; i < features.length; i++) {
-          const feature = features[i];
+        for (const feature of features) {
           let geomType = feature.getGeometry().getType().toUpperCase();
           // let styleType = geomType === "POINT" ? 'MARKER' : geomType;
           let defaultStyle = feature.getProperties().useStyle;
@@ -3760,7 +3756,7 @@ export class WebMap extends Observable {
      * @returns {ol.layer.Vector} 矢量图层
      */
     async createRankSymbolLayer(layerInfo, features) {
-        let styleSource = await this.createRankStyleSource(layerInfo, features, layerInfo.featureType);
+        const styleSource = await this.createRankStyleSource(layerInfo, features, layerInfo.featureType);
         let layer = new olLayer.Vector({
             styleSource,
             source: new Vector({
@@ -3770,10 +3766,10 @@ export class WebMap extends Observable {
             renderMode: 'image'
         });
         layer.setStyle(feature => {
-            let styleSource = layer.get('styleSource');
-            let themeField = styleSource.parameters.themeSetting.themeField;
-            let value = Number(feature.get('attributes')[themeField]);
-            let styleGroups = styleSource.styleGroups;
+            const styleSource = layer.get('styleSource');
+            const themeField = styleSource.parameters.themeSetting.themeField;
+            const value = Number(feature.get('attributes')[themeField]);
+            const styleGroups = styleSource.styleGroups;
             for (let i = 0, len = styleGroups.length; i < len; i++) {
                 if (value >= styleGroups[i].start && value < styleGroups[i].end) {
                     return styleSource.styleGroups[i].olStyle;
@@ -3792,9 +3788,9 @@ export class WebMap extends Observable {
      * @returns {Object} styleGroups
      */
     async createRankStyleSource(parameters, features, featureType) {
-        let themeSetting = parameters.themeSetting,
-            themeField = themeSetting.themeField;
-        let styleGroups = await this.getRankStyleGroup(themeField, features, parameters, featureType);
+        const themeSetting = parameters.themeSetting;
+        const themeField = themeSetting.themeField;
+        const styleGroups = await this.getRankStyleGroup(themeField, features, parameters, featureType);
         return styleGroups ? {parameters, styleGroups} : false
     }
     /**
@@ -3865,7 +3861,7 @@ export class WebMap extends Observable {
                 // 转化成 ol 样式
                 style.radius = radius;
                 style.fillColor = customSettings[j] && customSettings[j].color ? customSettings[j].color : rangeColors[j] || fillColor;
-                let olStyle = await StyleUtils.getOpenlayersStyle(style, featureType, true);
+                const olStyle = await StyleUtils.getOpenlayersStyle(style, featureType, true);
                 styleGroup.push({olStyle: olStyle, radius, start, end, fillColor: style.fillColor});
             }
             return styleGroup;

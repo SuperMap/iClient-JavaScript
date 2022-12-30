@@ -1506,7 +1506,7 @@ export class WebMap extends mapboxgl.Evented {
         const properties = feature.properties;
         const conditions = parseCondition(condition, Object.keys(properties));
         const filterFeature = parseConditionFeature(properties);
-        const sql = 'select * from json where (' + conditions + ')';
+        const sql = `select * from json where (${conditions})`;
         filterResult = window.jsonsql.query(sql, { attr: filterFeature });
 			} catch (err) {
 				//必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
