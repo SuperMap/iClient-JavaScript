@@ -684,6 +684,7 @@ describe('openlayers_GraphicLayer', () => {
         });
         map.addLayer(graphicLayer);
         const source = graphicLayer.getSource();
+        source.renderer = {};
         source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
             expect(result).not.toBeNull();
         });
