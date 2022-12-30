@@ -139,7 +139,6 @@ export class Graphic extends ImageCanvasSource {
             me.renderer.selected = this.selected;
             me.renderer.drawGraphics(graphics);
             me.isDeckGLRender = me.renderer instanceof GraphicWebGLRenderer;
-            return me.renderer.getCanvas();
         }
 
         function createRenderer(size, pixelRatio) {
@@ -543,6 +542,7 @@ export class Graphic extends ImageCanvasSource {
      * @private
      */
     _highLight(center, image, selectGraphic, evtPixel) {
+        console.log('highlight')
         if (selectGraphic.getStyle() instanceof CloverShape) {
             if (this.hitGraphicLayer) {
                 this.map.removeLayer(this.hitGraphicLayer);

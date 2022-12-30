@@ -117,6 +117,7 @@ describe('openlayers_Graph', () => {
       });
 
       var key = layer.on('postrender', function () {
+        console.log('++++++++++++++++')
         unByKey(key);
         expect(graphThemeSource.chartsType).toBe('Bar');
         graphThemeSource.setChartsType('Line');

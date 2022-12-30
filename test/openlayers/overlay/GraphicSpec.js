@@ -637,7 +637,7 @@ describe('openlayers_GraphicLayer', () => {
     });
   });
   it('onCLick', (done) => {
-    map = new Map({
+    const map = new Map({
       target: 'map',
       view: new View({
         center: [0, 0],
@@ -669,21 +669,24 @@ describe('openlayers_GraphicLayer', () => {
         })
       });
       map.addLayer(graphicLayer);
-      const source = graphicLayer.getSource();
-      source.renderer = { _clearBuffer: () => {}, drawGraphics: () => {}, getCanvas: () => {} };
-      source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
-        expect(result).not.toBeNull();
+      graphicLayer.on('postrender', function () {
+        const source = graphicLayer.getSource();
+        if (source.renderer) {
+          source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
+            expect(result).not.toBeNull();
+          });
+          const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
+          expect(res).toBeUndefined();
+          const res1 = source.getDeckglArguments(source, { pixel: [0, 0] }, graphics[0]);
+          expect(res1).not.toBeNull();
+          let pixel = map.getPixelFromCoordinate([0, 0]);
+          map.forEachFeatureAtPixel(pixel, (graphic, layer) => {
+            expect(graphic).toBe(graphics[0]);
+            expect(layer).toBe(graphicLayer);
+          });
+          done();
+        }
       });
-      const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
-      expect(res).toBeUndefined();
-      const res1 = source.getDeckglArguments(source, { pixel: [0, 0] }, graphics[0]);
-      expect(res1).not.toBeNull();
-      let pixel = map.getPixelFromCoordinate([0, 0]);
-      map.forEachFeatureAtPixel(pixel, (graphic, layer) => {
-        expect(graphic).toBe(graphics[0]);
-        expect(layer).toBe(graphicLayer);
-      });
-      done();
     });
   });
 });
