@@ -139,6 +139,7 @@ export class Graphic extends ImageCanvasSource {
             me.renderer.selected = this.selected;
             me.renderer.drawGraphics(graphics);
             me.isDeckGLRender = me.renderer instanceof GraphicWebGLRenderer;
+            return me.renderer.getCanvas();
         }
 
         function createRenderer(size, pixelRatio) {
