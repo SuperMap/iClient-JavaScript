@@ -13,8 +13,8 @@ function parseCondition(filterCondition, keys) {
 
 // 处理jsonsqlfeature, 加前缀
 function parseConditionFeature(feature) {
-  let copyValue = {};
-  for (let key in feature) {
+  const copyValue = {};
+  for (const key in feature) {
     let copyKey = key;
     if (startsWithNumber(key)) {
       copyKey = '$' + key;
