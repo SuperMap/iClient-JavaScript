@@ -638,7 +638,7 @@ describe('openlayers_GraphicLayer', () => {
   });
 
   it('onCLick', (done) => {
-    const map = new Map({
+    map = new Map({
       target: 'map',
       view: new View({
         center: [0, 0],
@@ -653,7 +653,7 @@ describe('openlayers_GraphicLayer', () => {
       highlightColor: [255, 0, 0, 255],
       radius: 20
     };
-    var graphicLayer = new ImageLayer({
+    graphicLayer = new ImageLayer({
       source: new GraphicSource({
         render: 'webgl',
         graphics: graphics,
