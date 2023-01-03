@@ -636,6 +636,7 @@ describe('openlayers_GraphicLayer', () => {
       }
     });
   });
+
   it('onCLick', (done) => {
     const map = new Map({
       target: 'map',
@@ -652,41 +653,40 @@ describe('openlayers_GraphicLayer', () => {
       highlightColor: [255, 0, 0, 255],
       radius: 20
     };
-    map.once('postrender', function () {
-      var graphicLayer = new ImageLayer({
-        source: new GraphicSource({
-          render: 'webgl',
-          graphics: graphics,
-          color: graphicStyle.color,
-          highlightColor: graphicStyle.highlightColor,
-          radius: graphicStyle.radius,
-          map: map,
-          onClick: function (graphic) {
-            if (graphic) {
-              graphic.lngLat;
-            }
+    var graphicLayer = new ImageLayer({
+      source: new GraphicSource({
+        render: 'webgl',
+        graphics: graphics,
+        color: graphicStyle.color,
+        highlightColor: graphicStyle.highlightColor,
+        radius: graphicStyle.radius,
+        map: map,
+        onClick: function (graphic) {
+          if (graphic) {
+            graphic.lngLat;
           }
-        })
-      });
-      map.addLayer(graphicLayer);
-      graphicLayer.on('postrender', function () {
-        const source = graphicLayer.getSource();
-        if (source.renderer) {
-          source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
-            expect(result).not.toBeNull();
-          });
-          const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
-          expect(res).toBeUndefined();
-          const res1 = source.getDeckglArguments(source, { pixel: [0, 0] }, graphics[0]);
-          expect(res1).not.toBeNull();
-          let pixel = map.getPixelFromCoordinate([0, 0]);
-          map.forEachFeatureAtPixel(pixel, (graphic, layer) => {
-            expect(graphic).toBe(graphics[0]);
-            expect(layer).toBe(graphicLayer);
-          });
-          done();
         }
-      });
+      })
+    });
+    map.addLayer(graphicLayer);
+    const key = graphicLayer.on('postrender', function () {
+      const source = graphicLayer.getSource();
+      if (source.renderer) {
+        unByKey(key);
+        source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
+          expect(result).not.toBeNull();
+        });
+        const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
+        expect(res).toBeUndefined();
+        const res1 = source.getDeckglArguments(source, { pixel: [0, 0] }, graphics[0]);
+        expect(res1).not.toBeNull();
+        let pixel = map.getPixelFromCoordinate([0, 0]);
+        map.forEachFeatureAtPixel(pixel, (graphic, layer) => {
+          expect(graphic).toBe(graphics[0]);
+          expect(layer).toBe(graphicLayer);
+        });
+        done();
+      }
     });
   });
 });
