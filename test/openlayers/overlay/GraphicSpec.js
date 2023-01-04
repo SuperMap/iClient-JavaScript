@@ -673,13 +673,17 @@ describe('openlayers_GraphicLayer', () => {
       const source = graphicLayer.getSource();
       if (source.renderer) {
         unByKey(key);
+        source.isDeckGLRender = true;
         source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
           expect(result).not.toBeNull();
         });
         const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
         expect(res).toBeUndefined();
-        const res1 = source.getDeckglArguments(source, { pixel: [0, 0] }, graphics[0]);
-        expect(res1).not.toBeNull();
+
+        spyOn(map, 'getFeaturesAtPixel').and.callFake(()=> graphics);
+        const res1 = source.findGraphicByPixel({ pixel: [0, 0] }, source);
+        expect(res1).not.toBeUndefined();
+
         let pixel = map.getPixelFromCoordinate([0, 0]);
         map.forEachFeatureAtPixel(pixel, (graphic, layer) => {
           expect(graphic).toBe(graphics[0]);
