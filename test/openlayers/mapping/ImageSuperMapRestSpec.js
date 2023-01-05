@@ -72,8 +72,8 @@ describe('openlayers_ImageSuperMapRest', () => {
        
         var tileUrl = imageTileSource.getImageInternal(extent, resolution, pixelRatio).src_;
         expect(tileUrl).toBe(
-            GlobeParameter.mapServiceURL +
-                '%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Day/image.png?transparent=true&cacheEnabled=true&redirect=false&width=3840&height=794&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-159.16992187500045%2C%22y%22%3A-22.895507812500092%7D%2C%22rightTop%22%3A%7B%22x%22%3A178.33007812500045%2C%22y%22%3A46.88964843750009%7D%7D'
+            url +
+                '/image.png?transparent=true&cacheEnabled=true&redirect=false&width=3840&height=794&viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-159.16992187500045%2C%22y%22%3A-22.895507812500092%7D%2C%22rightTop%22%3A%7B%22x%22%3A178.33007812500045%2C%22y%22%3A46.88964843750009%7D%7D'
         );
     });
 
