@@ -140,7 +140,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
       params['maxVisibleVertex'] = Math.round(+options.maxVisibleVertex);
     }
 
-    this._layerUrl = CommonUtil.urlAppend(encodeURI(this._layerUrl), CommonUtil.getParameterString(params));
+    this._layerUrl = CommonUtil.urlAppend(this._layerUrl, CommonUtil.getParameterString(params));
 
     //存储一个cacheEnabled
     this.cacheEnabled = cacheEnabled;
