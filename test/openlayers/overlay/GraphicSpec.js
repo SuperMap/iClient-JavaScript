@@ -665,10 +665,16 @@ describe('openlayers_GraphicLayer', () => {
           if (graphic) {
             graphic.lngLat;
           }
+        },
+        onHover: function (graphic) {
+          if (graphic) {
+            graphic.lngLat;
+          }
         }
       })
     });
     map.addLayer(graphicLayer);
+    const viewport = map.getViewport();
     const key = graphicLayer.on('postrender', function () {
       const source = graphicLayer.getSource();
       if (source.renderer) {
@@ -689,6 +695,11 @@ describe('openlayers_GraphicLayer', () => {
           expect(graphic).toBe(graphics[0]);
           expect(layer).toBe(graphicLayer);
         });
+        viewport.dispatchEvent(new Event('pointermove'));
+        viewport.dispatchEvent(new Event('click'));
+
+        source.isDeckGLRender = false;
+        viewport.dispatchEvent(new Event('click'));
         done();
       }
     });
