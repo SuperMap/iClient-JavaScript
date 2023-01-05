@@ -686,7 +686,7 @@ describe('openlayers_GraphicLayer', () => {
         const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
         expect(res).toBeUndefined();
 
-        spyOn(map, 'getFeaturesAtPixel').and.callFake(()=> graphics);
+        spyOn(map, 'getFeaturesAtPixel').and.callFake(() => graphics);
         const res1 = source.findGraphicByPixel({ pixel: [0, 0] }, source);
         expect(res1).not.toBeUndefined();
 
@@ -695,6 +695,7 @@ describe('openlayers_GraphicLayer', () => {
           expect(graphic).toBe(graphics[0]);
           expect(layer).toBe(graphicLayer);
         });
+        source.renderer = { deckGL: { pickObject: () => ({}) } };
         viewport.dispatchEvent(new Event('pointermove'));
         viewport.dispatchEvent(new Event('click'));
 
