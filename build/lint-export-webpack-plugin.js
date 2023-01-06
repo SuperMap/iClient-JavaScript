@@ -1,5 +1,5 @@
-const { lintExportRepeat, lintNamespaceRepeat } = require('./lint');
-
+// const { lintExportRepeat, lintNamespaceRepeat } = require('./lint');
+const { lintExportRepeat } = require('./lint');
 class LintExportWebpackPlugin {
   constructor(libName) {
     this.libName = libName === 'ol' ? 'openlayers' : libName;
@@ -11,8 +11,8 @@ class LintExportWebpackPlugin {
         if(repeatExportNames.length > 0) {
           throw new Error(`${this.libName}导出名重复：${repeatExportNames}`)
         }
-        const repeatNamespace = lintNamespaceRepeat(this.libName);
-        console.log(`${this.libName}命名空间重复：`, repeatNamespace);
+        // const repeatNamespace = lintNamespaceRepeat(this.libName);
+        // console.log(`${this.libName}命名空间重复：`, repeatNamespace);
       });
     }
    
