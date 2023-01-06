@@ -695,12 +695,19 @@ describe('openlayers_GraphicLayer', () => {
           expect(graphic).toBe(graphics[0]);
           expect(layer).toBe(graphicLayer);
         });
-        source.renderer = { deckGL: { pickObject: () => ({}) } };
+        source.renderer = { _clearBuffer: () => {}, deckGL: { pickObject: () => ({}) } };
         viewport.dispatchEvent(new Event('pointermove'));
-        viewport.dispatchEvent(new Event('click'));
 
-        source.isDeckGLRender = false;
-        viewport.dispatchEvent(new Event('click'));
+        const event = new Event('click');
+        event.pixel = [0, 0];
+        // ol内部对target属性赋值了， 但是原生Event不能被赋值
+        Object.defineProperty(event, "target", {
+          value : null,
+          writable : true,
+          enumerable : true,
+          configurable : true
+        });
+        map.dispatchEvent(event);
         done();
       }
     });

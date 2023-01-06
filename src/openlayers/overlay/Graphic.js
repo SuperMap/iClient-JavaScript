@@ -81,7 +81,6 @@ export class Graphic extends ImageCanvasSource {
         this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
         this._options = options;
         const me = this;
-
         if (options.onClick) {
             me.map.on('click', function(e) {
               if (me.isDeckGLRender) {
@@ -106,7 +105,6 @@ export class Graphic extends ImageCanvasSource {
               }
             });
         }
-       
           me.map.on('pointermove', function(e) {
             if (me.isDeckGLRender) {
               const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
@@ -115,7 +113,6 @@ export class Graphic extends ImageCanvasSource {
               }
             }
           });
-        
         //eslint-disable-next-line no-unused-vars
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             var mapWidth = size[0] / pixelRatio;
@@ -517,7 +514,6 @@ export class Graphic extends ImageCanvasSource {
      * @private
      */
     _highLight(center, image, selectGraphic, evtPixel) {
-        console.log('highlight')
         if (selectGraphic.getStyle() instanceof CloverShape) {
             if (this.hitGraphicLayer) {
                 this.map.removeLayer(this.hitGraphicLayer);
