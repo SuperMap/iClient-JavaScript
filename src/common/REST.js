@@ -1339,7 +1339,7 @@ var UGCLayerType = {
     THEME: "THEME",
     /** 矢量图层。 */
     VECTOR: "VECTOR",
-    /** 栅格图层。。 */
+    /** 栅格图层。 */
     GRID: "GRID",
     /** 影像图层。 */
     IMAGE: "IMAGE"
