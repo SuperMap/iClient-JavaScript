@@ -84,29 +84,38 @@ export class Graphic extends ImageCanvasSource {
 
         if (options.onClick) {
             me.map.on('click', function(e) {
-                if (me.renderer instanceof GraphicWebGLRenderer) {
-                    return;
-                }
-                const features = me.map.getFeaturesAtPixel(e.pixel) || [];
-                for (let index = 0; index < features.length; index++) {
-                    const graphic = features[index];
-                    if (me.graphics.indexOf(graphic) > -1) {
-                        options.onClick(graphic, e);
-                        if (me.isHighLight) {
-                            me._highLight(
-                                graphic.getGeometry().getCoordinates(),
-                                new Style({
-                                    image: graphic.getStyle()
-                                }).getImage(),
-                                graphic,
-                                e.pixel
-                            );
-                        }
-                        break;
-                    }
-                }
+              if (me.isDeckGLRender) {
+                const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+                options.onClick(params);
+                return;
+              }
+              const graphic = me.findGraphicByPixel(e, me);
+              if (graphic) {
+                  options.onClick(graphic, e);
+                  if (me.isHighLight) {
+                    me._highLight(
+                        graphic.getGeometry().getCoordinates(),
+                        new Style({
+                            image: graphic.getStyle()
+                        }).getImage(),
+                        graphic,
+                        e.pixel
+                    );
+                  }
+                
+              }
             });
         }
+       
+        me.map.on('pointermove', function(e) {
+          if (me.isDeckGLRender) {
+            const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+            if (options.onHover) {
+                options.onHover(params);
+            }
+          }
+        });
+        
         //eslint-disable-next-line no-unused-vars
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             var mapWidth = size[0] / pixelRatio;
@@ -124,6 +133,13 @@ export class Graphic extends ImageCanvasSource {
             me.renderer._clearBuffer();
             me.renderer.selected = this.selected;
             me.renderer.drawGraphics(graphics);
+            me.isDeckGLRender = me.renderer instanceof GraphicWebGLRenderer;
+            if(me.isDeckGLRender){
+              if (!me.context) {
+                me.context = Util.createCanvasContext2D(mapWidth, mapHeight);
+              }
+              return me.context.canvas;
+            }
             return me.renderer.getCanvas();
         }
 
@@ -179,7 +195,7 @@ export class Graphic extends ImageCanvasSource {
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
                 if (!style) {
-                    return;
+                  return;
                 }
                 //已经被高亮的graphics 不被选选中
                 if (style instanceof HitCloverShape) {
@@ -237,6 +253,17 @@ export class Graphic extends ImageCanvasSource {
             }
             return undefined;
         }
+    }
+
+    findGraphicByPixel(e, me) {
+      const features = me.map.getFeaturesAtPixel(e.pixel) || [];
+      for (let index = 0; index < features.length; index++) {
+          const graphic = features[index];
+          if (me.graphics.indexOf(graphic) > -1) {
+            return graphic;
+          }
+      }
+      return undefined;
     }
 
     /**

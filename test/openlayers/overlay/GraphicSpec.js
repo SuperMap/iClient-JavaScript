@@ -649,5 +649,80 @@ describe('openlayers_GraphicLayer', () => {
               done();
             }
         });
+   });
+   it('onCLick', (done) => {
+    map = new Map({
+      target: 'map',
+      view: new View({
+        center: [0, 0],
+        zoom: 2,
+        projection: 'EPSG:4326'
+      }),
+      renderer: ['canvas']
     });
+    var graphics = [new GraphicObj(new Point([0, 0]))];
+    var graphicStyle = {
+      color: [0, 255, 128, 255],
+      highlightColor: [255, 0, 0, 255],
+      radius: 20
+    };
+    graphicLayer = new ImageLayer({
+      source: new GraphicSource({
+        render: 'webgl',
+        graphics: graphics,
+        color: graphicStyle.color,
+        highlightColor: graphicStyle.highlightColor,
+        radius: graphicStyle.radius,
+        map: map,
+        onClick: function (graphic) {
+          if (graphic) {
+            graphic.lngLat;
+          }
+        },
+        onHover: function (graphic) {
+          if (graphic) {
+            graphic.lngLat;
+          }
+        }
+      })
+    });
+    map.addLayer(graphicLayer);
+    const viewport = map.getViewport();
+    const key = graphicLayer.on('postrender', function () {
+      const source = graphicLayer.getSource();
+      if (source.renderer) {
+        unByKey(key);
+        source.isDeckGLRender = true;
+        source._forEachFeatureAtCoordinate([0, 0], 1, (result) => {
+          expect(result).not.toBeNull();
+        });
+        const res = source.findGraphicByPixel({ pixel: [0, 0] }, source);
+        expect(res).toBeUndefined();
+
+        spyOn(map, 'getFeaturesAtPixel').and.callFake(() => graphics);
+        const res1 = source.findGraphicByPixel({ pixel: [0, 0] }, source);
+        expect(res1).not.toBeUndefined();
+
+        let pixel = map.getPixelFromCoordinate([0, 0]);
+        map.forEachFeatureAtPixel(pixel, (graphic, layer) => {
+          expect(graphic).toBe(graphics[0]);
+          expect(layer).toBe(graphicLayer);
+        });
+        source.renderer = { _clearBuffer: () => {}, deckGL: { pickObject: () => ({}) } };
+        viewport.dispatchEvent(new Event('pointermove'));
+
+        const event = new Event('click');
+        event.pixel = [0, 0];
+        // ol内部对target属性赋值了， 但是原生Event不能被赋值
+        Object.defineProperty(event, "target", {
+          value : null,
+          writable : true,
+          enumerable : true,
+          configurable : true
+        });
+        map.dispatchEvent(event);
+        done();
+      }
+    });
+  });
 });
