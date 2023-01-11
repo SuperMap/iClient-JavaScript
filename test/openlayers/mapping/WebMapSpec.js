@@ -197,6 +197,7 @@ describe('openlayers_WebMap', () => {
 
       function successCallback() {
         datavizWebmap.getFiterFeatures('2020年人口数> 20', [{ get: () => ({ '2020年人口数': 30 }) }]);
+        datavizWebmap.getFiterFeatures('观测场海拔高度（米）>150', [{ get: () => ({ '观测场海拔高度（米）': 30 }) }]);
         // datavizWebmap.createDataflowLayer({filterCondition:'2020年人口数> 20', pointStyle:{}, wsUrl: 'ws://test/iserver/services/dataflow/dataflow/subscribe'}, [{ get: () => ({ '2020年人口数': 30 }) }]);
         done();
       }

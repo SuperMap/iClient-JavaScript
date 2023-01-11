@@ -109,6 +109,7 @@ describe('mapboxgl_WebMap', () => {
       datavizWebmap = new WebMap(id, options);
       datavizWebmap.on('mapinitialized', () => {
         datavizWebmap._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 }}]);
+        datavizWebmap._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 }}]);
         done();
       });
     });
