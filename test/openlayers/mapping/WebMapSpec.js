@@ -181,6 +181,146 @@ describe('openlayers_WebMap', () => {
             done();
         }, 1000)
     });
+    it('isvj-5215', (done) => {
+      let options = {
+          server: server,
+          successCallback,
+          errorCallback: function () {}
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_BAIDU;
+              return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, options);
+
+      async function successCallback() {
+        const parameters = {
+          "layerType": "UNIQUE",
+          "visible": true,
+          "themeSetting": {
+              "themeField": "UserID",
+              "customSettings": {
+                  "0": {
+                      "fillColor": "#D53E4F",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "1": {
+                      "fillColor": "#3288BD",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "2": {
+                      "fillColor": "#FC8D59",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "3": {
+                      "fillColor": "#99D594",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "5": {
+                      "fillColor": "#FEE08B",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "8": {
+                      "fillColor": "#E6F598",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  }
+              },
+              "colors": [
+                  "#D53E4F",
+                  "#FC8D59",
+                  "#FEE08B",
+                  "#FFFFBF",
+                  "#E6F598",
+                  "#99D594",
+                  "#3288BD"
+              ]
+          },
+          "name": "isvj-5215",
+          "featureType": "POINT",
+          "labelStyle": {
+              "offsetX": 0,
+              "textBaseline": "bottom",
+              "fontFamily": "黑体",
+              "offsetY": -19,
+              "outlineWidth": 0,
+              "textAlign": "center",
+              "outlineColor": "#000000",
+              "fontSize": "14px",
+              "fill": "#333",
+              "backgroundFill": [
+                  255,
+                  255,
+                  255,
+                  0.8
+              ],
+              "labelField": "UserID"
+          },
+          "style": {
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "fillColor": "#E6F598",
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "radius": 15,
+              "strokeColor": "#ffffff",
+              "type": "BASIC_POINT",
+              "strokeOpacity": 1
+          },
+          "projection": "EPSG:4326",
+          "enableFields": [
+              "UserID"
+          ]
+        }
+        const res = await datavizWebmap.getUniqueStyleGroup(parameters, [{ get: () => ({ 'UserID': 30, 'UserID': 0 }) }]);
+        expect(res.length).toBe(2);
+        done();
+      }
+    });
     it('initialize_OPENSTREET', (done) => {
         let options = {
             server: server,

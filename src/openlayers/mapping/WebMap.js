@@ -51,6 +51,7 @@ import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 import Collection from 'ol/Collection';
 import {containsCoordinate, getCenter} from "ol/extent";
+import difference from 'lodash.difference';
 
 window.proj4 = proj4;
 window.Proj4js = proj4;
@@ -3160,6 +3161,9 @@ export class WebMap extends Observable {
 
         //生成styleGroup
         let styleGroup = [];
+        const usedColors = this.getCustomSettingColors(customSettings, names, featureType).map(item => item.toLowerCase());
+        const curentColors = this.getUniqueColors(themeSetting.colors || this.defaultParameters.themeSetting.colors, names.length + Object.keys(customSettings).length).map(item => item.toLowerCase());
+        const newColors = difference(curentColors, usedColors);
         names.forEach(function (name, index) {
             //兼容之前自定义是用key，现在因为数据支持编辑，需要用属性值。
             let key = this.webMapVersion === "1.0" ? index : name;
@@ -3168,6 +3172,10 @@ export class WebMap extends Observable {
                 //兼容之前自定义只存储一个color
                 custom = this.getCustomSetting(style, custom, featureType);
                 customSettings[key] = custom;
+            }
+
+            if (!custom) {
+              custom = this.getCustomSetting(style, newColors.shift(), featureType);
             }
 
             // 转化成 ol 样式
@@ -3206,6 +3214,23 @@ export class WebMap extends Observable {
         }
         let customSetting = Object.assign(style, newProps)
         return customSetting;
+    }
+
+    getCustomSettingColors(customSettings, featureType) {
+      const keys = Object.keys(customSettings);
+      const colors = [];
+      keys.forEach(key => {
+        if (featureType === "LINE") {
+          colors.push(customSettings[key].strokeColor);
+        } else {
+          colors.push(customSettings[key].fillColor);
+        }
+      });
+      return colors;
+    }
+
+    getUniqueColors(colors, valuesLen) {
+      return ColorsPickerUtil.getGradientColors(colors, valuesLen);
     }
 
     /**
