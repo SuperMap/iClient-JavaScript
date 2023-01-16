@@ -22,6 +22,7 @@
     "@supermap/iclient-common": "11.1.0-dev",
     "proj4": "2.8.0",
     "canvg": "3.0.10",
-    "lodash.remove": "^4.7.0"
+    "lodash.remove": "^4.7.0",
+    "lodash.difference": "^4.5.0"
   }
 }
