@@ -317,7 +317,7 @@ describe('openlayers_WebMap', () => {
           ]
         }
         const res = await datavizWebmap.getUniqueStyleGroup(parameters, [{ get: () => ({ 'UserID': 30, 'UserID': 0 }) }]);
-        expect(res.length).toBe(2);
+        expect(res.length).toBe(1);
         done();
       }
     });
