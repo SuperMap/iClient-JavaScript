@@ -3164,7 +3164,7 @@ export class WebMap extends Observable {
 
         //生成styleGroup
         let styleGroup = [];
-        const usedColors = this.getCustomSettingColors(customSettings, names, featureType).map(item => item.toLowerCase());
+        const usedColors = this.getCustomSettingColors(customSettings, featureType).map(item => item.toLowerCase());
         const curentColors = this.getUniqueColors(themeSetting.colors || this.defaultParameters.themeSetting.colors, names.length + Object.keys(customSettings).length).map(item => item.toLowerCase());
         const newColors = difference(curentColors, usedColors);
         for(let index = 0; index < names.length; index++) {
@@ -3222,6 +3222,11 @@ export class WebMap extends Observable {
       const keys = Object.keys(customSettings);
       const colors = [];
       keys.forEach(key => {
+        //兼容之前自定义只存储一个color
+        if (Util.isString(customSettings[key])) {
+          colors.push(customSettings[key]);
+          return;
+        }
         if (featureType === "LINE") {
           colors.push(customSettings[key].strokeColor);
         } else {
