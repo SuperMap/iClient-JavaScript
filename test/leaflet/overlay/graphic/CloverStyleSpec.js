@@ -10,14 +10,14 @@ describe('leaflet_CloverStyle', () => {
     var testDiv, map;
     beforeAll(() => {
         testDiv = window.document.createElement("div");
-        testDiv.setAttribute("id", "map");
+        testDiv.setAttribute("id", "map1");
         testDiv.style.styleFloat = "left";
         testDiv.style.marginLeft = "8px";
         testDiv.style.marginTop = "50px";
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = L.map('map', {
+        map = L.map('map1', {
             preferCanvas: true,
             crs: L.CRS.EPSG4326,
             center: {lon: 0, lat: 0},
