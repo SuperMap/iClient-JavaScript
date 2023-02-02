@@ -184,7 +184,7 @@ describe('openlayers_WebMap', () => {
     it('isvj-5215', (done) => {
       let options = {
           server: server,
-          successCallback,
+          successCallback: function () {},
           errorCallback: function () {}
       };
       spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -196,7 +196,7 @@ describe('openlayers_WebMap', () => {
       });
       var datavizWebmap = new WebMap(id, options);
 
-      async function successCallback() {
+      setTimeout(async () => {
         const parameters = {
           "layerType": "UNIQUE",
           "visible": true,
@@ -319,7 +319,7 @@ describe('openlayers_WebMap', () => {
         const res = await datavizWebmap.getUniqueStyleGroup(parameters, [{ get: () => ({ 'UserID': 30, 'UserID': 0 }) }]);
         expect(res.length).toBe(1);
         done();
-      }
+      });
     });
     it('initialize_OPENSTREET', (done) => {
         let options = {
