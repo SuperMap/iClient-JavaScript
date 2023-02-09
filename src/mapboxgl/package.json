@@ -17,7 +17,7 @@
   "dependencies": {
     "echarts": "4.9.0",
     "mapv": "2.0.62",
-    "mapbox-gl": "1.13.2",
+    "mapbox-gl": "1.13.3",
     "three": "0.129.0",
     "@supermap/iclient-common": "11.1.0-dev",
     "canvg": "3.0.10",
