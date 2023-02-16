@@ -181,7 +181,7 @@ export var normalizeScale = function(scale) {
  /**
  * @function getResolutionFromScaleDpi
  * @category BaseTypes Util
- * @description 根据比例尺和 dpi 计算屏幕分辨率。
+ * @description 根据比例尺和 DPI 计算屏幕分辨率。
  * @param {number} scale - 比例尺。
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。

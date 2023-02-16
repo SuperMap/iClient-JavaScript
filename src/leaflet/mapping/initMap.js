@@ -20,7 +20,7 @@ import proj4 from 'proj4';
  * @param {Object} [options] - 参数。
  * @param {L.MapOptions} [options.mapOptions] - 地图参数，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
  * @param {Object} [options.layerOptions] - 图层参数，参考<a href="TiledMapLayer.html">TiledMapLayer</a>的参数。
- * @returns {Promise} Promise 对象， 返回{ map, layer }。
+ * @returns {Promise} Promise 对象，返回{ map, layer }。
  * @usage
  * ```
  * // 浏览器
@@ -69,7 +69,7 @@ export function initMap(url, options) {
  * @param {Object} mapJSONObj - 地图参数。
  * @param {Object} mapJSONObj.prjCoordSys - 投影配置。
  * @param {Object} mapJSONObj.bounds - 范围。
- * @param {number} mapJSONObj.dpi - dpi。
+ * @param {number} mapJSONObj.dpi - DPI。
  * @param {Array}  mapJSONObj.visibleScales - 自定义比例尺。
  * @param {Array}  mapJSONObj.coordUnit - 地图单位。
  * @param {Object} [mapOptions] - 地图参数。

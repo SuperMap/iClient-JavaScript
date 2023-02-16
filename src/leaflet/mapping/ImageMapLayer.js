@@ -24,7 +24,7 @@ import { toSuperMapGeometry } from '../core/Util';
  * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
  * @param {boolean} [options.clipRegionEnabled=false] - 是否启用地图裁剪。
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域（区域为一个面对象）。当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。如：prjCoordSys={"epsgCode":3857}。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内，是否重叠显示。
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {number} [options.opacity=1] - 图层不透明度。
@@ -37,7 +37,7 @@ import { toSuperMapGeometry } from '../core/Util';
  * @param {string} [options.className] - 自定义 dom 元素的 className。
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
  * @param {string} [options.tileProxy] - 服务代理地址。
- * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
+ * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片格式。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @fires ImageMapLayer#load
@@ -59,7 +59,7 @@ export var ImageMapLayer = Layer.extend({
         clipRegionEnabled: false,
         //地图显示裁剪的区域
         clipRegion: null,
-        //请求的地图的坐标参考系统。 如：prjCoordSys= {"epsgCode":3857}。
+        //请求的地图的坐标参考系统。如：prjCoordSys= {"epsgCode":3857}。
         prjCoordSys: null,
         //地图对象在同一范围内，是否重叠显示
         overlapDisplayed: false,

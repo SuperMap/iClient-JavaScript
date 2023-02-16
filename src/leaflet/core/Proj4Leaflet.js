@@ -114,7 +114,7 @@ L.Proj.Projection = L.Class.extend({
  * @param {Array.<number>} [options.scaleDenominators] - 比例尺分母数组。
  * @param {Array.<number>} [options.resolutions] - 分辨率数组。
  * @param {(Array.<number>|L.Bounds)} [options.bounds] - 范围。
- * @param {number} [options.dpi=96] - dpi。
+ * @param {number} [options.dpi=96] - DPI。
  * @param {Array.<number>} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
  * @example
  *    var crs =new CRS("EPSG:4326",{

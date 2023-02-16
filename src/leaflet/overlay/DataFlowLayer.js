@@ -132,7 +132,7 @@ export var DataFlowLayer = L.LayerGroup.extend({
 
   /**
    * @function DataFlowLayer.prototype.setGeometry
-   * @description 设置集合要素。
+   * @description 设置几何要素。
    * @param {GeoJSONObject} geometry - 待设置的 GeoJSON 几何要素对象。
    */
   setGeometry: function (geometry) {

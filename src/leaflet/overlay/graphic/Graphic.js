@@ -12,7 +12,7 @@ import '../../core/Base';
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {L.LatLng} options.latLng - 经纬度。
- * @param {number} options.id - 要素id。
+ * @param {number} options.id - 要素ID。
  * @param {(CircleStyle|CloverStyle|ImageStyle)} [options.style] - 点样式。
  * @param {Object} [options.attributes] - 要素属性。
  * @usage
@@ -90,7 +90,7 @@ export var Graphic = L.Class.extend({
     /**
      * @deprecated
      * @function Graphic.prototype.getCanvas
-     * @description 获取画布，已弃用该设置，请使用 getStyle 接口
+     * @description 获取画布，已弃用该设置，请使用 getStyle 接口。
      * @returns {HTMLCanvasElement} 画布。
      */
     getCanvas: function () {
