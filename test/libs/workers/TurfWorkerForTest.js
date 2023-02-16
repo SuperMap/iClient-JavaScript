@@ -190,7 +190,7 @@ function squareGrid(bbox, cellSide, options, gridType) {
 function processBuffer(buffer, saveAttrs) {
     var featureCollection = [];
     //var maxBounds = [-180, -90, 180, 90];
-    //获取缓冲区异常feature， 并从原featureCollection中删除
+    //获取缓冲区异常feature，并从原featureCollection中删除
     for (var i = 0, len = buffer.features.length; i < len; i++) {
         var feature = buffer.features[i];
         //不保留原有的属性值

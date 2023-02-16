@@ -996,19 +996,19 @@ describe('openlayers_ProcessingService', () => {
             return Promise.resolve();
         });
         var summaryRegionJobParameter = new SummaryRegionJobParameter({
-            datasetName: "samples_processing_newyorkZone_R",  //必填参数, 源数据集
+            datasetName: "samples_processing_newyorkZone_R",  //必填参数，源数据集
             sumShape: false,                                  //是否统计长度或面积
-            query: "-74.05,40.65,-73.85,40.85",               //选填参数,分析范围
+            query: "-74.05,40.65,-73.85,40.85",               //选填参数，分析范围
             weightedSummaryFields: true,                      //以权重字段统计
-            //standardSummaryFields: false,                   //以标准属字段统计
-            //standardFields: "",                             //以标准属字段统计的字段名称,应该默认为空
-            //standardStatisticModes: "",                     //以标准属字段统计的统计模式,默认为空
+            //standardSummaryFields: false,                   //以标准属性字段统计
+            //standardFields: "",                             //以标准属性字段统计的字段名称，应该默认为空
+            //standardStatisticModes: "",                     //以标准属性字段统计的统计模式，默认为空
             weightedFields: "LocationID",                     //以权重字段统计的字段名称
             weightedStatisticModes: "MAX",                    //以权重字段统计的统计模式
             meshType: 0,                            //网格面汇总类型
             resolution: 50,                         //网格大小
             meshSizeUnit: "METER",                  //网格大小单位
-            type: "SUMMARYMESH"                      //汇总类型,默认为网格面汇总("SUMMARYMESH")
+            type: "SUMMARYMESH"                      //汇总类型，默认为网格面汇总("SUMMARYMESH")
         });
         processingService.addSummaryRegionJob(summaryRegionJobParameter, (result) => {
             expect(result.type).toBe("processCompleted");
@@ -1087,19 +1087,19 @@ describe('openlayers_ProcessingService', () => {
             return Promise.resolve();
         });
         var summaryRegionJobParameter = new SummaryRegionJobParameter({
-            datasetName: "samples_processing_newyorkZone_R",  //必填参数, 源数据集
+            datasetName: "samples_processing_newyorkZone_R",  //必填参数，源数据集
             sumShape: false,                                  //是否统计长度或面积
-            query: [-74.05,40.65,-73.85,40.85],               //选填参数,分析范围
+            query: [-74.05,40.65,-73.85,40.85],               //选填参数，分析范围
             weightedSummaryFields: true,                      //以权重字段统计
-            //standardSummaryFields: false,                   //以标准属字段统计
-            //standardFields: "",                             //以标准属字段统计的字段名称,应该默认为空
-            //standardStatisticModes: "",                     //以标准属字段统计的统计模式,默认为空
+            //standardSummaryFields: false,                   //以标准属性字段统计
+            //standardFields: "",                             //以标准属性字段统计的字段名称，应该默认为空
+            //standardStatisticModes: "",                     //以标准属性字段统计的统计模式，默认为空
             weightedFields: "LocationID",                     //以权重字段统计的字段名称
             weightedStatisticModes: "MAX",                    //以权重字段统计的统计模式
             meshType: 0,                            //网格面汇总类型
             resolution: 50,                         //网格大小
             meshSizeUnit: "METER",                  //网格大小单位
-            type: "SUMMARYMESH"                      //汇总类型,默认为网格面汇总("SUMMARYMESH")
+            type: "SUMMARYMESH"                      //汇总类型，默认为网格面汇总("SUMMARYMESH")
         });
         processingService.addSummaryRegionJob(summaryRegionJobParameter, (result) => {
             expect(result.type).toBe("processCompleted");
@@ -1178,18 +1178,18 @@ describe('openlayers_ProcessingService', () => {
             return Promise.resolve();
         });
         var summaryRegionJobParameter = new SummaryRegionJobParameter({
-            datasetName: "samples_processing_newyorkZone_R",  //必填参数, 源数据集
+            datasetName: "samples_processing_newyorkZone_R",  //必填参数，源数据集
             sumShape: false,                                  //是否统计长度或面积
             weightedSummaryFields: true,                      //以权重字段统计
-            //standardSummaryFields: false,                   //以标准属字段统计
-            //standardFields: "",                             //以标准属字段统计的字段名称,应该默认为空
-            //standardStatisticModes: "",                     //以标准属字段统计的统计模式,默认为空
+            //standardSummaryFields: false,                   //以标准属性字段统计
+            //standardFields: "",                             //以标准属性字段统计的字段名称，应该默认为空
+            //standardStatisticModes: "",                     //以标准属性字段统计的统计模式，默认为空
             weightedFields: "LocationID",                     //以权重字段统计的字段名称
             weightedStatisticModes: "MAX",                    //以权重字段统计的统计模式
             meshType: 0,                            //网格面汇总类型
             resolution: 50,                         //网格大小
             meshSizeUnit: "METER",                  //网格大小单位
-            type: "SUMMARYMESH"                      //汇总类型,默认为网格面汇总("SUMMARYMESH")
+            type: "SUMMARYMESH"                      //汇总类型，默认为网格面汇总("SUMMARYMESH")
         });
         processingService.addSummaryRegionJob(summaryRegionJobParameter, (result) => {
             expect(result.type).toBe("processCompleted");

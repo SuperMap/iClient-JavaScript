@@ -700,7 +700,7 @@ describe('openlayers_GraphicLayer', () => {
 
         const event = new Event('click');
         event.pixel = [0, 0];
-        // ol内部对target属性赋值了， 但是原生Event不能被赋值
+        // ol内部对target属性赋值了，但是原生Event不能被赋值
         Object.defineProperty(event, "target", {
           value : null,
           writable : true,
