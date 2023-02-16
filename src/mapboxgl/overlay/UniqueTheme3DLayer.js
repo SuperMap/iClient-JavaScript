@@ -8,8 +8,8 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @class UniqueTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维单值专题图。
- * @param {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
+ * @param {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
  * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height )没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @usage

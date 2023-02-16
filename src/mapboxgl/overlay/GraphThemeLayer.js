@@ -320,7 +320,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.isPointInPoly
-     * @description  判断一个点是否在多边形里面。(射线法)
+     * @description  判断一个点是否在多边形里面（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x (横坐标)，属性 y (纵坐标)。
      * @param {Array.<Object>} poly - 多边形节点数组。
      */
@@ -355,7 +355,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.clearCache
-     * @description  清除缓存
+     * @description  清除缓存。
      */
     clearCache() {
         this.cache = {};

@@ -40,7 +40,7 @@ export class Theme {
 
         /**
          * @member {string} [ThemeLayer.prototype.id]
-         * @description 专题图图层 id。
+         * @description 专题图图层 ID。
          */
         this.id = options.id ? options.id : CommonUtil.createUniqueID("themeLayer_");
         /**
@@ -323,7 +323,7 @@ export class Theme {
     /**
      * @function ThemeLayer.prototype.getFeatureById
      * @description 获取指定featureId的矢量要素。
-     * @param {string} featureId - 矢量要素的属性 id。
+     * @param {string} featureId - 矢量要素的属性 ID。
      * @returns {FeatureVector} 对应featureId的矢量要素，不存在则返回 null。
      */
     getFeatureById(featureId) {
@@ -584,7 +584,7 @@ export class Theme {
      * @function ThemeLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.div.id);

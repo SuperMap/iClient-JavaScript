@@ -77,7 +77,7 @@ export class ThreeLayerRenderer {
         this._layer && this._layer.draw(this.context, this.scene, this.camera);
         /**
          * @event ThreeLayer#draw
-         * @description draw 绘制事件, 调用提供给外部绘制的接口后触发
+         * @description draw 绘制事件，调用提供给外部绘制的接口后触发。
          */
         this._layer.fire("draw");
         this.renderScene();
@@ -128,7 +128,7 @@ export class ThreeLayerRenderer {
             this._initThreeRenderer();
             /**
              * @event ThreeLayer#rendererinitialized
-             * @description rendererinitialized 事件，初始化 three 渲染器后触发
+             * @description rendererinitialized 事件，初始化 three 渲染器后触发。
              */
             this._layer.fire("rendererinitialized");
         } else {

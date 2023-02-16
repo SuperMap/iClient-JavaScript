@@ -43,7 +43,7 @@ export class GraphicLayer {
         let opt = Util.extend(this, defaultProps, options);
         /**
          * @member {string} GraphicLayer.prototype.id
-         * @description 高效率点图层 id。
+         * @description 高效率点图层 ID。
          */
         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
         /**
@@ -248,8 +248,8 @@ export class GraphicLayer {
 
     /**
      * @function GraphicLayer.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id
+     * @description 通过给定一个 ID，返回对应的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 ID。
      * @returns {Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
@@ -365,7 +365,7 @@ export class GraphicLayer {
      * @function GraphicLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);

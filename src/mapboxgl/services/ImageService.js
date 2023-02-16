@@ -9,7 +9,7 @@ import CommonMatchImageService  from '@supermap/iclient-common/iServer/ImageServ
  * @class ImageService
  * @version 10.2.0
  * @constructs ImageService
- * @classdesc 影像服务类
+ * @classdesc 影像服务类。
  * @category  iServer Image
  * @example
  *      new ImageService(url,options)
@@ -53,7 +53,7 @@ export class ImageService extends ServiceBase {
 
     /**
      * @function ImageService.prototype.getCollectionByID
-     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
      * @param {RequestCallback} callback - 回调函数。
      */
@@ -76,7 +76,7 @@ export class ImageService extends ServiceBase {
     /**
      * @function ImageService.prototype.search
      * @description 查询与过滤条件匹配的影像数据。
-     * @param {ImageSearchParameter} [itemSearch] 影像服务查询参数类
+     * @param {ImageSearchParameter} [itemSearch] 影像服务查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     search(itemSearch, callback) {
