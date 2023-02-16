@@ -12,7 +12,7 @@ import {UGCLayer} from './UGCLayer';
  * 该类可以分别控制各种类型的对象的压盖显示情况，进而很好地处理地图中各种类型对象的压盖显示问题。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.allowPointOverlap=true] - 点和点压盖时是否显示压盖的点对象。
- * @param {boolean} [options.allowPointWithTextDisplay=true] - 标签和相应普通图层上的点是否一起过滤显示,如果过滤显示，
+ * @param {boolean} [options.allowPointWithTextDisplay=true] - 标签和相应普通图层上的点是否一起过滤显示，如果过滤显示，
  *                                                             只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。
  * @param {boolean} [options.allowTextOverlap=false] - 文本压盖时是否显示压盖的文本对象。
  * @param {boolean} [options.allowTextAndPointOverlap=true] - 文本和点压盖时是否显示压盖的文本或点对象（此属性不处理文本之间的压盖和点之间的压盖）。

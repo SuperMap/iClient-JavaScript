@@ -13,7 +13,7 @@ import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} [option.title] - 图例名称。
- * @param {string} [option.picAsUrl] - 图例的图片 url 地址。
+ * @param {string} [option.picAsUrl] - 图例的图片 URL 地址。
  * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
  * @param {WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
  * @param {WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
@@ -28,7 +28,7 @@ export class WebPrintingJobLegendOptions {
         this.title = null;
         /**
          * @member {string} [WebPrintingJobLegendOptions.prototype.picAsUrl]
-         * @description  图例的图片 url 地址。
+         * @description  图例的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**

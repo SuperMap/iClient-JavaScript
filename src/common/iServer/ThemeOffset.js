@@ -20,7 +20,7 @@ export class ThemeOffset {
     constructor(options) {
         /**
          * @member {boolean} [ThemeOffset.prototype.offsetFixed=false]
-         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。
+         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，指文本或符号的偏移量不随地图的缩放而变化。
          */
         this.offsetFixed = false;
 

@@ -12,7 +12,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @param {Object} options - 参数。
  * @param {Bounds} options.bounds - 图层范围。
  * @param {string} options.name - 图层的名称。
- * @param {UGCLayerType} options.type  - 图层类型
+ * @param {UGCLayerType} options.type  - 图层类型。
  * @param {string} [options.caption] - 图层的标题。
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。

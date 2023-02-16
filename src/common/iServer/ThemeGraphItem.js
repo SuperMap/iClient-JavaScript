@@ -13,7 +13,7 @@ import {ServerStyle} from './ServerStyle';
  * @param {string} [options.caption] - 专题图子项的名称。
  * @param {string} options.graphExpression - 统计专题图的专题变量。
  * @param {Array.<number>} [options.memoryDoubleValues] - 内存数组方式制作专题图时的值数组。
- * @param {ServerStyle} [options.uniformStyle] - 统计专题图子项的显示风格
+ * @param {ServerStyle} [options.uniformStyle] - 统计专题图子项的显示风格。
  * @usage
  */
 export class ThemeGraphItem {
@@ -36,7 +36,7 @@ export class ThemeGraphItem {
          * @member {Array.<number>} [ThemeGraphItem.prototype.memoryDoubleValues]
          * @description 内存数组方式制作专题图时的值数组。<br>
          *              内存数组方式制作专题图时，只对 SmID 值在键数组（{@link ThemeGraph#memoryKeys}）中的记录制作专题图。
-         *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。
+         *              值数组的数值个数必须与键数组中数值的个数一致。值数组中的值将代替原来的专题值来制作统计专题图。
          *              比如：利用面积字段和周长字段（即有两个统计专题图子项 ）作为专题变量制作统计专题图。
          */
         this.memoryDoubleValues = null;

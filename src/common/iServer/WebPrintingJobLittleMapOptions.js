@@ -39,7 +39,7 @@ export class WebPrintingJobLittleMapOptions {
         this.layerNames = null;
         /**
          * @member {WebPrintingJobImage} [WebPrintingJobLittleMapOptions.prototype.image]
-         * @description 表达小地图的静态图类。暂不支持
+         * @description 表达小地图的静态图类。暂不支持。
          */
         this.image = null;
         /**

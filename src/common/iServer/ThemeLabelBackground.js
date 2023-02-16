@@ -21,7 +21,7 @@ export class ThemeLabelBackground {
         /**
          * @member {LabelBackShape} [ThemeLabelBackground.prototype.labelBackShape=LabelBackShape.NONE]
          * @description 标签专题图中标签背景风格。当背景形状
-         *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
+         *              labelBackShape 属性设为 NONE（即无背景形状）时，backStyle 属性无效。
          */
         this.labelBackShape = LabelBackShape.NONE;
 
