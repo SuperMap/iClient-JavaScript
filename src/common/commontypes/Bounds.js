@@ -307,7 +307,7 @@ export class Bounds {
 
     /**
      * @function Bounds.prototype.extend
-     * @description 在当前 bounds 上扩展 bounds，支持 point，lanlat 和 bounds。扩展后的 bounds 的范围是两者的结合。
+     * @description 在当前 bounds 上扩展 bounds，支持 point，lonlat 和 bounds。扩展后的 bounds 的范围是两者的结合。
      * @example
      * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds 改变

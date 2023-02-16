@@ -623,7 +623,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 判断；浏览器是否支持 Canvas。
+   * @description 判断浏览器是否支持 Canvas。
    * @returns {boolean} 当前浏览器是否支持 HTML5 Canvas 。
    */
   supportCanvas: function () {
@@ -818,7 +818,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 根据比例尺和 dpi 计算屏幕分辨率。
+   * @description 根据比例尺和 DPI 计算屏幕分辨率。
    * @category BaseTypes Util
    * @param {number} scale - 比例尺。
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
@@ -951,7 +951,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 克隆一个 Object 对象
+   * @description 克隆一个 Object 对象。
    * @param {Object} obj - 需要克隆的对象。
    * @returns {Object} 对象的拷贝对象，注意是新的对象，不是指向。
    */
@@ -1072,9 +1072,9 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 获取转换后的path路径。
-   * @param {string} path - 待转换的path, 包含`{param}`。
+   * @param {string} path - 待转换的path，包含`{param}`。
    * @param {Object} pathParams - path中待替换的参数。
-   * @returns {string} 转换后的path路径
+   * @returns {string} 转换后的path路径。
    */
   convertPath: function (path, pathParams) {
     if (!pathParams) {

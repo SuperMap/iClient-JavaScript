@@ -70,7 +70,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
-     * @param {string} id - 空间分析的 id。
+     * @param {string} id - 空间分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -124,7 +124,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param {string} id - 密度分析的 id。
+     * @param {string} id - 密度分析的 ID。
      * @returns {Object} 密度分析的状态。
      */
     getKernelDensityJobState(id) {
@@ -158,7 +158,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
      * @description 获取点聚合分析。
-     * @param {string} id - 点聚合分析的 id。
+     * @param {string} id - 点聚合分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -212,7 +212,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
-     * @param {string} id - 点聚合分析的 id。
+     * @param {string} id - 点聚合分析的 ID。
      * @returns {Object} 点聚合分析的状态。
      */
     getSummaryMeshJobState(id) {
@@ -246,7 +246,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
      * @description 获取单对象查询分析。
-     * @param {string} id - 单对象查询分析的 id。
+     * @param {string} id - 单对象查询分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -302,8 +302,8 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
-     * @param {string} id - 单对象查询分析的 id。
-     * @returns {Object} 单对象查询分析的状态
+     * @param {string} id - 单对象查询分析的 ID。
+     * @returns {Object} 单对象查询分析的状态。
      */
     getQueryJobState(id) {
         return this.queryJobs[id];
@@ -337,7 +337,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某一个区域汇总分析。
-     * @param {string} id - 区域汇总分析的 id。
+     * @param {string} id - 区域汇总分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -391,7 +391,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param {string} id - 区域汇总分析的 id。
+     * @param {string} id - 区域汇总分析的 ID。
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState(id) {
@@ -425,7 +425,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
      * @description 获取矢量裁剪分析。
-     * @param {string} id - 矢量裁剪分析的 id。
+     * @param {string} id - 矢量裁剪分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -480,7 +480,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param {string} id - 矢量裁剪分析的 id。
+     * @param {string} id - 矢量裁剪分析的 ID。
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
@@ -514,7 +514,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
      * @description 获取叠加分析。
-     * @param {string} id - 叠加分析的 id。
+     * @param {string} id - 叠加分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -568,7 +568,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param {string} id - 叠加分析的 id。
+     * @param {string} id - 叠加分析的 ID。
      * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
@@ -602,7 +602,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
      * @description 获取缓冲区分析。
-     * @param {string} id - 缓冲区分析的 id。
+     * @param {string} id - 缓冲区分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -656,7 +656,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
-     * @param {string} id - 缓冲区分析的 id。
+     * @param {string} id - 缓冲区分析的 ID。
      * @returns {Object} 缓冲区分析的状态。
      */
     getBuffersJobState(id) {
@@ -690,7 +690,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取拓扑检查分析。
-     * @param {string} id - 拓扑检查分析的 id。
+     * @param {string} id - 拓扑检查分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -744,7 +744,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
-     * @param {string} id - 拓扑检查分析的 id。
+     * @param {string} id - 拓扑检查分析的 ID。
      * @returns {Object} 拓扑检查分析的状态。
      */
     getTopologyValidatorJobState(id) {
@@ -778,7 +778,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取属性汇总分析。
-     * @param {string} id - 属性汇总分析的 id。
+     * @param {string} id - 属性汇总分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -832,7 +832,7 @@ export class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
-     * @param {string} id - 属性汇总分析的 id。
+     * @param {string} id - 属性汇总分析的 ID。
      * @returns {Object} 属性汇总分析的状态。
      */
     getSummaryAttributesJobState(id) {

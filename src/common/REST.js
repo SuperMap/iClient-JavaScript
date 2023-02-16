@@ -106,7 +106,7 @@ var GeometryType = {
 
 /**
  * @enum QueryOption
- * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @description 查询结果类型枚举，描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -124,11 +124,11 @@ var GeometryType = {
  * ```
  */
 var QueryOption = {
-    /** 属性 */
+    /** 属性。 */
     ATTRIBUTE: "ATTRIBUTE",
-    /** 属性和几何对象 */
+    /** 属性和几何对象。 */
     ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
-    /** 几何对象 */
+    /** 几何对象。 */
     GEOMETRY: "GEOMETRY"
 };
 
@@ -153,9 +153,9 @@ var QueryOption = {
  * ```
  */
 var JoinType = {
-    /** 内连接 */
+    /** 内连接。 */
     INNERJOIN: "INNERJOIN",
-    /** 左连接 */
+    /** 左连接。 */
     LEFTJOIN: "LEFTJOIN"
 };
 
@@ -179,23 +179,23 @@ var JoinType = {
  * ```
  */
 var SpatialQueryMode = {
-    /** 包含空间查询模式 */
+    /** 包含空间查询模式。 */
     CONTAIN: "CONTAIN",
-    /** 交叉空间查询模式 */
+    /** 交叉空间查询模式。 */
     CROSS: "CROSS",
-    /** 分离空间查询模式 */
+    /** 分离空间查询模式。 */
     DISJOINT: "DISJOINT",
-    /** 重合空间查询模式 */
+    /** 重合空间查询模式。 */
     IDENTITY: "IDENTITY",
-    /** 相交空间查询模式 */
+    /** 相交空间查询模式。 */
     INTERSECT: "INTERSECT",
-    /** 无空间查询 */
+    /** 无空间查询。 */
     NONE: "NONE",
-    /** 叠加空间查询模式 */
+    /** 叠加空间查询模式。 */
     OVERLAP: "OVERLAP",
-    /** 邻接空间查询模式 */
+    /** 邻接空间查询模式。 */
     TOUCH: "TOUCH",
-    /** 被包含空间查询模式 */
+    /** 被包含空间查询模式。 */
     WITHIN: "WITHIN"
 };
 
@@ -220,11 +220,11 @@ var SpatialQueryMode = {
  * ```
  */
 var SpatialRelationType = {
-    /** 包含关系 */
+    /** 包含关系。 */
     CONTAIN: "CONTAIN",
-    /** 相交关系 */
+    /** 相交关系。 */
     INTERSECT: "INTERSECT",
-    /** 被包含关系 */
+    /** 被包含关系。 */
     WITHIN: "WITHIN"
 };
 
@@ -249,9 +249,9 @@ var SpatialRelationType = {
  * ```
  */
 var MeasureMode = {
-    /** 距离测量 */
+    /** 距离测量。 */
     DISTANCE: "DISTANCE",
-    /** 面积测量 */
+    /** 面积测量。 */
     AREA: "AREA"
 };
 
@@ -276,31 +276,31 @@ var MeasureMode = {
  * ```
  */
 var Unit = {
-    /**  米 */
+    /**  米。 */
     METER: "METER",
-    /**  千米 */
+    /**  千米。 */
     KILOMETER: "KILOMETER",
-    /**  英里 */
+    /**  英里。 */
     MILE: "MILE",
-    /**  码 */
+    /**  码。 */
     YARD: "YARD",
-    /**  度 */
+    /**  度。 */
     DEGREE: "DEGREE",
-    /**  毫米 */
+    /**  毫米。 */
     MILLIMETER: "MILLIMETER",
-    /**  厘米 */
+    /**  厘米。 */
     CENTIMETER: "CENTIMETER",
-    /**  英寸 */
+    /**  英寸。 */
     INCH: "INCH",
-    /**  分米 */
+    /**  分米。 */
     DECIMETER: "DECIMETER",
-    /**  英尺 */
+    /**  英尺。 */
     FOOT: "FOOT",
-    /**  秒 */
+    /**  秒。 */
     SECOND: "SECOND",
-    /**  分 */
+    /**  分。 */
     MINUTE: "MINUTE",
-    /**  弧度 */
+    /**  弧度。 */
     RADIAN: "RADIAN"
 };
 
@@ -324,23 +324,23 @@ var Unit = {
  * ```
  */
 var BufferRadiusUnit = {
-    /**  厘米 */
+    /**  厘米。 */
     CENTIMETER: "CENTIMETER",
-    /**  分米 */
+    /**  分米。 */
     DECIMETER: "DECIMETER",
-    /**  英尺 */
+    /**  英尺。 */
     FOOT: "FOOT",
-    /**  英寸 */
+    /**  英寸。 */
     INCH: "INCH",
-    /**  千米 */
+    /**  千米。 */
     KILOMETER: "KILOMETER",
-    /**  米 */
+    /**  米。 */
     METER: "METER",
-    /**  英里 */
+    /**  英里。 */
     MILE: "MILE",
-    /**  毫米 */
+    /**  毫米。 */
     MILLIMETER: "MILLIMETER",
-    /**  码 */
+    /**  码。 */
     YARD: "YARD"
 }
 
@@ -372,7 +372,7 @@ var EngineType = {
     ORACLEPLUS: "ORACLEPLUS",
     /**  SDB 引擎类型，文件引擎，即 SDB 数据源。 */
     SDBPLUS: "SDBPLUS",
-    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎 */
+    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎。 */
     SQLPLUS: "SQLPLUS",
     /**  UDB 引擎类型，文件引擎。 */
     UDB: "UDB"
@@ -645,7 +645,7 @@ var ColorGradientType = {
     RED_WHITE: "REDWHITE",
     /** 光谱渐变。 */
     SPECTRUM: "SPECTRUM",
-    /** 地形渐变,用于三维显示效果较好。 */
+    /** 地形渐变，用于三维显示效果较好。 */
     TERRAIN: "TERRAIN",
     /** 黄黑渐变色。 */
     YELLOW_BLACK: "YELLOWBLACK",
@@ -869,7 +869,7 @@ var DirectionType = {
 /**
  * @enum SideType
  * @description  行驶位置枚举。
- * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
+ * 表示在行驶在路的左边、右边或者路上的枚举，该类用在行驶导引子项类中。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -901,7 +901,7 @@ var SideType = {
  * @enum SupplyCenterType
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
- * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
+ * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1110,7 +1110,7 @@ var SurfaceAnalystMethod = {
 /**
  * @enum DataReturnMode
  * @description  数据返回模式枚举。
- * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
+ * 该枚举用于指定空间分析返回结果模式，包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1139,7 +1139,7 @@ var DataReturnMode = {
 /**
  * @enum EditType
  * @description  要素集更新模式枚举。
- * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * 该枚举用于指定数据服务中要素集更新模式，包含添加要素集、更新要素集和删除要素集。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1423,7 +1423,7 @@ var PixelFormat = {
 
 /**
  * @enum SearchMode
- * @description  内插时使用的样本点的查找方式枚举
+ * @description  内插时使用的样本点的查找方式枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1453,7 +1453,7 @@ var SearchMode = {
 
 /**
  * @enum InterpolationAlgorithmType
- * @description  插值分析的算法的类型
+ * @description  插值分析的算法的类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1481,7 +1481,7 @@ var InterpolationAlgorithmType = {
 
 /**
  * @enum VariogramMode
- * @description  克吕金（Kriging）插值时的半变函数类型枚举
+ * @description  克吕金（Kriging）插值时的半变函数类型枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1509,7 +1509,7 @@ var VariogramMode = {
 
 /**
  * @enum Exponent
- * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
+ * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1535,7 +1535,7 @@ var Exponent = {
 
 /**
  * @enum ClientType
- * @description token申请的客户端标识类型
+ * @description token申请的客户端标识类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1569,7 +1569,7 @@ var ClientType = {
 
 /**
  * @enum ChartType
- * @description 客户端专题图图表类型
+ * @description 客户端专题图图表类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1631,7 +1631,7 @@ var ClipAnalystMode = {
 
 /**
  * @enum AnalystAreaUnit
- * @description 分布式分析面积单位
+ * @description 分布式分析面积单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1669,7 +1669,7 @@ var AnalystAreaUnit = {
 
 /**
  * @enum AnalystSizeUnit
- * @description 分布式分析单位
+ * @description 分布式分析单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1701,7 +1701,7 @@ var AnalystSizeUnit = {
 
 /**
  * @enum StatisticAnalystMode
- * @description 分布式分析统计模式
+ * @description 分布式分析统计模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1729,13 +1729,13 @@ var StatisticAnalystMode = {
     "SUM": "sum",
     /** 统计所选字段的方差。 */
     "VARIANCE": "variance",
-    /** 统计所选字段的标准差 */
+    /** 统计所选字段的标准差。 */
     "STDDEVIATION": "stdDeviation"
 };
 
 /**
  * @enum SummaryType
- * @description 分布式分析聚合类型
+ * @description 分布式分析聚合类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1815,13 +1815,13 @@ var TopologyValidatorRule = {
  * ```
  */
 var BucketAggType = {
-    /** 格网聚合类型 */
+    /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid"
 };
 
 /**
  * @enum MetricsAggType
- * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1839,13 +1839,13 @@ var BucketAggType = {
  * ```
  */
 var MetricsAggType = {
-  /** 平均值聚合类型 */
+  /** 平均值聚合类型。 */
   AVG:'avg',
-  /** 最大值聚合类型 */
+  /** 最大值聚合类型。 */
   MAX:'max',
-  /** 最小值聚合类型 */
+  /** 最小值聚合类型。 */
   MIN:'min',
-  /** 求和聚合类型 */
+  /** 求和聚合类型。 */
   SUM:'sum'
 };
 
@@ -1963,17 +1963,17 @@ var ResourceType = {
  * ```
  */
 var OrderBy = {
-    /** 按更新时间排序 */
+    /** 按更新时间排序。 */
     UPDATETIME: "UPDATETIME",
-    /** 按热度(可能是访问量、下载量)排序 */
+    /** 按热度(可能是访问量、下载量)排序。 */
     HEATLEVEL: "HEATLEVEL",
-    /** 按相关性排序 */
+    /** 按相关性排序。 */
     RELEVANCE: "RELEVANCE"
 }
 
 /**
  * @enum OrderType
- * @description iportal资源升序还是降序过滤
+ * @description iportal资源升序还是降序过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -1992,15 +1992,15 @@ var OrderBy = {
  * ```
  */
 var OrderType = {
-    /** 升序 */
+    /** 升序。 */
     ASC: "ASC",
-    /** 降序 */
+    /** 降序。 */
     DESC: "DESC"
 }
 
 /**
  * @enum SearchType
- * @description iportal资源查询的范围进行过滤
+ * @description iportal资源查询的范围进行过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2033,7 +2033,7 @@ var SearchType = {
 
 /**
  * @enum AggregationTypes
- * @description iportal资源聚合查询的类型
+ * @description iportal资源聚合查询的类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2052,9 +2052,9 @@ var SearchType = {
  * ```
  */
 var AggregationTypes = {
-    /** 标签 */
+    /** 标签。 */
     TAG: "TAG",
-    /** 资源类型 */
+    /** 资源类型。 */
     TYPE: "TYPE"
 }
 
@@ -2079,15 +2079,15 @@ var AggregationTypes = {
  * ```
  */
 var PermissionType = {
-    /** 可检索 */
+    /** 可检索。 */
     SEARCH:"SEARCH",
-    /** 可查看 */
+    /** 可查看。 */
     READ: "READ",
-    /** 可编辑 */
+    /** 可编辑。 */
     READWRITE: "READWRITE",
-    /** 可删除 */
+    /** 可删除。 */
     DELETE: "DELETE",
-    /** 可下载，包括可读、可检索 */
+    /** 可下载，包括可读、可检索。 */
     DOWNLOAD:"DOWNLOAD"
 }
 
@@ -2112,15 +2112,15 @@ var PermissionType = {
  * ```
  */
 var EntityType = {
-    /** 部门 */
+    /** 部门。 */
     DEPARTMENT: "DEPARTMENT",
-    /** 用户组 */
+    /** 用户组。 */
     GROUP: "GROUP",
-    /** 群组 */
+    /** 群组。 */
     IPORTALGROUP: "IPORTALGROUP",
-    /** 角色 */
+    /** 角色。 */
     ROLE: "ROLE",
-    /** 用户 */
+    /** 用户。 */
     USER: "USER"
 }
 
@@ -2149,7 +2149,7 @@ var DataItemType = {
     GEOJSON: "GEOJSON",
     /** UGCV5_MVT  */
     UGCV5_MVT: "UGCV5_MVT",
-    /** json数据  */
+    /** json数据。  */
     JSON: "JSON",
     /** AUDIO */
     AUDIO: "AUDIO",
@@ -2224,9 +2224,9 @@ var DataItemType = {
  * ```
  */
 var WebExportFormatType = {
-    /** png */
+    /** PNG */
     PNG: "PNG",
-    /** pdf */
+    /** PDF */
     PDF: "PDF"
 }
 
@@ -2251,13 +2251,13 @@ var WebExportFormatType = {
  * ```
  */
 var WebScaleOrientationType = {
-    /** horizontal labels below */
+    /** horizontal labels below. */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
-    /** horizontal labels above */
+    /** horizontal labels above. */
     HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
-    /** vertical labels left */
+    /** vertical labels left. */
     VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
-    /** vertical labels right */
+    /** vertical labels right. */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
 }
 
@@ -2282,11 +2282,11 @@ var WebScaleOrientationType = {
  * ```
  */
 var WebScaleType = {
-    /** line */
+    /** line. */
     LINE: "LINE",
-    /** bar */
+    /** bar. */
     BAR: "BAR",
-    /** bar sub */
+    /** bar sub. */
     BAR_SUB: "BAR_SUB"
 }
 
@@ -2311,11 +2311,11 @@ var WebScaleType = {
  * ```
  */
 var WebScaleUnit = {
-    /** 米 */
+    /** 米。 */
     METER: "METER",
-    /** 英尺 */
+    /** 英尺。 */
     FOOT: "FOOT",
-    /** 度 */
+    /** 度。 */
     DEGREES: "DEGREES"
 }
 export {

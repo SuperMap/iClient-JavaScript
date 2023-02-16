@@ -46,7 +46,7 @@ export class Events {
 
         /**
          * @member {Object} Events.prototype.listeners
-         * @description 事件监听器函数
+         * @description 事件监听器函数。
          */
         this.listeners = {};
 

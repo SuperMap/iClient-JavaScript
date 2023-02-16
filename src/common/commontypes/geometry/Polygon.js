@@ -31,7 +31,7 @@ export class Polygon extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [GeometryPolygon.prototype.componentTypes=["SuperMap.Geometry.LinearRing"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];

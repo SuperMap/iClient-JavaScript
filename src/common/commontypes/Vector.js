@@ -43,7 +43,7 @@ export class Vector extends Feature {
         super(null, null, attributes);
         /**
          * @member {string} FeatureVector.prototype.fid
-         * @description fid
+         * @description fid。
          */
         this.fid = null;
 
@@ -71,7 +71,7 @@ export class Vector extends Feature {
 
         /**
          * @member {string} FeatureVector.prototype.state
-         * @description state
+         * @description state。
          */
         this.state = null;
 
@@ -260,10 +260,10 @@ export class Vector extends Feature {
  * @property {boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
  * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
  * @property {number} [graphicWidth] - 外部图表的像素宽度。
- * @property {number} [graphicHeight] - 外部图表的高宽度。
+ * @property {number} [graphicHeight] - 外部图表的像素高度。
  * @property {number} [graphicOpacity] - 外部图表的不透明度(0-1)。
  * @property {number} [graphicXOffset] - 外部图表沿着x方向的偏移量。
- * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量 Pixel。
+ * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量。
  * @property {number} [rotation] - 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
  * @property {number} [graphicZIndex] - 渲染时使用的索引值。
  * @property {string} [graphicName='circle'] - 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"。

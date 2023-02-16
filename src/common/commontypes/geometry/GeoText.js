@@ -46,7 +46,7 @@ export class GeoText extends Geometry {
         /**
          * @member {Object} GeometryGeoText.prototype.bsInfo
          * @description 标签范围的基础信息。
-         * @property {number} w - bounds 的宽。
+         * @property {number} w - bounds 的宽度。
          * @property {number} h - bounds 的高度。
          */
         this.bsInfo = {
