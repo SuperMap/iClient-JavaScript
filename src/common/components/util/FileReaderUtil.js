@@ -36,13 +36,13 @@ export let FileReaderUtil = {
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
     /**
      * @function FileReaderUtil.prototype.readFile
-     * @description 读取文件
-     * @param {string} fileType - 当前读取的文件类型
+     * @description 读取文件。
+     * @param {string} fileType - 当前读取的文件类型。
      *
-     * @param {Object} file - 读取回来的文件内容对象
-     * @param {function} success - 读取文件成功回调函数
-     * @param {function} failed - 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @param {Object} file - 读取回来的文件内容对象。
+     * @param {function} success - 读取文件成功回调函数。
+     * @param {function} failed - 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readFile(fileType, file, success, failed, context) {
         if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
@@ -53,11 +53,11 @@ export let FileReaderUtil = {
     },
 
     /**
-     * @description 读取文本文件
-     * @param {Object} file 文件内容对象
-     * @param {function} success 读取文件成功回调函数
-     * @param {function} failed 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @description 读取文本文件。
+     * @param {Object} file 文件内容对象。
+     * @param {function} success 读取文件成功回调函数。
+     * @param {function} failed 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readTextFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -71,11 +71,11 @@ export let FileReaderUtil = {
     },
 
     /**
-     * @description 读取excel或csv文件
-     * @param {Object} file 文件内容对象
-     * @param {function} success 读取文件成功回调函数
-     * @param {function} failed 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @description 读取excel或csv文件。
+     * @param {Object} file 文件内容对象。
+     * @param {function} success 读取文件成功回调函数。
+     * @param {function} failed 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readXLSXFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -101,13 +101,13 @@ export let FileReaderUtil = {
 
     /**
      * @function FileReaderUtil.prototype.processDataToGeoJson
-     * @description 将读取回来得数据统一处理为 GeoJSON 格式
-     * @param {string} type - 文件类型
-     * @param {Object} data - 读取返回的数据对象
-     * @param {function} success - 数据处理成功的回调
-     * @param {function} failed - 数据处理失败的回调
-     * @param {Object} context - 回调重定向对象
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式。
+     * @param {string} type - 文件类型。
+     * @param {Object} data - 读取返回的数据对象。
+     * @param {function} success - 数据处理成功的回调。
+     * @param {function} failed - 数据处理失败的回调。
+     * @param {Object} context - 回调重定向对象。
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据。
      * @private
      */
     processDataToGeoJson(type, data, success, failed, context) {
@@ -137,9 +137,9 @@ export let FileReaderUtil = {
     },
     /**
      * @function FileReaderUtil.prototype.processExcelDataToGeoJson
-     * @description 表格文件数据处理
-     * @param {Object} data - 读取的表格文件数据
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @description 表格文件数据处理。
+     * @param {Object} data - 读取的表格文件数据。
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据。
      * @private
      */
     processExcelDataToGeoJson(data) {
@@ -187,8 +187,8 @@ export let FileReaderUtil = {
         return features;
     },
     /**
-     * @description 判断是否地理X坐标
-     * @param {string} data 字段名
+     * @description 判断是否地理X坐标。
+     * @param {string} data 字段名。
      */
     isXField(data) {
         var lowerdata = data.toLowerCase();
@@ -198,8 +198,8 @@ export let FileReaderUtil = {
     },
 
     /**
-     * @description 判断是否地理Y坐标
-     * @param {string} data 字段名
+     * @description 判断是否地理Y坐标。
+     * @param {string} data 字段名。
      */
     isYField(data) {
         var lowerdata = data.toLowerCase();
@@ -208,9 +208,9 @@ export let FileReaderUtil = {
             lowerdata === "latitude" || lowerdata === "lat" || lowerdata === "y坐标");
     },
     /**
-     * @description 字符串转为dataEditor 支持的csv格式数据
-     * @param {string} string 待转化的字符串
-     * @param {boolean} withoutTitle 是否需要列标题
+     * @description 字符串转为dataEditor 支持的csv格式数据。
+     * @param {string} string 待转化的字符串。
+     * @param {boolean} withoutTitle 是否需要列标题。
      */
     string2Csv(string, withoutTitle) {
         // let rows = string.split('\r\n');

@@ -11,14 +11,14 @@ import {Util} from '../commontypes/Util';
  * @version 10.0.1
  * @category iPortal/Online Resources ResourcesQuery
  * @param {Object} params - 可选参数。
- * @param {ResourceType} [params.resourceType] - 资源类型
+ * @param {ResourceType} [params.resourceType] - 资源类型。
  * @param {number} [params.pageSize] - 分页中每页大小。
  * @param {number} [params.currentPage] - 分页页码。
  * @param {OrderBy} [params.orderBy] - 排序字段。
  * @param {OrderType} [params.orderType] - 根据升序还是降序过滤。
  * @param {SearchType} [params.searchType] - 根据查询的范围进行过滤。
  * @param {Array} [params.tags] - 标签。
- * @param {Array} [params.dirIds] - 目录 id
+ * @param {Array} [params.dirIds] - 目录 ID。
  * @param {Array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
  * @param {AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
  * @param {string} [params.text] - 	搜索的关键词。

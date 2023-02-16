@@ -13,7 +13,7 @@ import {Util} from '../commontypes/Util';
  * @param {Object} params - 可选参数。
  * @param {string} [params.type] - 服务类型。
  * @param {Array} [params.tags] - 服务标签。
- * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
+ * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数。
  * @param {Object} [params.metadata] - 服务元信息。
  * @param {Array} [params.addedMapNames] - 地图服务列表。
  * @param {Array} [params.addedSceneNames] - 场景服务列表。

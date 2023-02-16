@@ -6,7 +6,7 @@ import {Events} from '../commontypes/Events';
 /**
  * @class TimeControlBase
  * @deprecatedclass SuperMap.TimeControlBase
- * @classdesc 时间控制基类类。
+ * @classdesc 时间控制基类。
  * @category  Control
  * @param {Object} options - 可选参数。
  * @param {number} [options.speed=1] - 速度。不能小于 0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。
@@ -28,7 +28,7 @@ export class TimeControlBase {
 
         /**
          * @member {number} [TimeControlBase.prototype.speed=1]
-         * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
+         * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）。
          */
         this.speed = (options.speed && options.speed >= 0) ? options.speed : 1;
 
@@ -41,14 +41,14 @@ export class TimeControlBase {
         /**
          * @member {number} [TimeControlBase.prototype.startTime=0]
          * @description 记录的起始时间，必须为数字，
-         *              如果不设置，初始化时为0，建议设置
+         *              如果不设置，初始化时为0，建议设置。
          */
         this.startTime = (options.startTime && options.startTime != null) ? options.startTime : 0;
 
         /**
          * @member {number} TimeControlBase.prototype.endTime
          * @description 记录的结束时间，必须为数字，
-         *              如果不设置，初始化时以当前时间进行设置，建议设置
+         *              如果不设置，初始化时以当前时间进行设置，建议设置。
          */
         this.endTime = (options.endTime && options.endTime != null && options.endTime >= me.startTime) ? options.endTime : +new Date();
 
@@ -116,7 +116,7 @@ export class TimeControlBase {
     /**
      * @function TimeControlBase.prototype.updateOptions
      * @description 更新参数。
-     * @param {Object} options - 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
+     * @param {Object} options - 设置参数的可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
      */
     updateOptions(options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
@@ -228,7 +228,7 @@ export class TimeControlBase {
     /**
      * @function TimeControlBase.prototype.getSpeed
      * @description 获取步长。
-     * @returns {number} 返回当前的步长
+     * @returns {number} 返回当前的步长。
      */
     getSpeed() {
         return this.speed;
