@@ -189,7 +189,7 @@ export class ChangeTileVersion extends Control {
          * @param {string} tagName - 标签名。
          * @param {string} className - 类名。
          * @param {Object} container - 容器。
-         * @returns {object|HTMLElement} 元素
+         * @returns {object|HTMLElement} 元素。
          */
         function createElement(tagName, className, container) {
             var el = document.createElement(tagName);
@@ -208,7 +208,7 @@ export class ChangeTileVersion extends Control {
          * @param {string} type - 事件类型。
          * @param {Object} fn -容器。
          * @param {Object} context -当前环境。
-         * @returns {function} 添加的事件
+         * @returns {function} 添加的事件。
          */
         function addDomEvent(obj, type, fn, context) {
             var handler = function(e) {

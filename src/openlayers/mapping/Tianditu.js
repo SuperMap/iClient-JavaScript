@@ -96,7 +96,7 @@ export class Tianditu extends WMTS {
    * @function Tianditu.getTileGrid
    * @description 获取瓦片网格。
    * @param {string} projection - 投影参考对象。
-   * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
+   * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象。
    */
   static getTileGrid(projection) {
     if (projection === "EPSG:4326" || projection === "EPSG:4490") {

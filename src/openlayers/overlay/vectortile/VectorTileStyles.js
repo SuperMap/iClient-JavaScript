@@ -239,8 +239,8 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.setCartoCss
-     * @description 设置 cartoCss 的样式。
-     * @param {Object} cartoCss - cartoCss 的样式。
+     * @description 设置 CartoCSS 的样式。
+     * @param {Object} cartoCss - CartoCSS 的样式。
      */
     static setCartoCss(cartoCss) {
         this.cartoCss = cartoCss;
@@ -248,7 +248,7 @@ export class VectorTileStyles extends Observable {
 
     /**
      * @function VectorTileStyles.getCartoCss
-     * @description 获取 cartoCss 的样式。
+     * @description 获取 CartoCSS 的样式。
      */
     static getCartoCss() {
         return this.cartoCss;

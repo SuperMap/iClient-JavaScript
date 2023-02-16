@@ -44,7 +44,7 @@ const Renderer = ['canvas', 'webgl'];
  * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link OverlayGraphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.opacity=0.8] - 要素透明度。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
@@ -308,8 +308,8 @@ export class Graphic extends ImageCanvasSource {
 
     /**
      * @function Graphic.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id
+     * @description 通过给定一个 ID，返回对应的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 ID。
      * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {

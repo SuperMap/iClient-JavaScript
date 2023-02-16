@@ -19,7 +19,7 @@ import {Theme} from './Theme';
  * @param {number} [opt_options.opacity=1] - 图层透明度。
  * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
- * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array} [opt_options.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {Object} [opt_options.style] - 专题图样式。
@@ -183,7 +183,7 @@ export class GeoFeature extends Theme {
      * @function GeoFeature.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {Object} feature - 要素对象。
-     * @returns {Array.<FeatureVector>} 返回矢量要素
+     * @returns {Array.<FeatureVector>} 返回矢量要素。
      */
     createThematicFeature(feature) {
         var style = CommonUtil.copyAttributesWithClip(this.style);
@@ -255,7 +255,7 @@ export class GeoFeature extends Theme {
      * @function GeoFeature.prototype.getShapesByFeatureID
      * @param {number} featureID - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @returns {Array} 返回图形数组
+     * @returns {Array} 返回图形数组。
      */
     getShapesByFeatureID(featureID) {
         var list = [];

@@ -27,7 +27,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @param {number} [opt_option.opacity=1] - 图层透明度。
  * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
- * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
+ * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
  * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
@@ -514,7 +514,7 @@ export class Theme extends ImageCanvasSource {
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
      * @param {number} scaleRatio - 缩放倍数。
-     * @returns {Array.<number>} 返回数组形比例
+     * @returns {Array.<number>} 返回数组型比例。
      */
     scale(pixelP, center, scaleRatio) {
         var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
@@ -526,7 +526,7 @@ export class Theme extends ImageCanvasSource {
      * @function Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
-     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素
+     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!CommonUtil.isArray(features)) {
@@ -569,7 +569,7 @@ export class Theme extends ImageCanvasSource {
      * @deprecated
      * @description 转为 iClient 要素，该方法将被弃用，由 {@link Theme#toiClientFeature} 代替。
      * @param {(Array.<ThemeFeature>|Array.<GeoJSONObject>|Array.<ol.Feature>|ThemeFeature|GeoJSONObject|ol.Feature)} features - 待转要素。
-     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素
+     * @returns {Array.<FeatureVector>} 转换后的 iClient 要素。
      */
     toFeature(features) {
         return this.toiClientFeature(features);

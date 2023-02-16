@@ -45,7 +45,7 @@ export class Graphic extends BaseObject {
     /**
      * @function OverlayGraphic.prototype.getId
      * @description 获取当前 ID。
-     * @returns {string} id
+     * @returns {string} ID。
      */
     getId() {
         return this.id;
