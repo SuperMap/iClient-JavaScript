@@ -158,7 +158,7 @@
         map.setCenter(new SuperMap.LonLat(117, 40.004), 0);
     }
 
-    //获取 feature 数据, 专题图的数据必须是 SuperMap.Feature.Vector
+    //获取 feature 数据，专题图的数据必须是 SuperMap.Feature.Vector
     function addThemeLayer() {
         clearThemeLayer();
 
@@ -208,7 +208,7 @@
     // 显示地图弹窗
     function showInfoWin(e) {
         // e.target 是图形对象，即数据的可视化对象;
-        // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+        // 图形对象的 refDataID 属性是数据（feature）的 ID 属性，它指明图形对象是由那个数据制作而来;
         // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field 和 value;
         if (e.target && e.target.refDataID && e.target.dataInfo) {
 

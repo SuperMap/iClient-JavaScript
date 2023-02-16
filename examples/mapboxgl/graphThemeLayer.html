@@ -410,7 +410,7 @@
     function showInfoWin(e) {
         closeInfoWin();
         // e.target 是图形对象，即数据的可视化对象，柱状图中是柱条;
-        // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+        // 图形对象的 refDataID 属性是数据（feature）的 ID 属性，它指明图形对象是由那个数据制作而来;
         // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field 和 value;
         if (e.target && e.target.refDataID && e.target.dataInfo) {
             // 获取图形对应的数据 (feature)
