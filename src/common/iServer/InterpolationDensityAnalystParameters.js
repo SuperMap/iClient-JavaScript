@@ -8,7 +8,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @class InterpolationDensityAnalystParameters
  * @deprecatedclass SuperMap.InterpolationDensityAnalystParameters
  * @category iServer SpatialAnalyst InterpolationAnalyst
- * @classdesc 点密度差值分析参数类。
+ * @classdesc 点密度插值分析参数类。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。

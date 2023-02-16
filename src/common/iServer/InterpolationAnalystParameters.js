@@ -111,7 +111,7 @@ export class InterpolationAnalystParameters {
 
         /**
          * @member {string} [InterpolationAnalystParameters.prototype.InterpolationAnalystType="dataset"]
-         * @description  插值分析类型。差值分析包括数据集插值分析和几何插值分析两类，
+         * @description  插值分析类型。插值分析包括数据集插值分析和几何插值分析两类，
          *               "dataset" 表示对数据集进行插值分析，"geometry" 表示对离散点数组进行插值分析。
          */
         this.InterpolationAnalystType = "dataset";

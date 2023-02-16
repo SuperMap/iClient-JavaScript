@@ -15,7 +15,7 @@ import {Util} from '../Util';
  * @param {number} x - x 坐标。
  * @param {number} y - y 坐标。
  * @param {string} [type = 'Point'] - 点的类型。
- * @param {number} [tag] - 额外的属性，比如差值分析中的 Z 值。
+ * @param {number} [tag] - 额外的属性，比如插值分析中的 Z 值。
  * @example
  * var point = new GeometryPoint(-111.04, 45.68);
  * @usage
@@ -39,7 +39,7 @@ export class Point extends Geometry {
 
         /**
          * @member {string} GeometryPoint.prototype.tag
-         * @description  用来存储额外的属性，比如差值分析中的 Z 值。
+         * @description  用来存储额外的属性，比如插值分析中的 Z 值。
          */
         this.tag = (tag || tag == 0) ? parseFloat(tag) : null;
 

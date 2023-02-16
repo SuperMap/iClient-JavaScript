@@ -12,11 +12,11 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 克吕金插值分析参数类。通过该类可以设置克吕金插值分析所需的参数。
  * 克吕金（Kriging）法为地统计学上一种空间数据内插处理方法，主要的目的是利用各数据点间变异数（variance）的大小来推求某一未知点与各已知点的权重关系，
- * 再由各数据点的值和其与未知点的权重关系推求未知点的值。Kriging 法最大的特色不仅是提供一个最小估计误差的预测值，并且可明确的指出误差值的大小。
+ * 再由各数据点的值和其与未知点的权重关系推求未知点的值。Kriging 法最大的特色不仅是提供一个最小估计误差的预测值，并且可明确地指出误差值的大小。
  * 一般而言，许多地质参数，如地形面，本身即具有连续性，故在一段距离内的任两点必有空间上的关系。反之，在一不规则面上的两点若相距甚远，
  * 则在统计意义上可视为互为独立 (stastically indepedent)。这种随距离而改变的空间上连续性，可用半变异图 (semivariogram) 来表现。
  * 因此，若想由已知的散乱点来推求某一未知点的值，则可利用半变异图推求各已知点与未知点的空间关系，即以下四个参数：<br>
- * 1.块金值（nugget）：当采样点间距为0时，理论上半变异函数值为0，但时间上两采样点非常接近时半变异函数值并不为0，即产生了上图所示的块金效应，
+ * 1.块金值（nugget）：当采样点间距为0时，理论上半变异函数值为0，但时间上两采样点非常接近时半变异函数值并不为0，即产生了块金效应，
  * 对应的半变异函数值为块金值。块金值可能由于测量误差或者空间变异产生。<br>
  * 2.基台值（sill）：随着采样点间距的不断增大，半变异函数的值趋向一个稳定的常数，该常数成为基台值。到达基台值后，半变异函数的值不再随采样点间距而改变，
  *   即大于此间距的采样点不再具有空间相关性。<br>
@@ -27,7 +27,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * 计算量大，且变异函数有时需要根据经验人为选定。
  *
  * 由上述可知，半变异函数是克吕金插值的关键，因此选择合适的半变异函数模型非常重要，SuperMap 提供了以下三种半变异函数模型：<br>
- * 1.指数型（EXPONENTIAL）：适用于空间相关关系随样本间距的增加成指数递减的情况，其空间自相关关系在样本间距的无穷远处完全消失。<br>
+ * 1.指数型（EXPONENTIAL）：适用于空间相关关系随样本间距的增加呈指数递减的情况，其空间自相关关系在样本间距的无穷远处完全消失。<br>
  * 2.球型（SPHERICAL）：适用于空间自相关关系随样本间距的增加而逐渐减少，直到超出一定的距离时空间自相关关系消失的情况。<br>
  * 3.高斯型（GAUSSIAN）：适用于半变异函数值渐进地逼近基台值的情况。<br>
  *
@@ -158,7 +158,7 @@ export class InterpolationKrigingAnalystParameters extends InterpolationAnalystP
 
         /**
          * @member {number} [InterpolationKrigingAnalystParameters.prototype.expectedCount=12]
-         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数，默认值为12。
          * 【定长查找】方式下，设置查找的最小点数，默认值为12。
          */
         this.expectedCount = 12;

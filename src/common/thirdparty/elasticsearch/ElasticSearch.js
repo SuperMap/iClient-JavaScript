@@ -79,7 +79,7 @@ export class ElasticSearch {
 
         /**
          * @member {Object} ElasticSearch.prototype.eventListeners
-         * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+         * @description 监听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
          * 相当于调用 Events.on(eventListeners)。
          */
         this.eventListeners = null;

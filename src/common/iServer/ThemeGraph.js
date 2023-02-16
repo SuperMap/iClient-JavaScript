@@ -181,7 +181,7 @@ export class ThemeGraph extends Theme {
 
         /**
          * @member {boolean} [ThemeGraph.prototype.negativeDisplayed=false]
-         * @description 专题图中是否显示属性为负值的数据。true 表示显示；falese 不显示。
+         * @description 专题图中是否显示属性为负值的数据。true 表示显示；false 不显示。
          */
         this.negativeDisplayed = false;
 

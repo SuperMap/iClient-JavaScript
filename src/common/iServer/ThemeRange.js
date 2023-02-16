@@ -19,7 +19,6 @@ import {RangeMode, ColorGradientType} from '../REST';
  * @param {Array.<ThemeRangeItem>} options.items - 子项数组。
  * @param {string} options.rangeExpression - 分段字段表达式。
  * @param {number} options.rangeParameter - 分段参数。
- * @param {number} options.rangeParameter - 分段参数。
  * @param {RangeMode} [options.rangeMode=RangeMode.EQUALINTERVAL] - 分段模式。
  * @param {ColorGradientType} [options.colorGradientType=ColorGradientType.YELLOW_RED] - 渐变颜色枚举类。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。

@@ -263,7 +263,7 @@ export class Vector extends Feature {
  * @property {number} [graphicHeight] - 外部图表的高宽度。
  * @property {number} [graphicOpacity] - 外部图表的不透明度(0-1)。
  * @property {number} [graphicXOffset] - 外部图表沿着x方向的偏移量。
- * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量 Pixel。
+ * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量。
  * @property {number} [rotation] - 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
  * @property {number} [graphicZIndex] - 渲染时使用的索引值。
  * @property {string} [graphicName='circle'] - 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"。
