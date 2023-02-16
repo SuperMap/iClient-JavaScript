@@ -19,23 +19,23 @@ import {Util} from '../commontypes/Util';
  * @param {string} [options.strokeLinecap='butt'] - 线帽样式。strokeLinecap 有三种类型 “butt", "round", "square"。
  * @param {string} [options.strokeLineJoin='iter'] - 线段连接样式。strokeLineJoin 有三种类型 “miter", "round", "bevel"。
  * @param {string} [options.strokeDashstyle='solid'] - 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"。solid 表示实线。
- * @param {number} [options.pointRadius=6] - 点半径,单位为像素。
- * @param {number} [options.shadowBlur=0] - 阴影模糊度，（大于 0 有效;）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
+ * @param {number} [options.pointRadius=6] - 点半径，单位为像素。
+ * @param {number} [options.shadowBlur=0] - 阴影模糊度，（大于 0 有效）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
  * @param {string} [options.shadowColor='#000000'] - 阴影颜色。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
  * @param {number} [options.shadowOffsetX=0] - 阴影 X 方向偏移值。
  * @param {number} [options.shadowOffsetY=0] - 阴影 Y 方向偏移值。
  * @param {string} options.label - 专题要素附加文本标签内容。
  * @param {string} [options.fontColor] - 附加文本字体颜色。
- * @param {number} [options.fontSize=12] - 附加文本字体大小,单位是像素。
+ * @param {number} [options.fontSize=12] - 附加文本字体大小，单位是像素。
  * @param {string} [options.fontStyle='normal'] - 附加文本字体样式。可设值："normal", "italic", "oblique"。
  * @param {string} [options.fontVariant='normal'] - 附加文本字体变体。可设值："normal", "small-caps"。
  * @param {string} [options.fontWeight='normal'] - 附加文本字体粗细。可设值："normal", "bold", "bolder", "lighter"。
  * @param {string} [options.fontFamily='arial,sans-serif'] - 附加文本字体系列。fontFamily 值是字体族名称或/及类族名称的一个优先表，每个值逗号分割，
  *                             浏览器会使用它可识别的第一个可以使用具体的字体名称（"times"、"courier"、"arial"）或字体系列名称
  *                              （"serif"、"sans-serif"、"cursive"、"fantasy"、"monospace"）。
- * @param {string} [options.labelPosition='top'] - 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'。
+ * @param {string} [options.labelPosition='top'] - 附加文本位置，可以是 'inside', 'left', 'right', 'top', 'bottom'。
  * @param {string} [options.labelAlign='center'] - 附加文本水平对齐。可以是 'left', 'right', 'center'。
- * @param {string} [options.labelBaseline='middle'] - 附加文本垂直对齐。 可以是 'top', 'bottom', 'middle' 。
+ * @param {string} [options.labelBaseline='middle'] - 附加文本垂直对齐。可以是 'top', 'bottom', 'middle' 。
  * @param {number} [options.labelXOffset=0] - 附加文本在x轴方向的偏移量。
  * @param {number} [options.labelYOffset=0] - 附加文本在y轴方向的偏移量。
  * @usage
@@ -92,7 +92,7 @@ export class ThemeStyle {
         this.strokeLineJoin = "miter";
         /**
          * @member {string} [ThemeStyle.prototype.strokeDashstyle="solid"]
-         * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
+         * @description   虚线类型；strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
          * solid 表示实线。
          */
         this.strokeDashstyle = "solid";
@@ -138,7 +138,7 @@ export class ThemeStyle {
         this.fontColor = "";
         /**
          * @member {number} [ThemeStyle.prototype.fontSize=12]
-         * @description 附加文本字体大小,单位是像素。
+         * @description 附加文本字体大小，单位是像素。
          */
         this.fontSize = 12;
         /**
@@ -164,7 +164,7 @@ export class ThemeStyle {
         this.fontFamily = "arial,sans-serif";
         /**
          * @member {string} [ThemeStyle.prototype.labelPosition='top']
-         * @description 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'。
+         * @description 附加文本位置，可以是 'inside', 'left', 'right', 'top', 'bottom'。
          */
         this.labelPosition = "top";
         /**
@@ -174,7 +174,7 @@ export class ThemeStyle {
         this.labelAlign = "center";
         /**
          * @member {string} [ThemeStyle.prototype.labelBaseline='middle']
-         * @description  附加文本垂直对齐。 可以是 'top', 'bottom', 'middle'。
+         * @description  附加文本垂直对齐。可以是 'top', 'bottom', 'middle'。
          */
         this.labelBaseline = "middle";
         /**

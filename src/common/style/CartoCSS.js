@@ -9,7 +9,7 @@ import toPairs from 'lodash.topairs';
  * @deprecatedclass SuperMap.CartoCSS
  * @classdesc CartoCSS 解析类，其主要功能为将 CartoCSS 字符串解析为 CartoCSS 的 shader 属性风格对象。
  * @category BaseTypes Style
- * @param {string} cartoStr -  样式表字符串
+ * @param {string} cartoStr -  样式表字符串。
  * @example
  * var cartocss = "@provinceLineColor:#ddd;
  *                 #China_Provinces_L___China400{
@@ -28,25 +28,25 @@ export class CartoCSS {
 
         /**
          * @member CartoCSS.prototype.parser
-         * @description 解析器
+         * @description 解析器。
          */
         this.parser = null;
 
         /**
          * @member CartoCSS.prototype.ruleSet
-         * @description CartoCSS 规则对象
+         * @description CartoCSS 规则对象。
          */
         this.ruleSet = null;
 
         /**
          * @member CartoCSS.prototype.cartoStr
-         * @description CartoCSS 样式表字符串
+         * @description CartoCSS 样式表字符串。
          */
         this.cartoStr = "";
 
         /**
          * @member CartoCSS.prototype.shaders
-         * @description Carto 着色器集
+         * @description Carto 着色器集。
          */
         this.shaders = null;
 
@@ -67,7 +67,7 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.getParser
-     * @description 获取 CartoCSS 解析器
+     * @description 获取 CartoCSS 解析器。
      */
     getParser(env) {
         var input,       // LeSS input string
@@ -877,8 +877,8 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.parse
-     * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
-     * @returns {Object} CartoCSS规则集
+     * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集。
+     * @returns {Object} CartoCSS规则集。
      */
     parse(str) {
         var parser = this.parser;
@@ -889,8 +889,8 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.toShaders
-     * @description 将CartoCSS规则集转化为着色器
-     * @returns {Array} CartoCSS着色器集
+     * @description 将CartoCSS规则集转化为着色器。
+     * @returns {Array} CartoCSS着色器集。
      */
     toShaders() {
         if (this.ruleSet) {
@@ -1021,8 +1021,8 @@ export class CartoCSS {
     }
     /**
      * @function CartoCSS.prototype.getShaders
-     * @description 获取CartoCSS着色器
-     * @returns {Array} 着色器集
+     * @description 获取CartoCSS着色器。
+     * @returns {Array} 着色器集。
      * @example
      *   //shaders的结构大概如下：
      *   var shaders=[
@@ -1050,7 +1050,7 @@ export class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.destroy
-     * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
+     * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象。
      */
     destroy() {
         this.cartoStr = null;

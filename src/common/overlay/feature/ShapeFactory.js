@@ -762,7 +762,7 @@ export class ShapeFactory {
      * // styleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
      * // start: 值域值下限（包含）;
      * // end: 值域值上限（不包含）;
-     * // style: 数据可视化图形的 style，其可设属性根据图形类型参考 <ShapeParameters> 子类对象的 style 属性。。
+     * // style: 数据可视化图形的 style，其可设属性根据图形类型参考 <ShapeParameters> 子类对象的 style 属性。
      * // dataStyleByCodomain 数组形如：
      * [
      *   {
