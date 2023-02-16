@@ -88,7 +88,7 @@ export class FilterParameter {
          * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。
          * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，
          * 分别表示某个城市所属的洲和国家。
-         * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；
+         * 如果要按照国家对全球的城市进行分组，可以设置 groupBy = "Country"；
          * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。
          */
         this.groupBy = null;

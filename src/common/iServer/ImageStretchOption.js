@@ -72,9 +72,9 @@ export default class ImageStretchOption {
   /**
    * @function ImageStretchOption.prototype.constructFromObject
    * @description 目标对象新增该类的可选参数。
-   * @param {Object} data 要转换的数据.
-   * @param {ImageStretchOption} obj 返回的模型.
-   * @return {ImageStretchOption} 返回结果
+   * @param {Object} data 要转换的数据。
+   * @param {ImageStretchOption} obj 返回的模型。
+   * @return {ImageStretchOption} 返回结果。
    */
   static constructFromObject(data, obj) {
     if (data) {

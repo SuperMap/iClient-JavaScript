@@ -101,7 +101,7 @@ export class KernelDensityJobParameter {
 
         /**
          * @member {OutputSetting} KernelDensityJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 

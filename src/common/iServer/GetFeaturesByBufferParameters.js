@@ -21,7 +21,7 @@ import { ServerGeometry } from './ServerGeometry';
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {GetFeaturesParametersBase}
  * @usage
  */
@@ -30,7 +30,7 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {number} GetFeaturesByBufferParameters.prototype.bufferDistance
-         * @description buffer 距离,单位与所查询图层对应的数据集单位相同。
+         * @description buffer 距离，单位与所查询图层对应的数据集单位相同。
          */
         this.bufferDistance = null;
 
@@ -42,7 +42,7 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {GeoJSONObject} GetFeaturesByBufferParameters.prototype.geometry
-         * @description 空间查询条件。 <br>
+         * @description 空间查询条件。<br>
          * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。</br>
          * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。</br>
          * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLatBounds}|{@link GeoJSONObject}。

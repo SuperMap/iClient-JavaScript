@@ -8,7 +8,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFSlope
  * @deprecatedclass SuperMap.ImageGFSlope
- * @classdesc 栅格函数对象:对DEM数据生成坡度图。
+ * @classdesc 栅格函数对象：对DEM数据生成坡度图。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
@@ -54,9 +54,9 @@ export default class ImageGFSlope {
   /**
   * @function ImageGFSlope.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFSlope} obj 返回的模型.
-  * @return {ImageGFSlope} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFSlope} obj 返回的模型。
+  * @return {ImageGFSlope} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {

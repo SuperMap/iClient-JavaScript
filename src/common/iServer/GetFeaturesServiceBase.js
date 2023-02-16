@@ -58,7 +58,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
 
          /**
          * @member {number} [GetFeaturesServiceBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含Geometry
+         * @description 返回结果是否包含Geometry。
          */
         this.hasGeometry = true;
 

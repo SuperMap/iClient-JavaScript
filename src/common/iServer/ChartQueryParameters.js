@@ -26,7 +26,7 @@ export class ChartQueryParameters {
     constructor(options) {
         /**
          * @member {string} ChartQueryParameters.prototype.queryMode
-         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
+         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。
          */
         this.queryMode = null;
 

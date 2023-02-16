@@ -8,7 +8,7 @@ import { CommonServiceBase } from './CommonServiceBase';
 /**
  * @class ImageCollectionService
  * @deprecatedclass SuperMap.ImageCollectionService
- * @classdesc 影像集合服务类
+ * @classdesc 影像集合服务类。
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
@@ -40,7 +40,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     /**
      * @function ImageCollectionService.prototype.getLegend
      * @description 返回当前影像集合的图例信息。默认为服务发布所配置的风格，支持根据风格参数生成新的图例。
-     * @param {Object} queryParams query参数
+     * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] renderingRule 对象，用来指定影像的渲染风格，从而确定图例内容。影像的渲染风格包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。该参数未设置时，将使用发布服务时所配置的风格。
      */
     getLegend(queryParams) {

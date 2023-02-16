@@ -11,7 +11,7 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称，此为必选参数。
  * @param {string} options.datasetName - 数据集名称，此为必选参数。
- * @param {string} options.datasetType - 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+ * @param {string} options.datasetType - 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
  * @usage
  */
 export class CreateDatasetParameters {
@@ -35,7 +35,7 @@ export class CreateDatasetParameters {
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasetType
-         * @description 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+         * @description 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
          */
         this.datasetType = null;
 

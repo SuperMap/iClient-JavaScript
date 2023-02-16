@@ -108,7 +108,7 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
     /**
      * @function FindServiceAreasService.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
-     * @param {Object} result - 服务器返回的结果对象。。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         if (!result || !result.serviceAreaList) {

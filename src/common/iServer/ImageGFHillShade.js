@@ -8,7 +8,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFHillShade
  * @deprecatedclass SuperMap.ImageGFHillShade
- * @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。
+ * @classdesc 栅格函数对象：对DEM数据生成三维晕渲图。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFHillShade'] 栅格函数名称，参数值为：GFHillShade。
@@ -61,9 +61,9 @@ export default class ImageGFHillShade {
   /**
   * @function ImageGFHillShade.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFHillShade} obj 返回的模型.
-  * @return {ImageGFHillShade} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFHillShade} obj 返回的模型。
+  * @return {ImageGFHillShade} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {

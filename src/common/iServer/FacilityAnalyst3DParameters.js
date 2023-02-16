@@ -44,7 +44,7 @@ export class FacilityAnalyst3DParameters {
         /**
          * @member {boolean} [FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid=false]
          * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
-         *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
+         *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
          */
         this.isUncertainDirectionValid = false;
         Util.extend(this, options);

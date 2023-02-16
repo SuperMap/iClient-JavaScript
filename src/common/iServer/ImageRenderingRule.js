@@ -15,8 +15,8 @@ import ImageStretchOption from './ImageStretchOption';
  * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为STRETCHED，该属性指定一个波段的索引号(波段索引号从0开始计数)；若影像的显示模式为COMPOSITE，该属性为组合的波段索引号，例如：属性值3,2,1表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
  * @param {ImageStretchOption} [options.stretchOption] 影像的拉伸参数。
  * @param {ImageRenderingRule.InterpolationMode} [options.interpolationMode] 影像显示时使用的插值算法。
- * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
- * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+ * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+ * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"。
  * @param {number} [options.brightness] 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
  * @param {number} [options.contrast] 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
  * @param {string} [options.noData] 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
@@ -51,12 +51,12 @@ export default class ImageRenderingRule {
      */
     this.interpolationMode = undefined;
     /**
-     * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+     * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
      * @member {Array.<string>} ImageRenderingRule.prototype.colorScheme
      */
     this.colorScheme = undefined;
     /**
-     * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+     * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
      * @member {Array.<string>} ImageRenderingRule.prototype.colorTable
      */
     this.colorTable = undefined;
@@ -137,9 +137,9 @@ export default class ImageRenderingRule {
   /**
    * @function ImageRenderingRule.prototype.constructFromObject
    * @description 目标对象新增该类的可选参数。
-   * @param {Object} data 要转换的数据.
-   * @param {ImageRenderingRule} obj 返回的模型.
-   * @return {ImageRenderingRule} 返回结果
+   * @param {Object} data 要转换的数据。
+   * @param {ImageRenderingRule} obj 返回的模型。
+   * @return {ImageRenderingRule} 返回结果。
    */
   static constructFromObject(data, obj) {
     if (data) {

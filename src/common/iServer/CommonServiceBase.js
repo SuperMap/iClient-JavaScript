@@ -185,7 +185,7 @@ export class CommonServiceBase {
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
-     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求
+     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
      */
     ajaxPolling() {
         let me = this,
@@ -333,7 +333,7 @@ export class CommonServiceBase {
 
 
 /**
- * 服务器请求回调函数
+ * 服务器请求回调函数。
  * @callback RequestCallback
  * @category BaseTypes Util
  * @example
