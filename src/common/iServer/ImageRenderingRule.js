@@ -216,7 +216,10 @@ ImageRenderingRule.DisplayMode = {
  * @type {string}
  */
 ImageRenderingRule.InterpolationMode = {
+  /** 最邻近插值模式。 */
   NEARESTNEIGHBOR: 'NEARESTNEIGHBOR',
+  /** 高质量的双线性插值模式。 */
   HIGHQUALITYBILINEAR: 'HIGHQUALITYBILINEAR',
+  /** 默认插值模式。 */
   DEFAULT: 'DEFAULT'
 };

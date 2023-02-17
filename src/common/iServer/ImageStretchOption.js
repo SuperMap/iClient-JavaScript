@@ -109,9 +109,14 @@ export default class ImageStretchOption {
  * @type {string}
  */
 ImageStretchOption.StretchType = {
+  /** 无拉伸。 */
   NONE: 'NONE',
+  /** 高斯拉伸。 */
   GAUSSIAN: 'GAUSSIAN',
+  /** 百分比截断拉伸。 */
   PERCENTCLIP: 'PERCENTCLIP',
+  /** 最值拉伸。 */
   MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
+  /** 标准差拉伸。 */
   STANDARDDEVIATION: 'STANDARDDEVIATION'
 };
