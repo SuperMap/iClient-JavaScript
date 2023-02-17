@@ -115,7 +115,7 @@ export class NetworkAnalystService extends ServiceBase {
 
     /**
      * @function NetworkAnalystService.prototype.streamFacilityAnalyst
-     * @description 上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
+     * @description 上游/下游 关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param {FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。

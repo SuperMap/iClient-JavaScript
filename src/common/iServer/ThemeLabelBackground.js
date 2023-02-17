@@ -27,8 +27,7 @@ export class ThemeLabelBackground {
 
         /**
          * @member {ServerStyle} [ThemeLabelBackground.prototype.backStyle]
-         * @description 标签专题图中标签背景的形状枚举类。背景类型可
-         *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
+         * @description 标签专题图中标签背景的形状枚举类。背景类型可以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
          */
         this.backStyle = new ServerStyle();
 

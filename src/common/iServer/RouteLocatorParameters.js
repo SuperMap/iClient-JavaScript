@@ -9,8 +9,7 @@ import {Geometry} from '../commontypes/Geometry';
  * @deprecatedclass SuperMap.RouteLocatorParameters
  * @category  iServer SpatialAnalyst RouteLocator
  * @classdesc 路由对象定位空间对象的参数类。
- * 参数有两种方式，分别为 Geometry 和 Dataset 两种，前者需要指定 sourceRoute 对象作为参数，后者需要 dataset，routeIDField，routeID 三个参数
- * 如果用户两种参数均设置，优先选择 Dataset 方式。
+ * 参数有两种方式，分别为 Geometry 和 Dataset 两种，前者需要指定 sourceRoute 对象作为参数，后者需要 dataset，routeIDField，routeID 三个参数。如果用户两种参数均设置，优先选择 Dataset 方式。
  * @param {Object} options - 参数。
  * @param {(Route|L.Polyline|ol.geom.LineString|GeoJSONObject)} options.sourceRoute - 路由对象。
  * @param {number} options.measure - 定位点的 M 值。只当路由对象定位点时有意义。

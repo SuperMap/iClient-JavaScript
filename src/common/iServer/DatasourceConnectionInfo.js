@@ -10,7 +10,7 @@ import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
  * @category  iServer Data Datasource
  * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
  *            当保存为工作空间时，工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
- *            所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
+ *            所以在使用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
  *            其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
  * @param {Object} options - 参数。
  * @param {string} options.alias - 数据源别名。

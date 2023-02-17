@@ -70,7 +70,7 @@ export class SurfaceAnalystParametersSetting {
          * @member {number} [SurfaceAnalystParametersSetting.prototype.smoothness=0]
          * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
          * 以为 0-5 为例，光滑度为 0 表示不进行光滑操作，值越大表示光滑度越高。
-         * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，
+         * 随着光滑度的增加，提取的等值线越光滑，当然光滑度越大，
          * 计算所需的时间和占用的内存也就越大。而且，当等值距较小时，
          * 光滑度太高会出现等值线相交的问题。
          */

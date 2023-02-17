@@ -269,8 +269,7 @@
      },
 
      /**
-      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
-      * 保持一致才能确保事件移除成功。
+      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时保持一致才能确保事件移除成功。
       * @param {(HTMLElement|string)} elementParam - 被监听的 DOM 元素或者其 ID。
       * @param {string} name - 需要移除的被监听事件名称。
       * @param {function} observer - 需要移除的事件处理方法。

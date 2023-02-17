@@ -23,8 +23,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
- * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 的 style 中的有效属性应用到专题图层。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
- *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature）对应专题要素赋予独立 style。
+ * @param {boolean} [options.isAllowFeatureStyle=false] - 是否允许 feature 的 style 中的有效属性应用到专题图层。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature）对应专题要素赋予独立 style。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @usage
  */

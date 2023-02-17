@@ -452,8 +452,7 @@ export class Bounds {
 
     /**
      * @function Bounds.prototype.intersectsBounds
-     * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意
-     *              边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
+     * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
      * @example
      * var bounds = new Bounds(-180,-90,100,80);
      * var isIntersects = bounds.intersectsBounds(
@@ -461,11 +460,8 @@ export class Bounds {
      *  );
      * @param {Bounds} bounds - 目标边界。
      * @param {Object} options - 参数。
-     * @param {boolean} [options.inclusive=true] - 边缘重合也看成相交。如果是false，
-     *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
-     *                               这种情况被认为没有相交。
-     * @param {Bounds} [options.worldBounds] - 提供了 worldBounds 参数, 如果他们相交时
-     *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
+     * @param {boolean} [options.inclusive=true] - 边缘重合也看成相交。如果是false，两个边界范围没有重叠部分仅仅是在边缘相接（重合），这种情况被认为没有相交。
+     * @param {Bounds} [options.worldBounds] - 提供了 worldBounds 参数，如果他们相交时是在全球范围内，两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
      * @returns {boolean} 传入的 bounds 对象与当前 bounds 相交。
      */
     intersectsBounds(bounds, options) {
