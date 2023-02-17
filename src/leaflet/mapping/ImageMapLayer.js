@@ -140,7 +140,7 @@ export var ImageMapLayer = Layer.extend({
     },
 
     /**
-     * @function ImageMapLayer.prototype.bringToFront
+     * @function ImageMapLayer.prototype.bringToBack
      * @description 置底当前图层。
      */
     bringToBack: function() {
