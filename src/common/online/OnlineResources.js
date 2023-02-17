@@ -55,25 +55,25 @@ var ServiceStatus = {
  * ```
  */
 var DataItemOrderBy = {
-    /** FILENAME */
+    /** 文件名。 */
     FILENAME: "FILENAME",
-    /** ID */
+    /** ID。 */
     ID: "ID",
-    /** LASTMODIFIEDTIME */
+    /** 最后修改时间。 */
     LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
-    /** NICKNAME */
+    /** 作者昵称。 */
     NICKNAME: "NICKNAME",
-    /** SERVICESTATUS */
+    /** SERVICESTATUS。 */
     SERVICESTATUS: "SERVICESTATUS",
-    /** SIZE */
+    /** 大小。 */
     SIZE: "SIZE",
-    /** STATUS */
+    /** 状态。 */
     STATUS: "STATUS",
-    /** TYPE */
+    /** 类型。 */
     TYPE: "TYPE",
-    /** UPDATETIME */
+    /** 更新时间。 */
     UPDATETIME: "UPDATETIME",
-    /** USERNAME */
+    /** 作者名。 */
     USERNAME: "USERNAME"
 };
 
@@ -96,15 +96,15 @@ var DataItemOrderBy = {
  * ```
  */
 var FilterField = {
-    /** LINKPAGE */
+    /** 服务地址。 */
     LINKPAGE: "LINKPAGE",
-    /** MAPTITLE */
+    /** 服务中包含的地图的名称。 */
     MAPTITLE: "MAPTITLE",
-    /** NICKNAME */
+    /** 服务创建者昵称。 */
     NICKNAME: "NICKNAME",
-    /** RESTITLE */
+    /** 服务名称。 */
     RESTITLE: "RESTITLE",
-    /** USERNAME */
+    /** 服务创建者用户名。 */
     USERNAME: "USERNAME"
 };
 export {

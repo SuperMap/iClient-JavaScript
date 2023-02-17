@@ -69,6 +69,8 @@ export default class Sortby {
  * @type {string}
  */
 Sortby.Direction = {
+  /** 升序。 */
   ASC: 'ASC',
+  /** 降序。 */
   DESC: 'DESC'
 };

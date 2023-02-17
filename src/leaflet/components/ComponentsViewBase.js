@@ -67,6 +67,7 @@ export var ComponentsViewBase = L.Control.extend({
 
     /**
      * @function ComponentsViewBase.prototype.on
+     * @description 事件绑定。
      * @param {string} eventType - 监听的事件类型。
      * @param {function} callback - 监听事件的回调函数。
      */

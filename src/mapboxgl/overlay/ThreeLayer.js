@@ -30,7 +30,7 @@ const {
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
  *          {@link THREE.WebGLRenderer}
- *          THREE.CanvasRenderer
+ *          {@link THREE.CanvasRenderer}。
  *
  * @extends {mapboxgl.Evented}
  * @fires ThreeLayer#render

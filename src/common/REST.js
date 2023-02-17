@@ -76,31 +76,31 @@ var ServerType = {
  * ```
  */
 var GeometryType = {
-    /** LINE */
+    /** 线几何对象类型。 */
     LINE: "LINE",
-    /** LINEM */
+    /** 路由对象。 */
     LINEM: "LINEM",
-    /** POINT */
+    /** 点几何对象类型。 */
     POINT: "POINT",
-    /** REGION */
+    /** 面几何对象类型。 */
     REGION: "REGION",
-    /** POINTEPS */
+    /** EPS点几何对象。 */
     POINTEPS: "POINTEPS",
-    /** LINEEPS */
+    /** EPS线几何对象。 */
     LINEEPS: "LINEEPS",
-    /** REGIONEPS */
+    /** EPS面几何对象。 */
     REGIONEPS: "REGIONEPS",
-    /** ELLIPSE */
+    /** 椭圆。 */
     ELLIPSE: "ELLIPSE",
-    /** CIRCLE */
+    /** 圆。 */
     CIRCLE: "CIRCLE",
-    /** TEXT */
+    /** 文本几何对象类型。 */
     TEXT: "TEXT",
-    /** RECTANGLE */
+    /** 矩形。 */
     RECTANGLE: "RECTANGLE",
-    /** UNKNOWN */
+    /** 未定义。 */
     UNKNOWN: "UNKNOWN",
-    /** GEOCOMPOUND */
+    /** 复合几何对象类型。 */
     GEOCOMPOUND:"GEOCOMPOUND"
 };
 
@@ -982,9 +982,9 @@ var TurnType = {
  * ```
  */
 var BufferEndType = {
-    /** FLAT */
+    /** 平头缓冲。 */
     FLAT: "FLAT",
-    /** ROUND */
+    /** 圆头缓冲。 */
     ROUND: "ROUND"
 };
 /**
@@ -2145,61 +2145,61 @@ var EntityType = {
  * ```
  */
 var DataItemType = {
-    /** geojson数据。 */
+    /** geojson 数据。 */
     GEOJSON: "GEOJSON",
-    /** UGCV5_MVT  */
+    /** UGCV5_MVT。  */
     UGCV5_MVT: "UGCV5_MVT",
     /** json数据  */
     JSON: "JSON",
-    /** AUDIO */
+    /** 音频文件。 */
     AUDIO: "AUDIO",
-    /** COLOR */
+    /** Color 颜色。 */
     COLOR: "COLOR",
-    /** COLORSCHEME */
+    /** ColorScheme 颜色方案。 */
     COLORSCHEME: "COLORSCHEME",
-    /** CSV */
+    /** CSV 数据。 */
     CSV: "CSV",
-    /** EXCEL */
+    /** EXCEL 数据。 */
     EXCEL: "EXCEL",
-    /** FILLSYMBOL */
+    /** FillSymbol 填充符号库。 */
     FILLSYMBOL: "FILLSYMBOL",
-    /** IMAGE */
+    /** 图片类型。 */
     IMAGE: "IMAGE",
-    /** LAYERTEMPLATE */
+    /** LayerTemplate 图层模板。 */
     LAYERTEMPLATE: "LAYERTEMPLATE",
-    /** LAYOUTTEMPLATE */
+    /** LayoutTemplate 布局模板。 */
     LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
-    /** LINESYMBOL */
+    /** LineSymbol 线符号库。 */
     LINESYMBOL: "LINESYMBOL",
-    /** MAPTEMPLATE */
+    /** MapTemplate 地图模板。 */
     MAPTEMPLATE: "MAPTEMPLATE",
-    /** MARKERSYMBOL */
+    /** MarkerSymbol 点符号库。 */
     MARKERSYMBOL: "MARKERSYMBOL",
-    /** MBTILES */
+    /** MBTILES。 */
     MBTILES: "MBTILES",
-    /** PHOTOS */
+    /** 照片。 */
     PHOTOS: "PHOTOS",
-    /** SHP */
+    /** SHP 空间数据。 */
     SHP: "SHP",
-    /** SMTILES */
+    /** SMTILES。 */
     SMTILES: "SMTILES",
-    /** SVTILES */
+    /** SVTILES。 */
     SVTILES: "SVTILES",
-    /** THEMETEMPLATE */
+    /** ThemeTemplate 专题图模板。 */
     THEMETEMPLATE: "THEMETEMPLATE",
-    /** TPK */
+    /** TPK。 */
     TPK: "TPK",
-    /** UDB */
+    /** UDB 数据源。 */
     UDB: "UDB",
-    /** UGCV5 */
+    /** UGCV5。 */
     UGCV5: "UGCV5",
-    /** UNKNOWN */
+    /** 其他类型（普通文件）。 */
     UNKNOWN: "UNKNOWN",
-    /** VIDEO */
+    /** 视频文件。 */
     VIDEO: "VIDEO",
-    /** WORKENVIRONMENT */
+    /** WorkEnviroment 工作环境。 */
     WORKENVIRONMENT: "WORKENVIRONMENT",
-    /** WORKSPACE */
+    /** 工作空间。 */
     WORKSPACE: "WORKSPACE"
 }
 
