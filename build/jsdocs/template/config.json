@@ -387,6 +387,9 @@
       },
       "GraticuleLayer": {
         "name": "经纬网"
+      },
+      "FGB": {
+        "name": "FGB"
       }
     }
   },

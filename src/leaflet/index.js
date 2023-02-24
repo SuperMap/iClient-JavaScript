@@ -90,7 +90,8 @@ import {
     themeFeature,
     ThemeLayer,
     SVGRenderer,
-    VectorGrid
+    VectorGrid,
+    FGBLayer
 } from './overlay';
 import {
     AddressMatchService,
@@ -290,7 +291,8 @@ export {
     themeFeature,
     ThemeLayer,
     SVGRenderer,
-    VectorGrid
+    VectorGrid,
+    FGBLayer
 };
 export {
     AddressMatchService,

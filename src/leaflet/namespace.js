@@ -78,6 +78,7 @@ import {
   tiledVectorLayer,
   TurfLayer,
   turfLayer,
+  FGBLayer,
   UnicodeMarker,
   unicodeMarker,
   UniqueThemeLayer,
@@ -345,6 +346,7 @@ L.supermap.TileVectorLayer = TileVectorLayer;
 L.supermap.TiledVectorLayer = TiledVectorLayer;
 L.supermap.turfLayer = turfLayer;
 L.supermap.TurfLayer = TurfLayer;
+L.supermap.FGBLayer = FGBLayer;
 L.supermap.unicodeMarker = unicodeMarker;
 L.supermap.UnicodeMarker = UnicodeMarker;
 L.supermap.uniqueThemeLayer = uniqueThemeLayer;

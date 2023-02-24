@@ -32,23 +32,28 @@ module.exports = {
         rules: (function () {
             let moduleRules = [];
             moduleRules.push(configBase.module.rules.img);
-            if (configBase.moduleVersion === "es5") {
-                //打包为es5相关配置
-                moduleRules.push({
-                    test: [/\.js$/],
-                    exclude: /setImmediate|webgl-debug/,
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                });
-                //兼容es3相关配置
-                // moduleRules.push({
-                //     test: /\.js$/,
-                //     enforce: "post",
-                //     loaders: ['es3ify-loader']
-                // });
+            const babelConfig = {
+              test: [/\.js$/],
+              exclude: /setImmediate|webgl-debug/,
+              loader: 'babel-loader',
+              options: {
+                  presets: ['@babel/preset-env'],
+                  plugins: [
+                    [
+                        '@babel/plugin-transform-runtime',
+                        {
+                            absoluteRuntime: false,
+                            corejs: false,
+                            helpers: false,
+                            regenerator: true,
+                            useESModules: false
+                        }
+                    ]
+                ]
+              }
             }
+            configBase.moduleVersion === "es6" && (babelConfig.include = /FGBLayer|flatgeobuf/);
+            moduleRules.push(babelConfig);
             moduleRules.push(configBase.module.rules.css);
             return moduleRules
         })()

@@ -114,6 +114,9 @@
         if (inArray(includes, 'xlsx')) {
             inputScript('https://iclient.supermap.io/web/libs/xlsx/0.18.5/xlsx.core.min.js');
         }
+        if (inArray(includes, 'FGB')) {
+          inputScript('https://iclient.supermap.io/web/libs/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
+        }
 
         // dist
         if (!inArray(excludes, 'iclient-openlayers')) {

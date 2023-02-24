@@ -1,0 +1,59 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_fgb_extent"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="fgb-map" style="margin: 0 auto; width: 50%; height: 100%; position: absolute; top: 0; left: 0">
+    </div>
+    <script type="text/javascript" include="FGB" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      var allowMaxFeatures = 20000;
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var map,
+        FGBMap,
+        resultLayer,
+        baseUrl = host + '/iserver/services/map-china400/rest/maps/China_4326',
+        url = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
+      FGBMap = L.map('fgb-map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: { lon: 113, lat: 39 },
+        maxZoom: 18,
+        zoom: 3
+      });
+      new L.supermap.TiledMapLayer(baseUrl).addTo(FGBMap);
+      var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
+        queryParameter: {
+          name: 'waterways@osm-line',
+          attributeFilter: 'SMID > 0'
+        },
+        toIndex: allowMaxFeatures,
+        maxFeatures: allowMaxFeatures,
+        datasetNames: ['osm-line:waterways']
+      });
+      fgbQuery();
+
+      function fgbQuery() {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(
+          sqlParam,
+          function (serviceResult) {
+            new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+              style: {
+                color: 'blue',
+                weight: 5
+              },
+              strategy: 'bbox'
+            }).addTo(FGBMap);
+          },
+          'FGB'
+        );
+      }
+    </script>
+  </body>
+</html>

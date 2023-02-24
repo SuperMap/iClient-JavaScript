@@ -180,7 +180,9 @@
       inputCSS('https://iclient.supermap.io/web/libs/video-js/7.10.2/video-js.min.css');
       inputScript('https://iclient.supermap.io/web/libs/video-js/7.10.2/video.min.js');
     }
-
+    if (inArray(includes, 'FGB')) {
+      inputScript('https://iclient.supermap.io/web/libs/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
+    }
     // dist
     if (!inArray(excludes, 'iclient-mapboxgl')) {
       if (supportES6()) {

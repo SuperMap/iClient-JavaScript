@@ -3,7 +3,7 @@
  *          iclient-mapboxgl.(https://iclient.supermap.io)
  *          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.0.0
+ *          version: v11.1.0-dev
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -555,6 +555,947 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   module.exports = fetchJsonp;
 });
+
+/***/ }),
+
+/***/ 962:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Builder = void 0;
+var byte_buffer_js_1 = __webpack_require__(505);
+var constants_js_1 = __webpack_require__(147);
+var Builder = /** @class */ (function () {
+    /**
+     * Create a FlatBufferBuilder.
+     */
+    function Builder(opt_initial_size) {
+        /** Minimum alignment encountered so far. */
+        this.minalign = 1;
+        /** The vtable for the current table. */
+        this.vtable = null;
+        /** The amount of fields we're actually using. */
+        this.vtable_in_use = 0;
+        /** Whether we are currently serializing a table. */
+        this.isNested = false;
+        /** Starting offset of the current struct/table. */
+        this.object_start = 0;
+        /** List of offsets of all vtables. */
+        this.vtables = [];
+        /** For the current vector being built. */
+        this.vector_num_elems = 0;
+        /** False omits default values from the serialized data */
+        this.force_defaults = false;
+        this.string_maps = null;
+        var initial_size;
+        if (!opt_initial_size) {
+            initial_size = 1024;
+        }
+        else {
+            initial_size = opt_initial_size;
+        }
+        /**
+         * @type {ByteBuffer}
+         * @private
+         */
+        this.bb = byte_buffer_js_1.ByteBuffer.allocate(initial_size);
+        this.space = initial_size;
+    }
+    Builder.prototype.clear = function () {
+        this.bb.clear();
+        this.space = this.bb.capacity();
+        this.minalign = 1;
+        this.vtable = null;
+        this.vtable_in_use = 0;
+        this.isNested = false;
+        this.object_start = 0;
+        this.vtables = [];
+        this.vector_num_elems = 0;
+        this.force_defaults = false;
+        this.string_maps = null;
+    };
+    /**
+     * In order to save space, fields that are set to their default value
+     * don't get serialized into the buffer. Forcing defaults provides a
+     * way to manually disable this optimization.
+     *
+     * @param forceDefaults true always serializes default values
+     */
+    Builder.prototype.forceDefaults = function (forceDefaults) {
+        this.force_defaults = forceDefaults;
+    };
+    /**
+     * Get the ByteBuffer representing the FlatBuffer. Only call this after you've
+     * called finish(). The actual data starts at the ByteBuffer's current position,
+     * not necessarily at 0.
+     */
+    Builder.prototype.dataBuffer = function () {
+        return this.bb;
+    };
+    /**
+     * Get the bytes representing the FlatBuffer. Only call this after you've
+     * called finish().
+     */
+    Builder.prototype.asUint8Array = function () {
+        return this.bb.bytes().subarray(this.bb.position(), this.bb.position() + this.offset());
+    };
+    /**
+     * Prepare to write an element of `size` after `additional_bytes` have been
+     * written, e.g. if you write a string, you need to align such the int length
+     * field is aligned to 4 bytes, and the string data follows it directly. If all
+     * you need to do is alignment, `additional_bytes` will be 0.
+     *
+     * @param size This is the of the new element to write
+     * @param additional_bytes The padding size
+     */
+    Builder.prototype.prep = function (size, additional_bytes) {
+        // Track the biggest thing we've ever aligned to.
+        if (size > this.minalign) {
+            this.minalign = size;
+        }
+        // Find the amount of alignment needed such that `size` is properly
+        // aligned after `additional_bytes`
+        var align_size = ((~(this.bb.capacity() - this.space + additional_bytes)) + 1) & (size - 1);
+        // Reallocate the buffer if needed.
+        while (this.space < align_size + size + additional_bytes) {
+            var old_buf_size = this.bb.capacity();
+            this.bb = Builder.growByteBuffer(this.bb);
+            this.space += this.bb.capacity() - old_buf_size;
+        }
+        this.pad(align_size);
+    };
+    Builder.prototype.pad = function (byte_size) {
+        for (var i = 0; i < byte_size; i++) {
+            this.bb.writeInt8(--this.space, 0);
+        }
+    };
+    Builder.prototype.writeInt8 = function (value) {
+        this.bb.writeInt8(this.space -= 1, value);
+    };
+    Builder.prototype.writeInt16 = function (value) {
+        this.bb.writeInt16(this.space -= 2, value);
+    };
+    Builder.prototype.writeInt32 = function (value) {
+        this.bb.writeInt32(this.space -= 4, value);
+    };
+    Builder.prototype.writeInt64 = function (value) {
+        this.bb.writeInt64(this.space -= 8, value);
+    };
+    Builder.prototype.writeFloat32 = function (value) {
+        this.bb.writeFloat32(this.space -= 4, value);
+    };
+    Builder.prototype.writeFloat64 = function (value) {
+        this.bb.writeFloat64(this.space -= 8, value);
+    };
+    /**
+     * Add an `int8` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int8` to add the the buffer.
+     */
+    Builder.prototype.addInt8 = function (value) {
+        this.prep(1, 0);
+        this.writeInt8(value);
+    };
+    /**
+     * Add an `int16` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int16` to add the the buffer.
+     */
+    Builder.prototype.addInt16 = function (value) {
+        this.prep(2, 0);
+        this.writeInt16(value);
+    };
+    /**
+     * Add an `int32` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int32` to add the the buffer.
+     */
+    Builder.prototype.addInt32 = function (value) {
+        this.prep(4, 0);
+        this.writeInt32(value);
+    };
+    /**
+     * Add an `int64` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int64` to add the the buffer.
+     */
+    Builder.prototype.addInt64 = function (value) {
+        this.prep(8, 0);
+        this.writeInt64(value);
+    };
+    /**
+     * Add a `float32` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `float32` to add the the buffer.
+     */
+    Builder.prototype.addFloat32 = function (value) {
+        this.prep(4, 0);
+        this.writeFloat32(value);
+    };
+    /**
+     * Add a `float64` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `float64` to add the the buffer.
+     */
+    Builder.prototype.addFloat64 = function (value) {
+        this.prep(8, 0);
+        this.writeFloat64(value);
+    };
+    Builder.prototype.addFieldInt8 = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addInt8(value);
+            this.slot(voffset);
+        }
+    };
+    Builder.prototype.addFieldInt16 = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addInt16(value);
+            this.slot(voffset);
+        }
+    };
+    Builder.prototype.addFieldInt32 = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addInt32(value);
+            this.slot(voffset);
+        }
+    };
+    Builder.prototype.addFieldInt64 = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value !== defaultValue) {
+            this.addInt64(value);
+            this.slot(voffset);
+        }
+    };
+    Builder.prototype.addFieldFloat32 = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addFloat32(value);
+            this.slot(voffset);
+        }
+    };
+    Builder.prototype.addFieldFloat64 = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addFloat64(value);
+            this.slot(voffset);
+        }
+    };
+    Builder.prototype.addFieldOffset = function (voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addOffset(value);
+            this.slot(voffset);
+        }
+    };
+    /**
+     * Structs are stored inline, so nothing additional is being added. `d` is always 0.
+     */
+    Builder.prototype.addFieldStruct = function (voffset, value, defaultValue) {
+        if (value != defaultValue) {
+            this.nested(value);
+            this.slot(voffset);
+        }
+    };
+    /**
+     * Structures are always stored inline, they need to be created right
+     * where they're used.  You'll get this assertion failure if you
+     * created it elsewhere.
+     */
+    Builder.prototype.nested = function (obj) {
+        if (obj != this.offset()) {
+            throw new Error('FlatBuffers: struct must be serialized inline.');
+        }
+    };
+    /**
+     * Should not be creating any other object, string or vector
+     * while an object is being constructed
+     */
+    Builder.prototype.notNested = function () {
+        if (this.isNested) {
+            throw new Error('FlatBuffers: object serialization must not be nested.');
+        }
+    };
+    /**
+     * Set the current vtable at `voffset` to the current location in the buffer.
+     */
+    Builder.prototype.slot = function (voffset) {
+        if (this.vtable !== null)
+            this.vtable[voffset] = this.offset();
+    };
+    /**
+     * @returns Offset relative to the end of the buffer.
+     */
+    Builder.prototype.offset = function () {
+        return this.bb.capacity() - this.space;
+    };
+    /**
+     * Doubles the size of the backing ByteBuffer and copies the old data towards
+     * the end of the new buffer (since we build the buffer backwards).
+     *
+     * @param bb The current buffer with the existing data
+     * @returns A new byte buffer with the old data copied
+     * to it. The data is located at the end of the buffer.
+     *
+     * uint8Array.set() formally takes {Array<number>|ArrayBufferView}, so to pass
+     * it a uint8Array we need to suppress the type check:
+     * @suppress {checkTypes}
+     */
+    Builder.growByteBuffer = function (bb) {
+        var old_buf_size = bb.capacity();
+        // Ensure we don't grow beyond what fits in an int.
+        if (old_buf_size & 0xC0000000) {
+            throw new Error('FlatBuffers: cannot grow buffer beyond 2 gigabytes.');
+        }
+        var new_buf_size = old_buf_size << 1;
+        var nbb = byte_buffer_js_1.ByteBuffer.allocate(new_buf_size);
+        nbb.setPosition(new_buf_size - old_buf_size);
+        nbb.bytes().set(bb.bytes(), new_buf_size - old_buf_size);
+        return nbb;
+    };
+    /**
+     * Adds on offset, relative to where it will be written.
+     *
+     * @param offset The offset to add.
+     */
+    Builder.prototype.addOffset = function (offset) {
+        this.prep(constants_js_1.SIZEOF_INT, 0); // Ensure alignment is already done.
+        this.writeInt32(this.offset() - offset + constants_js_1.SIZEOF_INT);
+    };
+    /**
+     * Start encoding a new object in the buffer.  Users will not usually need to
+     * call this directly. The FlatBuffers compiler will generate helper methods
+     * that call this method internally.
+     */
+    Builder.prototype.startObject = function (numfields) {
+        this.notNested();
+        if (this.vtable == null) {
+            this.vtable = [];
+        }
+        this.vtable_in_use = numfields;
+        for (var i = 0; i < numfields; i++) {
+            this.vtable[i] = 0; // This will push additional elements as needed
+        }
+        this.isNested = true;
+        this.object_start = this.offset();
+    };
+    /**
+     * Finish off writing the object that is under construction.
+     *
+     * @returns The offset to the object inside `dataBuffer`
+     */
+    Builder.prototype.endObject = function () {
+        if (this.vtable == null || !this.isNested) {
+            throw new Error('FlatBuffers: endObject called without startObject');
+        }
+        this.addInt32(0);
+        var vtableloc = this.offset();
+        // Trim trailing zeroes.
+        var i = this.vtable_in_use - 1;
+        // eslint-disable-next-line no-empty
+        for (; i >= 0 && this.vtable[i] == 0; i--) { }
+        var trimmed_size = i + 1;
+        // Write out the current vtable.
+        for (; i >= 0; i--) {
+            // Offset relative to the start of the table.
+            this.addInt16(this.vtable[i] != 0 ? vtableloc - this.vtable[i] : 0);
+        }
+        var standard_fields = 2; // The fields below:
+        this.addInt16(vtableloc - this.object_start);
+        var len = (trimmed_size + standard_fields) * constants_js_1.SIZEOF_SHORT;
+        this.addInt16(len);
+        // Search for an existing vtable that matches the current one.
+        var existing_vtable = 0;
+        var vt1 = this.space;
+        outer_loop: for (i = 0; i < this.vtables.length; i++) {
+            var vt2 = this.bb.capacity() - this.vtables[i];
+            if (len == this.bb.readInt16(vt2)) {
+                for (var j = constants_js_1.SIZEOF_SHORT; j < len; j += constants_js_1.SIZEOF_SHORT) {
+                    if (this.bb.readInt16(vt1 + j) != this.bb.readInt16(vt2 + j)) {
+                        continue outer_loop;
+                    }
+                }
+                existing_vtable = this.vtables[i];
+                break;
+            }
+        }
+        if (existing_vtable) {
+            // Found a match:
+            // Remove the current vtable.
+            this.space = this.bb.capacity() - vtableloc;
+            // Point table to existing vtable.
+            this.bb.writeInt32(this.space, existing_vtable - vtableloc);
+        }
+        else {
+            // No match:
+            // Add the location of the current vtable to the list of vtables.
+            this.vtables.push(this.offset());
+            // Point table to current vtable.
+            this.bb.writeInt32(this.bb.capacity() - vtableloc, this.offset() - vtableloc);
+        }
+        this.isNested = false;
+        return vtableloc;
+    };
+    /**
+     * Finalize a buffer, poiting to the given `root_table`.
+     */
+    Builder.prototype.finish = function (root_table, opt_file_identifier, opt_size_prefix) {
+        var size_prefix = opt_size_prefix ? constants_js_1.SIZE_PREFIX_LENGTH : 0;
+        if (opt_file_identifier) {
+            var file_identifier = opt_file_identifier;
+            this.prep(this.minalign, constants_js_1.SIZEOF_INT +
+                constants_js_1.FILE_IDENTIFIER_LENGTH + size_prefix);
+            if (file_identifier.length != constants_js_1.FILE_IDENTIFIER_LENGTH) {
+                throw new Error('FlatBuffers: file identifier must be length ' +
+                    constants_js_1.FILE_IDENTIFIER_LENGTH);
+            }
+            for (var i = constants_js_1.FILE_IDENTIFIER_LENGTH - 1; i >= 0; i--) {
+                this.writeInt8(file_identifier.charCodeAt(i));
+            }
+        }
+        this.prep(this.minalign, constants_js_1.SIZEOF_INT + size_prefix);
+        this.addOffset(root_table);
+        if (size_prefix) {
+            this.addInt32(this.bb.capacity() - this.space);
+        }
+        this.bb.setPosition(this.space);
+    };
+    /**
+     * Finalize a size prefixed buffer, pointing to the given `root_table`.
+     */
+    Builder.prototype.finishSizePrefixed = function (root_table, opt_file_identifier) {
+        this.finish(root_table, opt_file_identifier, true);
+    };
+    /**
+     * This checks a required field has been set in a given table that has
+     * just been constructed.
+     */
+    Builder.prototype.requiredField = function (table, field) {
+        var table_start = this.bb.capacity() - table;
+        var vtable_start = table_start - this.bb.readInt32(table_start);
+        var ok = this.bb.readInt16(vtable_start + field) != 0;
+        // If this fails, the caller will show what field needs to be set.
+        if (!ok) {
+            throw new Error('FlatBuffers: field ' + field + ' must be set');
+        }
+    };
+    /**
+     * Start a new array/vector of objects.  Users usually will not call
+     * this directly. The FlatBuffers compiler will create a start/end
+     * method for vector types in generated code.
+     *
+     * @param elem_size The size of each element in the array
+     * @param num_elems The number of elements in the array
+     * @param alignment The alignment of the array
+     */
+    Builder.prototype.startVector = function (elem_size, num_elems, alignment) {
+        this.notNested();
+        this.vector_num_elems = num_elems;
+        this.prep(constants_js_1.SIZEOF_INT, elem_size * num_elems);
+        this.prep(alignment, elem_size * num_elems); // Just in case alignment > int.
+    };
+    /**
+     * Finish off the creation of an array and all its elements. The array must be
+     * created with `startVector`.
+     *
+     * @returns The offset at which the newly created array
+     * starts.
+     */
+    Builder.prototype.endVector = function () {
+        this.writeInt32(this.vector_num_elems);
+        return this.offset();
+    };
+    /**
+     * Encode the string `s` in the buffer using UTF-8. If the string passed has
+     * already been seen, we return the offset of the already written string
+     *
+     * @param s The string to encode
+     * @return The offset in the buffer where the encoded string starts
+     */
+    Builder.prototype.createSharedString = function (s) {
+        if (!s) {
+            return 0;
+        }
+        if (!this.string_maps) {
+            this.string_maps = new Map();
+        }
+        if (this.string_maps.has(s)) {
+            return this.string_maps.get(s);
+        }
+        var offset = this.createString(s);
+        this.string_maps.set(s, offset);
+        return offset;
+    };
+    /**
+     * Encode the string `s` in the buffer using UTF-8. If a Uint8Array is passed
+     * instead of a string, it is assumed to contain valid UTF-8 encoded data.
+     *
+     * @param s The string to encode
+     * @return The offset in the buffer where the encoded string starts
+     */
+    Builder.prototype.createString = function (s) {
+        if (s === null || s === undefined) {
+            return 0;
+        }
+        var utf8;
+        if (s instanceof Uint8Array) {
+            utf8 = s;
+        }
+        else {
+            utf8 = [];
+            var i = 0;
+            while (i < s.length) {
+                var codePoint = void 0;
+                // Decode UTF-16
+                var a = s.charCodeAt(i++);
+                if (a < 0xD800 || a >= 0xDC00) {
+                    codePoint = a;
+                }
+                else {
+                    var b = s.charCodeAt(i++);
+                    codePoint = (a << 10) + b + (0x10000 - (0xD800 << 10) - 0xDC00);
+                }
+                // Encode UTF-8
+                if (codePoint < 0x80) {
+                    utf8.push(codePoint);
+                }
+                else {
+                    if (codePoint < 0x800) {
+                        utf8.push(((codePoint >> 6) & 0x1F) | 0xC0);
+                    }
+                    else {
+                        if (codePoint < 0x10000) {
+                            utf8.push(((codePoint >> 12) & 0x0F) | 0xE0);
+                        }
+                        else {
+                            utf8.push(((codePoint >> 18) & 0x07) | 0xF0, ((codePoint >> 12) & 0x3F) | 0x80);
+                        }
+                        utf8.push(((codePoint >> 6) & 0x3F) | 0x80);
+                    }
+                    utf8.push((codePoint & 0x3F) | 0x80);
+                }
+            }
+        }
+        this.addInt8(0);
+        this.startVector(1, utf8.length, 1);
+        this.bb.setPosition(this.space -= utf8.length);
+        for (var i = 0, offset = this.space, bytes = this.bb.bytes(); i < utf8.length; i++) {
+            bytes[offset++] = utf8[i];
+        }
+        return this.endVector();
+    };
+    /**
+     * A helper function to pack an object
+     *
+     * @returns offset of obj
+     */
+    Builder.prototype.createObjectOffset = function (obj) {
+        if (obj === null) {
+            return 0;
+        }
+        if (typeof obj === 'string') {
+            return this.createString(obj);
+        }
+        else {
+            return obj.pack(this);
+        }
+    };
+    /**
+     * A helper function to pack a list of object
+     *
+     * @returns list of offsets of each non null object
+     */
+    Builder.prototype.createObjectOffsetList = function (list) {
+        var ret = [];
+        for (var i = 0; i < list.length; ++i) {
+            var val = list[i];
+            if (val !== null) {
+                ret.push(this.createObjectOffset(val));
+            }
+            else {
+                throw new Error('FlatBuffers: Argument for createObjectOffsetList cannot contain null.');
+            }
+        }
+        return ret;
+    };
+    Builder.prototype.createStructOffsetList = function (list, startFunc) {
+        startFunc(this, list.length);
+        this.createObjectOffsetList(list);
+        return this.endVector();
+    };
+    return Builder;
+}());
+exports.Builder = Builder;
+
+
+/***/ }),
+
+/***/ 505:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ByteBuffer = void 0;
+var constants_js_1 = __webpack_require__(147);
+var utils_js_1 = __webpack_require__(766);
+var encoding_js_1 = __webpack_require__(650);
+var ByteBuffer = /** @class */ (function () {
+    /**
+     * Create a new ByteBuffer with a given array of bytes (`Uint8Array`)
+     */
+    function ByteBuffer(bytes_) {
+        this.bytes_ = bytes_;
+        this.position_ = 0;
+    }
+    /**
+     * Create and allocate a new ByteBuffer with a given size.
+     */
+    ByteBuffer.allocate = function (byte_size) {
+        return new ByteBuffer(new Uint8Array(byte_size));
+    };
+    ByteBuffer.prototype.clear = function () {
+        this.position_ = 0;
+    };
+    /**
+     * Get the underlying `Uint8Array`.
+     */
+    ByteBuffer.prototype.bytes = function () {
+        return this.bytes_;
+    };
+    /**
+     * Get the buffer's position.
+     */
+    ByteBuffer.prototype.position = function () {
+        return this.position_;
+    };
+    /**
+     * Set the buffer's position.
+     */
+    ByteBuffer.prototype.setPosition = function (position) {
+        this.position_ = position;
+    };
+    /**
+     * Get the buffer's capacity.
+     */
+    ByteBuffer.prototype.capacity = function () {
+        return this.bytes_.length;
+    };
+    ByteBuffer.prototype.readInt8 = function (offset) {
+        return this.readUint8(offset) << 24 >> 24;
+    };
+    ByteBuffer.prototype.readUint8 = function (offset) {
+        return this.bytes_[offset];
+    };
+    ByteBuffer.prototype.readInt16 = function (offset) {
+        return this.readUint16(offset) << 16 >> 16;
+    };
+    ByteBuffer.prototype.readUint16 = function (offset) {
+        return this.bytes_[offset] | this.bytes_[offset + 1] << 8;
+    };
+    ByteBuffer.prototype.readInt32 = function (offset) {
+        return this.bytes_[offset] | this.bytes_[offset + 1] << 8 | this.bytes_[offset + 2] << 16 | this.bytes_[offset + 3] << 24;
+    };
+    ByteBuffer.prototype.readUint32 = function (offset) {
+        return this.readInt32(offset) >>> 0;
+    };
+    ByteBuffer.prototype.readInt64 = function (offset) {
+        return BigInt.asIntN(64, BigInt(this.readUint32(offset)) + (BigInt(this.readUint32(offset + 4)) << BigInt(32)));
+    };
+    ByteBuffer.prototype.readUint64 = function (offset) {
+        return BigInt.asUintN(64, BigInt(this.readUint32(offset)) + (BigInt(this.readUint32(offset + 4)) << BigInt(32)));
+    };
+    ByteBuffer.prototype.readFloat32 = function (offset) {
+        utils_js_1.int32[0] = this.readInt32(offset);
+        return utils_js_1.float32[0];
+    };
+    ByteBuffer.prototype.readFloat64 = function (offset) {
+        utils_js_1.int32[utils_js_1.isLittleEndian ? 0 : 1] = this.readInt32(offset);
+        utils_js_1.int32[utils_js_1.isLittleEndian ? 1 : 0] = this.readInt32(offset + 4);
+        return utils_js_1.float64[0];
+    };
+    ByteBuffer.prototype.writeInt8 = function (offset, value) {
+        this.bytes_[offset] = value;
+    };
+    ByteBuffer.prototype.writeUint8 = function (offset, value) {
+        this.bytes_[offset] = value;
+    };
+    ByteBuffer.prototype.writeInt16 = function (offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+    };
+    ByteBuffer.prototype.writeUint16 = function (offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+    };
+    ByteBuffer.prototype.writeInt32 = function (offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+        this.bytes_[offset + 2] = value >> 16;
+        this.bytes_[offset + 3] = value >> 24;
+    };
+    ByteBuffer.prototype.writeUint32 = function (offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+        this.bytes_[offset + 2] = value >> 16;
+        this.bytes_[offset + 3] = value >> 24;
+    };
+    ByteBuffer.prototype.writeInt64 = function (offset, value) {
+        this.writeInt32(offset, Number(BigInt.asIntN(32, value)));
+        this.writeInt32(offset + 4, Number(BigInt.asIntN(32, value >> BigInt(32))));
+    };
+    ByteBuffer.prototype.writeUint64 = function (offset, value) {
+        this.writeUint32(offset, Number(BigInt.asUintN(32, value)));
+        this.writeUint32(offset + 4, Number(BigInt.asUintN(32, value >> BigInt(32))));
+    };
+    ByteBuffer.prototype.writeFloat32 = function (offset, value) {
+        utils_js_1.float32[0] = value;
+        this.writeInt32(offset, utils_js_1.int32[0]);
+    };
+    ByteBuffer.prototype.writeFloat64 = function (offset, value) {
+        utils_js_1.float64[0] = value;
+        this.writeInt32(offset, utils_js_1.int32[utils_js_1.isLittleEndian ? 0 : 1]);
+        this.writeInt32(offset + 4, utils_js_1.int32[utils_js_1.isLittleEndian ? 1 : 0]);
+    };
+    /**
+     * Return the file identifier.   Behavior is undefined for FlatBuffers whose
+     * schema does not include a file_identifier (likely points at padding or the
+     * start of a the root vtable).
+     */
+    ByteBuffer.prototype.getBufferIdentifier = function () {
+        if (this.bytes_.length < this.position_ + constants_js_1.SIZEOF_INT +
+            constants_js_1.FILE_IDENTIFIER_LENGTH) {
+            throw new Error('FlatBuffers: ByteBuffer is too short to contain an identifier.');
+        }
+        var result = "";
+        for (var i = 0; i < constants_js_1.FILE_IDENTIFIER_LENGTH; i++) {
+            result += String.fromCharCode(this.readInt8(this.position_ + constants_js_1.SIZEOF_INT + i));
+        }
+        return result;
+    };
+    /**
+     * Look up a field in the vtable, return an offset into the object, or 0 if the
+     * field is not present.
+     */
+    ByteBuffer.prototype.__offset = function (bb_pos, vtable_offset) {
+        var vtable = bb_pos - this.readInt32(bb_pos);
+        return vtable_offset < this.readInt16(vtable) ? this.readInt16(vtable + vtable_offset) : 0;
+    };
+    /**
+     * Initialize any Table-derived type to point to the union at the given offset.
+     */
+    ByteBuffer.prototype.__union = function (t, offset) {
+        t.bb_pos = offset + this.readInt32(offset);
+        t.bb = this;
+        return t;
+    };
+    /**
+     * Create a JavaScript string from UTF-8 data stored inside the FlatBuffer.
+     * This allocates a new string and converts to wide chars upon each access.
+     *
+     * To avoid the conversion to UTF-16, pass Encoding.UTF8_BYTES as
+     * the "optionalEncoding" argument. This is useful for avoiding conversion to
+     * and from UTF-16 when the data will just be packaged back up in another
+     * FlatBuffer later on.
+     *
+     * @param offset
+     * @param opt_encoding Defaults to UTF16_STRING
+     */
+    ByteBuffer.prototype.__string = function (offset, opt_encoding) {
+        offset += this.readInt32(offset);
+        var length = this.readInt32(offset);
+        var result = '';
+        var i = 0;
+        offset += constants_js_1.SIZEOF_INT;
+        if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES) {
+            return this.bytes_.subarray(offset, offset + length);
+        }
+        while (i < length) {
+            var codePoint = void 0;
+            // Decode UTF-8
+            var a = this.readUint8(offset + i++);
+            if (a < 0xC0) {
+                codePoint = a;
+            }
+            else {
+                var b = this.readUint8(offset + i++);
+                if (a < 0xE0) {
+                    codePoint =
+                        ((a & 0x1F) << 6) |
+                            (b & 0x3F);
+                }
+                else {
+                    var c = this.readUint8(offset + i++);
+                    if (a < 0xF0) {
+                        codePoint =
+                            ((a & 0x0F) << 12) |
+                                ((b & 0x3F) << 6) |
+                                (c & 0x3F);
+                    }
+                    else {
+                        var d = this.readUint8(offset + i++);
+                        codePoint =
+                            ((a & 0x07) << 18) |
+                                ((b & 0x3F) << 12) |
+                                ((c & 0x3F) << 6) |
+                                (d & 0x3F);
+                    }
+                }
+            }
+            // Encode UTF-16
+            if (codePoint < 0x10000) {
+                result += String.fromCharCode(codePoint);
+            }
+            else {
+                codePoint -= 0x10000;
+                result += String.fromCharCode((codePoint >> 10) + 0xD800, (codePoint & ((1 << 10) - 1)) + 0xDC00);
+            }
+        }
+        return result;
+    };
+    /**
+     * Handle unions that can contain string as its member, if a Table-derived type then initialize it,
+     * if a string then return a new one
+     *
+     * WARNING: strings are immutable in JS so we can't change the string that the user gave us, this
+     * makes the behaviour of __union_with_string different compared to __union
+     */
+    ByteBuffer.prototype.__union_with_string = function (o, offset) {
+        if (typeof o === 'string') {
+            return this.__string(offset);
+        }
+        return this.__union(o, offset);
+    };
+    /**
+     * Retrieve the relative offset stored at "offset"
+     */
+    ByteBuffer.prototype.__indirect = function (offset) {
+        return offset + this.readInt32(offset);
+    };
+    /**
+     * Get the start of data of a vector whose offset is stored at "offset" in this object.
+     */
+    ByteBuffer.prototype.__vector = function (offset) {
+        return offset + this.readInt32(offset) + constants_js_1.SIZEOF_INT; // data starts after the length
+    };
+    /**
+     * Get the length of a vector whose offset is stored at "offset" in this object.
+     */
+    ByteBuffer.prototype.__vector_len = function (offset) {
+        return this.readInt32(offset + this.readInt32(offset));
+    };
+    ByteBuffer.prototype.__has_identifier = function (ident) {
+        if (ident.length != constants_js_1.FILE_IDENTIFIER_LENGTH) {
+            throw new Error('FlatBuffers: file identifier must be length ' +
+                constants_js_1.FILE_IDENTIFIER_LENGTH);
+        }
+        for (var i = 0; i < constants_js_1.FILE_IDENTIFIER_LENGTH; i++) {
+            if (ident.charCodeAt(i) != this.readInt8(this.position() + constants_js_1.SIZEOF_INT + i)) {
+                return false;
+            }
+        }
+        return true;
+    };
+    /**
+     * A helper function for generating list for obj api
+     */
+    ByteBuffer.prototype.createScalarList = function (listAccessor, listLength) {
+        var ret = [];
+        for (var i = 0; i < listLength; ++i) {
+            if (listAccessor(i) !== null) {
+                ret.push(listAccessor(i));
+            }
+        }
+        return ret;
+    };
+    /**
+     * A helper function for generating list for obj api
+     * @param listAccessor function that accepts an index and return data at that index
+     * @param listLength listLength
+     * @param res result list
+     */
+    ByteBuffer.prototype.createObjList = function (listAccessor, listLength) {
+        var ret = [];
+        for (var i = 0; i < listLength; ++i) {
+            var val = listAccessor(i);
+            if (val !== null) {
+                ret.push(val.unpack());
+            }
+        }
+        return ret;
+    };
+    return ByteBuffer;
+}());
+exports.ByteBuffer = ByteBuffer;
+
+
+/***/ }),
+
+/***/ 147:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SIZE_PREFIX_LENGTH = exports.FILE_IDENTIFIER_LENGTH = exports.SIZEOF_INT = exports.SIZEOF_SHORT = void 0;
+exports.SIZEOF_SHORT = 2;
+exports.SIZEOF_INT = 4;
+exports.FILE_IDENTIFIER_LENGTH = 4;
+exports.SIZE_PREFIX_LENGTH = 4;
+
+
+/***/ }),
+
+/***/ 650:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Encoding = void 0;
+var Encoding;
+(function (Encoding) {
+    Encoding[Encoding["UTF8_BYTES"] = 1] = "UTF8_BYTES";
+    Encoding[Encoding["UTF16_STRING"] = 2] = "UTF16_STRING";
+})(Encoding = exports.Encoding || (exports.Encoding = {}));
+
+
+/***/ }),
+
+/***/ 903:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+__webpack_unused_export__ = ({ value: true });
+exports.cZ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = exports.XU = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = void 0;
+var constants_js_1 = __webpack_require__(147);
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return constants_js_1.SIZEOF_SHORT; } });
+var constants_js_2 = __webpack_require__(147);
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return constants_js_2.SIZEOF_INT; } });
+var constants_js_3 = __webpack_require__(147);
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return constants_js_3.FILE_IDENTIFIER_LENGTH; } });
+var constants_js_4 = __webpack_require__(147);
+Object.defineProperty(exports, "XU", ({ enumerable: true, get: function () { return constants_js_4.SIZE_PREFIX_LENGTH; } }));
+var utils_js_1 = __webpack_require__(766);
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.int32; } });
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.float32; } });
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.float64; } });
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.isLittleEndian; } });
+var encoding_js_1 = __webpack_require__(650);
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return encoding_js_1.Encoding; } });
+var builder_js_1 = __webpack_require__(962);
+__webpack_unused_export__ = ({ enumerable: true, get: function () { return builder_js_1.Builder; } });
+var byte_buffer_js_1 = __webpack_require__(505);
+Object.defineProperty(exports, "cZ", ({ enumerable: true, get: function () { return byte_buffer_js_1.ByteBuffer; } }));
+
+
+/***/ }),
+
+/***/ 766:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isLittleEndian = exports.float64 = exports.float32 = exports.int32 = void 0;
+exports.int32 = new Int32Array(2);
+exports.float32 = new Float32Array(exports.int32.buffer);
+exports.float64 = new Float64Array(exports.int32.buffer);
+exports.isLittleEndian = new Uint16Array(new Uint8Array([1, 0]).buffer)[0] === 1;
+
 
 /***/ }),
 
@@ -1638,6 +2579,1671 @@ if (typeof globalNS['Promise'] !== 'function') {
 })));
 
 
+/***/ }),
+
+/***/ 510:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+module.exports = rbush;
+module.exports["default"] = rbush;
+
+var quickselect = __webpack_require__(291);
+
+function rbush(maxEntries, format) {
+    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
+
+    // max entries in a node is 9 by default; min node fill is 40% for best performance
+    this._maxEntries = Math.max(4, maxEntries || 9);
+    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
+
+    if (format) {
+        this._initFormat(format);
+    }
+
+    this.clear();
+}
+
+rbush.prototype = {
+
+    all: function () {
+        return this._all(this.data, []);
+    },
+
+    search: function (bbox) {
+
+        var node = this.data,
+            result = [],
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node)) return result;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf) result.push(child);
+                    else if (contains(bbox, childBBox)) this._all(child, result);
+                    else nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return result;
+    },
+
+    collides: function (bbox) {
+
+        var node = this.data,
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node)) return false;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf || contains(bbox, childBBox)) return true;
+                    nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return false;
+    },
+
+    load: function (data) {
+        if (!(data && data.length)) return this;
+
+        if (data.length < this._minEntries) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                this.insert(data[i]);
+            }
+            return this;
+        }
+
+        // recursively build the tree with the given data from scratch using OMT algorithm
+        var node = this._build(data.slice(), 0, data.length - 1, 0);
+
+        if (!this.data.children.length) {
+            // save as is if tree is empty
+            this.data = node;
+
+        } else if (this.data.height === node.height) {
+            // split root if trees have the same height
+            this._splitRoot(this.data, node);
+
+        } else {
+            if (this.data.height < node.height) {
+                // swap trees if inserted one is bigger
+                var tmpNode = this.data;
+                this.data = node;
+                node = tmpNode;
+            }
+
+            // insert the small tree into the large tree at appropriate level
+            this._insert(node, this.data.height - node.height - 1, true);
+        }
+
+        return this;
+    },
+
+    insert: function (item) {
+        if (item) this._insert(item, this.data.height - 1);
+        return this;
+    },
+
+    clear: function () {
+        this.data = createNode([]);
+        return this;
+    },
+
+    remove: function (item, equalsFn) {
+        if (!item) return this;
+
+        var node = this.data,
+            bbox = this.toBBox(item),
+            path = [],
+            indexes = [],
+            i, parent, index, goingUp;
+
+        // depth-first iterative tree traversal
+        while (node || path.length) {
+
+            if (!node) { // go up
+                node = path.pop();
+                parent = path[path.length - 1];
+                i = indexes.pop();
+                goingUp = true;
+            }
+
+            if (node.leaf) { // check current node
+                index = findItem(item, node.children, equalsFn);
+
+                if (index !== -1) {
+                    // item found, remove the item and condense tree upwards
+                    node.children.splice(index, 1);
+                    path.push(node);
+                    this._condense(path);
+                    return this;
+                }
+            }
+
+            if (!goingUp && !node.leaf && contains(node, bbox)) { // go down
+                path.push(node);
+                indexes.push(i);
+                i = 0;
+                parent = node;
+                node = node.children[0];
+
+            } else if (parent) { // go right
+                i++;
+                node = parent.children[i];
+                goingUp = false;
+
+            } else node = null; // nothing found
+        }
+
+        return this;
+    },
+
+    toBBox: function (item) { return item; },
+
+    compareMinX: compareNodeMinX,
+    compareMinY: compareNodeMinY,
+
+    toJSON: function () { return this.data; },
+
+    fromJSON: function (data) {
+        this.data = data;
+        return this;
+    },
+
+    _all: function (node, result) {
+        var nodesToSearch = [];
+        while (node) {
+            if (node.leaf) result.push.apply(result, node.children);
+            else nodesToSearch.push.apply(nodesToSearch, node.children);
+
+            node = nodesToSearch.pop();
+        }
+        return result;
+    },
+
+    _build: function (items, left, right, height) {
+
+        var N = right - left + 1,
+            M = this._maxEntries,
+            node;
+
+        if (N <= M) {
+            // reached leaf level; return leaf
+            node = createNode(items.slice(left, right + 1));
+            calcBBox(node, this.toBBox);
+            return node;
+        }
+
+        if (!height) {
+            // target height of the bulk-loaded tree
+            height = Math.ceil(Math.log(N) / Math.log(M));
+
+            // target number of root entries to maximize storage utilization
+            M = Math.ceil(N / Math.pow(M, height - 1));
+        }
+
+        node = createNode([]);
+        node.leaf = false;
+        node.height = height;
+
+        // split the items into M mostly square tiles
+
+        var N2 = Math.ceil(N / M),
+            N1 = N2 * Math.ceil(Math.sqrt(M)),
+            i, j, right2, right3;
+
+        multiSelect(items, left, right, N1, this.compareMinX);
+
+        for (i = left; i <= right; i += N1) {
+
+            right2 = Math.min(i + N1 - 1, right);
+
+            multiSelect(items, i, right2, N2, this.compareMinY);
+
+            for (j = i; j <= right2; j += N2) {
+
+                right3 = Math.min(j + N2 - 1, right2);
+
+                // pack each entry recursively
+                node.children.push(this._build(items, j, right3, height - 1));
+            }
+        }
+
+        calcBBox(node, this.toBBox);
+
+        return node;
+    },
+
+    _chooseSubtree: function (bbox, node, level, path) {
+
+        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
+
+        while (true) {
+            path.push(node);
+
+            if (node.leaf || path.length - 1 === level) break;
+
+            minArea = minEnlargement = Infinity;
+
+            for (i = 0, len = node.children.length; i < len; i++) {
+                child = node.children[i];
+                area = bboxArea(child);
+                enlargement = enlargedArea(bbox, child) - area;
+
+                // choose entry with the least area enlargement
+                if (enlargement < minEnlargement) {
+                    minEnlargement = enlargement;
+                    minArea = area < minArea ? area : minArea;
+                    targetNode = child;
+
+                } else if (enlargement === minEnlargement) {
+                    // otherwise choose one with the smallest area
+                    if (area < minArea) {
+                        minArea = area;
+                        targetNode = child;
+                    }
+                }
+            }
+
+            node = targetNode || node.children[0];
+        }
+
+        return node;
+    },
+
+    _insert: function (item, level, isNode) {
+
+        var toBBox = this.toBBox,
+            bbox = isNode ? item : toBBox(item),
+            insertPath = [];
+
+        // find the best node for accommodating the item, saving all nodes along the path too
+        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
+
+        // put the item into the node
+        node.children.push(item);
+        extend(node, bbox);
+
+        // split on node overflow; propagate upwards if necessary
+        while (level >= 0) {
+            if (insertPath[level].children.length > this._maxEntries) {
+                this._split(insertPath, level);
+                level--;
+            } else break;
+        }
+
+        // adjust bboxes along the insertion path
+        this._adjustParentBBoxes(bbox, insertPath, level);
+    },
+
+    // split overflowed node into two
+    _split: function (insertPath, level) {
+
+        var node = insertPath[level],
+            M = node.children.length,
+            m = this._minEntries;
+
+        this._chooseSplitAxis(node, m, M);
+
+        var splitIndex = this._chooseSplitIndex(node, m, M);
+
+        var newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
+        newNode.height = node.height;
+        newNode.leaf = node.leaf;
+
+        calcBBox(node, this.toBBox);
+        calcBBox(newNode, this.toBBox);
+
+        if (level) insertPath[level - 1].children.push(newNode);
+        else this._splitRoot(node, newNode);
+    },
+
+    _splitRoot: function (node, newNode) {
+        // split root node
+        this.data = createNode([node, newNode]);
+        this.data.height = node.height + 1;
+        this.data.leaf = false;
+        calcBBox(this.data, this.toBBox);
+    },
+
+    _chooseSplitIndex: function (node, m, M) {
+
+        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
+
+        minOverlap = minArea = Infinity;
+
+        for (i = m; i <= M - m; i++) {
+            bbox1 = distBBox(node, 0, i, this.toBBox);
+            bbox2 = distBBox(node, i, M, this.toBBox);
+
+            overlap = intersectionArea(bbox1, bbox2);
+            area = bboxArea(bbox1) + bboxArea(bbox2);
+
+            // choose distribution with minimum overlap
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                index = i;
+
+                minArea = area < minArea ? area : minArea;
+
+            } else if (overlap === minOverlap) {
+                // otherwise choose distribution with minimum area
+                if (area < minArea) {
+                    minArea = area;
+                    index = i;
+                }
+            }
+        }
+
+        return index;
+    },
+
+    // sorts node children by the best axis for split
+    _chooseSplitAxis: function (node, m, M) {
+
+        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
+            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
+            xMargin = this._allDistMargin(node, m, M, compareMinX),
+            yMargin = this._allDistMargin(node, m, M, compareMinY);
+
+        // if total distributions margin value is minimal for x, sort by minX,
+        // otherwise it's already sorted by minY
+        if (xMargin < yMargin) node.children.sort(compareMinX);
+    },
+
+    // total margin of all possible split distributions where each node is at least m full
+    _allDistMargin: function (node, m, M, compare) {
+
+        node.children.sort(compare);
+
+        var toBBox = this.toBBox,
+            leftBBox = distBBox(node, 0, m, toBBox),
+            rightBBox = distBBox(node, M - m, M, toBBox),
+            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
+            i, child;
+
+        for (i = m; i < M - m; i++) {
+            child = node.children[i];
+            extend(leftBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(leftBBox);
+        }
+
+        for (i = M - m - 1; i >= m; i--) {
+            child = node.children[i];
+            extend(rightBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(rightBBox);
+        }
+
+        return margin;
+    },
+
+    _adjustParentBBoxes: function (bbox, path, level) {
+        // adjust bboxes along the given tree path
+        for (var i = level; i >= 0; i--) {
+            extend(path[i], bbox);
+        }
+    },
+
+    _condense: function (path) {
+        // go through the path, removing empty nodes and updating bboxes
+        for (var i = path.length - 1, siblings; i >= 0; i--) {
+            if (path[i].children.length === 0) {
+                if (i > 0) {
+                    siblings = path[i - 1].children;
+                    siblings.splice(siblings.indexOf(path[i]), 1);
+
+                } else this.clear();
+
+            } else calcBBox(path[i], this.toBBox);
+        }
+    },
+
+    _initFormat: function (format) {
+        // data format (minX, minY, maxX, maxY accessors)
+
+        // uses eval-type function compilation instead of just accepting a toBBox function
+        // because the algorithms are very sensitive to sorting functions performance,
+        // so they should be dead simple and without inner calls
+
+        var compareArr = ['return a', ' - b', ';'];
+
+        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
+        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
+
+        this.toBBox = new Function('a',
+            'return {minX: a' + format[0] +
+            ', minY: a' + format[1] +
+            ', maxX: a' + format[2] +
+            ', maxY: a' + format[3] + '};');
+    }
+};
+
+function findItem(item, items, equalsFn) {
+    if (!equalsFn) return items.indexOf(item);
+
+    for (var i = 0; i < items.length; i++) {
+        if (equalsFn(item, items[i])) return i;
+    }
+    return -1;
+}
+
+// calculate node's bbox from bboxes of its children
+function calcBBox(node, toBBox) {
+    distBBox(node, 0, node.children.length, toBBox, node);
+}
+
+// min bounding rectangle of node children from k to p-1
+function distBBox(node, k, p, toBBox, destNode) {
+    if (!destNode) destNode = createNode(null);
+    destNode.minX = Infinity;
+    destNode.minY = Infinity;
+    destNode.maxX = -Infinity;
+    destNode.maxY = -Infinity;
+
+    for (var i = k, child; i < p; i++) {
+        child = node.children[i];
+        extend(destNode, node.leaf ? toBBox(child) : child);
+    }
+
+    return destNode;
+}
+
+function extend(a, b) {
+    a.minX = Math.min(a.minX, b.minX);
+    a.minY = Math.min(a.minY, b.minY);
+    a.maxX = Math.max(a.maxX, b.maxX);
+    a.maxY = Math.max(a.maxY, b.maxY);
+    return a;
+}
+
+function compareNodeMinX(a, b) { return a.minX - b.minX; }
+function compareNodeMinY(a, b) { return a.minY - b.minY; }
+
+function bboxArea(a)   { return (a.maxX - a.minX) * (a.maxY - a.minY); }
+function bboxMargin(a) { return (a.maxX - a.minX) + (a.maxY - a.minY); }
+
+function enlargedArea(a, b) {
+    return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) *
+           (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
+}
+
+function intersectionArea(a, b) {
+    var minX = Math.max(a.minX, b.minX),
+        minY = Math.max(a.minY, b.minY),
+        maxX = Math.min(a.maxX, b.maxX),
+        maxY = Math.min(a.maxY, b.maxY);
+
+    return Math.max(0, maxX - minX) *
+           Math.max(0, maxY - minY);
+}
+
+function contains(a, b) {
+    return a.minX <= b.minX &&
+           a.minY <= b.minY &&
+           b.maxX <= a.maxX &&
+           b.maxY <= a.maxY;
+}
+
+function intersects(a, b) {
+    return b.minX <= a.maxX &&
+           b.minY <= a.maxY &&
+           b.maxX >= a.minX &&
+           b.maxY >= a.minY;
+}
+
+function createNode(children) {
+    return {
+        children: children,
+        height: 1,
+        leaf: true,
+        minX: Infinity,
+        minY: Infinity,
+        maxX: -Infinity,
+        maxY: -Infinity
+    };
+}
+
+// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
+// combines selection algorithm with binary divide & conquer approach
+
+function multiSelect(arr, left, right, n, compare) {
+    var stack = [left, right],
+        mid;
+
+    while (stack.length) {
+        right = stack.pop();
+        left = stack.pop();
+
+        if (right - left <= n) continue;
+
+        mid = left + Math.ceil((right - left) / n / 2) * n;
+        quickselect(arr, mid, left, right, compare);
+
+        stack.push(left, mid, mid, right);
+    }
+}
+
+
+/***/ }),
+
+/***/ 291:
+/***/ (function(module) {
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	0;
+}(this, (function () { 'use strict';
+
+function quickselect(arr, k, left, right, compare) {
+    quickselectStep(arr, k, left || 0, right || (arr.length - 1), compare || defaultCompare);
+}
+
+function quickselectStep(arr, k, left, right, compare) {
+
+    while (right > left) {
+        if (right - left > 600) {
+            var n = right - left + 1;
+            var m = k - left + 1;
+            var z = Math.log(n);
+            var s = 0.5 * Math.exp(2 * z / 3);
+            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
+            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
+            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
+            quickselectStep(arr, k, newLeft, newRight, compare);
+        }
+
+        var t = arr[k];
+        var i = left;
+        var j = right;
+
+        swap(arr, left, k);
+        if (compare(arr[right], t) > 0) swap(arr, left, right);
+
+        while (i < j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+            while (compare(arr[i], t) < 0) i++;
+            while (compare(arr[j], t) > 0) j--;
+        }
+
+        if (compare(arr[left], t) === 0) swap(arr, left, j);
+        else {
+            j++;
+            swap(arr, j, right);
+        }
+
+        if (j <= k) left = j + 1;
+        if (k <= j) right = j - 1;
+    }
+}
+
+function swap(arr, i, j) {
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
+
+function defaultCompare(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+
+return quickselect;
+
+})));
+
+
+/***/ }),
+
+/***/ 901:
+/***/ (function(module) {
+
+// https://github.com/mbostock/slice-source Version 0.4.1. Copyright 2016 Mike Bostock.
+(function (global, factory) {
+   true ? module.exports = factory() :
+  0;
+}(this, (function () { 'use strict';
+
+var empty = new Uint8Array(0);
+
+function slice_cancel() {
+  return this._source.cancel();
+}
+
+function concat(a, b) {
+  if (!a.length) return b;
+  if (!b.length) return a;
+  var c = new Uint8Array(a.length + b.length);
+  c.set(a);
+  c.set(b, a.length);
+  return c;
+}
+
+function slice_read() {
+  var that = this, array = that._array.subarray(that._index);
+  return that._source.read().then(function(result) {
+    that._array = empty;
+    that._index = 0;
+    return result.done ? (array.length > 0
+        ? {done: false, value: array}
+        : {done: true, value: undefined})
+        : {done: false, value: concat(array, result.value)};
+  });
+}
+
+function slice_slice(length) {
+  if ((length |= 0) < 0) throw new Error("invalid length");
+  var that = this, index = this._array.length - this._index;
+
+  // If the request fits within the remaining buffer, resolve it immediately.
+  if (this._index + length <= this._array.length) {
+    return Promise.resolve(this._array.subarray(this._index, this._index += length));
+  }
+
+  // Otherwise, read chunks repeatedly until the request is fulfilled.
+  var array = new Uint8Array(length);
+  array.set(this._array.subarray(this._index));
+  return (function read() {
+    return that._source.read().then(function(result) {
+
+      // When done, it’s possible the request wasn’t fully fullfilled!
+      // If so, the pre-allocated array is too big and needs slicing.
+      if (result.done) {
+        that._array = empty;
+        that._index = 0;
+        return index > 0 ? array.subarray(0, index) : null;
+      }
+
+      // If this chunk fulfills the request, return the resulting array.
+      if (index + result.value.length >= length) {
+        that._array = result.value;
+        that._index = length - index;
+        array.set(result.value.subarray(0, length - index), index);
+        return array;
+      }
+
+      // Otherwise copy this chunk into the array, then read the next chunk.
+      array.set(result.value, index);
+      index += result.value.length;
+      return read();
+    });
+  })();
+}
+
+function slice(source) {
+  return typeof source.slice === "function" ? source :
+      new SliceSource(typeof source.read === "function" ? source
+          : source.getReader());
+}
+
+function SliceSource(source) {
+  this._source = source;
+  this._array = empty;
+  this._index = 0;
+}
+
+SliceSource.prototype.read = slice_read;
+SliceSource.prototype.slice = slice_slice;
+SliceSource.prototype.cancel = slice_cancel;
+
+return slice;
+
+})));
+
+/***/ }),
+
+/***/ 982:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+var __webpack_unused_export__;
+
+
+__webpack_unused_export__ = ({ value: true });
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+/** An error subclass which is thrown when there are too many pending push or next operations on a single repeater. */
+var RepeaterOverflowError = /** @class */ (function (_super) {
+    __extends(RepeaterOverflowError, _super);
+    function RepeaterOverflowError(message) {
+        var _this = _super.call(this, message) || this;
+        Object.defineProperty(_this, "name", {
+            value: "RepeaterOverflowError",
+            enumerable: false,
+        });
+        if (typeof Object.setPrototypeOf === "function") {
+            Object.setPrototypeOf(_this, _this.constructor.prototype);
+        }
+        else {
+            _this.__proto__ = _this.constructor.prototype;
+        }
+        if (typeof Error.captureStackTrace === "function") {
+            Error.captureStackTrace(_this, _this.constructor);
+        }
+        return _this;
+    }
+    return RepeaterOverflowError;
+}(Error));
+/** A buffer which allows you to push a set amount of values to the repeater without pushes waiting or throwing errors. */
+var FixedBuffer = /** @class */ (function () {
+    function FixedBuffer(capacity) {
+        if (capacity < 0) {
+            throw new RangeError("Capacity may not be less than 0");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(FixedBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FixedBuffer.prototype, "full", {
+        get: function () {
+            return this._q.length >= this._c;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FixedBuffer.prototype.add = function (value) {
+        if (this.full) {
+            throw new Error("Buffer full");
+        }
+        else {
+            this._q.push(value);
+        }
+    };
+    FixedBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return FixedBuffer;
+}());
+// TODO: Use a circular buffer here.
+/** Sliding buffers allow you to push a set amount of values to the repeater without pushes waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the earliest values added. */
+var SlidingBuffer = /** @class */ (function () {
+    function SlidingBuffer(capacity) {
+        if (capacity < 1) {
+            throw new RangeError("Capacity may not be less than 1");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(SlidingBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SlidingBuffer.prototype, "full", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    SlidingBuffer.prototype.add = function (value) {
+        while (this._q.length >= this._c) {
+            this._q.shift();
+        }
+        this._q.push(value);
+    };
+    SlidingBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return SlidingBuffer;
+}());
+/** Dropping buffers allow you to push a set amount of values to the repeater without the push function waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the latest values added. */
+var DroppingBuffer = /** @class */ (function () {
+    function DroppingBuffer(capacity) {
+        if (capacity < 1) {
+            throw new RangeError("Capacity may not be less than 1");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(DroppingBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(DroppingBuffer.prototype, "full", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    DroppingBuffer.prototype.add = function (value) {
+        if (this._q.length < this._c) {
+            this._q.push(value);
+        }
+    };
+    DroppingBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return DroppingBuffer;
+}());
+/** Makes sure promise-likes don’t cause unhandled rejections. */
+function swallow(value) {
+    if (value != null && typeof value.then === "function") {
+        value.then(NOOP, NOOP);
+    }
+}
+/*** REPEATER STATES ***/
+/** The following is an enumeration of all possible repeater states. These states are ordered, and a repeater may only advance to higher states. */
+/** The initial state of the repeater. */
+var Initial = 0;
+/** Repeaters advance to this state the first time the next method is called on the repeater. */
+var Started = 1;
+/** Repeaters advance to this state when the stop function is called. */
+var Stopped = 2;
+/** Repeaters advance to this state when there are no values left to be pulled from the repeater. */
+var Done = 3;
+/** Repeaters advance to this state if an error is thrown into the repeater. */
+var Rejected = 4;
+/** The maximum number of push or next operations which may exist on a single repeater. */
+var MAX_QUEUE_LENGTH = 1024;
+var NOOP = function () { };
+/** A helper function used to mimic the behavior of async generators where the final iteration is consumed. */
+function consumeExecution(r) {
+    var err = r.err;
+    var execution = Promise.resolve(r.execution).then(function (value) {
+        if (err != null) {
+            throw err;
+        }
+        return value;
+    });
+    r.err = undefined;
+    r.execution = execution.then(function () { return undefined; }, function () { return undefined; });
+    return r.pending === undefined ? execution : r.pending.then(function () { return execution; });
+}
+/** A helper function for building iterations from values. Promises are unwrapped, so that iterations never have their value property set to a promise. */
+function createIteration(r, value) {
+    var done = r.state >= Done;
+    return Promise.resolve(value).then(function (value) {
+        if (!done && r.state >= Rejected) {
+            return consumeExecution(r).then(function (value) { return ({
+                value: value,
+                done: true,
+            }); });
+        }
+        return { value: value, done: done };
+    });
+}
+/**
+ * This function is bound and passed to the executor as the stop argument.
+ *
+ * Advances state to Stopped.
+ */
+function stop(r, err) {
+    var e_1, _a;
+    if (r.state >= Stopped) {
+        return;
+    }
+    r.state = Stopped;
+    r.onnext();
+    r.onstop();
+    if (r.err == null) {
+        r.err = err;
+    }
+    if (r.pushes.length === 0 &&
+        (typeof r.buffer === "undefined" || r.buffer.empty)) {
+        finish(r);
+    }
+    else {
+        try {
+            for (var _b = __values(r.pushes), _d = _b.next(); !_d.done; _d = _b.next()) {
+                var push_1 = _d.value;
+                push_1.resolve();
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+    }
+}
+/**
+ * The difference between stopping a repeater vs finishing a repeater is that stopping a repeater allows next to continue to drain values from the push queue and buffer, while finishing a repeater will clear all pending values and end iteration immediately. Once, a repeater is finished, all iterations will have the done property set to true.
+ *
+ * Advances state to Done.
+ */
+function finish(r) {
+    var e_2, _a;
+    if (r.state >= Done) {
+        return;
+    }
+    if (r.state < Stopped) {
+        stop(r);
+    }
+    r.state = Done;
+    r.buffer = undefined;
+    try {
+        for (var _b = __values(r.nexts), _d = _b.next(); !_d.done; _d = _b.next()) {
+            var next = _d.value;
+            var execution = r.pending === undefined
+                ? consumeExecution(r)
+                : r.pending.then(function () { return consumeExecution(r); });
+            next.resolve(createIteration(r, execution));
+        }
+    }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+    finally {
+        try {
+            if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_2) throw e_2.error; }
+    }
+    r.pushes = [];
+    r.nexts = [];
+}
+/**
+ * Called when a promise passed to push rejects, or when a push call is unhandled.
+ *
+ * Advances state to Rejected.
+ */
+function reject(r) {
+    if (r.state >= Rejected) {
+        return;
+    }
+    if (r.state < Done) {
+        finish(r);
+    }
+    r.state = Rejected;
+}
+/** This function is bound and passed to the executor as the push argument. */
+function push(r, value) {
+    swallow(value);
+    if (r.pushes.length >= MAX_QUEUE_LENGTH) {
+        throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to push are allowed on a single repeater.");
+    }
+    else if (r.state >= Stopped) {
+        return Promise.resolve(undefined);
+    }
+    var valueP = r.pending === undefined
+        ? Promise.resolve(value)
+        : r.pending.then(function () { return value; });
+    valueP = valueP.catch(function (err) {
+        if (r.state < Stopped) {
+            r.err = err;
+        }
+        reject(r);
+        return undefined; // void :(
+    });
+    var nextP;
+    if (r.nexts.length) {
+        var next_1 = r.nexts.shift();
+        next_1.resolve(createIteration(r, valueP));
+        if (r.nexts.length) {
+            nextP = Promise.resolve(r.nexts[0].value);
+        }
+        else {
+            nextP = new Promise(function (resolve) { return (r.onnext = resolve); });
+        }
+    }
+    else if (typeof r.buffer !== "undefined" && !r.buffer.full) {
+        r.buffer.add(valueP);
+        nextP = Promise.resolve(undefined);
+    }
+    else {
+        nextP = new Promise(function (resolve) { return r.pushes.push({ resolve: resolve, value: valueP }); });
+    }
+    // If an error is thrown into the repeater via the next or throw methods, we give the repeater a chance to handle this by rejecting the promise returned from push. If the push call is not immediately handled we throw the next iteration of the repeater.
+    // To check that the promise returned from push is floating, we modify the then and catch methods of the returned promise so that they flip the floating flag. The push function actually does not return a promise, because modern engines do not call the then and catch methods on native promises. By making next a plain old javascript object, we ensure that the then and catch methods will be called.
+    var floating = true;
+    var next = {};
+    var unhandled = nextP.catch(function (err) {
+        if (floating) {
+            throw err;
+        }
+        return undefined; // void :(
+    });
+    next.then = function (onfulfilled, onrejected) {
+        floating = false;
+        return Promise.prototype.then.call(nextP, onfulfilled, onrejected);
+    };
+    next.catch = function (onrejected) {
+        floating = false;
+        return Promise.prototype.catch.call(nextP, onrejected);
+    };
+    next.finally = nextP.finally.bind(nextP);
+    r.pending = valueP
+        .then(function () { return unhandled; })
+        .catch(function (err) {
+        r.err = err;
+        reject(r);
+    });
+    return next;
+}
+/**
+ * Creates the stop callable promise which is passed to the executor
+ */
+function createStop(r) {
+    var stop1 = stop.bind(null, r);
+    var stopP = new Promise(function (resolve) { return (r.onstop = resolve); });
+    stop1.then = stopP.then.bind(stopP);
+    stop1.catch = stopP.catch.bind(stopP);
+    stop1.finally = stopP.finally.bind(stopP);
+    return stop1;
+}
+/**
+ * Calls the executor passed into the constructor. This function is called the first time the next method is called on the repeater.
+ *
+ * Advances state to Started.
+ */
+function execute(r) {
+    if (r.state >= Started) {
+        return;
+    }
+    r.state = Started;
+    var push1 = push.bind(null, r);
+    var stop1 = createStop(r);
+    r.execution = new Promise(function (resolve) { return resolve(r.executor(push1, stop1)); });
+    // TODO: We should consider stopping all repeaters when the executor settles.
+    r.execution.catch(function () { return stop(r); });
+}
+var records = new WeakMap();
+// NOTE: While repeaters implement and are assignable to the AsyncGenerator interface, and you can use the types interchangeably, we don’t use typescript’s implements syntax here because this would make supporting earlier versions of typescript trickier. This is because TypeScript version 3.6 changed the iterator types by adding the TReturn and TNext type parameters.
+var Repeater = /** @class */ (function () {
+    function Repeater(executor, buffer) {
+        records.set(this, {
+            executor: executor,
+            buffer: buffer,
+            err: undefined,
+            state: Initial,
+            pushes: [],
+            nexts: [],
+            pending: undefined,
+            execution: undefined,
+            onnext: NOOP,
+            onstop: NOOP,
+        });
+    }
+    Repeater.prototype.next = function (value) {
+        swallow(value);
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        if (r.nexts.length >= MAX_QUEUE_LENGTH) {
+            throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to next are allowed on a single repeater.");
+        }
+        if (r.state <= Initial) {
+            execute(r);
+        }
+        r.onnext(value);
+        if (typeof r.buffer !== "undefined" && !r.buffer.empty) {
+            var result = createIteration(r, r.buffer.remove());
+            if (r.pushes.length) {
+                var push_2 = r.pushes.shift();
+                r.buffer.add(push_2.value);
+                r.onnext = push_2.resolve;
+            }
+            return result;
+        }
+        else if (r.pushes.length) {
+            var push_3 = r.pushes.shift();
+            r.onnext = push_3.resolve;
+            return createIteration(r, push_3.value);
+        }
+        else if (r.state >= Stopped) {
+            finish(r);
+            return createIteration(r, consumeExecution(r));
+        }
+        return new Promise(function (resolve) { return r.nexts.push({ resolve: resolve, value: value }); });
+    };
+    Repeater.prototype.return = function (value) {
+        swallow(value);
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        finish(r);
+        // We override the execution because return should always return the value passed in.
+        r.execution = Promise.resolve(r.execution).then(function () { return value; });
+        return createIteration(r, consumeExecution(r));
+    };
+    Repeater.prototype.throw = function (err) {
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        if (r.state <= Initial ||
+            r.state >= Stopped ||
+            (typeof r.buffer !== "undefined" && !r.buffer.empty)) {
+            finish(r);
+            // If r.err is already set, that mean the repeater has already produced an error, so we throw that error rather than the error passed in, because doing so might be more informative for the caller.
+            if (r.err == null) {
+                r.err = err;
+            }
+            return createIteration(r, consumeExecution(r));
+        }
+        return this.next(Promise.reject(err));
+    };
+    Repeater.prototype[Symbol.asyncIterator] = function () {
+        return this;
+    };
+    // TODO: Remove these static methods from the class.
+    Repeater.race = race;
+    Repeater.merge = merge;
+    Repeater.zip = zip;
+    Repeater.latest = latest;
+    return Repeater;
+}());
+/*** COMBINATOR FUNCTIONS ***/
+// TODO: move these combinators to their own file.
+function getIterators(values, options) {
+    var e_3, _a;
+    var iters = [];
+    var _loop_1 = function (value) {
+        if (value != null && typeof value[Symbol.asyncIterator] === "function") {
+            iters.push(value[Symbol.asyncIterator]());
+        }
+        else if (value != null && typeof value[Symbol.iterator] === "function") {
+            iters.push(value[Symbol.iterator]());
+        }
+        else {
+            iters.push((function valueToAsyncIterator() {
+                return __asyncGenerator(this, arguments, function valueToAsyncIterator_1() {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!options.yieldValues) return [3 /*break*/, 3];
+                                return [4 /*yield*/, __await(value)];
+                            case 1: return [4 /*yield*/, _a.sent()];
+                            case 2:
+                                _a.sent();
+                                _a.label = 3;
+                            case 3:
+                                if (!options.returnValues) return [3 /*break*/, 5];
+                                return [4 /*yield*/, __await(value)];
+                            case 4: return [2 /*return*/, _a.sent()];
+                            case 5: return [2 /*return*/];
+                        }
+                    });
+                });
+            })());
+        }
+    };
+    try {
+        for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
+            var value = values_1_1.value;
+            _loop_1(value);
+        }
+    }
+    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    finally {
+        try {
+            if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
+        }
+        finally { if (e_3) throw e_3.error; }
+    }
+    return iters;
+}
+// NOTE: whenever you see any variables called `advance` or `advances`, know that it is a hack to get around the fact that `Promise.race` leaks memory. These variables are intended to be set to the resolve function of a promise which is constructed and awaited as an alternative to Promise.race. For more information, see this comment in the Node.js issue tracker: https://github.com/nodejs/node/issues/17469#issuecomment-685216777.
+function race(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { returnValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, stopped, finalIteration, iteration, i_1, _loop_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/];
+                    }
+                    stopped = false;
+                    stop.then(function () {
+                        advance();
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 5, 7]);
+                    iteration = void 0;
+                    i_1 = 0;
+                    _loop_2 = function () {
+                        var j, iters_1, iters_1_1, iter;
+                        var e_4, _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    j = i_1;
+                                    try {
+                                        for (iters_1 = (e_4 = void 0, __values(iters)), iters_1_1 = iters_1.next(); !iters_1_1.done; iters_1_1 = iters_1.next()) {
+                                            iter = iters_1_1.value;
+                                            Promise.resolve(iter.next()).then(function (iteration) {
+                                                if (iteration.done) {
+                                                    stop();
+                                                    if (finalIteration === undefined) {
+                                                        finalIteration = iteration;
+                                                    }
+                                                }
+                                                else if (i_1 === j) {
+                                                    // This iterator has won, advance i and resolve the promise.
+                                                    i_1++;
+                                                    advance(iteration);
+                                                }
+                                            }, function (err) { return stop(err); });
+                                        }
+                                    }
+                                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+                                    finally {
+                                        try {
+                                            if (iters_1_1 && !iters_1_1.done && (_a = iters_1.return)) _a.call(iters_1);
+                                        }
+                                        finally { if (e_4) throw e_4.error; }
+                                    }
+                                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                                case 1:
+                                    iteration = _b.sent();
+                                    if (!(iteration !== undefined)) return [3 /*break*/, 3];
+                                    return [4 /*yield*/, push(iteration.value)];
+                                case 2:
+                                    _b.sent();
+                                    _b.label = 3;
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    };
+                    _a.label = 2;
+                case 2:
+                    if (!!stopped) return [3 /*break*/, 4];
+                    return [5 /*yield**/, _loop_2()];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 4: return [2 /*return*/, finalIteration && finalIteration.value];
+                case 5:
+                    stop();
+                    return [4 /*yield*/, Promise.race(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function merge(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { yieldValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advances, stopped, finalIteration;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/];
+                    }
+                    advances = [];
+                    stopped = false;
+                    stop.then(function () {
+                        var e_5, _a;
+                        stopped = true;
+                        try {
+                            for (var advances_1 = __values(advances), advances_1_1 = advances_1.next(); !advances_1_1.done; advances_1_1 = advances_1.next()) {
+                                var advance = advances_1_1.value;
+                                advance();
+                            }
+                        }
+                        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+                        finally {
+                            try {
+                                if (advances_1_1 && !advances_1_1.done && (_a = advances_1.return)) _a.call(advances_1);
+                            }
+                            finally { if (e_5) throw e_5.error; }
+                        }
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 3, 4]);
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var iteration, _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _b.trys.push([0, , 6, 9]);
+                                        _b.label = 1;
+                                    case 1:
+                                        if (!!stopped) return [3 /*break*/, 5];
+                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
+                                        return [4 /*yield*/, new Promise(function (resolve) {
+                                                advances[i] = resolve;
+                                            })];
+                                    case 2:
+                                        iteration = _b.sent();
+                                        if (!(iteration !== undefined)) return [3 /*break*/, 4];
+                                        if (iteration.done) {
+                                            finalIteration = iteration;
+                                            return [2 /*return*/];
+                                        }
+                                        return [4 /*yield*/, push(iteration.value)];
+                                    case 3:
+                                        _b.sent();
+                                        _b.label = 4;
+                                    case 4: return [3 /*break*/, 1];
+                                    case 5: return [3 /*break*/, 9];
+                                    case 6:
+                                        _a = iter.return;
+                                        if (!_a) return [3 /*break*/, 8];
+                                        return [4 /*yield*/, iter.return()];
+                                    case 7:
+                                        _a = (_b.sent());
+                                        _b.label = 8;
+                                    case 8:
+                                        return [7 /*endfinally*/];
+                                    case 9: return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, finalIteration && finalIteration.value];
+                case 3:
+                    stop();
+                    return [7 /*endfinally*/];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function zip(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { returnValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, stopped, iterations, values;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/, []];
+                    }
+                    stopped = false;
+                    stop.then(function () {
+                        advance();
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 6, 8]);
+                    _a.label = 2;
+                case 2:
+                    if (!!stopped) return [3 /*break*/, 5];
+                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
+                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                case 3:
+                    iterations = _a.sent();
+                    if (iterations === undefined) {
+                        return [2 /*return*/];
+                    }
+                    values = iterations.map(function (iteration) { return iteration.value; });
+                    if (iterations.some(function (iteration) { return iteration.done; })) {
+                        return [2 /*return*/, values];
+                    }
+                    return [4 /*yield*/, push(values)];
+                case 4:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 5: return [3 /*break*/, 8];
+                case 6:
+                    stop();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 7:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 8: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function latest(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, {
+        yieldValues: true,
+        returnValues: true,
+    });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, advances, stopped, iterations_1, values_2;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/, []];
+                    }
+                    advances = [];
+                    stopped = false;
+                    stop.then(function () {
+                        var e_6, _a;
+                        advance();
+                        try {
+                            for (var advances_2 = __values(advances), advances_2_1 = advances_2.next(); !advances_2_1.done; advances_2_1 = advances_2.next()) {
+                                var advance1 = advances_2_1.value;
+                                advance1();
+                            }
+                        }
+                        catch (e_6_1) { e_6 = { error: e_6_1 }; }
+                        finally {
+                            try {
+                                if (advances_2_1 && !advances_2_1.done && (_a = advances_2.return)) _a.call(advances_2);
+                            }
+                            finally { if (e_6) throw e_6.error; }
+                        }
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 5, 7]);
+                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
+                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                case 2:
+                    iterations_1 = _a.sent();
+                    if (iterations_1 === undefined) {
+                        return [2 /*return*/];
+                    }
+                    values_2 = iterations_1.map(function (iteration) { return iteration.value; });
+                    if (iterations_1.every(function (iteration) { return iteration.done; })) {
+                        return [2 /*return*/, values_2];
+                    }
+                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
+                    return [4 /*yield*/, push(values_2.slice())];
+                case 3:
+                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
+                    _a.sent();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var iteration;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        if (iterations_1[i].done) {
+                                            return [2 /*return*/, iterations_1[i].value];
+                                        }
+                                        _a.label = 1;
+                                    case 1:
+                                        if (!!stopped) return [3 /*break*/, 4];
+                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
+                                        return [4 /*yield*/, new Promise(function (resolve) { return (advances[i] = resolve); })];
+                                    case 2:
+                                        iteration = _a.sent();
+                                        if (iteration === undefined) {
+                                            return [2 /*return*/, iterations_1[i].value];
+                                        }
+                                        else if (iteration.done) {
+                                            return [2 /*return*/, iteration.value];
+                                        }
+                                        values_2[i] = iteration.value;
+                                        return [4 /*yield*/, push(values_2.slice())];
+                                    case 3:
+                                        _a.sent();
+                                        return [3 /*break*/, 1];
+                                    case 4: return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 4: return [2 /*return*/, _a.sent()];
+                case 5:
+                    stop();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+
+__webpack_unused_export__ = DroppingBuffer;
+__webpack_unused_export__ = FixedBuffer;
+__webpack_unused_export__ = MAX_QUEUE_LENGTH;
+exports.ZN = Repeater;
+__webpack_unused_export__ = RepeaterOverflowError;
+__webpack_unused_export__ = SlidingBuffer;
+//# sourceMappingURL=repeater.js.map
+
+
 /***/ })
 
 /******/ 	});
@@ -1714,7 +4320,7 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoFeatureThemeLayer, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, GraphThemeLayer, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LabelThemeLayer, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvDataSet, MapvLayer, MapvRenderer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RangeTheme3DLayer, RangeThemeLayer, RankSymbol, RankSymbolThemeLayer, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, Theme3DLayer, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, ThreeLayerRenderer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, UniqueTheme3DLayer, UniqueThemeLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, getDefaultVectorTileStyle, getMeterPerMapUnit, getWrapNum, isCORS, setBackground, setCORS, setPaintProperty
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoFeatureThemeLayer, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, GraphThemeLayer, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LabelThemeLayer, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvDataSet, MapvLayer, MapvRenderer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RangeTheme3DLayer, RangeThemeLayer, RankSymbol, RankSymbolThemeLayer, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, Theme3DLayer, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, ThreeLayerRenderer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, UniqueTheme3DLayer, UniqueThemeLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, getDefaultVectorTileStyle, getMeterPerMapUnit, getWrapNum, isCORS, setBackground, setCORS, setPaintProperty
 
 ;// CONCATENATED MODULE: external "mapboxgl"
 const external_mapboxgl_namespaceObject = mapboxgl;
@@ -1730,143 +4336,160 @@ var external_mapboxgl_default = /*#__PURE__*/__webpack_require__.n(external_mapb
  * @description  扩展了 mapboxgl.Map 对图层相关的操作。
  * @private
  */
-var MapExtend = function () {
-
-    (external_mapboxgl_default()).Map.prototype.overlayLayersManager = {};
-    if ((external_mapboxgl_default()).Map.prototype.addLayerBak === undefined) {
-        (external_mapboxgl_default()).Map.prototype.addLayerBak = (external_mapboxgl_default()).Map.prototype.addLayer;
-        (external_mapboxgl_default()).Map.prototype.addLayer = function (layer, before) {
-            if (layer.source || layer.type === 'custom' || layer.type === 'background') {
-                this.addLayerBak(layer, before);
-                return this;
-            }
-            if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
-                this.fire('error', {
-                    error: new Error('A layer with this id already exists.')
-                });
-                return;
-            }
-            addLayer(layer, this);
-            this.overlayLayersManager[layer.id] = layer;
-            return this;
-        };
-    }
-    
-    (external_mapboxgl_default()).Map.prototype.getLayer = function (id) {
-        if (this.overlayLayersManager[id]) {
-            return this.overlayLayersManager[id];
-        }
-        return this.style.getLayer(id);
-    };
-
-    (external_mapboxgl_default()).Map.prototype.moveLayer = function (id, beforeId) {
-        if (this.overlayLayersManager[id]) {
-            moveLayer(id, beforeId);
-            return this;
-        }
-        if (this.style._layers[id]) {
-            this.style.moveLayer(id, beforeId);
-            this._update(true);
-            return this;
-        }
-    };
-
-    (external_mapboxgl_default()).Map.prototype.removeLayer = function (id) {
-        if (this.overlayLayersManager[id]) {
-            removeLayer(this.overlayLayersManager[id]);
-            delete this.overlayLayersManager[id];
-            return this;
-        }
-        this.style.removeLayer(id);
-        this._update(true);
+var MapExtend = (function () {
+  (external_mapboxgl_default()).Map.prototype.overlayLayersManager = {};
+  if ((external_mapboxgl_default()).Map.prototype.addLayerBak === undefined) {
+    (external_mapboxgl_default()).Map.prototype.addLayerBak = (external_mapboxgl_default()).Map.prototype.addLayer;
+    (external_mapboxgl_default()).Map.prototype.addLayer = function (layer, before) {
+      if (layer.source || layer.type === 'custom' || layer.type === 'background') {
+        this.addLayerBak(layer, before);
         return this;
+      }
+      if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
+        this.fire('error', {
+          error: new Error('A layer with this id already exists.')
+        });
+        return;
+      }
+      addLayer(layer, this);
+      this.overlayLayersManager[layer.id] = layer;
+      return this;
     };
+  }
 
-    //目前扩展的overlayer，只支持显示或隐藏图层操作
-    (external_mapboxgl_default()).Map.prototype.setLayoutProperty = function (layerID, name, value) {
-        if (this.overlayLayersManager[layerID]) {
-            if (name === "visibility") {
-                if (value === "visible") {
-                    value = true;
-                } else {
-                    value = false;
-                }
-                setVisibility(this.overlayLayersManager[layerID], value);
-                this.style.fire('data', {dataType: 'style'});
-            }
-            return this;
-        }
-        this.style.setLayoutProperty(layerID, name, value);
-        this._update(true);
-        return this;
-    };
-    ;(external_mapboxgl_default()).Map.prototype.updateTransform = function (units, originX, originY, centerX, centerY, width, height) {
-        this.transform.units = units;
-        var mercatorZfromAltitude = this.mercatorZfromAltitude;
-        (external_mapboxgl_default()).MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
-            altitude = altitude || 0;
-            const lngLat = external_mapboxgl_default().LngLat.convert(lngLatLike);
-            return new (external_mapboxgl_default()).MercatorCoordinate(
-                (lngLat.lng - originX) / width,
-                (originY - lngLat.lat) / height,
-                mercatorZfromAltitude(altitude, lngLat.lat));
-        };
-        (external_mapboxgl_default()).MercatorCoordinate.prototype.toLngLat = function () {
-            return new (external_mapboxgl_default()).LngLat(
-                this.x * width + originX,
-                originY - this.y * height);
-        };
-        this.customConvertPoint = window.URL.createObjectURL(new Blob(['customConvertPoint = {projectX:function(x){return (x - ' + centerX + ') / ' + width + ' + 0.5},projectY:function(y){y = 0.5 - ((y - ' + centerY + ') / ' + height + ');return y < 0 ? 0 : y > 1 ? 1 : y;},toY:function(y){return (0.5-y)*' + height + '+' + centerY + ';}}'],{type:"text/javascript"}));
+  (external_mapboxgl_default()).Map.prototype.getLayer = function (id) {
+    if (this.overlayLayersManager[id]) {
+      return this.overlayLayersManager[id];
     }
+    return this.style.getLayer(id);
+  };
 
-
-    function addLayer(layer, map) {
-        layer.onAdd && layer.onAdd(map);
+  (external_mapboxgl_default()).Map.prototype.moveLayer = function (id, beforeId) {
+    if (this.overlayLayersManager[id]) {
+      this.overlayLayersManager[id].moveLayer
+        ? this.overlayLayersManager[id].moveLayer(id, beforeId)
+        : moveLayer(id, beforeId);
+      return this;
     }
-
-    /**
-     * @function MapExtend.prototype.removeFromMap
-     * @description  移除事件。
-     */
-    function removeLayer(layer) {
-        layer.removeFromMap && layer.removeFromMap();
+    if (this.style._layers[id]) {
+      this.style.moveLayer(id, beforeId);
+      this._update(true);
+      return this;
     }
+  };
 
-    /**
-     * @function MapExtend.prototype.setVisibility
-     * @description  设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
-     */
-    function setVisibility(layer, visibility) {
-        layer.setVisibility && layer.setVisibility(visibility);
+  (external_mapboxgl_default()).Map.prototype.removeLayer = function (id) {
+    if (this.overlayLayersManager[id]) {
+      removeLayer(this.overlayLayersManager[id]);
+      delete this.overlayLayersManager[id];
+      return this;
     }
+    this.style.removeLayer(id);
+    this._update(true);
+    return this;
+  };
 
-    /**
-     * @function MapExtend.prototype.moveTo
-     * @description 将图层移动到某个图层之前。
-     * @param {string} layerID -待插入的图层 ID。
-     * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
-     */
-    function moveLayer(layerID, beforeLayerID) {
-        var layer = document.getElementById(layerID);
-        // var beforeLayer;
-        if (beforeLayerID) {
-            var beforeLayer = document.getElementById(beforeLayerID);
-            if (!beforeLayer) {
-                external_mapboxgl_default().Evented.prototype.fire("error", {
-                    error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)
-                });
-            }
-        }
-        if (layer && beforeLayer) {
-            beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+  //目前扩展的overlayer，只支持显示或隐藏图层操作
+  (external_mapboxgl_default()).Map.prototype.setLayoutProperty = function (layerID, name, value) {
+    if (this.overlayLayersManager[layerID]) {
+      if (name === 'visibility') {
+        if (value === 'visible') {
+          value = true;
         } else {
-            //当没有传入beforeLayerID ，则默认将图层移动到最上面
-            layer.parentNode.appendChild(layer);
+          value = false;
         }
+        setVisibility(this.overlayLayersManager[layerID], value);
+        this.style.fire('data', { dataType: 'style' });
+      }
+      return this;
     }
+    this.style.setLayoutProperty(layerID, name, value);
+    this._update(true);
+    return this;
+  };
+  (external_mapboxgl_default()).Map.prototype.updateTransform = function (units, originX, originY, centerX, centerY, width, height) {
+    this.transform.units = units;
+    var mercatorZfromAltitude = this.mercatorZfromAltitude;
+    (external_mapboxgl_default()).MercatorCoordinate.fromLngLat = function (lngLatLike, altitude) {
+      altitude = altitude || 0;
+      const lngLat = external_mapboxgl_default().LngLat.convert(lngLatLike);
+      return new (external_mapboxgl_default()).MercatorCoordinate(
+        (lngLat.lng - originX) / width,
+        (originY - lngLat.lat) / height,
+        mercatorZfromAltitude(altitude, lngLat.lat)
+      );
+    };
+    (external_mapboxgl_default()).MercatorCoordinate.prototype.toLngLat = function () {
+      return new (external_mapboxgl_default()).LngLat(this.x * width + originX, originY - this.y * height);
+    };
+    this.customConvertPoint = window.URL.createObjectURL(
+      new Blob(
+        [
+          'customConvertPoint = {projectX:function(x){return (x - ' +
+            centerX +
+            ') / ' +
+            width +
+            ' + 0.5},projectY:function(y){y = 0.5 - ((y - ' +
+            centerY +
+            ') / ' +
+            height +
+            ');return y < 0 ? 0 : y > 1 ? 1 : y;},toY:function(y){return (0.5-y)*' +
+            height +
+            '+' +
+            centerY +
+            ';}}'
+        ],
+        { type: 'text/javascript' }
+      )
+    );
+  };
 
-}();
+  function addLayer(layer, map) {
+    layer.onAdd && layer.onAdd(map);
+  }
+
+  /**
+   * @function MapExtend.prototype.removeFromMap
+   * @description  移除事件。
+   */
+  function removeLayer(layer) {
+    layer.removeFromMap && layer.removeFromMap();
+  }
+
+  /**
+   * @function MapExtend.prototype.setVisibility
+   * @description  设置图层可见性，设置图层的隐藏，显示，重绘的相应的可见标记。
+   * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
+   */
+  function setVisibility(layer, visibility) {
+    layer.setVisibility && layer.setVisibility(visibility);
+  }
+
+  /**
+   * @function MapExtend.prototype.moveTo
+   * @description 将图层移动到某个图层之前。
+   * @param {string} layerID -待插入的图层 ID。
+   * @param {boolean} [beforeLayerID] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+   */
+  function moveLayer(layerID, beforeLayerID) {
+    var layer = document.getElementById(layerID);
+    // var beforeLayer;
+    if (beforeLayerID) {
+      var beforeLayer = document.getElementById(beforeLayerID);
+      if (!beforeLayer) {
+        external_mapboxgl_default().Evented.prototype.fire('error', {
+          error: new Error(`Layer with id "${beforeLayerID}" does not exist on this document.`)
+        });
+      }
+    }
+    if (layer && beforeLayer) {
+      beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+    } else {
+      //当没有传入beforeLayerID ，则默认将图层移动到最上面
+      layer.parentNode.appendChild(layer);
+    }
+  }
+})();
 
 ;// CONCATENATED MODULE: ./src/mapboxgl/core/Base.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
@@ -2757,14 +5380,14 @@ var ArrayExt = {
  * @classdesc 几何对象类，描述地理对象的几何图形。
  * @usage
  */
-class Geometry {
+class Geometry_Geometry {
 
 
     constructor() {
         this.CLASS_NAME = "SuperMap.Geometry";
         /**
          * @member {string} Geometry.prototype.id
-         * @description  几何对象的唯一标示符。
+         * @description  几何对象的唯一标识符。
          *
          */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
@@ -2811,7 +5434,7 @@ class Geometry {
      * @returns {Geometry} 克隆的几何图形。
      */
     clone() {
-        return new Geometry();
+        return new Geometry_Geometry();
     }
 
 
@@ -3542,7 +6165,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 判断；浏览器是否支持 Canvas。
+   * @description 判断浏览器是否支持 Canvas。
    * @returns {boolean} 当前浏览器是否支持 HTML5 Canvas 。
    */
   supportCanvas: function () {
@@ -3737,7 +6360,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 根据比例尺和 dpi 计算屏幕分辨率。
+   * @description 根据比例尺和 DPI 计算屏幕分辨率。
    * @category BaseTypes Util
    * @param {number} scale - 比例尺。
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
@@ -3870,7 +6493,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 克隆一个 Object 对象
+   * @description 克隆一个 Object 对象。
    * @param {Object} obj - 需要克隆的对象。
    * @returns {Object} 对象的拷贝对象，注意是新的对象，不是指向。
    */
@@ -3929,7 +6552,7 @@ const Util = {
       k2 = a / ab;
 
       if (k1 >= 0 && k2 <= 1 && k1 <= 1 && k2 >= 0) {
-        intersectValue = new Geometry.Point(a1.x + k1 * (a2.x - a1.x), a1.y + k1 * (a2.y - a1.y));
+        intersectValue = new Geometry_Geometry.Point(a1.x + k1 * (a2.x - a1.x), a1.y + k1 * (a2.y - a1.y));
       } else {
         intersectValue = 'No Intersection';
       }
@@ -3991,9 +6614,9 @@ const Util = {
   /**
    * @memberOf CommonUtil
    * @description 获取转换后的path路径。
-   * @param {string} path - 待转换的path, 包含`{param}`。
+   * @param {string} path - 待转换的path，包含`{param}`。
    * @param {Object} pathParams - path中待替换的参数。
-   * @returns {string} 转换后的path路径
+   * @returns {string} 转换后的path路径。
    */
   convertPath: function (path, pathParams) {
     if (!pathParams) {
@@ -4189,11 +6812,11 @@ class LonLat {
 
     /**
      * @function LonLat.prototype.toString
-     * @description 返回此对象的字符串形式
+     * @description 返回此对象的字符串形式。
      * @example
      * var lonLat = new LonLat(100,50);
      * var str = lonLat.toString();
-     * @returns {string} 例如: "lon=100,lat=50"
+     * @returns {string} 例如: "lon=100,lat=50"。
      */
     toString() {
         return ("lon=" + this.lon + ",lat=" + this.lat);
@@ -4205,7 +6828,7 @@ class LonLat {
      * @example
      * var lonLat = new LonLat(100,50);
      * var str = lonLat.toShortString();
-     * @returns {string} 处理后的经纬度字符串。例如："100,50"
+     * @returns {string} 处理后的经纬度字符串。例如："100,50"。
      */
     toShortString() {
         return (this.lon + "," + this.lat);
@@ -4649,7 +7272,7 @@ class Bounds {
 
     /**
      * @function Bounds.prototype.extend
-     * @description 在当前 bounds 上扩展 bounds，支持 point，lanlat 和 bounds。扩展后的 bounds 的范围是两者的结合。
+     * @description 在当前 bounds 上扩展 bounds，支持 point，lonlat 和 bounds。扩展后的 bounds 的范围是两者的结合。
      * @example
      * var bounds1 = new Bounds(-50,-50,40,40);
      * //bounds 改变
@@ -4794,8 +7417,7 @@ class Bounds {
 
     /**
      * @function Bounds.prototype.intersectsBounds
-     * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意
-     *              边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
+     * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
      * @example
      * var bounds = new Bounds(-180,-90,100,80);
      * var isIntersects = bounds.intersectsBounds(
@@ -4803,11 +7425,8 @@ class Bounds {
      *  );
      * @param {Bounds} bounds - 目标边界。
      * @param {Object} options - 参数。
-     * @param {boolean} [options.inclusive=true] - 边缘重合也看成相交。如果是false，
-     *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
-     *                               这种情况被认为没有相交。
-     * @param {Bounds} [options.worldBounds] - 提供了 worldBounds 参数, 如果他们相交时
-     *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
+     * @param {boolean} [options.inclusive=true] - 边缘重合也看成相交。如果是false，两个边界范围没有重叠部分仅仅是在边缘相接（重合），这种情况被认为没有相交。
+     * @param {Bounds} [options.worldBounds] - 提供了 worldBounds 参数，如果他们相交时是在全球范围内，两个边界将被视为相交。这仅适用于交叉或完全不在世界范围的边界。
      * @returns {boolean} 传入的 bounds 对象与当前 bounds 相交。
      */
     intersectsBounds(bounds, options) {
@@ -5092,12 +7711,12 @@ class Bounds {
  * @param {number} x - x 坐标。
  * @param {number} y - y 坐标。
  * @param {string} [type = 'Point'] - 点的类型。
- * @param {number} [tag] - 额外的属性，比如差值分析中的 Z 值。
+ * @param {number} [tag] - 额外的属性，比如插值分析中的 Z 值。
  * @example
  * var point = new GeometryPoint(-111.04, 45.68);
  * @usage
  */
-class Point extends Geometry {
+class Point extends Geometry_Geometry {
 
 
     constructor(x, y, type, tag) {
@@ -5116,13 +7735,13 @@ class Point extends Geometry {
 
         /**
          * @member {string} GeometryPoint.prototype.tag
-         * @description  用来存储额外的属性，比如差值分析中的 Z 值。
+         * @description  用来存储额外的属性，比如插值分析中的 Z 值。
          */
         this.tag = (tag || tag == 0) ? parseFloat(tag) : null;
 
         /**
          * @member {string} GeometryPoint.prototype.type
-         * @description  用来存储点的类型
+         * @description  用来存储点的类型。
          */
         this.type = type || "Point";
         this.CLASS_NAME = "SuperMap.Geometry.Point";
@@ -5242,7 +7861,7 @@ class Point extends Geometry {
  * var col = new GeometryCollection([point1,point2]);
  * @usage
  */
-class Collection extends Geometry {
+class Collection extends Geometry_Geometry {
 
 
     constructor(components) {
@@ -5256,7 +7875,7 @@ class Collection extends Geometry {
 
         /**
          * @member {Array.<string>} GeometryCollection.prototype.componentTypes
-         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
+         * @description components 存储的几何对象所支持的几何类型数组，为空表示类型不受限制。
          */
         this.componentTypes = null;
         if (components != null) {
@@ -5450,7 +8069,7 @@ class Collection extends Geometry {
     /**
      * @function GeometryCollection.prototype.getVertices
      * @description 返回几何对象的所有结点的列表。
-     * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
+     * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点，如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何对象的顶点列表。
      */
     getVertices(nodes) {
@@ -5492,7 +8111,7 @@ class MultiPoint extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [GeometryMultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
@@ -5549,7 +8168,7 @@ class Curve extends MultiPoint {
         super(components);
         /**
          * @member {Array.<string>} [GeometryCurve.prototype.componentTypes=["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];
@@ -5646,7 +8265,7 @@ class LineString extends Curve {
     /**
      * @function GeometryLineString.prototype.getVertices
      * @description 返回几何图形的所有顶点的列表。
-     * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点。如果没有设置此参数，则返回所有顶点。
+     * @param {boolean} [nodes] - 对于线来说，仅仅返回作为端点的顶点，如果设为 false，则返回非端点的顶点，如果没有设置此参数，则返回所有顶点。
      * @returns {Array} 几何图形的顶点列表。
      */
     getVertices(nodes) {
@@ -5918,7 +8537,7 @@ class LinearRing extends LineString {
         super(points);
         /**
          * @member {Array.<string>} [GeometryLinearRing.prototype.componentTypes=["SuperMap.Geometry.Point"]]
-         * @description components 存储的的几何对象所支持的几何类型数组，为空表示类型不受限制。
+         * @description components 存储的几何对象所支持的几何类型数组，为空表示类型不受限制。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];
@@ -6041,7 +8660,7 @@ class Polygon extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [GeometryPolygon.prototype.componentTypes=["SuperMap.Geometry.LinearRing"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];
@@ -6084,7 +8703,7 @@ class Polygon extends Collection {
  * @param {Object} data - 数据对象。
  * @usage
  */
-class Feature {
+class Feature_Feature {
 
 
     constructor(layer, lonlat, data) {
@@ -6167,14 +8786,14 @@ const State = {
   UPDATE: 'Update',
   DELETE: 'Delete'
 };
-class Vector extends Feature {
+class Vector extends Feature_Feature {
 
 
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
         /**
          * @member {string} FeatureVector.prototype.fid
-         * @description fid
+         * @description fid。
          */
         this.fid = null;
 
@@ -6202,7 +8821,7 @@ class Vector extends Feature {
 
         /**
          * @member {string} FeatureVector.prototype.state
-         * @description state
+         * @description state。
          */
         this.state = null;
 
@@ -6391,10 +9010,10 @@ class Vector extends Feature {
  * @property {boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
  * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
  * @property {number} [graphicWidth] - 外部图表的像素宽度。
- * @property {number} [graphicHeight] - 外部图表的高宽度。
+ * @property {number} [graphicHeight] - 外部图表的像素高度。
  * @property {number} [graphicOpacity] - 外部图表的不透明度(0-1)。
  * @property {number} [graphicXOffset] - 外部图表沿着x方向的偏移量。
- * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量 Pixel。
+ * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量。
  * @property {number} [rotation] - 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
  * @property {number} [graphicZIndex] - 渲染时使用的索引值。
  * @property {string} [graphicName='circle'] - 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"。
@@ -6746,6 +9365,7 @@ class JSONFormat extends Format {
                 object = JSON.parse(json, filter);
             } catch (e) {
                 // Fall through if the regexp test fails.
+                return { data: json}
             }
         }
 
@@ -6850,7 +9470,7 @@ class MultiLineString extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [GeometryMultiLineString.prototype.componentTypes=["SuperMap.Geometry.LineString"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.LineString"];
@@ -6895,7 +9515,7 @@ class MultiPolygon extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [GeometryMultiPolygon.prototype.componentTypes=["SuperMap.Geometry.Polygon"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Polygon"];
@@ -7327,7 +9947,7 @@ class PointWithMeasure extends Point {
  * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
  * @param {Array.<Geometry>} points - 形成路由对象的线数组。
  * @param {Object} options - 参数。
- * @param {number} options.id - 路由对象在数据库中的 id。
+ * @param {number} options.id - 路由对象在数据库中的 ID。
  * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
@@ -7411,7 +10031,7 @@ class Route extends Collection {
 
         /**
          * @member {Array.<string>} [Route.prototype.componentTypes=LineString]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
@@ -7572,7 +10192,9 @@ var DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
-    ISERVER: "ISERVER"
+    ISERVER: "ISERVER",
+    /** FGB */
+    FGB: "FGB"
 };
 
 /**
@@ -7622,38 +10244,38 @@ var ServerType = {
  * const result = GeometryType.LINE;
  * ```
  */
-var GeometryType = {
-    /** LINE */
+var REST_GeometryType = {
+    /** 线几何对象类型。 */
     LINE: "LINE",
-    /** LINEM */
+    /** 路由对象。 */
     LINEM: "LINEM",
-    /** POINT */
+    /** 点几何对象类型。 */
     POINT: "POINT",
-    /** REGION */
+    /** 面几何对象类型。 */
     REGION: "REGION",
-    /** POINTEPS */
+    /** EPS点几何对象。 */
     POINTEPS: "POINTEPS",
-    /** LINEEPS */
+    /** EPS线几何对象。 */
     LINEEPS: "LINEEPS",
-    /** REGIONEPS */
+    /** EPS面几何对象。 */
     REGIONEPS: "REGIONEPS",
-    /** ELLIPSE */
+    /** 椭圆。 */
     ELLIPSE: "ELLIPSE",
-    /** CIRCLE */
+    /** 圆。 */
     CIRCLE: "CIRCLE",
-    /** TEXT */
+    /** 文本几何对象类型。 */
     TEXT: "TEXT",
-    /** RECTANGLE */
+    /** 矩形。 */
     RECTANGLE: "RECTANGLE",
-    /** UNKNOWN */
+    /** 未定义。 */
     UNKNOWN: "UNKNOWN",
-    /** GEOCOMPOUND */
+    /** 复合几何对象类型。 */
     GEOCOMPOUND:"GEOCOMPOUND"
 };
 
 /**
  * @enum QueryOption
- * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @description 查询结果类型枚举，描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7671,11 +10293,11 @@ var GeometryType = {
  * ```
  */
 var QueryOption = {
-    /** 属性 */
+    /** 属性。 */
     ATTRIBUTE: "ATTRIBUTE",
-    /** 属性和几何对象 */
+    /** 属性和几何对象。 */
     ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
-    /** 几何对象 */
+    /** 几何对象。 */
     GEOMETRY: "GEOMETRY"
 };
 
@@ -7700,9 +10322,9 @@ var QueryOption = {
  * ```
  */
 var JoinType = {
-    /** 内连接 */
+    /** 内连接。 */
     INNERJOIN: "INNERJOIN",
-    /** 左连接 */
+    /** 左连接。 */
     LEFTJOIN: "LEFTJOIN"
 };
 
@@ -7726,23 +10348,23 @@ var JoinType = {
  * ```
  */
 var SpatialQueryMode = {
-    /** 包含空间查询模式 */
+    /** 包含空间查询模式。 */
     CONTAIN: "CONTAIN",
-    /** 交叉空间查询模式 */
+    /** 交叉空间查询模式。 */
     CROSS: "CROSS",
-    /** 分离空间查询模式 */
+    /** 分离空间查询模式。 */
     DISJOINT: "DISJOINT",
-    /** 重合空间查询模式 */
+    /** 重合空间查询模式。 */
     IDENTITY: "IDENTITY",
-    /** 相交空间查询模式 */
+    /** 相交空间查询模式。 */
     INTERSECT: "INTERSECT",
-    /** 无空间查询 */
+    /** 无空间查询。 */
     NONE: "NONE",
-    /** 叠加空间查询模式 */
+    /** 叠加空间查询模式。 */
     OVERLAP: "OVERLAP",
-    /** 邻接空间查询模式 */
+    /** 邻接空间查询模式。 */
     TOUCH: "TOUCH",
-    /** 被包含空间查询模式 */
+    /** 被包含空间查询模式。 */
     WITHIN: "WITHIN"
 };
 
@@ -7767,11 +10389,11 @@ var SpatialQueryMode = {
  * ```
  */
 var SpatialRelationType = {
-    /** 包含关系 */
+    /** 包含关系。 */
     CONTAIN: "CONTAIN",
-    /** 相交关系 */
+    /** 相交关系。 */
     INTERSECT: "INTERSECT",
-    /** 被包含关系 */
+    /** 被包含关系。 */
     WITHIN: "WITHIN"
 };
 
@@ -7796,9 +10418,9 @@ var SpatialRelationType = {
  * ```
  */
 var MeasureMode = {
-    /** 距离测量 */
+    /** 距离测量。 */
     DISTANCE: "DISTANCE",
-    /** 面积测量 */
+    /** 面积测量。 */
     AREA: "AREA"
 };
 
@@ -7823,31 +10445,31 @@ var MeasureMode = {
  * ```
  */
 var Unit = {
-    /**  米 */
+    /**  米。 */
     METER: "METER",
-    /**  千米 */
+    /**  千米。 */
     KILOMETER: "KILOMETER",
-    /**  英里 */
+    /**  英里。 */
     MILE: "MILE",
-    /**  码 */
+    /**  码。 */
     YARD: "YARD",
-    /**  度 */
+    /**  度。 */
     DEGREE: "DEGREE",
-    /**  毫米 */
+    /**  毫米。 */
     MILLIMETER: "MILLIMETER",
-    /**  厘米 */
+    /**  厘米。 */
     CENTIMETER: "CENTIMETER",
-    /**  英寸 */
+    /**  英寸。 */
     INCH: "INCH",
-    /**  分米 */
+    /**  分米。 */
     DECIMETER: "DECIMETER",
-    /**  英尺 */
+    /**  英尺。 */
     FOOT: "FOOT",
-    /**  秒 */
+    /**  秒。 */
     SECOND: "SECOND",
-    /**  分 */
+    /**  分。 */
     MINUTE: "MINUTE",
-    /**  弧度 */
+    /**  弧度。 */
     RADIAN: "RADIAN"
 };
 
@@ -7871,23 +10493,23 @@ var Unit = {
  * ```
  */
 var BufferRadiusUnit = {
-    /**  厘米 */
+    /**  厘米。 */
     CENTIMETER: "CENTIMETER",
-    /**  分米 */
+    /**  分米。 */
     DECIMETER: "DECIMETER",
-    /**  英尺 */
+    /**  英尺。 */
     FOOT: "FOOT",
-    /**  英寸 */
+    /**  英寸。 */
     INCH: "INCH",
-    /**  千米 */
+    /**  千米。 */
     KILOMETER: "KILOMETER",
-    /**  米 */
+    /**  米。 */
     METER: "METER",
-    /**  英里 */
+    /**  英里。 */
     MILE: "MILE",
-    /**  毫米 */
+    /**  毫米。 */
     MILLIMETER: "MILLIMETER",
-    /**  码 */
+    /**  码。 */
     YARD: "YARD"
 }
 
@@ -7919,7 +10541,7 @@ var EngineType = {
     ORACLEPLUS: "ORACLEPLUS",
     /**  SDB 引擎类型，文件引擎，即 SDB 数据源。 */
     SDBPLUS: "SDBPLUS",
-    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎 */
+    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎。 */
     SQLPLUS: "SQLPLUS",
     /**  UDB 引擎类型，文件引擎。 */
     UDB: "UDB"
@@ -8192,7 +10814,7 @@ var ColorGradientType = {
     RED_WHITE: "REDWHITE",
     /** 光谱渐变。 */
     SPECTRUM: "SPECTRUM",
-    /** 地形渐变,用于三维显示效果较好。 */
+    /** 地形渐变，用于三维显示效果较好。 */
     TERRAIN: "TERRAIN",
     /** 黄黑渐变色。 */
     YELLOW_BLACK: "YELLOWBLACK",
@@ -8416,7 +11038,7 @@ var DirectionType = {
 /**
  * @enum SideType
  * @description  行驶位置枚举。
- * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
+ * 表示在行驶在路的左边、右边或者路上的枚举，该类用在行驶导引子项类中。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -8448,7 +11070,7 @@ var SideType = {
  * @enum SupplyCenterType
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
- * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
+ * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -8529,9 +11151,9 @@ var TurnType = {
  * ```
  */
 var BufferEndType = {
-    /** FLAT */
+    /** 平头缓冲。 */
     FLAT: "FLAT",
-    /** ROUND */
+    /** 圆头缓冲。 */
     ROUND: "ROUND"
 };
 /**
@@ -8657,7 +11279,7 @@ var SurfaceAnalystMethod = {
 /**
  * @enum DataReturnMode
  * @description  数据返回模式枚举。
- * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
+ * 该枚举用于指定空间分析返回结果模式，包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -8686,7 +11308,7 @@ var DataReturnMode = {
 /**
  * @enum EditType
  * @description  要素集更新模式枚举。
- * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * 该枚举用于指定数据服务中要素集更新模式，包含添加要素集、更新要素集和删除要素集。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -8886,7 +11508,7 @@ var UGCLayerType = {
     THEME: "THEME",
     /** 矢量图层。 */
     VECTOR: "VECTOR",
-    /** 栅格图层。。 */
+    /** 栅格图层。 */
     GRID: "GRID",
     /** 影像图层。 */
     IMAGE: "IMAGE"
@@ -8970,7 +11592,7 @@ var PixelFormat = {
 
 /**
  * @enum SearchMode
- * @description  内插时使用的样本点的查找方式枚举
+ * @description  内插时使用的样本点的查找方式枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9000,7 +11622,7 @@ var SearchMode = {
 
 /**
  * @enum InterpolationAlgorithmType
- * @description  插值分析的算法的类型
+ * @description  插值分析的算法的类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9028,7 +11650,7 @@ var InterpolationAlgorithmType = {
 
 /**
  * @enum VariogramMode
- * @description  克吕金（Kriging）插值时的半变函数类型枚举
+ * @description  克吕金（Kriging）插值时的半变函数类型枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9056,7 +11678,7 @@ var VariogramMode = {
 
 /**
  * @enum Exponent
- * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
+ * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9082,7 +11704,7 @@ var Exponent = {
 
 /**
  * @enum ClientType
- * @description token申请的客户端标识类型
+ * @description token申请的客户端标识类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9116,7 +11738,7 @@ var ClientType = {
 
 /**
  * @enum ChartType
- * @description 客户端专题图图表类型
+ * @description 客户端专题图图表类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9178,7 +11800,7 @@ var ClipAnalystMode = {
 
 /**
  * @enum AnalystAreaUnit
- * @description 分布式分析面积单位
+ * @description 分布式分析面积单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9216,7 +11838,7 @@ var AnalystAreaUnit = {
 
 /**
  * @enum AnalystSizeUnit
- * @description 分布式分析单位
+ * @description 分布式分析单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9248,7 +11870,7 @@ var AnalystSizeUnit = {
 
 /**
  * @enum StatisticAnalystMode
- * @description 分布式分析统计模式
+ * @description 分布式分析统计模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9276,13 +11898,13 @@ var StatisticAnalystMode = {
     "SUM": "sum",
     /** 统计所选字段的方差。 */
     "VARIANCE": "variance",
-    /** 统计所选字段的标准差 */
+    /** 统计所选字段的标准差。 */
     "STDDEVIATION": "stdDeviation"
 };
 
 /**
  * @enum SummaryType
- * @description 分布式分析聚合类型
+ * @description 分布式分析聚合类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9362,13 +11984,13 @@ var TopologyValidatorRule = {
  * ```
  */
 var BucketAggType = {
-    /** 格网聚合类型 */
+    /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid"
 };
 
 /**
  * @enum MetricsAggType
- * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -9386,13 +12008,13 @@ var BucketAggType = {
  * ```
  */
 var MetricsAggType = {
-  /** 平均值聚合类型 */
+  /** 平均值聚合类型。 */
   AVG:'avg',
-  /** 最大值聚合类型 */
+  /** 最大值聚合类型。 */
   MAX:'max',
-  /** 最小值聚合类型 */
+  /** 最小值聚合类型。 */
   MIN:'min',
-  /** 求和聚合类型 */
+  /** 求和聚合类型。 */
   SUM:'sum'
 };
 
@@ -9510,17 +12132,17 @@ var ResourceType = {
  * ```
  */
 var OrderBy = {
-    /** 按更新时间排序 */
+    /** 按更新时间排序。 */
     UPDATETIME: "UPDATETIME",
-    /** 按热度(可能是访问量、下载量)排序 */
+    /** 按热度(可能是访问量、下载量)排序。 */
     HEATLEVEL: "HEATLEVEL",
-    /** 按相关性排序 */
+    /** 按相关性排序。 */
     RELEVANCE: "RELEVANCE"
 }
 
 /**
  * @enum OrderType
- * @description iportal资源升序还是降序过滤
+ * @description iportal资源升序还是降序过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -9539,15 +12161,15 @@ var OrderBy = {
  * ```
  */
 var OrderType = {
-    /** 升序 */
+    /** 升序。 */
     ASC: "ASC",
-    /** 降序 */
+    /** 降序。 */
     DESC: "DESC"
 }
 
 /**
  * @enum SearchType
- * @description iportal资源查询的范围进行过滤
+ * @description iportal资源查询的范围进行过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -9580,7 +12202,7 @@ var SearchType = {
 
 /**
  * @enum AggregationTypes
- * @description iportal资源聚合查询的类型
+ * @description iportal资源聚合查询的类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -9599,9 +12221,9 @@ var SearchType = {
  * ```
  */
 var AggregationTypes = {
-    /** 标签 */
+    /** 标签。 */
     TAG: "TAG",
-    /** 资源类型 */
+    /** 资源类型。 */
     TYPE: "TYPE"
 }
 
@@ -9626,15 +12248,15 @@ var AggregationTypes = {
  * ```
  */
 var PermissionType = {
-    /** 可检索 */
+    /** 可检索。 */
     SEARCH:"SEARCH",
-    /** 可查看 */
+    /** 可查看。 */
     READ: "READ",
-    /** 可编辑 */
+    /** 可编辑。 */
     READWRITE: "READWRITE",
-    /** 可删除 */
+    /** 可删除。 */
     DELETE: "DELETE",
-    /** 可下载，包括可读、可检索 */
+    /** 可下载，包括可读、可检索。 */
     DOWNLOAD:"DOWNLOAD"
 }
 
@@ -9659,15 +12281,15 @@ var PermissionType = {
  * ```
  */
 var EntityType = {
-    /** 部门 */
+    /** 部门。 */
     DEPARTMENT: "DEPARTMENT",
-    /** 用户组 */
+    /** 用户组。 */
     GROUP: "GROUP",
-    /** 群组 */
+    /** 群组。 */
     IPORTALGROUP: "IPORTALGROUP",
-    /** 角色 */
+    /** 角色。 */
     ROLE: "ROLE",
-    /** 用户 */
+    /** 用户。 */
     USER: "USER"
 }
 
@@ -9692,61 +12314,61 @@ var EntityType = {
  * ```
  */
 var DataItemType = {
-    /** geojson数据。 */
+    /** geojson 数据。 */
     GEOJSON: "GEOJSON",
-    /** UGCV5_MVT  */
+    /** UGCV5_MVT。  */
     UGCV5_MVT: "UGCV5_MVT",
-    /** json数据  */
+    /** json数据。  */
     JSON: "JSON",
-    /** AUDIO */
+    /** 音频文件。 */
     AUDIO: "AUDIO",
-    /** COLOR */
+    /** Color 颜色。 */
     COLOR: "COLOR",
-    /** COLORSCHEME */
+    /** ColorScheme 颜色方案。 */
     COLORSCHEME: "COLORSCHEME",
-    /** CSV */
+    /** CSV 数据。 */
     CSV: "CSV",
-    /** EXCEL */
+    /** EXCEL 数据。 */
     EXCEL: "EXCEL",
-    /** FILLSYMBOL */
+    /** FillSymbol 填充符号库。 */
     FILLSYMBOL: "FILLSYMBOL",
-    /** IMAGE */
+    /** 图片类型。 */
     IMAGE: "IMAGE",
-    /** LAYERTEMPLATE */
+    /** LayerTemplate 图层模板。 */
     LAYERTEMPLATE: "LAYERTEMPLATE",
-    /** LAYOUTTEMPLATE */
+    /** LayoutTemplate 布局模板。 */
     LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
-    /** LINESYMBOL */
+    /** LineSymbol 线符号库。 */
     LINESYMBOL: "LINESYMBOL",
-    /** MAPTEMPLATE */
+    /** MapTemplate 地图模板。 */
     MAPTEMPLATE: "MAPTEMPLATE",
-    /** MARKERSYMBOL */
+    /** MarkerSymbol 点符号库。 */
     MARKERSYMBOL: "MARKERSYMBOL",
-    /** MBTILES */
+    /** MBTILES。 */
     MBTILES: "MBTILES",
-    /** PHOTOS */
+    /** 照片。 */
     PHOTOS: "PHOTOS",
-    /** SHP */
+    /** SHP 空间数据。 */
     SHP: "SHP",
-    /** SMTILES */
+    /** SMTILES。 */
     SMTILES: "SMTILES",
-    /** SVTILES */
+    /** SVTILES。 */
     SVTILES: "SVTILES",
-    /** THEMETEMPLATE */
+    /** ThemeTemplate 专题图模板。 */
     THEMETEMPLATE: "THEMETEMPLATE",
-    /** TPK */
+    /** TPK。 */
     TPK: "TPK",
-    /** UDB */
+    /** UDB 数据源。 */
     UDB: "UDB",
-    /** UGCV5 */
+    /** UGCV5。 */
     UGCV5: "UGCV5",
-    /** UNKNOWN */
+    /** 其他类型（普通文件）。 */
     UNKNOWN: "UNKNOWN",
-    /** VIDEO */
+    /** 视频文件。 */
     VIDEO: "VIDEO",
-    /** WORKENVIRONMENT */
+    /** WorkEnviroment 工作环境。 */
     WORKENVIRONMENT: "WORKENVIRONMENT",
-    /** WORKSPACE */
+    /** 工作空间。 */
     WORKSPACE: "WORKSPACE"
 }
 
@@ -9771,9 +12393,9 @@ var DataItemType = {
  * ```
  */
 var WebExportFormatType = {
-    /** png */
+    /** PNG */
     PNG: "PNG",
-    /** pdf */
+    /** PDF */
     PDF: "PDF"
 }
 
@@ -9798,13 +12420,13 @@ var WebExportFormatType = {
  * ```
  */
 var WebScaleOrientationType = {
-    /** horizontal labels below */
+    /** horizontal labels below. */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
-    /** horizontal labels above */
+    /** horizontal labels above. */
     HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
-    /** vertical labels left */
+    /** vertical labels left. */
     VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
-    /** vertical labels right */
+    /** vertical labels right. */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
 }
 
@@ -9829,11 +12451,11 @@ var WebScaleOrientationType = {
  * ```
  */
 var WebScaleType = {
-    /** line */
+    /** line. */
     LINE: "LINE",
-    /** bar */
+    /** bar. */
     BAR: "BAR",
-    /** bar sub */
+    /** bar sub. */
     BAR_SUB: "BAR_SUB"
 }
 
@@ -9858,11 +12480,11 @@ var WebScaleType = {
  * ```
  */
 var WebScaleUnit = {
-    /** 米 */
+    /** 米。 */
     METER: "METER",
-    /** 英尺 */
+    /** 英尺。 */
     FOOT: "FOOT",
-    /** 度 */
+    /** 度。 */
     DEGREES: "DEGREES"
 }
 
@@ -9981,21 +12603,21 @@ class ServerGeometry {
         var me = this,
             geoType = me.type;
         switch (geoType.toUpperCase()) {
-            case GeometryType.POINT:
+            case REST_GeometryType.POINT:
                 return me.toGeoPoint();
-            case GeometryType.LINE:
+            case REST_GeometryType.LINE:
                 return me.toGeoLine();
-            case GeometryType.LINEM:
+            case REST_GeometryType.LINEM:
                 return me.toGeoLinem();
-            case GeometryType.REGION:
+            case REST_GeometryType.REGION:
                 return me.toGeoRegion();
-            case GeometryType.POINTEPS:
+            case REST_GeometryType.POINTEPS:
                 return me.toGeoPoint();
-            case GeometryType.LINEEPS:
+            case REST_GeometryType.LINEEPS:
                 return me.toGeoLineEPS();
-            case GeometryType.REGIONEPS:
+            case REST_GeometryType.REGIONEPS:
                 return me.toGeoRegionEPS();
-            case GeometryType.GEOCOMPOUND:
+            case REST_GeometryType.GEOCOMPOUND:
                 return me.transformGeoCompound();
         }
     }
@@ -10409,7 +13031,7 @@ class ServerGeometry {
                 }
             }
             //这里className不是多点就全部是算线
-            type = className == 'SuperMap.Geometry.MultiPoint' ? GeometryType.POINT : GeometryType.LINE;
+            type = className == 'SuperMap.Geometry.MultiPoint' ? REST_GeometryType.POINT : REST_GeometryType.LINE;
         } else if (geometry instanceof MultiPolygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -10428,7 +13050,7 @@ class ServerGeometry {
                     );
                 }
             }
-            type = GeometryType.REGION;
+            type = REST_GeometryType.REGION;
         } else if (geometry instanceof Polygon) {
             let ilen = icomponents.length;
             for (let i = 0; i < ilen; i++) {
@@ -10440,7 +13062,7 @@ class ServerGeometry {
                 }
                 points.push(new Point(vertices[0].x, vertices[0].y));
             }
-            type = GeometryType.REGION;
+            type = REST_GeometryType.REGION;
         } else {
             const vertices = geometry.getVertices();
             let geometryVerticesCount = vertices.length;
@@ -10452,7 +13074,7 @@ class ServerGeometry {
                 geometryVerticesCount++;
             }
             parts.push(geometryVerticesCount);
-            type = geometry instanceof Point ? GeometryType.POINT : GeometryType.LINE;
+            type = geometry instanceof Point ? REST_GeometryType.POINT : REST_GeometryType.LINE;
         }
 
         return new ServerGeometry({
@@ -11100,6 +13722,7 @@ class GeoJSON extends JSONFormat {
             feature.bounds = Bounds.fromArray(bbox);
         }
         if (obj.id) {
+            feature.geometry.id = obj.id;
             feature.fid = obj.id;
         }
         return feature;
@@ -11489,7 +14112,7 @@ const Util_Util = {
  * @param {string} text - 标签中的文本内容。
  * @usage
  */
-class GeoText extends Geometry {
+class GeoText extends Geometry_Geometry {
 
     constructor(x, y, text) {
         super(x, y, text);
@@ -11514,7 +14137,7 @@ class GeoText extends Geometry {
         /**
          * @member {Object} GeometryGeoText.prototype.bsInfo
          * @description 标签范围的基础信息。
-         * @property {number} w - bounds 的宽。
+         * @property {number} w - bounds 的宽度。
          * @property {number} h - bounds 的高度。
          */
         this.bsInfo = {
@@ -16704,19 +19327,19 @@ class Transformable {
     constructor() {
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.position
-         * @description 平移， 默认值：[0, 0]。
+         * @description 平移，默认值：[0, 0]。
          */
         this.position = [0, 0];
 
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.rotation
-         * @description 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
+         * @description 旋转，可以通过数组二三项指定旋转的原点，默认值：[0, 0, 0]。
          */
         this.rotation = [0, 0, 0];
 
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.scale
-         * @description 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
+         * @description 缩放，可以通过数组三四项指定缩放的原点，默认值：[1, 1, 0, 0]。
          */
         this.scale = [1, 1, 0, 0];
 
@@ -16804,7 +19427,7 @@ class Transformable {
 
     /**
      * @function LevelRenderer.Transformable.prototype.updateTransform
-     * @description 判断是否需要有坐标变换，更新 needTransform 属性。如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
+     * @description 判断是否需要有坐标变换，更新 needTransform 属性。如果有坐标变换，则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵。
      */
     updateTransform() {
         this.updateNeedTransform();
@@ -17379,7 +20002,7 @@ class Storage {
      * @function LevelRenderer.Storage.prototype.getShapeList
      * @description 返回所有图形的绘制队列。
      *
-     * @param {boolean} [update=false] - 是否在返回前更新该数组。  详见：<LevelRenderer.Shape> updateShapeList。
+     * @param {boolean} [update=false] - 是否在返回前更新该数组。详见：<LevelRenderer.Shape> updateShapeList。
      * @return {LevelRenderer.Shape} 图形。
      */
     getShapeList(update) {
@@ -17578,7 +20201,7 @@ class Storage {
      * @function LevelRenderer.Storage.prototype.delRoot
      * @description 删除指定的图形(Shape)或者组(Group)。
      *
-     * @param {Array.<string>} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
+     * @param {Array.<string>} elId - 删除图形(Shape)或者组(Group)的 ID 数组。如果为空清空整个Storage。
      *
      */
     delRoot(elId) {
@@ -17724,7 +20347,7 @@ class Storage {
  * @usage
  */
 
-class Rectangle extends Geometry {
+class Rectangle extends Geometry_Geometry {
 
 
     constructor(x, y, width, height) {
@@ -18272,8 +20895,7 @@ var DateExt = {
      },
 
      /**
-      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
-      * 保持一致才能确保事件移除成功。
+      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时保持一致才能确保事件移除成功。
       * @param {(HTMLElement|string)} elementParam - 被监听的 DOM 元素或者其 ID。
       * @param {string} name - 需要移除的被监听事件名称。
       * @param {function} observer - 需要移除的事件处理方法。
@@ -18400,7 +21022,7 @@ class Events {
 
         /**
          * @member {Object} Events.prototype.listeners
-         * @description 事件监听器函数
+         * @description 事件监听器函数。
          */
         this.listeners = {};
 
@@ -18436,10 +21058,7 @@ class Events {
 
         /**
          * @member {boolean} [Events.prototype.includeXY=false]
-         * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。
-         *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个
-         *              事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-         *              设为 false 不抵消，如果设为 true，用 this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+         * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果设为 false 不抵消，如果设为 true，用 this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
          * @example
          *  function named(evt) {
          *        this.xy = this.object.events.getMousePosition(evt);
@@ -24362,7 +26981,7 @@ class ThemeLayer_Theme {
 
         /**
          * @member {string} [ThemeLayer.prototype.id]
-         * @description 专题图图层 id。
+         * @description 专题图图层 ID。
          */
         this.id = options.id ? options.id : Util.createUniqueID("themeLayer_");
         /**
@@ -24645,7 +27264,7 @@ class ThemeLayer_Theme {
     /**
      * @function ThemeLayer.prototype.getFeatureById
      * @description 获取指定featureId的矢量要素。
-     * @param {string} featureId - 矢量要素的属性 id。
+     * @param {string} featureId - 矢量要素的属性 ID。
      * @returns {FeatureVector} 对应featureId的矢量要素，不存在则返回 null。
      */
     getFeatureById(featureId) {
@@ -24906,7 +27525,7 @@ class ThemeLayer_Theme {
      * @function ThemeLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.div.id);
@@ -25258,7 +27877,7 @@ class Graph extends ThemeLayer_Theme {
 
     /**
      * @function GraphThemeLayer.prototype.isPointInPoly
-     * @description  判断一个点是否在多边形里面。(射线法)
+     * @description  判断一个点是否在多边形里面（射线法）。
      * @param {Object} pt - 需要判定的点对象，该对象含有属性 x (横坐标)，属性 y (纵坐标)。
      * @param {Array.<Object>} poly - 多边形节点数组。
      */
@@ -25293,7 +27912,7 @@ class Graph extends ThemeLayer_Theme {
 
     /**
      * @function GraphThemeLayer.prototype.clearCache
-     * @description  清除缓存
+     * @description  清除缓存。
      */
     clearCache() {
         this.cache = {};
@@ -25367,7 +27986,7 @@ class ShapeParameters {
          * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
          * 但 refOriginalPosition 可以改变图形的参考位置，例如： refOriginalPosition = [80, 80],
          * 图形圆的 style.x = 20, style.y = 20，那么圆在 canvas 中的实际位置是 [100, 100]。
-         * 图形（Shape） 的所有位置相关属性都是以 refOriginalPosition 为参考中心，
+         * 图形（Shape）的所有位置相关属性都是以 refOriginalPosition 为参考中心，
          * 也就是说图形的所有位置信息在 canvas 中都是以 refOriginalPosition 为参考的相对位置，只有
          * refOriginalPosition 的值为 [0, 0] 时，图形的位置信息才是 canvas 绝对位置。
          * 图形的位置信息通常有：style.pointList，style.x，style.y。
@@ -25376,7 +27995,7 @@ class ShapeParameters {
 
         /**
          * @member {string} ShapeParameters.prototype.refDataID
-         * @description 图形所关联数据的 ID（<{@link FeatureVector}> 的 id）。
+         * @description 图形所关联数据的 ID（<{@link FeatureVector}> 的 ID）。
          */
         this.refDataID = null;
 
@@ -28569,7 +31188,7 @@ class ShapeFactory {
      * // styleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
      * // start: 值域值下限（包含）;
      * // end: 值域值上限（不包含）;
-     * // style: 数据可视化图形的 style，其可设属性根据图形类型参考 <ShapeParameters> 子类对象的 style 属性。。
+     * // style: 数据可视化图形的 style，其可设属性根据图形类型参考 <ShapeParameters> 子类对象的 style 属性。
      * // dataStyleByCodomain 数组形如：
      * [
      *   {
@@ -28677,7 +31296,7 @@ class ShapeFactory {
  * @param {SuperMap.Layer} layer - 此专题要素所在图层。
  * @param {Object} style - 样式。
  * @param {Object} options - 创建专题要素时的可选参数。
- * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离, 单位：像素。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离，单位：像素。
  * @param {boolean} [options.isHoverAble=true] - 图形是否可 hover。
  * @param {boolean} [options.isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
@@ -28692,7 +31311,7 @@ class ThemeVector extends Theme {
         if (!data.geometry) {
             return;
         }
-        if (!(data.geometry instanceof Geometry)) {
+        if (!(data.geometry instanceof Geometry_Geometry)) {
             return;
         }
 
@@ -29336,8 +31955,7 @@ class ThemeVector extends Theme {
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
  * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
  *                                        禁止对专题要素使用数据（feature）的 style。
- *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
- *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @extends {ThemeLayer}
  * @fires GeoFeatureThemeLayer#beforefeaturesadded
@@ -29390,8 +32008,7 @@ class GeoFeature extends ThemeLayer_Theme {
         /**
          * @member {boolean} [GeoFeatureThemeLayer.prototype.isAllowFeatureStyle=false]
          * @description  是否允许 feature 样式（style） 中的有效属性应用到专题图层。</br>
-         *               禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
-         *               的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+         *               禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
          */
         this.isAllowFeatureStyle = false;
         Util.extend(this, options);
@@ -29521,7 +32138,7 @@ class GeoFeature extends ThemeLayer_Theme {
      * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param {FeatureVector} feature - 要素对象。
-     * @returns {Array.<FeatureVector>} 返回矢量要素
+     * @returns {Array.<FeatureVector>} 返回矢量要素。
      */
     createThematicFeature(feature) {
         var style = Util.copyAttributesWithClip(this.style);
@@ -29589,7 +32206,7 @@ class GeoFeature extends ThemeLayer_Theme {
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @param {number} [featureID=si.refDataID] - 要素 ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @returns {Array} 返回图形数组
+     * @returns {Array} 返回图形数组。
      */
     getShapesByFeatureID(featureID) {
         var list = [];
@@ -30580,10 +33197,10 @@ class LabelThemeLayer_Label extends GeoFeature {
 
     /**
      * @function LabelThemeLayer.prototype.isPointInPoly
-     * @description 判断一个点是否在多边形里面。(射线法)
+     * @description 判断一个点是否在多边形里面（射线法）。
      *
-     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性x（横坐标），属性y（纵坐标）。
+     * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @returns {boolean} 点是否在多边形内。
      */
     isPointInPoly(pt, poly) {
@@ -30714,6 +33331,162 @@ function conversionDegree(degrees) {
     return `${degree}°${fraction}'${second}`;
 }
 
+/**
+  * @function scalesToResolutions
+  * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
+  * @version 11.0.1
+  * @param {Array} scales - 比例尺数组。
+  * @param {Object} bounds - 地图范围。
+  * @param {number} dpi - 屏幕分辨率。
+  * @param {string} mapUnit - 地图单位。
+  * @param {number} [level=22] - 地图最大级别。
+  * @returns {number} 分辨率。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { scalesToResolutions } from '{npm}';
+  *
+  * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
+  * ```
+ */
+ function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
+  var resolutions = [];
+  if (scales && scales.length > 0) {
+    for (let i = 0; i < scales.length; i++) {
+      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+    }
+  } else {
+    const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
+    for (let i = 0; i < level; i++) {
+      resolutions.push(maxReolution / Math.pow(2, i));
+    }
+  }
+  return resolutions.sort(function (a, b) {
+    return b - a;
+  });
+}
+/**
+  * @function getZoomByResolution
+  * @description 通过分辨率获取地图级别。
+  * @version 11.0.1
+  * @param {number} resolution - 分辨率。
+  * @param {Array} resolutions - 分辨率数组。
+  * @returns {number} 地图级别。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { getZoomByResolution } from '{npm}';
+  *
+  * const result = getZoomByResolution(resolution, resolutions);
+  * ```
+ */
+function getZoomByResolution(resolution, resolutions) {
+  let zoom = 0;
+  let minDistance;
+  for (let i = 0; i < resolutions.length; i++) {
+    if (i === 0) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+    }
+    if (minDistance > Math.abs(resolution - resolutions[i])) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+      zoom = i;
+    }
+  }
+  return zoom;
+}
+
+/**
+  * @function scaleToResolution
+  * @description 通过比例尺计算分辨率。
+  * @version 11.0.1
+  * @param {number} scale - 比例尺。
+  * @param {number} dpi - 屏幕分辨率。
+  * @param {string} mapUnit - 地图单位。
+  * @returns {number} 分辨率。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { scaleToResolution } from '{npm}';
+  *
+  * const result = scaleToResolution(scale, dpi, mapUnit);
+  * ```
+ */
+function scaleToResolution(scale, dpi, mapUnit) {
+  const inchPerMeter = 1 / 0.0254;
+  const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+  const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
+  return resolution;
+}
+
+/**
+ * 范围是否相交
+ * @param {Extent} extent1 范围1
+ * @param {Extent} extent2 范围2
+ * @return {boolean} 范围是否相交。
+ */
+ function intersects(extent1, extent2) {
+  return (
+    extent1[0] <= extent2[2] &&
+    extent1[2] >= extent2[0] &&
+    extent1[1] <= extent2[3] &&
+    extent1[3] >= extent2[1]
+  );
+}
+
+/**
+ * 获取两个范围的交集
+ * @param {Array} extent1 Extent 1
+ * @param {Array} extent2 Extent 2
+ * @return {Array} 相交范围数组.
+ * @api
+ */
+ function getIntersection(extent1, extent2) {
+  const intersection = [];
+  if (intersects(extent1, extent2)) {
+    if (extent1[0] > extent2[0]) {
+      intersection[0] = extent1[0];
+    } else {
+      intersection[0] = extent2[0];
+    }
+    if (extent1[1] > extent2[1]) {
+      intersection[1] = extent1[1];
+    } else {
+      intersection[1] = extent2[1];
+    }
+    if (extent1[2] < extent2[2]) {
+      intersection[2] = extent1[2];
+    } else {
+      intersection[2] = extent2[2];
+    }
+    if (extent1[3] < extent2[3]) {
+      intersection[3] = extent1[3];
+    } else {
+      intersection[3] = extent2[3];
+    }
+  }
+  return intersection;
+}
 ;// CONCATENATED MODULE: ./src/mapboxgl/overlay/mapv/MapvRenderer.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -31298,7 +34071,7 @@ class MapvLayer {
      * @function MapvLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         const layer = document.getElementById(this.canvas.id);
@@ -31443,8 +34216,8 @@ class MapvLayer {
 /**
  * @class Theme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维专题图基类,不能直接实例化。
- * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @classdesc 三维专题图基类，不能直接实例化。
+ * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions -专题图图层配置项。
  * @param  {number} [layerOptions.opacity=1] - 图层不透明度。
  * @param  {boolean} [layerOptions.parseNumber=fasle] - 是否预处理数据，将数据转换为 number。
@@ -31467,7 +34240,7 @@ class Theme3DLayer {
     constructor(id, layerOptions) {
         /**
          * @member {string} Theme3DLayer.prototype.id
-         * @description Mapbox GL 图层 id。
+         * @description Mapbox GL 图层 ID。
          */
         this.id = id;
 
@@ -31483,7 +34256,7 @@ class Theme3DLayer {
         this.opacity = 1;
         /**
          * @member {boolean} [Theme3DLayer.prototype.parseNumber=false]
-         * @description 是否进行数据预处理,有些字段是 string 类型，需要转换为 number。
+         * @description 是否进行数据预处理，有些字段是 string 类型，需要转换为 number。
          */
         this.parseNumber = false;
         /**
@@ -31563,7 +34336,7 @@ class Theme3DLayer {
      * @param {Object} layerOptions - 该专题图图层相关参数。
      * @param {number} [layerOptions.opacity=1] - 图层不透明度。
      * @param {boolean} [layerOptions.parseNumber=false] - 是否预处理数据，将数据转换为 number。
-     * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段
+     * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段。
      * @param {number} [layerOptions.height] - 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
      * @param {string} [layerOptions.heightField] - 数据中表示高度的字段。
      * @param {string} [layerOptions.themeField] - 专题展示的字段。
@@ -31584,7 +34357,7 @@ class Theme3DLayer {
      * @description 设置图层高亮相关参数。
      * @param {Object} highlightOptions - 该专题图图层高亮相关参数。
      * @param {string} [highlightOptions.color] - 颜色。
-     * @param {function} highlightOptions.callback - 回调,返回数据参数（data,event）。
+     * @param {function} highlightOptions.callback - 回调，返回数据参数（data,event）。
      * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     setHighlightStyleOptions(highlightOptions) {
@@ -31596,7 +34369,7 @@ class Theme3DLayer {
      * @function Theme3DLayer.prototype.setData
      * @description 设置数据，数据格式必须为 GeoJSON 格式。
      * @param {GeoJSONObject} data - GeoJSON 格式数据。
-     * @param {boolean} [parseNumber=false] - 是否进行数据预处理,有些字段是 string 类型，需要转换为 number。
+     * @param {boolean} [parseNumber=false] - 是否进行数据预处理，有些字段是 string 类型，需要转换为 number。
      */
     setData(data, parseNumber) {
         var me = this;
@@ -31702,7 +34475,7 @@ class Theme3DLayer {
 
     /**
      * @function Theme3DLayer.prototype.getHighlightStyleOptions
-     * @description 获取高亮样式,子类重写实现。
+     * @description 获取高亮样式，子类重写实现。
      * @returns {Object} Mapbox GL 样式对象。
      */
     getHighlightStyleOptions() {
@@ -31967,8 +34740,8 @@ class Theme3DLayer {
  * @class RangeTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维分段专题图。
- * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param  {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
+ * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param  {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
  * @param  {Array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
  * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @param  {number} [layerOptions.base] - 新增参数，数据分段线性增量。
@@ -32306,8 +35079,8 @@ class RankSymbol extends Graph {
  * @class UniqueTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维单值专题图。
- * @param {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
+ * @param {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
  * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height )没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @usage
@@ -32548,7 +35321,7 @@ class GraphicLayer {
         let opt = Util_Util.extend(this, defaultProps, options);
         /**
          * @member {string} GraphicLayer.prototype.id
-         * @description 高效率点图层 id。
+         * @description 高效率点图层 ID。
          */
         this.id = id || Util.createUniqueID("graphicLayer_");
         /**
@@ -32753,8 +35526,8 @@ class GraphicLayer {
 
     /**
      * @function GraphicLayer.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id
+     * @description 通过给定一个 ID，返回对应的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 ID。
      * @returns {Graphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
@@ -32870,7 +35643,7 @@ class GraphicLayer {
      * @function GraphicLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -33238,7 +36011,7 @@ class ThreeLayerRenderer {
         this._layer && this._layer.draw(this.context, this.scene, this.camera);
         /**
          * @event ThreeLayer#draw
-         * @description draw 绘制事件, 调用提供给外部绘制的接口后触发
+         * @description draw 绘制事件，调用提供给外部绘制的接口后触发。
          */
         this._layer.fire("draw");
         this.renderScene();
@@ -33289,7 +36062,7 @@ class ThreeLayerRenderer {
             this._initThreeRenderer();
             /**
              * @event ThreeLayer#rendererinitialized
-             * @description rendererinitialized 事件，初始化 three 渲染器后触发
+             * @description rendererinitialized 事件，初始化 three 渲染器后触发。
              */
             this._layer.fire("rendererinitialized");
         } else {
@@ -33493,7 +36266,7 @@ const {
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
  *          {@link THREE.WebGLRenderer}
- *          THREE.CanvasRenderer
+ *          {@link THREE.CanvasRenderer}。
  *
  * @extends {mapboxgl.Evented}
  * @fires ThreeLayer#render
@@ -33599,7 +36372,7 @@ class ThreeLayer extends (external_mapboxgl_default()).Evented {
 
     /**
      * @function ThreeLayer.prototype.getScene
-     * @description 获取threejs 场景对象
+     * @description 获取 threejs 场景对象。
      * @returns {THREE.Scene} threejs 场景对象。
      */
     getScene() {
@@ -33608,7 +36381,7 @@ class ThreeLayer extends (external_mapboxgl_default()).Evented {
 
     /**
      * @function ThreeLayer.prototype.getCamera
-     * @description 获取threejs 相机。
+     * @description 获取 threejs 相机。
      * @returns {THREE.Camera} threejs 相机。
      */
     getCamera() {
@@ -33701,9 +36474,9 @@ class ThreeLayer extends (external_mapboxgl_default()).Evented {
 
     /**
      * @function ThreeLayer.prototype.lngLatToPosition
-     * @description 经纬度转threejs 3D 失量对象。
+     * @description 经纬度转threejs 3D 矢量对象。
      * @param {(Array.<number>|Object)} lngLat - 经纬度坐标。
-     * @returns {THREE.Vector3} threejs 3D 失量对象。
+     * @returns {THREE.Vector3} threejs 3D 矢量对象。
      */
     lngLatToPosition(lngLat) {
         let zoom = Transform.projection.nativeMaxZoom;
@@ -33713,11 +36486,11 @@ class ThreeLayer extends (external_mapboxgl_default()).Evented {
 
     /**
      * @function ThreeLayer.prototype.distanceToThreeVector3
-     * @description 计算距离指定坐标给定距离的新坐标的 threejs 3D 失量对象。
-     * @param {number} x - x 轴距离,单位米。
-     * @param {number} y - y 轴距离,单位米。
+     * @description 计算距离指定坐标给定距离的新坐标的 threejs 3D 矢量对象。
+     * @param {number} x - x 轴距离，单位米。
+     * @param {number} y - y 轴距离，单位米。
      * @param {(Array.<number>|Object)} lngLat - 源坐标。
-     * @returns {THREE.Vector3} 目标点的 threejs 3D 失量对象。
+     * @returns {THREE.Vector3} 目标点的 threejs 3D 矢量对象。
      */
     distanceToThreeVector3(x, y, lngLat) {
         let map = this._map;
@@ -33907,7 +36680,7 @@ class ThreeLayer extends (external_mapboxgl_default()).Evented {
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
- * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
+ * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {mapboxgl.Evented}
  * @fires HeatMapLayer#featuresadded
  * @fires HeatMapLayer#changelayer
@@ -33928,7 +36701,7 @@ class HeatMapLayer extends (external_mapboxgl_default()).Evented {
 
         /**
          * @member {string} HeatMapLayer.prototype.id
-         * @description 热力图图层 id。
+         * @description 热力图图层 ID。
          */
         this.id = _options.id ? _options.id : Util.createUniqueID("HeatMapLayer_");
 
@@ -33963,7 +36736,7 @@ class HeatMapLayer extends (external_mapboxgl_default()).Evented {
 
         /**
          * @member {boolean} [HeatMapLayer.prototype.useGeoUnit=false]
-         * @description 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
+         * @description 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
          */
         this.useGeoUnit = _options.useGeoUnit ? _options.useGeoUnit : false;
 
@@ -34461,7 +37234,7 @@ class HeatMapLayer extends (external_mapboxgl_default()).Evented {
      * @function HeatMapLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 ID 为 layerID 的图层之后)。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.rootCanvas.id);
@@ -34624,18 +37397,18 @@ class HeatMapLayer extends (external_mapboxgl_default()).Evented {
  * @classdesc Deckgl 高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
  *            正六边形图层（蜂巢图层）、网格图层，只需给定相依配置，因此，在创建图层之前，请仔细阅读参数配置。
  * @param {string} layerTypeID - 高效率图层类型 ID，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
- *                 "polygon-layer" 高效率面图层、 "arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
+ *                 "polygon-layer" 高效率面图层、"arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
  *
  * @param {Object} options -  图层配置项，包括以下参数：
  * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
  * @param {Array.<GeoJSONObject>} options.data - 图层数据,支持 GeoJSON 规范数据类型。
  * @param {Object} options.callback - deckgl 图层回调函数配置项。
  * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
- * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。 注意：覆盖范围不会影响分数的分配方式。 分配方式的半径仅由半径属性确定；
+ * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。注意：覆盖范围不会影响分数的分配方式。分配方式的半径仅由半径属性确定；
  * @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项：* @param {boolean}
  * @param {Object} options.props.lightSettings - 光照配置项。
- * @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。 长度应该是 `3 x numberOfLights`。
- * @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`。
+ * @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。长度应该是 `3 x numberOfLights`。
+ * @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。长度应该是`2 x numberOfLights`。
  * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
  * @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
  * @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
@@ -34678,7 +37451,7 @@ class HeatMapLayer extends (external_mapboxgl_default()).Evented {
  * @param {boolean} [options.props.strokeWidth=1] - "arc-layer" 配置项：线宽。
  * @param {boolean} [options.props.radius=1000] - "hexagon-layer" 配置项：六边形半径值。
  * @param {boolean} [options.props.extruded=false] - "hexagon-layer" 配置项：是否拉伸要素。
- * @param {boolean} [options.props.upperPercentile=100] - "hexagon-layer" 配置项：筛选箱并通过upperPercentile重新计算颜色。 颜色值大于upperPercentile的六边形将被隐藏。
+ * @param {boolean} [options.props.upperPercentile=100] - "hexagon-layer" 配置项：筛选箱并通过upperPercentile重新计算颜色。颜色值大于upperPercentile的六边形将被隐藏。
  * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
  * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
@@ -34689,7 +37462,7 @@ class DeckglLayer {
         // Util.extend(defaultProps, options);
         /**
          * @member {string} DeckglLayer.prototype.id
-         * @description 高效率点图层 id。
+         * @description 高效率点图层 ID。
          */
         this.layerTypeID = layerTypeID;
         /**
@@ -34777,7 +37550,7 @@ class DeckglLayer {
      * @function DeckglLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.id);
@@ -35244,22 +38017,22 @@ class DeckglLayer {
  */
 
 /**
- * @typedef {Object} GraticuleLayer.LabelStyle - 标签样式
- * @property {Array.<string>} [textFont = ['Calibri','sans-serif']] - 字体样式
- * @property {string} [textSize = '12px'] - 字体大小
- * @property {string} [textColor ='rgba(0,0,0,1)'] - 字体颜色
- * @property {string} [textHaloColor ='rgba(255,255,255,1)'] - 描边颜色
- * @property {number} [textHaloWidth = 1] - 描边宽度
- * @property {string} [textAnchor = 'bottom'] - 字体基线: "center", "left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"
+ * @typedef {Object} GraticuleLayer.LabelStyle - 标签样式。
+ * @property {Array.<string>} [textFont = ['Calibri','sans-serif']] - 字体样式。
+ * @property {string} [textSize = '12px'] - 字体大小。
+ * @property {string} [textColor ='rgba(0,0,0,1)'] - 字体颜色。
+ * @property {string} [textHaloColor ='rgba(255,255,255,1)'] - 描边颜色。
+ * @property {number} [textHaloWidth = 1] - 描边宽度。
+ * @property {string} [textAnchor = 'bottom'] - 字体基线: "center", "left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"。
  */
 
 /**
- * @typedef {Object} GraticuleLayer.StrokeStyle - 线样式
- * @property {string} [lineColor = 'red'] - 线颜色
- * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square
- * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter
- * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式
- * @property {number} [lineWidth = 1] - 线宽
+ * @typedef {Object} GraticuleLayer.StrokeStyle - 线样式。
+ * @property {string} [lineColor = 'red'] - 线颜色。
+ * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square。
+ * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter。
+ * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式。
+ * @property {number} [lineWidth = 1] - 线宽。
  */
 
 const defaultTextStyle = {
@@ -35426,7 +38199,7 @@ class GraticuleLayer {
 
     /**
      * @function GraticuleLayer.prototype.setIntervals
-     * @description 设置经纬度的间隔（以度为单位)
+     * @description 设置经纬度的间隔（以度为单位）。
      * @param {number|function} interval - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
      */
     setIntervals(interval) {
@@ -36128,6 +38901,3821 @@ class GraticuleLayer {
 }
 
 
+// EXTERNAL MODULE: ./node_modules/rbush/index.js
+var rbush = __webpack_require__(510);
+var rbush_default = /*#__PURE__*/__webpack_require__.n(rbush);
+// EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
+var polyfill = __webpack_require__(107);
+// EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
+var fetch_ie8_fetch = __webpack_require__(693);
+// EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
+var fetch_jsonp = __webpack_require__(144);
+var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
+;// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+let FetchRequest_fetch = window.fetch;
+var setFetch = function (newFetch) {
+    FetchRequest_fetch = newFetch;
+}
+var RequestJSONPPromise = {
+  limitLength: 1500,
+  queryKeys: [],
+  queryValues: [],
+  supermap_callbacks: {},
+  addQueryStrings: function (values) {
+      var me = this;
+      for (var key in values) {
+          me.queryKeys.push(key);
+          if (typeof values[key] !== 'string') {
+              values[key] = Util.toJSON(values[key]);
+          }
+          var tempValue = encodeURIComponent(values[key]);
+          me.queryValues.push(tempValue);
+      }
+  },
+  issue: function (config) {
+      var me = this,
+          uid = me.getUid(),
+          url = config.url,
+          splitQuestUrl = [];
+      var p = new Promise(function (resolve) {
+          me.supermap_callbacks[uid] = function (response) {
+              delete me.supermap_callbacks[uid];
+              resolve(response);
+          };
+      });
+
+      // me.addQueryStrings({
+      //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
+      // });
+      var sectionURL = url,
+          keysCount = 0; //此次sectionURL中有多少个key
+      var length = me.queryKeys ? me.queryKeys.length : 0;
+      for (var i = 0; i < length; i++) {
+          if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+              //+2 for ("&"or"?")and"="
+              if (keysCount == 0) {
+                  return false;
+              }
+              splitQuestUrl.push(sectionURL);
+              sectionURL = url;
+              keysCount = 0;
+              i--;
+          } else {
+              if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
+                  var leftValue = me.queryValues[i];
+                  while (leftValue.length > 0) {
+                      var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
+                      if (sectionURL.indexOf('?') > -1) {
+                          sectionURL += '&';
+                      } else {
+                          sectionURL += '?';
+                      }
+                      var tempLeftValue = leftValue.substring(0, leftLength);
+                      //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
+                      if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
+                          leftLength -= 1;
+                          tempLeftValue = leftValue.substring(0, leftLength);
+                      } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
+                          leftLength -= 2;
+                          tempLeftValue = leftValue.substring(0, leftLength);
+                      }
+
+                      sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
+                      leftValue = leftValue.substring(leftLength);
+                      if (tempLeftValue.length > 0) {
+                          splitQuestUrl.push(sectionURL);
+                          sectionURL = url;
+                          keysCount = 0;
+                      }
+                  }
+              } else {
+                  keysCount++;
+                  if (sectionURL.indexOf('?') > -1) {
+                      sectionURL += '&';
+                  } else {
+                      sectionURL += '?';
+                  }
+                  sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
+              }
+          }
+      }
+      splitQuestUrl.push(sectionURL);
+      me.send(
+          splitQuestUrl,
+          'RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+          config && config.proxy
+      );
+      return p;
+  },
+
+  getUid: function () {
+      var uid = new Date().getTime(),
+          random = Math.floor(Math.random() * 1e17);
+      return uid * 1000 + random;
+  },
+
+  send: function (splitQuestUrl, callback, proxy) {
+      var len = splitQuestUrl.length;
+      if (len > 0) {
+          var jsonpUserID = new Date().getTime();
+          for (var i = 0; i < len; i++) {
+              var url = splitQuestUrl[i];
+              if (url.indexOf('?') > -1) {
+                  url += '&';
+              } else {
+                  url += '?';
+              }
+              url += 'sectionCount=' + len;
+              url += '&sectionIndex=' + i;
+              url += '&jsonpUserID=' + jsonpUserID;
+              if (proxy) {
+                  url = decodeURIComponent(url);
+                  url = proxy + encodeURIComponent(url);
+              }
+              fetch_jsonp_default()(url, {
+                  jsonpCallbackFunction: callback,
+                  timeout: 30000
+              });
+          }
+      }
+  },
+
+  GET: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings(config.params);
+      return me.issue(config);
+  },
+
+  POST: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  },
+
+  PUT: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  },
+  DELETE: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  }
+};
+
+var CORS;
+var RequestTimeout;
+/**
+ * @function setCORS
+ * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
+ * @category BaseTypes Util
+ * @param {boolean} cors - 是否允许跨域请求。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.setCORS(cors);
+ *
+ *   // 弃用的写法
+ *   SuperMap.setCORS(cors);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { setCORS } from '{npm}';
+ *
+ * setCORS(cors);
+ * ```
+ */
+var setCORS = function (cors) {
+    CORS = cors;
+}
+/**
+ * @function isCORS
+ * @description 是是否允许跨域请求。
+ * @category BaseTypes Util
+ * @returns {boolean} 是否允许跨域请求。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.isCORS();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.isCORS();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { isCORS } from '{npm}';
+ *
+ * const result = isCORS();
+ * ```
+ */
+var isCORS = function () {
+    if (CORS != undefined) {
+        return CORS;
+    }
+    return window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
+}
+/**
+ * @function setRequestTimeout
+ * @category BaseTypes Util
+ * @description 设置请求超时时间。
+ * @param {number} [timeout=45] - 请求超时时间，单位秒。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cdn}"></script>
+  <script>
+    {namespace}.setRequestTimeout(timeout);
+
+    // 弃用的写法
+    SuperMap.setRequestTimeout(timeout);
+
+  </script>
+
+  // ES6 Import
+  import { setRequestTimeout } from '{npm}';
+
+  setRequestTimeout(timeout);
+ * ```
+ */
+var setRequestTimeout = function (timeout) {
+    return RequestTimeout = timeout;
+}
+/**
+ * @function getRequestTimeout
+ * @category BaseTypes Util
+ * @description 获取请求超时时间。
+ * @returns {number} 请求超时时间。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cdn}"></script>
+  <script>
+    {namespace}.getRequestTimeout();
+
+    // 弃用的写法
+    SuperMap.getRequestTimeout();
+
+  </script>
+
+  // ES6 Import
+  import { getRequestTimeout } from '{npm}';
+
+  getRequestTimeout();
+ * ```
+ */
+var getRequestTimeout = function () {
+    return RequestTimeout || 45000;
+}
+
+/**
+ * @name FetchRequest
+ * @namespace
+ * @category BaseTypes Util
+ * @description 获取请求。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FetchRequest.commit(method, url, params, options);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { FetchRequest } from '{npm}';
+ *
+ * const result = FetchRequest.commit(method, url, params, options);
+ *
+ * ```
+ */
+var FetchRequest = {
+    /**
+     * @function FetchRequest.commit
+     * @description commit 请求。
+     * @param {string} method - 请求方法。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
+    commit: function (method, url, params, options) {
+        method = method ? method.toUpperCase() : method;
+        switch (method) {
+            case 'GET':
+                return this.get(url, params, options);
+            case 'POST':
+                return this.post(url, params, options);
+            case 'PUT':
+                return this.put(url, params, options);
+            case 'DELETE':
+                return this.delete(url, params, options);
+            default:
+                return this.get(url, params, options);
+        }
+    },
+    /**
+     * @function FetchRequest.supportDirectRequest
+     * @description supportDirectRequest 请求。
+     * @param {string} url - 请求地址。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {boolean} 是否允许跨域请求。
+     */
+    supportDirectRequest: function (url, options) {
+        if (Util.isInTheSameDomain(url)) {
+            return true;
+        }
+        if (options.crossOrigin != undefined) {
+            return options.crossOrigin;
+        } else {
+            return isCORS() || options.proxy;
+        }
+    },
+    /**
+     * @function FetchRequest.get
+     * @description get 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
+    get: function (url, params, options) {
+        options = options || {};
+        var type = 'GET';
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url,
+                data: params
+            };
+            return RequestJSONPPromise.GET(config);
+        }
+        if (!this.urlIsLong(url)) {
+            return this._fetch(url, params, options, type);
+        } else {
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
+        }
+    },
+    /**
+     * @function FetchRequest.delete
+     * @description delete 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options -请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
+    delete: function (url, params, options) {
+        options = options || {};
+        var type = 'DELETE';
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
+        url = this._processUrl(url, options);
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url += "&_method=DELETE",
+                data: params
+            };
+            return RequestJSONPPromise.DELETE(config);
+        }
+        if (this.urlIsLong(url)) {
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
+        }
+        return this._fetch(url, params, options, type);
+    },
+    /**
+     * @function FetchRequest.post
+     * @description post 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
+    post: function (url, params, options) {
+        options = options || {};
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url += "&_method=POST",
+                data: params
+            };
+            return RequestJSONPPromise.POST(config);
+        }
+        return this._fetch(this._processUrl(url, options), params, options, 'POST');
+    },
+    /**
+     * @function FetchRequest.put
+     * @description put 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
+    put: function (url, params, options) {
+        options = options || {};
+        url = this._processUrl(url, options);
+        if (!this.supportDirectRequest(url, options)) {
+            url = url.replace('.json', '.jsonp');
+            var config = {
+                url: url += "&_method=PUT",
+                data: params
+            };
+            return RequestJSONPPromise.PUT(config);
+        }
+        return this._fetch(url, params, options, 'PUT');
+    },
+    /**
+     * @function FetchRequest.urlIsLong
+     * @description URL 的字节长度是否太长。
+     * @param {string} url - 请求地址。
+     * @returns {boolean} URL 的字节长度是否太长。
+     */
+    urlIsLong: function (url) {
+        //当前url的字节长度。
+        var totalLength = 0,
+            charCode = null;
+        for (var i = 0, len = url.length; i < len; i++) {
+            //转化为Unicode编码
+            charCode = url.charCodeAt(i);
+            if (charCode < 0x007f) {
+                totalLength++;
+            } else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
+                totalLength += 2;
+            } else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
+                totalLength += 3;
+            }
+        }
+        return totalLength < 2000 ? false : true;
+    },
+    _postSimulatie: function (type, url, params, options) {
+        var separator = url.indexOf('?') > -1 ? '&' : '?';
+        url += separator + '_method=' + type;
+        if (typeof params !== 'string') {
+            params = JSON.stringify(params);
+        }
+        return this.post(url, params, options);
+    },
+
+    _processUrl: function (url, options) {
+        if (this._isMVTRequest(url)) {
+            return url;
+        }
+
+        if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
+            if (url.indexOf('?') < 0) {
+                url += '.json';
+            } else {
+                var urlArrays = url.split('?');
+                if (urlArrays.length === 2) {
+                    url = urlArrays[0] + '.json?' + urlArrays[1];
+                }
+            }
+        }
+        if (options && options.proxy) {
+            if (typeof options.proxy === 'function') {
+                url = options.proxy(url);
+            } else {
+                url = decodeURIComponent(url);
+                url = options.proxy + encodeURIComponent(url);
+            }
+        }
+        return url;
+    },
+
+    _fetch: function (url, params, options, type) {
+        options = options || {};
+        options.headers = options.headers || {};
+        if (!options.headers['Content-Type'] && !FormData.prototype.isPrototypeOf(params)) {
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+        }
+        if (options.timeout) {
+            return this._timeout(
+                options.timeout,
+                FetchRequest_fetch(url, {
+                    method: type,
+                    headers: options.headers,
+                    body: type === 'PUT' || type === 'POST' ? params : undefined,
+                    credentials: this._getWithCredentials(options),
+                    mode: 'cors',
+                    timeout: getRequestTimeout()
+                }).then(function (response) {
+                    return response;
+                })
+            );
+        }
+        return FetchRequest_fetch(url, {
+            method: type,
+            body: type === 'PUT' || type === 'POST' ? params : undefined,
+            headers: options.headers,
+            credentials: this._getWithCredentials(options),
+            mode: 'cors',
+            timeout: getRequestTimeout()
+        }).then(function (response) {
+            return response;
+        });
+    },
+
+    _getWithCredentials: function (options) {
+        if (options.withCredentials === true) {
+            return 'include';
+        }
+        if (options.withCredentials === false) {
+            return 'omit';
+        }
+        return 'same-origin';
+    },
+
+    _fetchJsonp: function (url, options) {
+        options = options || {};
+        return fetch_jsonp_default()(url, {
+            method: 'GET',
+            timeout: options.timeout
+        }).then(function (response) {
+            return response;
+        });
+    },
+
+    _timeout: function (seconds, promise) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject(new Error('timeout'));
+            }, seconds);
+            promise.then(resolve, reject);
+        });
+    },
+
+    _getParameterString: function (params) {
+        var paramsArray = [];
+        for (var key in params) {
+            var value = params[key];
+            if (value != null && typeof value !== 'function') {
+                var encodedValue;
+                if (Array.isArray(value) || value.toString() === '[object Object]') {
+                    encodedValue = encodeURIComponent(JSON.stringify(value));
+                } else {
+                    encodedValue = encodeURIComponent(value);
+                }
+                paramsArray.push(encodeURIComponent(key) + '=' + encodedValue);
+            }
+        }
+        return paramsArray.join('&');
+    },
+
+    _isMVTRequest: function (url) {
+        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/column-type.js
+var column_type_ColumnType;
+(function (ColumnType) {
+  ColumnType[ColumnType["Byte"] = 0] = "Byte";
+  ColumnType[ColumnType["UByte"] = 1] = "UByte";
+  ColumnType[ColumnType["Bool"] = 2] = "Bool";
+  ColumnType[ColumnType["Short"] = 3] = "Short";
+  ColumnType[ColumnType["UShort"] = 4] = "UShort";
+  ColumnType[ColumnType["Int"] = 5] = "Int";
+  ColumnType[ColumnType["UInt"] = 6] = "UInt";
+  ColumnType[ColumnType["Long"] = 7] = "Long";
+  ColumnType[ColumnType["ULong"] = 8] = "ULong";
+  ColumnType[ColumnType["Float"] = 9] = "Float";
+  ColumnType[ColumnType["Double"] = 10] = "Double";
+  ColumnType[ColumnType["String"] = 11] = "String";
+  ColumnType[ColumnType["Json"] = 12] = "Json";
+  ColumnType[ColumnType["DateTime"] = 13] = "DateTime";
+  ColumnType[ColumnType["Binary"] = 14] = "Binary";
+})(column_type_ColumnType || (column_type_ColumnType = {}));
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/ColumnMeta.js
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var ColumnMeta_ColumnMeta = /*#__PURE__*/_createClass(function ColumnMeta(name, type, title, description, width, precision, scale, nullable, unique, primary_key) {
+  _classCallCheck(this, ColumnMeta);
+  this.name = name;
+  this.type = type;
+  this.title = title;
+  this.description = description;
+  this.width = width;
+  this.precision = precision;
+  this.scale = scale;
+  this.nullable = nullable;
+  this.unique = unique;
+  this.primary_key = primary_key;
+});
+
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/CrsMeta.js
+function CrsMeta_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function CrsMeta_createClass(Constructor, protoProps, staticProps) { if (protoProps) CrsMeta_defineProperties(Constructor.prototype, protoProps); if (staticProps) CrsMeta_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function CrsMeta_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var CrsMeta = /*#__PURE__*/CrsMeta_createClass(function CrsMeta(org, code, name, description, wkt, code_string) {
+  CrsMeta_classCallCheck(this, CrsMeta);
+  this.org = org;
+  this.code = code;
+  this.name = name;
+  this.description = description;
+  this.wkt = wkt;
+  this.code_string = code_string;
+});
+
+// EXTERNAL MODULE: ./node_modules/flatbuffers/js/flatbuffers.js
+var js_flatbuffers = __webpack_require__(903);
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/column.js
+function column_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function column_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function column_createClass(Constructor, protoProps, staticProps) { if (protoProps) column_defineProperties(Constructor.prototype, protoProps); if (staticProps) column_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+var column_Column = /*#__PURE__*/function () {
+  function Column() {
+    column_classCallCheck(this, Column);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  column_createClass(Column, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "name",
+    value: function name(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "type",
+    value: function type() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readUint8(this.bb_pos + offset) : column_type_ColumnType.Byte;
+    }
+  }, {
+    key: "title",
+    value: function title(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "description",
+    value: function description(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "width",
+    value: function width() {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
+    }
+  }, {
+    key: "precision",
+    value: function precision() {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
+    }
+  }, {
+    key: "scale",
+    value: function scale() {
+      var offset = this.bb.__offset(this.bb_pos, 16);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
+    }
+  }, {
+    key: "nullable",
+    value: function nullable() {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : true;
+    }
+  }, {
+    key: "unique",
+    value: function unique() {
+      var offset = this.bb.__offset(this.bb_pos, 20);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "primaryKey",
+    value: function primaryKey() {
+      var offset = this.bb.__offset(this.bb_pos, 22);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "metadata",
+    value: function metadata(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 24);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }], [{
+    key: "getRootAsColumn",
+    value: function getRootAsColumn(bb, obj) {
+      return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsColumn",
+    value: function getSizePrefixedRootAsColumn(bb, obj) {
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startColumn",
+    value: function startColumn(builder) {
+      builder.startObject(11);
+    }
+  }, {
+    key: "addName",
+    value: function addName(builder, nameOffset) {
+      builder.addFieldOffset(0, nameOffset, 0);
+    }
+  }, {
+    key: "addType",
+    value: function addType(builder, type) {
+      builder.addFieldInt8(1, type, column_type_ColumnType.Byte);
+    }
+  }, {
+    key: "addTitle",
+    value: function addTitle(builder, titleOffset) {
+      builder.addFieldOffset(2, titleOffset, 0);
+    }
+  }, {
+    key: "addDescription",
+    value: function addDescription(builder, descriptionOffset) {
+      builder.addFieldOffset(3, descriptionOffset, 0);
+    }
+  }, {
+    key: "addWidth",
+    value: function addWidth(builder, width) {
+      builder.addFieldInt32(4, width, -1);
+    }
+  }, {
+    key: "addPrecision",
+    value: function addPrecision(builder, precision) {
+      builder.addFieldInt32(5, precision, -1);
+    }
+  }, {
+    key: "addScale",
+    value: function addScale(builder, scale) {
+      builder.addFieldInt32(6, scale, -1);
+    }
+  }, {
+    key: "addNullable",
+    value: function addNullable(builder, nullable) {
+      builder.addFieldInt8(7, +nullable, +true);
+    }
+  }, {
+    key: "addUnique",
+    value: function addUnique(builder, unique) {
+      builder.addFieldInt8(8, +unique, +false);
+    }
+  }, {
+    key: "addPrimaryKey",
+    value: function addPrimaryKey(builder, primaryKey) {
+      builder.addFieldInt8(9, +primaryKey, +false);
+    }
+  }, {
+    key: "addMetadata",
+    value: function addMetadata(builder, metadataOffset) {
+      builder.addFieldOffset(10, metadataOffset, 0);
+    }
+  }, {
+    key: "endColumn",
+    value: function endColumn(builder) {
+      var offset = builder.endObject();
+      builder.requiredField(offset, 4);
+      return offset;
+    }
+  }, {
+    key: "createColumn",
+    value: function createColumn(builder, nameOffset, type, titleOffset, descriptionOffset, width, precision, scale, nullable, unique, primaryKey, metadataOffset) {
+      Column.startColumn(builder);
+      Column.addName(builder, nameOffset);
+      Column.addType(builder, type);
+      Column.addTitle(builder, titleOffset);
+      Column.addDescription(builder, descriptionOffset);
+      Column.addWidth(builder, width);
+      Column.addPrecision(builder, precision);
+      Column.addScale(builder, scale);
+      Column.addNullable(builder, nullable);
+      Column.addUnique(builder, unique);
+      Column.addPrimaryKey(builder, primaryKey);
+      Column.addMetadata(builder, metadataOffset);
+      return Column.endColumn(builder);
+    }
+  }]);
+  return Column;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/crs.js
+function crs_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function crs_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function crs_createClass(Constructor, protoProps, staticProps) { if (protoProps) crs_defineProperties(Constructor.prototype, protoProps); if (staticProps) crs_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Crs = /*#__PURE__*/function () {
+  function Crs() {
+    crs_classCallCheck(this, Crs);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  crs_createClass(Crs, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "org",
+    value: function org(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "code",
+    value: function code() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "name",
+    value: function name(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "description",
+    value: function description(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "wkt",
+    value: function wkt(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "codeString",
+    value: function codeString(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }], [{
+    key: "getRootAsCrs",
+    value: function getRootAsCrs(bb, obj) {
+      return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsCrs",
+    value: function getSizePrefixedRootAsCrs(bb, obj) {
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startCrs",
+    value: function startCrs(builder) {
+      builder.startObject(6);
+    }
+  }, {
+    key: "addOrg",
+    value: function addOrg(builder, orgOffset) {
+      builder.addFieldOffset(0, orgOffset, 0);
+    }
+  }, {
+    key: "addCode",
+    value: function addCode(builder, code) {
+      builder.addFieldInt32(1, code, 0);
+    }
+  }, {
+    key: "addName",
+    value: function addName(builder, nameOffset) {
+      builder.addFieldOffset(2, nameOffset, 0);
+    }
+  }, {
+    key: "addDescription",
+    value: function addDescription(builder, descriptionOffset) {
+      builder.addFieldOffset(3, descriptionOffset, 0);
+    }
+  }, {
+    key: "addWkt",
+    value: function addWkt(builder, wktOffset) {
+      builder.addFieldOffset(4, wktOffset, 0);
+    }
+  }, {
+    key: "addCodeString",
+    value: function addCodeString(builder, codeStringOffset) {
+      builder.addFieldOffset(5, codeStringOffset, 0);
+    }
+  }, {
+    key: "endCrs",
+    value: function endCrs(builder) {
+      var offset = builder.endObject();
+      return offset;
+    }
+  }, {
+    key: "createCrs",
+    value: function createCrs(builder, orgOffset, code, nameOffset, descriptionOffset, wktOffset, codeStringOffset) {
+      Crs.startCrs(builder);
+      Crs.addOrg(builder, orgOffset);
+      Crs.addCode(builder, code);
+      Crs.addName(builder, nameOffset);
+      Crs.addDescription(builder, descriptionOffset);
+      Crs.addWkt(builder, wktOffset);
+      Crs.addCodeString(builder, codeStringOffset);
+      return Crs.endCrs(builder);
+    }
+  }]);
+  return Crs;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/geometry-type.js
+var geometry_type_GeometryType;
+(function (GeometryType) {
+  GeometryType[GeometryType["Unknown"] = 0] = "Unknown";
+  GeometryType[GeometryType["Point"] = 1] = "Point";
+  GeometryType[GeometryType["LineString"] = 2] = "LineString";
+  GeometryType[GeometryType["Polygon"] = 3] = "Polygon";
+  GeometryType[GeometryType["MultiPoint"] = 4] = "MultiPoint";
+  GeometryType[GeometryType["MultiLineString"] = 5] = "MultiLineString";
+  GeometryType[GeometryType["MultiPolygon"] = 6] = "MultiPolygon";
+  GeometryType[GeometryType["GeometryCollection"] = 7] = "GeometryCollection";
+  GeometryType[GeometryType["CircularString"] = 8] = "CircularString";
+  GeometryType[GeometryType["CompoundCurve"] = 9] = "CompoundCurve";
+  GeometryType[GeometryType["CurvePolygon"] = 10] = "CurvePolygon";
+  GeometryType[GeometryType["MultiCurve"] = 11] = "MultiCurve";
+  GeometryType[GeometryType["MultiSurface"] = 12] = "MultiSurface";
+  GeometryType[GeometryType["Curve"] = 13] = "Curve";
+  GeometryType[GeometryType["Surface"] = 14] = "Surface";
+  GeometryType[GeometryType["PolyhedralSurface"] = 15] = "PolyhedralSurface";
+  GeometryType[GeometryType["TIN"] = 16] = "TIN";
+  GeometryType[GeometryType["Triangle"] = 17] = "Triangle";
+})(geometry_type_GeometryType || (geometry_type_GeometryType = {}));
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/header.js
+function header_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function header_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function header_createClass(Constructor, protoProps, staticProps) { if (protoProps) header_defineProperties(Constructor.prototype, protoProps); if (staticProps) header_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+
+var header_Header = /*#__PURE__*/function () {
+  function Header() {
+    header_classCallCheck(this, Header);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  header_createClass(Header, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "name",
+    value: function name(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "envelope",
+    value: function envelope(index) {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
+    }
+  }, {
+    key: "envelopeLength",
+    value: function envelopeLength() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "envelopeArray",
+    value: function envelopeArray() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "geometryType",
+    value: function geometryType() {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.readUint8(this.bb_pos + offset) : geometry_type_GeometryType.Unknown;
+    }
+  }, {
+    key: "hasZ",
+    value: function hasZ() {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "hasM",
+    value: function hasM() {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "hasT",
+    value: function hasT() {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "hasTm",
+    value: function hasTm() {
+      var offset = this.bb.__offset(this.bb_pos, 16);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "columns",
+    value: function columns(index, obj) {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? (obj || new column_Column()).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+    }
+  }, {
+    key: "columnsLength",
+    value: function columnsLength() {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "featuresCount",
+    value: function featuresCount() {
+      var offset = this.bb.__offset(this.bb_pos, 20);
+      return offset ? this.bb.readUint64(this.bb_pos + offset) : BigInt('0');
+    }
+  }, {
+    key: "indexNodeSize",
+    value: function indexNodeSize() {
+      var offset = this.bb.__offset(this.bb_pos, 22);
+      return offset ? this.bb.readUint16(this.bb_pos + offset) : 16;
+    }
+  }, {
+    key: "crs",
+    value: function crs(obj) {
+      var offset = this.bb.__offset(this.bb_pos, 24);
+      return offset ? (obj || new Crs()).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+    }
+  }, {
+    key: "title",
+    value: function title(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 26);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "description",
+    value: function description(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 28);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "metadata",
+    value: function metadata(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 30);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }], [{
+    key: "getRootAsHeader",
+    value: function getRootAsHeader(bb, obj) {
+      return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsHeader",
+    value: function getSizePrefixedRootAsHeader(bb, obj) {
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startHeader",
+    value: function startHeader(builder) {
+      builder.startObject(14);
+    }
+  }, {
+    key: "addName",
+    value: function addName(builder, nameOffset) {
+      builder.addFieldOffset(0, nameOffset, 0);
+    }
+  }, {
+    key: "addEnvelope",
+    value: function addEnvelope(builder, envelopeOffset) {
+      builder.addFieldOffset(1, envelopeOffset, 0);
+    }
+  }, {
+    key: "createEnvelopeVector",
+    value: function createEnvelopeVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addFloat64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startEnvelopeVector",
+    value: function startEnvelopeVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addGeometryType",
+    value: function addGeometryType(builder, geometryType) {
+      builder.addFieldInt8(2, geometryType, geometry_type_GeometryType.Unknown);
+    }
+  }, {
+    key: "addHasZ",
+    value: function addHasZ(builder, hasZ) {
+      builder.addFieldInt8(3, +hasZ, +false);
+    }
+  }, {
+    key: "addHasM",
+    value: function addHasM(builder, hasM) {
+      builder.addFieldInt8(4, +hasM, +false);
+    }
+  }, {
+    key: "addHasT",
+    value: function addHasT(builder, hasT) {
+      builder.addFieldInt8(5, +hasT, +false);
+    }
+  }, {
+    key: "addHasTm",
+    value: function addHasTm(builder, hasTm) {
+      builder.addFieldInt8(6, +hasTm, +false);
+    }
+  }, {
+    key: "addColumns",
+    value: function addColumns(builder, columnsOffset) {
+      builder.addFieldOffset(7, columnsOffset, 0);
+    }
+  }, {
+    key: "createColumnsVector",
+    value: function createColumnsVector(builder, data) {
+      builder.startVector(4, data.length, 4);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addOffset(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startColumnsVector",
+    value: function startColumnsVector(builder, numElems) {
+      builder.startVector(4, numElems, 4);
+    }
+  }, {
+    key: "addFeaturesCount",
+    value: function addFeaturesCount(builder, featuresCount) {
+      builder.addFieldInt64(8, featuresCount, BigInt('0'));
+    }
+  }, {
+    key: "addIndexNodeSize",
+    value: function addIndexNodeSize(builder, indexNodeSize) {
+      builder.addFieldInt16(9, indexNodeSize, 16);
+    }
+  }, {
+    key: "addCrs",
+    value: function addCrs(builder, crsOffset) {
+      builder.addFieldOffset(10, crsOffset, 0);
+    }
+  }, {
+    key: "addTitle",
+    value: function addTitle(builder, titleOffset) {
+      builder.addFieldOffset(11, titleOffset, 0);
+    }
+  }, {
+    key: "addDescription",
+    value: function addDescription(builder, descriptionOffset) {
+      builder.addFieldOffset(12, descriptionOffset, 0);
+    }
+  }, {
+    key: "addMetadata",
+    value: function addMetadata(builder, metadataOffset) {
+      builder.addFieldOffset(13, metadataOffset, 0);
+    }
+  }, {
+    key: "endHeader",
+    value: function endHeader(builder) {
+      var offset = builder.endObject();
+      return offset;
+    }
+  }, {
+    key: "finishHeaderBuffer",
+    value: function finishHeaderBuffer(builder, offset) {
+      builder.finish(offset);
+    }
+  }, {
+    key: "finishSizePrefixedHeaderBuffer",
+    value: function finishSizePrefixedHeaderBuffer(builder, offset) {
+      builder.finish(offset, undefined, true);
+    }
+  }]);
+  return Header;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/HeaderMeta.js
+function HeaderMeta_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function HeaderMeta_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function HeaderMeta_createClass(Constructor, protoProps, staticProps) { if (protoProps) HeaderMeta_defineProperties(Constructor.prototype, protoProps); if (staticProps) HeaderMeta_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+var HeaderMeta_HeaderMeta = /*#__PURE__*/function () {
+  function HeaderMeta(geometryType, columns, envelope, featuresCount, indexNodeSize, crs, title, description, metadata) {
+    HeaderMeta_classCallCheck(this, HeaderMeta);
+    this.geometryType = geometryType;
+    this.columns = columns;
+    this.envelope = envelope;
+    this.featuresCount = featuresCount;
+    this.indexNodeSize = indexNodeSize;
+    this.crs = crs;
+    this.title = title;
+    this.description = description;
+    this.metadata = metadata;
+  }
+  HeaderMeta_createClass(HeaderMeta, null, [{
+    key: "fromByteBuffer",
+    value: function fromByteBuffer(bb) {
+      var header = header_Header.getRootAsHeader(bb);
+      var featuresCount = header.featuresCount();
+      var indexNodeSize = header.indexNodeSize();
+      var columns = [];
+      for (var j = 0; j < header.columnsLength(); j++) {
+        var column = header.columns(j);
+        if (!column) throw new Error('Column unexpectedly missing');
+        if (!column.name()) throw new Error('Column name unexpectedly missing');
+        columns.push(new ColumnMeta_ColumnMeta(column.name(), column.type(), column.title(), column.description(), column.width(), column.precision(), column.scale(), column.nullable(), column.unique(), column.primaryKey()));
+      }
+      var crs = header.crs();
+      var crsMeta = crs ? new CrsMeta(crs.org(), crs.code(), crs.name(), crs.description(), crs.wkt(), crs.codeString()) : null;
+      var headerMeta = new HeaderMeta(header.geometryType(), columns, null, Number(featuresCount), indexNodeSize, crsMeta, header.title(), header.description(), header.metadata());
+      return headerMeta;
+    }
+  }]);
+  return HeaderMeta;
+}();
+
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/geometry.js
+function geometry_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function geometry_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function geometry_createClass(Constructor, protoProps, staticProps) { if (protoProps) geometry_defineProperties(Constructor.prototype, protoProps); if (staticProps) geometry_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+var geometry_Geometry = /*#__PURE__*/function () {
+  function Geometry() {
+    geometry_classCallCheck(this, Geometry);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  geometry_createClass(Geometry, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "ends",
+    value: function ends(index) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.readUint32(this.bb.__vector(this.bb_pos + offset) + index * 4) : 0;
+    }
+  }, {
+    key: "endsLength",
+    value: function endsLength() {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "endsArray",
+    value: function endsArray() {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? new Uint32Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "xy",
+    value: function xy(index) {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
+    }
+  }, {
+    key: "xyLength",
+    value: function xyLength() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "xyArray",
+    value: function xyArray() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "z",
+    value: function z(index) {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
+    }
+  }, {
+    key: "zLength",
+    value: function zLength() {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "zArray",
+    value: function zArray() {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "m",
+    value: function m(index) {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
+    }
+  }, {
+    key: "mLength",
+    value: function mLength() {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "mArray",
+    value: function mArray() {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "t",
+    value: function t(index) {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
+    }
+  }, {
+    key: "tLength",
+    value: function tLength() {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "tArray",
+    value: function tArray() {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "tm",
+    value: function tm(index) {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? this.bb.readUint64(this.bb.__vector(this.bb_pos + offset) + index * 8) : BigInt(0);
+    }
+  }, {
+    key: "tmLength",
+    value: function tmLength() {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "type",
+    value: function type() {
+      var offset = this.bb.__offset(this.bb_pos, 16);
+      return offset ? this.bb.readUint8(this.bb_pos + offset) : geometry_type_GeometryType.Unknown;
+    }
+  }, {
+    key: "parts",
+    value: function parts(index, obj) {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? (obj || new Geometry()).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+    }
+  }, {
+    key: "partsLength",
+    value: function partsLength() {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }], [{
+    key: "getRootAsGeometry",
+    value: function getRootAsGeometry(bb, obj) {
+      return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsGeometry",
+    value: function getSizePrefixedRootAsGeometry(bb, obj) {
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startGeometry",
+    value: function startGeometry(builder) {
+      builder.startObject(8);
+    }
+  }, {
+    key: "addEnds",
+    value: function addEnds(builder, endsOffset) {
+      builder.addFieldOffset(0, endsOffset, 0);
+    }
+  }, {
+    key: "createEndsVector",
+    value: function createEndsVector(builder, data) {
+      builder.startVector(4, data.length, 4);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addInt32(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startEndsVector",
+    value: function startEndsVector(builder, numElems) {
+      builder.startVector(4, numElems, 4);
+    }
+  }, {
+    key: "addXy",
+    value: function addXy(builder, xyOffset) {
+      builder.addFieldOffset(1, xyOffset, 0);
+    }
+  }, {
+    key: "createXyVector",
+    value: function createXyVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addFloat64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startXyVector",
+    value: function startXyVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addZ",
+    value: function addZ(builder, zOffset) {
+      builder.addFieldOffset(2, zOffset, 0);
+    }
+  }, {
+    key: "createZVector",
+    value: function createZVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addFloat64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startZVector",
+    value: function startZVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addM",
+    value: function addM(builder, mOffset) {
+      builder.addFieldOffset(3, mOffset, 0);
+    }
+  }, {
+    key: "createMVector",
+    value: function createMVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addFloat64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startMVector",
+    value: function startMVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addT",
+    value: function addT(builder, tOffset) {
+      builder.addFieldOffset(4, tOffset, 0);
+    }
+  }, {
+    key: "createTVector",
+    value: function createTVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addFloat64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startTVector",
+    value: function startTVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addTm",
+    value: function addTm(builder, tmOffset) {
+      builder.addFieldOffset(5, tmOffset, 0);
+    }
+  }, {
+    key: "createTmVector",
+    value: function createTmVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addInt64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startTmVector",
+    value: function startTmVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addType",
+    value: function addType(builder, type) {
+      builder.addFieldInt8(6, type, geometry_type_GeometryType.Unknown);
+    }
+  }, {
+    key: "addParts",
+    value: function addParts(builder, partsOffset) {
+      builder.addFieldOffset(7, partsOffset, 0);
+    }
+  }, {
+    key: "createPartsVector",
+    value: function createPartsVector(builder, data) {
+      builder.startVector(4, data.length, 4);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addOffset(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startPartsVector",
+    value: function startPartsVector(builder, numElems) {
+      builder.startVector(4, numElems, 4);
+    }
+  }, {
+    key: "endGeometry",
+    value: function endGeometry(builder) {
+      var offset = builder.endObject();
+      return offset;
+    }
+  }, {
+    key: "createGeometry",
+    value: function createGeometry(builder, endsOffset, xyOffset, zOffset, mOffset, tOffset, tmOffset, type, partsOffset) {
+      Geometry.startGeometry(builder);
+      Geometry.addEnds(builder, endsOffset);
+      Geometry.addXy(builder, xyOffset);
+      Geometry.addZ(builder, zOffset);
+      Geometry.addM(builder, mOffset);
+      Geometry.addT(builder, tOffset);
+      Geometry.addTm(builder, tmOffset);
+      Geometry.addType(builder, type);
+      Geometry.addParts(builder, partsOffset);
+      return Geometry.endGeometry(builder);
+    }
+  }]);
+  return Geometry;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/generic/geometry.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+
+function geometry_buildGeometry(builder, parsedGeometry) {
+  var xy = parsedGeometry.xy,
+    z = parsedGeometry.z,
+    ends = parsedGeometry.ends,
+    parts = parsedGeometry.parts,
+    type = parsedGeometry.type;
+  if (parts) {
+    var partOffsets = parts.map(function (part) {
+      return geometry_buildGeometry(builder, part);
+    });
+    var partsOffset = Geometry.createPartsVector(builder, partOffsets);
+    Geometry.startGeometry(builder);
+    Geometry.addParts(builder, partsOffset);
+    Geometry.addType(builder, type);
+    return Geometry.endGeometry(builder);
+  }
+  var xyOffset = Geometry.createXyVector(builder, xy);
+  var zOffset;
+  if (z) zOffset = Geometry.createZVector(builder, z);
+  var endsOffset;
+  if (ends) endsOffset = Geometry.createEndsVector(builder, ends);
+  Geometry.startGeometry(builder);
+  if (endsOffset) Geometry.addEnds(builder, endsOffset);
+  Geometry.addXy(builder, xyOffset);
+  if (zOffset) Geometry.addZ(builder, zOffset);
+  Geometry.addType(builder, type);
+  return Geometry.endGeometry(builder);
+}
+function geometry_flat(a, xy, z) {
+  if (a.length === 0) return;
+  if (Array.isArray(a[0])) {
+    var _iterator = _createForOfIteratorHelper(a),
+      _step;
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var sa = _step.value;
+        geometry_flat(sa, xy, z);
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+  } else {
+    if (a.length === 2) xy.push.apply(xy, _toConsumableArray(a));else {
+      xy.push(a[0], a[1]);
+      z.push(a[2]);
+    }
+  }
+}
+function geometry_parseGeometry(geometry, headerGeomType) {
+  var xy;
+  var ends;
+  var parts;
+  var type = headerGeomType;
+  if (type === GeometryType.Unknown) {
+    type = geometry_toGeometryType(geometry.getType());
+  }
+  if (type === GeometryType.MultiLineString) {
+    if (geometry.getFlatCoordinates) xy = geometry.getFlatCoordinates();
+    var mlsEnds = geometry.getEnds();
+    if (mlsEnds.length > 1) ends = mlsEnds.map(function (e) {
+      return e >> 1;
+    });
+  } else if (type === GeometryType.Polygon) {
+    if (geometry.getFlatCoordinates) xy = geometry.getFlatCoordinates();
+    var pEnds = geometry.getEnds();
+    if (pEnds.length > 1) ends = pEnds.map(function (e) {
+      return e >> 1;
+    });
+  } else if (type === GeometryType.MultiPolygon) {
+    var mp = geometry;
+    parts = mp.getPolygons().map(function (p) {
+      return geometry_parseGeometry(p, GeometryType.Polygon);
+    });
+  } else {
+    if (geometry.getFlatCoordinates) xy = geometry.getFlatCoordinates();
+  }
+  return {
+    xy: xy,
+    ends: ends,
+    type: type,
+    parts: parts
+  };
+}
+function pairFlatCoordinates(xy, z) {
+  var newArray = [];
+  for (var i = 0; i < xy.length; i += 2) {
+    var a = [xy[i], xy[i + 1]];
+    if (z) a.push(z[i >> 1]);
+    newArray.push(a);
+  }
+  return newArray;
+}
+function geometry_toGeometryType(name) {
+  if (!name) return GeometryType.Unknown;
+  var type = GeometryType[name];
+  return type;
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/geojson/geometry.js
+
+
+function geojson_geometry_parseGeometry(geometry) {
+  var cs = geometry.coordinates;
+  var xy = [];
+  var z = [];
+  var ends;
+  var parts;
+  var type = toGeometryType(geometry.type);
+  var end = 0;
+  switch (geometry.type) {
+    case 'Point':
+      flat(cs, xy, z);
+      break;
+    case 'MultiPoint':
+    case 'LineString':
+      flat(cs, xy, z);
+      break;
+    case 'MultiLineString':
+    case 'Polygon':
+      {
+        var css = cs;
+        flat(css, xy, z);
+        if (css.length > 1) ends = css.map(function (c) {
+          return end += c.length;
+        });
+        break;
+      }
+    case 'MultiPolygon':
+      {
+        var csss = cs;
+        var geometries = csss.map(function (coordinates) {
+          return {
+            type: 'Polygon',
+            coordinates: coordinates
+          };
+        });
+        parts = geometries.map(geojson_geometry_parseGeometry);
+        break;
+      }
+  }
+  return {
+    xy: xy,
+    z: z.length > 0 ? z : undefined,
+    ends: ends,
+    type: type,
+    parts: parts
+  };
+}
+function geometry_parseGC(geometry) {
+  var type = toGeometryType(geometry.type);
+  var parts = [];
+  for (var i = 0; i < geometry.geometries.length; i++) {
+    var g = geometry.geometries[i];
+    if (g.type === 'GeometryCollection') parts.push(geometry_parseGC(g));else parts.push(geojson_geometry_parseGeometry(g));
+  }
+  return {
+    type: type,
+    parts: parts
+  };
+}
+function extractParts(xy, z, ends) {
+  if (!ends || ends.length === 0) return [pairFlatCoordinates(xy, z)];
+  var s = 0;
+  var xySlices = Array.from(ends).map(function (e) {
+    return xy.slice(s, s = e << 1);
+  });
+  var zSlices;
+  if (z) {
+    s = 0;
+    zSlices = Array.from(ends).map(function (e) {
+      return z.slice(s, s = e);
+    });
+  }
+  return xySlices.map(function (xy, i) {
+    return pairFlatCoordinates(xy, zSlices ? zSlices[i] : undefined);
+  });
+}
+function toGeoJsonCoordinates(geometry, type) {
+  var xy = geometry.xyArray();
+  var z = geometry.zArray();
+  switch (type) {
+    case geometry_type_GeometryType.Point:
+      {
+        var a = Array.from(xy);
+        if (z) a.push(z[0]);
+        return a;
+      }
+    case geometry_type_GeometryType.MultiPoint:
+    case geometry_type_GeometryType.LineString:
+      return pairFlatCoordinates(xy, z);
+    case geometry_type_GeometryType.MultiLineString:
+      return extractParts(xy, z, geometry.endsArray());
+    case geometry_type_GeometryType.Polygon:
+      return extractParts(xy, z, geometry.endsArray());
+  }
+}
+function fromGeometry(geometry, headerType) {
+  var type = headerType;
+  if (type === geometry_type_GeometryType.Unknown) {
+    type = geometry.type();
+  }
+  if (type === geometry_type_GeometryType.GeometryCollection) {
+    var geometries = [];
+    for (var i = 0; i < geometry.partsLength(); i++) {
+      var part = geometry.parts(i);
+      var partType = part.type();
+      geometries.push(fromGeometry(part, partType));
+    }
+    return {
+      type: geometry_type_GeometryType[type],
+      geometries: geometries
+    };
+  } else if (type === geometry_type_GeometryType.MultiPolygon) {
+    var _geometries = [];
+    for (var _i2 = 0; _i2 < geometry.partsLength(); _i2++) _geometries.push(fromGeometry(geometry.parts(_i2), geometry_type_GeometryType.Polygon));
+    return {
+      type: geometry_type_GeometryType[type],
+      coordinates: _geometries.map(function (g) {
+        return g.coordinates;
+      })
+    };
+  }
+  var coordinates = toGeoJsonCoordinates(geometry, type);
+  return {
+    type: geometry_type_GeometryType[type],
+    coordinates: coordinates
+  };
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/feature.js
+function feature_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function feature_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function feature_createClass(Constructor, protoProps, staticProps) { if (protoProps) feature_defineProperties(Constructor.prototype, protoProps); if (staticProps) feature_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+var feature_Feature = /*#__PURE__*/function () {
+  function Feature() {
+    feature_classCallCheck(this, Feature);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  feature_createClass(Feature, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "geometry",
+    value: function geometry(obj) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? (obj || new geometry_Geometry()).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+    }
+  }, {
+    key: "properties",
+    value: function properties(index) {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readUint8(this.bb.__vector(this.bb_pos + offset) + index) : 0;
+    }
+  }, {
+    key: "propertiesLength",
+    value: function propertiesLength() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "propertiesArray",
+    value: function propertiesArray() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? new Uint8Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "columns",
+    value: function columns(index, obj) {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? (obj || new column_Column()).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+    }
+  }, {
+    key: "columnsLength",
+    value: function columnsLength() {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }], [{
+    key: "getRootAsFeature",
+    value: function getRootAsFeature(bb, obj) {
+      return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsFeature",
+    value: function getSizePrefixedRootAsFeature(bb, obj) {
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startFeature",
+    value: function startFeature(builder) {
+      builder.startObject(3);
+    }
+  }, {
+    key: "addGeometry",
+    value: function addGeometry(builder, geometryOffset) {
+      builder.addFieldOffset(0, geometryOffset, 0);
+    }
+  }, {
+    key: "addProperties",
+    value: function addProperties(builder, propertiesOffset) {
+      builder.addFieldOffset(1, propertiesOffset, 0);
+    }
+  }, {
+    key: "createPropertiesVector",
+    value: function createPropertiesVector(builder, data) {
+      builder.startVector(1, data.length, 1);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addInt8(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startPropertiesVector",
+    value: function startPropertiesVector(builder, numElems) {
+      builder.startVector(1, numElems, 1);
+    }
+  }, {
+    key: "addColumns",
+    value: function addColumns(builder, columnsOffset) {
+      builder.addFieldOffset(2, columnsOffset, 0);
+    }
+  }, {
+    key: "createColumnsVector",
+    value: function createColumnsVector(builder, data) {
+      builder.startVector(4, data.length, 4);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addOffset(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startColumnsVector",
+    value: function startColumnsVector(builder, numElems) {
+      builder.startVector(4, numElems, 4);
+    }
+  }, {
+    key: "endFeature",
+    value: function endFeature(builder) {
+      var offset = builder.endObject();
+      return offset;
+    }
+  }, {
+    key: "finishFeatureBuffer",
+    value: function finishFeatureBuffer(builder, offset) {
+      builder.finish(offset);
+    }
+  }, {
+    key: "finishSizePrefixedFeatureBuffer",
+    value: function finishSizePrefixedFeatureBuffer(builder, offset) {
+      builder.finish(offset, undefined, true);
+    }
+  }, {
+    key: "createFeature",
+    value: function createFeature(builder, geometryOffset, propertiesOffset, columnsOffset) {
+      Feature.startFeature(builder);
+      Feature.addGeometry(builder, geometryOffset);
+      Feature.addProperties(builder, propertiesOffset);
+      Feature.addColumns(builder, columnsOffset);
+      return Feature.endFeature(builder);
+    }
+  }]);
+  return Feature;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/generic/feature.js
+
+
+
+
+var textEncoder = new TextEncoder();
+var textDecoder = new TextDecoder();
+function fromFeature(feature, header, createGeometry, createFeature) {
+  var columns = header.columns;
+  var geometry = feature.geometry();
+  var simpleGeometry = createGeometry(geometry, header.geometryType);
+  var properties = parseProperties(feature, columns);
+  return createFeature(simpleGeometry, properties);
+}
+function feature_buildFeature(geometry, properties, header) {
+  var columns = header.columns;
+  var builder = new flatbuffers.Builder();
+  var offset = 0;
+  var capacity = 1024;
+  var bytes = new Uint8Array(capacity);
+  var view = new DataView(bytes.buffer);
+  var prep = function prep(size) {
+    if (offset + size < capacity) return;
+    capacity = capacity * 2;
+    var newBytes = new Uint8Array(capacity);
+    newBytes.set(bytes);
+    bytes = newBytes;
+    view = new DataView(bytes.buffer, offset);
+  };
+  if (columns) {
+    for (var i = 0; i < columns.length; i++) {
+      var column = columns[i];
+      var value = properties[column.name];
+      if (value === null) continue;
+      view.setUint16(offset, i, true);
+      offset += 2;
+      switch (column.type) {
+        case ColumnType.Bool:
+          prep(1);
+          view.setUint8(offset, value);
+          offset += 1;
+          break;
+        case ColumnType.Short:
+          prep(2);
+          view.setInt16(offset, value, true);
+          offset += 2;
+          break;
+        case ColumnType.UShort:
+          prep(2);
+          view.setUint16(offset, value, true);
+          offset += 2;
+          break;
+        case ColumnType.Int:
+          prep(4);
+          view.setInt32(offset, value, true);
+          offset += 4;
+          break;
+        case ColumnType.UInt:
+          prep(4);
+          view.setUint32(offset, value, true);
+          offset += 4;
+          break;
+        case ColumnType.Long:
+          prep(8);
+          view.setBigInt64(offset, BigInt(value), true);
+          offset += 8;
+          break;
+        case ColumnType.Double:
+          prep(8);
+          view.setFloat64(offset, value, true);
+          offset += 8;
+          break;
+        case ColumnType.DateTime:
+        case ColumnType.String:
+          {
+            var str = textEncoder.encode(value);
+            prep(4);
+            view.setUint32(offset, str.length, true);
+            offset += 4;
+            prep(str.length);
+            bytes.set(str, offset);
+            offset += str.length;
+            break;
+          }
+        default:
+          throw new Error('Unknown type ' + column.type);
+      }
+    }
+  }
+  var propertiesOffset = null;
+  if (offset > 0) propertiesOffset = Feature.createPropertiesVector(builder, bytes.slice(0, offset));
+  var geometryOffset = buildGeometry(builder, geometry);
+  Feature.startFeature(builder);
+  Feature.addGeometry(builder, geometryOffset);
+  if (propertiesOffset) Feature.addProperties(builder, propertiesOffset);
+  var featureOffset = Feature.endFeature(builder);
+  builder.finishSizePrefixed(featureOffset);
+  return builder.asUint8Array();
+}
+function parseProperties(feature, columns) {
+  var properties = {};
+  if (!columns || columns.length === 0) return properties;
+  var array = feature.propertiesArray();
+  if (!array) return properties;
+  var view = new DataView(array.buffer, array.byteOffset);
+  var length = feature.propertiesLength();
+  var offset = 0;
+  while (offset < length) {
+    var i = view.getUint16(offset, true);
+    offset += 2;
+    var column = columns[i];
+    var name = column.name;
+    switch (column.type) {
+      case column_type_ColumnType.Bool:
+        {
+          properties[name] = !!view.getUint8(offset);
+          offset += 1;
+          break;
+        }
+      case column_type_ColumnType.Byte:
+        {
+          properties[name] = view.getInt8(offset);
+          offset += 1;
+          break;
+        }
+      case column_type_ColumnType.UByte:
+        {
+          properties[name] = view.getUint8(offset);
+          offset += 1;
+          break;
+        }
+      case column_type_ColumnType.Short:
+        {
+          properties[name] = view.getInt16(offset, true);
+          offset += 2;
+          break;
+        }
+      case column_type_ColumnType.UShort:
+        {
+          properties[name] = view.getUint16(offset, true);
+          offset += 2;
+          break;
+        }
+      case column_type_ColumnType.Int:
+        {
+          properties[name] = view.getInt32(offset, true);
+          offset += 4;
+          break;
+        }
+      case column_type_ColumnType.UInt:
+        {
+          properties[name] = view.getUint32(offset, true);
+          offset += 4;
+          break;
+        }
+      case column_type_ColumnType.Long:
+        {
+          properties[name] = Number(view.getBigInt64(offset, true));
+          offset += 8;
+          break;
+        }
+      case column_type_ColumnType.ULong:
+        {
+          properties[name] = Number(view.getBigUint64(offset, true));
+          offset += 8;
+          break;
+        }
+      case column_type_ColumnType.Double:
+        {
+          properties[name] = view.getFloat64(offset, true);
+          offset += 8;
+          break;
+        }
+      case column_type_ColumnType.DateTime:
+      case column_type_ColumnType.String:
+        {
+          var _length = view.getUint32(offset, true);
+          offset += 4;
+          properties[name] = textDecoder.decode(array.subarray(offset, offset + _length));
+          offset += _length;
+          break;
+        }
+      default:
+        throw new Error('Unknown type ' + column.type);
+    }
+  }
+  return properties;
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/geojson/feature.js
+
+
+function feature_fromFeature(feature, header) {
+  var columns = header.columns;
+  var geometry = fromGeometry(feature.geometry(), header.geometryType);
+  var geoJsonfeature = {
+    type: 'Feature',
+    geometry: geometry,
+    properties: parseProperties(feature, columns)
+  };
+  return geoJsonfeature;
+}
+// EXTERNAL MODULE: ./node_modules/slice-source/dist/slice-source.js
+var slice_source = __webpack_require__(901);
+// EXTERNAL MODULE: ./node_modules/@repeaterjs/repeater/cjs/repeater.js
+var repeater = __webpack_require__(982);
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/Config.js
+function Config_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function Config_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function Config_createClass(Constructor, protoProps, staticProps) { if (protoProps) Config_defineProperties(Constructor.prototype, protoProps); if (staticProps) Config_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var Config_Config = /*#__PURE__*/function () {
+  function Config() {
+    Config_classCallCheck(this, Config);
+    this._extraRequestThreshold = 256 * 1024;
+  }
+  Config_createClass(Config, [{
+    key: "extraRequestThreshold",
+    value: function extraRequestThreshold() {
+      return this._extraRequestThreshold;
+    }
+  }, {
+    key: "setExtraRequestThreshold",
+    value: function setExtraRequestThreshold(bytes) {
+      if (bytes < 0) {
+        throw new Error('extraRequestThreshold cannot be negative');
+      }
+      this._extraRequestThreshold = bytes;
+    }
+  }]);
+  return Config;
+}();
+
+Config_Config.global = new Config_Config();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/Logger.js
+function Logger_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function Logger_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function Logger_createClass(Constructor, protoProps, staticProps) { if (protoProps) Logger_defineProperties(Constructor.prototype, protoProps); if (staticProps) Logger_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var LogLevel;
+(function (LogLevel) {
+  LogLevel[LogLevel["Debug"] = 0] = "Debug";
+  LogLevel[LogLevel["Info"] = 1] = "Info";
+  LogLevel[LogLevel["Warn"] = 2] = "Warn";
+  LogLevel[LogLevel["Error"] = 3] = "Error";
+})(LogLevel || (LogLevel = {}));
+var Logger = /*#__PURE__*/function () {
+  function Logger() {
+    Logger_classCallCheck(this, Logger);
+  }
+  Logger_createClass(Logger, null, [{
+    key: "debug",
+    value: function debug() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      this.log.apply(this, [LogLevel.Debug].concat(args));
+    }
+  }, {
+    key: "info",
+    value: function info() {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+      this.log.apply(this, [LogLevel.Info].concat(args));
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+      this.log.apply(this, [LogLevel.Warn].concat(args));
+    }
+  }, {
+    key: "error",
+    value: function error() {
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+      this.log.apply(this, [LogLevel.Error].concat(args));
+    }
+  }, {
+    key: "log",
+    value: function log(level) {
+      if (this.logLevel > level) {
+        return;
+      }
+      for (var _len5 = arguments.length, args = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+        args[_key5 - 1] = arguments[_key5];
+      }
+      switch (level) {
+        case LogLevel.Debug:
+          {
+            var _console;
+            (_console = console).debug.apply(_console, args);
+            break;
+          }
+        case LogLevel.Info:
+          {
+            var _console2;
+            (_console2 = console).info.apply(_console2, args);
+            break;
+          }
+        case LogLevel.Warn:
+          {
+            var _console3;
+            (_console3 = console).warn.apply(_console3, args);
+            break;
+          }
+        case LogLevel.Error:
+          {
+            var _console4;
+            (_console4 = console).error.apply(_console4, args);
+            break;
+          }
+      }
+    }
+  }]);
+  return Logger;
+}();
+
+Logger.logLevel = LogLevel.Info;
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/packedrtree.js
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || packedrtree_unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function packedrtree_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return packedrtree_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return packedrtree_arrayLikeToArray(o, minLen); }
+function packedrtree_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function packedrtree_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function packedrtree_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function packedrtree_createClass(Constructor, protoProps, staticProps) { if (protoProps) packedrtree_defineProperties(Constructor.prototype, protoProps); if (staticProps) packedrtree_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _awaitAsyncGenerator(value) { return new _OverloadYield(value, 0); }
+function _wrapAsyncGenerator(fn) { return function () { return new _AsyncGenerator(fn.apply(this, arguments)); }; }
+function _AsyncGenerator(gen) { var front, back; function resume(key, arg) { try { var result = gen[key](arg), value = result.value, overloaded = value instanceof _OverloadYield; Promise.resolve(overloaded ? value.v : value).then(function (arg) { if (overloaded) { var nextKey = "return" === key ? "return" : "next"; if (!value.k || arg.done) return resume(nextKey, arg); arg = gen[nextKey](arg).value; } settle(result.done ? "return" : "normal", arg); }, function (err) { resume("throw", err); }); } catch (err) { settle("throw", err); } } function settle(type, value) { switch (type) { case "return": front.resolve({ value: value, done: !0 }); break; case "throw": front.reject(value); break; default: front.resolve({ value: value, done: !1 }); } (front = front.next) ? resume(front.key, front.arg) : back = null; } this._invoke = function (key, arg) { return new Promise(function (resolve, reject) { var request = { key: key, arg: arg, resolve: resolve, reject: reject, next: null }; back ? back = back.next = request : (front = back = request, resume(key, arg)); }); }, "function" != typeof gen["return"] && (this["return"] = void 0); }
+_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, _AsyncGenerator.prototype.next = function (arg) { return this._invoke("next", arg); }, _AsyncGenerator.prototype["throw"] = function (arg) { return this._invoke("throw", arg); }, _AsyncGenerator.prototype["return"] = function (arg) { return this._invoke("return", arg); };
+function _OverloadYield(value, kind) { this.v = value, this.k = kind; }
+
+
+var NODE_ITEM_LEN = 8 * 4 + 8;
+var DEFAULT_NODE_SIZE = 16;
+function calcTreeSize(numItems, nodeSize) {
+  nodeSize = Math.min(Math.max(+nodeSize, 2), 65535);
+  var n = numItems;
+  var numNodes = n;
+  do {
+    n = Math.ceil(n / nodeSize);
+    numNodes += n;
+  } while (n !== 1);
+  return numNodes * NODE_ITEM_LEN;
+}
+function generateLevelBounds(numItems, nodeSize) {
+  if (nodeSize < 2) throw new Error('Node size must be at least 2');
+  if (numItems === 0) throw new Error('Number of items must be greater than 0');
+  var n = numItems;
+  var numNodes = n;
+  var levelNumNodes = [n];
+  do {
+    n = Math.ceil(n / nodeSize);
+    numNodes += n;
+    levelNumNodes.push(n);
+  } while (n !== 1);
+  var levelOffsets = [];
+  n = numNodes;
+  for (var _i = 0, _levelNumNodes = levelNumNodes; _i < _levelNumNodes.length; _i++) {
+    var size = _levelNumNodes[_i];
+    levelOffsets.push(n - size);
+    n -= size;
+  }
+  levelOffsets.reverse();
+  levelNumNodes.reverse();
+  var levelBounds = [];
+  for (var i = 0; i < levelNumNodes.length; i++) levelBounds.push([levelOffsets[i], levelOffsets[i] + levelNumNodes[i]]);
+  levelBounds.reverse();
+  return levelBounds;
+}
+function streamSearch(_x, _x2, _x3, _x4) {
+  return _streamSearch.apply(this, arguments);
+}
+function _streamSearch() {
+  _streamSearch = _wrapAsyncGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(numItems, nodeSize, rect, readNode) {
+    var NodeRange, minX, minY, maxX, maxY, levelBounds, leafNodesOffset, rootNodeRange, queue, _loop;
+    return _regeneratorRuntime().wrap(function _callee$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          NodeRange = /*#__PURE__*/function () {
+            function NodeRange(nodes, level) {
+              packedrtree_classCallCheck(this, NodeRange);
+              this._level = level;
+              this.nodes = nodes;
+            }
+            packedrtree_createClass(NodeRange, [{
+              key: "level",
+              value: function level() {
+                return this._level;
+              }
+            }, {
+              key: "startNode",
+              value: function startNode() {
+                return this.nodes[0];
+              }
+            }, {
+              key: "endNode",
+              value: function endNode() {
+                return this.nodes[1];
+              }
+            }, {
+              key: "extendEndNodeToNewOffset",
+              value: function extendEndNodeToNewOffset(newOffset) {
+                console.assert(newOffset > this.nodes[1]);
+                this.nodes[1] = newOffset;
+              }
+            }, {
+              key: "toString",
+              value: function toString() {
+                return "[NodeRange level: ".concat(this._level, ", nodes: ").concat(this.nodes[0], "-").concat(this.nodes[1], "]");
+              }
+            }]);
+            return NodeRange;
+          }();
+          minX = rect.minX, minY = rect.minY, maxX = rect.maxX, maxY = rect.maxY;
+          Logger.info("tree items: ".concat(numItems, ", nodeSize: ").concat(nodeSize));
+          levelBounds = generateLevelBounds(numItems, nodeSize);
+          leafNodesOffset = levelBounds[0][0];
+          rootNodeRange = function () {
+            var range = [0, 1];
+            var level = levelBounds.length - 1;
+            return new NodeRange(range, level);
+          }();
+          queue = [rootNodeRange];
+          Logger.debug("starting stream search with queue: ".concat(queue, ", numItems: ").concat(numItems, ", nodeSize: ").concat(nodeSize, ", levelBounds: ").concat(levelBounds));
+          _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop() {
+            var nodeRange, nodeIndex, isLeafNode, _levelBounds$nodeRang, levelBound, end, length, buffer, float64Array, uint32Array, _loop2, pos, _ret;
+            return _regeneratorRuntime().wrap(function _loop$(_context2) {
+              while (1) switch (_context2.prev = _context2.next) {
+                case 0:
+                  nodeRange = queue.shift();
+                  Logger.debug("popped node: ".concat(nodeRange, ", queueLength: ").concat(queue.length));
+                  nodeIndex = nodeRange.startNode();
+                  isLeafNode = nodeIndex >= leafNodesOffset;
+                  _levelBounds$nodeRang = _slicedToArray(levelBounds[nodeRange.level()], 2), levelBound = _levelBounds$nodeRang[1];
+                  end = Math.min(nodeRange.endNode() + nodeSize, levelBound);
+                  length = end - nodeIndex;
+                  _context2.next = 9;
+                  return _awaitAsyncGenerator(readNode(nodeIndex * NODE_ITEM_LEN, length * NODE_ITEM_LEN));
+                case 9:
+                  buffer = _context2.sent;
+                  float64Array = new Float64Array(buffer);
+                  uint32Array = new Uint32Array(buffer);
+                  _loop2 = /*#__PURE__*/_regeneratorRuntime().mark(function _loop2(pos) {
+                    var nodePos, low32Offset, high32Offset, offset, featureLength, extraRequestThresholdNodes, nearestNodeRange, newNodeRange;
+                    return _regeneratorRuntime().wrap(function _loop2$(_context) {
+                      while (1) switch (_context.prev = _context.next) {
+                        case 0:
+                          nodePos = (pos - nodeIndex) * 5;
+                          if (!(maxX < float64Array[nodePos + 0])) {
+                            _context.next = 3;
+                            break;
+                          }
+                          return _context.abrupt("return", "continue");
+                        case 3:
+                          if (!(maxY < float64Array[nodePos + 1])) {
+                            _context.next = 5;
+                            break;
+                          }
+                          return _context.abrupt("return", "continue");
+                        case 5:
+                          if (!(minX > float64Array[nodePos + 2])) {
+                            _context.next = 7;
+                            break;
+                          }
+                          return _context.abrupt("return", "continue");
+                        case 7:
+                          if (!(minY > float64Array[nodePos + 3])) {
+                            _context.next = 9;
+                            break;
+                          }
+                          return _context.abrupt("return", "continue");
+                        case 9:
+                          low32Offset = uint32Array[(nodePos << 1) + 8];
+                          high32Offset = uint32Array[(nodePos << 1) + 9];
+                          offset = readUint52(high32Offset, low32Offset);
+                          if (!isLeafNode) {
+                            _context.next = 17;
+                            break;
+                          }
+                          featureLength = function () {
+                            if (pos < numItems - 1) {
+                              var nextPos = (pos - nodeIndex + 1) * 5;
+                              var _low32Offset = uint32Array[(nextPos << 1) + 8];
+                              var _high32Offset = uint32Array[(nextPos << 1) + 9];
+                              var nextOffset = readUint52(_high32Offset, _low32Offset);
+                              return nextOffset - offset;
+                            } else {
+                              return null;
+                            }
+                          }();
+                          _context.next = 16;
+                          return [offset, pos - leafNodesOffset, featureLength];
+                        case 16:
+                          return _context.abrupt("return", "continue");
+                        case 17:
+                          extraRequestThresholdNodes = Config_Config.global.extraRequestThreshold() / NODE_ITEM_LEN;
+                          nearestNodeRange = queue[queue.length - 1];
+                          if (!(nearestNodeRange !== undefined && nearestNodeRange.level() == nodeRange.level() - 1 && offset < nearestNodeRange.endNode() + extraRequestThresholdNodes)) {
+                            _context.next = 23;
+                            break;
+                          }
+                          Logger.debug("Merging \"nodeRange\" request into existing range: ".concat(nearestNodeRange, ", newOffset: ").concat(nearestNodeRange.endNode(), " -> ").concat(offset));
+                          nearestNodeRange.extendEndNodeToNewOffset(offset);
+                          return _context.abrupt("return", "continue");
+                        case 23:
+                          newNodeRange = function () {
+                            var level = nodeRange.level() - 1;
+                            var range = [offset, offset + 1];
+                            return new NodeRange(range, level);
+                          }();
+                          if (nearestNodeRange !== undefined && nearestNodeRange.level() == newNodeRange.level()) {
+                            Logger.info("Same level, but too far away. Pushing new request at offset: ".concat(offset, " rather than merging with distant ").concat(nearestNodeRange));
+                          } else {
+                            Logger.info("Pushing new level for ".concat(newNodeRange, " onto queue with nearestNodeRange: ").concat(nearestNodeRange, " since there's not already a range for this level."));
+                          }
+                          queue.push(newNodeRange);
+                        case 26:
+                        case "end":
+                          return _context.stop();
+                      }
+                    }, _loop2);
+                  });
+                  pos = nodeIndex;
+                case 14:
+                  if (!(pos < end)) {
+                    _context2.next = 22;
+                    break;
+                  }
+                  return _context2.delegateYield(_loop2(pos), "t0", 16);
+                case 16:
+                  _ret = _context2.t0;
+                  if (!(_ret === "continue")) {
+                    _context2.next = 19;
+                    break;
+                  }
+                  return _context2.abrupt("continue", 19);
+                case 19:
+                  pos++;
+                  _context2.next = 14;
+                  break;
+                case 22:
+                case "end":
+                  return _context2.stop();
+              }
+            }, _loop);
+          });
+        case 9:
+          if (!(queue.length != 0)) {
+            _context3.next = 13;
+            break;
+          }
+          return _context3.delegateYield(_loop(), "t0", 11);
+        case 11:
+          _context3.next = 9;
+          break;
+        case 13:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee);
+  }));
+  return _streamSearch.apply(this, arguments);
+}
+function readUint52(high32Bits, low32Bits) {
+  if ((high32Bits & 0xfff00000) != 0) {
+    throw Error('integer is too large to be safely represented');
+  }
+  var result = low32Bits + high32Bits * Math.pow(2, 32);
+  return result;
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/constants.js
+var constants_magicbytes = new Uint8Array([0x66, 0x67, 0x62, 0x03, 0x66, 0x67, 0x62, 0x00]);
+var SIZE_PREFIX_LEN = 4;
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/HttpReader.js
+function HttpReader_typeof(obj) { "@babel/helpers - typeof"; return HttpReader_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, HttpReader_typeof(obj); }
+function HttpReader_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = HttpReader_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function HttpReader_slicedToArray(arr, i) { return HttpReader_arrayWithHoles(arr) || HttpReader_iterableToArrayLimit(arr, i) || HttpReader_unsupportedIterableToArray(arr, i) || HttpReader_nonIterableRest(); }
+function HttpReader_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function HttpReader_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return HttpReader_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return HttpReader_arrayLikeToArray(o, minLen); }
+function HttpReader_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function HttpReader_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function HttpReader_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function HttpReader_regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ HttpReader_regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == HttpReader_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function HttpReader_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function HttpReader_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function HttpReader_createClass(Constructor, protoProps, staticProps) { if (protoProps) HttpReader_defineProperties(Constructor.prototype, protoProps); if (staticProps) HttpReader_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function HttpReader_wrapAsyncGenerator(fn) { return function () { return new HttpReader_AsyncGenerator(fn.apply(this, arguments)); }; }
+function HttpReader_AsyncGenerator(gen) { var front, back; function resume(key, arg) { try { var result = gen[key](arg), value = result.value, overloaded = value instanceof HttpReader_OverloadYield; Promise.resolve(overloaded ? value.v : value).then(function (arg) { if (overloaded) { var nextKey = "return" === key ? "return" : "next"; if (!value.k || arg.done) return resume(nextKey, arg); arg = gen[nextKey](arg).value; } settle(result.done ? "return" : "normal", arg); }, function (err) { resume("throw", err); }); } catch (err) { settle("throw", err); } } function settle(type, value) { switch (type) { case "return": front.resolve({ value: value, done: !0 }); break; case "throw": front.reject(value); break; default: front.resolve({ value: value, done: !1 }); } (front = front.next) ? resume(front.key, front.arg) : back = null; } this._invoke = function (key, arg) { return new Promise(function (resolve, reject) { var request = { key: key, arg: arg, resolve: resolve, reject: reject, next: null }; back ? back = back.next = request : (front = back = request, resume(key, arg)); }); }, "function" != typeof gen["return"] && (this["return"] = void 0); }
+HttpReader_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, HttpReader_AsyncGenerator.prototype.next = function (arg) { return this._invoke("next", arg); }, HttpReader_AsyncGenerator.prototype["throw"] = function (arg) { return this._invoke("throw", arg); }, HttpReader_AsyncGenerator.prototype["return"] = function (arg) { return this._invoke("return", arg); };
+function HttpReader_awaitAsyncGenerator(value) { return new HttpReader_OverloadYield(value, 0); }
+function _asyncGeneratorDelegate(inner) { var iter = {}, waiting = !1; function pump(key, value) { return waiting = !0, value = new Promise(function (resolve) { resolve(inner[key](value)); }), { done: !1, value: new HttpReader_OverloadYield(value, 1) }; } return iter["undefined" != typeof Symbol && Symbol.iterator || "@@iterator"] = function () { return this; }, iter.next = function (value) { return waiting ? (waiting = !1, value) : pump("next", value); }, "function" == typeof inner["throw"] && (iter["throw"] = function (value) { if (waiting) throw waiting = !1, value; return pump("throw", value); }), "function" == typeof inner["return"] && (iter["return"] = function (value) { return waiting ? (waiting = !1, value) : pump("return", value); }), iter; }
+function HttpReader_OverloadYield(value, kind) { this.v = value, this.k = kind; }
+function _asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
+function AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(s); }
+
+
+
+
+
+
+
+
+var HttpReader = /*#__PURE__*/function () {
+  function HttpReader(headerClient, header, headerLength, indexLength) {
+    HttpReader_classCallCheck(this, HttpReader);
+    this.headerClient = headerClient;
+    this.header = header;
+    this.headerLength = headerLength;
+    this.indexLength = indexLength;
+  }
+  HttpReader_createClass(HttpReader, [{
+    key: "selectBbox",
+    value: function selectBbox(rect) {
+      var _this = this;
+      return HttpReader_wrapAsyncGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee2() {
+        var lengthBeforeTree, bufferedClient, readNode, batches, currentBatch, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, searchResult, _searchResult2, featureOffset, _searchResult4, featureLength, guessLength, prevFeature, gap, promises;
+        return HttpReader_regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              lengthBeforeTree = _this.lengthBeforeTree();
+              bufferedClient = _this.headerClient;
+              readNode = /*#__PURE__*/function () {
+                var _ref = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee(offsetIntoTree, size) {
+                  var minReqLength;
+                  return HttpReader_regeneratorRuntime().wrap(function _callee$(_context) {
+                    while (1) switch (_context.prev = _context.next) {
+                      case 0:
+                        minReqLength = 0;
+                        return _context.abrupt("return", bufferedClient.getRange(lengthBeforeTree + offsetIntoTree, size, minReqLength, 'index'));
+                      case 2:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }, _callee);
+                }));
+                return function readNode(_x, _x2) {
+                  return _ref.apply(this, arguments);
+                };
+              }();
+              batches = [];
+              currentBatch = [];
+              _iteratorAbruptCompletion = false;
+              _didIteratorError = false;
+              _context2.prev = 7;
+              _iterator = _asyncIterator(streamSearch(_this.header.featuresCount, _this.header.indexNodeSize, rect, readNode));
+            case 9:
+              _context2.next = 11;
+              return HttpReader_awaitAsyncGenerator(_iterator.next());
+            case 11:
+              if (!(_iteratorAbruptCompletion = !(_step = _context2.sent).done)) {
+                _context2.next = 26;
+                break;
+              }
+              searchResult = _step.value;
+              _searchResult2 = HttpReader_slicedToArray(searchResult, 2), featureOffset = _searchResult2[0];
+              _searchResult4 = HttpReader_slicedToArray(searchResult, 3), featureLength = _searchResult4[2];
+              if (!featureLength) {
+                Logger.info('final feature');
+                guessLength = Config_Config.global.extraRequestThreshold();
+                featureLength = guessLength;
+              }
+              if (!(currentBatch.length == 0)) {
+                _context2.next = 19;
+                break;
+              }
+              currentBatch.push([featureOffset, featureLength]);
+              return _context2.abrupt("continue", 23);
+            case 19:
+              prevFeature = currentBatch[currentBatch.length - 1];
+              gap = featureOffset - (prevFeature[0] + prevFeature[1]);
+              if (gap > Config_Config.global.extraRequestThreshold()) {
+                Logger.info("Pushing new feature batch, since gap ".concat(gap, " was too large"));
+                batches.push(currentBatch);
+                currentBatch = [];
+              }
+              currentBatch.push([featureOffset, featureLength]);
+            case 23:
+              _iteratorAbruptCompletion = false;
+              _context2.next = 9;
+              break;
+            case 26:
+              _context2.next = 32;
+              break;
+            case 28:
+              _context2.prev = 28;
+              _context2.t0 = _context2["catch"](7);
+              _didIteratorError = true;
+              _iteratorError = _context2.t0;
+            case 32:
+              _context2.prev = 32;
+              _context2.prev = 33;
+              if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
+                _context2.next = 37;
+                break;
+              }
+              _context2.next = 37;
+              return HttpReader_awaitAsyncGenerator(_iterator["return"]());
+            case 37:
+              _context2.prev = 37;
+              if (!_didIteratorError) {
+                _context2.next = 40;
+                break;
+              }
+              throw _iteratorError;
+            case 40:
+              return _context2.finish(37);
+            case 41:
+              return _context2.finish(32);
+            case 42:
+              _this.headerClient.logUsage('header+index');
+              if (currentBatch.length > 0) {
+                batches.push(currentBatch);
+              }
+              promises = batches.flatMap(function (batch) {
+                return _this.readFeatureBatch(batch);
+              });
+              return _context2.delegateYield(_asyncGeneratorDelegate(_asyncIterator(repeater/* Repeater.merge */.ZN.merge(promises)), HttpReader_awaitAsyncGenerator), "t1", 46);
+            case 46:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, null, [[7, 28, 32, 42], [33,, 37, 41]]);
+      }))();
+    }
+  }, {
+    key: "lengthBeforeTree",
+    value: function lengthBeforeTree() {
+      return constants_magicbytes.length + SIZE_PREFIX_LEN + this.headerLength;
+    }
+  }, {
+    key: "lengthBeforeFeatures",
+    value: function lengthBeforeFeatures() {
+      return this.lengthBeforeTree() + this.indexLength;
+    }
+  }, {
+    key: "buildFeatureClient",
+    value: function buildFeatureClient() {
+      return new BufferedHttpRangeClient(this.headerClient.httpClient);
+    }
+  }, {
+    key: "readFeatureBatch",
+    value: function readFeatureBatch(batch) {
+      var _this2 = this;
+      return HttpReader_wrapAsyncGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee3() {
+        var _batch$, firstFeatureOffset, _batch, lastFeatureOffset, lastFeatureLength, batchStart, batchEnd, batchSize, featureClient, _iterator2, _step2, _step2$value2, featureOffset;
+        return HttpReader_regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _batch$ = HttpReader_slicedToArray(batch[0], 1), firstFeatureOffset = _batch$[0];
+              _batch = HttpReader_slicedToArray(batch[batch.length - 1], 2), lastFeatureOffset = _batch[0], lastFeatureLength = _batch[1];
+              batchStart = firstFeatureOffset;
+              batchEnd = lastFeatureOffset + lastFeatureLength;
+              batchSize = batchEnd - batchStart;
+              featureClient = _this2.buildFeatureClient();
+              _iterator2 = HttpReader_createForOfIteratorHelper(batch);
+              _context3.prev = 7;
+              _iterator2.s();
+            case 9:
+              if ((_step2 = _iterator2.n()).done) {
+                _context3.next = 17;
+                break;
+              }
+              _step2$value2 = HttpReader_slicedToArray(_step2.value, 1), featureOffset = _step2$value2[0];
+              _context3.next = 13;
+              return HttpReader_awaitAsyncGenerator(_this2.readFeature(featureClient, featureOffset, batchSize));
+            case 13:
+              _context3.next = 15;
+              return _context3.sent;
+            case 15:
+              _context3.next = 9;
+              break;
+            case 17:
+              _context3.next = 22;
+              break;
+            case 19:
+              _context3.prev = 19;
+              _context3.t0 = _context3["catch"](7);
+              _iterator2.e(_context3.t0);
+            case 22:
+              _context3.prev = 22;
+              _iterator2.f();
+              return _context3.finish(22);
+            case 25:
+              featureClient.logUsage('feature');
+            case 26:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, null, [[7, 19, 22, 25]]);
+      }))();
+    }
+  }, {
+    key: "readFeature",
+    value: function () {
+      var _readFeature = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee4(featureClient, featureOffset, minFeatureReqLength) {
+        var offset, featureLength, _bytes, byteBuffer, bytes, bytesAligned, bb;
+        return HttpReader_regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              offset = featureOffset + this.lengthBeforeFeatures();
+              _context4.next = 3;
+              return featureClient.getRange(offset, 4, minFeatureReqLength, 'feature length');
+            case 3:
+              _bytes = _context4.sent;
+              featureLength = new DataView(_bytes).getUint32(0, true);
+              _context4.next = 7;
+              return featureClient.getRange(offset + 4, featureLength, minFeatureReqLength, 'feature data');
+            case 7:
+              byteBuffer = _context4.sent;
+              bytes = new Uint8Array(byteBuffer);
+              bytesAligned = new Uint8Array(featureLength + SIZE_PREFIX_LEN);
+              bytesAligned.set(bytes, SIZE_PREFIX_LEN);
+              bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
+              bb.setPosition(SIZE_PREFIX_LEN);
+              return _context4.abrupt("return", feature_Feature.getRootAsFeature(bb));
+            case 14:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this);
+      }));
+      function readFeature(_x3, _x4, _x5) {
+        return _readFeature.apply(this, arguments);
+      }
+      return readFeature;
+    }()
+  }], [{
+    key: "open",
+    value: function () {
+      var _open = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee5(url) {
+        var assumedHeaderLength, headerClient, assumedIndexLength, minReqLength, _bytes2, headerLength, _bytes3, HEADER_MAX_BUFFER_SIZE, bytes, bb, header, indexLength;
+        return HttpReader_regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              assumedHeaderLength = 2024;
+              headerClient = new BufferedHttpRangeClient(url);
+              assumedIndexLength = function () {
+                var assumedBranchingFactor = DEFAULT_NODE_SIZE;
+                var prefetchedLayers = 3;
+                var result = 0;
+                var i;
+                for (i = 0; i < prefetchedLayers; i++) {
+                  var layer_width = Math.pow(assumedBranchingFactor, i) * NODE_ITEM_LEN;
+                  result += layer_width;
+                }
+                return result;
+              }();
+              minReqLength = assumedHeaderLength + assumedIndexLength;
+              Logger.debug("fetching header. minReqLength: ".concat(minReqLength, " (assumedHeaderLength: ").concat(assumedHeaderLength, ", assumedIndexLength: ").concat(assumedIndexLength, ")"));
+              _context5.t0 = Uint8Array;
+              _context5.next = 8;
+              return headerClient.getRange(0, 8, minReqLength, 'header');
+            case 8:
+              _context5.t1 = _context5.sent;
+              _bytes2 = new _context5.t0(_context5.t1);
+              if (_bytes2.subarray(0, 3).every(function (v, i) {
+                return constants_magicbytes[i] === v;
+              })) {
+                _context5.next = 13;
+                break;
+              }
+              Logger.error("bytes: ".concat(_bytes2, " != ").concat(constants_magicbytes));
+              throw new Error('Not a FlatGeobuf file');
+            case 13:
+              Logger.debug('magic bytes look good');
+              _context5.next = 16;
+              return headerClient.getRange(8, 4, minReqLength, 'header');
+            case 16:
+              _bytes3 = _context5.sent;
+              headerLength = new DataView(_bytes3).getUint32(0, true);
+              HEADER_MAX_BUFFER_SIZE = 1048576 * 10;
+              if (!(headerLength > HEADER_MAX_BUFFER_SIZE || headerLength < 8)) {
+                _context5.next = 21;
+                break;
+              }
+              throw new Error('Invalid header size');
+            case 21:
+              Logger.debug("headerLength: ".concat(headerLength));
+              _context5.next = 24;
+              return headerClient.getRange(12, headerLength, minReqLength, 'header');
+            case 24:
+              bytes = _context5.sent;
+              bb = new js_flatbuffers/* ByteBuffer */.cZ(new Uint8Array(bytes));
+              header = HeaderMeta_HeaderMeta.fromByteBuffer(bb);
+              indexLength = calcTreeSize(header.featuresCount, header.indexNodeSize);
+              Logger.debug('completed: opening http reader');
+              return _context5.abrupt("return", new HttpReader(headerClient, header, headerLength, indexLength));
+            case 30:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5);
+      }));
+      function open(_x6) {
+        return _open.apply(this, arguments);
+      }
+      return open;
+    }()
+  }]);
+  return HttpReader;
+}();
+var BufferedHttpRangeClient = /*#__PURE__*/function () {
+  function BufferedHttpRangeClient(source) {
+    HttpReader_classCallCheck(this, BufferedHttpRangeClient);
+    this.bytesEverUsed = 0;
+    this.bytesEverFetched = 0;
+    this.buffer = new ArrayBuffer(0);
+    this.head = 0;
+    if (typeof source === 'string') {
+      this.httpClient = new HttpRangeClient(source);
+    } else {
+      this.httpClient = source;
+    }
+  }
+  HttpReader_createClass(BufferedHttpRangeClient, [{
+    key: "getRange",
+    value: function () {
+      var _getRange = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee6(start, length, minReqLength, purpose) {
+        var start_i, end_i, lengthToFetch;
+        return HttpReader_regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              this.bytesEverUsed += length;
+              start_i = start - this.head;
+              end_i = start_i + length;
+              if (!(start_i >= 0 && end_i <= this.buffer.byteLength)) {
+                _context6.next = 5;
+                break;
+              }
+              return _context6.abrupt("return", this.buffer.slice(start_i, end_i));
+            case 5:
+              lengthToFetch = Math.max(length, minReqLength);
+              this.bytesEverFetched += lengthToFetch;
+              Logger.debug("requesting for new Range: ".concat(start, "-").concat(start + length - 1));
+              _context6.next = 10;
+              return this.httpClient.getRange(start, lengthToFetch, purpose);
+            case 10:
+              this.buffer = _context6.sent;
+              this.head = start;
+              return _context6.abrupt("return", this.buffer.slice(0, length));
+            case 13:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6, this);
+      }));
+      function getRange(_x7, _x8, _x9, _x10) {
+        return _getRange.apply(this, arguments);
+      }
+      return getRange;
+    }()
+  }, {
+    key: "logUsage",
+    value: function logUsage(purpose) {
+      var category = purpose.split(' ')[0];
+      var used = this.bytesEverUsed;
+      var requested = this.bytesEverFetched;
+      var efficiency = (100.0 * used / requested).toFixed(2);
+      Logger.info("".concat(category, " bytes used/requested: ").concat(used, " / ").concat(requested, " = ").concat(efficiency, "%"));
+    }
+  }]);
+  return BufferedHttpRangeClient;
+}();
+var HttpRangeClient = /*#__PURE__*/function () {
+  function HttpRangeClient(url) {
+    HttpReader_classCallCheck(this, HttpRangeClient);
+    this.requestsEverMade = 0;
+    this.bytesEverRequested = 0;
+    this.url = url;
+  }
+  HttpReader_createClass(HttpRangeClient, [{
+    key: "getRange",
+    value: function () {
+      var _getRange2 = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee7(begin, length, purpose) {
+        var range, response;
+        return HttpReader_regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              this.requestsEverMade += 1;
+              this.bytesEverRequested += length;
+              range = "bytes=".concat(begin, "-").concat(begin + length - 1);
+              Logger.info("request: #".concat(this.requestsEverMade, ", purpose: ").concat(purpose, "), bytes: (this_request: ").concat(length, ", ever: ").concat(this.bytesEverRequested, "), Range: ").concat(range));
+              _context7.next = 6;
+              return fetch(this.url, {
+                headers: {
+                  Range: range
+                }
+              });
+            case 6:
+              response = _context7.sent;
+              return _context7.abrupt("return", response.arrayBuffer());
+            case 8:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7, this);
+      }));
+      function getRange(_x11, _x12, _x13) {
+        return _getRange2.apply(this, arguments);
+      }
+      return getRange;
+    }()
+  }]);
+  return HttpRangeClient;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/generic/header.js
+function header_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = header_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function header_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return header_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return header_arrayLikeToArray(o, minLen); }
+function header_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+
+function featureGeomType(feature) {
+  if (feature.getGeometry) {
+    return toGeometryType(feature.getGeometry().getType());
+  } else {
+    return toGeometryType(feature.geometry.type);
+  }
+}
+function header_inferGeometryType(features) {
+  var geometryType = undefined;
+  var _iterator = header_createForOfIteratorHelper(features),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var f = _step.value;
+      if (geometryType === GeometryType.Unknown) {
+        break;
+      }
+      var gtype = featureGeomType(f);
+      if (geometryType === undefined) {
+        geometryType = gtype;
+      } else if (geometryType !== gtype) {
+        geometryType = GeometryType.Unknown;
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  if (geometryType === undefined) {
+    throw new Error('Could not infer geometry type for collection of features.');
+  }
+  return geometryType;
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/generic/featurecollection.js
+function featurecollection_typeof(obj) { "@babel/helpers - typeof"; return featurecollection_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, featurecollection_typeof(obj); }
+function featurecollection_regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ featurecollection_regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == featurecollection_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function featurecollection_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function featurecollection_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { featurecollection_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { featurecollection_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function featurecollection_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = featurecollection_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function featurecollection_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return featurecollection_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return featurecollection_arrayLikeToArray(o, minLen); }
+function featurecollection_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function featurecollection_asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new featurecollection_AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
+function featurecollection_AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return featurecollection_AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, featurecollection_AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new featurecollection_AsyncFromSyncIterator(s); }
+function featurecollection_awaitAsyncGenerator(value) { return new featurecollection_OverloadYield(value, 0); }
+function featurecollection_wrapAsyncGenerator(fn) { return function () { return new featurecollection_AsyncGenerator(fn.apply(this, arguments)); }; }
+function featurecollection_AsyncGenerator(gen) { var front, back; function resume(key, arg) { try { var result = gen[key](arg), value = result.value, overloaded = value instanceof featurecollection_OverloadYield; Promise.resolve(overloaded ? value.v : value).then(function (arg) { if (overloaded) { var nextKey = "return" === key ? "return" : "next"; if (!value.k || arg.done) return resume(nextKey, arg); arg = gen[nextKey](arg).value; } settle(result.done ? "return" : "normal", arg); }, function (err) { resume("throw", err); }); } catch (err) { settle("throw", err); } } function settle(type, value) { switch (type) { case "return": front.resolve({ value: value, done: !0 }); break; case "throw": front.reject(value); break; default: front.resolve({ value: value, done: !1 }); } (front = front.next) ? resume(front.key, front.arg) : back = null; } this._invoke = function (key, arg) { return new Promise(function (resolve, reject) { var request = { key: key, arg: arg, resolve: resolve, reject: reject, next: null }; back ? back = back.next = request : (front = back = request, resume(key, arg)); }); }, "function" != typeof gen["return"] && (this["return"] = void 0); }
+featurecollection_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, featurecollection_AsyncGenerator.prototype.next = function (arg) { return this._invoke("next", arg); }, featurecollection_AsyncGenerator.prototype["throw"] = function (arg) { return this._invoke("throw", arg); }, featurecollection_AsyncGenerator.prototype["return"] = function (arg) { return this._invoke("return", arg); };
+function featurecollection_OverloadYield(value, kind) { this.v = value, this.k = kind; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function serialize(features) {
+  var headerMeta = introspectHeaderMeta(features);
+  var header = featurecollection_buildHeader(headerMeta);
+  var featureBuffers = features.map(function (f) {
+    if (!f.getGeometry) throw new Error('Missing getGeometry implementation');
+    if (!f.getProperties) throw new Error('Missing getProperties implementation');
+    return buildFeature(parseGeometry(f.getGeometry(), headerMeta.geometryType), f.getProperties(), headerMeta);
+  });
+  var featuresLength = featureBuffers.map(function (f) {
+    return f.length;
+  }).reduce(function (a, b) {
+    return a + b;
+  });
+  var uint8 = new Uint8Array(magicbytes.length + header.length + featuresLength);
+  uint8.set(header, magicbytes.length);
+  var offset = magicbytes.length + header.length;
+  var _iterator2 = featurecollection_createForOfIteratorHelper(featureBuffers),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var feature = _step2.value;
+      uint8.set(feature, offset);
+      offset += feature.length;
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  uint8.set(magicbytes);
+  return uint8;
+}
+function deserialize(bytes, fromFeature, headerMetaFn) {
+  if (!bytes.subarray(0, 3).every(function (v, i) {
+    return constants_magicbytes[i] === v;
+  })) throw new Error('Not a FlatGeobuf file');
+  var bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+  var headerLength = bb.readUint32(constants_magicbytes.length);
+  bb.setPosition(constants_magicbytes.length + SIZE_PREFIX_LEN);
+  var headerMeta = HeaderMeta_HeaderMeta.fromByteBuffer(bb);
+  if (headerMetaFn) headerMetaFn(headerMeta);
+  var offset = constants_magicbytes.length + SIZE_PREFIX_LEN + headerLength;
+  var indexNodeSize = headerMeta.indexNodeSize,
+    featuresCount = headerMeta.featuresCount;
+  if (indexNodeSize > 0) offset += calcTreeSize(featuresCount, indexNodeSize);
+  var features = [];
+  while (offset < bb.capacity()) {
+    var featureLength = bb.readUint32(offset);
+    bb.setPosition(offset + SIZE_PREFIX_LEN);
+    var feature = feature_Feature.getRootAsFeature(bb);
+    features.push(fromFeature(feature, headerMeta));
+    offset += SIZE_PREFIX_LEN + featureLength;
+  }
+  return features;
+}
+function deserializeStream(_x, _x2, _x3) {
+  return _deserializeStream.apply(this, arguments);
+}
+function _deserializeStream() {
+  _deserializeStream = featurecollection_wrapAsyncGenerator( /*#__PURE__*/featurecollection_regeneratorRuntime().mark(function _callee2(stream, fromFeature, headerMetaFn) {
+    var reader, read, bytes, bb, headerLength, headerMeta, indexNodeSize, featuresCount, treeSize, feature;
+    return featurecollection_regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          reader = slice_source(stream);
+          read = /*#__PURE__*/function () {
+            var _ref = featurecollection_asyncToGenerator( /*#__PURE__*/featurecollection_regeneratorRuntime().mark(function _callee(size) {
+              return featurecollection_regeneratorRuntime().wrap(function _callee$(_context) {
+                while (1) switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.next = 2;
+                    return reader.slice(size);
+                  case 2:
+                    return _context.abrupt("return", _context.sent);
+                  case 3:
+                  case "end":
+                    return _context.stop();
+                }
+              }, _callee);
+            }));
+            return function read(_x8) {
+              return _ref.apply(this, arguments);
+            };
+          }();
+          _context2.t0 = Uint8Array;
+          _context2.next = 5;
+          return featurecollection_awaitAsyncGenerator(read(8, 'magic bytes'));
+        case 5:
+          _context2.t1 = _context2.sent;
+          bytes = new _context2.t0(_context2.t1);
+          if (bytes.subarray(0, 3).every(function (v, i) {
+            return constants_magicbytes[i] === v;
+          })) {
+            _context2.next = 9;
+            break;
+          }
+          throw new Error('Not a FlatGeobuf file');
+        case 9:
+          _context2.t2 = Uint8Array;
+          _context2.next = 12;
+          return featurecollection_awaitAsyncGenerator(read(4, 'header length'));
+        case 12:
+          _context2.t3 = _context2.sent;
+          bytes = new _context2.t2(_context2.t3);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          headerLength = bb.readUint32(0);
+          _context2.t4 = Uint8Array;
+          _context2.next = 19;
+          return featurecollection_awaitAsyncGenerator(read(headerLength, 'header data'));
+        case 19:
+          _context2.t5 = _context2.sent;
+          bytes = new _context2.t4(_context2.t5);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          headerMeta = HeaderMeta_HeaderMeta.fromByteBuffer(bb);
+          if (headerMetaFn) headerMetaFn(headerMeta);
+          indexNodeSize = headerMeta.indexNodeSize, featuresCount = headerMeta.featuresCount;
+          if (!(indexNodeSize > 0)) {
+            _context2.next = 29;
+            break;
+          }
+          treeSize = calcTreeSize(featuresCount, indexNodeSize);
+          _context2.next = 29;
+          return featurecollection_awaitAsyncGenerator(read(treeSize, 'entire index, w/o rect'));
+        case 29:
+          _context2.next = 31;
+          return featurecollection_awaitAsyncGenerator(readFeature(read, headerMeta, fromFeature));
+        case 31:
+          if (!(feature = _context2.sent)) {
+            _context2.next = 36;
+            break;
+          }
+          _context2.next = 34;
+          return feature;
+        case 34:
+          _context2.next = 29;
+          break;
+        case 36:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return _deserializeStream.apply(this, arguments);
+}
+function deserializeFiltered(_x4, _x5, _x6, _x7) {
+  return _deserializeFiltered.apply(this, arguments);
+}
+function _deserializeFiltered() {
+  _deserializeFiltered = featurecollection_wrapAsyncGenerator( /*#__PURE__*/featurecollection_regeneratorRuntime().mark(function _callee3(url, rect, fromFeature, headerMetaFn) {
+    var reader, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, feature;
+    return featurecollection_regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return featurecollection_awaitAsyncGenerator(HttpReader.open(url));
+        case 2:
+          reader = _context3.sent;
+          Logger.debug('opened reader');
+          if (headerMetaFn) headerMetaFn(reader.header);
+          _iteratorAbruptCompletion = false;
+          _didIteratorError = false;
+          _context3.prev = 7;
+          _iterator = featurecollection_asyncIterator(reader.selectBbox(rect));
+        case 9:
+          _context3.next = 11;
+          return featurecollection_awaitAsyncGenerator(_iterator.next());
+        case 11:
+          if (!(_iteratorAbruptCompletion = !(_step = _context3.sent).done)) {
+            _context3.next = 18;
+            break;
+          }
+          feature = _step.value;
+          _context3.next = 15;
+          return fromFeature(feature, reader.header);
+        case 15:
+          _iteratorAbruptCompletion = false;
+          _context3.next = 9;
+          break;
+        case 18:
+          _context3.next = 24;
+          break;
+        case 20:
+          _context3.prev = 20;
+          _context3.t0 = _context3["catch"](7);
+          _didIteratorError = true;
+          _iteratorError = _context3.t0;
+        case 24:
+          _context3.prev = 24;
+          _context3.prev = 25;
+          if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
+            _context3.next = 29;
+            break;
+          }
+          _context3.next = 29;
+          return featurecollection_awaitAsyncGenerator(_iterator["return"]());
+        case 29:
+          _context3.prev = 29;
+          if (!_didIteratorError) {
+            _context3.next = 32;
+            break;
+          }
+          throw _iteratorError;
+        case 32:
+          return _context3.finish(29);
+        case 33:
+          return _context3.finish(24);
+        case 34:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[7, 20, 24, 34], [25,, 29, 33]]);
+  }));
+  return _deserializeFiltered.apply(this, arguments);
+}
+function readFeature(_x9, _x10, _x11) {
+  return _readFeature.apply(this, arguments);
+}
+function _readFeature() {
+  _readFeature = featurecollection_asyncToGenerator( /*#__PURE__*/featurecollection_regeneratorRuntime().mark(function _callee4(read, headerMeta, fromFeature) {
+    var bytes, bb, featureLength, bytesAligned, feature;
+    return featurecollection_regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.t0 = Uint8Array;
+          _context4.next = 3;
+          return read(4, 'feature length');
+        case 3:
+          _context4.t1 = _context4.sent;
+          bytes = new _context4.t0(_context4.t1);
+          if (!(bytes.byteLength === 0)) {
+            _context4.next = 7;
+            break;
+          }
+          return _context4.abrupt("return");
+        case 7:
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          featureLength = bb.readUint32(0);
+          _context4.t2 = Uint8Array;
+          _context4.next = 12;
+          return read(featureLength, 'feature data');
+        case 12:
+          _context4.t3 = _context4.sent;
+          bytes = new _context4.t2(_context4.t3);
+          bytesAligned = new Uint8Array(featureLength + 4);
+          bytesAligned.set(bytes, 4);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
+          bb.setPosition(SIZE_PREFIX_LEN);
+          feature = feature_Feature.getRootAsFeature(bb);
+          return _context4.abrupt("return", fromFeature(feature, headerMeta));
+        case 20:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4);
+  }));
+  return _readFeature.apply(this, arguments);
+}
+function buildColumn(builder, column) {
+  var nameOffset = builder.createString(column.name);
+  Column.startColumn(builder);
+  Column.addName(builder, nameOffset);
+  Column.addType(builder, column.type);
+  return Column.endColumn(builder);
+}
+function featurecollection_buildHeader(header) {
+  var builder = new flatbuffers.Builder();
+  var columnOffsets = null;
+  if (header.columns) columnOffsets = Header.createColumnsVector(builder, header.columns.map(function (c) {
+    return buildColumn(builder, c);
+  }));
+  var nameOffset = builder.createString('L1');
+  Header.startHeader(builder);
+  Header.addFeaturesCount(builder, BigInt(header.featuresCount));
+  Header.addGeometryType(builder, header.geometryType);
+  Header.addIndexNodeSize(builder, 0);
+  if (columnOffsets) Header.addColumns(builder, columnOffsets);
+  Header.addName(builder, nameOffset);
+  var offset = Header.endHeader(builder);
+  builder.finishSizePrefixed(offset);
+  return builder.asUint8Array();
+}
+function valueToType(value) {
+  if (typeof value === 'boolean') return ColumnType.Bool;else if (typeof value === 'number') {
+    if (value % 1 === 0) return ColumnType.Int;else return ColumnType.Double;
+  } else if (typeof value === 'string') return ColumnType.String;else if (value === null) return ColumnType.String;else throw new Error("Unknown type (value '".concat(value, "')"));
+}
+function introspectHeaderMeta(features) {
+  var sampleFeature = features[0];
+  var properties = sampleFeature.getProperties ? sampleFeature.getProperties() : {};
+  var columns = null;
+  if (properties) columns = Object.keys(properties).filter(function (key) {
+    return key !== 'geometry';
+  }).map(function (k) {
+    return new ColumnMeta(k, valueToType(properties[k]), null, null, -1, -1, -1, true, false, false);
+  });
+  var geometryType = inferGeometryType(features);
+  var headerMeta = new HeaderMeta(geometryType, columns, null, features.length, 0, null, null, null, null);
+  return headerMeta;
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/geojson/featurecollection.js
+function geojson_featurecollection_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = geojson_featurecollection_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function geojson_featurecollection_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return geojson_featurecollection_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return geojson_featurecollection_arrayLikeToArray(o, minLen); }
+function geojson_featurecollection_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+
+
+
+
+
+
+
+
+function featurecollection_serialize(featurecollection) {
+  var headerMeta = featurecollection_introspectHeaderMeta(featurecollection);
+  var header = buildHeader(headerMeta);
+  var features = featurecollection.features.map(function (f) {
+    return buildFeature(f.geometry.type === 'GeometryCollection' ? parseGC(f.geometry) : parseGeometry(f.geometry), f.properties, headerMeta);
+  });
+  var featuresLength = features.map(function (f) {
+    return f.length;
+  }).reduce(function (a, b) {
+    return a + b;
+  });
+  var uint8 = new Uint8Array(magicbytes.length + header.length + featuresLength);
+  uint8.set(header, magicbytes.length);
+  var offset = magicbytes.length + header.length;
+  var _iterator = geojson_featurecollection_createForOfIteratorHelper(features),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var feature = _step.value;
+      uint8.set(feature, offset);
+      offset += feature.length;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  uint8.set(magicbytes);
+  return uint8;
+}
+function featurecollection_deserialize(bytes, headerMetaFn) {
+  var features = deserialize(bytes, feature_fromFeature, headerMetaFn);
+  return {
+    type: 'FeatureCollection',
+    features: features
+  };
+}
+function featurecollection_deserializeStream(stream, headerMetaFn) {
+  return deserializeStream(stream, feature_fromFeature, headerMetaFn);
+}
+function featurecollection_deserializeFiltered(url, rect, headerMetaFn) {
+  return deserializeFiltered(url, rect, feature_fromFeature, headerMetaFn);
+}
+function featurecollection_valueToType(value) {
+  if (typeof value === 'boolean') return ColumnType.Bool;else if (typeof value === 'number') {
+    if (value % 1 === 0) return ColumnType.Int;else return ColumnType.Double;
+  } else if (typeof value === 'string') return ColumnType.String;else if (value === null) return ColumnType.String;else throw new Error("Unknown type (value '".concat(value, "')"));
+}
+function featurecollection_introspectHeaderMeta(featurecollection) {
+  var feature = featurecollection.features[0];
+  var properties = feature.properties;
+  var columns = null;
+  if (properties) columns = Object.keys(properties).map(function (k) {
+    return new ColumnMeta(k, featurecollection_valueToType(properties[k]), null, null, -1, -1, -1, true, false, false);
+  });
+  var geometryType = inferGeometryType(featurecollection.features);
+  var headerMeta = new HeaderMeta(geometryType, columns, null, featurecollection.features.length, 0, null, null, null, null);
+  return headerMeta;
+}
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/geojson.js
+
+function geojson_serialize(geojson) {
+  var bytes = fcSerialize(geojson);
+  return bytes;
+}
+function geojson_deserialize(input, rect, headerMetaFn) {
+  if (input instanceof Uint8Array) return featurecollection_deserialize(input, headerMetaFn);else if (input instanceof ReadableStream) return featurecollection_deserializeStream(input, headerMetaFn);else return featurecollection_deserializeFiltered(input, rect, headerMetaFn);
+}
+;// CONCATENATED MODULE: ./src/mapboxgl/overlay/FGBLayer.js
+function FGBLayer_typeof(obj) { "@babel/helpers - typeof"; return FGBLayer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, FGBLayer_typeof(obj); }
+function FGBLayer_regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ FGBLayer_regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == FGBLayer_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function FGBLayer_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function FGBLayer_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { FGBLayer_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { FGBLayer_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function FGBLayer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function FGBLayer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function FGBLayer_createClass(Constructor, protoProps, staticProps) { if (protoProps) FGBLayer_defineProperties(Constructor.prototype, protoProps); if (staticProps) FGBLayer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function FGBLayer_asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new FGBLayer_AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
+function FGBLayer_AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return FGBLayer_AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, FGBLayer_AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new FGBLayer_AsyncFromSyncIterator(s); }
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+/**
+ * reference and modification
+ * dereklieu/cool-grid, cloudybay/leaflet.latlng-graticule
+ * (https://github.com/dereklieu/cool-grid, https://github.com/cloudybay/leaflet.latlng-graticule)
+ * Apache Licene 2.0
+ * thanks dereklieu, cloudybay
+ */
+
+
+
+
+
+
+
+/**
+ * @class FGBLayer
+ * @category Visualization FGB
+ * @classdesc FGB。
+ * @version 11.1.0
+ * @param {Object} options - 参数。
+ * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("FGBlayer_") 创建图层 ID。
+ * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全部加载， bbox为当前可见范围加载。
+ * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
+ * @param {function} [options.featureLoader] - 要素自定义方法，接收要素作为参数，需返回要素。
+ * @param {Object} [options.paint] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property}
+ * @param {Object} [options.layout] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property}
+ * @param {Object} [options.sourceOptions] - 参数内容详见: {@link mapboxgl.source}
+ * @usage
+ */
+
+var GEOMETRY_TYPE_MAP = {
+  1: 'circle',
+  2: 'line',
+  3: 'fill',
+  5: 'line',
+  4: 'circle',
+  6: 'fill'
+};
+var PAINT_MAP = {
+  circle: {
+    'circle-radius': 6,
+    'circle-color': '#3fb1e3',
+    'circle-opacity': 1,
+    'circle-blur': 0,
+    'circle-translate': [0, 0],
+    'circle-translate-anchor': 'map',
+    'circle-pitch-scale': 'map',
+    'circle-pitch-alignment': 'viewport',
+    'circle-stroke-width': 0,
+    'circle-stroke-color': '#000',
+    'circle-stroke-opacity': 1
+  },
+  line: {
+    'line-opacity': 1,
+    'line-color': '#3fb1e3',
+    'line-width': 3,
+    'line-blur': 1
+  },
+  fill: {
+    'fill-opacity': 0.8,
+    'fill-color': '#3fb1e3',
+    'fill-translate': [0, 0],
+    'fill-antialias': true,
+    'fill-outline-color': '#3fb1e3',
+    'fill-translate-anchor': 'map'
+  }
+};
+var FGBLayer = /*#__PURE__*/function () {
+  function FGBLayer(options) {
+    FGBLayer_classCallCheck(this, FGBLayer);
+    this.id = options && options.layerID ? options.layerID : Util.createUniqueID('FGBLayer_');
+    this.layerId = this.id + 'outer';
+    this.sourceId = this.layerId;
+    this.options = options;
+    this.strategy = options.strategy || 'bbox';
+    this.url = options.url;
+    this.loadedExtentsRtree_ = new (rbush_default())();
+    this.layerType = '';
+    this.extent = this.options.extent;
+    this._updateFeaturesFn = this._updateFeatures.bind(this);
+  }
+  FGBLayer_createClass(FGBLayer, [{
+    key: "onAdd",
+    value: function onAdd(map) {
+      this.map = map;
+      var extent = [];
+      if (this.strategy === 'bbox') {
+        this.map.on('moveend', this._updateFeaturesFn);
+        var bounds = this.map.getBounds().toArray();
+        extent = [bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1]];
+      }
+      if (this.extent) {
+        var intersectExtent = getIntersection(this.extent, extent);
+        if (intersectExtent && intersectExtent.length) {
+          extent = intersectExtent;
+        } else {
+          extent = this.extent;
+        }
+      }
+      var formatBounds = extent.length ? {
+        minX: extent[0],
+        minY: extent[1],
+        maxX: extent[2],
+        maxY: extent[3]
+      } : {};
+      this._handleFeatures(formatBounds);
+    }
+  }, {
+    key: "moveLayer",
+    value: function moveLayer(id, beforeId) {
+      this.map.removeLayer(this.layerId, beforeId);
+    }
+  }, {
+    key: "removeLayer",
+    value: function removeLayer() {
+      this.map.removeLayer(this.layerId);
+    }
+  }, {
+    key: "setVisibility",
+    value: function setVisibility(visibility) {
+      var visible = visibility ? 'visible' : 'none';
+      this.map.setLayoutProperty(this.layerId, 'visibility', visible);
+    }
+  }, {
+    key: "_handleFeatures",
+    value: function () {
+      var _handleFeatures2 = FGBLayer_asyncToGenerator( /*#__PURE__*/FGBLayer_regeneratorRuntime().mark(function _callee(bounds) {
+        var iter, features, layer;
+        return FGBLayer_regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this._loadData(bounds);
+            case 2:
+              iter = _context.sent;
+              _context.next = 5;
+              return this.iterateFeatures(iter);
+            case 5:
+              features = _context.sent;
+              if (!this.map.getSource(this.sourceId)) {
+                this.map.addSource(this.sourceId, {
+                  type: 'geojson',
+                  data: features
+                });
+              }
+              this.map.getSource(this.sourceId).setData(features);
+              if (!this.map.getLayer(this.layerId)) {
+                layer = Object.assign({
+                  id: this.layerId,
+                  type: this.layerType,
+                  source: this.sourceId,
+                  paint: Object.assign(PAINT_MAP[this.layerType], this.options.paint) || {},
+                  layout: this.options.layout || {}
+                });
+                this.map.addLayer(layer);
+              }
+            case 9:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+      function _handleFeatures(_x) {
+        return _handleFeatures2.apply(this, arguments);
+      }
+      return _handleFeatures;
+    }()
+  }, {
+    key: "_updateFeatures",
+    value: function () {
+      var _updateFeatures2 = FGBLayer_asyncToGenerator( /*#__PURE__*/FGBLayer_regeneratorRuntime().mark(function _callee2() {
+        var _this = this;
+        var bounds, extentToLoad, loadedExtentsRtree, alreadyLoaded, iter, features, item;
+        return FGBLayer_regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              bounds = this.map.getBounds().toArray();
+              extentToLoad = [bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1]];
+              loadedExtentsRtree = this.loadedExtentsRtree_;
+              alreadyLoaded = this._forEachInExtent(extentToLoad, function (object) {
+                return _this._containsExtent(object.extent, extentToLoad);
+              });
+              if (alreadyLoaded) {
+                _context2.next = 14;
+                break;
+              }
+              _context2.next = 7;
+              return this._loadData(extentToLoad);
+            case 7:
+              iter = _context2.sent;
+              _context2.next = 10;
+              return this.iterateFeatures(iter);
+            case 10:
+              features = _context2.sent;
+              this.map.getSource(this.sourceId).setData(features);
+              item = {
+                minX: extentToLoad[0],
+                minY: extentToLoad[1],
+                maxX: extentToLoad[2],
+                maxY: extentToLoad[3],
+                value: {
+                  extent: extentToLoad.slice()
+                }
+              };
+              loadedExtentsRtree.insert(item);
+            case 14:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this);
+      }));
+      function _updateFeatures() {
+        return _updateFeatures2.apply(this, arguments);
+      }
+      return _updateFeatures;
+    }()
+  }, {
+    key: "iterateFeatures",
+    value: function () {
+      var _iterateFeatures = FGBLayer_asyncToGenerator( /*#__PURE__*/FGBLayer_regeneratorRuntime().mark(function _callee3(iterator) {
+        var features, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, feature;
+        return FGBLayer_regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              features = {
+                type: 'FeatureCollection',
+                features: []
+              };
+              _iteratorAbruptCompletion = false;
+              _didIteratorError = false;
+              _context3.prev = 3;
+              _iterator = FGBLayer_asyncIterator(iterator);
+            case 5:
+              _context3.next = 7;
+              return _iterator.next();
+            case 7:
+              if (!(_iteratorAbruptCompletion = !(_step = _context3.sent).done)) {
+                _context3.next = 14;
+                break;
+              }
+              feature = _step.value;
+              if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
+                feature = this.options.featureLoader(feature);
+              }
+              features.features.push(feature);
+            case 11:
+              _iteratorAbruptCompletion = false;
+              _context3.next = 5;
+              break;
+            case 14:
+              _context3.next = 20;
+              break;
+            case 16:
+              _context3.prev = 16;
+              _context3.t0 = _context3["catch"](3);
+              _didIteratorError = true;
+              _iteratorError = _context3.t0;
+            case 20:
+              _context3.prev = 20;
+              _context3.prev = 21;
+              if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
+                _context3.next = 25;
+                break;
+              }
+              _context3.next = 25;
+              return _iterator["return"]();
+            case 25:
+              _context3.prev = 25;
+              if (!_didIteratorError) {
+                _context3.next = 28;
+                break;
+              }
+              throw _iteratorError;
+            case 28:
+              return _context3.finish(25);
+            case 29:
+              return _context3.finish(20);
+            case 30:
+              return _context3.abrupt("return", features);
+            case 31:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this, [[3, 16, 20, 30], [21,, 25, 29]]);
+      }));
+      function iterateFeatures(_x2) {
+        return _iterateFeatures.apply(this, arguments);
+      }
+      return iterateFeatures;
+    }()
+  }, {
+    key: "_loadData",
+    value: function () {
+      var _loadData2 = FGBLayer_asyncToGenerator( /*#__PURE__*/FGBLayer_regeneratorRuntime().mark(function _callee4(bounds) {
+        var _this2 = this;
+        var fgbStream, rect;
+        return FGBLayer_regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              rect = bounds;
+              if (Object.keys(bounds).length) {
+                _context4.next = 5;
+                break;
+              }
+              _context4.next = 4;
+              return FetchRequest.get(this.url, {}, {
+                withoutFormatSuffix: true
+              }).then(function (response) {
+                return response;
+              });
+            case 4:
+              fgbStream = _context4.sent;
+            case 5:
+              _context4.next = 7;
+              return geojson_deserialize(fgbStream && fgbStream.body || this.url, rect, function (headerMeta) {
+                _this2.layerType = GEOMETRY_TYPE_MAP[headerMeta.geometryType];
+              });
+            case 7:
+              return _context4.abrupt("return", _context4.sent);
+            case 8:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this);
+      }));
+      function _loadData(_x3) {
+        return _loadData2.apply(this, arguments);
+      }
+      return _loadData;
+    }()
+  }, {
+    key: "_containsExtent",
+    value: function _containsExtent(extent1, extent2) {
+      return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] && extent1[1] <= extent2[1] && extent2[3] <= extent1[3];
+    }
+  }, {
+    key: "_getInExtent",
+    value: function _getInExtent(extent) {
+      var bbox = {
+        minX: extent[0],
+        minY: extent[1],
+        maxX: extent[2],
+        maxY: extent[3]
+      };
+      var items = this.loadedExtentsRtree_.search(bbox);
+      return items.map(function (item) {
+        return item.value;
+      });
+    }
+  }, {
+    key: "_forEachInExtent",
+    value: function _forEachInExtent(extent, callback) {
+      return this._forEach(this._getInExtent(extent), callback);
+    }
+  }, {
+    key: "_forEach",
+    value: function _forEach(values, callback) {
+      var result;
+      for (var i = 0, l = values.length; i < l; i++) {
+        result = callback(values[i]);
+        if (result) {
+          return result;
+        }
+      }
+      return result;
+    }
+  }]);
+  return FGBLayer;
+}();
 ;// CONCATENATED MODULE: ./src/mapboxgl/overlay/graphic/Graphic.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -36167,7 +42755,7 @@ class Graphic {
     /**
      * @function Graphic.prototype.getId
      * @description 获取当前 ID。
-     * @returns {string} id
+     * @returns {string} ID。
      */
     getId() {
         return this.id;
@@ -36186,7 +42774,7 @@ class Graphic {
     /**
      * @function Graphic.prototype.getLngLat
      * @description 获取经纬度坐标。
-     * @returns {Object} 经纬度坐标,数据格式{lng,lat}。
+     * @returns {Object} 经纬度坐标，数据格式{lng,lat}。
      */
     getLngLat() {
         return this.lngLat;
@@ -36195,7 +42783,7 @@ class Graphic {
     /**
      * @function Graphic.prototype.setLngLat
      * @description 设置经纬度坐标。
-     * @param {Object} lngLat - 经纬度坐标,数据格式{lng,lat}。
+     * @param {Object} lngLat - 经纬度坐标，数据格式{lng,lat}。
      */
     setLngLat(lngLat) {
         this.lngLat = Util_Util.isArray(lngLat) ? {lng: lngLat[0], lat: lngLat[1]} : lngLat;
@@ -36451,6 +43039,7 @@ function getLayer(id, type, source, sourceLayer, paint) {
 
 
 
+
 ;// CONCATENATED MODULE: ./src/mapboxgl/services/ServiceBase.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -36486,597 +43075,6 @@ class ServiceBase extends (external_mapboxgl_default()).Evented {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/promise-polyfill/dist/polyfill.js
-var polyfill = __webpack_require__(107);
-// EXTERNAL MODULE: ./node_modules/fetch-ie8/fetch.js
-var fetch = __webpack_require__(693);
-// EXTERNAL MODULE: ./node_modules/fetch-jsonp/build/fetch-jsonp.js
-var fetch_jsonp = __webpack_require__(144);
-var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
-;// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
-
-
-
-
-let FetchRequest_fetch = window.fetch;
-var setFetch = function (newFetch) {
-    FetchRequest_fetch = newFetch;
-}
-var RequestJSONPPromise = {
-  limitLength: 1500,
-  queryKeys: [],
-  queryValues: [],
-  supermap_callbacks: {},
-  addQueryStrings: function (values) {
-      var me = this;
-      for (var key in values) {
-          me.queryKeys.push(key);
-          if (typeof values[key] !== 'string') {
-              values[key] = Util.toJSON(values[key]);
-          }
-          var tempValue = encodeURIComponent(values[key]);
-          me.queryValues.push(tempValue);
-      }
-  },
-  issue: function (config) {
-      var me = this,
-          uid = me.getUid(),
-          url = config.url,
-          splitQuestUrl = [];
-      var p = new Promise(function (resolve) {
-          me.supermap_callbacks[uid] = function (response) {
-              delete me.supermap_callbacks[uid];
-              resolve(response);
-          };
-      });
-
-      // me.addQueryStrings({
-      //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
-      // });
-      var sectionURL = url,
-          keysCount = 0; //此次sectionURL中有多少个key
-      var length = me.queryKeys ? me.queryKeys.length : 0;
-      for (var i = 0; i < length; i++) {
-          if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
-              //+2 for ("&"or"?")and"="
-              if (keysCount == 0) {
-                  return false;
-              }
-              splitQuestUrl.push(sectionURL);
-              sectionURL = url;
-              keysCount = 0;
-              i--;
-          } else {
-              if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
-                  var leftValue = me.queryValues[i];
-                  while (leftValue.length > 0) {
-                      var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
-                      if (sectionURL.indexOf('?') > -1) {
-                          sectionURL += '&';
-                      } else {
-                          sectionURL += '?';
-                      }
-                      var tempLeftValue = leftValue.substring(0, leftLength);
-                      //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
-                      if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
-                          leftLength -= 1;
-                          tempLeftValue = leftValue.substring(0, leftLength);
-                      } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
-                          leftLength -= 2;
-                          tempLeftValue = leftValue.substring(0, leftLength);
-                      }
-
-                      sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
-                      leftValue = leftValue.substring(leftLength);
-                      if (tempLeftValue.length > 0) {
-                          splitQuestUrl.push(sectionURL);
-                          sectionURL = url;
-                          keysCount = 0;
-                      }
-                  }
-              } else {
-                  keysCount++;
-                  if (sectionURL.indexOf('?') > -1) {
-                      sectionURL += '&';
-                  } else {
-                      sectionURL += '?';
-                  }
-                  sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
-              }
-          }
-      }
-      splitQuestUrl.push(sectionURL);
-      me.send(
-          splitQuestUrl,
-          'RequestJSONPPromise.supermap_callbacks[' + uid + ']',
-          config && config.proxy
-      );
-      return p;
-  },
-
-  getUid: function () {
-      var uid = new Date().getTime(),
-          random = Math.floor(Math.random() * 1e17);
-      return uid * 1000 + random;
-  },
-
-  send: function (splitQuestUrl, callback, proxy) {
-      var len = splitQuestUrl.length;
-      if (len > 0) {
-          var jsonpUserID = new Date().getTime();
-          for (var i = 0; i < len; i++) {
-              var url = splitQuestUrl[i];
-              if (url.indexOf('?') > -1) {
-                  url += '&';
-              } else {
-                  url += '?';
-              }
-              url += 'sectionCount=' + len;
-              url += '&sectionIndex=' + i;
-              url += '&jsonpUserID=' + jsonpUserID;
-              if (proxy) {
-                  url = decodeURIComponent(url);
-                  url = proxy + encodeURIComponent(url);
-              }
-              fetch_jsonp_default()(url, {
-                  jsonpCallbackFunction: callback,
-                  timeout: 30000
-              });
-          }
-      }
-  },
-
-  GET: function (config) {
-      var me = this;
-      me.queryKeys.length = 0;
-      me.queryValues.length = 0;
-      me.addQueryStrings(config.params);
-      return me.issue(config);
-  },
-
-  POST: function (config) {
-      var me = this;
-      me.queryKeys.length = 0;
-      me.queryValues.length = 0;
-      me.addQueryStrings({
-          requestEntity: config.data
-      });
-      return me.issue(config);
-  },
-
-  PUT: function (config) {
-      var me = this;
-      me.queryKeys.length = 0;
-      me.queryValues.length = 0;
-      me.addQueryStrings({
-          requestEntity: config.data
-      });
-      return me.issue(config);
-  },
-  DELETE: function (config) {
-      var me = this;
-      me.queryKeys.length = 0;
-      me.queryValues.length = 0;
-      me.addQueryStrings({
-          requestEntity: config.data
-      });
-      return me.issue(config);
-  }
-};
-
-var CORS;
-var RequestTimeout;
-/**
- * @function setCORS
- * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
- * @category BaseTypes Util
- * @param {boolean} cors - 是否允许跨域请求。
- * @usage
- * ```
- * // 浏览器
- * <script type="text/javascript" src="{cdn}"></script>
- * <script>
- *   {namespace}.setCORS(cors);
- *
- *   // 弃用的写法
- *   SuperMap.setCORS(cors);
- *
- * </script>
- *
- * // ES6 Import
- * import { setCORS } from '{npm}';
- *
- * setCORS(cors);
- * ```
- */
-var setCORS = function (cors) {
-    CORS = cors;
-}
-/**
- * @function isCORS
- * @description 是是否允许跨域请求。
- * @category BaseTypes Util
- * @returns {boolean} 是否允许跨域请求。
- * @usage
- * ```
- * // 浏览器
- * <script type="text/javascript" src="{cdn}"></script>
- * <script>
- *   const result = {namespace}.isCORS();
- *
- *   // 弃用的写法
- *   const result = SuperMap.isCORS();
- *
- * </script>
- *
- * // ES6 Import
- * import { isCORS } from '{npm}';
- *
- * const result = isCORS();
- * ```
- */
-var isCORS = function () {
-    if (CORS != undefined) {
-        return CORS;
-    }
-    return window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
-}
-/**
- * @function setRequestTimeout
- * @description 设置请求超时时间。
- * @param {number} [timeout=45] - 请求超时时间，单位秒。
- * @private
- * @usage
- * ```
- * // 浏览器
-  <script type="text/javascript" src="{cdn}"></script>
-  <script>
-    {namespace}.setRequestTimeout(timeout);
-
-    // 弃用的写法
-    SuperMap.setRequestTimeout(timeout);
-
-  </script>
-
-  // ES6 Import
-  import { setRequestTimeout } from '{npm}';
-
-  setRequestTimeout(timeout);
- * ```
- */
-var setRequestTimeout = function (timeout) {
-    return RequestTimeout = timeout;
-}
-/**
- * @function getRequestTimeout
- * @description 获取请求超时时间。
- * @returns {number} 请求超时时间。
- * @private
- * @usage
- * ```
- * // 浏览器
-  <script type="text/javascript" src="{cdn}"></script>
-  <script>
-    {namespace}.getRequestTimeout();
-
-    // 弃用的写法
-    SuperMap.getRequestTimeout();
-
-  </script>
-
-  // ES6 Import
-  import { getRequestTimeout } from '{npm}';
-
-  getRequestTimeout();
- * ```
- */
-var getRequestTimeout = function () {
-    return RequestTimeout || 45000;
-}
-
-/**
- * @name FetchRequest
- * @namespace
- * @category BaseTypes Util
- * @description 获取请求。
- * @usage
- * ```
- * // 浏览器
- * <script type="text/javascript" src="{cdn}"></script>
- * <script>
- *   const result = {namespace}.FetchRequest.commit(method, url, params, options);
- *
- * </script>
- *
- * // ES6 Import
- * import { FetchRequest } from '{npm}';
- *
- * const result = FetchRequest.commit(method, url, params, options);
- *
- * ```
- */
-var FetchRequest = {
-    /**
-     * @function FetchRequest.commit
-     * @description commit 请求。
-     * @param {string} method - 请求方法。
-     * @param {string} url - 请求地址。
-     * @param {string} params - 请求参数。
-     * @param {Object} options - 请求的配置属性。
-     * @returns {Promise} Promise 对象。
-     */
-    commit: function (method, url, params, options) {
-        method = method ? method.toUpperCase() : method;
-        switch (method) {
-            case 'GET':
-                return this.get(url, params, options);
-            case 'POST':
-                return this.post(url, params, options);
-            case 'PUT':
-                return this.put(url, params, options);
-            case 'DELETE':
-                return this.delete(url, params, options);
-            default:
-                return this.get(url, params, options);
-        }
-    },
-    /**
-     * @function FetchRequest.supportDirectRequest
-     * @description supportDirectRequest 请求。
-     * @param {string} url - 请求地址。
-     * @param {Object} options - 请求的配置属性。
-     * @returns {boolean} 是否允许跨域请求。
-     */
-    supportDirectRequest: function (url, options) {
-        if (Util.isInTheSameDomain(url)) {
-            return true;
-        }
-        if (options.crossOrigin != undefined) {
-            return options.crossOrigin;
-        } else {
-            return isCORS() || options.proxy;
-        }
-    },
-    /**
-     * @function FetchRequest.get
-     * @description get 请求。
-     * @param {string} url - 请求地址。
-     * @param {string} params - 请求参数。
-     * @param {Object} options - 请求的配置属性。
-     * @returns {Promise} Promise 对象。
-     */
-    get: function (url, params, options) {
-        options = options || {};
-        var type = 'GET';
-        url = Util.urlAppend(url, this._getParameterString(params || {}));
-        url = this._processUrl(url, options);
-        if (!this.supportDirectRequest(url, options)) {
-            url = url.replace('.json', '.jsonp');
-            var config = {
-                url: url,
-                data: params
-            };
-            return RequestJSONPPromise.GET(config);
-        }
-        if (!this.urlIsLong(url)) {
-            return this._fetch(url, params, options, type);
-        } else {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
-        }
-    },
-    /**
-     * @function FetchRequest.delete
-     * @description delete 请求。
-     * @param {string} url - 请求地址。
-     * @param {string} params - 请求参数。
-     * @param {Object} options -请求的配置属性。
-     * @returns {Promise} Promise 对象。
-     */
-    delete: function (url, params, options) {
-        options = options || {};
-        var type = 'DELETE';
-        url = Util.urlAppend(url, this._getParameterString(params || {}));
-        url = this._processUrl(url, options);
-        if (!this.supportDirectRequest(url, options)) {
-            url = url.replace('.json', '.jsonp');
-            var config = {
-                url: url += "&_method=DELETE",
-                data: params
-            };
-            return RequestJSONPPromise.DELETE(config);
-        }
-        if (this.urlIsLong(url)) {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
-        }
-        return this._fetch(url, params, options, type);
-    },
-    /**
-     * @function FetchRequest.post
-     * @description post 请求。
-     * @param {string} url - 请求地址。
-     * @param {string} params - 请求参数。
-     * @param {Object} options - 请求的配置属性。
-     * @returns {Promise} Promise 对象。
-     */
-    post: function (url, params, options) {
-        options = options || {};
-        if (!this.supportDirectRequest(url, options)) {
-            url = url.replace('.json', '.jsonp');
-            var config = {
-                url: url += "&_method=POST",
-                data: params
-            };
-            return RequestJSONPPromise.POST(config);
-        }
-        return this._fetch(this._processUrl(url, options), params, options, 'POST');
-    },
-    /**
-     * @function FetchRequest.put
-     * @description put 请求。
-     * @param {string} url - 请求地址。
-     * @param {string} params - 请求参数。
-     * @param {Object} options - 请求的配置属性。
-     * @returns {Promise} Promise 对象。
-     */
-    put: function (url, params, options) {
-        options = options || {};
-        url = this._processUrl(url, options);
-        if (!this.supportDirectRequest(url, options)) {
-            url = url.replace('.json', '.jsonp');
-            var config = {
-                url: url += "&_method=PUT",
-                data: params
-            };
-            return RequestJSONPPromise.PUT(config);
-        }
-        return this._fetch(url, params, options, 'PUT');
-    },
-    /**
-     * @function FetchRequest.urlIsLong
-     * @description url 的字节长度是否太长。
-     * @param {string} url - 请求地址。
-     * @returns {boolean} url 的字节长度是否太长。
-     */
-    urlIsLong: function (url) {
-        //当前url的字节长度。
-        var totalLength = 0,
-            charCode = null;
-        for (var i = 0, len = url.length; i < len; i++) {
-            //转化为Unicode编码
-            charCode = url.charCodeAt(i);
-            if (charCode < 0x007f) {
-                totalLength++;
-            } else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
-                totalLength += 2;
-            } else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
-                totalLength += 3;
-            }
-        }
-        return totalLength < 2000 ? false : true;
-    },
-    _postSimulatie: function (type, url, params, options) {
-        var separator = url.indexOf('?') > -1 ? '&' : '?';
-        url += separator + '_method=' + type;
-        if (typeof params !== 'string') {
-            params = JSON.stringify(params);
-        }
-        return this.post(url, params, options);
-    },
-
-    _processUrl: function (url, options) {
-        if (this._isMVTRequest(url)) {
-            return url;
-        }
-
-        if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
-            if (url.indexOf('?') < 0) {
-                url += '.json';
-            } else {
-                var urlArrays = url.split('?');
-                if (urlArrays.length === 2) {
-                    url = urlArrays[0] + '.json?' + urlArrays[1];
-                }
-            }
-        }
-        if (options && options.proxy) {
-            if (typeof options.proxy === 'function') {
-                url = options.proxy(url);
-            } else {
-                url = decodeURIComponent(url);
-                url = options.proxy + encodeURIComponent(url);
-            }
-        }
-        return url;
-    },
-
-    _fetch: function (url, params, options, type) {
-        options = options || {};
-        options.headers = options.headers || {};
-        if (!options.headers['Content-Type'] && !FormData.prototype.isPrototypeOf(params)) {
-            options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-        }
-        if (options.timeout) {
-            return this._timeout(
-                options.timeout,
-                FetchRequest_fetch(url, {
-                    method: type,
-                    headers: options.headers,
-                    body: type === 'PUT' || type === 'POST' ? params : undefined,
-                    credentials: this._getWithCredentials(options),
-                    mode: 'cors',
-                    timeout: getRequestTimeout()
-                }).then(function (response) {
-                    return response;
-                })
-            );
-        }
-        return FetchRequest_fetch(url, {
-            method: type,
-            body: type === 'PUT' || type === 'POST' ? params : undefined,
-            headers: options.headers,
-            credentials: this._getWithCredentials(options),
-            mode: 'cors',
-            timeout: getRequestTimeout()
-        }).then(function (response) {
-            return response;
-        });
-    },
-
-    _getWithCredentials: function (options) {
-        if (options.withCredentials === true) {
-            return 'include';
-        }
-        if (options.withCredentials === false) {
-            return 'omit';
-        }
-        return 'same-origin';
-    },
-
-    _fetchJsonp: function (url, options) {
-        options = options || {};
-        return fetch_jsonp_default()(url, {
-            method: 'GET',
-            timeout: options.timeout
-        }).then(function (response) {
-            return response;
-        });
-    },
-
-    _timeout: function (seconds, promise) {
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                reject(new Error('timeout'));
-            }, seconds);
-            promise.then(resolve, reject);
-        });
-    },
-
-    _getParameterString: function (params) {
-        var paramsArray = [];
-        for (var key in params) {
-            var value = params[key];
-            if (value != null && typeof value !== 'function') {
-                var encodedValue;
-                if (Array.isArray(value) || value.toString() === '[object Object]') {
-                    encodedValue = encodeURIComponent(JSON.stringify(value));
-                } else {
-                    encodedValue = encodeURIComponent(value);
-                }
-                paramsArray.push(encodeURIComponent(key) + '=' + encodedValue);
-            }
-        }
-        return paramsArray.join('&');
-    },
-
-    _isMVTRequest: function (url) {
-        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
-    }
-}
-
 ;// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -37093,7 +43091,7 @@ var FetchRequest = {
  *  > 使用说明：
  *  > 创建任何一个服务之前调用 {@link SecurityManager.registerToken}或
  *  > {@link SecurityManager.registerKey}注册凭据。
- *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
+ *  > 发送请求时根据 URL 或者服务 ID 获取相应的 key 或者 token 并自动添加到服务地址中。
  * @usage
  */
 class SecurityManager {
@@ -37137,7 +43135,7 @@ class SecurityManager {
      * @description 服务请求都会自动带上这个 token。
      * @function SecurityManager.registerToken
      * @param {string} url -服务器域名+端口：如http://localhost:8090。
-     * @param {string} token - token
+     * @param {string} token - token。
      */
     static registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -37151,8 +43149,8 @@ class SecurityManager {
     /**
      * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
      * @function SecurityManager.registerKey
-     * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
-     * @param {string} key - key
+     * @param {Array} ids - 可以是服务 ID 数组或者 URL 地址数组或者 webAPI 类型数组。
+     * @param {string} key - key。
      */
     static registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -37179,10 +43177,10 @@ class SecurityManager {
     }
 
     /**
-     * @description 根据 Url 获取token。
+     * @description 根据 URL 获取token。
      * @function SecurityManager.getToken
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
-     * @returns {string} token
+     * @returns {string} token。
      */
     static getToken(url) {
         if (!url) {
@@ -37194,10 +43192,10 @@ class SecurityManager {
     }
 
     /**
-     * @description 根据 Url 获取 key。
+     * @description 根据 URL 获取 key。
      * @function SecurityManager.getKey
-     * @param {string} id - id
-     * @returns {string} key
+     * @param {string} id - ID。
+     * @returns {string} key。
      */
     static getKey(id) {
         this.keys = this.keys || {};
@@ -37269,7 +43267,7 @@ class SecurityManager {
     /**
      * @description iPortal登录验证。
      * @function SecurityManager.loginiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @returns {Promise} 包含 iPortal 登录请求结果的 Promise 对象。
@@ -37295,7 +43293,7 @@ class SecurityManager {
     /**
      * @description iPortal 登出。
      * @function SecurityManager.logoutiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
@@ -37368,7 +43366,7 @@ class SecurityManager {
     /**
      * @description 清空令牌信息。
      * @function SecurityManager.destroyToken
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
      */
     static destroyToken(url) {
         if (!url) {
@@ -37401,8 +43399,8 @@ class SecurityManager {
      * @description 服务URL追加授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
      * @version 10.1.2
      * @function SecurityManager.appendCredential
-     * @param {string} url - 服务URL
-     * @returns {string} 绑定了token或者key的服务URL
+     * @param {string} url - 服务URL。
+     * @returns {string} 绑定了token或者key的服务URL。
      */
     static appendCredential(url) {
         var newUrl = url;
@@ -37470,6 +43468,7 @@ SecurityManager.ONLINE = 'https://www.supermapol.com';
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -37605,13 +43604,22 @@ class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
+        const format = options.scope.format;
+        if (format && !this.supportDataFormat(format)) {
+          throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
+        }
+       
         let me = this;
         options.url = options.url || me.url;
+        if (this._returnContent(options) && !options.url.includes('returnContent=true')) {
+          options.url = Util.urlAppend(options.url, 'returnContent=true');
+        }
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
+        options.withoutFormatSuffix = options.scope.withoutFormatSuffix || false;
         //为url添加安全认证信息片段
         options.url = SecurityManager.appendCredential(options.url);
 
@@ -37653,7 +43661,7 @@ class CommonServiceBase {
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
-     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求
+     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
      */
     ajaxPolling() {
         let me = this,
@@ -37729,6 +43737,24 @@ class CommonServiceBase {
         });
     }
 
+    _returnContent(options) {
+      if (options.scope.format === DataFormat.FGB) {
+        return false;
+      }
+      if (options.scope.returnContent) {
+        return true;
+      }
+      return false;
+    }
+
+    supportDataFormat(foramt) {
+      return this.dataFormat().includes(foramt);
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER];
+    }
+
     _commit(options) {
         if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
@@ -37746,6 +43772,7 @@ class CommonServiceBase {
         }
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
+            withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
@@ -37780,6 +43807,9 @@ class CommonServiceBase {
                         };
                     }
                 }
+                if (requestResult && options.scope.format === DataFormat.FGB) {
+                  requestResult.newResourceLocation = requestResult.newResourceLocation.replace('.json', '') + '.fgb';
+                }
                 return requestResult;
             })
             .catch(function (e) {
@@ -37800,7 +43830,7 @@ class CommonServiceBase {
 
 
 /**
- * 服务器请求回调函数
+ * 服务器请求回调函数。
  * @callback RequestCallback
  * @category BaseTypes Util
  * @example
@@ -38221,7 +44251,7 @@ class QueryParameters {
          * @member {GeometryType} [QueryParameters.prototype.networkType=GeometryType.LINE]
          * @description 网络数据集对应的查询类型，分为点和线两种类型。
          */
-        this.networkType = GeometryType.LINE;
+        this.networkType = REST_GeometryType.LINE;
 
         /**
          * @member {QueryOption} [QueryParameters.prototype.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY]
@@ -38409,7 +44439,7 @@ class ChartQueryParameters {
     constructor(options) {
         /**
          * @member {string} ChartQueryParameters.prototype.queryMode
-         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
+         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。
          */
         this.queryMode = null;
 
@@ -38875,14 +44905,14 @@ class ChartService extends ServiceBase {
  * @class DataFlowService
  * @deprecatedclass SuperMap.DataFlowService
  * @category iServer DataFlow
- * @classdesc 数据流服务类
+ * @classdesc 数据流服务类。
  * @extends {CommonServiceBase}
- * @param {string} url - 数据流服务地址
+ * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - -排除字段。
+ * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -38908,13 +44938,13 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
         /**
          * @member {Object} DataFlowService.prototype.prjCoordSys
-         * @description 动态投影参数
+         * @description 动态投影参数。
          */
         this.prjCoordSys = null;
 
         /**
          * @member {Object} DataFlowService.prototype.excludeField
-         * @description 排除字段
+         * @description 排除字段。
          */
         this.excludeField = null;
 
@@ -38925,7 +44955,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.initBroadcast
-     * @description 初始化广播
+     * @description 初始化广播。
      * @returns {DataFlowService}
      */
     initBroadcast() {
@@ -38967,7 +44997,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.initSubscribe
-     * @description 初始化订阅数据
+     * @description 初始化订阅数据。
      * @returns {DataFlowService} DataFlowService的实例对象。
      */
     initSubscribe() {
@@ -38995,8 +45025,8 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段
-     * @param {Object} excludeField - 排除字段
+     * @description 设置排除字段。
+     * @param {Object} excludeField - 排除字段。
      * @returns {DataFlowService} DataFlowService的实例对象。
      */
     setExcludeField(excludeField) {
@@ -39007,7 +45037,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据
+     * @description 设置添加的几何要素数据。
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {DataFlowService} DataFlowService的实例对象。
      */
@@ -39019,7 +45049,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.unSubscribe
-     * @description 结束订阅数据
+     * @description 结束订阅数据。
      */
     unSubscribe() {
         if (!this.subscribeWebSocket) {
@@ -39031,7 +45061,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.unBroadcast
-     * @description 结束加载广播
+     * @description 结束加载广播。
      */
     unBroadcast() {
         if (!this.broadcastWebSocket) {
@@ -39410,7 +45440,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称，此为必选参数。
  * @param {string} options.datasetName - 数据集名称，此为必选参数。
- * @param {string} options.datasetType - 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+ * @param {string} options.datasetType - 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
  * @usage
  */
 class CreateDatasetParameters {
@@ -39434,7 +45464,7 @@ class CreateDatasetParameters {
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasetType
-         * @description 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+         * @description 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
          */
         this.datasetType = null;
 
@@ -40022,7 +46052,7 @@ class DatasourceService extends ServiceBase {
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
@@ -40063,7 +46093,7 @@ class GetFeaturesServiceBase extends CommonServiceBase {
 
          /**
          * @member {number} [GetFeaturesServiceBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含Geometry
+         * @description 返回结果是否包含Geometry。
          */
         this.hasGeometry = true;
 
@@ -40075,14 +46105,13 @@ class GetFeaturesServiceBase extends CommonServiceBase {
 
         /**
          * @member {string} [GetFeaturesServiceBase.prototype.format=DataFormat.GEOJSON]
-         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。
-         * 参数格式为 "ISERVER"，"GEOJSON"。
+         * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。
+         * 参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
          */
         this.format = DataFormat.GEOJSON;
 
         Util.extend(this, options);
         this.url = Util.urlPathAppend(this.url, 'featureResults');
-
         this.CLASS_NAME = "SuperMap.GetFeaturesServiceBase";
     }
 
@@ -40119,10 +46148,6 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
         me.hasGeometry = params.hasGeometry;
-        if (me.returnContent) {
-            me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
-            firstPara = false;
-        }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
@@ -40157,6 +46182,9 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result});
     }
 
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
+    }
 
 }
 
@@ -40251,7 +46279,7 @@ class FilterParameter {
          * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。
          * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，
          * 分别表示某个城市所属的洲和国家。
-         * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；
+         * 如果要按照国家对全球的城市进行分组，可以设置 groupBy = "Country"；
          * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。
          */
         this.groupBy = null;
@@ -40315,7 +46343,7 @@ class FilterParameter {
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @usage
  */
@@ -40335,7 +46363,7 @@ class GetFeaturesParametersBase {
 
         /**
          * @member {Object} GetFeaturesParametersBase.prototype.targetPrj
-         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
          */
         this.targetPrj = null;
 
@@ -40373,7 +46401,7 @@ class GetFeaturesParametersBase {
 
         /**
          * @member {number} [GetFeaturesParametersBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含Geometry
+         * @description 返回结果是否包含Geometry。
          */
         this.hasGeometry = true;
 
@@ -40430,7 +46458,7 @@ class GetFeaturesParametersBase {
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -40534,7 +46562,7 @@ class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
@@ -40598,7 +46626,7 @@ class GetFeaturesByIDsService extends GetFeaturesServiceBase {
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -40690,7 +46718,7 @@ class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
@@ -40758,7 +46786,7 @@ class GetFeaturesBySQLService extends GetFeaturesServiceBase {
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -40900,7 +46928,7 @@ GetFeaturesByBoundsParameters.getFeatureMode = {
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
@@ -40968,7 +46996,7 @@ class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @extends {GetFeaturesParametersBase}
  * @usage
  */
@@ -40977,7 +47005,7 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {number} GetFeaturesByBufferParameters.prototype.bufferDistance
-         * @description buffer 距离,单位与所查询图层对应的数据集单位相同。
+         * @description buffer 距离，单位与所查询图层对应的数据集单位相同。
          */
         this.bufferDistance = null;
 
@@ -40989,7 +47017,7 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {GeoJSONObject} GetFeaturesByBufferParameters.prototype.geometry
-         * @description 空间查询条件。 <br>
+         * @description 空间查询条件。<br>
          * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLat}|{@link mapboxgl.Point}|{@link GeoJSONObject}。</br>
          * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}|{@link GeoJSONObject}。</br>
          * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}|{@link mapboxgl.LngLatBounds}|{@link GeoJSONObject}。
@@ -41087,7 +47115,7 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
@@ -41159,7 +47187,7 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
@@ -41293,7 +47321,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
@@ -41467,6 +47495,7 @@ class EditFeaturesParameters {
 
 
 
+
 /**
  * @class EditFeaturesService
  * @deprecatedclass SuperMap.EditFeaturesService
@@ -41551,9 +47580,16 @@ class EditFeaturesService extends CommonServiceBase {
         jsonParameters = EditFeaturesParameters.toJsonParameters(params);
         if (editType === EditType.DELETE) {
             ids = Util.toJSON(params.IDs);
-            me.url = Util.urlAppend(me.url, Util.getParameterString({ids}));
-            method = "DELETE";
             jsonParameters = ids;
+            var urlWithIds = Util.urlAppend(me.url, Util.getParameterString({ids}))
+            if(FetchRequest.urlIsLong(urlWithIds)) {
+                me.url = Util.urlAppend(me.url, Util.getParameterString({_method: 'DELETE'}));
+                method = "POST";
+            } else{
+                me.url = urlWithIds;
+                method = "DELETE";
+            }
+           
         } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
@@ -41802,7 +47838,7 @@ class FeatureService extends ServiceBase {
             } else if (params.geometry instanceof (external_mapboxgl_default()).LngLat) {
                 params.geometry = new Point(params.geometry.lng, params.geometry.lat);
                 params.geometry.SRID = 4326;
-            } else if (!(params.geometry instanceof Geometry)) {
+            } else if (!(params.geometry instanceof Geometry_Geometry)) {
                 params.geometry = Util_Util.toSuperMapGeometry(params.geometry);
             }
         }
@@ -42010,13 +48046,13 @@ class FieldStatisticsParameters extends FieldParameters {
         super(options);
         /**
          * @member {string} FieldStatisticsParameters.prototype.fieldName
-         * @description 字段名
+         * @description 字段名。
          */
         this.fieldName = null;
 
         /**
          * @member {(string.<StatisticMode>|Array.<string.<StatisticMode>>)} FieldStatisticsParameters.prototype.statisticMode
-         * @description 字段统计方法类型
+         * @description 字段统计方法类型。
          */
         this.statisticMode = null;
 
@@ -42504,7 +48540,7 @@ class GetGridCellInfosService extends CommonServiceBase {
  *     //doSomething
  * })
  * @param {string} url - 服务地址。请求地图服务，URL 应为：</br>
- *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"。
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
@@ -42696,7 +48732,7 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
      * @description 处理自动化工具执行的结果等,支持结果过滤。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      */
     getResults(identifier, jobId, filter) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
@@ -42947,7 +48983,7 @@ class GeoprocessingService extends ServiceBase {
      * @description 处理自动化工具异步执行的结果,支持结果过滤。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      * @param {RequestCallback} callback 回调函数。
      */
     getResults(identifier, jobId, filter, callback) {
@@ -43356,8 +49392,7 @@ class ThemeLabelItem {
  * @class ThemeUniqueItem
  * @deprecatedclass SuperMap.ThemeUniqueItem
  * @category  iServer Map Theme
- * @classdesc 单值专题图子项类。单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
- * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有 5 种不同值，则该行政区划图有 5 个专题图子项。
+ * @classdesc 单值专题图子项类。单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有 5 种不同值，则该行政区划图有 5 个专题图子项。
  * @param {Object} options - 参数。
  * @param {string} options.unique - 子项的单值字段。
  * @param {string} [options.caption] - 子项的标题。
@@ -43472,7 +49507,7 @@ class ThemeOffset {
     constructor(options) {
         /**
          * @member {boolean} [ThemeOffset.prototype.offsetFixed=false]
-         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。
+         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，指文本或符号的偏移量不随地图的缩放而变化。
          */
         this.offsetFixed = false;
 
@@ -43713,8 +49748,7 @@ class ThemeLabelText {
 
         /**
          *@member {LabelMixedTextStyle} [ThemeLabelText.prototype.uniformMixedStyle]
-         *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标
-         *              签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
+         *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
          */
         this.uniformMixedStyle =  null;
@@ -43893,14 +49927,13 @@ class ThemeLabelBackground {
         /**
          * @member {LabelBackShape} [ThemeLabelBackground.prototype.labelBackShape=LabelBackShape.NONE]
          * @description 标签专题图中标签背景风格。当背景形状
-         *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
+         *              labelBackShape 属性设为 NONE（即无背景形状）时，backStyle 属性无效。
          */
         this.labelBackShape = LabelBackShape.NONE;
 
         /**
          * @member {ServerStyle} [ThemeLabelBackground.prototype.backStyle]
-         * @description 标签专题图中标签背景的形状枚举类。背景类型可
-         *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
+         * @description 标签专题图中标签背景的形状枚举类。背景类型可以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
          */
         this.backStyle = new ServerStyle();
 
@@ -44651,7 +50684,7 @@ class ThemeGraphText {
  * @param {string} [options.caption] - 专题图子项的名称。
  * @param {string} options.graphExpression - 统计专题图的专题变量。
  * @param {Array.<number>} [options.memoryDoubleValues] - 内存数组方式制作专题图时的值数组。
- * @param {ServerStyle} [options.uniformStyle] - 统计专题图子项的显示风格
+ * @param {ServerStyle} [options.uniformStyle] - 统计专题图子项的显示风格。
  * @usage
  */
 class ThemeGraphItem {
@@ -44674,7 +50707,7 @@ class ThemeGraphItem {
          * @member {Array.<number>} [ThemeGraphItem.prototype.memoryDoubleValues]
          * @description 内存数组方式制作专题图时的值数组。<br>
          *              内存数组方式制作专题图时，只对 SmID 值在键数组（{@link ThemeGraph#memoryKeys}）中的记录制作专题图。
-         *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。
+         *              值数组的数值个数必须与键数组中数值的个数一致。值数组中的值将代替原来的专题值来制作统计专题图。
          *              比如：利用面积字段和周长字段（即有两个统计专题图子项 ）作为专题变量制作统计专题图。
          */
         this.memoryDoubleValues = null;
@@ -44751,7 +50784,7 @@ class ThemeGraphItem {
  * @param {ThemeGraphAxes} [options.graphAxes] - 统计图中坐标轴样式相关信息。
  * @param {ThemeGraphSize} [options.graphSize=0] - 统计符号的最大最小尺寸。
  * @param {boolean} [options.graphSizeFixed=false] - 缩放地图时统计图符号是否固定大小。
- * @param {ThemeGraphText} [options.graphText] - 统计图上的文字是否可以见以及文字标注风格。
+ * @param {ThemeGraphText} [options.graphText] - 统计图上的文字是否可见以及文字标注风格。
  * @param {GraphAxesTextDisplayMode} [options.graphAxesTextDisplayMode=GraphAxesTextDisplayMode.NONE] - 统计专题图坐标轴文本显示模式。
  * @param {ThemeGraphType} [options.graphType=ThemeGraphType.AREA] - 统计专题图类型。
  * @param {Array.<number>} [options.memoryKeys] - 以内存数组方式制作专题图时的键数组。
@@ -44801,7 +50834,7 @@ class ThemeGraph extends Theme_Theme {
 
         /**
          * @member {ThemeGraphText} ThemeGraph.prototype.graphText
-         * @description 统计图上的文字是否可以见以及文字标注风格。
+         * @description 统计图上的文字是否可见以及文字标注风格。
          */
         this.graphText =  new ThemeGraphText();
 
@@ -44875,7 +50908,7 @@ class ThemeGraph extends Theme_Theme {
          *                       maxGraphSize: 1,
          *                       minGraphSize: 0.35
          *                   }),
-         *                   //统计图上的文字是否可以见以及文字标注风格
+         *                   //统计图上的文字是否可见以及文字标注风格
          *                   graphText: new ThemeGraphText({
          *                       graphTextDisplayed: true,
          *                       graphTextFormat: ThemeGraphTextFormat.VALUE,
@@ -44908,7 +50941,7 @@ class ThemeGraph extends Theme_Theme {
 
         /**
          * @member {boolean} [ThemeGraph.prototype.negativeDisplayed=false]
-         * @description 专题图中是否显示属性为负值的数据。true 表示显示；falese 不显示。
+         * @description 专题图中是否显示属性为负值的数据。true 表示显示；false 不显示。
          */
         this.negativeDisplayed = false;
 
@@ -45292,7 +51325,7 @@ class ThemeGraduatedSymbolStyle {
  * @param {string} options.expression - 等级符号专题图的字段或字段表达式。
  * @param {number} [options.baseValue=0] - 等级符号专题图的基准值，单位同专题变量的单位。
  * @param {GraduatedMode} [options.graduatedMode=GraduatedMode.CONSTANT] - 等级符号专题图分级模式。
- * @param {ThemeOffset} [options.offset] - 指定标签专题图中标记文本相对于要素内点的偏移量对象。
+ * @param {ThemeOffset} [options.offset] - 指定等级符号专题图中标记文本相对于要素内点的偏移量对象。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  * @usage
  */
@@ -45563,7 +51596,6 @@ class ThemeRangeItem {
  * @param {Array.<ThemeRangeItem>} options.items - 子项数组。
  * @param {string} options.rangeExpression - 分段字段表达式。
  * @param {number} options.rangeParameter - 分段参数。
- * @param {number} options.rangeParameter - 分段参数。
  * @param {RangeMode} [options.rangeMode=RangeMode.EQUALINTERVAL] - 分段模式。
  * @param {ColorGradientType} [options.colorGradientType=ColorGradientType.YELLOW_RED] - 渐变颜色枚举类。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
@@ -45575,7 +51607,7 @@ class ThemeRange extends Theme_Theme {
         super("RANGE", options);
         /**
          * @member {string} ThemeRange.prototype.precision
-         * @description 精准度
+         * @description 精准度。
          */
         this.precision = '1.0E-12';
 
@@ -45607,7 +51639,7 @@ class ThemeRange extends Theme_Theme {
         /**
          * @member {number} ThemeRange.prototype.rangeParameter
          * @description 分段参数。
-         *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数；当分段模式为标准差分段法时，
+         *              当分段模式为等距离分段法，平方根分段，对数分段法，等计数分段法其中一种模式时，该参数用于设置分段个数；当分段模式为标准差分段法时，
          *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。
          */
         this.rangeParameter = 0;
@@ -45616,8 +51648,7 @@ class ThemeRange extends Theme_Theme {
          * @member {ColorGradientType} [ThemeRange.prototype.colorGradientType=ColorGradientType.YELLOW_RED]
          * @description 渐变颜色枚举类。<br>
          *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
-         *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色
-         *              方案完成填*充。但如果为某几个子项的风格进行单独设置后（设置了 {@link ThemeUniqueItem} 或 {@link ThemeRangeItem} 类中Style属性），
+         *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。但如果为某几个子项的风格进行单独设置后（设置了 {@link ThemeUniqueItem} 或 {@link ThemeRangeItem} 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
         this.colorGradientType = ColorGradientType.YELLOW_RED;
@@ -45691,7 +51722,7 @@ class ThemeRange extends Theme_Theme {
  * @param {Object} options - 参数。
  * @param {Bounds} options.bounds - 图层范围。
  * @param {string} options.name - 图层的名称。
- * @param {UGCLayerType} options.type  - 图层类型
+ * @param {UGCLayerType} options.type  - 图层类型。
  * @param {string} [options.caption] - 图层的标题。
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
@@ -45896,7 +51927,7 @@ class UGCMapLayer extends UGCLayer {
 
     /**
      * @function UGCMapLayer.prototype.fromJson
-     * @description 将服务端 JSON 对象转换成当前客户端对象
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
@@ -46213,7 +52244,7 @@ class UGCSubLayer extends UGCMapLayer {
 
     /**
      * @function UGCSubLayer.prototype.fromJson
-     * @description 将服务端 JSON 对象转换成当前客户端对象
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
@@ -46328,7 +52359,7 @@ class ServerTheme extends UGCSubLayer {
 
     /**
      * @function ServerTheme.prototype.fromJson
-     * @description 将服务端 JSON 对象转换成当前客户端对象
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
@@ -47180,7 +53211,7 @@ class SetLayersInfoService extends CommonServiceBase {
  * @class SetLayerStatusParameters
  * @deprecatedclass SuperMap.SetLayerStatusParameters
  * @category  iServer Map TempLayersSet
- * @classdesc 子图层显示控制参数类,该类存储了各子图层是否可见的状态。
+ * @classdesc 子图层显示控制参数类，该类存储了各子图层是否可见的状态。
  *            注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
  * @param {Object} options - 参数。
  * @param {Array.<LayerStatus>} options.layerStatusList - 获取或设置图层可见状态（{@link LayerStatus}）集合，
@@ -47206,8 +53237,8 @@ class SetLayerStatusParameters {
 
         /**
          * @member {string} SetLayerStatusParameters.prototype.resourceID
-         * @description 获取或设置资源服务ID。如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；
-         *              如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
+         * @description 获取或设置资源服务ID。如果设置该参数则会在指定的 TempLayer 中进行图层的显示控制；
+         *              如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 中进行图层的显示控制。
          */
         this.resourceID = null;
 
@@ -48056,7 +54087,7 @@ class MeasureService extends ServiceBase {
     }
 
     _processParam(params) {
-        if (params && !(params.geometry instanceof Geometry)) {
+        if (params && !(params.geometry instanceof Geometry_Geometry)) {
 
             params.geometry = Util_Util.toSuperMapGeometry(params.geometry);
         }
@@ -48734,7 +54765,7 @@ class FacilityAnalystStreamParameters {
  * @class FacilityAnalystStreamService
  * @deprecatedclass SuperMap.FacilityAnalystStreamService
  * @category iServer NetworkAnalyst UpstreamCirticalFaclilities
- * @classdesc 上游/下游 关键设施查找资源服务类；即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
+ * @classdesc 上游/下游 关键设施查找资源服务类：即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  * @extends NetworkAnalystServiceBase
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
@@ -48828,7 +54859,7 @@ class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
  * @param {number} [options.expectFacilityCount=1] - 要查找的设施点数量。
  * @param {boolean} [options.fromEvent=false] - 是否从事件点到设施点进行查找。
  * @param {boolean} [options.isAnalyzeById=false] - 事件点和设施点是否通过节点 ID 号来指定。
- * @param {number} [options.maxWeight=0] - 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
+ * @param {number} [options.maxWeight=0] - 权值的最大限值。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
  * @param {TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  * @usage
  */
@@ -48859,9 +54890,7 @@ class FindClosestFacilitiesParameters {
         /**
          * @member {boolean} [FindClosestFacilitiesParameters.prototype.fromEvent=false]
          * @description 是否从事件点到设施点进行查找。最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。
-         *              这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。由于存在从 A 点到 B 点与从 B 点到 A 点的耗费不一样的情况，因此起止点
-         *              不同可能会得到不同的最优路线。因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最
-         *              近设施点为起点到事件点的方向分析。如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；设置为 false，表示从设施点到事件点进行查找。
+         *              这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。由于存在从 A 点到 B 点与从 B 点到 A 点的耗费不一样的情况，因此起止点不同可能会得到不同的最优路线。因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最近设施点为起点到事件点的方向分析。如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；设置为 false，表示从设施点到事件点进行查找。
          */
         this.fromEvent = false;
 
@@ -48873,7 +54902,7 @@ class FindClosestFacilitiesParameters {
 
         /**
          * @member {number} [FindClosestFacilitiesParameters.prototype.maxWeight=0]
-         * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
+         * @description 权值的最大限值。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。
          *              例如事件发生点是一起交通事故，要求查找在 10 分钟内能到达的最近医院，超过 10 分钟能到达的都不予考虑。
          *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
          */
@@ -49270,7 +55299,7 @@ class FindLocationService extends NetworkAnalystServiceBase {
  * @class FindMTSPPathsParameters
  * @deprecatedclass SuperMap.FindMTSPPathsParameters
  * @category iServer NetworkAnalyst MTSPPath
- * @classdesc 多旅行商分析参数类
+ * @classdesc 多旅行商分析参数类。
  * @param {Object} options - 参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.centers - 配送中心集合。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.nodes - 配送目标集合。
@@ -49362,7 +55391,7 @@ class FindMTSPPathsParameters {
  *            查找经济有效的配送路径，并给出相应的行走路线。
  *            物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
  *            该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
- *            多旅行商分析结果通过该类支持的事件的监听函数参数获取
+ *            多旅行商分析结果通过该类支持的事件的监听函数参数获取。
  * @extends {NetworkAnalystServiceBase}
  * @example
  * var myFindMTSPPathsService = new FindMTSPPathsService(url, {
@@ -49913,7 +55942,7 @@ class FindServiceAreasService extends NetworkAnalystServiceBase {
     /**
      * @function FindServiceAreasService.prototype.toGeoJSONResult
      * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
-     * @param {Object} result - 服务器返回的结果对象。。
+     * @param {Object} result - 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         if (!result || !result.serviceAreaList) {
@@ -49955,7 +55984,7 @@ class FindServiceAreasService extends NetworkAnalystServiceBase {
  * @classdesc 旅行商分析参数类。
  * 旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  * 旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
- * 旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
+ * 旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同。
  * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  * @param {Object} options - 参数。
  * @param {boolean} [options.endNodeAssigned=false] - 是否指定终止点，将指定的途经点的最后一个点作为终止点。true 表示指定终止点，则旅行商必须最后一个访问终止点。
@@ -50647,7 +56676,7 @@ class NetworkAnalystService extends ServiceBase {
 
     /**
      * @function NetworkAnalystService.prototype.streamFacilityAnalyst
-     * @description 上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
+     * @description 上游/下游 关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param {FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -50931,8 +56960,7 @@ class NetworkAnalystService extends ServiceBase {
  * @category  iServer FacilityAnalyst3D
  * @classdesc 最近设施分析参数基类。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点（或从设施点到事件点）以最小耗费能到达的最佳路径。
  * 设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在 10 分钟内能到达的最近医院，
- * 超过 10 分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起
- * 作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
+ * 超过 10 分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @param {Object} options - 参数。
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。
  * @param {number} [options.edgeID] - 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。
@@ -50966,7 +56994,7 @@ class FacilityAnalyst3DParameters {
         /**
          * @member {boolean} [FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid=false]
          * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
-         *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
+         *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
          */
         this.isUncertainDirectionValid = false;
         Util.extend(this, options);
@@ -50998,9 +57026,7 @@ class FacilityAnalyst3DParameters {
  * @deprecatedclass SuperMap.FacilityAnalystSinks3DParameters
  * @category  iServer FacilityAnalyst3D Sinks
  * @classdesc 最近设施分析参数类(汇查找资源)。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
- *            设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟
- *            能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、
- *            转向表、耗费等属性在最近设施分析时同样可设置。
+ *            设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。
@@ -51119,9 +57145,7 @@ class FacilityAnalystSinks3DService extends CommonServiceBase {
  * @deprecatedclass SuperMap.FacilityAnalystSources3DParameters
  * @category  iServer FacilityAnalyst3D Sources
  * @classdesc 最近设施分析参数类(源查找资源)。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
- *            设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分
- *            钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍
- *            点、转向表、耗费等属性在最近设施分析时同样可设置。
+ *            设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。
@@ -51872,8 +57896,8 @@ class ProcessingServiceBase extends CommonServiceBase {
  * @deprecatedclass SuperMap.DatasourceConnectionInfo
  * @category  iServer Data Datasource
  * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
- *            当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
- *            所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
+ *            当保存为工作空间时，工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
+ *            所以在使用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
  *            其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
  * @param {Object} options - 参数。
  * @param {string} options.alias - 数据源别名。
@@ -52246,7 +58270,7 @@ class KernelDensityJobParameter {
 
         /**
          * @member {OutputSetting} KernelDensityJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -53198,7 +59222,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
  * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属字段统计。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
  * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
  * @param {number} [options.resolution=100] - 网格大小。
  * @param {number} [options.meshType=0] - 网格面汇总类型。
@@ -53301,7 +59325,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {OutputSetting} SummaryRegionJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -53493,7 +59517,7 @@ class BuffersAnalystJobsParameter {
 
         /**
          * @member {string} [BuffersAnalystJobsParameter.prototype.distance='15']
-         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
+         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段为空时，此参数有效。
          */
         this.distance = '';
 
@@ -54089,7 +60113,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getKernelDensityJob
      * @description 获取某个密度分析。
-     * @param {string} id - 空间分析的id。 
+     * @param {string} id - 空间分析的ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -54180,7 +60204,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryMeshJob
      * @description 获取某个点聚合分析。
-     * @param {string} id - 空间分析的 id。 
+     * @param {string} id - 空间分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -54271,7 +60295,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getQueryJob
      * @description 获取某个单对象查询分析。
-     * @param {string} id - 空间分析的 id。 
+     * @param {string} id - 空间分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -54362,7 +60386,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某个区域汇总分析。
-     * @param {string} id - 区域汇总分析的 id。 
+     * @param {string} id - 区域汇总分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -54418,7 +60442,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param {string} id - 生成区域汇总分析的 id。
+     * @param {string} id - 生成区域汇总分析的 ID。
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState(id) {
@@ -54453,7 +60477,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJob
      * @description 获取某个矢量裁剪分析。
-     * @param {string} id - 空间分析的 id。 
+     * @param {string} id - 空间分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -54510,7 +60534,7 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param {number} id - 矢量裁剪分析的id。
+     * @param {number} id - 矢量裁剪分析的ID。
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
@@ -54602,8 +60626,8 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param {string} id - 叠加分析的id。
-     * @returns {Object} 叠加分析的状态
+     * @param {string} id - 叠加分析的 ID。
+     * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
         return this.overlayGeoJobs[id];
@@ -54929,7 +60953,7 @@ class ProcessingService extends ServiceBase {
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
@@ -54953,7 +60977,7 @@ class QueryService extends CommonServiceBase {
 
         /**
          * @member {string} QueryService.prototype.format
-         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
+         * @description 查询结果返回格式，目前支持iServerJSON、GeoJSON、FGB三种格式。参数格式为"ISERVER","GEOJSON","FGB"。
          */
         this.format = DataFormat.GEOJSON;
 
@@ -54999,9 +61023,8 @@ class QueryService extends CommonServiceBase {
         me.returnContent = params.returnContent;
 
         jsonParameters = me.getJsonParameters(params);
-        if (me.returnContent) {
-            me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
-        } else {
+       
+        if (!me.returnContent) {
             //仅供三维使用 获取高亮图片的bounds
             returnCustomResult = params.returnCustomResult;
             if (returnCustomResult) {
@@ -55046,6 +61069,10 @@ class QueryService extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {
             result: result
         });
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 
     /**
@@ -55164,7 +61191,7 @@ class QueryByBoundsParameters extends QueryParameters {
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -55334,7 +61361,7 @@ class QueryByDistanceParameters extends QueryParameters {
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -55467,7 +61494,7 @@ class QueryBySQLParameters extends QueryParameters {
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -55618,7 +61645,7 @@ class QueryByGeometryParameters extends QueryParameters {
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -55843,7 +61870,7 @@ class QueryService_QueryService extends ServiceBase {
                 params.geometry = Util_Util.toSuperMapPolygon(params.geometry);
             }
 
-            if (!(params.geometry instanceof Geometry)) {
+            if (!(params.geometry instanceof Geometry_Geometry)) {
                 params.geometry = Util_Util.toSuperMapGeometry(params.geometry);
             }
         }
@@ -55883,9 +61910,9 @@ class SpatialAnalystBase extends CommonServiceBase {
         super(url, options);
         /**
          * @member {DataFormat} [SpatialAnalystBase.prototype.format=DataFormat.GEOJSON]
-         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER"，"GEOJSON"。
+         * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
          */
-        this.format = DataFormat.GEOJSON;
+        this.format = options.format || DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
@@ -56587,7 +62614,7 @@ class DatasetBufferAnalystParameters extends BufferAnalystParameters {
  * @class GeometryBufferAnalystParameters
  * @deprecatedclass SuperMap.GeometryBufferAnalystParameters
  * @category  iServer SpatialAnalyst BufferAnalyst
- * @classdesc 几何对象缓冲区分析参数类
+ * @classdesc 几何对象缓冲区分析参数类。
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} options.sourceGeometry - 要做缓冲区分析的几何对象。
@@ -56670,6 +62697,7 @@ class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
 
 
+
 /**
  * @class BufferAnalystService
  * @deprecatedclass SuperMap.BufferAnalystService
@@ -56740,7 +62768,7 @@ class BufferAnalystService extends SpatialAnalystBase {
         }
 
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -56750,6 +62778,9 @@ class BufferAnalystService extends SpatialAnalystBase {
         });
     }
 
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DensityKernelAnalystParameters.js
@@ -57017,7 +63048,7 @@ class GenerateSpatialDataParameters {
 
         /**
          * @member {string} [GenerateSpatialDataParameters.prototype.measureField]
-         * @description 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义
+         * @description 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义。
          */
         this.measureField = null;
 
@@ -57464,7 +63495,7 @@ class InterpolationAnalystParameters {
         /**
          * @member {number} [InterpolationAnalystParameters.prototype.searchRadius=0]
          * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同。
-         * 计算某个位置的Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
+         * 计算某个位置的 Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
          * 该值需要根据待插值点数据的分布状况和点数据集范围进行设置。
          */
         this.searchRadius = 0;
@@ -57533,7 +63564,7 @@ class InterpolationAnalystParameters {
 
         /**
          * @member {string} [InterpolationAnalystParameters.prototype.InterpolationAnalystType="dataset"]
-         * @description  插值分析类型。差值分析包括数据集插值分析和几何插值分析两类，
+         * @description  插值分析类型。插值分析包括数据集插值分析和几何插值分析两类，
          *               "dataset" 表示对数据集进行插值分析，"geometry" 表示对离散点数组进行插值分析。
          */
         this.InterpolationAnalystType = "dataset";
@@ -57614,7 +63645,7 @@ class InterpolationAnalystParameters {
  * @param {string} [options.zValueFieldName] - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，此为必选参数。
  * @param {number} [options.smooth=0.1] - 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为0到1。
  * @param {number} [options.tension=40] - 张力系数，用于调整结果栅格数据表面的特性。
- * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置参与差值运算的点数。
+ * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置参与插值运算的点数。
  * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置参与运算点的查找范围。
  * @param {number} [options.maxPointCountForInterpolation=200] - 【块查找】方式下，设置最多参与插值的点数。
  * @param {number} [options.maxPointCountInNode=50] - 【块查找】方式下，设置单个块内最多参与运算点数。
@@ -57672,7 +63703,7 @@ class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
         /**
          * @member {number} [InterpolationRBFAnalystParameters.prototype.expectedCount=12]
-         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数。
          */
         this.expectedCount = 12;
 
@@ -57713,8 +63744,8 @@ class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
     /**
      * @function InterpolationRBFAnalystParameters.toObject
-     * @param {InterpolationRBFAnalystParameters} datasetInterpolationRBFAnalystParameters - 样条插值（径向基函数插值法）分析参数类
-     * @param {InterpolationRBFAnalystParameters} tempObj - 样条插值（径向基函数插值法）分析参数对象
+     * @param {InterpolationRBFAnalystParameters} datasetInterpolationRBFAnalystParameters - 样条插值（径向基函数插值法）分析参数类。
+     * @param {InterpolationRBFAnalystParameters} tempObj - 样条插值（径向基函数插值法）分析参数对象。
      * @description 将样条插值（径向基函数插值法）分析参数对象转换为 JSON 对象。
      * @returns JSON 对象。
      */
@@ -57738,7 +63769,7 @@ class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
  * @class InterpolationDensityAnalystParameters
  * @deprecatedclass SuperMap.InterpolationDensityAnalystParameters
  * @category iServer SpatialAnalyst InterpolationAnalyst
- * @classdesc 点密度差值分析参数类。
+ * @classdesc 点密度插值分析参数类。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
@@ -57804,7 +63835,7 @@ class InterpolationDensityAnalystParameters extends InterpolationAnalystParamete
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
  * @param {string} [options.zValueFieldName] - 进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，此为必选参数。
- * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。
+ * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数。
  * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置查找半径，即参与运算点的查找范围，与点数据集单位相同。
  * @param {number} [options.power=2] - 距离权重计算的幂次。
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
@@ -57855,7 +63886,7 @@ class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
 
         /**
          * @member {number} [InterpolationIDWAnalystParameters.prototype.expectedCount=12]
-         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数。
          */
         this.expectedCount = 12;
         if (options) {
@@ -57971,11 +64002,11 @@ class ThiessenAnalystParameters {
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 克吕金插值分析参数类。通过该类可以设置克吕金插值分析所需的参数。
  * 克吕金（Kriging）法为地统计学上一种空间数据内插处理方法，主要的目的是利用各数据点间变异数（variance）的大小来推求某一未知点与各已知点的权重关系，
- * 再由各数据点的值和其与未知点的权重关系推求未知点的值。Kriging 法最大的特色不仅是提供一个最小估计误差的预测值，并且可明确的指出误差值的大小。
+ * 再由各数据点的值和其与未知点的权重关系推求未知点的值。Kriging 法最大的特色不仅是提供一个最小估计误差的预测值，并且可明确地指出误差值的大小。
  * 一般而言，许多地质参数，如地形面，本身即具有连续性，故在一段距离内的任两点必有空间上的关系。反之，在一不规则面上的两点若相距甚远，
  * 则在统计意义上可视为互为独立 (stastically indepedent)。这种随距离而改变的空间上连续性，可用半变异图 (semivariogram) 来表现。
  * 因此，若想由已知的散乱点来推求某一未知点的值，则可利用半变异图推求各已知点与未知点的空间关系，即以下四个参数：<br>
- * 1.块金值（nugget）：当采样点间距为0时，理论上半变异函数值为0，但时间上两采样点非常接近时半变异函数值并不为0，即产生了上图所示的块金效应，
+ * 1.块金值（nugget）：当采样点间距为0时，理论上半变异函数值为0，但时间上两采样点非常接近时半变异函数值并不为0，即产生了块金效应，
  * 对应的半变异函数值为块金值。块金值可能由于测量误差或者空间变异产生。<br>
  * 2.基台值（sill）：随着采样点间距的不断增大，半变异函数的值趋向一个稳定的常数，该常数成为基台值。到达基台值后，半变异函数的值不再随采样点间距而改变，
  *   即大于此间距的采样点不再具有空间相关性。<br>
@@ -57986,16 +64017,16 @@ class ThiessenAnalystParameters {
  * 计算量大，且变异函数有时需要根据经验人为选定。
  *
  * 由上述可知，半变异函数是克吕金插值的关键，因此选择合适的半变异函数模型非常重要，SuperMap 提供了以下三种半变异函数模型：<br>
- * 1.指数型（EXPONENTIAL）：适用于空间相关关系随样本间距的增加成指数递减的情况，其空间自相关关系在样本间距的无穷远处完全消失。<br>
+ * 1.指数型（EXPONENTIAL）：适用于空间相关关系随样本间距的增加呈指数递减的情况，其空间自相关关系在样本间距的无穷远处完全消失。<br>
  * 2.球型（SPHERICAL）：适用于空间自相关关系随样本间距的增加而逐渐减少，直到超出一定的距离时空间自相关关系消失的情况。<br>
  * 3.高斯型（GAUSSIAN）：适用于半变异函数值渐进地逼近基台值的情况。<br>
  *
- * 半变异函数中，有一个关键参数即插值的字段值的期望（平均值），由于对于此参数的不同处理方法而衍生出了不同的 Kriging 方法。SuperMap的差值功能基于以下三种常用 Kriging 算法：<br>
- * 1.简单克吕金（Simple Kriging）：该方法假定用于插值的字段值的期望（平均值）已知的某一常数。<br>
+ * 半变异函数中，有一个关键参数即插值的字段值的期望（平均值），由于对于此参数的不同处理方法而衍生出了不同的 Kriging 方法。SuperMap的插值功能基于以下三种常用 Kriging 算法：<br>
+ * 1.简单克吕金（Simple Kriging）：该方法假定用于插值的字段值的期望（平均值）为已知的某一常数。<br>
  * 2.普通克吕金（Kriging）：该方法假定用于插值的字段值的期望（平均值）未知且恒定。它利用一定的数学函数，通过对给定的空间点进行拟合来估算单元格的值，
- *      生成格网数据集。它不仅可以生成一个表面，还可以给出预测结果的精度或者确定性的度量。因此，此方法计算精度较高，常用于地学领域。
+ *     生成格网数据集。它不仅可以生成一个表面，还可以给出预测结果的精度或者确定性的度量。因此，此方法计算精度较高，常用于地学领域。<br>
  * 3.泛克吕金（Universal Kriging）：该方法假定用于插值的字段值的期望（平均值）是未知的变量。在样点数据中存在某种主导趋势且该趋势可以通过某一个确定
- *      的函数或者多项式进行拟合的情况下，适用泛克吕金插值法。<br>
+ *     的函数或者多项式进行拟合的情况下，适用泛克吕金插值法。<br>
  * @param {Object} options - 参数。
  * @param {string} options.type - 克吕金插值的类型。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
@@ -58117,7 +64148,7 @@ class InterpolationKrigingAnalystParameters extends InterpolationAnalystParamete
 
         /**
          * @member {number} [InterpolationKrigingAnalystParameters.prototype.expectedCount=12]
-         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数，默认值为12。
          * 【定长查找】方式下，设置查找的最小点数，默认值为12。
          */
         this.expectedCount = 12;
@@ -58814,6 +64845,7 @@ class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
 
 
+
 /**
  * @class OverlayAnalystService
  * @deprecatedclass SuperMap.OverlayAnalystService
@@ -58825,6 +64857,7 @@ class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example 例如：
@@ -58853,7 +64886,6 @@ class OverlayAnalystService extends SpatialAnalystBase {
         if (options) {
             Util.extend(this, options);
         }
-
         this.CLASS_NAME = "SuperMap.OverlayAnalystService";
     }
 
@@ -58889,7 +64921,7 @@ class OverlayAnalystService extends SpatialAnalystBase {
             }
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         var jsonParameters = Util.toJSON(parameterObject);
         me.request({
             method: "POST",
@@ -58898,6 +64930,10 @@ class OverlayAnalystService extends SpatialAnalystBase {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 }
 
@@ -59108,8 +65144,7 @@ class RouteCalculateMeasureService extends SpatialAnalystBase {
  * @deprecatedclass SuperMap.RouteLocatorParameters
  * @category  iServer SpatialAnalyst RouteLocator
  * @classdesc 路由对象定位空间对象的参数类。
- * 参数有两种方式，分别为 Geometry 和 Dataset 两种，前者需要指定 sourceRoute 对象作为参数，后者需要 dataset，routeIDField，routeID 三个参数
- * 如果用户两种参数均设置，优先选择 Dataset 方式。
+ * 参数有两种方式，分别为 Geometry 和 Dataset 两种，前者需要指定 sourceRoute 对象作为参数，后者需要 dataset，routeIDField，routeID 三个参数。如果用户两种参数均设置，优先选择 Dataset 方式。
  * @param {Object} options - 参数。
  * @param {(Route|L.Polyline|ol.geom.LineString|GeoJSONObject)} options.sourceRoute - 路由对象。
  * @param {number} options.measure - 定位点的 M 值。只当路由对象定位点时有意义。
@@ -59193,7 +65228,7 @@ class RouteLocatorParameters {
 
         var routeFromClient = options.sourceRoute;
         var routeHandle = {};
-        if (routeFromClient && routeFromClient instanceof Geometry && routeFromClient.components) {
+        if (routeFromClient && routeFromClient instanceof Geometry_Geometry && routeFromClient.components) {
             routeHandle.type = routeFromClient.type;
             routeHandle.parts = routeFromClient.parts;
             var parts = [];
@@ -59390,8 +65425,8 @@ class SurfaceAnalystParametersSetting {
         /**
          * @member {number} [SurfaceAnalystParametersSetting.prototype.datumValue=0]
          * @description 获取或设置表面分析中提取等值线、提取等值面的基准值。
-         * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。 例如，高程范围为 220 -1550 的 DEM 栅格数据，
-         * 如果设基准值为 0， 等值距为 50，则提取等值线时，以基准值 0 为起点，等值距 50 为间隔提取等值线，
+         * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。例如，高程范围为 220 -1550 的 DEM 栅格数据，
+         * 如果设基准值为 0，等值距为 50，则提取等值线时，以基准值 0 为起点，等值距 50 为间隔提取等值线，
          * 因为给定高程的最小值是 220，所以，在给定范围内提取等值线的最小高程是 250。
          * 提取等值线的结果是：最小等值线值为 250，最大等值线值为 1550。
          */
@@ -59426,7 +65461,7 @@ class SurfaceAnalystParametersSetting {
          * @member {number} [SurfaceAnalystParametersSetting.prototype.smoothness=0]
          * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
          * 以为 0-5 为例，光滑度为 0 表示不进行光滑操作，值越大表示光滑度越高。
-         * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，
+         * 随着光滑度的增加，提取的等值线越光滑，当然光滑度越大，
          * 计算所需的时间和占用的内存也就越大。而且，当等值距较小时，
          * 光滑度太高会出现等值线相交的问题。
          */
@@ -59474,7 +65509,7 @@ class SurfaceAnalystParametersSetting {
         }
         if (this.clipRegion != null) {
             var serverGeometry = this.clipRegion;
-            if (this.clipRegion instanceof Geometry && this.clipRegion.components) {
+            if (this.clipRegion instanceof Geometry_Geometry && this.clipRegion.components) {
                 serverGeometry = ServerGeometry.fromGeometry(this.clipRegion)
             }
             json += ",'clipRegion':" + Util.toJSON(serverGeometry);
@@ -59645,7 +65680,7 @@ class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
                 tempObj.filterQueryParameter = datasetSurfaceAnalystParameters.filterQueryParameter;
             }
             if (name === "extractParameter") {
-                if (datasetSurfaceAnalystParameters.extractParameter.clipRegion instanceof Geometry && datasetSurfaceAnalystParameters.extractParameter.clipRegion.components) {
+                if (datasetSurfaceAnalystParameters.extractParameter.clipRegion instanceof Geometry_Geometry && datasetSurfaceAnalystParameters.extractParameter.clipRegion.components) {
                     datasetSurfaceAnalystParameters.extractParameter.clipRegion = ServerGeometry.fromGeometry(datasetSurfaceAnalystParameters.extractParameter.clipRegion);
                 }
                 tempObj.extractParameter = datasetSurfaceAnalystParameters.extractParameter;
@@ -59819,8 +65854,12 @@ class SurfaceAnalystService extends SpatialAnalystBase {
         } else {
             return;
         }
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         return jsonParameters;
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 }
 
@@ -60231,7 +66270,7 @@ class ThiessenAnalystService extends SpatialAnalystBase {
         }
 
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -60239,6 +66278,10 @@ class ThiessenAnalystService extends SpatialAnalystBase {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 }
 
@@ -61551,7 +67594,7 @@ class TransferSolutionParameters {
 
         /**
          * @member {string} TransferSolutionParameters.prototype.travelTime
-         * @description 出行的时间； 格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
+         * @description 出行的时间；格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
          */
         this.travelTime = null;
 
@@ -62044,7 +68087,7 @@ class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
-     * @param {string} jobId - Web 打印输入文档任务 Id。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
@@ -62068,7 +68111,7 @@ class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
-     * @param {string} jobId - Web 打印输入文档任务 Id。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJobResult(jobId, callback) {
@@ -62155,7 +68198,7 @@ class WebPrintingJobService extends ServiceBase {
 /**
  * @class ImageService
  * @deprecatedclass SuperMap.ImageService
- * @classdesc 影像服务类
+ * @classdesc 影像服务类。
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
@@ -62202,7 +68245,7 @@ class ImageService_ImageService extends CommonServiceBase {
 
     /**
      * @function ImageService.prototype.getCollectionByID
-     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
      */
     getCollectionByID(collectionId) {
@@ -62224,7 +68267,7 @@ class ImageService_ImageService extends CommonServiceBase {
     /**
      * @function ImageSearchService.prototype.search
      * @description 查询与过滤条件匹配的影像数据。
-     * @param {ImageSearchParameter} [imageSearchParameter] 查询参数
+     * @param {ImageSearchParameter} [imageSearchParameter] 查询参数。
      */
     search(imageSearchParameter) {
         var postBody = { ...(imageSearchParameter || {}) };
@@ -62255,7 +68298,7 @@ class ImageService_ImageService extends CommonServiceBase {
  * @class ImageService
  * @version 10.2.0
  * @constructs ImageService
- * @classdesc 影像服务类
+ * @classdesc 影像服务类。
  * @category  iServer Image
  * @example
  *      new ImageService(url,options)
@@ -62299,7 +68342,7 @@ class ImageService extends ServiceBase {
 
     /**
      * @function ImageService.prototype.getCollectionByID
-     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
      * @param {RequestCallback} callback - 回调函数。
      */
@@ -62322,7 +68365,7 @@ class ImageService extends ServiceBase {
     /**
      * @function ImageService.prototype.search
      * @description 查询与过滤条件匹配的影像数据。
-     * @param {ImageSearchParameter} [itemSearch] 影像服务查询参数类
+     * @param {ImageSearchParameter} [itemSearch] 影像服务查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      */
     search(itemSearch, callback) {
@@ -62354,7 +68397,7 @@ class ImageService extends ServiceBase {
 /**
  * @class ImageCollectionService
  * @deprecatedclass SuperMap.ImageCollectionService
- * @classdesc 影像集合服务类
+ * @classdesc 影像集合服务类。
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
@@ -62386,7 +68429,7 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
     /**
      * @function ImageCollectionService.prototype.getLegend
      * @description 返回当前影像集合的图例信息。默认为服务发布所配置的风格，支持根据风格参数生成新的图例。
-     * @param {Object} queryParams query参数
+     * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] renderingRule 对象，用来指定影像的渲染风格，从而确定图例内容。影像的渲染风格包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。该参数未设置时，将使用发布服务时所配置的风格。
      */
     getLegend(queryParams) {
@@ -62505,7 +68548,7 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
  * @class ImageCollectionService
  * @version 10.2.0
  * @constructs ImageCollectionService
- * @classdesc 影像集合服务类
+ * @classdesc 影像集合服务类。
  * @category  iServer Image
  * @extends {ServiceBase}
  * @example
@@ -62528,7 +68571,7 @@ class ImageCollectionService extends ServiceBase {
     }
     /**
      * @function ImageCollectionService.prototype.getLegend
-     * @param {Object} queryParams query参数
+     * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。不指定时，使用发布服务时所配置的风格。
      * @param {RequestCallback} callback - 回调函数。
      */
@@ -62959,7 +69002,7 @@ class WKT extends Format {
 
     /**
      * @function WKTFormat.prototype.read
-     * @description 反序列化 WKT 字符串并返回向量特征或向量特征数组。 支持 POINT、MULTIPOINT、LINESTRING、MULTILINESTRING、POLYGON、MULTIPOLYGON 和 GEOMETRYCOLLECTION 的 WKT。
+     * @description 反序列化 WKT 字符串并返回向量特征或向量特征数组。支持 POINT、MULTIPOINT、LINESTRING、MULTILINESTRING、POLYGON、MULTIPOLYGON 和 GEOMETRYCOLLECTION 的 WKT。
      * @param {string} wkt - WKT 字符串。
      * @returns {FeatureVector|Array} GEOMETRYCOLLECTION WKT 的矢量要素或者矢量要素数组。
      */
@@ -63049,7 +69092,7 @@ class WKT extends Format {
 /**
  * @class TimeControlBase
  * @deprecatedclass SuperMap.TimeControlBase
- * @classdesc 时间控制基类类。
+ * @classdesc 时间控制基类。
  * @category  Control
  * @param {Object} options - 可选参数。
  * @param {number} [options.speed=1] - 速度。不能小于 0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。
@@ -63071,7 +69114,7 @@ class TimeControlBase {
 
         /**
          * @member {number} [TimeControlBase.prototype.speed=1]
-         * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
+         * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）。
          */
         this.speed = (options.speed && options.speed >= 0) ? options.speed : 1;
 
@@ -63084,14 +69127,14 @@ class TimeControlBase {
         /**
          * @member {number} [TimeControlBase.prototype.startTime=0]
          * @description 记录的起始时间，必须为数字，
-         *              如果不设置，初始化时为0，建议设置
+         *              如果不设置，初始化时为0，建议设置。
          */
         this.startTime = (options.startTime && options.startTime != null) ? options.startTime : 0;
 
         /**
          * @member {number} TimeControlBase.prototype.endTime
          * @description 记录的结束时间，必须为数字，
-         *              如果不设置，初始化时以当前时间进行设置，建议设置
+         *              如果不设置，初始化时以当前时间进行设置，建议设置。
          */
         this.endTime = (options.endTime && options.endTime != null && options.endTime >= me.startTime) ? options.endTime : +new Date();
 
@@ -63159,7 +69202,7 @@ class TimeControlBase {
     /**
      * @function TimeControlBase.prototype.updateOptions
      * @description 更新参数。
-     * @param {Object} options - 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
+     * @param {Object} options - 设置参数的可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
      */
     updateOptions(options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
@@ -63271,7 +69314,7 @@ class TimeControlBase {
     /**
      * @function TimeControlBase.prototype.getSpeed
      * @description 获取步长。
-     * @returns {number} 返回当前的步长
+     * @returns {number} 返回当前的步长。
      */
     getSpeed() {
         return this.speed;
@@ -63486,7 +69529,7 @@ class TimeControlBase {
  * @category  Control
  * @classdesc 时间管理类。此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
  * 如设置起始时间为 1000，结束时间是 2000，步长设置为 1，
- * 那么表示按照每次1年（可以通过 setSpeed 进行修改）的变化从公元 1000 年开始到公元 2000 年为止，默认每 1 秒会 1 次（通过 setFrequency 修改）
+ * 那么表示按照每次1年（可以通过 setSpeed 进行修改）的变化从公元 1000 年开始到公元 2000 年为止，默认每 1 秒会变化 1 次（通过 setFrequency 修改）
  * @extends {TimeControlBase}
  * @param {function} callback - 每次刷新回调函数。具体的效果需要用户在此回调函数里面实现。
  * @param {Object} options - 可选参数。
@@ -63963,14 +70006,14 @@ class IPortalServiceBase {
  * @version 10.0.1
  * @category iPortal/Online Resources ResourcesQuery
  * @param {Object} params - 可选参数。
- * @param {ResourceType} [params.resourceType] - 资源类型
+ * @param {ResourceType} [params.resourceType] - 资源类型。
  * @param {number} [params.pageSize] - 分页中每页大小。
  * @param {number} [params.currentPage] - 分页页码。
  * @param {OrderBy} [params.orderBy] - 排序字段。
  * @param {OrderType} [params.orderType] - 根据升序还是降序过滤。
  * @param {SearchType} [params.searchType] - 根据查询的范围进行过滤。
  * @param {Array} [params.tags] - 标签。
- * @param {Array} [params.dirIds] - 目录 id
+ * @param {Array} [params.dirIds] - 目录 ID。
  * @param {Array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
  * @param {AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
  * @param {string} [params.text] - 	搜索的关键词。
@@ -64051,26 +70094,26 @@ class IPortalQueryResult {
  * @category iPortal/Online Resources
  * @param {string} portalUrl - 服务地址。
  * @param {Object} resourceInfo - 可选参数。
- * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息
- * @param {string} [resourceInfo.bounds] - 资源的坐标范围
+ * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息。
+ * @param {string} [resourceInfo.bounds] - 资源的坐标范围。
  * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为EPSG 4326坐标系统后的地理范围。
- * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED
- * @param {Date} [resourceInfo.createTime] - 资源的创建时间
- * @param {string} [resourceInfo.description] - 资源描述
- * @param {number} [resourceInfo.dirId] - 资源所在的门户目录的id
+ * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED。
+ * @param {Date} [resourceInfo.createTime] - 资源的创建时间。
+ * @param {string} [resourceInfo.description] - 资源描述。
+ * @param {number} [resourceInfo.dirId] - 资源所在的门户目录的ID。
  * @param {number} [resourceInfo.epsgCode] - 门户资源基于的坐标系的EPSG值。
  * @param {number} [resourceInfo.heatLevel] - 记录资源的访问量或下载量。
- * @param {string} [resourceInfo.id] - 资源存储到ElasticSearch中的文档id
- * @param {string} [resourceInfo.name] - 资源名称
- * @param {number} [resourceInfo.personalDirId] - 资源所在的个人目录的id
- * @param {number} [resourceInfo.resourceId] - 资源表(maps,services等)里的id
+ * @param {string} [resourceInfo.id] - 资源存储到ElasticSearch中的文档ID。
+ * @param {string} [resourceInfo.name] - 资源名称。
+ * @param {number} [resourceInfo.personalDirId] - 资源所在的个人目录的ID。
+ * @param {number} [resourceInfo.resourceId] - 资源表(maps,services等)里的ID。
  * @param {string} [resourceInfo.resourceSubType] - 某类资源的具体子类型。
- * @param {ResourceType} [resourceInfo.resourceType] - 资源类型
- * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID
- * @param {Array} [resourceInfo.tags] - 资源的标签
- * @param {string} [resourceInfo.thumbnail] - 资源的缩略图
- * @param {Date} [resourceInfo.updateTime] - 资源的更新时间
- * @param {string} [resourceInfo.userName] - 搜索的关键词
+ * @param {ResourceType} [resourceInfo.resourceType] - 资源类型。
+ * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID。
+ * @param {Array} [resourceInfo.tags] - 资源的标签。
+ * @param {string} [resourceInfo.thumbnail] - 资源的缩略图。
+ * @param {Date} [resourceInfo.updateTime] - 资源的更新时间。
+ * @param {string} [resourceInfo.userName] - 搜索的关键词。
  * @param {Object} [resourceInfo.sourceJSON] - 提供了门户项目返回的所有信息。
  * @extends {IPortalServiceBase}
  * @usage
@@ -64173,8 +70216,8 @@ class IPortalResource extends IPortalServiceBase {
  * @category iPortal/Online Resources ResourcesShare
  * @param {Object} params - 可选参数。
  * @param {ResourceType} [params.resourceType] - 资源类型。
- * @param {Array} [params.ids] - 资源的id数组。
- * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
+ * @param {Array} [params.ids] - 资源的ID数组。
+ * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数。
  * @usage
  */
 class IPortalShareParam {
@@ -64309,8 +70352,8 @@ class IPortal extends IPortalServiceBase {
  * @param {Object} shareEntity - 可选参数。
  * @param {PermissionType} [shareEntity.permissionType] - 权限类型。
  * @param {EntityType} [shareEntity.entityType] - 实体类型。
- * @param {string} [shareEntity.entityName] - 实体 Name。对应的 USER（用户）、 ROLE（角色）、GROUP（用户组）、IPORTALGROUP（群组）的名称。
- * @param {number} [shareEntity.entityId] - 实体的 id。用于群组的授权。
+ * @param {string} [shareEntity.entityName] - 实体 Name。对应的 USER（用户）、ROLE（角色）、GROUP（用户组）、IPORTALGROUP（群组）的名称。
+ * @param {number} [shareEntity.entityId] - 实体的 ID。用于群组的授权。
  * @usage
  */
 class IPortalShareEntity {
@@ -64342,7 +70385,7 @@ class IPortalShareEntity {
   * @param {Object} params - 可选参数。
   * @param {string} [params.rootUrl] - 服务地址。
   * @param {Array} [params.tags] - 标签。
-  * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
+  * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数。
   * @usage
   */
  class IPortalAddResourceParam {
@@ -64373,7 +70416,7 @@ class IPortalShareEntity {
  * @param {Object} params - 可选参数。
  * @param {string} [params.type] - 服务类型。
  * @param {Array} [params.tags] - 服务标签。
- * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数
+ * @param {IPortalShareEntity} [params.entities] - 资源的实体共享参数。
  * @param {Object} [params.metadata] - 服务元信息。
  * @param {Array} [params.addedMapNames] - 地图服务列表。
  * @param {Array} [params.addedSceneNames] - 场景服务列表。
@@ -64408,10 +70451,10 @@ class IPortalRegisterServiceParam {
   * @version 10.0.1
   * @category iPortal/Online Resources Data
   * @param {Object} params - 参数。
-  * @param {string} params.fileName - 文件名称
+  * @param {string} params.fileName - 文件名称。
   * @param {DataItemType} params.type - 数据类型。
-  * @param {Array} [params.tags] - 数据的标签
-  * @param {IPortalDataMetaInfoParam} [params.dataMetaInfo] - 数据元信息
+  * @param {Array} [params.tags] - 数据的标签。
+  * @param {IPortalDataMetaInfoParam} [params.dataMetaInfo] - 数据元信息。
   * @usage
   */
  class IPortalAddDataParam {
@@ -64441,15 +70484,15 @@ class IPortalRegisterServiceParam {
   * @version 10.0.1
   * @category iPortal/Online Resources Data
   * @param {Object} params - 参数。
-  * @param {string} params.xField - X 坐标字段
-  * @param {string} params.yField - Y 坐标字段
-  * @param {number} params.xIndex - x所在列（关系型存储下CSV或EXCEL数据时必填）
-  * @param {number} params.yIndex - y所在列（关系型存储下CSV或EXCEL数据时必填）
+  * @param {string} params.xField - X 坐标字段。
+  * @param {string} params.yField - Y 坐标字段。
+  * @param {number} params.xIndex - x所在列（关系型存储下CSV或EXCEL数据时必填）。
+  * @param {number} params.yIndex - y所在列（关系型存储下CSV或EXCEL数据时必填）。
   * @param {Array.<string>} [params.fieldTypes] - 设置字段类型（关系型存储下CSV或EXCEL数据时可选填）。默认类型为：WTEXT。该参数按照CSV文件字段顺序从左到右依次设置，其中默认字段类型可省略不设置。例如，CSV文件中有10个字段，如果只需设定第1，2，4个字段，可设置为['a','b',,'c']。
-  * @param {string} params.separator - 分隔符（关系型存储下CSV数据时必填）
-  * @param {boolean} params.firstRowIsHead - 是否带表头（关系型存储下CSV数据时必填）
-  * @param {boolean} params.url - HDFS注册目录地址
-  * @param {IPortalDataStoreInfoParam} params.dataStoreInfo - 注册数据时的数据存储信息
+  * @param {string} params.separator - 分隔符（关系型存储下CSV数据时必填）。
+  * @param {boolean} params.firstRowIsHead - 是否带表头（关系型存储下CSV数据时必填）。
+  * @param {boolean} params.url - HDFS注册目录地址。
+  * @param {IPortalDataStoreInfoParam} params.dataStoreInfo - 注册数据时的数据存储信息。
   * @usage
   */
  class IPortalDataMetaInfoParam {
@@ -64487,9 +70530,9 @@ class IPortalRegisterServiceParam {
   * @version 10.0.1
   * @category iPortal/Online Resources Data
   * @param {Object} params - 参数。
-  * @param {string} params.type - 大数据文件共享类型和空间数据库类型，包括大数据文件共享HDFS 目录(HDFS)和空间数据库HBASE
-  * @param {string} params.url - HDFS数据存储目录地址
-  * @param {IPortalDataConnectionInfoParam} [params.connectionInfo] - HBASE空间数据库服务的连接信息
+  * @param {string} params.type - 大数据文件共享类型和空间数据库类型，包括大数据文件共享HDFS 目录(HDFS)和空间数据库HBASE。
+  * @param {string} params.url - HDFS数据存储目录地址。
+  * @param {IPortalDataConnectionInfoParam} [params.connectionInfo] - HBASE空间数据库服务的连接信息。
   * @usage
   */
  class IPortalDataStoreInfoParam {
@@ -64663,7 +70706,7 @@ class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.uploadDataRequest
      * @description 上传数据。
      * @version 10.1.0
-     * @param {number} id - 上传数据的资源id。
+     * @param {number} id - 上传数据的资源ID。
      * @param {Object} formData - 请求体为文本数据流。
      * @returns {Promise} 返回包含上传数据操作的 Promise 对象。
      */
@@ -64758,9 +70801,9 @@ class IPortalUser extends IPortalServiceBase {
      * @description 发布/取消发布。
      * @version 10.1.0
      * @param {Object} options - 发布/取消发布数据服务所需的参数。
-     * @param {Object} options.dataId - 数据项id。
+     * @param {Object} options.dataId - 数据项ID。
      * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
-     * @param {Object} [options.dataServiceId] - 发布的服务 id。
+     * @param {Object} [options.dataServiceId] - 发布的服务 ID。
      * @param {boolean} forPublish - 是否取消发布。
      * @returns {Promise} 返回发布/取消发布数据服务的 Promise 对象。
      */
@@ -64795,8 +70838,8 @@ class IPortalUser extends IPortalServiceBase {
      * @function IPortalUser.prototype.getDataPublishedStatus
      * @description 查询服务状态，发起服务状态查询。
      * @version 10.1.0
-     * @param {number} dataId - 查询服务状态的数据项id。
-     * @param {string} dataServiceId - 发布的服务id。
+     * @param {number} dataId - 查询服务状态的数据项ID。
+     * @param {string} dataServiceId - 发布的服务ID。
      * @returns {Promise} 返回查询服务状态的 Promise 对象。
      */
     getDataPublishedStatus(dataId,dataServiceId){
@@ -64809,9 +70852,9 @@ class IPortalUser extends IPortalServiceBase {
      * @description 取消发布。
      * @version 10.1.0
      * @param {Object} options - 取消发布服务具体参数。
-     * @param {Object} options.dataId - 数据项id。
+     * @param {Object} options.dataId - 数据项ID。
      * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
-     * @param {Object} [options.dataServiceId] - 发布的服务 id。
+     * @param {Object} [options.dataServiceId] - 发布的服务 ID。
      * @returns {Promise} 返回取消发布数据服务的 Promise 对象。
      */
     unPublishDataService(option){
@@ -64823,9 +70866,9 @@ class IPortalUser extends IPortalServiceBase {
      * @description 发布数据服务。
      * @version 10.1.0
      * @param {Object} options - 发布数据服务具体参数。
-     * @param {Object} options.dataId - 数据项id。
+     * @param {Object} options.dataId - 数据项ID。
      * @param {Object} options.serviceType - 发布的服务类型，目前支持发布的服务类型包括：RESTDATA, RESTMAP, RESTREALSPACE, RESTSPATIALANALYST。
-     * @param {Object} [options.dataServiceId] - 发布的服务 id。
+     * @param {Object} [options.dataServiceId] - 发布的服务 ID。
      * @returns {Promise} 返回发布数据服务的 Promise 对象。
      */
     publishDataService(option){
@@ -65003,7 +71046,7 @@ class MetricsAggParameter extends AggregationParameter {
  * @param {Object} options - 可选参数。
  * @param {string} [options.clipDatasetName] - 裁剪的数据集名。
  * @param {string} [options.clipDatasourceName] - 裁剪的数据集所在数据源的名字。
- * @param {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject}} [options.clipRegion] - 用户指定的裁剪区域。
+ * @param {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject} [options.clipRegion] - 用户指定的裁剪区域。
  * @param {boolean} [options.isClipInRegion=true] - 是否对裁剪区内的数据集进行裁剪。
  * @param {boolean} [options.isExactClip=true] - 是否使用精确裁剪。
  * @usage
@@ -65175,7 +71218,7 @@ class LabelMatrixCell {
  * @classdesc 图片类型的矩阵标签元素类。该类继承自 {@link LabelMatrixCell}类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
  * 矩阵标签专题图是标签专题图（ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（{@link LabelImageCell}）、
  * 符号类型（{@link LabelSymbolCell}）、专题图类型（{@link LabelThemeCell}）三种，该类是这三种类型的矩阵标签元素其中的一种，
- * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
+ * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应）、大小等。
  * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 {@link ThemeLabel#matrixCells} 属性即可。matrixCells 是一个二维数组，
  * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
  * @extends {LabelMatrixCell}
@@ -65264,8 +71307,8 @@ class LabelImageCell extends LabelMatrixCell {
  * 该类继承自 {@link LabelMatrixCell}类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
  * 矩阵标签专题图是标签专题图（{@link ThemeLabel}）的一种，其中矩阵标签中的填充元素又可分为图片类型（{@link LabelImageCell}）、
  * 符号类型（{@link LabelSymbolCell}）、专题图类型（{@link LabelThemeCell}）三种，该类是这三种类型的矩阵标签元素其中的一种，
- * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
- * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 {@link ThemeLabel#matrixCells} 属性即可。matrixCells 属是一个二维数组，
+ * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应）、大小等。
+ * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 {@link ThemeLabel#matrixCells} 属性即可。matrixCells 属性是一个二维数组，
  * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
  * @extends {LabelMatrixCell}
  * @param {Object} options - 参数。
@@ -65334,8 +71377,8 @@ class LabelSymbolCell extends LabelMatrixCell {
  * 该类继承自 {@link LabelMatrixCell} 类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
  *              矩阵标签专题图是标签专题图（{@link ThemeLabel}）的一种，其中矩阵标签中的填充元素又可分为图片类型（{@link LabelImageCell}）、
  *              符号类型（{@link LabelSymbolCell}）、专题图类型（{@link LabelThemeCell}）三种，该类是这三种类型的矩阵标签元素其中的一种，
- *              用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
- *              用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 {@link ThemeLabel#matrixCells} 属性即可。matrixCells 属是一个二维数组，
+ *              用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应）、大小等。
+ *              用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 {@link ThemeLabel#matrixCells} 属性即可。matrixCells 属性是一个二维数组，
  *              每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
  * @extends {LabelMatrixCell}
  * @param {Object} options -参数。
@@ -65495,7 +71538,7 @@ class LayerStatus {
  * @deprecatedclass SuperMap.LinkItem
  * @constructs LinkItem
  * @category iServer Data FeatureResults
- * @classdesc 关联信息类。该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
+ * @classdesc 关联信息类。该类用于矢量数据集与外部表的关联。外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
  * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持 SQL Server 和 Oracle 类型。使用 LinkItem 时，
  * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。{@link LinkItem}
  * 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link LinkItem}；另外，用于建立关联关系的两个表可以不在同一个数据源下。注意：<br>
@@ -65582,8 +71625,7 @@ class LinkItem {
 
         /**
          * @member {Array.<string>} LinkItem.prototype.linkFields
-         * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返
-         * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。
+         * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。
          */
         this.linkFields = null;
 
@@ -65647,7 +71689,7 @@ class LinkItem {
  * 该类可以分别控制各种类型的对象的压盖显示情况，进而很好地处理地图中各种类型对象的压盖显示问题。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.allowPointOverlap=true] - 点和点压盖时是否显示压盖的点对象。
- * @param {boolean} [options.allowPointWithTextDisplay=true] - 标签和相应普通图层上的点是否一起过滤显示,如果过滤显示，
+ * @param {boolean} [options.allowPointWithTextDisplay=true] - 标签和相应普通图层上的点是否一起过滤显示，如果过滤显示，
  *                                                             只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。
  * @param {boolean} [options.allowTextOverlap=false] - 文本压盖时是否显示压盖的文本对象。
  * @param {boolean} [options.allowTextAndPointOverlap=true] - 文本和点压盖时是否显示压盖的文本或点对象（此属性不处理文本之间的压盖和点之间的压盖）。
@@ -65857,7 +71899,7 @@ class SetLayersInfoParameters {
         this.isTempLayers = null;
         /**
          * @member {string} SetLayersInfoParameters.prototype.resourceID
-         * @description 临时图层资源 ID，
+         * @description 临时图层资源 ID。
          */
         this.resourceID = null;
 
@@ -66225,7 +72267,7 @@ class ThemeGridRange extends Theme_Theme {
         /**
          * @member {number} [ThemeGridRange.prototype.rangeParameter=0]
          * @description 分段参数。<br>
-         *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
+         *              当分段模式为等距离分段法，平方根分段，对数分段法，等计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
          *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。
          */
         this.rangeParameter = 0;
@@ -66815,7 +72857,7 @@ class TransferLine {
  * @class RasterFunctionParameter
  * @deprecatedclass SuperMap.RasterFunctionParameter
  * @category iServer Map Tile
- * @classdesc iServer 地图服务栅格分析参数基类
+ * @classdesc iServer 地图服务栅格分析参数基类。
  * @param {Object} options - 参数。
  * @param {RasterFunctionType} options.type - 栅格分析方法。
  * @usage
@@ -66856,7 +72898,7 @@ class RasterFunctionParameter {
  * @class NDVIParameter
  * @deprecatedclass SuperMap.NDVIParameter
  * @category iServer Map Tile
- * @classdesc 归一化植被指数参数类
+ * @classdesc 归一化植被指数参数类。
  * @param {Object} options - 参数。
  * @param {number} [options.redIndex=0] - 红光谱波段索引。
  * @param {number} [options.nirIndex=1] - 近红外光谱波段索引。
@@ -66934,7 +72976,7 @@ class NDVIParameter extends RasterFunctionParameter {
  * @class HillshadeParameter
  * @deprecatedclass SuperMap.HillshadeParameter
  * @category iServer Map Tile
- * @classdesc 阴影面分析参数类
+ * @classdesc 阴影面分析参数类。
  * @param {Object} options - 可选参数。
  * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
  * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
@@ -67028,7 +73070,7 @@ class HillshadeParameter extends RasterFunctionParameter {
  * @param {Object} option - 参数。
  * @param {string} option.name - 图例元素的名称。
  * @param {string} option.picAsUrl - 图例元素 Base64 格式图片。
- * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。如果已填了 url 参数，此参数可不传
+ * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 class WebPrintingJobCustomItems {
@@ -67099,15 +73141,15 @@ class WebPrintingJobCustomItems {
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
- * @param {string} option.picAsUrl - 小地图的图片 url 地址。
- * @param {string} [option.picAsBase64] - 小地图的base64位图片信息。如果已填了 url 参数，此参数可不传
+ * @param {string} option.picAsUrl - 小地图的图片 URL 地址。
+ * @param {string} [option.picAsBase64] - 小地图的base64位图片信息。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 class WebPrintingJobImage {
     constructor(option) {
         /**
          * @member {string} [WebPrintingJobImage.prototype.picAsUrl]
-         * @description 小地图的图片 url 地址。
+         * @description 小地图的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**
@@ -67177,7 +73219,7 @@ class WebPrintingJobImage {
          this.layerType = null;
          /**
           * @member {string} WebPrintingJobLayers.prototype.url
-          * @description  图层 url。
+          * @description  图层 URL。
           */
          this.url = null;
 
@@ -67213,7 +73255,7 @@ class WebPrintingJobImage {
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} [option.title] - 图例名称。
- * @param {string} [option.picAsUrl] - 图例的图片 url 地址。
+ * @param {string} [option.picAsUrl] - 图例的图片 URL 地址。
  * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
  * @param {WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
  * @param {WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
@@ -67228,7 +73270,7 @@ class WebPrintingJobLegendOptions {
         this.title = null;
         /**
          * @member {string} [WebPrintingJobLegendOptions.prototype.picAsUrl]
-         * @description  图例的图片 url 地址。
+         * @description  图例的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**
@@ -67332,7 +73374,7 @@ class WebPrintingJobLittleMapOptions {
         this.layerNames = null;
         /**
          * @member {WebPrintingJobImage} [WebPrintingJobLittleMapOptions.prototype.image]
-         * @description 表达小地图的静态图类。暂不支持
+         * @description 表达小地图的静态图类。暂不支持。
          */
         this.image = null;
         /**
@@ -67399,7 +73441,7 @@ class WebPrintingJobLittleMapOptions {
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
- * @param {string} option.picAsUrl - 指北针的图片 url 地址。
+ * @param {string} option.picAsUrl - 指北针的图片 URL 地址。
  * @param {string} [option.picAsBase64] - 指北针的base64位图片信息。
  * @usage
  */
@@ -67407,7 +73449,7 @@ class WebPrintingJobNorthArrowOptions {
     constructor(option) {
         /**
          * @member {string} WebPrintingJobNorthArrowOptions.prototype.picAsUrl
-         * @description 指北针的图片 url 地址。
+         * @description 指北针的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**
@@ -67459,7 +73501,7 @@ class WebPrintingJobNorthArrowOptions {
  * @category iServer WebPrintingJob
  * @version 10.1.0
  * @param {Object} option - 参数。
- * @param {string} [option.scaleText] - 比例尺文本信息。例如：1:1000000
+ * @param {string} [option.scaleText] - 比例尺文本信息。例如：1:1000000。
  * @param {WebScaleOrientationType} [option.orientation] - 比例尺的方位样式。
  * @param {WebScaleType} [option.type] - 比例尺的样式。
  * @param {number} [option.intervals] - 比例尺条的段数。
@@ -67543,10 +73585,10 @@ class WebPrintingJobScaleBarOptions {
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
- * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP
- * @param {string} [option.url] - 待打印的 SuperMap iPortal WebMap 的 url 地址。例如：http://supermapiportal:8190/iportal/web/maps/{mapid}/map.rjson
+ * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP。
+ * @param {string} [option.url] - 待打印的 SuperMap iPortal WebMap 的 URL 地址。例如：http://supermapiportal:8190/iportal/web/maps/{mapid}/map.rjson 。
  * @param {string} [option.token] - 如果待打印的是 SuperMap iPortal 用户私有的 WebMap，需要提供 SuperMap iPortal 用户的 token。
- * @param {WebMapSummaryObject} [option.value] - 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 json 表达。如果已填了 url 参数，此参数可不传
+ * @param {WebMapSummaryObject} [option.value] - 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 JSON 表达。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 class WebPrintingJobContent {
@@ -67558,7 +73600,7 @@ class WebPrintingJobContent {
         this.type = null;
         /**
          * @member {string} [WebPrintingJobContent.prototype.url]
-         * @description 待打印的 SuperMap iPortal WebMap 的 url 地址。
+         * @description 待打印的 SuperMap iPortal WebMap 的 URL 地址。
          */
         this.url = null;
         /**
@@ -67568,7 +73610,7 @@ class WebPrintingJobContent {
         this.token = null;
         /**
          * @member {WebMapSummaryObject} [WebPrintingJobContent.prototype.value]
-         * @description 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 json 表达。
+         * @description 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 JSON 表达。
          */
         this.value = null;
 
@@ -67761,7 +73803,7 @@ class WebPrintingJobLayoutOptions {
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {WebExportFormatType} option.format - Web 打印输出的格式，目前支持：PNG、PDF。
- * @param {number} [option.dpi=96] - Web 打印输出的分辨率，单位为每英寸点数。默认值为 96 dpi。
+ * @param {number} [option.dpi=96] - Web 打印输出的分辨率，单位为每英寸点数。默认值为 96 DPI。
  * @param {number} [option.scale] - Web 打印输出的地图比例尺。
  * @param {number} [option.rotation] - Web 打印输出的地图角度。
  * @param {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} [option.center] - Web 打印输出的地图中心点。
@@ -67919,19 +73961,19 @@ class WebPrintingJobParameters {
  * @category iServer Data Field
  * @classdesc 指定返回的用于描述 Feature 的字段。
  * @param {Object} options - 可选参数。
- * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表
- * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，需排除的字段列表
+ * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表。
+ * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，需排除的字段列表。
  * @usage
  */
 class FieldsFilter {
   constructor(options) {
     /**
-    * @description 对返回的字段内容进行过滤，需保留的字段列表
+    * @description 对返回的字段内容进行过滤，需保留的字段列表。
     * @member {Array.<string>} FieldsFilter.prototype.include
     */
     this.include = undefined;
     /**
-    * @description 对返回的字段内容进行过滤，需排除的字段列表
+    * @description 对返回的字段内容进行过滤，需排除的字段列表。
     * @member {Array.<string>} FieldsFilter.prototype.exclude
     */
     this.exclude = undefined;
@@ -67954,9 +73996,9 @@ class FieldsFilter {
   /**
   * @function FieldsFilter.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {FieldsFilter} obj 返回的模型.
-  * @return {FieldsFilter} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {FieldsFilter} obj 返回的模型。
+  * @return {FieldsFilter} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {
@@ -67989,18 +74031,18 @@ class FieldsFilter {
  * @category BaseTypes Util
  * @param {Object} options - 参数。
  * @param {string} options.field 属性名称。
- * @param {Sortby.Direction} options.direction 排序规则， 默认升序。
+ * @param {Sortby.Direction} options.direction 排序规则，默认升序。
  * @usage
  */
 class Sortby {
   constructor(options) {
     /**
-     * @description 属性名称
+     * @description 属性名称。
      * @member {string} Sortby.prototype.field
      */
     this.field = undefined;
     /**
-     * @description 排序规则
+     * @description 排序规则。
      * @member {Sortby.Direction} Sortby.prototype.direction
      * @default Sortby.Direction.ASC
      */
@@ -68048,7 +74090,9 @@ class Sortby {
  * @type {string}
  */
 Sortby.Direction = {
+  /** 升序。 */
   ASC: 'ASC',
+  /** 降序。 */
   DESC: 'DESC'
 };
 
@@ -68064,22 +74108,22 @@ Sortby.Direction = {
 /**
  * @class ImageSearchParameter
  * @deprecatedclass SuperMap.ImageSearchParameter
- * @classdesc 影像服务查询参数类
+ * @classdesc 影像服务查询参数类。
  * @category iServer Image
  * @param {Object} options - 可选参数。
- * @param {Array.<number>} [options.bbox] 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
+ * @param {Array.<number>} [options.bbox] 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84)。对于 “WGS 84 经度/纬度” 坐标参考系统，该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。如果一个 Feature 具有多个空间几何对象（geometry）属性，由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
  * @param {Array.<string>} [options.collections] 影像集合的ID数组，将在该指定的Collection中搜索Items。
- * @param {Array.<string>} [options.ids] 只返回指定 Item 的 ID 数组中的Item。返回的 Item 的 ID 值数组。 设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
+ * @param {Array.<string>} [options.ids] 只返回指定 Item 的 ID 数组中的Item。返回的 Item 的 ID 值数组。设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
  * @param {number} [options.limit] 返回的最大结果数，即响应文档包含的 Item 的数目。
- * @param {FieldsFilter} [options.fields] 通过‘include’和‘exclude’属性分别指定哪些字段包含在查询结果的 Feature 描述中，哪些需要排除。返回结果中的stac_version，id，bbox，assets，links，geometry，type，properties这些字段为必须字段，若要返回结果中不含这种字段信息，需要显示地进行排除设置，如：排除geometry和bbox字段；在POST请求中，则需要将这些字段添加到“exclude”字段中，例如： "fields": { "exclude": ["geometry","bbox"] } } 。而对于返回的“properties”对象中的扩展字段内容，可以将字段前添加到‘include’字段中，如： "fields": { "include": ["properties.SmFileName","properties.SmHighPS"] } } ，表示properties.SmFileName和properties.SmHighPS 属性都包含在查询结果中。
- * @param {Object} [options.query] 定义查询哪些属性，查询运算符将应用于这些属性。运算符包括：eq、neq、gt、lt、gte、lte、startsWith、endsWith、 contains、in。 其中in是Array.<string>类型  例如：{ "SmFileName": { "eq":"B49C001002.tif" }}
+ * @param {FieldsFilter} [options.fields] 通过‘include’和‘exclude’属性分别指定哪些字段包含在查询结果的 Feature 描述中，哪些需要排除。返回结果中的stac_version，id，bbox，assets，links，geometry，type，properties这些字段为必须字段，若要返回结果中不含这种字段信息，需要显示地进行排除设置，如：排除geometry和bbox字段；在POST请求中，则需要将这些字段添加到“exclude”字段中，例如： "fields": { "exclude": ["geometry","bbox"] } } 。而对于返回的“properties”对象中的扩展字段内容，可以将字段前添加到‘include’字段中，如： "fields": { "include": ["properties.SmFileName","properties.SmHighPS"] } ，表示properties.SmFileName和properties.SmHighPS 属性都包含在查询结果中。
+ * @param {Object} [options.query] 定义查询哪些属性，查询运算符将应用于这些属性。运算符包括：eq、neq、gt、lt、gte、lte、startsWith、endsWith、contains、in。其中in是Array.<string>类型，例如：{ "SmFileName": { "eq":"B49C001002.tif" }}
  * @param {Array.<Sortby>} [options.sortby] 由包含属性名称和排序规则的对象构成的数组。
  * @usage
  */
 class ImageSearchParameter {
     constructor(options) {
         /**
-         * @description 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来。 该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统， 该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。  如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。  如果一个 Feature 具有多个空间几何对象（geometry）属性， 由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
+         * @description 指定查询范围。只有具有几何对象（geometry）属性的Features，并且该几何对象与该参数指定的范围相交的 Features 才会被选择出来该参数可以包含4个数值或者6个数值，这取决于使用的坐标参考系统是否包含高程值：  * 左下角坐标轴 1 的值 * 左下角坐标轴 2 的值 * 坐标轴 3 的最小值（可选） * 右上角坐标轴 1 的值 * 右上角坐标轴 2 的值 * 坐标轴 3 的最大值（可选）  坐标参考系统为 WGS 84 经度/纬度 (http://www.opengis.net/def/crs/OGC/1.3/CRS84).  对于 “WGS 84 经度/纬度” 坐标参考系统，该参数值的格式通常为：最小经度,最小纬度,最大经度,最大纬度。如果包含了高程值，该参数的格式为：最小经度,最小纬度,最小高程值,最大经度,最大纬度,最大高程值。如果一个 Feature 具有多个空间几何对象（geometry）属性，由服务器决定是否使用单一的空间几何对象属性，还是使用所有相关的几何对象作为最终的查询空间范围。
          * @member {Array.<number>} ImageSearchParameter.prototype.bbox
          */
         this.bbox = undefined;
@@ -68089,12 +74133,12 @@ class ImageSearchParameter {
          */
         this.collections = undefined;
         /**
-         * @description 返回的 Item 的 ID 值数组。 设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
+         * @description 返回的 Item 的 ID 值数组。设置了该参数，所有其他过滤器参数（除了next和limit）将被忽略。
          * @member {Array.<string>} ImageSearchParameter.prototype.ids
          */
         this.ids = undefined;
         /**
-         * @description 单页返回的最大结果数。 最小值为1最大值为10000
+         * @description 单页返回的最大结果数。最小值为1，最大值为10000。
          * @member {number} ImageSearchParameter.prototype.limit
          */
         this.limit = undefined;
@@ -68136,9 +74180,9 @@ class ImageSearchParameter {
     /**
      * @function ImageSearchParameter.prototype.constructFromObject
      * @description 目标对象新增该类的可选参数。
-     * @param {Object} data 要转换的数据.
-     * @param {ImageSearchParameter} obj 返回的模型.
-     * @return {ImageSearchParameter} 返回结果
+     * @param {Object} data 要转换的数据。
+     * @param {ImageSearchParameter} obj 返回的模型。
+     * @return {ImageSearchParameter} 返回结果。
      */
     static constructFromObject(data, obj) {
         if (data) {
@@ -68249,9 +74293,9 @@ class ImageStretchOption {
   /**
    * @function ImageStretchOption.prototype.constructFromObject
    * @description 目标对象新增该类的可选参数。
-   * @param {Object} data 要转换的数据.
-   * @param {ImageStretchOption} obj 返回的模型.
-   * @return {ImageStretchOption} 返回结果
+   * @param {Object} data 要转换的数据。
+   * @param {ImageStretchOption} obj 返回的模型。
+   * @return {ImageStretchOption} 返回结果。
    */
   static constructFromObject(data, obj) {
     if (data) {
@@ -68286,10 +74330,15 @@ class ImageStretchOption {
  * @type {string}
  */
 ImageStretchOption.StretchType = {
+  /** 无拉伸。 */
   NONE: 'NONE',
+  /** 高斯拉伸。 */
   GAUSSIAN: 'GAUSSIAN',
+  /** 百分比截断拉伸。 */
   PERCENTCLIP: 'PERCENTCLIP',
+  /** 最值拉伸。 */
   MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
+  /** 标准差拉伸。 */
   STANDARDDEVIATION: 'STANDARDDEVIATION'
 };
 
@@ -68311,8 +74360,8 @@ ImageStretchOption.StretchType = {
  * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为STRETCHED，该属性指定一个波段的索引号(波段索引号从0开始计数)；若影像的显示模式为COMPOSITE，该属性为组合的波段索引号，例如：属性值3,2,1表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
  * @param {ImageStretchOption} [options.stretchOption] 影像的拉伸参数。
  * @param {ImageRenderingRule.InterpolationMode} [options.interpolationMode] 影像显示时使用的插值算法。
- * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
- * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+ * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+ * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"。
  * @param {number} [options.brightness] 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
  * @param {number} [options.contrast] 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
  * @param {string} [options.noData] 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
@@ -68347,12 +74396,12 @@ class ImageRenderingRule {
      */
     this.interpolationMode = undefined;
     /**
-     * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+     * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
      * @member {Array.<string>} ImageRenderingRule.prototype.colorScheme
      */
     this.colorScheme = undefined;
     /**
-     * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。 RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。 以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。 示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+     * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
      * @member {Array.<string>} ImageRenderingRule.prototype.colorTable
      */
     this.colorTable = undefined;
@@ -68433,9 +74482,9 @@ class ImageRenderingRule {
   /**
    * @function ImageRenderingRule.prototype.constructFromObject
    * @description 目标对象新增该类的可选参数。
-   * @param {Object} data 要转换的数据.
-   * @param {ImageRenderingRule} obj 返回的模型.
-   * @return {ImageRenderingRule} 返回结果
+   * @param {Object} data 要转换的数据。
+   * @param {ImageRenderingRule} obj 返回的模型。
+   * @return {ImageRenderingRule} 返回结果。
    */
   static constructFromObject(data, obj) {
     if (data) {
@@ -68512,8 +74561,11 @@ ImageRenderingRule.DisplayMode = {
  * @type {string}
  */
 ImageRenderingRule.InterpolationMode = {
+  /** 最邻近插值模式。 */
   NEARESTNEIGHBOR: 'NEARESTNEIGHBOR',
+  /** 高质量的双线性插值模式。 */
   HIGHQUALITYBILINEAR: 'HIGHQUALITYBILINEAR',
+  /** 默认插值模式。 */
   DEFAULT: 'DEFAULT'
 };
 
@@ -68528,7 +74580,7 @@ ImageRenderingRule.InterpolationMode = {
 /**
  * @class ImageGFHillShade
  * @deprecatedclass SuperMap.ImageGFHillShade
- * @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。
+ * @classdesc 栅格函数对象：对DEM数据生成三维晕渲图。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFHillShade'] 栅格函数名称，参数值为：GFHillShade。
@@ -68581,9 +74633,9 @@ class ImageGFHillShade {
   /**
   * @function ImageGFHillShade.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFHillShade} obj 返回的模型.
-  * @return {ImageGFHillShade} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFHillShade} obj 返回的模型。
+  * @return {ImageGFHillShade} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {
@@ -68618,7 +74670,7 @@ class ImageGFHillShade {
 /**
  * @class ImageGFAspect
  * @deprecatedclass SuperMap.ImageGFAspect
- * @classdesc 栅格函数对象:对DEM数据生成坡向渲图。
+ * @classdesc 栅格函数对象：对DEM数据生成坡向渲图。
  * @category iServer Image
  * @param {Object} options -可选参数。
  * @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
@@ -68657,9 +74709,9 @@ class ImageGFAspect {
   /**
   * @function ImageGFAspect.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFAspect} obj 返回的模型.
-  * @return {ImageGFAspect} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFAspect} obj 返回的模型。
+  * @return {ImageGFAspect} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {
@@ -68688,7 +74740,7 @@ class ImageGFAspect {
 /**
  * @class ImageGFOrtho
  * @deprecatedclass SuperMap.ImageGFOrtho
- * @classdesc 栅格函数对象:对DEM数据生成三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
+ * @classdesc 栅格函数对象：对DEM数据生成三维晕渲图。该栅格函数不需要输入参数，采用系统默认设置。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFOrtho'] 栅格函数名称，参数值为：GFOrtho。
@@ -68720,9 +74772,9 @@ class ImageGFOrtho {
   /**
   * @function ImageGFOrtho.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFOrtho} obj 返回的模型.
-  * @return {ImageGFOrtho} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFOrtho} obj 返回的模型。
+  * @return {ImageGFOrtho} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {
@@ -68748,7 +74800,7 @@ class ImageGFOrtho {
 /**
  * @class ImageGFSlope
  * @deprecatedclass SuperMap.ImageGFSlope
- * @classdesc 栅格函数对象:对DEM数据生成坡度图。
+ * @classdesc 栅格函数对象：对DEM数据生成坡度图。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
@@ -68794,9 +74846,9 @@ class ImageGFSlope {
   /**
   * @function ImageGFSlope.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFSlope} obj 返回的模型.
-  * @return {ImageGFSlope} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFSlope} obj 返回的模型。
+  * @return {ImageGFSlope} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {
@@ -69379,25 +75431,25 @@ var ServiceStatus = {
  * ```
  */
 var DataItemOrderBy = {
-    /** FILENAME */
+    /** 文件名。 */
     FILENAME: "FILENAME",
-    /** ID */
+    /** ID。 */
     ID: "ID",
-    /** LASTMODIFIEDTIME */
+    /** 最后修改时间。 */
     LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
-    /** NICKNAME */
+    /** 作者昵称。 */
     NICKNAME: "NICKNAME",
-    /** SERVICESTATUS */
+    /** SERVICESTATUS。 */
     SERVICESTATUS: "SERVICESTATUS",
-    /** SIZE */
+    /** 大小。 */
     SIZE: "SIZE",
-    /** STATUS */
+    /** 状态。 */
     STATUS: "STATUS",
-    /** TYPE */
+    /** 类型。 */
     TYPE: "TYPE",
-    /** UPDATETIME */
+    /** 更新时间。 */
     UPDATETIME: "UPDATETIME",
-    /** USERNAME */
+    /** 作者名。 */
     USERNAME: "USERNAME"
 };
 
@@ -69420,15 +75472,15 @@ var DataItemOrderBy = {
  * ```
  */
 var FilterField = {
-    /** LINKPAGE */
+    /** 服务地址。 */
     LINKPAGE: "LINKPAGE",
-    /** MAPTITLE */
+    /** 服务中包含的地图的名称。 */
     MAPTITLE: "MAPTITLE",
-    /** NICKNAME */
+    /** 服务创建者昵称。 */
     NICKNAME: "NICKNAME",
-    /** RESTITLE */
+    /** 服务名称。 */
     RESTITLE: "RESTITLE",
-    /** USERNAME */
+    /** 服务创建者用户名。 */
     USERNAME: "USERNAME"
 };
 
@@ -69851,38 +75903,38 @@ class KeyServiceParameter {
 /**
  * @class ServerInfo
  * @deprecatedclass SuperMap.ServerInfo
- * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等。
  * @category Security
- * @param {string} type - 服务器类型
+ * @param {string} type - 服务器类型。
  * @param {Object} options - 参数。
- * @param {string} options.server - 服务器地址,如：http://supermapiserver:8090/iserver
- * @param {string} [options.tokenServiceUrl] - 如：http://supermapiserver:8090/iserver/services/security/tokens.json
- * @param {string} [options.keyServiceUrl] - 如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ * @param {string} options.server - 服务器地址，如：http://supermapiserver:8090/iserver。
+ * @param {string} [options.tokenServiceUrl] - 如：http://supermapiserver:8090/iserver/services/security/tokens.json。
+ * @param {string} [options.keyServiceUrl] - 如：http://supermapiserver:8092/web/mycontent/keys/register.json。
  * @usage
  */
 class ServerInfo {
     constructor(type, options) {
         /**
          * @member {ServerType} ServerInfo.prototype.type
-         * @description 服务器类型
+         * @description 服务器类型。
          */
         this.type = type;
 
         /**
          * @member {string} ServerInfo.prototype.server
-         * @description 服务器地址
+         * @description 服务器地址。
          */
         this.server = null;
 
         /**
          * @member {string} [ServerInfo.prototype.tokenServiceUrl]
-         * @description 如：http://supermapiserver:8090/iserver/services/security/tokens.json
+         * @description 如：http://supermapiserver:8090/iserver/services/security/tokens.json。
          */
         this.tokenServiceUrl = null;
 
         /**
          * @member {string} [ServerInfo.prototype.keyServiceUrl]
-         * @description 如：http://supermapiserver:8092/web/mycontent/keys/register.json
+         * @description 如：http://supermapiserver:8092/web/mycontent/keys/register.json。
          */
         this.keyServiceUrl = null;
 
@@ -69935,7 +75987,7 @@ class ServerInfo {
  * @param {ClientType} [options.clientType='ClientType.NONE'] - token 申请的客户端标识类型。
  * @param {string} [options.ip] - clientType=IP 时，此为必选参数。
  * @param {string} [options.referer] -clientType=Referer 时，此为必选参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
- * @param {number} [options.expiration=60] - 申请令牌的有效期,从发布令牌的时间开始计算,单位为分钟。
+ * @param {number} [options.expiration=60] - 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
  * @usage
  *
  */
@@ -69984,8 +76036,8 @@ class TokenServiceParameter {
 
     /**
      * @function TokenServiceParameter.prototype.toJSON
-     * @description 将所有信息转成 JSON 字符串
-     * @returns {string} 参数的 JSON 字符串
+     * @description 将所有信息转成 JSON 字符串。
+     * @returns {string} 参数的 JSON 字符串。
      */
     toJSON() {
         return {
@@ -70036,6 +76088,33 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
+ * @description 
+ * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
+ * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
+  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
+  然后配置webpack<pre><code>module.exports: {
+    resolve: {
+      alias: {
+        process: 'process/browser',
+      },
+      mainFields: ['browser', 'main'],
+      fallback: {
+        fs: false,
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        os: require.resolve('os-browserify/browser'),
+        stream: require.resolve('stream-browserify'),
+        tty: require.resolve('tty-browserify'),
+        zlib: require.resolve('browserify-zlib')
+      }
+    }
+    plugins: [
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: ['buffer', 'Buffer']
+      }),
+    ]
+}</code></pre>
  * @usage
  */
 
@@ -70045,16 +76124,26 @@ class ElasticSearch {
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
-         *  @description ElasticSearch服务地址
+         *  @description ElasticSearch服务地址。
          */
         this.url = url;
         /**
          *  @member {Object} ElasticSearch.prototype.client
-         *  @description client ES客户端
+         *  @description client ES客户端。
          */
-        this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+        try {
+          // 老版本
+          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
             host: this.url
-        });
+          });
+        } catch (e) {
+          // 新版本
+          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+            node: {
+              url: new URL(this.url)
+            }
+          });
+        }
         /**
          *  @deprecated
          *  @member {function} [ElasticSearch.prototype.change]
@@ -70068,13 +76157,13 @@ class ElasticSearch {
         this.openGeoFence = false;
         /**
          *  @member {function} [ElasticSearch.prototype.outOfGeoFence]
-         *  @description 数据超出地理围栏后执行的函数
+         *  @description 数据超出地理围栏后执行的函数。
          */
         this.outOfGeoFence = null;
 
         /**
          * @member {Object} [ElasticSearch.prototype.geoFence]
-         * @description 地理围栏
+         * @description 地理围栏。
          * @example {
      *    radius: 1000,//单位是m
      *    center: [104.40, 30.43],
@@ -70093,13 +76182,13 @@ class ElasticSearch {
 
         /**
          * @member {Events} ElasticSearch.prototype.events
-         * @description 事件
+         * @description 事件。
          */
         this.events = new Events(this, null, this.EVENT_TYPES);
 
         /**
          * @member {Object} ElasticSearch.prototype.eventListeners
-         * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+         * @description 监听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
          * 相当于调用 Events.on(eventListeners)。
          */
         this.eventListeners = null;
@@ -70128,7 +76217,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     bulk(params, callback) {
-        return this.client.bulk(params, callback);
+        return this.client.bulk(params, this._handleCallback(callback));
     }
 
     /**
@@ -70140,7 +76229,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     clearScroll(params, callback) {
-        return this.client.clearScroll(params, callback);
+        return this.client.clearScroll(params, this._handleCallback(callback));
     }
 
     /**
@@ -70152,19 +76241,19 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     count(params, callback) {
-        return this.client.count(params, callback);
+        return this.client.count(params, this._handleCallback(callback));
     }
 
     /**
      * @function  ElasticSearch.prototype.create
-     * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
+     * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
      * @param {Object} params - 参数。
      * @param {function} callback - 回调函数。
      */
     create(params, callback) {
-        return this.client.create(params, callback);
+        return this.client.create(params, this._handleCallback(callback));
     }
 
     /**
@@ -70176,7 +76265,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     delete(params, callback) {
-        return this.client.delete(params, callback);
+        return this.client.delete(params, this._handleCallback(callback));
     }
 
     /**
@@ -70188,7 +76277,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteByQuery(params, callback) {
-        return this.client.deleteByQuery(params, callback);
+        return this.client.deleteByQuery(params, this._handleCallback(callback));
     }
 
     /**
@@ -70200,7 +76289,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteScript(params, callback) {
-        return this.client.deleteScript(params, callback);
+        return this.client.deleteScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -70212,7 +76301,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteTemplate(params, callback) {
-        return this.client.deleteTemplate(params, callback);
+        return this.client.deleteTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -70224,7 +76313,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     exists(params, callback) {
-        return this.client.exists(params, callback);
+        return this.client.exists(params, this._handleCallback(callback));
     }
 
     /**
@@ -70237,7 +76326,7 @@ class ElasticSearch {
      */
 
     existsSource(params, callback) {
-        return this.client.existsSource(params, callback);
+        return this.client.existsSource(params, this._handleCallback(callback));
     }
 
     /**
@@ -70249,7 +76338,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     explain(params, callback) {
-        return this.client.explain(params, callback);
+        return this.client.explain(params, this._handleCallback(callback));
     }
 
     /**
@@ -70261,20 +76350,20 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     fieldCaps(params, callback) {
-        return this.client.fieldCaps(params, callback);
+        return this.client.fieldCaps(params, this._handleCallback(callback));
     }
 
 
     /**
      * @function  ElasticSearch.prototype.get
-     * @description 从索引获取一个基于其id的类型的JSON文档。</br>
+     * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 回调函数。
      */
     get(params, callback) {
-        return this.client.get(params, callback);
+        return this.client.get(params, this._handleCallback(callback));
     }
 
     /**
@@ -70286,7 +76375,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getScript(params, callback) {
-        return this.client.getScript(params, callback);
+        return this.client.getScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -70298,7 +76387,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getSource(params, callback) {
-        return this.client.getSource(params, callback);
+        return this.client.getSource(params, this._handleCallback(callback));
     }
 
     /**
@@ -70310,7 +76399,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getTemplate(params, callback) {
-        return this.client.getTemplate(params, callback);
+        return this.client.getTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -70322,7 +76411,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     index(params, callback) {
-        return this.client.index(params, callback);
+        return this.client.index(params, this._handleCallback(callback));
     }
 
     /**
@@ -70334,7 +76423,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     info(params, callback) {
-        return this.client.info(params, callback);
+        return this.client.info(params, this._handleCallback(callback));
     }
 
     /**
@@ -70346,7 +76435,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     mget(params, callback) {
-        return this.client.mget(params, callback);
+        return this.client.mget(params, this._handleCallback(callback));
     }
 
     /**
@@ -70356,13 +76445,14 @@ class ElasticSearch {
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
-     *     回调参数：error,response。结果存储在response.responses中
+     *     回调参数：error,response，结果存储在response.responses中。
      */
     msearch(params, callback) {
         let me = this;
 
         return me.client.msearch(params)
             .then(function (resp) {
+                resp = resp.body || resp;
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
@@ -70381,7 +76471,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     msearchTemplate(params, callback) {
-        return this.client.msearchTemplate(params, callback);
+        return this.client.msearchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -70393,7 +76483,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     mtermvectors(params, callback) {
-        return this.client.mtermvectors(params, callback);
+        return this.client.mtermvectors(params, this._handleCallback(callback));
     }
 
     /**
@@ -70405,7 +76495,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     ping(params, callback) {
-        return this.client.ping(params, callback);
+        return this.client.ping(params, this._handleCallback(callback));
     }
 
     /**
@@ -70417,7 +76507,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     putScript(params, callback) {
-        return this.client.putScript(params, callback);
+        return this.client.putScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -70429,7 +76519,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     putTemplate(params, callback) {
-        return this.client.putTemplate(params, callback);
+        return this.client.putTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -70441,7 +76531,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     reindex(params, callback) {
-        return this.client.reindex(params, callback);
+        return this.client.reindex(params, this._handleCallback(callback));
     }
 
     /**
@@ -70453,7 +76543,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     reindexRessrottle(params, callback) {
-        return this.client.reindexRessrottle(params, callback);
+        return this.client.reindexRessrottle(params, this._handleCallback(callback));
     }
 
     /**
@@ -70465,7 +76555,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     renderSearchTemplate(params, callback) {
-        return this.client.renderSearchTemplate(params, callback);
+        return this.client.renderSearchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -70477,7 +76567,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     scroll(params, callback) {
-        return this.client.scroll(params, callback);
+        return this.client.scroll(params, this._handleCallback(callback));
     }
 
     /**
@@ -70487,13 +76577,14 @@ class ElasticSearch {
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
-     *     回调参数：error,response,结果存储在response.responses中
+     *     回调参数：error,response，结果存储在response.responses中。
      */
     search(params, callback) {
         let me = this;
         return me.client.search(params)
             .then(function (resp) {
-                me._update(resp.responses, callback);
+                resp = resp.body || resp;
+                me._update(resp, callback);
                 return resp;
             }, function (err) {
                 callback && callback(err);
@@ -70511,7 +76602,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     searchShards(params, callback) {
-        return this.client.searchShards(params, callback);
+        return this.client.searchShards(params, this._handleCallback(callback));
     }
 
     /**
@@ -70523,7 +76614,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     searchTemplate(params, callback) {
-        return this.client.searchTemplate(params, callback);
+        return this.client.searchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -70535,7 +76626,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     suggest(params, callback) {
-        return this.client.suggest(params, callback);
+        return this.client.suggest(params, this._handleCallback(callback));
     }
 
     /**
@@ -70547,7 +76638,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     termvectors(params, callback) {
-        return this.client.termvectors(params, callback);
+        return this.client.termvectors(params, this._handleCallback(callback));
     }
 
     /**
@@ -70559,7 +76650,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     update(params, callback) {
-        return this.client.update(params, callback);
+        return this.client.update(params, this._handleCallback(callback));
     }
 
     /**
@@ -70571,7 +76662,28 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     updateByQuery(params, callback) {
-        return this.client.updateByQuery(params, callback);
+        return this.client.updateByQuery(params, this._handleCallback(callback));
+    }
+
+    /**
+     * @function ElasticSearch.prototype._handleCallback
+     * @description 处理ElasticSearch 16.x和5.x的callback兼容。 5.x的回调参数多包了一层body
+     * @param {function} callback - 回调函数。
+     * @private
+     */
+    _handleCallback(callback) {
+      return function () {
+        let args = Array.from(arguments);
+        const error = args.shift();
+        let resp = args.shift();
+        const body = resp && resp.body;
+        if (body) {
+          const { statusCode, headers } = resp;
+          args = [statusCode, headers];
+          resp = body;
+        }
+        callback.call(this, error, resp, ...args);
+      };
     }
 
     _update(data, callback) {
@@ -70670,7 +76782,7 @@ var ColorRender = new Color();
  * @name ColorsPickerUtil
  * @namespace
  * @category BaseTypes Util
- * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
+ * @classdesc 色带选择器工具类。用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色。
  * @usage
  * ```
  * // 浏览器
@@ -70692,7 +76804,7 @@ var ColorRender = new Color();
 class ColorsPickerUtil  {
     /**
      * @function ColorsPickerUtil.createCanvas
-     * @description 创建DOM canvas
+     * @description 创建DOM canvas。
      * @param {number} height - canvas 高度。
      * @param {number} width - canvas 宽度。
      */
@@ -71092,7 +77204,7 @@ var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
  * @deprecatedclass SuperMap.CartoCSS
  * @classdesc CartoCSS 解析类，其主要功能为将 CartoCSS 字符串解析为 CartoCSS 的 shader 属性风格对象。
  * @category BaseTypes Style
- * @param {string} cartoStr -  样式表字符串
+ * @param {string} cartoStr -  样式表字符串。
  * @example
  * var cartocss = "@provinceLineColor:#ddd;
  *                 #China_Provinces_L___China400{
@@ -71111,25 +77223,25 @@ class CartoCSS {
 
         /**
          * @member CartoCSS.prototype.parser
-         * @description 解析器
+         * @description 解析器。
          */
         this.parser = null;
 
         /**
          * @member CartoCSS.prototype.ruleSet
-         * @description CartoCSS 规则对象
+         * @description CartoCSS 规则对象。
          */
         this.ruleSet = null;
 
         /**
          * @member CartoCSS.prototype.cartoStr
-         * @description CartoCSS 样式表字符串
+         * @description CartoCSS 样式表字符串。
          */
         this.cartoStr = "";
 
         /**
          * @member CartoCSS.prototype.shaders
-         * @description Carto 着色器集
+         * @description Carto 着色器集。
          */
         this.shaders = null;
 
@@ -71150,7 +77262,7 @@ class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.getParser
-     * @description 获取 CartoCSS 解析器
+     * @description 获取 CartoCSS 解析器。
      */
     getParser(env) {
         var input,       // LeSS input string
@@ -71960,8 +78072,8 @@ class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.parse
-     * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
-     * @returns {Object} CartoCSS规则集
+     * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集。
+     * @returns {Object} CartoCSS规则集。
      */
     parse(str) {
         var parser = this.parser;
@@ -71972,8 +78084,8 @@ class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.toShaders
-     * @description 将CartoCSS规则集转化为着色器
-     * @returns {Array} CartoCSS着色器集
+     * @description 将CartoCSS规则集转化为着色器。
+     * @returns {Array} CartoCSS着色器集。
      */
     toShaders() {
         if (this.ruleSet) {
@@ -72104,8 +78216,8 @@ class CartoCSS {
     }
     /**
      * @function CartoCSS.prototype.getShaders
-     * @description 获取CartoCSS着色器
-     * @returns {Array} 着色器集
+     * @description 获取CartoCSS着色器。
+     * @returns {Array} 着色器集。
      * @example
      *   //shaders的结构大概如下：
      *   var shaders=[
@@ -72133,7 +78245,7 @@ class CartoCSS {
 
     /**
      * @function CartoCSS.prototype.destroy
-     * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
+     * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象。
      */
     destroy() {
         this.cartoStr = null;
@@ -75775,23 +81887,23 @@ CartoCSS.Tree.Zoom.ranges = {
  * @param {string} [options.strokeLinecap='butt'] - 线帽样式。strokeLinecap 有三种类型 “butt", "round", "square"。
  * @param {string} [options.strokeLineJoin='iter'] - 线段连接样式。strokeLineJoin 有三种类型 “miter", "round", "bevel"。
  * @param {string} [options.strokeDashstyle='solid'] - 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted"。solid 表示实线。
- * @param {number} [options.pointRadius=6] - 点半径,单位为像素。
- * @param {number} [options.shadowBlur=0] - 阴影模糊度，（大于 0 有效;）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
+ * @param {number} [options.pointRadius=6] - 点半径，单位为像素。
+ * @param {number} [options.shadowBlur=0] - 阴影模糊度，（大于 0 有效）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
  * @param {string} [options.shadowColor='#000000'] - 阴影颜色。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。
  * @param {number} [options.shadowOffsetX=0] - 阴影 X 方向偏移值。
  * @param {number} [options.shadowOffsetY=0] - 阴影 Y 方向偏移值。
  * @param {string} options.label - 专题要素附加文本标签内容。
  * @param {string} [options.fontColor] - 附加文本字体颜色。
- * @param {number} [options.fontSize=12] - 附加文本字体大小,单位是像素。
+ * @param {number} [options.fontSize=12] - 附加文本字体大小，单位是像素。
  * @param {string} [options.fontStyle='normal'] - 附加文本字体样式。可设值："normal", "italic", "oblique"。
  * @param {string} [options.fontVariant='normal'] - 附加文本字体变体。可设值："normal", "small-caps"。
  * @param {string} [options.fontWeight='normal'] - 附加文本字体粗细。可设值："normal", "bold", "bolder", "lighter"。
  * @param {string} [options.fontFamily='arial,sans-serif'] - 附加文本字体系列。fontFamily 值是字体族名称或/及类族名称的一个优先表，每个值逗号分割，
  *                             浏览器会使用它可识别的第一个可以使用具体的字体名称（"times"、"courier"、"arial"）或字体系列名称
  *                              （"serif"、"sans-serif"、"cursive"、"fantasy"、"monospace"）。
- * @param {string} [options.labelPosition='top'] - 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'。
+ * @param {string} [options.labelPosition='top'] - 附加文本位置，可以是 'inside', 'left', 'right', 'top', 'bottom'。
  * @param {string} [options.labelAlign='center'] - 附加文本水平对齐。可以是 'left', 'right', 'center'。
- * @param {string} [options.labelBaseline='middle'] - 附加文本垂直对齐。 可以是 'top', 'bottom', 'middle' 。
+ * @param {string} [options.labelBaseline='middle'] - 附加文本垂直对齐。可以是 'top', 'bottom', 'middle' 。
  * @param {number} [options.labelXOffset=0] - 附加文本在x轴方向的偏移量。
  * @param {number} [options.labelYOffset=0] - 附加文本在y轴方向的偏移量。
  * @usage
@@ -75848,7 +81960,7 @@ class ThemeStyle {
         this.strokeLineJoin = "miter";
         /**
          * @member {string} [ThemeStyle.prototype.strokeDashstyle="solid"]
-         * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
+         * @description   虚线类型；strokeDashstyle 有八种类型 “dot",“dash",“dashdot",“longdash",“longdashdot",“solid", "dashed", "dotted";
          * solid 表示实线。
          */
         this.strokeDashstyle = "solid";
@@ -75894,7 +82006,7 @@ class ThemeStyle {
         this.fontColor = "";
         /**
          * @member {number} [ThemeStyle.prototype.fontSize=12]
-         * @description 附加文本字体大小,单位是像素。
+         * @description 附加文本字体大小，单位是像素。
          */
         this.fontSize = 12;
         /**
@@ -75920,7 +82032,7 @@ class ThemeStyle {
         this.fontFamily = "arial,sans-serif";
         /**
          * @member {string} [ThemeStyle.prototype.labelPosition='top']
-         * @description 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'。
+         * @description 附加文本位置，可以是 'inside', 'left', 'right', 'top', 'bottom'。
          */
         this.labelPosition = "top";
         /**
@@ -75930,7 +82042,7 @@ class ThemeStyle {
         this.labelAlign = "center";
         /**
          * @member {string} [ThemeStyle.prototype.labelBaseline='middle']
-         * @description  附加文本垂直对齐。 可以是 'top', 'bottom', 'middle'。
+         * @description  附加文本垂直对齐。可以是 'top', 'bottom', 'middle'。
          */
         this.labelBaseline = "middle";
         /**
@@ -76036,7 +82148,7 @@ class Graph_Graph extends Theme {
          * @readonly
          * @member {Array.<number>} FeatureThemeGraph.prototype.chartBox
          * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
-         *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
+         *              下端 y坐标值、右端 x坐标值、上端 y 坐标值；[left, bottom, right, top]。
          */
         this.chartBox = null;
 
@@ -79600,13 +85712,13 @@ let FileReaderUtil = {
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
     /**
      * @function FileReaderUtil.prototype.readFile
-     * @description 读取文件
-     * @param {string} fileType - 当前读取的文件类型
+     * @description 读取文件。
+     * @param {string} fileType - 当前读取的文件类型。
      *
-     * @param {Object} file - 读取回来的文件内容对象
-     * @param {function} success - 读取文件成功回调函数
-     * @param {function} failed - 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @param {Object} file - 读取回来的文件内容对象。
+     * @param {function} success - 读取文件成功回调函数。
+     * @param {function} failed - 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readFile(fileType, file, success, failed, context) {
         if (CommonTypes_FileTypes.JSON === fileType || CommonTypes_FileTypes.GEOJSON === fileType) {
@@ -79617,11 +85729,11 @@ let FileReaderUtil = {
     },
 
     /**
-     * @description 读取文本文件
-     * @param {Object} file 文件内容对象
-     * @param {function} success 读取文件成功回调函数
-     * @param {function} failed 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @description 读取文本文件。
+     * @param {Object} file 文件内容对象。
+     * @param {function} success 读取文件成功回调函数。
+     * @param {function} failed 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readTextFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -79635,11 +85747,11 @@ let FileReaderUtil = {
     },
 
     /**
-     * @description 读取excel或csv文件
-     * @param {Object} file 文件内容对象
-     * @param {function} success 读取文件成功回调函数
-     * @param {function} failed 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @description 读取excel或csv文件。
+     * @param {Object} file 文件内容对象。
+     * @param {function} success 读取文件成功回调函数。
+     * @param {function} failed 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readXLSXFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -79665,13 +85777,13 @@ let FileReaderUtil = {
 
     /**
      * @function FileReaderUtil.prototype.processDataToGeoJson
-     * @description 将读取回来得数据统一处理为 GeoJSON 格式
-     * @param {string} type - 文件类型
-     * @param {Object} data - 读取返回的数据对象
-     * @param {function} success - 数据处理成功的回调
-     * @param {function} failed - 数据处理失败的回调
-     * @param {Object} context - 回调重定向对象
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式。
+     * @param {string} type - 文件类型。
+     * @param {Object} data - 读取返回的数据对象。
+     * @param {function} success - 数据处理成功的回调。
+     * @param {function} failed - 数据处理失败的回调。
+     * @param {Object} context - 回调重定向对象。
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据。
      * @private
      */
     processDataToGeoJson(type, data, success, failed, context) {
@@ -79701,9 +85813,9 @@ let FileReaderUtil = {
     },
     /**
      * @function FileReaderUtil.prototype.processExcelDataToGeoJson
-     * @description 表格文件数据处理
-     * @param {Object} data - 读取的表格文件数据
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @description 表格文件数据处理。
+     * @param {Object} data - 读取的表格文件数据。
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据。
      * @private
      */
     processExcelDataToGeoJson(data) {
@@ -79751,8 +85863,8 @@ let FileReaderUtil = {
         return features;
     },
     /**
-     * @description 判断是否地理X坐标
-     * @param {string} data 字段名
+     * @description 判断是否地理X坐标。
+     * @param {string} data 字段名。
      */
     isXField(data) {
         var lowerdata = data.toLowerCase();
@@ -79762,8 +85874,8 @@ let FileReaderUtil = {
     },
 
     /**
-     * @description 判断是否地理Y坐标
-     * @param {string} data 字段名
+     * @description 判断是否地理Y坐标。
+     * @param {string} data 字段名。
      */
     isYField(data) {
         var lowerdata = data.toLowerCase();
@@ -79772,9 +85884,9 @@ let FileReaderUtil = {
             lowerdata === "latitude" || lowerdata === "lat" || lowerdata === "y坐标");
     },
     /**
-     * @description 字符串转为dataEditor 支持的csv格式数据
-     * @param {string} string 待转化的字符串
-     * @param {boolean} withoutTitle 是否需要列标题
+     * @description 字符串转为dataEditor 支持的csv格式数据。
+     * @param {string} string 待转化的字符串。
+     * @param {boolean} withoutTitle 是否需要列标题。
      */
     string2Csv(string, withoutTitle) {
         // let rows = string.split('\r\n');
@@ -80384,7 +86496,7 @@ class ChartModel {
  * @class ChartViewModel
  * @aliasclass Components.ChartViewModel
  * @deprecatedclass SuperMap.Components.ChartViewModel
- * @classdesc 图表组件功能类
+ * @classdesc 图表组件功能类。
  * @category Components Chart
  * @version 10.0.0
  * @param {Object} options - 可选参数。
@@ -80980,12 +87092,12 @@ class ChartViewModel {
  * @class ChartView
  * @aliasclass Components.Chart
  * @deprecatedclass SuperMap.Components.Chart
- * @classdesc 图表组件
+ * @classdesc 图表组件。
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {ChartView.Datasets} options.datasets - 数据来源
+ * @param {ChartView.Datasets} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -80997,11 +87109,11 @@ class ChartViewModel {
  * @usage
  */
 /**
- * @typedef {Object} ChartView.Datasets  - 数据来源
+ * @typedef {Object} ChartView.Datasets  - 数据来源。
  * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
  * @property {string} url - 服务地址。
- * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
- * @property {FilterParameter} queryInfo - 查询条件
+ * @property {boolean} [withCredentials = false] - 设置请求是否带cookie。
+ * @property {FilterParameter} queryInfo - 查询条件。
  */
 class ChartView {
 
@@ -81019,7 +87131,7 @@ class ChartView {
 
     /**
      * @function ChartView.prototype.onAdd
-     * @description 创建图表之后成功回调
+     * @description 创建图表之后成功回调。
      * @param {function} addChart - 回调函数。
      */
     onAdd(addChart) {
@@ -82627,8 +88739,8 @@ SuperMap.Event = Event_Event;
 SuperMap.Bounds = Bounds;
 SuperMap.Credential = Credential;
 SuperMap.Events = Events;
-SuperMap.Feature = Feature;
-SuperMap.Geometry = Geometry;
+SuperMap.Feature = Feature_Feature;
+SuperMap.Geometry = Geometry_Geometry;
 SuperMap.Pixel = Pixel;
 SuperMap.Size = Size;
 SuperMap.Feature.Vector = Vector;
@@ -82994,7 +89106,7 @@ SuperMap.ColorsPickerUtil = ColorsPickerUtil;
 // REST
 SuperMap.DataFormat = DataFormat;
 SuperMap.ServerType = ServerType;
-SuperMap.GeometryType = GeometryType;
+SuperMap.GeometryType = REST_GeometryType;
 SuperMap.QueryOption = QueryOption;
 SuperMap.JoinType = JoinType;
 SuperMap.SpatialQueryMode = SpatialQueryMode;
@@ -83063,6 +89175,67 @@ SuperMap.WebScaleType = WebScaleType;
 SuperMap.WebScaleUnit = WebScaleUnit;
 
 
+;// CONCATENATED MODULE: ./src/common/util/FilterCondition.js
+function getParseSpecialCharacter() {
+  // 特殊字符字典
+  const directory = ['(', ')', '（', '）', ',', '，'];
+  const res = {};
+  directory.forEach((item, index) => {
+    res[item] = `$${index}`
+  });
+  return res;
+}
+
+function parseSpecialCharacter(str) {
+  const directory = getParseSpecialCharacter();
+  for (let key in directory) {
+    const replaceValue = directory[key];
+    const pattern = new RegExp(`\\${key}`, 'g');
+    // eslint-disable-next-line
+    while (pattern.test(str)) {
+      str = str.replace(pattern, replaceValue);
+    }
+  }
+  return str;
+}
+
+function parseCondition(filterCondition, keys) {
+  const str = filterCondition.replace(/&|\||>|<|=|!/g, ' ');
+  const arr = str.split(' ').filter((item) => item);
+  let result = filterCondition;
+  arr.forEach((item) => {
+    const key = keys.find((val) => val === item);
+    if (startsWithNumber(item) && key) {
+      result = result.replace(key, '$' + key);
+    }
+    if (key) {
+      const res = parseSpecialCharacter(key);
+      result = result.replace(key, res);
+    }
+  });
+  return result;
+}
+
+// 处理jsonsqlfeature, 加前缀
+function parseConditionFeature(feature) {
+  let copyValue = {};
+  for (let key in feature) {
+    let copyKey = key;
+    if (startsWithNumber(key)) {
+      copyKey = '$' + key;
+    }
+    copyKey = parseSpecialCharacter(copyKey);
+    copyValue[copyKey] = feature[key];
+  }
+  return copyValue;
+}
+
+function startsWithNumber(str) {
+  return /^\d/.test(str);
+}
+
+
+
 ;// CONCATENATED MODULE: external "function(){try{return convert}catch(e){return {}}}()"
 const external_function_try_return_convert_catch_e_return_namespaceObject = function(){try{return convert}catch(e){return {}}}();
 var external_function_try_return_convert_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_convert_catch_e_return_namespaceObject);
@@ -83073,6 +89246,7 @@ var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__w
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -83171,7 +89345,13 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 		this.credentialValue = options.credentialValue;
 		this.withCredentials = options.withCredentials || false;
 		this.target = options.target || 'map';
+    this._canvgsV = [];
 		this._createWebMap();
+    this.on('mapinitialized', () => {
+      this.map.on('remove', () => {
+        this._stopCanvg();
+      });
+    });
 	}
 	/**
 	 * @function WebMap.prototype.resize
@@ -84563,15 +90743,16 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 			return allFeatures;
 		}
 		let condition = this._replaceFilterCharacter(filterCondition);
-		let sql = 'select * from json where (' + condition + ')';
 		let filterFeatures = [];
 		for (let i = 0; i < allFeatures.length; i++) {
 			let feature = allFeatures[i];
 			let filterResult = false;
 			try {
-				filterResult = window.jsonsql.query(sql, {
-					properties: feature.properties
-				});
+        const properties = feature.properties;
+        const conditions = parseCondition(condition, Object.keys(properties));
+        const filterFeature = parseConditionFeature(properties);
+        const sql = 'select * from json where (' + conditions + ')';
+        filterResult = window.jsonsql.query(sql, { attr: filterFeature });
 			} catch (err) {
 				//必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
 				continue;
@@ -84974,21 +91155,26 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 		canvas.id = 'dataviz-canvas-' + Util_Util.newGuid(8);
 		canvas.style.display = 'none';
 		divDom.appendChild(canvas);
-		let canvgs = window.canvg ? window.canvg : (external_function_try_return_canvg_catch_e_return_default());
-		canvgs(canvas.id, svgUrl, {
-			ignoreMouse: true,
-			ignoreAnimation: true,
-			renderCallback: () => {
-				if (canvas.width > 300 || canvas.height > 300) {
-					return;
-				}
-				callBack(canvas);
-			},
-			forceRedraw: () => {
-				return false;
-			}
-		});
+    const canvgs = window.canvg && window.canvg.default ? window.canvg.default : (external_function_try_return_canvg_catch_e_return_default());
+    const ctx = canvas.getContext('2d');
+    canvgs.from(ctx, svgUrl, {
+      ignoreMouse: true,
+      ignoreAnimation: true,
+      forceRedraw: () => false
+    }).then(v => {
+      v.start();
+      this._canvgsV.push(v);
+      if (canvas.width > 300 || canvas.height > 300) {
+        return;
+      }
+      callBack(canvas);
+    });
 	}
+
+  _stopCanvg() {
+    this._canvgsV.forEach(v => v.stop());
+    this._canvgsV = [];
+  }
 	/**
 	 * @private
 	 * @function WebMap.prototype._addOverlayToMap
@@ -85237,6 +91423,7 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 (external_mapboxgl_default()).supermap.HeatMapLayer = HeatMapLayer;
 (external_mapboxgl_default()).supermap.LabelThemeLayer = LabelThemeLayer_Label;
 (external_mapboxgl_default()).supermap.MapvLayer = MapvLayer;
+(external_mapboxgl_default()).supermap.FGBLayer = FGBLayer;
 (external_mapboxgl_default()).supermap.RangeTheme3DLayer = RangeTheme3DLayer;
 (external_mapboxgl_default()).supermap.RangeThemeLayer = Range;
 (external_mapboxgl_default()).supermap.RankSymbolThemeLayer = RankSymbol;

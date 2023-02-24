@@ -24,9 +24,9 @@ export class SpatialAnalystBase extends CommonServiceBase {
         super(url, options);
         /**
          * @member {DataFormat} [SpatialAnalystBase.prototype.format=DataFormat.GEOJSON]
-         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为 "ISERVER"，"GEOJSON"。
+         * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
          */
-        this.format = DataFormat.GEOJSON;
+        this.format = options.format || DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 

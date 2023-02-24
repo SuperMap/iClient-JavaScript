@@ -1,0 +1,97 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_fgb_extent"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="FGB,proj4" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map-fgb {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-fgb">
+      <p style="font-size: 30px; width: 300px; height: 100px; position: absolute; left: 50%; z-index: 10000;">fgb 加载</p></div>
+    </div>
+    <script>
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var dataUrl = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
+      var allowMaxFeatures = 5000;
+      var mapConfig = {
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [baseUrl],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              maxzoom: 18
+            }
+          ]
+        },
+        center: [106.143, 40.236],
+        zoom: 3
+      };
+
+      var mapfgb = new mapboxgl.Map({
+        container: 'map-fgb',
+        ...mapConfig
+      });
+      mapfgb.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      mapfgb.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+      mapfgb.on('load', function () {
+        queryFgb();
+      });
+
+      function queryFgb() {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: 'waterways@osm-line',
+            attributeFilter: 'SMID > 0'
+          },
+          maxFeatures: allowMaxFeatures,
+          datasetNames: ['osm-line:waterways']
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+          sqlParam,
+          async function (serviceResult) {
+            const FGBLayer = new mapboxgl.supermap.FGBLayer({
+              url: serviceResult.result.newResourceLocation
+            });
+            mapfgb.addLayer(FGBLayer);
+          },
+          'FGB'
+        );
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_fgb_extent"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript">
+      // 测试数据条数设置参数
+      var maxFeatures = 10000;
+      // 数据服务地址
+      var dataUrl = 'http://localhost:8090/iserver/services/data-FGB-2/rest/data';
+      var map,
+        resultLayer;
+      var dataSourceName = 'DLTB80w';
+      var dataSetsName = 'DLTB';
+      // 局部加载范围 [ minX, minY, maxX, maxY ]
+      var extent = [107, 21.5, 119, 23]
+      map = new ol.Map({
+        target: 'map',
+        controls: ol.control
+          .defaults({ attributionOptions: { collapsed: false } })
+          .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+          center: [108.45767883056989, 22.964634692850268],
+          zoom: 11,
+          projection: 'EPSG:4326',
+          multiWorld: true
+        })
+      });
+      window.map = map;
+      var layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+          url: "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4326",
+          wrapX: true
+        }),
+        projection: 'EPSG:4326'
+      });
+      map.addLayer(layer);
+      query();
+      function query() {
+        var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: `${dataSetsName}@${dataSourceName}`,
+            attributeFilter: 'SMID > 0'
+          },
+          maxFeatures,
+          datasetNames: [`${dataSourceName}:${dataSetsName}`]
+        });
+        new ol.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+          sqlParam,
+          function (serviceResult) {
+            const vectorSource = new ol.source.FGB({
+              extent,
+              url: serviceResult.result.newResourceLocation,
+              strategy: ol.loadingstrategy.bbox
+            });
+
+            resultLayer = new ol.layer.Vector({
+              source: vectorSource
+            });
+            map.addLayer(resultLayer);
+          },
+          'FGB'
+        );
+      }
+    </script>
+  </body>
+</html>

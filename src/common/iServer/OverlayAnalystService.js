@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {DatasetOverlayAnalystParameters} from './DatasetOverlayAnalystParameters';
 import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParameters';
+import { DataFormat } from '../REST';
 
 /**
  * @class OverlayAnalystService
@@ -17,6 +18,7 @@ import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParamete
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example 例如：
@@ -45,7 +47,6 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         if (options) {
             Util.extend(this, options);
         }
-
         this.CLASS_NAME = "SuperMap.OverlayAnalystService";
     }
 
@@ -81,7 +82,7 @@ export class OverlayAnalystService extends SpatialAnalystBase {
             }
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         var jsonParameters = Util.toJSON(parameterObject);
         me.request({
             method: "POST",
@@ -90,5 +91,9 @@ export class OverlayAnalystService extends SpatialAnalystBase {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 }

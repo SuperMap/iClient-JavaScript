@@ -42,6 +42,7 @@ import {
   RankSymbol,
   Turf,
   Unique,
+  FGB,
   VectorTileSuperMapRest
 } from './overlay';
 
@@ -109,6 +110,7 @@ if (window && window.ol) {
   ol.source.Range = Range;
   ol.source.RankSymbol = RankSymbol;
   ol.source.Turf = Turf;
+  ol.source.FGB = FGB;
   ol.source.Unique = Unique;
   ol.source.VectorTileSuperMapRest = VectorTileSuperMapRest;
   // service

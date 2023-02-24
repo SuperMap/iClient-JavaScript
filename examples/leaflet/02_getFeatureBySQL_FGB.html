@@ -1,0 +1,67 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_getFeatureBySQL_FGB"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="margin: 0 auto; width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="FGB" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var map,
+        resultLayer,
+        baseUrl = host + '/iserver/services/map-china400/rest/maps/China',
+        url = 'http://localhost:8090/iserver/services/data-China100/rest/data';
+      map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG3857,
+        center: { lon: 113, lat: 39 },
+        maxZoom: 18,
+        zoom: 7
+      });
+      new L.supermap.TiledMapLayer(baseUrl).addTo(map);
+      query();
+      function query() {
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: 'China_Rural_pt@China',
+            attributeFilter: 'SMID < 50000'
+          },
+          maxFeatures: 50000,
+          returnContent: false,
+          datasetNames: ['China:China_Rural_pt']
+        });
+        new L.supermap.FeatureService(url).getFeaturesBySQL(
+          sqlParam,
+          function (serviceResult) {
+            new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+              style: {
+                color: 'blue',
+                weight: 5,
+                fillOpacity: 0.8
+              },
+              featureLoader: function(feature) {
+                feature.geometry.coordinates = Proj4js('EPSG:3857', 'EPSG:4326', feature.geometry.coordinates)
+                return feature;
+              },
+              pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                  radius: 2,
+                  fillColor: '#ff0000',
+                  weight: 1,
+                  opacity: 1
+                });
+              }
+            }).addTo(map);
+          },
+          'FGB'
+        );
+      }
+    </script>
+  </body>
+</html>

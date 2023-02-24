@@ -79,6 +79,7 @@ var typeLinks = {
     "mapboxgl.LngLatBounds": mbglapi + '#lnglatbounds',
     "mapboxgl.LngLat": mbglapi + '#lnglat',
     "mapboxgl.Point": mbglapi + '#point',
+    "mapboxgl.source": 'https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson',
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
     "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md',

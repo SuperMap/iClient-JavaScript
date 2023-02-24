@@ -5,7 +5,7 @@ import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {DatasetThiessenAnalystParameters} from './DatasetThiessenAnalystParameters';
 import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParameters';
-
+import { DataFormat } from '../REST';
 /**
  * @class ThiessenAnalystService
  * @deprecatedclass SuperMap.ThiessenAnalystService
@@ -77,7 +77,7 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
         }
 
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -85,5 +85,9 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 }

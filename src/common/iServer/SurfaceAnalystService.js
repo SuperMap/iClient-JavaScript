@@ -6,7 +6,7 @@ import {Util} from '../commontypes/Util';
 import {DatasetSurfaceAnalystParameters} from './DatasetSurfaceAnalystParameters';
 import {GeometrySurfaceAnalystParameters} from './GeometrySurfaceAnalystParameters';
 import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
-
+import {DataFormat} from '../REST';
 
 /**
  * @class SurfaceAnalystService
@@ -90,7 +90,11 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
         } else {
             return;
         }
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         return jsonParameters;
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
     }
 }

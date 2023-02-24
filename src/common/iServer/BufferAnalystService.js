@@ -5,6 +5,7 @@ import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {DatasetBufferAnalystParameters} from './DatasetBufferAnalystParameters';
 import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters';
+import { DataFormat } from '../REST';
 
 /**
  * @class BufferAnalystService
@@ -76,7 +77,7 @@ export class BufferAnalystService extends SpatialAnalystBase {
         }
 
         var jsonParameters = Util.toJSON(parameterObject);
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -86,4 +87,7 @@ export class BufferAnalystService extends SpatialAnalystBase {
         });
     }
 
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
+    }
 }

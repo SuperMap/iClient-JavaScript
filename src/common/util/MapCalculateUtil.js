@@ -219,3 +219,52 @@ export function scaleToResolution(scale, dpi, mapUnit) {
   const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
   return resolution;
 }
+
+/**
+ * 范围是否相交
+ * @param {Extent} extent1 范围1
+ * @param {Extent} extent2 范围2
+ * @return {boolean} 范围是否相交。
+ */
+ export function intersects(extent1, extent2) {
+  return (
+    extent1[0] <= extent2[2] &&
+    extent1[2] >= extent2[0] &&
+    extent1[1] <= extent2[3] &&
+    extent1[3] >= extent2[1]
+  );
+}
+
+/**
+ * 获取两个范围的交集
+ * @param {Array} extent1 Extent 1
+ * @param {Array} extent2 Extent 2
+ * @return {Array} 相交范围数组.
+ * @api
+ */
+ export function getIntersection(extent1, extent2) {
+  const intersection = [];
+  if (intersects(extent1, extent2)) {
+    if (extent1[0] > extent2[0]) {
+      intersection[0] = extent1[0];
+    } else {
+      intersection[0] = extent2[0];
+    }
+    if (extent1[1] > extent2[1]) {
+      intersection[1] = extent1[1];
+    } else {
+      intersection[1] = extent2[1];
+    }
+    if (extent1[2] < extent2[2]) {
+      intersection[2] = extent1[2];
+    } else {
+      intersection[2] = extent2[2];
+    }
+    if (extent1[3] < extent2[3]) {
+      intersection[3] = extent1[3];
+    } else {
+      intersection[3] = extent2[3];
+    }
+  }
+  return intersection;
+}

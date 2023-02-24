@@ -130,6 +130,10 @@
             inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');
         }
 
+        if (inArray(includes, 'FGB')) {
+          inputScript('https://iclient.supermap.io/web/libs/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
+        }
+
         // iclient
         if (!inArray(excludes, 'iclient-leaflet')) {
             if (supportES6()) {
@@ -166,7 +170,6 @@
         if (inArray(includes, 'leaflet-mapbox-gl')) {
             inputScript('https://iclient.supermap.io/web/libs/leaflet-mapbox-gl/0.0.15/leaflet-mapbox-gl.min.js');
         }
-
     }
 
     load();

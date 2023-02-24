@@ -25,7 +25,9 @@ var DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
-    ISERVER: "ISERVER"
+    ISERVER: "ISERVER",
+    /** FGB */
+    FGB: "FGB"
 };
 
 /**

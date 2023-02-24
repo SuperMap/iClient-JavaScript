@@ -7,6 +7,7 @@ import { SecurityManager } from '../security/SecurityManager';
 import { Util } from '../commontypes/Util';
 import { JSONFormat } from '../format/JSON';
 import { FunctionExt } from '../commontypes/BaseTypes';
+import {DataFormat} from '../REST';
 
 /**
  * @class CommonServiceBase
@@ -136,8 +137,16 @@ export class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
+        const format = options.scope.format;
+        if (format && !this.supportDataFormat(format)) {
+          throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
+        }
+       
         let me = this;
         options.url = options.url || me.url;
+        if (this._returnContent(options) && !options.url.includes('returnContent=true')) {
+          options.url = Util.urlAppend(options.url, 'returnContent=true');
+        }
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
@@ -261,6 +270,24 @@ export class CommonServiceBase {
         });
     }
 
+    _returnContent(options) {
+      if (options.scope.format === DataFormat.FGB) {
+        return false;
+      }
+      if (options.scope.returnContent) {
+        return true;
+      }
+      return false;
+    }
+
+    supportDataFormat(foramt) {
+      return this.dataFormat().includes(foramt);
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER];
+    }
+
     _commit(options) {
         if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
@@ -312,6 +339,9 @@ export class CommonServiceBase {
                             error: requestResult
                         };
                     }
+                }
+                if (requestResult && options.scope.format === DataFormat.FGB) {
+                  requestResult.newResourceLocation = requestResult.newResourceLocation.replace('.json', '') + '.fgb';
                 }
                 return requestResult;
             })
