@@ -86,6 +86,7 @@ var exampleConfig = {
                 {
                   name: "SQL查询 (FGB)",
                   name_en: "SQL query (FGB)",
+                  version: '11.1.0',
                   thumbnail: "ol_mapQueryBySQL.png",
                   fileName: "01_mapQueryBySQL_FGB"
               }
@@ -107,6 +108,7 @@ var exampleConfig = {
                 }, {
                   name: "SQL查询 (FGB)",
                   name_en: "SQL query (FGB)",
+                  version: '11.1.0',
                   thumbnail: "ol_getFeatureBySQL.png",
                   fileName: "02_getFeatureBySQL_FGB"
                 }, 
@@ -1053,7 +1055,7 @@ var exampleConfig = {
                 }]
             },
             FGBLayer: {
-              name: 'FGB 图层',
+              name: 'FGB',
               name_en: 'FGBLayer',
               version: '11.0.1',
               content: [
@@ -1069,7 +1071,7 @@ var exampleConfig = {
                     name_en: 'FGB Extent Load',
                     version: '11.1.0',
                     thumbnail: 'l_pixiOverlay_taxi.png',
-                    fileName: 'fgb_all_load'
+                    fileName: 'fgb_extent_load'
                   }
                 ]
             }

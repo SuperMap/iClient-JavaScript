@@ -85,9 +85,6 @@
        
         bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
           var resultLayer = new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-              style: {
-                color: 'red'
-              },
               strategy: 'all'
             }).addTo(map);
         }, 'FGB');

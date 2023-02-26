@@ -16,47 +16,29 @@
       var map,
         resultLayer,
         baseUrl = host + '/iserver/services/map-china400/rest/maps/China',
-        url = 'http://localhost:8090/iserver/services/data-China100/rest/data';
+        url = host + "/iserver/services/data-world/rest/data";
       map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG3857,
         center: { lon: 113, lat: 39 },
         maxZoom: 18,
-        zoom: 7
+        zoom: 1
       });
       new L.supermap.TiledMapLayer(baseUrl).addTo(map);
       query();
       function query() {
         var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
           queryParameter: {
-            name: 'China_Rural_pt@China',
-            attributeFilter: 'SMID < 50000'
+                name: "Countries@World",
+                attributeFilter: "SMID = 234"
           },
-          maxFeatures: 50000,
-          returnContent: false,
-          datasetNames: ['China:China_Rural_pt']
+          datasetNames: ["World:Countries"]
         });
         new L.supermap.FeatureService(url).getFeaturesBySQL(
           sqlParam,
           function (serviceResult) {
             new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-              style: {
-                color: 'blue',
-                weight: 5,
-                fillOpacity: 0.8
-              },
-              featureLoader: function(feature) {
-                feature.geometry.coordinates = Proj4js('EPSG:3857', 'EPSG:4326', feature.geometry.coordinates)
-                return feature;
-              },
-              pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                  radius: 2,
-                  fillColor: '#ff0000',
-                  weight: 1,
-                  opacity: 1
-                });
-              }
+              strategy: 'all'
             }).addTo(map);
           },
           'FGB'

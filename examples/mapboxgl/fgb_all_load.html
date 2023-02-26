@@ -24,7 +24,7 @@
     </style>
   </head>
   <body>
-    <div id="map-fgb">
+    <div id="map">
     </div>
     <script>
       var attribution =
@@ -55,18 +55,18 @@
             }
           ]
         },
-        center: [106.143, 40.236],
+        center: [107, 37],
         zoom: 8
       };
 
-      var mapfgb = new mapboxgl.Map({
-        container: 'map-fgb',
+      var map = new mapboxgl.Map({
+        container: 'map',
         ...mapConfig
       });
-      mapfgb.addControl(new mapboxgl.NavigationControl(), 'top-left');
-      mapfgb.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+      map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-      mapfgb.on('load', function () {
+      map.on('load', function () {
         queryFgb();
       });
 
@@ -87,7 +87,7 @@
               url: serviceResult.result.newResourceLocation,
               strategy: 'all'
             });
-            mapfgb.addLayer(FGBLayer);
+            map.addLayer(FGBLayer);
           },
           'FGB'
         );

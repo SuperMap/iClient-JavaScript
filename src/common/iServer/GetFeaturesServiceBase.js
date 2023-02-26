@@ -113,6 +113,9 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
         me.hasGeometry = params.hasGeometry;
+        if (me.returnContent) {
+          firstPara = false;
+        }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);

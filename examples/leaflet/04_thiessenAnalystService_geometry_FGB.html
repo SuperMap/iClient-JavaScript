@@ -50,10 +50,6 @@
         thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
         thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
           new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-            style: {
-              color: 'blue',
-              weight: 2
-            },
             strategy: 'all'
           }).addTo(map);
         }, 'FGB')

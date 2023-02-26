@@ -47,7 +47,11 @@
         new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
-              strategy: ol.loadingstrategy.bbox,
+              strategy: ol.loadingstrategy.all
+            });
+
+            resultLayer = new ol.layer.Vector({
+              source: vectorSource,
               style: new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: 'rgba(100, 100, 225, 10)',
@@ -57,10 +61,6 @@
                         color: 'rgba(0, 0, 255, 0.1)'
                     })
                 })
-            });
-
-            resultLayer = new ol.layer.Vector({
-              source: vectorSource
             });
             map.addLayer(resultLayer);
         }, 'FGB');

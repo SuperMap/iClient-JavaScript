@@ -13,21 +13,21 @@
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript">
       // 测试数据条数设置参数
-      var maxFeatures = 10000;
+      var maxFeatures = 100000;
       // 数据服务地址
-      var dataUrl = 'http://localhost:8090/iserver/services/data-FGB-2/rest/data';
+      var dataUrl = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
       var map,
         resultLayer;
-      var dataSourceName = 'DLTB80w';
-      var dataSetsName = 'DLTB';
+        var dataSourceName = 'osm-line';
+      var dataSetsName = 'waterways';
       map = new ol.Map({
         target: 'map',
         controls: ol.control
           .defaults({ attributionOptions: { collapsed: false } })
           .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-          center: [108.45767883056989, 22.964634692850268],
-          zoom: 11,
+          center: [107, 37],
+          zoom: 5,
           projection: 'EPSG:4326',
           multiWorld: true
         })
@@ -54,7 +54,6 @@
           sqlParam,
           function (serviceResult) {
             const vectorSource = new ol.source.FGB({
-              format: new ol.format.GeoJSON(),
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all
             });

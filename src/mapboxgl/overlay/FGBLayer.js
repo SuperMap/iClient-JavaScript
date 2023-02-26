@@ -37,7 +37,13 @@ const GEOMETRY_TYPE_MAP = {
   3: 'fill',
   5: 'line',
   4: 'circle',
-  6: 'fill'
+  6: 'fill',
+  'MultiPolygon': 'fill',
+  'Point': 'circle',
+  'MultiLineString': 'line',
+  'MultiPoint': 'circle',
+  'LineString': 'line',
+  'Polygon': 'fill'
 };
 
 const PAINT_MAP = {
@@ -180,6 +186,9 @@ export class FGBLayer {
     for await (let feature of iterator) {
       if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
         feature = this.options.featureLoader(feature);
+      }
+      if (!this.layerType) {
+        this.layerType = GEOMETRY_TYPE_MAP[feature.geometry.type]
       }
       features.features.push(feature);
     }

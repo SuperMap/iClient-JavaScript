@@ -9,11 +9,11 @@
     <script type="text/javascript" src="../js/include-web.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
-    <div id="fgb-map" style="margin: 0 auto; width: 50%; height: 100%; position: absolute; top: 0; left: 0">
+    <div id="fgb-map" style="margin: 0 auto; width: 100%; height: 100%; position: absolute; top: 0; left: 0">
     </div>
     <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
-      var allowMaxFeatures = 20000;
+      var allowMaxFeatures = 100000;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var map,
         FGBMap,
@@ -23,9 +23,9 @@
       FGBMap = L.map('fgb-map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: { lon: 113, lat: 39 },
+        center: { lon: 107, lat: 37 },
         maxZoom: 18,
-        zoom: 3
+        zoom: 4
       });
       new L.supermap.TiledMapLayer(baseUrl).addTo(FGBMap);
       var sqlParam = new L.supermap.GetFeaturesBySQLParameters({

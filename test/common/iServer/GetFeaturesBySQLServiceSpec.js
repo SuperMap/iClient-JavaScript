@@ -133,7 +133,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=2&toIndex=10&returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.hasGeometry).toBe(false);
@@ -176,7 +176,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=2&toIndex=10&returnContent=true');
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(
@@ -224,7 +224,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=2&toIndex=10&returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countriess');
       expect(paramsObj.hasGeometry).toBe(true);

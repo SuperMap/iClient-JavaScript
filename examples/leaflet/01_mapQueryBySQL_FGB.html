@@ -37,8 +37,8 @@
               .queryBySQL(param, function (serviceResult) {
                 new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
                   strategy: 'all'
-              });
-      })};
+              }).addTo(map);
+      }, 'FGB')};
     </script>
   </body>
 </html>

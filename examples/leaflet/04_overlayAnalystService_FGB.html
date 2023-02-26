@@ -36,9 +36,6 @@
         
         overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
           new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-            style: {
-              color: 'blue'
-            },
             strategy: 'all'
           }).addTo(map);
         }, 'FGB');

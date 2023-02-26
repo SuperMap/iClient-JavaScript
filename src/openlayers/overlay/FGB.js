@@ -26,13 +26,10 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @usage
  */
 export class FGB extends VectorSource {
-  constructor(options = { strategy: bbox }) {
-    super({
-      strategy: options.strategy,
-      overlaps: options.overlaps,
-      useSpatialIndex: options.useSpatialIndex,
-      wrapX: options.wrapX
-    });
+  constructor(options) {
+    const baseOptions = Object.assign({ strategy: bbox }, options);
+    delete baseOptions.url;
+    super(baseOptions);
     this.options = options || {};
     if (this.options.strategy) {
       this.strategy = this.options.strategy;
