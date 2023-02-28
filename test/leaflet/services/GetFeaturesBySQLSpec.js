@@ -42,7 +42,7 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Countries');
             expect(paramsObj.getFeatureMode).toBe('SQL');
@@ -147,7 +147,7 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World1:Countries');
             expect(paramsObj.queryParameter.name).toBe('Countries@World');
@@ -192,7 +192,7 @@ describe('leaflet_FeatureService_getFeaturesBySQL', () => {
         var getFeaturesBySQLService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Countries');
             expect(paramsObj.queryParameter).toBeNull;

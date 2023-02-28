@@ -65,17 +65,17 @@ var exampleConfig = {
                         fileName: '01_mapQueryByGeometry'
                     },
                     {
-                      name: '几何查询 (FGB)',
-                      name_en: 'geometry query (FGB)',
-                      version: '11.1.0',
-                      thumbnail: 'mb_mapQueryBySQL.png',
-                      fileName: '01_mapQueryBySQL'
-                    },
-                    {
                         name: 'SQL查询',
                         name_en: 'SQL query',
                         thumbnail: 'mb_mapQueryBySQL.png',
                         fileName: '01_mapQueryBySQL'
+                    },
+                    {
+                      name: 'SQL查询 (FGB)',
+                      name_en: 'SQL query (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'mb_mapQueryBySQL.png',
+                      fileName: '01_mapQueryBySQL_FGB'
                     }
                 ]
             },
@@ -1103,18 +1103,18 @@ var exampleConfig = {
               version: '11.0.1',
               content: [
                   {
-                      name: 'FGB 完整加载',
+                      name: 'FGB 全量加载',
                       name_en: 'FGB Full Load',
                       version: '11.1.0',
-                      thumbnail: 'l_pixiOverlay_taxi.png',
+                      thumbnail: 'fgb_all_load.png',
                       fileName: 'fgb_all_load'
                   },
                   {
-                    name: 'FGB 局部加载',
+                    name: 'FGB 按需加载',
                     name_en: 'FGB Extent Load',
                     version: '11.1.0',
-                    thumbnail: 'l_pixiOverlay_taxi.png',
-                    fileName: 'fgb_all_load'
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
                   }
                 ]
             }

@@ -158,7 +158,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var getFeaturesByIDsService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?fromIndex=0&toIndex=19&returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.datasetNames[0]).toContain("Jingjin:Landuse_R");
             expect(options).not.toBeNull();

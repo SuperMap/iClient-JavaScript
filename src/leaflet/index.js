@@ -91,7 +91,8 @@ import {
     ThemeLayer,
     SVGRenderer,
     VectorGrid,
-    FGBLayer
+    FGBLayer,
+    fgbLayer
 } from './overlay';
 import {
     AddressMatchService,
@@ -292,7 +293,8 @@ export {
     ThemeLayer,
     SVGRenderer,
     VectorGrid,
-    FGBLayer
+    FGBLayer,
+    fgbLayer
 };
 export {
     AddressMatchService,

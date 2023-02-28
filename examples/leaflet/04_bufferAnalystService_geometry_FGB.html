@@ -88,6 +88,21 @@
               strategy: 'all'
             }).addTo(map);
         }, 'FGB');
+
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+            resultLayer = L.geoJSON(serviceResult.result.resultGeometry);
+            //查询出缓冲区内信号影响范围内的工厂
+            queryService = new L.supermap.QueryService(baseUrl);
+            queryByGeometryParameters = new L.supermap.QueryByGeometryParameters({
+                queryParams: [new L.supermap.FilterParameter({name: "Company@Changchun.2"})],
+                geometry: resultLayer,
+                spatialQueryMode: L.supermap.SpatialQueryMode.INTERSECT
+            });
+            queryService.queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+                var result = serviceResult.result;
+                resultLayer1 = L.geoJSON(result.recordsets[0].features).addTo(map);
+            });
+        });
     }
 </script>
 </body>

@@ -135,7 +135,7 @@ describe('ChartModel', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'post').and.callFake((url) => {
-            if (url === 'http://192.168.12.230:8090/iserver/services/data_sichuan-3-/rest/data/featureResults?returnContent=true&fromIndex=0&toIndex=100000') {
+            if (url === 'http://192.168.12.230:8090/iserver/services/data_sichuan-3-/rest/data/featureResults?fromIndex=0&toIndex=100000&returnContent=true') {
                 return Promise.resolve(new Response(JSON.stringify({ "features": [{ "stringID": null, "fieldNames": ["SMID", "SMKEY", "SMSDRIW", "SMSDRIN", "SMSDRIE", "SMSDRIS", "SMGRANULE", "SMGEOMETRY", "SMUSERID", "SMLIBTILEID", "SMAREA", "SMPERIMETER", "PAC", "PINYIN", "POP_2014", "POP_2014_RURAL", "POP_2014_URBAN", "PER_CAPITA_GDP_2014", "GDP_2014", "NAME"], "geometry": { "center": { "x": 102.81566459814152, "y": 30.17315438920073 }, "parts": [3], "style": null, "prjCoordSys": null, "id": 1, "type": "REGION", "partTopo": [1], "points": [{ "x": 101.8400496800001, "y": 26.08599686926592 }, { "x": 101.6459944450001, "y": 26.33104981926121 }, { "x": 101.8400496800001, "y": 26.08599686926592 }] }, "fieldValues": ["1", "-2", "97.3801311200001", "34.26031190913554", "108.5099491700001", "26.08599686926592", "11.129818049999997", "[B@7f27b960", "0", "1", "4.848540935613763E11", "4543554.477096281", "510402.0", "Sichuan Sheng", "8140", "4371", "3769", "3.505732186732187", "28536.660", "四川省"], "ID": 1 }], "featureUriList": [], "totalCount": 1, "featureCount": 1 })))}
             return Promise.resolve();
         });
@@ -202,7 +202,7 @@ describe('ChartModel', () => {
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'post').and.callFake((url) => {
-            if (url === 'http://192.168.12.230:8090/iserver/services/data_sichuan-7-/rest/data/featureResults?returnContent=true&fromIndex=0&toIndex=100000') {
+            if (url === 'http://192.168.12.230:8090/iserver/services/data_sichuan-7-/rest/data/featureResults?fromIndex=0&toIndex=100000&returnContent=true') {
                 return Promise.resolve(new Response(JSON.stringify({ "recordsets": [{ "datasetName": "dataGeoJson_981423149@supermap1_pg", "features": [{ "fieldNames": ["SMID", "PAC", "PINYIN", "POP_2014", "POP_2014_RURAL", "POP_2014_URBAN", "PER_CAPITA_GDP_2014", "GDP_2014", "NAME"], "ID": 1, "fieldValues": ["1", "510402.0", "Sichuan Sheng", "8140", "4371", "3769", "3.505732186732187", "28536.660", "四川省"], "geometry": { "id": 1, "center": { "y": 30.17315438920073, "x": 102.81566459814152 }, "style": null, "parts": [3], "partTopo": [1], "points": [{ "y": 26.08599686926592, "x": 101.8400496800001 }, { "y": 26.33104981926121, "x": 101.6459944450001 }, { "y": 26.08599686926592, "x": 101.8400496800001 }], "type": "REGION" } }], "fieldCaptions": ["SmID", "SmKey", "SmSdriW", "SmSdriN", "SmSdriE", "SmSdriS", "SmGranule", "SmUserID", "SmLibTileID", "SmArea", "SmPerimeter", "PAC", "PINYIN", "pop_2014", "pop_2014_rural", "pop_2014_urban", "per_capita_GDP_2014", "GDP_2014", "NAME"], "fieldTypes": ["INT32", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"], "fields": ["SMID", "PAC", "PINYIN", "POP_2014", "POP_2014_RURAL", "POP_2014_URBAN", "PER_CAPITA_GDP_2014", "GDP_2014", "NAME"] }], "totalCount": 1, "currentCount": 1, "customResponse": null })));
             }
             return Promise.resolve();

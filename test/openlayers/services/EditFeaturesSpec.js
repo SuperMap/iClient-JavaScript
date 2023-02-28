@@ -204,7 +204,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var getFeaturesByIDsService = new FeatureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?fromIndex=0&toIndex=19&returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.datasetNames[0]).toBe("Jingjin:Landuse_R");

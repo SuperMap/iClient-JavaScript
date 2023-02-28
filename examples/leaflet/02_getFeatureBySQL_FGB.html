@@ -15,12 +15,12 @@
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var map,
         resultLayer,
-        baseUrl = host + '/iserver/services/map-china400/rest/maps/China',
+        baseUrl = host + '/iserver/services/map-world/rest/maps/World',
         url = host + "/iserver/services/data-world/rest/data";
       map = L.map('map', {
         preferCanvas: true,
-        crs: L.CRS.EPSG3857,
-        center: { lon: 113, lat: 39 },
+        crs: L.CRS.EPSG4326,
+        center: { lon: 0, lat: 0 },
         maxZoom: 18,
         zoom: 1
       });

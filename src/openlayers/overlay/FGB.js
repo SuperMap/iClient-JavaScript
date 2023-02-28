@@ -29,30 +29,23 @@ export class FGB extends VectorSource {
   constructor(options) {
     const baseOptions = Object.assign({ strategy: bbox }, options);
     delete baseOptions.url;
+    delete baseOptions.extent;
     super(baseOptions);
     this.options = options || {};
-    if (this.options.strategy) {
-      this.strategy = this.options.strategy;
-    }
+    this.strategy = baseOptions.strategy;
     this.url = this.options.url;
     this.extent = this.options.extent;
     this.setLoader(async function (extent) {
       if (this.extent && this.strategy === bbox) {
         const intersectExtent = getIntersection(this.extent, extent);
-        if (intersectExtent && intersectExtent.length) {
-          extent = intersectExtent;
-        } else {
-          extent = this.extent;
-        }
+        extent = (intersectExtent && intersectExtent.length) ? intersectExtent : this.extent;
       }
       if (!this.extent && (this.strategy === all || !isFinite(extent[0]))) {
         extent = [];
       }
       let fgbStream;
       if (!Object.keys(extent).length) {
-        fgbStream = await FetchRequest.get(this.url, {}, { withoutFormatSuffix: true }).then(function (response) {
-          return response;
-        });
+        fgbStream = await this._getStream(this.url);
       }
       await this._handleFeatures((fgbStream && fgbStream.body) || this.url, extent);
     });
@@ -76,5 +69,11 @@ export class FGB extends VectorSource {
       }
       this.addFeature(feature);
     }
+  }
+
+  async _getStream(url) {
+    return await FetchRequest.get(url, {}, { withoutFormatSuffix: true }).then(function (response) {
+      return response;
+    });
   }
 }

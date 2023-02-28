@@ -15,7 +15,7 @@
         padding: 0;
       }
 
-      #map-fgb {
+      #map {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -34,7 +34,7 @@
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
       var dataUrl = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
-      var allowMaxFeatures = 20000;
+      var allowMaxFeatures = 120000;
       var mapConfig = {
         style: {
           version: 8,
@@ -55,8 +55,8 @@
             }
           ]
         },
-        center: [106.143, 40.236],
-        zoom: 3
+        center: [116.3, 40],
+        zoom: 9
       };
 
       var map = new mapboxgl.Map({

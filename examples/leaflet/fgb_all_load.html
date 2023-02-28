@@ -9,23 +9,23 @@
     <script type="text/javascript" src="../js/include-web.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
-    <div id="fgb-map" style="margin: 0 auto; width: 100%; height: 100%; position: absolute; top: 0; left: 0">
+    <div id="map" style="margin: 0 auto; width: 100%; height: 100%; position: absolute; top: 0; left: 0">
     </div>
     <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
-      var allowMaxFeatures = 100000;
+      var allowMaxFeatures = 120000;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var map,
         FGBMap,
         resultLayer,
         baseUrl = host + '/iserver/services/map-china400/rest/maps/China_4326',
         url = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
-      FGBMap = L.map('fgb-map', {
+      FGBMap = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: { lon: 107, lat: 37 },
+        center: { lon: 110, lat: 30 },
         maxZoom: 18,
-        zoom: 4
+        zoom: 3
       });
       new L.supermap.TiledMapLayer(baseUrl).addTo(FGBMap);
       var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
@@ -44,10 +44,6 @@
           sqlParam,
           function (serviceResult) {
             new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-              style: {
-                color: 'blue',
-                weight: 5
-              },
               strategy: 'all'
             }).addTo(FGBMap);
           },

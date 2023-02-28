@@ -19,7 +19,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {Object} opt_options - 参数。
  * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。
- * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全部加载， bbox为当前可见范围加载。
+ * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为按需加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法。
  * @param {function} [options.onEachFeature] - 要素创建时调用
@@ -29,12 +29,12 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 export var FGBLayer = L.LayerGroup.extend({
   initialize: function (url, options) {
     this.options = options || {};
-    this.strategy = options.strategy || 'bbox';
+    this.strategy = this.options.strategy || 'bbox';
     this._layers = {};
     this.url = url;
     this.previousLayer = null;
     this.loadedExtentsRtree_ = new RBush();
-    this.extent = options.extent;
+    this.extent = this.options.extent;
     this._updateFeaturesFn = this._updateFeatures.bind(this);
     L.Util.setOptions(this, options);
   },
@@ -49,11 +49,7 @@ export var FGBLayer = L.LayerGroup.extend({
 
     if (this.extent) {
       const intersectExtent = getIntersection(this.extent, extent);
-      if (intersectExtent && intersectExtent.length) {
-        extent = intersectExtent;
-      } else {
-        extent = this.extent;
-      }
+      extent = (intersectExtent && intersectExtent.length) ? intersectExtent : this.extent;
     }
    
     const formatBounds = extent.length ? {
@@ -95,21 +91,24 @@ export var FGBLayer = L.LayerGroup.extend({
     let fgbStream;
     let rect = extent;
     if (!Object.keys(extent).length) {
-      fgbStream = await FetchRequest.get(this.url, {}, { withoutFormatSuffix: true }).then(function (response) {
-        return response;
-      });
+      fgbStream = await this._getStream(this.url);
     }
     const fgb = deserialize((fgbStream && fgbStream.body) || this.url, rect);
     let curLayer = L.geoJSON(null, this.options);
+    curLayer.addTo(this);
     for await (let feature of fgb) {
       if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
         feature = this.options.featureLoader(feature);
       }
       curLayer.addData(feature);
     }
-    curLayer.addTo(this);
     this.previousLayer && this.removeLayer(this.previousLayer);
     this.previousLayer = curLayer;
+  },
+  async _getStream(url) {
+    return await FetchRequest.get(url, {}, { withoutFormatSuffix: true }).then(function (response) {
+      return response;
+    });
   },
   _containsExtent: function (extent1, extent2) {
     return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] && extent1[1] <= extent2[1] && extent2[3] <= extent1[3];

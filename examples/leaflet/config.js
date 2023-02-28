@@ -1091,18 +1091,18 @@ var exampleConfig = {
               version: '11.1.0',
               content: [
                   {
-                      name: 'FGB 完整加载',
+                      name: 'FGB 全量加载',
                       name_en: 'FGB Full Load',
                       version: '11.1.0',
-                      thumbnail: 'l_pixiOverlay_taxi.png',
+                      thumbnail: 'fgb_all_load.png',
                       fileName: 'fgb_all_load'
                   },
                   {
-                    name: 'FGB 局部加载',
+                    name: 'FGB 按需加载',
                     name_en: 'FGB Extent Load',
                     version: '11.1.0',
-                    thumbnail: 'l_pixiOverlay_taxi.png',
-                    fileName: 'fgb_all_load'
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
                   }
                 ]
             }

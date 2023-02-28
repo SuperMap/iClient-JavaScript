@@ -199,12 +199,16 @@ export class FGBLayer {
     let fgbStream;
     let rect = bounds;
     if (!Object.keys(bounds).length) {
-      fgbStream = await FetchRequest.get(this.url, {}, { withoutFormatSuffix: true }).then(function (response) {
-        return response;
-      });
+      fgbStream = await this._getStream(this.url);
     }
     return await deserialize((fgbStream && fgbStream.body) || this.url, rect, (headerMeta) => {
       this.layerType = GEOMETRY_TYPE_MAP[headerMeta.geometryType];
+    });
+  }
+
+  async _getStream(url) {
+    return await FetchRequest.get(url, {}, { withoutFormatSuffix: true }).then(function (response) {
+      return response;
     });
   }
 

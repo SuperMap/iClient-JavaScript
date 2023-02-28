@@ -657,8 +657,8 @@ window.examplesResources = {
         "title_binary_classification": "二元分类",
         "title_landcover_classification": "地物分类",
         "title_object_detection": "目标检测",
-        "title_fgb_all": "FGB 完整加载",
-        "title_fgb_extent": "FGB 局部加载",
+        "title_fgb_all": "FGB 全量加载",
+        "title_fgb_extent": "FGB 按需加载",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
