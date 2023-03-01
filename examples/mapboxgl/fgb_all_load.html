@@ -8,7 +8,7 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title data-i18n="resources.title_fgb_all"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="FGB,proj4" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       body {
         margin: 0;
@@ -33,8 +33,7 @@
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
-      var dataUrl = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
-      var allowMaxFeatures = 120000;
+      var fgbUrl = 'https://iclient.supermap.io/web/data/fgb/waterways.fgb';
 
       var map = new mapboxgl.Map({
         container: 'map',
@@ -62,33 +61,14 @@
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-left');
       map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
-
       map.on('load', function () {
-        queryFgb();
-      });
-
-      function queryFgb() {
-        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
-          queryParameter: {
-            name: 'waterways@osm-line',
-            attributeFilter: 'SMID > 0'
-          },
-          maxFeatures: allowMaxFeatures,
-          datasetNames: ['osm-line:waterways']
+        const FGBLayer = new mapboxgl.supermap.FGBLayer({
+          url: fgbUrl,
+          strategy: 'all'
         });
-
-        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
-          sqlParam,
-          async function (serviceResult) {
-            const FGBLayer = new mapboxgl.supermap.FGBLayer({
-              url: serviceResult.result.newResourceLocation,
-              strategy: 'all'
-            });
-            map.addLayer(FGBLayer);
-          },
-          'FGB'
-        );
-      }
+        map.addLayer(FGBLayer);
+      });
+        
     </script>
   </body>
 </html>

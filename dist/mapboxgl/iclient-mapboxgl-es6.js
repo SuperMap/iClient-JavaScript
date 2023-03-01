@@ -42383,7 +42383,13 @@ var GEOMETRY_TYPE_MAP = {
   3: 'fill',
   5: 'line',
   4: 'circle',
-  6: 'fill'
+  6: 'fill',
+  'MultiPolygon': 'fill',
+  'Point': 'circle',
+  'MultiLineString': 'line',
+  'MultiPoint': 'circle',
+  'LineString': 'line',
+  'Polygon': 'fill'
 };
 var PAINT_MAP = {
   circle: {
@@ -42584,53 +42590,56 @@ var FGBLayer = /*#__PURE__*/function () {
               return _iterator.next();
             case 7:
               if (!(_iteratorAbruptCompletion = !(_step = _context3.sent).done)) {
-                _context3.next = 14;
+                _context3.next = 15;
                 break;
               }
               feature = _step.value;
               if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
                 feature = this.options.featureLoader(feature);
               }
+              if (!this.layerType) {
+                this.layerType = GEOMETRY_TYPE_MAP[feature.geometry.type];
+              }
               features.features.push(feature);
-            case 11:
+            case 12:
               _iteratorAbruptCompletion = false;
               _context3.next = 5;
               break;
-            case 14:
-              _context3.next = 20;
+            case 15:
+              _context3.next = 21;
               break;
-            case 16:
-              _context3.prev = 16;
+            case 17:
+              _context3.prev = 17;
               _context3.t0 = _context3["catch"](3);
               _didIteratorError = true;
               _iteratorError = _context3.t0;
-            case 20:
-              _context3.prev = 20;
+            case 21:
               _context3.prev = 21;
+              _context3.prev = 22;
               if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
-                _context3.next = 25;
+                _context3.next = 26;
                 break;
               }
-              _context3.next = 25;
+              _context3.next = 26;
               return _iterator["return"]();
-            case 25:
-              _context3.prev = 25;
+            case 26:
+              _context3.prev = 26;
               if (!_didIteratorError) {
-                _context3.next = 28;
+                _context3.next = 29;
                 break;
               }
               throw _iteratorError;
-            case 28:
-              return _context3.finish(25);
             case 29:
-              return _context3.finish(20);
+              return _context3.finish(26);
             case 30:
-              return _context3.abrupt("return", features);
+              return _context3.finish(21);
             case 31:
+              return _context3.abrupt("return", features);
+            case 32:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, this, [[3, 16, 20, 30], [21,, 25, 29]]);
+        }, _callee3, this, [[3, 17, 21, 31], [22,, 26, 30]]);
       }));
       function iterateFeatures(_x2) {
         return _iterateFeatures.apply(this, arguments);
@@ -42652,11 +42661,7 @@ var FGBLayer = /*#__PURE__*/function () {
                 break;
               }
               _context4.next = 4;
-              return FetchRequest.get(this.url, {}, {
-                withoutFormatSuffix: true
-              }).then(function (response) {
-                return response;
-              });
+              return this._getStream(this.url);
             case 4:
               fgbStream = _context4.sent;
             case 5:
@@ -42676,6 +42681,32 @@ var FGBLayer = /*#__PURE__*/function () {
         return _loadData2.apply(this, arguments);
       }
       return _loadData;
+    }()
+  }, {
+    key: "_getStream",
+    value: function () {
+      var _getStream2 = FGBLayer_asyncToGenerator( /*#__PURE__*/FGBLayer_regeneratorRuntime().mark(function _callee5(url) {
+        return FGBLayer_regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return FetchRequest.get(url, {}, {
+                withoutFormatSuffix: true
+              }).then(function (response) {
+                return response;
+              });
+            case 2:
+              return _context5.abrupt("return", _context5.sent);
+            case 3:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5);
+      }));
+      function _getStream(_x4) {
+        return _getStream2.apply(this, arguments);
+      }
+      return _getStream;
     }()
   }, {
     key: "_containsExtent",
@@ -46148,6 +46179,9 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
         me.hasGeometry = params.hasGeometry;
+        if (me.returnContent) {
+          firstPara = false;
+        }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);

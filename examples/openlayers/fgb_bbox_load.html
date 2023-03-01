@@ -12,12 +12,10 @@
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript">
-      // 测试数据条数设置参数
-      var maxFeatures = 200000;
-      // 数据服务地址
-      var dataUrl = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
-      var map,
-        resultLayer;
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io",
+      url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+      var fgbUrl = 'https://iclient.supermap.io/web/data/fgb/waterways.fgb';
+      var map;
       var dataSourceName = 'osm-line';
       var dataSetsName = 'waterways';
       map = new ol.Map({
@@ -27,7 +25,7 @@
           .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
           center: [116.3, 40],
-          zoom: 8,
+          zoom: 9,
           projection: 'EPSG:4326',
           multiWorld: true
         })
@@ -35,38 +33,21 @@
       window.map = map;
       var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
-          url: "https://iserver.supermap.io/iserver/services/map-china400/rest/maps/China_4326",
+          url,
           wrapX: true
         }),
         projection: 'EPSG:4326'
       });
       map.addLayer(layer);
-      query();
-      function query() {
-        var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
-          queryParameter: {
-            name: `${dataSetsName}@${dataSourceName}`,
-            attributeFilter: 'SMID > 0'
-          },
-          maxFeatures,
-          datasetNames: [`${dataSourceName}:${dataSetsName}`]
-        });
-        new ol.supermap.FeatureService(dataUrl).getFeaturesBySQL(
-          sqlParam,
-          function (serviceResult) {
-            const vectorSource = new ol.source.FGB({
-              url: serviceResult.result.newResourceLocation,
-              strategy: ol.loadingstrategy.bbox
-            });
+      const vectorSource = new ol.source.FGB({
+        url: fgbUrl,
+        strategy: ol.loadingstrategy.bbox
+      });
 
-            resultLayer = new ol.layer.Vector({
-              source: vectorSource
-            });
-            map.addLayer(resultLayer);
-          },
-          'FGB'
-        );
-      }
+      var fgbLayer = new ol.layer.Vector({
+        source: vectorSource
+      });
+      map.addLayer(fgbLayer);
     </script>
   </body>
 </html>

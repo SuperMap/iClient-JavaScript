@@ -36630,6 +36630,9 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
         me.hasGeometry = params.hasGeometry;
+        if (me.returnContent) {
+          firstPara = false;
+        }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
@@ -96514,22 +96517,17 @@ function FGB_AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuati
 var FGB = /*#__PURE__*/function (_VectorSource) {
   _inherits(FGB, _VectorSource);
   var _super = _createSuper(FGB);
-  function FGB() {
+  function FGB(options) {
     var _this;
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-      strategy: external_ol_loadingstrategy_namespaceObject.bbox
-    };
     FGB_classCallCheck(this, FGB);
-    _this = _super.call(this, {
-      strategy: options.strategy,
-      overlaps: options.overlaps,
-      useSpatialIndex: options.useSpatialIndex,
-      wrapX: options.wrapX
-    });
+    var baseOptions = Object.assign({
+      strategy: external_ol_loadingstrategy_namespaceObject.bbox
+    }, options);
+    delete baseOptions.url;
+    delete baseOptions.extent;
+    _this = _super.call(this, baseOptions);
     _this.options = options || {};
-    if (_this.options.strategy) {
-      _this.strategy = _this.options.strategy;
-    }
+    _this.strategy = baseOptions.strategy;
     _this.url = _this.options.url;
     _this.extent = _this.options.extent;
     _this.setLoader( /*#__PURE__*/function () {
@@ -96540,11 +96538,7 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
             case 0:
               if (this.extent && this.strategy === external_ol_loadingstrategy_namespaceObject.bbox) {
                 intersectExtent = getIntersection(this.extent, extent);
-                if (intersectExtent && intersectExtent.length) {
-                  extent = intersectExtent;
-                } else {
-                  extent = this.extent;
-                }
+                extent = intersectExtent && intersectExtent.length ? intersectExtent : this.extent;
               }
               if (!this.extent && (this.strategy === external_ol_loadingstrategy_namespaceObject.all || !isFinite(extent[0]))) {
                 extent = [];
@@ -96554,11 +96548,7 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
                 break;
               }
               _context.next = 5;
-              return FetchRequest.get(this.url, {}, {
-                withoutFormatSuffix: true
-              }).then(function (response) {
-                return response;
-              });
+              return this._getStream(this.url);
             case 5:
               fgbStream = _context.sent;
             case 6:
@@ -96654,6 +96644,32 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
         return _handleFeatures2.apply(this, arguments);
       }
       return _handleFeatures;
+    }()
+  }, {
+    key: "_getStream",
+    value: function () {
+      var _getStream2 = FGB_asyncToGenerator( /*#__PURE__*/FGB_regeneratorRuntime().mark(function _callee3(url) {
+        return FGB_regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return FetchRequest.get(url, {}, {
+                withoutFormatSuffix: true
+              }).then(function (response) {
+                return response;
+              });
+            case 2:
+              return _context3.abrupt("return", _context3.sent);
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }));
+      function _getStream(_x4) {
+        return _getStream2.apply(this, arguments);
+      }
+      return _getStream;
     }()
   }]);
   return FGB;

@@ -13,43 +13,20 @@
     </div>
     <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
-      var allowMaxFeatures = 120000;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var map,
-        FGBMap,
-        resultLayer,
-        baseUrl = host + '/iserver/services/map-china400/rest/maps/China_4326',
-        url = 'http://localhost:8090/iserver/services/data-osm-line/rest/data';
-      FGBMap = L.map('map', {
+      var map, baseUrl = host + '/iserver/services/map-china400/rest/maps/China_4326',
+      fgbUrl = 'https://iclient.supermap.io/web/data/fgb/waterways.fgb';
+      map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
         center: { lon: 110, lat: 30 },
         maxZoom: 18,
         zoom: 3
       });
-      new L.supermap.TiledMapLayer(baseUrl).addTo(FGBMap);
-      var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
-        queryParameter: {
-          name: 'waterways@osm-line',
-          attributeFilter: 'SMID > 0'
-        },
-        toIndex: allowMaxFeatures,
-        maxFeatures: allowMaxFeatures,
-        datasetNames: ['osm-line:waterways']
-      });
-      fgbQuery();
-
-      function fgbQuery() {
-        new L.supermap.FeatureService(url).getFeaturesBySQL(
-          sqlParam,
-          function (serviceResult) {
-            new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-              strategy: 'all'
-            }).addTo(FGBMap);
-          },
-          'FGB'
-        );
-      }
+      new L.supermap.TiledMapLayer(baseUrl).addTo(map);
+      new L.supermap.FGBLayer(fgbUrl, {
+        strategy: 'all'
+      }).addTo(map);
     </script>
   </body>
 </html>

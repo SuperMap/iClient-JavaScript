@@ -13399,7 +13399,7 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduCRS, BaiduTileLayer, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CRS, CartoCSS, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CircleStyle, CityTabsPage, ClientComputationLayer, ClientComputationView, ClientComputationViewModel, ClientType, ClipAnalystMode, ClipParameter, CloudTileLayer, CloverStyle, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, CommontypesConversion, ComponentsUtil, ComponentsViewBase, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlowLayer, DataFlowService, DataFlowView, DataFlowViewModel, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DataServiceQueryView, DataServiceQueryViewModel, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DensityKernelAnalystParameters, DirectionType, DistributedAnalysisView, DistributedAnalysisViewModel, DropDownBox, EchartsLayer, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeatureThemeLayer, GeoHashGridAggParameter, GeoJSONFormat, GeoJSONLayerWithName, GeoJsonLayerDataModel, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetResolutionFromScaleDpi, GraduatedMode, GraphAxesTextDisplayMode, GraphThemeLayer, Graphic, GraphicLayer, Grid, GridCellInfosService, GridType, HeatMapFeature, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageMapLayer, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageStyle, ImageTileLayer, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LabelThemeLayer, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapService, MapVLayer, MapVRenderer, MappingParameters, MapvRenderer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, NonEarthCRS, NormalRenderer, NormalizeScale, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OpenFileView, OpenFileViewModel, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, RangeMode, RangeThemeLayer, RankSymbolThemeLayer, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SVGRenderer, SearchMode, SearchType, SearchView, SearchViewModel, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, TianDiTu_MercatorCRS, TianDiTu_WGS84CRS, TiandituTileLayer, TileVectorLayer, TiledMapLayer, TiledVectorLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, TurfLayer, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, UnicodeMarker, UniqueThemeLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, VariogramMode, Vector, VectorClipJobsParameter, VectorGrid, VectorTileFormat, WKTFormat, WMTSLayer, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, addressMatchService, baiduTileLayer, changeTileVersion, chartService, circleStyle, clientComputationLayer, clientComputationView, cloudTileLayer, cloverStyle, componentsViewBase, conversionDegree, crs, crsFromMapJSON, dataFlowLayer, dataFlowService, dataFlowView, dataFlowViewModel, dataServiceQueryView, dataServiceQueryViewModel, datasetService, datasourceService, distributedAnalysisView, echartsLayer, featureService, fieldService, geoJSONLayerWithName, geoprocessingService, getMeterPerMapUnit, getResolutionFromScaleDpi, getWrapNum, graphThemeLayer, graphic, graphicLayer, gridCellInfosService, heatMapFeature, heatMapLayer, imageMapLayer, imageStyle, imageTileLayer, initMap, isCORS, labelThemeLayer, layerInfoService, logo, mapService, mapVLayer, measureService, networkAnalyst3DService, networkAnalystService, nonEarthCRS, normalizeScale, openFileView, openFileViewModel, processingService, queryService, rangeThemeLayer, rankSymbolThemeLayer, resolutionToScale, scaleToResolution, searchView, searchViewModel, setCORS, spatialAnalystService, themeFeature, themeService, tiandituTileLayer, tiledMapLayer, tiledVectorLayer, toGeoJSON, toSuperMapGeometry, trafficTransferAnalystService, transform, turfLayer, unicodeMarker, uniqueThemeLayer, webMap, webPrintingJobService, wmtsLayer
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduCRS, BaiduTileLayer, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CRS, CartoCSS, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CircleStyle, CityTabsPage, ClientComputationLayer, ClientComputationView, ClientComputationViewModel, ClientType, ClipAnalystMode, ClipParameter, CloudTileLayer, CloverStyle, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, CommontypesConversion, ComponentsUtil, ComponentsViewBase, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlowLayer, DataFlowService, DataFlowView, DataFlowViewModel, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DataServiceQueryView, DataServiceQueryViewModel, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DensityKernelAnalystParameters, DirectionType, DistributedAnalysisView, DistributedAnalysisViewModel, DropDownBox, EchartsLayer, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeatureThemeLayer, GeoHashGridAggParameter, GeoJSONFormat, GeoJSONLayerWithName, GeoJsonLayerDataModel, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetResolutionFromScaleDpi, GraduatedMode, GraphAxesTextDisplayMode, GraphThemeLayer, Graphic, GraphicLayer, Grid, GridCellInfosService, GridType, HeatMapFeature, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageMapLayer, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageStyle, ImageTileLayer, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LabelThemeLayer, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapService, MapVLayer, MapVRenderer, MappingParameters, MapvRenderer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, NonEarthCRS, NormalRenderer, NormalizeScale, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OpenFileView, OpenFileViewModel, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, RangeMode, RangeThemeLayer, RankSymbolThemeLayer, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SVGRenderer, SearchMode, SearchType, SearchView, SearchViewModel, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, TianDiTu_MercatorCRS, TianDiTu_WGS84CRS, TiandituTileLayer, TileVectorLayer, TiledMapLayer, TiledVectorLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, TurfLayer, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, UnicodeMarker, UniqueThemeLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, VariogramMode, Vector, VectorClipJobsParameter, VectorGrid, VectorTileFormat, WKTFormat, WMTSLayer, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, addressMatchService, baiduTileLayer, changeTileVersion, chartService, circleStyle, clientComputationLayer, clientComputationView, cloudTileLayer, cloverStyle, componentsViewBase, conversionDegree, crs, crsFromMapJSON, dataFlowLayer, dataFlowService, dataFlowView, dataFlowViewModel, dataServiceQueryView, dataServiceQueryViewModel, datasetService, datasourceService, distributedAnalysisView, echartsLayer, featureService, fgbLayer, fieldService, geoJSONLayerWithName, geoprocessingService, getMeterPerMapUnit, getResolutionFromScaleDpi, getWrapNum, graphThemeLayer, graphic, graphicLayer, gridCellInfosService, heatMapFeature, heatMapLayer, imageMapLayer, imageStyle, imageTileLayer, initMap, isCORS, labelThemeLayer, layerInfoService, logo, mapService, mapVLayer, measureService, networkAnalyst3DService, networkAnalystService, nonEarthCRS, normalizeScale, openFileView, openFileViewModel, processingService, queryService, rangeThemeLayer, rankSymbolThemeLayer, resolutionToScale, scaleToResolution, searchView, searchViewModel, setCORS, spatialAnalystService, themeFeature, themeService, tiandituTileLayer, tiledMapLayer, tiledVectorLayer, toGeoJSON, toSuperMapGeometry, trafficTransferAnalystService, transform, turfLayer, unicodeMarker, uniqueThemeLayer, webMap, webPrintingJobService, wmtsLayer
 
 ;// CONCATENATED MODULE: ./src/common/SuperMap.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
@@ -36469,6 +36469,9 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
         me.hasGeometry = params.hasGeometry;
+        if (me.returnContent) {
+          firstPara = false;
+        }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
@@ -99377,7 +99380,7 @@ function FGBLayer_AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorConti
  * @param {Object} opt_options - 参数。
  * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。
- * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全部加载， bbox为当前可见范围加载。
+ * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为按需加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法。
  * @param {function} [options.onEachFeature] - 要素创建时调用
@@ -99387,12 +99390,12 @@ function FGBLayer_AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorConti
 var FGBLayer = external_L_default().LayerGroup.extend({
   initialize: function initialize(url, options) {
     this.options = options || {};
-    this.strategy = options.strategy || 'bbox';
+    this.strategy = this.options.strategy || 'bbox';
     this._layers = {};
     this.url = url;
     this.previousLayer = null;
     this.loadedExtentsRtree_ = new (rbush_default())();
-    this.extent = options.extent;
+    this.extent = this.options.extent;
     this._updateFeaturesFn = this._updateFeatures.bind(this);
     external_L_default().Util.setOptions(this, options);
   },
@@ -99406,11 +99409,7 @@ var FGBLayer = external_L_default().LayerGroup.extend({
     }
     if (this.extent) {
       var intersectExtent = getIntersection(this.extent, extent);
-      if (intersectExtent && intersectExtent.length) {
-        extent = intersectExtent;
-      } else {
-        extent = this.extent;
-      }
+      extent = intersectExtent && intersectExtent.length ? intersectExtent : this.extent;
     }
     var formatBounds = extent.length ? {
       minX: extent[0],
@@ -99477,26 +99476,23 @@ var FGBLayer = external_L_default().LayerGroup.extend({
               break;
             }
             _context2.next = 4;
-            return FetchRequest.get(this.url, {}, {
-              withoutFormatSuffix: true
-            }).then(function (response) {
-              return response;
-            });
+            return this._getStream(this.url);
           case 4:
             fgbStream = _context2.sent;
           case 5:
             fgb = geojson_deserialize(fgbStream && fgbStream.body || this.url, rect);
             curLayer = external_L_default().geoJSON(null, this.options);
+            curLayer.addTo(this);
             _iteratorAbruptCompletion = false;
             _didIteratorError = false;
-            _context2.prev = 9;
+            _context2.prev = 10;
             _iterator = FGBLayer_asyncIterator(fgb);
-          case 11:
-            _context2.next = 13;
+          case 12:
+            _context2.next = 14;
             return _iterator.next();
-          case 13:
+          case 14:
             if (!(_iteratorAbruptCompletion = !(_step = _context2.sent).done)) {
-              _context2.next = 20;
+              _context2.next = 21;
               break;
             }
             feature = _step.value;
@@ -99504,53 +99500,72 @@ var FGBLayer = external_L_default().LayerGroup.extend({
               feature = this.options.featureLoader(feature);
             }
             curLayer.addData(feature);
-          case 17:
+          case 18:
             _iteratorAbruptCompletion = false;
-            _context2.next = 11;
+            _context2.next = 12;
             break;
-          case 20:
-            _context2.next = 26;
+          case 21:
+            _context2.next = 27;
             break;
-          case 22:
-            _context2.prev = 22;
-            _context2.t0 = _context2["catch"](9);
+          case 23:
+            _context2.prev = 23;
+            _context2.t0 = _context2["catch"](10);
             _didIteratorError = true;
             _iteratorError = _context2.t0;
-          case 26:
-            _context2.prev = 26;
+          case 27:
             _context2.prev = 27;
+            _context2.prev = 28;
             if (!(_iteratorAbruptCompletion && _iterator["return"] != null)) {
-              _context2.next = 31;
+              _context2.next = 32;
               break;
             }
-            _context2.next = 31;
+            _context2.next = 32;
             return _iterator["return"]();
-          case 31:
-            _context2.prev = 31;
+          case 32:
+            _context2.prev = 32;
             if (!_didIteratorError) {
-              _context2.next = 34;
+              _context2.next = 35;
               break;
             }
             throw _iteratorError;
-          case 34:
-            return _context2.finish(31);
           case 35:
-            return _context2.finish(26);
+            return _context2.finish(32);
           case 36:
-            curLayer.addTo(this);
+            return _context2.finish(27);
+          case 37:
             this.previousLayer && this.removeLayer(this.previousLayer);
             this.previousLayer = curLayer;
           case 39:
           case "end":
             return _context2.stop();
         }
-      }, _callee2, this, [[9, 22, 26, 36], [27,, 31, 35]]);
+      }, _callee2, this, [[10, 23, 27, 37], [28,, 32, 36]]);
     }));
     function _handleFeatures(_x2) {
       return _handleFeatures2.apply(this, arguments);
     }
     return _handleFeatures;
   }(),
+  _getStream: function _getStream(url) {
+    return FGBLayer_asyncToGenerator( /*#__PURE__*/FGBLayer_regeneratorRuntime().mark(function _callee3() {
+      return FGBLayer_regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return FetchRequest.get(url, {}, {
+              withoutFormatSuffix: true
+            }).then(function (response) {
+              return response;
+            });
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }))();
+  },
   _containsExtent: function _containsExtent(extent1, extent2) {
     return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] && extent1[1] <= extent2[1] && extent2[3] <= extent1[3];
   },
@@ -108315,6 +108330,7 @@ var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
 (external_L_default()).supermap.turfLayer = turfLayer;
 (external_L_default()).supermap.TurfLayer = TurfLayer;
 (external_L_default()).supermap.FGBLayer = FGBLayer;
+(external_L_default()).supermap.FGBLayer = fgbLayer;
 (external_L_default()).supermap.unicodeMarker = unicodeMarker;
 (external_L_default()).supermap.UnicodeMarker = UnicodeMarker;
 (external_L_default()).supermap.uniqueThemeLayer = uniqueThemeLayer;
