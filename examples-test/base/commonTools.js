@@ -20,7 +20,7 @@ var commonTools = ({
         }
         //var baseDir = path.resolve(__dirname, '../../').replace(/\\/g, '/');
         //var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
-        var basePath = 'http://192.168.169.39:8090/iserver/iClient/forJavaScript';
+        var basePath = 'http://127.0.0.1:8090/iserver/iClient/forJavaScript';
         var exampleUrl = basePath + '/examples/' + type + '/' + exampleName + '.html';
         browser.url(exampleUrl);
         browser.pause(2000);
