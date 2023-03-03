@@ -589,6 +589,7 @@ var Builder = /** @class */ (function () {
         /** False omits default values from the serialized data */
         this.force_defaults = false;
         this.string_maps = null;
+        this.text_encoder = new TextEncoder();
         var initial_size;
         if (!opt_initial_size) {
             initial_size = 1024;
@@ -691,7 +692,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int8` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int8` to add the the buffer.
+     * @param value The `int8` to add the buffer.
      */
     Builder.prototype.addInt8 = function (value) {
         this.prep(1, 0);
@@ -699,7 +700,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int16` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int16` to add the the buffer.
+     * @param value The `int16` to add the buffer.
      */
     Builder.prototype.addInt16 = function (value) {
         this.prep(2, 0);
@@ -707,7 +708,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int32` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int32` to add the the buffer.
+     * @param value The `int32` to add the buffer.
      */
     Builder.prototype.addInt32 = function (value) {
         this.prep(4, 0);
@@ -715,7 +716,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int64` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int64` to add the the buffer.
+     * @param value The `int64` to add the buffer.
      */
     Builder.prototype.addInt64 = function (value) {
         this.prep(8, 0);
@@ -723,7 +724,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add a `float32` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `float32` to add the the buffer.
+     * @param value The `float32` to add the buffer.
      */
     Builder.prototype.addFloat32 = function (value) {
         this.prep(4, 0);
@@ -731,7 +732,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add a `float64` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `float64` to add the the buffer.
+     * @param value The `float64` to add the buffer.
      */
     Builder.prototype.addFloat64 = function (value) {
         this.prep(8, 0);
@@ -1033,39 +1034,7 @@ var Builder = /** @class */ (function () {
             utf8 = s;
         }
         else {
-            utf8 = [];
-            var i = 0;
-            while (i < s.length) {
-                var codePoint = void 0;
-                // Decode UTF-16
-                var a = s.charCodeAt(i++);
-                if (a < 0xD800 || a >= 0xDC00) {
-                    codePoint = a;
-                }
-                else {
-                    var b = s.charCodeAt(i++);
-                    codePoint = (a << 10) + b + (0x10000 - (0xD800 << 10) - 0xDC00);
-                }
-                // Encode UTF-8
-                if (codePoint < 0x80) {
-                    utf8.push(codePoint);
-                }
-                else {
-                    if (codePoint < 0x800) {
-                        utf8.push(((codePoint >> 6) & 0x1F) | 0xC0);
-                    }
-                    else {
-                        if (codePoint < 0x10000) {
-                            utf8.push(((codePoint >> 12) & 0x0F) | 0xE0);
-                        }
-                        else {
-                            utf8.push(((codePoint >> 18) & 0x07) | 0xF0, ((codePoint >> 12) & 0x3F) | 0x80);
-                        }
-                        utf8.push(((codePoint >> 6) & 0x3F) | 0x80);
-                    }
-                    utf8.push((codePoint & 0x3F) | 0x80);
-                }
-            }
+            utf8 = this.text_encoder.encode(s);
         }
         this.addInt8(0);
         this.startVector(1, utf8.length, 1);
@@ -1111,7 +1080,7 @@ var Builder = /** @class */ (function () {
     };
     Builder.prototype.createStructOffsetList = function (list, startFunc) {
         startFunc(this, list.length);
-        this.createObjectOffsetList(list);
+        this.createObjectOffsetList(list.slice().reverse());
         return this.endVector();
     };
     return Builder;
@@ -1138,6 +1107,7 @@ var ByteBuffer = /** @class */ (function () {
     function ByteBuffer(bytes_) {
         this.bytes_ = bytes_;
         this.position_ = 0;
+        this.text_decoder_ = new TextDecoder();
     }
     /**
      * Create and allocate a new ByteBuffer with a given size.
@@ -1284,10 +1254,9 @@ var ByteBuffer = /** @class */ (function () {
      * Create a JavaScript string from UTF-8 data stored inside the FlatBuffer.
      * This allocates a new string and converts to wide chars upon each access.
      *
-     * To avoid the conversion to UTF-16, pass Encoding.UTF8_BYTES as
-     * the "optionalEncoding" argument. This is useful for avoiding conversion to
-     * and from UTF-16 when the data will just be packaged back up in another
-     * FlatBuffer later on.
+     * To avoid the conversion to string, pass Encoding.UTF8_BYTES as the
+     * "optionalEncoding" argument. This is useful for avoiding conversion when
+     * the data will just be packaged back up in another FlatBuffer later on.
      *
      * @param offset
      * @param opt_encoding Defaults to UTF16_STRING
@@ -1295,54 +1264,12 @@ var ByteBuffer = /** @class */ (function () {
     ByteBuffer.prototype.__string = function (offset, opt_encoding) {
         offset += this.readInt32(offset);
         var length = this.readInt32(offset);
-        var result = '';
-        var i = 0;
         offset += constants_js_1.SIZEOF_INT;
-        if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES) {
-            return this.bytes_.subarray(offset, offset + length);
-        }
-        while (i < length) {
-            var codePoint = void 0;
-            // Decode UTF-8
-            var a = this.readUint8(offset + i++);
-            if (a < 0xC0) {
-                codePoint = a;
-            }
-            else {
-                var b = this.readUint8(offset + i++);
-                if (a < 0xE0) {
-                    codePoint =
-                        ((a & 0x1F) << 6) |
-                            (b & 0x3F);
-                }
-                else {
-                    var c = this.readUint8(offset + i++);
-                    if (a < 0xF0) {
-                        codePoint =
-                            ((a & 0x0F) << 12) |
-                                ((b & 0x3F) << 6) |
-                                (c & 0x3F);
-                    }
-                    else {
-                        var d = this.readUint8(offset + i++);
-                        codePoint =
-                            ((a & 0x07) << 18) |
-                                ((b & 0x3F) << 12) |
-                                ((c & 0x3F) << 6) |
-                                (d & 0x3F);
-                    }
-                }
-            }
-            // Encode UTF-16
-            if (codePoint < 0x10000) {
-                result += String.fromCharCode(codePoint);
-            }
-            else {
-                codePoint -= 0x10000;
-                result += String.fromCharCode((codePoint >> 10) + 0xD800, (codePoint & ((1 << 10) - 1)) + 0xDC00);
-            }
-        }
-        return result;
+        var utf8bytes = this.bytes_.subarray(offset, offset + length);
+        if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES)
+            return utf8bytes;
+        else
+            return this.text_decoder_.decode(utf8bytes);
     };
     /**
      * Handle unions that can contain string as its member, if a Table-derived type then initialize it,
@@ -1393,8 +1320,9 @@ var ByteBuffer = /** @class */ (function () {
     ByteBuffer.prototype.createScalarList = function (listAccessor, listLength) {
         var ret = [];
         for (var i = 0; i < listLength; ++i) {
-            if (listAccessor(i) !== null) {
-                ret.push(listAccessor(i));
+            var val = listAccessor(i);
+            if (val !== null) {
+                ret.push(val);
             }
         }
         return ret;
@@ -1453,7 +1381,7 @@ var Encoding;
 
 /***/ }),
 
-/***/ 903:
+/***/ 385:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -13555,7 +13483,7 @@ return slice;
 
 /***/ }),
 
-/***/ 92:
+/***/ 847:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -93629,363 +93557,6 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
 
 }
 
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/column-type.js
-var column_type_ColumnType;
-(function (ColumnType) {
-  ColumnType[ColumnType["Byte"] = 0] = "Byte";
-  ColumnType[ColumnType["UByte"] = 1] = "UByte";
-  ColumnType[ColumnType["Bool"] = 2] = "Bool";
-  ColumnType[ColumnType["Short"] = 3] = "Short";
-  ColumnType[ColumnType["UShort"] = 4] = "UShort";
-  ColumnType[ColumnType["Int"] = 5] = "Int";
-  ColumnType[ColumnType["UInt"] = 6] = "UInt";
-  ColumnType[ColumnType["Long"] = 7] = "Long";
-  ColumnType[ColumnType["ULong"] = 8] = "ULong";
-  ColumnType[ColumnType["Float"] = 9] = "Float";
-  ColumnType[ColumnType["Double"] = 10] = "Double";
-  ColumnType[ColumnType["String"] = 11] = "String";
-  ColumnType[ColumnType["Json"] = 12] = "Json";
-  ColumnType[ColumnType["DateTime"] = 13] = "DateTime";
-  ColumnType[ColumnType["Binary"] = 14] = "Binary";
-})(column_type_ColumnType || (column_type_ColumnType = {}));
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/ColumnMeta.js
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-var ColumnMeta_ColumnMeta = /*#__PURE__*/_createClass(function ColumnMeta(name, type, title, description, width, precision, scale, nullable, unique, primary_key) {
-  _classCallCheck(this, ColumnMeta);
-  this.name = name;
-  this.type = type;
-  this.title = title;
-  this.description = description;
-  this.width = width;
-  this.precision = precision;
-  this.scale = scale;
-  this.nullable = nullable;
-  this.unique = unique;
-  this.primary_key = primary_key;
-});
-
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/CrsMeta.js
-function CrsMeta_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function CrsMeta_createClass(Constructor, protoProps, staticProps) { if (protoProps) CrsMeta_defineProperties(Constructor.prototype, protoProps); if (staticProps) CrsMeta_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function CrsMeta_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-var CrsMeta = /*#__PURE__*/CrsMeta_createClass(function CrsMeta(org, code, name, description, wkt, code_string) {
-  CrsMeta_classCallCheck(this, CrsMeta);
-  this.org = org;
-  this.code = code;
-  this.name = name;
-  this.description = description;
-  this.wkt = wkt;
-  this.code_string = code_string;
-});
-
-// EXTERNAL MODULE: ./node_modules/flatbuffers/js/flatbuffers.js
-var js_flatbuffers = __webpack_require__(903);
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/column.js
-function column_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function column_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function column_createClass(Constructor, protoProps, staticProps) { if (protoProps) column_defineProperties(Constructor.prototype, protoProps); if (staticProps) column_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-
-var column_Column = /*#__PURE__*/function () {
-  function Column() {
-    column_classCallCheck(this, Column);
-    this.bb = null;
-    this.bb_pos = 0;
-  }
-  column_createClass(Column, [{
-    key: "__init",
-    value: function __init(i, bb) {
-      this.bb_pos = i;
-      this.bb = bb;
-      return this;
-    }
-  }, {
-    key: "name",
-    value: function name(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 4);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "type",
-    value: function type() {
-      var offset = this.bb.__offset(this.bb_pos, 6);
-      return offset ? this.bb.readUint8(this.bb_pos + offset) : column_type_ColumnType.Byte;
-    }
-  }, {
-    key: "title",
-    value: function title(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 8);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "description",
-    value: function description(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 10);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "width",
-    value: function width() {
-      var offset = this.bb.__offset(this.bb_pos, 12);
-      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
-    }
-  }, {
-    key: "precision",
-    value: function precision() {
-      var offset = this.bb.__offset(this.bb_pos, 14);
-      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
-    }
-  }, {
-    key: "scale",
-    value: function scale() {
-      var offset = this.bb.__offset(this.bb_pos, 16);
-      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
-    }
-  }, {
-    key: "nullable",
-    value: function nullable() {
-      var offset = this.bb.__offset(this.bb_pos, 18);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : true;
-    }
-  }, {
-    key: "unique",
-    value: function unique() {
-      var offset = this.bb.__offset(this.bb_pos, 20);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
-    }
-  }, {
-    key: "primaryKey",
-    value: function primaryKey() {
-      var offset = this.bb.__offset(this.bb_pos, 22);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
-    }
-  }, {
-    key: "metadata",
-    value: function metadata(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 24);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }], [{
-    key: "getRootAsColumn",
-    value: function getRootAsColumn(bb, obj) {
-      return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-    }
-  }, {
-    key: "getSizePrefixedRootAsColumn",
-    value: function getSizePrefixedRootAsColumn(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
-      return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-    }
-  }, {
-    key: "startColumn",
-    value: function startColumn(builder) {
-      builder.startObject(11);
-    }
-  }, {
-    key: "addName",
-    value: function addName(builder, nameOffset) {
-      builder.addFieldOffset(0, nameOffset, 0);
-    }
-  }, {
-    key: "addType",
-    value: function addType(builder, type) {
-      builder.addFieldInt8(1, type, column_type_ColumnType.Byte);
-    }
-  }, {
-    key: "addTitle",
-    value: function addTitle(builder, titleOffset) {
-      builder.addFieldOffset(2, titleOffset, 0);
-    }
-  }, {
-    key: "addDescription",
-    value: function addDescription(builder, descriptionOffset) {
-      builder.addFieldOffset(3, descriptionOffset, 0);
-    }
-  }, {
-    key: "addWidth",
-    value: function addWidth(builder, width) {
-      builder.addFieldInt32(4, width, -1);
-    }
-  }, {
-    key: "addPrecision",
-    value: function addPrecision(builder, precision) {
-      builder.addFieldInt32(5, precision, -1);
-    }
-  }, {
-    key: "addScale",
-    value: function addScale(builder, scale) {
-      builder.addFieldInt32(6, scale, -1);
-    }
-  }, {
-    key: "addNullable",
-    value: function addNullable(builder, nullable) {
-      builder.addFieldInt8(7, +nullable, +true);
-    }
-  }, {
-    key: "addUnique",
-    value: function addUnique(builder, unique) {
-      builder.addFieldInt8(8, +unique, +false);
-    }
-  }, {
-    key: "addPrimaryKey",
-    value: function addPrimaryKey(builder, primaryKey) {
-      builder.addFieldInt8(9, +primaryKey, +false);
-    }
-  }, {
-    key: "addMetadata",
-    value: function addMetadata(builder, metadataOffset) {
-      builder.addFieldOffset(10, metadataOffset, 0);
-    }
-  }, {
-    key: "endColumn",
-    value: function endColumn(builder) {
-      var offset = builder.endObject();
-      builder.requiredField(offset, 4);
-      return offset;
-    }
-  }, {
-    key: "createColumn",
-    value: function createColumn(builder, nameOffset, type, titleOffset, descriptionOffset, width, precision, scale, nullable, unique, primaryKey, metadataOffset) {
-      Column.startColumn(builder);
-      Column.addName(builder, nameOffset);
-      Column.addType(builder, type);
-      Column.addTitle(builder, titleOffset);
-      Column.addDescription(builder, descriptionOffset);
-      Column.addWidth(builder, width);
-      Column.addPrecision(builder, precision);
-      Column.addScale(builder, scale);
-      Column.addNullable(builder, nullable);
-      Column.addUnique(builder, unique);
-      Column.addPrimaryKey(builder, primaryKey);
-      Column.addMetadata(builder, metadataOffset);
-      return Column.endColumn(builder);
-    }
-  }]);
-  return Column;
-}();
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/crs.js
-function crs_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function crs_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function crs_createClass(Constructor, protoProps, staticProps) { if (protoProps) crs_defineProperties(Constructor.prototype, protoProps); if (staticProps) crs_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-var Crs = /*#__PURE__*/function () {
-  function Crs() {
-    crs_classCallCheck(this, Crs);
-    this.bb = null;
-    this.bb_pos = 0;
-  }
-  crs_createClass(Crs, [{
-    key: "__init",
-    value: function __init(i, bb) {
-      this.bb_pos = i;
-      this.bb = bb;
-      return this;
-    }
-  }, {
-    key: "org",
-    value: function org(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 4);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "code",
-    value: function code() {
-      var offset = this.bb.__offset(this.bb_pos, 6);
-      return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
-    }
-  }, {
-    key: "name",
-    value: function name(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 8);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "description",
-    value: function description(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 10);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "wkt",
-    value: function wkt(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 12);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "codeString",
-    value: function codeString(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 14);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }], [{
-    key: "getRootAsCrs",
-    value: function getRootAsCrs(bb, obj) {
-      return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-    }
-  }, {
-    key: "getSizePrefixedRootAsCrs",
-    value: function getSizePrefixedRootAsCrs(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
-      return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-    }
-  }, {
-    key: "startCrs",
-    value: function startCrs(builder) {
-      builder.startObject(6);
-    }
-  }, {
-    key: "addOrg",
-    value: function addOrg(builder, orgOffset) {
-      builder.addFieldOffset(0, orgOffset, 0);
-    }
-  }, {
-    key: "addCode",
-    value: function addCode(builder, code) {
-      builder.addFieldInt32(1, code, 0);
-    }
-  }, {
-    key: "addName",
-    value: function addName(builder, nameOffset) {
-      builder.addFieldOffset(2, nameOffset, 0);
-    }
-  }, {
-    key: "addDescription",
-    value: function addDescription(builder, descriptionOffset) {
-      builder.addFieldOffset(3, descriptionOffset, 0);
-    }
-  }, {
-    key: "addWkt",
-    value: function addWkt(builder, wktOffset) {
-      builder.addFieldOffset(4, wktOffset, 0);
-    }
-  }, {
-    key: "addCodeString",
-    value: function addCodeString(builder, codeStringOffset) {
-      builder.addFieldOffset(5, codeStringOffset, 0);
-    }
-  }, {
-    key: "endCrs",
-    value: function endCrs(builder) {
-      var offset = builder.endObject();
-      return offset;
-    }
-  }, {
-    key: "createCrs",
-    value: function createCrs(builder, orgOffset, code, nameOffset, descriptionOffset, wktOffset, codeStringOffset) {
-      Crs.startCrs(builder);
-      Crs.addOrg(builder, orgOffset);
-      Crs.addCode(builder, code);
-      Crs.addName(builder, nameOffset);
-      Crs.addDescription(builder, descriptionOffset);
-      Crs.addWkt(builder, wktOffset);
-      Crs.addCodeString(builder, codeStringOffset);
-      return Crs.endCrs(builder);
-    }
-  }]);
-  return Crs;
-}();
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/geometry-type.js
 var geometry_type_GeometryType;
 (function (GeometryType) {
@@ -94008,317 +93579,21 @@ var geometry_type_GeometryType;
   GeometryType[GeometryType["TIN"] = 16] = "TIN";
   GeometryType[GeometryType["Triangle"] = 17] = "Triangle";
 })(geometry_type_GeometryType || (geometry_type_GeometryType = {}));
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/header.js
-function header_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function header_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function header_createClass(Constructor, protoProps, staticProps) { if (protoProps) header_defineProperties(Constructor.prototype, protoProps); if (staticProps) header_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-
-
-
-var header_Header = /*#__PURE__*/function () {
-  function Header() {
-    header_classCallCheck(this, Header);
-    this.bb = null;
-    this.bb_pos = 0;
-  }
-  header_createClass(Header, [{
-    key: "__init",
-    value: function __init(i, bb) {
-      this.bb_pos = i;
-      this.bb = bb;
-      return this;
-    }
-  }, {
-    key: "name",
-    value: function name(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 4);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "envelope",
-    value: function envelope(index) {
-      var offset = this.bb.__offset(this.bb_pos, 6);
-      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
-    }
-  }, {
-    key: "envelopeLength",
-    value: function envelopeLength() {
-      var offset = this.bb.__offset(this.bb_pos, 6);
-      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
-    }
-  }, {
-    key: "envelopeArray",
-    value: function envelopeArray() {
-      var offset = this.bb.__offset(this.bb_pos, 6);
-      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
-    }
-  }, {
-    key: "geometryType",
-    value: function geometryType() {
-      var offset = this.bb.__offset(this.bb_pos, 8);
-      return offset ? this.bb.readUint8(this.bb_pos + offset) : geometry_type_GeometryType.Unknown;
-    }
-  }, {
-    key: "hasZ",
-    value: function hasZ() {
-      var offset = this.bb.__offset(this.bb_pos, 10);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
-    }
-  }, {
-    key: "hasM",
-    value: function hasM() {
-      var offset = this.bb.__offset(this.bb_pos, 12);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
-    }
-  }, {
-    key: "hasT",
-    value: function hasT() {
-      var offset = this.bb.__offset(this.bb_pos, 14);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
-    }
-  }, {
-    key: "hasTm",
-    value: function hasTm() {
-      var offset = this.bb.__offset(this.bb_pos, 16);
-      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
-    }
-  }, {
-    key: "columns",
-    value: function columns(index, obj) {
-      var offset = this.bb.__offset(this.bb_pos, 18);
-      return offset ? (obj || new column_Column()).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
-    }
-  }, {
-    key: "columnsLength",
-    value: function columnsLength() {
-      var offset = this.bb.__offset(this.bb_pos, 18);
-      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
-    }
-  }, {
-    key: "featuresCount",
-    value: function featuresCount() {
-      var offset = this.bb.__offset(this.bb_pos, 20);
-      return offset ? this.bb.readUint64(this.bb_pos + offset) : BigInt('0');
-    }
-  }, {
-    key: "indexNodeSize",
-    value: function indexNodeSize() {
-      var offset = this.bb.__offset(this.bb_pos, 22);
-      return offset ? this.bb.readUint16(this.bb_pos + offset) : 16;
-    }
-  }, {
-    key: "crs",
-    value: function crs(obj) {
-      var offset = this.bb.__offset(this.bb_pos, 24);
-      return offset ? (obj || new Crs()).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
-    }
-  }, {
-    key: "title",
-    value: function title(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 26);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "description",
-    value: function description(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 28);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }, {
-    key: "metadata",
-    value: function metadata(optionalEncoding) {
-      var offset = this.bb.__offset(this.bb_pos, 30);
-      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
-    }
-  }], [{
-    key: "getRootAsHeader",
-    value: function getRootAsHeader(bb, obj) {
-      return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-    }
-  }, {
-    key: "getSizePrefixedRootAsHeader",
-    value: function getSizePrefixedRootAsHeader(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
-      return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-    }
-  }, {
-    key: "startHeader",
-    value: function startHeader(builder) {
-      builder.startObject(14);
-    }
-  }, {
-    key: "addName",
-    value: function addName(builder, nameOffset) {
-      builder.addFieldOffset(0, nameOffset, 0);
-    }
-  }, {
-    key: "addEnvelope",
-    value: function addEnvelope(builder, envelopeOffset) {
-      builder.addFieldOffset(1, envelopeOffset, 0);
-    }
-  }, {
-    key: "createEnvelopeVector",
-    value: function createEnvelopeVector(builder, data) {
-      builder.startVector(8, data.length, 8);
-      for (var i = data.length - 1; i >= 0; i--) {
-        builder.addFloat64(data[i]);
-      }
-      return builder.endVector();
-    }
-  }, {
-    key: "startEnvelopeVector",
-    value: function startEnvelopeVector(builder, numElems) {
-      builder.startVector(8, numElems, 8);
-    }
-  }, {
-    key: "addGeometryType",
-    value: function addGeometryType(builder, geometryType) {
-      builder.addFieldInt8(2, geometryType, geometry_type_GeometryType.Unknown);
-    }
-  }, {
-    key: "addHasZ",
-    value: function addHasZ(builder, hasZ) {
-      builder.addFieldInt8(3, +hasZ, +false);
-    }
-  }, {
-    key: "addHasM",
-    value: function addHasM(builder, hasM) {
-      builder.addFieldInt8(4, +hasM, +false);
-    }
-  }, {
-    key: "addHasT",
-    value: function addHasT(builder, hasT) {
-      builder.addFieldInt8(5, +hasT, +false);
-    }
-  }, {
-    key: "addHasTm",
-    value: function addHasTm(builder, hasTm) {
-      builder.addFieldInt8(6, +hasTm, +false);
-    }
-  }, {
-    key: "addColumns",
-    value: function addColumns(builder, columnsOffset) {
-      builder.addFieldOffset(7, columnsOffset, 0);
-    }
-  }, {
-    key: "createColumnsVector",
-    value: function createColumnsVector(builder, data) {
-      builder.startVector(4, data.length, 4);
-      for (var i = data.length - 1; i >= 0; i--) {
-        builder.addOffset(data[i]);
-      }
-      return builder.endVector();
-    }
-  }, {
-    key: "startColumnsVector",
-    value: function startColumnsVector(builder, numElems) {
-      builder.startVector(4, numElems, 4);
-    }
-  }, {
-    key: "addFeaturesCount",
-    value: function addFeaturesCount(builder, featuresCount) {
-      builder.addFieldInt64(8, featuresCount, BigInt('0'));
-    }
-  }, {
-    key: "addIndexNodeSize",
-    value: function addIndexNodeSize(builder, indexNodeSize) {
-      builder.addFieldInt16(9, indexNodeSize, 16);
-    }
-  }, {
-    key: "addCrs",
-    value: function addCrs(builder, crsOffset) {
-      builder.addFieldOffset(10, crsOffset, 0);
-    }
-  }, {
-    key: "addTitle",
-    value: function addTitle(builder, titleOffset) {
-      builder.addFieldOffset(11, titleOffset, 0);
-    }
-  }, {
-    key: "addDescription",
-    value: function addDescription(builder, descriptionOffset) {
-      builder.addFieldOffset(12, descriptionOffset, 0);
-    }
-  }, {
-    key: "addMetadata",
-    value: function addMetadata(builder, metadataOffset) {
-      builder.addFieldOffset(13, metadataOffset, 0);
-    }
-  }, {
-    key: "endHeader",
-    value: function endHeader(builder) {
-      var offset = builder.endObject();
-      return offset;
-    }
-  }, {
-    key: "finishHeaderBuffer",
-    value: function finishHeaderBuffer(builder, offset) {
-      builder.finish(offset);
-    }
-  }, {
-    key: "finishSizePrefixedHeaderBuffer",
-    value: function finishSizePrefixedHeaderBuffer(builder, offset) {
-      builder.finish(offset, undefined, true);
-    }
-  }]);
-  return Header;
-}();
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/HeaderMeta.js
-function HeaderMeta_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function HeaderMeta_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function HeaderMeta_createClass(Constructor, protoProps, staticProps) { if (protoProps) HeaderMeta_defineProperties(Constructor.prototype, protoProps); if (staticProps) HeaderMeta_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-
-
-var HeaderMeta_HeaderMeta = /*#__PURE__*/function () {
-  function HeaderMeta(geometryType, columns, envelope, featuresCount, indexNodeSize, crs, title, description, metadata) {
-    HeaderMeta_classCallCheck(this, HeaderMeta);
-    this.geometryType = geometryType;
-    this.columns = columns;
-    this.envelope = envelope;
-    this.featuresCount = featuresCount;
-    this.indexNodeSize = indexNodeSize;
-    this.crs = crs;
-    this.title = title;
-    this.description = description;
-    this.metadata = metadata;
-  }
-  HeaderMeta_createClass(HeaderMeta, null, [{
-    key: "fromByteBuffer",
-    value: function fromByteBuffer(bb) {
-      var header = header_Header.getRootAsHeader(bb);
-      var featuresCount = header.featuresCount();
-      var indexNodeSize = header.indexNodeSize();
-      var columns = [];
-      for (var j = 0; j < header.columnsLength(); j++) {
-        var column = header.columns(j);
-        if (!column) throw new Error('Column unexpectedly missing');
-        if (!column.name()) throw new Error('Column name unexpectedly missing');
-        columns.push(new ColumnMeta_ColumnMeta(column.name(), column.type(), column.title(), column.description(), column.width(), column.precision(), column.scale(), column.nullable(), column.unique(), column.primaryKey()));
-      }
-      var crs = header.crs();
-      var crsMeta = crs ? new CrsMeta(crs.org(), crs.code(), crs.name(), crs.description(), crs.wkt(), crs.codeString()) : null;
-      var headerMeta = new HeaderMeta(header.geometryType(), columns, null, Number(featuresCount), indexNodeSize, crsMeta, header.title(), header.description(), header.metadata());
-      return headerMeta;
-    }
-  }]);
-  return HeaderMeta;
-}();
-
+// EXTERNAL MODULE: ./node_modules/flatbuffers/js/index.js
+var js = __webpack_require__(385);
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/geometry.js
-function geometry_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function geometry_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function geometry_createClass(Constructor, protoProps, staticProps) { if (protoProps) geometry_defineProperties(Constructor.prototype, protoProps); if (staticProps) geometry_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 
 var geometry_Geometry = /*#__PURE__*/function () {
   function Geometry() {
-    geometry_classCallCheck(this, Geometry);
+    _classCallCheck(this, Geometry);
     this.bb = null;
     this.bb_pos = 0;
   }
-  geometry_createClass(Geometry, [{
+  _createClass(Geometry, [{
     key: "__init",
     value: function __init(i, bb) {
       this.bb_pos = i;
@@ -94453,7 +93728,7 @@ var geometry_Geometry = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsGeometry",
     value: function getSizePrefixedRootAsGeometry(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -94861,6 +94136,208 @@ function fromGeometry(geometry, headerType) {
     coordinates: coordinates
   };
 }
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/column-type.js
+var column_type_ColumnType;
+(function (ColumnType) {
+  ColumnType[ColumnType["Byte"] = 0] = "Byte";
+  ColumnType[ColumnType["UByte"] = 1] = "UByte";
+  ColumnType[ColumnType["Bool"] = 2] = "Bool";
+  ColumnType[ColumnType["Short"] = 3] = "Short";
+  ColumnType[ColumnType["UShort"] = 4] = "UShort";
+  ColumnType[ColumnType["Int"] = 5] = "Int";
+  ColumnType[ColumnType["UInt"] = 6] = "UInt";
+  ColumnType[ColumnType["Long"] = 7] = "Long";
+  ColumnType[ColumnType["ULong"] = 8] = "ULong";
+  ColumnType[ColumnType["Float"] = 9] = "Float";
+  ColumnType[ColumnType["Double"] = 10] = "Double";
+  ColumnType[ColumnType["String"] = 11] = "String";
+  ColumnType[ColumnType["Json"] = 12] = "Json";
+  ColumnType[ColumnType["DateTime"] = 13] = "DateTime";
+  ColumnType[ColumnType["Binary"] = 14] = "Binary";
+})(column_type_ColumnType || (column_type_ColumnType = {}));
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/column.js
+function column_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function column_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function column_createClass(Constructor, protoProps, staticProps) { if (protoProps) column_defineProperties(Constructor.prototype, protoProps); if (staticProps) column_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+var column_Column = /*#__PURE__*/function () {
+  function Column() {
+    column_classCallCheck(this, Column);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  column_createClass(Column, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "name",
+    value: function name(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "type",
+    value: function type() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readUint8(this.bb_pos + offset) : column_type_ColumnType.Byte;
+    }
+  }, {
+    key: "title",
+    value: function title(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "description",
+    value: function description(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "width",
+    value: function width() {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
+    }
+  }, {
+    key: "precision",
+    value: function precision() {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
+    }
+  }, {
+    key: "scale",
+    value: function scale() {
+      var offset = this.bb.__offset(this.bb_pos, 16);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : -1;
+    }
+  }, {
+    key: "nullable",
+    value: function nullable() {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : true;
+    }
+  }, {
+    key: "unique",
+    value: function unique() {
+      var offset = this.bb.__offset(this.bb_pos, 20);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "primaryKey",
+    value: function primaryKey() {
+      var offset = this.bb.__offset(this.bb_pos, 22);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "metadata",
+    value: function metadata(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 24);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }], [{
+    key: "getRootAsColumn",
+    value: function getRootAsColumn(bb, obj) {
+      return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsColumn",
+    value: function getSizePrefixedRootAsColumn(bb, obj) {
+      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startColumn",
+    value: function startColumn(builder) {
+      builder.startObject(11);
+    }
+  }, {
+    key: "addName",
+    value: function addName(builder, nameOffset) {
+      builder.addFieldOffset(0, nameOffset, 0);
+    }
+  }, {
+    key: "addType",
+    value: function addType(builder, type) {
+      builder.addFieldInt8(1, type, column_type_ColumnType.Byte);
+    }
+  }, {
+    key: "addTitle",
+    value: function addTitle(builder, titleOffset) {
+      builder.addFieldOffset(2, titleOffset, 0);
+    }
+  }, {
+    key: "addDescription",
+    value: function addDescription(builder, descriptionOffset) {
+      builder.addFieldOffset(3, descriptionOffset, 0);
+    }
+  }, {
+    key: "addWidth",
+    value: function addWidth(builder, width) {
+      builder.addFieldInt32(4, width, -1);
+    }
+  }, {
+    key: "addPrecision",
+    value: function addPrecision(builder, precision) {
+      builder.addFieldInt32(5, precision, -1);
+    }
+  }, {
+    key: "addScale",
+    value: function addScale(builder, scale) {
+      builder.addFieldInt32(6, scale, -1);
+    }
+  }, {
+    key: "addNullable",
+    value: function addNullable(builder, nullable) {
+      builder.addFieldInt8(7, +nullable, +true);
+    }
+  }, {
+    key: "addUnique",
+    value: function addUnique(builder, unique) {
+      builder.addFieldInt8(8, +unique, +false);
+    }
+  }, {
+    key: "addPrimaryKey",
+    value: function addPrimaryKey(builder, primaryKey) {
+      builder.addFieldInt8(9, +primaryKey, +false);
+    }
+  }, {
+    key: "addMetadata",
+    value: function addMetadata(builder, metadataOffset) {
+      builder.addFieldOffset(10, metadataOffset, 0);
+    }
+  }, {
+    key: "endColumn",
+    value: function endColumn(builder) {
+      var offset = builder.endObject();
+      builder.requiredField(offset, 4);
+      return offset;
+    }
+  }, {
+    key: "createColumn",
+    value: function createColumn(builder, nameOffset, type, titleOffset, descriptionOffset, width, precision, scale, nullable, unique, primaryKey, metadataOffset) {
+      Column.startColumn(builder);
+      Column.addName(builder, nameOffset);
+      Column.addType(builder, type);
+      Column.addTitle(builder, titleOffset);
+      Column.addDescription(builder, descriptionOffset);
+      Column.addWidth(builder, width);
+      Column.addPrecision(builder, precision);
+      Column.addScale(builder, scale);
+      Column.addNullable(builder, nullable);
+      Column.addUnique(builder, unique);
+      Column.addPrimaryKey(builder, primaryKey);
+      Column.addMetadata(builder, metadataOffset);
+      return Column.endColumn(builder);
+    }
+  }]);
+  return Column;
+}();
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/feature.js
 function feature_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function feature_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -94925,7 +94402,7 @@ var feature_Feature = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsFeature",
     value: function getSizePrefixedRootAsFeature(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -95027,17 +94504,18 @@ function feature_buildFeature(geometry, properties, header) {
   var view = new DataView(bytes.buffer);
   var prep = function prep(size) {
     if (offset + size < capacity) return;
-    capacity = capacity * 2;
+    capacity = Math.max(capacity + size, capacity * 2);
     var newBytes = new Uint8Array(capacity);
     newBytes.set(bytes);
     bytes = newBytes;
-    view = new DataView(bytes.buffer, offset);
+    view = new DataView(bytes.buffer);
   };
   if (columns) {
     for (var i = 0; i < columns.length; i++) {
       var column = columns[i];
       var value = properties[column.name];
       if (value === null) continue;
+      prep(2);
       view.setUint16(offset, i, true);
       offset += 2;
       switch (column.type) {
@@ -95071,6 +94549,11 @@ function feature_buildFeature(geometry, properties, header) {
           view.setBigInt64(offset, BigInt(value), true);
           offset += 8;
           break;
+        case ColumnType.Float:
+          prep(4);
+          view.setFloat32(offset, value, true);
+          offset += 4;
+          break;
         case ColumnType.Double:
           prep(8);
           view.setFloat64(offset, value, true);
@@ -95086,6 +94569,17 @@ function feature_buildFeature(geometry, properties, header) {
             prep(str.length);
             bytes.set(str, offset);
             offset += str.length;
+            break;
+          }
+        case ColumnType.Json:
+          {
+            var _str = textEncoder.encode(JSON.stringify(value));
+            prep(4);
+            view.setUint32(offset, _str.length, true);
+            offset += 4;
+            prep(_str.length);
+            bytes.set(_str, offset);
+            offset += _str.length;
             break;
           }
         default:
@@ -95171,6 +94665,12 @@ function parseProperties(feature, columns) {
           offset += 8;
           break;
         }
+      case column_type_ColumnType.Float:
+        {
+          properties[name] = view.getFloat32(offset, true);
+          offset += 4;
+          break;
+        }
       case column_type_ColumnType.Double:
         {
           properties[name] = view.getFloat64(offset, true);
@@ -95184,6 +94684,15 @@ function parseProperties(feature, columns) {
           offset += 4;
           properties[name] = textDecoder.decode(array.subarray(offset, offset + _length));
           offset += _length;
+          break;
+        }
+      case column_type_ColumnType.Json:
+        {
+          var _length2 = view.getUint32(offset, true);
+          offset += 4;
+          var str = textDecoder.decode(array.subarray(offset, offset + _length2));
+          properties[name] = JSON.parse(str);
+          offset += _length2;
           break;
         }
       default:
@@ -95207,18 +94716,441 @@ function feature_fromFeature(feature, header) {
 }
 // EXTERNAL MODULE: ./node_modules/slice-source/dist/slice-source.js
 var slice_source = __webpack_require__(901);
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/crs.js
+function crs_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function crs_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function crs_createClass(Constructor, protoProps, staticProps) { if (protoProps) crs_defineProperties(Constructor.prototype, protoProps); if (staticProps) crs_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Crs = /*#__PURE__*/function () {
+  function Crs() {
+    crs_classCallCheck(this, Crs);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  crs_createClass(Crs, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "org",
+    value: function org(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "code",
+    value: function code() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readInt32(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "name",
+    value: function name(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "description",
+    value: function description(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "wkt",
+    value: function wkt(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "codeString",
+    value: function codeString(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }], [{
+    key: "getRootAsCrs",
+    value: function getRootAsCrs(bb, obj) {
+      return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsCrs",
+    value: function getSizePrefixedRootAsCrs(bb, obj) {
+      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startCrs",
+    value: function startCrs(builder) {
+      builder.startObject(6);
+    }
+  }, {
+    key: "addOrg",
+    value: function addOrg(builder, orgOffset) {
+      builder.addFieldOffset(0, orgOffset, 0);
+    }
+  }, {
+    key: "addCode",
+    value: function addCode(builder, code) {
+      builder.addFieldInt32(1, code, 0);
+    }
+  }, {
+    key: "addName",
+    value: function addName(builder, nameOffset) {
+      builder.addFieldOffset(2, nameOffset, 0);
+    }
+  }, {
+    key: "addDescription",
+    value: function addDescription(builder, descriptionOffset) {
+      builder.addFieldOffset(3, descriptionOffset, 0);
+    }
+  }, {
+    key: "addWkt",
+    value: function addWkt(builder, wktOffset) {
+      builder.addFieldOffset(4, wktOffset, 0);
+    }
+  }, {
+    key: "addCodeString",
+    value: function addCodeString(builder, codeStringOffset) {
+      builder.addFieldOffset(5, codeStringOffset, 0);
+    }
+  }, {
+    key: "endCrs",
+    value: function endCrs(builder) {
+      var offset = builder.endObject();
+      return offset;
+    }
+  }, {
+    key: "createCrs",
+    value: function createCrs(builder, orgOffset, code, nameOffset, descriptionOffset, wktOffset, codeStringOffset) {
+      Crs.startCrs(builder);
+      Crs.addOrg(builder, orgOffset);
+      Crs.addCode(builder, code);
+      Crs.addName(builder, nameOffset);
+      Crs.addDescription(builder, descriptionOffset);
+      Crs.addWkt(builder, wktOffset);
+      Crs.addCodeString(builder, codeStringOffset);
+      return Crs.endCrs(builder);
+    }
+  }]);
+  return Crs;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/header.js
+function header_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function header_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function header_createClass(Constructor, protoProps, staticProps) { if (protoProps) header_defineProperties(Constructor.prototype, protoProps); if (staticProps) header_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+
+var header_Header = /*#__PURE__*/function () {
+  function Header() {
+    header_classCallCheck(this, Header);
+    this.bb = null;
+    this.bb_pos = 0;
+  }
+  header_createClass(Header, [{
+    key: "__init",
+    value: function __init(i, bb) {
+      this.bb_pos = i;
+      this.bb = bb;
+      return this;
+    }
+  }, {
+    key: "name",
+    value: function name(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 4);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "envelope",
+    value: function envelope(index) {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.readFloat64(this.bb.__vector(this.bb_pos + offset) + index * 8) : 0;
+    }
+  }, {
+    key: "envelopeLength",
+    value: function envelopeLength() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "envelopeArray",
+    value: function envelopeArray() {
+      var offset = this.bb.__offset(this.bb_pos, 6);
+      return offset ? new Float64Array(this.bb.bytes().buffer, this.bb.bytes().byteOffset + this.bb.__vector(this.bb_pos + offset), this.bb.__vector_len(this.bb_pos + offset)) : null;
+    }
+  }, {
+    key: "geometryType",
+    value: function geometryType() {
+      var offset = this.bb.__offset(this.bb_pos, 8);
+      return offset ? this.bb.readUint8(this.bb_pos + offset) : geometry_type_GeometryType.Unknown;
+    }
+  }, {
+    key: "hasZ",
+    value: function hasZ() {
+      var offset = this.bb.__offset(this.bb_pos, 10);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "hasM",
+    value: function hasM() {
+      var offset = this.bb.__offset(this.bb_pos, 12);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "hasT",
+    value: function hasT() {
+      var offset = this.bb.__offset(this.bb_pos, 14);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "hasTm",
+    value: function hasTm() {
+      var offset = this.bb.__offset(this.bb_pos, 16);
+      return offset ? !!this.bb.readInt8(this.bb_pos + offset) : false;
+    }
+  }, {
+    key: "columns",
+    value: function columns(index, obj) {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? (obj || new column_Column()).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + offset) + index * 4), this.bb) : null;
+    }
+  }, {
+    key: "columnsLength",
+    value: function columnsLength() {
+      var offset = this.bb.__offset(this.bb_pos, 18);
+      return offset ? this.bb.__vector_len(this.bb_pos + offset) : 0;
+    }
+  }, {
+    key: "featuresCount",
+    value: function featuresCount() {
+      var offset = this.bb.__offset(this.bb_pos, 20);
+      return offset ? this.bb.readUint64(this.bb_pos + offset) : BigInt('0');
+    }
+  }, {
+    key: "indexNodeSize",
+    value: function indexNodeSize() {
+      var offset = this.bb.__offset(this.bb_pos, 22);
+      return offset ? this.bb.readUint16(this.bb_pos + offset) : 16;
+    }
+  }, {
+    key: "crs",
+    value: function crs(obj) {
+      var offset = this.bb.__offset(this.bb_pos, 24);
+      return offset ? (obj || new Crs()).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+    }
+  }, {
+    key: "title",
+    value: function title(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 26);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "description",
+    value: function description(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 28);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }, {
+    key: "metadata",
+    value: function metadata(optionalEncoding) {
+      var offset = this.bb.__offset(this.bb_pos, 30);
+      return offset ? this.bb.__string(this.bb_pos + offset, optionalEncoding) : null;
+    }
+  }], [{
+    key: "getRootAsHeader",
+    value: function getRootAsHeader(bb, obj) {
+      return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "getSizePrefixedRootAsHeader",
+    value: function getSizePrefixedRootAsHeader(bb, obj) {
+      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+    }
+  }, {
+    key: "startHeader",
+    value: function startHeader(builder) {
+      builder.startObject(14);
+    }
+  }, {
+    key: "addName",
+    value: function addName(builder, nameOffset) {
+      builder.addFieldOffset(0, nameOffset, 0);
+    }
+  }, {
+    key: "addEnvelope",
+    value: function addEnvelope(builder, envelopeOffset) {
+      builder.addFieldOffset(1, envelopeOffset, 0);
+    }
+  }, {
+    key: "createEnvelopeVector",
+    value: function createEnvelopeVector(builder, data) {
+      builder.startVector(8, data.length, 8);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addFloat64(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startEnvelopeVector",
+    value: function startEnvelopeVector(builder, numElems) {
+      builder.startVector(8, numElems, 8);
+    }
+  }, {
+    key: "addGeometryType",
+    value: function addGeometryType(builder, geometryType) {
+      builder.addFieldInt8(2, geometryType, geometry_type_GeometryType.Unknown);
+    }
+  }, {
+    key: "addHasZ",
+    value: function addHasZ(builder, hasZ) {
+      builder.addFieldInt8(3, +hasZ, +false);
+    }
+  }, {
+    key: "addHasM",
+    value: function addHasM(builder, hasM) {
+      builder.addFieldInt8(4, +hasM, +false);
+    }
+  }, {
+    key: "addHasT",
+    value: function addHasT(builder, hasT) {
+      builder.addFieldInt8(5, +hasT, +false);
+    }
+  }, {
+    key: "addHasTm",
+    value: function addHasTm(builder, hasTm) {
+      builder.addFieldInt8(6, +hasTm, +false);
+    }
+  }, {
+    key: "addColumns",
+    value: function addColumns(builder, columnsOffset) {
+      builder.addFieldOffset(7, columnsOffset, 0);
+    }
+  }, {
+    key: "createColumnsVector",
+    value: function createColumnsVector(builder, data) {
+      builder.startVector(4, data.length, 4);
+      for (var i = data.length - 1; i >= 0; i--) {
+        builder.addOffset(data[i]);
+      }
+      return builder.endVector();
+    }
+  }, {
+    key: "startColumnsVector",
+    value: function startColumnsVector(builder, numElems) {
+      builder.startVector(4, numElems, 4);
+    }
+  }, {
+    key: "addFeaturesCount",
+    value: function addFeaturesCount(builder, featuresCount) {
+      builder.addFieldInt64(8, featuresCount, BigInt('0'));
+    }
+  }, {
+    key: "addIndexNodeSize",
+    value: function addIndexNodeSize(builder, indexNodeSize) {
+      builder.addFieldInt16(9, indexNodeSize, 16);
+    }
+  }, {
+    key: "addCrs",
+    value: function addCrs(builder, crsOffset) {
+      builder.addFieldOffset(10, crsOffset, 0);
+    }
+  }, {
+    key: "addTitle",
+    value: function addTitle(builder, titleOffset) {
+      builder.addFieldOffset(11, titleOffset, 0);
+    }
+  }, {
+    key: "addDescription",
+    value: function addDescription(builder, descriptionOffset) {
+      builder.addFieldOffset(12, descriptionOffset, 0);
+    }
+  }, {
+    key: "addMetadata",
+    value: function addMetadata(builder, metadataOffset) {
+      builder.addFieldOffset(13, metadataOffset, 0);
+    }
+  }, {
+    key: "endHeader",
+    value: function endHeader(builder) {
+      var offset = builder.endObject();
+      return offset;
+    }
+  }, {
+    key: "finishHeaderBuffer",
+    value: function finishHeaderBuffer(builder, offset) {
+      builder.finish(offset);
+    }
+  }, {
+    key: "finishSizePrefixedHeaderBuffer",
+    value: function finishSizePrefixedHeaderBuffer(builder, offset) {
+      builder.finish(offset, undefined, true);
+    }
+  }]);
+  return Header;
+}();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/header-meta.js
+
+function fromByteBuffer(bb) {
+  var header = header_Header.getRootAsHeader(bb);
+  var featuresCount = header.featuresCount();
+  var indexNodeSize = header.indexNodeSize();
+  var columns = [];
+  for (var j = 0; j < header.columnsLength(); j++) {
+    var column = header.columns(j);
+    if (!column) throw new Error('Column unexpectedly missing');
+    if (!column.name()) throw new Error('Column name unexpectedly missing');
+    columns.push({
+      name: column.name(),
+      type: column.type(),
+      title: column.title(),
+      description: column.description(),
+      width: column.width(),
+      precision: column.precision(),
+      scale: column.scale(),
+      nullable: column.nullable(),
+      unique: column.unique(),
+      primary_key: column.primaryKey()
+    });
+  }
+  var crs = header.crs();
+  var crsMeta = crs ? {
+    org: crs.org(),
+    code: crs.code(),
+    name: crs.name(),
+    description: crs.description(),
+    wkt: crs.wkt(),
+    code_string: crs.codeString()
+  } : null;
+  var headerMeta = {
+    geometryType: header.geometryType(),
+    columns: columns,
+    envelope: null,
+    featuresCount: Number(featuresCount),
+    indexNodeSize: indexNodeSize,
+    crs: crsMeta,
+    title: header.title(),
+    description: header.description(),
+    metadata: header.metadata()
+  };
+  return headerMeta;
+}
 // EXTERNAL MODULE: ./node_modules/@repeaterjs/repeater/cjs/repeater.js
 var repeater = __webpack_require__(982);
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/Config.js
-function Config_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function Config_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function Config_createClass(Constructor, protoProps, staticProps) { if (protoProps) Config_defineProperties(Constructor.prototype, protoProps); if (staticProps) Config_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-var Config_Config = /*#__PURE__*/function () {
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/config.js
+function config_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function config_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function config_createClass(Constructor, protoProps, staticProps) { if (protoProps) config_defineProperties(Constructor.prototype, protoProps); if (staticProps) config_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var config_Config = /*#__PURE__*/function () {
   function Config() {
-    Config_classCallCheck(this, Config);
+    config_classCallCheck(this, Config);
     this._extraRequestThreshold = 256 * 1024;
   }
-  Config_createClass(Config, [{
+  config_createClass(Config, [{
     key: "extraRequestThreshold",
     value: function extraRequestThreshold() {
       return this._extraRequestThreshold;
@@ -95235,11 +95167,11 @@ var Config_Config = /*#__PURE__*/function () {
   return Config;
 }();
 
-Config_Config.global = new Config_Config();
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/Logger.js
-function Logger_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function Logger_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function Logger_createClass(Constructor, protoProps, staticProps) { if (protoProps) Logger_defineProperties(Constructor.prototype, protoProps); if (staticProps) Logger_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+config_Config.global = new config_Config();
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/logger.js
+function logger_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function logger_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function logger_createClass(Constructor, protoProps, staticProps) { if (protoProps) logger_defineProperties(Constructor.prototype, protoProps); if (staticProps) logger_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 var LogLevel;
 (function (LogLevel) {
   LogLevel[LogLevel["Debug"] = 0] = "Debug";
@@ -95249,9 +95181,9 @@ var LogLevel;
 })(LogLevel || (LogLevel = {}));
 var Logger = /*#__PURE__*/function () {
   function Logger() {
-    Logger_classCallCheck(this, Logger);
+    logger_classCallCheck(this, Logger);
   }
-  Logger_createClass(Logger, null, [{
+  logger_createClass(Logger, null, [{
     key: "debug",
     value: function debug() {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -95323,7 +95255,7 @@ var Logger = /*#__PURE__*/function () {
   return Logger;
 }();
 
-Logger.logLevel = LogLevel.Info;
+Logger.logLevel = LogLevel.Warn;
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/packedrtree.js
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -95373,11 +95305,8 @@ function generateLevelBounds(numItems, nodeSize) {
     levelOffsets.push(n - size);
     n -= size;
   }
-  levelOffsets.reverse();
-  levelNumNodes.reverse();
   var levelBounds = [];
   for (var i = 0; i < levelNumNodes.length; i++) levelBounds.push([levelOffsets[i], levelOffsets[i] + levelNumNodes[i]]);
-  levelBounds.reverse();
   return levelBounds;
 }
 function streamSearch(_x, _x2, _x3, _x4) {
@@ -95506,7 +95435,7 @@ function _streamSearch() {
                         case 16:
                           return _context.abrupt("return", "continue");
                         case 17:
-                          extraRequestThresholdNodes = Config_Config.global.extraRequestThreshold() / NODE_ITEM_LEN;
+                          extraRequestThresholdNodes = config_Config.global.extraRequestThreshold() / NODE_ITEM_LEN;
                           nearestNodeRange = queue[queue.length - 1];
                           if (!(nearestNodeRange !== undefined && nearestNodeRange.level() == nodeRange.level() - 1 && offset < nearestNodeRange.endNode() + extraRequestThresholdNodes)) {
                             _context.next = 23;
@@ -95584,27 +95513,27 @@ function readUint52(high32Bits, low32Bits) {
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/constants.js
 var constants_magicbytes = new Uint8Array([0x66, 0x67, 0x62, 0x03, 0x66, 0x67, 0x62, 0x00]);
 var SIZE_PREFIX_LEN = 4;
-;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/HttpReader.js
-function HttpReader_typeof(obj) { "@babel/helpers - typeof"; return HttpReader_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, HttpReader_typeof(obj); }
-function HttpReader_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = HttpReader_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function HttpReader_slicedToArray(arr, i) { return HttpReader_arrayWithHoles(arr) || HttpReader_iterableToArrayLimit(arr, i) || HttpReader_unsupportedIterableToArray(arr, i) || HttpReader_nonIterableRest(); }
-function HttpReader_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function HttpReader_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return HttpReader_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return HttpReader_arrayLikeToArray(o, minLen); }
-function HttpReader_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function HttpReader_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-function HttpReader_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function HttpReader_regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ HttpReader_regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == HttpReader_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/http-reader.js
+function http_reader_typeof(obj) { "@babel/helpers - typeof"; return http_reader_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, http_reader_typeof(obj); }
+function http_reader_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = http_reader_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function http_reader_slicedToArray(arr, i) { return http_reader_arrayWithHoles(arr) || http_reader_iterableToArrayLimit(arr, i) || http_reader_unsupportedIterableToArray(arr, i) || http_reader_nonIterableRest(); }
+function http_reader_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function http_reader_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return http_reader_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return http_reader_arrayLikeToArray(o, minLen); }
+function http_reader_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function http_reader_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function http_reader_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function http_reader_regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ http_reader_regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == http_reader_typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-function HttpReader_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function HttpReader_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-function HttpReader_createClass(Constructor, protoProps, staticProps) { if (protoProps) HttpReader_defineProperties(Constructor.prototype, protoProps); if (staticProps) HttpReader_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function HttpReader_wrapAsyncGenerator(fn) { return function () { return new HttpReader_AsyncGenerator(fn.apply(this, arguments)); }; }
-function HttpReader_AsyncGenerator(gen) { var front, back; function resume(key, arg) { try { var result = gen[key](arg), value = result.value, overloaded = value instanceof HttpReader_OverloadYield; Promise.resolve(overloaded ? value.v : value).then(function (arg) { if (overloaded) { var nextKey = "return" === key ? "return" : "next"; if (!value.k || arg.done) return resume(nextKey, arg); arg = gen[nextKey](arg).value; } settle(result.done ? "return" : "normal", arg); }, function (err) { resume("throw", err); }); } catch (err) { settle("throw", err); } } function settle(type, value) { switch (type) { case "return": front.resolve({ value: value, done: !0 }); break; case "throw": front.reject(value); break; default: front.resolve({ value: value, done: !1 }); } (front = front.next) ? resume(front.key, front.arg) : back = null; } this._invoke = function (key, arg) { return new Promise(function (resolve, reject) { var request = { key: key, arg: arg, resolve: resolve, reject: reject, next: null }; back ? back = back.next = request : (front = back = request, resume(key, arg)); }); }, "function" != typeof gen["return"] && (this["return"] = void 0); }
-HttpReader_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, HttpReader_AsyncGenerator.prototype.next = function (arg) { return this._invoke("next", arg); }, HttpReader_AsyncGenerator.prototype["throw"] = function (arg) { return this._invoke("throw", arg); }, HttpReader_AsyncGenerator.prototype["return"] = function (arg) { return this._invoke("return", arg); };
-function HttpReader_awaitAsyncGenerator(value) { return new HttpReader_OverloadYield(value, 0); }
-function _asyncGeneratorDelegate(inner) { var iter = {}, waiting = !1; function pump(key, value) { return waiting = !0, value = new Promise(function (resolve) { resolve(inner[key](value)); }), { done: !1, value: new HttpReader_OverloadYield(value, 1) }; } return iter["undefined" != typeof Symbol && Symbol.iterator || "@@iterator"] = function () { return this; }, iter.next = function (value) { return waiting ? (waiting = !1, value) : pump("next", value); }, "function" == typeof inner["throw"] && (iter["throw"] = function (value) { if (waiting) throw waiting = !1, value; return pump("throw", value); }), "function" == typeof inner["return"] && (iter["return"] = function (value) { return waiting ? (waiting = !1, value) : pump("return", value); }), iter; }
-function HttpReader_OverloadYield(value, kind) { this.v = value, this.k = kind; }
+function http_reader_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function http_reader_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function http_reader_createClass(Constructor, protoProps, staticProps) { if (protoProps) http_reader_defineProperties(Constructor.prototype, protoProps); if (staticProps) http_reader_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function http_reader_wrapAsyncGenerator(fn) { return function () { return new http_reader_AsyncGenerator(fn.apply(this, arguments)); }; }
+function http_reader_AsyncGenerator(gen) { var front, back; function resume(key, arg) { try { var result = gen[key](arg), value = result.value, overloaded = value instanceof http_reader_OverloadYield; Promise.resolve(overloaded ? value.v : value).then(function (arg) { if (overloaded) { var nextKey = "return" === key ? "return" : "next"; if (!value.k || arg.done) return resume(nextKey, arg); arg = gen[nextKey](arg).value; } settle(result.done ? "return" : "normal", arg); }, function (err) { resume("throw", err); }); } catch (err) { settle("throw", err); } } function settle(type, value) { switch (type) { case "return": front.resolve({ value: value, done: !0 }); break; case "throw": front.reject(value); break; default: front.resolve({ value: value, done: !1 }); } (front = front.next) ? resume(front.key, front.arg) : back = null; } this._invoke = function (key, arg) { return new Promise(function (resolve, reject) { var request = { key: key, arg: arg, resolve: resolve, reject: reject, next: null }; back ? back = back.next = request : (front = back = request, resume(key, arg)); }); }, "function" != typeof gen["return"] && (this["return"] = void 0); }
+http_reader_AsyncGenerator.prototype["function" == typeof Symbol && Symbol.asyncIterator || "@@asyncIterator"] = function () { return this; }, http_reader_AsyncGenerator.prototype.next = function (arg) { return this._invoke("next", arg); }, http_reader_AsyncGenerator.prototype["throw"] = function (arg) { return this._invoke("throw", arg); }, http_reader_AsyncGenerator.prototype["return"] = function (arg) { return this._invoke("return", arg); };
+function http_reader_awaitAsyncGenerator(value) { return new http_reader_OverloadYield(value, 0); }
+function _asyncGeneratorDelegate(inner) { var iter = {}, waiting = !1; function pump(key, value) { return waiting = !0, value = new Promise(function (resolve) { resolve(inner[key](value)); }), { done: !1, value: new http_reader_OverloadYield(value, 1) }; } return iter["undefined" != typeof Symbol && Symbol.iterator || "@@iterator"] = function () { return this; }, iter.next = function (value) { return waiting ? (waiting = !1, value) : pump("next", value); }, "function" == typeof inner["throw"] && (iter["throw"] = function (value) { if (waiting) throw waiting = !1, value; return pump("throw", value); }), "function" == typeof inner["return"] && (iter["return"] = function (value) { return waiting ? (waiting = !1, value) : pump("return", value); }), iter; }
+function http_reader_OverloadYield(value, kind) { this.v = value, this.k = kind; }
 function _asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new AsyncFromSyncIterator(s); }
 
@@ -95617,27 +95546,27 @@ function AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r
 
 var HttpReader = /*#__PURE__*/function () {
   function HttpReader(headerClient, header, headerLength, indexLength) {
-    HttpReader_classCallCheck(this, HttpReader);
+    http_reader_classCallCheck(this, HttpReader);
     this.headerClient = headerClient;
     this.header = header;
     this.headerLength = headerLength;
     this.indexLength = indexLength;
   }
-  HttpReader_createClass(HttpReader, [{
+  http_reader_createClass(HttpReader, [{
     key: "selectBbox",
     value: function selectBbox(rect) {
       var _this = this;
-      return HttpReader_wrapAsyncGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee2() {
+      return http_reader_wrapAsyncGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee2() {
         var lengthBeforeTree, bufferedClient, readNode, batches, currentBatch, _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, searchResult, _searchResult2, featureOffset, _searchResult4, featureLength, guessLength, prevFeature, gap, promises;
-        return HttpReader_regeneratorRuntime().wrap(function _callee2$(_context2) {
+        return http_reader_regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               lengthBeforeTree = _this.lengthBeforeTree();
               bufferedClient = _this.headerClient;
               readNode = /*#__PURE__*/function () {
-                var _ref = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee(offsetIntoTree, size) {
+                var _ref = _asyncToGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee(offsetIntoTree, size) {
                   var minReqLength;
-                  return HttpReader_regeneratorRuntime().wrap(function _callee$(_context) {
+                  return http_reader_regeneratorRuntime().wrap(function _callee$(_context) {
                     while (1) switch (_context.prev = _context.next) {
                       case 0:
                         minReqLength = 0;
@@ -95660,18 +95589,18 @@ var HttpReader = /*#__PURE__*/function () {
               _iterator = _asyncIterator(streamSearch(_this.header.featuresCount, _this.header.indexNodeSize, rect, readNode));
             case 9:
               _context2.next = 11;
-              return HttpReader_awaitAsyncGenerator(_iterator.next());
+              return http_reader_awaitAsyncGenerator(_iterator.next());
             case 11:
               if (!(_iteratorAbruptCompletion = !(_step = _context2.sent).done)) {
                 _context2.next = 26;
                 break;
               }
               searchResult = _step.value;
-              _searchResult2 = HttpReader_slicedToArray(searchResult, 2), featureOffset = _searchResult2[0];
-              _searchResult4 = HttpReader_slicedToArray(searchResult, 3), featureLength = _searchResult4[2];
+              _searchResult2 = http_reader_slicedToArray(searchResult, 2), featureOffset = _searchResult2[0];
+              _searchResult4 = http_reader_slicedToArray(searchResult, 3), featureLength = _searchResult4[2];
               if (!featureLength) {
                 Logger.info('final feature');
-                guessLength = Config_Config.global.extraRequestThreshold();
+                guessLength = config_Config.global.extraRequestThreshold();
                 featureLength = guessLength;
               }
               if (!(currentBatch.length == 0)) {
@@ -95683,7 +95612,7 @@ var HttpReader = /*#__PURE__*/function () {
             case 19:
               prevFeature = currentBatch[currentBatch.length - 1];
               gap = featureOffset - (prevFeature[0] + prevFeature[1]);
-              if (gap > Config_Config.global.extraRequestThreshold()) {
+              if (gap > config_Config.global.extraRequestThreshold()) {
                 Logger.info("Pushing new feature batch, since gap ".concat(gap, " was too large"));
                 batches.push(currentBatch);
                 currentBatch = [];
@@ -95709,7 +95638,7 @@ var HttpReader = /*#__PURE__*/function () {
                 break;
               }
               _context2.next = 37;
-              return HttpReader_awaitAsyncGenerator(_iterator["return"]());
+              return http_reader_awaitAsyncGenerator(_iterator["return"]());
             case 37:
               _context2.prev = 37;
               if (!_didIteratorError) {
@@ -95729,7 +95658,7 @@ var HttpReader = /*#__PURE__*/function () {
               promises = batches.flatMap(function (batch) {
                 return _this.readFeatureBatch(batch);
               });
-              return _context2.delegateYield(_asyncGeneratorDelegate(_asyncIterator(repeater/* Repeater.merge */.ZN.merge(promises)), HttpReader_awaitAsyncGenerator), "t1", 46);
+              return _context2.delegateYield(_asyncGeneratorDelegate(_asyncIterator(repeater/* Repeater.merge */.ZN.merge(promises)), http_reader_awaitAsyncGenerator), "t1", 46);
             case 46:
             case "end":
               return _context2.stop();
@@ -95756,18 +95685,18 @@ var HttpReader = /*#__PURE__*/function () {
     key: "readFeatureBatch",
     value: function readFeatureBatch(batch) {
       var _this2 = this;
-      return HttpReader_wrapAsyncGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee3() {
+      return http_reader_wrapAsyncGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee3() {
         var _batch$, firstFeatureOffset, _batch, lastFeatureOffset, lastFeatureLength, batchStart, batchEnd, batchSize, featureClient, _iterator2, _step2, _step2$value2, featureOffset;
-        return HttpReader_regeneratorRuntime().wrap(function _callee3$(_context3) {
+        return http_reader_regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              _batch$ = HttpReader_slicedToArray(batch[0], 1), firstFeatureOffset = _batch$[0];
-              _batch = HttpReader_slicedToArray(batch[batch.length - 1], 2), lastFeatureOffset = _batch[0], lastFeatureLength = _batch[1];
+              _batch$ = http_reader_slicedToArray(batch[0], 1), firstFeatureOffset = _batch$[0];
+              _batch = http_reader_slicedToArray(batch[batch.length - 1], 2), lastFeatureOffset = _batch[0], lastFeatureLength = _batch[1];
               batchStart = firstFeatureOffset;
               batchEnd = lastFeatureOffset + lastFeatureLength;
               batchSize = batchEnd - batchStart;
               featureClient = _this2.buildFeatureClient();
-              _iterator2 = HttpReader_createForOfIteratorHelper(batch);
+              _iterator2 = http_reader_createForOfIteratorHelper(batch);
               _context3.prev = 7;
               _iterator2.s();
             case 9:
@@ -95775,9 +95704,9 @@ var HttpReader = /*#__PURE__*/function () {
                 _context3.next = 17;
                 break;
               }
-              _step2$value2 = HttpReader_slicedToArray(_step2.value, 1), featureOffset = _step2$value2[0];
+              _step2$value2 = http_reader_slicedToArray(_step2.value, 1), featureOffset = _step2$value2[0];
               _context3.next = 13;
-              return HttpReader_awaitAsyncGenerator(_this2.readFeature(featureClient, featureOffset, batchSize));
+              return http_reader_awaitAsyncGenerator(_this2.readFeature(featureClient, featureOffset, batchSize));
             case 13:
               _context3.next = 15;
               return _context3.sent;
@@ -95807,9 +95736,9 @@ var HttpReader = /*#__PURE__*/function () {
   }, {
     key: "readFeature",
     value: function () {
-      var _readFeature = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee4(featureClient, featureOffset, minFeatureReqLength) {
+      var _readFeature = _asyncToGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee4(featureClient, featureOffset, minFeatureReqLength) {
         var offset, featureLength, _bytes, byteBuffer, bytes, bytesAligned, bb;
-        return HttpReader_regeneratorRuntime().wrap(function _callee4$(_context4) {
+        return http_reader_regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               offset = featureOffset + this.lengthBeforeFeatures();
@@ -95825,7 +95754,7 @@ var HttpReader = /*#__PURE__*/function () {
               bytes = new Uint8Array(byteBuffer);
               bytesAligned = new Uint8Array(featureLength + SIZE_PREFIX_LEN);
               bytesAligned.set(bytes, SIZE_PREFIX_LEN);
-              bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
+              bb = new js/* ByteBuffer */.cZ(bytesAligned);
               bb.setPosition(SIZE_PREFIX_LEN);
               return _context4.abrupt("return", feature_Feature.getRootAsFeature(bb));
             case 14:
@@ -95842,9 +95771,9 @@ var HttpReader = /*#__PURE__*/function () {
   }], [{
     key: "open",
     value: function () {
-      var _open = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee5(url) {
+      var _open = _asyncToGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee5(url) {
         var assumedHeaderLength, headerClient, assumedIndexLength, minReqLength, _bytes2, headerLength, _bytes3, HEADER_MAX_BUFFER_SIZE, bytes, bb, header, indexLength;
-        return HttpReader_regeneratorRuntime().wrap(function _callee5$(_context5) {
+        return http_reader_regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               assumedHeaderLength = 2024;
@@ -95895,8 +95824,8 @@ var HttpReader = /*#__PURE__*/function () {
               return headerClient.getRange(12, headerLength, minReqLength, 'header');
             case 24:
               bytes = _context5.sent;
-              bb = new js_flatbuffers/* ByteBuffer */.cZ(new Uint8Array(bytes));
-              header = HeaderMeta_HeaderMeta.fromByteBuffer(bb);
+              bb = new js/* ByteBuffer */.cZ(new Uint8Array(bytes));
+              header = fromByteBuffer(bb);
               indexLength = calcTreeSize(header.featuresCount, header.indexNodeSize);
               Logger.debug('completed: opening http reader');
               return _context5.abrupt("return", new HttpReader(headerClient, header, headerLength, indexLength));
@@ -95916,7 +95845,7 @@ var HttpReader = /*#__PURE__*/function () {
 }();
 var BufferedHttpRangeClient = /*#__PURE__*/function () {
   function BufferedHttpRangeClient(source) {
-    HttpReader_classCallCheck(this, BufferedHttpRangeClient);
+    http_reader_classCallCheck(this, BufferedHttpRangeClient);
     this.bytesEverUsed = 0;
     this.bytesEverFetched = 0;
     this.buffer = new ArrayBuffer(0);
@@ -95927,12 +95856,12 @@ var BufferedHttpRangeClient = /*#__PURE__*/function () {
       this.httpClient = source;
     }
   }
-  HttpReader_createClass(BufferedHttpRangeClient, [{
+  http_reader_createClass(BufferedHttpRangeClient, [{
     key: "getRange",
     value: function () {
-      var _getRange = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee6(start, length, minReqLength, purpose) {
+      var _getRange = _asyncToGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee6(start, length, minReqLength, purpose) {
         var start_i, end_i, lengthToFetch;
-        return HttpReader_regeneratorRuntime().wrap(function _callee6$(_context6) {
+        return http_reader_regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               this.bytesEverUsed += length;
@@ -95978,17 +95907,17 @@ var BufferedHttpRangeClient = /*#__PURE__*/function () {
 }();
 var HttpRangeClient = /*#__PURE__*/function () {
   function HttpRangeClient(url) {
-    HttpReader_classCallCheck(this, HttpRangeClient);
+    http_reader_classCallCheck(this, HttpRangeClient);
     this.requestsEverMade = 0;
     this.bytesEverRequested = 0;
     this.url = url;
   }
-  HttpReader_createClass(HttpRangeClient, [{
+  http_reader_createClass(HttpRangeClient, [{
     key: "getRange",
     value: function () {
-      var _getRange2 = _asyncToGenerator( /*#__PURE__*/HttpReader_regeneratorRuntime().mark(function _callee7(begin, length, purpose) {
+      var _getRange2 = _asyncToGenerator( /*#__PURE__*/http_reader_regeneratorRuntime().mark(function _callee7(begin, length, purpose) {
         var range, response;
-        return HttpReader_regeneratorRuntime().wrap(function _callee7$(_context7) {
+        return http_reader_regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               this.requestsEverMade += 1;
@@ -96087,7 +96016,6 @@ function featurecollection_OverloadYield(value, kind) { this.v = value, this.k =
 
 
 
-
 function serialize(features) {
   var headerMeta = introspectHeaderMeta(features);
   var header = featurecollection_buildHeader(headerMeta);
@@ -96124,10 +96052,10 @@ function deserialize(bytes, fromFeature, headerMetaFn) {
   if (!bytes.subarray(0, 3).every(function (v, i) {
     return constants_magicbytes[i] === v;
   })) throw new Error('Not a FlatGeobuf file');
-  var bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+  var bb = new js/* ByteBuffer */.cZ(bytes);
   var headerLength = bb.readUint32(constants_magicbytes.length);
   bb.setPosition(constants_magicbytes.length + SIZE_PREFIX_LEN);
-  var headerMeta = HeaderMeta_HeaderMeta.fromByteBuffer(bb);
+  var headerMeta = fromByteBuffer(bb);
   if (headerMetaFn) headerMetaFn(headerMeta);
   var offset = constants_magicbytes.length + SIZE_PREFIX_LEN + headerLength;
   var indexNodeSize = headerMeta.indexNodeSize,
@@ -96192,7 +96120,7 @@ function _deserializeStream() {
         case 12:
           _context2.t3 = _context2.sent;
           bytes = new _context2.t2(_context2.t3);
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          bb = new js/* ByteBuffer */.cZ(bytes);
           headerLength = bb.readUint32(0);
           _context2.t4 = Uint8Array;
           _context2.next = 19;
@@ -96200,8 +96128,8 @@ function _deserializeStream() {
         case 19:
           _context2.t5 = _context2.sent;
           bytes = new _context2.t4(_context2.t5);
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
-          headerMeta = HeaderMeta_HeaderMeta.fromByteBuffer(bb);
+          bb = new js/* ByteBuffer */.cZ(bytes);
+          headerMeta = fromByteBuffer(bb);
           if (headerMetaFn) headerMetaFn(headerMeta);
           indexNodeSize = headerMeta.indexNodeSize, featuresCount = headerMeta.featuresCount;
           if (!(indexNodeSize > 0)) {
@@ -96323,7 +96251,7 @@ function _readFeature() {
           }
           return _context4.abrupt("return");
         case 7:
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          bb = new js/* ByteBuffer */.cZ(bytes);
           featureLength = bb.readUint32(0);
           _context4.t2 = Uint8Array;
           _context4.next = 12;
@@ -96333,7 +96261,7 @@ function _readFeature() {
           bytes = new _context4.t2(_context4.t3);
           bytesAligned = new Uint8Array(featureLength + 4);
           bytesAligned.set(bytes, 4);
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
+          bb = new js/* ByteBuffer */.cZ(bytesAligned);
           bb.setPosition(SIZE_PREFIX_LEN);
           feature = feature_Feature.getRootAsFeature(bb);
           return _context4.abrupt("return", fromFeature(feature, headerMeta));
@@ -96372,7 +96300,21 @@ function featurecollection_buildHeader(header) {
 function valueToType(value) {
   if (typeof value === 'boolean') return ColumnType.Bool;else if (typeof value === 'number') {
     if (value % 1 === 0) return ColumnType.Int;else return ColumnType.Double;
-  } else if (typeof value === 'string') return ColumnType.String;else if (value === null) return ColumnType.String;else throw new Error("Unknown type (value '".concat(value, "')"));
+  } else if (typeof value === 'string') return ColumnType.String;else if (value === null) return ColumnType.String;else if (featurecollection_typeof(value) === 'object') return ColumnType.Json;else throw new Error("Unknown type (value '".concat(value, "')"));
+}
+function featurecollection_mapColumn(properties, k) {
+  return {
+    name: k,
+    type: valueToType(properties[k]),
+    title: null,
+    description: null,
+    width: -1,
+    precision: -1,
+    scale: -1,
+    nullable: true,
+    unique: false,
+    primary_key: false
+  };
 }
 function introspectHeaderMeta(features) {
   var sampleFeature = features[0];
@@ -96381,19 +96323,26 @@ function introspectHeaderMeta(features) {
   if (properties) columns = Object.keys(properties).filter(function (key) {
     return key !== 'geometry';
   }).map(function (k) {
-    return new ColumnMeta(k, valueToType(properties[k]), null, null, -1, -1, -1, true, false, false);
+    return featurecollection_mapColumn(properties, k);
   });
   var geometryType = inferGeometryType(features);
-  var headerMeta = new HeaderMeta(geometryType, columns, null, features.length, 0, null, null, null, null);
+  var headerMeta = {
+    geometryType: geometryType,
+    columns: columns,
+    envelope: null,
+    featuresCount: features.length,
+    indexNodeSize: 0,
+    crs: null,
+    title: null,
+    description: null,
+    metadata: null
+  };
   return headerMeta;
 }
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/geojson/featurecollection.js
 function geojson_featurecollection_createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = geojson_featurecollection_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function geojson_featurecollection_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return geojson_featurecollection_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return geojson_featurecollection_arrayLikeToArray(o, minLen); }
 function geojson_featurecollection_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-
-
-
 
 
 
@@ -96443,20 +96392,25 @@ function featurecollection_deserializeStream(stream, headerMetaFn) {
 function featurecollection_deserializeFiltered(url, rect, headerMetaFn) {
   return deserializeFiltered(url, rect, feature_fromFeature, headerMetaFn);
 }
-function featurecollection_valueToType(value) {
-  if (typeof value === 'boolean') return ColumnType.Bool;else if (typeof value === 'number') {
-    if (value % 1 === 0) return ColumnType.Int;else return ColumnType.Double;
-  } else if (typeof value === 'string') return ColumnType.String;else if (value === null) return ColumnType.String;else throw new Error("Unknown type (value '".concat(value, "')"));
-}
 function featurecollection_introspectHeaderMeta(featurecollection) {
   var feature = featurecollection.features[0];
   var properties = feature.properties;
   var columns = null;
   if (properties) columns = Object.keys(properties).map(function (k) {
-    return new ColumnMeta(k, featurecollection_valueToType(properties[k]), null, null, -1, -1, -1, true, false, false);
+    return mapColumn(properties, k);
   });
   var geometryType = inferGeometryType(featurecollection.features);
-  var headerMeta = new HeaderMeta(geometryType, columns, null, featurecollection.features.length, 0, null, null, null, null);
+  var headerMeta = {
+    geometryType: geometryType,
+    columns: columns,
+    envelope: null,
+    featuresCount: featurecollection.features.length,
+    indexNodeSize: 0,
+    crs: null,
+    title: null,
+    description: null,
+    metadata: null
+  };
   return headerMeta;
 }
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/geojson.js
@@ -107729,7 +107683,7 @@ __webpack_unused_export__ = SlidingBuffer;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	__webpack_require__(92);
+/******/ 	__webpack_require__(847);
 /******/ 	var __webpack_exports__ = __webpack_require__(371);
 /******/ 	
 /******/ })()

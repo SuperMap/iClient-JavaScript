@@ -18,7 +18,7 @@
       map = L.map('map', {
           preferCanvas: true,
           crs: L.CRS.EPSG4326,
-          center: {lon: -120, lat: 0},
+          center: {lon: 0, lat: 0},
           maxZoom: 18,
           zoom: 2
       });
@@ -28,8 +28,8 @@
       function query() {
           var param = new L.supermap.QueryBySQLParameters({
               queryParams: {
-                  name: "Capitals@World.1",
-                  attributeFilter: "SMID < 10"
+                name: "Countries@World.1",
+                attributeFilter: "SMID > 0"
               }
           });
           new L.supermap

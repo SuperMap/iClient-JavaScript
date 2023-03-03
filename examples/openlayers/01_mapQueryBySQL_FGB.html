@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title data-i18n="resources.title_mapQueryBySQL_FGB"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="FGB" src="../../dist/ol/include-ol.js"></script>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
@@ -37,8 +37,8 @@
     function query() {
         var param = new ol.supermap.QueryBySQLParameters({
             queryParams: {
-                name: "Capitals@World.1",
-                attributeFilter: "SMID < 10"
+                name: "Countries@World.1",
+                attributeFilter: "SMID > 0"
             }
         });
         new ol.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {

@@ -51,8 +51,8 @@
     function query() {
         var param = new mapboxgl.supermap.QueryBySQLParameters({
             queryParams: {
-                name: "Capitals@World.1",
-                attributeFilter: "SMID < 10"
+                name: "Countries@World.1",
+                attributeFilter: "SMID > 0"
             }
         });
 
@@ -60,15 +60,7 @@
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               layerID: 'points',
-              strategy: 'all',
-              paint: {
-                "circle-radius": 6,
-                "circle-color": "#007cbf",
-                "circle-opacity": 0.1,
-                "circle-stroke-width": 2,
-                "circle-stroke-color": "#007cbf",
-                "circle-stroke-opacity": 0.5
-              }
+              strategy: 'all'
             });
             map.addLayer(FGBLayer);
         }, 'FGB');

@@ -3,49 +3,56 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title data-i18n="resources.title_getFeatureBySQL_FGB"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
-</head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<script type="text/javascript">
-    var map, resultLayer,
-        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-world/rest/maps/World",
-        url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/data-world/rest/data";
-    map = new ol.Map({
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript">
+      var map,
+        resultLayer,
+        baseUrl =
+          (window.isLocal ? window.server : 'https://iserver.supermap.io') +
+          '/iserver/services/map-world/rest/maps/World',
+        url =
+          (window.isLocal ? window.server : 'https://iserver.supermap.io') + '/iserver/services/data-world/rest/data';
+      map = new ol.Map({
         target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+        controls: ol.control
+          .defaults({ attributionOptions: { collapsed: false } })
+          .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-            center: [100, 0],
-            zoom: 3,
-            projection: 'EPSG:4326',
-            multiWorld: true
+          center: [100, 0],
+          zoom: 3,
+          projection: 'EPSG:4326',
+          multiWorld: true
         })
-    });
-    var layer = new ol.layer.Tile({
+      });
+      var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
-            url: baseUrl,
-            wrapX: true
+          url: baseUrl,
+          wrapX: true
         }),
         projection: 'EPSG:4326'
-    })
-    map.addLayer(layer);
-    query();
+      });
+      map.addLayer(layer);
+      query();
 
-    function query() {
+      function query() {
         var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
-            queryParameter: {
-                name: "Countries@World",
-                attributeFilter: "SMID = 234"
-            },
-            datasetNames: ["World:Countries"]
+          queryParameter: {
+            name: 'world@World',
+            attributeFilter: 'SMID > 0'
+          },
+          datasetNames: ['World:world']
         });
-        new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
-          const vectorSource = new ol.source.FGB({
+        new ol.supermap.FeatureService(url).getFeaturesBySQL(
+          sqlParam,
+          function (serviceResult) {
+            const vectorSource = new ol.source.FGB({
               format: new ol.format.GeoJSON(),
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all
@@ -55,8 +62,10 @@
               source: vectorSource
             });
             map.addLayer(resultLayer);
-        }, 'FGB');
-    }
-</script>
-</body>
+          },
+          'FGB'
+        );
+      }
+    </script>
+  </body>
 </html>
