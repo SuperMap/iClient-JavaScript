@@ -53,9 +53,6 @@ const PAINT_MAP = {
     'circle-opacity': 1,
     'circle-blur': 0,
     'circle-translate': [0, 0],
-    'circle-translate-anchor': 'map',
-    'circle-pitch-scale': 'map',
-    'circle-pitch-alignment': 'viewport',
     'circle-stroke-width': 0,
     'circle-stroke-color': '#000',
     'circle-stroke-opacity': 1
@@ -71,8 +68,7 @@ const PAINT_MAP = {
     'fill-color': '#3fb1e3',
     'fill-translate': [0, 0],
     'fill-antialias': true,
-    'fill-outline-color': '#3fb1e3',
-    'fill-translate-anchor': 'map'
+    'fill-outline-color': '#3fb1e3'
   }
 };
 
@@ -81,7 +77,7 @@ export class FGBLayer {
     this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('FGBLayer_');
     this.layerId = this.id + 'outer';
     this.sourceId = this.layerId;
-    this.options = options;
+    this.options = options || {};
     this.strategy = options.strategy || 'bbox';
     this.url = options.url;
     this.loadedExtentsRtree_ = new RBush();
@@ -112,13 +108,7 @@ export class FGBLayer {
         extent = this.extent;
       }
     }
-    const formatBounds = extent.length ? {
-      minX: extent[0],
-      minY: extent[1],
-      maxX: extent[2],
-      maxY: extent[3]
-    } : {};
-    this._handleFeatures(formatBounds);
+    this._handleFeatures(extent);
   }
 
   moveLayer(id, beforeId) {
@@ -142,8 +132,9 @@ export class FGBLayer {
         type: 'geojson',
         data: features
       });
+    } else {
+      this.map.getSource(this.sourceId).setData(features);
     }
-    this.map.getSource(this.sourceId).setData(features);
     if (!this.map.getLayer(this.layerId)) {
       const layer = Object.assign({
         id: this.layerId,
@@ -159,7 +150,6 @@ export class FGBLayer {
   async _updateFeatures() {
     const bounds = this.map.getBounds().toArray();
     const extentToLoad = [bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1]];
-    const loadedExtentsRtree = this.loadedExtentsRtree_;
     const alreadyLoaded = this._forEachInExtent(extentToLoad, (object) => {
       return this._containsExtent(object.extent, extentToLoad);
     });
@@ -167,14 +157,6 @@ export class FGBLayer {
       let iter = await this._loadData(extentToLoad);
       const features = await this.iterateFeatures(iter);
       this.map.getSource(this.sourceId).setData(features);
-      const item = {
-        minX: extentToLoad[0],
-        minY: extentToLoad[1],
-        maxX: extentToLoad[2],
-        maxY: extentToLoad[3],
-        value: { extent: extentToLoad.slice() }
-      };
-      loadedExtentsRtree.insert(item);
     }
   }
 
@@ -197,10 +179,19 @@ export class FGBLayer {
 
   async _loadData(bounds) {
     let fgbStream;
-    let rect = bounds;
-    if (!Object.keys(bounds).length) {
+    let rect = {
+      minX: bounds[0],
+      minY: bounds[1],
+      maxX: bounds[2],
+      maxY: bounds[3]
+    };
+    if (!bounds.length) {
       fgbStream = await this._getStream(this.url);
+    } else {
+      rect.value = { extent: bounds.slice() };
+      this.loadedExtentsRtree_.insert(rect);
     }
+   
     return await deserialize((fgbStream && fgbStream.body) || this.url, rect, (headerMeta) => {
       this.layerType = GEOMETRY_TYPE_MAP[headerMeta.geometryType];
     });

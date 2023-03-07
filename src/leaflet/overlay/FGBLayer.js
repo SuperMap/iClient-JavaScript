@@ -16,7 +16,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @category Visualization FGB
  * @extends {L.LayerGroup}
  * @param {string} url - FGB 服务地址，例如：http://localhost:8090/iserver/services/xxx/rest/data/featureResults/newResourceId.fgb。
- * @param {Object} opt_options - 参数。
+ * @param {Object} options - 参数。
  * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。
  * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为按需加载。
@@ -51,14 +51,7 @@ export var FGBLayer = L.LayerGroup.extend({
       const intersectExtent = getIntersection(this.extent, extent);
       extent = (intersectExtent && intersectExtent.length) ? intersectExtent : this.extent;
     }
-   
-    const formatBounds = extent.length ? {
-      minX: extent[0],
-      minY: extent[1],
-      maxX: extent[2],
-      maxY: extent[3]
-    } : {};
-    this._handleFeatures(formatBounds);
+    this._handleFeatures(extent);
   },
   onRemove: function (map) {
     this.loadedExtentsRtree_.clear();
@@ -71,29 +64,32 @@ export var FGBLayer = L.LayerGroup.extend({
     const map = e.target;
     let extent = [map.getBounds().getSouthWest(), map.getBounds().getNorthEast()];
     const extentToLoad = [extent[0].lng, extent[0].lat, extent[1].lng, extent[1].lat];
-    const loadedExtentsRtree = this.loadedExtentsRtree_;
     const alreadyLoaded = this._forEachInExtent(extentToLoad, (object) => {
       return this._containsExtent(object.extent, extentToLoad);
     });
     if (!alreadyLoaded) {
-      this._handleFeatures(extent);
-      const item = {
-        minX: extentToLoad[0],
-        minY: extentToLoad[1],
-        maxX: extentToLoad[2],
-        maxY: extentToLoad[3],
-        value: { extent: extentToLoad.slice() }
-      };
-      loadedExtentsRtree.insert(item);
+    
+      this._handleFeatures(extentToLoad);
+    
     }
   },
   _handleFeatures: async function (extent) {
     let fgbStream;
-    let rect = extent;
-    if (!Object.keys(extent).length) {
+    let rect = {
+      minX: extent[0],
+      minY: extent[1],
+      maxX: extent[2],
+      maxY: extent[3]
+    };
+    if (!extent.length) {
       fgbStream = await this._getStream(this.url);
+    } else {
+      rect.value = { extent: extent.slice() };
+      this.loadedExtentsRtree_.insert(rect);
     }
+    
     const fgb = deserialize((fgbStream && fgbStream.body) || this.url, rect);
+    
     let curLayer = L.geoJSON(null, this.options);
     curLayer.addTo(this);
     for await (let feature of fgb) {

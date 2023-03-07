@@ -35,6 +35,7 @@ import './openlayers/overlay/theme/ThemeSpec.js';
 import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
+import './openlayers/overlay/FGBSpec.js';
 
 // /**openlayers --services**/
 import './openlayers/services/BufferAnalysisSpec.js';

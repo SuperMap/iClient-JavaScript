@@ -47,7 +47,7 @@ export class FGB extends VectorSource {
       if (!Object.keys(extent).length) {
         fgbStream = await this._getStream(this.url);
       }
-      await this._handleFeatures((fgbStream && fgbStream.body) || this.url, extent);
+      this._handleFeatures((fgbStream && fgbStream.body) || this.url, extent);
     });
   }
 
