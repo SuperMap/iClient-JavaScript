@@ -15,13 +15,13 @@
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var map,
         baseUrl = host + '/iserver/services/map-china400/rest/maps/China_4326',
-        fgbUrl = 'https://iclient.supermap.io/web/data/fgb/waterways.fgb';
+        fgbUrl = 'https://iclient.supermap.io/minio/fgb/roads.fgb';
       map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: [40.05, 116.3],
+        center: [39.91313934326172, 116.3966453552246],
         maxZoom: 18,
-        zoom: 8
+        zoom: 12
       });
       new L.supermap.TiledMapLayer(baseUrl).addTo(map);
       new L.supermap.FGBLayer(fgbUrl, {

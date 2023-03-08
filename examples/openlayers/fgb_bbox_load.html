@@ -14,18 +14,16 @@
     <script type="text/javascript">
       var host = window.isLocal ? window.server : "https://iserver.supermap.io",
       url = host + "/iserver/services/map-china400/rest/maps/China_4326";
-      var fgbUrl = 'https://iclient.supermap.io/web/data/fgb/waterways.fgb';
+      var fgbUrl = 'https://iclient.supermap.io/minio/fgb/roads.fgb';
       var map;
-      var dataSourceName = 'osm-line';
-      var dataSetsName = 'waterways';
       map = new ol.Map({
         target: 'map',
         controls: ol.control
           .defaults({ attributionOptions: { collapsed: false } })
           .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-          center: [116.3, 40],
-          zoom: 9,
+          center: [116.3966453552246, 39.91313934326172],
+          zoom: 13,
           projection: 'EPSG:4326',
           multiWorld: true
         })
