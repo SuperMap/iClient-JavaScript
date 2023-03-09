@@ -22,7 +22,7 @@
           maxZoom: 18,
           zoom: 2
       });
-      new L.supermap.TiledMapLayer(url).addTo(map);
+      new L.supermap.TiledMapLayer(url, {noWrap: true}).addTo(map);
       query();
 
       function query() {

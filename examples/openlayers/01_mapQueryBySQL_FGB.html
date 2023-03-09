@@ -22,12 +22,13 @@
             center: [0, 0],
             zoom: 2,
             projection: 'EPSG:4326',
-            multiWorld: true
+            multiWorld: false
         })
     });
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
-            url: url
+            url: url,
+            wrapX: false
         }),
         projection: 'EPSG:4326'
     });

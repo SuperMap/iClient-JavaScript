@@ -22,9 +22,9 @@
         crs: L.CRS.EPSG4326,
         center: { lon: 0, lat: 0 },
         maxZoom: 18,
-        zoom: 1
+        zoom: 2,
       });
-      new L.supermap.TiledMapLayer(baseUrl).addTo(map);
+      new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
       query();
       function query() {
         var sqlParam = new L.supermap.GetFeaturesBySQLParameters({

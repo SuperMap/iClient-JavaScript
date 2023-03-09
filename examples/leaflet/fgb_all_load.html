@@ -19,9 +19,9 @@
       map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: { lon: 110, lat: 30 },
+        center: { lon: 110, lat: 35 },
         maxZoom: 18,
-        zoom: 3
+        zoom: 4
       });
       new L.supermap.TiledMapLayer(baseUrl).addTo(map);
       new L.supermap.FGBLayer(fgbUrl, {

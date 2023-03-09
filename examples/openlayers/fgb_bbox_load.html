@@ -12,8 +12,8 @@
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript">
-      var host = window.isLocal ? window.server : "https://iserver.supermap.io",
-      url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
+        url = host + '/iserver/services/map-china400/rest/maps/China_4326';
       var fgbUrl = 'https://iclient.supermap.io/minio/fgb/roads.fgb';
       var map;
       map = new ol.Map({
@@ -31,8 +31,7 @@
       window.map = map;
       var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
-          url,
-          wrapX: true
+          url
         }),
         projection: 'EPSG:4326'
       });
@@ -43,7 +42,13 @@
       });
 
       var fgbLayer = new ol.layer.Vector({
-        source: vectorSource
+        source: vectorSource,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: '#38f',
+            width: 2
+          })
+        })
       });
       map.addLayer(fgbLayer);
     </script>

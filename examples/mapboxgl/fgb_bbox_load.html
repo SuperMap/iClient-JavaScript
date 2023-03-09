@@ -62,7 +62,11 @@
 
       map.on('load', function () {
         const FGBLayer = new mapboxgl.supermap.FGBLayer({
-          url: fgbUrl
+          url: fgbUrl,
+          paint: {
+            'line-color': '#38f',
+            'line-width': 3
+          }
         });
         map.addLayer(FGBLayer);
       });

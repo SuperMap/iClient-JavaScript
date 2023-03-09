@@ -19,6 +19,7 @@
        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
     var map = new mapboxgl.Map({
         container: 'map',
+        renderWorldCopies: false,
         style: {
             "version": 8,
             "sources": {
@@ -60,7 +61,11 @@
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               layerID: 'points',
-              strategy: 'all'
+              strategy: 'all',
+              paint: {
+                'fill-color': '#FF3300' /* 填充的颜色 */,
+                'fill-opacity': 0.6 /* 透明度 */
+              }
             });
             map.addLayer(FGBLayer);
         }, 'FGB');

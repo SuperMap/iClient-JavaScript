@@ -106,7 +106,7 @@ var exampleConfig = {
                   name: "SQL查询 (FGB)",
                   name_en: "SQL query (FGB)",
                   version: '11.1.0',
-                  thumbnail: "l_mapQueryBySQL.png",
+                  thumbnail: "query_fgb_features.png",
                   fileName: "01_mapQueryBySQL_FGB"
               }]
             },
@@ -127,7 +127,7 @@ var exampleConfig = {
                   name: "SQL查询 (FGB)",
                   name_en: "SQL query (FGB)",
                   version: '11.1.0',
-                  thumbnail: "l_getFeatureBySQL.png",
+                  thumbnail: "query_fgb_features.png",
                   fileName: "02_getFeatureBySQL_FGB"
               },{
                     name: "范围查询",
@@ -1085,21 +1085,21 @@ var exampleConfig = {
                     }
                 ]
             },
-            "FGBLayer": {
-              name: 'FGBLayer',
-              name_en: 'FGBLayer',
+            "FGB": {
+              name: 'FGB',
+              name_en: 'FGB',
               version: '11.1.0',
               content: [
                   {
-                      name: 'FGB 全量加载',
-                      name_en: 'FGB Full Load',
+                      name: 'FGB 全量加载（2500万点数据量）',
+                      name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
                       version: '11.1.0',
                       thumbnail: 'fgb_all_load.png',
                       fileName: 'fgb_all_load'
                   },
                   {
-                    name: 'FGB 按需加载',
-                    name_en: 'FGB Extent Load',
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
                     version: '11.1.0',
                     thumbnail: 'fgb_bbox_load.png',
                     fileName: 'fgb_bbox_load'

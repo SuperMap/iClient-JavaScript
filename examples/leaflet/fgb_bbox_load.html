@@ -25,7 +25,11 @@
       });
       new L.supermap.TiledMapLayer(baseUrl).addTo(map);
       new L.supermap.FGBLayer(fgbUrl, {
-        strategy: 'bbox'
+        strategy: 'bbox',
+        style: {
+          color: '#38f',
+          weight: 2
+        }
       }).addTo(map);
     </script>
   </body>

@@ -56,15 +56,19 @@
             }
           ]
         },
-        center: [110, 30],
-        zoom: 3
+        center: [110, 37],
+        zoom: 3.7
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-left');
       map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
       map.on('load', function () {
         const FGBLayer = new mapboxgl.supermap.FGBLayer({
           url: fgbUrl,
-          strategy: 'all'
+          strategy: 'all',
+          paint: {
+            'line-color': '#38f',
+            'line-width': 3
+          }
         });
         map.addLayer(FGBLayer);
       });

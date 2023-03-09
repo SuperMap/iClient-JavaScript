@@ -74,7 +74,7 @@ var exampleConfig = {
                       name: 'SQL查询 (FGB)',
                       name_en: 'SQL query (FGB)',
                       version: '11.1.0',
-                      thumbnail: 'mb_mapQueryBySQL.png',
+                      thumbnail: 'query_fgb_features.png',
                       fileName: '01_mapQueryBySQL_FGB'
                     }
                 ]
@@ -99,7 +99,7 @@ var exampleConfig = {
                       name: 'SQL查询 (FGB)',
                       name_en: 'SQL query (FGB)',
                       version: '11.1.0',
-                      thumbnail: 'mb_getFeatureBySQL.png',
+                      thumbnail: 'query_fgb_features.png',
                       fileName: '02_getFeatureBySQL_FGB'
                     },
                     {
@@ -462,7 +462,7 @@ var exampleConfig = {
                       fileName: "imageService"
                   }
               ]
-            },
+            }
         }
     },
     iPortal: {
@@ -1097,21 +1097,21 @@ var exampleConfig = {
                     }
                 ]
             },
-            FGBLayer: {
-              name: 'FGB图层',
-              name_en: 'FGBLayer',
+            FGB: {
+              name: 'FGB',
+              name_en: 'FGB',
               version: '11.0.1',
               content: [
                   {
-                      name: 'FGB 全量加载',
-                      name_en: 'FGB Full Load',
+                      name: 'FGB 全量加载（2500万点数据量）',
+                      name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
                       version: '11.1.0',
                       thumbnail: 'fgb_all_load.png',
                       fileName: 'fgb_all_load'
                   },
                   {
-                    name: 'FGB 按需加载',
-                    name_en: 'FGB Extent Load',
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
                     version: '11.1.0',
                     thumbnail: 'fgb_bbox_load.png',
                     fileName: 'fgb_bbox_load'

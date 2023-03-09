@@ -22,8 +22,8 @@
           .defaults({ attributionOptions: { collapsed: false } })
           .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-          center: [103, 30],
-          zoom: 4,
+          center: [103, 35],
+          zoom: 5,
           projection: 'EPSG:4326',
           multiWorld: true
         })
@@ -42,7 +42,13 @@
       });
 
       var fgbLayer = new ol.layer.Vector({
-        source: vectorSource
+        source: vectorSource,
+        style: new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: '#38f',
+            width: 2
+          })
+        })
       });
       map.addLayer(fgbLayer);
     </script>

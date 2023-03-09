@@ -25,8 +25,8 @@
           .defaults({ attributionOptions: { collapsed: false } })
           .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-          center: [100, 0],
-          zoom: 3,
+          center: [0, 0],
+          zoom: 2,
           projection: 'EPSG:4326',
           multiWorld: true
         })
@@ -34,7 +34,7 @@
       var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
           url: baseUrl,
-          wrapX: true
+          wrapX: false
         }),
         projection: 'EPSG:4326'
       });
@@ -55,7 +55,8 @@
             const vectorSource = new ol.source.FGB({
               format: new ol.format.GeoJSON(),
               url: serviceResult.result.newResourceLocation,
-              strategy: ol.loadingstrategy.all
+              strategy: ol.loadingstrategy.all,
+              wrapX: false
             });
 
             resultLayer = new ol.layer.Vector({
