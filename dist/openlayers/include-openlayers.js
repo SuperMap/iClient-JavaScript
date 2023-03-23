@@ -75,7 +75,7 @@
             inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://iclient.supermap.io/web/libs/proj4/2.8.0/proj4.js');
+            inputScript('https://iclient.supermap.io/web/libs/proj4/2.9.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript('https://iclient.supermap.io/web/libs/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');

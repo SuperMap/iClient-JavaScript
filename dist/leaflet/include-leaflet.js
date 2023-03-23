@@ -102,7 +102,7 @@
             inputScript('https://iclient.supermap.io/web/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js');
         }
         if (inArray(includes, 'd3')) {
-            inputScript('https://iclient.supermap.io/web/libs/d3/7.4.4/d3.min.js');
+            inputScript('https://iclient.supermap.io/web/libs/d3/7.8.2/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
             inputScript('https://iclient.supermap.io/web/libs/d3/d3-hexbin.v0.2.min.js');
