@@ -76,7 +76,7 @@
                         collapsed: false
                     }
                 })
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 12,

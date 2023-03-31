@@ -46,7 +46,7 @@
     //mapboxgl默认 Attribution控件
     map.addControl(new mapboxgl.AttributionControl({compact: true}));
 
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 </script>
 

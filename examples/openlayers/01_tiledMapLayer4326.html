@@ -21,7 +21,7 @@
           mapOptions: {
             controls: ol.control
               .defaults({ attributionOptions: { collapsed: false } })
-              .extend([new ol.supermap.control.Logo()])
+              .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })])
           }
         });
       /* 方式二：1.调用 ol.supermap.MapService，获取 SuperMap iServer 地图服务的地图信息
@@ -35,7 +35,7 @@
             target: 'map',
             controls: ol.control
               .defaults({ attributionOptions: { collapsed: false } })
-              .extend([new ol.supermap.control.Logo()]),
+              .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View(viewOptions)
           });
          var layer = new ol.layer.Tile({

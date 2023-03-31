@@ -39,7 +39,7 @@ export class Theme extends ImageCanvasSource {
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,

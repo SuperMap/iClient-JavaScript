@@ -108,7 +108,7 @@
             target: 'map',
             maxExtent: [-180.0, -85.05, 180.0, 85.05],
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [106, 36],
                 zoom: 5,

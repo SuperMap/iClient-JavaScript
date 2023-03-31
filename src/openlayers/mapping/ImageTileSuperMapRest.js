@@ -33,7 +33,7 @@ export class ImageTileSuperMapRest extends XYZ {
         options.format = options.format || 'png';
         options.transparent = options.transparent === undefined ? true : options.transparent === true;
         options.cacheEnabled = options.cacheEnabled === undefined ? true : options.cacheEnabled === true;
-        var attributions = options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>";
+        var attributions = options.attributions || "Map Data <span>© SuperMap iServer</span>";
         var url = _createLayerUrl(options.url, options);
         var superOptions = {
             ...options,
