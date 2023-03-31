@@ -67,7 +67,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
 
     options.attributions =
       options.attributions ||
-      "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>";
+      "Map Data <span>© SuperMap iServer</span> with © SuperMap iClient";
 
     options.format = options.format ? options.format : 'png';
     this._layerUrl = CommonUtil.urlPathAppend(options.url, 'image.' + options.format);

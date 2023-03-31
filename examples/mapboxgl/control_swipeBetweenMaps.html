@@ -74,7 +74,7 @@
                 zoom: 0
             });
 
-            beforeMap.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+            beforeMap.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
             beforeMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
             var afterMap = new mapboxgl.Map({
                 container: 'after',

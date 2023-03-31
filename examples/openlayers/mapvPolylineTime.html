@@ -85,7 +85,7 @@
     var map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         overlays: [overlay],
         view: new ol.View({
             center: ol.proj.transform([114.321317, 30.398428], 'EPSG:4326', 'EPSG:3857'),

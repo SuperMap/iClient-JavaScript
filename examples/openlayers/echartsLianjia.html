@@ -64,7 +64,7 @@
         var map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({ attributionOptions: { collapsed: true } })
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [12954583.524137927, 4860747.532344677],
                 zoom: 10,
