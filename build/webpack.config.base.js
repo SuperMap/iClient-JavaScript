@@ -69,7 +69,7 @@ module.exports = {
 
     bannerInfo: function (libName) {
         return `
-         ${libName}.(${pkg.homepage})
+         ${libName}
          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
          license: ${pkg.license}
          version: v${pkg.version}
