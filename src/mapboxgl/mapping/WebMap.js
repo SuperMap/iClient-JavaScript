@@ -95,7 +95,7 @@ export class WebMap extends mapboxgl.Evented {
 		super();
 		this.mapId = id;
 		options = options || {};
-		this.server = options.server || 'https://www.supermapol.com';
+		this.server = options.server;
 		this.credentialKey = options.credentialKey;
 		this.credentialValue = options.credentialValue;
 		this.withCredentials = options.withCredentials || false;
