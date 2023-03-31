@@ -132,7 +132,7 @@
                 zoom: 11
             });
             map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-            map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+            map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
             //控制两种分析选项值：
             $(".form-control").change(function (e) {

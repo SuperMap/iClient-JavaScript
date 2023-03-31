@@ -41,7 +41,7 @@
         maxZoom: 18,
         zoom: 3
     });
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     var draw = new MapboxDraw({

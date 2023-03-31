@@ -30,7 +30,7 @@ export class Mapv extends ImageCanvasSource {
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "© 2018 百度 MapV with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,

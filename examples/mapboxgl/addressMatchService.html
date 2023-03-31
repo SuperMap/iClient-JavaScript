@@ -155,7 +155,7 @@
             zoom: 11
         });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     //判断输入字符串是否为空或者全部都是空格
     function isNull(str) {

@@ -37,7 +37,7 @@ export class TileSuperMapRest extends TileImage {
         options = options || {};
         options.attributions =
             options.attributions ||
-            "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
 
         options.format = options.format ? options.format : 'png';
 
