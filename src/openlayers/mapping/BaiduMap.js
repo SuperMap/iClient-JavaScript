@@ -23,7 +23,7 @@ export class BaiduMap extends TileImage {
         var options = opt_options || {};
         var attributions =
             options.attributions ||
-            "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© SuperMap iClient</span>";
         var tileGrid = BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
 

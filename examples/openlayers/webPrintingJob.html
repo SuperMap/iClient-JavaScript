@@ -269,6 +269,7 @@
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var webMap = new ol.supermap.WebMap(1887887232, {
             target: 'map',
+            server: 'https://www.supermapol.com',
             successCallback: function (map) {
                 $('#center').val(map.getView().getCenter().join(','));
                 var res = map.getView().getResolution();

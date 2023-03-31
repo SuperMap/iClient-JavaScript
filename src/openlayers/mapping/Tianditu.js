@@ -38,9 +38,7 @@ export class Tianditu extends WMTS {
       "img": 18
     }
     var options = opt_options || {};
-    var attributions = options.attributions || "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-      "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-      "<span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+    var attributions = options.attributions || "Map Data with <span>© SuperMap iClient</span>"
     options.layerType = options.layerType || "vec";
     options.layerType = options.isLabel ? layerLabelMap[options.layerType] : options.layerType;
     options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";

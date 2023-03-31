@@ -135,9 +135,6 @@ export class WebMap extends Observable {
             // webmap有可能是url地址，有可能是webmap对象
             Util.isString(this.webMap) ? this.createWebmap(this.webMap) : this.getMapInfoSuccess(options.webMap);
         } else {
-            if (!this.server) {
-                this.server = 'https://www.supermapol.com';
-            }
             this.createWebmap();
         }
     }
