@@ -49,112 +49,115 @@
     }
 
     //加载类库资源文件
-    function load() {
+    function load({ libsurl, disturl }) {
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'iclient8c')) {
             if (!inArray(includes, 'iclient8c-plot')) {
                 window.excludePlot = true;
             }
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/libs/SuperMap.Include.js");
+            inputScript(`${libsurl}/iclient8c/libs/SuperMap.Include.js`);
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("https://iclient.supermap.io/web/libs/mapv/2.0.62/mapv.min.js");
+            inputScript(`${libsurl}/mapv/2.0.62/mapv.min.js`);
         }
         if (inArray(includes, 'echarts')) {
-            inputScript('https://iclient.supermap.io/web/libs/echarts/4.9.0/echarts.min.js');
+            inputScript(`${libsurl}/echarts/4.9.0/echarts.min.js`);
         }
         if (inArray(includes, 'nanoscroller')) {
-            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/nanoscroller.css");
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/jquery.nanoscroller.min.js");
+            inputCSS(`${libsurl}/iclient8c/examples/css/nanoscroller.css`);
+            inputScript(`${libsurl}/iclient8c/examples/js/jquery.nanoscroller.min.js`);
         }
         if (inArray(includes, 'infoWindow')) {
-            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plugins/infoWindow/infoWindow.css");
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plugins/infoWindow/InfoWindow.js");
+            inputCSS(`${libsurl}/iclient8c/examples/js/plugins/infoWindow/infoWindow.css`);
+            inputScript(`${libsurl}/iclient8c/examples/js/plugins/infoWindow/InfoWindow.js`);
         }
-        if (inArray(includes, 'heatmapColorCSS')) {
-            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/heatmap.css");
+        if (inArray(includes, 'heatmapColorcss')) {
+            inputCSS(`${libsurl}/iclient8c/examples/css/heatmap.css`);
         }
         if (!inArray(excludes, 'iclient-classic')) {
             if (supportES6()) {
-                inputScript("../../dist/classic/iclient-classic-es6.min.js");
+                inputScript(`${disturl}/classic/iclient-classic-es6.min.js`);
             } else {
-                inputScript("../../dist/classic/iclient-classic.min.js");
+                inputScript(`${disturl}/classic/iclient-classic.min.js`);
             }
         }
         if (inArray(includes, 'tianditu')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/layer/Tianditu.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/layer/Tianditu.js`);
         }
         if (inArray(includes, 'echarts-all')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/echarts-all.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/echarts-all.js`);
         }
         if (inArray(includes, 'baidu')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/layer/Baidu.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/layer/Baidu.js`);
         }
         if (inArray(includes, 'OSMBuildings-SuperMap')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/OSMBuildings-SuperMap.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/OSMBuildings-SuperMap.js`);
         }
         if (inArray(includes, 'D3WindMap')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/D3WindMap.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/D3WindMap.js`);
         }
         if (inArray(includes, 'd3')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/d3.v3.min.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/d3.v3.min.js`);
         }
         if (inArray(includes, 'three')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/third-party/Three/ThreeWebGL.js");
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/third-party/Three/ThreeExtras.js");
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/third-party/Three/RequestAnimationFrame.js");
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/third-party/Three/Detector.js");
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/third-party/globe.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/third-party/Three/ThreeWebGL.js`);
+            inputScript(`${libsurl}/iclient8c/examples/js/third-party/Three/ThreeExtras.js`);
+            inputScript(`${libsurl}/iclient8c/examples/js/third-party/Three/RequestAnimationFrame.js`);
+            inputScript(`${libsurl}/iclient8c/examples/js/third-party/Three/Detector.js`);
+            inputScript(`${libsurl}/iclient8c/examples/js/third-party/globe.js`);
         }
         if (inArray(includes, 'MapToImg')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/MapToImg.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/MapToImg.js`);
         }
         if (inArray(includes, 'Bar')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Bar.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Bar.js`);
         }
         if (inArray(includes, 'Bar3D')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Bar3D.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Bar3D.js`);
         }
         if (inArray(includes, 'Circle')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Circle.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Circle.js`);
         }
         if (inArray(includes, 'Line')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Line.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Line.js`);
         }
         if (inArray(includes, 'Pie')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Pie.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Pie.js`);
         }
         if (inArray(includes, 'Point')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Point.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Point.js`);
         }
         if (inArray(includes, 'Ring')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/graph/Ring.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/graph/Ring.js`);
         }
         if (inArray(includes, 'style')) {
-            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/theme/default/style.css");
+            inputCSS(`${libsurl}/iclient8c/theme/default/style.css`);
         }
         if (inArray(includes, 'sm-doc')) {
-            inputCSS("https://iclient.supermap.io/web/libs/iclient8c/examples/css/sm-doc.css");
+            inputCSS(`${libsurl}/iclient8c/examples/css/sm-doc.css`);
         }
         if (inArray(includes, 'LargeFormatPrints')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/LargeFormatPrints.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/LargeFormatPrints.js`);
         }
         if (inArray(includes, 'PlottingPanel')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/PlottingPanel.Include.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/plottingPanel/PlottingPanel.Include.js`);
         }
         if (inArray(includes, 'bevInclude')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/examples/js/bevInclude.js");
+            inputScript(`${libsurl}/iclient8c/examples/js/bevInclude.js`);
         }
         if (inArray(includes, 'DefaultStyleConfiguration')) {
-            inputScript("https://iclient.supermap.io/web/libs/iclient8c/resource/Plugins/Plotting/DefaultStyleConfiguration.js");
+            inputScript(`${libsurl}/iclient8c/resource/Plugins/Plotting/DefaultStyleConfiguration.js`);
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://iclient.supermap.io/web/libs/tensorflow/3.9.0/tf.min.js');
+          inputScript(`${libsurl}/tensorflow/3.9.0/tf.min.js`);
         }
     }
 
-    load();
+    load({
+        libsurl: 'https://iclient.supermap.io/web/libs',
+        disturl: '../../dist'
+    });
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
 })();
