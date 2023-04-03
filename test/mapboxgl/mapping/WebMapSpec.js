@@ -632,7 +632,9 @@ describe('mapboxgl_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, {
+            server: server
+        });
         var features = [];
         let feature = {
             type: 'Feature',

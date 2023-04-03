@@ -868,7 +868,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         var layerInfo = JSON.parse(wmtsInfo);
         datavizWebmap.baseProjection = "EPSG:4326";
         datavizWebmap.createWMTSSource(layerInfo);
@@ -888,7 +888,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         var layerInfo = JSON.parse(wmtsInfo1);
         datavizWebmap.baseProjection = "EPSG:4326";
         datavizWebmap.createWMTSSource(layerInfo);
@@ -954,7 +954,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         var features = [];
         var feature = new Feature();
         feature.setProperties({
@@ -981,7 +981,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         setTimeout(() => {
             var layerInfo = {
                 layerType: 'WMTS',
@@ -1008,7 +1008,7 @@ describe('openlayers_WebMap', () => {
                 return Promise.resolve(new Response(wmtsData));
             }
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         spyOn(datavizWebmap, "isValidResponse").and.callFake(() => {
             return true;
         });
