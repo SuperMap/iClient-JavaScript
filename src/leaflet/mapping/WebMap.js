@@ -70,7 +70,7 @@ import Attributions from '../core/Attributions'
  * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 参数。
  * @param {string} [options.map='map'] - 地图容器 id。
- * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {string} [options.server] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
@@ -88,7 +88,7 @@ export var WebMap = L.LayerGroup.extend({
 
     options: {
         map: 'map',
-        server: 'https://www.supermapol.com',
+        server: '',
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
