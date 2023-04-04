@@ -42,8 +42,7 @@ describe('mapboxgl_WebMap', () => {
         var datavizWebmap = new WebMap(id, {
             server: server
         });
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.callBack).toBeUndefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -57,7 +56,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('tianditu');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('resize', (done) => {
@@ -72,10 +71,11 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.resize();
             done();
-        }, 0);
+        });
+        
     });
     it('setMapId', (done) => {
         let options = {
@@ -89,7 +89,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.setMapId('testID');
             expect(datavizWebmap.mapId).toEqual('testID');
             done();
@@ -107,7 +107,7 @@ describe('mapboxgl_WebMap', () => {
           return Promise.resolve();
       });
       datavizWebmap = new WebMap(id, options);
-      datavizWebmap.on('mapinitialized', () => {
+      datavizWebmap.on('addlayerssucceeded', () => {
         datavizWebmap._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 }}]);
         datavizWebmap._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 }}]);
         done();
@@ -125,7 +125,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
             expect(datavizWebmap.server).toEqual('http://www.test.com/');
             done();
@@ -149,7 +149,7 @@ describe('mapboxgl_WebMap', () => {
             maxZoom: 12,
             isWorldCopy: true
         };
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.setMapOptions(mapOptions);
             done();
         });
@@ -168,7 +168,7 @@ describe('mapboxgl_WebMap', () => {
         };
         datavizWebmap = new WebMap(id, options);
 
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
           expect(datavizWebmap.credentialKey).toBeUndefined();
           expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -193,7 +193,7 @@ describe('mapboxgl_WebMap', () => {
         });
         var datavizWebmap = new WebMap(id, options);
 
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
             done();
         });
@@ -211,8 +211,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -222,7 +221,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('openstreet');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('initialize_FAILD', (done) => {
@@ -233,7 +232,6 @@ describe('mapboxgl_WebMap', () => {
             return Promise.reject();
         });
         var datavizWebmap = new WebMap(id, options);
-
         setTimeout(() => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
@@ -253,8 +251,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -264,7 +261,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('GAOD');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('initialize_GOOGLE', (done) => {
@@ -279,8 +276,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -290,7 +286,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('google_map');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     // 暂时不写
@@ -306,14 +302,13 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('createThemeLayer_Vector_Basis', (done) => {
@@ -330,7 +325,8 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        var datavizWebmap = new WebMap(id, options);
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -340,7 +336,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('theme_base');
             expect(datavizWebmap.mapParams.description).toBe('base style');
             done();
-        }, 0);
+        });
     });
 
     it('createThemeLayer_Vector_Basis_Line', (done) => {
@@ -357,7 +353,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -367,7 +363,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Line_basis');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('createThemeLayer_Vector_IMAGE', (done) => {
@@ -385,7 +381,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             spyOn(datavizWebmap.map, 'loadImage').and.callFake((url, cb) => {
                 let img = new Image();
                 img.onload = () => {
@@ -395,9 +391,6 @@ describe('mapboxgl_WebMap', () => {
                 img.src = url;
                 cb(img);
             });
-        });
-
-        setTimeout(() => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(datavizWebmap.mapParams.title).toBe('Image');
@@ -406,7 +399,8 @@ describe('mapboxgl_WebMap', () => {
             expect(map.getZoom()).toBeCloseTo(7, 0.001)
             expect(map.getCenter()).toEqual(new mapboxgl.LngLat(120.63222224999998, 30.389530096727963));
             done();
-        }, 0);
+        });
+
     });
 
     it('createThemeLayer_Unique', (done) => {
@@ -423,8 +417,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -434,7 +427,8 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Unique');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
+        
     });
 
     it('createThemeLayer_Range', (done) => {
@@ -482,8 +476,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -493,7 +486,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Heat');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('createThemeLayer_Marker', (done) => {
@@ -510,8 +503,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -521,7 +513,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('标注图层');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('createThemeLayer_SUPERMAP_MAP_datasource', (done) => {
@@ -542,8 +534,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -553,7 +544,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('createThemeLayer_SUPERMAP_MAP', (done) => {
@@ -629,8 +620,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
 
@@ -641,7 +631,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('wms');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0);
+        });
     });
 
     it('changeWeight', (done) => {
@@ -667,14 +657,14 @@ describe('mapboxgl_WebMap', () => {
             }
         };
         features.push(feature);
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.fieldMaxValue = {
                 field: 10
             };
             datavizWebmap._changeWeight(features, 'field');
             // expect(feature.get('weight')).toBe(1);
             done();
-        }, 0);
+        });
     });
 
     it('getRangeStyleGroup', (done) => {
@@ -691,25 +681,25 @@ describe('mapboxgl_WebMap', () => {
         var datavizWebmap = new WebMap(id, {
             server: server
         });
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             var params =
-                '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
-            var features = [];
-            let feature = {
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: [116, 39]
-                },
-                properties: {
-                    field: 10
-                }
-            };
-            features.push(feature);
-            datavizWebmap._getRangeStyleGroup(JSON.parse(params), features);
-            expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
-            done();
-        }, 0);
+            '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
+        var features = [];
+        let feature = {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [116, 39]
+            },
+            properties: {
+                field: 10
+            }
+        };
+        features.push(feature);
+        datavizWebmap._getRangeStyleGroup(JSON.parse(params), features);
+        expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
+        done();
+        });
     });
 
     it('dashStyle', (done) => {
@@ -756,7 +746,7 @@ describe('mapboxgl_WebMap', () => {
         });
 
         var datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('mapinitialized', () => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             // spyOn(datavizWebmap, '_getCanvasFromSVG').and.callFake((svg_url, svgDiv, cb) => {
             //     let canvas = document.createElement('canvas');
             //     canvas.width = '150px';
@@ -771,12 +761,10 @@ describe('mapboxgl_WebMap', () => {
                 img.src = url;
                 cb(img);
             });
-        });
-        setTimeout(() => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 0);
+        });
     });
     it('vector_symbol', (done) => {
         let options = {
@@ -792,12 +780,11 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 0);
+        });
     });
     it('_getFiterFeatures', (done) => {
         let options = {
@@ -811,15 +798,15 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-        datavizWebmap._getFiterFeatures('SmID>20', geojsonData);
-        let feature =
+        datavizWebmap.on('addlayerssucceeded', () => {
+            datavizWebmap._getFiterFeatures('SmID>20', geojsonData);
+            let feature =
             '[{ "type" : "Feature", "properties" : { "name" : "aaaa" }, "geometry" : { "type" : "Polygon", "coordinates" : [ [[92.6806640625, 35.9957853864], [92.548828125, 29.8025179058], [99.9755859375, 33.541394669], [92.6806640625, 35.9957853864]], [[110.830078125, 34.5246614718], [103.6326255336, 36.859947123], [109.7218666539, 40.599259339], [110.830078125, 34.5246614718]] ] } } ]';
-        datavizWebmap._handleMultyPolygon(JSON.parse(feature));
-        setTimeout(() => {
+            datavizWebmap._handleMultyPolygon(JSON.parse(feature));
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 0);
+        });
     });
     it('datavizWebMap_WMTS', (done) => {
         let options = {
@@ -835,12 +822,11 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        datavizWebmap.on('addlayerssucceeded', () => {
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
-        }, 0);
+        });
     });
     it('datavizWebMap_WMTS_Custom', (done) => {
         let options = {
@@ -858,10 +844,10 @@ describe('mapboxgl_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         datavizWebmap.on('addlayerssucceeded', function () {
-            setTimeout(function () {
+            setTimeout(() => {
                 expect(datavizWebmap.map.getStyle().layers.length).toBe(2);
                 done();
-            }, 0);
+            }, 100);
         });
     });
 });
