@@ -16,8 +16,8 @@ export function getFeatureProperties(features) {
   return properties;
 }
 
-export function getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode) {
-  getFeatureBySQLWithConcurrent(url, datasetNames, processCompleted, processFaild, serviceOptions, targetEpsgCode);
+export function getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode, restDataSingleRequestCount) {
+  getFeatureBySQLWithConcurrent(url, datasetNames, processCompleted, processFaild, serviceOptions, targetEpsgCode, restDataSingleRequestCount);
 }
 export function queryFeatureBySQL(
   url,
@@ -64,13 +64,14 @@ export function getFeatureBySQLWithConcurrent(
   processCompleted,
   processFailed,
   serviceOptions,
-  targetEpsgCode
+  targetEpsgCode,
+  restDataSingleRequestCount
 ) {
   let queryParameter = new FilterParameter({
     name: datasetNames.join().replace(':', '@')
   });
 
-  let maxFeatures = 100, // 每次请求数据量
+  let maxFeatures = restDataSingleRequestCount || 1000, // 每次请求数据量
     firstResult, // 存储每次请求的结果
     allRequest = []; // 存储发出的请求Promise
 

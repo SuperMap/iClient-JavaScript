@@ -98,6 +98,7 @@ const dpiConfig = {
  * @param {function} [options.mapSetting.overlays] - 地图的overlays
  * @param {function} [options.mapSetting.controls] - 地图的控件
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数
+ * @param {number} [options.restDataSingleRequestCount=1000] - 自定义restData分批请求，单次请求数量
  * @extends {ol.Observable}
  * @usage
  */
@@ -130,6 +131,7 @@ export class WebMap extends Observable {
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.webMap = options.webMap;
         this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
+        this.restDataSingleRequestCount = options.restDataSingleRequestCount || 1000;
         this.createMap(options.mapSetting);
         if (this.webMap) {
             // webmap有可能是url地址，有可能是webmap对象
@@ -2163,7 +2165,7 @@ export class WebMap extends Observable {
             that.layerAdded++;
             that.sendMapToUser(layerLength);
             that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
-        }, that.baseProjection.split("EPSG:")[1]);
+        }, that.baseProjection.split("EPSG:")[1], this.restDataSingleRequestCount);
     }
 
     /**
@@ -2647,7 +2649,7 @@ export class WebMap extends Observable {
                 await that.addLayer(layerInfo, features, layerIndex);
             }, function (err) {
                 that.errorCallback && that.errorCallback(err, 'autoUpdateFaild', that.map);
-            });
+            }, undefined, this.restDataSingleRequestCount);
         }
     }
 
