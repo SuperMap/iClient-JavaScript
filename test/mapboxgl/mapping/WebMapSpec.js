@@ -90,9 +90,11 @@ describe('mapboxgl_WebMap', () => {
         });
         datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
-            datavizWebmap.setMapId('testID');
-            expect(datavizWebmap.mapId).toEqual('testID');
+          datavizWebmap.setMapId('testID');
+          expect(datavizWebmap.mapId).toEqual('testID');
+          datavizWebmap.on('addlayerssucceeded', () => {
             done();
+          });
         });
     });
     it('jsonsql', (done) => {
