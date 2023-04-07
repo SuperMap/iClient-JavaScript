@@ -92,7 +92,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('addlayerssucceeded', () => {
+        datavizWebmap.once('addlayerssucceeded', () => {
             datavizWebmap.setMapId('testID');
             expect(datavizWebmap.mapId).toEqual('testID');
             datavizWebmap.on('addlayerssucceeded', () => {
@@ -130,7 +130,7 @@ describe('mapboxgl_WebMap', () => {
             return Promise.resolve();
         });
         datavizWebmap = new WebMap(id, options);
-        datavizWebmap.on('addlayerssucceeded', () => {
+        datavizWebmap.once('addlayerssucceeded', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
             datavizWebmap.on('addlayerssucceeded', () => {
                 expect(datavizWebmap.server).toEqual('http://www.test.com/');
