@@ -1,4 +1,5 @@
 import mapboxgl from 'mapbox-gl';
+import mbglmap from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
@@ -6,11 +7,13 @@ import '../../resources/WebMapV5.js';
 window.jsonsql = { query: () => {} };
 
 describe('mapboxgl_WebMap', () => {
+    // spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
     var originalTimeout, testDiv;
-    var server = 'http://support.supermap.com:8090/iportal/';
+    var server = 'http://fack:8090/iportal/';
     var id = 1788054202;
     var datavizWebmap;
     beforeEach(() => {
+        spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
         testDiv.style.styleFloat = 'left';
@@ -589,7 +592,7 @@ describe('mapboxgl_WebMap', () => {
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             if (
                 url ===
-                'http://192.168.12.27:8091/iserver/services/data-jingjin/rest/data/featureResults?returnContent=true&fromIndex=0&toIndex=100000'
+                'http://fakeiserver/iserver/services/data-jingjin/rest/data/featureResults?returnContent=true&fromIndex=0&toIndex=100000'
             ) {
                 return Promise.resolve(new Response(supermapData));
             }
