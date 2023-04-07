@@ -4,7 +4,7 @@ import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
 import '../../resources/WebMapV5.js';
-window.jsonsql = { query: () => {} };
+window.jsonsql = { query: () => { } };
 
 describe('mapboxgl_WebMap', () => {
     // spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
@@ -26,11 +26,11 @@ describe('mapboxgl_WebMap', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
-      if (datavizWebmap && datavizWebmap.map) {
-        datavizWebmap.map.remove();
-        datavizWebmap.map = null;
-        datavizWebmap = null;
-      }
+        if (datavizWebmap && datavizWebmap.map) {
+            datavizWebmap.map.remove();
+            datavizWebmap.map = null;
+            datavizWebmap = null;
+        }
         window.document.body.removeChild(testDiv);
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
@@ -78,7 +78,7 @@ describe('mapboxgl_WebMap', () => {
             datavizWebmap.resize();
             done();
         });
-        
+
     });
     it('setMapId', (done) => {
         let options = {
@@ -93,30 +93,30 @@ describe('mapboxgl_WebMap', () => {
         });
         datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
-          datavizWebmap.setMapId('testID');
-          expect(datavizWebmap.mapId).toEqual('testID');
-          datavizWebmap.on('addlayerssucceeded', () => {
-            done();
-          });
+            datavizWebmap.setMapId('testID');
+            expect(datavizWebmap.mapId).toEqual('testID');
+            datavizWebmap.on('addlayerssucceeded', () => {
+                done();
+            });
         });
     });
     it('jsonsql', (done) => {
-      let options = {
-          server: server
-      };
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_CLOUD;
-              return Promise.resolve(new Response(mapJson));
-          }
-          return Promise.resolve();
-      });
-      datavizWebmap = new WebMap(id, options);
-      datavizWebmap.on('addlayerssucceeded', () => {
-        datavizWebmap._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 }}]);
-        datavizWebmap._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 }}]);
-        done();
-      });
+        let options = {
+            server: server
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_CLOUD;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        datavizWebmap = new WebMap(id, options);
+        datavizWebmap.on('addlayerssucceeded', () => {
+            datavizWebmap._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 } }]);
+            datavizWebmap._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 } }]);
+            done();
+        });
     });
     it('setWebMapOptions', (done) => {
         let options = {
@@ -132,8 +132,10 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
-            expect(datavizWebmap.server).toEqual('http://www.test.com/');
-            done();
+            datavizWebmap.on('addlayerssucceeded', () => {
+                expect(datavizWebmap.server).toEqual('http://www.test.com/');
+                done();
+            })
         })
     });
     it('setMapOptions', (done) => {
@@ -174,15 +176,15 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap = new WebMap(id, options);
 
         datavizWebmap.on('addlayerssucceeded', () => {
-          expect(datavizWebmap.credentialKey).toBeUndefined();
-          expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
 
-          var map = datavizWebmap.map;
-          expect(map.getZoom()).toBeCloseTo(2, 0.001)
-          expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
-          expect(datavizWebmap.mapParams.description).toBe('This is a image');
-          done();
-      })
+            var map = datavizWebmap.map;
+            expect(map.getZoom()).toBeCloseTo(2, 0.001)
+            expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
+            expect(datavizWebmap.mapParams.description).toBe('This is a image');
+            done();
+        })
     });
 
     it('initialize_TIANDITU_TER', (done) => {
@@ -433,7 +435,7 @@ describe('mapboxgl_WebMap', () => {
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
         });
-        
+
     });
 
     it('createThemeLayer_Range', (done) => {
@@ -688,22 +690,22 @@ describe('mapboxgl_WebMap', () => {
         });
         datavizWebmap.on('addlayerssucceeded', () => {
             var params =
-            '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
-        var features = [];
-        let feature = {
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: [116, 39]
-            },
-            properties: {
-                field: 10
-            }
-        };
-        features.push(feature);
-        datavizWebmap._getRangeStyleGroup(JSON.parse(params), features);
-        expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
-        done();
+                '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
+            var features = [];
+            let feature = {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [116, 39]
+                },
+                properties: {
+                    field: 10
+                }
+            };
+            features.push(feature);
+            datavizWebmap._getRangeStyleGroup(JSON.parse(params), features);
+            expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
+            done();
         });
     });
 
@@ -806,7 +808,7 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap.on('addlayerssucceeded', () => {
             datavizWebmap._getFiterFeatures('SmID>20', geojsonData);
             let feature =
-            '[{ "type" : "Feature", "properties" : { "name" : "aaaa" }, "geometry" : { "type" : "Polygon", "coordinates" : [ [[92.6806640625, 35.9957853864], [92.548828125, 29.8025179058], [99.9755859375, 33.541394669], [92.6806640625, 35.9957853864]], [[110.830078125, 34.5246614718], [103.6326255336, 36.859947123], [109.7218666539, 40.599259339], [110.830078125, 34.5246614718]] ] } } ]';
+                '[{ "type" : "Feature", "properties" : { "name" : "aaaa" }, "geometry" : { "type" : "Polygon", "coordinates" : [ [[92.6806640625, 35.9957853864], [92.548828125, 29.8025179058], [99.9755859375, 33.541394669], [92.6806640625, 35.9957853864]], [[110.830078125, 34.5246614718], [103.6326255336, 36.859947123], [109.7218666539, 40.599259339], [110.830078125, 34.5246614718]] ] } } ]';
             datavizWebmap._handleMultyPolygon(JSON.parse(feature));
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
