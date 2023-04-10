@@ -26,7 +26,7 @@ var datavizWebMap_Image = '{"version":"6.0","title":"Image","description":"","pr
 
 var datavizWebMap_SVG = '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"level":6,"center":{"x":13428717.554131005,"y":3553719.2183414707},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"VECTOR","visible":true,"name":"浙江省高等院校(1)","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"fillColor":"#EE4D5A","strokeWidth":1,"fillOpacity":0.9,"radius":8,"strokeColor":"#ffffff","type":"SVG_POINT","url":"http://127.0.0.1:8190/iportal/./resources/portal/dataviz/markericon/symbol-input-1555488704376.svg","strokeOpacity":1},"projection":"EPSG:4326","enableFields":["我是学校代码我是学校代码","学校名称","经度","纬度","学校地址","邮编","区号","电话","传真","网址"],"dataSource":{"type":"PORTAL_DATA","serverId":"1782454383"}}],"description":"","projection":"EPSG:3857","title":"无标题","version":"1.0"}';
 
-var datavizWebMap_SVG1 = '{"version":"6.0","title":"Image","description":"","projection":"EPSG:3857","center":{"x":13428717.554131005,"y":3553719.2183414707},"level":7,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"VECTOR","name":"浙江省高等院校(3)","visible":true,"featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"projection":"EPSG:4326","style":{"radius":13,"fillColor":"#50e3c2","fillOpacity":0.9,"strokeColor":"#ffffff","strokeWidth":1,"strokeOpacity":1,"lineDash":"solid","type":"SVG_POINT","url":"http://127.0.0.1:8090/iportal/resources/markerIcon/symbol-input7eff594Img.svg"},"dataSource":{"type":"PORTAL_DATA","serverId":675746998}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
+var datavizWebMap_SVG1 = '{"version":"6.0","title":"Image","description":"","projection":"EPSG:3857","center":{"x":13428717.554131005,"y":3553719.2183414707},"level":7,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"VECTOR","name":"浙江省高等院校(3)","visible":true,"featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"projection":"EPSG:4326","style":{"radius":13,"fillColor":"#50e3c2","fillOpacity":0.9,"strokeColor":"#ffffff","strokeWidth":1,"strokeOpacity":1,"lineDash":"solid","type":"SVG_POINT","url":"base/resources/img/down.svg"},"dataSource":{"type":"PORTAL_DATA","serverId":675746998}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 
 var datavizWebMap_symbol = '{ "extent": { "leftBottom": { "x": -2.00375083427892E7, "y": -2.00375083427892E7 }, "rightTop": { "x": 2.00375083427892E7, "y": 2.00375083427892E7 } }, "level": 10, "center": { "x": 1.2980454583611978E7, "y": 4851147.72792594 }, "baseLayer": { "layerType": "TIANDITU_VEC_3857", "visible": true, "labelLayerVisible": true, "name": "天地图" }, "layers": [ { "layerType": "VECTOR", "visible": true, "name": "北京市轨道交通站点", "featureType": "POINT", "style": { "fillColor": "#ff0000", "strokeWidth": 1, "fillOpacity": 0.9, "name": "Shape9-3", "unicode": "&#xe673", "fontSize": "12px", "className": "supermapol-icons-Shape-20", "strokeColor": "#ffffff", "type": "SYMBOL_POINT", "strokeOpacity": 1 }, "projection": "EPSG:4326", "dataSource": { "type": "PORTAL_DATA", "serverId": "2061203951" } } ], "description": "", "projection": "EPSG:3857", "title": "unicode", "version": "1.0" }'
 
@@ -42,7 +42,7 @@ var datavizWebMap_RestMap = '{"version":"6.0","title":"RestMap","description":"r
 
 var datavizWebMap_RestMap1 = '{"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"level":9,"center":{"x":12965020.337824289,"y":4888953.101710811},"baseLayer":{"layerType":"CLOUD_BLACK","name":"涓浗钃濋粦"},"layers":[{"layerType":"VECTOR","visible":true,"name":"rest_map_datasource","featureType":"POINT","style":{"fillColor":"#ff0000","strokeWidth":1,"fillOpacity":0.9,"radius":6,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:3857","dataSource":{"layerName":"rest_map_datasource","type":"REST_MAP","url":"https://www.supermapol.com/iserver/services/map_ShiLiShuJu/rest/maps/rest_map_datasource"}}],"description":"","projection":"EPSG:3857","title":"RestMap","version":"1.0"}'
 
-var datavizWebMap_RestData = '{"version":"6.0","title":"RestData","description":"","projection":"EPSG:3857","center":{"x":13013201.402643811,"y":4822518.728777889},"level":9,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"VECTOR","name":"Jingjin:BaseMap_P","visible":true,"featureType":"POINT","projection":"EPSG:4326","style":{"radius":6,"fillColor":"#ff0000","fillOpacity":0.9,"strokeColor":"#ffffff","strokeWidth":1,"strokeOpacity":1,"lineDash":"solid","symbolType":"svg","type":"BASIC_POINT"},"dataSource":{"type":"REST_DATA","url":"http://192.168.12.27:8091/iserver/services/data-jingjin/rest/data","dataSourceName":"Jingjin:BaseMap_P"}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
+var datavizWebMap_RestData = '{"version":"6.0","title":"RestData","description":"","projection":"EPSG:3857","center":{"x":13013201.402643811,"y":4822518.728777889},"level":9,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"VECTOR","name":"Jingjin:BaseMap_P","visible":true,"featureType":"POINT","projection":"EPSG:4326","style":{"radius":6,"fillColor":"#ff0000","fillOpacity":0.9,"strokeColor":"#ffffff","strokeWidth":1,"strokeOpacity":1,"lineDash":"solid","symbolType":"svg","type":"BASIC_POINT"},"dataSource":{"type":"REST_DATA","url":"http://fakeiserver/iserver/services/data-jingjin/rest/data","dataSourceName":"Jingjin:BaseMap_P"}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 
 var datavizWebMap_WMS = '{"version":"6.0","title":"wms","description":"","projection":"EPSG:3857","center":{"x":0,"y":-7.081154551613622e-10},"level":1,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"WMS","name":"World","visible":true,"url":"http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&","projection":"EPSG:3857"}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 
@@ -69,3 +69,184 @@ var wmtsInfoCustom='<?xml version="1.0" encoding="UTF-8" standalone="no"?><Capab
 var jinJingMap = "{\"viewBounds\":{\"top\":40.95653943614797,\"left\":116.16815155985853,\"bottom\":39.13116277881711,\"leftBottom\":{\"x\":116.16815155985853,\"y\":39.13116277881711},\"right\":117.99352821718941,\"rightTop\":{\"x\":117.99352821718941,\"y\":40.95653943614797}},\"viewer\":{\"leftTop\":{\"x\":0,\"y\":0},\"top\":0,\"left\":0,\"bottom\":256,\"rightBottom\":{\"x\":256,\"y\":256},\"width\":256,\"right\":256,\"height\":256},\"distanceUnit\":\"METER\",\"minVisibleTextSize\":0.1,\"coordUnit\":\"DEGREE\",\"scale\":3.3333333333333335E-7,\"description\":\"\",\"paintBackground\":true,\"maxVisibleTextSize\":1000,\"maxVisibleVertex\":3600000,\"clipRegionEnabled\":false,\"antialias\":true,\"textOrientationFixed\":false,\"angle\":0,\"prjCoordSys\":{\"distanceUnit\":\"METER\",\"projectionParam\":null,\"epsgCode\":4326,\"coordUnit\":\"DEGREE\",\"name\":\"GCS_WGS_1984\",\"projection\":null,\"type\":\"PCS_EARTH_LONGITUDE_LATITUDE\",\"coordSystem\":{\"datum\":{\"name\":\"D_WGS_1984\",\"type\":\"DATUM_WGS_1984\",\"spheroid\":{\"flatten\":0.00335281066474748,\"name\":\"WGS_1984\",\"axis\":6378137,\"type\":\"SPHEROID_WGS_1984\"}},\"unit\":\"DEGREE\",\"spatialRefType\":\"SPATIALREF_EARTH_LONGITUDE_LATITUDE\",\"name\":\"GCS_WGS_1984\",\"type\":\"GCS_WGS_1984\",\"primeMeridian\":{\"longitudeValue\":0,\"name\":\"Greenwich\",\"type\":\"PRIMEMERIDIAN_GREENWICH\"}}},\"minScale\":0,\"markerAngleFixed\":false,\"overlapDisplayedOptions\":{\"allowPointWithTextDisplay\":true,\"horizontalOverlappedSpaceSize\":0,\"allowPointOverlap\":true,\"allowThemeGraduatedSymbolOverlap\":false,\"verticalOverlappedSpaceSize\":0,\"allowTextOverlap\":false,\"allowThemeGraphOverlap\":false,\"allowTextAndPointOverlap\":true},\"visibleScales\":[],\"visibleScalesEnabled\":false,\"customEntireBoundsEnabled\":true,\"clipRegion\":{\"center\":null,\"parts\":null,\"style\":null,\"prjCoordSys\":null,\"id\":0,\"type\":\"REGION\",\"partTopo\":null,\"points\":null},\"maxScale\":1.11319490793273568E17,\"customParams\":\"\",\"center\":{\"x\":117.08083988852397,\"y\":40.04385110748254},\"dynamicPrjCoordSyses\":[{\"distanceUnit\":null,\"projectionParam\":null,\"epsgCode\":0,\"coordUnit\":null,\"name\":null,\"projection\":null,\"type\":\"PCS_ALL\",\"coordSystem\":null}],\"colorMode\":\"DEFAULT\",\"textAngleFixed\":false,\"overlapDisplayed\":true,\"userToken\":{\"userID\":\"\"},\"cacheEnabled\":true,\"dynamicProjection\":false,\"autoAvoidEffectEnabled\":true,\"customEntireBounds\":{\"top\":41.0418713984,\"left\":115.096175286,\"bottom\":38.5345130582,\"leftBottom\":{\"x\":115.096175286,\"y\":38.5345130582},\"right\":118.5945898171,\"rightTop\":{\"x\":118.5945898171,\"y\":41.0418713984}},\"name\":\"京津地区土地利用现状图\",\"bounds\":{\"top\":42.31307532235788,\"left\":114.54046016274,\"bottom\":37.76434929128856,\"leftBottom\":{\"x\":114.54046016274,\"y\":37.76434929128856},\"right\":120.02500641438,\"rightTop\":{\"x\":120.02500641438,\"y\":42.31307532235788}},\"backgroundStyle\":{\"fillGradientOffsetRatioX\":0,\"markerSize\":2.4,\"fillForeColor\":{\"red\":255,\"green\":255,\"blue\":255,\"alpha\":255},\"fillGradientOffsetRatioY\":0,\"markerWidth\":0,\"markerAngle\":0,\"fillSymbolID\":0,\"lineColor\":{\"red\":0,\"green\":0,\"blue\":0,\"alpha\":255},\"markerSymbolID\":0,\"lineWidth\":0.1,\"markerHeight\":0,\"fillOpaqueRate\":100,\"fillBackOpaque\":true,\"fillBackColor\":{\"red\":255,\"green\":255,\"blue\":255,\"alpha\":255},\"fillGradientMode\":\"NONE\",\"lineSymbolID\":0,\"fillGradientAngle\":0}}";
 
 const jingjinData = '{"viewBounds":{"top":40.95653943614797,"left":116.16815155985853,"bottom":39.13116277881711,"leftBottom":{"x":116.16815155985853,"y":39.13116277881711},"right":117.99352821718941,"rightTop":{"x":117.99352821718941,"y":40.95653943614797}},"viewer":{"leftTop":{"x":0,"y":0},"top":0,"left":0,"bottom":256,"rightBottom":{"x":256,"y":256},"width":256,"right":256,"height":256},"distanceUnit":"METER","minVisibleTextSize":0.1,"coordUnit":"DEGREE","scale":3.3333333333333335E-7,"description":"","paintBackground":true,"maxVisibleTextSize":1000,"maxVisibleVertex":3600000,"clipRegionEnabled":false,"antialias":true,"textOrientationFixed":false,"angle":0,"prjCoordSys":{"distanceUnit":"METER","projectionParam":null,"epsgCode":4326,"coordUnit":"DEGREE","name":"GCS_WGS_1984","projection":null,"type":"PCS_EARTH_LONGITUDE_LATITUDE","coordSystem":{"datum":{"name":"D_WGS_1984","type":"DATUM_WGS_1984","spheroid":{"flatten":0.0033528106647474805,"name":"WGS_1984","axis":6378137,"type":"SPHEROID_WGS_1984"}},"unit":"DEGREE","spatialRefType":"SPATIALREF_EARTH_LONGITUDE_LATITUDE","name":"GCS_WGS_1984","type":"GCS_WGS_1984","primeMeridian":{"longitudeValue":0,"name":"Greenwich","type":"PRIMEMERIDIAN_GREENWICH"}}},"minScale":0,"markerAngleFixed":false,"overlapDisplayedOptions":{"allowPointWithTextDisplay":true,"horizontalOverlappedSpaceSize":0,"allowPointOverlap":true,"allowThemeGraduatedSymbolOverlap":false,"verticalOverlappedSpaceSize":0,"allowTextOverlap":false,"allowThemeGraphOverlap":false,"allowTextAndPointOverlap":true},"visibleScales":[],"dpi":96,"visibleScalesEnabled":false,"customEntireBoundsEnabled":true,"clipRegion":{"center":null,"parts":null,"style":null,"prjCoordSys":null,"id":0,"type":"REGION","partTopo":null,"points":null},"maxScale":1.11319490793273568E17,"customParams":"","center":{"x":117.08083988852397,"y":40.04385110748254},"dynamicPrjCoordSyses":[{"distanceUnit":null,"projectionParam":null,"epsgCode":0,"coordUnit":null,"name":null,"projection":null,"type":"PCS_ALL","coordSystem":null}],"colorMode":"DEFAULT","textAngleFixed":false,"overlapDisplayed":true,"userToken":{"userID":""},"cacheEnabled":true,"dynamicProjection":false,"autoAvoidEffectEnabled":true,"customEntireBounds":{"top":41.0418713984,"left":115.096175286,"bottom":38.5345130582,"leftBottom":{"x":115.096175286,"y":38.5345130582},"right":118.5945898171,"rightTop":{"x":118.5945898171,"y":41.0418713984}},"name":"京津地区土地利用现状图","bounds":{"top":42.31307532235788,"left":114.58902605452259,"bottom":37.76434929128856,"leftBottom":{"x":114.58902605452259,"y":37.76434929128856},"right":119.51371730073062,"rightTop":{"x":119.51371730073062,"y":42.31307532235788}},"backgroundStyle":{"fillGradientOffsetRatioX":0,"markerSize":2.4,"fillForeColor":{"red":255,"green":255,"blue":255,"alpha":255},"fillGradientOffsetRatioY":0,"markerWidth":0,"markerAngle":0,"fillSymbolID":0,"lineColor":{"red":0,"green":0,"blue":0,"alpha":255},"markerSymbolID":0,"lineWidth":0.1,"markerHeight":0,"fillOpaqueRate":100,"fillBackOpaque":true,"fillBackColor":{"red":255,"green":255,"blue":255,"alpha":255},"fillGradientMode":"NONE","lineSymbolID":0,"fillGradientAngle":0}}'
+
+const mapInfo = `{
+  "viewBounds": {
+      "top": 44.471903184390165,
+      "left": -41.8352291254851,
+      "bottom": -45.52657288543795,
+      "leftBottom": {
+          "x": -41.8352291254851,
+          "y": -45.52657288543795
+      },
+      "right": 48.163246944343015,
+      "rightTop": {
+          "x": 48.163246944343015,
+          "y": 44.471903184390165
+      }
+  },
+  "viewer": {
+      "leftTop": {
+          "x": 0,
+          "y": 0
+      },
+      "top": 0,
+      "left": 0,
+      "bottom": 256,
+      "rightBottom": {
+          "x": 256,
+          "y": 256
+      },
+      "width": 256,
+      "right": 256,
+      "height": 256
+  },
+  "distanceUnit": "METER",
+  "coordUnit": "DEGREE",
+  "scale": 6.7606542864106095e-9,
+  "prjCoordSys": {
+      "distanceUnit": "METER",
+      "projectionParam": null,
+      "epsgCode": 4326,
+      "coordUnit": "DEGREE",
+      "name": "GCS_Beijing_1954",
+      "projection": null,
+      "type": "PCS_EARTH_LONGITUDE_LATITUDE",
+      "coordSystem": {
+          "datum": {
+              "name": "D_Beijing_1954",
+              "type": "DATUM_BEIJING_1954",
+              "spheroid": {
+                  "flatten": 0.003352329869259135,
+                  "name": "Krasovsky_1940",
+                  "axis": 6378245,
+                  "type": "SPHEROID_KRASOVSKY_1940"
+              }
+          },
+          "unit": "DEGREE",
+          "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+          "name": "GCS_Beijing_1954",
+          "type": "GCS_BEIJING_1954",
+          "primeMeridian": {
+              "longitudeValue": 0,
+              "name": "Greenwich",
+              "type": "PRIMEMERIDIAN_GREENWICH"
+          }
+      }
+  },
+  "overlapDisplayedOptions": {
+      "allowPointWithTextDisplay": true,
+      "horizontalOverlappedSpaceSize": 0,
+      "allowPointOverlap": false,
+      "allowThemeGraduatedSymbolOverlap": false,
+      "verticalOverlappedSpaceSize": 0,
+      "allowTextOverlap": false,
+      "allowThemeGraphOverlap": false,
+      "allowTextAndPointOverlap": false
+  },
+  "visibleScales": [
+      1.6901635716026555e-9,
+      3.3803271432053056e-9,
+      6.760654286410611e-9,
+      1.3521308572821242e-8,
+      2.7042617145642484e-8,
+      5.408523429128511e-8,
+      1.0817046858256998e-7,
+      2.1634093716513974e-7,
+      4.3268187433028044e-7,
+      8.653637486605571e-7,
+      0.0000017307274973211203,
+      0.0000034614549946422405,
+      0.0000069229099892844565
+  ],
+  "dpi": 96,
+  "visibleScalesEnabled": true,
+  "customEntireBoundsEnabled": false,
+  "clipRegion": {
+      "center": null,
+      "parts": null,
+      "style": null,
+      "prjCoordSys": null,
+      "id": 0,
+      "type": "REGION",
+      "partTopo": null,
+      "points": null
+  },
+  "maxScale": 1000000000000,
+  "customParams": "",
+  "center": {
+      "x": 3.164008909428958,
+      "y": -0.5273348505238928
+  },
+  "dynamicPrjCoordSyses": [
+      {
+          "distanceUnit": null,
+          "projectionParam": null,
+          "epsgCode": 0,
+          "coordUnit": null,
+          "name": null,
+          "projection": null,
+          "type": "PCS_ALL",
+          "coordSystem": null
+      }
+  ],
+  "colorMode": "DEFAULT",
+  "textAngleFixed": false,
+  "overlapDisplayed": false,
+  "userToken": {
+      "userID": ""
+  },
+  "cacheEnabled": true,
+  "dynamicProjection": true,
+  "autoAvoidEffectEnabled": true,
+  "customEntireBounds": null,
+  "name": "China_4326",
+  "bounds": {
+      "top": 85.05112460264307,
+      "left": -180,
+      "bottom": -85.05112460264311,
+      "leftBottom": {
+          "x": -180,
+          "y": -85.05112460264311
+      },
+      "right": 180,
+      "rightTop": {
+          "x": 180,
+          "y": 85.05112460264307
+      }
+  },
+  "backgroundStyle": {
+      "fillGradientOffsetRatioX": 0,
+      "markerSize": 2.4,
+      "fillForeColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 255
+      },
+      "fillGradientOffsetRatioY": 0,
+      "markerWidth": 0,
+      "markerAngle": 0,
+      "fillSymbolID": 0,
+      "lineColor": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "alpha": 255
+      },
+      "markerSymbolID": 0,
+      "lineWidth": 0.1,
+      "markerHeight": 0,
+      "fillOpaqueRate": 100,
+      "fillBackOpaque": true,
+      "fillBackColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 255
+      },
+      "fillGradientMode": "NONE",
+      "lineSymbolID": 0,
+      "fillGradientAngle": 0
+  }
+}`;

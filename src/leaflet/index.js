@@ -39,7 +39,9 @@ import {
     WebMap,
     webMap,
     ImageTileLayer,
-    imageTileLayer
+    imageTileLayer,
+    initMap,
+    crsFromMapJSON
 } from './mapping';
 import {
     DataFlowLayer,
@@ -88,7 +90,9 @@ import {
     themeFeature,
     ThemeLayer,
     SVGRenderer,
-    VectorGrid
+    VectorGrid,
+    FGBLayer,
+    fgbLayer
 } from './overlay';
 import {
     AddressMatchService,
@@ -237,7 +241,9 @@ export {
     WebMap,
     webMap,
     ImageTileLayer,
-    imageTileLayer
+    imageTileLayer,
+    initMap,
+    crsFromMapJSON
 };
 export {
     DataFlowLayer,
@@ -286,7 +292,9 @@ export {
     themeFeature,
     ThemeLayer,
     SVGRenderer,
-    VectorGrid
+    VectorGrid,
+    FGBLayer,
+    fgbLayer
 };
 export {
     AddressMatchService,

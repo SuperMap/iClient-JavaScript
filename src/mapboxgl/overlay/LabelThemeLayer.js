@@ -969,10 +969,10 @@ export class Label extends GeoFeature {
 
     /**
      * @function LabelThemeLayer.prototype.isPointInPoly
-     * @description 判断一个点是否在多边形里面。(射线法)
+     * @description 判断一个点是否在多边形里面（射线法）。
      *
-     * @param {Object} pt - 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+     * @param {Object} pt - 需要判定的点对象，该对象含有属性x（横坐标），属性y（纵坐标）。
+     * @param {Array.<Object>} poly - 多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * @returns {boolean} 点是否在多边形内。
      */
     isPointInPoly(pt, poly) {

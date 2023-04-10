@@ -19,7 +19,6 @@ import {RangeMode, ColorGradientType} from '../REST';
  * @param {Array.<ThemeRangeItem>} options.items - 子项数组。
  * @param {string} options.rangeExpression - 分段字段表达式。
  * @param {number} options.rangeParameter - 分段参数。
- * @param {number} options.rangeParameter - 分段参数。
  * @param {RangeMode} [options.rangeMode=RangeMode.EQUALINTERVAL] - 分段模式。
  * @param {ColorGradientType} [options.colorGradientType=ColorGradientType.YELLOW_RED] - 渐变颜色枚举类。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
@@ -31,7 +30,7 @@ export class ThemeRange extends Theme {
         super("RANGE", options);
         /**
          * @member {string} ThemeRange.prototype.precision
-         * @description 精准度
+         * @description 精准度。
          */
         this.precision = '1.0E-12';
 
@@ -63,7 +62,7 @@ export class ThemeRange extends Theme {
         /**
          * @member {number} ThemeRange.prototype.rangeParameter
          * @description 分段参数。
-         *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数；当分段模式为标准差分段法时，
+         *              当分段模式为等距离分段法，平方根分段，对数分段法，等计数分段法其中一种模式时，该参数用于设置分段个数；当分段模式为标准差分段法时，
          *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。
          */
         this.rangeParameter = 0;
@@ -72,8 +71,7 @@ export class ThemeRange extends Theme {
          * @member {ColorGradientType} [ThemeRange.prototype.colorGradientType=ColorGradientType.YELLOW_RED]
          * @description 渐变颜色枚举类。<br>
          *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
-         *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色
-         *              方案完成填*充。但如果为某几个子项的风格进行单独设置后（设置了 {@link ThemeUniqueItem} 或 {@link ThemeRangeItem} 类中Style属性），
+         *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。但如果为某几个子项的风格进行单独设置后（设置了 {@link ThemeUniqueItem} 或 {@link ThemeRangeItem} 类中Style属性），
          *              该配色方案对于这几个子项将不起作用。
          */
         this.colorGradientType = ColorGradientType.YELLOW_RED;

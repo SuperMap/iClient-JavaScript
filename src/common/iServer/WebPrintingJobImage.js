@@ -10,15 +10,15 @@ import { Util } from '../commontypes/Util';
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
- * @param {string} option.picAsUrl - 小地图的图片 url 地址。
- * @param {string} [option.picAsBase64] - 小地图的base64位图片信息。如果已填了 url 参数，此参数可不传
+ * @param {string} option.picAsUrl - 小地图的图片 URL 地址。
+ * @param {string} [option.picAsBase64] - 小地图的base64位图片信息。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 export class WebPrintingJobImage {
     constructor(option) {
         /**
          * @member {string} [WebPrintingJobImage.prototype.picAsUrl]
-         * @description 小地图的图片 url 地址。
+         * @description 小地图的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**

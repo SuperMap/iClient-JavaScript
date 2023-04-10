@@ -220,7 +220,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
      * @param {string} id - 点聚合分析的 ID。
-     * @returns {Object} 点聚合分析的状态
+     * @returns {Object} 点聚合分析的状态。
      */
     getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
@@ -310,7 +310,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
      * @param {string} id - 单对象查询分析的 ID。
-     * @returns {Object} 单对象查询分析的状态
+     * @returns {Object} 单对象查询分析的状态。
      */
     getQueryJobState(id) {
         return this.queryJobs[id];
@@ -492,7 +492,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
      * @param {number} id - 矢量裁剪分析的 ID。
-     * @returns {Object} 矢量裁剪分析的状态
+     * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
         return this.vectorClipJobs[id];
@@ -584,7 +584,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
      * @param {string} id - 叠加分析的 ID。
-     * @returns {Object} 叠加分析的状态
+     * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
         return this.overlayGeoJobs[id];
@@ -768,7 +768,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
      * @param {string} id - 拓扑检查分析的 ID。
-     * @returns {Object} 拓扑检查分析的状态
+     * @returns {Object} 拓扑检查分析的状态。
      */
     getTopologyValidatorJobState(id) {
         return this.topologyValidatorJobs[id];

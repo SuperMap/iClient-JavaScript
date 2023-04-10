@@ -44,7 +44,7 @@ const Renderer = ['canvas', 'webgl'];
  * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link OverlayGraphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.opacity=0.8] - 要素透明度。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radius=10] - 要素半径，单位像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
@@ -79,34 +79,40 @@ export class Graphic extends ImageCanvasSource {
         this.isHighLight = typeof options.isHighLight === 'undefined' ? true : options.isHighLight;
         this.hitGraphicLayer = null;
         this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
-
+        this._options = options;
         const me = this;
-
         if (options.onClick) {
             me.map.on('click', function(e) {
-                if (me.renderer instanceof GraphicWebGLRenderer) {
-                    return;
-                }
-                const features = me.map.getFeaturesAtPixel(e.pixel) || [];
-                for (let index = 0; index < features.length; index++) {
-                    const graphic = features[index];
-                    if (me.graphics.indexOf(graphic) > -1) {
-                        options.onClick(graphic, e);
-                        if (me.isHighLight) {
-                            me._highLight(
-                                graphic.getGeometry().getCoordinates(),
-                                new Style({
-                                    image: graphic.getStyle()
-                                }).getImage(),
-                                graphic,
-                                e.pixel
-                            );
-                        }
-                        break;
-                    }
-                }
+              if (me.isDeckGLRender) {
+                const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+                options.onClick(params);
+                return;
+              }
+              const graphic = me.findGraphicByPixel(e, me);
+              if (graphic) {
+                  options.onClick(graphic, e);
+                  if (me.isHighLight) {
+                    me._highLight(
+                        graphic.getGeometry().getCoordinates(),
+                        new Style({
+                            image: graphic.getStyle()
+                        }).getImage(),
+                        graphic,
+                        e.pixel
+                    );
+                  }
+                
+              }
             });
         }
+          me.map.on('pointermove', function(e) {
+            if (me.isDeckGLRender) {
+              const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+              if (options.onHover) {
+                  options.onHover(params);
+              }
+            }
+          });
         //eslint-disable-next-line no-unused-vars
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             var mapWidth = size[0] / pixelRatio;
@@ -124,6 +130,13 @@ export class Graphic extends ImageCanvasSource {
             me.renderer._clearBuffer();
             me.renderer.selected = this.selected;
             me.renderer.drawGraphics(graphics);
+            me.isDeckGLRender = me.renderer instanceof GraphicWebGLRenderer;
+            if(me.isDeckGLRender){
+              if (!me.context) {
+                me.context = Util.createCanvasContext2D(mapWidth, mapHeight);
+              }
+              return me.context.canvas;
+            }
             return me.renderer.getCanvas();
         }
 
@@ -179,7 +192,7 @@ export class Graphic extends ImageCanvasSource {
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
                 if (!style) {
-                    return;
+                  return;
                 }
                 //已经被高亮的graphics 不被选选中
                 if (style instanceof HitCloverShape) {
@@ -239,6 +252,17 @@ export class Graphic extends ImageCanvasSource {
         }
     }
 
+    findGraphicByPixel(e, me) {
+      const features = me.map.getFeaturesAtPixel(e.pixel) || [];
+      for (let index = 0; index < features.length; index++) {
+          const graphic = features[index];
+          if (me.graphics.indexOf(graphic) > -1) {
+            return graphic;
+          }
+      }
+      return undefined;
+    }
+
     /**
      * @function Graphic.prototype.setGraphics
      * @description 设置绘制的点要素，会覆盖之前的所有要素。
@@ -284,8 +308,8 @@ export class Graphic extends ImageCanvasSource {
 
     /**
      * @function Graphic.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id
+     * @description 通过给定一个 ID，返回对应的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 ID。
      * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {

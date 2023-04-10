@@ -37,11 +37,11 @@ export class LonLat {
 
     /**
      * @function LonLat.prototype.toString
-     * @description 返回此对象的字符串形式
+     * @description 返回此对象的字符串形式。
      * @example
      * var lonLat = new LonLat(100,50);
      * var str = lonLat.toString();
-     * @returns {string} 例如: "lon=100,lat=50"
+     * @returns {string} 例如: "lon=100,lat=50"。
      */
     toString() {
         return ("lon=" + this.lon + ",lat=" + this.lat);
@@ -53,7 +53,7 @@ export class LonLat {
      * @example
      * var lonLat = new LonLat(100,50);
      * var str = lonLat.toShortString();
-     * @returns {string} 处理后的经纬度字符串。例如："100,50"
+     * @returns {string} 处理后的经纬度字符串。例如："100,50"。
      */
     toShortString() {
         return (this.lon + "," + this.lat);

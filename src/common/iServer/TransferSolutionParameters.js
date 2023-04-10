@@ -95,7 +95,7 @@ export class TransferSolutionParameters {
 
         /**
          * @member {string} TransferSolutionParameters.prototype.travelTime
-         * @description 出行的时间； 格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
+         * @description 出行的时间；格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
          */
         this.travelTime = null;
 

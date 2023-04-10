@@ -20,7 +20,7 @@ export class SuperMapCloud extends XYZ {
     constructor(opt_options) {
         var options = opt_options || {};
 
-        var attributions = options.attributions || "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        var attributions = options.attributions || "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© SuperMap iClient</span>"
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';
         var url = options.url || 'http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';

@@ -56,12 +56,11 @@ module.exports = function (config) {
       /***测试文件***/
       './tool/**.js',
       './resources/**.js',
-      // './resources/img/**.png',
       /***classic的源码***/
       /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
-      { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', include: false },
-      { pattern: '../src/classic/libs/Lang/*.js', include: false },
-      { pattern: '../src/classic/theme/default/*.css', include: false },
+      { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', included: true },
+      { pattern: '../src/classic/libs/Lang/*.js', included: true },
+      { pattern: '../src/classic/theme/default/*.css', included: true },
       /**测试文件**/
       './test-main-classic.js',
 
@@ -71,22 +70,23 @@ module.exports = function (config) {
       './test-main-common.js',
 
       /***leaflet的源码***/
-      { pattern: './libs/workers/TurfWorkerForTest.js', include: false },
-      { pattern: '../node_modules/leaflet/dist/leaflet.css', include: false },
-      { pattern: '../src/leaflet/**/**/*.css', include: false },
+      { pattern: './libs/workers/TurfWorkerForTest.js', included: false },
+      { pattern: '../node_modules/leaflet/dist/leaflet.css', included: false },
+      { pattern: '../src/leaflet/**/**/*.css', included: false },
       '../src/leaflet/**/!(index).js',
       /**测试文件**/
       './test-main-leaflet.js',
 
       /***openlayers的源码***/
-      { pattern: '../node_modules/ol/ol.css', include: false },
-      { pattern: '../src/openlayers/**/**/*.css', include: false },
+      { pattern: '../node_modules/ol/ol.css', included: false },
+      { pattern: '../src/openlayers/**/**/*.css', included: false },
       '../src/openlayers/**/!(index).js',
       /**测试文件**/
       './test-main-openlayers.js',
-
+      { pattern: './resources/data/**.fgb', included: false },
+      { pattern: './resources/img/**.svg', included: false },
       /***mapboxgl***/
-      { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false },
+      { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: false },
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
       './test-main-mapboxgl.js'

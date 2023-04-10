@@ -7,7 +7,7 @@ import { Util } from '../commontypes/Util';
  * @class RasterFunctionParameter
  * @deprecatedclass SuperMap.RasterFunctionParameter
  * @category iServer Map Tile
- * @classdesc iServer 地图服务栅格分析参数基类
+ * @classdesc iServer 地图服务栅格分析参数基类。
  * @param {Object} options - 参数。
  * @param {RasterFunctionType} options.type - 栅格分析方法。
  * @usage

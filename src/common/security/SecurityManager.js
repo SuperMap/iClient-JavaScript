@@ -13,7 +13,7 @@ import { Credential } from '../commontypes/Credential';
  *  > 使用说明：
  *  > 创建任何一个服务之前调用 {@link SecurityManager.registerToken}或
  *  > {@link SecurityManager.registerKey}注册凭据。
- *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
+ *  > 发送请求时根据 URL 或者服务 ID 获取相应的 key 或者 token 并自动添加到服务地址中。
  * @usage
  */
 export class SecurityManager {
@@ -57,7 +57,7 @@ export class SecurityManager {
      * @description 服务请求都会自动带上这个 token。
      * @function SecurityManager.registerToken
      * @param {string} url -服务器域名+端口：如http://localhost:8090。
-     * @param {string} token - token
+     * @param {string} token - token。
      */
     static registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -71,8 +71,8 @@ export class SecurityManager {
     /**
      * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
      * @function SecurityManager.registerKey
-     * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
-     * @param {string} key - key
+     * @param {Array} ids - 可以是服务 ID 数组或者 URL 地址数组或者 webAPI 类型数组。
+     * @param {string} key - key。
      */
     static registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -99,10 +99,10 @@ export class SecurityManager {
     }
 
     /**
-     * @description 根据 Url 获取token。
+     * @description 根据 URL 获取token。
      * @function SecurityManager.getToken
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
-     * @returns {string} token
+     * @returns {string} token。
      */
     static getToken(url) {
         if (!url) {
@@ -114,10 +114,10 @@ export class SecurityManager {
     }
 
     /**
-     * @description 根据 Url 获取 key。
+     * @description 根据 URL 获取 key。
      * @function SecurityManager.getKey
-     * @param {string} id - id
-     * @returns {string} key
+     * @param {string} id - ID。
+     * @returns {string} key。
      */
     static getKey(id) {
         this.keys = this.keys || {};
@@ -189,7 +189,7 @@ export class SecurityManager {
     /**
      * @description iPortal登录验证。
      * @function SecurityManager.loginiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @returns {Promise} 包含 iPortal 登录请求结果的 Promise 对象。
@@ -215,7 +215,7 @@ export class SecurityManager {
     /**
      * @description iPortal 登出。
      * @function SecurityManager.logoutiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
@@ -288,7 +288,7 @@ export class SecurityManager {
     /**
      * @description 清空令牌信息。
      * @function SecurityManager.destroyToken
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
      */
     static destroyToken(url) {
         if (!url) {
@@ -321,8 +321,8 @@ export class SecurityManager {
      * @description 服务URL追加授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
      * @version 10.1.2
      * @function SecurityManager.appendCredential
-     * @param {string} url - 服务URL
-     * @returns {string} 绑定了token或者key的服务URL
+     * @param {string} url - 服务URL。
+     * @returns {string} 绑定了token或者key的服务URL。
      */
     static appendCredential(url) {
         var newUrl = url;

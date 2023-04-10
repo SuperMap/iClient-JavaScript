@@ -36,17 +36,28 @@ module.exports = {
     rules: (function() {
       let moduleRules = [];
       moduleRules.push(configBase.module.rules.img);
-      if (configBase.moduleVersion === 'es5') {
-        //打包为es5相关配置
-        moduleRules.push({
-          test: [/\.js$/],
-          exclude: /node_modules[\/\\]proj4|classic|webgl-debug/,
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        });
+      const babelConfig = {
+        test: [/\.js$/],
+        exclude: /node_modules[\/\\]proj4|classic|webgl-debug/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: [
+            [
+                '@babel/plugin-transform-runtime',
+                {
+                    absoluteRuntime: false,
+                    corejs: false,
+                    helpers: false,
+                    regenerator: true,
+                    useESModules: false
+                }
+            ]
+        ]
+        }
       }
+      configBase.moduleVersion === "es6" && (babelConfig.include = /FGBLayer|flatgeobuf/);
+      moduleRules.push(babelConfig);
       moduleRules.push(configBase.module.rules.css);
       return moduleRules;
     })()

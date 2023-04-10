@@ -369,7 +369,7 @@ export var FetchRequest = {
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
         } else {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
         }
     },
     /**
@@ -394,7 +394,7 @@ export var FetchRequest = {
             return RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
         }
         return this._fetch(url, params, options, type);
     },
@@ -441,9 +441,9 @@ export var FetchRequest = {
     },
     /**
      * @function FetchRequest.urlIsLong
-     * @description url 的字节长度是否太长。
+     * @description URL 的字节长度是否太长。
      * @param {string} url - 请求地址。
-     * @returns {boolean} url 的字节长度是否太长。
+     * @returns {boolean} URL 的字节长度是否太长。
      */
     urlIsLong: function (url) {
         //当前url的字节长度。

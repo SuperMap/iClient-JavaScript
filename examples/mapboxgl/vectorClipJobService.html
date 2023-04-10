@@ -94,7 +94,7 @@
             zoom: 11
         });
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-        map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+        map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
         var draw = new MapboxDraw({
             displayControlsDefault: false,
             controls: {

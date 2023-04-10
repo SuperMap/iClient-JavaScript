@@ -36,7 +36,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
         var getFeaturesByBoundsService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
             expect(paramsObj.getFeatureMode).toBe('BOUNDS');
@@ -153,7 +153,7 @@ describe('leaflet_FeatureService_getFeaturesByBounds', () => {
         var getFeaturesByBoundsService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             // expect(params).toContain("'datasetNames':[\"World1:Capitals\"");
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World1:Capitals');

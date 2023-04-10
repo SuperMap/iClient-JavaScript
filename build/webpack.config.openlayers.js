@@ -49,10 +49,8 @@ module.exports = {
         rules: (function() {
             let moduleRules = [];
             moduleRules.push(configBase.module.rules.img);
-            if (configBase.moduleVersion === 'es5') {
-                //打包为es5相关配置
-                moduleRules.push({
-                    test: [/\.js$/],
+            const babelConfig = {
+              test: [/\.js$/],
                     exclude: /classic | webgl-debug/,
                     loader: 'babel-loader',
                     options: {
@@ -70,8 +68,9 @@ module.exports = {
                             ]
                         ]
                     }
-                });
             }
+            configBase.moduleVersion === "es6" && (babelConfig.include = /FGB|flatgeobuf/);
+            moduleRules.push(babelConfig);
             moduleRules.push(configBase.module.rules.css);
             return moduleRules;
         })()

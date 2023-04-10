@@ -6,8 +6,8 @@ import '../../core/Base';
 /**
  * @class Theme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维专题图基类,不能直接实例化。
- * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @classdesc 三维专题图基类，不能直接实例化。
+ * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions -专题图图层配置项。
  * @param  {number} [layerOptions.opacity=1] - 图层不透明度。
  * @param  {boolean} [layerOptions.parseNumber=fasle] - 是否预处理数据，将数据转换为 number。
@@ -30,7 +30,7 @@ export class Theme3DLayer {
     constructor(id, layerOptions) {
         /**
          * @member {string} Theme3DLayer.prototype.id
-         * @description Mapbox GL 图层 id。
+         * @description Mapbox GL 图层 ID。
          */
         this.id = id;
 
@@ -46,7 +46,7 @@ export class Theme3DLayer {
         this.opacity = 1;
         /**
          * @member {boolean} [Theme3DLayer.prototype.parseNumber=false]
-         * @description 是否进行数据预处理,有些字段是 string 类型，需要转换为 number。
+         * @description 是否进行数据预处理，有些字段是 string 类型，需要转换为 number。
          */
         this.parseNumber = false;
         /**
@@ -126,7 +126,7 @@ export class Theme3DLayer {
      * @param {Object} layerOptions - 该专题图图层相关参数。
      * @param {number} [layerOptions.opacity=1] - 图层不透明度。
      * @param {boolean} [layerOptions.parseNumber=false] - 是否预处理数据，将数据转换为 number。
-     * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段
+     * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段。
      * @param {number} [layerOptions.height] - 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
      * @param {string} [layerOptions.heightField] - 数据中表示高度的字段。
      * @param {string} [layerOptions.themeField] - 专题展示的字段。
@@ -147,7 +147,7 @@ export class Theme3DLayer {
      * @description 设置图层高亮相关参数。
      * @param {Object} highlightOptions - 该专题图图层高亮相关参数。
      * @param {string} [highlightOptions.color] - 颜色。
-     * @param {function} highlightOptions.callback - 回调,返回数据参数（data,event）。
+     * @param {function} highlightOptions.callback - 回调，返回数据参数（data,event）。
      * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     setHighlightStyleOptions(highlightOptions) {
@@ -159,7 +159,7 @@ export class Theme3DLayer {
      * @function Theme3DLayer.prototype.setData
      * @description 设置数据，数据格式必须为 GeoJSON 格式。
      * @param {GeoJSONObject} data - GeoJSON 格式数据。
-     * @param {boolean} [parseNumber=false] - 是否进行数据预处理,有些字段是 string 类型，需要转换为 number。
+     * @param {boolean} [parseNumber=false] - 是否进行数据预处理，有些字段是 string 类型，需要转换为 number。
      */
     setData(data, parseNumber) {
         var me = this;
@@ -265,7 +265,7 @@ export class Theme3DLayer {
 
     /**
      * @function Theme3DLayer.prototype.getHighlightStyleOptions
-     * @description 获取高亮样式,子类重写实现。
+     * @description 获取高亮样式，子类重写实现。
      * @returns {Object} Mapbox GL 样式对象。
      */
     getHighlightStyleOptions() {

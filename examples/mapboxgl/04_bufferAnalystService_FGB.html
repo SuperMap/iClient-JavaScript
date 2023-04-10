@@ -1,0 +1,113 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_bufferAnalystService_FGB"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map,
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ",
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 2,
+                "maxzoom": 18
+            }]
+        },
+        center: [116.28094998209556, 39.897168019388474],
+        zoom: 12
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    map.on("load", function () {
+        bufferAnalystProcess();
+    });
+
+    function bufferAnalystProcess() {
+        map.addLayer({
+            "id": "route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [116.2143386597, 39.8959419733],
+                            [116.2156351162, 39.8963250173],
+                            [116.2182280292, 39.8968111885],
+                            [116.2740019864, 39.8970124079],
+                            [116.3103285499, 39.8970574832],
+                            [116.3321510064, 39.8970392162],
+                            [116.3377051439, 39.8973437531],
+                            [116.3463089006, 39.8978391816],
+                        ]
+                    }
+                }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#888",
+                "line-width": 8
+            }
+        });
+        //缓冲区分析参数
+        var dsBufferAnalystParameters = new mapboxgl.supermap.DatasetBufferAnalystParameters({
+            dataset: "Road_L@Jingjin",
+            filterQueryParameter: new mapboxgl.supermap.FilterParameter({
+                attributeFilter: "NAME='莲花池东路'"
+            }),
+            bufferSetting: new mapboxgl.supermap.BufferSetting({
+                endType: mapboxgl.supermap.BufferEndType.ROUND,
+                leftDistance: {value: 300},
+                rightDistance: {value: 300},
+                semicircleLineSegment: 10,
+                radiusUnit: 'METER'
+            })
+        });
+      //缓冲区分析服务 使用 FGB 格式
+      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+              var FGBLayer = new mapboxgl.supermap.FGBLayer({
+                url: serviceResult.result.newResourceLocation,
+                strategy: 'all',
+                paint: {
+                    "fill-color": "red", /* 填充的颜色 */
+                    "fill-opacity": 0.4  /* 透明度 */
+                }
+              });
+              map.addLayer(FGBLayer);
+          }, 'FGB')
+      }
+</script>
+</body>
+</html>

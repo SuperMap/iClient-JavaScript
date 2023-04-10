@@ -17,7 +17,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
@@ -58,7 +58,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
 
          /**
          * @member {number} [GetFeaturesServiceBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含Geometry
+         * @description 返回结果是否包含Geometry。
          */
         this.hasGeometry = true;
 
@@ -70,14 +70,13 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
 
         /**
          * @member {string} [GetFeaturesServiceBase.prototype.format=DataFormat.GEOJSON]
-         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。
-         * 参数格式为 "ISERVER"，"GEOJSON"。
+         * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。
+         * 参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
          */
         this.format = DataFormat.GEOJSON;
 
         Util.extend(this, options);
         this.url = Util.urlPathAppend(this.url, 'featureResults');
-
         this.CLASS_NAME = "SuperMap.GetFeaturesServiceBase";
     }
 
@@ -115,8 +114,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.maxFeatures = params.maxFeatures;
         me.hasGeometry = params.hasGeometry;
         if (me.returnContent) {
-            me.url = Util.urlAppend(me.url, 'returnContent=' + me.returnContent);
-            firstPara = false;
+          firstPara = false;
         }
         var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
         if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
@@ -152,5 +150,8 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result});
     }
 
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
+    }
 
 }

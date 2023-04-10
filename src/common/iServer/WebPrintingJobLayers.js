@@ -27,7 +27,7 @@
          this.layerType = null;
          /**
           * @member {string} WebPrintingJobLayers.prototype.url
-          * @description  图层 url。
+          * @description  图层 URL。
           */
          this.url = null;
 

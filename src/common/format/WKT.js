@@ -280,7 +280,7 @@ export class WKT extends Format {
 
     /**
      * @function WKTFormat.prototype.read
-     * @description 反序列化 WKT 字符串并返回向量特征或向量特征数组。 支持 POINT、MULTIPOINT、LINESTRING、MULTILINESTRING、POLYGON、MULTIPOLYGON 和 GEOMETRYCOLLECTION 的 WKT。
+     * @description 反序列化 WKT 字符串并返回向量特征或向量特征数组。支持 POINT、MULTIPOINT、LINESTRING、MULTILINESTRING、POLYGON、MULTIPOLYGON 和 GEOMETRYCOLLECTION 的 WKT。
      * @param {string} wkt - WKT 字符串。
      * @returns {FeatureVector|Array} GEOMETRYCOLLECTION WKT 的矢量要素或者矢量要素数组。
      */

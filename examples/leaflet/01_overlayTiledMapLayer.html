@@ -3,30 +3,48 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title data-i18n="resources.text_mapOverlay"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-</head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var map, urlWorld = host + "/iserver/services/map-world/rest/maps/World",
-        urlJinjing = host + "/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
-    map = L.map('map', {
-        crs: L.CRS.EPSG4326,
-        center: [40, 118],
-        maxZoom: 18,
-        zoom: 6
-    });
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="margin: 0 auto; width: 100%; height: 100%"></div>
+    <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var map,
+        urlWorld = host + '/iserver/services/map-world/rest/maps/World',
+        urlJinjing = host + '/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图';
 
-    new L.supermap.TiledMapLayer(urlWorld).addTo(map);
-    new L.supermap.TiledMapLayer(urlJinjing, {
-        transparent: true,
-        opacity: 0.6
-    }).addTo(map);
-</script>
-</body>
+      // 方式一：1.调用 L.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
+      //         2.调用 L.supermap.TiledMapLayer 创建叠加图层
+      L.supermap.initMap(urlWorld, { mapOptions: { center: [40, 118], zoom: 7 } }).then(({ map }) => {
+        new L.supermap.TiledMapLayer(urlJinjing, {
+          transparent: true,
+          opacity: 0.6
+        }).addTo(map);
+      });
+      /*
+          // 方式二：1.调用 L.supermap.MapService，获取 SuperMap iServer 地图服务的地图信息
+          //         2.调用 L.supermap.crsFromMapJSON 创建 CRS
+          //         3.调用 L.map 创建地图
+          //         4.调用 L.supermap.TiledMapLayer 创建底图和叠加图层
+        new L.supermap.MapService(urlWorld).getMapInfo((res) => {
+            var crs = L.supermap.crsFromMapJSON(res.result);
+            map = L.map('map', {
+              crs: crs,
+              center: [40, 118],
+              maxZoom: 18,
+              zoom: 7
+            });
+            new L.supermap.TiledMapLayer(urlWorld).addTo(map);
+            new L.supermap.TiledMapLayer(urlJinjing, {
+              transparent: true,
+              opacity: 0.6
+            }).addTo(map);
+        });
+      */
+    </script>
+  </body>
 </html>

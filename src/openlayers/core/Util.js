@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
  import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
- import { getMeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
+ import { getMeterPerMapUnit, scalesToResolutions, getZoomByResolution } from '@supermap/iclient-common/util/MapCalculateUtil';
  import * as olUtil from 'ol/util';
  import Geometry from 'ol/geom/Geometry';
  import { getVectorContext } from 'ol/render';
@@ -11,6 +11,8 @@
  import VectorLayer from 'ol/layer/Vector';
  import { Fill, Style } from 'ol/style';
  import Feature from 'ol/Feature';
+ import Projection from 'ol/proj/Projection';
+ import { get } from 'ol/proj';
 
  /**
   * @name Util
@@ -417,7 +419,27 @@
     * @version 10.1.0
     * @param {ol.layer.Layer|Array.<ol.layer.Layer>} layers 图层
     */
-   unsetMask
+   unsetMask,
+   getZoomByResolution(scale, scales) {
+    return getZoomByResolution(scale, scales);
+   },
+   scalesToResolutions(scales, bounds, dpi, unit, mapobj, level) {
+    return scalesToResolutions(scales, bounds, dpi, unit, mapobj, level);
+   },
+   getProjection(prjCoordSys, extent) {
+    let projection = get(`EPSG:${prjCoordSys.epsgCode}`);
+    if (prjCoordSys.type == 'PCS_NON_EARTH') {
+      projection = new Projection({
+        extent,
+        units: 'm',
+        code: '0'
+      });
+    }
+    if (!projection) {
+      console.error(`The projection of EPSG:${prjCoordSys.epsgCode} is missing, please register the projection of EPSG:${prjCoordSys.epsgCode} first, refer to the documentation: https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection`);
+    }
+    return projection;
+  }
  }
 
 function isString(str) {

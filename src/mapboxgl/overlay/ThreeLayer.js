@@ -30,7 +30,7 @@ const {
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
  *          {@link THREE.WebGLRenderer}
- *          THREE.CanvasRenderer
+ *          {@link THREE.CanvasRenderer}。
  *
  * @extends {mapboxgl.Evented}
  * @fires ThreeLayer#render
@@ -136,7 +136,7 @@ export class ThreeLayer extends mapboxgl.Evented {
 
     /**
      * @function ThreeLayer.prototype.getScene
-     * @description 获取threejs 场景对象
+     * @description 获取 threejs 场景对象。
      * @returns {THREE.Scene} threejs 场景对象。
      */
     getScene() {
@@ -145,7 +145,7 @@ export class ThreeLayer extends mapboxgl.Evented {
 
     /**
      * @function ThreeLayer.prototype.getCamera
-     * @description 获取threejs 相机。
+     * @description 获取 threejs 相机。
      * @returns {THREE.Camera} threejs 相机。
      */
     getCamera() {
@@ -238,9 +238,9 @@ export class ThreeLayer extends mapboxgl.Evented {
 
     /**
      * @function ThreeLayer.prototype.lngLatToPosition
-     * @description 经纬度转threejs 3D 失量对象。
+     * @description 经纬度转threejs 3D 矢量对象。
      * @param {(Array.<number>|Object)} lngLat - 经纬度坐标。
-     * @returns {THREE.Vector3} threejs 3D 失量对象。
+     * @returns {THREE.Vector3} threejs 3D 矢量对象。
      */
     lngLatToPosition(lngLat) {
         let zoom = Transform.projection.nativeMaxZoom;
@@ -250,11 +250,11 @@ export class ThreeLayer extends mapboxgl.Evented {
 
     /**
      * @function ThreeLayer.prototype.distanceToThreeVector3
-     * @description 计算距离指定坐标给定距离的新坐标的 threejs 3D 失量对象。
-     * @param {number} x - x 轴距离,单位米。
-     * @param {number} y - y 轴距离,单位米。
+     * @description 计算距离指定坐标给定距离的新坐标的 threejs 3D 矢量对象。
+     * @param {number} x - x 轴距离，单位米。
+     * @param {number} y - y 轴距离，单位米。
      * @param {(Array.<number>|Object)} lngLat - 源坐标。
-     * @returns {THREE.Vector3} 目标点的 threejs 3D 失量对象。
+     * @returns {THREE.Vector3} 目标点的 threejs 3D 矢量对象。
      */
     distanceToThreeVector3(x, y, lngLat) {
         let map = this._map;

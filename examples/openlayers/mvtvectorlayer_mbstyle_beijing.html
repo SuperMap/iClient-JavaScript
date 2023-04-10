@@ -164,7 +164,7 @@
                         collapsed: false
                     }
                 })
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 maxResolution: 40075016.68557849 / 512,
                 center: ol.proj.fromLonLat([116.4, 39.9]),

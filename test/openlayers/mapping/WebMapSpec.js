@@ -21,6 +21,8 @@ import * as olControl from 'ol/control';
 import Feature from 'ol/Feature';
 import * as olProj from 'ol/proj';
 
+window.jsonsql = { query: () => {} };
+
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
     var server = "http://127.0.0.1:8090/iportal/";
@@ -49,23 +51,23 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
+        const successCallback = () => {
+          expect(datavizWebmap.server).toBe(server);
+          expect(datavizWebmap.callBack).toBeUndefined();
+          expect(datavizWebmap.errorCallback).toBeUndefined();
+          expect(datavizWebmap.credentialKey).toBeUndefined();
+          expect(datavizWebmap.credentialValue).toBeUndefined();
+
+          var view = datavizWebmap.map.getView();
+          expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
+          expect(datavizWebmap.mapParams.title).toBe('tianditu');
+          expect(datavizWebmap.mapParams.description).toBe('');
+          done();
+        }
         var datavizWebmap = new WebMap(id, {
-            server: server
+            server: server,
+            successCallback
         });
-
-        setTimeout(() => {
-            expect(datavizWebmap.server).toBe(server);
-            expect(datavizWebmap.callBack).toBeUndefined();
-            expect(datavizWebmap.errorCallback).toBeUndefined();
-            expect(datavizWebmap.credentialKey).toBeUndefined();
-            expect(datavizWebmap.credentialValue).toBeUndefined();
-
-            var view = datavizWebmap.map.getView();
-            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
-            expect(datavizWebmap.mapParams.title).toBe('tianditu');
-            expect(datavizWebmap.mapParams.description).toBe('');
-            done();
-        }, 0)
     });
 
     it('initialize_TIANDITU_IMAGE', (done) => {
@@ -79,9 +81,24 @@ describe('openlayers_WebMap', () => {
         var overlayDiv = window.document.createElement("div");
         overlayDiv.setAttribute("id", "marker-pop");
         window.document.body.appendChild(overlayDiv);
+        
+        const successCallback = () => {
+          expect(datavizWebmap.server).toBe(server);
+          expect(datavizWebmap.errorCallback).toBeDefined();
+          expect(datavizWebmap.credentialKey).toBeUndefined();
+          expect(datavizWebmap.credentialValue).toBeUndefined();
+
+          var view = datavizWebmap.map.getView();
+          expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
+          expect(datavizWebmap.mapParams.description).toBe('This is a image');
+          /*spyOn(options.mapSetting, 'mapClickCallback');
+          datavizWebmap.map.trigger('click');
+          expect(options.mapSetting.mapClickCallback).toHaveBeenCalled();*/
+          done();
+        }
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {},
             mapSetting: {
                 overlays: [
@@ -100,31 +117,26 @@ describe('openlayers_WebMap', () => {
                 mapClickCallback: function (evt) {}
             }
         };
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
-            expect(datavizWebmap.server).toBe(server);
-            expect(datavizWebmap.errorCallback).toBeDefined();
-            expect(datavizWebmap.credentialKey).toBeUndefined();
-            expect(datavizWebmap.credentialValue).toBeUndefined();
-
-            var view = datavizWebmap.map.getView();
-            expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
-            expect(datavizWebmap.mapParams.description).toBe('This is a image');
-            expect(options.successCallback).toHaveBeenCalled();
-
-            /*spyOn(options.mapSetting, 'mapClickCallback');
-            datavizWebmap.map.trigger('click');
-            expect(options.mapSetting.mapClickCallback).toHaveBeenCalled();*/
-            done();
-        }, 0)
     });
 
     it('initialize_TIANDITU_TER', (done) => {
+      const successCallback = () => {
+        expect(datavizWebmap.server).toBe(server);
+        expect(datavizWebmap.errorCallback).toBeDefined();
+        expect(datavizWebmap.credentialKey).toBe('key');
+        expect(datavizWebmap.credentialValue).toBe('keyValue');
+
+        var view = datavizWebmap.map.getView();
+        expect(datavizWebmap.mapParams.title).toBe('ter');
+        expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
+        done();
+      };
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {},
             credentialKey: 'key',
             credentialValue: 'keyValue'
@@ -136,27 +148,13 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
-            expect(datavizWebmap.server).toBe(server);
-            expect(datavizWebmap.errorCallback).toBeDefined();
-            expect(datavizWebmap.credentialKey).toBe('key');
-            expect(datavizWebmap.credentialValue).toBe('keyValue');
-
-            var view = datavizWebmap.map.getView();
-            expect(datavizWebmap.mapParams.title).toBe('ter');
-            expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
-            expect(options.successCallback).toHaveBeenCalled();
-            done();
-        }, 0)
     });
 
     it('initialize_BAIDU', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -166,10 +164,9 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -178,14 +175,177 @@ describe('openlayers_WebMap', () => {
             var view = datavizWebmap.map.getView();
             expect(datavizWebmap.mapParams.title).toBe('百度');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             done();
-        }, 0)
+        }
+    });
+
+    it('jsonsql', (done) => {
+      let options = {
+          server: server,
+          successCallback,
+          errorCallback: function () {}
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_BAIDU;
+              return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, options);
+
+      function successCallback() {
+        datavizWebmap.getFiterFeatures('2020年人口数> 20', [{ get: () => ({ '2020年人口数': 30 }) }]);
+        datavizWebmap.getFiterFeatures('观测场海拔高度（米）>150', [{ get: () => ({ '观测场海拔高度（米）': 30 }) }]);
+        // datavizWebmap.createDataflowLayer({filterCondition:'2020年人口数> 20', pointStyle:{}, wsUrl: 'ws://test/iserver/services/dataflow/dataflow/subscribe'}, [{ get: () => ({ '2020年人口数': 30 }) }]);
+        done();
+      }
+    });
+    it('isvj-5215', (done) => {
+      let options = {
+          server: server,
+          successCallback,
+          errorCallback: function () {}
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_BAIDU;
+              return Promise.resolve(new Response(mapJson));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, options);
+
+      async function successCallback() {
+        const parameters = {
+          "layerType": "UNIQUE",
+          "visible": true,
+          "themeSetting": {
+              "themeField": "UserID",
+              "customSettings": {
+                  "0": {
+                      "fillColor": "#D53E4F",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "1": {
+                      "fillColor": "#3288BD",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "2": {
+                      "fillColor": "#FC8D59",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "3": {
+                      "fillColor": "#99D594",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "5": {
+                      "fillColor": "#FEE08B",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  },
+                  "8": {
+                      "fillColor": "#E6F598",
+                      "strokeWidth": 1,
+                      "offsetX": 0,
+                      "offsetY": 0,
+                      "fillOpacity": 0.9,
+                      "type": "BASIC_POINT",
+                      "radius": 15,
+                      "strokeColor": "#ffffff",
+                      "strokeOpacity": 1
+                  }
+              },
+              "colors": [
+                  "#D53E4F",
+                  "#FC8D59",
+                  "#FEE08B",
+                  "#FFFFBF",
+                  "#E6F598",
+                  "#99D594",
+                  "#3288BD"
+              ]
+          },
+          "name": "isvj-5215",
+          "featureType": "POINT",
+          "labelStyle": {
+              "offsetX": 0,
+              "textBaseline": "bottom",
+              "fontFamily": "黑体",
+              "offsetY": -19,
+              "outlineWidth": 0,
+              "textAlign": "center",
+              "outlineColor": "#000000",
+              "fontSize": "14px",
+              "fill": "#333",
+              "backgroundFill": [
+                  255,
+                  255,
+                  255,
+                  0.8
+              ],
+              "labelField": "UserID"
+          },
+          "style": {
+              "strokeWidth": 1,
+              "offsetX": 0,
+              "fillColor": "#E6F598",
+              "offsetY": 0,
+              "fillOpacity": 0.9,
+              "radius": 15,
+              "strokeColor": "#ffffff",
+              "type": "BASIC_POINT",
+              "strokeOpacity": 1
+          },
+          "projection": "EPSG:4326",
+          "enableFields": [
+              "UserID"
+          ]
+        }
+        const res = await datavizWebmap.getUniqueStyleGroup(parameters, [{ get: () => ({ 'UserID': 30, 'UserID': 0 }) }]);
+        expect(res.length).toBe(1);
+        done();
+      }
     });
     it('initialize_OPENSTREET', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -195,48 +355,44 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(datavizWebmap.mapParams.title).toBe('openstreet');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             done();
-        }, 0)
+        }
     });
 
     it('initialize_FAILD', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
-            errorCallback: function () {}
+            errorCallback
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             return Promise.reject();
         });
-        spyOn(options, 'successCallback');
-        spyOn(options, 'errorCallback');
         var datavizWebmap = new WebMap(id, options);
-
-        setTimeout(() => {
+        
+        function errorCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
-            expect(options.successCallback).not.toHaveBeenCalled();
-            expect(options.errorCallback).toHaveBeenCalled();
+            // expect(options.successCallback).not.toHaveBeenCalled();
             done();
-        }, 0)
+        }
     });
 
     it('initialize_CLOUD', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -246,10 +402,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -258,15 +414,15 @@ describe('openlayers_WebMap', () => {
             var view = datavizWebmap.map.getView();
             expect(datavizWebmap.mapParams.title).toBe('GAOD');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             done();
-        }, 0)
+        }
     });
 
     it('initialize_UNDEFIED', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -276,25 +432,25 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             done();
-        }, 0)
+        }
     });
 
     it('createThemeLayer_Vector_Basis', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -307,10 +463,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -321,17 +477,17 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([13428717.554131005, 3553719.2183414707]);
             expect(datavizWebmap.mapParams.title).toBe('theme_base');
             expect(datavizWebmap.mapParams.description).toBe('base style');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
-        }, 1000)
+        }
     });
 
     it('createThemeLayer_Vector_Basis_Line', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -344,10 +500,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -358,17 +514,17 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([12957099.912590493, 4857107.635483593]);
             expect(datavizWebmap.mapParams.title).toBe('Line_basis');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路');
             done();
-        }, 1000)
+        }
     });
 
     it('createThemeLayer_Vector_IMAGE', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -381,10 +537,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -392,16 +548,17 @@ describe('openlayers_WebMap', () => {
 
             expect(datavizWebmap.mapParams.title).toBe('Image');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
-        }, 1000)
+        }
     });
+
     it('createThemeLayer_Vector_SVG', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1782454383/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -414,11 +571,11 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
         spyOn(datavizWebmap, 'createGraphicLayer');
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -427,16 +584,16 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe("无标题");
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(datavizWebmap.createGraphicLayer).toHaveBeenCalled();
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             done();
-        }, 2000)
+        }
     });
 
     it('createThemeLayer_Unique', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -449,11 +606,11 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
 
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -464,17 +621,17 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([12949175.717869252, 4864340.473197712]);
             expect(datavizWebmap.mapParams.title).toBe('Unique');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('住宅_Lite(10)');
             done();
-        }, 1000)
+        }
     });
 
     it('createThemeLayer_Range', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -487,10 +644,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -501,18 +658,19 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([12957697.597143793, 4851476.112683487]);
             expect(datavizWebmap.mapParams.title).toBe('RANGE_LABEL');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路(2)');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(3);
             done();
-        }, 1000)
+        }
     });
+
     it('createThemeLayer_Heat', (done) => {
         //插件里面i未定义报错
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -527,7 +685,7 @@ describe('openlayers_WebMap', () => {
         });
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -539,13 +697,13 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe('Heat');
             expect(datavizWebmap.mapParams.description).toBe('');
             done();
-        }, 0)
+        }
     });
 
     it('createThemeLayer_Marker', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`)}`;
@@ -558,10 +716,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -571,18 +729,18 @@ describe('openlayers_WebMap', () => {
             expect(Math.floor(view.getZoom())).toBe(2);
             expect(datavizWebmap.mapParams.title).toBe('标注图层');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('未命名标注图层1');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 1000)
+        }
     });
 
     it('createThemeLayer_SUPERMAP_MAP', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -593,10 +751,10 @@ describe('openlayers_WebMap', () => {
                 return Promise.resolve(new Response(jinJingMap))
             }
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -607,18 +765,18 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([13010199.082679197, 4882852.518868368]);
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('restMap from jingjin');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('京津地区土地利用现状图');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 1000)
+        }
     });
 
     it('createThemeLayer_SUPERMAPREST_DATA', (done) => {
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -633,10 +791,10 @@ describe('openlayers_WebMap', () => {
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             return Promise.resolve(new Response(supermapData));
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -647,21 +805,21 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([13013201.402643811, 4822518.728777889]);
             expect(datavizWebmap.mapParams.title).toBe('RestData');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('Jingjin:BaseMap_P');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
             datavizWebmap.map = null;
             datavizWebmap = null;
-        }, 1000)
+        }
     });
 
     it('WMS', (done) => {
         //插件里面i未定义报错
         let options = {
             server: server,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
@@ -675,10 +833,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        // spyOn(options, 'successCallback');
+        // 
         var datavizWebmap = new WebMap(id, options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -688,13 +846,13 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('wms');
             expect(datavizWebmap.mapParams.description).toBe('');
-            // expect(options.successCallback).toHaveBeenCalled();
+            // 
 
             // expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             // expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('World');
             // expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
             done();
-        }, 0)
+        }
     });
 
     /*    it('WMTS', (done) => {
@@ -719,7 +877,7 @@ describe('openlayers_WebMap', () => {
             spyOn(options, 'callback');
             var datavizWebmap = new WebMap(id, options);
 
-            setTimeout(() => {
+            function successCallback() {
                 expect(datavizWebmap.server).toBe(server);
                 expect(datavizWebmap.errorCallback).toBeDefined();
                 expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -735,7 +893,7 @@ describe('openlayers_WebMap', () => {
                 expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('World_AirLine_Part');
                 expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
                 done();
-            }, 1000)
+            }
         });*/
 
     it('createWMTSSource', (done) => {
@@ -744,18 +902,20 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+              return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         var layerInfo = JSON.parse(wmtsInfo);
         datavizWebmap.baseProjection = "EPSG:4326";
         datavizWebmap.createWMTSSource(layerInfo);
 
-        setTimeout(() => {
-            expect(datavizWebmap.server).toBe(defaultServer);
-            done();
-        }, 0)
+        setTimeout(()=>{
+          expect(datavizWebmap.server).toBe(defaultServer);
+          done();
+        }, 0);
     });
 
     it('createWMTSSource1', (done) => {
@@ -764,18 +924,20 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+              return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         var layerInfo = JSON.parse(wmtsInfo1);
         datavizWebmap.baseProjection = "EPSG:4326";
         datavizWebmap.createWMTSSource(layerInfo);
 
-        setTimeout(() => {
+        setTimeout(()=>{
             expect(datavizWebmap.server).toBe(defaultServer);
             done();
-        }, 0)
+        }, 0);
     });
 
     // 被写在styleUtils
@@ -787,7 +949,7 @@ describe('openlayers_WebMap', () => {
     //         }
     //         return Promise.resolve();
     //     });
-    //     var datavizWebmap = new WebMap(id, {});
+    //     var datavizWebmap = new WebMap(id, { successCallback });
     //     var canvas = document.createElement('canvas');
     //     var params = {
     //         fillColor: '#0083cb',
@@ -796,10 +958,10 @@ describe('openlayers_WebMap', () => {
     //         strokeOpacity: '0.2',
     //         strokeWidth: '6'
     //     };
-    //     setTimeout(() => {
+    //     function successCallback() {
     //         expect(datavizWebmap.setColorToCanvas(canvas, params)).toBeDefined();
     //         done();
-    //     }, 1000)
+    //     }
     // });
 
     // it('getSymbolStyle', (done) => {
@@ -810,7 +972,7 @@ describe('openlayers_WebMap', () => {
     //         }
     //         return Promise.resolve();
     //     });
-    //     var datavizWebmap = new WebMap(id, {});
+    //     var datavizWebmap = new WebMap(id, { successCallback });
     //     var params = {
     //         unicode: "&#xe694",
     //         fillColor: '#ffffff',
@@ -819,10 +981,10 @@ describe('openlayers_WebMap', () => {
     //         strokeOpacity: '0.2',
     //         strokeWidth: '6'
     //     };
-    //     setTimeout(() => {
+    //     function successCallback() {
     //         expect(datavizWebmap.getSymbolStyle(params)).toBeDefined();
     //         done();
-    //     }, 1000)
+    //     }
     // });
 
     it('changeWeight', (done) => {
@@ -830,24 +992,26 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+              return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         var features = [];
         var feature = new Feature();
         feature.setProperties({
             field: '10'
         });
         features.push(feature);
-        setTimeout(() => {
+        setTimeout(()=>{
             datavizWebmap.fieldMaxValue = {
                 field: 10
             };
             datavizWebmap.changeWeight(features, 'field');
             // expect(feature.get('weight')).toBe(1);
             done();
-        }, 0)
+        }, 0);
     });
 
     it('createBaseLayer-wmts', (done) => {
@@ -855,13 +1019,14 @@ describe('openlayers_WebMap', () => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url === "http://localhost:9876/iserver/services/maps/wmts100?") {
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
                 return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {});
-        setTimeout(() => {
+        var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
+        function successCallback(){}
+        setTimeout(()=>{
             var layerInfo = {
                 layerType: 'WMTS',
                 zIndex: 1,
@@ -873,7 +1038,10 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.createBaseLayer(layerInfo);
             expect(datavizWebmap.createWMTSSource).toHaveBeenCalled();
             done();
-        }, 0)
+          }, 0);
+        function errorCallback(error) {
+          console.log(error);
+        }
     });
 
     it('getWmtsInfo', (done) => {
@@ -882,38 +1050,40 @@ describe('openlayers_WebMap', () => {
             if (url === requestUrl) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+                return Promise.resolve(new Response(wmtsInfo2));
             } else {
                 let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
                 return Promise.resolve(new Response(wmtsData));
             }
         });
-        var datavizWebmap = new WebMap(id, {});
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
         spyOn(datavizWebmap, "isValidResponse").and.callFake(() => {
             return true;
         });
         setTimeout(() => {
-            var layerInfo = {
-                url: 'http://localhost:9876/iserver/services/maps/wmts100'
-            };
-            var successCallback = function () {};
-            datavizWebmap.getWmtsInfo(layerInfo, successCallback);
-            expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
-            done();
-        }, 1000)
+          var layerInfo = {
+            url: 'http://localhost:9876/iserver/services/maps/wmts100'
+          };
+          const successCallback = function () {};
+          datavizWebmap.getWmtsInfo(layerInfo, successCallback);
+          expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
+          done();
+        }, 1000);
     });
 
     it('isValidResponse', (done) => {
-        var datavizWebmap = new WebMap(id, {webMap: JSON.parse(datavizWebMap_BAIDU)});
-        setTimeout(() => {
+        var datavizWebmap = new WebMap(id, {webMap: JSON.parse(datavizWebMap_BAIDU), successCallback});
+        function successCallback() {
             var response = {};
             expect(datavizWebmap.isValidResponse(response)).toBe(false);
             done();
-        }, 0)
+        }
     });
 
     it('getReslutionsFromScales', (done) => {
-        var datavizWebmap = new WebMap({webMap: JSON.parse(datavizWebMap_BAIDU)});
-        setTimeout(() => {
+        var datavizWebmap = new WebMap({webMap: JSON.parse(datavizWebMap_BAIDU), successCallback});
+        function successCallback() {
             var scales = {
                 TileMatrix: [{
                     Identifier: ''
@@ -921,13 +1091,13 @@ describe('openlayers_WebMap', () => {
             };
             expect(datavizWebmap.getReslutionsFromScales(scales, 96, 'degrees', 1000)).toBeDefined();
             done();
-        }, 0)
+        }
     });
 
     it('getRangeStyleGroup', (done) => {
         let webMapObj = JSON.parse(datavizWebMap_BAIDU);
-        var datavizWebmap = new WebMap({webMap: webMapObj});
-        setTimeout(() => {
+        var datavizWebmap = new WebMap({webMap: webMapObj, successCallback});
+        function successCallback() {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
             var feature = new Feature();
@@ -941,7 +1111,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
-        }, 0);
+        };
     });
 
     it('getRangeStyleGroup1', (done) => {
@@ -949,8 +1119,8 @@ describe('openlayers_WebMap', () => {
             return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
         });
         let webMapObj = JSON.parse(datavizWebMap_BAIDU);
-        var datavizWebmap = new WebMap({webMap: webMapObj});
-        setTimeout(() => {
+        var datavizWebmap = new WebMap({webMap: webMapObj, successCallback});
+        function successCallback() {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
             var feature = new Feature();
@@ -959,7 +1129,7 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
-        }, 0)
+        }
     });
 
     it('refresh', (done) => {
@@ -972,24 +1142,26 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         var datavizWebmap = new WebMap(id, {
-            server: server
+            server: server,
+            successCallback: callback
         });
 
-        setTimeout(() => {
+        function callback() {
+          if (!refresh) {
             expect(datavizWebmap.baseLayer.name).toEqual('天地图');
             refresh = true;
             datavizWebmap.refresh();
-            setTimeout(() => {
-                expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
-                done();
-            }, 0);            
-        }, 0)
+          } else {
+            expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
+            done();
+          }
+        }
     })
     it('webMapUrl', (done) => {
         let options = {
             server: server,
             webMap: defaultServeRequest,
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -999,10 +1171,10 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -1010,28 +1182,28 @@ describe('openlayers_WebMap', () => {
 
             expect(datavizWebmap.mapParams.title).toBe('百度');
             expect(datavizWebmap.mapParams.description).toBe('');
-            expect(options.successCallback).toHaveBeenCalled();
+            
             done();
-        }, 0)
+        }
     })
     it('webMapObject', (done) => {
         let options = {
             server: server,
             webMap: JSON.parse(datavizWebMap_BAIDU),
-            successCallback: function () {},
+            successCallback,
             errorCallback: function () {}
         };
-        spyOn(options, 'successCallback');
+        
         var datavizWebmap = new WebMap(options);
 
-        setTimeout(() => {
+        function successCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
-            expect(options.successCallback).toHaveBeenCalled();
+            
             done();
-        }, 0)
+        }
     })
     
     it('getScales EPSG:1', (done) => {
@@ -1040,6 +1212,8 @@ describe('openlayers_WebMap', () => {
         if (url.indexOf('map.json') > -1) {
           var mapJson = datavizWebMap_WMTS;
           return Promise.resolve(new Response(mapJson));
+        } else if (url.includes("/iserver/services/maps/wmts100?")) {
+            return Promise.resolve(new Response(wmtsInfo2));
         }
         return Promise.resolve();
       });
@@ -1048,7 +1222,7 @@ describe('openlayers_WebMap', () => {
         code: 'EPSG:1'
       });
       olProj.addProjection(proj);
-      var datavizWebmap = new WebMap(id, {});
+      var datavizWebmap = new WebMap(id, { server: defaultServer });
       var layerInfo = JSON.parse(wmtsInfo);
       datavizWebmap.baseProjection = 'EPSG:1';
       datavizWebmap.getScales({...layerInfo, projection:'EPSG:1'});
@@ -1064,6 +1238,8 @@ describe('openlayers_WebMap', () => {
         if (url.indexOf('map.json') > -1) {
           var mapJson = datavizWebMap_WMTS;
           return Promise.resolve(new Response(mapJson));
+        } else if (url.includes("/iserver/services/maps/wmts100?")) {
+            return Promise.resolve(new Response(wmtsInfo2));
         }
         return Promise.resolve();
       });
@@ -1072,7 +1248,7 @@ describe('openlayers_WebMap', () => {
         code: 'EPSG:1'
       });
       olProj.addProjection(proj);
-      var datavizWebmap = new WebMap(id, {});
+      var datavizWebmap = new WebMap(id, { server: defaultServer });
       var layerInfo = JSON.parse(wmtsInfo);
       datavizWebmap.baseProjection = 'EPSG:3857';
       datavizWebmap.getScales({...layerInfo, projection:'EPSG:1'});
@@ -1082,4 +1258,45 @@ describe('openlayers_WebMap', () => {
         done();
       }, 0);
     });
+    it('svg canvg', (done) => {
+      let options = {
+        server: server,
+        successCallback,
+        errorCallback: function () {}
+      };
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(markerData));
+          }
+          return Promise.resolve();
+      });
+      
+      var datavizWebmap = new WebMap(id, options);
+      function successCallback() {
+          expect(datavizWebmap.server).toBe(server);
+          datavizWebmap.stop
+          done();
+      }
+    });
+
+    it('vector_svg', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG1;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { server, successCallback });
+      function successCallback() {
+        expect(datavizWebmap.credentialKey).toBeUndefined();
+        expect(datavizWebmap.credentialValue).toBeUndefined();
+        done();
+      }
+  });
 });

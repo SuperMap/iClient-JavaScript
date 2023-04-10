@@ -137,9 +137,9 @@ export class CartoCSSToLeaflet {
             return null;
         }
         //兼容iportal示例的问题
-        if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-            icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
-        }
+        // if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+        //     icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
+        // }
         return L.icon({
             iconUrl: icon,
             iconSize: L.point(48, 43),
@@ -165,9 +165,9 @@ export class CartoCSSToLeaflet {
                     return null;
                 }
                 //兼容iportal示例的问题
-                if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-                    pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
-                }
+                // if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+                //     pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
+                // }
                 return L.icon({
                     iconUrl: pointStyle.externalGraphic,
                     iconSize: L.point(pointStyle.graphicWidth, pointStyle.graphicHeight),

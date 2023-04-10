@@ -8,7 +8,7 @@ import { CommonServiceBase } from './CommonServiceBase';
 /**
  * @class ImageService
  * @deprecatedclass SuperMap.ImageService
- * @classdesc 影像服务类
+ * @classdesc 影像服务类。
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
@@ -55,7 +55,7 @@ export default class ImageService extends CommonServiceBase {
 
     /**
      * @function ImageService.prototype.getCollectionByID
-     * @description ID值等于`collectionId`参数值的影像集合（Collection）。 ID值用于在服务中唯一标识该影像集合。
+     * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
      */
     getCollectionByID(collectionId) {
@@ -77,7 +77,7 @@ export default class ImageService extends CommonServiceBase {
     /**
      * @function ImageSearchService.prototype.search
      * @description 查询与过滤条件匹配的影像数据。
-     * @param {ImageSearchParameter} [imageSearchParameter] 查询参数
+     * @param {ImageSearchParameter} [imageSearchParameter] 查询参数。
      */
     search(imageSearchParameter) {
         var postBody = { ...(imageSearchParameter || {}) };

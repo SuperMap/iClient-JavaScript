@@ -15,7 +15,7 @@ import {GeoJSON} from '../format/GeoJSON';
  *            查找经济有效的配送路径，并给出相应的行走路线。
  *            物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
  *            该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
- *            多旅行商分析结果通过该类支持的事件的监听函数参数获取
+ *            多旅行商分析结果通过该类支持的事件的监听函数参数获取。
  * @extends {NetworkAnalystServiceBase}
  * @example
  * var myFindMTSPPathsService = new FindMTSPPathsService(url, {

@@ -13,19 +13,19 @@ export class Transformable {
     constructor() {
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.position
-         * @description 平移， 默认值：[0, 0]。
+         * @description 平移，默认值：[0, 0]。
          */
         this.position = [0, 0];
 
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.rotation
-         * @description 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
+         * @description 旋转，可以通过数组二三项指定旋转的原点，默认值：[0, 0, 0]。
          */
         this.rotation = [0, 0, 0];
 
         /**
          * @member {Array.<number>} LevelRenderer.Transformable.prototype.scale
-         * @description 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
+         * @description 缩放，可以通过数组三四项指定缩放的原点，默认值：[1, 1, 0, 0]。
          */
         this.scale = [1, 1, 0, 0];
 
@@ -113,7 +113,7 @@ export class Transformable {
 
     /**
      * @function LevelRenderer.Transformable.prototype.updateTransform
-     * @description 判断是否需要有坐标变换，更新 needTransform 属性。如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
+     * @description 判断是否需要有坐标变换，更新 needTransform 属性。如果有坐标变换，则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵。
      */
     updateTransform() {
         this.updateNeedTransform();

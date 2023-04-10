@@ -52,12 +52,12 @@ export class ElasticSearch {
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
-         *  @description ElasticSearch服务地址
+         *  @description ElasticSearch服务地址。
          */
         this.url = url;
         /**
          *  @member {Object} ElasticSearch.prototype.client
-         *  @description client ES客户端
+         *  @description client ES客户端。
          */
         try {
           // 老版本
@@ -85,13 +85,13 @@ export class ElasticSearch {
         this.openGeoFence = false;
         /**
          *  @member {function} [ElasticSearch.prototype.outOfGeoFence]
-         *  @description 数据超出地理围栏后执行的函数
+         *  @description 数据超出地理围栏后执行的函数。
          */
         this.outOfGeoFence = null;
 
         /**
          * @member {Object} [ElasticSearch.prototype.geoFence]
-         * @description 地理围栏
+         * @description 地理围栏。
          * @example {
      *    radius: 1000,//单位是m
      *    center: [104.40, 30.43],
@@ -110,13 +110,13 @@ export class ElasticSearch {
 
         /**
          * @member {Events} ElasticSearch.prototype.events
-         * @description 事件
+         * @description 事件。
          */
         this.events = new Events(this, null, this.EVENT_TYPES);
 
         /**
          * @member {Object} ElasticSearch.prototype.eventListeners
-         * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+         * @description 监听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
          * 相当于调用 Events.on(eventListeners)。
          */
         this.eventListeners = null;
@@ -174,7 +174,7 @@ export class ElasticSearch {
 
     /**
      * @function  ElasticSearch.prototype.create
-     * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
+     * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
      * @param {Object} params - 参数。
@@ -284,7 +284,7 @@ export class ElasticSearch {
 
     /**
      * @function  ElasticSearch.prototype.get
-     * @description 从索引获取一个基于其id的类型的JSON文档。</br>
+     * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param {Object} params - 参数。
@@ -373,7 +373,7 @@ export class ElasticSearch {
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
-     *     回调参数：error,response。结果存储在response.responses中
+     *     回调参数：error,response，结果存储在response.responses中。
      */
     msearch(params, callback) {
         let me = this;
@@ -505,7 +505,7 @@ export class ElasticSearch {
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
-     *     回调参数：error,response,结果存储在response.responses中
+     *     回调参数：error,response，结果存储在response.responses中。
      */
     search(params, callback) {
         let me = this;

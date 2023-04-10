@@ -15,6 +15,7 @@ export { ThreeLayer } from './ThreeLayer';
 export { HeatMapLayer } from './HeatMapLayer';
 export { DeckglLayer } from './DeckglLayer';
 export { GraticuleLayer } from './GraticuleLayer';
+export { FGBLayer } from './FGBLayer';
 
 export * from './graphic';
 export * from './mapv';

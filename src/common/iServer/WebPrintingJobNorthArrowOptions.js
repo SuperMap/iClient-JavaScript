@@ -10,7 +10,7 @@ import { Util } from '../commontypes/Util';
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
- * @param {string} option.picAsUrl - 指北针的图片 url 地址。
+ * @param {string} option.picAsUrl - 指北针的图片 URL 地址。
  * @param {string} [option.picAsBase64] - 指北针的base64位图片信息。
  * @usage
  */
@@ -18,7 +18,7 @@ export class WebPrintingJobNorthArrowOptions {
     constructor(option) {
         /**
          * @member {string} WebPrintingJobNorthArrowOptions.prototype.picAsUrl
-         * @description 指北针的图片 url 地址。
+         * @description 指北针的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**

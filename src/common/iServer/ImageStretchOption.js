@@ -72,9 +72,9 @@ export default class ImageStretchOption {
   /**
    * @function ImageStretchOption.prototype.constructFromObject
    * @description 目标对象新增该类的可选参数。
-   * @param {Object} data 要转换的数据.
-   * @param {ImageStretchOption} obj 返回的模型.
-   * @return {ImageStretchOption} 返回结果
+   * @param {Object} data 要转换的数据。
+   * @param {ImageStretchOption} obj 返回的模型。
+   * @return {ImageStretchOption} 返回结果。
    */
   static constructFromObject(data, obj) {
     if (data) {
@@ -109,9 +109,14 @@ export default class ImageStretchOption {
  * @type {string}
  */
 ImageStretchOption.StretchType = {
+  /** 无拉伸。 */
   NONE: 'NONE',
+  /** 高斯拉伸。 */
   GAUSSIAN: 'GAUSSIAN',
+  /** 百分比截断拉伸。 */
   PERCENTCLIP: 'PERCENTCLIP',
+  /** 最值拉伸。 */
   MINIMUMMAXIMUM: 'MINIMUMMAXIMUM',
+  /** 标准差拉伸。 */
   STANDARDDEVIATION: 'STANDARDDEVIATION'
 };

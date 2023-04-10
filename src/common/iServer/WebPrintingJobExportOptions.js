@@ -11,7 +11,7 @@ import { Util } from '../commontypes/Util';
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {WebExportFormatType} option.format - Web 打印输出的格式，目前支持：PNG、PDF。
- * @param {number} [option.dpi=96] - Web 打印输出的分辨率，单位为每英寸点数。默认值为 96 dpi。
+ * @param {number} [option.dpi=96] - Web 打印输出的分辨率，单位为每英寸点数。默认值为 96 DPI。
  * @param {number} [option.scale] - Web 打印输出的地图比例尺。
  * @param {number} [option.rotation] - Web 打印输出的地图角度。
  * @param {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} [option.center] - Web 打印输出的地图中心点。

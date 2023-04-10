@@ -14,7 +14,7 @@ import { Util } from '../commontypes/Util';
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
- * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+ * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
  * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
  * @usage
  */
@@ -34,7 +34,7 @@ export class GetFeaturesParametersBase {
 
         /**
          * @member {Object} GetFeaturesParametersBase.prototype.targetPrj
-         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。 如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
+         * @description 动态投影的目标坐标系。使用时需设置 returnContent 参数为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
          */
         this.targetPrj = null;
 
@@ -72,7 +72,7 @@ export class GetFeaturesParametersBase {
 
         /**
          * @member {number} [GetFeaturesParametersBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含Geometry
+         * @description 返回结果是否包含Geometry。
          */
         this.hasGeometry = true;
 

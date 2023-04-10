@@ -24,13 +24,13 @@ export class FieldStatisticsParameters extends FieldParameters {
         super(options);
         /**
          * @member {string} FieldStatisticsParameters.prototype.fieldName
-         * @description 字段名
+         * @description 字段名。
          */
         this.fieldName = null;
 
         /**
          * @member {(string.<StatisticMode>|Array.<string.<StatisticMode>>)} FieldStatisticsParameters.prototype.statisticMode
-         * @description 字段统计方法类型
+         * @description 字段统计方法类型。
          */
         this.statisticMode = null;
 

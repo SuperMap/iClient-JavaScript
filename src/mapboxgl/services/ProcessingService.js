@@ -76,7 +76,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getKernelDensityJob
      * @description 获取某个密度分析。
-     * @param {string} id - 空间分析的id。 
+     * @param {string} id - 空间分析的ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -167,7 +167,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryMeshJob
      * @description 获取某个点聚合分析。
-     * @param {string} id - 空间分析的 id。 
+     * @param {string} id - 空间分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -258,7 +258,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getQueryJob
      * @description 获取某个单对象查询分析。
-     * @param {string} id - 空间分析的 id。 
+     * @param {string} id - 空间分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -349,7 +349,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某个区域汇总分析。
-     * @param {string} id - 区域汇总分析的 id。 
+     * @param {string} id - 区域汇总分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -405,7 +405,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param {string} id - 生成区域汇总分析的 id。
+     * @param {string} id - 生成区域汇总分析的 ID。
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState(id) {
@@ -440,7 +440,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJob
      * @description 获取某个矢量裁剪分析。
-     * @param {string} id - 空间分析的 id。 
+     * @param {string} id - 空间分析的 ID。 
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -497,7 +497,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param {number} id - 矢量裁剪分析的id。
+     * @param {number} id - 矢量裁剪分析的ID。
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
@@ -589,8 +589,8 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param {string} id - 叠加分析的id。
-     * @returns {Object} 叠加分析的状态
+     * @param {string} id - 叠加分析的 ID。
+     * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
         return this.overlayGeoJobs[id];

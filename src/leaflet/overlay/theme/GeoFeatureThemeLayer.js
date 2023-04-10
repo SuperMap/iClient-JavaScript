@@ -24,10 +24,9 @@
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
- * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style）中的有效属性应用到专题图层。
  *                                        禁止对专题要素使用数据（feature）的 style。
- *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
- *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature）对应专题要素赋予独立 style。
  * @fires GeoFeatureThemeLayer#beforefeaturesadded
  * @usage
  */
@@ -46,10 +45,10 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
         // {boolean} 图形是否可点击，默认 true
         isClickAble: true,
-        //是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+        //是否允许 feature 样式（style）中的有效属性应用到专题图层。
         //默认值为： false，禁止对专题要素使用数据（feature）的 style。
         //此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
-        //的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+        //的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature）对应专题要素赋予独立 style。
         isAllowFeatureStyle: false
     },
 
@@ -66,7 +65,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加数据。
-     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待填加的要素。
+     * @param {(Array.<ServerFeature>|Array.<ThemeFeature>|Array.<GeoJSONObject>|ServerFeature|ThemeFeature|GeoJSONObject)} features - 待添加的要素。
      */
     addFeatures: function (features) {
         var me = this;
@@ -238,7 +237,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GeoFeatureThemeLayer.prototype.clear
-     * @description 清除的内容包括数据（features） 、专题要素、缓存。
+     * @description 清除的内容包括数据（features）、专题要素、缓存。
      */
     clear: function () {
         var me = this;
@@ -274,7 +273,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
-     * @returns {Array} 返回图形数组
+     * @returns {Array} 返回图形数组。
      */
     getShapesByFeatureID: function (featureID) {
         var me = this,

@@ -11,19 +11,19 @@ import { Util } from '../commontypes/Util';
  * @category iServer Data Field
  * @classdesc 指定返回的用于描述 Feature 的字段。
  * @param {Object} options - 可选参数。
- * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表
- * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，需排除的字段列表
+ * @param {Array.<string>} [options.include] 对返回的字段内容进行过滤，需保留的字段列表。
+ * @param {Array.<string>} [options.exclude] 对返回的字段内容进行过滤，需排除的字段列表。
  * @usage
  */
 export default class FieldsFilter {
   constructor(options) {
     /**
-    * @description 对返回的字段内容进行过滤，需保留的字段列表
+    * @description 对返回的字段内容进行过滤，需保留的字段列表。
     * @member {Array.<string>} FieldsFilter.prototype.include
     */
     this.include = undefined;
     /**
-    * @description 对返回的字段内容进行过滤，需排除的字段列表
+    * @description 对返回的字段内容进行过滤，需排除的字段列表。
     * @member {Array.<string>} FieldsFilter.prototype.exclude
     */
     this.exclude = undefined;
@@ -46,9 +46,9 @@ export default class FieldsFilter {
   /**
   * @function FieldsFilter.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {FieldsFilter} obj 返回的模型.
-  * @return {FieldsFilter} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {FieldsFilter} obj 返回的模型。
+  * @return {FieldsFilter} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {

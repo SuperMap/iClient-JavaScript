@@ -159,7 +159,7 @@ export class Storage {
      * @function LevelRenderer.Storage.prototype.getShapeList
      * @description 返回所有图形的绘制队列。
      *
-     * @param {boolean} [update=false] - 是否在返回前更新该数组。  详见：<LevelRenderer.Shape> updateShapeList。
+     * @param {boolean} [update=false] - 是否在返回前更新该数组。详见：<LevelRenderer.Shape> updateShapeList。
      * @return {LevelRenderer.Shape} 图形。
      */
     getShapeList(update) {
@@ -358,7 +358,7 @@ export class Storage {
      * @function LevelRenderer.Storage.prototype.delRoot
      * @description 删除指定的图形(Shape)或者组(Group)。
      *
-     * @param {Array.<string>} elId - 删除图形(Shape)或者组(Group)的 id 数组。如果为空清空整个Storage。
+     * @param {Array.<string>} elId - 删除图形(Shape)或者组(Group)的 ID 数组。如果为空清空整个Storage。
      *
      */
     delRoot(elId) {

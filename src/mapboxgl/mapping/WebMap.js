@@ -13,10 +13,11 @@ import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFea
 import { QueryBySQLParameters } from '@supermap/iclient-common/iServer/QueryBySQLParameters';
 import { FilterParameter } from '@supermap/iclient-common/iServer/FilterParameter';
 import { Lang } from '@supermap/iclient-common/lang/Lang';
+import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/util/FilterCondition';
 import { Util } from '../core/Util';
 import { QueryService } from '../services/QueryService';
 import convert from 'xml-js';
-import canvg from 'canvg';
+import Canvg from 'canvg';
 
 
 const MB_SCALEDENOMINATOR_3857 = [
@@ -94,12 +95,18 @@ export class WebMap extends mapboxgl.Evented {
 		super();
 		this.mapId = id;
 		options = options || {};
-		this.server = options.server || 'https://www.supermapol.com';
+		this.server = options.server;
 		this.credentialKey = options.credentialKey;
 		this.credentialValue = options.credentialValue;
 		this.withCredentials = options.withCredentials || false;
 		this.target = options.target || 'map';
+    this._canvgsV = [];
 		this._createWebMap();
+    this.on('mapinitialized', () => {
+      this.map.on('remove', () => {
+        this._stopCanvg();
+      });
+    });
 	}
 	/**
 	 * @function WebMap.prototype.resize
@@ -1491,15 +1498,16 @@ export class WebMap extends mapboxgl.Evented {
 			return allFeatures;
 		}
 		let condition = this._replaceFilterCharacter(filterCondition);
-		let sql = 'select * from json where (' + condition + ')';
 		let filterFeatures = [];
 		for (let i = 0; i < allFeatures.length; i++) {
 			let feature = allFeatures[i];
 			let filterResult = false;
 			try {
-				filterResult = window.jsonsql.query(sql, {
-					properties: feature.properties
-				});
+        const properties = feature.properties;
+        const conditions = parseCondition(condition, Object.keys(properties));
+        const filterFeature = parseConditionFeature(properties);
+        const sql = 'select * from json where (' + conditions + ')';
+        filterResult = window.jsonsql.query(sql, { attr: filterFeature });
 			} catch (err) {
 				//必须把要过滤得内容封装成一个对象,主要是处理jsonsql(line : 62)中由于with语句遍历对象造成的问题
 				continue;
@@ -1902,21 +1910,26 @@ export class WebMap extends mapboxgl.Evented {
 		canvas.id = 'dataviz-canvas-' + Util.newGuid(8);
 		canvas.style.display = 'none';
 		divDom.appendChild(canvas);
-		let canvgs = window.canvg ? window.canvg : canvg;
-		canvgs(canvas.id, svgUrl, {
-			ignoreMouse: true,
-			ignoreAnimation: true,
-			renderCallback: () => {
-				if (canvas.width > 300 || canvas.height > 300) {
-					return;
-				}
-				callBack(canvas);
-			},
-			forceRedraw: () => {
-				return false;
-			}
-		});
+    const canvgs = window.canvg && window.canvg.default ? window.canvg.default : Canvg;
+    const ctx = canvas.getContext('2d');
+    canvgs.from(ctx, svgUrl, {
+      ignoreMouse: true,
+      ignoreAnimation: true,
+      forceRedraw: () => false
+    }).then(v => {
+      v.start();
+      this._canvgsV.push(v);
+      if (canvas.width > 300 || canvas.height > 300) {
+        return;
+      }
+      callBack(canvas);
+    });
 	}
+
+  _stopCanvg() {
+    this._canvgsV.forEach(v => v.stop());
+    this._canvgsV = [];
+  }
 	/**
 	 * @private
 	 * @function WebMap.prototype._addOverlayToMap

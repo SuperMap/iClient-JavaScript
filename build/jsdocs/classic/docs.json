@@ -50,6 +50,7 @@
       "src/common/REST.js"
     ],
     "exclude": [
+      "src/common/thirdparty/ai",
       "src/classic/libs",
       "src/classic/theme",
       "src/classic/resource",

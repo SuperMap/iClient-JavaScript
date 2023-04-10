@@ -82,7 +82,15 @@ var exampleConfig = {
                     name_en: "SQL query",
                     thumbnail: "ol_mapQueryBySQL.png",
                     fileName: "01_mapQueryBySQL"
-                }]
+                },
+                {
+                  name: "SQL查询 (FGB)",
+                  name_en: "SQL query (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "query_fgb_features.png",
+                  fileName: "01_mapQueryBySQL_FGB"
+              }
+              ]
             },
             "data": {
                 name: "数据",
@@ -98,6 +106,13 @@ var exampleConfig = {
                     thumbnail: "ol_getFeatureBySQL.png",
                     fileName: "02_getFeatureBySQL"
                 }, {
+                  name: "SQL查询 (FGB)",
+                  name_en: "SQL query (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "query_fgb_features.png",
+                  fileName: "02_getFeatureBySQL_FGB"
+                }, 
+                {
                     name: "范围查询",
                     name_en: "bounds query",
                     thumbnail: "ol_getFeatureByBounds.png",
@@ -200,31 +215,62 @@ var exampleConfig = {
                     thumbnail: "ol_bufferAnalystService.png",
                     fileName: "04_bufferAnalystService"
                 }, {
+                  name: "数据集缓冲区分析 (FGB)",
+                  name_en: "buffer (FGB)",
+                  thumbnail: "ol_bufferAnalystService.png",
+                  fileName: "04_bufferAnalystService_FGB"
+                },{
                     name: "几何对象缓冲区分析",
                     name_en: "buffer-geometry",
                     thumbnail: "ol_bufferAnalystService_geometry.png",
                     fileName: "04_bufferAnalystService_geometry"
+                },{
+                  name: "几何对象缓冲区分析 (FGB)",
+                  name_en: "buffer-geometry",
+                  thumbnail: "ol_bufferAnalystService_geometry.png",
+                  fileName: "04_bufferAnalystService_geometry_FGB"
                 }, {
                     name: "数据集泰森多边形",
                     name_en: "thiessen-dataset",
                     thumbnail: "ol_thiessenAnalystService-datasets.png",
                     fileName: "04_thiessenAnalystService_datasets"
-                }, {
+                },{
+                  name: "数据集泰森多边形 (FGB)",
+                  name_en: "thiessen-dataset (FGB)",
+                  thumbnail: "ol_thiessenAnalystService-datasets.png",
+                  fileName: "04_thiessenAnalystService_datasets_FGB"
+                },  {
                     name: "几何泰森多边形",
                     name_en: "thiessen-geometry",
                     thumbnail: "ol_thiessenAnalystService-geometry.png",
                     fileName: "04_thiessenAnalystService_geometry"
+                }, {
+                  name: "几何泰森多边形 (FGB)",
+                  name_en: "thiessen-geometry (FGB)",
+                  thumbnail: "ol_thiessenAnalystService-geometry.png",
+                  fileName: "04_thiessenAnalystService_geometry_FGB"
                 }, {
                     name: "叠加分析",
                     name_en: "overlay",
                     thumbnail: "ol_overlayAnalystService.png",
                     fileName: "04_overlayAnalystService"
                 }, {
+                  name: "叠加分析 (FGB)",
+                  name_en: "overlay (FGB)",
+                  thumbnail: "ol_overlayAnalystService.png",
+                  fileName: "04_overlayAnalystService_FGB"
+                },{
                     name: "表面分析(提取等值线)",
                     name_en: "surface(Getting Contour Line)",
                     thumbnail: "ol_surfaceAnalystService.png",
                     fileName: "04_surfaceAnalystService"
                 }, {
+                  name: "表面分析(提取等值线) (FGB)",
+                  name_en: "surface(Getting Contour Line) (FGB)",
+                  version: "11.1.0",
+                  thumbnail: "ol_surfaceAnalystService.png",
+                  fileName: "04_surfaceAnalystService_FGB"
+                },{
                     name: "动态分析",
                     name_en: "dynamic segmentation",
                     thumbnail: "ol_generateSpatialDataService.png",
@@ -1008,6 +1054,27 @@ var exampleConfig = {
                     fileName: "mask"
                 }]
             },
+            FGB: {
+              name: 'FGB',
+              name_en: 'FGB',
+              version: '11.1.0',
+              content: [
+                  {
+                    name: 'FGB 全量加载（2500万点数据量）',
+                    name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_all_load.png',
+                    fileName: 'fgb_all_load'
+                  },
+                  {
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
+                  }
+                ]
+            }
         }
     },
     "plot": {

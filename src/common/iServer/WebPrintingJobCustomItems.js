@@ -12,7 +12,7 @@ import { Util } from '../commontypes/Util';
  * @param {Object} option - 参数。
  * @param {string} option.name - 图例元素的名称。
  * @param {string} option.picAsUrl - 图例元素 Base64 格式图片。
- * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。如果已填了 url 参数，此参数可不传
+ * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 export class WebPrintingJobCustomItems {

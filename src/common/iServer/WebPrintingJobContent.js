@@ -10,10 +10,10 @@ import { Util } from '../commontypes/Util';
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
- * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP
- * @param {string} [option.url] - 待打印的 SuperMap iPortal WebMap 的 url 地址。例如：http://supermapiportal:8190/iportal/web/maps/{mapid}/map.rjson
+ * @param {string} option.type - Web 打印内容支持的类型。目前支持的类型：WEBMAP。
+ * @param {string} [option.url] - 待打印的 SuperMap iPortal WebMap 的 URL 地址。例如：http://supermapiportal:8190/iportal/web/maps/{mapid}/map.rjson 。
  * @param {string} [option.token] - 如果待打印的是 SuperMap iPortal 用户私有的 WebMap，需要提供 SuperMap iPortal 用户的 token。
- * @param {WebMapSummaryObject} [option.value] - 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 json 表达。如果已填了 url 参数，此参数可不传
+ * @param {WebMapSummaryObject} [option.value] - 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 JSON 表达。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 export class WebPrintingJobContent {
@@ -25,7 +25,7 @@ export class WebPrintingJobContent {
         this.type = null;
         /**
          * @member {string} [WebPrintingJobContent.prototype.url]
-         * @description 待打印的 SuperMap iPortal WebMap 的 url 地址。
+         * @description 待打印的 SuperMap iPortal WebMap 的 URL 地址。
          */
         this.url = null;
         /**
@@ -35,7 +35,7 @@ export class WebPrintingJobContent {
         this.token = null;
         /**
          * @member {WebMapSummaryObject} [WebPrintingJobContent.prototype.value]
-         * @description 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 json 表达。
+         * @description 传递的是一个符合 SuperMap WebMap 规范的 WebMap 的 JSON 表达，也可以是一个完整的 SuperMap iPortal 数据上图制作的 WebMap 的 JSON 表达。
          */
         this.value = null;
 

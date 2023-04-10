@@ -330,7 +330,7 @@
         var map = new ol.Map({
             target: 'iserver_map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [104, 30],
                 maxZoom: 18,

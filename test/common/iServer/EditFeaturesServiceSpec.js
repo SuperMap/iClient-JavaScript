@@ -154,7 +154,6 @@ describe('EditFeaturesService', () => {
 
     // 删除要素
     it('successEvent:deleteFeature', (done) => {
-        var deleteFailedEventArgsSystem = null, deleteSuccessEventArgsSystem = null;
         var deleteFeaturesFailed = (deleteFailedEventArgsSystem) => {
             expect(deleteFailedEventArgsSystem).toBeNull();
         };
@@ -200,9 +199,108 @@ describe('EditFeaturesService', () => {
         deleteFeaturesService.processAsync(deleteFeaturesParams);
     });
 
+    // 删除要素-url超过长度转post
+    it('successEvent:deleteFeature-longurl', (done) => {
+        var ids = []
+        for(var i =0; i<500; i++){
+            ids.push(i)
+        }
+        var deleteFeaturesFailed = (deleteFailedEventArgsSystem) => {
+            expect(deleteFailedEventArgsSystem).toBeNull();
+        };
+        var deleteFeaturesCompleted = (deleteSuccessEventArgsSystem) => {
+            try {
+                expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
+                var id = JSON.stringify(ids);
+                expect(deleteSuccessEventArgsSystem.object.options.data).toBe(id);
+                expect(deleteSuccessEventArgsSystem.object.options.method).toBe("POST");
+                expect(deleteSuccessEventArgsSystem.result.succeed).toBeTruthy();
+                deleteFeaturesService.destroy();
+                deleteFeaturesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("deleteFeatures案例失败" + exception.name + ":" + exception.message);
+                deleteFeaturesService.destroy();
+                deleteFeaturesParams.destroy();
+                done();
+            }
+        };
+        var deleteFeaturesOptions = {
+            eventListeners: {
+                'processCompleted': deleteFeaturesCompleted,
+                'processFailed': deleteFeaturesFailed
+            }
+        };
+        var deleteFeaturesParams = new EditFeaturesParameters({
+            dataSourceName: "Jingjin",
+            dataSetName: "Landuse_R",
+            IDs: ids,
+            editType: EditType.DELETE
+        });
+        var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe(editServiceURL + "/features?_method=DELETE");
+            expect(JSON.parse(params).length).toBe(500);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
+        deleteFeaturesService.processAsync(deleteFeaturesParams);
+    });
+    // 删除要素-url超过长度且原本带有参数
+    it('successEvent:deleteFeature-longurl-withParms', (done) => {
+        var ids = []
+        for(var i =0; i<1000; i++){
+            ids.push(i)
+        }
+        var editServiceURL2 = editServiceURL + "?token=test&key=123"
+        var deleteFeaturesFailed = (deleteFailedEventArgsSystem) => {
+            expect(deleteFailedEventArgsSystem).toBeNull();
+        };
+        var deleteFeaturesCompleted = (deleteSuccessEventArgsSystem) => {
+            try {
+                expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
+                var id = JSON.stringify(ids);
+                expect(deleteSuccessEventArgsSystem.object.options.data).toBe(id);
+                expect(deleteSuccessEventArgsSystem.object.options.method).toBe("POST");
+                expect(deleteSuccessEventArgsSystem.result.succeed).toBeTruthy();
+                deleteFeaturesService.destroy();
+                deleteFeaturesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("deleteFeatures案例失败" + exception.name + ":" + exception.message);
+                deleteFeaturesService.destroy();
+                deleteFeaturesParams.destroy();
+                done();
+            }
+        };
+        var deleteFeaturesOptions = {
+            eventListeners: {
+                'processCompleted': deleteFeaturesCompleted,
+                'processFailed': deleteFeaturesFailed
+            }
+        };
+        var deleteFeaturesParams = new EditFeaturesParameters({
+            dataSourceName: "Jingjin",
+            dataSetName: "Landuse_R",
+            IDs: ids,
+            editType: EditType.DELETE
+        });
+        var deleteFeaturesService = new EditFeaturesService(editServiceURL2, deleteFeaturesOptions);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+            expect(method).toBe("POST");
+            expect(testUrl).toBe( editServiceURL + "/features?token=test&key=123&_method=DELETE");
+            expect(JSON.parse(params).length).toBe(1000);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(`{"succeed":true}`));
+        });
+        deleteFeaturesService.processAsync(deleteFeaturesParams);
+    });
+
     // 失败事件
     it('failEvent:addFeatures_noParameters', (done) => {
-        var noParamsFailedEventArgsSystem = null, noParamsSuccessEventArgsSystem = null;
         var noParamsFailed = (noParamsFailedEventArgsSystem) => {
             try {
 

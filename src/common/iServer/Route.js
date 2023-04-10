@@ -14,7 +14,7 @@ import {Collection} from '../commontypes/geometry/Collection';
  * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
  * @param {Array.<Geometry>} points - 形成路由对象的线数组。
  * @param {Object} options - 参数。
- * @param {number} options.id - 路由对象在数据库中的 id。
+ * @param {number} options.id - 路由对象在数据库中的 ID。
  * @param {number} options.length - 路由对象的长度。单位与数据集的单位相同。
  * @param {number} [options.maxM] - 最大线性度量值，即所有结点到起始点的量算距离中最大值。
  * @param {number} [options.minM] - 最小线性度量值，即所有结点到起始点的量算距离中最小值。
@@ -98,7 +98,7 @@ export class Route extends Collection {
 
         /**
          * @member {Array.<string>} [Route.prototype.componentTypes=LineString]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 

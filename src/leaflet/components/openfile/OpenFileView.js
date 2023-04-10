@@ -38,8 +38,8 @@ export var OpenFileView = ComponentsViewBase.extend({
     /**
      * @function OpenFileView.prototype.setViewStyle
      * @description 设置组件样式。
-     * @param {string} styleName - css 样式名称。
-     * @param {string} value - css 样式值。
+     * @param {string} styleName - CSS 样式名称。
+     * @param {string} value - CSS 样式值。
      */
     setViewStyle(styleName, value) {
         this.rootContainer.style[styleName] = value;

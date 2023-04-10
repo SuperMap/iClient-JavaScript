@@ -100,7 +100,7 @@ describe('GetFeaturesByBoundsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(url + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.hasGeometry).toBe(false);
@@ -203,7 +203,7 @@ describe('GetFeaturesByBoundsService', () => {
       bounds: new Bounds(0, 0, 90, 90)
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
-      expect(testUrl).toBe(url + '/featureResults?key=123&returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(url + '/featureResults?key=123&fromIndex=0&toIndex=19&returnContent=true');
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
     getFeaturesByBoundsService.processAsync(boundsParams);

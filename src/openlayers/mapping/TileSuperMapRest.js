@@ -24,7 +24,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled = true] - 是否使用服务端的缓存。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时，系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否只地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
  * @param {ol.geom.Geometry} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
@@ -32,7 +32,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 服务代理地址。
- * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @extends {ol.source.TileImage}
  * @usage
@@ -41,12 +41,11 @@ export class TileSuperMapRest extends TileImage {
     constructor(options) {
         options = options || {};
         options.attributions =
-            options.attributions ||
-            "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
 
         options.format = options.format ? options.format : 'png';
 
-        super({
+        super({ 
             attributions: options.attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
@@ -322,42 +321,8 @@ export class TileSuperMapRest extends TileImage {
         options.url = url;
         options.crossOrigin = 'anonymous';
         var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
-        var resolutions = getResolutions();
-
-        function getResolutions() {
-            var level = 22;
-            var dpi = 96;
-            var width = extent[2] - extent[0];
-            var height = extent[3] - extent[1];
-            var tileSize = width >= height ? width : height;
-            var maxReolution;
-            if (tileSize === width) {
-                maxReolution = tileSize / mapJSONObj.viewer.width;
-            } else {
-                maxReolution = tileSize / mapJSONObj.viewer.height;
-            }
-            var resolutions = [];
-            var unit = Unit.METER;
-            if (mapJSONObj.coordUnit === Unit.DEGREE) {
-                unit = Unit.DEGREE;
-            }
-            if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
-                for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
-                    resolutions.push(Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
-                }
-            } else {
-                for (let i = 0; i < level; i++) {
-                    resolutions.push(maxReolution / Math.pow(2, i));
-                }
-            }
-
-            function sortNumber(a, b) {
-                return b - a;
-            }
-
-            return resolutions.sort(sortNumber);
-        }
-
+        const { visibleScales, bounds, dpi, coordUnit } = mapJSONObj;
+        var resolutions = Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit);
         options.tileGrid = new TileGrid({
             extent: extent,
             resolutions: resolutions

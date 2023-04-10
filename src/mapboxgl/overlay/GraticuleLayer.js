@@ -35,22 +35,22 @@ import mapboxgl from 'mapbox-gl';
  */
 
 /**
- * @typedef {Object} GraticuleLayer.LabelStyle - 标签样式
- * @property {Array.<string>} [textFont = ['Calibri','sans-serif']] - 字体样式
- * @property {string} [textSize = '12px'] - 字体大小
- * @property {string} [textColor ='rgba(0,0,0,1)'] - 字体颜色
- * @property {string} [textHaloColor ='rgba(255,255,255,1)'] - 描边颜色
- * @property {number} [textHaloWidth = 1] - 描边宽度
- * @property {string} [textAnchor = 'bottom'] - 字体基线: "center", "left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"
+ * @typedef {Object} GraticuleLayer.LabelStyle - 标签样式。
+ * @property {Array.<string>} [textFont = ['Calibri','sans-serif']] - 字体样式。
+ * @property {string} [textSize = '12px'] - 字体大小。
+ * @property {string} [textColor ='rgba(0,0,0,1)'] - 字体颜色。
+ * @property {string} [textHaloColor ='rgba(255,255,255,1)'] - 描边颜色。
+ * @property {number} [textHaloWidth = 1] - 描边宽度。
+ * @property {string} [textAnchor = 'bottom'] - 字体基线: "center", "left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"。
  */
 
 /**
- * @typedef {Object} GraticuleLayer.StrokeStyle - 线样式
- * @property {string} [lineColor = 'red'] - 线颜色
- * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square
- * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter
- * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式
- * @property {number} [lineWidth = 1] - 线宽
+ * @typedef {Object} GraticuleLayer.StrokeStyle - 线样式。
+ * @property {string} [lineColor = 'red'] - 线颜色。
+ * @property {string} [lineCap = 'round'] - 线端点风格：butt, round, square。
+ * @property {string} [lineJoin = round] - 线连接样式：bevel, round, miter。
+ * @property {Array.<number>} [lindDasharray = [0.5,4]] - 虚线样式。
+ * @property {number} [lineWidth = 1] - 线宽。
  */
 
 const defaultTextStyle = {
@@ -217,7 +217,7 @@ export class GraticuleLayer {
 
     /**
      * @function GraticuleLayer.prototype.setIntervals
-     * @description 设置经纬度的间隔（以度为单位)
+     * @description 设置经纬度的间隔（以度为单位）。
      * @param {number|function} interval - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
      */
     setIntervals(interval) {

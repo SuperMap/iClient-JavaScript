@@ -9,14 +9,14 @@ import {SecurityManager} from '../security/SecurityManager';
  * @class DataFlowService
  * @deprecatedclass SuperMap.DataFlowService
  * @category iServer DataFlow
- * @classdesc 数据流服务类
+ * @classdesc 数据流服务类。
  * @extends {CommonServiceBase}
- * @param {string} url - 数据流服务地址
+ * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
  * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
  * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
- * @param {Object} [options.excludeField] - -排除字段。
+ * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -42,13 +42,13 @@ export class DataFlowService extends CommonServiceBase {
 
         /**
          * @member {Object} DataFlowService.prototype.prjCoordSys
-         * @description 动态投影参数
+         * @description 动态投影参数。
          */
         this.prjCoordSys = null;
 
         /**
          * @member {Object} DataFlowService.prototype.excludeField
-         * @description 排除字段
+         * @description 排除字段。
          */
         this.excludeField = null;
 
@@ -59,7 +59,7 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.initBroadcast
-     * @description 初始化广播
+     * @description 初始化广播。
      * @returns {DataFlowService}
      */
     initBroadcast() {
@@ -101,7 +101,7 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.initSubscribe
-     * @description 初始化订阅数据
+     * @description 初始化订阅数据。
      * @returns {DataFlowService} DataFlowService的实例对象。
      */
     initSubscribe() {
@@ -129,8 +129,8 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setExcludeField
-     * @description 设置排除字段
-     * @param {Object} excludeField - 排除字段
+     * @description 设置排除字段。
+     * @param {Object} excludeField - 排除字段。
      * @returns {DataFlowService} DataFlowService的实例对象。
      */
     setExcludeField(excludeField) {
@@ -141,7 +141,7 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据
+     * @description 设置添加的几何要素数据。
      * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
      * @returns {DataFlowService} DataFlowService的实例对象。
      */
@@ -153,7 +153,7 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.unSubscribe
-     * @description 结束订阅数据
+     * @description 结束订阅数据。
      */
     unSubscribe() {
         if (!this.subscribeWebSocket) {
@@ -165,7 +165,7 @@ export class DataFlowService extends CommonServiceBase {
 
     /**
      * @function DataFlowService.prototype.unBroadcast
-     * @description 结束加载广播
+     * @description 结束加载广播。
      */
     unBroadcast() {
         if (!this.broadcastWebSocket) {

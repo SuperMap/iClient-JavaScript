@@ -243,7 +243,27 @@ function attachModuleSymbols(doclets, modules) {
 function buildNav(members, view, templatePath) {
   var sorted = sortNav(members);
   view.categories = buildCategories(sorted, templatePath);
-  view.navMap = buildNavMap(sorted);
+  view.navMap = buildNavMap(sorted,view.linkto);
+  var methods = {};
+  for (const key in view.navMap ) {
+    if (Object.hasOwnProperty.call(view.navMap , key)) {
+      const element = view.navMap[key];
+      const m = element.methods.map(e => {
+        return e.name;
+      });
+      if(!element.fileName && m.length>0){
+        console.log("没有文件名的类：", element.longname,element.type,m)
+      }
+      if(methods[element.fileName]){
+        console.log("重复的文件名：", element.longname,element.fileName,element.type,m)
+      }else{
+        methods[element.fileName] = m;
+      }
+      
+    }
+  }
+  var methodsPath = path.join(outdir, 'methods.json');
+  fs.writeFileSync(methodsPath, JSON.stringify(methods), 'utf8');
 }
 
 function sortNav(members) {
@@ -291,12 +311,13 @@ function buildCategories(members, templatePath) {
  * @param {array<object>} members.events
  * @return {string} The HTML for the navigation sidebar.
  */
-function buildNavMap(members) {
+function buildNavMap(members,linkto) {
   this.navMap = {};
   _.each(members, function (v) {
     var nav;
     if (v.kind == 'namespace') {
       nav = {
+        fileName:`${linkto(v.meta.filename)}#${v.name}`,
         type: 'namespace',
         longname: v.longname,
         version: v.version,
@@ -320,6 +341,7 @@ function buildNavMap(members) {
       };
     } else if (v.kind == 'class') {
       nav = {
+        fileName:`${linkto(v.meta.filename)}#${v.name}`,
         type: 'class',
         longname: v.longname,
         name: v.name,
@@ -344,6 +366,7 @@ function buildNavMap(members) {
       };
     } else if (v.scope === 'global') {
       nav = {
+        fileName:`${linkto(v.meta.filename)}#${v.name}`,
         type: 'global',
         longname: v.longname,
         version: v.version,

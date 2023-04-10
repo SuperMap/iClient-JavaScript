@@ -24,7 +24,7 @@ export class MultiPoint extends Collection {
         super(components);
         /**
          * @member {Array.<string>} [GeometryMultiPoint.prototype.componentTypes=["SuperMap.Geometry.Point"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.Point"];

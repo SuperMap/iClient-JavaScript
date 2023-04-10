@@ -990,7 +990,7 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter
+// UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter, Util
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
@@ -1659,7 +1659,7 @@ class Geometry {
         this.CLASS_NAME = "SuperMap.Geometry";
         /**
          * @member {string} Geometry.prototype.id
-         * @description  几何对象的唯一标示符。
+         * @description  几何对象的唯一标识符。
          *
          */
         this.id = Util_Util.createUniqueID(this.CLASS_NAME + "_");
@@ -2437,7 +2437,7 @@ const Util_Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 判断；浏览器是否支持 Canvas。
+   * @description 判断浏览器是否支持 Canvas。
    * @returns {boolean} 当前浏览器是否支持 HTML5 Canvas 。
    */
   supportCanvas: function () {
@@ -2632,7 +2632,7 @@ const Util_Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 根据比例尺和 dpi 计算屏幕分辨率。
+   * @description 根据比例尺和 DPI 计算屏幕分辨率。
    * @category BaseTypes Util
    * @param {number} scale - 比例尺。
    * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
@@ -2765,7 +2765,7 @@ const Util_Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 克隆一个 Object 对象
+   * @description 克隆一个 Object 对象。
    * @param {Object} obj - 需要克隆的对象。
    * @returns {Object} 对象的拷贝对象，注意是新的对象，不是指向。
    */
@@ -2886,9 +2886,9 @@ const Util_Util = {
   /**
    * @memberOf CommonUtil
    * @description 获取转换后的path路径。
-   * @param {string} path - 待转换的path, 包含`{param}`。
+   * @param {string} path - 待转换的path，包含`{param}`。
    * @param {Object} pathParams - path中待替换的参数。
-   * @returns {string} 转换后的path路径
+   * @returns {string} 转换后的path路径。
    */
   convertPath: function (path, pathParams) {
     if (!pathParams) {
@@ -3316,8 +3316,7 @@ function canBeJsonified(str) {
      },
 
      /**
-      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
-      * 保持一致才能确保事件移除成功。
+      * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时保持一致才能确保事件移除成功。
       * @param {(HTMLElement|string)} elementParam - 被监听的 DOM 元素或者其 ID。
       * @param {string} name - 需要移除的被监听事件名称。
       * @param {function} observer - 需要移除的事件处理方法。
@@ -3444,7 +3443,7 @@ class Events {
 
         /**
          * @member {Object} Events.prototype.listeners
-         * @description 事件监听器函数
+         * @description 事件监听器函数。
          */
         this.listeners = {};
 
@@ -3480,10 +3479,7 @@ class Events {
 
         /**
          * @member {boolean} [Events.prototype.includeXY=false]
-         * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。
-         *              可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个
-         *              事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-         *              设为 false 不抵消，如果设为 true，用 this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+         * @description 判断是否让 xy 属性自动创建到浏览器上的鼠标事件，一般设置为 false，如果设置为 true，鼠标事件将会在事件传递过程中自动产生 xy 属性。可根据事件对象的 'evt.object' 属性在相关的事件句柄上调用 getMousePosition 函数。这个选项习惯默认为 false 的原因在于，当创建一个事件对象，其主要目的是管理。在一个 div 的相对定位的鼠标事件，将其设为 true 也是有意义的。这个选项也可以用来控制是否抵消缓存。如果设为 false 不抵消，如果设为 true，用 this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
          * @example
          *  function named(evt) {
          *        this.xy = this.object.events.getMousePosition(evt);
@@ -3916,6 +3912,33 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
+ * @description 
+ * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
+ * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
+  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
+  然后配置webpack<pre><code>module.exports: {
+    resolve: {
+      alias: {
+        process: 'process/browser',
+      },
+      mainFields: ['browser', 'main'],
+      fallback: {
+        fs: false,
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        os: require.resolve('os-browserify/browser'),
+        stream: require.resolve('stream-browserify'),
+        tty: require.resolve('tty-browserify'),
+        zlib: require.resolve('browserify-zlib')
+      }
+    }
+    plugins: [
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: ['buffer', 'Buffer']
+      }),
+    ]
+}</code></pre>
  * @usage
  */
 
@@ -3925,16 +3948,26 @@ class ElasticSearch {
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
-         *  @description ElasticSearch服务地址
+         *  @description ElasticSearch服务地址。
          */
         this.url = url;
         /**
          *  @member {Object} ElasticSearch.prototype.client
-         *  @description client ES客户端
+         *  @description client ES客户端。
          */
-        this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+        try {
+          // 老版本
+          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
             host: this.url
-        });
+          });
+        } catch (e) {
+          // 新版本
+          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+            node: {
+              url: new URL(this.url)
+            }
+          });
+        }
         /**
          *  @deprecated
          *  @member {function} [ElasticSearch.prototype.change]
@@ -3948,13 +3981,13 @@ class ElasticSearch {
         this.openGeoFence = false;
         /**
          *  @member {function} [ElasticSearch.prototype.outOfGeoFence]
-         *  @description 数据超出地理围栏后执行的函数
+         *  @description 数据超出地理围栏后执行的函数。
          */
         this.outOfGeoFence = null;
 
         /**
          * @member {Object} [ElasticSearch.prototype.geoFence]
-         * @description 地理围栏
+         * @description 地理围栏。
          * @example {
      *    radius: 1000,//单位是m
      *    center: [104.40, 30.43],
@@ -3973,13 +4006,13 @@ class ElasticSearch {
 
         /**
          * @member {Events} ElasticSearch.prototype.events
-         * @description 事件
+         * @description 事件。
          */
         this.events = new Events(this, null, this.EVENT_TYPES);
 
         /**
          * @member {Object} ElasticSearch.prototype.eventListeners
-         * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+         * @description 监听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
          * 相当于调用 Events.on(eventListeners)。
          */
         this.eventListeners = null;
@@ -4008,7 +4041,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     bulk(params, callback) {
-        return this.client.bulk(params, callback);
+        return this.client.bulk(params, this._handleCallback(callback));
     }
 
     /**
@@ -4020,7 +4053,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     clearScroll(params, callback) {
-        return this.client.clearScroll(params, callback);
+        return this.client.clearScroll(params, this._handleCallback(callback));
     }
 
     /**
@@ -4032,19 +4065,19 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     count(params, callback) {
-        return this.client.count(params, callback);
+        return this.client.count(params, this._handleCallback(callback));
     }
 
     /**
      * @function  ElasticSearch.prototype.create
-     * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
+     * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
      * @param {Object} params - 参数。
      * @param {function} callback - 回调函数。
      */
     create(params, callback) {
-        return this.client.create(params, callback);
+        return this.client.create(params, this._handleCallback(callback));
     }
 
     /**
@@ -4056,7 +4089,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     delete(params, callback) {
-        return this.client.delete(params, callback);
+        return this.client.delete(params, this._handleCallback(callback));
     }
 
     /**
@@ -4068,7 +4101,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteByQuery(params, callback) {
-        return this.client.deleteByQuery(params, callback);
+        return this.client.deleteByQuery(params, this._handleCallback(callback));
     }
 
     /**
@@ -4080,7 +4113,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteScript(params, callback) {
-        return this.client.deleteScript(params, callback);
+        return this.client.deleteScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -4092,7 +4125,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     deleteTemplate(params, callback) {
-        return this.client.deleteTemplate(params, callback);
+        return this.client.deleteTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -4104,7 +4137,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     exists(params, callback) {
-        return this.client.exists(params, callback);
+        return this.client.exists(params, this._handleCallback(callback));
     }
 
     /**
@@ -4117,7 +4150,7 @@ class ElasticSearch {
      */
 
     existsSource(params, callback) {
-        return this.client.existsSource(params, callback);
+        return this.client.existsSource(params, this._handleCallback(callback));
     }
 
     /**
@@ -4129,7 +4162,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     explain(params, callback) {
-        return this.client.explain(params, callback);
+        return this.client.explain(params, this._handleCallback(callback));
     }
 
     /**
@@ -4141,20 +4174,20 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     fieldCaps(params, callback) {
-        return this.client.fieldCaps(params, callback);
+        return this.client.fieldCaps(params, this._handleCallback(callback));
     }
 
 
     /**
      * @function  ElasticSearch.prototype.get
-     * @description 从索引获取一个基于其id的类型的JSON文档。</br>
+     * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 回调函数。
      */
     get(params, callback) {
-        return this.client.get(params, callback);
+        return this.client.get(params, this._handleCallback(callback));
     }
 
     /**
@@ -4166,7 +4199,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getScript(params, callback) {
-        return this.client.getScript(params, callback);
+        return this.client.getScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -4178,7 +4211,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getSource(params, callback) {
-        return this.client.getSource(params, callback);
+        return this.client.getSource(params, this._handleCallback(callback));
     }
 
     /**
@@ -4190,7 +4223,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     getTemplate(params, callback) {
-        return this.client.getTemplate(params, callback);
+        return this.client.getTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -4202,7 +4235,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     index(params, callback) {
-        return this.client.index(params, callback);
+        return this.client.index(params, this._handleCallback(callback));
     }
 
     /**
@@ -4214,7 +4247,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     info(params, callback) {
-        return this.client.info(params, callback);
+        return this.client.info(params, this._handleCallback(callback));
     }
 
     /**
@@ -4226,7 +4259,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     mget(params, callback) {
-        return this.client.mget(params, callback);
+        return this.client.mget(params, this._handleCallback(callback));
     }
 
     /**
@@ -4236,13 +4269,14 @@ class ElasticSearch {
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
-     *     回调参数：error,response。结果存储在response.responses中
+     *     回调参数：error,response，结果存储在response.responses中。
      */
     msearch(params, callback) {
         let me = this;
 
         return me.client.msearch(params)
             .then(function (resp) {
+                resp = resp.body || resp;
                 me._update(resp.responses, callback);
                 return resp;
             }, function (err) {
@@ -4261,7 +4295,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     msearchTemplate(params, callback) {
-        return this.client.msearchTemplate(params, callback);
+        return this.client.msearchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -4273,7 +4307,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     mtermvectors(params, callback) {
-        return this.client.mtermvectors(params, callback);
+        return this.client.mtermvectors(params, this._handleCallback(callback));
     }
 
     /**
@@ -4285,7 +4319,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     ping(params, callback) {
-        return this.client.ping(params, callback);
+        return this.client.ping(params, this._handleCallback(callback));
     }
 
     /**
@@ -4297,7 +4331,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     putScript(params, callback) {
-        return this.client.putScript(params, callback);
+        return this.client.putScript(params, this._handleCallback(callback));
     }
 
     /**
@@ -4309,7 +4343,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     putTemplate(params, callback) {
-        return this.client.putTemplate(params, callback);
+        return this.client.putTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -4321,7 +4355,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     reindex(params, callback) {
-        return this.client.reindex(params, callback);
+        return this.client.reindex(params, this._handleCallback(callback));
     }
 
     /**
@@ -4333,7 +4367,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     reindexRessrottle(params, callback) {
-        return this.client.reindexRessrottle(params, callback);
+        return this.client.reindexRessrottle(params, this._handleCallback(callback));
     }
 
     /**
@@ -4345,7 +4379,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     renderSearchTemplate(params, callback) {
-        return this.client.renderSearchTemplate(params, callback);
+        return this.client.renderSearchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -4357,7 +4391,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     scroll(params, callback) {
-        return this.client.scroll(params, callback);
+        return this.client.scroll(params, this._handleCallback(callback));
     }
 
     /**
@@ -4367,13 +4401,14 @@ class ElasticSearch {
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
      * @param {Object} params - 参数。
      * @param {function} callback - 请求返回的回调函数。也可以使用then表达式获取返回结果。
-     *     回调参数：error,response,结果存储在response.responses中
+     *     回调参数：error,response，结果存储在response.responses中。
      */
     search(params, callback) {
         let me = this;
         return me.client.search(params)
             .then(function (resp) {
-                me._update(resp.responses, callback);
+                resp = resp.body || resp;
+                me._update(resp, callback);
                 return resp;
             }, function (err) {
                 callback && callback(err);
@@ -4391,7 +4426,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     searchShards(params, callback) {
-        return this.client.searchShards(params, callback);
+        return this.client.searchShards(params, this._handleCallback(callback));
     }
 
     /**
@@ -4403,7 +4438,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     searchTemplate(params, callback) {
-        return this.client.searchTemplate(params, callback);
+        return this.client.searchTemplate(params, this._handleCallback(callback));
     }
 
     /**
@@ -4415,7 +4450,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     suggest(params, callback) {
-        return this.client.suggest(params, callback);
+        return this.client.suggest(params, this._handleCallback(callback));
     }
 
     /**
@@ -4427,7 +4462,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     termvectors(params, callback) {
-        return this.client.termvectors(params, callback);
+        return this.client.termvectors(params, this._handleCallback(callback));
     }
 
     /**
@@ -4439,7 +4474,7 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     update(params, callback) {
-        return this.client.update(params, callback);
+        return this.client.update(params, this._handleCallback(callback));
     }
 
     /**
@@ -4451,7 +4486,28 @@ class ElasticSearch {
      * @param {function} callback - 回调函数。
      */
     updateByQuery(params, callback) {
-        return this.client.updateByQuery(params, callback);
+        return this.client.updateByQuery(params, this._handleCallback(callback));
+    }
+
+    /**
+     * @function ElasticSearch.prototype._handleCallback
+     * @description 处理ElasticSearch 16.x和5.x的callback兼容。 5.x的回调参数多包了一层body
+     * @param {function} callback - 回调函数。
+     * @private
+     */
+    _handleCallback(callback) {
+      return function () {
+        let args = Array.from(arguments);
+        const error = args.shift();
+        let resp = args.shift();
+        const body = resp && resp.body;
+        if (body) {
+          const { statusCode, headers } = resp;
+          args = [statusCode, headers];
+          resp = body;
+        }
+        callback.call(this, error, resp, ...args);
+      };
     }
 
     _update(data, callback) {
@@ -4765,9 +4821,9 @@ var isCORS = function () {
 }
 /**
  * @function setRequestTimeout
+ * @category BaseTypes Util
  * @description 设置请求超时时间。
  * @param {number} [timeout=45] - 请求超时时间，单位秒。
- * @private
  * @usage
  * ```
  * // 浏览器
@@ -4791,9 +4847,9 @@ var setRequestTimeout = function (timeout) {
 }
 /**
  * @function getRequestTimeout
+ * @category BaseTypes Util
  * @description 获取请求超时时间。
  * @returns {number} 请求超时时间。
- * @private
  * @usage
  * ```
  * // 浏览器
@@ -4903,7 +4959,7 @@ var FetchRequest = {
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
         } else {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
         }
     },
     /**
@@ -4928,7 +4984,7 @@ var FetchRequest = {
             return RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
         }
         return this._fetch(url, params, options, type);
     },
@@ -4975,9 +5031,9 @@ var FetchRequest = {
     },
     /**
      * @function FetchRequest.urlIsLong
-     * @description url 的字节长度是否太长。
+     * @description URL 的字节长度是否太长。
      * @param {string} url - 请求地址。
-     * @returns {boolean} url 的字节长度是否太长。
+     * @returns {boolean} URL 的字节长度是否太长。
      */
     urlIsLong: function (url) {
         //当前url的字节长度。
@@ -5227,7 +5283,7 @@ class Credential {
  *  > 使用说明：
  *  > 创建任何一个服务之前调用 {@link SecurityManager.registerToken}或
  *  > {@link SecurityManager.registerKey}注册凭据。
- *  > 发送请求时根据 url 或者服务 id 获取相应的 key 或者 token 并自动添加到服务地址中。
+ *  > 发送请求时根据 URL 或者服务 ID 获取相应的 key 或者 token 并自动添加到服务地址中。
  * @usage
  */
 class SecurityManager {
@@ -5271,7 +5327,7 @@ class SecurityManager {
      * @description 服务请求都会自动带上这个 token。
      * @function SecurityManager.registerToken
      * @param {string} url -服务器域名+端口：如http://localhost:8090。
-     * @param {string} token - token
+     * @param {string} token - token。
      */
     static registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -5285,8 +5341,8 @@ class SecurityManager {
     /**
      * @description 注册 key,ids 为数组(存在一个 key 对应多个服务)。
      * @function SecurityManager.registerKey
-     * @param {Array} ids - 可以是服务 id 数组或者 url 地址数组或者 webAPI 类型数组。
-     * @param {string} key - key
+     * @param {Array} ids - 可以是服务 ID 数组或者 URL 地址数组或者 webAPI 类型数组。
+     * @param {string} key - key。
      */
     static registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -5313,10 +5369,10 @@ class SecurityManager {
     }
 
     /**
-     * @description 根据 Url 获取token。
+     * @description 根据 URL 获取token。
      * @function SecurityManager.getToken
      * @param {string} url - 服务器域名+端口，如：http://localhost:8092。
-     * @returns {string} token
+     * @returns {string} token。
      */
     static getToken(url) {
         if (!url) {
@@ -5328,10 +5384,10 @@ class SecurityManager {
     }
 
     /**
-     * @description 根据 Url 获取 key。
+     * @description 根据 URL 获取 key。
      * @function SecurityManager.getKey
-     * @param {string} id - id
-     * @returns {string} key
+     * @param {string} id - ID。
+     * @returns {string} key。
      */
     static getKey(id) {
         this.keys = this.keys || {};
@@ -5403,7 +5459,7 @@ class SecurityManager {
     /**
      * @description iPortal登录验证。
      * @function SecurityManager.loginiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @returns {Promise} 包含 iPortal 登录请求结果的 Promise 对象。
@@ -5429,7 +5485,7 @@ class SecurityManager {
     /**
      * @description iPortal 登出。
      * @function SecurityManager.logoutiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
@@ -5502,7 +5558,7 @@ class SecurityManager {
     /**
      * @description 清空令牌信息。
      * @function SecurityManager.destroyToken
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal.
+     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
      */
     static destroyToken(url) {
         if (!url) {
@@ -5535,8 +5591,8 @@ class SecurityManager {
      * @description 服务URL追加授权信息，授权信息需先通过SecurityManager.registerKey或SecurityManager.registerToken注册。
      * @version 10.1.2
      * @function SecurityManager.appendCredential
-     * @param {string} url - 服务URL
-     * @returns {string} 绑定了token或者key的服务URL
+     * @param {string} url - 服务URL。
+     * @returns {string} 绑定了token或者key的服务URL。
      */
     static appendCredential(url) {
         var newUrl = url;
@@ -5628,7 +5684,9 @@ var DataFormat = {
     /** GEOJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
-    ISERVER: "ISERVER"
+    ISERVER: "ISERVER",
+    /** FGB */
+    FGB: "FGB"
 };
 
 /**
@@ -5679,37 +5737,37 @@ var ServerType = {
  * ```
  */
 var GeometryType = {
-    /** LINE */
+    /** 线几何对象类型。 */
     LINE: "LINE",
-    /** LINEM */
+    /** 路由对象。 */
     LINEM: "LINEM",
-    /** POINT */
+    /** 点几何对象类型。 */
     POINT: "POINT",
-    /** REGION */
+    /** 面几何对象类型。 */
     REGION: "REGION",
-    /** POINTEPS */
+    /** EPS点几何对象。 */
     POINTEPS: "POINTEPS",
-    /** LINEEPS */
+    /** EPS线几何对象。 */
     LINEEPS: "LINEEPS",
-    /** REGIONEPS */
+    /** EPS面几何对象。 */
     REGIONEPS: "REGIONEPS",
-    /** ELLIPSE */
+    /** 椭圆。 */
     ELLIPSE: "ELLIPSE",
-    /** CIRCLE */
+    /** 圆。 */
     CIRCLE: "CIRCLE",
-    /** TEXT */
+    /** 文本几何对象类型。 */
     TEXT: "TEXT",
-    /** RECTANGLE */
+    /** 矩形。 */
     RECTANGLE: "RECTANGLE",
-    /** UNKNOWN */
+    /** 未定义。 */
     UNKNOWN: "UNKNOWN",
-    /** GEOCOMPOUND */
+    /** 复合几何对象类型。 */
     GEOCOMPOUND:"GEOCOMPOUND"
 };
 
 /**
  * @enum QueryOption
- * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @description 查询结果类型枚举，描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -5727,11 +5785,11 @@ var GeometryType = {
  * ```
  */
 var QueryOption = {
-    /** 属性 */
+    /** 属性。 */
     ATTRIBUTE: "ATTRIBUTE",
-    /** 属性和几何对象 */
+    /** 属性和几何对象。 */
     ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
-    /** 几何对象 */
+    /** 几何对象。 */
     GEOMETRY: "GEOMETRY"
 };
 
@@ -5756,9 +5814,9 @@ var QueryOption = {
  * ```
  */
 var JoinType = {
-    /** 内连接 */
+    /** 内连接。 */
     INNERJOIN: "INNERJOIN",
-    /** 左连接 */
+    /** 左连接。 */
     LEFTJOIN: "LEFTJOIN"
 };
 
@@ -5782,23 +5840,23 @@ var JoinType = {
  * ```
  */
 var SpatialQueryMode = {
-    /** 包含空间查询模式 */
+    /** 包含空间查询模式。 */
     CONTAIN: "CONTAIN",
-    /** 交叉空间查询模式 */
+    /** 交叉空间查询模式。 */
     CROSS: "CROSS",
-    /** 分离空间查询模式 */
+    /** 分离空间查询模式。 */
     DISJOINT: "DISJOINT",
-    /** 重合空间查询模式 */
+    /** 重合空间查询模式。 */
     IDENTITY: "IDENTITY",
-    /** 相交空间查询模式 */
+    /** 相交空间查询模式。 */
     INTERSECT: "INTERSECT",
-    /** 无空间查询 */
+    /** 无空间查询。 */
     NONE: "NONE",
-    /** 叠加空间查询模式 */
+    /** 叠加空间查询模式。 */
     OVERLAP: "OVERLAP",
-    /** 邻接空间查询模式 */
+    /** 邻接空间查询模式。 */
     TOUCH: "TOUCH",
-    /** 被包含空间查询模式 */
+    /** 被包含空间查询模式。 */
     WITHIN: "WITHIN"
 };
 
@@ -5823,11 +5881,11 @@ var SpatialQueryMode = {
  * ```
  */
 var SpatialRelationType = {
-    /** 包含关系 */
+    /** 包含关系。 */
     CONTAIN: "CONTAIN",
-    /** 相交关系 */
+    /** 相交关系。 */
     INTERSECT: "INTERSECT",
-    /** 被包含关系 */
+    /** 被包含关系。 */
     WITHIN: "WITHIN"
 };
 
@@ -5852,9 +5910,9 @@ var SpatialRelationType = {
  * ```
  */
 var MeasureMode = {
-    /** 距离测量 */
+    /** 距离测量。 */
     DISTANCE: "DISTANCE",
-    /** 面积测量 */
+    /** 面积测量。 */
     AREA: "AREA"
 };
 
@@ -5879,31 +5937,31 @@ var MeasureMode = {
  * ```
  */
 var Unit = {
-    /**  米 */
+    /**  米。 */
     METER: "METER",
-    /**  千米 */
+    /**  千米。 */
     KILOMETER: "KILOMETER",
-    /**  英里 */
+    /**  英里。 */
     MILE: "MILE",
-    /**  码 */
+    /**  码。 */
     YARD: "YARD",
-    /**  度 */
+    /**  度。 */
     DEGREE: "DEGREE",
-    /**  毫米 */
+    /**  毫米。 */
     MILLIMETER: "MILLIMETER",
-    /**  厘米 */
+    /**  厘米。 */
     CENTIMETER: "CENTIMETER",
-    /**  英寸 */
+    /**  英寸。 */
     INCH: "INCH",
-    /**  分米 */
+    /**  分米。 */
     DECIMETER: "DECIMETER",
-    /**  英尺 */
+    /**  英尺。 */
     FOOT: "FOOT",
-    /**  秒 */
+    /**  秒。 */
     SECOND: "SECOND",
-    /**  分 */
+    /**  分。 */
     MINUTE: "MINUTE",
-    /**  弧度 */
+    /**  弧度。 */
     RADIAN: "RADIAN"
 };
 
@@ -5927,23 +5985,23 @@ var Unit = {
  * ```
  */
 var BufferRadiusUnit = {
-    /**  厘米 */
+    /**  厘米。 */
     CENTIMETER: "CENTIMETER",
-    /**  分米 */
+    /**  分米。 */
     DECIMETER: "DECIMETER",
-    /**  英尺 */
+    /**  英尺。 */
     FOOT: "FOOT",
-    /**  英寸 */
+    /**  英寸。 */
     INCH: "INCH",
-    /**  千米 */
+    /**  千米。 */
     KILOMETER: "KILOMETER",
-    /**  米 */
+    /**  米。 */
     METER: "METER",
-    /**  英里 */
+    /**  英里。 */
     MILE: "MILE",
-    /**  毫米 */
+    /**  毫米。 */
     MILLIMETER: "MILLIMETER",
-    /**  码 */
+    /**  码。 */
     YARD: "YARD"
 }
 
@@ -5975,7 +6033,7 @@ var EngineType = {
     ORACLEPLUS: "ORACLEPLUS",
     /**  SDB 引擎类型，文件引擎，即 SDB 数据源。 */
     SDBPLUS: "SDBPLUS",
-    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎 */
+    /**  SQL Server 引擎类型，针对 SQL Server 数据源，数据库引擎。 */
     SQLPLUS: "SQLPLUS",
     /**  UDB 引擎类型，文件引擎。 */
     UDB: "UDB"
@@ -6248,7 +6306,7 @@ var ColorGradientType = {
     RED_WHITE: "REDWHITE",
     /** 光谱渐变。 */
     SPECTRUM: "SPECTRUM",
-    /** 地形渐变,用于三维显示效果较好。 */
+    /** 地形渐变，用于三维显示效果较好。 */
     TERRAIN: "TERRAIN",
     /** 黄黑渐变色。 */
     YELLOW_BLACK: "YELLOWBLACK",
@@ -6472,7 +6530,7 @@ var DirectionType = {
 /**
  * @enum SideType
  * @description  行驶位置枚举。
- * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
+ * 表示在行驶在路的左边、右边或者路上的枚举，该类用在行驶导引子项类中。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -6504,7 +6562,7 @@ var SideType = {
  * @enum SupplyCenterType
  * @description  资源供给中心类型枚举。
  * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
- * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
+ * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -6585,9 +6643,9 @@ var TurnType = {
  * ```
  */
 var BufferEndType = {
-    /** FLAT */
+    /** 平头缓冲。 */
     FLAT: "FLAT",
-    /** ROUND */
+    /** 圆头缓冲。 */
     ROUND: "ROUND"
 };
 /**
@@ -6713,7 +6771,7 @@ var SurfaceAnalystMethod = {
 /**
  * @enum DataReturnMode
  * @description  数据返回模式枚举。
- * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
+ * 该枚举用于指定空间分析返回结果模式，包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -6742,7 +6800,7 @@ var DataReturnMode = {
 /**
  * @enum EditType
  * @description  要素集更新模式枚举。
- * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * 该枚举用于指定数据服务中要素集更新模式，包含添加要素集、更新要素集和删除要素集。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -6942,7 +7000,7 @@ var UGCLayerType = {
     THEME: "THEME",
     /** 矢量图层。 */
     VECTOR: "VECTOR",
-    /** 栅格图层。。 */
+    /** 栅格图层。 */
     GRID: "GRID",
     /** 影像图层。 */
     IMAGE: "IMAGE"
@@ -7026,7 +7084,7 @@ var PixelFormat = {
 
 /**
  * @enum SearchMode
- * @description  内插时使用的样本点的查找方式枚举
+ * @description  内插时使用的样本点的查找方式枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7056,7 +7114,7 @@ var SearchMode = {
 
 /**
  * @enum InterpolationAlgorithmType
- * @description  插值分析的算法的类型
+ * @description  插值分析的算法的类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7084,7 +7142,7 @@ var InterpolationAlgorithmType = {
 
 /**
  * @enum VariogramMode
- * @description  克吕金（Kriging）插值时的半变函数类型枚举
+ * @description  克吕金（Kriging）插值时的半变函数类型枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7112,7 +7170,7 @@ var VariogramMode = {
 
 /**
  * @enum Exponent
- * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
+ * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7138,7 +7196,7 @@ var Exponent = {
 
 /**
  * @enum ClientType
- * @description token申请的客户端标识类型
+ * @description token申请的客户端标识类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7172,7 +7230,7 @@ var ClientType = {
 
 /**
  * @enum ChartType
- * @description 客户端专题图图表类型
+ * @description 客户端专题图图表类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7234,7 +7292,7 @@ var ClipAnalystMode = {
 
 /**
  * @enum AnalystAreaUnit
- * @description 分布式分析面积单位
+ * @description 分布式分析面积单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7272,7 +7330,7 @@ var AnalystAreaUnit = {
 
 /**
  * @enum AnalystSizeUnit
- * @description 分布式分析单位
+ * @description 分布式分析单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7304,7 +7362,7 @@ var AnalystSizeUnit = {
 
 /**
  * @enum StatisticAnalystMode
- * @description 分布式分析统计模式
+ * @description 分布式分析统计模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7332,13 +7390,13 @@ var StatisticAnalystMode = {
     "SUM": "sum",
     /** 统计所选字段的方差。 */
     "VARIANCE": "variance",
-    /** 统计所选字段的标准差 */
+    /** 统计所选字段的标准差。 */
     "STDDEVIATION": "stdDeviation"
 };
 
 /**
  * @enum SummaryType
- * @description 分布式分析聚合类型
+ * @description 分布式分析聚合类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7418,13 +7476,13 @@ var TopologyValidatorRule = {
  * ```
  */
 var BucketAggType = {
-    /** 格网聚合类型 */
+    /** 格网聚合类型。 */
     GEOHASH_GRID: "geohash_grid"
 };
 
 /**
  * @enum MetricsAggType
- * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -7442,13 +7500,13 @@ var BucketAggType = {
  * ```
  */
 var MetricsAggType = {
-  /** 平均值聚合类型 */
+  /** 平均值聚合类型。 */
   AVG:'avg',
-  /** 最大值聚合类型 */
+  /** 最大值聚合类型。 */
   MAX:'max',
-  /** 最小值聚合类型 */
+  /** 最小值聚合类型。 */
   MIN:'min',
-  /** 求和聚合类型 */
+  /** 求和聚合类型。 */
   SUM:'sum'
 };
 
@@ -7566,17 +7624,17 @@ var ResourceType = {
  * ```
  */
 var OrderBy = {
-    /** 按更新时间排序 */
+    /** 按更新时间排序。 */
     UPDATETIME: "UPDATETIME",
-    /** 按热度(可能是访问量、下载量)排序 */
+    /** 按热度(可能是访问量、下载量)排序。 */
     HEATLEVEL: "HEATLEVEL",
-    /** 按相关性排序 */
+    /** 按相关性排序。 */
     RELEVANCE: "RELEVANCE"
 }
 
 /**
  * @enum OrderType
- * @description iportal资源升序还是降序过滤
+ * @description iportal资源升序还是降序过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -7595,15 +7653,15 @@ var OrderBy = {
  * ```
  */
 var OrderType = {
-    /** 升序 */
+    /** 升序。 */
     ASC: "ASC",
-    /** 降序 */
+    /** 降序。 */
     DESC: "DESC"
 }
 
 /**
  * @enum SearchType
- * @description iportal资源查询的范围进行过滤
+ * @description iportal资源查询的范围进行过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -7636,7 +7694,7 @@ var SearchType = {
 
 /**
  * @enum AggregationTypes
- * @description iportal资源聚合查询的类型
+ * @description iportal资源聚合查询的类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -7655,9 +7713,9 @@ var SearchType = {
  * ```
  */
 var AggregationTypes = {
-    /** 标签 */
+    /** 标签。 */
     TAG: "TAG",
-    /** 资源类型 */
+    /** 资源类型。 */
     TYPE: "TYPE"
 }
 
@@ -7682,15 +7740,15 @@ var AggregationTypes = {
  * ```
  */
 var PermissionType = {
-    /** 可检索 */
+    /** 可检索。 */
     SEARCH:"SEARCH",
-    /** 可查看 */
+    /** 可查看。 */
     READ: "READ",
-    /** 可编辑 */
+    /** 可编辑。 */
     READWRITE: "READWRITE",
-    /** 可删除 */
+    /** 可删除。 */
     DELETE: "DELETE",
-    /** 可下载，包括可读、可检索 */
+    /** 可下载，包括可读、可检索。 */
     DOWNLOAD:"DOWNLOAD"
 }
 
@@ -7715,15 +7773,15 @@ var PermissionType = {
  * ```
  */
 var EntityType = {
-    /** 部门 */
+    /** 部门。 */
     DEPARTMENT: "DEPARTMENT",
-    /** 用户组 */
+    /** 用户组。 */
     GROUP: "GROUP",
-    /** 群组 */
+    /** 群组。 */
     IPORTALGROUP: "IPORTALGROUP",
-    /** 角色 */
+    /** 角色。 */
     ROLE: "ROLE",
-    /** 用户 */
+    /** 用户。 */
     USER: "USER"
 }
 
@@ -7748,61 +7806,61 @@ var EntityType = {
  * ```
  */
 var DataItemType = {
-    /** geojson数据。 */
+    /** geojson 数据。 */
     GEOJSON: "GEOJSON",
-    /** UGCV5_MVT  */
+    /** UGCV5_MVT。  */
     UGCV5_MVT: "UGCV5_MVT",
-    /** json数据  */
+    /** json数据。  */
     JSON: "JSON",
-    /** AUDIO */
+    /** 音频文件。 */
     AUDIO: "AUDIO",
-    /** COLOR */
+    /** Color 颜色。 */
     COLOR: "COLOR",
-    /** COLORSCHEME */
+    /** ColorScheme 颜色方案。 */
     COLORSCHEME: "COLORSCHEME",
-    /** CSV */
+    /** CSV 数据。 */
     CSV: "CSV",
-    /** EXCEL */
+    /** EXCEL 数据。 */
     EXCEL: "EXCEL",
-    /** FILLSYMBOL */
+    /** FillSymbol 填充符号库。 */
     FILLSYMBOL: "FILLSYMBOL",
-    /** IMAGE */
+    /** 图片类型。 */
     IMAGE: "IMAGE",
-    /** LAYERTEMPLATE */
+    /** LayerTemplate 图层模板。 */
     LAYERTEMPLATE: "LAYERTEMPLATE",
-    /** LAYOUTTEMPLATE */
+    /** LayoutTemplate 布局模板。 */
     LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
-    /** LINESYMBOL */
+    /** LineSymbol 线符号库。 */
     LINESYMBOL: "LINESYMBOL",
-    /** MAPTEMPLATE */
+    /** MapTemplate 地图模板。 */
     MAPTEMPLATE: "MAPTEMPLATE",
-    /** MARKERSYMBOL */
+    /** MarkerSymbol 点符号库。 */
     MARKERSYMBOL: "MARKERSYMBOL",
-    /** MBTILES */
+    /** MBTILES。 */
     MBTILES: "MBTILES",
-    /** PHOTOS */
+    /** 照片。 */
     PHOTOS: "PHOTOS",
-    /** SHP */
+    /** SHP 空间数据。 */
     SHP: "SHP",
-    /** SMTILES */
+    /** SMTILES。 */
     SMTILES: "SMTILES",
-    /** SVTILES */
+    /** SVTILES。 */
     SVTILES: "SVTILES",
-    /** THEMETEMPLATE */
+    /** ThemeTemplate 专题图模板。 */
     THEMETEMPLATE: "THEMETEMPLATE",
-    /** TPK */
+    /** TPK。 */
     TPK: "TPK",
-    /** UDB */
+    /** UDB 数据源。 */
     UDB: "UDB",
-    /** UGCV5 */
+    /** UGCV5。 */
     UGCV5: "UGCV5",
-    /** UNKNOWN */
+    /** 其他类型（普通文件）。 */
     UNKNOWN: "UNKNOWN",
-    /** VIDEO */
+    /** 视频文件。 */
     VIDEO: "VIDEO",
-    /** WORKENVIRONMENT */
+    /** WorkEnviroment 工作环境。 */
     WORKENVIRONMENT: "WORKENVIRONMENT",
-    /** WORKSPACE */
+    /** 工作空间。 */
     WORKSPACE: "WORKSPACE"
 }
 
@@ -7827,9 +7885,9 @@ var DataItemType = {
  * ```
  */
 var WebExportFormatType = {
-    /** png */
+    /** PNG */
     PNG: "PNG",
-    /** pdf */
+    /** PDF */
     PDF: "PDF"
 }
 
@@ -7854,13 +7912,13 @@ var WebExportFormatType = {
  * ```
  */
 var WebScaleOrientationType = {
-    /** horizontal labels below */
+    /** horizontal labels below. */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
-    /** horizontal labels above */
+    /** horizontal labels above. */
     HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
-    /** vertical labels left */
+    /** vertical labels left. */
     VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
-    /** vertical labels right */
+    /** vertical labels right. */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
 }
 
@@ -7885,11 +7943,11 @@ var WebScaleOrientationType = {
  * ```
  */
 var WebScaleType = {
-    /** line */
+    /** line. */
     LINE: "LINE",
-    /** bar */
+    /** bar. */
     BAR: "BAR",
-    /** bar sub */
+    /** bar sub. */
     BAR_SUB: "BAR_SUB"
 }
 
@@ -7914,11 +7972,11 @@ var WebScaleType = {
  * ```
  */
 var WebScaleUnit = {
-    /** 米 */
+    /** 米。 */
     METER: "METER",
-    /** 英尺 */
+    /** 英尺。 */
     FOOT: "FOOT",
-    /** 度 */
+    /** 度。 */
     DEGREES: "DEGREES"
 }
 
@@ -7935,8 +7993,8 @@ var WebScaleUnit = {
  * @deprecatedclass SuperMap.DatasourceConnectionInfo
  * @category  iServer Data Datasource
  * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
- *            当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
- *            所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
+ *            当保存为工作空间时，工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
+ *            所以在使用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
  *            其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
  * @param {Object} options - 参数。
  * @param {string} options.alias - 数据源别名。
@@ -8309,7 +8367,7 @@ class KernelDensityJobParameter {
 
         /**
          * @member {OutputSetting} KernelDensityJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -8809,7 +8867,7 @@ class SummaryMeshJobParameter {
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
  * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属字段统计。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
  * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
  * @param {number} [options.resolution=100] - 网格大小。
  * @param {number} [options.meshType=0] - 网格面汇总类型。
@@ -8912,7 +8970,7 @@ class SummaryRegionJobParameter {
 
         /**
          * @member {OutputSetting} SummaryRegionJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 
@@ -9166,7 +9224,7 @@ class BuffersAnalystJobsParameter {
 
         /**
          * @member {string} [BuffersAnalystJobsParameter.prototype.distance='15']
-         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
+         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段为空时，此参数有效。
          */
         this.distance = '';
 
@@ -9674,6 +9732,162 @@ function conversionDegree(degrees) {
     return `${degree}°${fraction}'${second}`;
 }
 
+/**
+  * @function scalesToResolutions
+  * @description 通过比例尺数组计算分辨率数组，没有传入比例尺数组时通过地图范围与地图最大级别进行计算。
+  * @version 11.0.1
+  * @param {Array} scales - 比例尺数组。
+  * @param {Object} bounds - 地图范围。
+  * @param {number} dpi - 屏幕分辨率。
+  * @param {string} mapUnit - 地图单位。
+  * @param {number} [level=22] - 地图最大级别。
+  * @returns {number} 分辨率。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.scalesToResolutions(scales, bounds, dpi, mapUnit);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { scalesToResolutions } from '{npm}';
+  *
+  * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
+  * ```
+ */
+ function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
+  var resolutions = [];
+  if (scales && scales.length > 0) {
+    for (let i = 0; i < scales.length; i++) {
+      resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+    }
+  } else {
+    const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
+    for (let i = 0; i < level; i++) {
+      resolutions.push(maxReolution / Math.pow(2, i));
+    }
+  }
+  return resolutions.sort(function (a, b) {
+    return b - a;
+  });
+}
+/**
+  * @function getZoomByResolution
+  * @description 通过分辨率获取地图级别。
+  * @version 11.0.1
+  * @param {number} resolution - 分辨率。
+  * @param {Array} resolutions - 分辨率数组。
+  * @returns {number} 地图级别。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.getZoomByResolution(resolution, resolutions);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { getZoomByResolution } from '{npm}';
+  *
+  * const result = getZoomByResolution(resolution, resolutions);
+  * ```
+ */
+function getZoomByResolution(resolution, resolutions) {
+  let zoom = 0;
+  let minDistance;
+  for (let i = 0; i < resolutions.length; i++) {
+    if (i === 0) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+    }
+    if (minDistance > Math.abs(resolution - resolutions[i])) {
+      minDistance = Math.abs(resolution - resolutions[i]);
+      zoom = i;
+    }
+  }
+  return zoom;
+}
+
+/**
+  * @function scaleToResolution
+  * @description 通过比例尺计算分辨率。
+  * @version 11.0.1
+  * @param {number} scale - 比例尺。
+  * @param {number} dpi - 屏幕分辨率。
+  * @param {string} mapUnit - 地图单位。
+  * @returns {number} 分辨率。
+  * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script>
+  *   const result = {namespace}.scaleToResolution(scale, dpi, mapUnit);
+  *
+  * </script>
+  *
+  * // ES6 Import
+  * import { scaleToResolution } from '{npm}';
+  *
+  * const result = scaleToResolution(scale, dpi, mapUnit);
+  * ```
+ */
+function scaleToResolution(scale, dpi, mapUnit) {
+  const inchPerMeter = 1 / 0.0254;
+  const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+  const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
+  return resolution;
+}
+
+/**
+ * 范围是否相交
+ * @param {Extent} extent1 范围1
+ * @param {Extent} extent2 范围2
+ * @return {boolean} 范围是否相交。
+ */
+ function intersects(extent1, extent2) {
+  return (
+    extent1[0] <= extent2[2] &&
+    extent1[2] >= extent2[0] &&
+    extent1[1] <= extent2[3] &&
+    extent1[3] >= extent2[1]
+  );
+}
+
+/**
+ * 获取两个范围的交集
+ * @param {Array} extent1 Extent 1
+ * @param {Array} extent2 Extent 2
+ * @return {Array} 相交范围数组.
+ * @api
+ */
+ function getIntersection(extent1, extent2) {
+  const intersection = [];
+  if (intersects(extent1, extent2)) {
+    if (extent1[0] > extent2[0]) {
+      intersection[0] = extent1[0];
+    } else {
+      intersection[0] = extent2[0];
+    }
+    if (extent1[1] > extent2[1]) {
+      intersection[1] = extent1[1];
+    } else {
+      intersection[1] = extent2[1];
+    }
+    if (extent1[2] < extent2[2]) {
+      intersection[2] = extent1[2];
+    } else {
+      intersection[2] = extent2[2];
+    }
+    if (extent1[3] < extent2[3]) {
+      intersection[3] = extent1[3];
+    } else {
+      intersection[3] = extent2[3];
+    }
+  }
+  return intersection;
+}
 ;// CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -10038,8 +10252,8 @@ class MapVRenderer extends MapVBaseLayer {
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
- * @param {Mapv.DataSet} options.dataSet - mapv 的 dataSet 对象。
- * @param {Object} options.options - mapv 绘图风格配置信息。
+ * @param {Mapv.DataSet} options.dataSet - MapV 的 dataSet 对象。
+ * @param {Object} options.options - MapV 绘图风格配置信息。
  */
 class MapVLayer extends SuperMap.Layer {
     constructor(name, options) {
@@ -10047,13 +10261,13 @@ class MapVLayer extends SuperMap.Layer {
 
         /**
          * @member {Mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
-         * @description mapv 的 dataset 对象。
+         * @description MapV 的 dataset 对象。
          */
         this.dataSet = null;
 
         /**
          * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
-         * @description mapv 绘图风格配置信息。
+         * @description MapV 绘图风格配置信息。
          */
         this.options = null;
 
@@ -10129,8 +10343,8 @@ class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
-     * @param {Object} options - mapv 绘图风格配置信息。
+     * @param {Mapv.DataSet} dataSet - MapV 的 dataSet 对象。
+     * @param {Object} options - MapV 绘图风格配置信息。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -10139,8 +10353,8 @@ class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
-     * @param {Object} options - mapv 绘图风格配置信息。
+     * @param {Mapv.DataSet} dataSet - MapV 的 dataSet 对象。
+     * @param {Object} options - MapV 绘图风格配置信息。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -10149,7 +10363,7 @@ class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {Mapv.DataSet} mapv 的 dataSet 对象。
+     * @returns {Mapv.DataSet} MapV 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {
@@ -10176,7 +10390,7 @@ class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.renderer.clearData();
@@ -10575,6 +10789,7 @@ class JSONFormat extends Format {
                 object = JSON.parse(json, filter);
             } catch (e) {
                 // Fall through if the regexp test fails.
+                return { data: json}
             }
         }
 
@@ -10651,6 +10866,7 @@ class JSONFormat extends Format {
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -10786,13 +11002,22 @@ class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
+        const format = options.scope.format;
+        if (format && !this.supportDataFormat(format)) {
+          throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
+        }
+       
         let me = this;
         options.url = options.url || me.url;
+        if (this._returnContent(options) && !options.url.includes('returnContent=true')) {
+          options.url = Util_Util.urlAppend(options.url, 'returnContent=true');
+        }
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
+        options.withoutFormatSuffix = options.scope.withoutFormatSuffix || false;
         //为url添加安全认证信息片段
         options.url = SecurityManager.appendCredential(options.url);
 
@@ -10834,7 +11059,7 @@ class CommonServiceBase {
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
-     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求
+     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
      */
     ajaxPolling() {
         let me = this,
@@ -10910,6 +11135,24 @@ class CommonServiceBase {
         });
     }
 
+    _returnContent(options) {
+      if (options.scope.format === DataFormat.FGB) {
+        return false;
+      }
+      if (options.scope.returnContent) {
+        return true;
+      }
+      return false;
+    }
+
+    supportDataFormat(foramt) {
+      return this.dataFormat().includes(foramt);
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER];
+    }
+
     _commit(options) {
         if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
             if (options.params) {
@@ -10927,6 +11170,7 @@ class CommonServiceBase {
         }
         FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
+            withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
@@ -10961,6 +11205,9 @@ class CommonServiceBase {
                         };
                     }
                 }
+                if (requestResult && options.scope.format === DataFormat.FGB) {
+                  requestResult.newResourceLocation = requestResult.newResourceLocation.replace('.json', '') + '.fgb';
+                }
                 return requestResult;
             })
             .catch(function (e) {
@@ -10981,7 +11228,7 @@ class CommonServiceBase {
 
 
 /**
- * 服务器请求回调函数
+ * 服务器请求回调函数。
  * @callback RequestCallback
  * @category BaseTypes Util
  * @example
@@ -11306,7 +11553,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称，此为必选参数。
  * @param {string} options.datasetName - 数据集名称，此为必选参数。
- * @param {string} options.datasetType - 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+ * @param {string} options.datasetType - 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
  * @usage
  */
 class CreateDatasetParameters {
@@ -11330,7 +11577,7 @@ class CreateDatasetParameters {
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasetType
-         * @description 数据集类型。目前支持创建的出聚集类型有：点、线、面、文本、复合（CAD）和属性数据集。
+         * @description 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
          */
         this.datasetType = null;
 
@@ -12818,7 +13065,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
-     * @param {string} id - 空间分析的 id。
+     * @param {string} id - 空间分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -12872,7 +13119,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param {string} id - 密度分析的 id。
+     * @param {string} id - 密度分析的 ID。
      * @returns {Object} 密度分析的状态。
      */
     getKernelDensityJobState(id) {
@@ -12906,7 +13153,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
      * @description 获取点聚合分析。
-     * @param {string} id - 点聚合分析的 id。
+     * @param {string} id - 点聚合分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -12960,7 +13207,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
-     * @param {string} id - 点聚合分析的 id。
+     * @param {string} id - 点聚合分析的 ID。
      * @returns {Object} 点聚合分析的状态。
      */
     getSummaryMeshJobState(id) {
@@ -12994,7 +13241,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJob
      * @description 获取单对象查询分析。
-     * @param {string} id - 单对象查询分析的 id。
+     * @param {string} id - 单对象查询分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13050,8 +13297,8 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
-     * @param {string} id - 单对象查询分析的 id。
-     * @returns {Object} 单对象查询分析的状态
+     * @param {string} id - 单对象查询分析的 ID。
+     * @returns {Object} 单对象查询分析的状态。
      */
     getQueryJobState(id) {
         return this.queryJobs[id];
@@ -13085,7 +13332,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某一个区域汇总分析。
-     * @param {string} id - 区域汇总分析的 id。
+     * @param {string} id - 区域汇总分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13139,7 +13386,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
-     * @param {string} id - 区域汇总分析的 id。
+     * @param {string} id - 区域汇总分析的 ID。
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState(id) {
@@ -13173,7 +13420,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJob
      * @description 获取矢量裁剪分析。
-     * @param {string} id - 矢量裁剪分析的 id。
+     * @param {string} id - 矢量裁剪分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13228,7 +13475,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param {string} id - 矢量裁剪分析的 id。
+     * @param {string} id - 矢量裁剪分析的 ID。
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState(id) {
@@ -13262,7 +13509,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getOverlayGeoJob
      * @description 获取叠加分析。
-     * @param {string} id - 叠加分析的 id。
+     * @param {string} id - 叠加分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13316,7 +13563,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
-     * @param {string} id - 叠加分析的 id。
+     * @param {string} id - 叠加分析的 ID。
      * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState(id) {
@@ -13350,7 +13597,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
      * @description 获取缓冲区分析。
-     * @param {string} id - 缓冲区分析的 id。
+     * @param {string} id - 缓冲区分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13404,7 +13651,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
      * @description 获取缓冲区分析的状态。
-     * @param {string} id - 缓冲区分析的 id。
+     * @param {string} id - 缓冲区分析的 ID。
      * @returns {Object} 缓冲区分析的状态。
      */
     getBuffersJobState(id) {
@@ -13438,7 +13685,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取拓扑检查分析。
-     * @param {string} id - 拓扑检查分析的 id。
+     * @param {string} id - 拓扑检查分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13492,7 +13739,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
      * @description 获取拓扑检查分析的状态。
-     * @param {string} id - 拓扑检查分析的 id。
+     * @param {string} id - 拓扑检查分析的 ID。
      * @returns {Object} 拓扑检查分析的状态。
      */
     getTopologyValidatorJobState(id) {
@@ -13526,7 +13773,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取属性汇总分析。
-     * @param {string} id - 属性汇总分析的 id。
+     * @param {string} id - 属性汇总分析的 ID。
      * @param {function} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -13580,7 +13827,7 @@ class ProcessingService extends CommonServiceBase {
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
-     * @param {string} id - 属性汇总分析的 id。
+     * @param {string} id - 属性汇总分析的 ID。
      * @returns {Object} 属性汇总分析的状态。
      */
     getSummaryAttributesJobState(id) {
@@ -13656,6 +13903,7 @@ SuperMap.REST.ProcessingService = ProcessingService;
 
 
 
+
 ;// CONCATENATED MODULE: ./src/classic/namespace.js
 
 
@@ -13673,7 +13921,7 @@ SuperMap.OutputSetting = OutputSetting;
 SuperMap.MappingParameters = MappingParameters;
 SuperMap.GeoCodingParameter = GeoCodingParameter;
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
-
+SuperMap.Util = {...SuperMap.Util, ...Util_Util};
 
 
 })();

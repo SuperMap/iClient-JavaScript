@@ -101,7 +101,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GraphThemeLayer.prototype.redrawThematicFeatures
-     * @description 重绘所有专题要素 此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
+     * @description 重绘所有专题要素。此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
      * @param {L.Bounds} bounds - 重绘的范围。
      */
     redrawThematicFeatures: function (bounds) {
@@ -344,7 +344,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     /**
      * @function GraphThemeLayer.prototype.clear
-     * @description 清除图层。清除的内容包括数据（features） 、专题要素、缓存。
+     * @description 清除图层。清除的内容包括数据（features）、专题要素、缓存。
      */
     clear: function () {
         var me = this;

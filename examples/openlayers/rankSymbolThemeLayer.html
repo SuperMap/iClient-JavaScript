@@ -32,7 +32,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 4,
@@ -104,7 +104,7 @@
         // 地图弹窗的显示
         function showInfoWin(e) {
             // e.target 是图形对象，即数据的可视化对象。
-            // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+            // 图形对象的 refDataID 属性是数据（feature）的 ID 属性，它指明图形对象是由那个数据制作而来;
             // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field、R 和 value;
             if (e.target && e.target.refDataID && e.target.dataInfo) {
                 closeInfoWin();

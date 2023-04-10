@@ -172,7 +172,7 @@ describe('GetFeaturesByIDsService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(

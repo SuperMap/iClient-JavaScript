@@ -39,8 +39,8 @@ export class Tianditu extends WMTS {
     }
     var options = opt_options || {};
     var attributions = options.attributions || "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-      "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-      "<span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+    "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
+    "<span>© SuperMap iClient</span>"
     options.layerType = options.layerType || "vec";
     options.layerType = options.isLabel ? layerLabelMap[options.layerType] : options.layerType;
     options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";
@@ -96,7 +96,7 @@ export class Tianditu extends WMTS {
    * @function Tianditu.getTileGrid
    * @description 获取瓦片网格。
    * @param {string} projection - 投影参考对象。
-   * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象
+   * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象。
    */
   static getTileGrid(projection) {
     if (projection === "EPSG:4326" || projection === "EPSG:4490") {

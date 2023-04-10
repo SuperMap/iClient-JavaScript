@@ -56,7 +56,7 @@
         zoom: 3
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     var features = [];
     for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
@@ -101,7 +101,7 @@
 
     function showInfoWin(e) {
         // e.target 是图形对象，即数据的可视化对象。
-        // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+        // 图形对象的 refDataID 属性是数据（feature）的 ID 属性，它指明图形对象是由那个数据制作而来;
         // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field、R 和 value;
         if (e.target && e.target.refDataID && e.target.dataInfo) {
             closeInfoWin();

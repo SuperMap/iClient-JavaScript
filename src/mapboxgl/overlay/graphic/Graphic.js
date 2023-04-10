@@ -36,7 +36,7 @@ export class Graphic {
     /**
      * @function Graphic.prototype.getId
      * @description 获取当前 ID。
-     * @returns {string} id
+     * @returns {string} ID。
      */
     getId() {
         return this.id;
@@ -55,7 +55,7 @@ export class Graphic {
     /**
      * @function Graphic.prototype.getLngLat
      * @description 获取经纬度坐标。
-     * @returns {Object} 经纬度坐标,数据格式{lng,lat}。
+     * @returns {Object} 经纬度坐标，数据格式{lng,lat}。
      */
     getLngLat() {
         return this.lngLat;
@@ -64,7 +64,7 @@ export class Graphic {
     /**
      * @function Graphic.prototype.setLngLat
      * @description 设置经纬度坐标。
-     * @param {Object} lngLat - 经纬度坐标,数据格式{lng,lat}。
+     * @param {Object} lngLat - 经纬度坐标，数据格式{lng,lat}。
      */
     setLngLat(lngLat) {
         this.lngLat = Util.isArray(lngLat) ? {lng: lngLat[0], lat: lngLat[1]} : lngLat;

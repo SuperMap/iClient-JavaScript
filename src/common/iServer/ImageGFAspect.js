@@ -6,7 +6,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFAspect
  * @deprecatedclass SuperMap.ImageGFAspect
- * @classdesc 栅格函数对象:对DEM数据生成坡向渲图。
+ * @classdesc 栅格函数对象：对DEM数据生成坡向渲图。
  * @category iServer Image
  * @param {Object} options -可选参数。
  * @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
@@ -45,9 +45,9 @@ export default class ImageGFAspect {
   /**
   * @function ImageGFAspect.prototype.constructFromObject
   * @description 目标对象新增该类的可选参数。
-  * @param {Object} data 要转换的数据.
-  * @param {ImageGFAspect} obj 返回的模型.
-  * @return {ImageGFAspect} 返回结果
+  * @param {Object} data 要转换的数据。
+  * @param {ImageGFAspect} obj 返回的模型。
+  * @return {ImageGFAspect} 返回结果。
   */
   static constructFromObject(data, obj) {
     if (data) {

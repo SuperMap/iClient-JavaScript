@@ -11,7 +11,7 @@ import {GeoFeature} from './theme/GeoFeature';
  * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 单值专题图图层源。
- * @param {string} name - 图层名称
+ * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
  * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层ID。

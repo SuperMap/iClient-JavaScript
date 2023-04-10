@@ -47,7 +47,9 @@ import {
   WebMap,
   webMap,
   ImageTileLayer,
-  imageTileLayer
+  imageTileLayer,
+  initMap,
+  crsFromMapJSON
 } from './mapping';
 
 import {
@@ -76,6 +78,8 @@ import {
   tiledVectorLayer,
   TurfLayer,
   turfLayer,
+  FGBLayer,
+  fgbLayer,
   UnicodeMarker,
   unicodeMarker,
   UniqueThemeLayer,
@@ -300,6 +304,8 @@ L.supermap.wmtsLayer = wmtsLayer;
 L.supermap.WMTSLayer = WMTSLayer;
 L.supermap.webmap = webMap;
 L.supermap.WebMap = WebMap;
+L.supermap.initMap = initMap;
+L.supermap.crsFromMapJSON = crsFromMapJSON;
 // overlay
 L.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
 L.supermap.DefaultStyle = DefaultStyle;
@@ -341,6 +347,8 @@ L.supermap.TileVectorLayer = TileVectorLayer;
 L.supermap.TiledVectorLayer = TiledVectorLayer;
 L.supermap.turfLayer = turfLayer;
 L.supermap.TurfLayer = TurfLayer;
+L.supermap.FGBLayer = FGBLayer;
+L.supermap.FGBLayer = fgbLayer;
 L.supermap.unicodeMarker = unicodeMarker;
 L.supermap.UnicodeMarker = UnicodeMarker;
 L.supermap.uniqueThemeLayer = uniqueThemeLayer;

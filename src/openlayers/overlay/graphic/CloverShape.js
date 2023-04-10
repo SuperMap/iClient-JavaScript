@@ -83,7 +83,7 @@ export class CloverShape extends RegularShape {
     /**
      * @function CloverShape.prototype.drawSector
      * @description 绘制扇形。
-     * @param {CanvasRenderingContext2D} ctx - context 对象
+     * @param {CanvasRenderingContext2D} ctx - context 对象。
      * @param {number} x - 中心点 x。
      * @param {number} y - 中心点 y。
      * @param {number} r - 中心点 r。

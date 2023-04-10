@@ -102,7 +102,13 @@ var exampleConfig = {
                     name_en: "SQL query",
                     thumbnail: "l_mapQueryBySQL.png",
                     fileName: "01_mapQueryBySQL"
-                }]
+                }, {
+                  name: "SQL查询 (FGB)",
+                  name_en: "SQL query (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "query_fgb_features.png",
+                  fileName: "01_mapQueryBySQL_FGB"
+              }]
             },
             "data": {
                 name: "数据",
@@ -118,6 +124,12 @@ var exampleConfig = {
                     thumbnail: "l_getFeatureBySQL.png",
                     fileName: "02_getFeatureBySQL"
                 }, {
+                  name: "SQL查询 (FGB)",
+                  name_en: "SQL query (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "query_fgb_features.png",
+                  fileName: "02_getFeatureBySQL_FGB"
+              },{
                     name: "范围查询",
                     name_en: "bounds query",
                     thumbnail: "l_getFeatureByBounds.png",
@@ -220,35 +232,76 @@ var exampleConfig = {
                 name: "空间分析",
                 name_en: "Spatial analysis service",
                 content: [{
-                    name: "数据集缓冲区分析",
-                    name_en: "buffer",
-                    thumbnail: "l_bufferAnalystService.png",
-                    fileName: "04_bufferAnalystService"
+                  name: "数据集缓冲区分析",
+                  name_en: "buffer",
+                  thumbnail: "l_bufferAnalystService.png",
+                  fileName: "04_bufferAnalystService"
+                },
+                {
+                  name: "数据集缓冲区分析 (FGB)",
+                  name_en: "buffer (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "l_bufferAnalystService.png",
+                  fileName: "04_bufferAnalystService_FGB"
+                },
+                {
+                  name: "几何对象缓冲区分析",
+                  name_en: "buffer-geometry",
+                  thumbnail: "l_bufferAnalystService-geometry.png",
+                  fileName: "04_bufferAnalystService_geometry"
+                },
+                {
+                  name: "几何对象缓冲区分析 (FGB)",
+                  name_en: "buffer-geometry (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "l_bufferAnalystService-geometry.png",
+                  fileName: "04_bufferAnalystService_geometry_FGB"
+                },
+                {
+                  name: "数据集泰森多边形",
+                  name_en: "thiessen-dataset",
+                  thumbnail: "l_thiessenAnalystService-datasets.png",
+                  fileName: "04_thiessenAnalystService_datasets"
+                },
+                {
+                  name: "数据集泰森多边形 (FGB)",
+                  name_en: "thiessen-dataset (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "l_thiessenAnalystService-datasets.png",
+                  fileName: "04_thiessenAnalystService_datasets_FGB"
                 }, {
-                    name: "几何对象缓冲区分析",
-                    name_en: "buffer-geometry",
-                    thumbnail: "l_bufferAnalystService-geometry.png",
-                    fileName: "04_bufferAnalystService_geometry"
+                  name: "几何泰森多边形",
+                  name_en: "thiessen-geometry",
+                  thumbnail: "l_thiessenAnalystService-geometry.png",
+                  fileName: "04_thiessenAnalystService_geometry"
                 }, {
-                    name: "数据集泰森多边形",
-                    name_en: "thiessen-dataset",
-                    thumbnail: "l_thiessenAnalystService-datasets.png",
-                    fileName: "04_thiessenAnalystService_datasets"
+                  name: "几何泰森多边形 (FGB)",
+                  name_en: "thiessen-geometry (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "l_thiessenAnalystService-geometry.png",
+                  fileName: "04_thiessenAnalystService_geometry_FGB"
                 }, {
-                    name: "几何泰森多边形",
-                    name_en: "thiessen-geometry",
-                    thumbnail: "l_thiessenAnalystService-geometry.png",
-                    fileName: "04_thiessenAnalystService_geometry"
+                  name: "叠加分析",
+                  name_en: "overlay",
+                  thumbnail: "l_overlayAnalystService.png",
+                  fileName: "04_overlayAnalystService"
                 }, {
-                    name: "叠加分析",
-                    name_en: "overlay",
-                    thumbnail: "l_overlayAnalystService.png",
-                    fileName: "04_overlayAnalystService"
-                }, {
+                  name: "叠加分析 (FGB)",
+                  name_en: "overlay (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "l_overlayAnalystService.png",
+                  fileName: "04_overlayAnalystService_FGB"
+                },{
                     name: "表面分析(提取等值线)",
                     name_en: "surface(Getting Contour Line)",
                     thumbnail: "l_surfaceAnalystService.png",
                     fileName: "04_surfaceAnalystService"
+                },{
+                  name: "表面分析(提取等值线) (FGB)",
+                  name_en: "surface(Getting Contour Line) (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "l_surfaceAnalystService.png",
+                  fileName: "04_surfaceAnalystService_FGB"
                 }, {
                     name: "动态分段",
                     name_en: "dynamic segmentation",
@@ -1030,6 +1083,27 @@ var exampleConfig = {
                         thumbnail: 'l_pixiOverlay_taxi.png',
                         fileName: 'l_pixiOverlay_taxi'
                     }
+                ]
+            },
+            "FGB": {
+              name: 'FGB',
+              name_en: 'FGB',
+              version: '11.1.0',
+              content: [
+                  {
+                      name: 'FGB 全量加载（2500万点数据量）',
+                      name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                      version: '11.1.0',
+                      thumbnail: 'fgb_all_load.png',
+                      fileName: 'fgb_all_load'
+                  },
+                  {
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
+                  }
                 ]
             }
         }

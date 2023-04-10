@@ -8,8 +8,8 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  * @class RangeTheme3DLayer
  * @category  Visualization Theme
  * @classdesc 三维分段专题图。
- * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param  {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
+ * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param  {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
  * @param  {Array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
  * @param  {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @param  {number} [layerOptions.base] - 新增参数，数据分段线性增量。

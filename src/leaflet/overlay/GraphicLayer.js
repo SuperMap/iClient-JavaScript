@@ -39,7 +39,7 @@ const DEFAULT_ZOOM_OFFSET = {
  * @param {string}   [options.render='canvas'] - 指定使用的渲染器。可选值：'webgl'，'canvas'（ webgl 渲染目前只支持散点）。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度,。当 {@link Graphic} 的 style 参数传入设置了 fillOpacity 或 opacity 的 {@link CircleStyle} 或 {@link CloverStyle}，此参数无效。{@link Graphic} 的 style 传入 {@link ImageStyle} 后不支持此参数。
+ * @param {number} [options.opacity=0.8] - 要素透明度。当 {@link Graphic} 的 style 参数传入设置了 fillOpacity 或 opacity 的 {@link CircleStyle} 或 {@link CloverStyle}，此参数无效。{@link Graphic} 的 style 传入 {@link ImageStyle} 后不支持此参数。
  * @param {number} [options.radius=10] - 要素半径，单位为像素。当 {@link Graphic} 的 style 参数传入了 radius，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值，单位为像素。
@@ -153,8 +153,8 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getGraphicById
-     * @description 获取指定 id 的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id。
+     * @description 获取指定 ID 的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 ID。
      * @returns {Graphic} 返回匹配的 graphic。
      */
     getGraphicById(graphicId) {

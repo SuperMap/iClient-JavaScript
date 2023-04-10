@@ -597,7 +597,7 @@ export var ProcessingService = ServiceBase.extend({
      * @function ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
      * @param {string} id - 叠加分析的 ID。
-     * @returns {Object} 叠加分析的状态
+     * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState: function(id) {
         return this.overlayGeoJobs[id];

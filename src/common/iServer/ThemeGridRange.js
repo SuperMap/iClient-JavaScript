@@ -46,7 +46,7 @@ export class ThemeGridRange extends Theme {
         /**
          * @member {number} [ThemeGridRange.prototype.rangeParameter=0]
          * @description 分段参数。<br>
-         *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
+         *              当分段模式为等距离分段法，平方根分段，对数分段法，等计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
          *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。
          */
         this.rangeParameter = 0;

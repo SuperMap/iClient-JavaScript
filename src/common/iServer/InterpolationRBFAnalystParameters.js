@@ -18,7 +18,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @param {string} [options.zValueFieldName] - 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，此为必选参数。
  * @param {number} [options.smooth=0.1] - 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为0到1。
  * @param {number} [options.tension=40] - 张力系数，用于调整结果栅格数据表面的特性。
- * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置参与差值运算的点数。
+ * @param {number} [options.expectedCount=12] - 【固定点数查找】方式下，设置参与插值运算的点数。
  * @param {number} [options.searchRadius=0] - 【定长查找】方式下，设置参与运算点的查找范围。
  * @param {number} [options.maxPointCountForInterpolation=200] - 【块查找】方式下，设置最多参与插值的点数。
  * @param {number} [options.maxPointCountInNode=50] - 【块查找】方式下，设置单个块内最多参与运算点数。
@@ -76,7 +76,7 @@ export class InterpolationRBFAnalystParameters extends InterpolationAnalystParam
 
         /**
          * @member {number} [InterpolationRBFAnalystParameters.prototype.expectedCount=12]
-         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数。
          */
         this.expectedCount = 12;
 
@@ -117,8 +117,8 @@ export class InterpolationRBFAnalystParameters extends InterpolationAnalystParam
 
     /**
      * @function InterpolationRBFAnalystParameters.toObject
-     * @param {InterpolationRBFAnalystParameters} datasetInterpolationRBFAnalystParameters - 样条插值（径向基函数插值法）分析参数类
-     * @param {InterpolationRBFAnalystParameters} tempObj - 样条插值（径向基函数插值法）分析参数对象
+     * @param {InterpolationRBFAnalystParameters} datasetInterpolationRBFAnalystParameters - 样条插值（径向基函数插值法）分析参数类。
+     * @param {InterpolationRBFAnalystParameters} tempObj - 样条插值（径向基函数插值法）分析参数对象。
      * @description 将样条插值（径向基函数插值法）分析参数对象转换为 JSON 对象。
      * @returns JSON 对象。
      */

@@ -7,38 +7,38 @@ import {ServerType} from '../REST';
 /**
  * @class ServerInfo
  * @deprecatedclass SuperMap.ServerInfo
- * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等。
  * @category Security
- * @param {string} type - 服务器类型
+ * @param {string} type - 服务器类型。
  * @param {Object} options - 参数。
- * @param {string} options.server - 服务器地址,如：http://supermapiserver:8090/iserver
- * @param {string} [options.tokenServiceUrl] - 如：http://supermapiserver:8090/iserver/services/security/tokens.json
- * @param {string} [options.keyServiceUrl] - 如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ * @param {string} options.server - 服务器地址，如：http://supermapiserver:8090/iserver。
+ * @param {string} [options.tokenServiceUrl] - 如：http://supermapiserver:8090/iserver/services/security/tokens.json。
+ * @param {string} [options.keyServiceUrl] - 如：http://supermapiserver:8092/web/mycontent/keys/register.json。
  * @usage
  */
 export class ServerInfo {
     constructor(type, options) {
         /**
          * @member {ServerType} ServerInfo.prototype.type
-         * @description 服务器类型
+         * @description 服务器类型。
          */
         this.type = type;
 
         /**
          * @member {string} ServerInfo.prototype.server
-         * @description 服务器地址
+         * @description 服务器地址。
          */
         this.server = null;
 
         /**
          * @member {string} [ServerInfo.prototype.tokenServiceUrl]
-         * @description 如：http://supermapiserver:8090/iserver/services/security/tokens.json
+         * @description 如：http://supermapiserver:8090/iserver/services/security/tokens.json。
          */
         this.tokenServiceUrl = null;
 
         /**
          * @member {string} [ServerInfo.prototype.keyServiceUrl]
-         * @description 如：http://supermapiserver:8092/web/mycontent/keys/register.json
+         * @description 如：http://supermapiserver:8092/web/mycontent/keys/register.json。
          */
         this.keyServiceUrl = null;
 

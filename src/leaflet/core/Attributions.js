@@ -10,8 +10,7 @@
 
 let Attributions = {
 
-    Prefix: `<a href='https://leafletjs.com' title='A JS library for interactive maps'>Leaflet</a>
-                with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
+    Prefix: `Leaflet with <span>© <a href='https://iclient.supermap.io' title='SuperMap iClient' target='_blank'>SuperMap iClient</a></span>`,
 
     Common: {
         attribution: `Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`

@@ -3,8 +3,12 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
- import { getMeterPerMapUnit as MeterPerMapUnit } from '@supermap/iclient-common/util/MapCalculateUtil';
- 
+ import {
+  getMeterPerMapUnit as MeterPerMapUnit,
+  getZoomByResolution,
+  scalesToResolutions
+} from '@supermap/iclient-common/util/MapCalculateUtil';
+
  /**
  * @function toGeoJSON
  * @category BaseTypes Util
@@ -177,7 +181,7 @@ export var normalizeScale = function(scale) {
  /**
  * @function getResolutionFromScaleDpi
  * @category BaseTypes Util
- * @description 根据比例尺和 dpi 计算屏幕分辨率。
+ * @description 根据比例尺和 DPI 计算屏幕分辨率。
  * @param {number} scale - 比例尺。
  * @param {number} dpi - 图像分辨率，表示每英寸内的像素个数。
  * @param {string} [coordUnit] - 投影坐标系统的地图单位。
@@ -224,4 +228,7 @@ export var getResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
     }
     return -1;
 };
-
+export {
+  getZoomByResolution,
+  scalesToResolutions
+}

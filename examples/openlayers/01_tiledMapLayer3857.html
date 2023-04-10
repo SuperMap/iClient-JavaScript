@@ -3,36 +3,47 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title data-i18n="resources.title_tiledMapLayer3857"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
-</head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<script type="text/javascript">
-    var map, url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China";
-    map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: [0, 0],
-            zoom: 1,
-            projection: 'EPSG:3857',
-            multiWorld: true
-        })
-    });
-    var layer = new ol.layer.Tile({
-        source: new ol.source.TileSuperMapRest({
-            url: url,
-            wrapX: true
-        }),
-        projection: 'EPSG:3857'
-    });
-    map.addLayer(layer);
-    map.addControl(new ol.supermap.control.ScaleLine());
-</script>
-</body>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript">
+      var map,
+        url =
+          (window.isLocal ? window.server : 'https://iserver.supermap.io') +
+          '/iserver/services/map-china400/rest/maps/China';
+      // 方式一：1.调用 ol.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
+      ol.supermap.initMap(url, {
+        mapOptions: {
+          controls: ol.control
+            .defaults({ attributionOptions: { collapsed: false } })
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })])
+        }
+      });
+      /* 方式二：1.调用 ol.supermap.MapService，获取 SuperMap iServer 地图服务的地图信息
+                2.调用 ol.supermap.viewOptionsFromMapJSON 获取地图视图参数
+                3.调用 ol.Map 创建地图
+                4.调用 ol.layer.Tile 与 ol.source.TileSuperMapRest 创建底图
+      new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        const mapObj = serviceResult.result;
+        map = new ol.Map({
+          target: 'map',
+          controls: ol.control
+            .defaults({ attributionOptions: { collapsed: false } })
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+          view: new ol.View(ol.supermap.viewOptionsFromMapJSON(mapObj))
+        });
+        var layer = new ol.layer.Tile({
+          source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapObj, true))
+        });
+        map.addLayer(layer);
+        map.addControl(new ol.supermap.control.ScaleLine());
+      });
+      */
+    </script>
+  </body>
 </html>

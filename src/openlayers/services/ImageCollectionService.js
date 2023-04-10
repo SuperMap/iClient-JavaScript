@@ -8,7 +8,7 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
  * @class ImageCollectionService
  * @version 10.2.0
  * @constructs ImageCollectionService
- * @classdesc 影像集合服务类
+ * @classdesc 影像集合服务类。
  * @category  iServer Image
  * @extends {ServiceBase}
  * @example
@@ -31,7 +31,7 @@ export class ImageCollectionService extends ServiceBase {
 
     /**
      * @function ImageCollectionService.prototype.getLegend
-     * @param {Object} queryParams query参数
+     * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。不指定时，使用发布服务时所配置的风格。
      * @param {RequestCallback} callback - 回调函数。
      */

@@ -19,7 +19,7 @@ export class Geometry {
         this.CLASS_NAME = "SuperMap.Geometry";
         /**
          * @member {string} Geometry.prototype.id
-         * @description  几何对象的唯一标示符。
+         * @description  几何对象的唯一标识符。
          *
          */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");

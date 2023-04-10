@@ -226,7 +226,7 @@ export class GeoprocessingService extends ServiceBase {
      * @description 处理自动化工具异步执行的结果,支持结果过滤。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
-     * @param {string} filter - 输出异步结果的id。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      * @param {RequestCallback} callback 回调函数。
      */
     getResults(identifier, jobId, filter, callback) {

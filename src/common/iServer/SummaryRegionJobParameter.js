@@ -19,7 +19,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
  * @param {StatisticAnalystMode} [options.weightedStatisticModes] - 权重字段的统计模式。weightedSummaryFields 为 true 时必填。
  * @param {boolean} [options.sumShape=true] - 是否统计长度或面积。
- * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属字段统计。
+ * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
  * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
  * @param {number} [options.resolution=100] - 网格大小。
  * @param {number} [options.meshType=0] - 网格面汇总类型。
@@ -122,7 +122,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {OutputSetting} SummaryRegionJobParameter.prototype.output
-         * @description 输出参数设置类
+         * @description 输出参数设置类。
          */
         this.output = null;
 

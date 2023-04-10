@@ -44,7 +44,7 @@ export class VectorTileSuperMapRest extends VectorTile {
 
         options.attributions =
             options.attributions ||
-            "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "Tile Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
         if (['4', '5'].indexOf(Util.getOlVersion()) < 0) {
             options.tileSize = options.format instanceof MVT && options.style ? 512 : 256;
         }

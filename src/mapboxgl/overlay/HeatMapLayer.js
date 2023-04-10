@@ -23,7 +23,7 @@ import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
- * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
+ * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {mapboxgl.Evented}
  * @fires HeatMapLayer#featuresadded
  * @fires HeatMapLayer#changelayer
@@ -44,7 +44,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
         /**
          * @member {string} HeatMapLayer.prototype.id
-         * @description 热力图图层 id。
+         * @description 热力图图层 ID。
          */
         this.id = _options.id ? _options.id : CommonUtil.createUniqueID("HeatMapLayer_");
 
@@ -79,7 +79,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
         /**
          * @member {boolean} [HeatMapLayer.prototype.useGeoUnit=false]
-         * @description 使用地理单位，即默认热点半径默认使用像素单位。 当设置为 true 时，热点半径和图层地理坐标保持一致。
+         * @description 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
          */
         this.useGeoUnit = _options.useGeoUnit ? _options.useGeoUnit : false;
 
@@ -577,7 +577,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
      * @function HeatMapLayer.prototype.moveTo
      * @description 将图层移动到某个图层之前。
      * @param {string} layerID - 待插入的图层ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 id 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 id 为 layerID 的图层之后)。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 ID 为 layerID 的图层之后)。
      */
     moveTo(layerID, before) {
         var layer = document.getElementById(this.rootCanvas.id);

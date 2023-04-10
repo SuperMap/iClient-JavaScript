@@ -12,26 +12,26 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @category iPortal/Online Resources
  * @param {string} portalUrl - 服务地址。
  * @param {Object} resourceInfo - 可选参数。
- * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息
- * @param {string} [resourceInfo.bounds] - 资源的坐标范围
+ * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息。
+ * @param {string} [resourceInfo.bounds] - 资源的坐标范围。
  * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为EPSG 4326坐标系统后的地理范围。
- * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED
- * @param {Date} [resourceInfo.createTime] - 资源的创建时间
- * @param {string} [resourceInfo.description] - 资源描述
- * @param {number} [resourceInfo.dirId] - 资源所在的门户目录的id
+ * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED。
+ * @param {Date} [resourceInfo.createTime] - 资源的创建时间。
+ * @param {string} [resourceInfo.description] - 资源描述。
+ * @param {number} [resourceInfo.dirId] - 资源所在的门户目录的ID。
  * @param {number} [resourceInfo.epsgCode] - 门户资源基于的坐标系的EPSG值。
  * @param {number} [resourceInfo.heatLevel] - 记录资源的访问量或下载量。
- * @param {string} [resourceInfo.id] - 资源存储到ElasticSearch中的文档id
- * @param {string} [resourceInfo.name] - 资源名称
- * @param {number} [resourceInfo.personalDirId] - 资源所在的个人目录的id
- * @param {number} [resourceInfo.resourceId] - 资源表(maps,services等)里的id
+ * @param {string} [resourceInfo.id] - 资源存储到ElasticSearch中的文档ID。
+ * @param {string} [resourceInfo.name] - 资源名称。
+ * @param {number} [resourceInfo.personalDirId] - 资源所在的个人目录的ID。
+ * @param {number} [resourceInfo.resourceId] - 资源表(maps,services等)里的ID。
  * @param {string} [resourceInfo.resourceSubType] - 某类资源的具体子类型。
- * @param {ResourceType} [resourceInfo.resourceType] - 资源类型
- * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID
- * @param {Array} [resourceInfo.tags] - 资源的标签
- * @param {string} [resourceInfo.thumbnail] - 资源的缩略图
- * @param {Date} [resourceInfo.updateTime] - 资源的更新时间
- * @param {string} [resourceInfo.userName] - 搜索的关键词
+ * @param {ResourceType} [resourceInfo.resourceType] - 资源类型。
+ * @param {number} [resourceInfo.serviceRootUrlId] - 批量注册服务时，服务根地址的ID。
+ * @param {Array} [resourceInfo.tags] - 资源的标签。
+ * @param {string} [resourceInfo.thumbnail] - 资源的缩略图。
+ * @param {Date} [resourceInfo.updateTime] - 资源的更新时间。
+ * @param {string} [resourceInfo.userName] - 搜索的关键词。
  * @param {Object} [resourceInfo.sourceJSON] - 提供了门户项目返回的所有信息。
  * @extends {IPortalServiceBase}
  * @usage

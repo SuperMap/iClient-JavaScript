@@ -69,7 +69,7 @@ function build(nav,navOrder,level){
 }
 function buildLi(obj){
     ?>
-     <li class="item" data-name="<?js= obj.longname ?>">
+     <li class="item" file-name="<?js= obj.fileName ?>" data-name="<?js= obj.longname ?>">
             <span class="title" title="<?js= obj.longname ?>">
                 <?js= self.linkto(obj.longname, obj.longname) ?>
             </span>

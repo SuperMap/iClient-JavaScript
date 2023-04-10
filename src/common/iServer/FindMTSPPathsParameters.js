@@ -8,7 +8,7 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class FindMTSPPathsParameters
  * @deprecatedclass SuperMap.FindMTSPPathsParameters
  * @category iServer NetworkAnalyst MTSPPath
- * @classdesc 多旅行商分析参数类
+ * @classdesc 多旅行商分析参数类。
  * @param {Object} options - 参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.centers - 配送中心集合。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.nodes - 配送目标集合。

@@ -16,6 +16,7 @@ export { OutputSetting } from '@supermap/iclient-common/iServer/OutputSetting';
 export { MappingParameters } from '@supermap/iclient-common/iServer/MappingParameters';
 export { GeoCodingParameter } from '@supermap/iclient-common/iServer/GeoCodingParameter';
 export { GeoDecodingParameter } from '@supermap/iclient-common/iServer/GeoDecodingParameter';
+export { Util } from '@supermap/iclient-common/commontypes/Util';
 export * from './overlay';
 export * from './services';
 export { SuperMap } from './SuperMap';

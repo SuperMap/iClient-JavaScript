@@ -18,7 +18,7 @@ import Point from 'ol/geom/Point';
  * @browsernamespace ol.source
  * @classdesc 热力图层类。
  * @category Visualization HeatMap
- * @param {string} name - 图层名称
+ * @param {string} name - 图层名称。
  * @param {Object} options - 参数。
  * @param {ol.Map} options.map - openlayers 的 map 对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
@@ -35,7 +35,7 @@ export class HeatMap extends ImageCanvasSource {
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
@@ -357,7 +357,7 @@ export class HeatMap extends ImageCanvasSource {
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
      * @param {number} scaleRatio - 缩放倍数。
-     * @returns {Array.<number>} 返回数组形比例
+     * @returns {Array.<number>} 返回数组型比例。
      */
     scale(pixelP, center, scaleRatio) {
         var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
@@ -411,7 +411,7 @@ export class HeatMap extends ImageCanvasSource {
      * @function HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
      * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
-     * @returns {FeatureVector} 转换后的 iClient 要素
+     * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {

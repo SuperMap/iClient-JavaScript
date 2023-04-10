@@ -235,31 +235,18 @@ export class GraphicWebGLRenderer extends BaseObject {
             getColor(point) {
                 let defaultStyle = me._getLayerDefaultStyle();
                 let style = point && point.getStyle();
-                return style && style.getColor() || defaultStyle.color
+                return style && style.getColor && style.getColor() || defaultStyle.color
             },
             getRadius(point) {
                 let defaultStyle = me._getLayerDefaultStyle();
                 let style = point && point.getStyle();
-                return style && style.getRadius() || defaultStyle.radius
+                return style && style.getRadius && style.getRadius() || defaultStyle.radius
             },
             updateTriggers: {
                 getColor: [color],
                 getRadius: [radius]
             }
         };
-        let _self = this;
-        if (this.onClick) {
-            innerLayerOptions.onClick = function () {
-                _self._canvas.style.cursor = "pointer";
-                _self.onClick.apply(_self, arguments)
-            };
-        }
-        if (this.onHover) {
-            innerLayerOptions.onHover = function () {
-                _self._canvas.style.cursor = "pointer";
-                _self.onHover.apply(_self, arguments)
-            };
-        }
         me._renderLayer = new window.DeckGL.ScatterplotLayer(innerLayerOptions);
     }
 

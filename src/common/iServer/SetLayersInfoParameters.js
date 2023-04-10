@@ -25,7 +25,7 @@ export class SetLayersInfoParameters {
         this.isTempLayers = null;
         /**
          * @member {string} SetLayersInfoParameters.prototype.resourceID
-         * @description 临时图层资源 ID，
+         * @description 临时图层资源 ID。
          */
         this.resourceID = null;
 

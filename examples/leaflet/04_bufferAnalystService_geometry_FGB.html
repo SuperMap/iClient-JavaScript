@@ -1,0 +1,109 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_bufferAnalystServiceGeometry_FGB"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, bufferAnalystService, geoBufferAnalystParams, resultLayer,
+        queryService, queryByGeometryParameters, resultLayer1,
+        baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+    map = L.map('map', {
+        crs: new L.supermap.CRS.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+            origin: L.point(48.4, -55.58)
+        }),
+        center: [-3861.911472192499, 5100],
+        maxZoom: 18,
+        zoom: 2
+    });
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    geoBufferAnalystProcess();
+
+    function geoBufferAnalystProcess() {
+        var pointsList = [
+            [-4690.000, 2823.940],
+            [-4690.301, 3448.940],
+            [-3810.125, 3816.561],
+            [-3609.158, 3917.383],
+            [-3490.291, 3976.983],
+            [-4377.027, 4020.004],
+            [-4382.939, 4076.265],
+            [-4382.333, 4215.049],
+            [-4382.285, 4428.156],
+            [-4383.017, 4647.579],
+            [-4382.898, 4679.707],
+            [-4382.635, 4917.462],
+            [-4381.833, 5074.019],
+            [-4381.031, 5257.042],
+            [-4380.717, 5363.785],
+            [-4378.794, 5671.717],
+            [-4377.970, 5847.521],
+            [-4303.528, 5990.637],
+            [-4270.072, 6055.343],
+            [-4382.389, 6168.913],
+            [-4209.927, 6214.183],
+            [-4209.142, 6377.789],
+            [-4210.142, 6393.692],
+            [-4207.450, 6693.989],
+            [-4208.450, 6788.392],
+            [-4207.210, 6984.304],
+            [-4208.296, 7189.183],
+            [-4208.296, 7300.505],
+            [-4208.803, 7573.056],
+            [-4208.804, 7680.977],
+            [-4208.393, 7850.593],
+            [-4210.533, 8182.656],
+            [-4261.485, 8554.893]
+        ];
+        //在地图上添加所有离散gps信号点
+        for (var i = 0; i < pointsList.length; i++) {
+            L.circleMarker(pointsList[i], {color: 'black', radius: 2}).addTo(map);
+        }
+        //将离散gps信号点生成线路
+        var roadLine = L.polyline(pointsList, {color: 'red'}).addTo(map);
+        bufferAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        //对生成的线路进行缓冲区分析
+        geoBufferAnalystParams = new L.supermap.GeometryBufferAnalystParameters({
+            sourceGeometry: roadLine,
+            bufferSetting: new L.supermap.BufferSetting({
+                endType: L.supermap.BufferEndType.ROUND,
+                leftDistance: new L.supermap.BufferDistance({value: 250}),
+                rightDistance: new L.supermap.BufferDistance({value: 250}),
+                semicircleLineSegment: 10
+            })
+        });
+       
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+          var resultLayer = new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+              strategy: 'all'
+            }).addTo(map);
+        }, 'FGB');
+
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+            resultLayer = L.geoJSON(serviceResult.result.resultGeometry);
+            //查询出缓冲区内信号影响范围内的工厂
+            queryService = new L.supermap.QueryService(baseUrl);
+            queryByGeometryParameters = new L.supermap.QueryByGeometryParameters({
+                queryParams: [new L.supermap.FilterParameter({name: "Company@Changchun.2"})],
+                geometry: resultLayer,
+                spatialQueryMode: L.supermap.SpatialQueryMode.INTERSECT
+            });
+            queryService.queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+                var result = serviceResult.result;
+                resultLayer1 = L.geoJSON(result.recordsets[0].features).addTo(map);
+            });
+        });
+    }
+</script>
+</body>
+</html>

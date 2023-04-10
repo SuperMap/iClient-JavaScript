@@ -27,13 +27,13 @@
  * @param {boolean} [options.cacheEnabled=true] - 启用缓存。
  * @param {boolean} [options.clipRegionEnabled=false] - 是否启用地图裁剪。
  * @param {L.Path} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。如：prjCoordSys={"epsgCode":3857}。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
  * @param {string} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项。
  * @param {string} [options.tileversion] - 切片版本名称，cacheEnabled 为 true 时有效。如果没有设置 tileversion 参数，而且当前地图的切片集中存在多个版本，则默认使用最后一个更新版本。
  * @param {CRS} [options.crs] - 坐标系统类。
  * @param {string} [options.tileProxy] - 服务代理地址。
- * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片格式。
+ * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png"、"webp"、"bmp"、"jpg"、"gif" 等图片格式。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
@@ -54,7 +54,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         clipRegionEnabled: false,
         //地图显示裁剪的区域
         clipRegion: null,
-        //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}
+        //请求的地图的坐标参考系统。如：prjCoordSys={"epsgCode":3857}
         prjCoordSys: null,
         //地图对象在同一范围内时，是否重叠显示
         overlapDisplayed: false,
@@ -346,7 +346,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         if (options.overlapDisplayed === false) {
             params["overlapDisplayed"] = false;
             if (options.overlapDisplayedOptions) {
-                params["overlapDisplayedOptions"] = me.overlapDisplayedOptions.toString();
+                params["overlapDisplayedOptions"] = options.overlapDisplayedOptions;
             }
         } else {
             params["overlapDisplayed"] = true;

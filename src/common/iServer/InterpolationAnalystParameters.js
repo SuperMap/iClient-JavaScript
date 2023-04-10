@@ -42,7 +42,7 @@ export class InterpolationAnalystParameters {
         /**
          * @member {number} [InterpolationAnalystParameters.prototype.searchRadius=0]
          * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同。
-         * 计算某个位置的Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
+         * 计算某个位置的 Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
          * 该值需要根据待插值点数据的分布状况和点数据集范围进行设置。
          */
         this.searchRadius = 0;
@@ -111,7 +111,7 @@ export class InterpolationAnalystParameters {
 
         /**
          * @member {string} [InterpolationAnalystParameters.prototype.InterpolationAnalystType="dataset"]
-         * @description  插值分析类型。差值分析包括数据集插值分析和几何插值分析两类，
+         * @description  插值分析类型。插值分析包括数据集插值分析和几何插值分析两类，
          *               "dataset" 表示对数据集进行插值分析，"geometry" 表示对离散点数组进行插值分析。
          */
         this.InterpolationAnalystType = "dataset";

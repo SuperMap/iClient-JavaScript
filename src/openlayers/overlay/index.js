@@ -12,6 +12,7 @@ export {Turf} from './Turf';
 export {Unique} from './Unique';
 export {VectorTileSuperMapRest} from './VectorTileSuperMapRest';
 export {HeatMap} from './HeatMap';
+export {FGB} from './FGB';
 export * from './graphic/index';
 export * from './mapv/index';
 export * from './theme';

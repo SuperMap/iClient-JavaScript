@@ -61,7 +61,7 @@
         zoom: 11
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
         .setLngLat(map.getCenter())
         .setHTML(resources.text_iClient)

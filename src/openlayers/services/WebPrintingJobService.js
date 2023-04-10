@@ -61,7 +61,7 @@ export class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
-     * @param {string} jobId - Web 打印输入文档任务 Id。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
@@ -85,7 +85,7 @@ export class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
-     * @param {string} jobId - Web 打印输入文档任务 Id。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJobResult(jobId, callback) {

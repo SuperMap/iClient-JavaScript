@@ -74,7 +74,7 @@ export class Graph extends Theme {
          * @readonly
          * @member {Array.<number>} FeatureThemeGraph.prototype.chartBox
          * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
-         *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
+         *              下端 y坐标值、右端 x坐标值、上端 y 坐标值；[left, bottom, right, top]。
          */
         this.chartBox = null;
 

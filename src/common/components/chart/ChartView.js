@@ -13,12 +13,12 @@ import {
  * @class ChartView
  * @aliasclass Components.Chart
  * @deprecatedclass SuperMap.Components.Chart
- * @classdesc 图表组件
+ * @classdesc 图表组件。
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。
  * @param {string} options.type - 图表类型。
- * @param {ChartView.Datasets} options.datasets - 数据来源
+ * @param {ChartView.Datasets} options.datasets - 数据来源。
  * @param {Array.<Object>} options.chartOptions - 图表可选参数。
  * @param {Array.<Object>} options.chartOptions.xAxis - 图表X轴。
  * @param {string} options.chartOptions.xAxis.field - 图表X轴字段名。
@@ -30,11 +30,11 @@ import {
  * @usage
  */
 /**
- * @typedef {Object} ChartView.Datasets  - 数据来源
+ * @typedef {Object} ChartView.Datasets  - 数据来源。
  * @property {string} [type = 'iServer'] - 服务类型 iServer, iPortal。
  * @property {string} url - 服务地址。
- * @property {boolean} [withCredentials = false] - 设置请求是否带cookie
- * @property {FilterParameter} queryInfo - 查询条件
+ * @property {boolean} [withCredentials = false] - 设置请求是否带cookie。
+ * @property {FilterParameter} queryInfo - 查询条件。
  */
 export class ChartView {
 
@@ -52,7 +52,7 @@ export class ChartView {
 
     /**
      * @function ChartView.prototype.onAdd
-     * @description 创建图表之后成功回调
+     * @description 创建图表之后成功回调。
      * @param {function} addChart - 回调函数。
      */
     onAdd(addChart) {

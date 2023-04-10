@@ -41,7 +41,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            expect(testUrl).toBe(url + '/featureResults?fromIndex=1&toIndex=3&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
             expect(paramsObj.bufferDistance).toEqual(10);
@@ -148,7 +148,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            expect(testUrl).toBe(url + '/featureResults?fromIndex=1&toIndex=3&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.geometry).not.toBeFalsy();
             expect(paramsObj.geometry.points.length).toBe(1);
@@ -179,7 +179,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            expect(testUrl).toBe(url + '/featureResults?fromIndex=1&toIndex=3&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.geometry).not.toBeFalsy();
             expect(paramsObj.geometry.points.length).toBe(1);

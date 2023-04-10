@@ -24,7 +24,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @param {boolean} [options.transparent=true] - 瓦片是否透明。
  * @param {boolean} [options.antialias=false] - 是否反走样地图。
  * @param {boolean} [options.cacheEnabled=true] - 是否使用服务端的缓存，true 表示使用服务端的缓存。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时，系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
  * @param {ol.geom.Geometry} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
@@ -35,14 +35,14 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @param {boolean} [options.textOrientationFixed=false] - 文本朝向是否固定。
  * @param {boolean} [options.paintBackground=false] - 是否绘制地图背景。
  * @param {boolean} [options.maxVisibleTextSize] - 文本的最大可见尺寸，单位为像素。
- * @param {boolean} [options.maxVisibleVertex] - 最大几何对象可见节点数。 如果几何对象的节点数超过指定的个数，则超过的那部分节点不显示。
+ * @param {boolean} [options.maxVisibleVertex] - 最大几何对象可见节点数。如果几何对象的节点数超过指定的个数，则超过的那部分节点不显示。
  * @param {boolean} [options.minVisibleTextSize] - 文本的最小可见尺寸，单位为像素。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
  * @param {string} [options.tileProxy] - 代理地址。
  * @param {NDVIParameter|HillshadeParameter} [options.rasterfunction] - 栅格分析参数。
- * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @param {Function} [options.imageLoadFunction] - 加载图片的方法。默认为function(imageTile, src) {imageTile.getImage().src = src;};
- * @param {string} [options.ratio=1.5] - 	请求图片大小比例. 1 表示请求图片大小和地图视窗范围一致, 2 表示请求图片大小是地图视窗范围的2倍，以此类推。
+ * @param {string} [options.ratio=1.5] - 	请求图片大小比例。 1 表示请求图片大小和地图视窗范围一致，2 表示请求图片大小是地图视窗范围的2倍，以此类推。
  * @extends {ol.source.Image}
  * @usage
  */
@@ -67,7 +67,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
 
     options.attributions =
       options.attributions ||
-      "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>";
+      "Map Data <span>© SuperMap iServer</span> with © SuperMap iClient";
 
     options.format = options.format ? options.format : 'png';
     this._layerUrl = CommonUtil.urlPathAppend(options.url, 'image.' + options.format);
@@ -140,7 +140,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
       params['maxVisibleVertex'] = Math.round(+options.maxVisibleVertex);
     }
 
-    this._layerUrl = CommonUtil.urlAppend(encodeURI(this._layerUrl), CommonUtil.getParameterString(params));
+    this._layerUrl = CommonUtil.urlAppend(this._layerUrl, CommonUtil.getParameterString(params));
 
     //存储一个cacheEnabled
     this.cacheEnabled = cacheEnabled;

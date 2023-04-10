@@ -61,8 +61,7 @@ export class ThemeLabelText {
 
         /**
          *@member {LabelMixedTextStyle} [ThemeLabelText.prototype.uniformMixedStyle]
-         *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标
-         *              签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
+         *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
          *              ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
          */
         this.uniformMixedStyle =  null;

@@ -11,8 +11,8 @@ import { MapVRenderer } from './mapv/MapVRenderer';
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
- * @param {Mapv.DataSet} options.dataSet - mapv 的 dataSet 对象。
- * @param {Object} options.options - mapv 绘图风格配置信息。
+ * @param {Mapv.DataSet} options.dataSet - MapV 的 dataSet 对象。
+ * @param {Object} options.options - MapV 绘图风格配置信息。
  */
 export class MapVLayer extends SuperMap.Layer {
     constructor(name, options) {
@@ -20,13 +20,13 @@ export class MapVLayer extends SuperMap.Layer {
 
         /**
          * @member {Mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
-         * @description mapv 的 dataset 对象。
+         * @description MapV 的 dataset 对象。
          */
         this.dataSet = null;
 
         /**
          * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
-         * @description mapv 绘图风格配置信息。
+         * @description MapV 绘图风格配置信息。
          */
         this.options = null;
 
@@ -102,8 +102,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
-     * @param {Object} options - mapv 绘图风格配置信息。
+     * @param {Mapv.DataSet} dataSet - MapV 的 dataSet 对象。
+     * @param {Object} options - MapV 绘图风格配置信息。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -112,8 +112,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {Mapv.DataSet} dataSet - mapv 的 dataSet 对象。
-     * @param {Object} options - mapv 绘图风格配置信息。
+     * @param {Mapv.DataSet} dataSet - MapV 的 dataSet 对象。
+     * @param {Object} options - MapV 绘图风格配置信息。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -122,7 +122,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {Mapv.DataSet} mapv 的 dataSet 对象。
+     * @returns {Mapv.DataSet} MapV 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {
@@ -149,7 +149,7 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.renderer.clearData();

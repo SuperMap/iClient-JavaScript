@@ -15,7 +15,7 @@ import {UnicodeMarker, unicodeMarker} from './UnicodeMarker';
 import {UniqueThemeLayer, uniqueThemeLayer} from './UniqueThemeLayer';
 import {HeatMapLayer, heatMapLayer, HeatMapFeature, heatMapFeature} from './HeatMapLayer';
 import {VectorTileFormat} from './VectorTileFormat';
-
+import {FGBLayer, fgbLayer} from './FGBLayer';
 import {NormalRenderer} from './dataflow/NormalRenderer';
 import {MapvRenderer} from './dataflow/MapvRenderer';
 
@@ -61,7 +61,7 @@ export {UnicodeMarker, unicodeMarker};
 export {UniqueThemeLayer, uniqueThemeLayer};
 export {HeatMapLayer, heatMapLayer,HeatMapFeature,heatMapFeature};
 export {VectorTileFormat};
-
+export {FGBLayer, fgbLayer};
 export {NormalRenderer};
 export {MapvRenderer};
 

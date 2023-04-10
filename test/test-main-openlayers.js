@@ -12,6 +12,7 @@ import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/TileSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
 import './openlayers/mapping/ImageTileSuperMapRestSpec.js';
+import './openlayers/mapping/initMapSpec.js';
 
 /*openlayers -- overlay*/
 import './openlayers/overlay/DataFlowSpec.js';
@@ -34,6 +35,7 @@ import './openlayers/overlay/theme/ThemeSpec.js';
 import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
+import './openlayers/overlay/FGBSpec.js';
 
 // /**openlayers --services**/
 import './openlayers/services/BufferAnalysisSpec.js';

@@ -18,7 +18,7 @@ export class ShapeParameters {
          * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
          * 但 refOriginalPosition 可以改变图形的参考位置，例如： refOriginalPosition = [80, 80],
          * 图形圆的 style.x = 20, style.y = 20，那么圆在 canvas 中的实际位置是 [100, 100]。
-         * 图形（Shape） 的所有位置相关属性都是以 refOriginalPosition 为参考中心，
+         * 图形（Shape）的所有位置相关属性都是以 refOriginalPosition 为参考中心，
          * 也就是说图形的所有位置信息在 canvas 中都是以 refOriginalPosition 为参考的相对位置，只有
          * refOriginalPosition 的值为 [0, 0] 时，图形的位置信息才是 canvas 绝对位置。
          * 图形的位置信息通常有：style.pointList，style.x，style.y。
@@ -27,7 +27,7 @@ export class ShapeParameters {
 
         /**
          * @member {string} ShapeParameters.prototype.refDataID
-         * @description 图形所关联数据的 ID（<{@link FeatureVector}> 的 id）。
+         * @description 图形所关联数据的 ID（<{@link FeatureVector}> 的 ID）。
          */
         this.refDataID = null;
 

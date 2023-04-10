@@ -60,7 +60,7 @@ export class GenerateSpatialDataParameters {
 
         /**
          * @member {string} [GenerateSpatialDataParameters.prototype.measureField]
-         * @description 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义
+         * @description 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义。
          */
         this.measureField = null;
 

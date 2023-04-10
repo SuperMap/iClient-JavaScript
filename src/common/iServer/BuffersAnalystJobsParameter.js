@@ -37,7 +37,7 @@ export class BuffersAnalystJobsParameter {
 
         /**
          * @member {string} [BuffersAnalystJobsParameter.prototype.distance='15']
-         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
+         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段为空时，此参数有效。
          */
         this.distance = '';
 

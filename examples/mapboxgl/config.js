@@ -69,6 +69,13 @@ var exampleConfig = {
                         name_en: 'SQL query',
                         thumbnail: 'mb_mapQueryBySQL.png',
                         fileName: '01_mapQueryBySQL'
+                    },
+                    {
+                      name: 'SQL查询 (FGB)',
+                      name_en: 'SQL query (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'query_fgb_features.png',
+                      fileName: '01_mapQueryBySQL_FGB'
                     }
                 ]
             },
@@ -87,6 +94,13 @@ var exampleConfig = {
                         name_en: 'SQL query',
                         thumbnail: 'mb_getFeatureBySQL.png',
                         fileName: '02_getFeatureBySQL'
+                    },
+                    {
+                      name: 'SQL查询 (FGB)',
+                      name_en: 'SQL query (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'query_fgb_features.png',
+                      fileName: '02_getFeatureBySQL_FGB'
                     },
                     {
                         name: '范围查询',
@@ -209,10 +223,24 @@ var exampleConfig = {
                         fileName: '04_bufferAnalystService'
                     },
                     {
+                      name: '数据集缓冲区分析 (FGB)',
+                      name_en: 'buffer',
+                      version: '11.1.0',
+                      thumbnail: 'mb_bufferAnalystService.png',
+                      fileName: '04_bufferAnalystService_FGB'
+                    },
+                    {
                         name: '几何对象缓冲区分析',
                         name_en: 'buffer-geometry',
                         thumbnail: 'mb_bufferAnalystService_geometry.png',
                         fileName: '04_bufferAnalystService_geometry'
+                    },
+                    {
+                      name: '几何对象缓冲区分析 (FGB)',
+                      name_en: 'buffer-geometry',
+                      version: '11.1.0',
+                      thumbnail: 'mb_bufferAnalystService_geometry.png',
+                      fileName: '04_bufferAnalystService_geometry_FGB'
                     },
                     {
                         name: '数据集泰森多边形',
@@ -221,16 +249,37 @@ var exampleConfig = {
                         fileName: '04_thiessenAnalystService_datasets'
                     },
                     {
+                      name: '数据集泰森多边形 (FGB)',
+                      name_en: 'thiessen-dataset',
+                      version: '11.1.0',
+                      thumbnail: 'mb_thiessenAnalystService-datasets.png',
+                      fileName: '04_thiessenAnalystService_datasets_FGB'
+                    },
+                    {
                         name: '几何泰森多边形',
                         name_en: 'thiessen-geometry',
                         thumbnail: 'mb_thiessenAnalystService-geometry.png',
                         fileName: '04_thiessenAnalystService_geometry'
                     },
                     {
+                      name: '几何泰森多边形 (FGB)',
+                      name_en: 'thiessen-geometry',
+                      version: '11.1.0',
+                      thumbnail: 'mb_thiessenAnalystService-geometry.png',
+                      fileName: '04_thiessenAnalystService_geometry_FGB'
+                    },
+                    {
                         name: '叠加分析',
                         name_en: 'overlay',
                         thumbnail: 'mb_overlayAnalystService.png',
                         fileName: '04_overlayAnalystService'
+                    },
+                    {
+                      name: '叠加分析 (FGB)',
+                      name_en: 'overlay',
+                      version: '11.1.0',
+                      thumbnail: 'mb_overlayAnalystService.png',
+                      fileName: '04_overlayAnalystService_FGB'
                     },
                     {
                         name: '地形曲率计算',
@@ -413,7 +462,7 @@ var exampleConfig = {
                       fileName: "imageService"
                   }
               ]
-            },
+            }
         }
     },
     iPortal: {
@@ -1046,6 +1095,27 @@ var exampleConfig = {
                         thumbnail: 'graticule_3857.png',
                         fileName: 'graticuleLayer_3857'
                     }
+                ]
+            },
+            FGB: {
+              name: 'FGB',
+              name_en: 'FGB',
+              version: '11.0.1',
+              content: [
+                  {
+                      name: 'FGB 全量加载（2500万点数据量）',
+                      name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                      version: '11.1.0',
+                      thumbnail: 'fgb_all_load.png',
+                      fileName: 'fgb_all_load'
+                  },
+                  {
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
+                  }
                 ]
             }
         }

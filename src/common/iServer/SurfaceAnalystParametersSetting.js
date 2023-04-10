@@ -34,8 +34,8 @@ export class SurfaceAnalystParametersSetting {
         /**
          * @member {number} [SurfaceAnalystParametersSetting.prototype.datumValue=0]
          * @description 获取或设置表面分析中提取等值线、提取等值面的基准值。
-         * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。 例如，高程范围为 220 -1550 的 DEM 栅格数据，
-         * 如果设基准值为 0， 等值距为 50，则提取等值线时，以基准值 0 为起点，等值距 50 为间隔提取等值线，
+         * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。例如，高程范围为 220 -1550 的 DEM 栅格数据，
+         * 如果设基准值为 0，等值距为 50，则提取等值线时，以基准值 0 为起点，等值距 50 为间隔提取等值线，
          * 因为给定高程的最小值是 220，所以，在给定范围内提取等值线的最小高程是 250。
          * 提取等值线的结果是：最小等值线值为 250，最大等值线值为 1550。
          */
@@ -70,7 +70,7 @@ export class SurfaceAnalystParametersSetting {
          * @member {number} [SurfaceAnalystParametersSetting.prototype.smoothness=0]
          * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
          * 以为 0-5 为例，光滑度为 0 表示不进行光滑操作，值越大表示光滑度越高。
-         * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，
+         * 随着光滑度的增加，提取的等值线越光滑，当然光滑度越大，
          * 计算所需的时间和占用的内存也就越大。而且，当等值距较小时，
          * 光滑度太高会出现等值线相交的问题。
          */

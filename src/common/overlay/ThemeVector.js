@@ -34,7 +34,7 @@ import {LonLat} from '../commontypes/LonLat';
  * @param {SuperMap.Layer} layer - 此专题要素所在图层。
  * @param {Object} style - 样式。
  * @param {Object} options - 创建专题要素时的可选参数。
- * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离, 单位：像素。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离，单位：像素。
  * @param {boolean} [options.isHoverAble=true] - 图形是否可 hover。
  * @param {boolean} [options.isMultiHover=true] - 是否使用多图形高亮，isHoverAble 为 true 时生效。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。

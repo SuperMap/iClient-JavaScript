@@ -10,18 +10,18 @@ import { Util } from '../commontypes/Util';
  * @category BaseTypes Util
  * @param {Object} options - 参数。
  * @param {string} options.field 属性名称。
- * @param {Sortby.Direction} options.direction 排序规则， 默认升序。
+ * @param {Sortby.Direction} options.direction 排序规则，默认升序。
  * @usage
  */
 export default class Sortby {
   constructor(options) {
     /**
-     * @description 属性名称
+     * @description 属性名称。
      * @member {string} Sortby.prototype.field
      */
     this.field = undefined;
     /**
-     * @description 排序规则
+     * @description 排序规则。
      * @member {Sortby.Direction} Sortby.prototype.direction
      * @default Sortby.Direction.ASC
      */
@@ -69,6 +69,8 @@ export default class Sortby {
  * @type {string}
  */
 Sortby.Direction = {
+  /** 升序。 */
   ASC: 'ASC',
+  /** 降序。 */
   DESC: 'DESC'
 };

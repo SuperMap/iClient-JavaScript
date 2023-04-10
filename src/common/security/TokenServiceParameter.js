@@ -15,7 +15,7 @@ import {ClientType} from '../REST';
  * @param {ClientType} [options.clientType='ClientType.NONE'] - token 申请的客户端标识类型。
  * @param {string} [options.ip] - clientType=IP 时，此为必选参数。
  * @param {string} [options.referer] -clientType=Referer 时，此为必选参数。如果按照指定 URL 的方式申请令牌，则设置相应的 URL。
- * @param {number} [options.expiration=60] - 申请令牌的有效期,从发布令牌的时间开始计算,单位为分钟。
+ * @param {number} [options.expiration=60] - 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
  * @usage
  *
  */
@@ -64,8 +64,8 @@ export class TokenServiceParameter {
 
     /**
      * @function TokenServiceParameter.prototype.toJSON
-     * @description 将所有信息转成 JSON 字符串
-     * @returns {string} 参数的 JSON 字符串
+     * @description 将所有信息转成 JSON 字符串。
+     * @returns {string} 参数的 JSON 字符串。
      */
     toJSON() {
         return {

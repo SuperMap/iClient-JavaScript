@@ -63,6 +63,7 @@
     function addThemeUnique() {
         removeTheme();
         var themeService = new SuperMap.REST.ThemeService(url, {
+            isInTheSameDomain: true,
             eventListeners: {
                 "processCompleted": themeCompleted,
                 "processFailed": themeFailed

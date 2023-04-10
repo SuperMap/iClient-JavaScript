@@ -8,7 +8,7 @@ var ColorRender = new Color();
  * @name ColorsPickerUtil
  * @namespace
  * @category BaseTypes Util
- * @classdesc 色带选择器工具类  用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色
+ * @classdesc 色带选择器工具类。用于1、创建canvas对象，2、从几种颜色中获取一定数量的渐变色。
  * @usage
  * ```
  * // 浏览器
@@ -30,7 +30,7 @@ var ColorRender = new Color();
 export class ColorsPickerUtil  {
     /**
      * @function ColorsPickerUtil.createCanvas
-     * @description 创建DOM canvas
+     * @description 创建DOM canvas。
      * @param {number} height - canvas 高度。
      * @param {number} width - canvas 宽度。
      */
