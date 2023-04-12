@@ -562,6 +562,9 @@ var whiteLists = {
     'WebMap',
     'WKTFormat'
   ],
+  maplibregl:[
+    'L7Layer',
+  ],
   openlayers: [
     'AddressMatchService',
     'ChartService',

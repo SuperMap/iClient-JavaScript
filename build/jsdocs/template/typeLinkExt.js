@@ -1,6 +1,7 @@
 var olapi = "https://openlayers.org/en/v6.14.1/apidoc/";
 var lfapi = "https://leafletjs.com/reference.html";
 var mbglapi = "https://www.mapbox.com/mapbox-gl-js/api/";
+var mlbglapi = "https://maplibre.org/maplibre-gl-js-docs/api/";
 var mapv = "https://github.com/huiyan-fe/mapv/blob/master/src/";
 var classicapi="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap"
 var geojsonapi = "https://geojson.org";
@@ -80,6 +81,10 @@ var typeLinks = {
     "mapboxgl.LngLat": mbglapi + '#lnglat',
     "mapboxgl.Point": mbglapi + '#point',
     "mapboxgl.source": 'https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson',
+
+    //maplibregl
+    "maplibregl.Map": mlbglapi + '#map',
+
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',
     "Mapv.BaiduMapLayer": mapv + 'map/baidu-map/Layer.md',
