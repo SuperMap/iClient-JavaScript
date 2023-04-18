@@ -105,7 +105,7 @@
             inputScript(`${libsurl}/d3/7.8.2/d3.min.js`);
         }
         if (inArray(includes, 'd3-hexbin')) {
-            inputScript(`${libsurl}/d3/d3-hexbin.v0.2.min.js`);
+            inputScript(`${libsurl}/d3-hexbin/0.2.2/d3-hexbin.v0.2.min.js`);
         }
         if (inArray(includes, 'd3Layer')) {
             inputScript(`${libsurl}/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.js`);

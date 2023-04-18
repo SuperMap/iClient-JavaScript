@@ -275,10 +275,9 @@
 <div id="contentMe" style="width:100px;background-color:#f4f4f4;box-shadow:3px 3px 3px rgba(0,0,0,0.5);position:absolute;z-index:1000; top:20px;left:100px;display:none;text-align:center;">
     <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;">粘贴此处</a>
 </div>
-<script type="text/javascript" include="plottingPanel" src="../js/include-web.js"></script>
+<script type="text/javascript" include="plottingPanel,pako" src="../js/include-web.js"></script>
 <script type="text/javascript"  include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript" include="PlotPanel,StylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
-<script type="text/javascript" src="../../node_modules/pako/dist/pako_inflate.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
