@@ -2145,7 +2145,7 @@ export class WebMap extends Observable {
             return;
         }
         //因为itest上使用的https，iserver是http，所以要加上代理
-        getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, async function (result) {
+        getFeatureBySQL(requestUrl, [decodeURIComponent(dataSourceName)], serviceOptions, async function (result) {
             let features = that.parseGeoJsonData2Feature({
                 allDatas: {
                     features: result.result.features.features
