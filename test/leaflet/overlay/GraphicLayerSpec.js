@@ -11,8 +11,8 @@ const imgData =
 var url = 'http://supermapiserver:8090/iserver/services/map-world/rest/maps/World';
 describe('leaflet_GraphicLayer', () => {
     var originalTimeout;
+    var testDiv, map;
     function createMap() {
-        var testDiv, map;
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
         testDiv.style.styleFloat = 'left';
@@ -40,6 +40,14 @@ describe('leaflet_GraphicLayer', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
+        if(map){
+            map.remove();
+            map = null;
+        }
+        if(testDiv){
+            window.document.body.removeChild(testDiv);
+            testDiv = null;
+        }
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     it('initialize', (done) => {
@@ -80,8 +88,6 @@ describe('leaflet_GraphicLayer', () => {
             layer.on('remove', () => {
                 var requestAnimId = map.getRenderer(layer)._redrawRequest;
                 requestAnimId != null && L.Util.cancelAnimFrame(requestAnimId);
-                map.remove();
-                window.document.body.removeChild(testDiv);
                 done();
             });
             layer.remove();
@@ -109,8 +115,6 @@ describe('leaflet_GraphicLayer', () => {
                 layer.on('remove', () => {
                     var requestAnimId = map.getRenderer(layer)._redrawRequest;
                     requestAnimId != null && L.Util.cancelAnimFrame(requestAnimId);
-                    map.remove();
-                    window.document.body.removeChild(testDiv);
                     done();
                 });
                 layer.remove();
@@ -163,8 +167,6 @@ describe('leaflet_GraphicLayer', () => {
                 layer.on('remove', () => {
                     var requestAnimId = map.getRenderer(layer)._redrawRequest;
                     requestAnimId != null && L.Util.cancelAnimFrame(requestAnimId);
-                    map.remove();
-                    window.document.body.removeChild(testDiv);
                     done();
                 });
                 layer.remove();
@@ -205,9 +207,10 @@ describe('leaflet_GraphicLayer', () => {
 
                 const graphic1 = layer.getGraphicById(1);
                 expect(graphic1.getId()).toEqual(1);
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
@@ -218,9 +221,10 @@ describe('leaflet_GraphicLayer', () => {
                 const graphic = layer.getGraphicsByAttribute('name', 'graphic_1');
                 expect(graphic).not.toBeNull();
                 expect(graphic[0].getAttributes().name).toBe('graphic_1');
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
@@ -242,9 +246,10 @@ describe('leaflet_GraphicLayer', () => {
                 //默认
                 layer.removeGraphics();
                 expect(layer.graphics.length).toEqual(0);
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
@@ -257,9 +262,10 @@ describe('leaflet_GraphicLayer', () => {
                 expect(state).not.toBeNull();
                 expect(layer.getRenderer()).not.toBeNull();
                 expect(state.color).toBe('#3388ff');
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
@@ -273,9 +279,10 @@ describe('leaflet_GraphicLayer', () => {
                 expect(layer.options.color).toEqual([0, 0, 0, 255]);
                 layer.setStyle({ color: 'blue' });
                 expect(layer.options.color).toEqual('blue');
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
@@ -286,9 +293,10 @@ describe('leaflet_GraphicLayer', () => {
             setTimeout(() => {
                 layer.addGraphics(graphics);
                 expect(layer.graphics.length).toEqual(10);
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
@@ -309,25 +317,30 @@ describe('leaflet_GraphicLayer', () => {
                 }
                 layer.setGraphics(graphics);
                 expect(layer.graphics.length).toEqual(5);
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
 
         //特定条件下，期望的函数被调用、
-        it('_moveEnd_expect_ICL_1042', () => {
+        it('_moveEnd_expect_ICL_1042', (done) => {
             let { map, testDiv } = createMap();
 
             spyOn(Detector, 'supportWebGL2').and.callFake(() => {
                 return true;
             });
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
-            spyOn(layer, '_update');
-            layer._moveEnd();
-            expect(layer._update).toHaveBeenCalled();
-            map.remove();
-            window.document.body.removeChild(testDiv);
+            setTimeout(() => {
+                spyOn(layer, '_update');
+                layer._moveEnd();
+                expect(layer._update).toHaveBeenCalled();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
+            }, 0)
         });
         it('CRS_4326_ICL_1134', (done) => {
             let { map, testDiv } = createMap();
@@ -341,9 +354,10 @@ describe('leaflet_GraphicLayer', () => {
                 expect(webglRenderLayer).not.toBeNull();
                 expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
                 expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
         it('CRS_4326_ICL_1349', (done) => {
@@ -359,9 +373,10 @@ describe('leaflet_GraphicLayer', () => {
                 expect(webglRenderLayer).not.toBeNull();
                 expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT);
                 expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeFalse();
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
         it('CRS_4326_ICL_1349', (done) => {
@@ -377,9 +392,10 @@ describe('leaflet_GraphicLayer', () => {
                 expect(webglRenderLayer).not.toBeNull();
                 expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
                 expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
-                map.remove();
-                window.document.body.removeChild(testDiv);
-                done();
+                layer.on('remove', () => {
+                    done();
+                })
+                layer.remove()
             }, 0);
         });
     });
