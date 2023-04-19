@@ -342,6 +342,118 @@ export class Util {
         return !isNaN(mdata);
     }
     /**
+     * @function ol.supermap.Util.getFeatureBySQLWithConcurrent
+     * @description 分批请求要素
+     * @param {url} url 
+     * @param {string} datasetNames 
+     * @param {function} processCompleted 
+     * @param {function} processFailed 
+     * @param {object} serviceOptions 
+     * @param {string} targetEpsgCode 
+     * @param {number} restDataSingleRequestCount 
+     */
+    static getFeatureBySQLWithConcurrent(
+        url,
+        datasetNames,
+        processCompleted,
+        processFailed,
+        serviceOptions,
+        targetEpsgCode,
+        restDataSingleRequestCount
+    ) {
+        let me = this;
+        let queryParameter = new FilterParameter({
+            name: datasetNames.join().replace(':', '@')
+        });
+
+        let maxFeatures = restDataSingleRequestCount || 1000, // 每次请求数据量
+            firstResult, // 存储每次请求的结果
+            allRequest = []; // 存储发出的请求Promise
+
+        // 发送请求获取获取总数据量
+        this._getReasult(url, queryParameter, datasetNames, 0, 1, 1, serviceOptions, targetEpsgCode).then((result) => {
+            firstResult = result;
+            let totalCount = result.result.totalCount;
+
+            if (totalCount > 1) {
+                // 开始并发请求
+                for (let i = 1; i < totalCount;) {
+                    allRequest.push(
+                        me._getReasult(
+                            url,
+                            queryParameter,
+                            datasetNames,
+                            i,
+                            i + maxFeatures,
+                            maxFeatures,
+                            serviceOptions,
+                            targetEpsgCode
+                        )
+                    );
+                    i += maxFeatures;
+                }
+                // 所有请求结束
+                Promise.all(allRequest).then((results) => {
+                    // 结果合并
+                    results.forEach((result) => {
+                        if (result.type === 'processCompleted' && result.result.features && result.result.features.features) {
+                            result.result.features.features.forEach((feature) => {
+                                firstResult.result.features.features.push(feature);
+                            });
+                        } else {
+                            // todo 提示 部分数据请求失败
+                            firstResult.someRequestFailed = true;
+                        }
+                    });
+                    processCompleted(firstResult);
+                }).catch((error) => {
+                    processFailed(error);
+                });
+            } else {
+                processCompleted(result);
+            }
+        }).catch((error) => {
+            processFailed(error);
+        });
+    }
+
+    static _getReasult(
+        url,
+        queryParameter,
+        datasetNames,
+        fromIndex,
+        toIndex,
+        maxFeatures,
+        serviceOptions,
+        targetEpsgCode
+    ) {
+        return new Promise((resolve, reject) => {
+            new FeatureService(url, serviceOptions).getFeaturesBySQL(
+                this._getFeaturesBySQLParameters(queryParameter, datasetNames, fromIndex, toIndex, maxFeatures, targetEpsgCode),
+                (result) => {
+                    let featuresResult = result.result;
+                    //[bug] wt任务编号: 5223
+                    if (result.type === 'processCompleted' && featuresResult && featuresResult.features) {
+                        resolve(result);
+                    } else {
+                        reject(result);
+                    }
+                }
+            );
+        });
+    }
+    static _getFeaturesBySQLParameters(queryParameter, datasetNames, fromIndex, toIndex, maxFeatures, targetEpsgCode) {
+        return new GetFeaturesBySQLParameters({
+            queryParameter,
+            datasetNames,
+            fromIndex,
+            toIndex,
+            maxFeatures,
+            returnContent: true,
+            targetEpsgCode
+        });
+    }
+    /**
      * @function ol.supermap.Util.getFeatureBySQL
      * @description 获取feature
      * @param {string} url - 获取feature的请求地址
@@ -352,27 +464,14 @@ export class Util {
      * @param {string | number} targetEpsgCode - 动态投影的目标坐标系对应的 EPSG Code
      */
     static getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode) {
-        let getFeatureParam = new FilterParameter({
-                name: datasetNames.join().replace(':', '@')
-                // attributeFilter: 'SMID > 0'  // shp第三方发布的数据没有SMID字段，http://yt.ispeco.com:8099/issue/DV-131
-            }),
-            getFeatureBySQLParams = new GetFeaturesBySQLParameters({
-                queryParameter: getFeatureParam,
-                datasetNames: datasetNames,
-                fromIndex: 0,
-                toIndex: 100000,
-                maxFeatures: 100000,
-                returnContent: true,
-                targetEpsgCode
-            }),
-            callback = (serviceResult) => {
-                if (serviceResult.type === 'processCompleted') {
-                    processCompleted && processCompleted(serviceResult);
-                } else {
-                    processFaild && processFaild(serviceResult);
-                }
-            };
-        new FeatureService(url, serviceOptions).getFeaturesBySQL(getFeatureBySQLParams, callback);
+        this.getFeatureBySQLWithConcurrent(
+            url,
+            datasetNames,
+            processCompleted,
+            processFaild,
+            serviceOptions,
+            targetEpsgCode
+        );
     }
 
     static queryFeatureBySQL(
