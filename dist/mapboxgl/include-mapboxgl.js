@@ -64,8 +64,8 @@
       inputScript(`${libsurl}/turf/6.5.0/turf.min.js`);
     }
     if (inArray(includes, 'draw')) {
-      inputCSS(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.css`);
-      inputScript(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.js`);
+      inputCSS(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.css`);
+      inputScript(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.js`);
     }
 
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {

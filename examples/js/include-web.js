@@ -82,7 +82,7 @@
         }
         if (inArray(includes, 'moment')) {
             inputScript(`${libsurl}/moment/2.29.4/moment.min.js`);
-            inputScript(`${libsurl}/moment/2.29.4/zh-cn.js`);
+            inputScript(`${libsurl}/moment/2.29.4/zh-cn.min.js`);
         }
         if (inArray(includes, 'bootstrap-datetimepicker')) {
             inputCSS(`${libsurl}/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css`);
