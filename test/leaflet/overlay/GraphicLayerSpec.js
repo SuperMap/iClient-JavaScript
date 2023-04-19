@@ -167,9 +167,13 @@ describe('leaflet_GraphicLayer', () => {
                 layer.on('remove', () => {
                     var requestAnimId = map.getRenderer(layer)._redrawRequest;
                     requestAnimId != null && L.Util.cancelAnimFrame(requestAnimId);
-                    done();
+                    layer1.on('remove', () => {
+                        done();
+                    });
+                    layer1.remove();
                 });
                 layer.remove();
+                
             });
             const g = layer.graphics[0].getLatLng();
             const boundingClientRect = map.getContainer().getBoundingClientRect();
