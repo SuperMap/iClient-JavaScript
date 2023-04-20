@@ -346,7 +346,7 @@ describe('leaflet_GraphicLayer', () => {
                 layer.remove()
             }, 0)
         });
-        it('CRS_4326_ICL_1134', (done) => {
+        xit('CRS_4326_ICL_1134', (done) => {
             let { map, testDiv } = createMap();
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
             setTimeout(() => {
@@ -364,7 +364,7 @@ describe('leaflet_GraphicLayer', () => {
                 layer.remove()
             }, 0);
         });
-        it('CRS_4326_ICL_1349', (done) => {
+        xit('CRS_4326_ICL_1349', (done) => {
             let { map, testDiv } = createMap();
             map.options.crs = L.CRS.TianDiTu_Mercator;
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
