@@ -200,6 +200,16 @@ describe('leaflet_GraphicLayer', () => {
                 graphics[j].setAttributes({ name: 'graphic_' + j });
             }
         });
+        afterEach(() => {
+            if(map){
+                map.remove();
+                map = null;
+            }
+            if(testDiv){
+                window.document.body.removeChild(testDiv);
+                testDiv = null;
+            }
+        });
 
         it('getGraphicBy add getGraphicById', (done) => {
             let { map, testDiv } = createMap();
@@ -346,7 +356,7 @@ describe('leaflet_GraphicLayer', () => {
                 layer.remove()
             }, 0)
         });
-        xit('CRS_4326_ICL_1134', (done) => {
+        it('CRS_4326_ICL_1134', (done) => {
             let { map, testDiv } = createMap();
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
             setTimeout(() => {
@@ -364,7 +374,7 @@ describe('leaflet_GraphicLayer', () => {
                 layer.remove()
             }, 0);
         });
-        xit('CRS_4326_ICL_1349', (done) => {
+        it('CRS_4326_ICL_1349', (done) => {
             let { map, testDiv } = createMap();
             map.options.crs = L.CRS.TianDiTu_Mercator;
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
@@ -383,7 +393,7 @@ describe('leaflet_GraphicLayer', () => {
                 layer.remove()
             }, 0);
         });
-        xit('CRS_4326_ICL_1349', (done) => {
+        it('CRS_4326_ICL_1349', (done) => {
             let { map, testDiv } = createMap();
             map.options.crs = L.CRS.TianDiTu_WGS84;
             let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
