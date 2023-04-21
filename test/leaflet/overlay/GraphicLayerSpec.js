@@ -12,6 +12,23 @@ var url = 'http://supermapiserver:8090/iserver/services/map-world/rest/maps/Worl
 describe('leaflet_GraphicLayer', () => {
     var originalTimeout;
     var testDiv, map;
+    let graphics = [];
+    const coors = [
+      [-35.16, 38.05],
+      [-36.16, 39.05],
+      [-36.16, 40.05],
+      [-37.16, 40.05],
+      [-38.16, 39.05]
+    ];
+    beforeAll(() => {
+      for (let j = 0; j < coors.length; ++j) {
+        graphics[j] = graphic({
+          latLng: L.latLng(coors[j][0], coors[j][1])
+        });
+        graphics[j].setId(j);
+        graphics[j].setAttributes({ name: 'graphic_' + j });
+      }
+    });
     function createMap() {
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
@@ -181,17 +198,117 @@ describe('leaflet_GraphicLayer', () => {
             map._renderer._onClick({ type: 'click', clientX: layerPoint.x + boundingClientRect.left, clientY: layerPoint.y+ boundingClientRect.top });
         }, 0);
     });
+    it('getGraphicBy add getGraphicById', (done) => {
+        let { map, testDiv } = createMap();
+        let layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            const graphic = layer.getGraphicBy('id', 1);
+            expect(graphic).not.toBeNull();
+            expect(graphic.getId()).toEqual(1);
 
-    describe('GraphicLayer_graphic', () => {
-        let graphics = [];
-        const coors = [
-            [-35.16, 38.05],
-            [-36.16, 39.05],
-            [-36.16, 40.05],
-            [-37.16, 40.05],
-            [-38.16, 39.05]
-        ];
-        beforeAll(() => {
+            const graphic1 = layer.getGraphicById(1);
+            expect(graphic1.getId()).toEqual(1);
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    it('getGraphicsByAttribute', (done) => {
+        let { map, testDiv } = createMap();
+        let layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            const graphic = layer.getGraphicsByAttribute('name', 'graphic_1');
+            expect(graphic).not.toBeNull();
+            expect(graphic[0].getAttributes().name).toBe('graphic_1');
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    it('removeGraphics', (done) => {
+        let { map, testDiv } = createMap();
+        let layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            //删除单个
+            let deleteGraphic = graphics[0];
+            expect(layer.graphics.length).toEqual(5);
+            layer.removeGraphics(deleteGraphic);
+            expect(layer.graphics.length).toEqual(4);
+
+            //多个
+            deleteGraphic = [graphics[1], graphics[2]];
+            layer.removeGraphics(deleteGraphic);
+            expect(layer.graphics.length).toEqual(2);
+
+            //默认
+            layer.removeGraphics();
+            expect(layer.graphics.length).toEqual(0);
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    it('getState,getRenderer', (done) => {
+        let { map, testDiv } = createMap();
+
+        let layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            const state = layer.getState();
+            expect(state).not.toBeNull();
+            expect(layer.getRenderer()).not.toBeNull();
+            expect(state.color).toBe('#3388ff');
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    it('setStyle', (done) => {
+        let { map, testDiv } = createMap();
+        let layer = graphicLayer(graphics, {
+            render: 'canvas',
+            color: [0, 0, 0, 255]
+        }).addTo(map);
+        setTimeout(() => {
+            expect(layer.options.color).toEqual([0, 0, 0, 255]);
+            layer.setStyle({ color: 'blue' });
+            expect(layer.options.color).toEqual('blue');
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    it('addGraphics', (done) => {
+        let { map, testDiv } = createMap();
+
+        let layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            layer.addGraphics(graphics);
+            expect(layer.graphics.length).toEqual(10);
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    it('setGraphics', (done) => {
+        let { map, testDiv } = createMap();
+
+        let layer = graphicLayer(graphics).addTo(map);
+        setTimeout(() => {
+            layer.clear();
+            expect(layer.graphics.length).toEqual(0);
+            let graphics = [];
             for (let j = 0; j < coors.length; ++j) {
                 graphics[j] = graphic({
                     latLng: L.latLng(coors[j][0], coors[j][1])
@@ -199,218 +316,87 @@ describe('leaflet_GraphicLayer', () => {
                 graphics[j].setId(j);
                 graphics[j].setAttributes({ name: 'graphic_' + j });
             }
+            layer.setGraphics(graphics);
+            expect(layer.graphics.length).toEqual(5);
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+
+    //特定条件下，期望的函数被调用、
+    it('_moveEnd_expect_ICL_1042', (done) => {
+        let { map, testDiv } = createMap();
+
+        spyOn(Detector, 'supportWebGL2').and.callFake(() => {
+            return true;
         });
-        afterEach(() => {
-            if(map){
-                map.remove();
-                map = null;
-            }
-            if(testDiv){
-                window.document.body.removeChild(testDiv);
-                testDiv = null;
-            }
-        });
-
-        it('getGraphicBy add getGraphicById', (done) => {
-            let { map, testDiv } = createMap();
-            let layer = graphicLayer(graphics).addTo(map);
-            setTimeout(() => {
-                const graphic = layer.getGraphicBy('id', 1);
-                expect(graphic).not.toBeNull();
-                expect(graphic.getId()).toEqual(1);
-
-                const graphic1 = layer.getGraphicById(1);
-                expect(graphic1.getId()).toEqual(1);
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        it('getGraphicsByAttribute', (done) => {
-            let { map, testDiv } = createMap();
-            let layer = graphicLayer(graphics).addTo(map);
-            setTimeout(() => {
-                const graphic = layer.getGraphicsByAttribute('name', 'graphic_1');
-                expect(graphic).not.toBeNull();
-                expect(graphic[0].getAttributes().name).toBe('graphic_1');
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        it('removeGraphics', (done) => {
-            let { map, testDiv } = createMap();
-            let layer = graphicLayer(graphics).addTo(map);
-            setTimeout(() => {
-                //删除单个
-                let deleteGraphic = graphics[0];
-                expect(layer.graphics.length).toEqual(5);
-                layer.removeGraphics(deleteGraphic);
-                expect(layer.graphics.length).toEqual(4);
-
-                //多个
-                deleteGraphic = [graphics[1], graphics[2]];
-                layer.removeGraphics(deleteGraphic);
-                expect(layer.graphics.length).toEqual(2);
-
-                //默认
-                layer.removeGraphics();
-                expect(layer.graphics.length).toEqual(0);
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        it('getState,getRenderer', (done) => {
-            let { map, testDiv } = createMap();
-
-            let layer = graphicLayer(graphics).addTo(map);
-            setTimeout(() => {
-                const state = layer.getState();
-                expect(state).not.toBeNull();
-                expect(layer.getRenderer()).not.toBeNull();
-                expect(state.color).toBe('#3388ff');
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        it('setStyle', (done) => {
-            let { map, testDiv } = createMap();
-            let layer = graphicLayer(graphics, {
-                render: 'canvas',
-                color: [0, 0, 0, 255]
-            }).addTo(map);
-            setTimeout(() => {
-                expect(layer.options.color).toEqual([0, 0, 0, 255]);
-                layer.setStyle({ color: 'blue' });
-                expect(layer.options.color).toEqual('blue');
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        it('addGraphics', (done) => {
-            let { map, testDiv } = createMap();
-
-            let layer = graphicLayer(graphics).addTo(map);
-            setTimeout(() => {
-                layer.addGraphics(graphics);
-                expect(layer.graphics.length).toEqual(10);
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        it('setGraphics', (done) => {
-            let { map, testDiv } = createMap();
-
-            let layer = graphicLayer(graphics).addTo(map);
-            setTimeout(() => {
-                layer.clear();
-                expect(layer.graphics.length).toEqual(0);
-                let graphics = [];
-                for (let j = 0; j < coors.length; ++j) {
-                    graphics[j] = graphic({
-                        latLng: L.latLng(coors[j][0], coors[j][1])
-                    });
-                    graphics[j].setId(j);
-                    graphics[j].setAttributes({ name: 'graphic_' + j });
-                }
-                layer.setGraphics(graphics);
-                expect(layer.graphics.length).toEqual(5);
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-
-        //特定条件下，期望的函数被调用、
-        it('_moveEnd_expect_ICL_1042', (done) => {
-            let { map, testDiv } = createMap();
-
-            spyOn(Detector, 'supportWebGL2').and.callFake(() => {
-                return true;
-            });
-            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
-            setTimeout(() => {
-                spyOn(layer, '_update');
-                layer._moveEnd();
-                expect(layer._update).toHaveBeenCalled();
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0)
-        });
-        it('CRS_4326_ICL_1134', (done) => {
-            let { map, testDiv } = createMap();
-            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
-            setTimeout(() => {
-                expect(layer._crs).toEqual(map.options.crs);
-                const state = layer.getState();
-                expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
-                expect(state.zoom).toEqual(map.getZoom()+1);
-                const webglRenderLayer = layer._renderer._renderLayer;
-                expect(webglRenderLayer).not.toBeNull();
-                expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
-                expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-        it('CRS_4326_ICL_1349', (done) => {
-            let { map, testDiv } = createMap();
-            map.options.crs = L.CRS.TianDiTu_Mercator;
-            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
-            setTimeout(() => {
-                expect(layer._crs).toEqual(map.options.crs);
-                const state = layer.getState();
-                expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
-                expect(state.zoom).toEqual(map.getZoom()+1);
-                const webglRenderLayer = layer._renderer._renderLayer;
-                expect(webglRenderLayer).not.toBeNull();
-                expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT);
-                expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeFalse();
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
-        it('CRS_4326_ICL_1349', (done) => {
-            let { map, testDiv } = createMap();
-            map.options.crs = L.CRS.TianDiTu_WGS84;
-            let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
-            setTimeout(() => {
-                expect(layer._crs).toEqual(map.options.crs);
-                const state = layer.getState();
-                expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
-                expect(state.zoom).toEqual(map.getZoom()+1);
-                const webglRenderLayer = layer._renderer._renderLayer;
-                expect(webglRenderLayer).not.toBeNull();
-                expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
-                expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
-                layer.on('remove', () => {
-                    done();
-                })
-                layer.remove()
-            }, 0);
-        });
+        let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+        setTimeout(() => {
+            spyOn(layer, '_update');
+            layer._moveEnd();
+            expect(layer._update).toHaveBeenCalled();
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0)
+    });
+    it('CRS_4326_ICL_1134', (done) => {
+        let { map, testDiv } = createMap();
+        let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+        setTimeout(() => {
+            expect(layer._crs).toEqual(map.options.crs);
+            const state = layer.getState();
+            expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
+            expect(state.zoom).toEqual(map.getZoom()+1);
+            const webglRenderLayer = layer._renderer._renderLayer;
+            expect(webglRenderLayer).not.toBeNull();
+            expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
+            expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+    it('Mercator_ICL_1349', (done) => {
+        let { map, testDiv } = createMap();
+        map.options.crs = L.CRS.TianDiTu_Mercator;
+        let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+        setTimeout(() => {
+            expect(layer._crs).toEqual(map.options.crs);
+            const state = layer.getState();
+            expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
+            expect(state.zoom).toEqual(map.getZoom()+1);
+            const webglRenderLayer = layer._renderer._renderLayer;
+            expect(webglRenderLayer).not.toBeNull();
+            expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT);
+            expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeFalse();
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
+    });
+    it('CRS_4326_ICL_1349', (done) => {
+        let { map, testDiv } = createMap();
+        map.options.crs = L.CRS.TianDiTu_WGS84;
+        let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
+        setTimeout(() => {
+            expect(layer._crs).toEqual(map.options.crs);
+            const state = layer.getState();
+            expect(state.maxZoom).toEqual(map.getMaxZoom()+1);
+            expect(state.zoom).toEqual(map.getZoom()+1);
+            const webglRenderLayer = layer._renderer._renderLayer;
+            expect(webglRenderLayer).not.toBeNull();
+            expect(webglRenderLayer.props.coordinateSystem).toEqual(window.DeckGL.COORDINATE_SYSTEM.LNGLAT_OFFSETS);
+            expect(webglRenderLayer.props.isGeographicCoordinateSystem).toBeTrue();
+            layer.on('remove', () => {
+                done();
+            })
+            layer.remove()
+        }, 0);
     });
 });

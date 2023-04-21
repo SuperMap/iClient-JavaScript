@@ -16,13 +16,13 @@ export function mockCreateTile() {
     };
 }
 export function mockInitImage() {
-    spyOn(L.ImageOverlay.prototype, '_initImage').and.callFake(function () {
+    L.ImageOverlay.prototype._initImage=function () {
         this._image = L.DomUtil.create('img');
         var me = this;
         setTimeout(function () {
             me.fire('load', {});
         }, 100);
-    });
+    };
 }
 export function mockHeatLayer() {
     L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({

@@ -71,22 +71,22 @@ module.exports = function (config) {
 
       /***leaflet的源码***/
       { pattern: './libs/workers/TurfWorkerForTest.js', included: false },
-      { pattern: '../node_modules/leaflet/dist/leaflet.css', included: false },
-      { pattern: '../src/leaflet/**/**/*.css', included: false },
+      { pattern: '../node_modules/leaflet/dist/leaflet.css', included: true },
+      { pattern: '../src/leaflet/**/**/*.css', included: true },
       '../src/leaflet/**/!(index).js',
       /**测试文件**/
       './test-main-leaflet.js',
 
       /***openlayers的源码***/
-      { pattern: '../node_modules/ol/ol.css', included: false },
-      { pattern: '../src/openlayers/**/**/*.css', included: false },
+      { pattern: '../node_modules/ol/ol.css', included: true },
+      { pattern: '../src/openlayers/**/**/*.css', included: true },
       '../src/openlayers/**/!(index).js',
       /**测试文件**/
       './test-main-openlayers.js',
       { pattern: './resources/data/**.fgb', included: false },
       { pattern: './resources/img/**.svg', included: false },
       /***mapboxgl***/
-      { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: false },
+      { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: true },
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
       './test-main-mapboxgl.js'
