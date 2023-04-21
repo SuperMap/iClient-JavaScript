@@ -11,6 +11,7 @@ export function mockCreateTile() {
         }
         tile.alt = '';
         tile.setAttribute('role', 'presentation');
+        tile.src = 'base/resources/img/baiduTileTest.png';
         this.getTileUrl(coords);
         return tile;
     };

@@ -61,6 +61,9 @@ module.exports = function (config) {
       { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', included: true },
       { pattern: '../src/classic/libs/Lang/*.js', included: true },
       { pattern: '../src/classic/theme/default/*.css', included: true },
+      { pattern: './resources/data/**.fgb', included: false },
+      { pattern: './resources/img/**.svg', included: false },
+      { pattern: './resources/img/baiduTileTest.png', included: false },
       /**测试文件**/
       './test-main-classic.js',
 
@@ -83,8 +86,6 @@ module.exports = function (config) {
       '../src/openlayers/**/!(index).js',
       /**测试文件**/
       './test-main-openlayers.js',
-      { pattern: './resources/data/**.fgb', included: false },
-      { pattern: './resources/img/**.svg', included: false },
       /***mapboxgl***/
       { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: true },
       '../src/mapboxgl/**/!(index).js',
