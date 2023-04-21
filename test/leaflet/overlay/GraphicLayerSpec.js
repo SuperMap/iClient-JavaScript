@@ -29,7 +29,7 @@ describe('leaflet_GraphicLayer', () => {
         graphics[j].setAttributes({ name: 'graphic_' + j });
       }
     });
-    function createMap() {
+    function createMap(crs) {
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
         testDiv.style.styleFloat = 'left';
@@ -41,7 +41,7 @@ describe('leaflet_GraphicLayer', () => {
 
         map = L.map('map', {
             preferCanvas: true,
-            crs: L.CRS.EPSG4326,
+            crs: crs || L.CRS.EPSG4326,
             center: { lon: 0, lat: 0 },
             maxZoom: 18,
             zoom: 1
@@ -362,8 +362,7 @@ describe('leaflet_GraphicLayer', () => {
         }, 0);
     });
     it('Mercator_ICL_1349', (done) => {
-        let { map, testDiv } = createMap();
-        map.options.crs = L.CRS.TianDiTu_Mercator;
+        let { map, testDiv } = createMap(L.CRS.TianDiTu_Mercator);
         let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
         setTimeout(() => {
             expect(layer._crs).toEqual(map.options.crs);
@@ -381,8 +380,7 @@ describe('leaflet_GraphicLayer', () => {
         }, 0);
     });
     it('CRS_4326_ICL_1349', (done) => {
-        let { map, testDiv } = createMap();
-        map.options.crs = L.CRS.TianDiTu_WGS84;
+        let { map, testDiv } = createMap(L.CRS.TianDiTu_WGS84);
         let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
         setTimeout(() => {
             expect(layer._crs).toEqual(map.options.crs);
