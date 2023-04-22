@@ -10,7 +10,7 @@ import './leaflet/core/Proj4LeafletSpec.js';
 import './leaflet/mapping/ImageMapLayerSpec.js';
 import './leaflet/mapping/TiledMapLayerSpec.js';
 import './leaflet/mapping/TileLayer.WMTSSpec.js';
-// import './leaflet/mapping/WebMapSpec.js';
+import './leaflet/mapping/WebMapSpec.js';
 import './leaflet/mapping/TiandituTileLayerSpec';
 import './leaflet/mapping/ImageTileLayerSpec';
 import './leaflet/mapping/initMapSpec.js';
@@ -18,7 +18,7 @@ import './leaflet/mapping/initMapSpec.js';
 
 import './leaflet/overlay/EchartsLayerSpec.js';
 import './leaflet/overlay/graphic/GraphicSpec.js';
-import './leaflet/overlay/GraphicLayerSpec.js';
+// import './leaflet/overlay/GraphicLayerSpec.js';
 import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';
