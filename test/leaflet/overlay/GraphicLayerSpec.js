@@ -344,6 +344,9 @@ describe('leaflet_GraphicLayer', () => {
         }, 0)
     });
     it('CRS_4326_ICL_1134', (done) => {
+        spyOn(Detector, 'supportWebGL2').and.callFake(() => {
+            return true;
+        });
         let { map, testDiv } = createMap();
         let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
         setTimeout(() => {
@@ -362,6 +365,9 @@ describe('leaflet_GraphicLayer', () => {
         }, 0);
     });
     it('Mercator_ICL_1349', (done) => {
+        spyOn(Detector, 'supportWebGL2').and.callFake(() => {
+            return true;
+        });
         let { map, testDiv } = createMap(L.CRS.TianDiTu_Mercator);
         let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
         setTimeout(() => {
@@ -380,6 +386,9 @@ describe('leaflet_GraphicLayer', () => {
         }, 0);
     });
     it('CRS_4326_ICL_1349', (done) => {
+        spyOn(Detector, 'supportWebGL2').and.callFake(() => {
+            return true;
+        });
         let { map, testDiv } = createMap(L.CRS.TianDiTu_WGS84);
         let layer = graphicLayer(graphics, { render: 'webgl' }).addTo(map);
         setTimeout(() => {
