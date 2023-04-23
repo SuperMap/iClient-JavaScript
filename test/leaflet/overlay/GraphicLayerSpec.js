@@ -326,7 +326,7 @@ describe('leaflet_GraphicLayer', () => {
     });
 
     //特定条件下，期望的函数被调用、
-    xit('_moveEnd_expect_ICL_1042', (done) => {
+    it('_moveEnd_expect_ICL_1042', (done) => {
         let { map, testDiv } = createMap();
 
         spyOn(Detector, 'supportWebGL2').and.callFake(() => {
@@ -343,7 +343,7 @@ describe('leaflet_GraphicLayer', () => {
             layer.remove()
         }, 0)
     });
-    xit('CRS_4326_ICL_1134', (done) => {
+    it('CRS_4326_ICL_1134', (done) => {
         spyOn(Detector, 'supportWebGL2').and.callFake(() => {
             return true;
         });
@@ -364,7 +364,7 @@ describe('leaflet_GraphicLayer', () => {
             layer.remove()
         }, 0);
     });
-    xit('Mercator_ICL_1349', (done) => {
+    it('Mercator_ICL_1349', (done) => {
         spyOn(Detector, 'supportWebGL2').and.callFake(() => {
             return true;
         });
@@ -385,7 +385,7 @@ describe('leaflet_GraphicLayer', () => {
             layer.remove()
         }, 0);
     });
-    xit('CRS_4326_ICL_1349', (done) => {
+    it('CRS_4326_ICL_1349', (done) => {
         spyOn(Detector, 'supportWebGL2').and.callFake(() => {
             return true;
         });
