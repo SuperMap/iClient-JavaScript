@@ -264,10 +264,8 @@ describe('openlayers_ThemeService', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496.json"}`));
         });
         service.getThemeInfo(themeParameters, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
-            try {
+            serviceResult = result;
+          try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
@@ -283,7 +281,7 @@ describe('openlayers_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 0);
+        });
     });
 
     it('getThemeInfo_GridUnique', (done) => {
