@@ -33,6 +33,24 @@ describe('openlayers_AddressMatchService', () => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
         var codeCompleted = (analyseEventArgs) => {
             codingSuccessEventArgs = analyseEventArgs;
+            try {
+                expect(addressCodeService).not.toBeNull();
+                expect(codingSuccessEventArgs).not.toBeNull();
+                expect(codingSuccessEventArgs.type).toBe('processCompleted');
+                expect(codingSuccessEventArgs.result).not.toBeNull();
+                expect(codingSuccessEventArgs.result.length).toBe(10);
+                GeoCodingParams.destroy();
+                codingSuccessEventArgs = null;
+                codingFailedEventArgs = null;
+                done();
+            } catch (exception) {
+                console.log("'code'案例失败：" + exception.name + ":" + exception.message);
+                GeoCodingParams.destroy();
+                codingFailedEventArgs = null;
+                codingSuccessEventArgs = null;
+                expect(false).toBeTruthy();
+                done();
+            }
         };
         var codeFailed = (serviceFailedEventArgs) => {
             codingFailedEventArgs = serviceFailedEventArgs;
@@ -58,26 +76,6 @@ describe('openlayers_AddressMatchService', () => {
             return Promise.resolve(new Response(codeSuccessEscapedJson));
         });
         addressCodeService.code(GeoCodingParams, codeCompleted);
-        setTimeout(() => {
-            try {
-                expect(addressCodeService).not.toBeNull();
-                expect(codingSuccessEventArgs).not.toBeNull();
-                expect(codingSuccessEventArgs.type).toBe('processCompleted');
-                expect(codingSuccessEventArgs.result).not.toBeNull();
-                expect(codingSuccessEventArgs.result.length).toBe(10);
-                GeoCodingParams.destroy();
-                codingSuccessEventArgs = null;
-                codingFailedEventArgs = null;
-                done();
-            } catch (exception) {
-                console.log("'code'案例失败：" + exception.name + ":" + exception.message);
-                GeoCodingParams.destroy();
-                codingFailedEventArgs = null;
-                codingSuccessEventArgs = null;
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 0);
     });
 
     it('decode', (done) => {
@@ -87,6 +85,24 @@ describe('openlayers_AddressMatchService', () => {
         };
         var decodeCompleted = (analyseEventArgs) => {
             decodingSuccessEventArgs = analyseEventArgs;
+            try {
+                expect(addressDeCodeService).not.toBeNull();
+                expect(decodingSuccessEventArgs).not.toBeNull();
+                expect(decodingSuccessEventArgs.type).toBe('processCompleted');
+                expect(decodingSuccessEventArgs.result).not.toBeNull();
+                expect(decodingSuccessEventArgs.result.length).toEqual(5);
+                GeoDeCodingParams.destroy();
+                decodingFailedEventArgs = null;
+                decodingSuccessEventArgs = null;
+                done();
+            } catch (exception) {
+                console.log("'decode'案例失败：" + exception.name + ":" + exception.message);
+                GeoDeCodingParams.destroy();
+                decodingFailedEventArgs = null;
+                decodingSuccessEventArgs = null;
+                expect(false).toBeTruthy();
+                done();
+            }
         };
         var GeoDeCodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
@@ -108,31 +124,24 @@ describe('openlayers_AddressMatchService', () => {
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
         addressDeCodeService.decode(GeoDeCodingParams, decodeCompleted);
-        setTimeout(() => {
-            try {
-                expect(addressDeCodeService).not.toBeNull();
-                expect(decodingSuccessEventArgs).not.toBeNull();
-                expect(decodingSuccessEventArgs.type).toBe('processCompleted');
-                expect(decodingSuccessEventArgs.result).not.toBeNull();
-                expect(decodingSuccessEventArgs.result.length).toEqual(5);
-                GeoDeCodingParams.destroy();
-                decodingFailedEventArgs = null;
-                decodingSuccessEventArgs = null;
-                done();
-            } catch (exception) {
-                console.log("'decode'案例失败：" + exception.name + ":" + exception.message);
-                GeoDeCodingParams.destroy();
-                decodingFailedEventArgs = null;
-                decodingSuccessEventArgs = null;
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 0);
     });
     it('code_customQueryParam', (done) => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
         var codeCompleted = (analyseEventArgs) => {
             codingSuccessEventArgs = analyseEventArgs;
+            try {
+                GeoCodingParams.destroy();
+                codingSuccessEventArgs = null;
+                codingFailedEventArgs = null;
+                done();
+            } catch (exception) {
+                console.log("'code'案例失败：" + exception.name + ":" + exception.message);
+                GeoCodingParams.destroy();
+                codingFailedEventArgs = null;
+                codingSuccessEventArgs = null;
+                expect(false).toBeTruthy();
+                done();
+            }
         };
         var codeFailed = (serviceFailedEventArgs) => {
             codingFailedEventArgs = serviceFailedEventArgs;
@@ -154,21 +163,6 @@ describe('openlayers_AddressMatchService', () => {
             return Promise.resolve(new Response(codeSuccessEscapedJson));
         });
         addressCodeService.code(GeoCodingParams, codeCompleted);
-        setTimeout(() => {
-            try {
-                GeoCodingParams.destroy();
-                codingSuccessEventArgs = null;
-                codingFailedEventArgs = null;
-                done();
-            } catch (exception) {
-                console.log("'code'案例失败：" + exception.name + ":" + exception.message);
-                GeoCodingParams.destroy();
-                codingFailedEventArgs = null;
-                codingSuccessEventArgs = null;
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 0);
     });
 
     it('decode_customQueryParam', (done) => {
@@ -178,6 +172,19 @@ describe('openlayers_AddressMatchService', () => {
         };
         var decodeCompleted = (analyseEventArgs) => {
             decodingSuccessEventArgs = analyseEventArgs;
+            try {
+                GeoDeCodingParams.destroy();
+                decodingFailedEventArgs = null;
+                decodingSuccessEventArgs = null;
+                done();
+            } catch (exception) {
+                console.log("'decode'案例失败：" + exception.name + ":" + exception.message);
+                GeoDeCodingParams.destroy();
+                decodingFailedEventArgs = null;
+                decodingSuccessEventArgs = null;
+                expect(false).toBeTruthy();
+                done();
+            }
         };
         var GeoDeCodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
@@ -195,20 +202,5 @@ describe('openlayers_AddressMatchService', () => {
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
         addressDeCodeService.decode(GeoDeCodingParams, decodeCompleted);
-        setTimeout(() => {
-            try {
-                GeoDeCodingParams.destroy();
-                decodingFailedEventArgs = null;
-                decodingSuccessEventArgs = null;
-                done();
-            } catch (exception) {
-                console.log("'decode'案例失败：" + exception.name + ":" + exception.message);
-                GeoDeCodingParams.destroy();
-                decodingFailedEventArgs = null;
-                decodingSuccessEventArgs = null;
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 0);
     });
 });

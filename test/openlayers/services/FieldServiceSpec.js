@@ -186,11 +186,10 @@ describe('openlayers_FieldService', () => {
             }
             return Promise.resolve();
         });
+        let count = 0;
         service.getFieldStatisticsInfo(fieldStatisticsParameters, (result) => {
+            count++
             serviceResult = result;
-        });
-       
-        setTimeout(() => {
             try {
                 expect(service).not.toBeNull();
                 expect(service.currentStatisticResult).not.toBeNull();
@@ -206,12 +205,14 @@ describe('openlayers_FieldService', () => {
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(404);
                 expect(serviceResult.error.errorMsg).toBe("数据源World1不存在，获取相应的数据服务组件失败");
-                done();
+                if(count === 6){
+                    done();
+                }
             } catch (e) {
                 console.log("'fail:getFieldStatisticsInfo'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 0);
+        });
     });
 });

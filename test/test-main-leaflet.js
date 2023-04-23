@@ -18,7 +18,7 @@ import './leaflet/mapping/initMapSpec.js';
 
 import './leaflet/overlay/EchartsLayerSpec.js';
 import './leaflet/overlay/graphic/GraphicSpec.js';
-// import './leaflet/overlay/GraphicLayerSpec.js';
+import './leaflet/overlay/GraphicLayerSpec.js';
 import './leaflet/overlay/graphic/CloverStyleSpec';
 import './leaflet/overlay/GraphThemeLayerSpec.js';
 import './leaflet/overlay/HeatMapLayerSpec.js';

@@ -184,9 +184,7 @@ describe('leaflet_search_SearchView', () => {
             return Promise.resolve();
         });
         spyOn(poiSearch.viewModel.map, 'setView').and.callThrough();
-        document.getElementsByClassName('component-search__settings__name')[0].click()
-        document.getElementsByClassName('component-citytabpag__content')[0].childNodes[0].click();
-        setTimeout(() => {
+        poiSearch.viewModel.map.on('zoomend',()=>{
             try {
                 expect(poiSearch.viewModel.map.setView).toHaveBeenCalled();
                 done();
@@ -195,7 +193,9 @@ describe('leaflet_search_SearchView', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 0);
+        })
+        document.getElementsByClassName('component-search__settings__name')[0].click()
+        document.getElementsByClassName('component-citytabpag__content')[0].childNodes[0].click();
 
     })
 })
