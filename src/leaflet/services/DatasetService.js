@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
  import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
  import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
@@ -26,6 +25,12 @@ export var DatasetService = ServiceBase.extend({
 
     initialize: function (url,options) {
         ServiceBase.prototype.initialize.call(this, url,options);
+        this.datasetService = new CommonDatasetService(this.url, {
+          proxy: this.options.proxy,
+          withCredentials: this.options.withCredentials,
+          crossOrigin: this.options.crossOrigin,
+          headers: this.options.headers
+        });
     },
 
     
@@ -40,23 +45,11 @@ export var DatasetService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasets: function (datasourceName, callback) {
-        if (!datasourceName) {
-            return;
-        }
-        const me = this;
-        const datasetService = new CommonDatasetService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetsService(datasourceName);
-        },
+      if (!datasourceName) {
+        return;
+      }
+      this.datasetService.getDatasetsService(datasourceName, callback);
+    },
 
     /**
      * @function DatasetService.prototype.getDataset
@@ -70,22 +63,10 @@ export var DatasetService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getDataset: function (datasourceName, datasetName, callback) {
-        if (!datasourceName || !datasetName) {
-            return;
-        }
-        const me = this;
-        const datasetService = new CommonDatasetService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetService(datasourceName, datasetName);
+      if (!datasourceName || !datasetName) {
+        return;
+      }
+      this.datasetService.getDatasetService(datasourceName, datasetName, callback);
     },
 
     /**
@@ -99,35 +80,23 @@ export var DatasetService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     setDataset(params, callback) {
-        if(!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)){
-            return;
-        }else if (params instanceof CreateDatasetParameters) {
-            var datasetParams = {
-                "datasetType": params.datasetType,
-                "datasetName": params.datasetName
-            }
-        }else if(params instanceof UpdateDatasetParameters){
-             datasetParams = {
-                    "datasetName": params.datasetName,
-                    "isFileCache": params.isFileCache,
-                    "description": params.description,
-                    "prjCoordSys": params.prjCoordSys,
-                    "charset": params.charset
-                }
-        }
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
-        const datasetService = new CommonDatasetService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.setDatasetService(datasetParams);
+      if(!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)){
+        return;
+      }else if (params instanceof CreateDatasetParameters) {
+          var datasetParams = {
+              "datasetType": params.datasetType,
+              "datasetName": params.datasetName
+          }
+      }else if(params instanceof UpdateDatasetParameters){
+            datasetParams = {
+                  "datasetName": params.datasetName,
+                  "isFileCache": params.isFileCache,
+                  "description": params.description,
+                  "prjCoordSys": params.prjCoordSys,
+                  "charset": params.charset
+              }
+      }
+      this.datasetService.setDatasetService(datasetParams, callback);
     },
 
     /**
@@ -142,20 +111,8 @@ export var DatasetService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteDataset: function (datasourceName, datasetName, callback) {
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        const datasetService = new CommonDatasetService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.deleteDatasetService();
-        }
+      this.datasetService.deleteDatasetService(datasourceName, datasetName, callback);
+    }
 });
 
 export var datasetService = function (url, options) {

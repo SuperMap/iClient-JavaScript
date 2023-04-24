@@ -25,7 +25,13 @@ import CommonMatchImageService from '@supermap/iclient-common/iServer/ImageServi
  */
 export class ImageService extends ServiceBase {
     constructor(url, options) {
-        super(url, options);
+      super(url, options);
+      this.imageService = new CommonMatchImageService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers
+      });
     }
 
     /**
@@ -34,19 +40,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollections(callback) {
-        var me = this;
-        var ImageService = new CommonMatchImageService(this.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageService.getCollections();
+      this.imageService.getCollections(callback);
     }
 
     /**
@@ -56,19 +50,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollectionByID(collectionId, callback) {
-        var me = this;
-        var ImageService = new CommonMatchImageService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageService.getCollectionByID(collectionId);
+      this.imageService.getCollectionByID(collectionId, callback);
     }
 
     /**
@@ -78,18 +60,6 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     search(itemSearch, callback) {
-        var me = this;
-        var ImageService = new CommonMatchImageService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageService.search(itemSearch);
+      this.imageService.search(itemSearch, callback);
     }
 }

@@ -1,15 +1,10 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { Util } from '../core/Util';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import { DataFormat } from '@supermap/iclient-common/REST';
-import { ChartQueryService } from '@supermap/iclient-common/iServer/ChartQueryService';
-import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/ChartFeatureInfoSpecsService';
+import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
 
 /**
  * @class ChartService
@@ -32,6 +27,7 @@ import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/C
 export class ChartService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
+        this.chartServiceBase = new CommonChartService(url, options);
     }
 
     /**
@@ -42,24 +38,7 @@ export class ChartService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryChart(params, callback, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var chartQueryService = new ChartQueryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-
-        chartQueryService.processAsync(param);
+      this.chartServiceBase.queryChart(params, callback, resultFormat);
     }
 
     /**
@@ -68,46 +47,7 @@ export class ChartService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getChartFeatureInfo(callback) {
-        var me = this,
-            url = me.url.concat();
-        url = CommonUtil.urlPathAppend(url, 'chartFeatureInfoSpecs');
-        var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        chartFeatureInfoSpecsService.processAsync();
-    }
-
-    _processParams(params) {
-        if (!params) {
-            return {};
-        }
-        params.returnContent = params.returnContent == null ? true : params.returnContent;
-        if (params.filter) {
-            params.chartQueryFilterParameters = Util.isArray(params.filter) ? params.filter : [params.filter];
-        }
-
-        if (params.bounds) {
-            if (params.bounds instanceof Array) {
-                params.bounds = new Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
-            }
-            if (params.bounds instanceof mapboxgl.LngLatBounds) {
-                params.bounds = new Bounds(
-                    params.bounds.getSouthWest().lng,
-                    params.bounds.getSouthWest().lat,
-                    params.bounds.getNorthEast().lng,
-                    params.bounds.getNorthEast().lat
-                );
-            }
-        }
+      this.chartServiceBase.queryChart(callback);
     }
 
     _processFormat(resultFormat) {

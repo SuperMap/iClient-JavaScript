@@ -21,21 +21,23 @@ export class GeoprocessingService extends CommonServiceBase {
         this.CLASS_NAME = 'SuperMap.GeoprocessingService';
         this.headers = {};
         this.crossOrigin = true;
+        this.eventCount = 0;
     }
     /**
      * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
+     * @param {string} identifier - 处理自动化工具ID。
      */
-    getTools() {
-        this._get(`${this.url}/list`);
+    getTools(callback) {
+        this._processAsync({ url: `${this.url}/list`, callback });
     }
     /**
      * @function GeoprocessingService.prototype.getTool
      * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
      */
-    getTool(identifier) {
-        this._get(`${this.url}/${identifier}`);
+    getTool(identifier, callback) {
+        this._processAsync({ url: `${this.url}/${identifier}`, callback });
     }
     /**
      * @function GeoprocessingService.prototype.execute
@@ -44,11 +46,11 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
      */
-    execute(identifier, parameter, environment) {
+    execute(identifier, parameter, environment, callback) {
         parameter = parameter ? parameter : null;
         environment = environment ? environment : null;
         const executeParamter = { parameter, environment };
-        this._get(`${this.url}/${identifier}/execute`, executeParamter);
+        this._processAsync({ url: `${this.url}/${identifier}/execute`, executeParamter, callback });
     }
     /**
      * @function GeoprocessingService.prototype.submitJob
@@ -57,19 +59,11 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environments - 处理自动化工具的环境参数。
      */
-    submitJob(identifier, parameter, environments) {
+    submitJob(identifier, parameter, environments, callback) {
         parameter = parameter ? parameter : null;
         environments = environments ? environments : null;
-        const asyncParamter = { parameter: parameter, environments: environments };
-        this.request({
-            url: `${this.url}/${identifier}/jobs`,
-            headers: { 'Content-type': 'application/json' },
-            method: 'POST',
-            data: JSON.stringify(asyncParamter),
-            scope: this,
-            success: this.serviceProcessCompleted,
-            failure: this.serviceProcessFailed
-        });
+        const asyncParamter = JSON.stringify({ parameter: parameter, environments: environments });
+        this._processAsync({ url: `${this.url}/${identifier}/jobs`, method: 'POST', callback, params: asyncParamter });
     }
 
     /**
@@ -81,14 +75,15 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {number} options.interval - 定时器时间间隔。
      * @param {function} options.statusCallback - 任务状态的回调函数。
      */
-    waitForJobCompletion(jobId, identifier, options) {
+    waitForJobCompletion(jobId, identifier, options, callback) {
         const me = this;
         const timer = setInterval(function () {
-            const serviceProcessCompleted = function (serverResult) {
+            const serviceProcessCompleted = function (serverResult, eventId) {
                 const state = serverResult.state.runState;
                 if (options.statusCallback) {
                     options.statusCallback(state);
                 }
+                serverResult.eventId = eventId;
                 switch (state) {
                     case 'FINISHED':
                         clearInterval(timer);
@@ -110,7 +105,7 @@ export class GeoprocessingService extends CommonServiceBase {
                         break;
                 }
             };
-            me._get(`${me.url}/${identifier}/jobs/${jobId}`, null, serviceProcessCompleted);
+            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, serviceProcessCompleted, callback });
         }, options.interval);
     }
 
@@ -120,8 +115,8 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
      */
-    getJobInfo(identifier, jobId) {
-        this._get(`${this.url}/${identifier}/jobs/${jobId}`);
+    getJobInfo(identifier, jobId, callback) {
+        this._processAsync({ url: `${this.url}/${identifier}/jobs/${jobId}`, callback });
     }
 
     /**
@@ -130,20 +125,20 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
      */
-    cancelJob(identifier, jobId) {
-        this._get(`${this.url}/${identifier}/jobs/${jobId}/cancel`);
+    cancelJob(identifier, jobId, callback) {
+        this._processAsync({ url: `${this.url}/${identifier}/jobs/${jobId}/cancel`, callback });
     }
     /**
      * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
      * @param {string} identifier - 处理自动化工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      */
-    getJobs(identifier) {
+    getJobs(identifier, callback) {
         let url = `${this.url}/jobs`;
         if (identifier) {
             url = `${this.url}/${identifier}/jobs`;
         }
-        this._get(url);
+        this._processAsync({ url, callback });
     }
     /**
      * @function GeoprocessingService.prototype.getResults
@@ -152,22 +147,42 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} jobId - 处理自动化任务ID。
      * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      */
-    getResults(identifier, jobId, filter) {
+    getResults(identifier, jobId, callback, filter) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
         if (filter) {
             url = `${url}/${filter}`;
         }
-        this._get(url);
+        this._processAsync({ url, callback });
     }
-    _get(url, paramter, serviceProcessCompleted, serviceProcessFailed) {
-        this.request({
-            url: url,
-            method: 'GET',
-            params: paramter,
-            headers: { 'Content-type': 'application/json' },
-            scope: this,
-            success: serviceProcessCompleted ? serviceProcessCompleted : this.serviceProcessCompleted,
-            failure: serviceProcessFailed ? serviceProcessFailed : this.serviceProcessFailed
-        });
-    }
+   
+    _processAsync({ url, method, callback, paramter, serviceProcessCompleted, serviceProcessFailed }) {
+        let eventId = ++this.eventCount;
+        let eventListeners = {
+          scope: this,
+          processCompleted: function(result) {
+            if (eventId === result.result.eventId) {
+              callback(result);
+            }
+          },
+          processFailed: callback
+        }
+        this.events.on(eventListeners);
+          this.request({
+              url: url,
+              method: method || 'GET',
+              params: paramter,
+              headers: { 'Content-type': 'application/json' },
+              scope: this,
+              success(result) {
+                result.eventId = eventId;
+                const callback = serviceProcessCompleted || this.serviceProcessCompleted;
+                callback(result, eventId);
+              },
+              failure(result) {
+                result.eventId = eventId;
+                const callback = serviceProcessFailed || this.serviceProcessFailed;
+                callback(result, eventId);
+              }
+          });
+      }
 }

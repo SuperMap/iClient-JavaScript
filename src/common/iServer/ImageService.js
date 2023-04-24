@@ -25,6 +25,7 @@ export default class ImageService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
+        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.ImageService';
     }
 
@@ -40,17 +41,11 @@ export default class ImageService extends CommonServiceBase {
      * @function ImageService.prototype.getCollections
      * @description 返回当前影像服务中的影像集合列表（Collections）。
      */
-    getCollections() {
+    getCollections(callback) {
         var me = this;
         var path = Util.convertPath('/collections');
         var url = Util.urlPathAppend(me.url, path);
-        this.request({
-            method: 'GET',
-            url,
-            scope: this,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        this._processAsync({ url, mehtod: 'GET', callback });
     }
 
     /**
@@ -58,20 +53,14 @@ export default class ImageService extends CommonServiceBase {
      * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
      */
-    getCollectionByID(collectionId) {
+    getCollectionByID(collectionId, callback) {
         var pathParams = {
             collectionId: collectionId
         };
         var me = this;
         var path = Util.convertPath('/collections/{collectionId}', pathParams);
         var url = Util.urlPathAppend(me.url, path);
-        this.request({
-            method: 'GET',
-            url,
-            scope: this,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        this._processAsync({ url, mehtod: 'GET', callback });
     }
 
     /**
@@ -79,19 +68,44 @@ export default class ImageService extends CommonServiceBase {
      * @description 查询与过滤条件匹配的影像数据。
      * @param {ImageSearchParameter} [imageSearchParameter] 查询参数。
      */
-    search(imageSearchParameter) {
+    search(imageSearchParameter, callback) {
         var postBody = { ...(imageSearchParameter || {}) };
         var me = this;
         var path = Util.convertPath('/search');
         var url = Util.urlPathAppend(me.url, path);
-        this.request({
-            method: 'POST',
-            url,
-            data: postBody,
-            scope: this,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        this._processAsync({ url, mehtod: 'POST', data: postBody, callback });
+    }
+
+    _processAsync({ url, method, callback, data }) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId) {
+            callback(result);
+          }
+        },
+        processFailed: function(result) {
+          if (eventId === result.result.eventId) {
+            callback(result);
+          }
+        }
+      }
+      this.events.on(eventListeners);
+      this.request({
+        method: method || 'GET',
+        url,
+        data,
+        scope: this,
+        success(result) {
+          result.eventId = eventId;
+          this.serviceProcessCompleted(result);
+        },
+        failure(result) {
+          result.eventId = eventId;
+          this.serviceProcessFailed(result);
+        }
+    });
     }
 }
 

@@ -7,6 +7,11 @@ import RBush from 'rbush';
 import { getIntersection } from '../../common/util/MapCalculateUtil';
 import { FetchRequest } from '../../common/util/FetchRequest';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
+import * as flatbuffers from 'flatbuffers';
+import { HttpReader } from 'flatgeobuf/lib/mjs/http-reader';
+import { Feature } from 'flatgeobuf/lib/mjs/flat-geobuf/feature';
+import { fromFeature } from 'flatgeobuf/lib/mjs/geojson/feature';
+import slice from 'slice-source';
 
 /**
  * @class FGBLayer
@@ -25,6 +30,9 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {function} [options.onEachFeature] - 要素创建时调用
  * @usage
  */
+
+ const magicbytesLength = 8;
+ const headerbytesLength = 4;
 
 export var FGBLayer = L.LayerGroup.extend({
   initialize: function (url, options) {

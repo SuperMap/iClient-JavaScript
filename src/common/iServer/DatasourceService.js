@@ -28,6 +28,7 @@ export class DatasourceService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
+        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.DatasourceService";
     }
 
@@ -37,6 +38,7 @@ export class DatasourceService extends CommonServiceBase {
      * @override
      */
     destroy() {
+        this.eventCount = 0;
         super.destroy();
     }
 
@@ -45,49 +47,58 @@ export class DatasourceService extends CommonServiceBase {
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
      */
-    getDatasourceService(datasourceName) {
-        var me = this;
-        me.url = Util.urlPathAppend(me.url,`datasources/name/${datasourceName}`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasourceService(datasourceName, callback) {
+        let url = Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
+        this.processAsync(url, "GET", callback);
     }
 
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
      */
-    getDatasourcesService() {
-        var me = this;
-        me.url = Util.urlPathAppend(me.url,`datasources`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasourcesService(callback) {
+        let url = Util.urlPathAppend(this.url,`datasources`);
+        this.processAsync(url, "GET", callback);
     }
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
      */
-    setDatasourceService(params) {
+    setDatasourceService(params, callback) {
         if (!params) {
             return;
         }
-        var me = this;
-        var jsonParamsStr = Util.toJSON(params);
-        me.request({
-            method: "PUT",
-            data: jsonParamsStr,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        const url = Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
+        this.processAsync(url, "PUT", callback, params);
+    }
+
+    processAsync(url, method, callback, params) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId) {
+            callback(result);
+          }
+        },
+        processFailed: callback
+      }
+      this.events.on(eventListeners);
+       var me = this;
+       let requestConfig = {
+          url,
+          method,
+          scope: me,
+          success(result) {
+            result.eventId = eventId;
+            this.serviceProcessCompleted(result);
+          },
+          failure(result) {
+            result.eventId = eventId;
+            this.serviceProcessFailed(result);
+          }
+        }
+        params && (requestConfig.data = Util.toJSON(params));
+        me.request(requestConfig);
     }
 }

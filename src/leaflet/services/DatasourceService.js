@@ -5,7 +5,6 @@
  import { ServiceBase } from './ServiceBase';
  import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-common/iServer/DatasourceService';
  import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
  * @class  DatasourceService
  * @deprecatedclassinstance L.supermap.datasourceService
@@ -24,6 +23,12 @@ export var DatasourceService = ServiceBase.extend({
 
     initialize: function (url,options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this.datasourceService = new CommonDatasourceService(this.url, {
+          proxy: this.proxy,
+          withCredentials: this.withCredentials,
+          crossOrigin: this.crossOrigin,
+          headers: this.headers
+        });
     },
 
     /**
@@ -36,19 +41,7 @@ export var DatasourceService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasources: function (callback) {
-        const me = this;
-        const datasourceService = new CommonDatasourceService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourcesService();
+        this.datasourceService.getDatasourcesService(callback);
     },
 
     /**
@@ -62,22 +55,10 @@ export var DatasourceService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasource: function (datasourceName, callback) {
-        if (!datasourceName) {
-            return;
-        }
-        const me = this;
-        const datasourceService = new CommonDatasourceService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourceService(datasourceName);
+      if (!datasourceName) {
+        return;
+      }
+      this.datasourceService.getDatasourceService(datasourceName, callback);
     },
 
     /**
@@ -91,30 +72,18 @@ export var DatasourceService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     setDatasource: function(params, callback) {
-        if (!(params instanceof SetDatasourceParameters)) {
-            return;
-        }
-        const datasourceParams = {
-            description: params.description ,
-            coordUnit: params.coordUnit,
-            distanceUnit: params.distanceUnit
-        };
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url,`datasources/name/${params.datasourceName}`);
-        const datasourceService = new CommonDatasourceService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.setDatasourceService(datasourceParams);
+      if (!(params instanceof SetDatasourceParameters)) {
+        return;
+      }
+      const datasourceParams = {
+          description: params.description ,
+          coordUnit: params.coordUnit,
+          distanceUnit: params.distanceUnit
+      };
+      this.datasourceService.setDatasourceService(datasourceParams, callback);
     }
 });
 
 export var datasourceService = function (url, options) {
-    return new DatasourceService(url, options);
+  return new DatasourceService(url, options);
 };

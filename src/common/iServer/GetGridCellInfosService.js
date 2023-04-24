@@ -62,6 +62,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
+        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.GetGridCellInfosService";
     }
 
@@ -84,14 +85,14 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @description 执行服务，查询数据集信息。
      * @param {GetGridCellInfosParameters} params - 查询参数。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof GetGridCellInfosParameters)) {
             return;
         }
         Util.extend(this, params);
         var me = this;
         me.url = Util.urlPathAppend(me.url,`datasources/${me.dataSourceName}/datasets/${me.datasetName}`);
-        me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
+        me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed, callback);
     }
 
     /**
@@ -100,14 +101,36 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @callback {function} successFun - 成功后执行的函数。
      * @callback {function} failedFunc - 失败后执行的函数。
      */
-    queryRequest(successFun, failedFunc) {
+    queryRequest(successFun, failedFunc, callback) {
+      let eventId = ++this.eventCount;
+        let eventListeners = {
+          scope: this,
+          processCompleted: function(result) {
+            if (eventId === result.result.eventId) {
+              callback(result);
+            }
+          },
+          processFailed: function(result) {
+            if (eventId === result.result.eventId) {
+              callback(result);
+            }
+          }
+        }
+        this.events.on(eventListeners);
+
         var me = this;
         me.request({
             method: "GET",
             data: null,
             scope: me,
-            success: successFun,
-            failure: failedFunc
+            success(result) {
+              result.eventId = eventId;
+              successFun(result);
+            },
+            failure(result) {
+              result.eventId = eventId;
+              failedFunc(result);
+            }
         });
     }
 
@@ -127,13 +150,13 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.queryGridInfos
      * @description 执行服务，查询数据集栅格信息信息。
      */
-    queryGridInfos() {
+    queryGridInfos(callback) {
         var me = this;
         me.url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
         if (me.X != null && me.Y != null) {
             me.url = Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
         }
-        me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed);
+        me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed, callback);
     }
 
 

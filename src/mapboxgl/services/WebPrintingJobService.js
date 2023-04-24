@@ -5,8 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
 /**
  * @class WebPrintingJobService
  * @category  iServer WebPrintingJob
@@ -30,6 +30,7 @@ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geo
 export class WebPrintingJobService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
+        this.webPrintingService = new WebPrintingService(url, options);
     }
 
     /**
@@ -39,24 +40,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     createWebPrintingJob(params, callback) {
-        if (!params) {
-            return;
-        }
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.createWebPrintingJob(me._processParams(params));
+      this.webPrintingService.createWebPrintingJob(params, callback);
     }
 
     /**
@@ -66,21 +50,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.getPrintingJob(jobId);
+      this.webPrintingService.getPrintingJob(jobId, callback);
     }
 
     /**
@@ -90,21 +60,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJobResult(jobId, callback) {
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.getPrintingJobResult(jobId);
+      this.webPrintingService.getPrintingJobResult(jobId, callback);
     }
 
     /**
@@ -113,21 +69,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getLayoutTemplates(callback) {
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.getLayoutTemplates();
+      this.webPrintingService.getLayoutTemplates(callback);
     }
 
     _processParams(params) {

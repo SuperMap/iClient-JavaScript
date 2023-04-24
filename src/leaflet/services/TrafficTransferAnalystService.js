@@ -4,10 +4,7 @@
 import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { StopQueryService } from '@supermap/iclient-common/iServer/StopQueryService';
-import { TransferPathService } from '@supermap/iclient-common/iServer/TransferPathService';
-import { TransferSolutionService } from '@supermap/iclient-common/iServer/TransferSolutionService';
-
+import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermap/iclient-common/iServer/TrafficTransferAnalystService';
 /**
  * @class TrafficTransferAnalystService
  * @deprecatedclassinstance L.supermap.trafficTransferAnalystService
@@ -29,6 +26,7 @@ import { TransferSolutionService } from '@supermap/iclient-common/iServer/Transf
 export var TrafficTransferAnalystService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this.commonTrafficTransferAnalystService = new CommonTrafficTransferAnalystService(url, options);
     },
 
     /**
@@ -38,20 +36,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop: function(params, callback) {
-        var me = this;
-        var stopQueryService = new StopQueryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        stopQueryService.processAsync(params);
+        this.commonTrafficTransferAnalystService.queryStop(params, callback);
     },
     /**
      * @function  TrafficTransferAnalystService.prototype.analysisTransferPath
@@ -60,20 +45,8 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath: function(params, callback) {
-        var me = this;
-        var transferPathService = new TransferPathService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        transferPathService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        this.commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
     },
     /**
      * @function  TrafficTransferAnalystService.prototype.analysisTransferSolution
@@ -82,19 +55,8 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution: function(params, callback) {
-        var me = this;
-        var transferSolutionService = new TransferSolutionService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        transferSolutionService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        this.commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
     },
 
     _processParams: function(params) {

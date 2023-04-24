@@ -43,14 +43,9 @@ export class MapService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }, projection: me.options.projection
+            projection: me.options.projection
         });
-        getMapStatusService.processAsync();
+        getMapStatusService.processAsync(callback);
     }
 
     /**

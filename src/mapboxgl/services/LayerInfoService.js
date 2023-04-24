@@ -3,11 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { GetLayersInfoService } from '@supermap/iclient-common/iServer/GetLayersInfoService';
-import { SetLayerInfoService } from '@supermap/iclient-common/iServer/SetLayerInfoService';
-import { SetLayersInfoService } from '@supermap/iclient-common/iServer/SetLayersInfoService';
-import { SetLayerStatusService } from '@supermap/iclient-common/iServer/SetLayerStatusService';
+import { LayerInfoService as CommonLayerInfoService } from '@supermap/iclient-common/iServer/LayerInfoService';
 /**
  * @class LayerInfoService
  * @category  iServer Map Layer
@@ -30,6 +26,7 @@ export class LayerInfoService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.layerInfoService = new CommonLayerInfoService(url, options);
     }
 
     /**
@@ -39,19 +36,7 @@ export class LayerInfoService extends ServiceBase {
      * @returns {LayerInfoService} 返回图层信息类。
      */
     getLayersInfo(callback) {
-        var me = this;
-        var getLayersInfoService = new GetLayersInfoService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        getLayersInfoService.processAsync();
+      this.layerInfoService.getLayersInfo(callback);
     }
 
     /**
@@ -61,29 +46,7 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayerInfo(params, callback) {
-        if (!params) {
-            return;
-        }
-        var me = this,
-            resourceID = params.resourceID,
-            tempLayerName = params.tempLayerName,
-            layerInfoParams = params.layerInfo;
-        if (!resourceID || !tempLayerName) {
-            return;
-        }
-        var url = CommonUtil.urlPathAppend(me.url, "tempLayersSet/" + resourceID + "/" + tempLayerName);
-        var setLayerInfoService = new SetLayerInfoService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        setLayerInfoService.processAsync(layerInfoParams);
+      this.layerInfoService.setLayerInfo(params, callback);
     }
 
     /**
@@ -93,30 +56,7 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo(params, callback) {
-        if (!params) {
-            return;
-        }
-        var me = this,
-            resourceID = params.resourceID,
-            isTempLayers = params.isTempLayers ? params.isTempLayers : false,
-            layersInfo = params.layersInfo;
-        if ((isTempLayers && !resourceID) || !layersInfo) {
-            return;
-        }
-        var setLayersInfoService = new SetLayersInfoService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            resourceID: resourceID,
-            isTempLayers: isTempLayers
-        });
-        setLayersInfoService.processAsync(layersInfo);
+      this.layerInfoService.setLayersInfo(params, callback);
     }
 
     /**
@@ -126,21 +66,6 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     setLayerStatus(params, callback) {
-        if (!params) {
-            return;
-        }
-        var me = this;
-        var setLayerStatusService = new SetLayerStatusService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        setLayerStatusService.processAsync(params);
+      this.layerInfoService.setLayerStatus(params, callback);
     }
 }

@@ -54,6 +54,7 @@ export class MapService extends CommonServiceBase {
                 }
             }
         }
+        this.eventCount = 0;
     }
 
     /**
@@ -76,13 +77,34 @@ export class MapService extends CommonServiceBase {
      * @function  MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
      */
-    processAsync() {
+    processAsync(callback) {
+        let eventId = ++this.eventCount;
+        let eventListeners = {
+          scope: this,
+          processCompleted: function(result) {
+            if (eventId === result.result.eventId) {
+              callback(result);
+            }
+          },
+          processFailed: function(result) {
+            if (eventId === result.result.eventId) {
+              callback(result);
+            }
+          }
+        }
+        this.events.on(eventListeners);
         var me = this;
         me.request({
             method: "GET",
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success(result) {
+              result.eventId = eventId;
+              this.serviceProcessCompleted(result);
+            },
+            failure(result) {
+              result.eventId = eventId;
+              this.serviceProcessFailed(result);
+            }
         });
     }
 
@@ -105,6 +127,5 @@ export class MapService extends CommonServiceBase {
             me.events.triggerEvent("processFailed", {error: result});
         }
     }
-
 }
 

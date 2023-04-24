@@ -28,6 +28,12 @@ export class GridCellInfosService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.gridCellQueryService = new GetGridCellInfosService(this.url, {
+            proxy: this.options.proxy,
+            withCredentials: this.options.withCredentials,
+            crossOrigin: this.options.crossOrigin,
+            headers: this.options.headers
+        });
     }
 
     /**
@@ -39,18 +45,6 @@ export class GridCellInfosService extends ServiceBase {
         if (!params) {
             return null;
         }
-        var me = this;
-        var gridCellQueryService = new GetGridCellInfosService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        gridCellQueryService.processAsync(params);
+        this.gridCellQueryService.processAsync(params, callback);
     }
 }

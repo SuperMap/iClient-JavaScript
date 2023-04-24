@@ -28,6 +28,13 @@ export class ThemeService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CommonThemeService = new CommonThemeService(url, options);
+        this.themeService = new CommonThemeService(this.url, {
+          proxy: this.options.proxy,
+          withCredentials: this.options.withCredentials,
+          crossOrigin:this.options.crossOrigin,
+          headers:this.options.headers
+        });
     }
 
     /**
@@ -37,19 +44,6 @@ export class ThemeService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getThemeInfo(params, callback) {
-        var me = this;
-        var themeService = new CommonThemeService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        themeService.processAsync(params);
+      this.CommonThemeService.processAsync(params, callback);
     }
 }

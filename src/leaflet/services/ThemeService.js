@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
 import '../core/Base';
-import { ThemeService as SuperMapThemeService } from '@supermap/iclient-common/iServer/ThemeService';
+import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iServer/ThemeService';
 
 /**
  * @class ThemeService
@@ -28,7 +28,13 @@ import { ThemeService as SuperMapThemeService } from '@supermap/iclient-common/i
 export var ThemeService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase.prototype.initialize.call(this, url, options);
+      ServiceBase.prototype.initialize.call(this, url, options);
+      this.themeService = new CommonThemeService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin:this.options.crossOrigin,
+        headers:this.options.headers
+      });
     },
 
     /**
@@ -38,19 +44,7 @@ export var ThemeService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getThemeInfo: function (params, callback) {
-        var me = this;
-        var themeService = new SuperMapThemeService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        themeService.processAsync(params);
+        this.themeService.processAsync(params, callback);
     }
 });
 

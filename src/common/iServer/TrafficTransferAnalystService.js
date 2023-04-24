@@ -1,10 +1,9 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {Util} from '../core/Util';
-import {ServiceBase} from './ServiceBase';
-import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermap/iclient-common/iServer/TrafficTransferAnalystService';
-import Point from 'ol/geom/Point';
+import { StopQueryService } from './StopQueryService';
+import { TransferPathService } from './TransferPathService';
+import { TransferSolutionService } from './TransferSolutionService';
 
 /**
  * @class TrafficTransferAnalystService
@@ -23,11 +22,11 @@ import Point from 'ol/geom/Point';
  * @param {Object} [options.headers] - 请求头。
  * @usage
  */
-export class TrafficTransferAnalystService extends ServiceBase {
+export class TrafficTransferAnalystService {
 
     constructor(url, options) {
-        super(url, options);
-        this.commonTrafficTransferAnalystService = new CommonTrafficTransferAnalystService(url, options);
+      this.url = url;
+      this.options = options || {};
     }
 
     /**
@@ -37,7 +36,20 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop(params, callback) {
-      this.commonTrafficTransferAnalystService.queryStop(params, callback);
+        var me = this;
+        var stopQueryService = new StopQueryService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        stopQueryService.processAsync(params);
     }
 
     /**
@@ -47,8 +59,20 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath(params, callback) {
-      params = this._processParams(params);
-      this.commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
+        var me = this;
+        var transferPathService = new TransferPathService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        transferPathService.processAsync(params);
     }
 
     /**
@@ -58,27 +82,19 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution(params, callback) {
-      params = this._processParams(params);
-      this.commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
-    }
+        var me = this;
+        var transferSolutionService = new TransferSolutionService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
 
-    _processParams(params) {
-        if (!params) {
-            return {};
-        }
-        if (params.transferLines && !Util.isArray(params.transferLines)) {
-            params.transferLines = [params.transferLines];
-        }
-        if (params.points && Util.isArray(params.points)) {
-            params.points.map(function (point, key) {
-                params.points[key] = (point instanceof Point) ? {
-                    x: point.getCoordinates()[0],
-                    y: point.getCoordinates()[1]
-                } : point;
-                return params.points[key];
-            });
-        }
-        return params;
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        transferSolutionService.processAsync(params);
     }
-
 }

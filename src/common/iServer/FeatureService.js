@@ -1,17 +1,14 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
-import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
-import {
-    Util
-} from '../core/Util';
-import {
-    ServiceBase
-} from './ServiceBase';
-import GeoJSON from 'ol/format/GeoJSON';
+import { Util as CommonUtil} from '../commontypes/Util';
+import { GetFeaturesByIDsService } from './GetFeaturesByIDsService';
+import { GetFeaturesBySQLService } from './GetFeaturesBySQLService';
+import { GetFeaturesByBoundsService } from './GetFeaturesByBoundsService';
+import { GetFeaturesByBufferService } from './GetFeaturesByBufferService';
+import { GetFeaturesByGeometryService } from './GetFeaturesByGeometryService';
+import { EditFeaturesService } from './EditFeaturesService';
+import { DataFormat } from '../REST';
 
 /**
  * @class FeatureService
@@ -31,11 +28,11 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @extends {ServiceBase}
  * @usage
  */
-export class FeatureService extends ServiceBase {
+export class FeatureService {
 
     constructor(url, options) {
-        super(url, options);
-        this.featureService = new CommonFeatureService(url, options);
+      this.url = url;
+      this.options = options || {};
     }
 
     /**
@@ -46,8 +43,21 @@ export class FeatureService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
     getFeaturesByIDs(params, callback, resultFormat) {
-      params = this._processParams(params);
-      this.featureService.getFeaturesByIDs(params, callback, resultFormat);
+        var me = this;
+        var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: resultFormat
+        });
+        getFeaturesByIDsService.processAsync(params);
+
     }
 
     /**
@@ -58,8 +68,20 @@ export class FeatureService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
     getFeaturesByBounds(params, callback, resultFormat) {
-      params = this._processParams(params);
-      this.featureService.getFeaturesByBounds(params, callback, resultFormat);
+        var me = this;
+        var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        getFeaturesByBoundsService.processAsync(params);
     }
 
     /**
@@ -70,8 +92,20 @@ export class FeatureService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
-      params = this._processParams(params);
-      this.featureService.getFeaturesByBuffer(params, callback, resultFormat);
+        var me = this;
+        var getFeatureService = new GetFeaturesByBufferService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        getFeatureService.processAsync(params);
     }
 
     /**
@@ -82,8 +116,21 @@ export class FeatureService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
-      params = this._processParams(params);
-      this.featureService.getFeaturesBySQL(params, callback, resultFormat);
+        var me = this;
+        var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+
+        getFeatureBySQLService.processAsync(params);
     }
 
     /**
@@ -94,8 +141,20 @@ export class FeatureService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
-      params = this._processParams(params);
-      this.featureService.getFeaturesByGeometry(params, callback, resultFormat);
+        var me = this;
+        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        getFeaturesByGeometryService.processAsync(params);
     }
 
     /**
@@ -125,63 +184,9 @@ export class FeatureService extends ServiceBase {
                 processFailed: callback
             }
         });
-        editFeatureService.processAsync(me._processParams(params));
+        editFeatureService.processAsync(params);
     }
-
-    _processParams(params) {
-        if (!params) {
-            return {};
-        }
-        var me = this;
-        params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-        params.fromIndex = params.fromIndex ? params.fromIndex : 0;
-        params.toIndex = params.toIndex ? params.toIndex : -1;
-        if (params.bounds) {
-            params.bounds = Util.toSuperMapBounds(params.bounds);
-        }
-        if (params.geometry) {
-            params.geometry = Util.toSuperMapGeometry(JSON.parse((new GeoJSON()).writeGeometry(params.geometry)));
-        }
-        if (params.editType) {
-            params.editType = params.editType.toLowerCase();
-        }
-        if (params.features) {
-            var features = [];
-            if (Util.isArray(params.features)) {
-                params.features.map(function (feature) {
-                    features.push(me._createServerFeature(feature));
-                    return feature;
-                });
-            } else {
-                features.push(me._createServerFeature(params.features));
-            }
-            params.features = features;
-        }
-        return params;
-    }
-
-    _createServerFeature(geoFeature) {
-        var feature = {},
-            fieldNames = [],
-            fieldValues = [];
-        var properties = geoFeature.getProperties();
-        for (var key in properties) {
-            if (key === geoFeature.getGeometryName()) {
-                continue;
-            }
-            fieldNames.push(key);
-            fieldValues.push(properties[key]);
-        }
-        feature.fieldNames = fieldNames;
-        feature.fieldValues = fieldValues;
-        if (geoFeature.getId()) {
-            feature.id = geoFeature.getId();
-        }
-        feature.geometry = Util.toSuperMapGeometry((new GeoJSON()).writeFeatureObject(geoFeature));
-        return feature;
-    }
-
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
-    }
+      return resultFormat ? resultFormat : DataFormat.GEOJSON;
+  }
 }
