@@ -57,8 +57,8 @@
       inputScript(`${libsurl}/mapbox-gl-js/1.13.2/mapbox-gl.js`);
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
-      inputCSS(`${libsurl}/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css`);
-      inputScript(`${libsurl}/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js`);
+      inputCSS(`${libsurl}/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.css`);
+      inputScript(`${libsurl}/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js`);
     }
     if (inArray(includes, 'turf')) {
       inputScript(`${libsurl}/turf/6.5.0/turf.min.js`);

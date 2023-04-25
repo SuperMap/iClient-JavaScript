@@ -1231,6 +1231,13 @@ var exampleConfig = {
                         fileName: 'mvtVectorTile_4326'
                     },
                     {
+                        name: '矢量瓦片_EPSG2362',
+                        name_en: 'MVT EPSG2362',
+                        version: '11.1.0',
+                        thumbnail: 'mvtvectorlayer_mbstyle_landuse.png',
+                        fileName: 'mvtVectorTile_2362'
+                    },
+                    {
                         name: '地图打印',
                         name_en: 'Map Print',
                         version: '10.1.0',

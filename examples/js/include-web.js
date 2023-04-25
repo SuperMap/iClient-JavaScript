@@ -171,10 +171,6 @@
             inputScript(`${libsurl}/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js`);
             inputCSS(`${libsurl}/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css`);
         }
-        if (inArray(includes, 'pako')) {
-            inputScript(`${libsurl}/pako/1.0.6/pako_inflate.js`);
-            inputScript(`${libsurl}/pako/1.0.6/pako.min.js`);
-        }
     }
 
     function datGuiI18N() {
