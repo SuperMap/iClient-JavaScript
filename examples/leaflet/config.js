@@ -1085,9 +1085,9 @@ var exampleConfig = {
                     }
                 ]
             },
-            "FGB": {
-              name: 'FGB',
-              name_en: 'FGB',
+            "FlatGeoBuf": {
+              name: 'FlatGeoBuf',
+              name_en: 'FlatGeoBuf',
               version: '11.1.0',
               content: [
                   {

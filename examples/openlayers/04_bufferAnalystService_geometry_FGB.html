@@ -129,9 +129,19 @@
             semicircleLineSegment: 10
           })
         });
-        //向iServer发送请求并返回结果
-        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(
-          geoBufferAnalystParams,
+        var geoBufferAnalystParams1 = new ol.supermap.GeometryBufferAnalystParameters({
+          sourceGeometry: roadLine,
+          bufferSetting: new ol.supermap.BufferSetting({
+            endType: ol.supermap.BufferEndType.ROUND,
+            leftDistance: new ol.supermap.BufferDistance({ value: 250 }),
+            rightDistance: new ol.supermap.BufferDistance({ value: 250 }),
+            semicircleLineSegment: 10
+          })
+        });
+        // 向iServer发送请求并返回结果
+        var spatialAnalystService =  new ol.supermap.SpatialAnalystService(serviceUrl);
+        spatialAnalystService.bufferAnalysis(
+          geoBufferAnalystParams1,
           function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
@@ -155,7 +165,7 @@
           'FGB'
         );
 
-        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(
+        spatialAnalystService.bufferAnalysis(
           geoBufferAnalystParams,
           function (serviceResult) {
             //将组成缓冲区的边界点提出来，为了构造下面查询服务的geometry
