@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 require.config({
     paths: {
         'Cesium': 'https://www.supermapol.com/earth/Build/Cesium/Cesium',

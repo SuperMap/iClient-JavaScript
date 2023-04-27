@@ -1,4 +1,4 @@
-﻿/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+﻿/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  (function () {
@@ -57,6 +57,10 @@
       inputScript(`${libsurl}/mapbox-gl-js/1.13.2/mapbox-gl.js`);
     }
     if (inArray(includes, 'mapbox-gl-enhance')) {
+      inputCSS(`${libsurl}/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css`);
+      inputScript(`${libsurl}/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js`);
+    }
+    if (inArray(includes, 'mapbox-gl-enhance-beta')) {
       inputCSS(`${libsurl}/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.css`);
       inputScript(`${libsurl}/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js`);
     }
@@ -99,7 +103,7 @@
       inputScript(`${libsurl}/xlsx/0.18.5/xlsx.core.min.js`);
     }
     if (inArray(includes, 'proj4')) {
-      inputScript(`${libsurl}/proj4/2.9.0/proj4.js`);
+      inputScript(`${libsurl}/proj4/2.9.0/proj4.min.js`);
     }
     if (inArray(includes, 'shapefile')) {
       inputScript(`${libsurl}/shapefile/shapefile.js`);
