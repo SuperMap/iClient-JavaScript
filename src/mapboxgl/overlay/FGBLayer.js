@@ -8,11 +8,10 @@
  * Apache Licene 2.0
  * thanks dereklieu, cloudybay
  */
-
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import RBush from 'rbush';
-import { getIntersection } from '../../common/util/MapCalculateUtil';
-import { FetchRequest } from '../../common/util/FetchRequest';
+import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 
 /**
