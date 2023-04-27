@@ -94,7 +94,7 @@
       inputScript(`${libsurl}/echartsLayer/EchartsLayer.min.js`);
     }
     if (inArray(includes, 'three')) {
-      inputScript(`${libsurl}/three/0.150.1/build/three.min.js`);
+      inputScript(`${libsurl}/three/0.150.1/three.min.js`);
     }
     if (inArray(includes, 'three@0.121.1')) {
       inputScript(`${libsurl}/three/0.121.1/build/three.js`);
