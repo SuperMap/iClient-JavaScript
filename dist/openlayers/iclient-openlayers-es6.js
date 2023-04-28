@@ -1,9 +1,9 @@
 /*!
  * 
- *          iclient-openlayers.(https://iclient.supermap.io)
- *          Copyright© 2000 - 2022 SuperMap Software Co.Ltd
+ *          iclient-openlayers
+ *          Copyright© 2000 - 2023 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.1.0-dev
+ *          version: v11.1.0-beta
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -589,7 +589,6 @@ var Builder = /** @class */ (function () {
         /** False omits default values from the serialized data */
         this.force_defaults = false;
         this.string_maps = null;
-        this.text_encoder = new TextEncoder();
         var initial_size;
         if (!opt_initial_size) {
             initial_size = 1024;
@@ -692,7 +691,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int8` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int8` to add the buffer.
+     * @param value The `int8` to add the the buffer.
      */
     Builder.prototype.addInt8 = function (value) {
         this.prep(1, 0);
@@ -700,7 +699,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int16` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int16` to add the buffer.
+     * @param value The `int16` to add the the buffer.
      */
     Builder.prototype.addInt16 = function (value) {
         this.prep(2, 0);
@@ -708,7 +707,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int32` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int32` to add the buffer.
+     * @param value The `int32` to add the the buffer.
      */
     Builder.prototype.addInt32 = function (value) {
         this.prep(4, 0);
@@ -716,7 +715,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add an `int64` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int64` to add the buffer.
+     * @param value The `int64` to add the the buffer.
      */
     Builder.prototype.addInt64 = function (value) {
         this.prep(8, 0);
@@ -724,7 +723,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add a `float32` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `float32` to add the buffer.
+     * @param value The `float32` to add the the buffer.
      */
     Builder.prototype.addFloat32 = function (value) {
         this.prep(4, 0);
@@ -732,7 +731,7 @@ var Builder = /** @class */ (function () {
     };
     /**
      * Add a `float64` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `float64` to add the buffer.
+     * @param value The `float64` to add the the buffer.
      */
     Builder.prototype.addFloat64 = function (value) {
         this.prep(8, 0);
@@ -1034,7 +1033,39 @@ var Builder = /** @class */ (function () {
             utf8 = s;
         }
         else {
-            utf8 = this.text_encoder.encode(s);
+            utf8 = [];
+            var i = 0;
+            while (i < s.length) {
+                var codePoint = void 0;
+                // Decode UTF-16
+                var a = s.charCodeAt(i++);
+                if (a < 0xD800 || a >= 0xDC00) {
+                    codePoint = a;
+                }
+                else {
+                    var b = s.charCodeAt(i++);
+                    codePoint = (a << 10) + b + (0x10000 - (0xD800 << 10) - 0xDC00);
+                }
+                // Encode UTF-8
+                if (codePoint < 0x80) {
+                    utf8.push(codePoint);
+                }
+                else {
+                    if (codePoint < 0x800) {
+                        utf8.push(((codePoint >> 6) & 0x1F) | 0xC0);
+                    }
+                    else {
+                        if (codePoint < 0x10000) {
+                            utf8.push(((codePoint >> 12) & 0x0F) | 0xE0);
+                        }
+                        else {
+                            utf8.push(((codePoint >> 18) & 0x07) | 0xF0, ((codePoint >> 12) & 0x3F) | 0x80);
+                        }
+                        utf8.push(((codePoint >> 6) & 0x3F) | 0x80);
+                    }
+                    utf8.push((codePoint & 0x3F) | 0x80);
+                }
+            }
         }
         this.addInt8(0);
         this.startVector(1, utf8.length, 1);
@@ -1080,7 +1111,7 @@ var Builder = /** @class */ (function () {
     };
     Builder.prototype.createStructOffsetList = function (list, startFunc) {
         startFunc(this, list.length);
-        this.createObjectOffsetList(list.slice().reverse());
+        this.createObjectOffsetList(list);
         return this.endVector();
     };
     return Builder;
@@ -1107,7 +1138,6 @@ var ByteBuffer = /** @class */ (function () {
     function ByteBuffer(bytes_) {
         this.bytes_ = bytes_;
         this.position_ = 0;
-        this.text_decoder_ = new TextDecoder();
     }
     /**
      * Create and allocate a new ByteBuffer with a given size.
@@ -1254,9 +1284,10 @@ var ByteBuffer = /** @class */ (function () {
      * Create a JavaScript string from UTF-8 data stored inside the FlatBuffer.
      * This allocates a new string and converts to wide chars upon each access.
      *
-     * To avoid the conversion to string, pass Encoding.UTF8_BYTES as the
-     * "optionalEncoding" argument. This is useful for avoiding conversion when
-     * the data will just be packaged back up in another FlatBuffer later on.
+     * To avoid the conversion to UTF-16, pass Encoding.UTF8_BYTES as
+     * the "optionalEncoding" argument. This is useful for avoiding conversion to
+     * and from UTF-16 when the data will just be packaged back up in another
+     * FlatBuffer later on.
      *
      * @param offset
      * @param opt_encoding Defaults to UTF16_STRING
@@ -1264,12 +1295,54 @@ var ByteBuffer = /** @class */ (function () {
     ByteBuffer.prototype.__string = function (offset, opt_encoding) {
         offset += this.readInt32(offset);
         var length = this.readInt32(offset);
+        var result = '';
+        var i = 0;
         offset += constants_js_1.SIZEOF_INT;
-        var utf8bytes = this.bytes_.subarray(offset, offset + length);
-        if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES)
-            return utf8bytes;
-        else
-            return this.text_decoder_.decode(utf8bytes);
+        if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES) {
+            return this.bytes_.subarray(offset, offset + length);
+        }
+        while (i < length) {
+            var codePoint = void 0;
+            // Decode UTF-8
+            var a = this.readUint8(offset + i++);
+            if (a < 0xC0) {
+                codePoint = a;
+            }
+            else {
+                var b = this.readUint8(offset + i++);
+                if (a < 0xE0) {
+                    codePoint =
+                        ((a & 0x1F) << 6) |
+                            (b & 0x3F);
+                }
+                else {
+                    var c = this.readUint8(offset + i++);
+                    if (a < 0xF0) {
+                        codePoint =
+                            ((a & 0x0F) << 12) |
+                                ((b & 0x3F) << 6) |
+                                (c & 0x3F);
+                    }
+                    else {
+                        var d = this.readUint8(offset + i++);
+                        codePoint =
+                            ((a & 0x07) << 18) |
+                                ((b & 0x3F) << 12) |
+                                ((c & 0x3F) << 6) |
+                                (d & 0x3F);
+                    }
+                }
+            }
+            // Encode UTF-16
+            if (codePoint < 0x10000) {
+                result += String.fromCharCode(codePoint);
+            }
+            else {
+                codePoint -= 0x10000;
+                result += String.fromCharCode((codePoint >> 10) + 0xD800, (codePoint & ((1 << 10) - 1)) + 0xDC00);
+            }
+        }
+        return result;
     };
     /**
      * Handle unions that can contain string as its member, if a Table-derived type then initialize it,
@@ -1320,9 +1393,8 @@ var ByteBuffer = /** @class */ (function () {
     ByteBuffer.prototype.createScalarList = function (listAccessor, listLength) {
         var ret = [];
         for (var i = 0; i < listLength; ++i) {
-            var val = listAccessor(i);
-            if (val !== null) {
-                ret.push(val);
+            if (listAccessor(i) !== null) {
+                ret.push(listAccessor(i));
             }
         }
         return ret;
@@ -1381,7 +1453,7 @@ var Encoding;
 
 /***/ }),
 
-/***/ 385:
+/***/ 903:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5901,7 +5973,7 @@ module.exports = toPairs;
     var ENDED = -1;
     var whitespace = /\s/;
     var latin = /[A-Za-z]/;
-    var keyword = /[A-Za-z84]/;
+    var keyword = /[A-Za-z84_]/;
     var endThings = /[,\]]/;
     var digets = /[\d\.E\-\+]/;
     // const ignoredChar = /[\s_\-\/\(\)]/g;
@@ -6765,6 +6837,13 @@ module.exports = toPairs;
       a: 6378249.145,
       rf: 293.4663,
       ellipseName: "Clarke 1880 mod."
+    };
+
+    exports$2.clrk80ign = {
+      a: 6378249.2,
+      b: 6356515,
+      rf: 293.4660213,
+      ellipseName: "Clarke 1880 (IGN)"
     };
 
     exports$2.clrk58 = {
@@ -7844,14 +7923,25 @@ module.exports = toPairs;
     }
 
     function checkNotWGS(source, dest) {
-      return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
+      return (
+        (source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM || source.datum.datum_type === PJD_GRIDSHIFT) && dest.datumCode !== 'WGS84') ||
+        ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM || dest.datum.datum_type === PJD_GRIDSHIFT) && source.datumCode !== 'WGS84');
     }
 
     function transform(source, dest, point, enforceAxis) {
       var wgs84;
       if (Array.isArray(point)) {
         point = toPoint(point);
+      } else {
+        // Clone the point object so inputs don't get modified
+        point = {
+          x: point.x,
+          y: point.y,
+          z: point.z,
+          m: point.m
+        };
       }
+      var hasZ = point.z !== undefined;
       checkSanity(point);
       // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
       if (source.datum && dest.datum && checkNotWGS(source, dest)) {
@@ -7926,6 +8016,9 @@ module.exports = toPairs;
         return adjust_axis(dest, true, point);
       }
 
+      if (!hasZ) {
+        delete point.z;
+      }
       return point;
     }
 
@@ -10628,18 +10721,18 @@ module.exports = toPairs;
       this.t1 = this.sin_po;
       this.con = this.sin_po;
       this.ms1 = msfnz(this.e3, this.sin_po, this.cos_po);
-      this.qs1 = qsfnz(this.e3, this.sin_po, this.cos_po);
+      this.qs1 = qsfnz(this.e3, this.sin_po);
 
       this.sin_po = Math.sin(this.lat2);
       this.cos_po = Math.cos(this.lat2);
       this.t2 = this.sin_po;
       this.ms2 = msfnz(this.e3, this.sin_po, this.cos_po);
-      this.qs2 = qsfnz(this.e3, this.sin_po, this.cos_po);
+      this.qs2 = qsfnz(this.e3, this.sin_po);
 
       this.sin_po = Math.sin(this.lat0);
       this.cos_po = Math.cos(this.lat0);
       this.t3 = this.sin_po;
-      this.qs0 = qsfnz(this.e3, this.sin_po, this.cos_po);
+      this.qs0 = qsfnz(this.e3, this.sin_po);
 
       if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
         this.ns0 = (this.ms1 * this.ms1 - this.ms2 * this.ms2) / (this.qs2 - this.qs1);
@@ -10661,7 +10754,7 @@ module.exports = toPairs;
       this.sin_phi = Math.sin(lat);
       this.cos_phi = Math.cos(lat);
 
-      var qs = qsfnz(this.e3, this.sin_phi, this.cos_phi);
+      var qs = qsfnz(this.e3, this.sin_phi);
       var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
       var theta = this.ns0 * adjust_lon(lon - this.long0);
       var x = rh1 * Math.sin(theta) + this.x0;
@@ -12998,7 +13091,7 @@ module.exports = toPairs;
     proj4$1.nadgrid = nadgrid;
     proj4$1.transform = transform;
     proj4$1.mgrs = mgrs;
-    proj4$1.version = '2.8.0';
+    proj4$1.version = '2.9.0';
     includedProjections(proj4$1);
 
     return proj4$1;
@@ -13471,34 +13564,1032 @@ return slice;
 
 /***/ }),
 
-/***/ 371:
-/***/ (() => {
+/***/ 982:
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
- * This program are made available under the terms of the Apache License, Version 2.0
- * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+var __webpack_unused_export__;
 
 
+__webpack_unused_export__ = ({ value: true });
 
-/***/ }),
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
 
-/***/ 847:
-/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+/** An error subclass which is thrown when there are too many pending push or next operations on a single repeater. */
+var RepeaterOverflowError = /** @class */ (function (_super) {
+    __extends(RepeaterOverflowError, _super);
+    function RepeaterOverflowError(message) {
+        var _this = _super.call(this, message) || this;
+        Object.defineProperty(_this, "name", {
+            value: "RepeaterOverflowError",
+            enumerable: false,
+        });
+        if (typeof Object.setPrototypeOf === "function") {
+            Object.setPrototypeOf(_this, _this.constructor.prototype);
+        }
+        else {
+            _this.__proto__ = _this.constructor.prototype;
+        }
+        if (typeof Error.captureStackTrace === "function") {
+            Error.captureStackTrace(_this, _this.constructor);
+        }
+        return _this;
+    }
+    return RepeaterOverflowError;
+}(Error));
+/** A buffer which allows you to push a set amount of values to the repeater without pushes waiting or throwing errors. */
+var FixedBuffer = /** @class */ (function () {
+    function FixedBuffer(capacity) {
+        if (capacity < 0) {
+            throw new RangeError("Capacity may not be less than 0");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(FixedBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FixedBuffer.prototype, "full", {
+        get: function () {
+            return this._q.length >= this._c;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FixedBuffer.prototype.add = function (value) {
+        if (this.full) {
+            throw new Error("Buffer full");
+        }
+        else {
+            this._q.push(value);
+        }
+    };
+    FixedBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return FixedBuffer;
+}());
+// TODO: Use a circular buffer here.
+/** Sliding buffers allow you to push a set amount of values to the repeater without pushes waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the earliest values added. */
+var SlidingBuffer = /** @class */ (function () {
+    function SlidingBuffer(capacity) {
+        if (capacity < 1) {
+            throw new RangeError("Capacity may not be less than 1");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(SlidingBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SlidingBuffer.prototype, "full", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    SlidingBuffer.prototype.add = function (value) {
+        while (this._q.length >= this._c) {
+            this._q.shift();
+        }
+        this._q.push(value);
+    };
+    SlidingBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return SlidingBuffer;
+}());
+/** Dropping buffers allow you to push a set amount of values to the repeater without the push function waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the latest values added. */
+var DroppingBuffer = /** @class */ (function () {
+    function DroppingBuffer(capacity) {
+        if (capacity < 1) {
+            throw new RangeError("Capacity may not be less than 1");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(DroppingBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(DroppingBuffer.prototype, "full", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    DroppingBuffer.prototype.add = function (value) {
+        if (this._q.length < this._c) {
+            this._q.push(value);
+        }
+    };
+    DroppingBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return DroppingBuffer;
+}());
+/** Makes sure promise-likes don’t cause unhandled rejections. */
+function swallow(value) {
+    if (value != null && typeof value.then === "function") {
+        value.then(NOOP, NOOP);
+    }
+}
+/*** REPEATER STATES ***/
+/** The following is an enumeration of all possible repeater states. These states are ordered, and a repeater may only advance to higher states. */
+/** The initial state of the repeater. */
+var Initial = 0;
+/** Repeaters advance to this state the first time the next method is called on the repeater. */
+var Started = 1;
+/** Repeaters advance to this state when the stop function is called. */
+var Stopped = 2;
+/** Repeaters advance to this state when there are no values left to be pulled from the repeater. */
+var Done = 3;
+/** Repeaters advance to this state if an error is thrown into the repeater. */
+var Rejected = 4;
+/** The maximum number of push or next operations which may exist on a single repeater. */
+var MAX_QUEUE_LENGTH = 1024;
+var NOOP = function () { };
+/** A helper function used to mimic the behavior of async generators where the final iteration is consumed. */
+function consumeExecution(r) {
+    var err = r.err;
+    var execution = Promise.resolve(r.execution).then(function (value) {
+        if (err != null) {
+            throw err;
+        }
+        return value;
+    });
+    r.err = undefined;
+    r.execution = execution.then(function () { return undefined; }, function () { return undefined; });
+    return r.pending === undefined ? execution : r.pending.then(function () { return execution; });
+}
+/** A helper function for building iterations from values. Promises are unwrapped, so that iterations never have their value property set to a promise. */
+function createIteration(r, value) {
+    var done = r.state >= Done;
+    return Promise.resolve(value).then(function (value) {
+        if (!done && r.state >= Rejected) {
+            return consumeExecution(r).then(function (value) { return ({
+                value: value,
+                done: true,
+            }); });
+        }
+        return { value: value, done: done };
+    });
+}
+/**
+ * This function is bound and passed to the executor as the stop argument.
+ *
+ * Advances state to Stopped.
+ */
+function stop(r, err) {
+    var e_1, _a;
+    if (r.state >= Stopped) {
+        return;
+    }
+    r.state = Stopped;
+    r.onnext();
+    r.onstop();
+    if (r.err == null) {
+        r.err = err;
+    }
+    if (r.pushes.length === 0 &&
+        (typeof r.buffer === "undefined" || r.buffer.empty)) {
+        finish(r);
+    }
+    else {
+        try {
+            for (var _b = __values(r.pushes), _d = _b.next(); !_d.done; _d = _b.next()) {
+                var push_1 = _d.value;
+                push_1.resolve();
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+    }
+}
+/**
+ * The difference between stopping a repeater vs finishing a repeater is that stopping a repeater allows next to continue to drain values from the push queue and buffer, while finishing a repeater will clear all pending values and end iteration immediately. Once, a repeater is finished, all iterations will have the done property set to true.
+ *
+ * Advances state to Done.
+ */
+function finish(r) {
+    var e_2, _a;
+    if (r.state >= Done) {
+        return;
+    }
+    if (r.state < Stopped) {
+        stop(r);
+    }
+    r.state = Done;
+    r.buffer = undefined;
+    try {
+        for (var _b = __values(r.nexts), _d = _b.next(); !_d.done; _d = _b.next()) {
+            var next = _d.value;
+            var execution = r.pending === undefined
+                ? consumeExecution(r)
+                : r.pending.then(function () { return consumeExecution(r); });
+            next.resolve(createIteration(r, execution));
+        }
+    }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+    finally {
+        try {
+            if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_2) throw e_2.error; }
+    }
+    r.pushes = [];
+    r.nexts = [];
+}
+/**
+ * Called when a promise passed to push rejects, or when a push call is unhandled.
+ *
+ * Advances state to Rejected.
+ */
+function reject(r) {
+    if (r.state >= Rejected) {
+        return;
+    }
+    if (r.state < Done) {
+        finish(r);
+    }
+    r.state = Rejected;
+}
+/** This function is bound and passed to the executor as the push argument. */
+function push(r, value) {
+    swallow(value);
+    if (r.pushes.length >= MAX_QUEUE_LENGTH) {
+        throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to push are allowed on a single repeater.");
+    }
+    else if (r.state >= Stopped) {
+        return Promise.resolve(undefined);
+    }
+    var valueP = r.pending === undefined
+        ? Promise.resolve(value)
+        : r.pending.then(function () { return value; });
+    valueP = valueP.catch(function (err) {
+        if (r.state < Stopped) {
+            r.err = err;
+        }
+        reject(r);
+        return undefined; // void :(
+    });
+    var nextP;
+    if (r.nexts.length) {
+        var next_1 = r.nexts.shift();
+        next_1.resolve(createIteration(r, valueP));
+        if (r.nexts.length) {
+            nextP = Promise.resolve(r.nexts[0].value);
+        }
+        else {
+            nextP = new Promise(function (resolve) { return (r.onnext = resolve); });
+        }
+    }
+    else if (typeof r.buffer !== "undefined" && !r.buffer.full) {
+        r.buffer.add(valueP);
+        nextP = Promise.resolve(undefined);
+    }
+    else {
+        nextP = new Promise(function (resolve) { return r.pushes.push({ resolve: resolve, value: valueP }); });
+    }
+    // If an error is thrown into the repeater via the next or throw methods, we give the repeater a chance to handle this by rejecting the promise returned from push. If the push call is not immediately handled we throw the next iteration of the repeater.
+    // To check that the promise returned from push is floating, we modify the then and catch methods of the returned promise so that they flip the floating flag. The push function actually does not return a promise, because modern engines do not call the then and catch methods on native promises. By making next a plain old javascript object, we ensure that the then and catch methods will be called.
+    var floating = true;
+    var next = {};
+    var unhandled = nextP.catch(function (err) {
+        if (floating) {
+            throw err;
+        }
+        return undefined; // void :(
+    });
+    next.then = function (onfulfilled, onrejected) {
+        floating = false;
+        return Promise.prototype.then.call(nextP, onfulfilled, onrejected);
+    };
+    next.catch = function (onrejected) {
+        floating = false;
+        return Promise.prototype.catch.call(nextP, onrejected);
+    };
+    next.finally = nextP.finally.bind(nextP);
+    r.pending = valueP
+        .then(function () { return unhandled; })
+        .catch(function (err) {
+        r.err = err;
+        reject(r);
+    });
+    return next;
+}
+/**
+ * Creates the stop callable promise which is passed to the executor
+ */
+function createStop(r) {
+    var stop1 = stop.bind(null, r);
+    var stopP = new Promise(function (resolve) { return (r.onstop = resolve); });
+    stop1.then = stopP.then.bind(stopP);
+    stop1.catch = stopP.catch.bind(stopP);
+    stop1.finally = stopP.finally.bind(stopP);
+    return stop1;
+}
+/**
+ * Calls the executor passed into the constructor. This function is called the first time the next method is called on the repeater.
+ *
+ * Advances state to Started.
+ */
+function execute(r) {
+    if (r.state >= Started) {
+        return;
+    }
+    r.state = Started;
+    var push1 = push.bind(null, r);
+    var stop1 = createStop(r);
+    r.execution = new Promise(function (resolve) { return resolve(r.executor(push1, stop1)); });
+    // TODO: We should consider stopping all repeaters when the executor settles.
+    r.execution.catch(function () { return stop(r); });
+}
+var records = new WeakMap();
+// NOTE: While repeaters implement and are assignable to the AsyncGenerator interface, and you can use the types interchangeably, we don’t use typescript’s implements syntax here because this would make supporting earlier versions of typescript trickier. This is because TypeScript version 3.6 changed the iterator types by adding the TReturn and TNext type parameters.
+var Repeater = /** @class */ (function () {
+    function Repeater(executor, buffer) {
+        records.set(this, {
+            executor: executor,
+            buffer: buffer,
+            err: undefined,
+            state: Initial,
+            pushes: [],
+            nexts: [],
+            pending: undefined,
+            execution: undefined,
+            onnext: NOOP,
+            onstop: NOOP,
+        });
+    }
+    Repeater.prototype.next = function (value) {
+        swallow(value);
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        if (r.nexts.length >= MAX_QUEUE_LENGTH) {
+            throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to next are allowed on a single repeater.");
+        }
+        if (r.state <= Initial) {
+            execute(r);
+        }
+        r.onnext(value);
+        if (typeof r.buffer !== "undefined" && !r.buffer.empty) {
+            var result = createIteration(r, r.buffer.remove());
+            if (r.pushes.length) {
+                var push_2 = r.pushes.shift();
+                r.buffer.add(push_2.value);
+                r.onnext = push_2.resolve;
+            }
+            return result;
+        }
+        else if (r.pushes.length) {
+            var push_3 = r.pushes.shift();
+            r.onnext = push_3.resolve;
+            return createIteration(r, push_3.value);
+        }
+        else if (r.state >= Stopped) {
+            finish(r);
+            return createIteration(r, consumeExecution(r));
+        }
+        return new Promise(function (resolve) { return r.nexts.push({ resolve: resolve, value: value }); });
+    };
+    Repeater.prototype.return = function (value) {
+        swallow(value);
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        finish(r);
+        // We override the execution because return should always return the value passed in.
+        r.execution = Promise.resolve(r.execution).then(function () { return value; });
+        return createIteration(r, consumeExecution(r));
+    };
+    Repeater.prototype.throw = function (err) {
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        if (r.state <= Initial ||
+            r.state >= Stopped ||
+            (typeof r.buffer !== "undefined" && !r.buffer.empty)) {
+            finish(r);
+            // If r.err is already set, that mean the repeater has already produced an error, so we throw that error rather than the error passed in, because doing so might be more informative for the caller.
+            if (r.err == null) {
+                r.err = err;
+            }
+            return createIteration(r, consumeExecution(r));
+        }
+        return this.next(Promise.reject(err));
+    };
+    Repeater.prototype[Symbol.asyncIterator] = function () {
+        return this;
+    };
+    // TODO: Remove these static methods from the class.
+    Repeater.race = race;
+    Repeater.merge = merge;
+    Repeater.zip = zip;
+    Repeater.latest = latest;
+    return Repeater;
+}());
+/*** COMBINATOR FUNCTIONS ***/
+// TODO: move these combinators to their own file.
+function getIterators(values, options) {
+    var e_3, _a;
+    var iters = [];
+    var _loop_1 = function (value) {
+        if (value != null && typeof value[Symbol.asyncIterator] === "function") {
+            iters.push(value[Symbol.asyncIterator]());
+        }
+        else if (value != null && typeof value[Symbol.iterator] === "function") {
+            iters.push(value[Symbol.iterator]());
+        }
+        else {
+            iters.push((function valueToAsyncIterator() {
+                return __asyncGenerator(this, arguments, function valueToAsyncIterator_1() {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!options.yieldValues) return [3 /*break*/, 3];
+                                return [4 /*yield*/, __await(value)];
+                            case 1: return [4 /*yield*/, _a.sent()];
+                            case 2:
+                                _a.sent();
+                                _a.label = 3;
+                            case 3:
+                                if (!options.returnValues) return [3 /*break*/, 5];
+                                return [4 /*yield*/, __await(value)];
+                            case 4: return [2 /*return*/, _a.sent()];
+                            case 5: return [2 /*return*/];
+                        }
+                    });
+                });
+            })());
+        }
+    };
+    try {
+        for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
+            var value = values_1_1.value;
+            _loop_1(value);
+        }
+    }
+    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    finally {
+        try {
+            if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
+        }
+        finally { if (e_3) throw e_3.error; }
+    }
+    return iters;
+}
+// NOTE: whenever you see any variables called `advance` or `advances`, know that it is a hack to get around the fact that `Promise.race` leaks memory. These variables are intended to be set to the resolve function of a promise which is constructed and awaited as an alternative to Promise.race. For more information, see this comment in the Node.js issue tracker: https://github.com/nodejs/node/issues/17469#issuecomment-685216777.
+function race(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { returnValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, stopped, finalIteration, iteration, i_1, _loop_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/];
+                    }
+                    stopped = false;
+                    stop.then(function () {
+                        advance();
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 5, 7]);
+                    iteration = void 0;
+                    i_1 = 0;
+                    _loop_2 = function () {
+                        var j, iters_1, iters_1_1, iter;
+                        var e_4, _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    j = i_1;
+                                    try {
+                                        for (iters_1 = (e_4 = void 0, __values(iters)), iters_1_1 = iters_1.next(); !iters_1_1.done; iters_1_1 = iters_1.next()) {
+                                            iter = iters_1_1.value;
+                                            Promise.resolve(iter.next()).then(function (iteration) {
+                                                if (iteration.done) {
+                                                    stop();
+                                                    if (finalIteration === undefined) {
+                                                        finalIteration = iteration;
+                                                    }
+                                                }
+                                                else if (i_1 === j) {
+                                                    // This iterator has won, advance i and resolve the promise.
+                                                    i_1++;
+                                                    advance(iteration);
+                                                }
+                                            }, function (err) { return stop(err); });
+                                        }
+                                    }
+                                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+                                    finally {
+                                        try {
+                                            if (iters_1_1 && !iters_1_1.done && (_a = iters_1.return)) _a.call(iters_1);
+                                        }
+                                        finally { if (e_4) throw e_4.error; }
+                                    }
+                                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                                case 1:
+                                    iteration = _b.sent();
+                                    if (!(iteration !== undefined)) return [3 /*break*/, 3];
+                                    return [4 /*yield*/, push(iteration.value)];
+                                case 2:
+                                    _b.sent();
+                                    _b.label = 3;
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    };
+                    _a.label = 2;
+                case 2:
+                    if (!!stopped) return [3 /*break*/, 4];
+                    return [5 /*yield**/, _loop_2()];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 4: return [2 /*return*/, finalIteration && finalIteration.value];
+                case 5:
+                    stop();
+                    return [4 /*yield*/, Promise.race(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function merge(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { yieldValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advances, stopped, finalIteration;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/];
+                    }
+                    advances = [];
+                    stopped = false;
+                    stop.then(function () {
+                        var e_5, _a;
+                        stopped = true;
+                        try {
+                            for (var advances_1 = __values(advances), advances_1_1 = advances_1.next(); !advances_1_1.done; advances_1_1 = advances_1.next()) {
+                                var advance = advances_1_1.value;
+                                advance();
+                            }
+                        }
+                        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+                        finally {
+                            try {
+                                if (advances_1_1 && !advances_1_1.done && (_a = advances_1.return)) _a.call(advances_1);
+                            }
+                            finally { if (e_5) throw e_5.error; }
+                        }
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 3, 4]);
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var iteration, _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _b.trys.push([0, , 6, 9]);
+                                        _b.label = 1;
+                                    case 1:
+                                        if (!!stopped) return [3 /*break*/, 5];
+                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
+                                        return [4 /*yield*/, new Promise(function (resolve) {
+                                                advances[i] = resolve;
+                                            })];
+                                    case 2:
+                                        iteration = _b.sent();
+                                        if (!(iteration !== undefined)) return [3 /*break*/, 4];
+                                        if (iteration.done) {
+                                            finalIteration = iteration;
+                                            return [2 /*return*/];
+                                        }
+                                        return [4 /*yield*/, push(iteration.value)];
+                                    case 3:
+                                        _b.sent();
+                                        _b.label = 4;
+                                    case 4: return [3 /*break*/, 1];
+                                    case 5: return [3 /*break*/, 9];
+                                    case 6:
+                                        _a = iter.return;
+                                        if (!_a) return [3 /*break*/, 8];
+                                        return [4 /*yield*/, iter.return()];
+                                    case 7:
+                                        _a = (_b.sent());
+                                        _b.label = 8;
+                                    case 8:
+                                        return [7 /*endfinally*/];
+                                    case 9: return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, finalIteration && finalIteration.value];
+                case 3:
+                    stop();
+                    return [7 /*endfinally*/];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function zip(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { returnValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, stopped, iterations, values;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/, []];
+                    }
+                    stopped = false;
+                    stop.then(function () {
+                        advance();
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 6, 8]);
+                    _a.label = 2;
+                case 2:
+                    if (!!stopped) return [3 /*break*/, 5];
+                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
+                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                case 3:
+                    iterations = _a.sent();
+                    if (iterations === undefined) {
+                        return [2 /*return*/];
+                    }
+                    values = iterations.map(function (iteration) { return iteration.value; });
+                    if (iterations.some(function (iteration) { return iteration.done; })) {
+                        return [2 /*return*/, values];
+                    }
+                    return [4 /*yield*/, push(values)];
+                case 4:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 5: return [3 /*break*/, 8];
+                case 6:
+                    stop();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 7:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 8: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function latest(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, {
+        yieldValues: true,
+        returnValues: true,
+    });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, advances, stopped, iterations_1, values_2;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/, []];
+                    }
+                    advances = [];
+                    stopped = false;
+                    stop.then(function () {
+                        var e_6, _a;
+                        advance();
+                        try {
+                            for (var advances_2 = __values(advances), advances_2_1 = advances_2.next(); !advances_2_1.done; advances_2_1 = advances_2.next()) {
+                                var advance1 = advances_2_1.value;
+                                advance1();
+                            }
+                        }
+                        catch (e_6_1) { e_6 = { error: e_6_1 }; }
+                        finally {
+                            try {
+                                if (advances_2_1 && !advances_2_1.done && (_a = advances_2.return)) _a.call(advances_2);
+                            }
+                            finally { if (e_6) throw e_6.error; }
+                        }
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 5, 7]);
+                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
+                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                case 2:
+                    iterations_1 = _a.sent();
+                    if (iterations_1 === undefined) {
+                        return [2 /*return*/];
+                    }
+                    values_2 = iterations_1.map(function (iteration) { return iteration.value; });
+                    if (iterations_1.every(function (iteration) { return iteration.done; })) {
+                        return [2 /*return*/, values_2];
+                    }
+                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
+                    return [4 /*yield*/, push(values_2.slice())];
+                case 3:
+                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
+                    _a.sent();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var iteration;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        if (iterations_1[i].done) {
+                                            return [2 /*return*/, iterations_1[i].value];
+                                        }
+                                        _a.label = 1;
+                                    case 1:
+                                        if (!!stopped) return [3 /*break*/, 4];
+                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
+                                        return [4 /*yield*/, new Promise(function (resolve) { return (advances[i] = resolve); })];
+                                    case 2:
+                                        iteration = _a.sent();
+                                        if (iteration === undefined) {
+                                            return [2 /*return*/, iterations_1[i].value];
+                                        }
+                                        else if (iteration.done) {
+                                            return [2 /*return*/, iteration.value];
+                                        }
+                                        values_2[i] = iteration.value;
+                                        return [4 /*yield*/, push(values_2.slice())];
+                                    case 3:
+                                        _a.sent();
+                                        return [3 /*break*/, 1];
+                                    case 4: return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 4: return [2 /*return*/, _a.sent()];
+                case 5:
+                    stop();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+
+__webpack_unused_export__ = DroppingBuffer;
+__webpack_unused_export__ = FixedBuffer;
+__webpack_unused_export__ = MAX_QUEUE_LENGTH;
+exports.ZN = Repeater;
+__webpack_unused_export__ = RepeaterOverflowError;
+__webpack_unused_export__ = SlidingBuffer;
+//# sourceMappingURL=repeater.js.map
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
 "use strict";
 
 // UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, BaiduMap, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, ChangeTileVersion, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, CloverShape, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlow, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeafultCanvasStyle, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FGB, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, Graphic, GraphicCanvasRenderer, GraphicWebGLRenderer, Grid, GridCellInfosService, GridType, HeatMap, HillshadeParameter, HitCloverShape, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, ImageSuperMapRest, ImageTileSuperMapRest, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MapboxStyles, MappingParameters, Mapv, MapvCanvasLayer, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayGraphic, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RankSymbol, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, ScaleLine, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, StyleMap, StyleUtils, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SuperMapCloud, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, Theme, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, Tianditu, TileSuperMapRest, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, TransportationAnalystParameter, TransportationAnalystResultSetting, Turf, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, VectorTileStyles, VectorTileSuperMapRest, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, conversionDegree, getMeterPerMapUnit, getWrapNum, initMap, isCORS, lineMap, lineStyle, pointMap, pointStyle, polygonMap, polygonStyle, setCORS, viewOptionsFromMapJSON
 
 ;// CONCATENATED MODULE: ./src/common/SuperMap.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var SuperMap = window.SuperMap = window.SuperMap || {};
 SuperMap.Components = window.SuperMap.Components || {};
 
 ;// CONCATENATED MODULE: ./src/common/REST.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15823,7 +16914,7 @@ var WebScaleUnit = {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Size.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -15920,7 +17011,7 @@ class Size {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -16096,7 +17187,7 @@ Pixel.Mode = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -16565,7 +17656,7 @@ var ArrayExt = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
@@ -16739,7 +17830,7 @@ class Geometry_Geometry {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Util.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -17972,7 +19063,7 @@ function canBeJsonified(str) {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/LonLat.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18162,7 +19253,7 @@ class LonLat {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Bounds.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -18893,7 +19984,7 @@ class Bounds {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Collection.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -19140,7 +20231,7 @@ class Collection extends Geometry_Geometry {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPoint.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -19198,7 +20289,7 @@ class MultiPoint extends Collection {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Curve.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -19236,7 +20327,7 @@ class Curve extends MultiPoint {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Point.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -19380,7 +20471,7 @@ class Point extends Geometry_Geometry {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/LineString.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -19706,7 +20797,7 @@ class LineString extends Curve {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/GeoText.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20033,7 +21124,7 @@ class GeoText extends Geometry_Geometry {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/LinearRing.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20153,7 +21244,7 @@ class LinearRing extends LineString {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiLineString.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20196,7 +21287,7 @@ class MultiLineString extends Collection {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/MultiPolygon.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20241,7 +21332,7 @@ class MultiPolygon extends Collection {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Polygon.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20302,7 +21393,7 @@ class Polygon extends Collection {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/Rectangle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20387,7 +21478,7 @@ class Rectangle extends Geometry_Geometry {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/geometry/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20414,7 +21505,7 @@ class Rectangle extends Geometry_Geometry {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -20510,7 +21601,7 @@ class Credential {
  Credential.CREDENTIAL = null;
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Date.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -20606,7 +21697,7 @@ var DateExt = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -20956,7 +22047,7 @@ var DateExt = {
  Event.observe(window, 'resize', Event.unloadCache, false);
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Events.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21452,7 +22543,7 @@ Events.prototype.BROWSER_EVENTS = [
 ];
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Feature.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21512,7 +22603,7 @@ class Feature_Feature {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Vector.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21829,7 +22920,7 @@ class Vector extends Feature_Feature {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21862,7 +22953,7 @@ class Vector extends Feature_Feature {
 
 
 ;// CONCATENATED MODULE: ./src/common/format/Format.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -21928,7 +23019,7 @@ class Format {
 }
 
 ;// CONCATENATED MODULE: ./src/common/format/JSON.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22236,7 +23327,7 @@ class JSONFormat extends Format {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ServerColor.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22324,7 +23415,7 @@ class ServerColor {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ServerStyle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22538,7 +23629,7 @@ class ServerStyle {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/PointWithMeasure.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22640,7 +23731,7 @@ class PointWithMeasure extends Point {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/Route.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -22874,7 +23965,7 @@ class Route extends Collection {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ServerGeometry.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -23518,7 +24609,7 @@ class ServerGeometry {
 
 
 ;// CONCATENATED MODULE: ./src/common/format/GeoJSON.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24233,7 +25324,7 @@ class GeoJSON extends JSONFormat {
 }
 
 ;// CONCATENATED MODULE: ./src/common/format/WKT.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24584,7 +25675,7 @@ class WKT extends Format {
 }
 
 ;// CONCATENATED MODULE: ./src/common/format/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -24597,7 +25688,7 @@ class WKT extends Format {
 
 
 ;// CONCATENATED MODULE: ./src/common/control/TimeControlBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25031,7 +26122,7 @@ class TimeControlBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/control/TimeFlowControl.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25237,7 +26328,7 @@ class TimeFlowControl extends TimeControlBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/control/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25256,7 +26347,7 @@ var fetch_ie8_fetch = __webpack_require__(693);
 var fetch_jsonp = __webpack_require__(144);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 ;// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -25840,7 +26931,7 @@ var FetchRequest = {
 }
 
 ;// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26229,7 +27320,7 @@ SecurityManager.SSO = 'https://sso.supermap.com';
 SecurityManager.ONLINE = 'https://www.supermapol.com';
 
 ;// CONCATENATED MODULE: ./src/common/iManager/iManagerServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26299,7 +27390,7 @@ class IManagerServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iManager/iManagerCreateNodeParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26331,7 +27422,7 @@ class IManagerCreateNodeParam {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iManager/iManager.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26422,7 +27513,7 @@ class IManager extends IManagerServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iManager/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26434,7 +27525,7 @@ class IManager extends IManagerServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26486,7 +27577,7 @@ class IPortalServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26537,7 +27628,7 @@ class IPortalQueryParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalQueryResult.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26573,7 +27664,7 @@ class IPortalQueryResult {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalResource.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26695,7 +27786,7 @@ class IPortalResource extends IPortalServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26726,7 +27817,7 @@ class IPortalShareParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortal.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26830,7 +27921,7 @@ class IPortal extends IPortalServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalShareEntity.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26863,7 +27954,7 @@ class IPortalShareEntity {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddResourceParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -26894,7 +27985,7 @@ class IPortalShareEntity {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalRegisterServiceParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -26931,7 +28022,7 @@ class IPortalRegisterServiceParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalAddDataParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -26964,7 +28055,7 @@ class IPortalRegisterServiceParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataMetaInfoParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -27010,7 +28101,7 @@ class IPortalRegisterServiceParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataStoreInfoParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -27041,7 +28132,7 @@ class IPortalRegisterServiceParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalDataConnectionInfoParam.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -27070,7 +28161,7 @@ class IPortalRegisterServiceParam {
 
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/iPortalUser.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27370,7 +28461,7 @@ class IPortalUser extends IPortalServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iPortal/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27403,7 +28494,7 @@ class IPortalUser extends IPortalServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27784,7 +28875,7 @@ class CommonServiceBase {
  */
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27862,7 +28953,7 @@ class GeoCodingParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -27957,7 +29048,7 @@ class GeoDecodingParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28056,7 +29147,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AggregationParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28098,7 +29189,7 @@ class AggregationParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BucketAggParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28138,7 +29229,7 @@ class BucketAggParameter extends AggregationParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MetricsAggParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28178,7 +29269,7 @@ class MetricsAggParameter extends AggregationParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28351,7 +29442,7 @@ class AreaSolarRadiationParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SpatialAnalystBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28456,7 +29547,7 @@ class SpatialAnalystBase extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AreaSolarRadiationService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28532,7 +29623,7 @@ class AreaSolarRadiationService extends SpatialAnalystBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BufferDistance.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28581,7 +29672,7 @@ class BufferDistance {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BufferSetting.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28670,7 +29761,7 @@ class BufferSetting {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28716,7 +29807,7 @@ class BufferAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DataReturnOption.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28786,7 +29877,7 @@ class DataReturnOption {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FilterParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -28924,7 +30015,7 @@ class FilterParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetBufferAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29035,7 +30126,7 @@ class DatasetBufferAnalystParameters extends BufferAnalystParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeometryBufferAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29121,7 +30212,7 @@ class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BufferAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29216,7 +30307,7 @@ class BufferAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29357,7 +30448,7 @@ class DatasourceConnectionInfo {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29426,7 +30517,7 @@ class OutputSetting {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29507,7 +30598,7 @@ class MappingParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29644,7 +30735,7 @@ class BuffersAnalystJobsParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29801,7 +30892,7 @@ class ProcessingServiceBase extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29864,7 +30955,7 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -29933,7 +31024,7 @@ class BurstPipelineAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/NetworkAnalystServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30003,7 +31094,7 @@ class NetworkAnalystServiceBase extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BurstPipelineAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30082,7 +31173,7 @@ class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ChartFeatureInfoSpecsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30147,7 +31238,7 @@ class ChartFeatureInfoSpecsService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ChartQueryFilterParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30238,7 +31329,7 @@ class ChartQueryFilterParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ChartQueryParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30374,7 +31465,7 @@ class ChartQueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30497,7 +31588,7 @@ class QueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ChartQueryService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30660,7 +31751,7 @@ class ChartQueryService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ClipParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30753,7 +31844,7 @@ class ClipParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ColorDictionary.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30825,7 +31916,7 @@ class ColorDictionary {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystResultSetting.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -30926,7 +32017,7 @@ class TransportationAnalystResultSetting {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31022,7 +32113,7 @@ class TransportationAnalystParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31084,7 +32175,7 @@ class ComputeWeightMatrixParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ComputeWeightMatrixService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31190,7 +32281,7 @@ class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DataFlowService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31425,7 +32516,7 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetInfo.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31550,7 +32641,7 @@ class DatasetInfo {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31593,7 +32684,7 @@ class OverlayAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetOverlayAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31753,7 +32844,7 @@ class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParametersSetting.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31884,7 +32975,7 @@ class SurfaceAnalystParametersSetting {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -31961,7 +33052,7 @@ class SurfaceAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetSurfaceAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32061,7 +33152,7 @@ class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32139,7 +33230,7 @@ class ThiessenAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetThiessenAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32220,7 +33311,7 @@ class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32315,7 +33406,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DensityKernelAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32433,7 +33524,7 @@ class DensityKernelAnalystParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DensityAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32519,7 +33610,7 @@ class DensityAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32640,7 +33731,7 @@ class EditFeaturesParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/EditFeaturesService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32768,7 +33859,7 @@ class EditFeaturesService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalyst3DParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32835,7 +33926,7 @@ class FacilityAnalyst3DParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32875,7 +33966,7 @@ class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSinks3DService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32954,7 +34045,7 @@ class FacilityAnalystSinks3DService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -32994,7 +34085,7 @@ class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystSources3DService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33067,7 +34158,7 @@ class FacilityAnalystSources3DService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33140,7 +34231,7 @@ class FacilityAnalystStreamParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystStreamService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33228,7 +34319,7 @@ class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33266,7 +34357,7 @@ class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTracedown3DService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33334,7 +34425,7 @@ class FacilityAnalystTracedown3DService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33372,7 +34463,7 @@ class FacilityAnalystTraceup3DParameters extends FacilityAnalyst3DParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystTraceup3DService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33437,7 +34528,7 @@ class FacilityAnalystTraceup3DService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33482,7 +34573,7 @@ class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FacilityAnalystUpstream3DService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33548,7 +34639,7 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FieldParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33600,7 +34691,7 @@ class FieldParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticsParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33657,7 +34748,7 @@ class FieldStatisticsParameters extends FieldParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FieldStatisticService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33766,7 +34857,7 @@ class FieldStatisticService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -33865,7 +34956,7 @@ class FindClosestFacilitiesParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34006,7 +35097,7 @@ class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindLocationParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34089,7 +35180,7 @@ class FindLocationParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindLocationService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34213,7 +35304,7 @@ class FindLocationService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34298,7 +35389,7 @@ class FindMTSPPathsParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindMTSPPathsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34440,7 +35531,7 @@ class FindMTSPPathsService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindPathParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34523,7 +35614,7 @@ class FindPathParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindPathService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34659,7 +35750,7 @@ class FindPathService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34756,7 +35847,7 @@ class FindServiceAreasParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindServiceAreasService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34895,7 +35986,7 @@ class FindServiceAreasService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -34972,7 +36063,7 @@ class FindTSPPathsParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindTSPPathsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35110,7 +36201,7 @@ class FindTSPPathsService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35247,7 +36338,7 @@ class GenerateSpatialDataParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GenerateSpatialDataService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35367,7 +36458,7 @@ class GenerateSpatialDataService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoHashGridAggParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35427,7 +36518,7 @@ class GeoHashGridAggParameter extends BucketAggParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeometryOverlayAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35539,7 +36630,7 @@ class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeometrySurfaceAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35604,7 +36695,7 @@ class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeometryThiessenAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35850,7 +36941,7 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -35963,7 +37054,7 @@ class GeoRelationAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoRelationAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36058,7 +37149,7 @@ class GeoRelationAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36184,7 +37275,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesParametersBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36295,7 +37386,7 @@ class GetFeaturesParametersBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36443,7 +37534,7 @@ GetFeaturesByBoundsParameters.getFeatureMode = {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36602,7 +37693,7 @@ class GetFeaturesServiceBase extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBoundsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36664,7 +37755,7 @@ class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36790,7 +37881,7 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByBufferService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36854,7 +37945,7 @@ class GetFeaturesByBufferService extends GetFeaturesServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -36996,7 +38087,7 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByGeometryService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37057,7 +38148,7 @@ class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37165,7 +38256,7 @@ class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesByIDsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37227,7 +38318,7 @@ class GetFeaturesByIDsService extends GetFeaturesServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37320,7 +38411,7 @@ class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesBySQLService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37382,7 +38473,7 @@ class GetFeaturesBySQLService extends GetFeaturesServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFieldsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37466,7 +38557,7 @@ class GetFieldsService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37533,7 +38624,7 @@ class GetGridCellInfosParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetGridCellInfosService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37684,7 +38775,7 @@ class GetGridCellInfosService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/Theme.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37753,7 +38844,7 @@ class Theme {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ServerTextStyle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -37958,7 +39049,7 @@ class ServerTextStyle {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38061,7 +39152,7 @@ class ThemeLabelItem {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeUniqueItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38164,7 +39255,7 @@ class ThemeUniqueItem {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeOffset.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38240,7 +39331,7 @@ class ThemeOffset {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LabelMixedTextStyle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38364,7 +39455,7 @@ class LabelMixedTextStyle {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelText.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38478,7 +39569,7 @@ class ThemeLabelText {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelAlongLine.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38583,7 +39674,7 @@ class ThemeLabelAlongLine {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelBackground.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38657,7 +39748,7 @@ class ThemeLabelBackground {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabel.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -38962,7 +40053,7 @@ class ThemeLabel extends Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeUnique.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39103,7 +40194,7 @@ class ThemeUnique extends Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphAxes.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39205,7 +40296,7 @@ class ThemeGraphAxes {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphSize.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39268,7 +40359,7 @@ class ThemeGraphSize {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphText.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39348,7 +40439,7 @@ class ThemeGraphText {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraphItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39437,7 +40528,7 @@ class ThemeGraphItem {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraph.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39778,7 +40869,7 @@ class ThemeGraph extends Theme {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeDotDensity.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39888,7 +40979,7 @@ class ThemeDotDensity extends Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbolStyle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -39984,7 +41075,7 @@ class ThemeGraduatedSymbolStyle {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGraduatedSymbol.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40135,7 +41226,7 @@ class ThemeGraduatedSymbol extends Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeRangeItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40254,7 +41345,7 @@ class ThemeRangeItem {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeRange.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40387,7 +41478,7 @@ class ThemeRange extends Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UGCLayer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40509,7 +41600,7 @@ class UGCLayer {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UGCMapLayer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40627,7 +41718,7 @@ class UGCMapLayer extends UGCLayer {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/JoinItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40734,7 +41825,7 @@ class JoinItem {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UGCSubLayer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40854,7 +41945,7 @@ class UGCSubLayer extends UGCMapLayer {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ServerTheme.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -40973,7 +42064,7 @@ class ServerTheme extends UGCSubLayer {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/Grid.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41172,7 +42263,7 @@ class Grid extends UGCSubLayer {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/Image.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41282,7 +42373,7 @@ class UGCImage extends UGCSubLayer {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/Vector.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41355,7 +42446,7 @@ class Vector_Vector extends UGCSubLayer {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetLayersInfoService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41493,7 +42584,7 @@ class GetLayersInfoService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41665,7 +42756,7 @@ class InterpolationAnalystParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/InterpolationRBFAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41799,7 +42890,7 @@ class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/InterpolationDensityAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41858,7 +42949,7 @@ class InterpolationDensityAnalystParameters extends InterpolationAnalystParamete
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/InterpolationIDWAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -41950,7 +43041,7 @@ class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/InterpolationKrigingAnalystParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42157,7 +43248,7 @@ class InterpolationKrigingAnalystParameters extends InterpolationAnalystParamete
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/InterpolationAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42272,7 +43363,7 @@ class InterpolationAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42441,7 +43532,7 @@ class KernelDensityJobParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42506,7 +43597,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LabelMatrixCell.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42526,7 +43617,7 @@ class LabelMatrixCell {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LabelImageCell.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42613,7 +43704,7 @@ class LabelImageCell extends LabelMatrixCell {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LabelSymbolCell.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42683,7 +43774,7 @@ class LabelSymbolCell extends LabelMatrixCell {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LabelThemeCell.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42745,7 +43836,7 @@ class LabelThemeCell extends LabelMatrixCell {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LayerStatus.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42848,7 +43939,7 @@ class LayerStatus {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/LinkItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -42996,7 +44087,7 @@ class LinkItem {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MapService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43108,7 +44199,7 @@ class MapService_MapService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43248,7 +44339,7 @@ class MathExpressionAnalysisParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MathExpressionAnalysisService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43320,7 +44411,7 @@ class MathExpressionAnalysisService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MeasureParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43393,7 +44484,7 @@ class MeasureParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MeasureService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43507,7 +44598,7 @@ class MeasureService_MeasureService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlapDisplayedOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43646,7 +44737,7 @@ class OverlapDisplayedOptions {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43747,7 +44838,7 @@ class OverlayAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43872,7 +44963,7 @@ class OverlayGeoJobParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -43937,7 +45028,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44004,7 +45095,7 @@ class QueryByBoundsParameters extends QueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44166,7 +45257,7 @@ class QueryService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryByBoundsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44240,7 +45331,7 @@ class QueryByBoundsService extends QueryService {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44337,7 +45428,7 @@ class QueryByDistanceParameters extends QueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryByDistanceService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44408,7 +45499,7 @@ class QueryByDistanceService extends QueryService {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryParameters.js
- /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
   * This program are made available under the terms of the Apache License, Version 2.0
   * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44490,7 +45581,7 @@ class QueryByGeometryParameters extends QueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryByGeometryService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44562,7 +45653,7 @@ class QueryByGeometryService extends QueryService {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44618,7 +45709,7 @@ class QueryBySQLParameters extends QueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/QueryBySQLService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44693,7 +45784,7 @@ class QueryBySQLService extends QueryService {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44763,7 +45854,7 @@ class RouteCalculateMeasureParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/RouteCalculateMeasureService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -44888,7 +45979,7 @@ class RouteCalculateMeasureService extends SpatialAnalystBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45019,7 +46110,7 @@ class RouteLocatorParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/RouteLocatorService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45144,7 +46235,7 @@ class RouteLocatorService extends SpatialAnalystBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ServerFeature.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45257,7 +46348,7 @@ class ServerFeature {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45327,7 +46418,7 @@ class SetDatasourceParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45385,7 +46476,7 @@ class SetLayerInfoParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45450,7 +46541,7 @@ class SetLayerInfoService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45510,7 +46601,7 @@ class SetLayersInfoParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayersInfoService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45636,7 +46727,7 @@ class SetLayersInfoService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45717,7 +46808,7 @@ class SetLayerStatusParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayerStatusService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45863,7 +46954,7 @@ class SetLayerStatusService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -45982,7 +47073,7 @@ class SingleObjectQueryJobsParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46045,7 +47136,7 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/StopQueryParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46092,7 +47183,7 @@ class StopQueryParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/StopQueryService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46165,7 +47256,7 @@ class StopQueryService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46277,7 +47368,7 @@ class SummaryAttributesJobsParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46341,7 +47432,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46514,7 +47605,7 @@ class SummaryMeshJobParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46580,7 +47671,7 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46794,7 +47885,7 @@ class SummaryRegionJobParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46857,7 +47948,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SupplyCenter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -46946,7 +48037,7 @@ class SupplyCenter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SurfaceAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47048,7 +48139,7 @@ class SurfaceAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47152,7 +48243,7 @@ class TerrainCurvatureCalculationParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TerrainCurvatureCalculationService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47223,7 +48314,7 @@ class TerrainCurvatureCalculationService extends SpatialAnalystBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeFlow.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47309,7 +48400,7 @@ class ThemeFlow {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRangeItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47421,7 +48512,7 @@ class ThemeGridRangeItem {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridRange.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47542,7 +48633,7 @@ class ThemeGridRange extends Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUniqueItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47645,7 +48736,7 @@ class ThemeGridUniqueItem {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeGridUnique.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47759,7 +48850,7 @@ class ThemeGridUnique extends Theme {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeLabelUniqueItem.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47863,7 +48954,7 @@ class ThemeLabelUniqueItem {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeMemoryData.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -47930,7 +49021,7 @@ class ThemeMemoryData {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48032,7 +49123,7 @@ class ThemeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48167,7 +49258,7 @@ class ThemeService_ThemeService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThiessenAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48262,7 +49353,7 @@ class ThiessenAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeometryBatchAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48399,7 +49490,7 @@ class GeometryBatchAnalystService extends SpatialAnalystBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TilesetsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48455,7 +49546,7 @@ class TilesetsService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48572,7 +49663,7 @@ class TopologyValidatorJobsParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48636,7 +49727,7 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransferLine.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48756,7 +49847,7 @@ class TransferLine {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransferPathParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48818,7 +49909,7 @@ class TransferPathParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransferPathService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -48892,7 +49983,7 @@ class TransferPathService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49023,7 +50114,7 @@ class TransferSolutionParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransferSolutionService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49118,7 +50209,7 @@ class TransferSolutionService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49193,7 +50284,7 @@ class UpdateEdgeWeightParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49253,7 +50344,7 @@ class CreateDatasetParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateEdgeWeightService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49366,7 +50457,7 @@ class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49438,7 +50529,7 @@ class UpdateTurnNodeWeightParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateTurnNodeWeightService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49549,7 +50640,7 @@ class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49650,7 +50741,7 @@ class UpdateDatasetParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49767,7 +50858,7 @@ class VectorClipJobsParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49830,7 +50921,7 @@ class VectorClipJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/RasterFunctionParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49869,7 +50960,7 @@ class RasterFunctionParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/NDVIParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -49947,7 +51038,7 @@ class NDVIParameter extends RasterFunctionParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/HillshadeParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50038,7 +51129,7 @@ class HillshadeParameter extends RasterFunctionParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobCustomItems.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50111,7 +51202,7 @@ class WebPrintingJobCustomItems {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobImage.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50172,7 +51263,7 @@ class WebPrintingJobImage {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayers.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -50222,7 +51313,7 @@ class WebPrintingJobImage {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLegendOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50315,7 +51406,7 @@ class WebPrintingJobLegendOptions {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLittleMapOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50411,7 +51502,7 @@ class WebPrintingJobLittleMapOptions {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobNorthArrowOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50471,7 +51562,7 @@ class WebPrintingJobNorthArrowOptions {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobScaleBarOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50555,7 +51646,7 @@ class WebPrintingJobScaleBarOptions {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobContent.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50634,7 +51725,7 @@ class WebPrintingJobContent {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobLayoutOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50772,7 +51863,7 @@ class WebPrintingJobLayoutOptions {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobExportOptions.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50860,7 +51951,7 @@ class WebPrintingJobExportOptions {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingJobParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -50930,7 +52021,7 @@ class WebPrintingJobParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/WebPrintingService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51104,7 +52195,7 @@ class WebPrintingService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageCollectionService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51254,7 +52345,7 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51353,7 +52444,7 @@ class ImageService_ImageService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/FieldsFilter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51424,7 +52515,7 @@ class FieldsFilter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/Sortby.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51502,7 +52593,7 @@ Sortby.Direction = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageSearchParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51624,7 +52715,7 @@ class ImageSearchParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageStretchOption.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51748,7 +52839,7 @@ ImageStretchOption.StretchType = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageRenderingRule.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -51975,7 +53066,7 @@ ImageRenderingRule.InterpolationMode = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageGFHillShade.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52067,7 +53158,7 @@ class ImageGFHillShade {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageGFAspect.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52137,7 +53228,7 @@ class ImageGFAspect {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageGFOrtho.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52195,7 +53286,7 @@ class ImageGFOrtho {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ImageGFSlope.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52277,7 +53368,7 @@ class ImageGFSlope {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52779,7 +53870,7 @@ class ImageGFSlope {
 
 
 ;// CONCATENATED MODULE: ./src/common/online/OnlineResources.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52891,7 +53982,7 @@ var FilterField = {
 
 
 ;// CONCATENATED MODULE: ./src/common/online/OnlineServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -52939,7 +54030,7 @@ class OnlineServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/online/OnlineData.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53051,7 +54142,7 @@ class OnlineData extends OnlineServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/online/Online.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53132,7 +54223,7 @@ class Online {
 }
 
 ;// CONCATENATED MODULE: ./src/common/online/OnlineQueryDatasParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53236,7 +54327,7 @@ class OnlineQueryDatasParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/online/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53252,7 +54343,7 @@ class OnlineQueryDatasParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/security/KeyServiceParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53299,7 +54390,7 @@ class KeyServiceParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/security/ServerInfo.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53375,7 +54466,7 @@ class ServerInfo {
 
 
 ;// CONCATENATED MODULE: ./src/common/security/TokenServiceParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53459,7 +54550,7 @@ class TokenServiceParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/security/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -53475,7 +54566,7 @@ class TokenServiceParameter {
 const external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -54162,14 +55253,14 @@ class ElasticSearch {
 
 
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
 ;// CONCATENATED MODULE: ./src/common/thirdparty/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -54177,7 +55268,7 @@ class ElasticSearch {
 
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Util.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -54464,7 +55555,7 @@ class Util_Util {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Color.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -56250,7 +57341,7 @@ function scaleToResolution(scale, dpi, mapUnit) {
   return intersection;
 }
 ;// CONCATENATED MODULE: ./src/common/util/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -56266,7 +57357,7 @@ function scaleToResolution(scale, dpi, mapUnit) {
 var lodash_topairs = __webpack_require__(52);
 var lodash_topairs_default = /*#__PURE__*/__webpack_require__.n(lodash_topairs);
 ;// CONCATENATED MODULE: ./src/common/style/CartoCSS.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -60939,7 +62030,7 @@ CartoCSS.Tree.Zoom.ranges = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/style/ThemeStyle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61135,7 +62226,7 @@ class ThemeStyle {
 
 
 ;// CONCATENATED MODULE: ./src/common/style/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61145,7 +62236,7 @@ class ThemeStyle {
 
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -61244,7 +62335,7 @@ class ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Point.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61302,7 +62393,7 @@ class Point_Point extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Line.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61350,7 +62441,7 @@ class Line_Line extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Polygon.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61404,7 +62495,7 @@ class Polygon_Polygon extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Rectangle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61470,7 +62561,7 @@ class Rectangle_Rectangle extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Sector.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61558,7 +62649,7 @@ class Sector extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Label.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61636,7 +62727,7 @@ class Label extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Image.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61740,7 +62831,7 @@ class Image_Image extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Circle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -61798,7 +62889,7 @@ class Circle_Circle extends ShapeParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Eventful.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -62038,7 +63129,7 @@ class Eventful {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Vector.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -62398,7 +63489,7 @@ class levelRenderer_Vector_Vector {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Curve.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -62941,7 +64032,7 @@ class Curve_Curve {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Area.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -64016,7 +65107,7 @@ class Area {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/ComputeBoundingBox.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -64218,7 +65309,7 @@ class ComputeBoundingBox {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Env.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -64362,7 +65453,7 @@ class Env {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Event.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -64434,7 +65525,7 @@ class Event_Event {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Http.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -64487,7 +65578,7 @@ class Http {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Config.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 class Config {
@@ -64574,7 +65665,7 @@ Config.catchBrushException = false;
  */
 Config.debugMode = 0;
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Log.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -64619,7 +65710,7 @@ class Log {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Math.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -64689,7 +65780,7 @@ class MathTool {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Matrix.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -64898,7 +65989,7 @@ class Matrix {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SUtil.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -65137,7 +66228,7 @@ SUtil_SUtil.Util = new Util_Util();
 SUtil_SUtil.Util_vector = new levelRenderer_Vector_Vector();
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Transformable.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -65404,7 +66495,7 @@ class Transformable {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Shape.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66316,7 +67407,7 @@ class Shape_Shape extends mixinExt(Eventful, Transformable) {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPoint.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66425,7 +67516,7 @@ class SmicPoint extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicText.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -66912,7 +68003,7 @@ class SmicText extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicCircle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67030,7 +68121,7 @@ class SmicCircle extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicPolygon.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67490,7 +68581,7 @@ class SmicPolygon extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicBrokenLine.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67744,7 +68835,7 @@ class SmicBrokenLine extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicImage.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -67961,7 +69052,7 @@ SmicImage._needsRefresh = [];
 SmicImage._refreshTimeout = null;
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRectangle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -68166,7 +69257,7 @@ class SmicRectangle extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicSector.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -68338,7 +69429,7 @@ class SmicSector extends Shape_Shape {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/ShapeFactory.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -69174,7 +70265,7 @@ class ShapeFactory {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/Theme.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -69287,7 +70378,7 @@ class Theme_Theme {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Graph.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -69811,7 +70902,7 @@ Theme_Theme.getDataValues = function (data, fields, decimalNumber) {
 };
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Bar.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -70130,7 +71221,7 @@ class Bar extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Bar3D.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -70528,7 +71619,7 @@ class Bar3D extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/RankSymbol.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -70673,7 +71764,7 @@ class RankSymbol extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Circle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -70821,7 +71912,7 @@ class Circle extends RankSymbol {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Line.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -71081,7 +72172,7 @@ class Line extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Pie.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -71272,7 +72363,7 @@ class Pie extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Point.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -71504,7 +72595,7 @@ class overlay_Point_Point extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/Ring.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -71705,7 +72796,7 @@ class Ring extends Graph {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/ThemeVector.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -72375,7 +73466,7 @@ class ThemeVector extends Theme_Theme {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/feature/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -72412,7 +73503,7 @@ class ThemeVector extends Theme_Theme {
 
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Group.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -72674,7 +73765,7 @@ class Group extends mixinExt(Eventful, Transformable) {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Storage.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -73153,7 +74244,7 @@ class Storage {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Painter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -74295,7 +75386,7 @@ class PaintLayer extends Transformable {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Handler.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -75420,7 +76511,7 @@ class Handler extends Eventful {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Easing.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -75870,7 +76961,7 @@ class Easing {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Clip.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -75986,7 +77077,7 @@ class Clip {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Animation.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -76669,7 +77760,7 @@ class Animator {
 
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/Render.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77229,7 +78320,7 @@ class Render {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/LevelRenderer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77347,7 +78438,7 @@ class LevelRenderer {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicEllipse.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77472,7 +78563,7 @@ class SmicEllipse extends (/* unused pure expression or super */ null && (Shape)
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicIsogon.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77600,7 +78691,7 @@ class SmicIsogon extends (/* unused pure expression or super */ null && (Shape))
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicRing.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77707,7 +78798,7 @@ class SmicRing extends (/* unused pure expression or super */ null && (Shape)) {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/SmicStar.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77859,7 +78950,7 @@ class SmicStar extends (/* unused pure expression or super */ null && (Shape)) {
 }
 
 ;// CONCATENATED MODULE: ./src/common/overlay/levelRenderer/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77940,7 +79031,7 @@ class SmicStar extends (/* unused pure expression or super */ null && (Shape)) {
 
 
 ;// CONCATENATED MODULE: ./src/common/overlay/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -77970,7 +79061,7 @@ class SmicStar extends (/* unused pure expression or super */ null && (Shape)) {
 
 
 ;// CONCATENATED MODULE: ./src/common/components/CommonTypes.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -77989,7 +79080,7 @@ const CommonTypes_FileConfig = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/components/openfile/FileModel.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78031,7 +79122,7 @@ class FileModel {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/messagebox/MessageBox.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78122,7 +79213,7 @@ const external_function_try_return_echarts_catch_e_return_namespaceObject = func
 var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
 ﻿
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -78245,7 +79336,7 @@ let en = {
 
 
 ;// CONCATENATED MODULE: ./src/common/lang/locales/zh-CN.js
-﻿/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+﻿/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78369,7 +79460,7 @@ let zh = {
 
 
 ;// CONCATENATED MODULE: ./src/common/lang/Lang.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -78494,7 +79585,7 @@ let Lang = {
 ;// CONCATENATED MODULE: external "function(){try{return XLSX}catch(e){return {}}}()"
 const external_function_try_return_XLSX_catch_e_return_namespaceObject = function(){try{return XLSX}catch(e){return {}}}();
 ;// CONCATENATED MODULE: ./src/common/components/util/FileReaderUtil.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -78729,7 +79820,7 @@ let FileReaderUtil = {
 
 
 ;// CONCATENATED MODULE: ./src/common/components/chart/ChartModel.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -79306,7 +80397,7 @@ class ChartModel {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/chart/ChartViewModel.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -79901,7 +80992,7 @@ class ChartViewModel {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/chart/ChartView.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80064,7 +81155,7 @@ class ChartView {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/TemplateBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80136,7 +81227,7 @@ class TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/CommonContainer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80204,7 +81295,7 @@ class CommonContainer extends TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/Select.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80334,7 +81425,7 @@ class Select extends TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/DropDownBox.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80535,7 +81626,7 @@ class DropDownBox extends TemplateBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/PopContainer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80606,7 +81697,7 @@ class PopContainer extends TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/AttributesPopContainer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80667,7 +81758,7 @@ class AttributesPopContainer extends PopContainer {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/IndexTabsPageContainer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80782,7 +81873,7 @@ class IndexTabsPageContainer extends TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/CityTabsPage.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -80905,7 +81996,7 @@ class CityTabsPage extends IndexTabsPageContainer {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/NavTabsPage.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -81038,7 +82129,7 @@ class NavTabsPage extends TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/templates/PaginationContainer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -81353,7 +82444,7 @@ class PaginationContainer extends TemplateBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/components/util/Util.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -81400,7 +82491,7 @@ let ComponentsUtil = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/components/util/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -81409,7 +82500,7 @@ let ComponentsUtil = {
 
 
 ;// CONCATENATED MODULE: ./src/common/components/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 //数据
@@ -81456,7 +82547,7 @@ let ComponentsUtil = {
 
 
 ;// CONCATENATED MODULE: ./src/common/lang/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -81468,7 +82559,7 @@ let ComponentsUtil = {
 
 
 ;// CONCATENATED MODULE: ./src/common/index.common.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -81999,7 +83090,7 @@ SuperMap.WebScaleUnit = WebScaleUnit;
 const external_ol_Observable_namespaceObject = ol.Observable;
 var external_ol_Observable_default = /*#__PURE__*/__webpack_require__.n(external_ol_Observable_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/services/ServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -82027,7 +83118,7 @@ class ServiceBase extends (external_ol_Observable_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/MapService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -82128,7 +83219,7 @@ class MapService extends ServiceBase {
 const external_ol_control_Control_namespaceObject = ol.control.Control;
 var external_ol_control_Control_default = /*#__PURE__*/__webpack_require__.n(external_ol_control_Control_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/control/ChangeTileVersion.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -82575,7 +83666,7 @@ const external_ol_proj_namespaceObject = ol.proj;
 const external_ol_AssertionError_namespaceObject = ol.AssertionError;
 var external_ol_AssertionError_default = /*#__PURE__*/__webpack_require__.n(external_ol_AssertionError_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/control/ScaleLine.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -82740,12 +83831,12 @@ class ScaleLine extends (external_ol_control_ScaleLine_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/common/control/img/Logo.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 var LogoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII=";
 ;// CONCATENATED MODULE: ./src/openlayers/control/Logo.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -82775,7 +83866,6 @@ class Logo extends (external_ol_control_Control_default()) {
         options.imageUrl = options.imageUrl || null;
         options.width = options.width || null;
         options.height = options.height || null;
-        options.link = options.link || "https://iclient.supermap.io";
         options.alt = options.alt || "SuperMap iClient";
         super(options);
         this.options = options;
@@ -82846,14 +83936,14 @@ class Logo extends (external_ol_control_Control_default()) {
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/control/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/StyleMap.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -83107,7 +84197,7 @@ var StyleMap = {
 };
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/DeafultCanvasStyle.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -83255,7 +84345,7 @@ var external_ol_Feature_default = /*#__PURE__*/__webpack_require__.n(external_ol
 const external_ol_proj_Projection_namespaceObject = ol.proj.Projection;
 var external_ol_proj_Projection_default = /*#__PURE__*/__webpack_require__.n(external_ol_proj_Projection_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/core/Util.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -83756,7 +84846,7 @@ var external_ol_style_Stroke_default = /*#__PURE__*/__webpack_require__.n(extern
 const external_ol_style_Text_namespaceObject = ol.style.Text;
 var external_ol_style_Text_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_Text_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/core/StyleUtils.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -84222,9 +85312,9 @@ class StyleUtils {
       return null;
     }
     //兼容iportal示例的问题
-    if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-      icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
-    }
+    // if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+    //   icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
+    // }
     return new (external_ol_style_Style_default())({
       image: new (external_ol_style_Icon_default())({
         src: icon,
@@ -84252,9 +85342,9 @@ class StyleUtils {
           return null;
         }
         //兼容iportal示例的问题
-        if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-          pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
-        }
+        // if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+        //   pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
+        // }
         return new (external_ol_style_Style_default())({
           image: new (external_ol_style_Icon_default())({
             src: pointStyle.externalGraphic,
@@ -85017,7 +86107,7 @@ var external_ol_Map_default = /*#__PURE__*/__webpack_require__.n(external_ol_Map
 const external_ol_layer_Group_namespaceObject = ol.layer.Group;
 var external_ol_layer_Group_default = /*#__PURE__*/__webpack_require__.n(external_ol_layer_Group_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/core/MapExtend.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85067,7 +86157,7 @@ var MapExtend = function () {
     }
 }();
 ;// CONCATENATED MODULE: ./src/openlayers/core/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85083,7 +86173,7 @@ const external_ol_asserts_namespaceObject = ol.asserts;
 const external_ol_tilegrid_TileGrid_namespaceObject = ol.tilegrid.TileGrid;
 var external_ol_tilegrid_TileGrid_default = /*#__PURE__*/__webpack_require__.n(external_ol_tilegrid_TileGrid_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/BaiduMap.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85108,7 +86198,7 @@ class BaiduMap extends (external_ol_source_TileImage_default()) {
         var options = opt_options || {};
         var attributions =
             options.attributions ||
-            "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© SuperMap iClient</span>";
         var tileGrid = BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
 
@@ -85215,7 +86305,7 @@ var external_ol_format_GeoJSON_default = /*#__PURE__*/__webpack_require__.n(exte
 ;// CONCATENATED MODULE: external "ol.extent"
 const external_ol_extent_namespaceObject = ol.extent;
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/ImageSuperMapRest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85284,7 +86374,7 @@ const external_ol_extent_namespaceObject = ol.extent;
 
     options.attributions =
       options.attributions ||
-      "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='https://iclient.supermap.io/'>© SuperMap iClient</a>";
+      "Map Data <span>© SuperMap iServer</span> with © SuperMap iClient";
 
     options.format = options.format ? options.format : 'png';
     this._layerUrl = Util.urlPathAppend(options.url, 'image.' + options.format);
@@ -85471,7 +86561,7 @@ const external_ol_extent_namespaceObject = ol.extent;
 const external_ol_source_XYZ_namespaceObject = ol.source.XYZ;
 var external_ol_source_XYZ_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_XYZ_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/SuperMapCloud.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85493,7 +86583,7 @@ class SuperMapCloud extends (external_ol_source_XYZ_default()) {
     constructor(opt_options) {
         var options = opt_options || {};
 
-        var attributions = options.attributions || "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+        var attributions = options.attributions || "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© SuperMap iClient</span>"
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';
         var url = options.url || 'http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
@@ -85534,7 +86624,7 @@ var external_ol_source_WMTS_default = /*#__PURE__*/__webpack_require__.n(externa
 const external_ol_tilegrid_WMTS_namespaceObject = ol.tilegrid.WMTS;
 var external_ol_tilegrid_WMTS_default = /*#__PURE__*/__webpack_require__.n(external_ol_tilegrid_WMTS_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/Tianditu.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85575,8 +86665,8 @@ class Tianditu extends (external_ol_source_WMTS_default()) {
     }
     var options = opt_options || {};
     var attributions = options.attributions || "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-      "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-      "<span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+    "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
+    "<span>© SuperMap iClient</span>"
     options.layerType = options.layerType || "vec";
     options.layerType = options.isLabel ? layerLabelMap[options.layerType] : options.layerType;
     options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";
@@ -85691,7 +86781,7 @@ const external_ol_size_namespaceObject = ol.size;
 ;// CONCATENATED MODULE: external "ol.tilegrid"
 const external_ol_tilegrid_namespaceObject = ol.tilegrid;
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/TileSuperMapRest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -85734,8 +86824,7 @@ class TileSuperMapRest extends (external_ol_source_TileImage_default()) {
     constructor(options) {
         options = options || {};
         options.attributions =
-            options.attributions ||
-            "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
 
         options.format = options.format ? options.format : 'png';
 
@@ -86118,7 +87207,7 @@ function startsWithNumber(str) {
 const external_ol_geom_Point_namespaceObject = ol.geom.Point;
 var external_ol_geom_Point_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_Point_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/services/QueryService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -86295,7 +87384,7 @@ class QueryService_QueryService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/FeatureService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -86563,8 +87652,8 @@ function getFeatureProperties(features) {
   return properties;
 }
 
-function getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode) {
-  getFeatureBySQLWithConcurrent(url, datasetNames, processCompleted, processFaild, serviceOptions, targetEpsgCode);
+function getFeatureBySQL(url, datasetNames, serviceOptions, processCompleted, processFaild, targetEpsgCode, restDataSingleRequestCount) {
+  getFeatureBySQLWithConcurrent(url, datasetNames, processCompleted, processFaild, serviceOptions, targetEpsgCode, restDataSingleRequestCount);
 }
 function queryFeatureBySQL(
   url,
@@ -86611,13 +87700,14 @@ function getFeatureBySQLWithConcurrent(
   processCompleted,
   processFailed,
   serviceOptions,
-  targetEpsgCode
+  targetEpsgCode,
+  restDataSingleRequestCount
 ) {
   let queryParameter = new FilterParameter({
     name: datasetNames.join().replace(':', '@')
   });
 
-  let maxFeatures = 100, // 每次请求数据量
+  let maxFeatures = restDataSingleRequestCount || 1000, // 每次请求数据量
     firstResult, // 存储每次请求的结果
     allRequest = []; // 存储发出的请求Promise
 
@@ -86722,7 +87812,7 @@ function Util_isArray(obj) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/DataFlowService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -86841,7 +87931,7 @@ class DataFlowService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/DataFlow.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -86957,7 +88047,7 @@ class DataFlow extends (external_ol_source_Vector_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/ThemeFeature.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -87007,7 +88097,7 @@ class ThemeFeature {
 const external_ol_source_ImageCanvas_namespaceObject = ol.source.ImageCanvas;
 var external_ol_source_ImageCanvas_default = /*#__PURE__*/__webpack_require__.n(external_ol_source_ImageCanvas_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/Theme.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -87048,7 +88138,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
@@ -87593,7 +88683,7 @@ class theme_Theme_Theme extends (external_ol_source_ImageCanvas_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Graph.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -88031,7 +89121,7 @@ class Graph_Graph extends theme_Theme_Theme {
 const external_ol_style_RegularShape_namespaceObject = ol.style.RegularShape;
 var external_ol_style_RegularShape_default = /*#__PURE__*/__webpack_require__.n(external_ol_style_RegularShape_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/CloverShape.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -88165,7 +89255,7 @@ class CloverShape extends (external_ol_style_RegularShape_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/HitCloverShape.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -88230,7 +89320,7 @@ class HitCloverShape extends CloverShape {
 const external_ol_Object_namespaceObject = ol.Object;
 var external_ol_Object_default = /*#__PURE__*/__webpack_require__.n(external_ol_Object_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/WebGLRenderer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -88587,7 +89677,7 @@ class GraphicWebGLRenderer extends (external_ol_Object_default()) {
 
 }
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/CanvasRenderer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -88766,7 +89856,7 @@ class GraphicCanvasRenderer extends (external_ol_Object_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/Graphic.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -88947,7 +90037,7 @@ var external_ol_geom_Polygon_default = /*#__PURE__*/__webpack_require__.n(extern
 const external_ol_layer_Image_namespaceObject = ol.layer.Image;
 var external_ol_layer_Image_default = /*#__PURE__*/__webpack_require__.n(external_ol_layer_Image_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Graphic.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -89536,7 +90626,7 @@ class Graphic extends (external_ol_source_ImageCanvas_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/GeoFeature.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -89813,7 +90903,7 @@ class GeoFeature extends theme_Theme_Theme {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Label.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -90776,7 +91866,7 @@ class Label_Label extends GeoFeature {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvCanvasLayer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
@@ -90887,7 +91977,7 @@ const external_function_try_return_mapv_catch_e_return_namespaceObject = functio
 const external_ol_interaction_Pointer_namespaceObject = ol.interaction.Pointer;
 var external_ol_interaction_Pointer_default = /*#__PURE__*/__webpack_require__.n(external_ol_interaction_Pointer_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/MapvLayer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -91294,7 +92384,7 @@ class MapvLayer extends BaiduMapLayer {
     }
 }
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Mapv.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -91324,7 +92414,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "© 2018 百度 MapV with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
@@ -91437,7 +92527,7 @@ class Mapv extends (external_ol_source_ImageCanvas_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Range.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -91566,7 +92656,7 @@ class Range extends GeoFeature {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/RankSymbol.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -91663,7 +92753,7 @@ class RankSymbol_RankSymbol extends Graph_Graph {
 ;// CONCATENATED MODULE: external "function(){try{return turf}catch(e){return {}}}()"
 const external_function_try_return_turf_catch_e_return_namespaceObject = function(){try{return turf}catch(e){return {}}}();
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Turf.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -91686,7 +92776,7 @@ class Turf extends (external_ol_source_Vector_default()) {
         var options = opt_options ? opt_options : {};
 
         super({
-            attributions: options.attributions || "<span>© <a href='https://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "<span>© turfjs</span> with <span>© SuperMap iClient</span>",
             features: options.features,
             format: options.format,
             extent: options.extent,
@@ -91961,7 +93051,7 @@ class Turf extends (external_ol_source_Vector_default()) {
 
 }
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/Unique.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -92085,7 +93175,7 @@ class Unique extends GeoFeature {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/VectorTileStyles.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -92646,7 +93736,7 @@ var external_ol_source_VectorTile_default = /*#__PURE__*/__webpack_require__.n(e
 const external_ol_format_MVT_namespaceObject = ol.format.MVT;
 var external_ol_format_MVT_default = /*#__PURE__*/__webpack_require__.n(external_ol_format_MVT_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/VectorTileSuperMapRest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -92692,7 +93782,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
 
         options.attributions =
             options.attributions ||
-            "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "Tile Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
         if (['4', '5'].indexOf(core_Util_Util.getOlVersion()) < 0) {
             options.tileSize = options.format instanceof (external_ol_format_MVT_default()) && options.style ? 512 : 256;
         }
@@ -93113,7 +94203,7 @@ class VectorTileSuperMapRest extends (external_ol_source_VectorTile_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/HeatMap.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -93150,7 +94240,7 @@ class HeatMap extends (external_ol_source_ImageCanvas_default()) {
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: core_Util_Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
@@ -93579,8 +94669,8 @@ var geometry_type_GeometryType;
   GeometryType[GeometryType["TIN"] = 16] = "TIN";
   GeometryType[GeometryType["Triangle"] = 17] = "Triangle";
 })(geometry_type_GeometryType || (geometry_type_GeometryType = {}));
-// EXTERNAL MODULE: ./node_modules/flatbuffers/js/index.js
-var js = __webpack_require__(385);
+// EXTERNAL MODULE: ./node_modules/flatbuffers/js/flatbuffers.js
+var js_flatbuffers = __webpack_require__(903);
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/geometry.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -93728,7 +94818,7 @@ var geometry_Geometry = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsGeometry",
     value: function getSizePrefixedRootAsGeometry(bb, obj) {
-      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -94248,7 +95338,7 @@ var column_Column = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsColumn",
     value: function getSizePrefixedRootAsColumn(bb, obj) {
-      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -94402,7 +95492,7 @@ var feature_Feature = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsFeature",
     value: function getSizePrefixedRootAsFeature(bb, obj) {
-      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -94778,7 +95868,7 @@ var Crs = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsCrs",
     value: function getSizePrefixedRootAsCrs(bb, obj) {
-      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -94968,7 +96058,7 @@ var header_Header = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsHeader",
     value: function getSizePrefixedRootAsHeader(bb, obj) {
-      bb.setPosition(bb.position() + js/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
       return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -95255,7 +96345,7 @@ var Logger = /*#__PURE__*/function () {
   return Logger;
 }();
 
-Logger.logLevel = LogLevel.Warn;
+Logger.logLevel = LogLevel.Info;
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/packedrtree.js
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -95305,8 +96395,11 @@ function generateLevelBounds(numItems, nodeSize) {
     levelOffsets.push(n - size);
     n -= size;
   }
+  levelOffsets.reverse();
+  levelNumNodes.reverse();
   var levelBounds = [];
   for (var i = 0; i < levelNumNodes.length; i++) levelBounds.push([levelOffsets[i], levelOffsets[i] + levelNumNodes[i]]);
+  levelBounds.reverse();
   return levelBounds;
 }
 function streamSearch(_x, _x2, _x3, _x4) {
@@ -95754,7 +96847,7 @@ var HttpReader = /*#__PURE__*/function () {
               bytes = new Uint8Array(byteBuffer);
               bytesAligned = new Uint8Array(featureLength + SIZE_PREFIX_LEN);
               bytesAligned.set(bytes, SIZE_PREFIX_LEN);
-              bb = new js/* ByteBuffer */.cZ(bytesAligned);
+              bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
               bb.setPosition(SIZE_PREFIX_LEN);
               return _context4.abrupt("return", feature_Feature.getRootAsFeature(bb));
             case 14:
@@ -95824,7 +96917,7 @@ var HttpReader = /*#__PURE__*/function () {
               return headerClient.getRange(12, headerLength, minReqLength, 'header');
             case 24:
               bytes = _context5.sent;
-              bb = new js/* ByteBuffer */.cZ(new Uint8Array(bytes));
+              bb = new js_flatbuffers/* ByteBuffer */.cZ(new Uint8Array(bytes));
               header = fromByteBuffer(bb);
               indexLength = calcTreeSize(header.featuresCount, header.indexNodeSize);
               Logger.debug('completed: opening http reader');
@@ -96052,7 +97145,7 @@ function deserialize(bytes, fromFeature, headerMetaFn) {
   if (!bytes.subarray(0, 3).every(function (v, i) {
     return constants_magicbytes[i] === v;
   })) throw new Error('Not a FlatGeobuf file');
-  var bb = new js/* ByteBuffer */.cZ(bytes);
+  var bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
   var headerLength = bb.readUint32(constants_magicbytes.length);
   bb.setPosition(constants_magicbytes.length + SIZE_PREFIX_LEN);
   var headerMeta = fromByteBuffer(bb);
@@ -96120,7 +97213,7 @@ function _deserializeStream() {
         case 12:
           _context2.t3 = _context2.sent;
           bytes = new _context2.t2(_context2.t3);
-          bb = new js/* ByteBuffer */.cZ(bytes);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
           headerLength = bb.readUint32(0);
           _context2.t4 = Uint8Array;
           _context2.next = 19;
@@ -96128,7 +97221,7 @@ function _deserializeStream() {
         case 19:
           _context2.t5 = _context2.sent;
           bytes = new _context2.t4(_context2.t5);
-          bb = new js/* ByteBuffer */.cZ(bytes);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
           headerMeta = fromByteBuffer(bb);
           if (headerMetaFn) headerMetaFn(headerMeta);
           indexNodeSize = headerMeta.indexNodeSize, featuresCount = headerMeta.featuresCount;
@@ -96251,7 +97344,7 @@ function _readFeature() {
           }
           return _context4.abrupt("return");
         case 7:
-          bb = new js/* ByteBuffer */.cZ(bytes);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
           featureLength = bb.readUint32(0);
           _context4.t2 = Uint8Array;
           _context4.next = 12;
@@ -96261,7 +97354,7 @@ function _readFeature() {
           bytes = new _context4.t2(_context4.t3);
           bytesAligned = new Uint8Array(featureLength + 4);
           bytesAligned.set(bytes, 4);
-          bb = new js/* ByteBuffer */.cZ(bytesAligned);
+          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
           bb.setPosition(SIZE_PREFIX_LEN);
           feature = feature_Feature.getRootAsFeature(bb);
           return _context4.abrupt("return", fromFeature(feature, headerMeta));
@@ -96441,10 +97534,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 function FGB_asyncIterator(iterable) { var method, async, sync, retry = 2; for ("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;) { if (async && null != (method = iterable[async])) return method.call(iterable); if (sync && null != (method = iterable[sync])) return new FGB_AsyncFromSyncIterator(method.call(iterable)); async = "@@asyncIterator", sync = "@@iterator"; } throw new TypeError("Object is not async iterable"); }
 function FGB_AsyncFromSyncIterator(s) { function AsyncFromSyncIteratorContinuation(r) { if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object.")); var done = r.done; return Promise.resolve(r.value).then(function (value) { return { value: value, done: done }; }); } return FGB_AsyncFromSyncIterator = function AsyncFromSyncIterator(s) { this.s = s, this.n = s.next; }, FGB_AsyncFromSyncIterator.prototype = { s: null, n: null, next: function next() { return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments)); }, "return": function _return(value) { var ret = this.s["return"]; return void 0 === ret ? Promise.resolve({ value: value, done: !0 }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments)); }, "throw": function _throw(value) { var thr = this.s["return"]; return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments)); } }, new FGB_AsyncFromSyncIterator(s); }
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-// import { FetchRequest } from '../../common/util/FetchRequest';
 
 
 
@@ -96506,9 +97598,8 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
             case 5:
               fgbStream = _context.sent;
             case 6:
-              _context.next = 8;
-              return this._handleFeatures(fgbStream && fgbStream.body || this.url, extent);
-            case 8:
+              this._handleFeatures(fgbStream && fgbStream.body || this.url, extent);
+            case 7:
             case "end":
               return _context.stop();
           }
@@ -96629,7 +97720,7 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
   return FGB;
 }((external_ol_source_Vector_default()));
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/graphic/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -96639,13 +97730,13 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/mapv/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/theme/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -96655,7 +97746,7 @@ var FGB = /*#__PURE__*/function (_VectorSource) {
 const external_ol_geom_LineString_namespaceObject = ol.geom.LineString;
 var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(external_ol_geom_LineString_namespaceObject);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/olExtends.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -97041,7 +98132,7 @@ var external_ol_geom_LineString_default = /*#__PURE__*/__webpack_require__.n(ext
 var lodash_remove = __webpack_require__(794);
 var lodash_remove_default = /*#__PURE__*/__webpack_require__.n(lodash_remove);
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/MapboxStyles.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97412,7 +98503,7 @@ class MapboxStyles extends (external_ol_Observable_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/vectortile/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97421,7 +98512,7 @@ class MapboxStyles extends (external_ol_Observable_default()) {
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/overlay/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97441,7 +98532,7 @@ class MapboxStyles extends (external_ol_Observable_default()) {
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/AddressMatchService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97520,7 +98611,7 @@ class AddressMatchService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/ChartService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97629,7 +98720,7 @@ class ChartService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/FieldService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97746,7 +98837,7 @@ class FieldService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/DatasetService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97891,7 +98982,7 @@ class DatasetService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/DatasourceService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -97997,7 +99088,7 @@ class DatasourceService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/GridCellInfosService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -98305,7 +99396,7 @@ class GeoprocessingService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/LayerInfoService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -98448,7 +99539,7 @@ class LayerInfoService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/MeasureService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -98529,7 +99620,7 @@ class MeasureService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/NetworkAnalyst3DService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -98687,7 +99778,7 @@ class NetworkAnalyst3DService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/NetworkAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -99062,7 +100153,7 @@ class NetworkAnalystService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/ProcessingService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -99955,7 +101046,7 @@ class ProcessingService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/SpatialAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -100496,7 +101587,7 @@ class SpatialAnalystService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/ThemeService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -100551,7 +101642,7 @@ class ThemeService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/TrafficTransferAnalystService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -100675,7 +101766,7 @@ class TrafficTransferAnalystService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/WebPrintingJobService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -100835,7 +101926,7 @@ class WebPrintingJobService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/ImageService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -100932,7 +102023,7 @@ class ImageService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/ImageCollectionService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -101078,7 +102169,7 @@ class ImageCollectionService extends ServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/services/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -101144,7 +102235,7 @@ var external_ol_Collection_default = /*#__PURE__*/__webpack_require__.n(external
 var lodash_difference = __webpack_require__(478);
 var lodash_difference_default = /*#__PURE__*/__webpack_require__.n(lodash_difference);
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/WebMap.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -101223,7 +102314,7 @@ const dpiConfig = {
  * @param {string} [options.target='map'] - 地图容器id
  * @param {Object | string} [options.webMap] - webMap对象，或者是获取webMap的url地址。存在webMap，优先使用webMap, id的选项则会被忽略
  * @param {number} [options.id] - 地图的id
- * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址，如果使用传入id，server则会和id拼接成webMap请求地址
+ * @param {string} [options.server] - 地图的地址，如果使用传入id，server则会和id拼接成webMap请求地址
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数
  * @param {function} [options.errorCallback] - 加载地图失败调用的函数
  * @param {string} [options.credentialKey] - 凭证密钥。例如为"key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填
@@ -101240,6 +102331,7 @@ const dpiConfig = {
  * @param {function} [options.mapSetting.overlays] - 地图的overlays
  * @param {function} [options.mapSetting.controls] - 地图的控件
  * @param {function} [options.mapSetting.interactions] - 地图控制的参数
+ * @param {number} [options.restDataSingleRequestCount=1000] - 自定义restData分批请求，单次请求数量
  * @extends {ol.Observable}
  * @usage
  */
@@ -101272,14 +102364,12 @@ class WebMap extends (external_ol_Observable_default()) {
         this.events = new Events(this, null, ["updateDataflowFeature"], true);
         this.webMap = options.webMap;
         this.tileFormat = options.tileFormat && options.tileFormat.toLowerCase();
+        this.restDataSingleRequestCount = options.restDataSingleRequestCount || 1000;
         this.createMap(options.mapSetting);
         if (this.webMap) {
             // webmap有可能是url地址，有可能是webmap对象
             core_Util_Util.isString(this.webMap) ? this.createWebmap(this.webMap) : this.getMapInfoSuccess(options.webMap);
         } else {
-            if (!this.server) {
-                this.server = 'https://www.supermapol.com';
-            }
             this.createWebmap();
         }
     }
@@ -103293,7 +104383,7 @@ class WebMap extends (external_ol_Observable_default()) {
             return;
         }
         //因为itest上使用的https，iserver是http，所以要加上代理
-        getFeatureBySQL(requestUrl, [dataSourceName], serviceOptions, async function (result) {
+        getFeatureBySQL(requestUrl, [decodeURIComponent(dataSourceName)], serviceOptions, async function (result) {
             let features = that.parseGeoJsonData2Feature({
                 allDatas: {
                     features: result.result.features.features
@@ -103308,7 +104398,7 @@ class WebMap extends (external_ol_Observable_default()) {
             that.layerAdded++;
             that.sendMapToUser(layerLength);
             that.errorCallback && that.errorCallback(err, 'getFeatureFaild', that.map)
-        }, that.baseProjection.split("EPSG:")[1]);
+        }, that.baseProjection.split("EPSG:")[1], this.restDataSingleRequestCount);
     }
 
     /**
@@ -103792,7 +104882,7 @@ class WebMap extends (external_ol_Observable_default()) {
                 await that.addLayer(layerInfo, features, layerIndex);
             }, function (err) {
                 that.errorCallback && that.errorCallback(err, 'autoUpdateFaild', that.map);
-            });
+            }, undefined, this.restDataSingleRequestCount);
         }
     }
 
@@ -106315,7 +107405,7 @@ class WebMap extends (external_ol_Observable_default()) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/ImageTileSuperMapRest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -106350,7 +107440,7 @@ class ImageTileSuperMapRest extends (external_ol_source_XYZ_default()) {
         options.format = options.format || 'png';
         options.transparent = options.transparent === undefined ? true : options.transparent === true;
         options.cacheEnabled = options.cacheEnabled === undefined ? true : options.cacheEnabled === true;
-        var attributions = options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>";
+        var attributions = options.attributions || "Map Data <span>© SuperMap iServer</span>";
         var url = _createLayerUrl(options.url, options);
         var superOptions = {
             ...options,
@@ -106550,7 +107640,7 @@ function getWkt(url) {
 }
 
 ;// CONCATENATED MODULE: ./src/openlayers/mapping/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -106562,7 +107652,7 @@ function getWkt(url) {
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -106573,7 +107663,7 @@ function getWkt(url) {
 
 
 ;// CONCATENATED MODULE: ./src/openlayers/namespace.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -106666,1025 +107756,17 @@ if (window && window.ol) {
 
 
 
+})();
 
-/***/ }),
-
-/***/ 982:
-/***/ ((__unused_webpack_module, exports) => {
-
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
 "use strict";
-var __webpack_unused_export__;
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
-__webpack_unused_export__ = ({ value: true });
+})();
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __values(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-/** An error subclass which is thrown when there are too many pending push or next operations on a single repeater. */
-var RepeaterOverflowError = /** @class */ (function (_super) {
-    __extends(RepeaterOverflowError, _super);
-    function RepeaterOverflowError(message) {
-        var _this = _super.call(this, message) || this;
-        Object.defineProperty(_this, "name", {
-            value: "RepeaterOverflowError",
-            enumerable: false,
-        });
-        if (typeof Object.setPrototypeOf === "function") {
-            Object.setPrototypeOf(_this, _this.constructor.prototype);
-        }
-        else {
-            _this.__proto__ = _this.constructor.prototype;
-        }
-        if (typeof Error.captureStackTrace === "function") {
-            Error.captureStackTrace(_this, _this.constructor);
-        }
-        return _this;
-    }
-    return RepeaterOverflowError;
-}(Error));
-/** A buffer which allows you to push a set amount of values to the repeater without pushes waiting or throwing errors. */
-var FixedBuffer = /** @class */ (function () {
-    function FixedBuffer(capacity) {
-        if (capacity < 0) {
-            throw new RangeError("Capacity may not be less than 0");
-        }
-        this._c = capacity;
-        this._q = [];
-    }
-    Object.defineProperty(FixedBuffer.prototype, "empty", {
-        get: function () {
-            return this._q.length === 0;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(FixedBuffer.prototype, "full", {
-        get: function () {
-            return this._q.length >= this._c;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    FixedBuffer.prototype.add = function (value) {
-        if (this.full) {
-            throw new Error("Buffer full");
-        }
-        else {
-            this._q.push(value);
-        }
-    };
-    FixedBuffer.prototype.remove = function () {
-        if (this.empty) {
-            throw new Error("Buffer empty");
-        }
-        return this._q.shift();
-    };
-    return FixedBuffer;
-}());
-// TODO: Use a circular buffer here.
-/** Sliding buffers allow you to push a set amount of values to the repeater without pushes waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the earliest values added. */
-var SlidingBuffer = /** @class */ (function () {
-    function SlidingBuffer(capacity) {
-        if (capacity < 1) {
-            throw new RangeError("Capacity may not be less than 1");
-        }
-        this._c = capacity;
-        this._q = [];
-    }
-    Object.defineProperty(SlidingBuffer.prototype, "empty", {
-        get: function () {
-            return this._q.length === 0;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SlidingBuffer.prototype, "full", {
-        get: function () {
-            return false;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    SlidingBuffer.prototype.add = function (value) {
-        while (this._q.length >= this._c) {
-            this._q.shift();
-        }
-        this._q.push(value);
-    };
-    SlidingBuffer.prototype.remove = function () {
-        if (this.empty) {
-            throw new Error("Buffer empty");
-        }
-        return this._q.shift();
-    };
-    return SlidingBuffer;
-}());
-/** Dropping buffers allow you to push a set amount of values to the repeater without the push function waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the latest values added. */
-var DroppingBuffer = /** @class */ (function () {
-    function DroppingBuffer(capacity) {
-        if (capacity < 1) {
-            throw new RangeError("Capacity may not be less than 1");
-        }
-        this._c = capacity;
-        this._q = [];
-    }
-    Object.defineProperty(DroppingBuffer.prototype, "empty", {
-        get: function () {
-            return this._q.length === 0;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(DroppingBuffer.prototype, "full", {
-        get: function () {
-            return false;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    DroppingBuffer.prototype.add = function (value) {
-        if (this._q.length < this._c) {
-            this._q.push(value);
-        }
-    };
-    DroppingBuffer.prototype.remove = function () {
-        if (this.empty) {
-            throw new Error("Buffer empty");
-        }
-        return this._q.shift();
-    };
-    return DroppingBuffer;
-}());
-/** Makes sure promise-likes don’t cause unhandled rejections. */
-function swallow(value) {
-    if (value != null && typeof value.then === "function") {
-        value.then(NOOP, NOOP);
-    }
-}
-/*** REPEATER STATES ***/
-/** The following is an enumeration of all possible repeater states. These states are ordered, and a repeater may only advance to higher states. */
-/** The initial state of the repeater. */
-var Initial = 0;
-/** Repeaters advance to this state the first time the next method is called on the repeater. */
-var Started = 1;
-/** Repeaters advance to this state when the stop function is called. */
-var Stopped = 2;
-/** Repeaters advance to this state when there are no values left to be pulled from the repeater. */
-var Done = 3;
-/** Repeaters advance to this state if an error is thrown into the repeater. */
-var Rejected = 4;
-/** The maximum number of push or next operations which may exist on a single repeater. */
-var MAX_QUEUE_LENGTH = 1024;
-var NOOP = function () { };
-/** A helper function used to mimic the behavior of async generators where the final iteration is consumed. */
-function consumeExecution(r) {
-    var err = r.err;
-    var execution = Promise.resolve(r.execution).then(function (value) {
-        if (err != null) {
-            throw err;
-        }
-        return value;
-    });
-    r.err = undefined;
-    r.execution = execution.then(function () { return undefined; }, function () { return undefined; });
-    return r.pending === undefined ? execution : r.pending.then(function () { return execution; });
-}
-/** A helper function for building iterations from values. Promises are unwrapped, so that iterations never have their value property set to a promise. */
-function createIteration(r, value) {
-    var done = r.state >= Done;
-    return Promise.resolve(value).then(function (value) {
-        if (!done && r.state >= Rejected) {
-            return consumeExecution(r).then(function (value) { return ({
-                value: value,
-                done: true,
-            }); });
-        }
-        return { value: value, done: done };
-    });
-}
-/**
- * This function is bound and passed to the executor as the stop argument.
- *
- * Advances state to Stopped.
- */
-function stop(r, err) {
-    var e_1, _a;
-    if (r.state >= Stopped) {
-        return;
-    }
-    r.state = Stopped;
-    r.onnext();
-    r.onstop();
-    if (r.err == null) {
-        r.err = err;
-    }
-    if (r.pushes.length === 0 &&
-        (typeof r.buffer === "undefined" || r.buffer.empty)) {
-        finish(r);
-    }
-    else {
-        try {
-            for (var _b = __values(r.pushes), _d = _b.next(); !_d.done; _d = _b.next()) {
-                var push_1 = _d.value;
-                push_1.resolve();
-            }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
-    }
-}
-/**
- * The difference between stopping a repeater vs finishing a repeater is that stopping a repeater allows next to continue to drain values from the push queue and buffer, while finishing a repeater will clear all pending values and end iteration immediately. Once, a repeater is finished, all iterations will have the done property set to true.
- *
- * Advances state to Done.
- */
-function finish(r) {
-    var e_2, _a;
-    if (r.state >= Done) {
-        return;
-    }
-    if (r.state < Stopped) {
-        stop(r);
-    }
-    r.state = Done;
-    r.buffer = undefined;
-    try {
-        for (var _b = __values(r.nexts), _d = _b.next(); !_d.done; _d = _b.next()) {
-            var next = _d.value;
-            var execution = r.pending === undefined
-                ? consumeExecution(r)
-                : r.pending.then(function () { return consumeExecution(r); });
-            next.resolve(createIteration(r, execution));
-        }
-    }
-    catch (e_2_1) { e_2 = { error: e_2_1 }; }
-    finally {
-        try {
-            if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
-        }
-        finally { if (e_2) throw e_2.error; }
-    }
-    r.pushes = [];
-    r.nexts = [];
-}
-/**
- * Called when a promise passed to push rejects, or when a push call is unhandled.
- *
- * Advances state to Rejected.
- */
-function reject(r) {
-    if (r.state >= Rejected) {
-        return;
-    }
-    if (r.state < Done) {
-        finish(r);
-    }
-    r.state = Rejected;
-}
-/** This function is bound and passed to the executor as the push argument. */
-function push(r, value) {
-    swallow(value);
-    if (r.pushes.length >= MAX_QUEUE_LENGTH) {
-        throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to push are allowed on a single repeater.");
-    }
-    else if (r.state >= Stopped) {
-        return Promise.resolve(undefined);
-    }
-    var valueP = r.pending === undefined
-        ? Promise.resolve(value)
-        : r.pending.then(function () { return value; });
-    valueP = valueP.catch(function (err) {
-        if (r.state < Stopped) {
-            r.err = err;
-        }
-        reject(r);
-        return undefined; // void :(
-    });
-    var nextP;
-    if (r.nexts.length) {
-        var next_1 = r.nexts.shift();
-        next_1.resolve(createIteration(r, valueP));
-        if (r.nexts.length) {
-            nextP = Promise.resolve(r.nexts[0].value);
-        }
-        else {
-            nextP = new Promise(function (resolve) { return (r.onnext = resolve); });
-        }
-    }
-    else if (typeof r.buffer !== "undefined" && !r.buffer.full) {
-        r.buffer.add(valueP);
-        nextP = Promise.resolve(undefined);
-    }
-    else {
-        nextP = new Promise(function (resolve) { return r.pushes.push({ resolve: resolve, value: valueP }); });
-    }
-    // If an error is thrown into the repeater via the next or throw methods, we give the repeater a chance to handle this by rejecting the promise returned from push. If the push call is not immediately handled we throw the next iteration of the repeater.
-    // To check that the promise returned from push is floating, we modify the then and catch methods of the returned promise so that they flip the floating flag. The push function actually does not return a promise, because modern engines do not call the then and catch methods on native promises. By making next a plain old javascript object, we ensure that the then and catch methods will be called.
-    var floating = true;
-    var next = {};
-    var unhandled = nextP.catch(function (err) {
-        if (floating) {
-            throw err;
-        }
-        return undefined; // void :(
-    });
-    next.then = function (onfulfilled, onrejected) {
-        floating = false;
-        return Promise.prototype.then.call(nextP, onfulfilled, onrejected);
-    };
-    next.catch = function (onrejected) {
-        floating = false;
-        return Promise.prototype.catch.call(nextP, onrejected);
-    };
-    next.finally = nextP.finally.bind(nextP);
-    r.pending = valueP
-        .then(function () { return unhandled; })
-        .catch(function (err) {
-        r.err = err;
-        reject(r);
-    });
-    return next;
-}
-/**
- * Creates the stop callable promise which is passed to the executor
- */
-function createStop(r) {
-    var stop1 = stop.bind(null, r);
-    var stopP = new Promise(function (resolve) { return (r.onstop = resolve); });
-    stop1.then = stopP.then.bind(stopP);
-    stop1.catch = stopP.catch.bind(stopP);
-    stop1.finally = stopP.finally.bind(stopP);
-    return stop1;
-}
-/**
- * Calls the executor passed into the constructor. This function is called the first time the next method is called on the repeater.
- *
- * Advances state to Started.
- */
-function execute(r) {
-    if (r.state >= Started) {
-        return;
-    }
-    r.state = Started;
-    var push1 = push.bind(null, r);
-    var stop1 = createStop(r);
-    r.execution = new Promise(function (resolve) { return resolve(r.executor(push1, stop1)); });
-    // TODO: We should consider stopping all repeaters when the executor settles.
-    r.execution.catch(function () { return stop(r); });
-}
-var records = new WeakMap();
-// NOTE: While repeaters implement and are assignable to the AsyncGenerator interface, and you can use the types interchangeably, we don’t use typescript’s implements syntax here because this would make supporting earlier versions of typescript trickier. This is because TypeScript version 3.6 changed the iterator types by adding the TReturn and TNext type parameters.
-var Repeater = /** @class */ (function () {
-    function Repeater(executor, buffer) {
-        records.set(this, {
-            executor: executor,
-            buffer: buffer,
-            err: undefined,
-            state: Initial,
-            pushes: [],
-            nexts: [],
-            pending: undefined,
-            execution: undefined,
-            onnext: NOOP,
-            onstop: NOOP,
-        });
-    }
-    Repeater.prototype.next = function (value) {
-        swallow(value);
-        var r = records.get(this);
-        if (r === undefined) {
-            throw new Error("WeakMap error");
-        }
-        if (r.nexts.length >= MAX_QUEUE_LENGTH) {
-            throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to next are allowed on a single repeater.");
-        }
-        if (r.state <= Initial) {
-            execute(r);
-        }
-        r.onnext(value);
-        if (typeof r.buffer !== "undefined" && !r.buffer.empty) {
-            var result = createIteration(r, r.buffer.remove());
-            if (r.pushes.length) {
-                var push_2 = r.pushes.shift();
-                r.buffer.add(push_2.value);
-                r.onnext = push_2.resolve;
-            }
-            return result;
-        }
-        else if (r.pushes.length) {
-            var push_3 = r.pushes.shift();
-            r.onnext = push_3.resolve;
-            return createIteration(r, push_3.value);
-        }
-        else if (r.state >= Stopped) {
-            finish(r);
-            return createIteration(r, consumeExecution(r));
-        }
-        return new Promise(function (resolve) { return r.nexts.push({ resolve: resolve, value: value }); });
-    };
-    Repeater.prototype.return = function (value) {
-        swallow(value);
-        var r = records.get(this);
-        if (r === undefined) {
-            throw new Error("WeakMap error");
-        }
-        finish(r);
-        // We override the execution because return should always return the value passed in.
-        r.execution = Promise.resolve(r.execution).then(function () { return value; });
-        return createIteration(r, consumeExecution(r));
-    };
-    Repeater.prototype.throw = function (err) {
-        var r = records.get(this);
-        if (r === undefined) {
-            throw new Error("WeakMap error");
-        }
-        if (r.state <= Initial ||
-            r.state >= Stopped ||
-            (typeof r.buffer !== "undefined" && !r.buffer.empty)) {
-            finish(r);
-            // If r.err is already set, that mean the repeater has already produced an error, so we throw that error rather than the error passed in, because doing so might be more informative for the caller.
-            if (r.err == null) {
-                r.err = err;
-            }
-            return createIteration(r, consumeExecution(r));
-        }
-        return this.next(Promise.reject(err));
-    };
-    Repeater.prototype[Symbol.asyncIterator] = function () {
-        return this;
-    };
-    // TODO: Remove these static methods from the class.
-    Repeater.race = race;
-    Repeater.merge = merge;
-    Repeater.zip = zip;
-    Repeater.latest = latest;
-    return Repeater;
-}());
-/*** COMBINATOR FUNCTIONS ***/
-// TODO: move these combinators to their own file.
-function getIterators(values, options) {
-    var e_3, _a;
-    var iters = [];
-    var _loop_1 = function (value) {
-        if (value != null && typeof value[Symbol.asyncIterator] === "function") {
-            iters.push(value[Symbol.asyncIterator]());
-        }
-        else if (value != null && typeof value[Symbol.iterator] === "function") {
-            iters.push(value[Symbol.iterator]());
-        }
-        else {
-            iters.push((function valueToAsyncIterator() {
-                return __asyncGenerator(this, arguments, function valueToAsyncIterator_1() {
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                if (!options.yieldValues) return [3 /*break*/, 3];
-                                return [4 /*yield*/, __await(value)];
-                            case 1: return [4 /*yield*/, _a.sent()];
-                            case 2:
-                                _a.sent();
-                                _a.label = 3;
-                            case 3:
-                                if (!options.returnValues) return [3 /*break*/, 5];
-                                return [4 /*yield*/, __await(value)];
-                            case 4: return [2 /*return*/, _a.sent()];
-                            case 5: return [2 /*return*/];
-                        }
-                    });
-                });
-            })());
-        }
-    };
-    try {
-        for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
-            var value = values_1_1.value;
-            _loop_1(value);
-        }
-    }
-    catch (e_3_1) { e_3 = { error: e_3_1 }; }
-    finally {
-        try {
-            if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
-        }
-        finally { if (e_3) throw e_3.error; }
-    }
-    return iters;
-}
-// NOTE: whenever you see any variables called `advance` or `advances`, know that it is a hack to get around the fact that `Promise.race` leaks memory. These variables are intended to be set to the resolve function of a promise which is constructed and awaited as an alternative to Promise.race. For more information, see this comment in the Node.js issue tracker: https://github.com/nodejs/node/issues/17469#issuecomment-685216777.
-function race(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, { returnValues: true });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advance, stopped, finalIteration, iteration, i_1, _loop_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/];
-                    }
-                    stopped = false;
-                    stop.then(function () {
-                        advance();
-                        stopped = true;
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 5, 7]);
-                    iteration = void 0;
-                    i_1 = 0;
-                    _loop_2 = function () {
-                        var j, iters_1, iters_1_1, iter;
-                        var e_4, _a;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    j = i_1;
-                                    try {
-                                        for (iters_1 = (e_4 = void 0, __values(iters)), iters_1_1 = iters_1.next(); !iters_1_1.done; iters_1_1 = iters_1.next()) {
-                                            iter = iters_1_1.value;
-                                            Promise.resolve(iter.next()).then(function (iteration) {
-                                                if (iteration.done) {
-                                                    stop();
-                                                    if (finalIteration === undefined) {
-                                                        finalIteration = iteration;
-                                                    }
-                                                }
-                                                else if (i_1 === j) {
-                                                    // This iterator has won, advance i and resolve the promise.
-                                                    i_1++;
-                                                    advance(iteration);
-                                                }
-                                            }, function (err) { return stop(err); });
-                                        }
-                                    }
-                                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
-                                    finally {
-                                        try {
-                                            if (iters_1_1 && !iters_1_1.done && (_a = iters_1.return)) _a.call(iters_1);
-                                        }
-                                        finally { if (e_4) throw e_4.error; }
-                                    }
-                                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
-                                case 1:
-                                    iteration = _b.sent();
-                                    if (!(iteration !== undefined)) return [3 /*break*/, 3];
-                                    return [4 /*yield*/, push(iteration.value)];
-                                case 2:
-                                    _b.sent();
-                                    _b.label = 3;
-                                case 3: return [2 /*return*/];
-                            }
-                        });
-                    };
-                    _a.label = 2;
-                case 2:
-                    if (!!stopped) return [3 /*break*/, 4];
-                    return [5 /*yield**/, _loop_2()];
-                case 3:
-                    _a.sent();
-                    return [3 /*break*/, 2];
-                case 4: return [2 /*return*/, finalIteration && finalIteration.value];
-                case 5:
-                    stop();
-                    return [4 /*yield*/, Promise.race(iters.map(function (iter) { return iter.return && iter.return(); }))];
-                case 6:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 7: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-function merge(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, { yieldValues: true });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advances, stopped, finalIteration;
-        var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/];
-                    }
-                    advances = [];
-                    stopped = false;
-                    stop.then(function () {
-                        var e_5, _a;
-                        stopped = true;
-                        try {
-                            for (var advances_1 = __values(advances), advances_1_1 = advances_1.next(); !advances_1_1.done; advances_1_1 = advances_1.next()) {
-                                var advance = advances_1_1.value;
-                                advance();
-                            }
-                        }
-                        catch (e_5_1) { e_5 = { error: e_5_1 }; }
-                        finally {
-                            try {
-                                if (advances_1_1 && !advances_1_1.done && (_a = advances_1.return)) _a.call(advances_1);
-                            }
-                            finally { if (e_5) throw e_5.error; }
-                        }
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 3, 4]);
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
-                            var iteration, _a;
-                            return __generator(this, function (_b) {
-                                switch (_b.label) {
-                                    case 0:
-                                        _b.trys.push([0, , 6, 9]);
-                                        _b.label = 1;
-                                    case 1:
-                                        if (!!stopped) return [3 /*break*/, 5];
-                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
-                                        return [4 /*yield*/, new Promise(function (resolve) {
-                                                advances[i] = resolve;
-                                            })];
-                                    case 2:
-                                        iteration = _b.sent();
-                                        if (!(iteration !== undefined)) return [3 /*break*/, 4];
-                                        if (iteration.done) {
-                                            finalIteration = iteration;
-                                            return [2 /*return*/];
-                                        }
-                                        return [4 /*yield*/, push(iteration.value)];
-                                    case 3:
-                                        _b.sent();
-                                        _b.label = 4;
-                                    case 4: return [3 /*break*/, 1];
-                                    case 5: return [3 /*break*/, 9];
-                                    case 6:
-                                        _a = iter.return;
-                                        if (!_a) return [3 /*break*/, 8];
-                                        return [4 /*yield*/, iter.return()];
-                                    case 7:
-                                        _a = (_b.sent());
-                                        _b.label = 8;
-                                    case 8:
-                                        return [7 /*endfinally*/];
-                                    case 9: return [2 /*return*/];
-                                }
-                            });
-                        }); }))];
-                case 2:
-                    _a.sent();
-                    return [2 /*return*/, finalIteration && finalIteration.value];
-                case 3:
-                    stop();
-                    return [7 /*endfinally*/];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-function zip(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, { returnValues: true });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advance, stopped, iterations, values;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/, []];
-                    }
-                    stopped = false;
-                    stop.then(function () {
-                        advance();
-                        stopped = true;
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 6, 8]);
-                    _a.label = 2;
-                case 2:
-                    if (!!stopped) return [3 /*break*/, 5];
-                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
-                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
-                case 3:
-                    iterations = _a.sent();
-                    if (iterations === undefined) {
-                        return [2 /*return*/];
-                    }
-                    values = iterations.map(function (iteration) { return iteration.value; });
-                    if (iterations.some(function (iteration) { return iteration.done; })) {
-                        return [2 /*return*/, values];
-                    }
-                    return [4 /*yield*/, push(values)];
-                case 4:
-                    _a.sent();
-                    return [3 /*break*/, 2];
-                case 5: return [3 /*break*/, 8];
-                case 6:
-                    stop();
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
-                case 7:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 8: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-function latest(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, {
-        yieldValues: true,
-        returnValues: true,
-    });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advance, advances, stopped, iterations_1, values_2;
-        var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/, []];
-                    }
-                    advances = [];
-                    stopped = false;
-                    stop.then(function () {
-                        var e_6, _a;
-                        advance();
-                        try {
-                            for (var advances_2 = __values(advances), advances_2_1 = advances_2.next(); !advances_2_1.done; advances_2_1 = advances_2.next()) {
-                                var advance1 = advances_2_1.value;
-                                advance1();
-                            }
-                        }
-                        catch (e_6_1) { e_6 = { error: e_6_1 }; }
-                        finally {
-                            try {
-                                if (advances_2_1 && !advances_2_1.done && (_a = advances_2.return)) _a.call(advances_2);
-                            }
-                            finally { if (e_6) throw e_6.error; }
-                        }
-                        stopped = true;
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 5, 7]);
-                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
-                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
-                case 2:
-                    iterations_1 = _a.sent();
-                    if (iterations_1 === undefined) {
-                        return [2 /*return*/];
-                    }
-                    values_2 = iterations_1.map(function (iteration) { return iteration.value; });
-                    if (iterations_1.every(function (iteration) { return iteration.done; })) {
-                        return [2 /*return*/, values_2];
-                    }
-                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
-                    return [4 /*yield*/, push(values_2.slice())];
-                case 3:
-                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
-                    _a.sent();
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
-                            var iteration;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        if (iterations_1[i].done) {
-                                            return [2 /*return*/, iterations_1[i].value];
-                                        }
-                                        _a.label = 1;
-                                    case 1:
-                                        if (!!stopped) return [3 /*break*/, 4];
-                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
-                                        return [4 /*yield*/, new Promise(function (resolve) { return (advances[i] = resolve); })];
-                                    case 2:
-                                        iteration = _a.sent();
-                                        if (iteration === undefined) {
-                                            return [2 /*return*/, iterations_1[i].value];
-                                        }
-                                        else if (iteration.done) {
-                                            return [2 /*return*/, iteration.value];
-                                        }
-                                        values_2[i] = iteration.value;
-                                        return [4 /*yield*/, push(values_2.slice())];
-                                    case 3:
-                                        _a.sent();
-                                        return [3 /*break*/, 1];
-                                    case 4: return [2 /*return*/];
-                                }
-                            });
-                        }); }))];
-                case 4: return [2 /*return*/, _a.sent()];
-                case 5:
-                    stop();
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
-                case 6:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 7: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-
-__webpack_unused_export__ = DroppingBuffer;
-__webpack_unused_export__ = FixedBuffer;
-__webpack_unused_export__ = MAX_QUEUE_LENGTH;
-exports.ZN = Repeater;
-__webpack_unused_export__ = RepeaterOverflowError;
-__webpack_unused_export__ = SlidingBuffer;
-//# sourceMappingURL=repeater.js.map
-
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/node module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.nmd = (module) => {
-/******/ 			module.paths = [];
-/******/ 			if (!module.children) module.children = [];
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	__webpack_require__(847);
-/******/ 	var __webpack_exports__ = __webpack_require__(371);
-/******/ 	
 /******/ })()
 ;

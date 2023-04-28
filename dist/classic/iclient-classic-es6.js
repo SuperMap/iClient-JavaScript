@@ -993,7 +993,7 @@ var __webpack_exports__ = {};
 // UNUSED EXPORTS: AddressMatchService, BuffersAnalystJobsParameter, DatasetService, DatasourceService, ElasticSearch, GeoCodingParameter, GeoDecodingParameter, KernelDensityJobParameter, MapVLayer, MapVRenderer, MappingParameters, OutputSetting, OverlayGeoJobParameter, ProcessingService, SecurityManager, SingleObjectQueryJobsParameter, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SuperMap, TopologyValidatorJobsParameter, Util
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Pixel.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -1169,7 +1169,7 @@ Pixel.Mode = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/BaseTypes.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -1638,7 +1638,7 @@ var ArrayExt = {
 };
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Geometry.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import {WKT} from '../format/WKT';
@@ -1812,7 +1812,7 @@ class Geometry {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Util.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3045,7 +3045,7 @@ function canBeJsonified(str) {
 
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Event.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -3395,7 +3395,7 @@ function canBeJsonified(str) {
  Event.observe(window, 'resize', Event.unloadCache, false);
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Events.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -3894,7 +3894,7 @@ Events.prototype.BROWSER_EVENTS = [
 const external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
 var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -4588,7 +4588,7 @@ var fetch = __webpack_require__(693);
 var fetch_jsonp = __webpack_require__(144);
 var fetch_jsonp_default = /*#__PURE__*/__webpack_require__.n(fetch_jsonp);
 ;// CONCATENATED MODULE: ./src/common/util/FetchRequest.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5172,7 +5172,7 @@ var FetchRequest = {
 }
 
 ;// CONCATENATED MODULE: ./src/common/commontypes/Credential.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5268,7 +5268,7 @@ class Credential {
  Credential.CREDENTIAL = null;
 
 ;// CONCATENATED MODULE: ./src/common/security/SecurityManager.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -5657,7 +5657,7 @@ SecurityManager.SSO = 'https://sso.supermap.com';
 SecurityManager.ONLINE = 'https://www.supermapol.com';
 
 ;// CONCATENATED MODULE: ./src/common/REST.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7982,7 +7982,7 @@ var WebScaleUnit = {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceConnectionInfo.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8123,7 +8123,7 @@ class DatasourceConnectionInfo {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OutputSetting.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8192,7 +8192,7 @@ class OutputSetting {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/MappingParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8273,7 +8273,7 @@ class MappingParameters {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8442,7 +8442,7 @@ class KernelDensityJobParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8561,7 +8561,7 @@ class SingleObjectQueryJobsParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8673,7 +8673,7 @@ class SummaryAttributesJobsParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -8846,7 +8846,7 @@ class SummaryMeshJobParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9060,7 +9060,7 @@ class SummaryRegionJobParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9185,7 +9185,7 @@ class OverlayGeoJobParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9322,7 +9322,7 @@ class BuffersAnalystJobsParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9439,7 +9439,7 @@ class TopologyValidatorJobsParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoCodingParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9517,7 +9517,7 @@ class GeoCodingParameter {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeoDecodingParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -9889,7 +9889,7 @@ function scaleToResolution(scale, dpi, mapUnit) {
   return intersection;
 }
 ;// CONCATENATED MODULE: ./src/classic/overlay/mapv/MapVRenderer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10239,7 +10239,7 @@ class MapVRenderer extends MapVBaseLayer {
     }
 }
 ;// CONCATENATED MODULE: ./src/classic/overlay/MapVLayer.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10478,18 +10478,18 @@ class MapVLayer extends SuperMap.Layer {
 SuperMap.Layer.MapVLayer = MapVLayer;
 
 ;// CONCATENATED MODULE: ./src/classic/overlay/mapv/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 ;// CONCATENATED MODULE: ./src/classic/overlay/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 
 ;// CONCATENATED MODULE: ./src/common/format/Format.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10555,7 +10555,7 @@ class Format {
 }
 
 ;// CONCATENATED MODULE: ./src/common/format/JSON.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -10863,7 +10863,7 @@ class JSONFormat extends Format {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/CommonServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11244,7 +11244,7 @@ class CommonServiceBase {
  */
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11343,7 +11343,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/classic/services/AddressMatchService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  
@@ -11414,7 +11414,7 @@ class AddressMatchService extends CommonServiceBase {
 SuperMap.REST.AddressMatchService = AddressMatchService;
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasetService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11540,7 +11540,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11600,7 +11600,7 @@ class CreateDatasetParameters {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/UpdateDatasetParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11701,7 +11701,7 @@ class UpdateDatasetParameters {
 
 
 ;// CONCATENATED MODULE: ./src/classic/services/DatasetService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11861,7 +11861,7 @@ class DatasetService extends CommonServiceBase {
 SuperMap.REST.DatasetService = DatasetService;
 
 ;// CONCATENATED MODULE: ./src/common/iServer/DatasourceService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -11956,7 +11956,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SetDatasourceParameters.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12026,7 +12026,7 @@ class SetDatasourceParameters {
 
 
 ;// CONCATENATED MODULE: ./src/classic/services/DatasourceService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12143,7 +12143,7 @@ class DatasourceService extends CommonServiceBase {
 SuperMap.REST.DatasourceService = DatasourceService;
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ProcessingServiceBase.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12300,7 +12300,7 @@ class ProcessingServiceBase extends CommonServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/KernelDensityJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12365,7 +12365,7 @@ class KernelDensityJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SingleObjectQueryJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12428,7 +12428,7 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryMeshJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12494,7 +12494,7 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryRegionJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12557,7 +12557,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsParameter.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12674,7 +12674,7 @@ class VectorClipJobsParameter {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/VectorClipJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12737,7 +12737,7 @@ class VectorClipJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/OverlayGeoJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12802,7 +12802,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/BuffersAnalystJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12865,7 +12865,7 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
 
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TopologyValidatorJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12929,7 +12929,7 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/SummaryAttributesJobsService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -12993,7 +12993,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
 }
 
 ;// CONCATENATED MODULE: ./src/classic/services/ProcessingService.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13873,7 +13873,7 @@ class ProcessingService extends CommonServiceBase {
 SuperMap.REST.ProcessingService = ProcessingService;
 
 ;// CONCATENATED MODULE: ./src/classic/services/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -13881,7 +13881,7 @@ SuperMap.REST.ProcessingService = ProcessingService;
 
 
 ;// CONCATENATED MODULE: ./src/classic/index.js
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 

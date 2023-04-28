@@ -3,2145 +3,21 @@
  *       @supermap/react-iclient.(https://iclient.supermap.io)
  *       Copyright© 2000 - 2022 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v11.0.0
+ *       version: v11.1.0-beta
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("../public/libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("three/build/three"), require("../public/libs/deckgl/deck.gl.min.js"), require("../public/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("antd"), require("../public/libs/echarts-layer/EchartsLayer.js"), require("react"));
+		module.exports = factory(require("../public/libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("three/build/three"), require("../public/libs/deckgl/deck.gl.min.js"), require("../public/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("antd"), require("../public/libs/echarts-layer/EchartsLayer.js"), require("react"), require("canvg"));
 	else if(typeof define === 'function' && define.amd)
-		define(["../public/libs/mapboxgl/mapbox-gl-enhance.js", "echarts", "three/build/three", "../public/libs/deckgl/deck.gl.min.js", "../public/libs/iclient-mapboxgl/iclient-mapboxgl.min.js", "antd", "../public/libs/echarts-layer/EchartsLayer.js", "react"], factory);
+		define(["../public/libs/mapboxgl/mapbox-gl-enhance.js", "echarts", "three/build/three", "../public/libs/deckgl/deck.gl.min.js", "../public/libs/iclient-mapboxgl/iclient-mapboxgl.min.js", "antd", "../public/libs/echarts-layer/EchartsLayer.js", "react", "canvg"], factory);
 	else if(typeof exports === 'object')
-		exports["SuperMap"] = factory(require("../public/libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("three/build/three"), require("../public/libs/deckgl/deck.gl.min.js"), require("../public/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("antd"), require("../public/libs/echarts-layer/EchartsLayer.js"), require("react"));
+		exports["SuperMap"] = factory(require("../public/libs/mapboxgl/mapbox-gl-enhance.js"), require("echarts"), require("three/build/three"), require("../public/libs/deckgl/deck.gl.min.js"), require("../public/libs/iclient-mapboxgl/iclient-mapboxgl.min.js"), require("antd"), require("../public/libs/echarts-layer/EchartsLayer.js"), require("react"), require("canvg"));
 	else
-		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["echarts"], root["THREE"], root["DeckGL"], root["SuperMap"], root["antd"], root["EchartsLayer"], root["React"]);
-})(self, function(__WEBPACK_EXTERNAL_MODULE__375__, __WEBPACK_EXTERNAL_MODULE__550__, __WEBPACK_EXTERNAL_MODULE__2069__, __WEBPACK_EXTERNAL_MODULE__2371__, __WEBPACK_EXTERNAL_MODULE__2395__, __WEBPACK_EXTERNAL_MODULE__2721__, __WEBPACK_EXTERNAL_MODULE__3094__, __WEBPACK_EXTERNAL_MODULE__3899__) {
+		root["SuperMap"] = root["SuperMap"] || {}, root["SuperMap"]["Components"] = factory(root["mapboxgl"], root["echarts"], root["THREE"], root["DeckGL"], root["SuperMap"], root["antd"], root["EchartsLayer"], root["React"], root["canvg"]);
+})(self, function(__WEBPACK_EXTERNAL_MODULE__375__, __WEBPACK_EXTERNAL_MODULE__550__, __WEBPACK_EXTERNAL_MODULE__2069__, __WEBPACK_EXTERNAL_MODULE__2371__, __WEBPACK_EXTERNAL_MODULE__2395__, __WEBPACK_EXTERNAL_MODULE__2721__, __WEBPACK_EXTERNAL_MODULE__3094__, __WEBPACK_EXTERNAL_MODULE__3899__, __WEBPACK_EXTERNAL_MODULE__5973__) {
 return /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 4782:
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-
-exports.byteLength = byteLength
-exports.toByteArray = toByteArray
-exports.fromByteArray = fromByteArray
-
-var lookup = []
-var revLookup = []
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i]
-  revLookup[code.charCodeAt(i)] = i
-}
-
-// Support decoding URL-safe base64 strings, as Node.js does.
-// See: https://en.wikipedia.org/wiki/Base64#URL_applications
-revLookup['-'.charCodeAt(0)] = 62
-revLookup['_'.charCodeAt(0)] = 63
-
-function getLens (b64) {
-  var len = b64.length
-
-  if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // Trim off extra bytes after placeholder bytes are found
-  // See: https://github.com/beatgammit/base64-js/issues/42
-  var validLen = b64.indexOf('=')
-  if (validLen === -1) validLen = len
-
-  var placeHoldersLen = validLen === len
-    ? 0
-    : 4 - (validLen % 4)
-
-  return [validLen, placeHoldersLen]
-}
-
-// base64 is 4/3 + up to two characters of the original data
-function byteLength (b64) {
-  var lens = getLens(b64)
-  var validLen = lens[0]
-  var placeHoldersLen = lens[1]
-  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-}
-
-function _byteLength (b64, validLen, placeHoldersLen) {
-  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-}
-
-function toByteArray (b64) {
-  var tmp
-  var lens = getLens(b64)
-  var validLen = lens[0]
-  var placeHoldersLen = lens[1]
-
-  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
-
-  var curByte = 0
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  var len = placeHoldersLen > 0
-    ? validLen - 4
-    : validLen
-
-  var i
-  for (i = 0; i < len; i += 4) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 18) |
-      (revLookup[b64.charCodeAt(i + 1)] << 12) |
-      (revLookup[b64.charCodeAt(i + 2)] << 6) |
-      revLookup[b64.charCodeAt(i + 3)]
-    arr[curByte++] = (tmp >> 16) & 0xFF
-    arr[curByte++] = (tmp >> 8) & 0xFF
-    arr[curByte++] = tmp & 0xFF
-  }
-
-  if (placeHoldersLen === 2) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 2) |
-      (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[curByte++] = tmp & 0xFF
-  }
-
-  if (placeHoldersLen === 1) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 10) |
-      (revLookup[b64.charCodeAt(i + 1)] << 4) |
-      (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[curByte++] = (tmp >> 8) & 0xFF
-    arr[curByte++] = tmp & 0xFF
-  }
-
-  return arr
-}
-
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] +
-    lookup[num >> 12 & 0x3F] +
-    lookup[num >> 6 & 0x3F] +
-    lookup[num & 0x3F]
-}
-
-function encodeChunk (uint8, start, end) {
-  var tmp
-  var output = []
-  for (var i = start; i < end; i += 3) {
-    tmp =
-      ((uint8[i] << 16) & 0xFF0000) +
-      ((uint8[i + 1] << 8) & 0xFF00) +
-      (uint8[i + 2] & 0xFF)
-    output.push(tripletToBase64(tmp))
-  }
-  return output.join('')
-}
-
-function fromByteArray (uint8) {
-  var tmp
-  var len = uint8.length
-  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var parts = []
-  var maxChunkLength = 16383 // must be multiple of 3
-
-  // go through the array every three bytes, we'll deal with trailing stuff later
-  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
-  }
-
-  // pad the end with zeros, but make sure to not forget the extra bytes
-  if (extraBytes === 1) {
-    tmp = uint8[len - 1]
-    parts.push(
-      lookup[tmp >> 2] +
-      lookup[(tmp << 4) & 0x3F] +
-      '=='
-    )
-  } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
-    parts.push(
-      lookup[tmp >> 10] +
-      lookup[(tmp >> 4) & 0x3F] +
-      lookup[(tmp << 2) & 0x3F] +
-      '='
-    )
-  }
-
-  return parts.join('')
-}
-
-
-/***/ }),
-
-/***/ 816:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-/* eslint-disable no-proto */
-
-
-
-var base64 = __webpack_require__(4782)
-var ieee754 = __webpack_require__(8898)
-
-exports.Buffer = Buffer
-exports.SlowBuffer = SlowBuffer
-exports.INSPECT_MAX_BYTES = 50
-
-var K_MAX_LENGTH = 0x7fffffff
-exports.kMaxLength = K_MAX_LENGTH
-
-/**
- * If `Buffer.TYPED_ARRAY_SUPPORT`:
- *   === true    Use Uint8Array implementation (fastest)
- *   === false   Print warning and recommend using `buffer` v4.x which has an Object
- *               implementation (most compatible, even IE6)
- *
- * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
- * Opera 11.6+, iOS 4.2+.
- *
- * We report that the browser does not support typed arrays if the are not subclassable
- * using __proto__. Firefox 4-29 lacks support for adding new properties to `Uint8Array`
- * (See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support
- * for __proto__ and has a buggy typed array implementation.
- */
-Buffer.TYPED_ARRAY_SUPPORT = typedArraySupport()
-
-if (!Buffer.TYPED_ARRAY_SUPPORT && typeof console !== 'undefined' &&
-    typeof console.error === 'function') {
-  console.error(
-    'This browser lacks typed array (Uint8Array) support which is required by ' +
-    '`buffer` v5.x. Use `buffer` v4.x if you require old browser support.'
-  )
-}
-
-function typedArraySupport () {
-  // Can typed array instances can be augmented?
-  try {
-    var arr = new Uint8Array(1)
-    arr.__proto__ = { __proto__: Uint8Array.prototype, foo: function () { return 42 } }
-    return arr.foo() === 42
-  } catch (e) {
-    return false
-  }
-}
-
-Object.defineProperty(Buffer.prototype, 'parent', {
-  enumerable: true,
-  get: function () {
-    if (!Buffer.isBuffer(this)) return undefined
-    return this.buffer
-  }
-})
-
-Object.defineProperty(Buffer.prototype, 'offset', {
-  enumerable: true,
-  get: function () {
-    if (!Buffer.isBuffer(this)) return undefined
-    return this.byteOffset
-  }
-})
-
-function createBuffer (length) {
-  if (length > K_MAX_LENGTH) {
-    throw new RangeError('The value "' + length + '" is invalid for option "size"')
-  }
-  // Return an augmented `Uint8Array` instance
-  var buf = new Uint8Array(length)
-  buf.__proto__ = Buffer.prototype
-  return buf
-}
-
-/**
- * The Buffer constructor returns instances of `Uint8Array` that have their
- * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
- * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
- * and the `Uint8Array` methods. Square bracket notation works as expected -- it
- * returns a single octet.
- *
- * The `Uint8Array` prototype remains unmodified.
- */
-
-function Buffer (arg, encodingOrOffset, length) {
-  // Common case.
-  if (typeof arg === 'number') {
-    if (typeof encodingOrOffset === 'string') {
-      throw new TypeError(
-        'The "string" argument must be of type string. Received type number'
-      )
-    }
-    return allocUnsafe(arg)
-  }
-  return from(arg, encodingOrOffset, length)
-}
-
-// Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
-if (typeof Symbol !== 'undefined' && Symbol.species != null &&
-    Buffer[Symbol.species] === Buffer) {
-  Object.defineProperty(Buffer, Symbol.species, {
-    value: null,
-    configurable: true,
-    enumerable: false,
-    writable: false
-  })
-}
-
-Buffer.poolSize = 8192 // not used by this implementation
-
-function from (value, encodingOrOffset, length) {
-  if (typeof value === 'string') {
-    return fromString(value, encodingOrOffset)
-  }
-
-  if (ArrayBuffer.isView(value)) {
-    return fromArrayLike(value)
-  }
-
-  if (value == null) {
-    throw TypeError(
-      'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
-      'or Array-like Object. Received type ' + (typeof value)
-    )
-  }
-
-  if (isInstance(value, ArrayBuffer) ||
-      (value && isInstance(value.buffer, ArrayBuffer))) {
-    return fromArrayBuffer(value, encodingOrOffset, length)
-  }
-
-  if (typeof value === 'number') {
-    throw new TypeError(
-      'The "value" argument must not be of type number. Received type number'
-    )
-  }
-
-  var valueOf = value.valueOf && value.valueOf()
-  if (valueOf != null && valueOf !== value) {
-    return Buffer.from(valueOf, encodingOrOffset, length)
-  }
-
-  var b = fromObject(value)
-  if (b) return b
-
-  if (typeof Symbol !== 'undefined' && Symbol.toPrimitive != null &&
-      typeof value[Symbol.toPrimitive] === 'function') {
-    return Buffer.from(
-      value[Symbol.toPrimitive]('string'), encodingOrOffset, length
-    )
-  }
-
-  throw new TypeError(
-    'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
-    'or Array-like Object. Received type ' + (typeof value)
-  )
-}
-
-/**
- * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
- * if value is a number.
- * Buffer.from(str[, encoding])
- * Buffer.from(array)
- * Buffer.from(buffer)
- * Buffer.from(arrayBuffer[, byteOffset[, length]])
- **/
-Buffer.from = function (value, encodingOrOffset, length) {
-  return from(value, encodingOrOffset, length)
-}
-
-// Note: Change prototype *after* Buffer.from is defined to workaround Chrome bug:
-// https://github.com/feross/buffer/pull/148
-Buffer.prototype.__proto__ = Uint8Array.prototype
-Buffer.__proto__ = Uint8Array
-
-function assertSize (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('"size" argument must be of type number')
-  } else if (size < 0) {
-    throw new RangeError('The value "' + size + '" is invalid for option "size"')
-  }
-}
-
-function alloc (size, fill, encoding) {
-  assertSize(size)
-  if (size <= 0) {
-    return createBuffer(size)
-  }
-  if (fill !== undefined) {
-    // Only pay attention to encoding if it's a string. This
-    // prevents accidentally sending in a number that would
-    // be interpretted as a start offset.
-    return typeof encoding === 'string'
-      ? createBuffer(size).fill(fill, encoding)
-      : createBuffer(size).fill(fill)
-  }
-  return createBuffer(size)
-}
-
-/**
- * Creates a new filled Buffer instance.
- * alloc(size[, fill[, encoding]])
- **/
-Buffer.alloc = function (size, fill, encoding) {
-  return alloc(size, fill, encoding)
-}
-
-function allocUnsafe (size) {
-  assertSize(size)
-  return createBuffer(size < 0 ? 0 : checked(size) | 0)
-}
-
-/**
- * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
- * */
-Buffer.allocUnsafe = function (size) {
-  return allocUnsafe(size)
-}
-/**
- * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
- */
-Buffer.allocUnsafeSlow = function (size) {
-  return allocUnsafe(size)
-}
-
-function fromString (string, encoding) {
-  if (typeof encoding !== 'string' || encoding === '') {
-    encoding = 'utf8'
-  }
-
-  if (!Buffer.isEncoding(encoding)) {
-    throw new TypeError('Unknown encoding: ' + encoding)
-  }
-
-  var length = byteLength(string, encoding) | 0
-  var buf = createBuffer(length)
-
-  var actual = buf.write(string, encoding)
-
-  if (actual !== length) {
-    // Writing a hex string, for example, that contains invalid characters will
-    // cause everything after the first invalid character to be ignored. (e.g.
-    // 'abxxcd' will be treated as 'ab')
-    buf = buf.slice(0, actual)
-  }
-
-  return buf
-}
-
-function fromArrayLike (array) {
-  var length = array.length < 0 ? 0 : checked(array.length) | 0
-  var buf = createBuffer(length)
-  for (var i = 0; i < length; i += 1) {
-    buf[i] = array[i] & 255
-  }
-  return buf
-}
-
-function fromArrayBuffer (array, byteOffset, length) {
-  if (byteOffset < 0 || array.byteLength < byteOffset) {
-    throw new RangeError('"offset" is outside of buffer bounds')
-  }
-
-  if (array.byteLength < byteOffset + (length || 0)) {
-    throw new RangeError('"length" is outside of buffer bounds')
-  }
-
-  var buf
-  if (byteOffset === undefined && length === undefined) {
-    buf = new Uint8Array(array)
-  } else if (length === undefined) {
-    buf = new Uint8Array(array, byteOffset)
-  } else {
-    buf = new Uint8Array(array, byteOffset, length)
-  }
-
-  // Return an augmented `Uint8Array` instance
-  buf.__proto__ = Buffer.prototype
-  return buf
-}
-
-function fromObject (obj) {
-  if (Buffer.isBuffer(obj)) {
-    var len = checked(obj.length) | 0
-    var buf = createBuffer(len)
-
-    if (buf.length === 0) {
-      return buf
-    }
-
-    obj.copy(buf, 0, 0, len)
-    return buf
-  }
-
-  if (obj.length !== undefined) {
-    if (typeof obj.length !== 'number' || numberIsNaN(obj.length)) {
-      return createBuffer(0)
-    }
-    return fromArrayLike(obj)
-  }
-
-  if (obj.type === 'Buffer' && Array.isArray(obj.data)) {
-    return fromArrayLike(obj.data)
-  }
-}
-
-function checked (length) {
-  // Note: cannot use `length < K_MAX_LENGTH` here because that fails when
-  // length is NaN (which is otherwise coerced to zero.)
-  if (length >= K_MAX_LENGTH) {
-    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-                         'size: 0x' + K_MAX_LENGTH.toString(16) + ' bytes')
-  }
-  return length | 0
-}
-
-function SlowBuffer (length) {
-  if (+length != length) { // eslint-disable-line eqeqeq
-    length = 0
-  }
-  return Buffer.alloc(+length)
-}
-
-Buffer.isBuffer = function isBuffer (b) {
-  return b != null && b._isBuffer === true &&
-    b !== Buffer.prototype // so Buffer.isBuffer(Buffer.prototype) will be false
-}
-
-Buffer.compare = function compare (a, b) {
-  if (isInstance(a, Uint8Array)) a = Buffer.from(a, a.offset, a.byteLength)
-  if (isInstance(b, Uint8Array)) b = Buffer.from(b, b.offset, b.byteLength)
-  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
-    throw new TypeError(
-      'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array'
-    )
-  }
-
-  if (a === b) return 0
-
-  var x = a.length
-  var y = b.length
-
-  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
-    if (a[i] !== b[i]) {
-      x = a[i]
-      y = b[i]
-      break
-    }
-  }
-
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-Buffer.isEncoding = function isEncoding (encoding) {
-  switch (String(encoding).toLowerCase()) {
-    case 'hex':
-    case 'utf8':
-    case 'utf-8':
-    case 'ascii':
-    case 'latin1':
-    case 'binary':
-    case 'base64':
-    case 'ucs2':
-    case 'ucs-2':
-    case 'utf16le':
-    case 'utf-16le':
-      return true
-    default:
-      return false
-  }
-}
-
-Buffer.concat = function concat (list, length) {
-  if (!Array.isArray(list)) {
-    throw new TypeError('"list" argument must be an Array of Buffers')
-  }
-
-  if (list.length === 0) {
-    return Buffer.alloc(0)
-  }
-
-  var i
-  if (length === undefined) {
-    length = 0
-    for (i = 0; i < list.length; ++i) {
-      length += list[i].length
-    }
-  }
-
-  var buffer = Buffer.allocUnsafe(length)
-  var pos = 0
-  for (i = 0; i < list.length; ++i) {
-    var buf = list[i]
-    if (isInstance(buf, Uint8Array)) {
-      buf = Buffer.from(buf)
-    }
-    if (!Buffer.isBuffer(buf)) {
-      throw new TypeError('"list" argument must be an Array of Buffers')
-    }
-    buf.copy(buffer, pos)
-    pos += buf.length
-  }
-  return buffer
-}
-
-function byteLength (string, encoding) {
-  if (Buffer.isBuffer(string)) {
-    return string.length
-  }
-  if (ArrayBuffer.isView(string) || isInstance(string, ArrayBuffer)) {
-    return string.byteLength
-  }
-  if (typeof string !== 'string') {
-    throw new TypeError(
-      'The "string" argument must be one of type string, Buffer, or ArrayBuffer. ' +
-      'Received type ' + typeof string
-    )
-  }
-
-  var len = string.length
-  var mustMatch = (arguments.length > 2 && arguments[2] === true)
-  if (!mustMatch && len === 0) return 0
-
-  // Use a for loop to avoid recursion
-  var loweredCase = false
-  for (;;) {
-    switch (encoding) {
-      case 'ascii':
-      case 'latin1':
-      case 'binary':
-        return len
-      case 'utf8':
-      case 'utf-8':
-        return utf8ToBytes(string).length
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return len * 2
-      case 'hex':
-        return len >>> 1
-      case 'base64':
-        return base64ToBytes(string).length
-      default:
-        if (loweredCase) {
-          return mustMatch ? -1 : utf8ToBytes(string).length // assume utf8
-        }
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-Buffer.byteLength = byteLength
-
-function slowToString (encoding, start, end) {
-  var loweredCase = false
-
-  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
-  // property of a typed array.
-
-  // This behaves neither like String nor Uint8Array in that we set start/end
-  // to their upper/lower bounds if the value passed is out of range.
-  // undefined is handled specially as per ECMA-262 6th Edition,
-  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
-  if (start === undefined || start < 0) {
-    start = 0
-  }
-  // Return early if start > this.length. Done here to prevent potential uint32
-  // coercion fail below.
-  if (start > this.length) {
-    return ''
-  }
-
-  if (end === undefined || end > this.length) {
-    end = this.length
-  }
-
-  if (end <= 0) {
-    return ''
-  }
-
-  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
-  end >>>= 0
-  start >>>= 0
-
-  if (end <= start) {
-    return ''
-  }
-
-  if (!encoding) encoding = 'utf8'
-
-  while (true) {
-    switch (encoding) {
-      case 'hex':
-        return hexSlice(this, start, end)
-
-      case 'utf8':
-      case 'utf-8':
-        return utf8Slice(this, start, end)
-
-      case 'ascii':
-        return asciiSlice(this, start, end)
-
-      case 'latin1':
-      case 'binary':
-        return latin1Slice(this, start, end)
-
-      case 'base64':
-        return base64Slice(this, start, end)
-
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return utf16leSlice(this, start, end)
-
-      default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = (encoding + '').toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-
-// This property is used by `Buffer.isBuffer` (and the `is-buffer` npm package)
-// to detect a Buffer instance. It's not possible to use `instanceof Buffer`
-// reliably in a browserify context because there could be multiple different
-// copies of the 'buffer' package in use. This method works even for Buffer
-// instances that were created from another copy of the `buffer` package.
-// See: https://github.com/feross/buffer/issues/154
-Buffer.prototype._isBuffer = true
-
-function swap (b, n, m) {
-  var i = b[n]
-  b[n] = b[m]
-  b[m] = i
-}
-
-Buffer.prototype.swap16 = function swap16 () {
-  var len = this.length
-  if (len % 2 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 16-bits')
-  }
-  for (var i = 0; i < len; i += 2) {
-    swap(this, i, i + 1)
-  }
-  return this
-}
-
-Buffer.prototype.swap32 = function swap32 () {
-  var len = this.length
-  if (len % 4 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 32-bits')
-  }
-  for (var i = 0; i < len; i += 4) {
-    swap(this, i, i + 3)
-    swap(this, i + 1, i + 2)
-  }
-  return this
-}
-
-Buffer.prototype.swap64 = function swap64 () {
-  var len = this.length
-  if (len % 8 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 64-bits')
-  }
-  for (var i = 0; i < len; i += 8) {
-    swap(this, i, i + 7)
-    swap(this, i + 1, i + 6)
-    swap(this, i + 2, i + 5)
-    swap(this, i + 3, i + 4)
-  }
-  return this
-}
-
-Buffer.prototype.toString = function toString () {
-  var length = this.length
-  if (length === 0) return ''
-  if (arguments.length === 0) return utf8Slice(this, 0, length)
-  return slowToString.apply(this, arguments)
-}
-
-Buffer.prototype.toLocaleString = Buffer.prototype.toString
-
-Buffer.prototype.equals = function equals (b) {
-  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-  if (this === b) return true
-  return Buffer.compare(this, b) === 0
-}
-
-Buffer.prototype.inspect = function inspect () {
-  var str = ''
-  var max = exports.INSPECT_MAX_BYTES
-  str = this.toString('hex', 0, max).replace(/(.{2})/g, '$1 ').trim()
-  if (this.length > max) str += ' ... '
-  return '<Buffer ' + str + '>'
-}
-
-Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
-  if (isInstance(target, Uint8Array)) {
-    target = Buffer.from(target, target.offset, target.byteLength)
-  }
-  if (!Buffer.isBuffer(target)) {
-    throw new TypeError(
-      'The "target" argument must be one of type Buffer or Uint8Array. ' +
-      'Received type ' + (typeof target)
-    )
-  }
-
-  if (start === undefined) {
-    start = 0
-  }
-  if (end === undefined) {
-    end = target ? target.length : 0
-  }
-  if (thisStart === undefined) {
-    thisStart = 0
-  }
-  if (thisEnd === undefined) {
-    thisEnd = this.length
-  }
-
-  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
-    throw new RangeError('out of range index')
-  }
-
-  if (thisStart >= thisEnd && start >= end) {
-    return 0
-  }
-  if (thisStart >= thisEnd) {
-    return -1
-  }
-  if (start >= end) {
-    return 1
-  }
-
-  start >>>= 0
-  end >>>= 0
-  thisStart >>>= 0
-  thisEnd >>>= 0
-
-  if (this === target) return 0
-
-  var x = thisEnd - thisStart
-  var y = end - start
-  var len = Math.min(x, y)
-
-  var thisCopy = this.slice(thisStart, thisEnd)
-  var targetCopy = target.slice(start, end)
-
-  for (var i = 0; i < len; ++i) {
-    if (thisCopy[i] !== targetCopy[i]) {
-      x = thisCopy[i]
-      y = targetCopy[i]
-      break
-    }
-  }
-
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
-// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
-//
-// Arguments:
-// - buffer - a Buffer to search
-// - val - a string, Buffer, or number
-// - byteOffset - an index into `buffer`; will be clamped to an int32
-// - encoding - an optional encoding, relevant is val is a string
-// - dir - true for indexOf, false for lastIndexOf
-function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
-  // Empty buffer means no match
-  if (buffer.length === 0) return -1
-
-  // Normalize byteOffset
-  if (typeof byteOffset === 'string') {
-    encoding = byteOffset
-    byteOffset = 0
-  } else if (byteOffset > 0x7fffffff) {
-    byteOffset = 0x7fffffff
-  } else if (byteOffset < -0x80000000) {
-    byteOffset = -0x80000000
-  }
-  byteOffset = +byteOffset // Coerce to Number.
-  if (numberIsNaN(byteOffset)) {
-    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
-    byteOffset = dir ? 0 : (buffer.length - 1)
-  }
-
-  // Normalize byteOffset: negative offsets start from the end of the buffer
-  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
-  if (byteOffset >= buffer.length) {
-    if (dir) return -1
-    else byteOffset = buffer.length - 1
-  } else if (byteOffset < 0) {
-    if (dir) byteOffset = 0
-    else return -1
-  }
-
-  // Normalize val
-  if (typeof val === 'string') {
-    val = Buffer.from(val, encoding)
-  }
-
-  // Finally, search either indexOf (if dir is true) or lastIndexOf
-  if (Buffer.isBuffer(val)) {
-    // Special case: looking for empty string/buffer always fails
-    if (val.length === 0) {
-      return -1
-    }
-    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
-  } else if (typeof val === 'number') {
-    val = val & 0xFF // Search for a byte value [0-255]
-    if (typeof Uint8Array.prototype.indexOf === 'function') {
-      if (dir) {
-        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
-      } else {
-        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
-      }
-    }
-    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
-  }
-
-  throw new TypeError('val must be string, number or Buffer')
-}
-
-function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
-  var indexSize = 1
-  var arrLength = arr.length
-  var valLength = val.length
-
-  if (encoding !== undefined) {
-    encoding = String(encoding).toLowerCase()
-    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
-        encoding === 'utf16le' || encoding === 'utf-16le') {
-      if (arr.length < 2 || val.length < 2) {
-        return -1
-      }
-      indexSize = 2
-      arrLength /= 2
-      valLength /= 2
-      byteOffset /= 2
-    }
-  }
-
-  function read (buf, i) {
-    if (indexSize === 1) {
-      return buf[i]
-    } else {
-      return buf.readUInt16BE(i * indexSize)
-    }
-  }
-
-  var i
-  if (dir) {
-    var foundIndex = -1
-    for (i = byteOffset; i < arrLength; i++) {
-      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
-        if (foundIndex === -1) foundIndex = i
-        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
-      } else {
-        if (foundIndex !== -1) i -= i - foundIndex
-        foundIndex = -1
-      }
-    }
-  } else {
-    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
-    for (i = byteOffset; i >= 0; i--) {
-      var found = true
-      for (var j = 0; j < valLength; j++) {
-        if (read(arr, i + j) !== read(val, j)) {
-          found = false
-          break
-        }
-      }
-      if (found) return i
-    }
-  }
-
-  return -1
-}
-
-Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
-  return this.indexOf(val, byteOffset, encoding) !== -1
-}
-
-Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
-}
-
-Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
-}
-
-function hexWrite (buf, string, offset, length) {
-  offset = Number(offset) || 0
-  var remaining = buf.length - offset
-  if (!length) {
-    length = remaining
-  } else {
-    length = Number(length)
-    if (length > remaining) {
-      length = remaining
-    }
-  }
-
-  var strLen = string.length
-
-  if (length > strLen / 2) {
-    length = strLen / 2
-  }
-  for (var i = 0; i < length; ++i) {
-    var parsed = parseInt(string.substr(i * 2, 2), 16)
-    if (numberIsNaN(parsed)) return i
-    buf[offset + i] = parsed
-  }
-  return i
-}
-
-function utf8Write (buf, string, offset, length) {
-  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
-}
-
-function asciiWrite (buf, string, offset, length) {
-  return blitBuffer(asciiToBytes(string), buf, offset, length)
-}
-
-function latin1Write (buf, string, offset, length) {
-  return asciiWrite(buf, string, offset, length)
-}
-
-function base64Write (buf, string, offset, length) {
-  return blitBuffer(base64ToBytes(string), buf, offset, length)
-}
-
-function ucs2Write (buf, string, offset, length) {
-  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
-}
-
-Buffer.prototype.write = function write (string, offset, length, encoding) {
-  // Buffer#write(string)
-  if (offset === undefined) {
-    encoding = 'utf8'
-    length = this.length
-    offset = 0
-  // Buffer#write(string, encoding)
-  } else if (length === undefined && typeof offset === 'string') {
-    encoding = offset
-    length = this.length
-    offset = 0
-  // Buffer#write(string, offset[, length][, encoding])
-  } else if (isFinite(offset)) {
-    offset = offset >>> 0
-    if (isFinite(length)) {
-      length = length >>> 0
-      if (encoding === undefined) encoding = 'utf8'
-    } else {
-      encoding = length
-      length = undefined
-    }
-  } else {
-    throw new Error(
-      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
-    )
-  }
-
-  var remaining = this.length - offset
-  if (length === undefined || length > remaining) length = remaining
-
-  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
-    throw new RangeError('Attempt to write outside buffer bounds')
-  }
-
-  if (!encoding) encoding = 'utf8'
-
-  var loweredCase = false
-  for (;;) {
-    switch (encoding) {
-      case 'hex':
-        return hexWrite(this, string, offset, length)
-
-      case 'utf8':
-      case 'utf-8':
-        return utf8Write(this, string, offset, length)
-
-      case 'ascii':
-        return asciiWrite(this, string, offset, length)
-
-      case 'latin1':
-      case 'binary':
-        return latin1Write(this, string, offset, length)
-
-      case 'base64':
-        // Warning: maxLength not taken into account in base64Write
-        return base64Write(this, string, offset, length)
-
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return ucs2Write(this, string, offset, length)
-
-      default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-
-Buffer.prototype.toJSON = function toJSON () {
-  return {
-    type: 'Buffer',
-    data: Array.prototype.slice.call(this._arr || this, 0)
-  }
-}
-
-function base64Slice (buf, start, end) {
-  if (start === 0 && end === buf.length) {
-    return base64.fromByteArray(buf)
-  } else {
-    return base64.fromByteArray(buf.slice(start, end))
-  }
-}
-
-function utf8Slice (buf, start, end) {
-  end = Math.min(buf.length, end)
-  var res = []
-
-  var i = start
-  while (i < end) {
-    var firstByte = buf[i]
-    var codePoint = null
-    var bytesPerSequence = (firstByte > 0xEF) ? 4
-      : (firstByte > 0xDF) ? 3
-        : (firstByte > 0xBF) ? 2
-          : 1
-
-    if (i + bytesPerSequence <= end) {
-      var secondByte, thirdByte, fourthByte, tempCodePoint
-
-      switch (bytesPerSequence) {
-        case 1:
-          if (firstByte < 0x80) {
-            codePoint = firstByte
-          }
-          break
-        case 2:
-          secondByte = buf[i + 1]
-          if ((secondByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
-            if (tempCodePoint > 0x7F) {
-              codePoint = tempCodePoint
-            }
-          }
-          break
-        case 3:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
-            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
-              codePoint = tempCodePoint
-            }
-          }
-          break
-        case 4:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          fourthByte = buf[i + 3]
-          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
-            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
-              codePoint = tempCodePoint
-            }
-          }
-      }
-    }
-
-    if (codePoint === null) {
-      // we did not generate a valid codePoint so insert a
-      // replacement char (U+FFFD) and advance only 1 byte
-      codePoint = 0xFFFD
-      bytesPerSequence = 1
-    } else if (codePoint > 0xFFFF) {
-      // encode to utf16 (surrogate pair dance)
-      codePoint -= 0x10000
-      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
-      codePoint = 0xDC00 | codePoint & 0x3FF
-    }
-
-    res.push(codePoint)
-    i += bytesPerSequence
-  }
-
-  return decodeCodePointsArray(res)
-}
-
-// Based on http://stackoverflow.com/a/22747272/680742, the browser with
-// the lowest limit is Chrome, with 0x10000 args.
-// We go 1 magnitude less, for safety
-var MAX_ARGUMENTS_LENGTH = 0x1000
-
-function decodeCodePointsArray (codePoints) {
-  var len = codePoints.length
-  if (len <= MAX_ARGUMENTS_LENGTH) {
-    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
-  }
-
-  // Decode in chunks to avoid "call stack size exceeded".
-  var res = ''
-  var i = 0
-  while (i < len) {
-    res += String.fromCharCode.apply(
-      String,
-      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
-    )
-  }
-  return res
-}
-
-function asciiSlice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
-
-  for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i] & 0x7F)
-  }
-  return ret
-}
-
-function latin1Slice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
-
-  for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i])
-  }
-  return ret
-}
-
-function hexSlice (buf, start, end) {
-  var len = buf.length
-
-  if (!start || start < 0) start = 0
-  if (!end || end < 0 || end > len) end = len
-
-  var out = ''
-  for (var i = start; i < end; ++i) {
-    out += toHex(buf[i])
-  }
-  return out
-}
-
-function utf16leSlice (buf, start, end) {
-  var bytes = buf.slice(start, end)
-  var res = ''
-  for (var i = 0; i < bytes.length; i += 2) {
-    res += String.fromCharCode(bytes[i] + (bytes[i + 1] * 256))
-  }
-  return res
-}
-
-Buffer.prototype.slice = function slice (start, end) {
-  var len = this.length
-  start = ~~start
-  end = end === undefined ? len : ~~end
-
-  if (start < 0) {
-    start += len
-    if (start < 0) start = 0
-  } else if (start > len) {
-    start = len
-  }
-
-  if (end < 0) {
-    end += len
-    if (end < 0) end = 0
-  } else if (end > len) {
-    end = len
-  }
-
-  if (end < start) end = start
-
-  var newBuf = this.subarray(start, end)
-  // Return an augmented `Uint8Array` instance
-  newBuf.__proto__ = Buffer.prototype
-  return newBuf
-}
-
-/*
- * Need to make sure that buffer isn't trying to write out of bounds.
- */
-function checkOffset (offset, ext, length) {
-  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
-  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
-}
-
-Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
-  while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
-  }
-
-  return val
-}
-
-Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) {
-    checkOffset(offset, byteLength, this.length)
-  }
-
-  var val = this[offset + --byteLength]
-  var mul = 1
-  while (byteLength > 0 && (mul *= 0x100)) {
-    val += this[offset + --byteLength] * mul
-  }
-
-  return val
-}
-
-Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  return this[offset]
-}
-
-Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return this[offset] | (this[offset + 1] << 8)
-}
-
-Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return (this[offset] << 8) | this[offset + 1]
-}
-
-Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return ((this[offset]) |
-      (this[offset + 1] << 8) |
-      (this[offset + 2] << 16)) +
-      (this[offset + 3] * 0x1000000)
-}
-
-Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] * 0x1000000) +
-    ((this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    this[offset + 3])
-}
-
-Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
-  while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
-  }
-  mul *= 0x80
-
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
-
-  return val
-}
-
-Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var i = byteLength
-  var mul = 1
-  var val = this[offset + --i]
-  while (i > 0 && (mul *= 0x100)) {
-    val += this[offset + --i] * mul
-  }
-  mul *= 0x80
-
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
-
-  return val
-}
-
-Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  if (!(this[offset] & 0x80)) return (this[offset])
-  return ((0xff - this[offset] + 1) * -1)
-}
-
-Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset] | (this[offset + 1] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset + 1] | (this[offset] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset]) |
-    (this[offset + 1] << 8) |
-    (this[offset + 2] << 16) |
-    (this[offset + 3] << 24)
-}
-
-Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] << 24) |
-    (this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    (this[offset + 3])
-}
-
-Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, true, 23, 4)
-}
-
-Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, false, 23, 4)
-}
-
-Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, true, 52, 8)
-}
-
-Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
-  offset = offset >>> 0
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, false, 52, 8)
-}
-
-function checkInt (buf, value, offset, ext, max, min) {
-  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
-  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-}
-
-Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
-  }
-
-  var mul = 1
-  var i = 0
-  this[offset] = value & 0xFF
-  while (++i < byteLength && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  byteLength = byteLength >>> 0
-  if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
-  }
-
-  var i = byteLength - 1
-  var mul = 1
-  this[offset + i] = value & 0xFF
-  while (--i >= 0 && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
-
-Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  this[offset] = (value & 0xff)
-  this[offset + 1] = (value >>> 8)
-  return offset + 2
-}
-
-Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  this[offset] = (value >>> 8)
-  this[offset + 1] = (value & 0xff)
-  return offset + 2
-}
-
-Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  this[offset + 3] = (value >>> 24)
-  this[offset + 2] = (value >>> 16)
-  this[offset + 1] = (value >>> 8)
-  this[offset] = (value & 0xff)
-  return offset + 4
-}
-
-Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  this[offset] = (value >>> 24)
-  this[offset + 1] = (value >>> 16)
-  this[offset + 2] = (value >>> 8)
-  this[offset + 3] = (value & 0xff)
-  return offset + 4
-}
-
-Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) {
-    var limit = Math.pow(2, (8 * byteLength) - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
-  }
-
-  var i = 0
-  var mul = 1
-  var sub = 0
-  this[offset] = value & 0xFF
-  while (++i < byteLength && (mul *= 0x100)) {
-    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
-      sub = 1
-    }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) {
-    var limit = Math.pow(2, (8 * byteLength) - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
-  }
-
-  var i = byteLength - 1
-  var mul = 1
-  var sub = 0
-  this[offset + i] = value & 0xFF
-  while (--i >= 0 && (mul *= 0x100)) {
-    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
-      sub = 1
-    }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
-  if (value < 0) value = 0xff + value + 1
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
-
-Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  this[offset] = (value & 0xff)
-  this[offset + 1] = (value >>> 8)
-  return offset + 2
-}
-
-Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  this[offset] = (value >>> 8)
-  this[offset + 1] = (value & 0xff)
-  return offset + 2
-}
-
-Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  this[offset] = (value & 0xff)
-  this[offset + 1] = (value >>> 8)
-  this[offset + 2] = (value >>> 16)
-  this[offset + 3] = (value >>> 24)
-  return offset + 4
-}
-
-Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  if (value < 0) value = 0xffffffff + value + 1
-  this[offset] = (value >>> 24)
-  this[offset + 1] = (value >>> 16)
-  this[offset + 2] = (value >>> 8)
-  this[offset + 3] = (value & 0xff)
-  return offset + 4
-}
-
-function checkIEEE754 (buf, value, offset, ext, max, min) {
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-  if (offset < 0) throw new RangeError('Index out of range')
-}
-
-function writeFloat (buf, value, offset, littleEndian, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) {
-    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
-  }
-  ieee754.write(buf, value, offset, littleEndian, 23, 4)
-  return offset + 4
-}
-
-Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, false, noAssert)
-}
-
-function writeDouble (buf, value, offset, littleEndian, noAssert) {
-  value = +value
-  offset = offset >>> 0
-  if (!noAssert) {
-    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
-  }
-  ieee754.write(buf, value, offset, littleEndian, 52, 8)
-  return offset + 8
-}
-
-Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, false, noAssert)
-}
-
-// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-Buffer.prototype.copy = function copy (target, targetStart, start, end) {
-  if (!Buffer.isBuffer(target)) throw new TypeError('argument should be a Buffer')
-  if (!start) start = 0
-  if (!end && end !== 0) end = this.length
-  if (targetStart >= target.length) targetStart = target.length
-  if (!targetStart) targetStart = 0
-  if (end > 0 && end < start) end = start
-
-  // Copy 0 bytes; we're done
-  if (end === start) return 0
-  if (target.length === 0 || this.length === 0) return 0
-
-  // Fatal error conditions
-  if (targetStart < 0) {
-    throw new RangeError('targetStart out of bounds')
-  }
-  if (start < 0 || start >= this.length) throw new RangeError('Index out of range')
-  if (end < 0) throw new RangeError('sourceEnd out of bounds')
-
-  // Are we oob?
-  if (end > this.length) end = this.length
-  if (target.length - targetStart < end - start) {
-    end = target.length - targetStart + start
-  }
-
-  var len = end - start
-
-  if (this === target && typeof Uint8Array.prototype.copyWithin === 'function') {
-    // Use built-in when available, missing from IE11
-    this.copyWithin(targetStart, start, end)
-  } else if (this === target && start < targetStart && targetStart < end) {
-    // descending copy from end
-    for (var i = len - 1; i >= 0; --i) {
-      target[i + targetStart] = this[i + start]
-    }
-  } else {
-    Uint8Array.prototype.set.call(
-      target,
-      this.subarray(start, end),
-      targetStart
-    )
-  }
-
-  return len
-}
-
-// Usage:
-//    buffer.fill(number[, offset[, end]])
-//    buffer.fill(buffer[, offset[, end]])
-//    buffer.fill(string[, offset[, end]][, encoding])
-Buffer.prototype.fill = function fill (val, start, end, encoding) {
-  // Handle string cases:
-  if (typeof val === 'string') {
-    if (typeof start === 'string') {
-      encoding = start
-      start = 0
-      end = this.length
-    } else if (typeof end === 'string') {
-      encoding = end
-      end = this.length
-    }
-    if (encoding !== undefined && typeof encoding !== 'string') {
-      throw new TypeError('encoding must be a string')
-    }
-    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
-      throw new TypeError('Unknown encoding: ' + encoding)
-    }
-    if (val.length === 1) {
-      var code = val.charCodeAt(0)
-      if ((encoding === 'utf8' && code < 128) ||
-          encoding === 'latin1') {
-        // Fast path: If `val` fits into a single byte, use that numeric value.
-        val = code
-      }
-    }
-  } else if (typeof val === 'number') {
-    val = val & 255
-  }
-
-  // Invalid ranges are not set to a default, so can range check early.
-  if (start < 0 || this.length < start || this.length < end) {
-    throw new RangeError('Out of range index')
-  }
-
-  if (end <= start) {
-    return this
-  }
-
-  start = start >>> 0
-  end = end === undefined ? this.length : end >>> 0
-
-  if (!val) val = 0
-
-  var i
-  if (typeof val === 'number') {
-    for (i = start; i < end; ++i) {
-      this[i] = val
-    }
-  } else {
-    var bytes = Buffer.isBuffer(val)
-      ? val
-      : Buffer.from(val, encoding)
-    var len = bytes.length
-    if (len === 0) {
-      throw new TypeError('The value "' + val +
-        '" is invalid for argument "value"')
-    }
-    for (i = 0; i < end - start; ++i) {
-      this[i + start] = bytes[i % len]
-    }
-  }
-
-  return this
-}
-
-// HELPER FUNCTIONS
-// ================
-
-var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g
-
-function base64clean (str) {
-  // Node takes equal signs as end of the Base64 encoding
-  str = str.split('=')[0]
-  // Node strips out invalid characters like \n and \t from the string, base64-js does not
-  str = str.trim().replace(INVALID_BASE64_RE, '')
-  // Node converts strings with length < 2 to ''
-  if (str.length < 2) return ''
-  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
-  while (str.length % 4 !== 0) {
-    str = str + '='
-  }
-  return str
-}
-
-function toHex (n) {
-  if (n < 16) return '0' + n.toString(16)
-  return n.toString(16)
-}
-
-function utf8ToBytes (string, units) {
-  units = units || Infinity
-  var codePoint
-  var length = string.length
-  var leadSurrogate = null
-  var bytes = []
-
-  for (var i = 0; i < length; ++i) {
-    codePoint = string.charCodeAt(i)
-
-    // is surrogate component
-    if (codePoint > 0xD7FF && codePoint < 0xE000) {
-      // last char was a lead
-      if (!leadSurrogate) {
-        // no lead yet
-        if (codePoint > 0xDBFF) {
-          // unexpected trail
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        } else if (i + 1 === length) {
-          // unpaired lead
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        }
-
-        // valid lead
-        leadSurrogate = codePoint
-
-        continue
-      }
-
-      // 2 leads in a row
-      if (codePoint < 0xDC00) {
-        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-        leadSurrogate = codePoint
-        continue
-      }
-
-      // valid surrogate pair
-      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
-    } else if (leadSurrogate) {
-      // valid bmp char, but last char was a lead
-      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-    }
-
-    leadSurrogate = null
-
-    // encode utf8
-    if (codePoint < 0x80) {
-      if ((units -= 1) < 0) break
-      bytes.push(codePoint)
-    } else if (codePoint < 0x800) {
-      if ((units -= 2) < 0) break
-      bytes.push(
-        codePoint >> 0x6 | 0xC0,
-        codePoint & 0x3F | 0x80
-      )
-    } else if (codePoint < 0x10000) {
-      if ((units -= 3) < 0) break
-      bytes.push(
-        codePoint >> 0xC | 0xE0,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
-    } else if (codePoint < 0x110000) {
-      if ((units -= 4) < 0) break
-      bytes.push(
-        codePoint >> 0x12 | 0xF0,
-        codePoint >> 0xC & 0x3F | 0x80,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
-    } else {
-      throw new Error('Invalid code point')
-    }
-  }
-
-  return bytes
-}
-
-function asciiToBytes (str) {
-  var byteArray = []
-  for (var i = 0; i < str.length; ++i) {
-    // Node's code seems to be doing this and not & 0x7F..
-    byteArray.push(str.charCodeAt(i) & 0xFF)
-  }
-  return byteArray
-}
-
-function utf16leToBytes (str, units) {
-  var c, hi, lo
-  var byteArray = []
-  for (var i = 0; i < str.length; ++i) {
-    if ((units -= 2) < 0) break
-
-    c = str.charCodeAt(i)
-    hi = c >> 8
-    lo = c % 256
-    byteArray.push(lo)
-    byteArray.push(hi)
-  }
-
-  return byteArray
-}
-
-function base64ToBytes (str) {
-  return base64.toByteArray(base64clean(str))
-}
-
-function blitBuffer (src, dst, offset, length) {
-  for (var i = 0; i < length; ++i) {
-    if ((i + offset >= dst.length) || (i >= src.length)) break
-    dst[i + offset] = src[i]
-  }
-  return i
-}
-
-// ArrayBuffer or Uint8Array objects from other contexts (i.e. iframes) do not pass
-// the `instanceof` check but they should be treated as of that type.
-// See: https://github.com/feross/buffer/issues/166
-function isInstance (obj, type) {
-  return obj instanceof type ||
-    (obj != null && obj.constructor != null && obj.constructor.name != null &&
-      obj.constructor.name === type.name)
-}
-function numberIsNaN (obj) {
-  // For IE11 support
-  return obj !== obj // eslint-disable-line no-self-compare
-}
-
-
-/***/ }),
-
-/***/ 8898:
-/***/ (function(__unused_webpack_module, exports) {
-
-/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = ((value * c) - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-
-/***/ }),
-
-/***/ 5318:
-/***/ (function(module) {
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
-  };
-}
-
-module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ 862:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var _typeof = (__webpack_require__(8)["default"]);
-
-function _getRequireWildcardCache(nodeInterop) {
-  if (typeof WeakMap !== "function") return null;
-  var cacheBabelInterop = new WeakMap();
-  var cacheNodeInterop = new WeakMap();
-  return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) {
-    return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
-  })(nodeInterop);
-}
-
-function _interopRequireWildcard(obj, nodeInterop) {
-  if (!nodeInterop && obj && obj.__esModule) {
-    return obj;
-  }
-
-  if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
-    return {
-      "default": obj
-    };
-  }
-
-  var cache = _getRequireWildcardCache(nodeInterop);
-
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-
-  var newObj = {};
-  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
-  for (var key in obj) {
-    if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
-      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
-      if (desc && (desc.get || desc.set)) {
-        Object.defineProperty(newObj, key, desc);
-      } else {
-        newObj[key] = obj[key];
-      }
-    }
-  }
-
-  newObj["default"] = obj;
-
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-
-  return newObj;
-}
-
-module.exports = _interopRequireWildcard, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module) {
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
-}
-
-module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
 
 /***/ 9705:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
@@ -16595,7 +14471,7 @@ function defineOrigin(geojson, origin) {
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);var _slicedToArray2=_interopRequireDefault(__webpack_require__(885));/*jshint esversion: 6 */function colorcolor(color){var newColor=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"rgba";var calculateOpacity=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;color=color.toLowerCase();newColor=newColor.toLowerCase();var returnedColor=color;var namedColor=__webpack_require__(8874);var r,g,b,a;var roundTo=4;var colorDefinitions={rgb:{re:/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/,example:["rgb(123, 234, 45)","rgb(255,234,245)"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],10),parseInt(bits[2],10),parseInt(bits[3],10),1];}},rgba:{re:/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d+(?:\.\d+)?|\.\d+)\s*\)/,example:["rgba(123, 234, 45, 1)","rgba(255,234,245, 0.5)"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],10),parseInt(bits[2],10),parseInt(bits[3],10),parseFloat(bits[4])];}},hex:{re:/^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,example:["00ff00","336699"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],16),parseInt(bits[2],16),parseInt(bits[3],16),1];}},hex3:{re:/^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,example:["fb0","f0f"],toRGBA:function toRGBA(bits){return[parseInt(bits[1]+bits[1],16),parseInt(bits[2]+bits[2],16),parseInt(bits[3]+bits[3],16),1];}},hexa:{re:/^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,example:["00ff00ff","336699a0"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],16),parseInt(bits[2],16),parseInt(bits[3],16),parseInt(bits[4],16)/255];}},hex4a:{re:/^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,example:["fb0f","f0f8"],toRGBA:function toRGBA(bits){return[parseInt(bits[1]+bits[1],16),parseInt(bits[2]+bits[2],16),parseInt(bits[3]+bits[3],16),parseInt(bits[4]+bits[4],16)/255];}},hsl:{re:/^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/,example:["hsl(120, 100%, 25%)","hsl(0, 100%, 50%)"],toRGBA:function toRGBA(bits){bits[4]=1;var rgba=hslToRgb(bits);return[rgba.r,rgba.g,rgba.b,rgba.a];}},hsla:{re:/^hsla\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%,\s*(\d+(?:\.\d+)?|\.\d+)\s*\)/,example:["hsla(120, 100%, 25%, 1)","hsla(0, 100%, 50%, 0.5)"],toRGBA:function toRGBA(bits){var rgba=hslToRgb(bits);return[rgba.r,rgba.g,rgba.b,rgba.a];}},hsv:{re:/^hsv\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/,example:["hsv(120, 100%, 25%)","hsv(0, 100%, 50%)"],toRGBA:function toRGBA(bits){var rgb=hsvToRgb(bits);return[rgb.r,rgb.g,rgb.b,1];}},hsb:{re:/^hsb\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/,example:["hsb(120, 100%, 25%)","hsb(0, 100%, 50%)"],toRGBA:function toRGBA(bits){var rgb=hsvToRgb(bits);return[rgb.r,rgb.g,rgb.b,1];}}};// If this is a named color, convert it to hex
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);var _slicedToArray2=_interopRequireDefault(__webpack_require__(885));/*jshint esversion: 6 */function colorcolor(color){var newColor=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"rgba";var calculateOpacity=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;color=color.toLowerCase();newColor=newColor.toLowerCase();var returnedColor=color;var namedColor=__webpack_require__(8874);var r,g,b,a;var roundTo=4;var colorDefinitions={rgb:{re:/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/,example:["rgb(123, 234, 45)","rgb(255,234,245)"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],10),parseInt(bits[2],10),parseInt(bits[3],10),1];}},rgba:{re:/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d+(?:\.\d+)?|\.\d+)\s*\)/,example:["rgba(123, 234, 45, 1)","rgba(255,234,245, 0.5)"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],10),parseInt(bits[2],10),parseInt(bits[3],10),parseFloat(bits[4])];}},hex:{re:/^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,example:["00ff00","336699"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],16),parseInt(bits[2],16),parseInt(bits[3],16),1];}},hex3:{re:/^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,example:["fb0","f0f"],toRGBA:function toRGBA(bits){return[parseInt(bits[1]+bits[1],16),parseInt(bits[2]+bits[2],16),parseInt(bits[3]+bits[3],16),1];}},hexa:{re:/^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,example:["00ff00ff","336699a0"],toRGBA:function toRGBA(bits){return[parseInt(bits[1],16),parseInt(bits[2],16),parseInt(bits[3],16),parseInt(bits[4],16)/255];}},hex4a:{re:/^#([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,example:["fb0f","f0f8"],toRGBA:function toRGBA(bits){return[parseInt(bits[1]+bits[1],16),parseInt(bits[2]+bits[2],16),parseInt(bits[3]+bits[3],16),parseInt(bits[4]+bits[4],16)/255];}},hsl:{re:/^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/,example:["hsl(120, 100%, 25%)","hsl(0, 100%, 50%)"],toRGBA:function toRGBA(bits){bits[4]=1;var rgba=hslToRgb(bits);return[rgba.r,rgba.g,rgba.b,rgba.a];}},hsla:{re:/^hsla\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%,\s*(\d+(?:\.\d+)?|\.\d+)\s*\)/,example:["hsla(120, 100%, 25%, 1)","hsla(0, 100%, 50%, 0.5)"],toRGBA:function toRGBA(bits){var rgba=hslToRgb(bits);return[rgba.r,rgba.g,rgba.b,rgba.a];}},hsv:{re:/^hsv\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/,example:["hsv(120, 100%, 25%)","hsv(0, 100%, 50%)"],toRGBA:function toRGBA(bits){var rgb=hsvToRgb(bits);return[rgb.r,rgb.g,rgb.b,1];}},hsb:{re:/^hsb\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/,example:["hsb(120, 100%, 25%)","hsb(0, 100%, 50%)"],toRGBA:function toRGBA(bits){var rgb=hsvToRgb(bits);return[rgb.r,rgb.g,rgb.b,1];}}};// If this is a named color, convert it to hex
 if(namedColor.hasOwnProperty(color)){color=namedColor[color];color.forEach(function(piece,index){"use strict";color[index]=("0"+piece.toString(16)).slice(-2);});color="#"+color.join('');}// Search the color definitions for a match
 for(var colorDefinition in colorDefinitions){var re=colorDefinitions[colorDefinition].re;var processor=colorDefinitions[colorDefinition].toRGBA;var bits=re.exec(color);if(bits){var channels=processor(bits);r=channels[0];g=channels[1];b=channels[2];a=+(Math.round(channels[3]+("e+"+roundTo))+("e-"+roundTo));}}r=Math.round(r<0||isNaN(r)?0:r>255?255:r);g=Math.round(g<0||isNaN(g)?0:g>255?255:g);b=Math.round(b<0||isNaN(b)?0:b>255?255:b);a=a<0||isNaN(a)?0:a>1?1:a;switch(newColor){case"hex":returnedColor="#"+("0"+r.toString(16)).slice(-2)+("0"+g.toString(16)).slice(-2)+("0"+b.toString(16)).slice(-2);break;case"hexa":if(calculateOpacity){var _calculateOpacityFrom=calculateOpacityFromWhite(r,g,b,a);var _calculateOpacityFrom2=(0,_slicedToArray2.default)(_calculateOpacityFrom,4);r=_calculateOpacityFrom2[0];g=_calculateOpacityFrom2[1];b=_calculateOpacityFrom2[2];a=_calculateOpacityFrom2[3];}returnedColor="#"+("0"+r.toString(16)).slice(-2)+("0"+g.toString(16)).slice(-2)+("0"+b.toString(16)).slice(-2)+("0"+Math.round(255*a).toString(16)).slice(-2);break;case"hsl":var hsl=rgbToHsl({"r":r,"g":g,"b":b});returnedColor="hsl(".concat(hsl.h,",").concat(hsl.s,"%,").concat(hsl.l,"%)");break;case"hsla":if(calculateOpacity){var _calculateOpacityFrom3=calculateOpacityFromWhite(r,g,b,a);var _calculateOpacityFrom4=(0,_slicedToArray2.default)(_calculateOpacityFrom3,4);r=_calculateOpacityFrom4[0];g=_calculateOpacityFrom4[1];b=_calculateOpacityFrom4[2];a=_calculateOpacityFrom4[3];}var hsla=rgbToHsl({"r":r,"g":g,"b":b,"a":a});returnedColor="hsla(".concat(hsla.h,",").concat(hsla.s,"%,").concat(hsla.l,"%,").concat(hsla.a,")");break;case"hsb":/* Same as `hsv` */var hsb=rgbToHsv({"r":r,"g":g,"b":b});returnedColor="hsb(".concat(hsb.h,",").concat(hsb.s,"%,").concat(hsb.v,"%)");break;case"hsv":var hsv=rgbToHsv({"r":r,"g":g,"b":b});returnedColor="hsv(".concat(hsv.h,",").concat(hsv.s,"%,").concat(hsv.v,"%)");break;case"rgb":returnedColor="rgb(".concat(r,",").concat(g,",").concat(b,")");break;case"rgba":/* falls through */default:if(calculateOpacity){var _calculateOpacityFrom5=calculateOpacityFromWhite(r,g,b,a);var _calculateOpacityFrom6=(0,_slicedToArray2.default)(_calculateOpacityFrom5,4);r=_calculateOpacityFrom6[0];g=_calculateOpacityFrom6[1];b=_calculateOpacityFrom6[2];a=_calculateOpacityFrom6[3];}returnedColor="rgba(".concat(r,",").concat(g,",").concat(b,",").concat(a,")");break;}return returnedColor;}function calculateOpacityFromWhite(r,g,b,a){"use strict";var min=0;a=(255-(min=Math.min(r,g,b)))/255;r=( false||(r-min)/a).toFixed(0);g=( false||(g-min)/a).toFixed(0);b=( false||(b-min)/a).toFixed(0);a=parseFloat(a.toFixed(4));return[r,g,b,a];}function hslToRgb(bits){var rgba={},hsl={h:bits[1]/360,s:bits[2]/100,l:bits[3]/100,a:parseFloat(bits[4])};if(hsl.s===0){var v=255*hsl.l;rgba={r:v,g:v,b:v,a:hsl.a};}else{var q=hsl.l<0.5?hsl.l*(1+hsl.s):hsl.l+hsl.s-hsl.l*hsl.s;var p=2*hsl.l-q;rgba.r=hueToRgb(p,q,hsl.h+1/3)*255;rgba.g=hueToRgb(p,q,hsl.h)*255;rgba.b=hueToRgb(p,q,hsl.h-1/3)*255;rgba.a=hsl.a;}return rgba;}function rgbToHsl(rgba){rgba.r=rgba.r/255;rgba.g=rgba.g/255;rgba.b=rgba.b/255;var max=Math.max(rgba.r,rgba.g,rgba.b),min=Math.min(rgba.r,rgba.g,rgba.b),hsl=[],d;hsl.a=rgba.a;hsl.l=(max+min)/2;if(max===min){hsl.h=0;hsl.s=0;}else{d=max-min;hsl.s=hsl.l>=0.5?d/(2-max-min):d/(max+min);switch(max){case rgba.r:hsl.h=(rgba.g-rgba.b)/d+(rgba.g<rgba.b?6:0);break;case rgba.g:hsl.h=(rgba.b-rgba.r)/d+2;break;case rgba.b:hsl.h=(rgba.r-rgba.g)/d+4;break;}hsl.h/=6;}hsl.h=parseInt((hsl.h*360).toFixed(0),10);hsl.s=parseInt((hsl.s*100).toFixed(0),10);hsl.l=parseInt((hsl.l*100).toFixed(0),10);return hsl;}function hsvToRgb(bits){var rgb={},hsv={h:bits[1]/360,s:bits[2]/100,v:bits[3]/100},i=Math.floor(hsv.h*6),f=hsv.h*6-i,p=hsv.v*(1-hsv.s),q=hsv.v*(1-f*hsv.s),t=hsv.v*(1-(1-f)*hsv.s);switch(i%6){case 0:rgb.r=hsv.v;rgb.g=t;rgb.b=p;break;case 1:rgb.r=q;rgb.g=hsv.v;rgb.b=p;break;case 2:rgb.r=p;rgb.g=hsv.v;rgb.b=t;break;case 3:rgb.r=p;rgb.g=q;rgb.b=hsv.v;break;case 4:rgb.r=t;rgb.g=p;rgb.b=hsv.v;break;case 5:rgb.r=hsv.v;rgb.g=p;rgb.b=q;break;}rgb.r=rgb.r*255;rgb.g=rgb.g*255;rgb.b=rgb.b*255;return rgb;}function rgbToHsv(rgba){rgba.r=toPercent(parseInt(rgba.r,10)%256,256);rgba.g=toPercent(parseInt(rgba.g,10)%256,256);rgba.b=toPercent(parseInt(rgba.b,10)%256,256);var max=Math.max(rgba.r,rgba.g,rgba.b),min=Math.min(rgba.r,rgba.g,rgba.b),d=max-min,hsv={"h":0,"s":max===0?0:d/max,"v":max};if(max!==min){switch(max){case rgba.r:hsv.h=(rgba.g-rgba.b)/d+(rgba.g<rgba.b?6:0);break;case rgba.g:hsv.h=(rgba.b-rgba.r)/d+2;break;case rgba.b:hsv.h=(rgba.r-rgba.g)/d+4;break;}hsv.h/=6;}hsv.h=parseInt((hsv.h*360).toFixed(0),10);hsv.s=parseInt((hsv.s*100).toFixed(0),10);hsv.v=parseInt((hsv.v*100).toFixed(0),10);return hsv;}function hueToRgb(p,q,t){if(t<0){t+=1;}if(t>1){t-=1;}if(t<1/6){return p+(q-p)*6*t;}if(t<1/2){return q;}if(t<2/3){return p+(q-p)*((2/3-t)*6);}return p;}function toPercent(amount,limit){return amount/limit;}module.exports=colorcolor;__webpack_require__.g.colorcolor=module.exports;/* ew */
 
@@ -16624,7 +14500,7 @@ contract.scrollLeft=csw;contract.scrollTop=csh;expandChild.style.width=eow+1+'px
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _events=__webpack_require__(7187);var _theme=_interopRequireDefault(__webpack_require__(5618));var GlobalEvent=/*#__PURE__*/function(_EventEmitter){(0,_inherits2.default)(GlobalEvent,_EventEmitter);var _super=(0,_createSuper2.default)(GlobalEvent);function GlobalEvent(){var _this;var themValue=arguments.length>0&&arguments[0]!==undefined?arguments[0]:_theme.default[1];(0,_classCallCheck2.default)(this,GlobalEvent);_this=_super.call(this);_this._theme=themValue;return _this;}(0,_createClass2.default)(GlobalEvent,[{key:"theme",get:function get(){return this._theme;},set:function set(themValue){this._theme=themValue;}}]);return GlobalEvent;}(_events.EventEmitter);var _default=new GlobalEvent();exports["default"]=_default;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _events=__webpack_require__(7187);var _theme=_interopRequireDefault(__webpack_require__(5618));var GlobalEvent=/*#__PURE__*/function(_EventEmitter){(0,_inherits2.default)(GlobalEvent,_EventEmitter);var _super=(0,_createSuper2.default)(GlobalEvent);function GlobalEvent(){var _this;var themValue=arguments.length>0&&arguments[0]!==undefined?arguments[0]:_theme.default[1];(0,_classCallCheck2.default)(this,GlobalEvent);_this=_super.call(this);_this._theme=themValue;return _this;}(0,_createClass2.default)(GlobalEvent,[{key:"theme",get:function get(){return this._theme;},set:function set(themValue){this._theme=themValue;}}]);return GlobalEvent;}(_events.EventEmitter);var _default=new GlobalEvent();exports["default"]=_default;
 
 /***/ }),
 
@@ -16632,7 +14508,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports.callHook=callHook;exports.clearNumberComma=clearNumberComma;exports.getColorWithOpacity=getColorWithOpacity;exports.getComponentInstance=getComponentInstance;exports.getFirstMapTarget=getFirstMapTarget;exports.hexToRgba=hexToRgba;exports.isFunction=isFunction;exports.isXField=isXField;exports.isYField=isYField;exports.reservedDecimal=reservedDecimal;var _colorcolor=_interopRequireDefault(__webpack_require__(9458));// 获取当前时间返回置顶格式
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports.callHook=callHook;exports.clearNumberComma=clearNumberComma;exports.getColorWithOpacity=getColorWithOpacity;exports.getComponentInstance=getComponentInstance;exports.getFirstMapTarget=getFirstMapTarget;exports.hexToRgba=hexToRgba;exports.isFunction=isFunction;exports.isXField=isXField;exports.isYField=isYField;exports.reservedDecimal=reservedDecimal;var _colorcolor=_interopRequireDefault(__webpack_require__(9458));// 获取当前时间返回置顶格式
 // export function getDateTime(timeType) {
 //   return geti18n().d(new Date(), timeType.replace(/\+/g, '_'), getLanguage());
 // }
@@ -16657,8 +14533,14 @@ function clearNumberComma(num){if(num.replace){num=num.replace(/,/g,'');}return 
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(862)["default"]);var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=withLayer;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _wrapDisplayName2=_interopRequireDefault(__webpack_require__(6626));var _react=_interopRequireWildcard(__webpack_require__(3899));var _hoistNonReactStatics=_interopRequireDefault(__webpack_require__(8679));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(1633));var _util=__webpack_require__(9752);var _jsxRuntime=__webpack_require__(5893);function withLayer(WrappedComponent){var BaseLayer=/*#__PURE__*/function(_PureComponent){(0,_inherits2.default)(BaseLayer,_PureComponent);var _super=(0,_createSuper2.default)(BaseLayer);function BaseLayer(props){var _this;(0,_classCallCheck2.default)(this,BaseLayer);_this=_super.call(this,props);_this.registerEvents=[];_this.$_emitEvent=function(name){var data=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var originEventName="on".concat((0,_lodash2.default)(name));if((0,_util.isFunction)(_this.props[originEventName])){_this.props[originEventName]((0,_objectSpread2.default)({map:_this.map,layerId:_this.props.layerId},data));}};_this.$_emitLayerMapEvent=function(event){_this.$_emitEvent(event.type,{mapboxEvent:event});};_this.$_bindLayerEvents=function(){Object.keys(_this.props).forEach(function(eventName){if(_this.eventList.includes(eventName)){var layerId=_this.props.layerId;// @ts-ignore
-var layer=_this.map.overlayLayersManager[layerId];var name=eventName.replace('on','');var registerEventName=name.toLowerCase();_this.registerEvents.push(registerEventName);if(layer){_this.overLayer=layer;layer.on(registerEventName,_this.$_emitLayerMapEvent);}else{_this.map.on(registerEventName,layerId,_this.$_emitLayerMapEvent);}}});};_this.$_unbindLayerEvents=function(events){if(_this.map){events.forEach(function(eventName){!_this.overLayer&&_this.map.off(eventName,_this.props.layerId,_this.$_emitLayerMapEvent);});}};_this.remove=function(){var layerId=arguments.length>0&&arguments[0]!==undefined?arguments[0]:_this.props.layerId;if(_this.registerEvents&&_this.registerEvents.length){_this.$_unbindLayerEvents(_this.registerEvents);}if(_this.map){_this.map&&_this.map.removeLayer(layerId);_this.$_emitEvent('layer-removed');}};_this.eventList=['onMousedown','onMouseup','onClick','onDblclick','onMousemove','onMouseenter','onMouseleave','onMouseover','onMouseout','onContextmenu','onTouchstart','onTouchend','onTouchcancel'];_this.getComponentInstance=_util.getComponentInstance.bind((0,_assertThisInitialized2.default)(_this));return _this;}(0,_createClass2.default)(BaseLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(prevProps.minzoom!==this.props.minzoom||prevProps.maxzoom!==this.props.maxzoom){this.map.setLayerZoomRange(this.props.layerId,this.props.minzoom,this.props.maxzoom);}if(prevProps.filter!==this.props.filter){this.map.setFilter(this.props.layerId,this.props.filter);}if(this.props.layout&&prevProps.layout!==this.props.layout){for(var _i=0,_Object$keys=Object.keys(this.props.layout);_i<_Object$keys.length;_i++){var prop=_Object$keys[_i];this.map.setLayoutProperty(this.props.layerId,prop,this.props.layout[prop]);}}if(this.props.paint&&prevProps.paint!==this.props.paint){for(var _i2=0,_Object$keys2=Object.keys(this.props.paint);_i2<_Object$keys2.length;_i2++){var _prop=_Object$keys2[_i2];this.map.setPaintProperty(this.props.layerId,_prop,this.props.paint[_prop]);}}if(this.props.metadata&&prevProps.metadata!==this.props.metadata){var layer=this.map.getLayer(this.props.layerId),metadata=layer.metadata;if(metadata){Object.assign(layer.metadata,this.props.metadata);}else{layer.metadata=this.props.metadata;}}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.remove();}},{key:"loaded",value:function loaded(map){this.map=map;(0,_util.callHook)(this.instanceRef,'loaded',this.map);this.$_bindLayerEvents();}},{key:"removed",value:function removed(map){if(this.props.layerId&&this.map){this.remove();}this.map=map;(0,_util.callHook)(this.instanceRef,'removed',this.map);}},{key:"render",value:function render(){// const { layerId } = this.props;
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=withLayer;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _wrapDisplayName2=_interopRequireDefault(__webpack_require__(6626));var _react=_interopRequireWildcard(__webpack_require__(3899));var _hoistNonReactStatics=_interopRequireDefault(__webpack_require__(8679));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(1633));var _util=__webpack_require__(9752);var _jsxRuntime=__webpack_require__(5893);function withLayer(WrappedComponent){var BaseLayer=/*#__PURE__*/function(_PureComponent){(0,_inherits2.default)(BaseLayer,_PureComponent);var _super=(0,_createSuper2.default)(BaseLayer);function BaseLayer(props){var _this;(0,_classCallCheck2.default)(this,BaseLayer);_this=_super.call(this,props);_this.registerEvents=[];_this.$_emitEvent=function(name){var data=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var originEventName="on".concat((0,_lodash2.default)(name));if((0,_util.isFunction)(_this.props[originEventName])){_this.props[originEventName]((0,_objectSpread2.default)({map:_this.map,layerId:_this.props.layerId},data));}};_this.$_emitLayerMapEvent=function(event){_this.$_emitEvent(event.type,{mapboxEvent:event});};_this.$_bindLayerEvents=function(){Object.keys(_this.props).forEach(function(eventName){if(_this.eventList.includes(eventName)){var layerId=_this.props.layerId;// @ts-ignore
+var layer=_this.map.overlayLayersManager[layerId];var name=eventName.replace('on','');var registerEventName=name.toLowerCase();_this.registerEvents.push(registerEventName);if(layer){_this.overLayer=layer;layer.on(registerEventName,_this.$_emitLayerMapEvent);}else{_this.map.on(registerEventName,layerId,_this.$_emitLayerMapEvent);}}});};_this.$_unbindLayerEvents=function(events){if(_this.map){events.forEach(function(eventName){!_this.overLayer&&_this.map.off(eventName,_this.props.layerId,_this.$_emitLayerMapEvent);});}};// move = beforeId => {
+//   this.map.moveLayer(this.props.layerId, beforeId);
+//   this.$_emitEvent('layer-moved', {
+//     beforeId: beforeId
+//   });
+// };
+_this.remove=function(){var layerId=arguments.length>0&&arguments[0]!==undefined?arguments[0]:_this.props.layerId;if(_this.registerEvents&&_this.registerEvents.length){_this.$_unbindLayerEvents(_this.registerEvents);}if(_this.map){_this.map&&_this.map.removeLayer(layerId);_this.$_emitEvent('layer-removed');}};_this.eventList=['onMousedown','onMouseup','onClick','onDblclick','onMousemove','onMouseenter','onMouseleave','onMouseover','onMouseout','onContextmenu','onTouchstart','onTouchend','onTouchcancel'];_this.getComponentInstance=_util.getComponentInstance.bind((0,_assertThisInitialized2.default)(_this));return _this;}(0,_createClass2.default)(BaseLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(prevProps.minzoom!==this.props.minzoom||prevProps.maxzoom!==this.props.maxzoom){this.map.setLayerZoomRange(this.props.layerId,this.props.minzoom,this.props.maxzoom);}if(prevProps.filter!==this.props.filter){this.map.setFilter(this.props.layerId,this.props.filter);}if(this.props.layout&&prevProps.layout!==this.props.layout){for(var _i=0,_Object$keys=Object.keys(this.props.layout);_i<_Object$keys.length;_i++){var prop=_Object$keys[_i];this.map.setLayoutProperty(this.props.layerId,prop,this.props.layout[prop]);}}if(this.props.paint&&prevProps.paint!==this.props.paint){for(var _i2=0,_Object$keys2=Object.keys(this.props.paint);_i2<_Object$keys2.length;_i2++){var _prop=_Object$keys2[_i2];this.map.setPaintProperty(this.props.layerId,_prop,this.props.paint[_prop]);}}if(this.props.metadata&&prevProps.metadata!==this.props.metadata){var layer=this.map.getLayer(this.props.layerId),metadata=layer.metadata;if(metadata){Object.assign(layer.metadata,this.props.metadata);}else{layer.metadata=this.props.metadata;}}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.remove();}},{key:"loaded",value:function loaded(map){this.map=map;(0,_util.callHook)(this.instanceRef,'loaded',this.map);this.$_bindLayerEvents();}},{key:"removed",value:function removed(map){if(this.props.layerId&&this.map){this.remove();}this.map=map;(0,_util.callHook)(this.instanceRef,'removed',this.map);}},{key:"render",value:function render(){// const { layerId } = this.props;
 // const id = source || layerId;
 // const sourceLoaded =
 //   this.map && layerId ? this.map.isSourceLoaded(layerId) : false;
@@ -16676,7 +14558,7 @@ var newProps=Object.assign({},this.props,{// sourceLoaded,
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=mapGetter;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _wrapDisplayName2=_interopRequireDefault(__webpack_require__(6626));var _react=_interopRequireDefault(__webpack_require__(3899));var _hoistNonReactStatics=_interopRequireDefault(__webpack_require__(8679));var _antd=__webpack_require__(2721);var _mapEvent=_interopRequireDefault(__webpack_require__(1104));var _globalEvent=_interopRequireDefault(__webpack_require__(4870));var _util=__webpack_require__(9752);var _jsxRuntime=__webpack_require__(5893);function mapGetter(WrappedComponent){var MapGetter=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(MapGetter,_React$Component);var _super=(0,_createSuper2.default)(MapGetter);function MapGetter(props){var _this;(0,_classCallCheck2.default)(this,MapGetter);_this=_super.call(this,props);_this.loadMapSucceed=_this.loadMapSucceed.bind((0,_assertThisInitialized2.default)(_this));_this.deleteMapSucceed=_this.deleteMapSucceed.bind((0,_assertThisInitialized2.default)(_this));_this.getComponentInstance=_util.getComponentInstance.bind((0,_assertThisInitialized2.default)(_this));return _this;}(0,_createClass2.default)(MapGetter,[{key:"componentDidMount",value:function componentDidMount(){var targetName=this.getTargetName();if(_mapEvent.default.getMap(targetName)){this.loadMap(targetName);}_mapEvent.default.on('load-map',this.loadMapSucceed);_globalEvent.default.on('delete-map',this.deleteMapSucceed);}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var mapTarget=this.props.mapTarget;var prevMapTarget=prevProps.mapTarget;if(mapTarget&&prevMapTarget&&mapTarget!==prevMapTarget){this.mapTargetChanged(mapTarget);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){_mapEvent.default.off('load-map',this.loadMapSucceed);_globalEvent.default.off('delete-map',this.deleteMapSucceed);}},{key:"getTargetName",value:function getTargetName(){/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=mapGetter;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _wrapDisplayName2=_interopRequireDefault(__webpack_require__(6626));var _react=_interopRequireDefault(__webpack_require__(3899));var _hoistNonReactStatics=_interopRequireDefault(__webpack_require__(8679));var _antd=__webpack_require__(2721);var _mapEvent=_interopRequireDefault(__webpack_require__(1104));var _globalEvent=_interopRequireDefault(__webpack_require__(4870));var _util=__webpack_require__(9752);var _jsxRuntime=__webpack_require__(5893);function mapGetter(WrappedComponent){var MapGetter=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(MapGetter,_React$Component);var _super=(0,_createSuper2.default)(MapGetter);function MapGetter(props){var _this;(0,_classCallCheck2.default)(this,MapGetter);_this=_super.call(this,props);_this.loadMapSucceed=_this.loadMapSucceed.bind((0,_assertThisInitialized2.default)(_this));_this.deleteMapSucceed=_this.deleteMapSucceed.bind((0,_assertThisInitialized2.default)(_this));_this.getComponentInstance=_util.getComponentInstance.bind((0,_assertThisInitialized2.default)(_this));return _this;}(0,_createClass2.default)(MapGetter,[{key:"componentDidMount",value:function componentDidMount(){var targetName=this.getTargetName();if(_mapEvent.default.getMap(targetName)){this.loadMap(targetName);}_mapEvent.default.on('load-map',this.loadMapSucceed);_globalEvent.default.on('delete-map',this.deleteMapSucceed);}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var mapTarget=this.props.mapTarget;var prevMapTarget=prevProps.mapTarget;if(mapTarget&&prevMapTarget&&mapTarget!==prevMapTarget){this.mapTargetChanged(mapTarget);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){_mapEvent.default.off('load-map',this.loadMapSucceed);_globalEvent.default.off('delete-map',this.deleteMapSucceed);}},{key:"getTargetName",value:function getTargetName(){/**
        * 便于区分存在多个map时，子组件对应的map的渲染；
        * map 和 webmap  的 props 属性是 target 其他组件都叫 mapTarget
        * 如果子组件包裹在 map 组件里面，若没有传 mapTarget, 则 targetName 直接取父元素的target 的值
@@ -16708,7 +14590,7 @@ _antd.message.warning('您需要配置关联地图！');return true;}return fals
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
  * @class CircleStyle
  * @category BaseTypes Style
  * @classdesc 点图层样式类。
@@ -16722,7 +14604,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
  * @class FillStyle
  * @category BaseTypes Style
  * @classdesc 面图层样式类。
@@ -16736,7 +14618,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var HeatMapStyle=/*#__PURE__*/(0,_createClass2.default)(function HeatMapStyle(){var paint=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var layout=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,HeatMapStyle);this.paint={'heatmap-radius':30,'heatmap-weight':1,'heatmap-intensity':1,'heatmap-color':['interpolate',['linear'],['heatmap-density'],0,'rgba(0, 0, 255, 0)',0.1,'royalblue',0.3,'cyan',0.5,'lime',0.7,'yellow',1,'red'],'heatmap-opacity':1};this.layout={visibility:'visible'};Object.assign(this.paint,paint);Object.assign(this.layout,layout);});exports["default"]=HeatMapStyle;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var HeatMapStyle=/*#__PURE__*/(0,_createClass2.default)(function HeatMapStyle(){var paint=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var layout=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,HeatMapStyle);this.paint={'heatmap-radius':30,'heatmap-weight':1,'heatmap-intensity':1,'heatmap-color':['interpolate',['linear'],['heatmap-density'],0,'rgba(0, 0, 255, 0)',0.1,'royalblue',0.3,'cyan',0.5,'lime',0.7,'yellow',1,'red'],'heatmap-opacity':1};this.layout={visibility:'visible'};Object.assign(this.paint,paint);Object.assign(this.layout,layout);});exports["default"]=HeatMapStyle;
 
 /***/ }),
 
@@ -16744,7 +14626,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
  * @class LineStyle
  * @category BaseTypes Style
  * @classdesc 线图层样式类。
@@ -16758,7 +14640,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
  * @class SymbolStyle
  * @classdesc symbol 图层样式类。
  */var SymbolStyle=/*#__PURE__*/(0,_createClass2.default)(function SymbolStyle(){var paint=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var layout=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,SymbolStyle);this.paint=Object.assign({},paint);this.layout=Object.assign({visibility:'visible'},layout);});exports["default"]=SymbolStyle;
@@ -16769,7 +14651,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));Object.defineProperty(exports, "CircleStyle", ({enumerable:true,get:function get(){return _CircleStyle.default;}}));Object.defineProperty(exports, "FillStyle", ({enumerable:true,get:function get(){return _FillStyle.default;}}));Object.defineProperty(exports, "HeatMapStyle", ({enumerable:true,get:function get(){return _HeatMapStyle.default;}}));Object.defineProperty(exports, "LineStyle", ({enumerable:true,get:function get(){return _LineStyle.default;}}));Object.defineProperty(exports, "SymbolStyle", ({enumerable:true,get:function get(){return _SymbolStyle.default;}}));var _CircleStyle=_interopRequireDefault(__webpack_require__(1558));var _FillStyle=_interopRequireDefault(__webpack_require__(3768));var _LineStyle=_interopRequireDefault(__webpack_require__(8214));var _HeatMapStyle=_interopRequireDefault(__webpack_require__(9623));var _SymbolStyle=_interopRequireDefault(__webpack_require__(1700));
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));Object.defineProperty(exports, "CircleStyle", ({enumerable:true,get:function get(){return _CircleStyle.default;}}));Object.defineProperty(exports, "FillStyle", ({enumerable:true,get:function get(){return _FillStyle.default;}}));Object.defineProperty(exports, "HeatMapStyle", ({enumerable:true,get:function get(){return _HeatMapStyle.default;}}));Object.defineProperty(exports, "LineStyle", ({enumerable:true,get:function get(){return _LineStyle.default;}}));Object.defineProperty(exports, "SymbolStyle", ({enumerable:true,get:function get(){return _SymbolStyle.default;}}));var _CircleStyle=_interopRequireDefault(__webpack_require__(1558));var _FillStyle=_interopRequireDefault(__webpack_require__(3768));var _LineStyle=_interopRequireDefault(__webpack_require__(8214));var _HeatMapStyle=_interopRequireDefault(__webpack_require__(9623));var _SymbolStyle=_interopRequireDefault(__webpack_require__(1700));
 
 /***/ }),
 
@@ -16777,7 +14659,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _events=__webpack_require__(7187);var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _globalEvent=_interopRequireDefault(__webpack_require__(4870));var MapEvent=/*#__PURE__*/function(_EventEmitter){(0,_inherits2.default)(MapEvent,_EventEmitter);var _super=(0,_createSuper2.default)(MapEvent);function MapEvent(){var _this;(0,_classCallCheck2.default)(this,MapEvent);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.mapCache={};_this.webMapCache={};return _this;}(0,_createClass2.default)(MapEvent,[{key:"getMap",value:function getMap(mapTarget){return this.mapCache[mapTarget];}},{key:"getWebMap",value:function getWebMap(webmapTarget){return this.webMapCache[webmapTarget];}},{key:"getAllMaps",value:function getAllMaps(){return this.mapCache;}},{key:"getAllWebMap",value:function getAllWebMap(){return this.webMapCache;}},{key:"setMap",value:function setMap(mapTarget,map){this.mapCache[mapTarget]=map;}},{key:"setWebMap",value:function setWebMap(webmapTarget,webmap){this.webMapCache[webmapTarget]=webmap;}},{key:"deleteMap",value:function deleteMap(mapTarget){_globalEvent.default.emit('delete-map',mapTarget);// drawEvent.$options.deletDrawOfMap(mapTarget);
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _events=__webpack_require__(7187);var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _globalEvent=_interopRequireDefault(__webpack_require__(4870));var MapEvent=/*#__PURE__*/function(_EventEmitter){(0,_inherits2.default)(MapEvent,_EventEmitter);var _super=(0,_createSuper2.default)(MapEvent);function MapEvent(){var _this;(0,_classCallCheck2.default)(this,MapEvent);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.mapCache={};_this.webMapCache={};return _this;}(0,_createClass2.default)(MapEvent,[{key:"getMap",value:function getMap(mapTarget){return this.mapCache[mapTarget];}},{key:"getWebMap",value:function getWebMap(webmapTarget){return this.webMapCache[webmapTarget];}},{key:"getAllMaps",value:function getAllMaps(){return this.mapCache;}},{key:"getAllWebMap",value:function getAllWebMap(){return this.webMapCache;}},{key:"setMap",value:function setMap(mapTarget,map){this.mapCache[mapTarget]=map;}},{key:"setWebMap",value:function setWebMap(webmapTarget,webmap){this.webMapCache[webmapTarget]=webmap;}},{key:"deleteMap",value:function deleteMap(mapTarget){_globalEvent.default.emit('delete-map',mapTarget);// drawEvent.$options.deletDrawOfMap(mapTarget);
 delete this.mapCache[mapTarget];}},{key:"deleteWebMap",value:function deleteWebMap(webmapTarget){delete this.webMapCache[webmapTarget];}},{key:"getMapSource",value:function getMapSource(mapTarget){var sources=[];var map=this.getMap(mapTarget);if(map){var sourceListModel=new _SourceListModel.default({map:map});var sourceList=sourceListModel.getSourceList();for(var key in sourceList){if(key){var layers=sourceList[key].layers||[];layers.forEach(function(item){if(item.source&&item.type!=='raster'){sources.push(item.source);}});}}}return sources;}}]);return MapEvent;}(_events.EventEmitter);var _default=new MapEvent();exports["default"]=_default;
 
 /***/ }),
@@ -16794,7 +14676,7 @@ Object.defineProperty(exports, "__esModule", ({value:true}));exports.handleMulty
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));Object.defineProperty(exports, "SmAnimateMarkerLayer", ({enumerable:true,get:function get(){return _AnimateMarkerLayer.default;}}));Object.defineProperty(exports, "SmClusterLayer", ({enumerable:true,get:function get(){return _ClusterLayer.default;}}));Object.defineProperty(exports, "SmDataFlowLayer", ({enumerable:true,get:function get(){return _DataFlowLayer.default;}}));Object.defineProperty(exports, "SmDeckglLayer", ({enumerable:true,get:function get(){return _DeckglLayer.default;}}));Object.defineProperty(exports, "SmEchartsLayer", ({enumerable:true,get:function get(){return _EchartsLayer.default;}}));Object.defineProperty(exports, "SmFireLayer", ({enumerable:true,get:function get(){return _FireLayer.default;}}));Object.defineProperty(exports, "SmGeojsonLayer", ({enumerable:true,get:function get(){return _GeojsonLayer.default;}}));Object.defineProperty(exports, "SmGraphThemeLayer", ({enumerable:true,get:function get(){return _GraphThemeLayer.default;}}));Object.defineProperty(exports, "SmHeatmapLayer", ({enumerable:true,get:function get(){return _HeatmapLayer.default;}}));Object.defineProperty(exports, "SmLabelThemeLayer", ({enumerable:true,get:function get(){return _LabelThemeLayer.default;}}));Object.defineProperty(exports, "SmLayer", ({enumerable:true,get:function get(){return _Layer.default;}}));Object.defineProperty(exports, "SmMap", ({enumerable:true,get:function get(){return _Map.default;}}));Object.defineProperty(exports, "SmMapvLayer", ({enumerable:true,get:function get(){return _MapvLayer.default;}}));Object.defineProperty(exports, "SmRangeThemeLayer", ({enumerable:true,get:function get(){return _RangeThemeLayer.default;}}));Object.defineProperty(exports, "SmRanksymbolThemeLayer", ({enumerable:true,get:function get(){return _RanksymbolThemeLayer.default;}}));Object.defineProperty(exports, "SmRasterTileLayer", ({enumerable:true,get:function get(){return _RasterTileLayer.default;}}));Object.defineProperty(exports, "SmSource", ({enumerable:true,get:function get(){return _Source.default;}}));Object.defineProperty(exports, "SmUniqueThemeLayer", ({enumerable:true,get:function get(){return _UniqueThemeLayer.default;}}));Object.defineProperty(exports, "SmVectorTileLayer", ({enumerable:true,get:function get(){return _VectorTileLayer.default;}}));Object.defineProperty(exports, "SmWebMap", ({enumerable:true,get:function get(){return _WebMap.default;}}));var _WebMap=_interopRequireDefault(__webpack_require__(4416));var _Map=_interopRequireDefault(__webpack_require__(8611));var _Source=_interopRequireDefault(__webpack_require__(1406));var _Layer=_interopRequireDefault(__webpack_require__(5558));var _GeojsonLayer=_interopRequireDefault(__webpack_require__(9704));var _RasterTileLayer=_interopRequireDefault(__webpack_require__(1771));var _VectorTileLayer=_interopRequireDefault(__webpack_require__(2125));var _UniqueThemeLayer=_interopRequireDefault(__webpack_require__(4204));var _RanksymbolThemeLayer=_interopRequireDefault(__webpack_require__(3930));var _RangeThemeLayer=_interopRequireDefault(__webpack_require__(5890));var _GraphThemeLayer=_interopRequireDefault(__webpack_require__(910));var _ClusterLayer=_interopRequireDefault(__webpack_require__(9407));var _DeckglLayer=_interopRequireDefault(__webpack_require__(9183));var _LabelThemeLayer=_interopRequireDefault(__webpack_require__(2174));var _HeatmapLayer=_interopRequireDefault(__webpack_require__(6073));var _MapvLayer=_interopRequireDefault(__webpack_require__(7));var _EchartsLayer=_interopRequireDefault(__webpack_require__(1762));var _DataFlowLayer=_interopRequireDefault(__webpack_require__(2313));var _FireLayer=_interopRequireDefault(__webpack_require__(4799));var _AnimateMarkerLayer=_interopRequireDefault(__webpack_require__(1193));
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));Object.defineProperty(exports, "SmAnimateMarkerLayer", ({enumerable:true,get:function get(){return _AnimateMarkerLayer.default;}}));Object.defineProperty(exports, "SmClusterLayer", ({enumerable:true,get:function get(){return _ClusterLayer.default;}}));Object.defineProperty(exports, "SmDataFlowLayer", ({enumerable:true,get:function get(){return _DataFlowLayer.default;}}));Object.defineProperty(exports, "SmDeckglLayer", ({enumerable:true,get:function get(){return _DeckglLayer.default;}}));Object.defineProperty(exports, "SmEchartsLayer", ({enumerable:true,get:function get(){return _EchartsLayer.default;}}));Object.defineProperty(exports, "SmFireLayer", ({enumerable:true,get:function get(){return _FireLayer.default;}}));Object.defineProperty(exports, "SmGeojsonLayer", ({enumerable:true,get:function get(){return _GeojsonLayer.default;}}));Object.defineProperty(exports, "SmGraphThemeLayer", ({enumerable:true,get:function get(){return _GraphThemeLayer.default;}}));Object.defineProperty(exports, "SmHeatmapLayer", ({enumerable:true,get:function get(){return _HeatmapLayer.default;}}));Object.defineProperty(exports, "SmLabelThemeLayer", ({enumerable:true,get:function get(){return _LabelThemeLayer.default;}}));Object.defineProperty(exports, "SmLayer", ({enumerable:true,get:function get(){return _Layer.default;}}));Object.defineProperty(exports, "SmMap", ({enumerable:true,get:function get(){return _Map.default;}}));Object.defineProperty(exports, "SmMapvLayer", ({enumerable:true,get:function get(){return _MapvLayer.default;}}));Object.defineProperty(exports, "SmRangeThemeLayer", ({enumerable:true,get:function get(){return _RangeThemeLayer.default;}}));Object.defineProperty(exports, "SmRanksymbolThemeLayer", ({enumerable:true,get:function get(){return _RanksymbolThemeLayer.default;}}));Object.defineProperty(exports, "SmRasterTileLayer", ({enumerable:true,get:function get(){return _RasterTileLayer.default;}}));Object.defineProperty(exports, "SmSource", ({enumerable:true,get:function get(){return _Source.default;}}));Object.defineProperty(exports, "SmUniqueThemeLayer", ({enumerable:true,get:function get(){return _UniqueThemeLayer.default;}}));Object.defineProperty(exports, "SmVectorTileLayer", ({enumerable:true,get:function get(){return _VectorTileLayer.default;}}));Object.defineProperty(exports, "SmWebMap", ({enumerable:true,get:function get(){return _WebMap.default;}}));var _WebMap=_interopRequireDefault(__webpack_require__(4416));var _Map=_interopRequireDefault(__webpack_require__(8611));var _Source=_interopRequireDefault(__webpack_require__(1406));var _Layer=_interopRequireDefault(__webpack_require__(5558));var _GeojsonLayer=_interopRequireDefault(__webpack_require__(9704));var _RasterTileLayer=_interopRequireDefault(__webpack_require__(1771));var _VectorTileLayer=_interopRequireDefault(__webpack_require__(2125));var _UniqueThemeLayer=_interopRequireDefault(__webpack_require__(4204));var _RanksymbolThemeLayer=_interopRequireDefault(__webpack_require__(3930));var _RangeThemeLayer=_interopRequireDefault(__webpack_require__(5890));var _GraphThemeLayer=_interopRequireDefault(__webpack_require__(910));var _ClusterLayer=_interopRequireDefault(__webpack_require__(9407));var _DeckglLayer=_interopRequireDefault(__webpack_require__(9183));var _LabelThemeLayer=_interopRequireDefault(__webpack_require__(2174));var _HeatmapLayer=_interopRequireDefault(__webpack_require__(6073));var _MapvLayer=_interopRequireDefault(__webpack_require__(7));var _EchartsLayer=_interopRequireDefault(__webpack_require__(1762));var _DataFlowLayer=_interopRequireDefault(__webpack_require__(2313));var _FireLayer=_interopRequireDefault(__webpack_require__(4799));var _AnimateMarkerLayer=_interopRequireDefault(__webpack_require__(1193));
 
 /***/ }),
 
@@ -16802,7 +14684,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(862)["default"]);var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));var _exportNames={};exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));__webpack_require__(9626);__webpack_require__(2547);var components=_interopRequireWildcard(__webpack_require__(1191));Object.keys(components).forEach(function(key){if(key==="default"||key==="__esModule")return;if(Object.prototype.hasOwnProperty.call(_exportNames,key))return;if(key in exports&&exports[key]===components[key])return;Object.defineProperty(exports,key,{enumerable:true,get:function get(){return components[key];}});});var commontypes=_interopRequireWildcard(__webpack_require__(2009));var exportData=(0,_objectSpread2.default)((0,_objectSpread2.default)({},components),{},{commontypes:commontypes});var _default=exportData;exports["default"]=_default;
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));var _exportNames={};exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));__webpack_require__(9626);__webpack_require__(2547);var components=_interopRequireWildcard(__webpack_require__(1191));Object.keys(components).forEach(function(key){if(key==="default"||key==="__esModule")return;if(Object.prototype.hasOwnProperty.call(_exportNames,key))return;if(key in exports&&exports[key]===components[key])return;Object.defineProperty(exports,key,{enumerable:true,get:function get(){return components[key];}});});var commontypes=_interopRequireWildcard(__webpack_require__(2009));var exportData=(0,_objectSpread2.default)((0,_objectSpread2.default)({},components),{},{commontypes:commontypes});var _default=exportData;exports["default"]=_default;
 
 /***/ }),
 
@@ -16810,7 +14692,7 @@ var _interopRequireWildcard=(__webpack_require__(862)["default"]);var _interopRe
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));/**
  * @class LayerModel
  * @description 图层数据模型。
  * @param {Object} options - 图层参数。
@@ -16829,12 +14711,12 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(862)["default"]);var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _react=_interopRequireWildcard(__webpack_require__(3899));var _interface=__webpack_require__(4831);var _MapViewModal=_interopRequireDefault(__webpack_require__(8031));var _lodash=_interopRequireDefault(__webpack_require__(1296));var _lodash2=_interopRequireDefault(__webpack_require__(1633));var _lodash3=_interopRequireDefault(__webpack_require__(39));var _lodash4=_interopRequireDefault(__webpack_require__(9208));var _lodash5=_interopRequireDefault(__webpack_require__(2307));var _resizeDetector=__webpack_require__(1892);var _mapEvent=_interopRequireDefault(__webpack_require__(1104));var _util=__webpack_require__(9752);var _jsxRuntime=__webpack_require__(5893);var Map=/*#__PURE__*/function(_Component){(0,_inherits2.default)(Map,_Component);var _super=(0,_createSuper2.default)(Map);function Map(props){var _this;(0,_classCallCheck2.default)(this,Map);_this=_super.call(this,props);_this.viewModelProps=['mapOptions.center','mapOptions.zoom','mapOptions.crs','mapOptions.minZoom','mapOptions.maxZoom','mapOptions.maxBounds','mapOptions.renderWorldCopies','mapOptions.bearing','mapOptions.pitch'];_this.initializeWebMap=function(){var _this$props=_this.props,target=_this$props.target,tiandituKey=_this$props.tiandituKey,mapOptions=_this$props.mapOptions,autoresize=_this$props.autoresize;_this.viewModel=new _MapViewModal.default({target:target,tiandituKey:tiandituKey},mapOptions);if(autoresize){(0,_resizeDetector.addListener)(_this.selfRef.current,_this.__resizeHandler);}};_this.registerEvents=function(){var _this$props2=_this.props,target=_this$props2.target,onLoad=_this$props2.onLoad;_this.viewModel.on('addlayerssucceeded',function(e){_this.setState({spinning:false});_mapEvent.default.setMap(target,e.map);_this.viewModel&&_mapEvent.default.setWebMap(target,_this.viewModel);_mapEvent.default.emit('load-map',e.map,target);e.map.resize();_this.map=e.map;if(false){}// 绑定map event
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _react=_interopRequireWildcard(__webpack_require__(3899));var _interface=__webpack_require__(4831);var _MapViewModal=_interopRequireDefault(__webpack_require__(8031));var _lodash=_interopRequireDefault(__webpack_require__(1296));var _lodash2=_interopRequireDefault(__webpack_require__(1633));var _lodash3=_interopRequireDefault(__webpack_require__(39));var _lodash4=_interopRequireDefault(__webpack_require__(9208));var _lodash5=_interopRequireDefault(__webpack_require__(2307));var _resizeDetector=__webpack_require__(1892);var _mapEvent=_interopRequireDefault(__webpack_require__(1104));var _util=__webpack_require__(9752);var _jsxRuntime=__webpack_require__(5893);var Map=/*#__PURE__*/function(_Component){(0,_inherits2.default)(Map,_Component);var _super=(0,_createSuper2.default)(Map);function Map(props){var _this;(0,_classCallCheck2.default)(this,Map);_this=_super.call(this,props);_this.viewModelProps=['mapOptions.center','mapOptions.zoom','mapOptions.crs','mapOptions.minZoom','mapOptions.maxZoom','mapOptions.maxBounds','mapOptions.renderWorldCopies','mapOptions.bearing','mapOptions.pitch'];_this.initializeWebMap=function(){var _this$props=_this.props,target=_this$props.target,tiandituKey=_this$props.tiandituKey,mapOptions=_this$props.mapOptions,autoresize=_this$props.autoresize;_this.viewModel=new _MapViewModal.default({target:target,tiandituKey:tiandituKey},mapOptions);if(autoresize){(0,_resizeDetector.addListener)(_this.selfRef.current,_this.__resizeHandler);}};_this.registerEvents=function(){var _this$props2=_this.props,target=_this$props2.target,onLoad=_this$props2.onLoad;_this.viewModel.on('addlayerssucceeded',function(e){_this.setState({spinning:false});_mapEvent.default.setMap(target,e.map);_this.viewModel&&_mapEvent.default.setWebMap(target,_this.viewModel);_mapEvent.default.emit('load-map',e.map,target);e.map.resize();_this.map=e.map;if(false){}// 绑定map event
 _this.bindMapEvents();/**
        * @event load
        * @desc webmap 加载完成之后触发。
        * @property {mapboxgl.Map} map - MapBoxGL Map 对象。
-       */(0,_util.isFunction)(onLoad)&&onLoad((0,_objectSpread2.default)((0,_objectSpread2.default)({},e),{},{component:(0,_assertThisInitialized2.default)(_this)}));});};_this.mapEventCallback=function(event){var data=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};_this.emitMapEvent(event.type,(0,_objectSpread2.default)({mapboxEvent:event},data));};_this.state={spinning:true};_this.selfRef=/*#__PURE__*/_react.default.createRef();_this.__resizeHandler=(0,_lodash.default)(_this.__resizeHandler.bind((0,_assertThisInitialized2.default)(_this)),100,{leading:true});return _this;}(0,_createClass2.default)(Map,[{key:"componentDidMount",value:function componentDidMount(){this.initializeWebMap();this.registerEvents();}},{key:"getLayerIds",value:function getLayerIds(children){return children===null||children===void 0?void 0:children.reduce(function(layerIds,child){var _child$type,_child$type$displayNa;if(child!==null&&child!==void 0&&(_child$type=child.type)!==null&&_child$type!==void 0&&(_child$type$displayNa=_child$type.displayName)!==null&&_child$type$displayNa!==void 0&&_child$type$displayNa.includes('Layer')){var id=child.props.layerId;id&&layerIds.push(id);}return layerIds;},[]);}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var _this2=this;this.viewModel&&this.viewModelProps.forEach(function(prop){var name=prop.includes('.')?prop.split('.')[1]:prop;var funcName="set".concat((0,_lodash3.default)(name));var propsValue=(0,_lodash4.default)(_this2.props,prop);var prevPropsValue=(0,_lodash4.default)(prevProps,prop);if(propsValue&&!(0,_lodash5.default)(propsValue,prevPropsValue)){_this2.viewModel[funcName](propsValue);}});var _this$props3=this.props,sprites=_this$props3.sprites,glyphs=_this$props3.glyphs;for(var id in sprites){if(prevProps.sprites[id]!==sprites[id]){this.viewModel.addSprites(id,sprites[id]);}}for(var _id in glyphs){if(prevProps.glyphs[_id]!==glyphs[_id]){this.viewModel.addGlyphs(_id,glyphs[_id]);}}if(!this.map){return;}var preLayerIds=this.getLayerIds(prevProps.children);var newLayerIds=this.getLayerIds(this.props.children);// 过滤图层顺序相等的情况
+       */(0,_util.isFunction)(onLoad)&&onLoad((0,_objectSpread2.default)((0,_objectSpread2.default)({},e),{},{component:(0,_assertThisInitialized2.default)(_this)}));});};_this.mapEventCallback=function(event){var data=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};_this.emitMapEvent(event.type,(0,_objectSpread2.default)({mapboxEvent:event},data));};_this.state={spinning:true};_this.selfRef=/*#__PURE__*/_react.default.createRef();_this.__resizeHandler=(0,_lodash.default)(_this.__resizeHandler.bind((0,_assertThisInitialized2.default)(_this)),100,{leading:true});return _this;}(0,_createClass2.default)(Map,[{key:"componentDidMount",value:function componentDidMount(){this.initializeWebMap();this.registerEvents();}},{key:"getLayerIds",value:function getLayerIds(children){return children===null||children===void 0?void 0:children.reduce(function(layerIds,child){var _child$type,_child$type$displayNa;if(child!==null&&child!==void 0&&(_child$type=child.type)!==null&&_child$type!==void 0&&(_child$type$displayNa=_child$type.displayName)!==null&&_child$type$displayNa!==void 0&&_child$type$displayNa.includes('Layer')){var id=child.props.layerId;id&&layerIds.push(id);}return layerIds;},[]);}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var _this2=this;this.viewModel&&this.viewModelProps.forEach(function(prop){var name=prop.includes('.')?prop.split('.')[1]:prop;var funcName="set".concat((0,_lodash3.default)(name));var propsValue=(0,_lodash4.default)(_this2.props,prop);var prevPropsValue=(0,_lodash4.default)(prevProps,prop);if(propsValue&&!(0,_lodash5.default)(propsValue,prevPropsValue)){_this2.viewModel[funcName](propsValue);}});var _this$props3=this.props,sprites=_this$props3.sprites,glyphs=_this$props3.glyphs;for(var id in sprites){if(prevProps.sprites[id]!==sprites[id]){this.viewModel.addSprites(id,sprites[id]);}}for(var _id2 in glyphs){if(prevProps.glyphs[_id2]!==glyphs[_id2]){this.viewModel.addGlyphs(_id2,glyphs[_id2]);}}if(!this.map){return;}var preLayerIds=this.getLayerIds(prevProps.children);var newLayerIds=this.getLayerIds(this.props.children);// 过滤图层顺序相等的情况
 if(!(0,_lodash5.default)(preLayerIds,newLayerIds)){this.viewModel.changeLayersOrder(newLayerIds);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){var _this$props4=this.props,target=_this$props4.target,autoresize=_this$props4.autoresize;_mapEvent.default.deleteMap(target);_mapEvent.default.deleteWebMap(target);if(autoresize&&this.selfRef.current){(0,_resizeDetector.removeListener)(this.selfRef.current,this.__resizeHandler);}}},{key:"bindMapEvents",value:function bindMapEvents(){var _this3=this;Object.keys(this.props).forEach(function(eventName){if(_interface.MAP_EVENT_NAMES.includes(eventName)){var name=eventName.replace('on','');_this3.bindMapEvent(name.toLowerCase(),_this3.mapEventCallback);}});}},{key:"bindMapEvent",value:function bindMapEvent(eventName,eventCallback){this.map.on(eventName,eventCallback);}},{key:"emitMapEvent",value:function emitMapEvent(name){var data=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var originEventName="on".concat((0,_lodash2.default)(name));if((0,_util.isFunction)(this.props[originEventName])){this.props[originEventName]((0,_objectSpread2.default)({map:this.map,component:this},data));}}},{key:"__resizeHandler",value:function __resizeHandler(){this.resize();}},{key:"resize",value:function resize(){if(this.viewModel&&this.viewModel.resize){this.viewModel.resize();}}},{key:"render",value:function render(){var spinning=this.state.spinning;var _this$props5=this.props,target=_this$props5.target,children=_this$props5.children;return/*#__PURE__*/(0,_jsxRuntime.jsx)("div",{id:target,className:"sm-component-map",ref:this.selfRef,children:!spinning&&children});}}]);return Map;}(_react.Component);Map.defaultProps={target:'map',autoresize:true};var _default=Map;exports["default"]=_default;
 
 /***/ }),
@@ -16843,7 +14725,7 @@ if(!(0,_lodash5.default)(preLayerIds,newLayerIds)){this.viewModel.changeLayersOr
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var MapViewModal=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(MapViewModal,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(MapViewModal);function MapViewModal(options){var _this;var mapOptions=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{style:{version:8,sources:{},layers:[]}};(0,_classCallCheck2.default)(this,MapViewModal);_this=_super.call(this);_this.mapOptions=Object.assign({style:{version:8,sources:{},layers:[]}},mapOptions);_this.tiandituKey=options.tiandituKey||'';_this.target=options.target||'map';_this.center=mapOptions.center||[];_this.zoom=mapOptions.zoom;_this._createMap();return _this;}(0,_createClass2.default)(MapViewModal,[{key:"_createMap",value:function _createMap(){var _this2=this;if(this.map){this.map.remove();this.center=[];this.zoom=null;}this.mapOptions.container=this.target;setTimeout(function(){_this2.map=new _mapboxGlEnhance.default.Map(_this2.mapOptions);_this2.map.on('load',function(){_this2.fire('addlayerssucceeded',{map:_this2.map});});},0);return;}/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var MapViewModal=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(MapViewModal,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(MapViewModal);function MapViewModal(options){var _this;var mapOptions=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{style:{version:8,sources:{},layers:[]}};(0,_classCallCheck2.default)(this,MapViewModal);_this=_super.call(this);_this.mapOptions=Object.assign({style:{version:8,sources:{},layers:[]}},mapOptions);_this.tiandituKey=options.tiandituKey||'';_this.target=options.target||'map';_this.center=mapOptions.center||[];_this.zoom=mapOptions.zoom;_this._createMap();return _this;}(0,_createClass2.default)(MapViewModal,[{key:"_createMap",value:function _createMap(){var _this2=this;if(this.map){this.map.remove();this.center=[];this.zoom=null;}this.mapOptions.container=this.target;setTimeout(function(){_this2.map=new _mapboxGlEnhance.default.Map(_this2.mapOptions);_this2.map.on('load',function(){_this2.fire('addlayerssucceeded',{map:_this2.map});});},0);return;}/**
    * @function WebMapViewModel.prototype.resize
    * @description Map 更新大小。
    */},{key:"resize",value:function resize(){this.map&&this.map.resize();}/**
@@ -16896,7 +14778,7 @@ for(var index=newLayerIds.length-2;index>-1;index--){var moveId=newLayerIds[inde
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectWithoutProperties2=_interopRequireDefault(__webpack_require__(4925));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _excluded=["id","mapNotLoadedTip"];var _dec,_class;var Source=(_dec=(0,_compose2.default)(_mapGetter.default),_dec(_class=/*#__PURE__*/function(_React$PureComponent){(0,_inherits2.default)(Source,_React$PureComponent);var _super=(0,_createSuper2.default)(Source);function Source(props){var _this;(0,_classCallCheck2.default)(this,Source);_this=_super.call(this,props);_this._map=null;return _this;}(0,_createClass2.default)(Source,[{key:"componentWillUnmount",value:function componentWillUnmount(){var _this2=this;setTimeout(function(){_this2._map.removeSource(_this2.props.id);},100);}},{key:"loaded",value:function loaded(map){this._map=map;var _this$props=this.props,id=_this$props.id,mapNotLoadedTip=_this$props.mapNotLoadedTip,sourceOption=(0,_objectWithoutProperties2.default)(_this$props,_excluded);if(this._map.getSource(id)){return;}this._map.addSource(id,sourceOption);}},{key:"render",value:function render(){return null;}}]);return Source;}(_react.default.PureComponent))||_class);exports["default"]=Source;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectWithoutProperties2=_interopRequireDefault(__webpack_require__(4925));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _excluded=["id","mapNotLoadedTip"];var _dec,_class;var Source=(_dec=(0,_compose2.default)(_mapGetter.default),_dec(_class=/*#__PURE__*/function(_React$PureComponent){(0,_inherits2.default)(Source,_React$PureComponent);var _super=(0,_createSuper2.default)(Source);function Source(props){var _this;(0,_classCallCheck2.default)(this,Source);_this=_super.call(this,props);_this._map=null;return _this;}(0,_createClass2.default)(Source,[{key:"componentWillUnmount",value:function componentWillUnmount(){var _this2=this;setTimeout(function(){_this2._map.removeSource(_this2.props.id);},100);}},{key:"loaded",value:function loaded(map){this._map=map;var _this$props=this.props,id=_this$props.id,mapNotLoadedTip=_this$props.mapNotLoadedTip,sourceOption=(0,_objectWithoutProperties2.default)(_this$props,_excluded);if(this._map.getSource(id)){return;}this._map.addSource(id,sourceOption);}},{key:"render",value:function render(){return null;}}]);return Source;}(_react.default.PureComponent))||_class);exports["default"]=Source;
 
 /***/ }),
 
@@ -16904,7 +14786,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _SourceModel=_interopRequireDefault(__webpack_require__(7591));var _LayerModel=_interopRequireDefault(__webpack_require__(1016));var SourceListModel=/*#__PURE__*/function(){function SourceListModel(options){(0,_classCallCheck2.default)(this,SourceListModel);this.map=options.map;this.style=this.map.getStyle();this.layers=this.map.getStyle().layers;this.overlayLayers=this.map.overlayLayersManager;this.detailLayers=null;this.sourceList={};this.sourceNames=[];this._initLayers();this._initSource();this.excludeSourceNames=['tdt-search-','tdt-route-','smmeasure','mapbox-gl-draw'];}(0,_createClass2.default)(SourceListModel,[{key:"getSourceList",value:function getSourceList(){var sourceList={};for(var key in this.sourceList){if(key&&this.excludeSource(key)){sourceList[key]=this.sourceList[key];}}return sourceList;}},{key:"getSourceNames",value:function getSourceNames(){var _this=this;var names=[];this.sourceNames.forEach(function(element){if(element&&_this.excludeSource(element)){names.push(element);}});return names;}},{key:"excludeSource",value:function excludeSource(key){for(var i=0;i<this.excludeSourceNames.length;i++){if(key.indexOf(this.excludeSourceNames[i])>=0){return false;}}return true;}},{key:"getLegendStyle",value:function getLegendStyle(sourceName){if(sourceName){return this.sourceList[sourceName]?this.sourceList[sourceName].style:'';}var sourceList=Object.values(this.sourceList)||[];var styles=sourceList.filter(function(item){return!!item.style;});return styles;}},{key:"getLayers",value:function getLayers(){return this.detailLayers;}},{key:"getLayersBySourceLayer",value:function getLayersBySourceLayer(sourceName,sourceLayer){return this.sourceList[sourceName]['sourceLayerList'][sourceLayer];}},{key:"getSourceLayersBySource",value:function getSourceLayersBySource(sourceName){return this.sourceList[sourceName]['sourceLayerList'];}},{key:"addSourceStyle",value:function addSourceStyle(sourceName,sourceStyle){if(this.sourceList[sourceName]){this.sourceList[sourceName]['style']=sourceStyle;}}},{key:"_initLayers",value:function _initLayers(){var _this2=this;this.layers&&(this.detailLayers=this.layers.map(function(layer){return _this2.map.getLayer(layer.id);}));var overLayerList=Object.values(this.overlayLayers);overLayerList.forEach(function(overlayer){if(overlayer.id){_this2.detailLayers.push({id:overlayer.id,visibility:overlayer.visibility?'visible':'none',source:overlayer.id});}});}},{key:"_initSource",value:function _initSource(){var _this3=this;this.detailLayers&&this.detailLayers.forEach(function(layer){if(!_this3.sourceList[layer['source']]){_this3.sourceList[layer['source']]=new _SourceModel.default({source:layer['source']});_this3.sourceNames.push(layer['source']);}_this3.sourceList[layer['source']].addLayer(new _LayerModel.default(layer),layer['sourceLayer']);});}}]);return SourceListModel;}();var _default=SourceListModel;exports["default"]=_default;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _SourceModel=_interopRequireDefault(__webpack_require__(7591));var _LayerModel=_interopRequireDefault(__webpack_require__(1016));var SourceListModel=/*#__PURE__*/function(){function SourceListModel(options){(0,_classCallCheck2.default)(this,SourceListModel);this.map=options.map;this.style=this.map.getStyle();this.layers=this.map.getStyle().layers;this.overlayLayers=this.map.overlayLayersManager;this.detailLayers=null;this.sourceList={};this.sourceNames=[];this._initLayers();this._initSource();this.excludeSourceNames=['tdt-search-','tdt-route-','smmeasure','mapbox-gl-draw'];}(0,_createClass2.default)(SourceListModel,[{key:"getSourceList",value:function getSourceList(){var sourceList={};for(var key in this.sourceList){if(key&&this.excludeSource(key)){sourceList[key]=this.sourceList[key];}}return sourceList;}},{key:"getSourceNames",value:function getSourceNames(){var _this=this;var names=[];this.sourceNames.forEach(function(element){if(element&&_this.excludeSource(element)){names.push(element);}});return names;}},{key:"excludeSource",value:function excludeSource(key){for(var i=0;i<this.excludeSourceNames.length;i++){if(key.indexOf(this.excludeSourceNames[i])>=0){return false;}}return true;}},{key:"getLegendStyle",value:function getLegendStyle(sourceName){if(sourceName){return this.sourceList[sourceName]?this.sourceList[sourceName].style:'';}var sourceList=Object.values(this.sourceList)||[];var styles=sourceList.filter(function(item){return!!item.style;});return styles;}},{key:"getLayers",value:function getLayers(){return this.detailLayers;}},{key:"getLayersBySourceLayer",value:function getLayersBySourceLayer(sourceName,sourceLayer){return this.sourceList[sourceName]['sourceLayerList'][sourceLayer];}},{key:"getSourceLayersBySource",value:function getSourceLayersBySource(sourceName){return this.sourceList[sourceName]['sourceLayerList'];}},{key:"addSourceStyle",value:function addSourceStyle(sourceName,sourceStyle){if(this.sourceList[sourceName]){this.sourceList[sourceName]['style']=sourceStyle;}}},{key:"_initLayers",value:function _initLayers(){var _this2=this;this.layers&&(this.detailLayers=this.layers.map(function(layer){return _this2.map.getLayer(layer.id);}));var overLayerList=Object.values(this.overlayLayers);overLayerList.forEach(function(overlayer){if(overlayer.id){_this2.detailLayers.push({id:overlayer.id,visibility:overlayer.visibility?'visible':'none',source:overlayer.id});}});}},{key:"_initSource",value:function _initSource(){var _this3=this;this.detailLayers&&this.detailLayers.forEach(function(layer){if(!_this3.sourceList[layer['source']]){_this3.sourceList[layer['source']]=new _SourceModel.default({source:layer['source']});_this3.sourceNames.push(layer['source']);}_this3.sourceList[layer['source']].addLayer(new _LayerModel.default(layer),layer['sourceLayer']);});}}]);return SourceListModel;}();var _default=SourceListModel;exports["default"]=_default;
 
 /***/ }),
 
@@ -16912,7 +14794,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var SourceModel=/*#__PURE__*/function(){function SourceModel(options){(0,_classCallCheck2.default)(this,SourceModel);this.id=options.source;this.sourceLayerList={};this.layers=[];this.type=null;}(0,_createClass2.default)(SourceModel,[{key:"addLayer",value:function addLayer(layer,sourceLayer){if(sourceLayer){if(!this.sourceLayerList[sourceLayer]){this.sourceLayerList[sourceLayer]=[];}this.sourceLayerList[sourceLayer].push(layer);}else{this.sourceLayerList=undefined;}this.layers.push(layer);this.type=layer.type;if([layer.visibility,this.visibility].includes('visible')){this.visibility='visible';}else{this.visibility='none';}}}]);return SourceModel;}();var _default=SourceModel;exports["default"]=_default;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var SourceModel=/*#__PURE__*/function(){function SourceModel(options){(0,_classCallCheck2.default)(this,SourceModel);this.id=options.source;this.sourceLayerList={};this.layers=[];this.type=null;}(0,_createClass2.default)(SourceModel,[{key:"addLayer",value:function addLayer(layer,sourceLayer){if(sourceLayer){if(!this.sourceLayerList[sourceLayer]){this.sourceLayerList[sourceLayer]=[];}this.sourceLayerList[sourceLayer].push(layer);}else{this.sourceLayerList=undefined;}this.layers.push(layer);this.type=layer.type;if([layer.visibility,this.visibility].includes('visible')){this.visibility='visible';}else{this.visibility='none';}}}]);return SourceModel;}();var _default=SourceModel;exports["default"]=_default;
 
 /***/ }),
 
@@ -16920,7 +14802,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _react=_interopRequireDefault(__webpack_require__(3899));var _resizeDetector=__webpack_require__(1892);var _lodash=_interopRequireDefault(__webpack_require__(1296));var _lodash2=_interopRequireDefault(__webpack_require__(1633));var _lodash3=_interopRequireDefault(__webpack_require__(39));var _antd=__webpack_require__(2721);var _lodash4=_interopRequireDefault(__webpack_require__(9208));var _lodash5=_interopRequireDefault(__webpack_require__(2307));var _mapEvent=_interopRequireDefault(__webpack_require__(1104));var _WebMapViewModel=_interopRequireDefault(__webpack_require__(2872));var _util=__webpack_require__(9752);var _interface=__webpack_require__(4831);var _jsxRuntime=__webpack_require__(5893);var WebMap=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(WebMap,_React$Component);var _super=(0,_createSuper2.default)(WebMap);function WebMap(props){var _this;(0,_classCallCheck2.default)(this,WebMap);_this=_super.call(this,props);_this._isMounted=false;_this.initializeWebMap=function(){var _this$props=_this.props,target=_this$props.target,serverUrl=_this$props.serverUrl,accessToken=_this$props.accessToken,accessKey=_this$props.accessKey,tiandituKey=_this$props.tiandituKey,withCredentials=_this$props.withCredentials,excludePortalProxyUrl=_this$props.excludePortalProxyUrl,mapOptions=_this$props.mapOptions,autoresize=_this$props.autoresize;_this.viewModel=new _WebMapViewModel.default(_this.props.mapId,{target:target,serverUrl:serverUrl,accessToken:accessToken,accessKey:accessKey,tiandituKey:tiandituKey,withCredentials:withCredentials,excludePortalProxyUrl:excludePortalProxyUrl},mapOptions);if(autoresize){(0,_resizeDetector.addListener)(_this.selfRef.current,_this.__resizeHandler);}};_this.registerEvents=function(){var _this$props2=_this.props,target=_this$props2.target,onLoad=_this$props2.onLoad;_this.viewModel.on('addlayerssucceeded',function(e){if(_this._isMounted){_this.setState({spinning:false});}_mapEvent.default.setMap(target,e.map);_this.viewModel&&_mapEvent.default.setWebMap(target,_this.viewModel);_mapEvent.default.emit('load-map',e.map,target);e.map.resize();_this.map=e.map;// 绑定map event
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _assertThisInitialized2=_interopRequireDefault(__webpack_require__(7326));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _react=_interopRequireDefault(__webpack_require__(3899));var _resizeDetector=__webpack_require__(1892);var _lodash=_interopRequireDefault(__webpack_require__(1296));var _lodash2=_interopRequireDefault(__webpack_require__(1633));var _lodash3=_interopRequireDefault(__webpack_require__(39));var _antd=__webpack_require__(2721);var _lodash4=_interopRequireDefault(__webpack_require__(9208));var _lodash5=_interopRequireDefault(__webpack_require__(2307));var _mapEvent=_interopRequireDefault(__webpack_require__(1104));var _WebMapViewModel=_interopRequireDefault(__webpack_require__(2872));var _util=__webpack_require__(9752);var _interface=__webpack_require__(4831);var _jsxRuntime=__webpack_require__(5893);var WebMap=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(WebMap,_React$Component);var _super=(0,_createSuper2.default)(WebMap);function WebMap(props){var _this;(0,_classCallCheck2.default)(this,WebMap);_this=_super.call(this,props);_this._isMounted=false;_this.initializeWebMap=function(){var _this$props=_this.props,target=_this$props.target,serverUrl=_this$props.serverUrl,accessToken=_this$props.accessToken,accessKey=_this$props.accessKey,tiandituKey=_this$props.tiandituKey,withCredentials=_this$props.withCredentials,excludePortalProxyUrl=_this$props.excludePortalProxyUrl,mapOptions=_this$props.mapOptions,autoresize=_this$props.autoresize;_this.viewModel=new _WebMapViewModel.default(_this.props.mapId,{target:target,serverUrl:serverUrl,accessToken:accessToken,accessKey:accessKey,tiandituKey:tiandituKey,withCredentials:withCredentials,excludePortalProxyUrl:excludePortalProxyUrl},mapOptions);if(autoresize){(0,_resizeDetector.addListener)(_this.selfRef.current,_this.__resizeHandler);}};_this.registerEvents=function(){var _this$props2=_this.props,target=_this$props2.target,onLoad=_this$props2.onLoad;_this.viewModel.on('addlayerssucceeded',function(e){if(_this._isMounted){_this.setState({spinning:false});}_mapEvent.default.setMap(target,e.map);_this.viewModel&&_mapEvent.default.setWebMap(target,_this.viewModel);_mapEvent.default.emit('load-map',e.map,target);e.map.resize();_this.map=e.map;// 绑定map event
 _this.bindMapEvents();/**
        * @event load
        * @desc webmap 加载完成之后触发。
@@ -16945,7 +14827,7 @@ _antd.message.error('获取图层信息失败！');});};_this.state={spinning:tr
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(862)["default"]);var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _geometryUtil=__webpack_require__(3595);var _util=__webpack_require__(9752);__webpack_require__(2395);__webpack_require__(8399);__webpack_require__(8553);var convert=_interopRequireWildcard(__webpack_require__(7888));var _canvg=_interopRequireDefault(__webpack_require__(5760));var _echarts=_interopRequireDefault(__webpack_require__(550));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));var _ProvinceCenter=_interopRequireDefault(__webpack_require__(5385));var _MunicipalCenter=_interopRequireDefault(__webpack_require__(2158));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(3465));/* eslint-disable */ /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _geometryUtil=__webpack_require__(3595);var _util=__webpack_require__(9752);__webpack_require__(2395);__webpack_require__(8399);__webpack_require__(8553);var convert=_interopRequireWildcard(__webpack_require__(7888));var _canvg=_interopRequireDefault(__webpack_require__(5973));var _echarts=_interopRequireDefault(__webpack_require__(550));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));var _ProvinceCenter=_interopRequireDefault(__webpack_require__(5385));var _MunicipalCenter=_interopRequireDefault(__webpack_require__(2158));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(3465));/* eslint-disable */ /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */ // eslint-disable-line import/extensions
 // eslint-disable-line import/extensions
@@ -16968,9 +14850,9 @@ var MAX_MIGRATION_ANIMATION_COUNT=1000;/**
   * @fires WebMapViewModel#getwmtsinfofailed
   * @fires WebMapViewModel#getlayerdatasourcefailed
   * @fires WebMapViewModel#addlayerssucceeded
-  */var WebMapViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(WebMapViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(WebMapViewModel);//  on: any;
+  */var WebMapViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(WebMapViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(WebMapViewModel);function WebMapViewModel(id){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var mapOptions=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{style:{version:8,sources:{},layers:[]}};(0,_classCallCheck2.default)(this,WebMapViewModel);_this=_super.call(this);_this.mapParams={};//  on: any;
 //  fire: any;
-function WebMapViewModel(id){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var mapOptions=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{style:{version:8,sources:{},layers:[]}};(0,_classCallCheck2.default)(this,WebMapViewModel);_this=_super.call(this);_this.mapParams={};_this.echartslayer=[];_this._layers=[];_this.mapId=id;_this.mapOptions=Object.assign({style:{version:8,sources:{},layers:[]}},mapOptions);_this.serverUrl=options.serverUrl||'http://www.supermapol.com';_this.accessToken=options.accessToken;_this.accessKey=options.accessKey;_this.tiandituKey=options.tiandituKey||'';_this.withCredentials=options.withCredentials||false;_this.target=options.target||'map';_this.excludePortalProxyUrl=options.excludePortalProxyUrl;_this.center=mapOptions.center||[];_this.zoom=mapOptions.zoom;_this.echartslayer=[];_this._createWebMap();return _this;}/**
+_this.echartslayer=[];_this.canvgsV=[];_this._layers=[];_this.mapId=id;_this.mapOptions=Object.assign({style:{version:8,sources:{},layers:[]}},mapOptions);_this.serverUrl=options.serverUrl||'http://www.supermapol.com';_this.accessToken=options.accessToken;_this.accessKey=options.accessKey;_this.tiandituKey=options.tiandituKey||'';_this.withCredentials=options.withCredentials||false;_this.target=options.target||'map';_this.excludePortalProxyUrl=options.excludePortalProxyUrl;_this.center=mapOptions.center||[];_this.zoom=mapOptions.zoom;_this.echartslayer=[];_this._createWebMap();_this.on('mapinitialized',function(){_this.map.on('remove',function(){_this._stopCanvg();});});return _this;}/**
     * @function WebMapViewModel.prototype.resize
     * @description Map 更新大小。
     */(0,_createClass2.default)(WebMapViewModel,[{key:"resize",value:function resize(){this.map&&this.map.resize();this.echartsLayerResize();}/**
@@ -16980,7 +14862,8 @@ function WebMapViewModel(id){var _this;var options=arguments.length>1&&arguments
     * @function WebMapViewModel.prototype.setMapId
     * @description 设置地图 ID。
     * @param {String} mapId - iPortal|Online 地图 ID。
-    */},{key:"setMapId",value:function setMapId(mapId){var _this2=this;this.mapId=mapId;setTimeout(function(){_this2._createWebMap();},0);}/**
+    */},{key:"setMapId",value:function setMapId(mapId){var _this2=this;this.mapId=mapId;setTimeout(function(){_this2._createWebMap();//@ts-ignore
+window.map=_this2.map;},0);}/**
     * @function WebMapViewModel.prototype.setServerUrl
     * @description 设置地图的地址。
     * @param {string} options.serverUrl - 地图的地址。
@@ -17102,7 +14985,7 @@ this._addBaselayer([bingUrl],'bing-layers-'+layerName);}/**
     * @function WebMapViewModel.prototype._createXYZLayer
     * @description 创建 XYZ 底图。
     * @param {String} url - url 地址。
-    */},{key:"_createXYZLayer",value:function _createXYZLayer(layerInfo,url){var urlArr=[];if(layerInfo.layerType==='OSM'){var res=url.match(/\w\-\w/g)[0];var start=res[0];var end=res[2];var alphabet='';for(var i=97;i<123;i++){alphabet+=String.fromCharCode(i);}var alphabetArr=alphabet.split('');var startIndex=alphabetArr.indexOf(start);var endIndex=alphabetArr.indexOf(end);var res3=alphabetArr.slice(startIndex,endIndex+1);for(var _i=0;_i<res3.length;_i++){var replaceRes=url.replace(/{\w\-\w}/g,res3[_i]);urlArr.push(replaceRes);}}else if(layerInfo.layerType==='GOOGLE_CN'){var _res=url.match(/\d\-\d/g)[0];var _start=parseInt(_res[0]);var _end=parseInt(_res[2]);for(var _i2=_start;_i2<=_end;_i2++){var _replaceRes=url.replace(/{\d\-\d}/g,_i2.toString());urlArr.push(_replaceRes);}}else{urlArr=[url];}this._addBaselayer(urlArr,'XYZ-layers-'+layerInfo.name);}/**
+    */},{key:"_createXYZLayer",value:function _createXYZLayer(layerInfo,url){var urlArr=[];if(layerInfo.layerType==='OSM'){var res=url.match(/\w\-\w/g)[0];var start=res[0];var end=res[2];var alphabet='';for(var i=97;i<123;i++){alphabet+=String.fromCharCode(i);}var alphabetArr=alphabet.split('');var startIndex=alphabetArr.indexOf(start);var endIndex=alphabetArr.indexOf(end);var res3=alphabetArr.slice(startIndex,endIndex+1);for(var _i2=0;_i2<res3.length;_i2++){var replaceRes=url.replace(/{\w\-\w}/g,res3[_i2]);urlArr.push(replaceRes);}}else if(layerInfo.layerType==='GOOGLE_CN'){var _res=url.match(/\d\-\d/g)[0];var _start=parseInt(_res[0]);var _end=parseInt(_res[2]);for(var _i4=_start;_i4<=_end;_i4++){var _replaceRes=url.replace(/{\d\-\d}/g,_i4.toString());urlArr.push(_replaceRes);}}else{urlArr=[url];}this._addBaselayer(urlArr,'XYZ-layers-'+layerInfo.name);}/**
     * @private
     * @function WebMapViewModel.prototype._createDynamicTiledLayer
     * @description 创建 iserver 底图。
@@ -17126,7 +15009,7 @@ type==='POLYGON'&&style.strokeColor&&this._addStrokeLineForPoly(style,source,lay
     * @description 创建天地图url;
     * @param {Object} mapInfo - map 信息。
     */},{key:"_getTiandituUrl",value:function _getTiandituUrl(mapInfo){var re=/t0/gi;var tiandituUrls={tiandituUrl:[],labelUrl:[]};var layerType=mapInfo.baseLayer.layerType.split('_')[1].toLowerCase();var isLabel=Boolean(mapInfo.baseLayer.labelLayerVisible);var url="http://t0.tianditu.com/{layer}_{proj}/wmts?tk=".concat(this.tiandituKey);var labelUrl=url;var layerLabelMap={vec:'cva',ter:'cta',img:'cia'};var tilematrixSet=this.baseProjection==='EPSG:4326'?'c':'w';var options={service:'WMTS',request:'GetTile',style:'default',version:'1.0.0',layer:layerType,tilematrixSet:tilematrixSet,format:'tiles',width:256,height:256};url+=this._getParamString(options,url)+'&tilematrix={z}&tilerow={y}&tilecol={x}';var tiandituUrl=url.replace('{layer}',layerType).replace('{proj}',tilematrixSet);var tiandituUrlArr=[];for(var i=0;i<8;i++){tiandituUrlArr.push(tiandituUrl.replace(re,"t".concat(i)));}tiandituUrls['tiandituUrl']=tiandituUrlArr;// 如果有 label 图层
-if(isLabel){var labelLayer=layerLabelMap[layerType];options.layer=labelLayer;labelUrl+=this._getParamString(options,labelUrl)+'&tilematrix={z}&tilerow={y}&tilecol={x}';labelUrl=labelUrl.replace('{layer}',labelLayer).replace('{proj}',tilematrixSet);var labelUrlArr=[];for(var _i3=0;_i3<8;_i3++){labelUrlArr.push(labelUrl.replace(re,"t".concat(_i3)));}tiandituUrls['labelUrl']=labelUrlArr;}return tiandituUrls;}/**
+if(isLabel){var labelLayer=layerLabelMap[layerType];options.layer=labelLayer;labelUrl+=this._getParamString(options,labelUrl)+'&tilematrix={z}&tilerow={y}&tilecol={x}';labelUrl=labelUrl.replace('{layer}',labelLayer).replace('{proj}',tilematrixSet);var labelUrlArr=[];for(var _i6=0;_i6<8;_i6++){labelUrlArr.push(labelUrl.replace(re,"t".concat(_i6)));}tiandituUrls['labelUrl']=labelUrlArr;}return tiandituUrls;}/**
     * @function WebMapViewModel.prototype._getWMSUrl
     * @private
     * @description 创建 WMS url;
@@ -17196,7 +15079,7 @@ var fileCode=layerInfo.projection;this._queryFeatureBySQL(source.url,source.laye
     */},{key:"_addLayer",value:function _addLayer(layerInfo,features,index){var layerType=layerInfo.layerType;layerInfo.layerID=layerType+'-'+layerInfo.name+'-'+index;layerInfo.visible=layerInfo.visible?'visible':'none';// mbgl 目前不能处理 geojson 复杂面情况
 // mbgl isssue https://github.com/mapbox/mapbox-gl-js/issues/7023
 if(features&&features[0]&&features[0].geometry.type==='Polygon'){features=(0,_geometryUtil.handleMultyPolygon)(features);}if(layerInfo.style&&layerInfo.filterCondition){// 将 feature 根据过滤条件进行过滤, 分段专题图和单值专题图因为要计算 styleGroup 所以暂时不过滤
-if(layerType!=='RANGE'&&layerType!=='UNIQUE'&&layerType!=='RANK_SYMBOL'){features=this._getFiterFeatures(layerInfo.filterCondition,features);}}if(features&&layerInfo.projection!=='EPSG:4326'){this._transformFeatures(features);}if(layerType==='VECTOR'){if(layerInfo.featureType==='POINT'){if(layerInfo.style.type==='SYMBOL_POINT'){this._createSymbolLayer(layerInfo,features);}else{this._createGraphicLayer(layerInfo,features);}}else{// 线和面
+if(layerType!=='RANGE'&&layerType!=='UNIQUE'&&layerType!=='RANK_SYMBOL'){features=this._getFiterFeatures(layerInfo.filterCondition,features);}}if(features&&layerInfo.projection&&layerInfo.projection!=='EPSG:4326'){this._transformFeatures(features);}if(layerType==='VECTOR'){if(layerInfo.featureType==='POINT'){if(layerInfo.style.type==='SYMBOL_POINT'){this._createSymbolLayer(layerInfo,features);}else{this._createGraphicLayer(layerInfo,features);}}else{// 线和面
 this._createVectorLayer(layerInfo,features);}}else if(layerType==='UNIQUE'){this._createUniqueLayer(layerInfo,features);}else if(layerType==='RANGE'){this._createRangeLayer(layerInfo,features);}else if(layerType==='HEAT'){this._createHeatLayer(layerInfo,features);}else if(layerType==='MARKER'){this._createMarkerLayer(layerInfo,features);}else if(layerInfo.layerType==='MIGRATION'){this._createMigrationLayer(layerInfo,features);}else if(layerInfo.layerType==='RANK_SYMBOL'){this._createRankSymbolLayer(layerInfo,features);}else if(layerInfo.layerType==='DATAFLOW_POINT_TRACK'||layerInfo.layerType==='DATAFLOW_HEAT'){this._createDataflowLayer(layerInfo);}if(layerInfo.labelStyle&&layerInfo.labelStyle.labelField&&layerInfo.layerType!=='DATAFLOW_POINT_TRACK'){// 存在标签专题图
 this._addLabelLayer(layerInfo,features);}}},{key:"_createDataflowLayer",value:function _createDataflowLayer(layerInfo){var dataflowService=new _mapboxGlEnhance.default.supermap.DataFlowService(layerInfo.wsUrl).initSubscribe();this._handleDataflowFeaturesCallback=this._handleDataflowFeatures.bind(this,layerInfo);dataflowService.on('messageSucceeded',this._handleDataflowFeaturesCallback);this._dataflowService=dataflowService;}},{key:"_handleDataflowFeatures",value:function _handleDataflowFeatures(layerInfo,e){var features=e.data&&JSON.parse(e.data);// this._transformFeatures([features]); // TODO 坐标系
 this.fire('dataflowfeatureupdated',{features:features,identifyField:layerInfo.identifyField,layerID:layerInfo.layerID});if(layerInfo.filterCondition){//过滤条件
@@ -17246,10 +15129,10 @@ var values=[],segements=[],style=parameters.style,themeSetting=parameters.themeS
 if(value==null||!_mapboxGlEnhance.default.supermap.Util.isNumber(value)){return;}values.push(Number(value));});try{segements=SuperMap.ArrayStatistic.getArraySegments(values,segmentMethod,segmentCount);}catch(error){console.error(error);}// 处理自定义 分段
 for(var i=0;i<segmentCount;i++){if(i in customSettings){var startValue=customSettings[i]['segment']['start'],endValue=customSettings[i]['segment']['end'];startValue!=null&&(segements[i]=startValue);endValue!=null&&(segements[i+1]=endValue);}}//生成styleGroup
 var styleGroup=[];if(segements&&segements.length){var len=segements.length,incrementR=(maxR-minR)/(len-1),// 半径增量
-start,end,radius=Number(((maxR+minR)/2).toFixed(2));for(var _i4=0;_i4<len-1;_i4++){start=Number(segements[_i4].toFixed(2));end=Number(segements[_i4+1].toFixed(2));// 这里特殊处理以下分段值相同的情况（即所有字段值相同）
-radius=start===end?radius:minR+Math.round(incrementR*_i4);// 最后一个分段时将end+0.01，避免取不到最大值
-end=_i4===len-2?end+0.01:end;// 处理自定义 半径
-radius=customSettings[_i4]&&customSettings[_i4].radius?customSettings[_i4].radius:radius;style.radius=radius;styleGroup.push({radius:radius,start:start,end:end});}return styleGroup;}else{return false;}}/**
+start,end,radius=Number(((maxR+minR)/2).toFixed(2));for(var _i8=0;_i8<len-1;_i8++){start=Number(segements[_i8].toFixed(2));end=Number(segements[_i8+1].toFixed(2));// 这里特殊处理以下分段值相同的情况（即所有字段值相同）
+radius=start===end?radius:minR+Math.round(incrementR*_i8);// 最后一个分段时将end+0.01，避免取不到最大值
+end=_i8===len-2?end+0.01:end;// 处理自定义 半径
+radius=customSettings[_i8]&&customSettings[_i8].radius?customSettings[_i8].radius:radius;style.radius=radius;styleGroup.push({radius:radius,start:start,end:end});}return styleGroup;}else{return false;}}/**
     * @private
     * @function WebMapViewModel.prototype._addLabelLayer
     * @description 添加标签图层。
@@ -17299,7 +15182,7 @@ var styleGroup=[];names.forEach(function(name,index){var color=curentColors[inde
 geomType='TEXT';}var featureInfo=_this12._setFeatureInfo(feature);feature.properties['useStyle']=defaultStyle;feature.properties['featureInfo']=featureInfo;if(geomType==='POINT'&&defaultStyle.src&&defaultStyle.src.indexOf('http://')===-1&&defaultStyle.src.indexOf('https://')===-1){// 说明地址不完整
 defaultStyle.src=_this12.serverUrl+defaultStyle.src;}var source={type:'geojson',data:feature};var index=feature.properties.index;var layerID=geomType+'-'+index;// image-marker
 geomType==='POINT'&&defaultStyle.src&&defaultStyle.src.indexOf('svg')<=-1&&_this12.map.loadImage(defaultStyle.src,function(error,image){if(error){console.log(error);}_this12.map.addImage(index+'',image);_this12.map.addLayer({id:layerID,type:'symbol',source:source,layout:{'icon-image':defaultStyle.src,'icon-size':defaultStyle.scale,visibility:layerInfo.visible}});});// svg-marker
-if(geomType==='POINT'&&defaultStyle.src&&defaultStyle.src.indexOf('svg')>-1){if(!_this12._svgDiv){_this12._svgDiv=document.createElement('div');document.body.appendChild(_this12._svgDiv);}_this12._getCanvasFromSVG(defaultStyle.src,_this12._svgDiv,function(canvas){var imgUrl=canvas.toDataURL('img/png');imgUrl&&_this12.map.loadImage(imgUrl,function(error,image){if(error){console.log(error);}_this12.map.addImage(index+'',image);_this12.map.addLayer({id:layerID,type:'symbol',source:source,layout:{'icon-image':index+'','icon-size':defaultStyle.scale,visibility:layerInfo.visible}});});});}// point-line-polygon-marker
+if(geomType==='POINT'&&defaultStyle.src&&defaultStyle.src.indexOf('svg')>-1){if(!_this12._svgDiv){_this12._svgDiv=document.createElement('div');document.body.appendChild(_this12._svgDiv);}_this12._getCanvasFromSVG(defaultStyle.src,_this12._svgDiv,function(canvas){var imgUrl=canvas.toDataURL('img/png');imgUrl&&_this12.map.loadImage(imgUrl,function(error,image){if(error){console.log(error);}_this12.map.addImage(index+'',image);_this12.map.addLayer({id:layerID,type:'symbol',source:source,layout:{'icon-image':index+'','icon-size':defaultStyle.scale,visibility:layerInfo.visible}});console.log(_this12.map.getStyle());});});}// point-line-polygon-marker
 if(!defaultStyle.src){var layeStyle={layout:{}};if(geomType==='LINESTRING'&&defaultStyle.lineCap){geomType='LINE';layeStyle.layout={'line-cap':defaultStyle.lineCap};}var visible=layerInfo.visible;layeStyle.layout.visibility=visible;// get style
 layeStyle.style=_this12._transformStyleToMapBoxGl(defaultStyle,geomType);_this12._addOverlayToMap(geomType,source,layerID,layeStyle);// 若面有边框
 geomType==='POLYGON'&&defaultStyle.strokeColor&&_this12._addStrokeLineForPoly(defaultStyle,source,layerID+'-strokeLine',visible);}},this);}/**
@@ -17365,7 +15248,7 @@ for(var i=0;i<segements.length;i++){var value=segements[i];value=i===0?Math.floo
 segements[i]=Number(value.toFixed(2));}// 获取一定量的颜色
 var curentColors=themeSetting.colors;// curentColors = SuperMap.ColorsPickerUtil.getGradientColors(curentColors, itemNum, 'RANGE');
 for(var index=0;index<itemNum;index++){if(index in customSettings){if(customSettings[index]['segment']['start']){segements[index]=customSettings[index]['segment']['start'];}if(customSettings[index]['segment']['end']){segements[index+1]=customSettings[index]['segment']['end'];}}}// 生成styleGroup
-var styleGroups=[];for(var _i5=0;_i5<itemNum;_i5++){var color=curentColors[_i5];if(_i5 in customSettings){if(customSettings[_i5].color){color=customSettings[_i5].color;}}if(featureType==='LINE'){style.strokeColor=color;}else{style.fillColor=color;}var start=segements[_i5];var end=segements[_i5+1];var styleObj=JSON.parse(JSON.stringify(style));styleGroups.push({style:styleObj,color:color,start:start,end:end});}return styleGroups;}}/**
+var styleGroups=[];for(var _i10=0;_i10<itemNum;_i10++){var color=curentColors[_i10];if(_i10 in customSettings){if(customSettings[_i10].color){color=customSettings[_i10].color;}}if(featureType==='LINE'){style.strokeColor=color;}else{style.fillColor=color;}var start=segements[_i10];var end=segements[_i10+1];var styleObj=JSON.parse(JSON.stringify(style));styleGroups.push({style:styleObj,color:color,start:start,end:end});}return styleGroups;}}/**
     * @private
     * @function WebMapViewModel.prototype._formatGeoJSON
     * @description 格式 GeoJSON。
@@ -17379,8 +15262,8 @@ var styleGroups=[];for(var _i5=0;_i5<itemNum;_i5++){var color=curentColors[_i5];
     * @returns {Array}  feature的数组集合
     */},{key:"_excelData2Feature",value:function _excelData2Feature(dataContent){var fieldCaptions=dataContent.colTitles;// 位置属性处理
 var xfieldIndex=-1;var yfieldIndex=-1;for(var i=0,len=fieldCaptions.length;i<len;i++){if((0,_util.isXField)(fieldCaptions[i])){xfieldIndex=i;}if((0,_util.isYField)(fieldCaptions[i])){yfieldIndex=i;}}// feature 构建后期支持坐标系 4326/3857
-var features=[];for(var _i6=0,_len=dataContent.rows.length;_i6<_len;_i6++){var row=dataContent.rows[_i6];var x=Number(row[xfieldIndex]);var y=Number(row[yfieldIndex]);// 属性信息
-var attributes={};for(var index in dataContent.colTitles){var key=dataContent.colTitles[index];attributes[key]=dataContent.rows[_i6][index];}attributes['index']=_i6+'';// 目前csv 只支持处理点，所以先生成点类型的 geojson
+var features=[];for(var _i12=0,_len2=dataContent.rows.length;_i12<_len2;_i12++){var row=dataContent.rows[_i12];var x=Number(row[xfieldIndex]);var y=Number(row[yfieldIndex]);// 属性信息
+var attributes={};for(var index in dataContent.colTitles){var key=dataContent.colTitles[index];attributes[key]=dataContent.rows[_i12][index];}attributes['index']=_i12+'';// 目前csv 只支持处理点，所以先生成点类型的 geojson
 var feature={type:'Feature',geometry:{type:'Point',coordinates:[x,y]},properties:attributes};features.push(feature);}return features;}/**
     * @private
     * @function WebMapViewModel.prototype._sendMapToUser
@@ -17426,8 +15309,8 @@ var w=1;var str=style.strokeDashstyle||style.lineDash;switch(str){case'solid':re
     * @param svgUrl
     * @param divDom
     * @param callBack
-    */},{key:"_getCanvasFromSVG",value:function _getCanvasFromSVG(svgUrl,divDom,callBack){// 一个图层对应一个canvas
-var canvas=document.createElement('canvas');canvas.id='dataviz-canvas-'+_mapboxGlEnhance.default.supermap.Util.newGuid(8);canvas.style.display='none';divDom.appendChild(canvas);var canvgs=window.canvg?window.canvg:_canvg.default;canvgs(canvas.id,svgUrl,{ignoreMouse:true,ignoreAnimation:true,renderCallback:function renderCallback(){if(canvas.width>300||canvas.height>300){return;}callBack(canvas);},forceRedraw:function forceRedraw(){return false;}});}/**
+    */},{key:"_getCanvasFromSVG",value:function _getCanvasFromSVG(svgUrl,divDom,callBack){var _this13=this;// 一个图层对应一个canvas
+var canvas=document.createElement('canvas');canvas.id='dataviz-canvas-'+_mapboxGlEnhance.default.supermap.Util.newGuid(8);canvas.style.display='none';divDom.appendChild(canvas);var canvgs=window.canvg&&window.canvg.default?window.canvg.default:_canvg.default;try{var ctx=canvas.getContext('2d');canvgs.from(ctx,svgUrl,{ignoreMouse:true,ignoreAnimation:true,forceRedraw:function forceRedraw(){return false;}}).then(function(v){v.start();_this13.canvgsV.push(v);if(canvas.width>300||canvas.height>300){return;}callBack(canvas);});}catch(error){console.log(error);}}},{key:"_stopCanvg",value:function _stopCanvg(){this.canvgsV.forEach(function(v){return v.stop();});this.canvgsV=[];}/**
     * @private
     * @function WebMapViewModel.prototype._addOverlayToMap
     * @description 添加基础矢量图层到 MAP
@@ -17453,13 +15336,13 @@ if(allFeatures[i].properties){allFeatures[i].properties.lon=coordinate[0];allFea
     * @function WebMapViewModel.prototype._queryFeatureBySQL
     * @description 通过 sql 方式查询数据。
     */},{key:"_queryFeatureBySQL",value:function _queryFeatureBySQL(url,layerName,processCompleted,processFaild,attributeFilter,fields,epsgCode,startRecord,recordLength,onlyAttribute){var queryParam=new SuperMap.FilterParameter({name:layerName,attributeFilter:attributeFilter});if(fields){queryParam.fields=fields;}var params={queryParams:[queryParam]};if(onlyAttribute){params.queryOption=SuperMap.QueryOption.ATTRIBUTE;}startRecord&&(params.startRecord=startRecord);recordLength&&(params.expectCount=recordLength);if(epsgCode){params.prjCoordSys={epsgCode:epsgCode};}var queryBySQLParams=new SuperMap.QueryBySQLParameters(params);var queryBySQLService=new _mapboxGlEnhance.default.supermap.QueryService(url);queryBySQLService.queryBySQL(queryBySQLParams,function(data){data.type==='processCompleted'?processCompleted(data):processFaild(data);});}},{key:"_initLegendConfigInfo",value:function _initLegendConfigInfo(layerInfo,style){if(!this._legendList[layerInfo.layerID]){this._legendList[layerInfo.layerID]={layerType:layerInfo.layerType,featureType:layerInfo.featureType,layerId:layerInfo.layerID,themeField:layerInfo.layerType==='HEAT'?layerInfo.themeSetting.weight:layerInfo.themeSetting.themeField,styleGroup:style};}}},{key:"_getFeatureProperties",value:function _getFeatureProperties(features){var properties=[];if(features&&features.length){features.forEach(function(feature){var property=feature.properties;property&&properties.push(property);});}return properties;}},{key:"_addVectorLayer",value:function _addVectorLayer(info,layerInfo,featureType){var style=this._getDataVectorTileStyle(featureType);var paint=this._transformStyleToMapBoxGl(style,featureType);var url=info.url+'/tileFeature.mvt';var origin=_mapboxGlEnhance.default.CRS.get(this.baseProjection).getOrigin();url+="?&returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin={x:".concat(origin[0],",y:").concat(origin[1],"}");this.map.addLayer({id:(0,_lodash.default)(layerInfo.name+'-'),// @ts-ignore
-type:style.mbglType,source:{type:'vector',tiles:[url]},'source-layer':"".concat(info.datasetName,"@").concat(info.datasourceName),paint:paint,layout:{visibility:layerInfo.visible?'visible':'none'}});}},{key:"_isMvt",value:function _isMvt(serviceUrl,datasetName){var _this13=this;return this._getDatasetsInfo(serviceUrl,datasetName).then(function(info){//判断是否和底图坐标系一直
-if(info.epsgCode==_this13.baseProjection.split('EPSG:')[1]){return SuperMap.FetchRequest.get("".concat(info.url,"/tilefeature.mvt")).then(function(response){return response.json();}).then(function(result){info.isMvt=result.error&&result.error.code===400;return info;}).catch(function(){return info;});}return info;});}},{key:"_getDatasetsInfo",value:function _getDatasetsInfo(serviceUrl,datasetName){return this._getDatasources(serviceUrl).then(function(datasourceName){//判断mvt服务是否可用
+type:style.mbglType,source:{type:'vector',tiles:[url]},'source-layer':"".concat(info.datasetName,"@").concat(info.datasourceName),paint:paint,layout:{visibility:layerInfo.visible?'visible':'none'}});}},{key:"_isMvt",value:function _isMvt(serviceUrl,datasetName){var _this14=this;return this._getDatasetsInfo(serviceUrl,datasetName).then(function(info){//判断是否和底图坐标系一直
+if(info.epsgCode==_this14.baseProjection.split('EPSG:')[1]){return SuperMap.FetchRequest.get("".concat(info.url,"/tilefeature.mvt")).then(function(response){return response.json();}).then(function(result){info.isMvt=result.error&&result.error.code===400;return info;}).catch(function(){return info;});}return info;});}},{key:"_getDatasetsInfo",value:function _getDatasetsInfo(serviceUrl,datasetName){return this._getDatasources(serviceUrl).then(function(datasourceName){//判断mvt服务是否可用
 var url="".concat(serviceUrl,"/data/datasources/").concat(datasourceName,"/datasets/").concat(datasetName);return SuperMap.FetchRequest.get(url).then(function(response){return response.json();}).then(function(datasetsInfo){return{epsgCode:datasetsInfo.datasetInfo.prjCoordSys.epsgCode,bounds:datasetsInfo.datasetInfo.bounds,datasourceName:datasourceName,datasetName:datasetName,url:url//返回的是原始url，没有代理。因为用于请求mvt
 };});});}},{key:"_getDataVectorTileStyle",value:function _getDataVectorTileStyle(featureType){var styleParameters={radius:8,//圆点半径
 fillColor:'#EE4D5A',//填充色
 fillOpacity:0.9,strokeColor:'#ffffff',//边框颜色
-strokeWidth:1,strokeOpacity:1,lineDash:'solid',type:'BASIC_POINT',mbglType:'circle'};if(['LINE','LINESTRING','MULTILINESTRING'].includes(featureType)){styleParameters.strokeColor='#4CC8A3';styleParameters.strokeWidth=2;styleParameters.mbglType='line';}else if(['REGION','POLYGON','MULTIPOLYGON'].includes(featureType)){styleParameters.fillColor='#826DBA';styleParameters.mbglType='fill';}return styleParameters;}},{key:"_transformFeatures",value:function _transformFeatures(features){var _this14=this;features&&features.forEach(function(feature,index){var geometryType=feature.geometry.type;var coordinates=feature.geometry.coordinates;if(geometryType==='LineString'){coordinates.forEach(function(coordinate,index){coordinate=_this14._unproject(coordinate);coordinates[index]=coordinate;},_this14);}else if(geometryType==='Point'){coordinates=_this14._unproject(coordinates);feature.geometry.coordinates=coordinates;}else if(geometryType==='MultiPolygon'||geometryType==='Polygon'){coordinates.forEach(function(coordinate,index){var coords=geometryType==='MultiPolygon'?coordinate[0]:coordinate;coords.forEach(function(latlng,index){latlng=_this14._unproject(latlng);coords[index]=latlng;});coordinates[index]=coordinate;});}features[index]=feature;},this);}}]);return WebMapViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=WebMapViewModel;
+strokeWidth:1,strokeOpacity:1,lineDash:'solid',type:'BASIC_POINT',mbglType:'circle'};if(['LINE','LINESTRING','MULTILINESTRING'].includes(featureType)){styleParameters.strokeColor='#4CC8A3';styleParameters.strokeWidth=2;styleParameters.mbglType='line';}else if(['REGION','POLYGON','MULTIPOLYGON'].includes(featureType)){styleParameters.fillColor='#826DBA';styleParameters.mbglType='fill';}return styleParameters;}},{key:"_transformFeatures",value:function _transformFeatures(features){var _this15=this;features&&features.forEach(function(feature,index){var geometryType=feature.geometry.type;var coordinates=feature.geometry.coordinates;if(geometryType==='LineString'){coordinates.forEach(function(coordinate,index){coordinate=_this15._unproject(coordinate);coordinates[index]=coordinate;},_this15);}else if(geometryType==='Point'){coordinates=_this15._unproject(coordinates);feature.geometry.coordinates=coordinates;}else if(geometryType==='MultiPolygon'||geometryType==='Polygon'){coordinates.forEach(function(coordinate,index){var coords=geometryType==='MultiPolygon'?coordinate[0]:coordinate;coords.forEach(function(latlng,index){latlng=_this15._unproject(latlng);coords[index]=latlng;});coordinates[index]=coordinate;});}features[index]=feature;},this);}}]);return WebMapViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=WebMapViewModel;
 
 /***/ }),
 
@@ -17475,7 +15358,7 @@ Object.defineProperty(exports, "__esModule", ({value:true}));exports.MAP_EVENT_N
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class;var Layer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(Layer,_React$Component);var _super=(0,_createSuper2.default)(Layer);function Layer(){(0,_classCallCheck2.default)(this,Layer);return _super.apply(this,arguments);}(0,_createClass2.default)(Layer,[{key:"loaded",value:function loaded(map){var _this$props=this.props,type=_this$props.type,source=_this$props.source,layerId=_this$props.layerId,minzoom=_this$props.minzoom,maxzoom=_this$props.maxzoom,filter=_this$props.filter,layout=_this$props.layout,paint=_this$props.paint,metadata=_this$props.metadata;if(map.getLayer(layerId)){console.error("There is already a layer with the id \"".concat(layerId,"\""));return;}if(typeof source==='string'&&!map.getSource(source)){console.error("Source \"".concat(source,"\" is not loaded"));return;}if(type!=='background'&&!source){console.error("Source is required unless type is background");return;}var layerOption={id:layerId,type:type};source&&(layerOption.source=source);minzoom!==undefined&&(layerOption.minzoom=minzoom);maxzoom!==undefined&&(layerOption.maxzoom=maxzoom);filter&&(layerOption.filter=filter);layout&&(layerOption.layout=layout);paint&&(layerOption.paint=paint);metadata&&(layerOption.metadata=metadata);this.props['source-layer']&&(layerOption['source-layer']=this.props['source-layer']);map.addLayer(layerOption);}},{key:"removed",value:function removed(){}},{key:"render",value:function render(){return null;}}]);return Layer;}(_react.default.Component))||_class);exports["default"]=Layer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class;var Layer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(Layer,_React$Component);var _super=(0,_createSuper2.default)(Layer);function Layer(){(0,_classCallCheck2.default)(this,Layer);return _super.apply(this,arguments);}(0,_createClass2.default)(Layer,[{key:"loaded",value:function loaded(map){var _this$props=this.props,type=_this$props.type,source=_this$props.source,layerId=_this$props.layerId,minzoom=_this$props.minzoom,maxzoom=_this$props.maxzoom,filter=_this$props.filter,layout=_this$props.layout,paint=_this$props.paint,metadata=_this$props.metadata;if(map.getLayer(layerId)){console.error("There is already a layer with the id \"".concat(layerId,"\""));return;}if(typeof source==='string'&&!map.getSource(source)){console.error("Source \"".concat(source,"\" is not loaded"));return;}if(type!=='background'&&!source){console.error("Source is required unless type is background");return;}var layerOption={id:layerId,type:type};source&&(layerOption.source=source);minzoom!==undefined&&(layerOption.minzoom=minzoom);maxzoom!==undefined&&(layerOption.maxzoom=maxzoom);filter&&(layerOption.filter=filter);layout&&(layerOption.layout=layout);paint&&(layerOption.paint=paint);metadata&&(layerOption.metadata=metadata);this.props['source-layer']&&(layerOption['source-layer']=this.props['source-layer']);map.addLayer(layerOption);}},{key:"removed",value:function removed(){}},{key:"render",value:function render(){return null;}}]);return Layer;}(_react.default.Component))||_class);exports["default"]=Layer;
 
 /***/ }),
 
@@ -17483,13 +15366,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _react=__webpack_require__(3899);var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _AnimateMarkerLayerViewModel=_interopRequireDefault(__webpack_require__(3843));var _BreathingApertureMarker=_interopRequireDefault(__webpack_require__(7278));var _DiffusedApertureMarker=_interopRequireDefault(__webpack_require__(2017));var _HaloRingMarker=_interopRequireDefault(__webpack_require__(6130));var _RotatingApertureMarker=_interopRequireDefault(__webpack_require__(970));var _RotatingTextBorderMarker=_interopRequireDefault(__webpack_require__(9041));var _FluorescenceMarker=_interopRequireDefault(__webpack_require__(6889));var _class,_class2;var AnimateMarkerLayer=(0,_mapGetter.default)(_class=(_class2=/*#__PURE__*/function(_Component){(0,_inherits2.default)(AnimateMarkerLayer,_Component);var _super=(0,_createSuper2.default)(AnimateMarkerLayer);function AnimateMarkerLayer(){(0,_classCallCheck2.default)(this,AnimateMarkerLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(AnimateMarkerLayer,[{key:"componentDidMount",value:// 进行类型断言时报错 先注释掉 待优化
-// | RotatingTextBorderMarker
-// | BreathingApertureMarker
-// | DiffusedApertureMarker
-// | HaloRingMarker
-// | RotatingApertureMarker;
-function componentDidMount(){this._markersElement=[];}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(this.viewModel&&!(0,_lodash.default)(prevProps.features,this.props.features)){this._markersElement=[];this._getMarkerElement();this.props.features&&this.viewModel.setFeatures(this.props.features,this._markersElement);}if(this.viewModel&&!(0,_lodash.default)(prevProps.type,this.props.type)){this._markersElement=[];this._getMarkerElement();this.viewModel.setType(this._markersElement);}if(this.viewModel&&this.props.width&&prevProps.width!==this.props.width){this.marker&&this.marker.setMarkersWidth(this.props.width);}if(this.viewModel&&this.props.height&&prevProps.height!==this.props.height){this.marker&&this.marker.setMarkersHeight&&this.marker.setMarkersHeight(this.props.height);}if(this.viewModel&&this.props.textColor&&prevProps.textColor!==this.props.textColor){this.marker&&this.marker.setMarkersTextColor(this.props.textColor);}if(this.viewModel&&this.props.textFontSize&&prevProps.textFontSize!==this.props.textFontSize){this.marker&&this.marker.setMarkersTextFontSize(this.props.textFontSize);}if(this.viewModel&&this.props.colors&&this.props.colors.length&&this.props.colors.length>0&&!(0,_lodash.default)(prevProps.colors,this.props.colors)){this.marker&&this.marker.setMarkersColors(this.props.colors);}if(this.viewModel&&this.props.textField&&prevProps.textField!==this.props.textField){this.marker&&this.marker.setMarkersTextField(this.props.textField);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.viewModel&&this.viewModel.clearMarkerLayer();}},{key:"loaded",value:function loaded(map){this.props.features&&this._getMarkerElement();this.viewModel=new _AnimateMarkerLayerViewModel.default(map,this.props.features,this._markersElement,this.props.fitBounds);}},{key:"_getMarkerElement",value:function _getMarkerElement(){this.setState({marker:null});var _this$props=this.props,features=_this$props.features,width=_this$props.width,height=_this$props.height,colors=_this$props.colors,textFontSize=_this$props.textFontSize,textColor=_this$props.textColor,textField=_this$props.textField,type=_this$props.type;if(!features||JSON.stringify(features)==='{}'||!features.features){this.viewModel&&this.viewModel.clearMarkerLayer();return;}switch(type){case'rotatingAperture':this.marker=new _RotatingApertureMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'haloRing':this.marker=new _HaloRingMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'breathingAperture':this.marker=new _BreathingApertureMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'diffusedAperture':this.marker=new _DiffusedApertureMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'rotatingTextBorder':this.marker=new _RotatingTextBorderMarker.default(features,{width:width,height:height,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'fluorescence':this.marker=new _FluorescenceMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;}this.marker&&(this._markersElement=this.marker.getMarkersElement());}},{key:"render",value:function render(){return null;}}]);return AnimateMarkerLayer;}(_react.Component),_class2.defaultProps={type:'breathingAperture',textFontSize:14},_class2))||_class;exports["default"]=AnimateMarkerLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _react=__webpack_require__(3899);var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _AnimateMarkerLayerViewModel=_interopRequireDefault(__webpack_require__(3843));var _BreathingApertureMarker=_interopRequireDefault(__webpack_require__(7278));var _DiffusedApertureMarker=_interopRequireDefault(__webpack_require__(2017));var _HaloRingMarker=_interopRequireDefault(__webpack_require__(6130));var _RotatingApertureMarker=_interopRequireDefault(__webpack_require__(970));var _RotatingTextBorderMarker=_interopRequireDefault(__webpack_require__(9041));var _FluorescenceMarker=_interopRequireDefault(__webpack_require__(6889));var _class,_class2;var AnimateMarkerLayer=(0,_mapGetter.default)(_class=(_class2=/*#__PURE__*/function(_Component){(0,_inherits2.default)(AnimateMarkerLayer,_Component);var _super=(0,_createSuper2.default)(AnimateMarkerLayer);function AnimateMarkerLayer(){(0,_classCallCheck2.default)(this,AnimateMarkerLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(AnimateMarkerLayer,[{key:"componentDidMount",value:function componentDidMount(){this._markersElement=[];}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(this.viewModel&&!(0,_lodash.default)(prevProps.features,this.props.features)){this._markersElement=[];this._getMarkerElement();this.props.features&&this.viewModel.setFeatures(this.props.features,this._markersElement);}if(this.viewModel&&!(0,_lodash.default)(prevProps.type,this.props.type)){this._markersElement=[];this._getMarkerElement();this.viewModel.setType(this._markersElement);}if(this.viewModel&&this.props.width&&prevProps.width!==this.props.width){this.marker&&this.marker.setMarkersWidth(this.props.width);}if(this.viewModel&&this.props.height&&prevProps.height!==this.props.height){this.marker&&this.marker.setMarkersHeight&&this.marker.setMarkersHeight(this.props.height);}if(this.viewModel&&this.props.textColor&&prevProps.textColor!==this.props.textColor){this.marker&&this.marker.setMarkersTextColor(this.props.textColor);}if(this.viewModel&&this.props.textFontSize&&prevProps.textFontSize!==this.props.textFontSize){this.marker&&this.marker.setMarkersTextFontSize(this.props.textFontSize);}if(this.viewModel&&this.props.colors&&this.props.colors.length&&this.props.colors.length>0&&!(0,_lodash.default)(prevProps.colors,this.props.colors)){this.marker&&this.marker.setMarkersColors(this.props.colors);}if(this.viewModel&&this.props.textField&&prevProps.textField!==this.props.textField){this.marker&&this.marker.setMarkersTextField(this.props.textField);}}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.viewModel&&this.viewModel.clearMarkerLayer();}},{key:"loaded",value:function loaded(map){this.props.features&&this._getMarkerElement();this.viewModel=new _AnimateMarkerLayerViewModel.default(map,this.props.features,this._markersElement,this.props.fitBounds);}},{key:"_getMarkerElement",value:function _getMarkerElement(){this.setState({marker:null});var _this$props=this.props,features=_this$props.features,width=_this$props.width,height=_this$props.height,colors=_this$props.colors,textFontSize=_this$props.textFontSize,textColor=_this$props.textColor,textField=_this$props.textField,type=_this$props.type;if(!features||JSON.stringify(features)==='{}'||!features.features){this.viewModel&&this.viewModel.clearMarkerLayer();return;}switch(type){case'rotatingAperture':this.marker=new _RotatingApertureMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'haloRing':this.marker=new _HaloRingMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'breathingAperture':this.marker=new _BreathingApertureMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'diffusedAperture':this.marker=new _DiffusedApertureMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'rotatingTextBorder':this.marker=new _RotatingTextBorderMarker.default(features,{width:width,height:height,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;case'fluorescence':this.marker=new _FluorescenceMarker.default(features,{width:width,colors:colors,textField:textField,textColor:textColor,textFontSize:textFontSize});break;}this.marker&&(this._markersElement=this.marker.getMarkersElement());}},{key:"render",value:function render(){return null;}}]);return AnimateMarkerLayer;}(_react.Component),_class2.defaultProps={type:'breathingAperture',textFontSize:14},_class2))||_class;exports["default"]=AnimateMarkerLayer;
 
 /***/ }),
 
@@ -17497,7 +15374,7 @@ function componentDidMount(){this._markersElement=[];}},{key:"componentDidUpdate
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _envelope=_interopRequireDefault(__webpack_require__(3880));var _bbox=_interopRequireDefault(__webpack_require__(9705));var _transformScale=_interopRequireDefault(__webpack_require__(5748));var AnimateMarkerLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(AnimateMarkerLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(AnimateMarkerLayerViewModel);function AnimateMarkerLayerViewModel(map,features,markersElement){var _this;var fitBounds=arguments.length>3&&arguments[3]!==undefined?arguments[3]:true;(0,_classCallCheck2.default)(this,AnimateMarkerLayerViewModel);_this=_super.call(this);if(!map){throw new Error('map is requierd');}_this.map=map;_this.features=features;_this.markers=[];_this.markersElement=markersElement;_this.fitBounds=fitBounds;_this.features&&_this._initalizeMarkerLayer();return _this;}(0,_createClass2.default)(AnimateMarkerLayerViewModel,[{key:"setType",value:function setType(markersElement){this.markersElement=markersElement;this._initalizeMarkerLayer();}},{key:"setFeatures",value:function setFeatures(features,markersElement){this.markersElement=markersElement;this.features=features;this._initalizeMarkerLayer();}},{key:"_initalizeMarkerLayer",value:function _initalizeMarkerLayer(){if(!this.features||JSON.stringify(this.features)==='{}'){return;}this.clearMarkerLayer();this._createMarker();}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point,index){var marker=new _mapboxGlEnhance.default.Marker(_this2.markersElement[index]||_this2.markersElement[0])// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _envelope=_interopRequireDefault(__webpack_require__(3880));var _bbox=_interopRequireDefault(__webpack_require__(9705));var _transformScale=_interopRequireDefault(__webpack_require__(5748));var AnimateMarkerLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(AnimateMarkerLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(AnimateMarkerLayerViewModel);function AnimateMarkerLayerViewModel(map,features,markersElement){var _this;var fitBounds=arguments.length>3&&arguments[3]!==undefined?arguments[3]:true;(0,_classCallCheck2.default)(this,AnimateMarkerLayerViewModel);_this=_super.call(this);if(!map){throw new Error('map is requierd');}_this.map=map;_this.features=features;_this.markers=[];_this.markersElement=markersElement;_this.fitBounds=fitBounds;_this.features&&_this._initalizeMarkerLayer();return _this;}(0,_createClass2.default)(AnimateMarkerLayerViewModel,[{key:"setType",value:function setType(markersElement){this.markersElement=markersElement;this._initalizeMarkerLayer();}},{key:"setFeatures",value:function setFeatures(features,markersElement){this.markersElement=markersElement;this.features=features;this._initalizeMarkerLayer();}},{key:"_initalizeMarkerLayer",value:function _initalizeMarkerLayer(){if(!this.features||JSON.stringify(this.features)==='{}'){return;}this.clearMarkerLayer();this._createMarker();}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point,index){var marker=new _mapboxGlEnhance.default.Marker(_this2.markersElement[index]||_this2.markersElement[0])// @ts-ignore
 .setLngLat(point.geometry.coordinates).addTo(_this2.map);_this2.markers.push(marker);},this);if(this.fitBounds){// @ts-ignore
 var bounds=(0,_bbox.default)((0,_transformScale.default)((0,_envelope.default)(this.features),1.7));this.fitBounds&&this.map.fitBounds([[bounds[0],bounds[1]],[bounds[2],bounds[3]]],{maxZoom:17});}}},{key:"clearMarkerLayer",value:function clearMarkerLayer(){this.markers.length>0&&this.markers.forEach(function(marker){marker&&marker.remove();});this.markers=[];}}]);return AnimateMarkerLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=AnimateMarkerLayerViewModel;
 
@@ -17507,10 +15384,10 @@ var bounds=(0,_bbox.default)((0,_transformScale.default)((0,_envelope.default)(t
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var BreathingApertureMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(BreathingApertureMarker,_Marker);var _super=(0,_createSuper2.default)(BreathingApertureMarker);function BreathingApertureMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,BreathingApertureMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(BreathingApertureMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var pulse=document.getElementsByClassName('sm-component-animate-marker__pulse');for(var i=0;i<pulse.length;i++){// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var BreathingApertureMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(BreathingApertureMarker,_Marker);var _super=(0,_createSuper2.default)(BreathingApertureMarker);function BreathingApertureMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,BreathingApertureMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(BreathingApertureMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var pulse=document.getElementsByClassName('sm-component-animate-marker__pulse');for(var i=0;i<pulse.length;i++){// @ts-ignore
 this._setBreathingApertureWidth(pulse[i].style);}}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){var dot=document.getElementsByClassName('sm-component-animate-marker__dot-point');for(var i=0;i<dot.length;i++){// @ts-ignore
-dot[i].style.background=this.options.colors[0];}var pulse=document.getElementsByClassName('sm-component-animate-marker__pulse');for(var _i=0;_i<pulse.length;_i++){// @ts-ignore
-var style=pulse[_i].style;style.borderColor=this.options.colors[0];style.boxShadow="0 0 12px ".concat(this.options.colors[1],", 0 0 20px ").concat(this.options.colors[1]," inset");}}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--breathing-aperture';var dot=document.createElement('span');dot.className='sm-component-animate-marker__dot-point';var colors;if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0){colors=_this2.options.colors;}colors&&(dot.style.background=colors[0]);markerContainer.appendChild(dot);var childElements=_this2._createMakerElement(3,'span',['sm-component-animate-marker__delay','sm-component-animate-marker__pulse']);childElements.forEach(function(element){if(colors){element.style.borderColor=colors[0];element.style.boxShadow="0 0 12px ".concat(colors[1],", 0 0 20px ").concat(colors[1]," inset");}_this2._setBreathingApertureWidth(element.style);markerContainer.appendChild(element);});var nameContainer=_this2._getTextContainer(point,'breathing-aperture-name');markerContainer.appendChild(nameContainer);_this2.markersElement.push(markerContainer);},this);}},{key:"_setBreathingApertureWidth",value:function _setBreathingApertureWidth(style){var width=this.options.width;if(width){style.width=width+'px';style.height=width+'px';style.top=-width/2+'px';style.left=-width/2+'px';style.borderRadius=width/2+'px';}}},{key:"_createMakerElement",value:function _createMakerElement(length,type,classNames){var markerElements=[];for(var i=1;i<length+1;i++){var element=document.createElement(type);element.className="".concat(classNames[0],"-0").concat(i," ").concat(classNames[1]);markerElements.push(element);}return markerElements;}}]);return BreathingApertureMarker;}(_Marker2.default);exports["default"]=BreathingApertureMarker;
+dot[i].style.background=this.options.colors[0];}var pulse=document.getElementsByClassName('sm-component-animate-marker__pulse');for(var _i2=0;_i2<pulse.length;_i2++){// @ts-ignore
+var style=pulse[_i2].style;style.borderColor=this.options.colors[0];style.boxShadow="0 0 12px ".concat(this.options.colors[1],", 0 0 20px ").concat(this.options.colors[1]," inset");}}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--breathing-aperture';var dot=document.createElement('span');dot.className='sm-component-animate-marker__dot-point';var colors;if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0){colors=_this2.options.colors;}colors&&(dot.style.background=colors[0]);markerContainer.appendChild(dot);var childElements=_this2._createMakerElement(3,'span',['sm-component-animate-marker__delay','sm-component-animate-marker__pulse']);childElements.forEach(function(element){if(colors){element.style.borderColor=colors[0];element.style.boxShadow="0 0 12px ".concat(colors[1],", 0 0 20px ").concat(colors[1]," inset");}_this2._setBreathingApertureWidth(element.style);markerContainer.appendChild(element);});var nameContainer=_this2._getTextContainer(point,'breathing-aperture-name');markerContainer.appendChild(nameContainer);_this2.markersElement.push(markerContainer);},this);}},{key:"_setBreathingApertureWidth",value:function _setBreathingApertureWidth(style){var width=this.options.width;if(width){style.width=width+'px';style.height=width+'px';style.top=-width/2+'px';style.left=-width/2+'px';style.borderRadius=width/2+'px';}}},{key:"_createMakerElement",value:function _createMakerElement(length,type,classNames){var markerElements=[];for(var i=1;i<length+1;i++){var element=document.createElement(type);element.className="".concat(classNames[0],"-0").concat(i," ").concat(classNames[1]);markerElements.push(element);}return markerElements;}}]);return BreathingApertureMarker;}(_Marker2.default);exports["default"]=BreathingApertureMarker;
 
 /***/ }),
 
@@ -17518,7 +15395,7 @@ var style=pulse[_i].style;style.borderColor=this.options.colors[0];style.boxShad
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var DiffusedApertureMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(DiffusedApertureMarker,_Marker);var _super=(0,_createSuper2.default)(DiffusedApertureMarker);function DiffusedApertureMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,DiffusedApertureMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(DiffusedApertureMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--diffused-aperture');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var DiffusedApertureMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(DiffusedApertureMarker,_Marker);var _super=(0,_createSuper2.default)(DiffusedApertureMarker);function DiffusedApertureMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,DiffusedApertureMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(DiffusedApertureMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--diffused-aperture');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
 var style=markerContainer[i].style;style.setProperty('--container-width',width+'px');}}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){var markerContainer=document.getElementsByClassName('sm-component-animate-marker--diffused-aperture');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
 var style=markerContainer[i].style;style.setProperty('--background-color',this.options.colors[0]);style.setProperty('--box-shadow-color',this.options.colors[1]||this.options.colors[0]);}}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--diffused-aperture';var wrapper=document.createElement('div');wrapper.className='sm-component-animate-marker__diffused-aperture-wrapper';var bg=document.createElement('div');bg.className='sm-component-animate-marker__bg';wrapper.appendChild(bg);var circle=document.createElement('div');circle.className='sm-component-animate-marker__circle';wrapper.appendChild(circle);markerContainer.appendChild(wrapper);var nameContainer=_this2._getTextContainer(point,'diffused-aperture-name');markerContainer.appendChild(nameContainer);_this2.options.width&&markerContainer.style.setProperty('--container-width',_this2.options.width+'px');if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0){markerContainer.style.setProperty('--background-color',_this2.options.colors[0]);markerContainer.style.setProperty('--box-shadow-color',_this2.options.colors[1]||_this2.options.colors[0]);}_this2.markersElement.push(markerContainer);},this);}}]);return DiffusedApertureMarker;}(_Marker2.default);exports["default"]=DiffusedApertureMarker;
 
@@ -17528,7 +15405,7 @@ var style=markerContainer[i].style;style.setProperty('--background-color',this.o
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var FluorescenceMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(FluorescenceMarker,_Marker);var _super=(0,_createSuper2.default)(FluorescenceMarker);function FluorescenceMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,FluorescenceMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(FluorescenceMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--fluorescence');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var FluorescenceMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(FluorescenceMarker,_Marker);var _super=(0,_createSuper2.default)(FluorescenceMarker);function FluorescenceMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,FluorescenceMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(FluorescenceMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--fluorescence');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
 this._setFluorescenceWidth(markerContainer[i].style);}}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){var markerContainer=document.getElementsByClassName('sm-component-animate-marker--fluorescence');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
 this._setFluorescenceColor(markerContainer[i].style);}}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--fluorescence';var marker=document.createElement('div');marker.className='sm-component-animate-marker__fluorescence';markerContainer.appendChild(marker);var nameContainer=_this2._getTextContainer(point,'fluorescence-name');markerContainer.appendChild(nameContainer);_this2._setFluorescenceWidth(markerContainer.style);_this2._setFluorescenceColor(markerContainer.style);_this2.markersElement.push(markerContainer);});}},{key:"_setFluorescenceWidth",value:function _setFluorescenceWidth(style){if(this.options.width){style.setProperty('--container-width',this.options.width/3+'px');style.setProperty('--box-shadow-width',this.options.width+'px');}}},{key:"_setFluorescenceColor",value:function _setFluorescenceColor(style){if(this.options.colors&&this.options.colors.length>0){style.setProperty('--box-shadow-color',this.options.colors[0]);style.setProperty('--light-color',this.options.colors[1]);}}}]);return FluorescenceMarker;}(_Marker2.default);exports["default"]=FluorescenceMarker;
 
@@ -17538,7 +15415,7 @@ this._setFluorescenceColor(markerContainer[i].style);}}}},{key:"_createMarker",v
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _colorcolor=_interopRequireDefault(__webpack_require__(9458));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var HaloRingMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(HaloRingMarker,_Marker);var _super=(0,_createSuper2.default)(HaloRingMarker);function HaloRingMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,HaloRingMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(HaloRingMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--halo-ring');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _colorcolor=_interopRequireDefault(__webpack_require__(9458));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var HaloRingMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(HaloRingMarker,_Marker);var _super=(0,_createSuper2.default)(HaloRingMarker);function HaloRingMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,HaloRingMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(HaloRingMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--halo-ring');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
 var style=markerContainer[i].style;style.setProperty('--halo-width',this.options.width+'px');style.setProperty('--halo-left',-this.options.width/2+'px');style.setProperty('--box-shadow-width-1',this.options.width/10+'px');style.setProperty('--box-shadow-width-2',this.options.width/4+'px');}}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){var markerContainer=document.getElementsByClassName('sm-component-animate-marker--halo-ring');for(var i=0;i<markerContainer.length;i++){// @ts-ignore
 var style=markerContainer[i].style;style.setProperty('--color-1',this._getColorWithOpacity(this.options.colors[0],0.3));style.setProperty('--color-1-transparent',this._getColorWithOpacity(this.options.colors[0],0.1));style.setProperty('--color-2',this._getColorWithOpacity(this.options.colors[1],0.3));style.setProperty('--color-2-transparent',this._getColorWithOpacity(this.options.colors[1],0.1));}}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--halo-ring';var childElements=_this2._createMakerElement(8,'div',['sm-component-animate-marker__ring','sm-component-animate-marker__halo']);childElements.forEach(function(element){markerContainer.appendChild(element);});var nameContainer=_this2._getTextContainer(point,'halo-ring-name');markerContainer.appendChild(nameContainer);if(_this2.options.width){markerContainer.style.setProperty('--halo-width',_this2.options.width+'px');markerContainer.style.setProperty('--halo-left',-_this2.options.width/2+'px');markerContainer.style.setProperty('--box-shadow-width-1',_this2.options.width/10+'px');markerContainer.style.setProperty('--box-shadow-width-2',_this2.options.width/4+'px');}if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0){markerContainer.style.setProperty('--color-1',_this2._getColorWithOpacity((0,_colorcolor.default)(_this2.options.colors[0],'rgba',true),0.3));markerContainer.style.setProperty('--color-1-transparent',_this2._getColorWithOpacity((0,_colorcolor.default)(_this2.options.colors[0],'rgba',true),0.1));markerContainer.style.setProperty('--color-2',_this2._getColorWithOpacity((0,_colorcolor.default)(_this2.options.colors[1],'rgba',true),0.3));markerContainer.style.setProperty('--color-2-transparent',_this2._getColorWithOpacity((0,_colorcolor.default)(_this2.options.colors[1],'rgba',true),0.1));}_this2.markersElement.push(markerContainer);},this);}},{key:"_createMakerElement",value:function _createMakerElement(length,type,classNames){var markerElements=[];for(var i=1;i<length+1;i++){var element=document.createElement(type);element.className="".concat(classNames[0],"-0").concat(i," ").concat(classNames[1]);markerElements.push(element);}return markerElements;}}]);return HaloRingMarker;}(_Marker2.default);exports["default"]=HaloRingMarker;
 
@@ -17548,7 +15425,7 @@ var style=markerContainer[i].style;style.setProperty('--color-1',this._getColorW
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _util=__webpack_require__(9752);var Marker=/*#__PURE__*/function(){function Marker(features){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,Marker);this.markersElement=[];this.features=features;this.options=options;}(0,_createClass2.default)(Marker,[{key:"setFeatures",value:function setFeatures(features){this.markersElement=[];this.features=features;this.features&&this._createMarker();}},{key:"getMarkersElement",value:function getMarkersElement(){return this.markersElement;}},{key:"setMarkersTextField",value:function setMarkersTextField(textField){if(!this.features||JSON.stringify(this.features)==='{}'){return;}this.options.textField=textField;var name=document.getElementsByClassName('sm-component-animate-marker__name');for(var i=0;i<name.length;i++){var properties=this.features.features[i]&&this.features.features[i].properties;if(properties&&properties[textField]){name[i].innerHTML=properties[textField];}else{name[i].innerHTML='';}}}},{key:"setMarkersTextFontSize",value:function setMarkersTextFontSize(textFontSize){this.options.textFontSize=textFontSize;var pulse=document.getElementsByClassName('sm-component-animate-marker__name-container');for(var i=0;i<pulse.length;i++){// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _util=__webpack_require__(9752);var Marker=/*#__PURE__*/function(){function Marker(features){var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,Marker);this.markersElement=[];this.features=features;this.options=options;}(0,_createClass2.default)(Marker,[{key:"setFeatures",value:function setFeatures(features){this.markersElement=[];this.features=features;this.features&&this._createMarker();}},{key:"getMarkersElement",value:function getMarkersElement(){return this.markersElement;}},{key:"setMarkersTextField",value:function setMarkersTextField(textField){if(!this.features||JSON.stringify(this.features)==='{}'){return;}this.options.textField=textField;var name=document.getElementsByClassName('sm-component-animate-marker__name');for(var i=0;i<name.length;i++){var properties=this.features.features[i]&&this.features.features[i].properties;if(properties&&properties[textField]){name[i].innerHTML=properties[textField];}else{name[i].innerHTML='';}}}},{key:"setMarkersTextFontSize",value:function setMarkersTextFontSize(textFontSize){this.options.textFontSize=textFontSize;var pulse=document.getElementsByClassName('sm-component-animate-marker__name-container');for(var i=0;i<pulse.length;i++){// @ts-ignore
 pulse[i].style.fontSize=textFontSize+'px';}}},{key:"setMarkersTextColor",value:function setMarkersTextColor(textColor){this.options.textColor=textColor;var pulse=document.getElementsByClassName('sm-component-animate-marker__name-container');for(var i=0;i<pulse.length;i++){// @ts-ignore
 pulse[i].style.color=textColor;}}},{key:"_getColorWithOpacity",value:function _getColorWithOpacity(color,opacity){return(0,_util.getColorWithOpacity)(color,opacity);}},{key:"_getTextContainer",value:function _getTextContainer(point,className){var name;if(point.properties&&Object.keys(point.properties).length!==0&&this.options.textField){name=point.properties[this.options.textField];}var nameContainer=document.createElement('div');nameContainer.className="sm-component-animate-marker__name-container sm-component-animate-marker__name-container--".concat(className);this.options.textColor&&(nameContainer.style.color=this.options.textColor);this.options.textFontSize&&(nameContainer.style.fontSize=this.options.textFontSize+'px');var nameSpan=document.createElement('span');nameSpan.className="sm-component-animate-marker__".concat(className," sm-component-animate-marker__name");nameSpan.innerHTML=name||'';nameContainer.appendChild(nameSpan);return nameContainer;}}]);return Marker;}();exports["default"]=Marker;
 
@@ -17558,7 +15435,7 @@ pulse[i].style.color=textColor;}}},{key:"_getColorWithOpacity",value:function _g
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var RotatingApertureMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(RotatingApertureMarker,_Marker);var _super=(0,_createSuper2.default)(RotatingApertureMarker);function RotatingApertureMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,RotatingApertureMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(RotatingApertureMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;// TODO 待抛出 width 不能小于 40
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var RotatingApertureMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(RotatingApertureMarker,_Marker);var _super=(0,_createSuper2.default)(RotatingApertureMarker);function RotatingApertureMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,RotatingApertureMarker);_this=_super.call(this,features,options);_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(RotatingApertureMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;// TODO 待抛出 width 不能小于 40
 if(!this.options.width||this.options.width<40){return;}var dotsMarker=document.getElementsByClassName('sm-component-animate-marker--rotating-aperture');for(var i=0;i<dotsMarker.length;i++){// @ts-ignore
 dotsMarker[i].style.setProperty('--container-width',"".concat(this.options.width,"px"));var dots1=dotsMarker[i].children[0];var dots2=dotsMarker[i].children[1];var dots3=dotsMarker[i].children[2];dots1.setAttribute('style',this._getDotsStyleObj(this.options.width-32));dots2.setAttribute('style',this._getDotsStyleObj(this.options.width-16));dots3.setAttribute('style',this._getDotsStyleObj(this.options.width));}}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){var dotsMarker=document.getElementsByClassName('sm-component-animate-marker--rotating-aperture');for(var i=0;i<dotsMarker.length;i++){// @ts-ignore
 var style=dotsMarker[i].style;style.setProperty('--light-color',this.options.colors[1]);style.setProperty('--color',this.options.colors[0]);style.setProperty('--line-color',this._getColorWithOpacity(this.options.colors[0],0.2));}}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var width=_this2.options.width&&_this2.options.width>=40?_this2.options.width:50;var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--rotating-aperture';var childElements=_this2._createMakerElement(3,'div',['sm-component-animate-marker__dots','sm-component-animate-marker__dots']);childElements.forEach(function(element,index){var elementWidth;index===0&&(elementWidth=width-32);index===1&&(elementWidth=width-16);index===2&&(elementWidth=width);element.setAttribute('style',_this2._getDotsStyleObj(elementWidth));markerContainer.appendChild(element);});var nameContainer=_this2._getTextContainer(point,'rotating-aperture-name');markerContainer.appendChild(nameContainer);if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0&&_this2.options.colors[0].indexOf('rgb')>-1){markerContainer.style.setProperty('--color',_this2.options.colors[0]);markerContainer.style.setProperty('--line-color',_this2._getColorWithOpacity(_this2.options.colors[0],0.2));markerContainer.style.setProperty('--light-color',_this2.options.colors[1]);}markerContainer.style.setProperty('--container-width',width+'px');_this2.markersElement.push(markerContainer);},this);}},{key:"_createMakerElement",value:function _createMakerElement(length,type,classNames){var markerElements=[];for(var i=1;i<length+1;i++){var element=document.createElement(type);element.className="".concat(classNames[0],"-0").concat(i," ").concat(classNames[1]);markerElements.push(element);}return markerElements;}},{key:"_getDotsStyleObj",value:function _getDotsStyleObj(width){return"--dots-width: ".concat(width,"px;\n      --dots-height: ").concat(width,"px;\n      --dots-box-shadow-x: ").concat(width/2+6,"px;\n      --dots-box-shadow-x-negative: -").concat(width/2+6,"px;\n      --dots-box-shadow-radius1: ").concat(width/2-2,"px;\n      --dots-box-shadow-radius1-negative: -").concat(width/2-2,"px;\n      --dots-box-shadow-radius2: ").concat(width/2-3,"px;\n      --dots-box-shadow-radius2-negative: -").concat(width/2-3,"px;");}}]);return RotatingApertureMarker;}(_Marker2.default);exports["default"]=RotatingApertureMarker;
@@ -17569,8 +15446,8 @@ var style=dotsMarker[i].style;style.setProperty('--light-color',this.options.col
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var RotatingTextBorderMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(RotatingTextBorderMarker,_Marker);var _super=(0,_createSuper2.default)(RotatingTextBorderMarker);function RotatingTextBorderMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,RotatingTextBorderMarker);_this=_super.call(this,features);_this.options=options;_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(RotatingTextBorderMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;this._setMarkerContainerProperty({'--clip-width-1':width+width/10+'px','--clip-width-2':width+width/10-2+'px','--boder-width':width+'px','--text-left-position':-width/2+'px'});}},{key:"setMarkersHeight",value:function setMarkersHeight(height){this.options.height=height;this._setMarkerContainerProperty({'--clip-height-1':height+height/10+'px','--clip-height-2':height+height/10-2+'px','--boder-height':height+'px'});}},{key:"setMarkersTextField",value:function setMarkersTextField(textField){if(!this.features||JSON.stringify(this.features)==='{}'){return;}this.options.textField=textField;var name=document.getElementsByClassName('sm-component-animate-marker__text');for(var i=0;i<name.length;i++){var properties=this.features.features[i]&&this.features.features[i].properties;if(properties&&properties[textField]){name[i].innerHTML=properties[textField];}else{name[i].innerHTML='';}}}},{key:"setMarkersTextColor",value:function setMarkersTextColor(textColor){this.options.textColor=textColor;this._setMarkerContainerProperty({'--text-color':textColor});}},{key:"setMarkersTextFontSize",value:function setMarkersTextFontSize(textFontSize){this.options.textFontSize=textFontSize;this._setMarkerContainerProperty({'--text-font-size':textFontSize+'px'});}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){this._setMarkerContainerProperty({'--border-color':colors[0],'--box-shadow-color':colors[1]});}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--text-boder';var border=document.createElement('div');border.className='sm-component-animate-marker__boder';var keys=Object.keys(point.properties);var name;if(point.properties||Object.keys(point.properties).length!==0){name=point.properties[_this2.options.textField]||point.properties[keys[0]];}var span=document.createElement('span');span.className='sm-component-animate-marker__text';span.innerHTML=name||'';border.appendChild(span);if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0){markerContainer.style.setProperty('--border-color',_this2.options.colors[0]);markerContainer.style.setProperty('--box-shadow-color',_this2.options.colors[1]);}_this2.options.textColor&&markerContainer.style.setProperty('--text-color',_this2.options.textColor);_this2.options.textFontSize&&markerContainer.style.setProperty('--text-font-size',_this2.options.textFontSize+'px');if(_this2.options.width){markerContainer.style.setProperty('--clip-width-1',_this2.options.width+_this2.options.width/10+'px');markerContainer.style.setProperty('--clip-width-2',_this2.options.width+_this2.options.width/10-2+'px');markerContainer.style.setProperty('--boder-width',_this2.options.width+'px');markerContainer.style.setProperty('--text-left-position',-_this2.options.width/2+'px');}if(_this2.options.height){markerContainer.style.setProperty('--clip-height-1',_this2.options.height+_this2.options.width/10+'px');markerContainer.style.setProperty('--clip-height-2',_this2.options.height+_this2.options.width/10-2+'px');markerContainer.style.setProperty('--boder-height',_this2.options.height+'px');}if((_this2.options.width||100)>(_this2.options.width||200)){markerContainer.style.setProperty('--animation-name','clipMe2');}else{markerContainer.style.setProperty('--animation-name','clipMe1');}markerContainer.appendChild(border);_this2.markersElement.push(markerContainer);},this);}},{key:"_setMarkerContainerProperty",value:function _setMarkerContainerProperty(properties){var _this3=this;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--text-boder');var _loop=function _loop(i){// @ts-ignore
-var style=markerContainer[i].style;Object.keys(properties).forEach(function(key){style.setProperty(key,properties[key]);});if((_this3.options.height||100)>(_this3.options.width||200)){style.setProperty('--animation-name','clipMe2');}else{style.setProperty('--animation-name','clipMe1');}};for(var i=0;i<markerContainer.length;i++){_loop(i);}}}]);return RotatingTextBorderMarker;}(_Marker2.default);exports["default"]=RotatingTextBorderMarker;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _Marker2=_interopRequireDefault(__webpack_require__(9853));var RotatingTextBorderMarker=/*#__PURE__*/function(_Marker){(0,_inherits2.default)(RotatingTextBorderMarker,_Marker);var _super=(0,_createSuper2.default)(RotatingTextBorderMarker);function RotatingTextBorderMarker(features){var _this;var options=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};(0,_classCallCheck2.default)(this,RotatingTextBorderMarker);_this=_super.call(this,features);_this.options=options;_this.features&&_this._createMarker();return _this;}(0,_createClass2.default)(RotatingTextBorderMarker,[{key:"setMarkersWidth",value:function setMarkersWidth(width){this.options.width=width;this._setMarkerContainerProperty({'--clip-width-1':width+width/10+'px','--clip-width-2':width+width/10-2+'px','--boder-width':width+'px','--text-left-position':-width/2+'px'});}},{key:"setMarkersHeight",value:function setMarkersHeight(height){this.options.height=height;this._setMarkerContainerProperty({'--clip-height-1':height+height/10+'px','--clip-height-2':height+height/10-2+'px','--boder-height':height+'px'});}},{key:"setMarkersTextField",value:function setMarkersTextField(textField){if(!this.features||JSON.stringify(this.features)==='{}'){return;}this.options.textField=textField;var name=document.getElementsByClassName('sm-component-animate-marker__text');for(var i=0;i<name.length;i++){var properties=this.features.features[i]&&this.features.features[i].properties;if(properties&&properties[textField]){name[i].innerHTML=properties[textField];}else{name[i].innerHTML='';}}}},{key:"setMarkersTextColor",value:function setMarkersTextColor(textColor){this.options.textColor=textColor;this._setMarkerContainerProperty({'--text-color':textColor});}},{key:"setMarkersTextFontSize",value:function setMarkersTextFontSize(textFontSize){this.options.textFontSize=textFontSize;this._setMarkerContainerProperty({'--text-font-size':textFontSize+'px'});}},{key:"setMarkersColors",value:function setMarkersColors(colors){this.options.colors=colors;if(colors&&colors.length&&colors.length>0){this._setMarkerContainerProperty({'--border-color':colors[0],'--box-shadow-color':colors[1]});}}},{key:"_createMarker",value:function _createMarker(){var _this2=this;this.features.features.forEach(function(point){var markerContainer=document.createElement('div');markerContainer.className='sm-component-animate-marker--text-boder';var border=document.createElement('div');border.className='sm-component-animate-marker__boder';var keys=Object.keys(point.properties);var name;if(point.properties||Object.keys(point.properties).length!==0){name=point.properties[_this2.options.textField]||point.properties[keys[0]];}var span=document.createElement('span');span.className='sm-component-animate-marker__text';span.innerHTML=name||'';border.appendChild(span);if(_this2.options.colors&&_this2.options.colors.length&&_this2.options.colors.length>0){markerContainer.style.setProperty('--border-color',_this2.options.colors[0]);markerContainer.style.setProperty('--box-shadow-color',_this2.options.colors[1]);}_this2.options.textColor&&markerContainer.style.setProperty('--text-color',_this2.options.textColor);_this2.options.textFontSize&&markerContainer.style.setProperty('--text-font-size',_this2.options.textFontSize+'px');if(_this2.options.width){markerContainer.style.setProperty('--clip-width-1',_this2.options.width+_this2.options.width/10+'px');markerContainer.style.setProperty('--clip-width-2',_this2.options.width+_this2.options.width/10-2+'px');markerContainer.style.setProperty('--boder-width',_this2.options.width+'px');markerContainer.style.setProperty('--text-left-position',-_this2.options.width/2+'px');}if(_this2.options.height){markerContainer.style.setProperty('--clip-height-1',_this2.options.height+_this2.options.width/10+'px');markerContainer.style.setProperty('--clip-height-2',_this2.options.height+_this2.options.width/10-2+'px');markerContainer.style.setProperty('--boder-height',_this2.options.height+'px');}if((_this2.options.width||100)>(_this2.options.width||200)){markerContainer.style.setProperty('--animation-name','clipMe2');}else{markerContainer.style.setProperty('--animation-name','clipMe1');}markerContainer.appendChild(border);_this2.markersElement.push(markerContainer);},this);}},{key:"_setMarkerContainerProperty",value:function _setMarkerContainerProperty(properties){var _this3=this;var markerContainer=document.getElementsByClassName('sm-component-animate-marker--text-boder');var _loop=function _loop(){// @ts-ignore
+var style=markerContainer[i].style;Object.keys(properties).forEach(function(key){style.setProperty(key,properties[key]);});if((_this3.options.height||100)>(_this3.options.width||200)){style.setProperty('--animation-name','clipMe2');}else{style.setProperty('--animation-name','clipMe1');}};for(var i=0;i<markerContainer.length;i++){_loop();}}}]);return RotatingTextBorderMarker;}(_Marker2.default);exports["default"]=RotatingTextBorderMarker;
 
 /***/ }),
 
@@ -17578,7 +15455,7 @@ var style=markerContainer[i].style;Object.keys(properties).forEach(function(key)
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _ClusterLayerViewModel=_interopRequireDefault(__webpack_require__(7727));var _CircleStyle=_interopRequireDefault(__webpack_require__(1558));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class,_class2;var ClusterLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_Component){(0,_inherits2.default)(ClusterLayer,_Component);var _super=(0,_createSuper2.default)(ClusterLayer);function ClusterLayer(){(0,_classCallCheck2.default)(this,ClusterLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(ClusterLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var _this$props=this.props,data=_this$props.data,clusteredPointStyle=_this$props.clusteredPointStyle,unclusteredPointStyle=_this$props.unclusteredPointStyle,clusteredPointTextLayout=_this$props.clusteredPointTextLayout;if(!(0,_lodash.default)(data,prevProps.data)){this.viewModel&&this.viewModel.setData(data);}if(prevProps.clusteredPointStyle!==clusteredPointStyle){this.viewModel&&this.viewModel.setClusteredPointStyle(clusteredPointStyle);}if(prevProps.unclusteredPointStyle!==unclusteredPointStyle){this.viewModel&&this.viewModel.setUnclusteredPointStyle(unclusteredPointStyle);}if(prevProps.clusteredPointTextLayout!==clusteredPointTextLayout){this.viewModel&&this.viewModel.setClusteredPointTextLayout(clusteredPointTextLayout);}}},{key:"loaded",value:function loaded(map){var options=JSON.parse(JSON.stringify(this.props));delete options.data;this.viewModel=new _ClusterLayerViewModel.default(map,this.props.data,(0,_objectSpread2.default)({},options));}},{key:"render",value:function render(){return null;}}]);return ClusterLayer;}(_react.Component),_class2.defaultProps={radius:50,maxZoom:14,clusteredPointStyle:new _CircleStyle.default({'circle-color':['step',['get','point_count'],'#51bbd6',100,'#f1f075',750,'#f28cb1'],'circle-radius':['step',['get','point_count'],20,100,30,750,40]}),unclusteredPointStyle:new _CircleStyle.default({'circle-color':'#11b4da','circle-radius':4,'circle-stroke-width':1,'circle-stroke-color':'#fff'})},_class2))||_class);var _default=ClusterLayer;exports["default"]=_default;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _ClusterLayerViewModel=_interopRequireDefault(__webpack_require__(7727));var _CircleStyle=_interopRequireDefault(__webpack_require__(1558));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class,_class2;var ClusterLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_Component){(0,_inherits2.default)(ClusterLayer,_Component);var _super=(0,_createSuper2.default)(ClusterLayer);function ClusterLayer(){(0,_classCallCheck2.default)(this,ClusterLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(ClusterLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var _this$props=this.props,data=_this$props.data,clusteredPointStyle=_this$props.clusteredPointStyle,unclusteredPointStyle=_this$props.unclusteredPointStyle,clusteredPointTextLayout=_this$props.clusteredPointTextLayout;if(!(0,_lodash.default)(data,prevProps.data)){this.viewModel&&this.viewModel.setData(data);}if(prevProps.clusteredPointStyle!==clusteredPointStyle){this.viewModel&&this.viewModel.setClusteredPointStyle(clusteredPointStyle);}if(prevProps.unclusteredPointStyle!==unclusteredPointStyle){this.viewModel&&this.viewModel.setUnclusteredPointStyle(unclusteredPointStyle);}if(prevProps.clusteredPointTextLayout!==clusteredPointTextLayout){this.viewModel&&this.viewModel.setClusteredPointTextLayout(clusteredPointTextLayout);}}},{key:"loaded",value:function loaded(map){var options=JSON.parse(JSON.stringify(this.props));delete options.data;this.viewModel=new _ClusterLayerViewModel.default(map,this.props.data,(0,_objectSpread2.default)({},options));}},{key:"render",value:function render(){return null;}}]);return ClusterLayer;}(_react.Component),_class2.defaultProps={radius:50,maxZoom:14,clusteredPointStyle:new _CircleStyle.default({'circle-color':['step',['get','point_count'],'#51bbd6',100,'#f1f075',750,'#f28cb1'],'circle-radius':['step',['get','point_count'],20,100,30,750,40]}),unclusteredPointStyle:new _CircleStyle.default({'circle-color':'#11b4da','circle-radius':4,'circle-stroke-width':1,'circle-stroke-color':'#fff'})},_class2))||_class);var _default=ClusterLayer;exports["default"]=_default;
 
 /***/ }),
 
@@ -17586,7 +15463,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));/**
  * @class ClusterLayerViewModel
  * @param {mapboxgl.map} map - mapboxgl map 对象。
  * @param {Object} data - Cluster layer data。
@@ -17611,7 +15488,7 @@ this.map.addLayer({id:'unclustered_point'+this.layerId,type:'circle',source:this
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _DataFlowLayerViewModel=_interopRequireDefault(__webpack_require__(9162));var _types=__webpack_require__(2009);var _util=__webpack_require__(9752);var _dec,_class,_class2;var DataFlowLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(DataFlowLayer,_React$Component);var _super=(0,_createSuper2.default)(DataFlowLayer);function DataFlowLayer(){(0,_classCallCheck2.default)(this,DataFlowLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(DataFlowLayer,[{key:"loaded",value:function loaded(map){var options=JSON.parse(JSON.stringify(this.props));delete options.serviceUrl;this.viewModel=new _DataFlowLayerViewModel.default(map,this.props.serviceUrl,(0,_objectSpread2.default)({},options));this.registerEvents();}},{key:"registerEvents",value:function registerEvents(){var _this=this;// @ts-ignore
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _DataFlowLayerViewModel=_interopRequireDefault(__webpack_require__(9162));var _types=__webpack_require__(2009);var _util=__webpack_require__(9752);var _dec,_class,_class2;var DataFlowLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(DataFlowLayer,_React$Component);var _super=(0,_createSuper2.default)(DataFlowLayer);function DataFlowLayer(){(0,_classCallCheck2.default)(this,DataFlowLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(DataFlowLayer,[{key:"loaded",value:function loaded(map){var options=JSON.parse(JSON.stringify(this.props));delete options.serviceUrl;this.viewModel=new _DataFlowLayerViewModel.default(map,this.props.serviceUrl,(0,_objectSpread2.default)({},options));this.registerEvents();}},{key:"registerEvents",value:function registerEvents(){var _this=this;// @ts-ignore
 this.viewModel.on('subscribefailed',function(e){// this.$message.error(this.$t('dataFlow.dataSubscriptionFailed'));
 /**
        * @event subscribeFailed
@@ -17636,7 +15513,7 @@ this.viewModel.on('dataupdated',function(e){/**
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _lodash=_interopRequireDefault(__webpack_require__(3465));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _lodash=_interopRequireDefault(__webpack_require__(3465));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);/**
  * @class DataFlowLayerViewModel
  * @category ViewModel
  * @classdesc 数据流图层组件功能类。
@@ -17681,7 +15558,7 @@ var features=(0,_lodash.default)(this.map.getSource(this.sourceID)._data.feature
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _DeckglLayerViewModel=_interopRequireDefault(__webpack_require__(5703));var _dec,_class;var LAYER_TYPE_ID_LIST=['scatter-plot','path-layer','polygon-layer','arc-layer','hexagon-layer','screen-grid-layer'];var DeckglLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_Component){(0,_inherits2.default)(DeckglLayer,_Component);var _super=(0,_createSuper2.default)(DeckglLayer);function DeckglLayer(){(0,_classCallCheck2.default)(this,DeckglLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(DeckglLayer,[{key:"loaded",value:function loaded(map){var _this=this;var matchIndex=LAYER_TYPE_ID_LIST.findIndex(function(item){return item===_this.props.layerType;});if(matchIndex>-1){this.viewModel=new _DeckglLayerViewModel.default(map,this.props);}}},{key:"render",value:function render(){return null;}}]);return DeckglLayer;}(_react.Component))||_class);exports["default"]=DeckglLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _DeckglLayerViewModel=_interopRequireDefault(__webpack_require__(5703));var _dec,_class;var LAYER_TYPE_ID_LIST=['scatter-plot','path-layer','polygon-layer','arc-layer','hexagon-layer','screen-grid-layer'];var DeckglLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_Component){(0,_inherits2.default)(DeckglLayer,_Component);var _super=(0,_createSuper2.default)(DeckglLayer);function DeckglLayer(){(0,_classCallCheck2.default)(this,DeckglLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(DeckglLayer,[{key:"loaded",value:function loaded(map){var _this=this;var matchIndex=LAYER_TYPE_ID_LIST.findIndex(function(item){return item===_this.props.layerType;});if(matchIndex>-1){this.viewModel=new _DeckglLayerViewModel.default(map,this.props);}}},{key:"render",value:function render(){return null;}}]);return DeckglLayer;}(_react.Component))||_class);exports["default"]=DeckglLayer;
 
 /***/ }),
 
@@ -17689,7 +15566,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);__webpack_require__(2371);var DeckglLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(DeckglLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(DeckglLayerViewModel);function DeckglLayerViewModel(map,deckglProps){var _this;(0,_classCallCheck2.default)(this,DeckglLayerViewModel);_this=_super.call(this);_this.map=map;var layerType=deckglProps.layerType,options=deckglProps.options,layerId=deckglProps.layerId;_this.layerType=layerType;options.data=options.data||[];options.layerId=options.layerId||layerId;_this.options=options;_this._init();return _this;}(0,_createClass2.default)(DeckglLayerViewModel,[{key:"_init",value:function _init(){if(this.layerType&&this.options){this._addDeckglLayer();}}},{key:"_addDeckglLayer",value:function _addDeckglLayer(){var deckglLayer=new _mapboxGlEnhance.default.supermap.DeckglLayer(this.layerType,this.options);this.map.addLayer(deckglLayer);}}]);return DeckglLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=DeckglLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);__webpack_require__(2371);var DeckglLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(DeckglLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(DeckglLayerViewModel);function DeckglLayerViewModel(map,deckglProps){var _this;(0,_classCallCheck2.default)(this,DeckglLayerViewModel);_this=_super.call(this);_this.map=map;var layerType=deckglProps.layerType,options=deckglProps.options,layerId=deckglProps.layerId;_this.layerType=layerType;options.data=options.data||[];options.layerId=options.layerId||layerId;_this.options=options;_this._init();return _this;}(0,_createClass2.default)(DeckglLayerViewModel,[{key:"_init",value:function _init(){if(this.layerType&&this.options){this._addDeckglLayer();}}},{key:"_addDeckglLayer",value:function _addDeckglLayer(){var deckglLayer=new _mapboxGlEnhance.default.supermap.DeckglLayer(this.layerType,this.options);this.map.addLayer(deckglLayer);}}]);return DeckglLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=DeckglLayerViewModel;
 
 /***/ }),
 
@@ -17697,7 +15574,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _EchatsLayerViewModel=_interopRequireDefault(__webpack_require__(3395));var _dec,_class;var EchartsLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(EchartsLayer,_React$Component);var _super=(0,_createSuper2.default)(EchartsLayer);function EchartsLayer(){(0,_classCallCheck2.default)(this,EchartsLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(EchartsLayer,[{key:"loaded",value:function loaded(map){this.viewModel=new _EchatsLayerViewModel.default(map,this.props.options);}},{key:"render",value:function render(){return null;}}]);return EchartsLayer;}(_react.default.Component))||_class);exports["default"]=EchartsLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _EchatsLayerViewModel=_interopRequireDefault(__webpack_require__(3395));var _dec,_class;var EchartsLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(EchartsLayer,_React$Component);var _super=(0,_createSuper2.default)(EchartsLayer);function EchartsLayer(){(0,_classCallCheck2.default)(this,EchartsLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(EchartsLayer,[{key:"loaded",value:function loaded(map){this.viewModel=new _EchatsLayerViewModel.default(map,this.props.options);}},{key:"render",value:function render(){return null;}}]);return EchartsLayer;}(_react.default.Component))||_class);exports["default"]=EchartsLayer;
 
 /***/ }),
 
@@ -17705,7 +15582,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _echarts=_interopRequireDefault(__webpack_require__(550));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _echarts=_interopRequireDefault(__webpack_require__(550));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));/**
  * @class EchatsLayerViewModel
  * @param {mapboxgl.map} map - mapboxgl map 对象。
  * @param {String} options - EchartsLayer options。
@@ -17720,7 +15597,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _FireLayerViewModel=_interopRequireDefault(__webpack_require__(5382));var _dec,_class,_class2;var FireLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(FireLayer,_React$Component);var _super=(0,_createSuper2.default)(FireLayer);function FireLayer(){(0,_classCallCheck2.default)(this,FireLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(FireLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var _this$props=this.props,features=_this$props.features,modelScale=_this$props.modelScale;if(this.viewModel){if(!(0,_lodash.default)(prevProps.features,features)){this.viewModel.setFeatures(features);}if(prevProps.modelScale!==modelScale){this.viewModel.setModelScale(modelScale);}}}},{key:"loaded",value:function loaded(map){this.viewModel=new _FireLayerViewModel.default(map,this.props.features,this.props.modelScale,this.props.layerId);}},{key:"render",value:function render(){return null;}}]);return FireLayer;}(_react.default.Component),_class2.defaultProps={modelScale:5.41843220338983e-6},_class2))||_class);exports["default"]=FireLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _FireLayerViewModel=_interopRequireDefault(__webpack_require__(5382));var _dec,_class,_class2;var FireLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(FireLayer,_React$Component);var _super=(0,_createSuper2.default)(FireLayer);function FireLayer(){(0,_classCallCheck2.default)(this,FireLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(FireLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var _this$props=this.props,features=_this$props.features,modelScale=_this$props.modelScale;if(this.viewModel){if(!(0,_lodash.default)(prevProps.features,features)){this.viewModel.setFeatures(features);}if(prevProps.modelScale!==modelScale){this.viewModel.setModelScale(modelScale);}}}},{key:"loaded",value:function loaded(map){this.viewModel=new _FireLayerViewModel.default(map,this.props.features,this.props.modelScale,this.props.layerId);}},{key:"render",value:function render(){return null;}}]);return FireLayer;}(_react.default.Component),_class2.defaultProps={modelScale:5.41843220338983e-6},_class2))||_class);exports["default"]=FireLayer;
 
 /***/ }),
 
@@ -17728,7 +15605,10 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(862)["default"]);var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _toConsumableArray2=_interopRequireDefault(__webpack_require__(2982));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var THREE=_interopRequireWildcard(__webpack_require__(2069));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _tendrils=_interopRequireDefault(__webpack_require__(2769));var FireLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(FireLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(FireLayerViewModel);function FireLayerViewModel(map,features){var _this;var modelScale=arguments.length>2&&arguments[2]!==undefined?arguments[2]:5.41843220338983e-6;var layerId=arguments.length>3?arguments[3]:undefined;(0,_classCallCheck2.default)(this,FireLayerViewModel);_this=_super.call(this);if(!map){throw new Error('map is requierd');}_this.map=map;_this.layerId=layerId;_this.features=features;_this.modelScale=modelScale;_this.features&&_this._addFireLayer();return _this;}(0,_createClass2.default)(FireLayerViewModel,[{key:"setFeatures",value:function setFeatures(features){this.features=features;this._addFireLayer();}},{key:"setModelScale",value:function setModelScale(modelScale){this.modelScale=modelScale;this._addFireLayer();}},{key:"_addFireLayer",value:function _addFireLayer(){var _this2=this;var feature=this.features.features[0];if(feature.geometry.type!=='Point'){throw new Error("Feature's type must be point");}if(this.features.features.length>50){throw new Error('The maximum number of features is 50');}this.features.features.forEach(function(feature,index){var geometry=feature.geometry;if(geometry.type==='Point'){_this2._initializeFireLayer(geometry.coordinates,index);}});}},{key:"_initializeFireLayer",value:function _initializeFireLayer(originCoordinate,index){var _this3=this;var modelTransform=this._getModelTransform(originCoordinate);var layerId=this.layerId&&this.layerId+'-'+index||"threeLayerFire-".concat(new Date());this.map.getLayer(layerId)&&this.map.removeLayer(layerId);var customLayer={id:layerId,type:'custom',renderingMode:'3d',onAdd:function onAdd(map,gl){_this3.camera=new THREE.PerspectiveCamera(45,map.getCanvas().width/map.getCanvas().height,0.1,2000);_this3.scene=new THREE.Scene();_this3.renderer=new THREE.WebGLRenderer({canvas:map.getCanvas(),context:gl,antialias:true});_this3.renderer.autoClear=false;var rig=new THREE.Group();rig.add(_this3.camera);_this3.scene.add(rig);_this3._fire();_this3.scene.add(_this3._object);var light=new THREE.PointLight(0xffffff,1,100);light.position.set(10,10,20);_this3.scene.add(light);_this3.map=map;},render:function render(gl,matrix){var rotationX=new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1,0,0),modelTransform.rotateX);var rotationY=new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0,1,0),modelTransform.rotateY);var rotationZ=new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0,0,1),modelTransform.rotateZ);var m=new THREE.Matrix4().fromArray(matrix);var l=new THREE.Matrix4().makeTranslation(modelTransform.translateX,modelTransform.translateY,modelTransform.translateZ).scale(new THREE.Vector3(modelTransform.scale,-modelTransform.scale,modelTransform.scale)).multiply(rotationX).multiply(rotationY).multiply(rotationZ);_this3.camera.projectionMatrix.elements=matrix;_this3.camera.projectionMatrix=m.multiply(l);_this3.renderer.state.reset();_this3._update();_this3.renderer.render(_this3.scene,_this3.camera);// @ts-ignore
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _toConsumableArray2=_interopRequireDefault(__webpack_require__(2982));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var THREE=_interopRequireWildcard(__webpack_require__(2069));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _tendrils=_interopRequireDefault(__webpack_require__(2769));/**
+ * @class FireLayerViewModel
+ * @param {mapboxgl.map} map - mapboxgl map 对象。
+ */var FireLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(FireLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(FireLayerViewModel);function FireLayerViewModel(map,features){var _this;var modelScale=arguments.length>2&&arguments[2]!==undefined?arguments[2]:5.41843220338983e-6;var layerId=arguments.length>3?arguments[3]:undefined;(0,_classCallCheck2.default)(this,FireLayerViewModel);_this=_super.call(this);if(!map){throw new Error('map is requierd');}_this.map=map;_this.layerId=layerId;_this.features=features;_this.modelScale=modelScale;_this.features&&_this._addFireLayer();return _this;}(0,_createClass2.default)(FireLayerViewModel,[{key:"setFeatures",value:function setFeatures(features){this.features=features;this._addFireLayer();}},{key:"setModelScale",value:function setModelScale(modelScale){this.modelScale=modelScale;this._addFireLayer();}},{key:"_addFireLayer",value:function _addFireLayer(){var _this2=this;var feature=this.features.features[0];if(feature.geometry.type!=='Point'){throw new Error("Feature's type must be point");}if(this.features.features.length>50){throw new Error('The maximum number of features is 50');}this.features.features.forEach(function(feature,index){var geometry=feature.geometry;if(geometry.type==='Point'){_this2._initializeFireLayer(geometry.coordinates,index);}});}},{key:"_initializeFireLayer",value:function _initializeFireLayer(originCoordinate,index){var _this3=this;var modelTransform=this._getModelTransform(originCoordinate);var layerId=this.layerId&&this.layerId+'-'+index||"threeLayerFire-".concat(new Date());this.map.getLayer(layerId)&&this.map.removeLayer(layerId);var customLayer={id:layerId,type:'custom',renderingMode:'3d',onAdd:function onAdd(map,gl){_this3.camera=new THREE.PerspectiveCamera(45,map.getCanvas().width/map.getCanvas().height,0.1,2000);_this3.scene=new THREE.Scene();_this3.renderer=new THREE.WebGLRenderer({canvas:map.getCanvas(),context:gl,antialias:true});_this3.renderer.autoClear=false;var rig=new THREE.Group();rig.add(_this3.camera);_this3.scene.add(rig);_this3._fire();_this3.scene.add(_this3._object);var light=new THREE.PointLight(0xffffff,1,100);light.position.set(10,10,20);_this3.scene.add(light);_this3.map=map;},render:function render(gl,matrix){var rotationX=new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(1,0,0),modelTransform.rotateX);var rotationY=new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0,1,0),modelTransform.rotateY);var rotationZ=new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(0,0,1),modelTransform.rotateZ);var m=new THREE.Matrix4().fromArray(matrix);var l=new THREE.Matrix4().makeTranslation(modelTransform.translateX,modelTransform.translateY,modelTransform.translateZ).scale(new THREE.Vector3(modelTransform.scale,-modelTransform.scale,modelTransform.scale)).multiply(rotationX).multiply(rotationY).multiply(rotationZ);_this3.camera.projectionMatrix.elements=matrix;_this3.camera.projectionMatrix=m.multiply(l);_this3.renderer.state.reset();_this3._update();_this3.renderer.render(_this3.scene,_this3.camera);// @ts-ignore
 _this3.map.triggerRepaint();}};// @ts-ignore  TODO mapbox-gl types 未更新
 this.map.addLayer(customLayer);}},{key:"_getModelTransform",value:function _getModelTransform(originCoordinate){var modelOrigin=originCoordinate;var modelAltitude=0;var modelRotate=[Math.PI/2,0,0];var modelTransform={translateX:_mapboxGlEnhance.default.MercatorCoordinate.fromLngLat(modelOrigin,modelAltitude).x,translateY:_mapboxGlEnhance.default.MercatorCoordinate.fromLngLat(modelOrigin,modelAltitude).y,translateZ:_mapboxGlEnhance.default.MercatorCoordinate.fromLngLat(modelOrigin,modelAltitude).z,rotateX:modelRotate[0],rotateY:modelRotate[1],rotateZ:modelRotate[2],scale:this.modelScale};return modelTransform;}},{key:"_fire",value:function _fire(){var _this$_object;var density=arguments.length>0&&arguments[0]!==undefined?arguments[0]:150;var height=arguments.length>1&&arguments[1]!==undefined?arguments[1]:8;var r=arguments.length>2&&arguments[2]!==undefined?arguments[2]:0.2;this._object=new THREE.Group();this._fireballs=[];this._height=height;this._radius=r;var texture=new THREE.TextureLoader().load(_tendrils.default,function(){console.log('loaded');},undefined,function(e){console.log('error',e);});// @ts-ignore
 texture.crossOrigin='';// "anonymous";
@@ -17746,7 +15626,7 @@ ball.material.uniforms.blend.value=p;// ball.material.needsUpdate = true;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _GeojsonLayerViewModel=_interopRequireDefault(__webpack_require__(8428));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class;var GeojsonLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_Component){(0,_inherits2.default)(GeojsonLayer,_Component);var _super=(0,_createSuper2.default)(GeojsonLayer);function GeojsonLayer(){(0,_classCallCheck2.default)(this,GeojsonLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(GeojsonLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(!(0,_lodash.default)(this.props.layerStyle,prevProps.layerStyle)&&this.viewModel){this.viewModel.setLayerStyle(this.props.layerStyle);}if(!(0,_lodash.default)(this.props.data,prevProps.data)&&this.viewModel){this.viewModel.setData(this.props.data);}}},{key:"loaded",value:function loaded(map){this.viewModel=new _GeojsonLayerViewModel.default(map,this.props);}},{key:"render",value:function render(){return null;}}]);return GeojsonLayer;}(_react.Component))||_class);exports["default"]=GeojsonLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _GeojsonLayerViewModel=_interopRequireDefault(__webpack_require__(8428));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class;var GeojsonLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_Component){(0,_inherits2.default)(GeojsonLayer,_Component);var _super=(0,_createSuper2.default)(GeojsonLayer);function GeojsonLayer(){(0,_classCallCheck2.default)(this,GeojsonLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(GeojsonLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(!(0,_lodash.default)(this.props.layerStyle,prevProps.layerStyle)&&this.viewModel){this.viewModel.setLayerStyle(this.props.layerStyle);}if(!(0,_lodash.default)(this.props.data,prevProps.data)&&this.viewModel){this.viewModel.setData(this.props.data);}}},{key:"loaded",value:function loaded(map){this.viewModel=new _GeojsonLayerViewModel.default(map,this.props);}},{key:"render",value:function render(){return null;}}]);return GeojsonLayer;}(_react.Component))||_class);exports["default"]=GeojsonLayer;
 
 /***/ }),
 
@@ -17754,7 +15634,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var GeojsonLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(GeojsonLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(GeojsonLayerViewModel);function GeojsonLayerViewModel(map,GeojsonLayerOptions){var _this;(0,_classCallCheck2.default)(this,GeojsonLayerViewModel);_this=_super.call(this);if(!map){throw new Error('map is requierd');}_this.map=map;var layerStyle=GeojsonLayerOptions.layerStyle,data=GeojsonLayerOptions.data,layerId=GeojsonLayerOptions.layerId;_this.data=data;_this.layerStyle=layerStyle;_this.layerId=layerId;_this.data&&_this._addLayer();return _this;}(0,_createClass2.default)(GeojsonLayerViewModel,[{key:"setData",value:function setData(data){if(!data||!this.map.getSource(this.layerId)){return;}this.data=data;if(this.layerId&&!this.map.getSource(this.layerId)){this._addLayer();}else{this.map.getSource(this.layerId).setData(data);}}},{key:"setLayerStyle",value:function setLayerStyle(layerStyle){if(!layerStyle||!this.map.getSource(this.layerId)){return;}var paint=layerStyle.paint,layout=layerStyle.layout;for(var _i=0,_Object$keys=Object.keys(paint);_i<_Object$keys.length;_i++){var prop=_Object$keys[_i];this.map.setPaintProperty(this.layerId,prop,paint[prop]);}for(var _i2=0,_Object$keys2=Object.keys(layout);_i2<_Object$keys2.length;_i2++){var _prop=_Object$keys2[_i2];this.map.setLayoutProperty(this.layerId,_prop,layout[_prop]);}this.layerStyle=layerStyle;}},{key:"_addLayer",value:function _addLayer(){if(!(this.layerStyle instanceof Object))throw new Error('layerStyle must be object');var _this$layerStyle=this.layerStyle,paint=_this$layerStyle.paint,layout=_this$layerStyle.layout;this.map.addLayer({id:this.layerId,type:this._getLayerType(paint),source:{type:'geojson',data:this.data},layout:layout||{},paint:paint||{}});}},{key:"_getLayerType",value:function _getLayerType(){var paint=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var keys=Object.keys(paint).join(' ');var reg=/circle-|line-|fill-extrusion-|fill-+/i;var matchType=keys.match(reg);var type=matchType?matchType[0]:'';return type.substr(0,type.length-1);}}]);return GeojsonLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=GeojsonLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var GeojsonLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(GeojsonLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(GeojsonLayerViewModel);function GeojsonLayerViewModel(map,GeojsonLayerOptions){var _this;(0,_classCallCheck2.default)(this,GeojsonLayerViewModel);_this=_super.call(this);if(!map){throw new Error('map is requierd');}_this.map=map;var layerStyle=GeojsonLayerOptions.layerStyle,data=GeojsonLayerOptions.data,layerId=GeojsonLayerOptions.layerId;_this.data=data;_this.layerStyle=layerStyle;_this.layerId=layerId;_this.data&&_this._addLayer();return _this;}(0,_createClass2.default)(GeojsonLayerViewModel,[{key:"setData",value:function setData(data){if(!data||!this.map.getSource(this.layerId)){return;}this.data=data;if(this.layerId&&!this.map.getSource(this.layerId)){this._addLayer();}else{this.map.getSource(this.layerId).setData(data);}}},{key:"setLayerStyle",value:function setLayerStyle(layerStyle){if(!layerStyle||!this.map.getSource(this.layerId)){return;}var paint=layerStyle.paint,layout=layerStyle.layout;for(var _i=0,_Object$keys=Object.keys(paint);_i<_Object$keys.length;_i++){var prop=_Object$keys[_i];this.map.setPaintProperty(this.layerId,prop,paint[prop]);}for(var _i2=0,_Object$keys2=Object.keys(layout);_i2<_Object$keys2.length;_i2++){var _prop=_Object$keys2[_i2];this.map.setLayoutProperty(this.layerId,_prop,layout[_prop]);}this.layerStyle=layerStyle;}},{key:"_addLayer",value:function _addLayer(){if(!(this.layerStyle instanceof Object))throw new Error('layerStyle must be object');var _this$layerStyle=this.layerStyle,paint=_this$layerStyle.paint,layout=_this$layerStyle.layout;this.map.addLayer({id:this.layerId,type:this._getLayerType(paint),source:{type:'geojson',data:this.data},layout:layout||{},paint:paint||{}});}},{key:"_getLayerType",value:function _getLayerType(){var paint=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var keys=Object.keys(paint).join(' ');var reg=/circle-|line-|fill-extrusion-|fill-+/i;var matchType=keys.match(reg);var type=matchType?matchType[0]:'';return type.substr(0,type.length-1);}}]);return GeojsonLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=GeojsonLayerViewModel;
 
 /***/ }),
 
@@ -17762,7 +15642,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _GraphThemeLayerViewModel=_interopRequireDefault(__webpack_require__(1043));var _dec,_class,_class2;var GraphThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(GraphThemeLayer,_React$Component);var _super=(0,_createSuper2.default)(GraphThemeLayer);function GraphThemeLayer(){(0,_classCallCheck2.default)(this,GraphThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(GraphThemeLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var data=this.props.data;if(!(0,_lodash.default)(prevProps.data,data)&&this.viewModel){this.viewModel.setData(data);}}},{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _GraphThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return GraphThemeLayer;}(_react.default.Component),_class2.defaultProps={options:{},chartsType:'Bar'},_class2))||_class);exports["default"]=GraphThemeLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _GraphThemeLayerViewModel=_interopRequireDefault(__webpack_require__(1043));var _dec,_class,_class2;var GraphThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(GraphThemeLayer,_React$Component);var _super=(0,_createSuper2.default)(GraphThemeLayer);function GraphThemeLayer(){(0,_classCallCheck2.default)(this,GraphThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(GraphThemeLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var data=this.props.data;if(!(0,_lodash.default)(prevProps.data,data)&&this.viewModel){this.viewModel.setData(data);}}},{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _GraphThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return GraphThemeLayer;}(_react.default.Component),_class2.defaultProps={options:{},chartsType:'Bar'},_class2))||_class);exports["default"]=GraphThemeLayer;
 
 /***/ }),
 
@@ -17770,7 +15650,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var GraphThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(GraphThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(GraphThemeLayerViewModel);function GraphThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,GraphThemeLayerViewModel);_this=_super.call(this);_this.map=map;var layerName=themeProps.layerName,options=themeProps.options,chartsType=themeProps.chartsType,layerId=themeProps.layerId,data=themeProps.data;_this.layerName=layerName||layerId;_this.chartsType=chartsType||'Bar';options.id=options.id||layerId;_this.options=options;_this.data=data||{};_this._init();return _this;}(0,_createClass2.default)(GraphThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.GraphThemeLayer(this.layerName,this.chartsType,this.options);this.map.addLayer(this.themeLayer);if(JSON.stringify(this.data)!=='{}'){this.setData(this.data);}}},{key:"setData",value:function setData(data){this.themeLayer.addFeatures(data);}}]);return GraphThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=GraphThemeLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var GraphThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(GraphThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(GraphThemeLayerViewModel);function GraphThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,GraphThemeLayerViewModel);_this=_super.call(this);_this.map=map;var layerName=themeProps.layerName,options=themeProps.options,chartsType=themeProps.chartsType,layerId=themeProps.layerId,data=themeProps.data;_this.layerName=layerName||layerId;_this.chartsType=chartsType||'Bar';options.id=options.id||layerId;_this.options=options;_this.data=data||{};_this._init();return _this;}(0,_createClass2.default)(GraphThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.GraphThemeLayer(this.layerName,this.chartsType,this.options);this.map.addLayer(this.themeLayer);if(JSON.stringify(this.data)!=='{}'){this.setData(this.data);}}},{key:"setData",value:function setData(data){this.themeLayer.addFeatures(data);}}]);return GraphThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=GraphThemeLayerViewModel;
 
 /***/ }),
 
@@ -17778,7 +15658,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _HeatmapLayerViewModel=_interopRequireDefault(__webpack_require__(9354));var _HeatMapStyle=_interopRequireDefault(__webpack_require__(9623));var _dec,_class,_class2;var HeatmapLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(HeatmapLayer,_React$Component);var _super=(0,_createSuper2.default)(HeatmapLayer);function HeatmapLayer(){(0,_classCallCheck2.default)(this,HeatmapLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(HeatmapLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(prevProps.layerStyle!==this.props.layerStyle){this.viewModel&&this.viewModel.setLayerStyle(this.props.layerStyle);}if(!(0,_lodash.default)(this.props.data,prevProps.data)&&this.viewModel){this.viewModel.setData(this.props.data);}}},{key:"loaded",value:function loaded(map){var _this$props=this.props,data=_this$props.data,layerId=_this$props.layerId,layerStyle=_this$props.layerStyle;this.viewModel=new _HeatmapLayerViewModel.default(map,data,{layerId:layerId,layerStyle:layerStyle});}},{key:"render",value:function render(){return null;}}]);return HeatmapLayer;}(_react.default.Component),_class2.defaultProps={layerStyle:new _HeatMapStyle.default()},_class2))||_class);exports["default"]=HeatmapLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _HeatmapLayerViewModel=_interopRequireDefault(__webpack_require__(9354));var _HeatMapStyle=_interopRequireDefault(__webpack_require__(9623));var _dec,_class,_class2;var HeatmapLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(HeatmapLayer,_React$Component);var _super=(0,_createSuper2.default)(HeatmapLayer);function HeatmapLayer(){(0,_classCallCheck2.default)(this,HeatmapLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(HeatmapLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(prevProps.layerStyle!==this.props.layerStyle){this.viewModel&&this.viewModel.setLayerStyle(this.props.layerStyle);}if(!(0,_lodash.default)(this.props.data,prevProps.data)&&this.viewModel){this.viewModel.setData(this.props.data);}}},{key:"loaded",value:function loaded(map){var _this$props=this.props,data=_this$props.data,layerId=_this$props.layerId,layerStyle=_this$props.layerStyle;this.viewModel=new _HeatmapLayerViewModel.default(map,data,{layerId:layerId,layerStyle:layerStyle});}},{key:"render",value:function render(){return null;}}]);return HeatmapLayer;}(_react.default.Component),_class2.defaultProps={layerStyle:new _HeatMapStyle.default()},_class2))||_class);exports["default"]=HeatmapLayer;
 
 /***/ }),
 
@@ -17786,7 +15666,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));/**
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));/**
  * @class HeatMapLayerViewModel
  * @param {mapboxgl.map} map - mapboxgl map 对象。
  * @param {String} data - 热力图数据。
@@ -17801,7 +15681,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _LabelThemeLayerViewModel=_interopRequireDefault(__webpack_require__(8499));var _dec,_class,_class2;var LabelThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_Component){(0,_inherits2.default)(LabelThemeLayer,_Component);var _super=(0,_createSuper2.default)(LabelThemeLayer);function LabelThemeLayer(){(0,_classCallCheck2.default)(this,LabelThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(LabelThemeLayer,[{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _LabelThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return LabelThemeLayer;}(_react.Component),_class2.defaultProps={options:{}},_class2))||_class);exports["default"]=LabelThemeLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _LabelThemeLayerViewModel=_interopRequireDefault(__webpack_require__(8499));var _dec,_class,_class2;var LabelThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_Component){(0,_inherits2.default)(LabelThemeLayer,_Component);var _super=(0,_createSuper2.default)(LabelThemeLayer);function LabelThemeLayer(){(0,_classCallCheck2.default)(this,LabelThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(LabelThemeLayer,[{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _LabelThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return LabelThemeLayer;}(_react.Component),_class2.defaultProps={options:{}},_class2))||_class);exports["default"]=LabelThemeLayer;
 
 /***/ }),
 
@@ -17809,7 +15689,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var LabelThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(LabelThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(LabelThemeLayerViewModel);function LabelThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,LabelThemeLayerViewModel);_this=_super.call(this);var layerName=themeProps.layerName,options=themeProps.options,layerId=themeProps.layerId,data=themeProps.data;_this.map=map;_this.layerName=layerName||layerId;options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(LabelThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.LabelThemeLayer(this.layerName,this.options);this.map.addLayer(this.themeLayer);this.themeLayer.addFeatures(this.data);}}]);return LabelThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=LabelThemeLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var LabelThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(LabelThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(LabelThemeLayerViewModel);function LabelThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,LabelThemeLayerViewModel);_this=_super.call(this);var layerName=themeProps.layerName,options=themeProps.options,layerId=themeProps.layerId,data=themeProps.data;_this.map=map;_this.layerName=layerName||layerId;options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(LabelThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.LabelThemeLayer(this.layerName,this.options);this.map.addLayer(this.themeLayer);this.themeLayer.addFeatures(this.data);}}]);return LabelThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=LabelThemeLayerViewModel;
 
 /***/ }),
 
@@ -17817,7 +15697,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _MapvLayerViewModel=_interopRequireDefault(__webpack_require__(8862));var _dec,_class,_class2;var MapvLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(MapvLayer,_React$Component);var _super=(0,_createSuper2.default)(MapvLayer);function MapvLayer(){(0,_classCallCheck2.default)(this,MapvLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(MapvLayer,[{key:"loaded",value:function loaded(map){this.viewModel=new _MapvLayerViewModel.default(map,this.props);}},{key:"render",value:function render(){return null;}}]);return MapvLayer;}(_react.default.Component),_class2.defaultProps={options:{},data:{}},_class2))||_class);exports["default"]=MapvLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _MapvLayerViewModel=_interopRequireDefault(__webpack_require__(8862));var _dec,_class,_class2;var MapvLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(MapvLayer,_React$Component);var _super=(0,_createSuper2.default)(MapvLayer);function MapvLayer(){(0,_classCallCheck2.default)(this,MapvLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(MapvLayer,[{key:"loaded",value:function loaded(map){this.viewModel=new _MapvLayerViewModel.default(map,this.props);}},{key:"render",value:function render(){return null;}}]);return MapvLayer;}(_react.default.Component),_class2.defaultProps={options:{},data:{}},_class2))||_class);exports["default"]=MapvLayer;
 
 /***/ }),
 
@@ -17825,7 +15705,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var MapvLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(MapvLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(MapvLayerViewModel);function MapvLayerViewModel(map,mapvLayerProps){var _this;(0,_classCallCheck2.default)(this,MapvLayerViewModel);_this=_super.call(this);_this.map=map;var data=mapvLayerProps.data,options=mapvLayerProps.options,layerId=mapvLayerProps.layerId;_this.data=data;_this.options=options.layerId?options:(0,_objectSpread2.default)((0,_objectSpread2.default)({},options),{},{layerId:layerId});_this._init();return _this;}(0,_createClass2.default)(MapvLayerViewModel,[{key:"_init",value:function _init(){if(this.data&&this.options){this._addMapvLayer();}}},{key:"_addMapvLayer",value:function _addMapvLayer(){var mapVLayer=new _mapboxGlEnhance.default.supermap.MapvLayer('',this.data,this.options);this.map.addLayer(mapVLayer);}}]);return MapvLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=MapvLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _objectSpread2=_interopRequireDefault(__webpack_require__(8683));var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var MapvLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(MapvLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(MapvLayerViewModel);function MapvLayerViewModel(map,mapvLayerProps){var _this;(0,_classCallCheck2.default)(this,MapvLayerViewModel);_this=_super.call(this);_this.map=map;var data=mapvLayerProps.data,options=mapvLayerProps.options,layerId=mapvLayerProps.layerId;_this.data=data;_this.options=options.layerId?options:(0,_objectSpread2.default)((0,_objectSpread2.default)({},options),{},{layerId:layerId});_this._init();return _this;}(0,_createClass2.default)(MapvLayerViewModel,[{key:"_init",value:function _init(){if(this.data&&this.options){this._addMapvLayer();}}},{key:"_addMapvLayer",value:function _addMapvLayer(){var mapVLayer=new _mapboxGlEnhance.default.supermap.MapvLayer('',this.data,this.options);this.map.addLayer(mapVLayer);}}]);return MapvLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=MapvLayerViewModel;
 
 /***/ }),
 
@@ -17833,7 +15713,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _RangeThemeLayerViewModel=_interopRequireDefault(__webpack_require__(5040));var _dec,_class,_class2;var RangeThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(RangeThemeLayer,_React$Component);var _super=(0,_createSuper2.default)(RangeThemeLayer);function RangeThemeLayer(){(0,_classCallCheck2.default)(this,RangeThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(RangeThemeLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var data=this.props.data;if(!(0,_lodash.default)(prevProps.data,data)&&this.viewModel){this.viewModel.setData(data);}}},{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _RangeThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return RangeThemeLayer;}(_react.default.Component),_class2.defaultProps={options:{}},_class2))||_class);exports["default"]=RangeThemeLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _RangeThemeLayerViewModel=_interopRequireDefault(__webpack_require__(5040));var _dec,_class,_class2;var RangeThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(RangeThemeLayer,_React$Component);var _super=(0,_createSuper2.default)(RangeThemeLayer);function RangeThemeLayer(){(0,_classCallCheck2.default)(this,RangeThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(RangeThemeLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var data=this.props.data;if(!(0,_lodash.default)(prevProps.data,data)&&this.viewModel){this.viewModel.setData(data);}}},{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _RangeThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return RangeThemeLayer;}(_react.default.Component),_class2.defaultProps={options:{}},_class2))||_class);exports["default"]=RangeThemeLayer;
 
 /***/ }),
 
@@ -17841,7 +15721,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var RangeThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(RangeThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(RangeThemeLayerViewModel);function RangeThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,RangeThemeLayerViewModel);_this=_super.call(this);var layerName=themeProps.layerName,options=themeProps.options,layerId=themeProps.layerId,data=themeProps.data;_this.map=map;_this.layerName=layerName||layerId;options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(RangeThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.RangeThemeLayer(this.layerName,this.options);this.map.addLayer(this.themeLayer);if(this.data&&this.data.length){this.setData(this.data);}}},{key:"setData",value:function setData(data){this.themeLayer.addFeatures(data);}}]);return RangeThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=RangeThemeLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var RangeThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(RangeThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(RangeThemeLayerViewModel);function RangeThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,RangeThemeLayerViewModel);_this=_super.call(this);var layerName=themeProps.layerName,options=themeProps.options,layerId=themeProps.layerId,data=themeProps.data;_this.map=map;_this.layerName=layerName||layerId;options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(RangeThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.RangeThemeLayer(this.layerName,this.options);this.map.addLayer(this.themeLayer);if(this.data&&this.data.length){this.setData(this.data);}}},{key:"setData",value:function setData(data){this.themeLayer.addFeatures(data);}}]);return RangeThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=RangeThemeLayerViewModel;
 
 /***/ }),
 
@@ -17849,7 +15729,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _RanksymbolThemeLayerViewModel=_interopRequireDefault(__webpack_require__(8510));var _dec,_class;var RanksymbolThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_Component){(0,_inherits2.default)(RanksymbolThemeLayer,_Component);var _super=(0,_createSuper2.default)(RanksymbolThemeLayer);function RanksymbolThemeLayer(){(0,_classCallCheck2.default)(this,RanksymbolThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(RanksymbolThemeLayer,[{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _RanksymbolThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return RanksymbolThemeLayer;}(_react.Component))||_class);exports["default"]=RanksymbolThemeLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=__webpack_require__(3899);var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _RanksymbolThemeLayerViewModel=_interopRequireDefault(__webpack_require__(8510));var _dec,_class;var RanksymbolThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_Component){(0,_inherits2.default)(RanksymbolThemeLayer,_Component);var _super=(0,_createSuper2.default)(RanksymbolThemeLayer);function RanksymbolThemeLayer(){(0,_classCallCheck2.default)(this,RanksymbolThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(RanksymbolThemeLayer,[{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _RanksymbolThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return RanksymbolThemeLayer;}(_react.Component))||_class);exports["default"]=RanksymbolThemeLayer;
 
 /***/ }),
 
@@ -17857,7 +15737,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var RanksymbolThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(RanksymbolThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(RanksymbolThemeLayerViewModel);function RanksymbolThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,RanksymbolThemeLayerViewModel);_this=_super.call(this);_this.map=map;var layerName=themeProps.layerName,options=themeProps.options,symbolType=themeProps.symbolType,layerId=themeProps.layerId,data=themeProps.data;_this.layerName=layerName||layerId;_this.symbolType=symbolType||'Circle';options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(RanksymbolThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.RankSymbolThemeLayer(this.layerName,this.symbolType,this.options);this.map.addLayer(this.themeLayer);this.themeLayer.addFeatures(this.data);}}]);return RanksymbolThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=RanksymbolThemeLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var RanksymbolThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(RanksymbolThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(RanksymbolThemeLayerViewModel);function RanksymbolThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,RanksymbolThemeLayerViewModel);_this=_super.call(this);_this.map=map;var layerName=themeProps.layerName,options=themeProps.options,symbolType=themeProps.symbolType,layerId=themeProps.layerId,data=themeProps.data;_this.layerName=layerName||layerId;_this.symbolType=symbolType||'Circle';options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(RanksymbolThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.RankSymbolThemeLayer(this.layerName,this.symbolType,this.options);this.map.addLayer(this.themeLayer);this.themeLayer.addFeatures(this.data);}}]);return RanksymbolThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=RanksymbolThemeLayerViewModel;
 
 /***/ }),
 
@@ -17865,7 +15745,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _RasterTileLayerViewModel=_interopRequireDefault(__webpack_require__(339));var _dec,_class,_class2;var RasterTileLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(RasterTileLayer,_React$Component);var _super=(0,_createSuper2.default)(RasterTileLayer);function RasterTileLayer(){(0,_classCallCheck2.default)(this,RasterTileLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(RasterTileLayer,[{key:"loaded",value:function loaded(map){this.viewModel=new _RasterTileLayerViewModel.default(map,this.props);}},{key:"removed",value:function removed(){this.viewModel=null;}},{key:"render",value:function render(){return null;}}]);return RasterTileLayer;}(_react.default.Component),_class2.defaultProps={scheme:'xyz',visible:true,opacity:1},_class2))||_class);exports["default"]=RasterTileLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _RasterTileLayerViewModel=_interopRequireDefault(__webpack_require__(339));var _dec,_class,_class2;var RasterTileLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(RasterTileLayer,_React$Component);var _super=(0,_createSuper2.default)(RasterTileLayer);function RasterTileLayer(){(0,_classCallCheck2.default)(this,RasterTileLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(RasterTileLayer,[{key:"loaded",value:function loaded(map){this.viewModel=new _RasterTileLayerViewModel.default(map,this.props);}},{key:"removed",value:function removed(){this.viewModel=null;}},{key:"render",value:function render(){return null;}}]);return RasterTileLayer;}(_react.default.Component),_class2.defaultProps={scheme:'xyz',visible:true,opacity:1},_class2))||_class);exports["default"]=RasterTileLayer;
 
 /***/ }),
 
@@ -17873,7 +15753,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var RasterTileLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(RasterTileLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(RasterTileLayerViewModel);function RasterTileLayerViewModel(map,rasterLayerOptions){var _this;(0,_classCallCheck2.default)(this,RasterTileLayerViewModel);_this=_super.call(this);_this.map=map;var layerId=rasterLayerOptions.layerId,tileSize=rasterLayerOptions.tileSize,mapUrl=rasterLayerOptions.mapUrl,tiles=rasterLayerOptions.tiles,bounds=rasterLayerOptions.bounds,_rasterLayerOptions$m=rasterLayerOptions.minZoom,minZoom=_rasterLayerOptions$m===void 0?0:_rasterLayerOptions$m,_rasterLayerOptions$m2=rasterLayerOptions.maxZoom,maxZoom=_rasterLayerOptions$m2===void 0?22:_rasterLayerOptions$m2,attribution=rasterLayerOptions.attribution,_rasterLayerOptions$s=rasterLayerOptions.scheme,scheme=_rasterLayerOptions$s===void 0?'xyz':_rasterLayerOptions$s,_rasterLayerOptions$v=rasterLayerOptions.visible,visible=_rasterLayerOptions$v===void 0?true:_rasterLayerOptions$v,_rasterLayerOptions$o=rasterLayerOptions.opacity,opacity=_rasterLayerOptions$o===void 0?1:_rasterLayerOptions$o,before=rasterLayerOptions.before;_this.layerId=layerId;_this.tileSize=tileSize;_this.mapUrl=mapUrl;_this.tiles=tiles;_this.bounds=bounds;_this.minZoom=minZoom;_this.maxZoom=maxZoom;_this.attribution=attribution;_this.scheme=scheme;_this.opacity=opacity;_this.visibility=visible?'visible':'none';_this.before=before;// enhance扩展，传iserver标识是iserver rest map
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var RasterTileLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(RasterTileLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(RasterTileLayerViewModel);function RasterTileLayerViewModel(map,rasterLayerOptions){var _this;(0,_classCallCheck2.default)(this,RasterTileLayerViewModel);_this=_super.call(this);_this.map=map;var layerId=rasterLayerOptions.layerId,tileSize=rasterLayerOptions.tileSize,mapUrl=rasterLayerOptions.mapUrl,tiles=rasterLayerOptions.tiles,bounds=rasterLayerOptions.bounds,_rasterLayerOptions$m=rasterLayerOptions.minZoom,minZoom=_rasterLayerOptions$m===void 0?0:_rasterLayerOptions$m,_rasterLayerOptions$m2=rasterLayerOptions.maxZoom,maxZoom=_rasterLayerOptions$m2===void 0?22:_rasterLayerOptions$m2,attribution=rasterLayerOptions.attribution,_rasterLayerOptions$s=rasterLayerOptions.scheme,scheme=_rasterLayerOptions$s===void 0?'xyz':_rasterLayerOptions$s,_rasterLayerOptions$v=rasterLayerOptions.visible,visible=_rasterLayerOptions$v===void 0?true:_rasterLayerOptions$v,_rasterLayerOptions$o=rasterLayerOptions.opacity,opacity=_rasterLayerOptions$o===void 0?1:_rasterLayerOptions$o,before=rasterLayerOptions.before;_this.layerId=layerId;_this.tileSize=tileSize;_this.mapUrl=mapUrl;_this.tiles=tiles;_this.bounds=bounds;_this.minZoom=minZoom;_this.maxZoom=maxZoom;_this.attribution=attribution;_this.scheme=scheme;_this.opacity=opacity;_this.visibility=visible?'visible':'none';_this.before=before;// enhance扩展，传iserver标识是iserver rest map
 _this.rasterSource='';_this._init();return _this;}(0,_createClass2.default)(RasterTileLayerViewModel,[{key:"_init",value:function _init(){if(this.mapUrl){this._addRestMapLayer();}else{this._addLayer();}}},{key:"_addRestMapLayer",value:function _addRestMapLayer(){var _this2=this;var service=new _mapboxGlEnhance.default.supermap.MapService(this.mapUrl);service.getMapInfo(function(mapObj){if(!_this2.layerId){_this2.layerId=mapObj.name;}if(!_this2.tileSize&&mapObj.viewer){_this2.tileSize=mapObj.viewer.width;}var bounds=mapObj.bounds;if(!_this2.bounds&&bounds){_this2.bounds=[bounds.left,bounds.bottom,bounds.right,bounds.top];}_this2.rasterSource='iserver';_this2.tiles=[_this2.mapUrl];_this2._addLayer(mapObj);});}},{key:"_addLayer",value:function _addLayer(){this.map.addLayer({id:this.layerId||"raster-layer-".concat(new Date().getTime()),type:'raster',layout:{visibility:this.visibility},paint:{'raster-opacity':this.opacity},source:{bounds:this.bounds||[-180,-85.051129,180,85.051129],type:'raster',tileSize:this.tileSize||256,tiles:this.tiles,rasterSource:this.rasterSource,minzoom:this.minZoom,maxzoom:this.maxZoom,scheme:this.scheme}},this.before);}}]);return RasterTileLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=RasterTileLayerViewModel;
 
 /***/ }),
@@ -17882,7 +15762,7 @@ _this.rasterSource='';_this._init();return _this;}(0,_createClass2.default)(Rast
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _UniqueThemeLayerViewModel=_interopRequireDefault(__webpack_require__(2658));var _dec,_class,_class2;var UniqueThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(UniqueThemeLayer,_React$Component);var _super=(0,_createSuper2.default)(UniqueThemeLayer);function UniqueThemeLayer(){(0,_classCallCheck2.default)(this,UniqueThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(UniqueThemeLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var data=this.props.data;if(!(0,_lodash.default)(prevProps.data,data)&&this.viewModel){this.viewModel.setData(data);}}},{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _UniqueThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return UniqueThemeLayer;}(_react.default.Component),_class2.defaultProps={options:{}},_class2))||_class);exports["default"]=UniqueThemeLayer;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _lodash=_interopRequireDefault(__webpack_require__(2307));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _util=__webpack_require__(9752);var _UniqueThemeLayerViewModel=_interopRequireDefault(__webpack_require__(2658));var _dec,_class,_class2;var UniqueThemeLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=(_class2=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(UniqueThemeLayer,_React$Component);var _super=(0,_createSuper2.default)(UniqueThemeLayer);function UniqueThemeLayer(){(0,_classCallCheck2.default)(this,UniqueThemeLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(UniqueThemeLayer,[{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){var data=this.props.data;if(!(0,_lodash.default)(prevProps.data,data)&&this.viewModel){this.viewModel.setData(data);}}},{key:"loaded",value:function loaded(map){var onLoad=this.props.onLoad;this.viewModel=new _UniqueThemeLayerViewModel.default(map,this.props);(0,_util.isFunction)(onLoad)&&onLoad(this.viewModel.themeLayer,map);}},{key:"render",value:function render(){return null;}}]);return UniqueThemeLayer;}(_react.default.Component),_class2.defaultProps={options:{}},_class2))||_class);exports["default"]=UniqueThemeLayer;
 
 /***/ }),
 
@@ -17890,7 +15770,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var UniqueThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(UniqueThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(UniqueThemeLayerViewModel);function UniqueThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,UniqueThemeLayerViewModel);_this=_super.call(this);_this.map=map;var options=themeProps.options,layerId=themeProps.layerId,data=themeProps.data,layerName=themeProps.layerName;_this.layerName=layerName||layerId;options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(UniqueThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.UniqueThemeLayer(this.layerName,this.options);this.map.addLayer(this.themeLayer);if(this.data&&this.data.length){this.setData(this.data);}}},{key:"setData",value:function setData(data){this.themeLayer.addFeatures(data);}}]);return UniqueThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=UniqueThemeLayerViewModel;
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));__webpack_require__(2395);var UniqueThemeLayerViewModel=/*#__PURE__*/function(_mapboxgl$Evented){(0,_inherits2.default)(UniqueThemeLayerViewModel,_mapboxgl$Evented);var _super=(0,_createSuper2.default)(UniqueThemeLayerViewModel);function UniqueThemeLayerViewModel(map,themeProps){var _this;(0,_classCallCheck2.default)(this,UniqueThemeLayerViewModel);_this=_super.call(this);_this.map=map;var options=themeProps.options,layerId=themeProps.layerId,data=themeProps.data,layerName=themeProps.layerName;_this.layerName=layerName||layerId;options.id=options.id||layerId;_this.options=options;_this.data=data||[];_this._init();return _this;}(0,_createClass2.default)(UniqueThemeLayerViewModel,[{key:"_init",value:function _init(){this.themeLayer=new _mapboxGlEnhance.default.supermap.UniqueThemeLayer(this.layerName,this.options);this.map.addLayer(this.themeLayer);if(this.data&&this.data.length){this.setData(this.data);}}},{key:"setData",value:function setData(data){this.themeLayer.addFeatures(data);}}]);return UniqueThemeLayerViewModel;}(_mapboxGlEnhance.default.Evented);exports["default"]=UniqueThemeLayerViewModel;
 
 /***/ }),
 
@@ -17898,14 +15778,7 @@ var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineP
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireDefault=(__webpack_require__(5318)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8347));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class;var VectorTileLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(VectorTileLayer,_React$Component);var _super=(0,_createSuper2.default)(VectorTileLayer);function VectorTileLayer(){(0,_classCallCheck2.default)(this,VectorTileLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(VectorTileLayer,[{key:"loaded",value:function loaded(map){if(map&&map['addStyle']){map['addStyle'](this.props.styleOptions,this.props.before);}}},{key:"render",value:function render(){return null;}}]);return VectorTileLayer;}(_react.default.Component))||_class);exports["default"]=VectorTileLayer;
-
-/***/ }),
-
-/***/ 5760:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-!function(t,e){ true?module.exports=e(__webpack_require__(6131),__webpack_require__(4757)):0}(this,function(m,d){"use strict";var t;return m=m&&m.hasOwnProperty("default")?m.default:m,d=d&&d.hasOwnProperty("default")?d.default:d,function(t){var u;t.exports;(u=window).DOMParser=window.DOMParser;function p(){return document.createElement("canvas")}var f,c=function(t,e,i){if(null!=t||null!=e||null!=i){var n=function(s){var A={opts:s,FRAMERATE:30,MAX_VIRTUAL_PIXELS:3e4,rootEmSize:12,emSize:12,log:function(t){}};1==A.opts.log&&"undefined"!=typeof console&&(A.log=function(t){console.log(t)});A.init=function(t){var e=0;A.UniqueId=function(){return"canvg"+ ++e},A.Definitions={},A.Styles={},A.StylesSpecificity={},A.Animations=[],A.Images=[],A.ctx=t,A.ViewPort=new function(){this.viewPorts=[],this.Clear=function(){this.viewPorts=[]},this.SetCurrent=function(t,e){this.viewPorts.push({width:t,height:e})},this.RemoveCurrent=function(){this.viewPorts.pop()},this.Current=function(){return this.viewPorts[this.viewPorts.length-1]},this.width=function(){return this.Current().width},this.height=function(){return this.Current().height},this.ComputeSize=function(t){return null!=t&&"number"==typeof t?t:"x"==t?this.width():"y"==t?this.height():Math.sqrt(Math.pow(this.width(),2)+Math.pow(this.height(),2))/Math.sqrt(2)}}},A.init(),A.ImagesLoaded=function(){for(var t=0;t<A.Images.length;t++)if(!A.Images[t].loaded)return!1;return!0},A.trim=function(t){return t.replace(/^\s+|\s+$/g,"")},A.compressSpaces=function(t){return t.replace(/(?!\u3000)\s+/gm," ")},A.ajax=function(t){var e;return(e=u.XMLHttpRequest?new u.XMLHttpRequest:new ActiveXObject("Microsoft.XMLHTTP"))?(e.open("GET",t,!1),e.send(null),e.responseText):null},A.parseXml=function(e){if("undefined"!=typeof Windows&&void 0!==Windows.Data&&void 0!==Windows.Data.Xml){var t=new Windows.Data.Xml.Dom.XmlDocument,i=new Windows.Data.Xml.Dom.XmlLoadSettings;return i.prohibitDtd=!1,t.loadXml(e,i),t}if(!u.DOMParser){e=e.replace(/<!DOCTYPE svg[^>]*>/,"");var t=new ActiveXObject("Microsoft.XMLDOM");return t.async="false",t.loadXML(e),t}try{var n=s.xmldom?new u.DOMParser(s.xmldom):new u.DOMParser;return n.parseFromString(e,"image/svg+xml")}catch(t){return(n=s.xmldom?new u.DOMParser(s.xmldom):new u.DOMParser).parseFromString(e,"text/xml")}},A.Property=function(t,e){this.name=t,this.value=e},A.Property.prototype.getValue=function(){return this.value},A.Property.prototype.hasValue=function(){return null!=this.value&&""!==this.value},A.Property.prototype.numValue=function(){if(!this.hasValue())return 0;var t=parseFloat(this.value);return(this.value+"").match(/%$/)&&(t/=100),t},A.Property.prototype.valueOrDefault=function(t){return this.hasValue()?this.value:t},A.Property.prototype.numValueOrDefault=function(t){return this.hasValue()?this.numValue():t},A.Property.prototype.addOpacity=function(t){var e=this.value;if(null!=t.value&&""!=t.value&&"string"==typeof this.value){var i=new m(this.value);i.ok&&(e="rgba("+i.r+", "+i.g+", "+i.b+", "+t.numValue()+")")}return new A.Property(this.name,e)},A.Property.prototype.getDefinition=function(){var t=this.value.match(/#([^\)'"]+)/);return t&&(t=t[1]),t||(t=this.value),A.Definitions[t]},A.Property.prototype.isUrlDefinition=function(){return 0==this.value.indexOf("url(")},A.Property.prototype.getFillStyleDefinition=function(t,e){var i=this.getDefinition();if(null!=i&&i.createGradient)return i.createGradient(A.ctx,t,e);if(null!=i&&i.createPattern){if(i.getHrefAttribute().hasValue()){var n=i.attribute("patternTransform");i=i.getHrefAttribute().getDefinition(),n.hasValue()&&(i.attribute("patternTransform",!0).value=n.value)}return i.createPattern(A.ctx,t)}return null},A.Property.prototype.getDPI=function(t){return 96},A.Property.prototype.getREM=function(t){return A.rootEmSize},A.Property.prototype.getEM=function(t){return A.emSize},A.Property.prototype.getUnits=function(){var t=this.value+"";return t.replace(/[0-9\.\-]/g,"")},A.Property.prototype.isPixels=function(){if(!this.hasValue())return!1;var t=this.value+"";return!!t.match(/px$/)||!!t.match(/^[0-9]+$/)},A.Property.prototype.toPixels=function(t,e){if(!this.hasValue())return 0;var i=this.value+"";if(i.match(/rem$/))return this.numValue()*this.getREM(t);if(i.match(/em$/))return this.numValue()*this.getEM(t);if(i.match(/ex$/))return this.numValue()*this.getEM(t)/2;if(i.match(/px$/))return this.numValue();if(i.match(/pt$/))return this.numValue()*this.getDPI(t)*(1/72);if(i.match(/pc$/))return 15*this.numValue();if(i.match(/cm$/))return this.numValue()*this.getDPI(t)/2.54;if(i.match(/mm$/))return this.numValue()*this.getDPI(t)/25.4;if(i.match(/in$/))return this.numValue()*this.getDPI(t);if(i.match(/%$/))return this.numValue()*A.ViewPort.ComputeSize(t);var n=this.numValue();return e&&n<1?n*A.ViewPort.ComputeSize(t):n},A.Property.prototype.toMilliseconds=function(){if(!this.hasValue())return 0;var t=this.value+"";return t.match(/s$/)?1e3*this.numValue():(t.match(/ms$/),this.numValue())},A.Property.prototype.toRadians=function(){if(!this.hasValue())return 0;var t=this.value+"";return t.match(/deg$/)?this.numValue()*(Math.PI/180):t.match(/grad$/)?this.numValue()*(Math.PI/200):t.match(/rad$/)?this.numValue():this.numValue()*(Math.PI/180)};var t={baseline:"alphabetic","before-edge":"top","text-before-edge":"top",middle:"middle",central:"middle","after-edge":"bottom","text-after-edge":"bottom",ideographic:"ideographic",alphabetic:"alphabetic",hanging:"hanging",mathematical:"alphabetic"};return A.Property.prototype.toTextBaseline=function(){return this.hasValue()?t[this.value]:null},A.Font=new function(){this.Styles="normal|italic|oblique|inherit",this.Variants="normal|small-caps|inherit",this.Weights="normal|bold|bolder|lighter|100|200|300|400|500|600|700|800|900|inherit",this.CreateFont=function(t,e,i,n,s,a){var r=null!=a?this.Parse(a):this.CreateFont("","","","","",A.ctx.font);return{fontFamily:s=s||r.fontFamily,fontSize:n||r.fontSize,fontStyle:t||r.fontStyle,fontWeight:i||r.fontWeight,fontVariant:e||r.fontVariant,toString:function(){return[this.fontStyle,this.fontVariant,this.fontWeight,this.fontSize,this.fontFamily].join(" ")}}};var r=this;this.Parse=function(t){for(var e={},i=A.trim(A.compressSpaces(t||"")).split(" "),n={fontSize:!1,fontStyle:!1,fontWeight:!1,fontVariant:!1},s="",a=0;a<i.length;a++)n.fontStyle||-1==r.Styles.indexOf(i[a])?n.fontVariant||-1==r.Variants.indexOf(i[a])?n.fontWeight||-1==r.Weights.indexOf(i[a])?n.fontSize?"inherit"!=i[a]&&(s+=i[a]):("inherit"!=i[a]&&(e.fontSize=i[a].split("/")[0]),n.fontStyle=n.fontVariant=n.fontWeight=n.fontSize=!0):("inherit"!=i[a]&&(e.fontWeight=i[a]),n.fontStyle=n.fontVariant=n.fontWeight=!0):("inherit"!=i[a]&&(e.fontVariant=i[a]),n.fontStyle=n.fontVariant=!0):("inherit"!=i[a]&&(e.fontStyle=i[a]),n.fontStyle=!0);return""!=s&&(e.fontFamily=s),e}},A.ToNumberArray=function(t){for(var e=A.trim(A.compressSpaces((t||"").replace(/,/g," "))).split(" "),i=0;i<e.length;i++)e[i]=parseFloat(e[i]);return e},A.Point=function(t,e){this.x=t,this.y=e},A.Point.prototype.angleTo=function(t){return Math.atan2(t.y-this.y,t.x-this.x)},A.Point.prototype.applyTransform=function(t){var e=this.x*t[0]+this.y*t[2]+t[4],i=this.x*t[1]+this.y*t[3]+t[5];this.x=e,this.y=i},A.CreatePoint=function(t){var e=A.ToNumberArray(t);return new A.Point(e[0],e[1])},A.CreatePath=function(t){for(var e=A.ToNumberArray(t),i=[],n=0;n<e.length;n+=2)i.push(new A.Point(e[n],e[n+1]));return i},A.BoundingBox=function(t,e,i,n){this.x1=Number.NaN,this.y1=Number.NaN,this.x2=Number.NaN,this.y2=Number.NaN,this.x=function(){return this.x1},this.y=function(){return this.y1},this.width=function(){return this.x2-this.x1},this.height=function(){return this.y2-this.y1},this.addPoint=function(t,e){null!=t&&((isNaN(this.x1)||isNaN(this.x2))&&(this.x1=t,this.x2=t),t<this.x1&&(this.x1=t),t>this.x2&&(this.x2=t)),null!=e&&((isNaN(this.y1)||isNaN(this.y2))&&(this.y1=e,this.y2=e),e<this.y1&&(this.y1=e),e>this.y2&&(this.y2=e))},this.addX=function(t){this.addPoint(t,null)},this.addY=function(t){this.addPoint(null,t)},this.addBoundingBox=function(t){this.addPoint(t.x1,t.y1),this.addPoint(t.x2,t.y2)},this.addQuadraticCurve=function(t,e,i,n,s,a){var r=t+2/3*(i-t),o=e+2/3*(n-e),l=r+1/3*(s-t),h=o+1/3*(a-e);this.addBezierCurve(t,e,r,l,o,h,s,a)},this.addBezierCurve=function(t,e,i,n,s,a,r,o){var l=[t,e],h=[i,n],u=[s,a],c=[r,o];this.addPoint(l[0],l[1]),this.addPoint(c[0],c[1]);for(var f=0;f<=1;f++){var m=function(t){return Math.pow(1-t,3)*l[f]+3*Math.pow(1-t,2)*t*h[f]+3*(1-t)*Math.pow(t,2)*u[f]+Math.pow(t,3)*c[f]},p=6*l[f]-12*h[f]+6*u[f],d=-3*l[f]+9*h[f]-9*u[f]+3*c[f],y=3*h[f]-3*l[f];if(0!=d){var v=Math.pow(p,2)-4*y*d;if(!(v<0)){var g=(-p+Math.sqrt(v))/(2*d);0<g&&g<1&&(0==f&&this.addX(m(g)),1==f&&this.addY(m(g)));var x=(-p-Math.sqrt(v))/(2*d);0<x&&x<1&&(0==f&&this.addX(m(x)),1==f&&this.addY(m(x)))}}else{if(0==p)continue;var b=-y/p;0<b&&b<1&&(0==f&&this.addX(m(b)),1==f&&this.addY(m(b)))}}},this.isPointInBox=function(t,e){return this.x1<=t&&t<=this.x2&&this.y1<=e&&e<=this.y2},this.addPoint(t,e),this.addPoint(i,n)},A.Transform=function(t){var e=this;this.Type={},this.Type.translate=function(t){this.p=A.CreatePoint(t),this.apply=function(t){t.translate(this.p.x||0,this.p.y||0)},this.unapply=function(t){t.translate(-1*this.p.x||0,-1*this.p.y||0)},this.applyToPoint=function(t){t.applyTransform([1,0,0,1,this.p.x||0,this.p.y||0])}},this.Type.rotate=function(t){var e=A.ToNumberArray(t);this.angle=new A.Property("angle",e[0]),this.cx=e[1]||0,this.cy=e[2]||0,this.apply=function(t){t.translate(this.cx,this.cy),t.rotate(this.angle.toRadians()),t.translate(-this.cx,-this.cy)},this.unapply=function(t){t.translate(this.cx,this.cy),t.rotate(-1*this.angle.toRadians()),t.translate(-this.cx,-this.cy)},this.applyToPoint=function(t){var e=this.angle.toRadians();t.applyTransform([1,0,0,1,this.p.x||0,this.p.y||0]),t.applyTransform([Math.cos(e),Math.sin(e),-Math.sin(e),Math.cos(e),0,0]),t.applyTransform([1,0,0,1,-this.p.x||0,-this.p.y||0])}},this.Type.scale=function(t){this.p=A.CreatePoint(t),this.apply=function(t){t.scale(this.p.x||1,this.p.y||this.p.x||1)},this.unapply=function(t){t.scale(1/this.p.x||1,1/this.p.y||this.p.x||1)},this.applyToPoint=function(t){t.applyTransform([this.p.x||0,0,0,this.p.y||0,0,0])}},this.Type.matrix=function(t){this.m=A.ToNumberArray(t),this.apply=function(t){t.transform(this.m[0],this.m[1],this.m[2],this.m[3],this.m[4],this.m[5])},this.unapply=function(t){var e=this.m[0],i=this.m[2],n=this.m[4],s=this.m[1],a=this.m[3],r=this.m[5],o=1/(e*(1*a-0*r)-i*(1*s-0*r)+n*(0*s-0*a));t.transform(o*(1*a-0*r),o*(0*r-1*s),o*(0*n-1*i),o*(1*e-0*n),o*(i*r-n*a),o*(n*s-e*r))},this.applyToPoint=function(t){t.applyTransform(this.m)}},this.Type.SkewBase=function(t){this.base=e.Type.matrix,this.base(t),this.angle=new A.Property("angle",t)},this.Type.SkewBase.prototype=new this.Type.matrix,this.Type.skewX=function(t){this.base=e.Type.SkewBase,this.base(t),this.m=[1,0,Math.tan(this.angle.toRadians()),1,0,0]},this.Type.skewX.prototype=new this.Type.SkewBase,this.Type.skewY=function(t){this.base=e.Type.SkewBase,this.base(t),this.m=[1,Math.tan(this.angle.toRadians()),0,1,0,0]},this.Type.skewY.prototype=new this.Type.SkewBase,this.transforms=[],this.apply=function(t){for(var e=0;e<this.transforms.length;e++)this.transforms[e].apply(t)},this.unapply=function(t){for(var e=this.transforms.length-1;0<=e;e--)this.transforms[e].unapply(t)},this.applyToPoint=function(t){for(var e=0;e<this.transforms.length;e++)this.transforms[e].applyToPoint(t)};for(var i=A.trim(A.compressSpaces(t)).replace(/\)([a-zA-Z])/g,") $1").replace(/\)(\s?,\s?)/g,") ").split(/\s(?=[a-z])/),n=0;n<i.length;n++)if("none"!==i[n]){var s=A.trim(i[n].split("(")[0]),a=i[n].split("(")[1].replace(")",""),r=this.Type[s];if(void 0!==r){var o=new r(a);o.type=s,this.transforms.push(o)}}},A.AspectRatio=function(t,e,i,n,s,a,r,o,l,h){var u=(e=(e=A.compressSpaces(e)).replace(/^defer\s/,"")).split(" ")[0]||"xMidYMid",c=e.split(" ")[1]||"meet",f=i/n,m=s/a,p=Math.min(f,m),d=Math.max(f,m);"meet"==c&&(n*=p,a*=p),"slice"==c&&(n*=d,a*=d),l=new A.Property("refX",l),h=new A.Property("refY",h),l.hasValue()&&h.hasValue()?t.translate(-p*l.toPixels("x"),-p*h.toPixels("y")):(u.match(/^xMid/)&&("meet"==c&&p==m||"slice"==c&&d==m)&&t.translate(i/2-n/2,0),u.match(/YMid$/)&&("meet"==c&&p==f||"slice"==c&&d==f)&&t.translate(0,s/2-a/2),u.match(/^xMax/)&&("meet"==c&&p==m||"slice"==c&&d==m)&&t.translate(i-n,0),u.match(/YMax$/)&&("meet"==c&&p==f||"slice"==c&&d==f)&&t.translate(0,s-a)),"none"==u?t.scale(f,m):"meet"==c?t.scale(p,p):"slice"==c&&t.scale(d,d),t.translate(null==r?0:-r,null==o?0:-o)},A.Element={},A.EmptyProperty=new A.Property("EMPTY",""),A.Element.ElementBase=function(a){this.attributes={},this.styles={},this.stylesSpecificity={},this.children=[],this.attribute=function(t,e){var i=this.attributes[t];return null!=i?i:(1==e&&(i=new A.Property(t,""),this.attributes[t]=i),i||A.EmptyProperty)},this.getHrefAttribute=function(){for(var t in this.attributes)if("href"==t||t.match(/:href$/))return this.attributes[t];return A.EmptyProperty},this.style=function(t,e,i){var n=this.styles[t];if(null!=n)return n;var s=this.attribute(t);if(null!=s&&s.hasValue())return this.styles[t]=s;if(1!=i){var a=this.parent;if(null!=a){var r=a.style(t);if(null!=r&&r.hasValue())return r}}return 1==e&&(n=new A.Property(t,""),this.styles[t]=n),n||A.EmptyProperty},this.render=function(t){if("none"!=this.style("display").value&&"hidden"!=this.style("visibility").value){if(t.save(),this.style("mask").hasValue()){var e=this.style("mask").getDefinition();null!=e&&e.apply(t,this)}else if(this.style("filter").hasValue()){var i=this.style("filter").getDefinition();null!=i&&i.apply(t,this)}else this.setContext(t),this.renderChildren(t),this.clearContext(t);t.restore()}},this.setContext=function(t){},this.clearContext=function(t){},this.renderChildren=function(t){for(var e=0;e<this.children.length;e++)this.children[e].render(t)},this.addChild=function(t,e){var i=t;e&&(i=A.CreateElement(t)),i.parent=this,"title"!=i.type&&this.children.push(i)},this.addStylesFromStyleDefinition=function(){for(var t in A.Styles)if("@"!=t[0]&&f(a,t)){var e=A.Styles[t],i=A.StylesSpecificity[t];if(null!=e)for(var n in e){var s=this.stylesSpecificity[n];void 0===s&&(s="000"),s<i&&(this.styles[n]=e[n],this.stylesSpecificity[n]=i)}}};var t,e=new RegExp("^[A-Z-]+$");if(null!=a&&1==a.nodeType){for(var i=0;i<a.attributes.length;i++){var n=a.attributes[i],s=(t=n.nodeName,e.test(t)?t.toLowerCase():t);this.attributes[s]=new A.Property(s,n.value)}if(this.addStylesFromStyleDefinition(),this.attribute("style").hasValue()){var r=this.attribute("style").value.split(";");for(i=0;i<r.length;i++)if(""!=A.trim(r[i])){var o=r[i].split(":"),l=A.trim(o[0]),h=A.trim(o[1]);this.styles[l]=new A.Property(l,h)}}for(this.attribute("id").hasValue()&&null==A.Definitions[this.attribute("id").value]&&(A.Definitions[this.attribute("id").value]=this),i=0;i<a.childNodes.length;i++){var u=a.childNodes[i];if(1==u.nodeType&&this.addChild(u,!0),this.captureTextNodes&&(3==u.nodeType||4==u.nodeType)){var c=u.value||u.text||u.textContent||"";""!=A.compressSpaces(c)&&this.addChild(new A.Element.tspan(u),!1)}}}},A.Element.RenderedElementBase=function(t){this.base=A.Element.ElementBase,this.base(t),this.calculateOpacity=function(){for(var t=1,e=this;null!=e;){var i=e.style("opacity",!1,!0);i.hasValue()&&(t*=i.numValue()),e=e.parent}return t},this.setContext=function(t,e){if(!e){var i;if(this.style("fill").isUrlDefinition())null!=(i=this.style("fill").getFillStyleDefinition(this,this.style("fill-opacity")))&&(t.fillStyle=i);else if(this.style("fill").hasValue()){var n;"currentColor"==(n=this.style("fill")).value&&(n.value=this.style("color").value),"inherit"!=n.value&&(t.fillStyle="none"==n.value?"rgba(0,0,0,0)":n.value)}if(this.style("fill-opacity").hasValue()&&(n=(n=new A.Property("fill",t.fillStyle)).addOpacity(this.style("fill-opacity")),t.fillStyle=n.value),this.style("stroke").isUrlDefinition())null!=(i=this.style("stroke").getFillStyleDefinition(this,this.style("stroke-opacity")))&&(t.strokeStyle=i);else if(this.style("stroke").hasValue()){var s;"currentColor"==(s=this.style("stroke")).value&&(s.value=this.style("color").value),"inherit"!=s.value&&(t.strokeStyle="none"==s.value?"rgba(0,0,0,0)":s.value)}if(this.style("stroke-opacity").hasValue()&&(s=(s=new A.Property("stroke",t.strokeStyle)).addOpacity(this.style("stroke-opacity")),t.strokeStyle=s.value),this.style("stroke-width").hasValue()){var a=this.style("stroke-width").toPixels();t.lineWidth=0==a?.001:a}if(this.style("stroke-linecap").hasValue()&&(t.lineCap=this.style("stroke-linecap").value),this.style("stroke-linejoin").hasValue()&&(t.lineJoin=this.style("stroke-linejoin").value),this.style("stroke-miterlimit").hasValue()&&(t.miterLimit=this.style("stroke-miterlimit").value),this.style("paint-order").hasValue()&&(t.paintOrder=this.style("paint-order").value),this.style("stroke-dasharray").hasValue()&&"none"!=this.style("stroke-dasharray").value){var r=A.ToNumberArray(this.style("stroke-dasharray").value);void 0!==t.setLineDash?t.setLineDash(r):void 0!==t.webkitLineDash?t.webkitLineDash=r:void 0===t.mozDash||1==r.length&&0==r[0]||(t.mozDash=r);var o=this.style("stroke-dashoffset").toPixels();void 0!==t.lineDashOffset?t.lineDashOffset=o:void 0!==t.webkitLineDashOffset?t.webkitLineDashOffset=o:void 0!==t.mozDashOffset&&(t.mozDashOffset=o)}}if(void 0!==t.font){t.font=A.Font.CreateFont(this.style("font-style").value,this.style("font-variant").value,this.style("font-weight").value,this.style("font-size").hasValue()?this.style("font-size").toPixels()+"px":"",this.style("font-family").value).toString();var l=this.style("font-size",!1,!1);l.isPixels()&&(A.emSize=l.toPixels())}if(this.style("transform",!1,!0).hasValue()&&new A.Transform(this.style("transform",!1,!0).value).apply(t),this.style("clip-path",!1,!0).hasValue()){var h=this.style("clip-path",!1,!0).getDefinition();null!=h&&h.apply(t)}t.globalAlpha=this.calculateOpacity()}},A.Element.RenderedElementBase.prototype=new A.Element.ElementBase,A.Element.PathElementBase=function(t){this.base=A.Element.RenderedElementBase,this.base(t),this.path=function(t){return null!=t&&t.beginPath(),new A.BoundingBox},this.renderChildren=function(t){this.path(t),A.Mouse.checkPath(this,t),""!=t.fillStyle&&("inherit"!=this.style("fill-rule").valueOrDefault("inherit")?t.fill(this.style("fill-rule").value):t.fill()),""!=t.strokeStyle&&t.stroke();var e=this.getMarkers();if(null!=e){if(this.style("marker-start").isUrlDefinition()&&(i=this.style("marker-start").getDefinition()).render(t,e[0][0],e[0][1]),this.style("marker-mid").isUrlDefinition())for(var i=this.style("marker-mid").getDefinition(),n=1;n<e.length-1;n++)i.render(t,e[n][0],e[n][1]);this.style("marker-end").isUrlDefinition()&&(i=this.style("marker-end").getDefinition()).render(t,e[e.length-1][0],e[e.length-1][1])}},this.getBoundingBox=function(){return this.path()},this.getMarkers=function(){return null}},A.Element.PathElementBase.prototype=new A.Element.RenderedElementBase,A.Element.svg=function(t){this.base=A.Element.RenderedElementBase,this.base(t),this.baseClearContext=this.clearContext,this.clearContext=function(t){this.baseClearContext(t),A.ViewPort.RemoveCurrent()},this.baseSetContext=this.setContext,this.setContext=function(t){if(t.strokeStyle="rgba(0,0,0,0)",t.lineCap="butt",t.lineJoin="miter",t.miterLimit=4,t.canvas.style&&void 0!==t.font&&void 0!==u.getComputedStyle){t.font=u.getComputedStyle(t.canvas).getPropertyValue("font");var e=new A.Property("fontSize",A.Font.Parse(t.font).fontSize);e.hasValue()&&(A.rootEmSize=A.emSize=e.toPixels("y"))}this.baseSetContext(t),this.attribute("x").hasValue()||(this.attribute("x",!0).value=0),this.attribute("y").hasValue()||(this.attribute("y",!0).value=0),t.translate(this.attribute("x").toPixels("x"),this.attribute("y").toPixels("y"));var i=A.ViewPort.width(),n=A.ViewPort.height();if(this.attribute("width").hasValue()||(this.attribute("width",!0).value="100%"),this.attribute("height").hasValue()||(this.attribute("height",!0).value="100%"),void 0===this.root){i=this.attribute("width").toPixels("x"),n=this.attribute("height").toPixels("y");var s=0,a=0;this.attribute("refX").hasValue()&&this.attribute("refY").hasValue()&&(s=-this.attribute("refX").toPixels("x"),a=-this.attribute("refY").toPixels("y")),"visible"!=this.attribute("overflow").valueOrDefault("hidden")&&(t.beginPath(),t.moveTo(s,a),t.lineTo(i,a),t.lineTo(i,n),t.lineTo(s,n),t.closePath(),t.clip())}if(A.ViewPort.SetCurrent(i,n),this.attribute("viewBox").hasValue()){var r=A.ToNumberArray(this.attribute("viewBox").value),o=r[0],l=r[1];i=r[2],n=r[3],A.AspectRatio(t,this.attribute("preserveAspectRatio").value,A.ViewPort.width(),i,A.ViewPort.height(),n,o,l,this.attribute("refX").value,this.attribute("refY").value),A.ViewPort.RemoveCurrent(),A.ViewPort.SetCurrent(r[2],r[3])}}},A.Element.svg.prototype=new A.Element.RenderedElementBase,A.Element.rect=function(t){this.base=A.Element.PathElementBase,this.base(t),this.path=function(t){var e=this.attribute("x").toPixels("x"),i=this.attribute("y").toPixels("y"),n=this.attribute("width").toPixels("x"),s=this.attribute("height").toPixels("y"),a=this.attribute("rx").toPixels("x"),r=this.attribute("ry").toPixels("y");if(this.attribute("rx").hasValue()&&!this.attribute("ry").hasValue()&&(r=a),this.attribute("ry").hasValue()&&!this.attribute("rx").hasValue()&&(a=r),a=Math.min(a,n/2),r=Math.min(r,s/2),null!=t){var o=(Math.sqrt(2)-1)/3*4;t.beginPath(),t.moveTo(e+a,i),t.lineTo(e+n-a,i),t.bezierCurveTo(e+n-a+o*a,i,e+n,i+r-o*r,e+n,i+r),t.lineTo(e+n,i+s-r),t.bezierCurveTo(e+n,i+s-r+o*r,e+n-a+o*a,i+s,e+n-a,i+s),t.lineTo(e+a,i+s),t.bezierCurveTo(e+a-o*a,i+s,e,i+s-r+o*r,e,i+s-r),t.lineTo(e,i+r),t.bezierCurveTo(e,i+r-o*r,e+a-o*a,i,e+a,i),t.closePath()}return new A.BoundingBox(e,i,e+n,i+s)}},A.Element.rect.prototype=new A.Element.PathElementBase,A.Element.circle=function(t){this.base=A.Element.PathElementBase,this.base(t),this.path=function(t){var e=this.attribute("cx").toPixels("x"),i=this.attribute("cy").toPixels("y"),n=this.attribute("r").toPixels();return null!=t&&(t.beginPath(),t.arc(e,i,n,0,2*Math.PI,!1),t.closePath()),new A.BoundingBox(e-n,i-n,e+n,i+n)}},A.Element.circle.prototype=new A.Element.PathElementBase,A.Element.ellipse=function(t){this.base=A.Element.PathElementBase,this.base(t),this.path=function(t){var e=(Math.sqrt(2)-1)/3*4,i=this.attribute("rx").toPixels("x"),n=this.attribute("ry").toPixels("y"),s=this.attribute("cx").toPixels("x"),a=this.attribute("cy").toPixels("y");return null!=t&&(t.beginPath(),t.moveTo(s+i,a),t.bezierCurveTo(s+i,a+e*n,s+e*i,a+n,s,a+n),t.bezierCurveTo(s-e*i,a+n,s-i,a+e*n,s-i,a),t.bezierCurveTo(s-i,a-e*n,s-e*i,a-n,s,a-n),t.bezierCurveTo(s+e*i,a-n,s+i,a-e*n,s+i,a),t.closePath()),new A.BoundingBox(s-i,a-n,s+i,a+n)}},A.Element.ellipse.prototype=new A.Element.PathElementBase,A.Element.line=function(t){this.base=A.Element.PathElementBase,this.base(t),this.getPoints=function(){return[new A.Point(this.attribute("x1").toPixels("x"),this.attribute("y1").toPixels("y")),new A.Point(this.attribute("x2").toPixels("x"),this.attribute("y2").toPixels("y"))]},this.path=function(t){var e=this.getPoints();return null!=t&&(t.beginPath(),t.moveTo(e[0].x,e[0].y),t.lineTo(e[1].x,e[1].y)),new A.BoundingBox(e[0].x,e[0].y,e[1].x,e[1].y)},this.getMarkers=function(){var t=this.getPoints(),e=t[0].angleTo(t[1]);return[[t[0],e],[t[1],e]]}},A.Element.line.prototype=new A.Element.PathElementBase,A.Element.polyline=function(t){this.base=A.Element.PathElementBase,this.base(t),this.points=A.CreatePath(this.attribute("points").value),this.path=function(t){var e=new A.BoundingBox(this.points[0].x,this.points[0].y);null!=t&&(t.beginPath(),t.moveTo(this.points[0].x,this.points[0].y));for(var i=1;i<this.points.length;i++)e.addPoint(this.points[i].x,this.points[i].y),null!=t&&t.lineTo(this.points[i].x,this.points[i].y);return e},this.getMarkers=function(){for(var t=[],e=0;e<this.points.length-1;e++)t.push([this.points[e],this.points[e].angleTo(this.points[e+1])]);return 0<t.length&&t.push([this.points[this.points.length-1],t[t.length-1][1]]),t}},A.Element.polyline.prototype=new A.Element.PathElementBase,A.Element.polygon=function(t){this.base=A.Element.polyline,this.base(t),this.basePath=this.path,this.path=function(t){var e=this.basePath(t);return null!=t&&(t.lineTo(this.points[0].x,this.points[0].y),t.closePath()),e}},A.Element.polygon.prototype=new A.Element.polyline,A.Element.path=function(t){this.base=A.Element.PathElementBase,this.base(t);var e=this.attribute("d").value;e=e.replace(/,/gm," ");for(var i=0;i<2;i++)e=e.replace(/([MmZzLlHhVvCcSsQqTtAa])([^\s])/gm,"$1 $2");for(e=(e=e.replace(/([^\s])([MmZzLlHhVvCcSsQqTtAa])/gm,"$1 $2")).replace(/([0-9])([+\-])/gm,"$1 $2"),i=0;i<2;i++)e=e.replace(/(\.[0-9]*)(\.)/gm,"$1 $2");e=e.replace(/([Aa](\s+[0-9]+){3})\s+([01])\s*([01])/gm,"$1 $3 $4 "),e=A.compressSpaces(e),e=A.trim(e),this.PathParser=new function(t){this.tokens=t.split(" "),this.reset=function(){this.i=-1,this.command="",this.previousCommand="",this.start=new A.Point(0,0),this.control=new A.Point(0,0),this.current=new A.Point(0,0),this.points=[],this.angles=[]},this.isEnd=function(){return this.i>=this.tokens.length-1},this.isCommandOrEnd=function(){return!!this.isEnd()||null!=this.tokens[this.i+1].match(/^[A-Za-z]$/)},this.isRelativeCommand=function(){switch(this.command){case"m":case"l":case"h":case"v":case"c":case"s":case"q":case"t":case"a":case"z":return!0}return!1},this.getToken=function(){return this.i++,this.tokens[this.i]},this.getScalar=function(){return parseFloat(this.getToken())},this.nextCommand=function(){this.previousCommand=this.command,this.command=this.getToken()},this.getPoint=function(){var t=new A.Point(this.getScalar(),this.getScalar());return this.makeAbsolute(t)},this.getAsControlPoint=function(){var t=this.getPoint();return this.control=t},this.getAsCurrentPoint=function(){var t=this.getPoint();return this.current=t},this.getReflectedControlPoint=function(){return"c"!=this.previousCommand.toLowerCase()&&"s"!=this.previousCommand.toLowerCase()&&"q"!=this.previousCommand.toLowerCase()&&"t"!=this.previousCommand.toLowerCase()?this.current:new A.Point(2*this.current.x-this.control.x,2*this.current.y-this.control.y)},this.makeAbsolute=function(t){return this.isRelativeCommand()&&(t.x+=this.current.x,t.y+=this.current.y),t},this.addMarker=function(t,e,i){null!=i&&0<this.angles.length&&null==this.angles[this.angles.length-1]&&(this.angles[this.angles.length-1]=this.points[this.points.length-1].angleTo(i)),this.addMarkerAngle(t,null==e?null:e.angleTo(t))},this.addMarkerAngle=function(t,e){this.points.push(t),this.angles.push(e)},this.getMarkerPoints=function(){return this.points},this.getMarkerAngles=function(){for(var t=0;t<this.angles.length;t++)if(null==this.angles[t])for(var e=t+1;e<this.angles.length;e++)if(null!=this.angles[e]){this.angles[t]=this.angles[e];break}return this.angles}}(e),this.path=function(t){var e=this.PathParser;e.reset();var i=new A.BoundingBox;for(null!=t&&t.beginPath();!e.isEnd();)switch(e.nextCommand(),e.command){case"M":case"m":var n=e.getAsCurrentPoint();for(e.addMarker(n),i.addPoint(n.x,n.y),null!=t&&t.moveTo(n.x,n.y),e.start=e.current;!e.isCommandOrEnd();)n=e.getAsCurrentPoint(),e.addMarker(n,e.start),i.addPoint(n.x,n.y),null!=t&&t.lineTo(n.x,n.y);break;case"L":case"l":for(;!e.isCommandOrEnd();){var s=e.current;n=e.getAsCurrentPoint(),e.addMarker(n,s),i.addPoint(n.x,n.y),null!=t&&t.lineTo(n.x,n.y)}break;case"H":case"h":for(;!e.isCommandOrEnd();){var a=new A.Point((e.isRelativeCommand()?e.current.x:0)+e.getScalar(),e.current.y);e.addMarker(a,e.current),e.current=a,i.addPoint(e.current.x,e.current.y),null!=t&&t.lineTo(e.current.x,e.current.y)}break;case"V":case"v":for(;!e.isCommandOrEnd();)a=new A.Point(e.current.x,(e.isRelativeCommand()?e.current.y:0)+e.getScalar()),e.addMarker(a,e.current),e.current=a,i.addPoint(e.current.x,e.current.y),null!=t&&t.lineTo(e.current.x,e.current.y);break;case"C":case"c":for(;!e.isCommandOrEnd();){var r=e.current,o=e.getPoint(),l=e.getAsControlPoint(),h=e.getAsCurrentPoint();e.addMarker(h,l,o),i.addBezierCurve(r.x,r.y,o.x,o.y,l.x,l.y,h.x,h.y),null!=t&&t.bezierCurveTo(o.x,o.y,l.x,l.y,h.x,h.y)}break;case"S":case"s":for(;!e.isCommandOrEnd();)r=e.current,o=e.getReflectedControlPoint(),l=e.getAsControlPoint(),h=e.getAsCurrentPoint(),e.addMarker(h,l,o),i.addBezierCurve(r.x,r.y,o.x,o.y,l.x,l.y,h.x,h.y),null!=t&&t.bezierCurveTo(o.x,o.y,l.x,l.y,h.x,h.y);break;case"Q":case"q":for(;!e.isCommandOrEnd();)r=e.current,l=e.getAsControlPoint(),h=e.getAsCurrentPoint(),e.addMarker(h,l,l),i.addQuadraticCurve(r.x,r.y,l.x,l.y,h.x,h.y),null!=t&&t.quadraticCurveTo(l.x,l.y,h.x,h.y);break;case"T":case"t":for(;!e.isCommandOrEnd();)r=e.current,l=e.getReflectedControlPoint(),e.control=l,h=e.getAsCurrentPoint(),e.addMarker(h,l,l),i.addQuadraticCurve(r.x,r.y,l.x,l.y,h.x,h.y),null!=t&&t.quadraticCurveTo(l.x,l.y,h.x,h.y);break;case"A":case"a":for(;!e.isCommandOrEnd();){r=e.current;var u=e.getScalar(),c=e.getScalar(),f=e.getScalar()*(Math.PI/180),m=e.getScalar(),p=e.getScalar(),d=(h=e.getAsCurrentPoint(),new A.Point(Math.cos(f)*(r.x-h.x)/2+Math.sin(f)*(r.y-h.y)/2,-Math.sin(f)*(r.x-h.x)/2+Math.cos(f)*(r.y-h.y)/2)),y=Math.pow(d.x,2)/Math.pow(u,2)+Math.pow(d.y,2)/Math.pow(c,2);1<y&&(u*=Math.sqrt(y),c*=Math.sqrt(y));var v=(m==p?-1:1)*Math.sqrt((Math.pow(u,2)*Math.pow(c,2)-Math.pow(u,2)*Math.pow(d.y,2)-Math.pow(c,2)*Math.pow(d.x,2))/(Math.pow(u,2)*Math.pow(d.y,2)+Math.pow(c,2)*Math.pow(d.x,2)));isNaN(v)&&(v=0);var g=new A.Point(v*u*d.y/c,v*-c*d.x/u),x=new A.Point((r.x+h.x)/2+Math.cos(f)*g.x-Math.sin(f)*g.y,(r.y+h.y)/2+Math.sin(f)*g.x+Math.cos(f)*g.y),b=function(t){return Math.sqrt(Math.pow(t[0],2)+Math.pow(t[1],2))},P=function(t,e){return(t[0]*e[0]+t[1]*e[1])/(b(t)*b(e))},E=function(t,e){return(t[0]*e[1]<t[1]*e[0]?-1:1)*Math.acos(P(t,e))},w=E([1,0],[(d.x-g.x)/u,(d.y-g.y)/c]),B=[(d.x-g.x)/u,(d.y-g.y)/c],C=[(-d.x-g.x)/u,(-d.y-g.y)/c],T=E(B,C);P(B,C)<=-1&&(T=Math.PI),1<=P(B,C)&&(T=0);var V=1-p?1:-1,M=w+V*(T/2),S=new A.Point(x.x+u*Math.cos(M),x.y+c*Math.sin(M));if(e.addMarkerAngle(S,M-V*Math.PI/2),e.addMarkerAngle(h,M-V*Math.PI),i.addPoint(h.x,h.y),null!=t){P=c<u?u:c;var k=c<u?1:u/c,D=c<u?c/u:1;t.translate(x.x,x.y),t.rotate(f),t.scale(k,D),t.arc(0,0,P,w,w+T,1-p),t.scale(1/k,1/D),t.rotate(-f),t.translate(-x.x,-x.y)}}break;case"Z":case"z":null!=t&&i.x1!==i.x2&&i.y1!==i.y2&&t.closePath(),e.current=e.start}return i},this.getMarkers=function(){for(var t=this.PathParser.getMarkerPoints(),e=this.PathParser.getMarkerAngles(),i=[],n=0;n<t.length;n++)i.push([t[n],e[n]]);return i}},A.Element.path.prototype=new A.Element.PathElementBase,A.Element.pattern=function(t){this.base=A.Element.ElementBase,this.base(t),this.createPattern=function(t,e){var i=this.attribute("width").toPixels("x",!0),n=this.attribute("height").toPixels("y",!0),s=new A.Element.svg;s.attributes.viewBox=new A.Property("viewBox",this.attribute("viewBox").value),s.attributes.width=new A.Property("width",i+"px"),s.attributes.height=new A.Property("height",n+"px"),s.attributes.transform=new A.Property("transform",this.attribute("patternTransform").value),s.children=this.children;var a=p();a.width=i,a.height=n;var r=a.getContext("2d");this.attribute("x").hasValue()&&this.attribute("y").hasValue()&&r.translate(this.attribute("x").toPixels("x",!0),this.attribute("y").toPixels("y",!0));for(var o=-1;o<=1;o++)for(var l=-1;l<=1;l++)r.save(),s.attributes.x=new A.Property("x",o*a.width),s.attributes.y=new A.Property("y",l*a.height),s.render(r),r.restore();return t.createPattern(a,"repeat")}},A.Element.pattern.prototype=new A.Element.ElementBase,A.Element.marker=function(t){this.base=A.Element.ElementBase,this.base(t),this.baseRender=this.render,this.render=function(t,e,i){if(e){t.translate(e.x,e.y),"auto"==this.attribute("orient").valueOrDefault("auto")&&t.rotate(i),"strokeWidth"==this.attribute("markerUnits").valueOrDefault("strokeWidth")&&t.scale(t.lineWidth,t.lineWidth),t.save();var n=new A.Element.svg;n.attributes.viewBox=new A.Property("viewBox",this.attribute("viewBox").value),n.attributes.refX=new A.Property("refX",this.attribute("refX").value),n.attributes.refY=new A.Property("refY",this.attribute("refY").value),n.attributes.width=new A.Property("width",this.attribute("markerWidth").value),n.attributes.height=new A.Property("height",this.attribute("markerHeight").value),n.attributes.fill=new A.Property("fill",this.attribute("fill").valueOrDefault("black")),n.attributes.stroke=new A.Property("stroke",this.attribute("stroke").valueOrDefault("none")),n.children=this.children,n.render(t),t.restore(),"strokeWidth"==this.attribute("markerUnits").valueOrDefault("strokeWidth")&&t.scale(1/t.lineWidth,1/t.lineWidth),"auto"==this.attribute("orient").valueOrDefault("auto")&&t.rotate(-i),t.translate(-e.x,-e.y)}}},A.Element.marker.prototype=new A.Element.ElementBase,A.Element.defs=function(t){this.base=A.Element.ElementBase,this.base(t),this.render=function(t){}},A.Element.defs.prototype=new A.Element.ElementBase,A.Element.GradientBase=function(t){this.base=A.Element.ElementBase,this.base(t),this.stops=[];for(var e=0;e<this.children.length;e++){var i=this.children[e];"stop"==i.type&&this.stops.push(i)}this.getGradient=function(){},this.gradientUnits=function(){return this.attribute("gradientUnits").valueOrDefault("objectBoundingBox")},this.attributesToInherit=["gradientUnits"],this.inheritStopContainer=function(t){for(var e=0;e<this.attributesToInherit.length;e++){var i=this.attributesToInherit[e];!this.attribute(i).hasValue()&&t.attribute(i).hasValue()&&(this.attribute(i,!0).value=t.attribute(i).value)}},this.createGradient=function(t,e,i){var n=this;this.getHrefAttribute().hasValue()&&(n=this.getHrefAttribute().getDefinition(),this.inheritStopContainer(n));var s=function(t){return i.hasValue()?new A.Property("color",t).addOpacity(i).value:t},a=this.getGradient(t,e);if(null==a)return s(n.stops[n.stops.length-1].color);for(var r=0;r<n.stops.length;r++)a.addColorStop(n.stops[r].offset,s(n.stops[r].color));if(this.attribute("gradientTransform").hasValue()){var o=A.ViewPort.viewPorts[0],l=new A.Element.rect;l.attributes.x=new A.Property("x",-A.MAX_VIRTUAL_PIXELS/3),l.attributes.y=new A.Property("y",-A.MAX_VIRTUAL_PIXELS/3),l.attributes.width=new A.Property("width",A.MAX_VIRTUAL_PIXELS),l.attributes.height=new A.Property("height",A.MAX_VIRTUAL_PIXELS);var h=new A.Element.g;h.attributes.transform=new A.Property("transform",this.attribute("gradientTransform").value),h.children=[l];var u=new A.Element.svg;u.attributes.x=new A.Property("x",0),u.attributes.y=new A.Property("y",0),u.attributes.width=new A.Property("width",o.width),u.attributes.height=new A.Property("height",o.height),u.children=[h];var c=p();c.width=o.width,c.height=o.height;var f=c.getContext("2d");return f.fillStyle=a,u.render(f),f.createPattern(c,"no-repeat")}return a}},A.Element.GradientBase.prototype=new A.Element.ElementBase,A.Element.linearGradient=function(t){this.base=A.Element.GradientBase,this.base(t),this.attributesToInherit.push("x1"),this.attributesToInherit.push("y1"),this.attributesToInherit.push("x2"),this.attributesToInherit.push("y2"),this.getGradient=function(t,e){var i="objectBoundingBox"==this.gradientUnits()?e.getBoundingBox(t):null;this.attribute("x1").hasValue()||this.attribute("y1").hasValue()||this.attribute("x2").hasValue()||this.attribute("y2").hasValue()||(this.attribute("x1",!0).value=0,this.attribute("y1",!0).value=0,this.attribute("x2",!0).value=1,this.attribute("y2",!0).value=0);var n="objectBoundingBox"==this.gradientUnits()?i.x()+i.width()*this.attribute("x1").numValue():this.attribute("x1").toPixels("x"),s="objectBoundingBox"==this.gradientUnits()?i.y()+i.height()*this.attribute("y1").numValue():this.attribute("y1").toPixels("y"),a="objectBoundingBox"==this.gradientUnits()?i.x()+i.width()*this.attribute("x2").numValue():this.attribute("x2").toPixels("x"),r="objectBoundingBox"==this.gradientUnits()?i.y()+i.height()*this.attribute("y2").numValue():this.attribute("y2").toPixels("y");return n==a&&s==r?null:t.createLinearGradient(n,s,a,r)}},A.Element.linearGradient.prototype=new A.Element.GradientBase,A.Element.radialGradient=function(t){this.base=A.Element.GradientBase,this.base(t),this.attributesToInherit.push("cx"),this.attributesToInherit.push("cy"),this.attributesToInherit.push("r"),this.attributesToInherit.push("fx"),this.attributesToInherit.push("fy"),this.getGradient=function(t,e){var i=e.getBoundingBox(t);this.attribute("cx").hasValue()||(this.attribute("cx",!0).value="50%"),this.attribute("cy").hasValue()||(this.attribute("cy",!0).value="50%"),this.attribute("r").hasValue()||(this.attribute("r",!0).value="50%");var n="objectBoundingBox"==this.gradientUnits()?i.x()+i.width()*this.attribute("cx").numValue():this.attribute("cx").toPixels("x"),s="objectBoundingBox"==this.gradientUnits()?i.y()+i.height()*this.attribute("cy").numValue():this.attribute("cy").toPixels("y"),a=n,r=s;this.attribute("fx").hasValue()&&(a="objectBoundingBox"==this.gradientUnits()?i.x()+i.width()*this.attribute("fx").numValue():this.attribute("fx").toPixels("x")),this.attribute("fy").hasValue()&&(r="objectBoundingBox"==this.gradientUnits()?i.y()+i.height()*this.attribute("fy").numValue():this.attribute("fy").toPixels("y"));var o="objectBoundingBox"==this.gradientUnits()?(i.width()+i.height())/2*this.attribute("r").numValue():this.attribute("r").toPixels();return t.createRadialGradient(a,r,0,n,s,o)}},A.Element.radialGradient.prototype=new A.Element.GradientBase,A.Element.stop=function(t){this.base=A.Element.ElementBase,this.base(t),this.offset=this.attribute("offset").numValue(),this.offset<0&&(this.offset=0),1<this.offset&&(this.offset=1);var e=this.style("stop-color",!0);""===e.value&&(e.value="#000"),this.style("stop-opacity").hasValue()&&(e=e.addOpacity(this.style("stop-opacity"))),this.color=e.value},A.Element.stop.prototype=new A.Element.ElementBase,A.Element.AnimateBase=function(t){this.base=A.Element.ElementBase,this.base(t),A.Animations.push(this),this.duration=0,this.begin=this.attribute("begin").toMilliseconds(),this.maxDuration=this.begin+this.attribute("dur").toMilliseconds(),this.getProperty=function(){var t=this.attribute("attributeType").value,e=this.attribute("attributeName").value;return"CSS"==t?this.parent.style(e,!0):this.parent.attribute(e,!0)},this.initialValue=null,this.initialUnits="",this.removed=!1,this.calcValue=function(){return""},this.update=function(t){if(null==this.initialValue&&(this.initialValue=this.getProperty().value,this.initialUnits=this.getProperty().getUnits()),this.duration>this.maxDuration){if("indefinite"==this.attribute("repeatCount").value||"indefinite"==this.attribute("repeatDur").value)this.duration=0;else if("freeze"!=this.attribute("fill").valueOrDefault("remove")||this.frozen){if("remove"==this.attribute("fill").valueOrDefault("remove")&&!this.removed)return this.removed=!0,this.getProperty().value=this.parent.animationFrozen?this.parent.animationFrozenValue:this.initialValue,!0}else this.frozen=!0,this.parent.animationFrozen=!0,this.parent.animationFrozenValue=this.getProperty().value;return!1}this.duration=this.duration+t;var e=!1;if(this.begin<this.duration){var i=this.calcValue();this.attribute("type").hasValue()&&(i=this.attribute("type").value+"("+i+")"),this.getProperty().value=i,e=!0}return e},this.from=this.attribute("from"),this.to=this.attribute("to"),this.values=this.attribute("values"),this.values.hasValue()&&(this.values.value=this.values.value.split(";")),this.progress=function(){var t={progress:(this.duration-this.begin)/(this.maxDuration-this.begin)};if(this.values.hasValue()){var e=t.progress*(this.values.value.length-1),i=Math.floor(e),n=Math.ceil(e);t.from=new A.Property("from",parseFloat(this.values.value[i])),t.to=new A.Property("to",parseFloat(this.values.value[n])),t.progress=(e-i)/(n-i)}else t.from=this.from,t.to=this.to;return t}},A.Element.AnimateBase.prototype=new A.Element.ElementBase,A.Element.animate=function(t){this.base=A.Element.AnimateBase,this.base(t),this.calcValue=function(){var t=this.progress();return t.from.numValue()+(t.to.numValue()-t.from.numValue())*t.progress+this.initialUnits}},A.Element.animate.prototype=new A.Element.AnimateBase,A.Element.animateColor=function(t){this.base=A.Element.AnimateBase,this.base(t),this.calcValue=function(){var t=this.progress(),e=new m(t.from.value),i=new m(t.to.value);if(e.ok&&i.ok){var n=e.r+(i.r-e.r)*t.progress,s=e.g+(i.g-e.g)*t.progress,a=e.b+(i.b-e.b)*t.progress;return"rgb("+parseInt(n,10)+","+parseInt(s,10)+","+parseInt(a,10)+")"}return this.attribute("from").value}},A.Element.animateColor.prototype=new A.Element.AnimateBase,A.Element.animateTransform=function(t){this.base=A.Element.AnimateBase,this.base(t),this.calcValue=function(){for(var t=this.progress(),e=A.ToNumberArray(t.from.value),i=A.ToNumberArray(t.to.value),n="",s=0;s<e.length;s++)n+=e[s]+(i[s]-e[s])*t.progress+" ";return n}},A.Element.animateTransform.prototype=new A.Element.animate,A.Element.font=function(t){this.base=A.Element.ElementBase,this.base(t),this.horizAdvX=this.attribute("horiz-adv-x").numValue(),this.isRTL=!1,this.isArabic=!1,this.fontFace=null,this.missingGlyph=null,this.glyphs=[];for(var e=0;e<this.children.length;e++){var i=this.children[e];"font-face"==i.type?(this.fontFace=i).style("font-family").hasValue()&&(A.Definitions[i.style("font-family").value]=this):"missing-glyph"==i.type?this.missingGlyph=i:"glyph"==i.type&&(""!=i.arabicForm?(this.isRTL=!0,this.isArabic=!0,void 0===this.glyphs[i.unicode]&&(this.glyphs[i.unicode]=[]),this.glyphs[i.unicode][i.arabicForm]=i):this.glyphs[i.unicode]=i)}},A.Element.font.prototype=new A.Element.ElementBase,A.Element.fontface=function(t){this.base=A.Element.ElementBase,this.base(t),this.ascent=this.attribute("ascent").value,this.descent=this.attribute("descent").value,this.unitsPerEm=this.attribute("units-per-em").numValue()},A.Element.fontface.prototype=new A.Element.ElementBase,A.Element.missingglyph=function(t){this.base=A.Element.path,this.base(t),this.horizAdvX=0},A.Element.missingglyph.prototype=new A.Element.path,A.Element.glyph=function(t){this.base=A.Element.path,this.base(t),this.horizAdvX=this.attribute("horiz-adv-x").numValue(),this.unicode=this.attribute("unicode").value,this.arabicForm=this.attribute("arabic-form").value},A.Element.glyph.prototype=new A.Element.path,A.Element.text=function(t){this.captureTextNodes=!0,this.base=A.Element.RenderedElementBase,this.base(t),this.baseSetContext=this.setContext,this.setContext=function(t){this.baseSetContext(t);var e=this.style("dominant-baseline").toTextBaseline();null==e&&(e=this.style("alignment-baseline").toTextBaseline()),null!=e&&(t.textBaseline=e)},this.initializeCoordinates=function(t){this.x=this.attribute("x").toPixels("x"),this.y=this.attribute("y").toPixels("y"),this.attribute("dx").hasValue()&&(this.x+=this.attribute("dx").toPixels("x")),this.attribute("dy").hasValue()&&(this.y+=this.attribute("dy").toPixels("y")),this.x+=this.getAnchorDelta(t,this,0)},this.getBoundingBox=function(t){this.initializeCoordinates(t);for(var e=null,i=0;i<this.children.length;i++){var n=this.getChildBoundingBox(t,this,this,i);null==e?e=n:e.addBoundingBox(n)}return e},this.renderChildren=function(t){this.initializeCoordinates(t);for(var e=0;e<this.children.length;e++)this.renderChild(t,this,this,e)},this.getAnchorDelta=function(t,e,i){var n=this.style("text-anchor").valueOrDefault("start");if("start"!=n){for(var s=0,a=i;a<e.children.length;a++){var r=e.children[a];if(i<a&&r.attribute("x").hasValue())break;s+=r.measureTextRecursive(t)}return-1*("end"==n?s:s/2)}return 0},this.adjustChildCoordinates=function(t,e,i,n){var s=i.children[n];return s.attribute("x").hasValue()?(s.x=s.attribute("x").toPixels("x")+e.getAnchorDelta(t,i,n),s.attribute("dx").hasValue()&&(s.x+=s.attribute("dx").toPixels("x"))):(s.attribute("dx").hasValue()&&(e.x+=s.attribute("dx").toPixels("x")),s.x=e.x),e.x=s.x+s.measureText(t),s.attribute("y").hasValue()?(s.y=s.attribute("y").toPixels("y"),s.attribute("dy").hasValue()&&(s.y+=s.attribute("dy").toPixels("y"))):(s.attribute("dy").hasValue()&&(e.y+=s.attribute("dy").toPixels("y")),s.y=e.y),e.y=s.y,s},this.getChildBoundingBox=function(t,e,i,n){var s=this.adjustChildCoordinates(t,e,i,n),a=s.getBoundingBox(t);for(n=0;n<s.children.length;n++){var r=e.getChildBoundingBox(t,e,s,n);a.addBoundingBox(r)}return a},this.renderChild=function(t,e,i,n){var s=this.adjustChildCoordinates(t,e,i,n);for(s.render(t),n=0;n<s.children.length;n++)e.renderChild(t,e,s,n)}},A.Element.text.prototype=new A.Element.RenderedElementBase,A.Element.TextElementBase=function(t){this.base=A.Element.RenderedElementBase,this.base(t),this.getGlyph=function(t,e,i){var n=e[i],s=null;if(t.isArabic){var a="isolated";(0==i||" "==e[i-1])&&i<e.length-2&&" "!=e[i+1]&&(a="terminal"),0<i&&" "!=e[i-1]&&i<e.length-2&&" "!=e[i+1]&&(a="medial"),0<i&&" "!=e[i-1]&&(i==e.length-1||" "==e[i+1])&&(a="initial"),void 0!==t.glyphs[n]&&null==(s=t.glyphs[n][a])&&"glyph"==t.glyphs[n].type&&(s=t.glyphs[n])}else s=t.glyphs[n];return null==s&&(s=t.missingGlyph),s},this.renderChildren=function(t){var e=this.parent.style("font-family").getDefinition();if(null==e)"stroke"==t.paintOrder?(""!=t.strokeStyle&&t.strokeText(A.compressSpaces(this.getText()),this.x,this.y),""!=t.fillStyle&&t.fillText(A.compressSpaces(this.getText()),this.x,this.y)):(""!=t.fillStyle&&t.fillText(A.compressSpaces(this.getText()),this.x,this.y),""!=t.strokeStyle&&t.strokeText(A.compressSpaces(this.getText()),this.x,this.y));else{var i=this.parent.style("font-size").numValueOrDefault(A.Font.Parse(A.ctx.font).fontSize),n=this.parent.style("font-style").valueOrDefault(A.Font.Parse(A.ctx.font).fontStyle),s=this.getText();e.isRTL&&(s=s.split("").reverse().join(""));for(var a=A.ToNumberArray(this.parent.attribute("dx").value),r=0;r<s.length;r++){var o=this.getGlyph(e,s,r),l=i/e.fontFace.unitsPerEm;t.translate(this.x,this.y),t.scale(l,-l);var h=t.lineWidth;t.lineWidth=t.lineWidth*e.fontFace.unitsPerEm/i,"italic"==n&&t.transform(1,0,.4,1,0,0),o.render(t),"italic"==n&&t.transform(1,0,-.4,1,0,0),t.lineWidth=h,t.scale(1/l,-1/l),t.translate(-this.x,-this.y),this.x+=i*(o.horizAdvX||e.horizAdvX)/e.fontFace.unitsPerEm,void 0===a[r]||isNaN(a[r])||(this.x+=a[r])}}},this.getText=function(){},this.measureTextRecursive=function(t){for(var e=this.measureText(t),i=0;i<this.children.length;i++)e+=this.children[i].measureTextRecursive(t);return e},this.measureText=function(t){var e=this.parent.style("font-family").getDefinition();if(null!=e){var i=this.parent.style("font-size").numValueOrDefault(A.Font.Parse(A.ctx.font).fontSize),n=0,s=this.getText();e.isRTL&&(s=s.split("").reverse().join(""));for(var a=A.ToNumberArray(this.parent.attribute("dx").value),r=0;r<s.length;r++)n+=(this.getGlyph(e,s,r).horizAdvX||e.horizAdvX)*i/e.fontFace.unitsPerEm,void 0===a[r]||isNaN(a[r])||(n+=a[r]);return n}var o=A.compressSpaces(this.getText());if(!t.measureText)return 10*o.length;t.save(),this.setContext(t,!0);var l=t.measureText(o).width;return t.restore(),l},this.getBoundingBox=function(t){var e=this.parent.style("font-size").numValueOrDefault(A.Font.Parse(A.ctx.font).fontSize);return new A.BoundingBox(this.x,this.y-e,this.x+this.measureText(t),this.y)}},A.Element.TextElementBase.prototype=new A.Element.RenderedElementBase,A.Element.tspan=function(t){this.captureTextNodes=!0,this.base=A.Element.TextElementBase,this.base(t),this.text=A.compressSpaces(t.value||t.text||t.textContent||""),this.getText=function(){return 0<this.children.length?"":this.text}},A.Element.tspan.prototype=new A.Element.TextElementBase,A.Element.tref=function(t){this.base=A.Element.TextElementBase,this.base(t),this.getText=function(){var t=this.getHrefAttribute().getDefinition();if(null!=t)return t.children[0].getText()}},A.Element.tref.prototype=new A.Element.TextElementBase,A.Element.a=function(t){this.base=A.Element.TextElementBase,this.base(t),this.hasText=0<t.childNodes.length;for(var e=0;e<t.childNodes.length;e++)3!=t.childNodes[e].nodeType&&(this.hasText=!1);this.text=this.hasText?t.childNodes[0].value||t.childNodes[0].data:"",this.getText=function(){return this.text},this.baseRenderChildren=this.renderChildren,this.renderChildren=function(t){if(this.hasText){this.baseRenderChildren(t);var e=new A.Property("fontSize",A.Font.Parse(A.ctx.font).fontSize);A.Mouse.checkBoundingBox(this,new A.BoundingBox(this.x,this.y-e.toPixels("y"),this.x+this.measureText(t),this.y))}else if(0<this.children.length){var i=new A.Element.g;i.children=this.children,i.parent=this,i.render(t)}},this.onclick=function(){u.open(this.getHrefAttribute().value)},this.onmousemove=function(){A.ctx.canvas.style.cursor="pointer"}},A.Element.a.prototype=new A.Element.TextElementBase,A.Element.image=function(t){this.base=A.Element.RenderedElementBase,this.base(t);var e=this.getHrefAttribute().value;if(""!=e){var a=e.match(/\.svg$/);if(A.Images.push(this),this.loaded=!1,a)this.img=A.ajax(e),this.loaded=!0;else{this.img=document.createElement("img"),1==A.opts.useCORS&&(this.img.crossOrigin="Anonymous");var r=this;this.img.onload=function(){r.loaded=!0},this.img.onerror=function(){A.log('ERROR: image "'+e+'" not found'),r.loaded=!0},this.img.src=e}this.renderChildren=function(t){var e=this.attribute("x").toPixels("x"),i=this.attribute("y").toPixels("y"),n=this.attribute("width").toPixels("x"),s=this.attribute("height").toPixels("y");0!=n&&0!=s&&(t.save(),a?t.drawSvg(this.img,e,i,n,s):(t.translate(e,i),A.AspectRatio(t,this.attribute("preserveAspectRatio").value,n,this.img.width,s,this.img.height,0,0),r.loaded&&(void 0===this.img.complete||this.img.complete)&&t.drawImage(this.img,0,0)),t.restore())},this.getBoundingBox=function(){var t=this.attribute("x").toPixels("x"),e=this.attribute("y").toPixels("y"),i=this.attribute("width").toPixels("x"),n=this.attribute("height").toPixels("y");return new A.BoundingBox(t,e,t+i,e+n)}}},A.Element.image.prototype=new A.Element.RenderedElementBase,A.Element.g=function(t){this.base=A.Element.RenderedElementBase,this.base(t),this.getBoundingBox=function(t){for(var e=new A.BoundingBox,i=0;i<this.children.length;i++)e.addBoundingBox(this.children[i].getBoundingBox(t));return e}},A.Element.g.prototype=new A.Element.RenderedElementBase,A.Element.symbol=function(t){this.base=A.Element.RenderedElementBase,this.base(t),this.render=function(t){}},A.Element.symbol.prototype=new A.Element.RenderedElementBase,A.Element.style=function(t){this.base=A.Element.ElementBase,this.base(t);for(var e="",i=0;i<t.childNodes.length;i++)e+=t.childNodes[i].data;e=e.replace(/(\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\/)|(^[\s]*\/\/.*)/gm,"");var n=(e=A.compressSpaces(e)).split("}");for(i=0;i<n.length;i++)if(""!=A.trim(n[i]))for(var s=n[i].split("{"),a=s[0].split(","),r=s[1].split(";"),o=0;o<a.length;o++){var l=A.trim(a[o]);if(""!=l){for(var h=A.Styles[l]||{},u=0;u<r.length;u++){var c=r[u].indexOf(":"),f=r[u].substr(0,c),m=r[u].substr(c+1,r[u].length-c);null!=f&&null!=m&&(h[A.trim(f)]=new A.Property(A.trim(f),A.trim(m)))}if(A.Styles[l]=h,A.StylesSpecificity[l]=w(l),"@font-face"==l)for(var p=h["font-family"].value.replace(/"/g,""),d=h.src.value.split(","),y=0;y<d.length;y++)if(0<d[y].indexOf('format("svg")'))for(var v=d[y].indexOf("url"),g=d[y].indexOf(")",v),x=d[y].substr(v+5,g-v-6),b=A.parseXml(A.ajax(x)).getElementsByTagName("font"),P=0;P<b.length;P++){var E=A.CreateElement(b[P]);A.Definitions[p]=E}}}},A.Element.style.prototype=new A.Element.ElementBase,A.Element.use=function(t){this.base=A.Element.RenderedElementBase,this.base(t),this.baseSetContext=this.setContext,this.setContext=function(t){this.baseSetContext(t),this.attribute("x").hasValue()&&t.translate(this.attribute("x").toPixels("x"),0),this.attribute("y").hasValue()&&t.translate(0,this.attribute("y").toPixels("y"))};var n=this.getHrefAttribute().getDefinition();this.path=function(t){null!=n&&n.path(t)},this.elementTransform=function(){if(null!=n&&n.style("transform",!1,!0).hasValue())return new A.Transform(n.style("transform",!1,!0).value)},this.getBoundingBox=function(t){if(null!=n)return n.getBoundingBox(t)},this.renderChildren=function(t){if(null!=n){var e=n;"symbol"==n.type&&((e=new A.Element.svg).type="svg",e.attributes.viewBox=new A.Property("viewBox",n.attribute("viewBox").value),e.attributes.preserveAspectRatio=new A.Property("preserveAspectRatio",n.attribute("preserveAspectRatio").value),e.attributes.overflow=new A.Property("overflow",n.attribute("overflow").value),e.children=n.children),"svg"==e.type&&(this.attribute("width").hasValue()&&(e.attributes.width=new A.Property("width",this.attribute("width").value)),this.attribute("height").hasValue()&&(e.attributes.height=new A.Property("height",this.attribute("height").value)));var i=e.parent;e.parent=null,e.render(t),e.parent=i}}},A.Element.use.prototype=new A.Element.RenderedElementBase,A.Element.mask=function(t){this.base=A.Element.ElementBase,this.base(t),this.apply=function(t,e){var i=this.attribute("x").toPixels("x"),n=this.attribute("y").toPixels("y"),s=this.attribute("width").toPixels("x"),a=this.attribute("height").toPixels("y");if(0==s&&0==a){for(var r=new A.BoundingBox,o=0;o<this.children.length;o++)r.addBoundingBox(this.children[o].getBoundingBox(t));i=Math.floor(r.x1),n=Math.floor(r.y1),s=Math.floor(r.width()),a=Math.floor(r.height())}var l=e.attribute("mask").value;e.attribute("mask").value="";var h=p();h.width=i+s,h.height=n+a;var u=h.getContext("2d");this.renderChildren(u);var c=p();c.width=i+s,c.height=n+a;var f=c.getContext("2d");e.render(f),f.globalCompositeOperation="destination-in",f.fillStyle=u.createPattern(h,"no-repeat"),f.fillRect(0,0,i+s,n+a),t.fillStyle=f.createPattern(c,"no-repeat"),t.fillRect(0,0,i+s,n+a),e.attribute("mask").value=l},this.render=function(t){}},A.Element.mask.prototype=new A.Element.ElementBase,A.Element.clipPath=function(t){this.base=A.Element.ElementBase,this.base(t),this.apply=function(t){var e="undefined"!=typeof CanvasRenderingContext2D,i=t.beginPath,n=t.closePath;e&&(CanvasRenderingContext2D.prototype.beginPath=function(){},CanvasRenderingContext2D.prototype.closePath=function(){}),i.call(t);for(var s=0;s<this.children.length;s++){var a=this.children[s];if(void 0!==a.path){var r=void 0!==a.elementTransform&&a.elementTransform();!r&&a.style("transform",!1,!0).hasValue()&&(r=new A.Transform(a.style("transform",!1,!0).value)),r&&r.apply(t),a.path(t),e&&(CanvasRenderingContext2D.prototype.closePath=n),r&&r.unapply(t)}}n.call(t),t.clip(),e&&(CanvasRenderingContext2D.prototype.beginPath=i,CanvasRenderingContext2D.prototype.closePath=n)},this.render=function(t){}},A.Element.clipPath.prototype=new A.Element.ElementBase,A.Element.filter=function(t){this.base=A.Element.ElementBase,this.base(t),this.apply=function(t,e){var i=e.getBoundingBox(t),n=Math.floor(i.x1),s=Math.floor(i.y1),a=Math.floor(i.width()),r=Math.floor(i.height()),o=e.style("filter").value;e.style("filter").value="";for(var l=0,h=0,u=0;u<this.children.length;u++){var c=this.children[u].extraFilterDistance||0;l=Math.max(l,c),h=Math.max(h,c)}var f=p();f.width=a+2*l,f.height=r+2*h;var m=f.getContext("2d");for(m.translate(-n+l,-s+h),e.render(m),u=0;u<this.children.length;u++)"function"==typeof this.children[u].apply&&this.children[u].apply(m,0,0,a+2*l,r+2*h);t.drawImage(f,0,0,a+2*l,r+2*h,n-l,s-h,a+2*l,r+2*h),e.style("filter",!0).value=o},this.render=function(t){}},A.Element.filter.prototype=new A.Element.ElementBase,A.Element.feMorphology=function(t){this.base=A.Element.ElementBase,this.base(t),this.apply=function(t,e,i,n,s){}},A.Element.feMorphology.prototype=new A.Element.ElementBase,A.Element.feComposite=function(t){this.base=A.Element.ElementBase,this.base(t),this.apply=function(t,e,i,n,s){}},A.Element.feComposite.prototype=new A.Element.ElementBase,A.Element.feColorMatrix=function(t){this.base=A.Element.ElementBase,this.base(t);var n=A.ToNumberArray(this.attribute("values").value);switch(this.attribute("type").valueOrDefault("matrix")){case"saturate":var e=n[0];n=[.213+.787*e,.715-.715*e,.072-.072*e,0,0,.213-.213*e,.715+.285*e,.072-.072*e,0,0,.213-.213*e,.715-.715*e,.072+.928*e,0,0,0,0,0,1,0,0,0,0,0,1];break;case"hueRotate":var s=n[0]*Math.PI/180,i=function(t,e,i){return t+Math.cos(s)*e+Math.sin(s)*i};n=[i(.213,.787,-.213),i(.715,-.715,-.715),i(.072,-.072,.928),0,0,i(.213,-.213,.143),i(.715,.285,.14),i(.072,-.072,-.283),0,0,i(.213,-.213,-.787),i(.715,-.715,.715),i(.072,.928,.072),0,0,0,0,0,1,0,0,0,0,0,1];break;case"luminanceToAlpha":n=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.2125,.7154,.0721,0,0,0,0,0,0,1]}function u(t,e,i,n,s,a){return t[i*n*4+4*e+a]}function c(t,e,i,n,s,a,r){t[i*n*4+4*e+a]=r}function f(t,e){var i=n[t];return i*(i<0?e-255:e)}this.apply=function(t,e,i,n,s){var a=t.getImageData(0,0,n,s);for(i=0;i<s;i++)for(e=0;e<n;e++){var r=u(a.data,e,i,n,0,0),o=u(a.data,e,i,n,0,1),l=u(a.data,e,i,n,0,2),h=u(a.data,e,i,n,0,3);c(a.data,e,i,n,0,0,f(0,r)+f(1,o)+f(2,l)+f(3,h)+f(4,1)),c(a.data,e,i,n,0,1,f(5,r)+f(6,o)+f(7,l)+f(8,h)+f(9,1)),c(a.data,e,i,n,0,2,f(10,r)+f(11,o)+f(12,l)+f(13,h)+f(14,1)),c(a.data,e,i,n,0,3,f(15,r)+f(16,o)+f(17,l)+f(18,h)+f(19,1))}t.clearRect(0,0,n,s),t.putImageData(a,0,0)}},A.Element.feColorMatrix.prototype=new A.Element.ElementBase,A.Element.feGaussianBlur=function(t){this.base=A.Element.ElementBase,this.base(t),this.blurRadius=Math.floor(this.attribute("stdDeviation").numValue()),this.extraFilterDistance=this.blurRadius,this.apply=function(t,e,i,n,s){d&&void 0!==d.canvasRGBA?(t.canvas.id=A.UniqueId(),t.canvas.style.display="none",document.body.appendChild(t.canvas),d.canvasRGBA(t.canvas,e,i,n,s,this.blurRadius),document.body.removeChild(t.canvas)):A.log("ERROR: StackBlur.js must be included for blur to work")}},A.Element.feGaussianBlur.prototype=new A.Element.ElementBase,A.Element.title=function(t){},A.Element.title.prototype=new A.Element.ElementBase,A.Element.desc=function(t){},A.Element.desc.prototype=new A.Element.ElementBase,A.Element.MISSING=function(t){A.log("ERROR: Element '"+t.nodeName+"' not yet implemented.")},A.Element.MISSING.prototype=new A.Element.ElementBase,A.CreateElement=function(t){var e=t.nodeName.replace(/^[^:]+:/,"");e=e.replace(/\-/g,"");var i=null;return(i=void 0!==A.Element[e]?new A.Element[e](t):new A.Element.MISSING(t)).type=t.nodeName,i},A.load=function(t,e){A.loadXml(t,A.ajax(e))},A.loadXml=function(t,e){A.loadXmlDoc(t,A.parseXml(e))},A.loadXmlDoc=function(a,r){A.init(a);var i=function(t){for(var e=a.canvas;e;)t.x-=e.offsetLeft,t.y-=e.offsetTop,e=e.offsetParent;return u.scrollX&&(t.x+=u.scrollX),u.scrollY&&(t.y+=u.scrollY),t};1!=A.opts.ignoreMouse&&(a.canvas.onclick=function(t){var e=i(new A.Point(null!=t?t.clientX:event.clientX,null!=t?t.clientY:event.clientY));A.Mouse.onclick(e.x,e.y)},a.canvas.onmousemove=function(t){var e=i(new A.Point(null!=t?t.clientX:event.clientX,null!=t?t.clientY:event.clientY));A.Mouse.onmousemove(e.x,e.y)});var o=A.CreateElement(r.documentElement);o.root=!0,o.addStylesFromStyleDefinition();var l=!0,n=function(){A.ViewPort.Clear(),a.canvas.parentNode?A.ViewPort.SetCurrent(a.canvas.parentNode.clientWidth,a.canvas.parentNode.clientHeight):A.ViewPort.SetCurrent(800,600),1!=A.opts.ignoreDimensions&&(o.style("width").hasValue()&&(a.canvas.width=o.style("width").toPixels("x"),a.canvas.style&&(a.canvas.style.width=a.canvas.width+"px")),o.style("height").hasValue()&&(a.canvas.height=o.style("height").toPixels("y"),a.canvas.style&&(a.canvas.style.height=a.canvas.height+"px")));var t=a.canvas.clientWidth||a.canvas.width,e=a.canvas.clientHeight||a.canvas.height;if(1==A.opts.ignoreDimensions&&o.style("width").hasValue()&&o.style("height").hasValue()&&(t=o.style("width").toPixels("x"),e=o.style("height").toPixels("y")),A.ViewPort.SetCurrent(t,e),null!=A.opts.offsetX&&(o.attribute("x",!0).value=A.opts.offsetX),null!=A.opts.offsetY&&(o.attribute("y",!0).value=A.opts.offsetY),null!=A.opts.scaleWidth||null!=A.opts.scaleHeight){var i=null,n=null,s=A.ToNumberArray(o.attribute("viewBox").value);null!=A.opts.scaleWidth&&(o.attribute("width").hasValue()?i=o.attribute("width").toPixels("x")/A.opts.scaleWidth:isNaN(s[2])||(i=s[2]/A.opts.scaleWidth)),null!=A.opts.scaleHeight&&(o.attribute("height").hasValue()?n=o.attribute("height").toPixels("y")/A.opts.scaleHeight:isNaN(s[3])||(n=s[3]/A.opts.scaleHeight)),null==i&&(i=n),null==n&&(n=i),o.attribute("width",!0).value=A.opts.scaleWidth,o.attribute("height",!0).value=A.opts.scaleHeight,o.style("transform",!0,!0).value+=" scale("+1/i+","+1/n+")"}1!=A.opts.ignoreClear&&a.clearRect(0,0,t,e),o.render(a),l&&(l=!1,"function"==typeof A.opts.renderCallback&&A.opts.renderCallback(r))},s=!0;A.ImagesLoaded()&&(s=!1,n()),A.intervalID=setInterval(function(){var t=!1;if(s&&A.ImagesLoaded()&&(t=!(s=!1)),1!=A.opts.ignoreMouse&&(t|=A.Mouse.hasEvents()),1!=A.opts.ignoreAnimation)for(var e=0;e<A.Animations.length;e++)t|=A.Animations[e].update(1e3/A.FRAMERATE);"function"==typeof A.opts.forceRedraw&&1==A.opts.forceRedraw()&&(t=!0),t&&(n(),A.Mouse.runEvents())},1e3/A.FRAMERATE)},A.stop=function(){A.intervalID&&clearInterval(A.intervalID)},A.Mouse=new function(){this.events=[],this.hasEvents=function(){return 0!=this.events.length},this.onclick=function(t,e){this.events.push({type:"onclick",x:t,y:e,run:function(t){t.onclick&&t.onclick()}})},this.onmousemove=function(t,e){this.events.push({type:"onmousemove",x:t,y:e,run:function(t){t.onmousemove&&t.onmousemove()}})},this.eventElements=[],this.checkPath=function(t,e){for(var i=0;i<this.events.length;i++){var n=this.events[i];e.isPointInPath&&e.isPointInPath(n.x,n.y)&&(this.eventElements[i]=t)}},this.checkBoundingBox=function(t,e){for(var i=0;i<this.events.length;i++){var n=this.events[i];e.isPointInBox(n.x,n.y)&&(this.eventElements[i]=t)}},this.runEvents=function(){A.ctx.canvas.style.cursor="";for(var t=0;t<this.events.length;t++)for(var e=this.events[t],i=this.eventElements[t];i;)e.run(i),i=i.parent;this.events=[],this.eventElements=[]}},A}(i||{});"string"==typeof t&&(t=document.getElementById(t)),null!=t.svg&&t.svg.stop(),t.childNodes&&1==t.childNodes.length&&"OBJECT"==t.childNodes[0].nodeName||(t.svg=n);var s=t.getContext("2d");void 0!==e.documentElement?n.loadXmlDoc(s,e):"<"==e.substr(0,1)?n.loadXml(s,e):n.load(s,e)}else for(var a=document.querySelectorAll("svg"),r=0;r<a.length;r++){var o=a[r],l=document.createElement("canvas");l.width=o.clientWidth,l.height=o.clientHeight,o.parentNode.insertBefore(l,o),o.parentNode.removeChild(o);var h=document.createElement("div");h.appendChild(o),c(l,h.innerHTML)}};"undefined"==typeof Element||(void 0!==Element.prototype.matches?f=function(t,e){return t.matches(e)}:void 0!==Element.prototype.webkitMatchesSelector?f=function(t,e){return t.webkitMatchesSelector(e)}:void 0!==Element.prototype.mozMatchesSelector?f=function(t,e){return t.mozMatchesSelector(e)}:void 0!==Element.prototype.msMatchesSelector?f=function(t,e){return t.msMatchesSelector(e)}:void 0!==Element.prototype.oMatchesSelector?f=function(t,e){return t.oMatchesSelector(e)}:("function"!=typeof jQuery&&"function"!=typeof Zepto||(f=function(t,e){return $(t).is(e)}),void 0===f&&"undefined"!=typeof Sizzle&&(f=Sizzle.matchesSelector)));var e=/(\[[^\]]+\])/g,i=/(#[^\s\+>~\.\[:]+)/g,a=/(\.[^\s\+>~\.\[:]+)/g,r=/(::[^\s\+>~\.\[:]+|:first-line|:first-letter|:before|:after)/gi,o=/(:[\w-]+\([^\)]*\))/gi,l=/(:[^\s\+>~\.\[:]+)/g,h=/([^\s\+>~\.\[:]+)/g;function w(n){var s=[0,0,0],t=function(t,e){var i=n.match(t);null!=i&&(s[e]+=i.length,n=n.replace(t," "))};return n=(n=n.replace(/:not\(([^\)]*)\)/g,"     $1 ")).replace(/{[\s\S]*/gm," "),t(e,1),t(i,0),t(a,1),t(r,2),t(o,1),t(l,1),n=(n=n.replace(/[\*\s\+>~]/g," ")).replace(/[#\.]/g," "),t(h,2),s.join("")}"undefined"!=typeof CanvasRenderingContext2D&&(CanvasRenderingContext2D.prototype.drawSvg=function(t,e,i,n,s,a){var r={ignoreMouse:!0,ignoreAnimation:!0,ignoreDimensions:!0,ignoreClear:!0,offsetX:e,offsetY:i,scaleWidth:n,scaleHeight:s};for(var o in a)a.hasOwnProperty(o)&&(r[o]=a[o]);c(this.canvas,t,r)}),t.exports=c}(t={exports:{}},t.exports),t.exports});
+var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _compose2=_interopRequireDefault(__webpack_require__(8808));var _react=_interopRequireDefault(__webpack_require__(3899));var _mapGetter=_interopRequireDefault(__webpack_require__(9635));var _baseLayer=_interopRequireDefault(__webpack_require__(7006));var _dec,_class;var VectorTileLayer=(_dec=(0,_compose2.default)(_mapGetter.default,_baseLayer.default),_dec(_class=/*#__PURE__*/function(_React$Component){(0,_inherits2.default)(VectorTileLayer,_React$Component);var _super=(0,_createSuper2.default)(VectorTileLayer);function VectorTileLayer(){(0,_classCallCheck2.default)(this,VectorTileLayer);return _super.apply(this,arguments);}(0,_createClass2.default)(VectorTileLayer,[{key:"loaded",value:function loaded(map){if(map&&map['addStyle']){map['addStyle'](this.props.styleOptions,this.props.before);}}},{key:"render",value:function render(){return null;}}]);return VectorTileLayer;}(_react.default.Component))||_class);exports["default"]=VectorTileLayer;
 
 /***/ }),
 
@@ -24608,7 +22481,7 @@ exports["default"] = _default;
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(5318);
+var _interopRequireDefault = __webpack_require__(4836);
 
 exports.__esModule = true;
 exports["default"] = void 0;
@@ -24621,315 +22494,6 @@ var wrapDisplayName = function wrapDisplayName(BaseComponent, hocName) {
 
 var _default = wrapDisplayName;
 exports["default"] = _default;
-
-/***/ }),
-
-/***/ 6131:
-/***/ (function(module) {
-
-/*
-	Based on rgbcolor.js by Stoyan Stefanov <sstoo@gmail.com>
-	http://www.phpied.com/rgb-color-parser-in-javascript/
-*/
-
-module.exports = function(color_string) {
-    this.ok = false;
-    this.alpha = 1.0;
-
-    // strip any leading #
-    if (color_string.charAt(0) == '#') { // remove # if any
-        color_string = color_string.substr(1,6);
-    }
-
-    color_string = color_string.replace(/ /g,'');
-    color_string = color_string.toLowerCase();
-
-    // before getting into regexps, try simple matches
-    // and overwrite the input
-    var simple_colors = {
-        aliceblue: 'f0f8ff',
-        antiquewhite: 'faebd7',
-        aqua: '00ffff',
-        aquamarine: '7fffd4',
-        azure: 'f0ffff',
-        beige: 'f5f5dc',
-        bisque: 'ffe4c4',
-        black: '000000',
-        blanchedalmond: 'ffebcd',
-        blue: '0000ff',
-        blueviolet: '8a2be2',
-        brown: 'a52a2a',
-        burlywood: 'deb887',
-        cadetblue: '5f9ea0',
-        chartreuse: '7fff00',
-        chocolate: 'd2691e',
-        coral: 'ff7f50',
-        cornflowerblue: '6495ed',
-        cornsilk: 'fff8dc',
-        crimson: 'dc143c',
-        cyan: '00ffff',
-        darkblue: '00008b',
-        darkcyan: '008b8b',
-        darkgoldenrod: 'b8860b',
-        darkgray: 'a9a9a9',
-        darkgreen: '006400',
-        darkkhaki: 'bdb76b',
-        darkmagenta: '8b008b',
-        darkolivegreen: '556b2f',
-        darkorange: 'ff8c00',
-        darkorchid: '9932cc',
-        darkred: '8b0000',
-        darksalmon: 'e9967a',
-        darkseagreen: '8fbc8f',
-        darkslateblue: '483d8b',
-        darkslategray: '2f4f4f',
-        darkturquoise: '00ced1',
-        darkviolet: '9400d3',
-        deeppink: 'ff1493',
-        deepskyblue: '00bfff',
-        dimgray: '696969',
-        dodgerblue: '1e90ff',
-        feldspar: 'd19275',
-        firebrick: 'b22222',
-        floralwhite: 'fffaf0',
-        forestgreen: '228b22',
-        fuchsia: 'ff00ff',
-        gainsboro: 'dcdcdc',
-        ghostwhite: 'f8f8ff',
-        gold: 'ffd700',
-        goldenrod: 'daa520',
-        gray: '808080',
-        green: '008000',
-        greenyellow: 'adff2f',
-        honeydew: 'f0fff0',
-        hotpink: 'ff69b4',
-        indianred : 'cd5c5c',
-        indigo : '4b0082',
-        ivory: 'fffff0',
-        khaki: 'f0e68c',
-        lavender: 'e6e6fa',
-        lavenderblush: 'fff0f5',
-        lawngreen: '7cfc00',
-        lemonchiffon: 'fffacd',
-        lightblue: 'add8e6',
-        lightcoral: 'f08080',
-        lightcyan: 'e0ffff',
-        lightgoldenrodyellow: 'fafad2',
-        lightgrey: 'd3d3d3',
-        lightgreen: '90ee90',
-        lightpink: 'ffb6c1',
-        lightsalmon: 'ffa07a',
-        lightseagreen: '20b2aa',
-        lightskyblue: '87cefa',
-        lightslateblue: '8470ff',
-        lightslategray: '778899',
-        lightsteelblue: 'b0c4de',
-        lightyellow: 'ffffe0',
-        lime: '00ff00',
-        limegreen: '32cd32',
-        linen: 'faf0e6',
-        magenta: 'ff00ff',
-        maroon: '800000',
-        mediumaquamarine: '66cdaa',
-        mediumblue: '0000cd',
-        mediumorchid: 'ba55d3',
-        mediumpurple: '9370d8',
-        mediumseagreen: '3cb371',
-        mediumslateblue: '7b68ee',
-        mediumspringgreen: '00fa9a',
-        mediumturquoise: '48d1cc',
-        mediumvioletred: 'c71585',
-        midnightblue: '191970',
-        mintcream: 'f5fffa',
-        mistyrose: 'ffe4e1',
-        moccasin: 'ffe4b5',
-        navajowhite: 'ffdead',
-        navy: '000080',
-        oldlace: 'fdf5e6',
-        olive: '808000',
-        olivedrab: '6b8e23',
-        orange: 'ffa500',
-        orangered: 'ff4500',
-        orchid: 'da70d6',
-        palegoldenrod: 'eee8aa',
-        palegreen: '98fb98',
-        paleturquoise: 'afeeee',
-        palevioletred: 'd87093',
-        papayawhip: 'ffefd5',
-        peachpuff: 'ffdab9',
-        peru: 'cd853f',
-        pink: 'ffc0cb',
-        plum: 'dda0dd',
-        powderblue: 'b0e0e6',
-        purple: '800080',
-        rebeccapurple: '663399',
-        red: 'ff0000',
-        rosybrown: 'bc8f8f',
-        royalblue: '4169e1',
-        saddlebrown: '8b4513',
-        salmon: 'fa8072',
-        sandybrown: 'f4a460',
-        seagreen: '2e8b57',
-        seashell: 'fff5ee',
-        sienna: 'a0522d',
-        silver: 'c0c0c0',
-        skyblue: '87ceeb',
-        slateblue: '6a5acd',
-        slategray: '708090',
-        snow: 'fffafa',
-        springgreen: '00ff7f',
-        steelblue: '4682b4',
-        tan: 'd2b48c',
-        teal: '008080',
-        thistle: 'd8bfd8',
-        tomato: 'ff6347',
-        turquoise: '40e0d0',
-        violet: 'ee82ee',
-        violetred: 'd02090',
-        wheat: 'f5deb3',
-        white: 'ffffff',
-        whitesmoke: 'f5f5f5',
-        yellow: 'ffff00',
-        yellowgreen: '9acd32'
-    };
-    color_string = simple_colors[color_string] || color_string;
-    // emd of simple type-in colors
-
-    // array of color definition objects
-    var color_defs = [
-        {
-            re: /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*((?:\d?\.)?\d)\)$/,
-            example: ['rgba(123, 234, 45, 0.8)', 'rgba(255,234,245,1.0)'],
-            process: function (bits){
-                return [
-                    parseInt(bits[1]),
-                    parseInt(bits[2]),
-                    parseInt(bits[3]),
-                    parseFloat(bits[4])
-                ];
-            }
-        },
-        {
-            re: /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/,
-            example: ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
-            process: function (bits){
-                return [
-                    parseInt(bits[1]),
-                    parseInt(bits[2]),
-                    parseInt(bits[3])
-                ];
-            }
-        },
-        {
-            re: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
-            example: ['#00ff00', '336699'],
-            process: function (bits){
-                return [
-                    parseInt(bits[1], 16),
-                    parseInt(bits[2], 16),
-                    parseInt(bits[3], 16)
-                ];
-            }
-        },
-        {
-            re: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
-            example: ['#fb0', 'f0f'],
-            process: function (bits){
-                return [
-                    parseInt(bits[1] + bits[1], 16),
-                    parseInt(bits[2] + bits[2], 16),
-                    parseInt(bits[3] + bits[3], 16)
-                ];
-            }
-        }
-    ];
-
-    // search through the definitions to find a match
-    for (var i = 0; i < color_defs.length; i++) {
-        var re = color_defs[i].re;
-        var processor = color_defs[i].process;
-        var bits = re.exec(color_string);
-        if (bits) {
-            var channels = processor(bits);
-            this.r = channels[0];
-            this.g = channels[1];
-            this.b = channels[2];
-            if (channels.length > 3) {
-                this.alpha = channels[3];
-            }
-            this.ok = true;
-        }
-
-    }
-
-    // validate/cleanup values
-    this.r = (this.r < 0 || isNaN(this.r)) ? 0 : ((this.r > 255) ? 255 : this.r);
-    this.g = (this.g < 0 || isNaN(this.g)) ? 0 : ((this.g > 255) ? 255 : this.g);
-    this.b = (this.b < 0 || isNaN(this.b)) ? 0 : ((this.b > 255) ? 255 : this.b);
-    this.alpha = (this.alpha < 0) ? 0 : ((this.alpha > 1.0 || isNaN(this.alpha)) ? 1.0 : this.alpha);
-
-    // some getters
-    this.toRGB = function () {
-        return 'rgb(' + this.r + ', ' + this.g + ', ' + this.b + ')';
-    }
-    this.toRGBA = function () {
-        return 'rgba(' + this.r + ', ' + this.g + ', ' + this.b + ', ' + this.alpha + ')';
-    }
-    this.toHex = function () {
-        var r = this.r.toString(16);
-        var g = this.g.toString(16);
-        var b = this.b.toString(16);
-        if (r.length == 1) r = '0' + r;
-        if (g.length == 1) g = '0' + g;
-        if (b.length == 1) b = '0' + b;
-        return '#' + r + g + b;
-    }
-
-    // help
-    this.getHelpXML = function () {
-
-        var examples = new Array();
-        // add regexps
-        for (var i = 0; i < color_defs.length; i++) {
-            var example = color_defs[i].example;
-            for (var j = 0; j < example.length; j++) {
-                examples[examples.length] = example[j];
-            }
-        }
-        // add type-in colors
-        for (var sc in simple_colors) {
-            examples[examples.length] = sc;
-        }
-
-        var xml = document.createElement('ul');
-        xml.setAttribute('id', 'rgbcolor-examples');
-        for (var i = 0; i < examples.length; i++) {
-            try {
-                var list_item = document.createElement('li');
-                var list_color = new RGBColor(examples[i]);
-                var example_div = document.createElement('div');
-                example_div.style.cssText =
-                        'margin: 3px; '
-                        + 'border: 1px solid black; '
-                        + 'background:' + list_color.toHex() + '; '
-                        + 'color:' + list_color.toHex()
-                ;
-                example_div.appendChild(document.createTextNode('test'));
-                var list_item_value = document.createTextNode(
-                    ' ' + examples[i] + ' -> ' + list_color.toRGB() + ' -> ' + list_color.toHex()
-                );
-                list_item.appendChild(example_div);
-                list_item.appendChild(list_item_value);
-                xml.appendChild(list_item);
-
-            } catch(e){}
-        }
-        return xml;
-
-    }
-
-}
-
 
 /***/ }),
 
@@ -26505,626 +24069,6 @@ module.exports = function(color_string) {
 
 /***/ }),
 
-/***/ 4757:
-/***/ (function(module) {
-
-/*
-    StackBlur - a fast almost Gaussian Blur For Canvas
-
-    Version:     0.5
-    Author:        Mario Klingemann
-    Contact:     mario@quasimondo.com
-    Website:    http://www.quasimondo.com/StackBlurForCanvas
-    Twitter:    @quasimondo
-
-    In case you find this class useful - especially in commercial projects -
-    I am not totally unhappy for a small donation to my PayPal account
-    mario@quasimondo.de
-
-    Or support me on flattr:
-    https://flattr.com/thing/72791/StackBlur-a-fast-almost-Gaussian-Blur-Effect-for-CanvasJavascript
-
-    Copyright (c) 2010 Mario Klingemann
-
-    Permission is hereby granted, free of charge, to any person
-    obtaining a copy of this software and associated documentation
-    files (the "Software"), to deal in the Software without
-    restriction, including without limitation the rights to use,
-    copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the
-    Software is furnished to do so, subject to the following
-    conditions:
-
-    The above copyright notice and this permission notice shall be
-    included in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-    OTHER DEALINGS IN THE SOFTWARE.
-    */
-
-
-var mul_table = [
-    512,512,456,512,328,456,335,512,405,328,271,456,388,335,292,512,
-    454,405,364,328,298,271,496,456,420,388,360,335,312,292,273,512,
-    482,454,428,405,383,364,345,328,312,298,284,271,259,496,475,456,
-    437,420,404,388,374,360,347,335,323,312,302,292,282,273,265,512,
-    497,482,468,454,441,428,417,405,394,383,373,364,354,345,337,328,
-    320,312,305,298,291,284,278,271,265,259,507,496,485,475,465,456,
-    446,437,428,420,412,404,396,388,381,374,367,360,354,347,341,335,
-    329,323,318,312,307,302,297,292,287,282,278,273,269,265,261,512,
-    505,497,489,482,475,468,461,454,447,441,435,428,422,417,411,405,
-    399,394,389,383,378,373,368,364,359,354,350,345,341,337,332,328,
-    324,320,316,312,309,305,301,298,294,291,287,284,281,278,274,271,
-    268,265,262,259,257,507,501,496,491,485,480,475,470,465,460,456,
-    451,446,442,437,433,428,424,420,416,412,408,404,400,396,392,388,
-    385,381,377,374,370,367,363,360,357,354,350,347,344,341,338,335,
-    332,329,326,323,320,318,315,312,310,307,304,302,299,297,294,292,
-    289,287,285,282,280,278,275,273,271,269,267,265,263,261,259];
-
-
-var shg_table = [
-    9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17,
-    17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
-    19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20,
-    20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21,
-    21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,
-    21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22,
-    22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
-    22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23,
-    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
-    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
-    23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23,
-    23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
-    24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
-
-
-function processImage(img, canvas, radius, blurAlphaChannel)
-{
-    if (typeof(img) == 'string') {
-        var img = document.getElementById(img);
-    }
-    else if (typeof HTMLImageElement !== 'undefined' && !img instanceof HTMLImageElement) {
-        return;
-    }
-    var w = img.naturalWidth;
-    var h = img.naturalHeight;
-
-    if (typeof(canvas) == 'string') {
-        var canvas = document.getElementById(canvas);
-    }
-    else if (typeof HTMLCanvasElement !== 'undefined' && !canvas instanceof HTMLCanvasElement) {
-        return;
-    }
-
-    canvas.style.width  = w + 'px';
-    canvas.style.height = h + 'px';
-    canvas.width = w;
-    canvas.height = h;
-
-    var context = canvas.getContext('2d');
-    context.clearRect(0, 0, w, h);
-    context.drawImage(img, 0, 0);
-
-    if (isNaN(radius) || radius < 1) return;
-
-    if (blurAlphaChannel)
-        processCanvasRGBA(canvas, 0, 0, w, h, radius);
-    else
-        processCanvasRGB(canvas, 0, 0, w, h, radius);
-}
-
-function getImageDataFromCanvas(canvas, top_x, top_y, width, height)
-{
-    if (typeof(canvas) == 'string')
-        var canvas  = document.getElementById(canvas);
-    else if (typeof HTMLCanvasElement !== 'undefined' && !canvas instanceof HTMLCanvasElement)
-        return;
-
-    var context = canvas.getContext('2d');
-    var imageData;
-
-    try {
-        try {
-            imageData = context.getImageData(top_x, top_y, width, height);
-        } catch(e) {
-            throw new Error("unable to access local image data: " + e);
-            return;
-        }
-    } catch(e) {
-        throw new Error("unable to access image data: " + e);
-    }
-
-    return imageData;
-}
-
-function processCanvasRGBA(canvas, top_x, top_y, width, height, radius)
-{
-    if (isNaN(radius) || radius < 1) return;
-    radius |= 0;
-
-    var imageData = getImageDataFromCanvas(canvas, top_x, top_y, width, height);
-
-    imageData = processImageDataRGBA(imageData, top_x, top_y, width, height, radius);
-
-    canvas.getContext('2d').putImageData(imageData, top_x, top_y);
-}
-
-function processImageDataRGBA(imageData, top_x, top_y, width, height, radius)
-{
-    var pixels = imageData.data;
-
-    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum, a_sum,
-        r_out_sum, g_out_sum, b_out_sum, a_out_sum,
-        r_in_sum, g_in_sum, b_in_sum, a_in_sum,
-        pr, pg, pb, pa, rbs;
-
-    var div = radius + radius + 1;
-    var w4 = width << 2;
-    var widthMinus1  = width - 1;
-    var heightMinus1 = height - 1;
-    var radiusPlus1  = radius + 1;
-    var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
-
-    var stackStart = new BlurStack();
-    var stack = stackStart;
-    for (i = 1; i < div; i++)
-    {
-        stack = stack.next = new BlurStack();
-        if (i == radiusPlus1) var stackEnd = stack;
-    }
-    stack.next = stackStart;
-    var stackIn = null;
-    var stackOut = null;
-
-    yw = yi = 0;
-
-    var mul_sum = mul_table[radius];
-    var shg_sum = shg_table[radius];
-
-    for (y = 0; y < height; y++)
-    {
-        r_in_sum = g_in_sum = b_in_sum = a_in_sum = r_sum = g_sum = b_sum = a_sum = 0;
-
-        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-        g_out_sum = radiusPlus1 * (pg = pixels[yi+1]);
-        b_out_sum = radiusPlus1 * (pb = pixels[yi+2]);
-        a_out_sum = radiusPlus1 * (pa = pixels[yi+3]);
-
-        r_sum += sumFactor * pr;
-        g_sum += sumFactor * pg;
-        b_sum += sumFactor * pb;
-        a_sum += sumFactor * pa;
-
-        stack = stackStart;
-
-        for (i = 0; i < radiusPlus1; i++)
-        {
-            stack.r = pr;
-            stack.g = pg;
-            stack.b = pb;
-            stack.a = pa;
-            stack = stack.next;
-        }
-
-        for (i = 1; i < radiusPlus1; i++)
-        {
-            p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
-            r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
-            g_sum += (stack.g = (pg = pixels[p+1])) * rbs;
-            b_sum += (stack.b = (pb = pixels[p+2])) * rbs;
-            a_sum += (stack.a = (pa = pixels[p+3])) * rbs;
-
-            r_in_sum += pr;
-            g_in_sum += pg;
-            b_in_sum += pb;
-            a_in_sum += pa;
-
-            stack = stack.next;
-        }
-
-
-        stackIn = stackStart;
-        stackOut = stackEnd;
-        for (x = 0; x < width; x++)
-        {
-            pixels[yi+3] = pa = (a_sum * mul_sum) >> shg_sum;
-            if (pa != 0)
-            {
-                pa = 255 / pa;
-                pixels[yi]   = ((r_sum * mul_sum) >> shg_sum) * pa;
-                pixels[yi+1] = ((g_sum * mul_sum) >> shg_sum) * pa;
-                pixels[yi+2] = ((b_sum * mul_sum) >> shg_sum) * pa;
-            } else {
-                pixels[yi] = pixels[yi+1] = pixels[yi+2] = 0;
-            }
-
-            r_sum -= r_out_sum;
-            g_sum -= g_out_sum;
-            b_sum -= b_out_sum;
-            a_sum -= a_out_sum;
-
-            r_out_sum -= stackIn.r;
-            g_out_sum -= stackIn.g;
-            b_out_sum -= stackIn.b;
-            a_out_sum -= stackIn.a;
-
-            p =  (yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1)) << 2;
-
-            r_in_sum += (stackIn.r = pixels[p]);
-            g_in_sum += (stackIn.g = pixels[p+1]);
-            b_in_sum += (stackIn.b = pixels[p+2]);
-            a_in_sum += (stackIn.a = pixels[p+3]);
-
-            r_sum += r_in_sum;
-            g_sum += g_in_sum;
-            b_sum += b_in_sum;
-            a_sum += a_in_sum;
-
-            stackIn = stackIn.next;
-
-            r_out_sum += (pr = stackOut.r);
-            g_out_sum += (pg = stackOut.g);
-            b_out_sum += (pb = stackOut.b);
-            a_out_sum += (pa = stackOut.a);
-
-            r_in_sum -= pr;
-            g_in_sum -= pg;
-            b_in_sum -= pb;
-            a_in_sum -= pa;
-
-            stackOut = stackOut.next;
-
-            yi += 4;
-        }
-        yw += width;
-    }
-
-
-    for (x = 0; x < width; x++)
-    {
-        g_in_sum = b_in_sum = a_in_sum = r_in_sum = g_sum = b_sum = a_sum = r_sum = 0;
-
-        yi = x << 2;
-        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-        g_out_sum = radiusPlus1 * (pg = pixels[yi+1]);
-        b_out_sum = radiusPlus1 * (pb = pixels[yi+2]);
-        a_out_sum = radiusPlus1 * (pa = pixels[yi+3]);
-
-        r_sum += sumFactor * pr;
-        g_sum += sumFactor * pg;
-        b_sum += sumFactor * pb;
-        a_sum += sumFactor * pa;
-
-        stack = stackStart;
-
-        for (i = 0; i < radiusPlus1; i++)
-        {
-            stack.r = pr;
-            stack.g = pg;
-            stack.b = pb;
-            stack.a = pa;
-            stack = stack.next;
-        }
-
-        yp = width;
-
-        for (i = 1; i <= radius; i++)
-        {
-            yi = (yp + x) << 2;
-
-            r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
-            g_sum += (stack.g = (pg = pixels[yi+1])) * rbs;
-            b_sum += (stack.b = (pb = pixels[yi+2])) * rbs;
-            a_sum += (stack.a = (pa = pixels[yi+3])) * rbs;
-
-            r_in_sum += pr;
-            g_in_sum += pg;
-            b_in_sum += pb;
-            a_in_sum += pa;
-
-            stack = stack.next;
-
-            if(i < heightMinus1)
-            {
-                yp += width;
-            }
-        }
-
-        yi = x;
-        stackIn = stackStart;
-        stackOut = stackEnd;
-        for (y = 0; y < height; y++)
-        {
-            p = yi << 2;
-            pixels[p+3] = pa = (a_sum * mul_sum) >> shg_sum;
-            if (pa > 0)
-            {
-                pa = 255 / pa;
-                pixels[p]   = ((r_sum * mul_sum) >> shg_sum) * pa;
-                pixels[p+1] = ((g_sum * mul_sum) >> shg_sum) * pa;
-                pixels[p+2] = ((b_sum * mul_sum) >> shg_sum) * pa;
-            } else {
-                pixels[p] = pixels[p+1] = pixels[p+2] = 0;
-            }
-
-            r_sum -= r_out_sum;
-            g_sum -= g_out_sum;
-            b_sum -= b_out_sum;
-            a_sum -= a_out_sum;
-
-            r_out_sum -= stackIn.r;
-            g_out_sum -= stackIn.g;
-            b_out_sum -= stackIn.b;
-            a_out_sum -= stackIn.a;
-
-            p = (x + (((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width)) << 2;
-
-            r_sum += (r_in_sum += (stackIn.r = pixels[p]));
-            g_sum += (g_in_sum += (stackIn.g = pixels[p+1]));
-            b_sum += (b_in_sum += (stackIn.b = pixels[p+2]));
-            a_sum += (a_in_sum += (stackIn.a = pixels[p+3]));
-
-            stackIn = stackIn.next;
-
-            r_out_sum += (pr = stackOut.r);
-            g_out_sum += (pg = stackOut.g);
-            b_out_sum += (pb = stackOut.b);
-            a_out_sum += (pa = stackOut.a);
-
-            r_in_sum -= pr;
-            g_in_sum -= pg;
-            b_in_sum -= pb;
-            a_in_sum -= pa;
-
-            stackOut = stackOut.next;
-
-            yi += width;
-        }
-    }
-    return imageData;
-}
-
-function processCanvasRGB(canvas, top_x, top_y, width, height, radius)
-{
-    if (isNaN(radius) || radius < 1) return;
-    radius |= 0;
-
-    var imageData = getImageDataFromCanvas(canvas, top_x, top_y, width, height);
-    imageData = processImageDataRGB(imageData, top_x, top_y, width, height, radius);
-
-    canvas.getContext('2d').putImageData(imageData, top_x, top_y);
-}
-
-function processImageDataRGB(imageData, top_x, top_y, width, height, radius)
-{
-    var pixels = imageData.data;
-
-    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum,
-        r_out_sum, g_out_sum, b_out_sum,
-        r_in_sum, g_in_sum, b_in_sum,
-        pr, pg, pb, rbs;
-
-    var div = radius + radius + 1;
-    var w4 = width << 2;
-    var widthMinus1  = width - 1;
-    var heightMinus1 = height - 1;
-    var radiusPlus1  = radius + 1;
-    var sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
-
-    var stackStart = new BlurStack();
-    var stack = stackStart;
-    for (i = 1; i < div; i++)
-    {
-        stack = stack.next = new BlurStack();
-        if (i == radiusPlus1) var stackEnd = stack;
-    }
-    stack.next = stackStart;
-    var stackIn = null;
-    var stackOut = null;
-
-    yw = yi = 0;
-
-    var mul_sum = mul_table[radius];
-    var shg_sum = shg_table[radius];
-
-    for (y = 0; y < height; y++)
-    {
-        r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
-
-        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-        g_out_sum = radiusPlus1 * (pg = pixels[yi+1]);
-        b_out_sum = radiusPlus1 * (pb = pixels[yi+2]);
-
-        r_sum += sumFactor * pr;
-        g_sum += sumFactor * pg;
-        b_sum += sumFactor * pb;
-
-        stack = stackStart;
-
-        for (i = 0; i < radiusPlus1; i++)
-        {
-            stack.r = pr;
-            stack.g = pg;
-            stack.b = pb;
-            stack = stack.next;
-        }
-
-        for (i = 1; i < radiusPlus1; i++)
-        {
-            p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
-            r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
-            g_sum += (stack.g = (pg = pixels[p+1])) * rbs;
-            b_sum += (stack.b = (pb = pixels[p+2])) * rbs;
-
-            r_in_sum += pr;
-            g_in_sum += pg;
-            b_in_sum += pb;
-
-            stack = stack.next;
-        }
-
-
-        stackIn = stackStart;
-        stackOut = stackEnd;
-        for (x = 0; x < width; x++)
-        {
-            pixels[yi]   = (r_sum * mul_sum) >> shg_sum;
-            pixels[yi+1] = (g_sum * mul_sum) >> shg_sum;
-            pixels[yi+2] = (b_sum * mul_sum) >> shg_sum;
-
-            r_sum -= r_out_sum;
-            g_sum -= g_out_sum;
-            b_sum -= b_out_sum;
-
-            r_out_sum -= stackIn.r;
-            g_out_sum -= stackIn.g;
-            b_out_sum -= stackIn.b;
-
-            p =  (yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1)) << 2;
-
-            r_in_sum += (stackIn.r = pixels[p]);
-            g_in_sum += (stackIn.g = pixels[p+1]);
-            b_in_sum += (stackIn.b = pixels[p+2]);
-
-            r_sum += r_in_sum;
-            g_sum += g_in_sum;
-            b_sum += b_in_sum;
-
-            stackIn = stackIn.next;
-
-            r_out_sum += (pr = stackOut.r);
-            g_out_sum += (pg = stackOut.g);
-            b_out_sum += (pb = stackOut.b);
-
-            r_in_sum -= pr;
-            g_in_sum -= pg;
-            b_in_sum -= pb;
-
-            stackOut = stackOut.next;
-
-            yi += 4;
-        }
-        yw += width;
-    }
-
-
-    for (x = 0; x < width; x++)
-    {
-        g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
-
-        yi = x << 2;
-        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
-        g_out_sum = radiusPlus1 * (pg = pixels[yi+1]);
-        b_out_sum = radiusPlus1 * (pb = pixels[yi+2]);
-
-        r_sum += sumFactor * pr;
-        g_sum += sumFactor * pg;
-        b_sum += sumFactor * pb;
-
-        stack = stackStart;
-
-        for (i = 0; i < radiusPlus1; i++)
-        {
-            stack.r = pr;
-            stack.g = pg;
-            stack.b = pb;
-            stack = stack.next;
-        }
-
-        yp = width;
-
-        for (i = 1; i <= radius; i++)
-        {
-            yi = (yp + x) << 2;
-
-            r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
-            g_sum += (stack.g = (pg = pixels[yi+1])) * rbs;
-            b_sum += (stack.b = (pb = pixels[yi+2])) * rbs;
-
-            r_in_sum += pr;
-            g_in_sum += pg;
-            b_in_sum += pb;
-
-            stack = stack.next;
-
-            if(i < heightMinus1)
-            {
-                yp += width;
-            }
-        }
-
-        yi = x;
-        stackIn = stackStart;
-        stackOut = stackEnd;
-        for (y = 0; y < height; y++)
-        {
-            p = yi << 2;
-            pixels[p]   = (r_sum * mul_sum) >> shg_sum;
-            pixels[p+1] = (g_sum * mul_sum) >> shg_sum;
-            pixels[p+2] = (b_sum * mul_sum) >> shg_sum;
-
-            r_sum -= r_out_sum;
-            g_sum -= g_out_sum;
-            b_sum -= b_out_sum;
-
-            r_out_sum -= stackIn.r;
-            g_out_sum -= stackIn.g;
-            b_out_sum -= stackIn.b;
-
-            p = (x + (((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width)) << 2;
-
-            r_sum += (r_in_sum += (stackIn.r = pixels[p]));
-            g_sum += (g_in_sum += (stackIn.g = pixels[p+1]));
-            b_sum += (b_in_sum += (stackIn.b = pixels[p+2]));
-
-            stackIn = stackIn.next;
-
-            r_out_sum += (pr = stackOut.r);
-            g_out_sum += (pg = stackOut.g);
-            b_out_sum += (pb = stackOut.b);
-
-            r_in_sum -= pr;
-            g_in_sum -= pg;
-            b_in_sum -= pb;
-
-            stackOut = stackOut.next;
-
-            yi += width;
-        }
-    }
-
-    return imageData;
-}
-
-function BlurStack()
-{
-    this.r = 0;
-    this.g = 0;
-    this.b = 0;
-    this.a = 0;
-    this.next = null;
-}
-
-module.exports = {
-    image: processImage,
-    canvasRGBA: processCanvasRGBA,
-    canvasRGB: processCanvasRGB,
-    imageDataRGBA: processImageDataRGBA,
-    imageDataRGB: processImageDataRGB
-};
-
-
-/***/ }),
-
 /***/ 2830:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
@@ -27420,60 +24364,48 @@ module.exports.q = codes;
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
 // Writable.
 
-/*<replacement>*/
 
+
+/*<replacement>*/
 var objectKeys = Object.keys || function (obj) {
   var keys = [];
-
-  for (var key in obj) {
-    keys.push(key);
-  }
-
+  for (var key in obj) keys.push(key);
   return keys;
 };
 /*</replacement>*/
 
-
 module.exports = Duplex;
-
 var Readable = __webpack_require__(6577);
-
 var Writable = __webpack_require__(323);
-
 __webpack_require__(5717)(Duplex, Readable);
-
 {
   // Allow the keys array to be GC'ed.
   var keys = objectKeys(Writable.prototype);
-
   for (var v = 0; v < keys.length; v++) {
     var method = keys[v];
     if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];
   }
 }
-
 function Duplex(options) {
   if (!(this instanceof Duplex)) return new Duplex(options);
   Readable.call(this, options);
   Writable.call(this, options);
   this.allowHalfOpen = true;
-
   if (options) {
     if (options.readable === false) this.readable = false;
     if (options.writable === false) this.writable = false;
-
     if (options.allowHalfOpen === false) {
       this.allowHalfOpen = false;
       this.once('end', onend);
     }
   }
 }
-
 Object.defineProperty(Duplex.prototype, 'writableHighWaterMark', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -27500,20 +24432,20 @@ Object.defineProperty(Duplex.prototype, 'writableLength', {
   get: function get() {
     return this._writableState.length;
   }
-}); // the no-half-open enforcer
+});
 
+// the no-half-open enforcer
 function onend() {
   // If the writable side ended, then we're ok.
-  if (this._writableState.ended) return; // no more data can be written.
-  // But allow more writes to happen in this tick.
+  if (this._writableState.ended) return;
 
+  // no more data can be written.
+  // But allow more writes to happen in this tick.
   process.nextTick(onEndNT, this);
 }
-
 function onEndNT(self) {
   self.end();
 }
-
 Object.defineProperty(Duplex.prototype, 'destroyed', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -27523,7 +24455,6 @@ Object.defineProperty(Duplex.prototype, 'destroyed', {
     if (this._readableState === undefined || this._writableState === undefined) {
       return false;
     }
-
     return this._readableState.destroyed && this._writableState.destroyed;
   },
   set: function set(value) {
@@ -27531,10 +24462,10 @@ Object.defineProperty(Duplex.prototype, 'destroyed', {
     // has not been initialized yet
     if (this._readableState === undefined || this._writableState === undefined) {
       return;
-    } // backward compatibility, the user is explicitly
+    }
+
+    // backward compatibility, the user is explicitly
     // managing destroyed
-
-
     this._readableState.destroyed = value;
     this._writableState.destroyed = value;
   }
@@ -27566,22 +24497,20 @@ Object.defineProperty(Duplex.prototype, 'destroyed', {
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
 
 
+
 module.exports = PassThrough;
-
 var Transform = __webpack_require__(4473);
-
 __webpack_require__(5717)(PassThrough, Transform);
-
 function PassThrough(options) {
   if (!(this instanceof PassThrough)) return new PassThrough(options);
   Transform.call(this, options);
 }
-
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
@@ -27614,47 +24543,38 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-module.exports = Readable;
-/*<replacement>*/
 
+module.exports = Readable;
+
+/*<replacement>*/
 var Duplex;
 /*</replacement>*/
 
 Readable.ReadableState = ReadableState;
+
 /*<replacement>*/
-
 var EE = (__webpack_require__(7187).EventEmitter);
-
 var EElistenerCount = function EElistenerCount(emitter, type) {
   return emitter.listeners(type).length;
 };
 /*</replacement>*/
 
 /*<replacement>*/
-
-
 var Stream = __webpack_require__(3194);
 /*</replacement>*/
 
-
-var Buffer = (__webpack_require__(816).Buffer);
-
-var OurUint8Array = __webpack_require__.g.Uint8Array || function () {};
-
+var Buffer = (__webpack_require__(2860).Buffer);
+var OurUint8Array = (typeof __webpack_require__.g !== 'undefined' ? __webpack_require__.g : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
 }
-
 function _isUint8Array(obj) {
   return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
 }
+
 /*<replacement>*/
-
-
 var debugUtil = __webpack_require__(964);
-
 var debug;
-
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
 } else {
@@ -27662,60 +24582,57 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-
 var BufferList = __webpack_require__(9686);
-
 var destroyImpl = __webpack_require__(1029);
-
 var _require = __webpack_require__(94),
-    getHighWaterMark = _require.getHighWaterMark;
-
+  getHighWaterMark = _require.getHighWaterMark;
 var _require$codes = (__webpack_require__(8106)/* .codes */ .q),
-    ERR_INVALID_ARG_TYPE = _require$codes.ERR_INVALID_ARG_TYPE,
-    ERR_STREAM_PUSH_AFTER_EOF = _require$codes.ERR_STREAM_PUSH_AFTER_EOF,
-    ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
-    ERR_STREAM_UNSHIFT_AFTER_END_EVENT = _require$codes.ERR_STREAM_UNSHIFT_AFTER_END_EVENT; // Lazy loaded to improve the startup performance.
+  ERR_INVALID_ARG_TYPE = _require$codes.ERR_INVALID_ARG_TYPE,
+  ERR_STREAM_PUSH_AFTER_EOF = _require$codes.ERR_STREAM_PUSH_AFTER_EOF,
+  ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
+  ERR_STREAM_UNSHIFT_AFTER_END_EVENT = _require$codes.ERR_STREAM_UNSHIFT_AFTER_END_EVENT;
 
-
+// Lazy loaded to improve the startup performance.
 var StringDecoder;
 var createReadableStreamAsyncIterator;
 var from;
-
 __webpack_require__(5717)(Readable, Stream);
-
 var errorOrDestroy = destroyImpl.errorOrDestroy;
 var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
-
 function prependListener(emitter, event, fn) {
   // Sadly this is not cacheable as some libraries bundle their own
   // event emitter implementation with them.
-  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn); // This is a hack to make sure that our error handler is attached before any
+  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn);
+
+  // This is a hack to make sure that our error handler is attached before any
   // userland ones.  NEVER DO THIS. This is here only because this code needs
   // to continue to work with older versions of Node.js that do not include
   // the prependListener() method. The goal is to eventually remove this hack.
-
   if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (Array.isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
 }
-
 function ReadableState(options, stream, isDuplex) {
   Duplex = Duplex || __webpack_require__(8656);
-  options = options || {}; // Duplex streams are both readable and writable, but share
+  options = options || {};
+
+  // Duplex streams are both readable and writable, but share
   // the same options object.
   // However, some cases require setting options to different
   // values for the readable and the writable sides of the duplex stream.
   // These options can be provided separately as readableXXX and writableXXX.
+  if (typeof isDuplex !== 'boolean') isDuplex = stream instanceof Duplex;
 
-  if (typeof isDuplex !== 'boolean') isDuplex = stream instanceof Duplex; // object stream flag. Used to make read(n) ignore n and to
+  // object stream flag. Used to make read(n) ignore n and to
   // make all the buffer merging and length checks go away
-
   this.objectMode = !!options.objectMode;
-  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode; // the point at which it stops calling _read() to fill the buffer
-  // Note: 0 is a valid value, means "don't call _read preemptively ever"
+  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
-  this.highWaterMark = getHighWaterMark(this, options, 'readableHighWaterMark', isDuplex); // A linked list is used to store data chunks instead of an array because the
+  // the point at which it stops calling _read() to fill the buffer
+  // Note: 0 is a valid value, means "don't call _read preemptively ever"
+  this.highWaterMark = getHighWaterMark(this, options, 'readableHighWaterMark', isDuplex);
+
+  // A linked list is used to store data chunks instead of an array because the
   // linked list can remove elements from the beginning faster than
   // array.shift()
-
   this.buffer = new BufferList();
   this.length = 0;
   this.pipes = null;
@@ -27723,61 +24640,66 @@ function ReadableState(options, stream, isDuplex) {
   this.flowing = null;
   this.ended = false;
   this.endEmitted = false;
-  this.reading = false; // a flag to be able to tell if the event 'readable'/'data' is emitted
+  this.reading = false;
+
+  // a flag to be able to tell if the event 'readable'/'data' is emitted
   // immediately, or on a later tick.  We set this to true at first, because
   // any actions that shouldn't happen until "later" should generally also
   // not happen before the first read call.
+  this.sync = true;
 
-  this.sync = true; // whenever we return null, then we set a flag to say
+  // whenever we return null, then we set a flag to say
   // that we're awaiting a 'readable' event emission.
-
   this.needReadable = false;
   this.emittedReadable = false;
   this.readableListening = false;
   this.resumeScheduled = false;
-  this.paused = true; // Should close be emitted on destroy. Defaults to true.
+  this.paused = true;
 
-  this.emitClose = options.emitClose !== false; // Should .destroy() be called after 'end' (and potentially 'finish')
+  // Should close be emitted on destroy. Defaults to true.
+  this.emitClose = options.emitClose !== false;
 
-  this.autoDestroy = !!options.autoDestroy; // has it been destroyed
+  // Should .destroy() be called after 'end' (and potentially 'finish')
+  this.autoDestroy = !!options.autoDestroy;
 
-  this.destroyed = false; // Crypto is kind of old and crusty.  Historically, its default string
+  // has it been destroyed
+  this.destroyed = false;
+
+  // Crypto is kind of old and crusty.  Historically, its default string
   // encoding is 'binary' so we have to make this configurable.
   // Everything else in the universe uses 'utf8', though.
+  this.defaultEncoding = options.defaultEncoding || 'utf8';
 
-  this.defaultEncoding = options.defaultEncoding || 'utf8'; // the number of writers that are awaiting a drain event in .pipe()s
+  // the number of writers that are awaiting a drain event in .pipe()s
+  this.awaitDrain = 0;
 
-  this.awaitDrain = 0; // if true, a maybeReadMore has been scheduled
-
+  // if true, a maybeReadMore has been scheduled
   this.readingMore = false;
   this.decoder = null;
   this.encoding = null;
-
   if (options.encoding) {
     if (!StringDecoder) StringDecoder = (__webpack_require__(2553)/* .StringDecoder */ .s);
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
 }
-
 function Readable(options) {
   Duplex = Duplex || __webpack_require__(8656);
-  if (!(this instanceof Readable)) return new Readable(options); // Checking for a Stream.Duplex instance is faster here instead of inside
+  if (!(this instanceof Readable)) return new Readable(options);
+
+  // Checking for a Stream.Duplex instance is faster here instead of inside
   // the ReadableState constructor, at least with V8 6.5
-
   var isDuplex = this instanceof Duplex;
-  this._readableState = new ReadableState(options, this, isDuplex); // legacy
+  this._readableState = new ReadableState(options, this, isDuplex);
 
+  // legacy
   this.readable = true;
-
   if (options) {
     if (typeof options.read === 'function') this._read = options.read;
     if (typeof options.destroy === 'function') this._destroy = options.destroy;
   }
-
   Stream.call(this);
 }
-
 Object.defineProperty(Readable.prototype, 'destroyed', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -27787,7 +24709,6 @@ Object.defineProperty(Readable.prototype, 'destroyed', {
     if (this._readableState === undefined) {
       return false;
     }
-
     return this._readableState.destroyed;
   },
   set: function set(value) {
@@ -27795,69 +24716,60 @@ Object.defineProperty(Readable.prototype, 'destroyed', {
     // has not been initialized yet
     if (!this._readableState) {
       return;
-    } // backward compatibility, the user is explicitly
+    }
+
+    // backward compatibility, the user is explicitly
     // managing destroyed
-
-
     this._readableState.destroyed = value;
   }
 });
 Readable.prototype.destroy = destroyImpl.destroy;
 Readable.prototype._undestroy = destroyImpl.undestroy;
-
 Readable.prototype._destroy = function (err, cb) {
   cb(err);
-}; // Manually shove something into the read() buffer.
+};
+
+// Manually shove something into the read() buffer.
 // This returns true if the highWaterMark has not been hit yet,
 // similar to how Writable.write() returns true if you should
 // write() some more.
-
-
 Readable.prototype.push = function (chunk, encoding) {
   var state = this._readableState;
   var skipChunkCheck;
-
   if (!state.objectMode) {
     if (typeof chunk === 'string') {
       encoding = encoding || state.defaultEncoding;
-
       if (encoding !== state.encoding) {
         chunk = Buffer.from(chunk, encoding);
         encoding = '';
       }
-
       skipChunkCheck = true;
     }
   } else {
     skipChunkCheck = true;
   }
-
   return readableAddChunk(this, chunk, encoding, false, skipChunkCheck);
-}; // Unshift should *always* be something directly out of read()
+};
 
-
+// Unshift should *always* be something directly out of read()
 Readable.prototype.unshift = function (chunk) {
   return readableAddChunk(this, chunk, null, true, false);
 };
-
 function readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {
   debug('readableAddChunk', chunk);
   var state = stream._readableState;
-
   if (chunk === null) {
     state.reading = false;
     onEofChunk(stream, state);
   } else {
     var er;
     if (!skipChunkCheck) er = chunkInvalid(state, chunk);
-
     if (er) {
       errorOrDestroy(stream, er);
     } else if (state.objectMode || chunk && chunk.length > 0) {
       if (typeof chunk !== 'string' && !state.objectMode && Object.getPrototypeOf(chunk) !== Buffer.prototype) {
         chunk = _uint8ArrayToBuffer(chunk);
       }
-
       if (addToFront) {
         if (state.endEmitted) errorOrDestroy(stream, new ERR_STREAM_UNSHIFT_AFTER_END_EVENT());else addChunk(stream, state, chunk, true);
       } else if (state.ended) {
@@ -27866,7 +24778,6 @@ function readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {
         return false;
       } else {
         state.reading = false;
-
         if (state.decoder && !encoding) {
           chunk = state.decoder.write(chunk);
           if (state.objectMode || chunk.length !== 0) addChunk(stream, state, chunk, false);else maybeReadMore(stream, state);
@@ -27878,14 +24789,13 @@ function readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {
       state.reading = false;
       maybeReadMore(stream, state);
     }
-  } // We can push more data if we are below the highWaterMark.
+  }
+
+  // We can push more data if we are below the highWaterMark.
   // Also, if we have no data yet, we can stand some more bytes.
   // This is to work around cases where hwm=0, such as the repl.
-
-
   return !state.ended && (state.length < state.highWaterMark || state.length === 0);
 }
-
 function addChunk(stream, state, chunk, addToFront) {
   if (state.flowing && state.length === 0 && !state.sync) {
     state.awaitDrain = 0;
@@ -27896,50 +24806,42 @@ function addChunk(stream, state, chunk, addToFront) {
     if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
     if (state.needReadable) emitReadable(stream);
   }
-
   maybeReadMore(stream, state);
 }
-
 function chunkInvalid(state, chunk) {
   var er;
-
   if (!_isUint8Array(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {
     er = new ERR_INVALID_ARG_TYPE('chunk', ['string', 'Buffer', 'Uint8Array'], chunk);
   }
-
   return er;
 }
-
 Readable.prototype.isPaused = function () {
   return this._readableState.flowing === false;
-}; // backwards compatibility.
+};
 
-
+// backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
   if (!StringDecoder) StringDecoder = (__webpack_require__(2553)/* .StringDecoder */ .s);
   var decoder = new StringDecoder(enc);
-  this._readableState.decoder = decoder; // If setEncoding(null), decoder.encoding equals utf8
+  this._readableState.decoder = decoder;
+  // If setEncoding(null), decoder.encoding equals utf8
+  this._readableState.encoding = this._readableState.decoder.encoding;
 
-  this._readableState.encoding = this._readableState.decoder.encoding; // Iterate over current buffer to convert already stored Buffers:
-
+  // Iterate over current buffer to convert already stored Buffers:
   var p = this._readableState.buffer.head;
   var content = '';
-
   while (p !== null) {
     content += decoder.write(p.data);
     p = p.next;
   }
-
   this._readableState.buffer.clear();
-
   if (content !== '') this._readableState.buffer.push(content);
   this._readableState.length = content.length;
   return this;
-}; // Don't raise the hwm > 1GB
+};
 
-
+// Don't raise the hwm > 1GB
 var MAX_HWM = 0x40000000;
-
 function computeNewHighWaterMark(n) {
   if (n >= MAX_HWM) {
     // TODO(ronag): Throw ERR_VALUE_OUT_OF_RANGE.
@@ -27955,55 +24857,54 @@ function computeNewHighWaterMark(n) {
     n |= n >>> 16;
     n++;
   }
-
   return n;
-} // This function is designed to be inlinable, so please take care when making
+}
+
+// This function is designed to be inlinable, so please take care when making
 // changes to the function body.
-
-
 function howMuchToRead(n, state) {
   if (n <= 0 || state.length === 0 && state.ended) return 0;
   if (state.objectMode) return 1;
-
   if (n !== n) {
     // Only flow one buffer at a time
     if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;
-  } // If we're asking for more than the current hwm, then raise the hwm.
-
-
+  }
+  // If we're asking for more than the current hwm, then raise the hwm.
   if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);
-  if (n <= state.length) return n; // Don't have enough
-
+  if (n <= state.length) return n;
+  // Don't have enough
   if (!state.ended) {
     state.needReadable = true;
     return 0;
   }
-
   return state.length;
-} // you can override either this method, or the async _read(n) below.
+}
 
-
+// you can override either this method, or the async _read(n) below.
 Readable.prototype.read = function (n) {
   debug('read', n);
   n = parseInt(n, 10);
   var state = this._readableState;
   var nOrig = n;
-  if (n !== 0) state.emittedReadable = false; // if we're doing read(0) to trigger a readable event, but we
+  if (n !== 0) state.emittedReadable = false;
+
+  // if we're doing read(0) to trigger a readable event, but we
   // already have a bunch of data in the buffer, then just trigger
   // the 'readable' event and move on.
-
   if (n === 0 && state.needReadable && ((state.highWaterMark !== 0 ? state.length >= state.highWaterMark : state.length > 0) || state.ended)) {
     debug('read: emitReadable', state.length, state.ended);
     if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
     return null;
   }
+  n = howMuchToRead(n, state);
 
-  n = howMuchToRead(n, state); // if we've ended, and we're now clear, then finish it up.
-
+  // if we've ended, and we're now clear, then finish it up.
   if (n === 0 && state.ended) {
     if (state.length === 0) endReadable(this);
     return null;
-  } // All the actual chunk generation logic needs to be
+  }
+
+  // All the actual chunk generation logic needs to be
   // *below* the call to _read.  The reason is that in certain
   // synthetic stream cases, such as passthrough streams, _read
   // may be a completely synchronous operation which may change
@@ -28024,40 +24925,37 @@ Readable.prototype.read = function (n) {
   // 'readable' etc.
   //
   // 3. Actually pull the requested chunks out of the buffer and return.
+
   // if we need a readable event, then we need to do some reading.
-
-
   var doRead = state.needReadable;
-  debug('need readable', doRead); // if we currently have less than the highWaterMark, then also read some
+  debug('need readable', doRead);
 
+  // if we currently have less than the highWaterMark, then also read some
   if (state.length === 0 || state.length - n < state.highWaterMark) {
     doRead = true;
     debug('length less than watermark', doRead);
-  } // however, if we've ended, then there's no point, and if we're already
+  }
+
+  // however, if we've ended, then there's no point, and if we're already
   // reading, then it's unnecessary.
-
-
   if (state.ended || state.reading) {
     doRead = false;
     debug('reading or ended', doRead);
   } else if (doRead) {
     debug('do read');
     state.reading = true;
-    state.sync = true; // if the length is currently zero, then we *need* a readable event.
-
-    if (state.length === 0) state.needReadable = true; // call internal read method
-
+    state.sync = true;
+    // if the length is currently zero, then we *need* a readable event.
+    if (state.length === 0) state.needReadable = true;
+    // call internal read method
     this._read(state.highWaterMark);
-
-    state.sync = false; // If _read pushed data synchronously, then `reading` will be false,
+    state.sync = false;
+    // If _read pushed data synchronously, then `reading` will be false,
     // and we need to re-evaluate how much data we can return to the user.
-
     if (!state.reading) n = howMuchToRead(nOrig, state);
   }
-
   var ret;
   if (n > 0) ret = fromList(n, state);else ret = null;
-
   if (ret === null) {
     state.needReadable = state.length <= state.highWaterMark;
     n = 0;
@@ -28065,34 +24963,28 @@ Readable.prototype.read = function (n) {
     state.length -= n;
     state.awaitDrain = 0;
   }
-
   if (state.length === 0) {
     // If we have nothing in the buffer, then we want to know
     // as soon as we *do* get something into the buffer.
-    if (!state.ended) state.needReadable = true; // If we tried to read() past the EOF, then emit end on the next tick.
+    if (!state.ended) state.needReadable = true;
 
+    // If we tried to read() past the EOF, then emit end on the next tick.
     if (nOrig !== n && state.ended) endReadable(this);
   }
-
   if (ret !== null) this.emit('data', ret);
   return ret;
 };
-
 function onEofChunk(stream, state) {
   debug('onEofChunk');
   if (state.ended) return;
-
   if (state.decoder) {
     var chunk = state.decoder.end();
-
     if (chunk && chunk.length) {
       state.buffer.push(chunk);
       state.length += state.objectMode ? 1 : chunk.length;
     }
   }
-
   state.ended = true;
-
   if (state.sync) {
     // if we are sync, wait until next tick to emit the data.
     // Otherwise we risk emitting data in the flow()
@@ -28101,61 +24993,56 @@ function onEofChunk(stream, state) {
   } else {
     // emit 'readable' now to make sure it gets picked up.
     state.needReadable = false;
-
     if (!state.emittedReadable) {
       state.emittedReadable = true;
       emitReadable_(stream);
     }
   }
-} // Don't emit readable right away in sync mode, because this can trigger
+}
+
+// Don't emit readable right away in sync mode, because this can trigger
 // another read() call => stack overflow.  This way, it might trigger
 // a nextTick recursion warning, but that's not so bad.
-
-
 function emitReadable(stream) {
   var state = stream._readableState;
   debug('emitReadable', state.needReadable, state.emittedReadable);
   state.needReadable = false;
-
   if (!state.emittedReadable) {
     debug('emitReadable', state.flowing);
     state.emittedReadable = true;
     process.nextTick(emitReadable_, stream);
   }
 }
-
 function emitReadable_(stream) {
   var state = stream._readableState;
   debug('emitReadable_', state.destroyed, state.length, state.ended);
-
   if (!state.destroyed && (state.length || state.ended)) {
     stream.emit('readable');
     state.emittedReadable = false;
-  } // The stream needs another readable event if
+  }
+
+  // The stream needs another readable event if
   // 1. It is not flowing, as the flow mechanism will take
   //    care of it.
   // 2. It is not ended.
   // 3. It is below the highWaterMark, so we can schedule
   //    another readable later.
-
-
   state.needReadable = !state.flowing && !state.ended && state.length <= state.highWaterMark;
   flow(stream);
-} // at this point, the user has presumably seen the 'readable' event,
+}
+
+// at this point, the user has presumably seen the 'readable' event,
 // and called read() to consume some data.  that may have triggered
 // in turn another _read(n) call, in which case reading = true if
 // it's in progress.
 // However, if we're not ended, or reading, and the length < hwm,
 // then go ahead and try to read some more preemptively.
-
-
 function maybeReadMore(stream, state) {
   if (!state.readingMore) {
     state.readingMore = true;
     process.nextTick(maybeReadMore_, stream, state);
   }
 }
-
 function maybeReadMore_(stream, state) {
   // Attempt to read more data if we should.
   //
@@ -28184,49 +25071,42 @@ function maybeReadMore_(stream, state) {
     var len = state.length;
     debug('maybeReadMore read 0');
     stream.read(0);
-    if (len === state.length) // didn't get any data, stop spinning.
+    if (len === state.length)
+      // didn't get any data, stop spinning.
       break;
   }
-
   state.readingMore = false;
-} // abstract method.  to be overridden in specific implementation classes.
+}
+
+// abstract method.  to be overridden in specific implementation classes.
 // call cb(er, data) where data is <= n in length.
 // for virtual (non-string, non-buffer) streams, "length" is somewhat
 // arbitrary, and perhaps not very meaningful.
-
-
 Readable.prototype._read = function (n) {
   errorOrDestroy(this, new ERR_METHOD_NOT_IMPLEMENTED('_read()'));
 };
-
 Readable.prototype.pipe = function (dest, pipeOpts) {
   var src = this;
   var state = this._readableState;
-
   switch (state.pipesCount) {
     case 0:
       state.pipes = dest;
       break;
-
     case 1:
       state.pipes = [state.pipes, dest];
       break;
-
     default:
       state.pipes.push(dest);
       break;
   }
-
   state.pipesCount += 1;
   debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
   var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;
   var endFn = doEnd ? onend : unpipe;
   if (state.endEmitted) process.nextTick(endFn);else src.once('end', endFn);
   dest.on('unpipe', onunpipe);
-
   function onunpipe(readable, unpipeInfo) {
     debug('onunpipe');
-
     if (readable === src) {
       if (unpipeInfo && unpipeInfo.hasUnpiped === false) {
         unpipeInfo.hasUnpiped = true;
@@ -28234,23 +25114,21 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
       }
     }
   }
-
   function onend() {
     debug('onend');
     dest.end();
-  } // when the dest drains, it reduces the awaitDrain counter
+  }
+
+  // when the dest drains, it reduces the awaitDrain counter
   // on the source.  This would be more elegant with a .once()
   // handler in flow(), but adding and removing repeatedly is
   // too slow.
-
-
   var ondrain = pipeOnDrain(src);
   dest.on('drain', ondrain);
   var cleanedUp = false;
-
   function cleanup() {
-    debug('cleanup'); // cleanup event handlers once the pipe is broken
-
+    debug('cleanup');
+    // cleanup event handlers once the pipe is broken
     dest.removeListener('close', onclose);
     dest.removeListener('finish', onfinish);
     dest.removeListener('drain', ondrain);
@@ -28259,22 +25137,20 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
     src.removeListener('end', onend);
     src.removeListener('end', unpipe);
     src.removeListener('data', ondata);
-    cleanedUp = true; // if the reader is waiting for a drain event from this
+    cleanedUp = true;
+
+    // if the reader is waiting for a drain event from this
     // specific writer, then it would cause it to never start
     // flowing again.
     // So, if this is awaiting a drain, then we just call it now.
     // If we don't know, then assume that we are waiting for one.
-
     if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();
   }
-
   src.on('data', ondata);
-
   function ondata(chunk) {
     debug('ondata');
     var ret = dest.write(chunk);
     debug('dest.write', ret);
-
     if (ret === false) {
       // If the user unpiped during `dest.write()`, it is possible
       // to get stuck in a permanently paused state if that write
@@ -28284,87 +25160,84 @@ Readable.prototype.pipe = function (dest, pipeOpts) {
         debug('false write response, pause', state.awaitDrain);
         state.awaitDrain++;
       }
-
       src.pause();
     }
-  } // if the dest has an error, then stop piping into it.
+  }
+
+  // if the dest has an error, then stop piping into it.
   // however, don't suppress the throwing behavior for this.
-
-
   function onerror(er) {
     debug('onerror', er);
     unpipe();
     dest.removeListener('error', onerror);
     if (EElistenerCount(dest, 'error') === 0) errorOrDestroy(dest, er);
-  } // Make sure our error handler is attached before userland ones.
+  }
 
+  // Make sure our error handler is attached before userland ones.
+  prependListener(dest, 'error', onerror);
 
-  prependListener(dest, 'error', onerror); // Both close and finish should trigger unpipe, but only once.
-
+  // Both close and finish should trigger unpipe, but only once.
   function onclose() {
     dest.removeListener('finish', onfinish);
     unpipe();
   }
-
   dest.once('close', onclose);
-
   function onfinish() {
     debug('onfinish');
     dest.removeListener('close', onclose);
     unpipe();
   }
-
   dest.once('finish', onfinish);
-
   function unpipe() {
     debug('unpipe');
     src.unpipe(dest);
-  } // tell the dest that it's being piped to
+  }
 
+  // tell the dest that it's being piped to
+  dest.emit('pipe', src);
 
-  dest.emit('pipe', src); // start the flow if it hasn't been started already.
-
+  // start the flow if it hasn't been started already.
   if (!state.flowing) {
     debug('pipe resume');
     src.resume();
   }
-
   return dest;
 };
-
 function pipeOnDrain(src) {
   return function pipeOnDrainFunctionResult() {
     var state = src._readableState;
     debug('pipeOnDrain', state.awaitDrain);
     if (state.awaitDrain) state.awaitDrain--;
-
     if (state.awaitDrain === 0 && EElistenerCount(src, 'data')) {
       state.flowing = true;
       flow(src);
     }
   };
 }
-
 Readable.prototype.unpipe = function (dest) {
   var state = this._readableState;
   var unpipeInfo = {
     hasUnpiped: false
-  }; // if we're not piping anywhere, then do nothing.
+  };
 
-  if (state.pipesCount === 0) return this; // just one destination.  most common case.
+  // if we're not piping anywhere, then do nothing.
+  if (state.pipesCount === 0) return this;
 
+  // just one destination.  most common case.
   if (state.pipesCount === 1) {
     // passed in one, but it's not the right one.
     if (dest && dest !== state.pipes) return this;
-    if (!dest) dest = state.pipes; // got a match.
+    if (!dest) dest = state.pipes;
 
+    // got a match.
     state.pipes = null;
     state.pipesCount = 0;
     state.flowing = false;
     if (dest) dest.emit('unpipe', this, unpipeInfo);
     return this;
-  } // slow case. multiple pipe destinations.
+  }
 
+  // slow case. multiple pipe destinations.
 
   if (!dest) {
     // remove all.
@@ -28373,17 +25246,13 @@ Readable.prototype.unpipe = function (dest) {
     state.pipes = null;
     state.pipesCount = 0;
     state.flowing = false;
-
-    for (var i = 0; i < len; i++) {
-      dests[i].emit('unpipe', this, {
-        hasUnpiped: false
-      });
-    }
-
+    for (var i = 0; i < len; i++) dests[i].emit('unpipe', this, {
+      hasUnpiped: false
+    });
     return this;
-  } // try to find the right one.
+  }
 
-
+  // try to find the right one.
   var index = indexOf(state.pipes, dest);
   if (index === -1) return this;
   state.pipes.splice(index, 1);
@@ -28391,19 +25260,19 @@ Readable.prototype.unpipe = function (dest) {
   if (state.pipesCount === 1) state.pipes = state.pipes[0];
   dest.emit('unpipe', this, unpipeInfo);
   return this;
-}; // set up data events if they are asked for
+};
+
+// set up data events if they are asked for
 // Ensure readable listeners eventually get something
-
-
 Readable.prototype.on = function (ev, fn) {
   var res = Stream.prototype.on.call(this, ev, fn);
   var state = this._readableState;
-
   if (ev === 'data') {
     // update readableListening so that resume() may be a no-op
     // a few lines down. This is needed to support once('readable').
-    state.readableListening = this.listenerCount('readable') > 0; // Try start flowing on next tick if stream isn't explicitly paused
+    state.readableListening = this.listenerCount('readable') > 0;
 
+    // Try start flowing on next tick if stream isn't explicitly paused
     if (state.flowing !== false) this.resume();
   } else if (ev === 'readable') {
     if (!state.endEmitted && !state.readableListening) {
@@ -28411,7 +25280,6 @@ Readable.prototype.on = function (ev, fn) {
       state.flowing = false;
       state.emittedReadable = false;
       debug('on readable', state.length, state.reading);
-
       if (state.length) {
         emitReadable(this);
       } else if (!state.reading) {
@@ -28419,15 +25287,11 @@ Readable.prototype.on = function (ev, fn) {
       }
     }
   }
-
   return res;
 };
-
 Readable.prototype.addListener = Readable.prototype.on;
-
 Readable.prototype.removeListener = function (ev, fn) {
   var res = Stream.prototype.removeListener.call(this, ev, fn);
-
   if (ev === 'readable') {
     // We need to check if there is someone still listening to
     // readable and reset the state. However this needs to happen
@@ -28437,13 +25301,10 @@ Readable.prototype.removeListener = function (ev, fn) {
     // effect.
     process.nextTick(updateReadableListening, this);
   }
-
   return res;
 };
-
 Readable.prototype.removeAllListeners = function (ev) {
   var res = Stream.prototype.removeAllListeners.apply(this, arguments);
-
   if (ev === 'readable' || ev === undefined) {
     // We need to check if there is someone still listening to
     // readable and reset the state. However this needs to happen
@@ -28453,121 +25314,103 @@ Readable.prototype.removeAllListeners = function (ev) {
     // effect.
     process.nextTick(updateReadableListening, this);
   }
-
   return res;
 };
-
 function updateReadableListening(self) {
   var state = self._readableState;
   state.readableListening = self.listenerCount('readable') > 0;
-
   if (state.resumeScheduled && !state.paused) {
     // flowing needs to be set to true now, otherwise
     // the upcoming resume will not flow.
-    state.flowing = true; // crude way to check if we should resume
+    state.flowing = true;
+
+    // crude way to check if we should resume
   } else if (self.listenerCount('data') > 0) {
     self.resume();
   }
 }
-
 function nReadingNextTick(self) {
   debug('readable nexttick read 0');
   self.read(0);
-} // pause() and resume() are remnants of the legacy readable stream API
+}
+
+// pause() and resume() are remnants of the legacy readable stream API
 // If the user uses them, then switch into old mode.
-
-
 Readable.prototype.resume = function () {
   var state = this._readableState;
-
   if (!state.flowing) {
-    debug('resume'); // we flow only if there is no one listening
+    debug('resume');
+    // we flow only if there is no one listening
     // for readable, but we still have to call
     // resume()
-
     state.flowing = !state.readableListening;
     resume(this, state);
   }
-
   state.paused = false;
   return this;
 };
-
 function resume(stream, state) {
   if (!state.resumeScheduled) {
     state.resumeScheduled = true;
     process.nextTick(resume_, stream, state);
   }
 }
-
 function resume_(stream, state) {
   debug('resume', state.reading);
-
   if (!state.reading) {
     stream.read(0);
   }
-
   state.resumeScheduled = false;
   stream.emit('resume');
   flow(stream);
   if (state.flowing && !state.reading) stream.read(0);
 }
-
 Readable.prototype.pause = function () {
   debug('call pause flowing=%j', this._readableState.flowing);
-
   if (this._readableState.flowing !== false) {
     debug('pause');
     this._readableState.flowing = false;
     this.emit('pause');
   }
-
   this._readableState.paused = true;
   return this;
 };
-
 function flow(stream) {
   var state = stream._readableState;
   debug('flow', state.flowing);
+  while (state.flowing && stream.read() !== null);
+}
 
-  while (state.flowing && stream.read() !== null) {
-    ;
-  }
-} // wrap an old-style stream as the async data source.
+// wrap an old-style stream as the async data source.
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
-
-
 Readable.prototype.wrap = function (stream) {
   var _this = this;
-
   var state = this._readableState;
   var paused = false;
   stream.on('end', function () {
     debug('wrapped end');
-
     if (state.decoder && !state.ended) {
       var chunk = state.decoder.end();
       if (chunk && chunk.length) _this.push(chunk);
     }
-
     _this.push(null);
   });
   stream.on('data', function (chunk) {
     debug('wrapped data');
-    if (state.decoder) chunk = state.decoder.write(chunk); // don't skip over falsy values in objectMode
+    if (state.decoder) chunk = state.decoder.write(chunk);
 
+    // don't skip over falsy values in objectMode
     if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
-
     var ret = _this.push(chunk);
-
     if (!ret) {
       paused = true;
       stream.pause();
     }
-  }); // proxy all the other methods.
-  // important when wrapping filters and duplexes.
+  });
 
+  // proxy all the other methods.
+  // important when wrapping filters and duplexes.
   for (var i in stream) {
     if (this[i] === undefined && typeof stream[i] === 'function') {
       this[i] = function methodWrap(method) {
@@ -28576,37 +25419,32 @@ Readable.prototype.wrap = function (stream) {
         };
       }(i);
     }
-  } // proxy certain important events.
+  }
 
-
+  // proxy certain important events.
   for (var n = 0; n < kProxyEvents.length; n++) {
     stream.on(kProxyEvents[n], this.emit.bind(this, kProxyEvents[n]));
-  } // when we try to consume some more bytes, simply unpause the
+  }
+
+  // when we try to consume some more bytes, simply unpause the
   // underlying stream.
-
-
   this._read = function (n) {
     debug('wrapped _read', n);
-
     if (paused) {
       paused = false;
       stream.resume();
     }
   };
-
   return this;
 };
-
 if (typeof Symbol === 'function') {
   Readable.prototype[Symbol.asyncIterator] = function () {
     if (createReadableStreamAsyncIterator === undefined) {
       createReadableStreamAsyncIterator = __webpack_require__(828);
     }
-
     return createReadableStreamAsyncIterator(this);
   };
 }
-
 Object.defineProperty(Readable.prototype, 'readableHighWaterMark', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -28638,8 +25476,9 @@ Object.defineProperty(Readable.prototype, 'readableFlowing', {
       this._readableState.flowing = state;
     }
   }
-}); // exposed for testing purposes only.
+});
 
+// exposed for testing purposes only.
 Readable._fromList = fromList;
 Object.defineProperty(Readable.prototype, 'readableLength', {
   // making it explicit this property is not enumerable
@@ -28649,11 +25488,12 @@ Object.defineProperty(Readable.prototype, 'readableLength', {
   get: function get() {
     return this._readableState.length;
   }
-}); // Pluck off n bytes from an array of buffers.
+});
+
+// Pluck off n bytes from an array of buffers.
 // Length is the combined lengths of all the buffers in the list.
 // This function is designed to be inlinable, so please take care when making
 // changes to the function body.
-
 function fromList(n, state) {
   // nothing buffered
   if (state.length === 0) return null;
@@ -28668,52 +25508,44 @@ function fromList(n, state) {
   }
   return ret;
 }
-
 function endReadable(stream) {
   var state = stream._readableState;
   debug('endReadable', state.endEmitted);
-
   if (!state.endEmitted) {
     state.ended = true;
     process.nextTick(endReadableNT, state, stream);
   }
 }
-
 function endReadableNT(state, stream) {
-  debug('endReadableNT', state.endEmitted, state.length); // Check that we didn't get one last unshift.
+  debug('endReadableNT', state.endEmitted, state.length);
 
+  // Check that we didn't get one last unshift.
   if (!state.endEmitted && state.length === 0) {
     state.endEmitted = true;
     stream.readable = false;
     stream.emit('end');
-
     if (state.autoDestroy) {
       // In case of duplex streams we need a way to detect
       // if the writable side is ready for autoDestroy as well
       var wState = stream._writableState;
-
       if (!wState || wState.autoDestroy && wState.finished) {
         stream.destroy();
       }
     }
   }
 }
-
 if (typeof Symbol === 'function') {
   Readable.from = function (iterable, opts) {
     if (from === undefined) {
       from = __webpack_require__(1265);
     }
-
     return from(Readable, iterable, opts);
   };
 }
-
 function indexOf(xs, x) {
   for (var i = 0, l = xs.length; i < l; i++) {
     if (xs[i] === x) return i;
   }
-
   return -1;
 }
 
@@ -28743,6 +25575,7 @@ function indexOf(xs, x) {
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -28786,40 +25619,34 @@ function indexOf(xs, x) {
 // the results of the previous transformed chunk were consumed.
 
 
+
 module.exports = Transform;
-
 var _require$codes = (__webpack_require__(8106)/* .codes */ .q),
-    ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
-    ERR_MULTIPLE_CALLBACK = _require$codes.ERR_MULTIPLE_CALLBACK,
-    ERR_TRANSFORM_ALREADY_TRANSFORMING = _require$codes.ERR_TRANSFORM_ALREADY_TRANSFORMING,
-    ERR_TRANSFORM_WITH_LENGTH_0 = _require$codes.ERR_TRANSFORM_WITH_LENGTH_0;
-
+  ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
+  ERR_MULTIPLE_CALLBACK = _require$codes.ERR_MULTIPLE_CALLBACK,
+  ERR_TRANSFORM_ALREADY_TRANSFORMING = _require$codes.ERR_TRANSFORM_ALREADY_TRANSFORMING,
+  ERR_TRANSFORM_WITH_LENGTH_0 = _require$codes.ERR_TRANSFORM_WITH_LENGTH_0;
 var Duplex = __webpack_require__(8656);
-
 __webpack_require__(5717)(Transform, Duplex);
-
 function afterTransform(er, data) {
   var ts = this._transformState;
   ts.transforming = false;
   var cb = ts.writecb;
-
   if (cb === null) {
     return this.emit('error', new ERR_MULTIPLE_CALLBACK());
   }
-
   ts.writechunk = null;
   ts.writecb = null;
-  if (data != null) // single equals check for both `null` and `undefined`
+  if (data != null)
+    // single equals check for both `null` and `undefined`
     this.push(data);
   cb(er);
   var rs = this._readableState;
   rs.reading = false;
-
   if (rs.needReadable || rs.length < rs.highWaterMark) {
     this._read(rs.highWaterMark);
   }
 }
-
 function Transform(options) {
   if (!(this instanceof Transform)) return new Transform(options);
   Duplex.call(this, options);
@@ -28830,26 +25657,25 @@ function Transform(options) {
     writecb: null,
     writechunk: null,
     writeencoding: null
-  }; // start out asking for a readable event once data is transformed.
+  };
 
-  this._readableState.needReadable = true; // we have implemented the _read method, and done the other things
+  // start out asking for a readable event once data is transformed.
+  this._readableState.needReadable = true;
+
+  // we have implemented the _read method, and done the other things
   // that Readable wants before the first _read call, so unset the
   // sync guard flag.
-
   this._readableState.sync = false;
-
   if (options) {
     if (typeof options.transform === 'function') this._transform = options.transform;
     if (typeof options.flush === 'function') this._flush = options.flush;
-  } // When the writable side finishes, then flush out anything remaining.
+  }
 
-
+  // When the writable side finishes, then flush out anything remaining.
   this.on('prefinish', prefinish);
 }
-
 function prefinish() {
   var _this = this;
-
   if (typeof this._flush === 'function' && !this._readableState.destroyed) {
     this._flush(function (er, data) {
       done(_this, er, data);
@@ -28858,11 +25684,12 @@ function prefinish() {
     done(this, null, null);
   }
 }
-
 Transform.prototype.push = function (chunk, encoding) {
   this._transformState.needTransform = false;
   return Duplex.prototype.push.call(this, chunk, encoding);
-}; // This is the part where you do stuff!
+};
+
+// This is the part where you do stuff!
 // override this function in implementation classes.
 // 'chunk' is an input chunk.
 //
@@ -28872,33 +25699,27 @@ Transform.prototype.push = function (chunk, encoding) {
 // Call `cb(err)` when you are done with this chunk.  If you pass
 // an error, then that'll put the hurt on the whole operation.  If you
 // never call cb(), then you'll never get another chunk.
-
-
 Transform.prototype._transform = function (chunk, encoding, cb) {
   cb(new ERR_METHOD_NOT_IMPLEMENTED('_transform()'));
 };
-
 Transform.prototype._write = function (chunk, encoding, cb) {
   var ts = this._transformState;
   ts.writecb = cb;
   ts.writechunk = chunk;
   ts.writeencoding = encoding;
-
   if (!ts.transforming) {
     var rs = this._readableState;
     if (ts.needTransform || rs.needReadable || rs.length < rs.highWaterMark) this._read(rs.highWaterMark);
   }
-}; // Doesn't matter what the args are here.
+};
+
+// Doesn't matter what the args are here.
 // _transform does all the work.
 // That we got here means that the readable side wants more data.
-
-
 Transform.prototype._read = function (n) {
   var ts = this._transformState;
-
   if (ts.writechunk !== null && !ts.transforming) {
     ts.transforming = true;
-
     this._transform(ts.writechunk, ts.writeencoding, ts.afterTransform);
   } else {
     // mark that we need a transform, so that any data that comes in
@@ -28906,20 +25727,20 @@ Transform.prototype._read = function (n) {
     ts.needTransform = true;
   }
 };
-
 Transform.prototype._destroy = function (err, cb) {
   Duplex.prototype._destroy.call(this, err, function (err2) {
     cb(err2);
   });
 };
-
 function done(stream, er, data) {
   if (er) return stream.emit('error', er);
-  if (data != null) // single equals check for both `null` and `undefined`
-    stream.push(data); // TODO(BridgeAR): Write a test for these two error cases
+  if (data != null)
+    // single equals check for both `null` and `undefined`
+    stream.push(data);
+
+  // TODO(BridgeAR): Write a test for these two error cases
   // if there's nothing in the write buffer, then that means
   // that nothing more will ever be provided
-
   if (stream._writableState.length) throw new ERR_TRANSFORM_WITH_LENGTH_0();
   if (stream._transformState.transforming) throw new ERR_TRANSFORM_ALREADY_TRANSFORMING();
   return stream.push(null);
@@ -28951,29 +25772,29 @@ function done(stream, er, data) {
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
 // the drain event emission and buffering.
 
 
-module.exports = Writable;
-/* <replacement> */
 
+module.exports = Writable;
+
+/* <replacement> */
 function WriteReq(chunk, encoding, cb) {
   this.chunk = chunk;
   this.encoding = encoding;
   this.callback = cb;
   this.next = null;
-} // It seems a linked list but it is not
+}
+
+// It seems a linked list but it is not
 // there will be only 2 of these for each stream
-
-
 function CorkedRequest(state) {
   var _this = this;
-
   this.next = null;
   this.entry = null;
-
   this.finish = function () {
     onCorkedFinish(_this, state);
   };
@@ -28981,155 +25802,159 @@ function CorkedRequest(state) {
 /* </replacement> */
 
 /*<replacement>*/
-
-
 var Duplex;
 /*</replacement>*/
 
 Writable.WritableState = WritableState;
-/*<replacement>*/
 
+/*<replacement>*/
 var internalUtil = {
   deprecate: __webpack_require__(4927)
 };
 /*</replacement>*/
 
 /*<replacement>*/
-
 var Stream = __webpack_require__(3194);
 /*</replacement>*/
 
-
-var Buffer = (__webpack_require__(816).Buffer);
-
-var OurUint8Array = __webpack_require__.g.Uint8Array || function () {};
-
+var Buffer = (__webpack_require__(2860).Buffer);
+var OurUint8Array = (typeof __webpack_require__.g !== 'undefined' ? __webpack_require__.g : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
 }
-
 function _isUint8Array(obj) {
   return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;
 }
-
 var destroyImpl = __webpack_require__(1029);
-
 var _require = __webpack_require__(94),
-    getHighWaterMark = _require.getHighWaterMark;
-
+  getHighWaterMark = _require.getHighWaterMark;
 var _require$codes = (__webpack_require__(8106)/* .codes */ .q),
-    ERR_INVALID_ARG_TYPE = _require$codes.ERR_INVALID_ARG_TYPE,
-    ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
-    ERR_MULTIPLE_CALLBACK = _require$codes.ERR_MULTIPLE_CALLBACK,
-    ERR_STREAM_CANNOT_PIPE = _require$codes.ERR_STREAM_CANNOT_PIPE,
-    ERR_STREAM_DESTROYED = _require$codes.ERR_STREAM_DESTROYED,
-    ERR_STREAM_NULL_VALUES = _require$codes.ERR_STREAM_NULL_VALUES,
-    ERR_STREAM_WRITE_AFTER_END = _require$codes.ERR_STREAM_WRITE_AFTER_END,
-    ERR_UNKNOWN_ENCODING = _require$codes.ERR_UNKNOWN_ENCODING;
-
+  ERR_INVALID_ARG_TYPE = _require$codes.ERR_INVALID_ARG_TYPE,
+  ERR_METHOD_NOT_IMPLEMENTED = _require$codes.ERR_METHOD_NOT_IMPLEMENTED,
+  ERR_MULTIPLE_CALLBACK = _require$codes.ERR_MULTIPLE_CALLBACK,
+  ERR_STREAM_CANNOT_PIPE = _require$codes.ERR_STREAM_CANNOT_PIPE,
+  ERR_STREAM_DESTROYED = _require$codes.ERR_STREAM_DESTROYED,
+  ERR_STREAM_NULL_VALUES = _require$codes.ERR_STREAM_NULL_VALUES,
+  ERR_STREAM_WRITE_AFTER_END = _require$codes.ERR_STREAM_WRITE_AFTER_END,
+  ERR_UNKNOWN_ENCODING = _require$codes.ERR_UNKNOWN_ENCODING;
 var errorOrDestroy = destroyImpl.errorOrDestroy;
-
 __webpack_require__(5717)(Writable, Stream);
-
 function nop() {}
-
 function WritableState(options, stream, isDuplex) {
   Duplex = Duplex || __webpack_require__(8656);
-  options = options || {}; // Duplex streams are both readable and writable, but share
+  options = options || {};
+
+  // Duplex streams are both readable and writable, but share
   // the same options object.
   // However, some cases require setting options to different
   // values for the readable and the writable sides of the duplex stream,
   // e.g. options.readableObjectMode vs. options.writableObjectMode, etc.
+  if (typeof isDuplex !== 'boolean') isDuplex = stream instanceof Duplex;
 
-  if (typeof isDuplex !== 'boolean') isDuplex = stream instanceof Duplex; // object stream flag to indicate whether or not this stream
+  // object stream flag to indicate whether or not this stream
   // contains buffers or objects.
-
   this.objectMode = !!options.objectMode;
-  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode; // the point at which write() starts returning false
+  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
+
+  // the point at which write() starts returning false
   // Note: 0 is a valid value, means that we always return false if
   // the entire buffer is not flushed immediately on write()
+  this.highWaterMark = getHighWaterMark(this, options, 'writableHighWaterMark', isDuplex);
 
-  this.highWaterMark = getHighWaterMark(this, options, 'writableHighWaterMark', isDuplex); // if _final has been called
+  // if _final has been called
+  this.finalCalled = false;
 
-  this.finalCalled = false; // drain event flag.
+  // drain event flag.
+  this.needDrain = false;
+  // at the start of calling end()
+  this.ending = false;
+  // when end() has been called, and returned
+  this.ended = false;
+  // when 'finish' is emitted
+  this.finished = false;
 
-  this.needDrain = false; // at the start of calling end()
+  // has it been destroyed
+  this.destroyed = false;
 
-  this.ending = false; // when end() has been called, and returned
-
-  this.ended = false; // when 'finish' is emitted
-
-  this.finished = false; // has it been destroyed
-
-  this.destroyed = false; // should we decode strings into buffers before passing to _write?
+  // should we decode strings into buffers before passing to _write?
   // this is here so that some node-core streams can optimize string
   // handling at a lower level.
-
   var noDecode = options.decodeStrings === false;
-  this.decodeStrings = !noDecode; // Crypto is kind of old and crusty.  Historically, its default string
+  this.decodeStrings = !noDecode;
+
+  // Crypto is kind of old and crusty.  Historically, its default string
   // encoding is 'binary' so we have to make this configurable.
   // Everything else in the universe uses 'utf8', though.
+  this.defaultEncoding = options.defaultEncoding || 'utf8';
 
-  this.defaultEncoding = options.defaultEncoding || 'utf8'; // not an actual buffer we keep track of, but a measurement
+  // not an actual buffer we keep track of, but a measurement
   // of how much we're waiting to get pushed to some underlying
   // socket or file.
+  this.length = 0;
 
-  this.length = 0; // a flag to see when we're in the middle of a write.
+  // a flag to see when we're in the middle of a write.
+  this.writing = false;
 
-  this.writing = false; // when true all writes will be buffered until .uncork() call
+  // when true all writes will be buffered until .uncork() call
+  this.corked = 0;
 
-  this.corked = 0; // a flag to be able to tell if the onwrite cb is called immediately,
+  // a flag to be able to tell if the onwrite cb is called immediately,
   // or on a later tick.  We set this to true at first, because any
   // actions that shouldn't happen until "later" should generally also
   // not happen before the first write call.
+  this.sync = true;
 
-  this.sync = true; // a flag to know if we're processing previously buffered items, which
+  // a flag to know if we're processing previously buffered items, which
   // may call the _write() callback in the same tick, so that we don't
   // end up in an overlapped onwrite situation.
+  this.bufferProcessing = false;
 
-  this.bufferProcessing = false; // the callback that's passed to _write(chunk,cb)
-
+  // the callback that's passed to _write(chunk,cb)
   this.onwrite = function (er) {
     onwrite(stream, er);
-  }; // the callback that the user supplies to write(chunk,encoding,cb)
+  };
 
+  // the callback that the user supplies to write(chunk,encoding,cb)
+  this.writecb = null;
 
-  this.writecb = null; // the amount that is being written when _write is called.
-
+  // the amount that is being written when _write is called.
   this.writelen = 0;
   this.bufferedRequest = null;
-  this.lastBufferedRequest = null; // number of pending user-supplied write callbacks
+  this.lastBufferedRequest = null;
+
+  // number of pending user-supplied write callbacks
   // this must be 0 before 'finish' can be emitted
+  this.pendingcb = 0;
 
-  this.pendingcb = 0; // emit prefinish if the only thing we're waiting for is _write cbs
+  // emit prefinish if the only thing we're waiting for is _write cbs
   // This is relevant for synchronous Transform streams
+  this.prefinished = false;
 
-  this.prefinished = false; // True if the error was already emitted and should not be thrown again
+  // True if the error was already emitted and should not be thrown again
+  this.errorEmitted = false;
 
-  this.errorEmitted = false; // Should close be emitted on destroy. Defaults to true.
+  // Should close be emitted on destroy. Defaults to true.
+  this.emitClose = options.emitClose !== false;
 
-  this.emitClose = options.emitClose !== false; // Should .destroy() be called after 'finish' (and potentially 'end')
+  // Should .destroy() be called after 'finish' (and potentially 'end')
+  this.autoDestroy = !!options.autoDestroy;
 
-  this.autoDestroy = !!options.autoDestroy; // count buffered requests
+  // count buffered requests
+  this.bufferedRequestCount = 0;
 
-  this.bufferedRequestCount = 0; // allocate the first CorkedRequest, there is always
+  // allocate the first CorkedRequest, there is always
   // one allocated and free to use, and we maintain at most two
-
   this.corkedRequestsFree = new CorkedRequest(this);
 }
-
 WritableState.prototype.getBuffer = function getBuffer() {
   var current = this.bufferedRequest;
   var out = [];
-
   while (current) {
     out.push(current);
     current = current.next;
   }
-
   return out;
 };
-
 (function () {
   try {
     Object.defineProperty(WritableState.prototype, 'buffer', {
@@ -29138,12 +25963,11 @@ WritableState.prototype.getBuffer = function getBuffer() {
       }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.', 'DEP0003')
     });
   } catch (_) {}
-})(); // Test _writableState for inheritance to account for Duplex streams,
+})();
+
+// Test _writableState for inheritance to account for Duplex streams,
 // whose prototype chain only points to Readable.
-
-
 var realHasInstance;
-
 if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.prototype[Symbol.hasInstance] === 'function') {
   realHasInstance = Function.prototype[Symbol.hasInstance];
   Object.defineProperty(Writable, Symbol.hasInstance, {
@@ -29158,81 +25982,73 @@ if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.protot
     return object instanceof this;
   };
 }
-
 function Writable(options) {
-  Duplex = Duplex || __webpack_require__(8656); // Writable ctor is applied to Duplexes, too.
+  Duplex = Duplex || __webpack_require__(8656);
+
+  // Writable ctor is applied to Duplexes, too.
   // `realHasInstance` is necessary because using plain `instanceof`
   // would return false, as no `_writableState` property is attached.
+
   // Trying to use the custom `instanceof` for Writable here will also break the
   // Node.js LazyTransform implementation, which has a non-trivial getter for
   // `_writableState` that would lead to infinite recursion.
+
   // Checking for a Stream.Duplex instance is faster here instead of inside
   // the WritableState constructor, at least with V8 6.5
-
   var isDuplex = this instanceof Duplex;
   if (!isDuplex && !realHasInstance.call(Writable, this)) return new Writable(options);
-  this._writableState = new WritableState(options, this, isDuplex); // legacy.
+  this._writableState = new WritableState(options, this, isDuplex);
 
+  // legacy.
   this.writable = true;
-
   if (options) {
     if (typeof options.write === 'function') this._write = options.write;
     if (typeof options.writev === 'function') this._writev = options.writev;
     if (typeof options.destroy === 'function') this._destroy = options.destroy;
     if (typeof options.final === 'function') this._final = options.final;
   }
-
   Stream.call(this);
-} // Otherwise people can pipe Writable streams, which is just wrong.
+}
 
-
+// Otherwise people can pipe Writable streams, which is just wrong.
 Writable.prototype.pipe = function () {
   errorOrDestroy(this, new ERR_STREAM_CANNOT_PIPE());
 };
-
 function writeAfterEnd(stream, cb) {
-  var er = new ERR_STREAM_WRITE_AFTER_END(); // TODO: defer error events consistently everywhere, not just the cb
-
+  var er = new ERR_STREAM_WRITE_AFTER_END();
+  // TODO: defer error events consistently everywhere, not just the cb
   errorOrDestroy(stream, er);
   process.nextTick(cb, er);
-} // Checks that a user-supplied chunk is valid, especially for the particular
+}
+
+// Checks that a user-supplied chunk is valid, especially for the particular
 // mode the stream is in. Currently this means that `null` is never accepted
 // and undefined/non-string values are only allowed in object mode.
-
-
 function validChunk(stream, state, chunk, cb) {
   var er;
-
   if (chunk === null) {
     er = new ERR_STREAM_NULL_VALUES();
   } else if (typeof chunk !== 'string' && !state.objectMode) {
     er = new ERR_INVALID_ARG_TYPE('chunk', ['string', 'Buffer'], chunk);
   }
-
   if (er) {
     errorOrDestroy(stream, er);
     process.nextTick(cb, er);
     return false;
   }
-
   return true;
 }
-
 Writable.prototype.write = function (chunk, encoding, cb) {
   var state = this._writableState;
   var ret = false;
-
   var isBuf = !state.objectMode && _isUint8Array(chunk);
-
   if (isBuf && !Buffer.isBuffer(chunk)) {
     chunk = _uint8ArrayToBuffer(chunk);
   }
-
   if (typeof encoding === 'function') {
     cb = encoding;
     encoding = null;
   }
-
   if (isBuf) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
   if (typeof cb !== 'function') cb = nop;
   if (state.ending) writeAfterEnd(this, cb);else if (isBuf || validChunk(this, state, chunk, cb)) {
@@ -29241,20 +26057,16 @@ Writable.prototype.write = function (chunk, encoding, cb) {
   }
   return ret;
 };
-
 Writable.prototype.cork = function () {
   this._writableState.corked++;
 };
-
 Writable.prototype.uncork = function () {
   var state = this._writableState;
-
   if (state.corked) {
     state.corked--;
     if (!state.writing && !state.corked && !state.bufferProcessing && state.bufferedRequest) clearBuffer(this, state);
   }
 };
-
 Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
   // node::ParseEncoding() requires lower case.
   if (typeof encoding === 'string') encoding = encoding.toLowerCase();
@@ -29262,7 +26074,6 @@ Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
   this._writableState.defaultEncoding = encoding;
   return this;
 };
-
 Object.defineProperty(Writable.prototype, 'writableBuffer', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -29272,15 +26083,12 @@ Object.defineProperty(Writable.prototype, 'writableBuffer', {
     return this._writableState && this._writableState.getBuffer();
   }
 });
-
 function decodeChunk(state, chunk, encoding) {
   if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
     chunk = Buffer.from(chunk, encoding);
   }
-
   return chunk;
 }
-
 Object.defineProperty(Writable.prototype, 'writableHighWaterMark', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -29289,27 +26097,25 @@ Object.defineProperty(Writable.prototype, 'writableHighWaterMark', {
   get: function get() {
     return this._writableState.highWaterMark;
   }
-}); // if we're already writing something, then just put this
+});
+
+// if we're already writing something, then just put this
 // in the queue, and wait our turn.  Otherwise, call _write
 // If we return false, then we need a drain event, so set that flag.
-
 function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
   if (!isBuf) {
     var newChunk = decodeChunk(state, chunk, encoding);
-
     if (chunk !== newChunk) {
       isBuf = true;
       encoding = 'buffer';
       chunk = newChunk;
     }
   }
-
   var len = state.objectMode ? 1 : chunk.length;
   state.length += len;
-  var ret = state.length < state.highWaterMark; // we must ensure that previous needDrain will not be reset to false.
-
+  var ret = state.length < state.highWaterMark;
+  // we must ensure that previous needDrain will not be reset to false.
   if (!ret) state.needDrain = true;
-
   if (state.writing || state.corked) {
     var last = state.lastBufferedRequest;
     state.lastBufferedRequest = {
@@ -29319,21 +26125,17 @@ function writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {
       callback: cb,
       next: null
     };
-
     if (last) {
       last.next = state.lastBufferedRequest;
     } else {
       state.bufferedRequest = state.lastBufferedRequest;
     }
-
     state.bufferedRequestCount += 1;
   } else {
     doWrite(stream, state, false, len, chunk, encoding, cb);
   }
-
   return ret;
 }
-
 function doWrite(stream, state, writev, len, chunk, encoding, cb) {
   state.writelen = len;
   state.writecb = cb;
@@ -29342,16 +26144,14 @@ function doWrite(stream, state, writev, len, chunk, encoding, cb) {
   if (state.destroyed) state.onwrite(new ERR_STREAM_DESTROYED('write'));else if (writev) stream._writev(chunk, state.onwrite);else stream._write(chunk, encoding, state.onwrite);
   state.sync = false;
 }
-
 function onwriteError(stream, state, sync, er, cb) {
   --state.pendingcb;
-
   if (sync) {
     // defer the callback if we are being called synchronously
     // to avoid piling up things on the stack
-    process.nextTick(cb, er); // this can emit finish, and it will always happen
+    process.nextTick(cb, er);
+    // this can emit finish, and it will always happen
     // after error
-
     process.nextTick(finishMaybe, stream, state);
     stream._writableState.errorEmitted = true;
     errorOrDestroy(stream, er);
@@ -29360,20 +26160,18 @@ function onwriteError(stream, state, sync, er, cb) {
     // it is async
     cb(er);
     stream._writableState.errorEmitted = true;
-    errorOrDestroy(stream, er); // this can emit finish, but finish must
+    errorOrDestroy(stream, er);
+    // this can emit finish, but finish must
     // always follow error
-
     finishMaybe(stream, state);
   }
 }
-
 function onwriteStateUpdate(state) {
   state.writing = false;
   state.writecb = null;
   state.length -= state.writelen;
   state.writelen = 0;
 }
-
 function onwrite(stream, er) {
   var state = stream._writableState;
   var sync = state.sync;
@@ -29383,11 +26181,9 @@ function onwrite(stream, er) {
   if (er) onwriteError(stream, state, sync, er, cb);else {
     // Check if we're actually ready to finish, but don't emit yet
     var finished = needFinish(state) || stream.destroyed;
-
     if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
       clearBuffer(stream, state);
     }
-
     if (sync) {
       process.nextTick(afterWrite, stream, state, finished, cb);
     } else {
@@ -29395,29 +26191,27 @@ function onwrite(stream, er) {
     }
   }
 }
-
 function afterWrite(stream, state, finished, cb) {
   if (!finished) onwriteDrain(stream, state);
   state.pendingcb--;
   cb();
   finishMaybe(stream, state);
-} // Must force callback to be called on nextTick, so that we don't
+}
+
+// Must force callback to be called on nextTick, so that we don't
 // emit 'drain' before the write() consumer gets the 'false' return
 // value, and has a chance to attach a 'drain' listener.
-
-
 function onwriteDrain(stream, state) {
   if (state.length === 0 && state.needDrain) {
     state.needDrain = false;
     stream.emit('drain');
   }
-} // if there's something in the buffer waiting, then process it
+}
 
-
+// if there's something in the buffer waiting, then process it
 function clearBuffer(stream, state) {
   state.bufferProcessing = true;
   var entry = state.bufferedRequest;
-
   if (stream._writev && entry && entry.next) {
     // Fast case, write everything using _writev()
     var l = state.bufferedRequestCount;
@@ -29426,28 +26220,25 @@ function clearBuffer(stream, state) {
     holder.entry = entry;
     var count = 0;
     var allBuffers = true;
-
     while (entry) {
       buffer[count] = entry;
       if (!entry.isBuf) allBuffers = false;
       entry = entry.next;
       count += 1;
     }
-
     buffer.allBuffers = allBuffers;
-    doWrite(stream, state, true, state.length, buffer, '', holder.finish); // doWrite is almost always async, defer these to save a bit of time
-    // as the hot path ends with doWrite
+    doWrite(stream, state, true, state.length, buffer, '', holder.finish);
 
+    // doWrite is almost always async, defer these to save a bit of time
+    // as the hot path ends with doWrite
     state.pendingcb++;
     state.lastBufferedRequest = null;
-
     if (holder.next) {
       state.corkedRequestsFree = holder.next;
       holder.next = null;
     } else {
       state.corkedRequestsFree = new CorkedRequest(state);
     }
-
     state.bufferedRequestCount = 0;
   } else {
     // Slow case, write chunks one-by-one
@@ -29458,32 +26249,26 @@ function clearBuffer(stream, state) {
       var len = state.objectMode ? 1 : chunk.length;
       doWrite(stream, state, false, len, chunk, encoding, cb);
       entry = entry.next;
-      state.bufferedRequestCount--; // if we didn't call the onwrite immediately, then
+      state.bufferedRequestCount--;
+      // if we didn't call the onwrite immediately, then
       // it means that we need to wait until it does.
       // also, that means that the chunk and cb are currently
       // being processed, so move the buffer counter past them.
-
       if (state.writing) {
         break;
       }
     }
-
     if (entry === null) state.lastBufferedRequest = null;
   }
-
   state.bufferedRequest = entry;
   state.bufferProcessing = false;
 }
-
 Writable.prototype._write = function (chunk, encoding, cb) {
   cb(new ERR_METHOD_NOT_IMPLEMENTED('_write()'));
 };
-
 Writable.prototype._writev = null;
-
 Writable.prototype.end = function (chunk, encoding, cb) {
   var state = this._writableState;
-
   if (typeof chunk === 'function') {
     cb = chunk;
     chunk = null;
@@ -29492,19 +26277,18 @@ Writable.prototype.end = function (chunk, encoding, cb) {
     cb = encoding;
     encoding = null;
   }
+  if (chunk !== null && chunk !== undefined) this.write(chunk, encoding);
 
-  if (chunk !== null && chunk !== undefined) this.write(chunk, encoding); // .end() fully uncorks
-
+  // .end() fully uncorks
   if (state.corked) {
     state.corked = 1;
     this.uncork();
-  } // ignore unnecessary end() calls.
+  }
 
-
+  // ignore unnecessary end() calls.
   if (!state.ending) endWritable(this, state, cb);
   return this;
 };
-
 Object.defineProperty(Writable.prototype, 'writableLength', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -29514,25 +26298,20 @@ Object.defineProperty(Writable.prototype, 'writableLength', {
     return this._writableState.length;
   }
 });
-
 function needFinish(state) {
   return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
 }
-
 function callFinal(stream, state) {
   stream._final(function (err) {
     state.pendingcb--;
-
     if (err) {
       errorOrDestroy(stream, err);
     }
-
     state.prefinished = true;
     stream.emit('prefinish');
     finishMaybe(stream, state);
   });
 }
-
 function prefinish(stream, state) {
   if (!state.prefinished && !state.finalCalled) {
     if (typeof stream._final === 'function' && !state.destroyed) {
@@ -29545,59 +26324,47 @@ function prefinish(stream, state) {
     }
   }
 }
-
 function finishMaybe(stream, state) {
   var need = needFinish(state);
-
   if (need) {
     prefinish(stream, state);
-
     if (state.pendingcb === 0) {
       state.finished = true;
       stream.emit('finish');
-
       if (state.autoDestroy) {
         // In case of duplex streams we need a way to detect
         // if the readable side is ready for autoDestroy as well
         var rState = stream._readableState;
-
         if (!rState || rState.autoDestroy && rState.endEmitted) {
           stream.destroy();
         }
       }
     }
   }
-
   return need;
 }
-
 function endWritable(stream, state, cb) {
   state.ending = true;
   finishMaybe(stream, state);
-
   if (cb) {
     if (state.finished) process.nextTick(cb);else stream.once('finish', cb);
   }
-
   state.ended = true;
   stream.writable = false;
 }
-
 function onCorkedFinish(corkReq, state, err) {
   var entry = corkReq.entry;
   corkReq.entry = null;
-
   while (entry) {
     var cb = entry.callback;
     state.pendingcb--;
     cb(err);
     entry = entry.next;
-  } // reuse the free corkReq.
+  }
 
-
+  // reuse the free corkReq.
   state.corkedRequestsFree.next = corkReq;
 }
-
 Object.defineProperty(Writable.prototype, 'destroyed', {
   // making it explicit this property is not enumerable
   // because otherwise some prototype manipulation in
@@ -29607,7 +26374,6 @@ Object.defineProperty(Writable.prototype, 'destroyed', {
     if (this._writableState === undefined) {
       return false;
     }
-
     return this._writableState.destroyed;
   },
   set: function set(value) {
@@ -29615,16 +26381,15 @@ Object.defineProperty(Writable.prototype, 'destroyed', {
     // has not been initialized yet
     if (!this._writableState) {
       return;
-    } // backward compatibility, the user is explicitly
+    }
+
+    // backward compatibility, the user is explicitly
     // managing destroyed
-
-
     this._writableState.destroyed = value;
   }
 });
 Writable.prototype.destroy = destroyImpl.destroy;
 Writable.prototype._undestroy = destroyImpl.undestroy;
-
 Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
@@ -29638,11 +26403,10 @@ Writable.prototype._destroy = function (err, cb) {
 
 
 var _Object$setPrototypeO;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var finished = __webpack_require__(1086);
-
 var kLastResolve = Symbol('lastResolve');
 var kLastReject = Symbol('lastReject');
 var kError = Symbol('error');
@@ -29650,22 +26414,19 @@ var kEnded = Symbol('ended');
 var kLastPromise = Symbol('lastPromise');
 var kHandlePromise = Symbol('handlePromise');
 var kStream = Symbol('stream');
-
 function createIterResult(value, done) {
   return {
     value: value,
     done: done
   };
 }
-
 function readAndResolve(iter) {
   var resolve = iter[kLastResolve];
-
   if (resolve !== null) {
-    var data = iter[kStream].read(); // we defer if data is null
+    var data = iter[kStream].read();
+    // we defer if data is null
     // we can be expecting either 'end' or
     // 'error'
-
     if (data !== null) {
       iter[kLastPromise] = null;
       iter[kLastResolve] = null;
@@ -29674,13 +26435,11 @@ function readAndResolve(iter) {
     }
   }
 }
-
 function onReadable(iter) {
   // we wait for the next tick, because it might
   // emit an error with process.nextTick
   process.nextTick(readAndResolve, iter);
 }
-
 function wrapForNext(lastPromise, iter) {
   return function (resolve, reject) {
     lastPromise.then(function () {
@@ -29688,33 +26447,26 @@ function wrapForNext(lastPromise, iter) {
         resolve(createIterResult(undefined, true));
         return;
       }
-
       iter[kHandlePromise](resolve, reject);
     }, reject);
   };
 }
-
 var AsyncIteratorPrototype = Object.getPrototypeOf(function () {});
 var ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf((_Object$setPrototypeO = {
   get stream() {
     return this[kStream];
   },
-
   next: function next() {
     var _this = this;
-
     // if we have detected an error in the meanwhile
     // reject straight away
     var error = this[kError];
-
     if (error !== null) {
       return Promise.reject(error);
     }
-
     if (this[kEnded]) {
       return Promise.resolve(createIterResult(undefined, true));
     }
-
     if (this[kStream].destroyed) {
       // We need to defer via nextTick because if .destroy(err) is
       // called, the error will be emitted via nextTick, and
@@ -29729,29 +26481,25 @@ var ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf((_Object$setPro
           }
         });
       });
-    } // if we have multiple next() calls
+    }
+
+    // if we have multiple next() calls
     // we will wait for the previous Promise to finish
     // this logic is optimized to support for await loops,
     // where next() is only called once at a time
-
-
     var lastPromise = this[kLastPromise];
     var promise;
-
     if (lastPromise) {
       promise = new Promise(wrapForNext(lastPromise, this));
     } else {
       // fast path needed to support multiple this.push()
       // without triggering the next() queue
       var data = this[kStream].read();
-
       if (data !== null) {
         return Promise.resolve(createIterResult(data, false));
       }
-
       promise = new Promise(this[kHandlePromise]);
     }
-
     this[kLastPromise] = promise;
     return promise;
   }
@@ -29759,7 +26507,6 @@ var ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf((_Object$setPro
   return this;
 }), _defineProperty(_Object$setPrototypeO, "return", function _return() {
   var _this2 = this;
-
   // destroy(err, cb) is a private API
   // we can guarantee we have that here, because we control the
   // Readable class this is attached to
@@ -29769,15 +26516,12 @@ var ReadableStreamAsyncIteratorPrototype = Object.setPrototypeOf((_Object$setPro
         reject(err);
         return;
       }
-
       resolve(createIterResult(undefined, true));
     });
   });
 }), _Object$setPrototypeO), AsyncIteratorPrototype);
-
 var createReadableStreamAsyncIterator = function createReadableStreamAsyncIterator(stream) {
   var _Object$create;
-
   var iterator = Object.create(ReadableStreamAsyncIteratorPrototype, (_Object$create = {}, _defineProperty(_Object$create, kStream, {
     value: stream,
     writable: true
@@ -29796,7 +26540,6 @@ var createReadableStreamAsyncIterator = function createReadableStreamAsyncIterat
   }), _defineProperty(_Object$create, kHandlePromise, {
     value: function value(resolve, reject) {
       var data = iterator[kStream].read();
-
       if (data) {
         iterator[kLastPromise] = null;
         iterator[kLastResolve] = null;
@@ -29812,35 +26555,30 @@ var createReadableStreamAsyncIterator = function createReadableStreamAsyncIterat
   iterator[kLastPromise] = null;
   finished(stream, function (err) {
     if (err && err.code !== 'ERR_STREAM_PREMATURE_CLOSE') {
-      var reject = iterator[kLastReject]; // reject if we are waiting for data in the Promise
+      var reject = iterator[kLastReject];
+      // reject if we are waiting for data in the Promise
       // returned by next() and store the error
-
       if (reject !== null) {
         iterator[kLastPromise] = null;
         iterator[kLastResolve] = null;
         iterator[kLastReject] = null;
         reject(err);
       }
-
       iterator[kError] = err;
       return;
     }
-
     var resolve = iterator[kLastResolve];
-
     if (resolve !== null) {
       iterator[kLastPromise] = null;
       iterator[kLastResolve] = null;
       iterator[kLastReject] = null;
       resolve(createIterResult(undefined, true));
     }
-
     iterator[kEnded] = true;
   });
   stream.on('readable', onReadable.bind(null, iterator));
   return iterator;
 };
-
 module.exports = createReadableStreamAsyncIterator;
 
 /***/ }),
@@ -29851,41 +26589,29 @@ module.exports = createReadableStreamAsyncIterator;
 "use strict";
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var _require = __webpack_require__(816),
-    Buffer = _require.Buffer;
-
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var _require = __webpack_require__(2961),
+  Buffer = _require.Buffer;
 var _require2 = __webpack_require__(9862),
-    inspect = _require2.inspect;
-
+  inspect = _require2.inspect;
 var custom = inspect && inspect.custom || 'inspect';
-
 function copyBuffer(src, target, offset) {
   Buffer.prototype.copy.call(src, target, offset);
 }
-
-module.exports =
-/*#__PURE__*/
-function () {
+module.exports = /*#__PURE__*/function () {
   function BufferList() {
     _classCallCheck(this, BufferList);
-
     this.head = null;
     this.tail = null;
     this.length = 0;
   }
-
   _createClass(BufferList, [{
     key: "push",
     value: function push(v) {
@@ -29929,11 +26655,7 @@ function () {
       if (this.length === 0) return '';
       var p = this.head;
       var ret = '' + p.data;
-
-      while (p = p.next) {
-        ret += s + p.data;
-      }
-
+      while (p = p.next) ret += s + p.data;
       return ret;
     }
   }, {
@@ -29943,21 +26665,19 @@ function () {
       var ret = Buffer.allocUnsafe(n >>> 0);
       var p = this.head;
       var i = 0;
-
       while (p) {
         copyBuffer(p.data, ret, i);
         i += p.data.length;
         p = p.next;
       }
-
       return ret;
-    } // Consumes a specified amount of bytes or characters from the buffered data.
+    }
 
+    // Consumes a specified amount of bytes or characters from the buffered data.
   }, {
     key: "consume",
     value: function consume(n, hasStrings) {
       var ret;
-
       if (n < this.head.data.length) {
         // `slice` is the same for buffers and strings.
         ret = this.head.data.slice(0, n);
@@ -29969,15 +26689,15 @@ function () {
         // Result spans more than one buffer.
         ret = hasStrings ? this._getString(n) : this._getBuffer(n);
       }
-
       return ret;
     }
   }, {
     key: "first",
     value: function first() {
       return this.head.data;
-    } // Consumes a specified amount of characters from the buffered data.
+    }
 
+    // Consumes a specified amount of characters from the buffered data.
   }, {
     key: "_getString",
     value: function _getString(n) {
@@ -29985,13 +26705,11 @@ function () {
       var c = 1;
       var ret = p.data;
       n -= ret.length;
-
       while (p = p.next) {
         var str = p.data;
         var nb = n > str.length ? str.length : n;
         if (nb === str.length) ret += str;else ret += str.slice(0, n);
         n -= nb;
-
         if (n === 0) {
           if (nb === str.length) {
             ++c;
@@ -30000,17 +26718,15 @@ function () {
             this.head = p;
             p.data = str.slice(nb);
           }
-
           break;
         }
-
         ++c;
       }
-
       this.length -= c;
       return ret;
-    } // Consumes a specified amount of bytes from the buffered data.
+    }
 
+    // Consumes a specified amount of bytes from the buffered data.
   }, {
     key: "_getBuffer",
     value: function _getBuffer(n) {
@@ -30019,13 +26735,11 @@ function () {
       var c = 1;
       p.data.copy(ret);
       n -= p.data.length;
-
       while (p = p.next) {
         var buf = p.data;
         var nb = n > buf.length ? buf.length : n;
         buf.copy(ret, ret.length - n, 0, nb);
         n -= nb;
-
         if (n === 0) {
           if (nb === buf.length) {
             ++c;
@@ -30034,21 +26748,19 @@ function () {
             this.head = p;
             p.data = buf.slice(nb);
           }
-
           break;
         }
-
         ++c;
       }
-
       this.length -= c;
       return ret;
-    } // Make sure the linked list only shows the minimal necessary information.
+    }
 
+    // Make sure the linked list only shows the minimal necessary information.
   }, {
     key: custom,
     value: function value(_, options) {
-      return inspect(this, _objectSpread({}, options, {
+      return inspect(this, _objectSpread(_objectSpread({}, options), {}, {
         // Only inspect one level.
         depth: 0,
         // It should not recurse.
@@ -30056,7 +26768,6 @@ function () {
       }));
     }
   }]);
-
   return BufferList;
 }();
 
@@ -30066,14 +26777,13 @@ function () {
 /***/ (function(module) {
 
 "use strict";
- // undocumented cb() API, needed for core, not for public API
 
+
+// undocumented cb() API, needed for core, not for public API
 function destroy(err, cb) {
   var _this = this;
-
   var readableDestroyed = this._readableState && this._readableState.destroyed;
   var writableDestroyed = this._writableState && this._writableState.destroyed;
-
   if (readableDestroyed || writableDestroyed) {
     if (cb) {
       cb(err);
@@ -30085,21 +26795,20 @@ function destroy(err, cb) {
         process.nextTick(emitErrorNT, this, err);
       }
     }
-
     return this;
-  } // we set destroyed to true before firing error callbacks in order
-  // to make it re-entrance safe in case destroy() is called within callbacks
+  }
 
+  // we set destroyed to true before firing error callbacks in order
+  // to make it re-entrance safe in case destroy() is called within callbacks
 
   if (this._readableState) {
     this._readableState.destroyed = true;
-  } // if this is a duplex stream mark the writable part as destroyed as well
+  }
 
-
+  // if this is a duplex stream mark the writable part as destroyed as well
   if (this._writableState) {
     this._writableState.destroyed = true;
   }
-
   this._destroy(err || null, function (err) {
     if (!cb && err) {
       if (!_this._writableState) {
@@ -30117,21 +26826,17 @@ function destroy(err, cb) {
       process.nextTick(emitCloseNT, _this);
     }
   });
-
   return this;
 }
-
 function emitErrorAndCloseNT(self, err) {
   emitErrorNT(self, err);
   emitCloseNT(self);
 }
-
 function emitCloseNT(self) {
   if (self._writableState && !self._writableState.emitClose) return;
   if (self._readableState && !self._readableState.emitClose) return;
   self.emit('close');
 }
-
 function undestroy() {
   if (this._readableState) {
     this._readableState.destroyed = false;
@@ -30139,7 +26844,6 @@ function undestroy() {
     this._readableState.ended = false;
     this._readableState.endEmitted = false;
   }
-
   if (this._writableState) {
     this._writableState.destroyed = false;
     this._writableState.ended = false;
@@ -30150,22 +26854,20 @@ function undestroy() {
     this._writableState.errorEmitted = false;
   }
 }
-
 function emitErrorNT(self, err) {
   self.emit('error', err);
 }
-
 function errorOrDestroy(stream, err) {
   // We have tests that rely on errors being emitted
   // in the same tick, so changing this is semver major.
   // For now when you opt-in to autoDestroy we allow
   // the error to be emitted nextTick. In a future
   // semver major update we should change the default to this.
+
   var rState = stream._readableState;
   var wState = stream._writableState;
   if (rState && rState.autoDestroy || wState && wState.autoDestroy) stream.destroy(err);else stream.emit('error', err);
 }
-
 module.exports = {
   destroy: destroy,
   undestroy: undestroy,
@@ -30182,77 +26884,61 @@ module.exports = {
 // permission from the author, Mathias Buus (@mafintosh).
 
 
-var ERR_STREAM_PREMATURE_CLOSE = (__webpack_require__(8106)/* .codes.ERR_STREAM_PREMATURE_CLOSE */ .q.ERR_STREAM_PREMATURE_CLOSE);
 
+var ERR_STREAM_PREMATURE_CLOSE = (__webpack_require__(8106)/* .codes.ERR_STREAM_PREMATURE_CLOSE */ .q.ERR_STREAM_PREMATURE_CLOSE);
 function once(callback) {
   var called = false;
   return function () {
     if (called) return;
     called = true;
-
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
     callback.apply(this, args);
   };
 }
-
 function noop() {}
-
 function isRequest(stream) {
   return stream.setHeader && typeof stream.abort === 'function';
 }
-
 function eos(stream, opts, callback) {
   if (typeof opts === 'function') return eos(stream, null, opts);
   if (!opts) opts = {};
   callback = once(callback || noop);
   var readable = opts.readable || opts.readable !== false && stream.readable;
   var writable = opts.writable || opts.writable !== false && stream.writable;
-
   var onlegacyfinish = function onlegacyfinish() {
     if (!stream.writable) onfinish();
   };
-
   var writableEnded = stream._writableState && stream._writableState.finished;
-
   var onfinish = function onfinish() {
     writable = false;
     writableEnded = true;
     if (!readable) callback.call(stream);
   };
-
   var readableEnded = stream._readableState && stream._readableState.endEmitted;
-
   var onend = function onend() {
     readable = false;
     readableEnded = true;
     if (!writable) callback.call(stream);
   };
-
   var onerror = function onerror(err) {
     callback.call(stream, err);
   };
-
   var onclose = function onclose() {
     var err;
-
     if (readable && !readableEnded) {
       if (!stream._readableState || !stream._readableState.ended) err = new ERR_STREAM_PREMATURE_CLOSE();
       return callback.call(stream, err);
     }
-
     if (writable && !writableEnded) {
       if (!stream._writableState || !stream._writableState.ended) err = new ERR_STREAM_PREMATURE_CLOSE();
       return callback.call(stream, err);
     }
   };
-
   var onrequest = function onrequest() {
     stream.req.on('finish', onfinish);
   };
-
   if (isRequest(stream)) {
     stream.on('complete', onfinish);
     stream.on('abort', onclose);
@@ -30262,7 +26948,6 @@ function eos(stream, opts, callback) {
     stream.on('end', onlegacyfinish);
     stream.on('close', onlegacyfinish);
   }
-
   stream.on('end', onend);
   stream.on('finish', onfinish);
   if (opts.error !== false) stream.on('error', onerror);
@@ -30280,7 +26965,6 @@ function eos(stream, opts, callback) {
     stream.removeListener('close', onclose);
   };
 }
-
 module.exports = eos;
 
 /***/ }),
@@ -30303,8 +26987,8 @@ module.exports = function () {
 // permission from the author, Mathias Buus (@mafintosh).
 
 
-var eos;
 
+var eos;
 function once(callback) {
   var called = false;
   return function () {
@@ -30313,20 +26997,16 @@ function once(callback) {
     callback.apply(void 0, arguments);
   };
 }
-
 var _require$codes = (__webpack_require__(8106)/* .codes */ .q),
-    ERR_MISSING_ARGS = _require$codes.ERR_MISSING_ARGS,
-    ERR_STREAM_DESTROYED = _require$codes.ERR_STREAM_DESTROYED;
-
+  ERR_MISSING_ARGS = _require$codes.ERR_MISSING_ARGS,
+  ERR_STREAM_DESTROYED = _require$codes.ERR_STREAM_DESTROYED;
 function noop(err) {
   // Rethrow the error if it exists to avoid swallowing it
   if (err) throw err;
 }
-
 function isRequest(stream) {
   return stream.setHeader && typeof stream.abort === 'function';
 }
-
 function destroyer(stream, reading, writing, callback) {
   callback = once(callback);
   var closed = false;
@@ -30346,40 +27026,34 @@ function destroyer(stream, reading, writing, callback) {
   return function (err) {
     if (closed) return;
     if (destroyed) return;
-    destroyed = true; // request.destroy just do .end - .abort is what we want
+    destroyed = true;
 
+    // request.destroy just do .end - .abort is what we want
     if (isRequest(stream)) return stream.abort();
     if (typeof stream.destroy === 'function') return stream.destroy();
     callback(err || new ERR_STREAM_DESTROYED('pipe'));
   };
 }
-
 function call(fn) {
   fn();
 }
-
 function pipe(from, to) {
   return from.pipe(to);
 }
-
 function popCallback(streams) {
   if (!streams.length) return noop;
   if (typeof streams[streams.length - 1] !== 'function') return noop;
   return streams.pop();
 }
-
 function pipeline() {
   for (var _len = arguments.length, streams = new Array(_len), _key = 0; _key < _len; _key++) {
     streams[_key] = arguments[_key];
   }
-
   var callback = popCallback(streams);
   if (Array.isArray(streams[0])) streams = streams[0];
-
   if (streams.length < 2) {
     throw new ERR_MISSING_ARGS('streams');
   }
-
   var error;
   var destroys = streams.map(function (stream, i) {
     var reading = i < streams.length - 1;
@@ -30394,7 +27068,6 @@ function pipeline() {
   });
   return streams.reduce(pipe);
 }
-
 module.exports = pipeline;
 
 /***/ }),
@@ -30406,27 +27079,22 @@ module.exports = pipeline;
 
 
 var ERR_INVALID_OPT_VALUE = (__webpack_require__(8106)/* .codes.ERR_INVALID_OPT_VALUE */ .q.ERR_INVALID_OPT_VALUE);
-
 function highWaterMarkFrom(options, isDuplex, duplexKey) {
   return options.highWaterMark != null ? options.highWaterMark : isDuplex ? options[duplexKey] : null;
 }
-
 function getHighWaterMark(state, options, duplexKey, isDuplex) {
   var hwm = highWaterMarkFrom(options, isDuplex, duplexKey);
-
   if (hwm != null) {
     if (!(isFinite(hwm) && Math.floor(hwm) === hwm) || hwm < 0) {
       var name = isDuplex ? duplexKey : 'highWaterMark';
       throw new ERR_INVALID_OPT_VALUE(name, hwm);
     }
-
     return Math.floor(hwm);
-  } // Default value
+  }
 
-
+  // Default value
   return state.objectMode ? 16 : 16 * 1024;
 }
-
 module.exports = {
   getHighWaterMark: getHighWaterMark
 };
@@ -30748,7 +27416,7 @@ function simpleEnd(buf) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(816)
+var buffer = __webpack_require__(2783)
 var Buffer = buffer.Buffer
 
 // alternative to using Object.keys for old browsers
@@ -33084,6 +29752,14 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2721__;
 
 /***/ }),
 
+/***/ 5973:
+/***/ (function(module) {
+
+"use strict";
+module.exports = __WEBPACK_EXTERNAL_MODULE__5973__;
+
+/***/ }),
+
 /***/ 550:
 /***/ (function(module) {
 
@@ -33140,7 +29816,21 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__375__;
 
 /***/ }),
 
+/***/ 2961:
+/***/ (function() {
+
+/* (ignored) */
+
+/***/ }),
+
 /***/ 9862:
+/***/ (function() {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 2860:
 /***/ (function() {
 
 /* (ignored) */
@@ -33154,6 +29844,88 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__375__;
 
 /***/ }),
 
+/***/ 2783:
+/***/ (function() {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 4836:
+/***/ (function(module) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ 5263:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var _typeof = (__webpack_require__(8698)["default"]);
+function _getRequireWildcardCache(nodeInterop) {
+  if (typeof WeakMap !== "function") return null;
+  var cacheBabelInterop = new WeakMap();
+  var cacheNodeInterop = new WeakMap();
+  return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) {
+    return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
+  })(nodeInterop);
+}
+function _interopRequireWildcard(obj, nodeInterop) {
+  if (!nodeInterop && obj && obj.__esModule) {
+    return obj;
+  }
+  if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+    return {
+      "default": obj
+    };
+  }
+  var cache = _getRequireWildcardCache(nodeInterop);
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+  var newObj = {};
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+  for (var key in obj) {
+    if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+      if (desc && (desc.get || desc.set)) {
+        Object.defineProperty(newObj, key, desc);
+      } else {
+        newObj[key] = obj[key];
+      }
+    }
+  }
+  newObj["default"] = obj;
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+  return newObj;
+}
+module.exports = _interopRequireWildcard, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ 8698:
+/***/ (function(module) {
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
+}
+module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
 /***/ 907:
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -33163,11 +29935,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__375__;
 /* harmony export */ });
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
 
@@ -33185,7 +29953,6 @@ function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
-
   return self;
 }
 
@@ -33215,16 +29982,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": function() { return /* binding */ _createClass; }
 /* harmony export */ });
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9142);
+
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target, (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(descriptor.key), descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
@@ -33236,7 +30004,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 /***/ }),
 
-/***/ 8347:
+/***/ 8557:
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33260,7 +30028,6 @@ function _isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
   if (Reflect.construct.sham) return false;
   if (typeof Proxy === "function") return true;
-
   try {
     Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
@@ -33268,28 +30035,19 @@ function _isNativeReflectConstruct() {
     return false;
   }
 }
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
-}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+var esm_typeof = __webpack_require__(1002);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
 var assertThisInitialized = __webpack_require__(7326);
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js
 
 
 function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+  if (call && ((0,esm_typeof/* default */.Z)(call) === "object" || typeof call === "function")) {
     return call;
   } else if (call !== void 0) {
     throw new TypeError("Derived constructors may only return object or undefined");
   }
-
   return (0,assertThisInitialized["default"])(self);
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/createSuper.js
@@ -33300,15 +30058,13 @@ function _createSuper(Derived) {
   var hasNativeReflectConstruct = _isNativeReflectConstruct();
   return function _createSuperInternal() {
     var Super = _getPrototypeOf(Derived),
-        result;
-
+      result;
     if (hasNativeReflectConstruct) {
       var NewTarget = _getPrototypeOf(this).constructor;
       result = Reflect.construct(Super, arguments, NewTarget);
     } else {
       result = Super.apply(this, arguments);
     }
-
     return _possibleConstructorReturn(this, result);
   };
 }
@@ -33341,7 +30097,6 @@ function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function");
   }
-
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: {
       value: subClass,
@@ -33369,8 +30124,12 @@ __webpack_require__.d(__webpack_exports__, {
   "default": function() { return /* binding */ _objectSpread2; }
 });
 
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js + 1 modules
+var toPropertyKey = __webpack_require__(9142);
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
+
 function _defineProperty(obj, key, value) {
+  key = (0,toPropertyKey/* default */.Z)(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -33381,25 +30140,20 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
 
-
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
-
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
     enumerableOnly && (symbols = symbols.filter(function (sym) {
       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
     })), keys.push.apply(keys, symbols);
   }
-
   return keys;
 }
-
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
@@ -33409,7 +30163,6 @@ function _objectSpread2(target) {
       Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-
   return target;
 }
 
@@ -33433,13 +30186,11 @@ function _objectWithoutPropertiesLoose(source, excluded) {
   var target = {};
   var sourceKeys = Object.keys(source);
   var key, i;
-
   for (i = 0; i < sourceKeys.length; i++) {
     key = sourceKeys[i];
     if (excluded.indexOf(key) >= 0) continue;
     target[key] = source[key];
   }
-
   return target;
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js
@@ -33448,10 +30199,8 @@ function _objectWithoutProperties(source, excluded) {
   if (source == null) return {};
   var target = _objectWithoutPropertiesLoose(source, excluded);
   var key, i;
-
   if (Object.getOwnPropertySymbols) {
     var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
     for (i = 0; i < sourceSymbolKeys.length; i++) {
       key = sourceSymbolKeys[i];
       if (excluded.indexOf(key) >= 0) continue;
@@ -33459,7 +30208,6 @@ function _objectWithoutProperties(source, excluded) {
       target[key] = source[key];
     }
   }
-
   return target;
 }
 
@@ -33483,33 +30231,31 @@ function _arrayWithHoles(arr) {
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js
 function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
+  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+  if (null != _i) {
+    var _s,
+      _e,
+      _x,
+      _r,
+      _arr = [],
+      _n = !0,
+      _d = !1;
     try {
-      if (!_n && _i["return"] != null) _i["return"]();
+      if (_x = (_i = _i.call(arr)).next, 0 === i) {
+        if (Object(_i) !== _i) return;
+        _n = !1;
+      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+    } catch (err) {
+      _d = !0, _e = err;
     } finally {
-      if (_d) throw _e;
+      try {
+        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+      } finally {
+        if (_d) throw _e;
+      }
     }
+    return _arr;
   }
-
-  return _arr;
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js
 var unsupportedIterableToArray = __webpack_require__(181);
@@ -33564,6 +30310,59 @@ function _nonIterableSpread() {
 
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || (0,unsupportedIterableToArray/* default */.Z)(arr) || _nonIterableSpread();
+}
+
+/***/ }),
+
+/***/ 9142:
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "Z": function() { return /* binding */ _toPropertyKey; }
+});
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+var esm_typeof = __webpack_require__(1002);
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js
+
+function _toPrimitive(input, hint) {
+  if ((0,esm_typeof/* default */.Z)(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if ((0,esm_typeof/* default */.Z)(res) !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js
+
+
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+  return (0,esm_typeof/* default */.Z)(key) === "symbol" ? key : String(key);
+}
+
+/***/ }),
+
+/***/ 1002:
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": function() { return /* binding */ _typeof; }
+/* harmony export */ });
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 /***/ }),
@@ -33632,7 +30431,7 @@ module.exports = JSON.parse('[{"name":"黑龙江省","coord":[127.64559817675396
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;

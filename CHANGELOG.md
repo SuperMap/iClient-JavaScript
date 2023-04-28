@@ -1,3 +1,83 @@
+# 11.1.0-beta #
+
+## 新特性
+
+### 新增支持云原生矢量交换格式（FlatGeoBuf），支持直接访问云存储和SuperMap iServer服务返回的FlatGeoBuf格式文件，并支持流式传输和渲染
+
+ - 新增 L.supermap.FGBLayer、mapboxgl.supermap.FGBLayer 、ol.source.FGB，支持全量或按需渲染FlatGeobuf格式数据
+
+ - QueryService类queryBySQL、queryByGeometry、queryByDistance、queryByBounds方法dataFormat 参数新增支持 DataFormat.FGB
+
+ - FeatureService类getFeaturesBySQL、getFeaturesByBuffer、getFeaturesByGeometry、getFeaturesByBounds、getFeaturesByIDs方法dataFormat 参数新增支持 DataFormat.FGB
+
+ - SpatialAnalystService类bufferAnalysis、thiessenAnalysis、surfaceAnalysis、overlayAnalysis方法dataFormat 参数新增支持 DataFormat.FGB
+
+### iClient for MapboxGL enhance 支持全坐标系
+
+ - 支持访问SuperMap iServer地图服务和OGC WMTS/WMS服务
+
+ - 支持地理坐标系、投影坐标系
+
+ - 支持栅格瓦片、矢量瓦片
+
+
+## Fixed
+
+### for Leaflet
+
+- 修复`L.supermap.NetworkAnalystService`最近设施分析、最短路径分析设施点数量太多请求失败的问题
+
+### for OpenLayers
+
+- 修复ol.source.Graphic高效率点图层webgl渲染时onclick不生效、多次渲染的问题
+
+- 修复`ol.supermap.NetworkAnalystService`最近设施分析、最短路径分析设施点数量太多请求失败的问题
+
+- 修复ol.supermap.WebMap 图层过滤设置以数字开头或包含特殊字符不起作用的问题
+
+- ol.supermap.WebMap 新增restDataSingleRequestCount参数，支持设置rest data服务单次请求数量
+
+
+### for MapboxGL
+
+- 修复`mapboxgl.supermap.NetworkAnalystService`最近设施分析、最短路径分析设施点数量太多请求失败的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复地图组件(sm-web-map)GeoJOSN数据来源的图层自动更新失败的问题
+
+  - 地图组件(sm-web-map)增加googleMapsAPIKey googleMapsLanguage参数支持显示谷歌地图底图
+
+  - 修复地图组件(sm-web-map)图层过滤设置以数字开头或包含特殊字符不起作用的问题
+
+  - 修复地图组件(sm-web-map)无法显示只有单个Layer的WMTS服务的问题
+
+  - 修复地图组件(sm-web-map)显示China2000坐标系地图中心点不对的问题
+
+  - 视频组件新增是否全屏播放、填充方式、设置视屏封面功能
+
+
+# 11.0.1 #
+## Fixed
+
+### for Leaflet
+
+- 优化 SuperMap iClient for Lealfet 出图示例，更具代表性，使iServer缓存利用率更高
+- 修复当浏览器缩放比例不是100%时，`L.supermap.MapVLayer` 热力图偏移的问题
+- 修复当 `L.supermap.FeatureService` 删除要素过多时，删除失败的问题
+- 修复 `L.supermap.WMTSLayer` 加载带认证参数的WMTS出图失败的问题
+
+### for OpenLayers
+
+- 优化 SuperMap iClient for OpenLayers 出图示例，更具代表性，使iServer缓存利用率更高
+- 修复当 `ol.supermap.FeatureService` 删除要素过多时，删除失败的问题
+
+### for MapboxGL
+
+- 修复当 `mapboxgl.supermap.FeatureService` 删除要素过多时，删除失败的问题
+
 # 11.0.0 #
 
 ## 新特性
