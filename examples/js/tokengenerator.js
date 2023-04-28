@@ -1,2 +1,2 @@
 window.exampleToken = "PisX2NS9DsMKnnNzs6lg5WzjwZqvH2zXcizVYuBG0L0MvPrnBafdbATturwemCbsdUMHvIfItEBVCAcgubl-UNDHMsJU_XJWanQN65xaOUj_xMCsSTkKn26WFWLgvKBy";
-window.iportalToken ="0q1kbKI9RMHrTmL7uv3a1HhAbM-zZHneVqxCUIWu2Fuf-uNh8zERFRplx8QuCyRtDVfq1ugj4FD26PIUMSmQPw.."
+window.iportalToken ="YDXLzgADk20EZ4PWXFn7FZ5gtydmT3GdaMt5HiBUNPlZBmafJjoce4KYZMFopVGL3K_P4BbT-MVuq2GJ6YfZJw.."
