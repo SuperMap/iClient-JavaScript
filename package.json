@@ -66,7 +66,7 @@
     "@babel/parser": "~7.19.6",
     "@babel/plugin-transform-runtime": "~7.19.6",
     "@babel/preset-env": "~7.19.4",
-    "@babel/traverse": "~7.19.6",
+    "@babel/traverse": "~7.21.5",
     "@babel/types": "~7.19.4",
     "@geoman-io/leaflet-geoman-free": "^2.11.4",
     "@supermap/babel-plugin-import": "^0.0.1",
