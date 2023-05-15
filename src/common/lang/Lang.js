@@ -61,15 +61,13 @@ let Lang = {
      */
     setCode: function () {
         var lang = this.getLanguageFromCookie();
-        if (lang) {
-            Lang.code = lang;
-            return;
-        }
-        lang = Lang.defaultCode;
-        if (navigator.appName === 'Netscape') {
-            lang = navigator.language;
-        } else {
-            lang = navigator.browserLanguage;
+        if (!lang) {
+            lang = Lang.defaultCode;
+            if (navigator.appName === 'Netscape') {
+                lang = navigator.language;
+            } else {
+                lang = navigator.browserLanguage;
+            }
         }
         if (lang.indexOf('zh') === 0) {
             lang = 'zh-CN';

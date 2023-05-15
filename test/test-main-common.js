@@ -202,3 +202,4 @@ import './common/components/chart/ChartViewModelSpec';
 import './common/components/chart/ChartViewSpec';
 
 import './common/util/FetchRequestSpec';
+import './common/lang/LangSpec.js';
