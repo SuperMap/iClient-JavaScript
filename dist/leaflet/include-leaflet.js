@@ -95,7 +95,7 @@
             inputScript(`${libsurl}/elasticsearch/16.7.3/elasticsearch.min.js`);
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript(`${libsurl}/xlsx/0.18.5/xlsx.core.min.js`);
+            inputScript(`${libsurl}/xlsx/0.19.3/xlsx.core.min.js`);
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {

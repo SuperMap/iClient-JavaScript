@@ -112,7 +112,7 @@
           inputScript(`${libsurl}/tensorflow/3.9.0/tf.min.js`);
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript(`${libsurl}/xlsx/0.18.5/xlsx.core.min.js`);
+            inputScript(`${libsurl}/xlsx/0.19.3/xlsx.core.min.js`);
         }
         if (inArray(includes, 'FGB')) {
           inputScript(`${libsurl}/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js`);
