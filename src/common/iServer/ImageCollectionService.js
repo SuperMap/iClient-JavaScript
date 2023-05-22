@@ -112,7 +112,7 @@ export default class ImageCollectionService extends CommonServiceBase {
         };
         var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
         var url = Util.urlPathAppend(me.url, path);
-        this._processAsync({ url, method: 'DELETE', callback });
+        this._processAsync({ url, method: 'GET', callback });
     }
 
     _processAsync({ url, method, callback, params}) {
@@ -120,12 +120,12 @@ export default class ImageCollectionService extends CommonServiceBase {
         let eventListeners = {
           scope: this,
           processCompleted: function(result) {
-            if (eventId === result.result.eventId) {
+            if (eventId === result.result.eventId && callback) {
               callback(result);
             }
           },
           processFailed: function(result) {
-            if (eventId === result.result.eventId) {
+            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
               callback(result);
             }
           }
@@ -142,6 +142,9 @@ export default class ImageCollectionService extends CommonServiceBase {
             this.serviceProcessCompleted(result);
           },
           failure(result) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
             result.eventId = eventId;
             this.serviceProcessFailed(result);
           }

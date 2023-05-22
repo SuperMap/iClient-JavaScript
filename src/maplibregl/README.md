@@ -1,15 +1,15 @@
-# @supermap/iclient-maplibre
+# @supermap/iclient-maplibregl
 
-@supermap/iclient-maplibre 是一套基于 Mapbox GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
+@supermap/iclient-maplibregl 是一套基于 Mapbox GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
 * 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
-* 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/maplibre](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/maplibre)
+* 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/maplibregl](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/maplibregl)
 
 ## 安装
 
 ```
- npm install @supermap/iclient-maplibre
+ npm install @supermap/iclient-maplibregl
 ```
 
 ## 开发
@@ -25,7 +25,7 @@
 
 ```
 import maplibre from 'mapbox-gl';
-import {Logo, QueryByBoundsParameters, QueryService} from '@supermap/iclient-maplibre';
+import {Logo, QueryByBoundsParameters, QueryService} from '@supermap/iclient-maplibregl';
 
 var map, host = "https://iserver.supermap.io";
 var url = host + "/iserver/services/map-world/rest/maps/World";
@@ -113,4 +113,4 @@ function query() {
 ```
 
 ## 示例
- [https://github.com/SuperMap/iClient-JavaScript/tree/master/examples/maplibre](https://github.com/SuperMap/iClient-JavaScript/tree/master/examples/maplibre)
+ [https://github.com/SuperMap/iClient-JavaScript/tree/master/examples/maplibregl](https://github.com/SuperMap/iClient-JavaScript/tree/master/examples/maplibregl)

@@ -68,12 +68,12 @@ export class AddressMatchService extends CommonServiceBase {
       let eventListeners = {
         scope: this,
         processCompleted: function(result) {
-          if (eventId === result.result.eventId) {
+          if (eventId === result.result.eventId && callback) {
             callback(result);
           }
         },
         processFailed: function(result) {
-          if (eventId === result.result.eventId) {
+          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
             callback(result);
           }
         }
@@ -89,6 +89,9 @@ export class AddressMatchService extends CommonServiceBase {
             this.serviceProcessCompleted(result, eventId);
           },
           failure(result) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
             result.eventId = eventId;
             this.serviceProcessFailed(result, eventId);
           }

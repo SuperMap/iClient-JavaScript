@@ -4,6 +4,7 @@
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { AddressMatchService as AddressMatchServiceBase } from '@supermap/iclient-common/iServer/AddressMatchService';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class AddressMatchService
@@ -26,7 +27,7 @@ import { AddressMatchService as AddressMatchServiceBase } from '@supermap/iclien
 export class AddressMatchService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.addressMatchServiceBase = new AddressMatchServiceBase(url, options);
+        this._addressMatchService = new AddressMatchServiceBase(url, options);
     }
 
     /**
@@ -36,7 +37,7 @@ export class AddressMatchService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     code(params, callback) {
-      this.addressMatchServiceBase.code(params, callback);
+      this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
     }
 
     /**
@@ -46,6 +47,6 @@ export class AddressMatchService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     decode(params, callback) {
-      this.addressMatchServiceBase.decode(params, callback);
+      this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 }

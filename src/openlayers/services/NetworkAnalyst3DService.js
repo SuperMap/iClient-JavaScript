@@ -26,7 +26,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.networkAnalyst3DService = new CommonNetworkAnalyst3DService(url, options);
+        this._networkAnalyst3DService = new CommonNetworkAnalyst3DService(url, options);
     }
 
     /**
@@ -37,7 +37,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sinksFacilityAnalyst(params, callback) {
-      this.networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
     }
 
     /**
@@ -48,7 +48,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sourcesFacilityAnalyst(params, callback) {
-      this.networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
     }
 
     /**
@@ -60,7 +60,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      */
 
     traceUpFacilityAnalyst(params, callback) {
-      this.networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
     }
 
     /**
@@ -71,7 +71,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     traceDownFacilityAnalyst(params, callback) {
-      this.networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
     }
 
     /**
@@ -82,6 +82,6 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     upstreamFacilityAnalyst(params, callback) {
-      this.networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
     }
 }

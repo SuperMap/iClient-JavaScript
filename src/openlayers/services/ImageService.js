@@ -26,7 +26,7 @@ import CommonMatchImageService from '@supermap/iclient-common/iServer/ImageServi
 export class ImageService extends ServiceBase {
     constructor(url, options) {
       super(url, options);
-      this.imageService = new CommonMatchImageService(this.url, {
+      this._imageService = new CommonMatchImageService(this.url, {
         proxy: this.options.proxy,
         withCredentials: this.options.withCredentials,
         crossOrigin: this.options.crossOrigin,
@@ -40,7 +40,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollections(callback) {
-      this.imageService.getCollections(callback);
+      this._imageService.getCollections(callback);
     }
 
     /**
@@ -50,7 +50,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollectionByID(collectionId, callback) {
-      this.imageService.getCollectionByID(collectionId, callback);
+      this._imageService.getCollectionByID(collectionId, callback);
     }
 
     /**
@@ -60,6 +60,6 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     search(itemSearch, callback) {
-      this.imageService.search(itemSearch, callback);
+      this._imageService.search(itemSearch, callback);
     }
 }

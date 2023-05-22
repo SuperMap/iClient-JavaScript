@@ -27,7 +27,7 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
 export class ImageCollectionService extends ServiceBase {
     constructor(url, options) {
       super(url, options);
-      this.imageCollectionService = new CommonMatchImageCollectionService(this.url, {
+      this._imageCollectionService = new CommonMatchImageCollectionService(this.url, {
         collectionId: this.options.collectionId,
         proxy: this.options.proxy,
         withCredentials: this.options.withCredentials,
@@ -43,7 +43,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getLegend(queryParams, callback) {
-      this.imageCollectionService.getLegend(queryParams, callback);
+      this._imageCollectionService.getLegend(queryParams, callback);
     }
 
     /**
@@ -52,7 +52,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getStatistics(callback) {
-      this.imageCollectionService.getStatistics(callback);
+      this._imageCollectionService.getStatistics(callback);
     }
 
     /**
@@ -61,7 +61,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getTileInfo(callback) {
-      this.imageCollectionService.getTileInfo(callback);
+      this._imageCollectionService.getTileInfo(callback);
     }
 
     /**
@@ -71,7 +71,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteItemByID(featureId, callback) {
-      this.imageCollectionService.deleteItemByID(featureId, callback);
+      this._imageCollectionService.deleteItemByID(featureId, callback);
     }
 
     /**
@@ -81,6 +81,6 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getItemByID(featureId, callback) {
-      this.imageCollectionService.getItemByID(featureId, callback);
+      this._imageCollectionService.getItemByID(featureId, callback);
     }
 }

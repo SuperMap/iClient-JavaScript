@@ -23,7 +23,7 @@ export var DatasourceService = ServiceBase.extend({
 
     initialize: function (url,options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.datasourceService = new CommonDatasourceService(this.url, {
+        this._datasourceService = new CommonDatasourceService(this.url, {
           proxy: this.proxy,
           withCredentials: this.withCredentials,
           crossOrigin: this.crossOrigin,
@@ -41,7 +41,7 @@ export var DatasourceService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasources: function (callback) {
-        this.datasourceService.getDatasourcesService(callback);
+        this._datasourceService.getDatasourcesService(callback);
     },
 
     /**
@@ -58,7 +58,7 @@ export var DatasourceService = ServiceBase.extend({
       if (!datasourceName) {
         return;
       }
-      this.datasourceService.getDatasourceService(datasourceName, callback);
+      this._datasourceService.getDatasourceService(datasourceName, callback);
     },
 
     /**
@@ -76,11 +76,12 @@ export var DatasourceService = ServiceBase.extend({
         return;
       }
       const datasourceParams = {
-          description: params.description ,
+          description: params.description,
           coordUnit: params.coordUnit,
-          distanceUnit: params.distanceUnit
+          distanceUnit: params.distanceUnit,
+          datasourceName: params.datasourceName
       };
-      this.datasourceService.setDatasourceService(datasourceParams, callback);
+      this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 });
 

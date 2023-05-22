@@ -22,7 +22,7 @@ export class DatasourceService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.datasourceService = new CommonDatasourceService(this.url, {
+        this._datasourceService = new CommonDatasourceService(this.url, {
           proxy: this.proxy,
           withCredentials: this.withCredentials,
           crossOrigin: this.crossOrigin,
@@ -36,7 +36,7 @@ export class DatasourceService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasources(callback) {
-      this.datasourceService.getDatasourcesService(callback);
+      this._datasourceService.getDatasourcesService(callback);
     }
 
     /**
@@ -49,7 +49,7 @@ export class DatasourceService extends ServiceBase {
       if (!datasourceName) {
           return;
       }
-      this.datasourceService.getDatasourceService(datasourceName, callback);
+      this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
    /**
@@ -65,8 +65,9 @@ export class DatasourceService extends ServiceBase {
         const datasourceParams = {
           description: params.description,
           coordUnit: params.coordUnit,
-          distanceUnit: params.distanceUnit
+          distanceUnit: params.distanceUnit,
+          datasourceName: params.datasourceName
         };
-        this.datasourceService.setDatasourceService(datasourceParams, callback);
+        this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }

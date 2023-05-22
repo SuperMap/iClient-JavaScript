@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
-import {QueryService} from './QueryService';
+import { QueryServiceBase } from './QueryServiceBase';
 import {QueryByBoundsParameters} from './QueryByBoundsParameters';
 
 /**
@@ -30,7 +30,7 @@ import {QueryByBoundsParameters} from './QueryByBoundsParameters';
  * @param {Object} [options.headers] - 请求头。
  * @usage
  */
-export class QueryByBoundsService extends QueryService {
+export class QueryByBoundsService extends QueryServiceBase {
 
     constructor(url, options) {
         super(url, options);

@@ -28,7 +28,7 @@ import Point from 'ol/geom/Point';
 export class WebPrintingJobService extends ServiceBase {
     constructor(url, options) {
       super(url, options);
-      this.webPrintingService = new WebPrintingService(this.url, {
+      this._webPrintingService = new WebPrintingService(this.url, {
         proxy: this.options.proxy,
         withCredentials:this.options.withCredentials,
         crossOrigin: this.options.crossOrigin,
@@ -43,10 +43,10 @@ export class WebPrintingJobService extends ServiceBase {
    * @param {RequestCallback} callback - 回调函数。
    */
   createWebPrintingJob(params, callback) {
-      if (!params) {
-          return;
-      }
-      this.webPrintingService.createWebPrintingJob(this._processParams(params), callback);
+    if (!params) {
+        return;
+    }
+    this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
   }
 
   /**
@@ -56,7 +56,7 @@ export class WebPrintingJobService extends ServiceBase {
    * @param {RequestCallback} callback - 回调函数。
    */
   getPrintingJob(jobId, callback) {
-    this.webPrintingService.getPrintingJob(jobId, callback);
+    this._webPrintingService.getPrintingJob(jobId, callback);
   }
 
   /**
@@ -66,7 +66,7 @@ export class WebPrintingJobService extends ServiceBase {
    * @param {RequestCallback} callback - 回调函数。
    */
   getPrintingJobResult(jobId, callback) {
-    this.webPrintingService.getPrintingJobResult(jobId, callback);
+    this._webPrintingService.getPrintingJobResult(jobId, callback);
   }
 
   /**
@@ -75,7 +75,7 @@ export class WebPrintingJobService extends ServiceBase {
    * @param {RequestCallback} callback - 回调函数。
    */
   getLayoutTemplates(callback) {
-    this.webPrintingService.getLayoutTemplates(callback);
+    this._webPrintingService.getLayoutTemplates(callback);
   }
 
   _processParams(params) {

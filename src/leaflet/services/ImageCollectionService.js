@@ -30,7 +30,7 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
 export var ImageCollectionService = ServiceBase.extend({
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.imageCollectionService = new CommonMatchImageCollectionService(this.url, {
+        this._imageCollectionService = new CommonMatchImageCollectionService(this.url, {
           collectionId: this.options.collectionId,
           proxy: this.options.proxy,
           withCredentials: this.options.withCredentials,
@@ -46,7 +46,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getLegend: function (queryParams, callback) {
-      this.imageCollectionService.getLegend(queryParams, callback);
+      this._imageCollectionService.getLegend(queryParams, callback);
     },
 
     /**
@@ -55,7 +55,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getStatistics: function (callback) {
-      this.imageCollectionService.getStatistics(callback);
+      this._imageCollectionService.getStatistics(callback);
     },
 
     /**
@@ -64,7 +64,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getTileInfo: function (callback) {
-      this.imageCollectionService.getTileInfo(callback);
+      this._imageCollectionService.getTileInfo(callback);
     },
 
     /**
@@ -74,7 +74,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteItemByID(featureId, callback) {
-      this.imageCollectionService.deleteItemByID(featureId, callback);
+      this._imageCollectionService.deleteItemByID(featureId, callback);
     },
 
     /**
@@ -84,7 +84,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getItemByID(featureId, callback) {
-      this.imageCollectionService.getItemByID(featureId, callback);
+      this._imageCollectionService.getItemByID(featureId, callback);
     }
 });
 

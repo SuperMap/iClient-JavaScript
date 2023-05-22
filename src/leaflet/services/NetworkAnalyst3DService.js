@@ -28,7 +28,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.networkAnalyst3DService = new CommonNetworkAnalyst3DService(url, options);
+        this._networkAnalyst3DService = new CommonNetworkAnalyst3DService(url, options);
     },
 
     /**
@@ -38,7 +38,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     sinksFacilityAnalyst: function (params, callback) {
-      this.networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
     },
 
     /**
@@ -49,7 +49,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @returns {NetworkAnalyst3DService} NetworkAnalyst3DService的实例对象。
      */
     sourcesFacilityAnalyst: function (params, callback) {
-      this.networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
     },
 
     /**
@@ -60,7 +60,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @returns {NetworkAnalyst3DService} NetworkAnalyst3DService的实例对象。
      */
     traceUpFacilityAnalyst: function (params, callback) {
-      this.networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
     },
 
     /**
@@ -70,7 +70,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     traceDownFacilityAnalyst: function (params, callback) {
-      this.networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
     },
 
     /**
@@ -80,7 +80,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     upstreamFacilityAnalyst: function (params, callback) {
-      this.networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
+      this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
     }
 });
 

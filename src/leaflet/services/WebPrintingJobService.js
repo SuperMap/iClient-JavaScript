@@ -31,7 +31,7 @@
 export var WebPrintingJobService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.webPrintingService = new WebPrintingService(this.url, {
+        this._webPrintingService = new WebPrintingService(this.url, {
           proxy: this.options.proxy,
           withCredentials:this.options.withCredentials,
           crossOrigin: this.options.crossOrigin,
@@ -49,7 +49,7 @@ export var WebPrintingJobService = ServiceBase.extend({
       if (!params) {
         return;
       }
-      this.webPrintingService.createWebPrintingJob(this._processParams(params), callback);
+      this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
     },
 
     /**
@@ -59,7 +59,7 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob: function(jobId, callback) {
-      this.webPrintingService.getPrintingJob(jobId, callback);
+      this._webPrintingService.getPrintingJob(jobId, callback);
     },
 
     /**
@@ -69,7 +69,7 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJobResult: function(jobId, callback) {
-      this.webPrintingService.getPrintingJobResult(jobId, callback);
+      this._webPrintingService.getPrintingJobResult(jobId, callback);
     },
 
     /**
@@ -78,7 +78,7 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getLayoutTemplates: function(callback) {
-      this.webPrintingService.getLayoutTemplates(callback);
+      this._webPrintingService.getLayoutTemplates(callback);
     },
 
     _processParams(params) {

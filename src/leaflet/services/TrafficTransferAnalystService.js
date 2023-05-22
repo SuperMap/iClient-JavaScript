@@ -26,7 +26,7 @@ import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } 
 export var TrafficTransferAnalystService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.commonTrafficTransferAnalystService = new CommonTrafficTransferAnalystService(url, options);
+        this._commonTrafficTransferAnalystService = new CommonTrafficTransferAnalystService(url, options);
     },
 
     /**
@@ -36,7 +36,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop: function(params, callback) {
-        this.commonTrafficTransferAnalystService.queryStop(params, callback);
+        this._commonTrafficTransferAnalystService.queryStop(params, callback);
     },
     /**
      * @function  TrafficTransferAnalystService.prototype.analysisTransferPath
@@ -46,7 +46,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      */
     analysisTransferPath: function(params, callback) {
         params = this._processParams(params);
-        this.commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
+        this._commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
     },
     /**
      * @function  TrafficTransferAnalystService.prototype.analysisTransferSolution
@@ -56,7 +56,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
      */
     analysisTransferSolution: function(params, callback) {
         params = this._processParams(params);
-        this.commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
+        this._commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
     },
 
     _processParams: function(params) {

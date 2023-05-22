@@ -25,7 +25,7 @@ export class FieldService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.fieldService = new CommonFieldService(url, options);
+        this._fieldService = new CommonFieldService(url, options);
     }
 
     /**
@@ -35,7 +35,7 @@ export class FieldService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getFields(params, callback) {
-      this.fieldService.getFields(params, callback);
+      this._fieldService.getFields(params, callback);
     }
 
     /**
@@ -45,6 +45,6 @@ export class FieldService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {
-      this.fieldService.getFieldStatisticsInfo(params, callback);
+      this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 }

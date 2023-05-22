@@ -28,7 +28,7 @@ export class GridCellInfosService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.gridCellQueryService = new GetGridCellInfosService(this.url, {
+        this._gridCellQueryService = new GetGridCellInfosService(this.url, {
           proxy: this.options.proxy,
           withCredentials: this.options.withCredentials,
           crossOrigin: this.options.crossOrigin,
@@ -45,6 +45,6 @@ export class GridCellInfosService extends ServiceBase {
       if (!params) {
         return null;
       }
-      this.gridCellQueryService.processAsync(params, callback);
+      this._gridCellQueryService.processAsync(params, callback);
     }
 }

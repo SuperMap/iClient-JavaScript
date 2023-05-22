@@ -26,7 +26,7 @@ export class AddressMatchService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.addressMatchService = new CommonAddressMatchService(this.url, {
+        this._addressMatchService = new CommonAddressMatchService(this.url, {
           proxy: this.options.proxy,
           withCredentials: this.options.withCredentials,
           crossOrigin: this.options.crossOrigin,
@@ -41,7 +41,7 @@ export class AddressMatchService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     code(params, callback) {
-        this.addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
+        this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
     }
 
     /**
@@ -51,7 +51,7 @@ export class AddressMatchService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     decode(params, callback) {
-        this.addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
+        this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 
 }

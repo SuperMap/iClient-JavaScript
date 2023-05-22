@@ -27,7 +27,7 @@ export var FieldService = ServiceBase.extend({
 
     initialize: function (url,options) {
         ServiceBase.prototype.initialize.call(this, url,options);
-        this.fieldService = new CommonFieldService(url, options);
+        this._fieldService = new CommonFieldService(url, options);
     },
 
     /**
@@ -37,7 +37,7 @@ export var FieldService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getFields: function (params, callback) {
-      this.fieldService.getFields(params, callback);
+      this._fieldService.getFields(params, callback);
     },
 
     /**
@@ -47,7 +47,7 @@ export var FieldService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getFieldStatisticsInfo: function (params, callback) {
-      this.fieldService.getFieldStatisticsInfo(params, callback);
+      this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 });
 export var fieldService = function (url, options) {

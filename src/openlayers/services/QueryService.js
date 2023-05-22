@@ -5,7 +5,7 @@ import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryServiceManager';
+import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
 import Point from 'ol/geom/Point';
 import GeoJSON from 'ol/format/GeoJSON';
 
@@ -32,7 +32,7 @@ export class QueryService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.queryService = new CommonQueryService(url, options);
+        this._queryService = new CommonQueryService(url, options);
     }
 
     /**
@@ -44,7 +44,8 @@ export class QueryService extends ServiceBase {
      * @returns {QueryService}
      */
     queryByBounds(params, callback, resultFormat) {
-      this.queryService.queryByBounds(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._queryService.queryByBounds(params, callback, resultFormat);
     }
 
     /**
@@ -55,7 +56,8 @@ export class QueryService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByDistance(params, callback, resultFormat) {
-      this.queryService.queryByDistance(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._queryService.queryByDistance(params, callback, resultFormat);
     }
 
     /**
@@ -66,7 +68,8 @@ export class QueryService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL(params, callback, resultFormat) {
-      this.queryService.queryBySQL(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._queryService.queryBySQL(params, callback, resultFormat);
     }
 
     /**
@@ -77,7 +80,8 @@ export class QueryService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry(params, callback, resultFormat) {
-      this.queryService.queryByGeometry(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._queryService.queryByGeometry(params, callback, resultFormat);
     }
 
     _processParams(params) {

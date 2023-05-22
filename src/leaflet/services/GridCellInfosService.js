@@ -28,7 +28,7 @@ export var GridCellInfosService = ServiceBase.extend({
 
     initialize: function (url, options) {
       ServiceBase.prototype.initialize.call(this, url, options);
-      this.gridCellQueryService = new GetGridCellInfosService(this.url, {
+      this._gridCellQueryService = new GetGridCellInfosService(this.url, {
         proxy: this.options.proxy,
         withCredentials: this.options.withCredentials,
         crossOrigin: this.options.crossOrigin,
@@ -45,7 +45,7 @@ export var GridCellInfosService = ServiceBase.extend({
       if (!params) {
         return null;
       }
-      this.gridCellQueryService.processAsync(params, callback);
+      this._gridCellQueryService.processAsync(params, callback);
     }
 });
 export var gridCellInfosService = function (url, options) {

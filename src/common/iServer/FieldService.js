@@ -1,8 +1,9 @@
 /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { GetFieldsService } from '@supermap/iclient-common/iServer/GetFieldsService';
-import { FieldStatisticService } from '@supermap/iclient-common/iServer/FieldStatisticService';
+import { GetFieldsService } from './GetFieldsService';
+import { FieldStatisticService } from './FieldStatisticService';
+import { FieldStatisticsParameters } from './FieldStatisticsParameters';
 
 /**
  * @class FieldService
@@ -58,6 +59,9 @@ export class FieldService {
      * @param {RequestCallback} callback 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {
+      if (!(params instanceof FieldStatisticsParameters)) {
+        return;
+      }
         var me = this,
             fieldName = params.fieldName,
             modes = params.statisticMode;
@@ -78,7 +82,7 @@ export class FieldService {
         var statisticService = new FieldStatisticService(me.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me._processCompleted,
+                processCompleted: me._processCompleted.bind(me),
                 processFailed: me._statisticsCallback
             },
             datasource: datasource,

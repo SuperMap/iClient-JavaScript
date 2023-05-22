@@ -1,0 +1,129 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_themeLabel"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="title" style="position:absolute;top: 10px;text-align:center;width:100%;z-index: 10;color: #f7931e" data-i18n="resources.text_popThemeLayer"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<span id="show"></span>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+
+    var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
+       "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+    var dataUrl = host + "/iserver/services/map-china400/rest/maps/China";
+    var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [117, 37],
+        zoom: 3
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+
+    function createTheme() {
+        var style1, style2, style3;
+        style1 = new maplibregl.supermap.ServerTextStyle({
+            fontHeight: 4,
+            foreColor: new maplibregl.supermap.ServerColor(0, 0, 0),
+
+        });
+        style2 = new maplibregl.supermap.ServerTextStyle({
+            fontHeight: 4,
+            foreColor: new maplibregl.supermap.ServerColor(155, 30, 45),
+        });
+        style3 = new maplibregl.supermap.ServerTextStyle({
+            fontHeight: 4,
+            foreColor: new maplibregl.supermap.ServerColor(30, 45, 155),
+        });
+        var themeLabelItem1, themeLabelItem2, themeLabelItem3;
+        themeLabelItem1 = new maplibregl.supermap.ThemeLabelItem({
+            start: 300,//110000,
+            end: 3508,//350000,
+            style: style1
+        });
+        themeLabelItem2 = new maplibregl.supermap.ThemeLabelItem({
+            start: 3508,//350000,
+            end: 5508,//550000,
+            style: style2
+        });
+        themeLabelItem3 = new maplibregl.supermap.ThemeLabelItem({
+            start: 5508,//550000,
+            end: 10724,//820000,
+            style: style3
+        });
+
+        var themeLabel = new maplibregl.supermap.ThemeLabel({
+            labelExpression: "NAME",
+            rangeExpression: "pop_2014",
+            numericPrecision: 0,
+            items: [themeLabelItem1, themeLabelItem2, themeLabelItem3],
+            background: new maplibregl.supermap.ThemeLabelBackground({
+                backStyle: new maplibregl.supermap.ServerStyle({
+                    fillForeColor: new maplibregl.supermap.ServerColor(179, 209, 193),
+                    fillOpaqueRate: 60,
+                    lineWidth: 0.1
+                }),
+                labelBackShape: "RECT"
+            })
+        });
+        var themeParameters = new maplibregl.supermap.ThemeParameters({
+            themes: [themeLabel],
+            datasetNames: ["China_Province_pg"],
+            dataSourceNames: ["China"]
+        });
+
+        new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.newResourceID) {
+                map.addSource("theme", {
+                    "type": 'raster',
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}&transparent=true&cacheEnabled=false&layersID=' + result.newResourceID],
+                    "tileSize": 256,
+                });
+
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": "theme",
+                });
+            }
+        })
+    }
+
+    map.on('load', function () {
+
+        createTheme();
+    });
+
+</script>
+
+</body>
+</html>

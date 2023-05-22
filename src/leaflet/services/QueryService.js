@@ -4,7 +4,7 @@
 import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
-import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryServiceManager';
+import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
@@ -30,7 +30,7 @@ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geo
 export var QueryService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.queryServiceBase = new CommonQueryService(url, options);
+        this._queryService = new CommonQueryService(url, options);
     },
     /**
      * @function QueryService.prototype.queryByBounds
@@ -41,7 +41,7 @@ export var QueryService = ServiceBase.extend({
      */
     queryByBounds: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryServiceBase.queryByBounds(params, callback, resultFormat);
+      this._queryService.queryByBounds(params, callback, resultFormat);
     },
 
     /**
@@ -53,7 +53,7 @@ export var QueryService = ServiceBase.extend({
      */
     queryByDistance: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryServiceBase.queryByDistance(params, callback, resultFormat);
+      this._queryService.queryByDistance(params, callback, resultFormat);
     },
 
     /**
@@ -65,7 +65,7 @@ export var QueryService = ServiceBase.extend({
      */
     queryBySQL: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryServiceBase.queryBySQL(params, callback, resultFormat);
+      this._queryService.queryBySQL(params, callback, resultFormat);
     },
 
     /**
@@ -77,7 +77,7 @@ export var QueryService = ServiceBase.extend({
      */
     queryByGeometry: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryServiceBase.queryByGeometry(params, callback, resultFormat);
+      this._queryService.queryByGeometry(params, callback, resultFormat);
     },
 
     _processParams: function(params) {

@@ -1,0 +1,54 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n='resources.title_binary_classification'></title>
+  <style>
+    #predict {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+    }
+  </style>
+  
+</head>
+  <img style="display: none;" class="building" id="tileImg16" src="../img/building.png" alt="">
+  <canvas id="data-canvas1" width="640" height="640"></canvas>
+  <input type='button' id='predict' class='btn btn-primary' data-i18n="[value]resources.text_analyse"/>
+  <script type="text/javascript" include="bootstrap,vue" src="../js/include-web.js"></script>
+  <script include="iclient-maplibregl-vue,mapbox-gl-enhance,tensorflow" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  <script>
+  var modelUrl = 'https://iclient.supermap.io/web/data/machine_learning/binary_classification/model.json';
+  var img = document.querySelector('#tileImg16');
+  var canvas = document.querySelector('#data-canvas1');
+  var ctx = canvas.getContext('2d');
+  var predictBtn = document.querySelector('#predict');
+  ctx.drawImage(img, 0, 0, 640, 640);
+  var webMachineLearning = new maplibregl.supermap.WebMachineLearning();
+  var binaryClassification = new maplibregl.supermap.BinaryClassification({ modelUrl, image: img });
+  predictBtn.addEventListener('click', function() {
+    webMachineLearning.execute(binaryClassification).then((res) => {
+    const { data, width, height } = res;
+    const bytes = ctx.getImageData(0, 0, 640, 640);
+    for (let i = 0;i < width * height; i++) {
+      let j = i * 4;
+      let threshold = data[i];
+      if (threshold > 0.9) {
+        bytes.data[j] = 255;
+        bytes.data[j + 1] = 255;
+        bytes.data[j + 2] = 0;
+        bytes.data[j + 3] = 255;
+      }
+    }
+    ctx.putImageData(bytes, 0, 0);
+   });
+  });
+   
+  </script>
+</body>
+
+</html>

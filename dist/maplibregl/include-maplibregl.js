@@ -49,19 +49,20 @@
   }
 
   //加载类库资源文件
-  function load() {
+  function load({ libsurl }) {
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     inputCSS('https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css');
     inputScript('https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js');
-    if (inArray(includes, 'L7')) {
-      inputScript('../../dist/maplibregl/l7.js');
+    // inputCSS('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css');
+    // inputScript('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js');
+    if (inArray(includes, 'draw')) {
+      inputCSS(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.css`);
+      inputScript(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.js`);
     }
-    if (inArray(includes, 'L7Three')) {
-      inputScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r115/three.min.js');
-      inputScript('../../dist/maplibregl/l7-tree.js');
+    if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
+      inputScript(`${libsurl}/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js`);
     }
-    // dist
     if (!inArray(excludes, 'iclient-maplibregl')) {
       if (supportES6()) {
         inputScript('../../dist/maplibregl/iclient-maplibregl-es6.min.js');
@@ -72,12 +73,11 @@
     if (!inArray(excludes, 'iclient-maplibregl-css')) {
       inputCSS('../../dist/maplibregl/iclient-maplibregl.min.css');
     }
-    if (inArray(includes, 'vue-cesium')) {
-      inputScript('https://iclient.supermap.io/web/libs/vue-cesium/2.1.4/index.umd.min.js');
-    }
   }
 
-  load();
+  load({
+    libsurl: 'https://iclient.supermap.io/web/libs'
+  });
   window.isLocal = false;
   window.server = document.location.toString().match(/file:\/\//)
     ? 'http://localhost:8090'

@@ -30,7 +30,7 @@ export var AddressMatchService = ServiceBase.extend({
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
         var me = this;
-        this.addressMatchService = new CommonMatchAddressService(this.url, {
+        this._addressMatchService = new CommonMatchAddressService(this.url, {
           proxy: me.options.proxy,
           withCredentials: me.options.withCredentials,
           crossOrigin: me.options.crossOrigin,
@@ -45,7 +45,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     code: function (params, callback) {
-        this.addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
+        this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
     },
 
     /**
@@ -55,7 +55,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     decode: function (params, callback) {
-        this.addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
+        this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 
 });

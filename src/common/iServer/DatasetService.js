@@ -81,7 +81,9 @@ export class DatasetService extends CommonServiceBase {
         if (!params) {
             return;
         }
-        this.processAsync(this.url, 'PUT', callback, params);
+        const url = Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
+        delete params.datasourceName;
+        this.processAsync(url, 'PUT', callback, params);
     }
 
      /**
@@ -98,11 +100,15 @@ export class DatasetService extends CommonServiceBase {
       let eventListeners = {
         scope: this,
         processCompleted: function(result) {
-          if (eventId === result.result.eventId) {
+          if (eventId === result.result.eventId && callback) {
             callback(result);
           }
         },
-        processFailed: callback
+        processFailed: function(result) {
+          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+            callback(result);
+          }
+        }
       }
       this.events.on(eventListeners);
        var me = this;
@@ -115,6 +121,9 @@ export class DatasetService extends CommonServiceBase {
             me.serviceProcessCompleted(result);
           },
           failure(result) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
             result.eventId = eventId;
             me.serviceProcessFailed(result);
           }

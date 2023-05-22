@@ -26,7 +26,7 @@ export class LayerInfoService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.layerInfoService = new CommonLayerInfoService(url, options);
+        this._layerInfoService = new CommonLayerInfoService(url, options);
     }
 
     /**
@@ -36,7 +36,7 @@ export class LayerInfoService extends ServiceBase {
      * @returns {LayerInfoService} 返回图层信息类。
      */
     getLayersInfo(callback) {
-      this.layerInfoService.getLayersInfo(callback);
+      this._layerInfoService.getLayersInfo(callback);
     }
 
     /**
@@ -46,7 +46,7 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayerInfo(params, callback) {
-      this.layerInfoService.setLayerInfo(params, callback);
+      this._layerInfoService.setLayerInfo(params, callback);
     }
 
     /**
@@ -56,7 +56,7 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo(params, callback) {
-      this.layerInfoService.setLayersInfo(params, callback);
+      this._layerInfoService.setLayersInfo(params, callback);
     }
 
     /**
@@ -66,6 +66,6 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     setLayerStatus(params, callback) {
-      this.layerInfoService.setLayerStatus(params, callback);
+      this._layerInfoService.setLayerStatus(params, callback);
     }
 }

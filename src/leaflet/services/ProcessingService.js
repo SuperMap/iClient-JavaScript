@@ -5,7 +5,6 @@ import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import { DataFormat } from '@supermap/iclient-common/REST';
 import { ProcessingService as CommonProcessingService } from '@supermap/iclient-common/iServer/ProcessingService';
 
 /**
@@ -41,7 +40,7 @@ export var ProcessingService = ServiceBase.extend({
         this.buffersJobs = {};
         this.topologyValidatorJobs = {};
         this.summaryAttributesJobs = {};
-        this.processingService = new CommonProcessingService(url, options);
+        this._processingService = new CommonProcessingService(url, options);
     },
 
     /**
@@ -51,7 +50,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getKernelDensityJobs: function(callback, resultFormat) {
-      this.processingService.getKernelDensityJobs(callback, resultFormat);
+      this._processingService.getKernelDensityJobs(callback, resultFormat);
     },
 
     /**
@@ -62,7 +61,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getKernelDensityJob: function(id, callback, resultFormat) {
-      this.processingService.getKernelDensityJob(id, callback, resultFormat);
+      this._processingService.getKernelDensityJob(id, callback, resultFormat);
     },
 
     /**
@@ -74,8 +73,8 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addKernelDensityJob: function(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
-      this.processingService.addKernelDensityJob(params, callback, seconds, resultFormat);
+      let processParams = this._processParams(params);
+      this._processingService.addKernelDensityJob(processParams, callback, seconds, resultFormat);
     },
 
     /**
@@ -85,7 +84,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 密度分析的状态。
      */
     getKernelDensityJobState: function(id) {
-        return this.kernelDensityJobs[id];
+        return this._processingService.getKernelDensityJobState(id);
     },
 
     /**
@@ -95,7 +94,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getSummaryMeshJobs: function(callback, resultFormat) {
-      this.processingService.getSummaryMeshJobs(callback, resultFormat);
+      this._processingService.getSummaryMeshJobs(callback, resultFormat);
     },
 
     /**
@@ -106,7 +105,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getSummaryMeshJob: function(id, callback, resultFormat) {
-      this.processingService.getSummaryMeshJob(id, callback, resultFormat);
+      this._processingService.getSummaryMeshJob(id, callback, resultFormat);
     },
 
     /**
@@ -119,7 +118,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addSummaryMeshJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this.processingService.addSummaryMeshJob(params, callback, seconds, resultFormat);
+      this._processingService.addSummaryMeshJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -129,7 +128,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 点聚合分析的状态。
      */
     getSummaryMeshJobState: function(id) {
-        return this.summaryMeshJobs[id];
+        return this._processingService.getSummaryMeshJobState(id);
     },
 
     /**
@@ -139,7 +138,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getQueryJobs: function(callback, resultFormat) {
-      this.processingService.getQueryJobs(callback, resultFormat);
+      this._processingService.getQueryJobs(callback, resultFormat);
     },
 
     /**
@@ -150,7 +149,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getQueryJob: function(id, callback, resultFormat) {
-      this.processingService.getQueryJob(id, callback, resultFormat);
+      this._processingService.getQueryJob(id, callback, resultFormat);
     },
 
     /**
@@ -163,7 +162,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addQueryJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this.processingService.addQueryJob(params, callback, seconds, resultFormat);
+      this._processingService.addQueryJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -173,7 +172,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 单对象查询分析的状态。
      */
     getQueryJobState: function(id) {
-        return this.queryJobs[id];
+        return this._processingService.getQueryJobState(id);
     },
 
     /**
@@ -183,7 +182,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getSummaryRegionJobs: function(callback, resultFormat) {
-      this.processingService.getSummaryRegionJobs(callback, resultFormat);
+      this._processingService.getSummaryRegionJobs(callback, resultFormat);
     },
 
     /**
@@ -194,7 +193,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getSummaryRegionJob: function(id, callback, resultFormat) {
-      this.processingService.getSummaryRegionJob(id, callback, resultFormat);
+      this._processingService.getSummaryRegionJob(id, callback, resultFormat);
     },
 
     /**
@@ -207,7 +206,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addSummaryRegionJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params),
-      this.processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
+      this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -217,7 +216,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 区域汇总分析的状态。
      */
     getSummaryRegionJobState: function(id) {
-        return this.summaryRegionJobs[id];
+        return this._processingService.getSummaryRegionJobState(id);
     },
 
     /**
@@ -227,7 +226,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getVectorClipJobs: function(callback, resultFormat) {
-      this.processingService.getVectorClipJobs(callback, resultFormat);
+      this._processingService.getVectorClipJobs(callback, resultFormat);
     },
 
     /**
@@ -238,7 +237,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getVectorClipJob: function(id, callback, resultFormat) {
-      this.processingService.getVectorClipJob(id, callback, resultFormat);
+      this._processingService.getVectorClipJob(id, callback, resultFormat);
     },
 
     /**
@@ -251,7 +250,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addVectorClipJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this.processingService.getVectorClipJob(params, callback, seconds, resultFormat);
+      this._processingService.addVectorClipJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -261,7 +260,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 矢量裁剪分析的状态。
      */
     getVectorClipJobState: function(id) {
-        return this.vectorClipJobs[id];
+        return this._processingService.getVectorClipJobState(id);
     },
 
     /**
@@ -271,7 +270,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getOverlayGeoJobs: function(callback, resultFormat) {
-      this.processingService.getOverlayGeoJobs(callback, resultFormat);
+      this._processingService.getOverlayGeoJobs(callback, resultFormat);
     },
 
     /**
@@ -282,7 +281,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getOverlayGeoJob: function(id, callback, resultFormat) {
-      this.processingService.getOverlayGeoJob(id, callback, resultFormat);
+      this._processingService.getOverlayGeoJob(id, callback, resultFormat);
     },
 
     /**
@@ -295,7 +294,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addOverlayGeoJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this.processingService.addOverlayGeoJob(params, callback, seconds, resultFormat);
+      this._processingService.addOverlayGeoJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -305,7 +304,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 叠加分析的状态。
      */
     getoverlayGeoJobState: function(id) {
-        return this.overlayGeoJobs[id];
+        return this._processingService.getoverlayGeoJobState(id);
     },
 
     /**
@@ -315,7 +314,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getBuffersJobs: function(callback, resultFormat) {
-      this.processingService.getBuffersJobs(callback, resultFormat);
+      this._processingService.getBuffersJobs(callback, resultFormat);
     },
 
     /**
@@ -326,7 +325,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getBuffersJob: function(id, callback, resultFormat) {
-      this.processingService.getBuffersJob(id, callback, resultFormat);
+      this._processingService.getBuffersJob(id, callback, resultFormat);
     },
 
     /**
@@ -339,7 +338,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addBuffersJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this.processingService.addBuffersJob(params, callback, seconds, resultFormat);
+      this._processingService.addBuffersJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -349,7 +348,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 缓冲区分析的状态
      */
     getBuffersJobState: function(id) {
-        return this.buffersJobs[id];
+        return this._processingService.getBuffersJobState(id);
     },
 
     /**
@@ -359,7 +358,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getTopologyValidatorJobs: function(callback, resultFormat) {
-      this.processingService.getTopologyValidatorJobs(callback, resultFormat);
+      this._processingService.getTopologyValidatorJobs(callback, resultFormat);
     },
 
     /**
@@ -370,7 +369,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getTopologyValidatorJob: function(id, callback, resultFormat) {
-      this.processingService.getTopologyValidatorJob(id, callback, resultFormat);
+      this._processingService.getTopologyValidatorJob(id, callback, resultFormat);
     },
 
     /**
@@ -383,7 +382,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addTopologyValidatorJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params),
-      this.processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
+      this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -393,7 +392,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 拓扑检查分析的状态。
      */
     getTopologyValidatorJobState: function(id) {
-        return this.topologyValidatorJobs[id];
+        return this._processingService.getTopologyValidatorJobState(id);
     },
 
     /**
@@ -403,7 +402,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getSummaryAttributesJobs: function(callback, resultFormat) {
-      this.processingService.getSummaryAttributesJobs(callback, resultFormat);
+      this._processingService.getSummaryAttributesJobs(callback, resultFormat);
     },
 
     /**
@@ -414,7 +413,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getSummaryAttributesJob: function(id, callback, resultFormat) {
-      this.processingService.getSummaryAttributesJob(id, callback, resultFormat);
+      this._processingService.getSummaryAttributesJob(id, callback, resultFormat);
     },
 
     /**
@@ -427,7 +426,7 @@ export var ProcessingService = ServiceBase.extend({
      */
     addSummaryAttributesJob: function(params, callback, seconds, resultFormat) {
       params = this._processParams(params),
-      this.processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
+      this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
     },
 
     /**
@@ -437,11 +436,7 @@ export var ProcessingService = ServiceBase.extend({
      * @returns {Object} 属性汇总分析的状态。
      */
     getSummaryAttributesJobState: function(id) {
-        return this.summaryAttributesJobs[id];
-    },
-
-    _processFormat: function(resultFormat) {
-        return resultFormat ? resultFormat : DataFormat.GEOJSON;
+      return this._processingService.getSummaryAttributesJobState(id);
     },
 
     _processParams: function(params) {

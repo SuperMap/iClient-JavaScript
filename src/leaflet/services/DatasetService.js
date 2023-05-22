@@ -25,7 +25,7 @@ export var DatasetService = ServiceBase.extend({
 
     initialize: function (url,options) {
         ServiceBase.prototype.initialize.call(this, url,options);
-        this.datasetService = new CommonDatasetService(this.url, {
+        this._datasetService = new CommonDatasetService(this.url, {
           proxy: this.options.proxy,
           withCredentials: this.options.withCredentials,
           crossOrigin: this.options.crossOrigin,
@@ -48,7 +48,7 @@ export var DatasetService = ServiceBase.extend({
       if (!datasourceName) {
         return;
       }
-      this.datasetService.getDatasetsService(datasourceName, callback);
+      this._datasetService.getDatasetsService(datasourceName, callback);
     },
 
     /**
@@ -66,7 +66,7 @@ export var DatasetService = ServiceBase.extend({
       if (!datasourceName || !datasetName) {
         return;
       }
-      this.datasetService.getDatasetService(datasourceName, datasetName, callback);
+      this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     },
 
     /**
@@ -85,18 +85,20 @@ export var DatasetService = ServiceBase.extend({
       }else if (params instanceof CreateDatasetParameters) {
           var datasetParams = {
               "datasetType": params.datasetType,
+              "datasourceName": params.datasourceName,
               "datasetName": params.datasetName
           }
       }else if(params instanceof UpdateDatasetParameters){
             datasetParams = {
                   "datasetName": params.datasetName,
+                  "datasourceName": params.datasourceName,
                   "isFileCache": params.isFileCache,
                   "description": params.description,
                   "prjCoordSys": params.prjCoordSys,
                   "charset": params.charset
               }
       }
-      this.datasetService.setDatasetService(datasetParams, callback);
+      this._datasetService.setDatasetService(datasetParams, callback);
     },
 
     /**
@@ -111,7 +113,7 @@ export var DatasetService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteDataset: function (datasourceName, datasetName, callback) {
-      this.datasetService.deleteDatasetService(datasourceName, datasetName, callback);
+      this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 });
 

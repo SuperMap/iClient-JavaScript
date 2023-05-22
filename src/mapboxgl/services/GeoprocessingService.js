@@ -36,7 +36,7 @@ export class GeoprocessingService extends ServiceBase {
         this.crossOrigin = true;
         this.withCredentials = true;
         this.proxy = true;
-        this.geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
+        this._geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
           proxy: this.options.proxy,
           withCredentials: this.options.withCredentials,
           crossOrigin: this.options.crossOrigin,
@@ -49,7 +49,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getTools(callback) {
-      this.geoprocessingJobsService.getTools(callback);
+      this._geoprocessingJobsService.getTools(callback);
     }
     /**
      * @function GeoprocessingService.prototype.getTool
@@ -58,7 +58,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getTool(identifier, callback) {
-      this.geoprocessingJobsService.getTool(identifier, callback);
+      this._geoprocessingJobsService.getTool(identifier, callback);
     }
 
     /**
@@ -70,7 +70,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     execute(identifier, parameter, environment, callback) {
-      this.geoprocessingJobsService.execute(identifier, parameter, environment, callback);
+      this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
     }
 
     /**
@@ -82,7 +82,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     submitJob(identifier, parameter, environment, callback) {
-      this.geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
+      this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
     }
 
     /**
@@ -96,7 +96,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     waitForJobCompletion(jobId, identifier, options, callback) {
-      this.geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
+      this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
     }
 
     /**
@@ -107,7 +107,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getJobInfo(identifier, jobId, callback) {
-      this.geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
+      this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
     }
 
     /**
@@ -118,7 +118,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     cancelJob(identifier, jobId, callback) {
-      this.geoprocessingJobsService.cancelJob(identifier, jobId, callback);
+      this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
     }
 
     /**
@@ -128,7 +128,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getJobs(identifier, callback) {
-      this.geoprocessingJobsService.getJobs(identifier, callback);
+      this._geoprocessingJobsService.getJobs(identifier, callback);
     }
 
     /**
@@ -140,7 +140,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getResults(identifier, jobId, filter, callback) {
-      this.geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
+      this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
     }
 }
 

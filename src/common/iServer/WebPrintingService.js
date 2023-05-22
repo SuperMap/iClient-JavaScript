@@ -75,8 +75,9 @@ export class WebPrintingService extends CommonServiceBase {
      * @param {string} jobId - Web 打印任务 ID
      */
     getPrintingJob(jobId, callback) {
-        this.processAsync(`jobs/${jobId}`, 'GET', function(result) {
-          this.rollingProcess(result, this.url, callback);
+        var me = this;
+        me.processAsync(`jobs/${jobId}`, 'GET', function(result) {
+          me.rollingProcess(result, me._processUrl(`jobs/${jobId}`), callback);
         });
     }
 
@@ -108,33 +109,37 @@ export class WebPrintingService extends CommonServiceBase {
             return;
         }
         var id = setInterval(function () {
-          let eventId = ++this.eventCount;
+          let eventId = ++me.eventCount;
           let eventListeners = {
             scope: this,
             processCompleted: function(result) {
-              if (eventId === result.result.eventId) {
+              if (eventId === result.result.eventId && callback) {
                 callback(result);
               }
             },
-            processFailed: callback
+            processFailed: function(result) {
+              if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+                callback(result);
+              }
+            }
           }
-          this.events.on(eventListeners);
+          me.events.on(eventListeners);
           me.request({
             url,
             method: 'GET',
             scope: me,
             success: function (result) {
+                result.eventId = eventId;
                 switch (result.status) {
                     case 'FINISHED':
                         clearInterval(id);
-                        me.serviceProcessCompleted(result, eventId);
+                        me.serviceProcessCompleted(result);
                         break;
                     case 'ERROR':
                         clearInterval(id);
-                        me.serviceProcessFailed(result, eventId);
+                        me.serviceProcessFailed(result);
                         break;
                     case 'RUNNING':
-                        result.eventId = eventId;
                         me.events.triggerEvent('processRunning', result);
                         break;
                 }
@@ -153,7 +158,11 @@ export class WebPrintingService extends CommonServiceBase {
             callback(result);
           }
         },
-        processFailed: callback
+        processFailed: function(result) {
+          if (eventId === result.error.eventId || eventId === result.eventId) {
+            callback(result);
+          }
+        }
       }
       this.events.on(eventListeners);
       var me = this;
@@ -166,6 +175,9 @@ export class WebPrintingService extends CommonServiceBase {
           this.serviceProcessCompleted(result);
         },
         failure(result) {
+          if (result.error) {
+            result.error.eventId = eventId;
+          }
           result.eventId = eventId;
           this.serviceProcessFailed(result);
         }

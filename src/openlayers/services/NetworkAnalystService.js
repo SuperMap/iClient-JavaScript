@@ -30,7 +30,7 @@ export class NetworkAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.networkAnalystService = new CommonNetworkAnalystService(url, options);
+        this._networkAnalystService = new CommonNetworkAnalystService(url, options);
     }
 
     /**
@@ -41,7 +41,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     burstPipelineAnalyst(params, callback) {
       params = this._processParams(params);
-      this.networkAnalystService.burstPipelineAnalyst(params, callback);
+      this._networkAnalystService.burstPipelineAnalyst(params, callback);
     }
 
     /**
@@ -52,7 +52,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     computeWeightMatrix(params, callback) {
       params = this._processParams(params);
-      this.networkAnalystService.computeWeightMatrix(params, callback);
+      this._networkAnalystService.computeWeightMatrix(params, callback);
     }
 
     /**
@@ -64,7 +64,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findClosestFacilities(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.findClosestFacilities(params, callback, resultFormat);
+      this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
     }
 
     /**
@@ -76,7 +76,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     streamFacilityAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
+      this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
     }
 
     /**
@@ -88,7 +88,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findLocation(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.findLocation(params, callback, resultFormat);
+      this._networkAnalystService.findLocation(params, callback, resultFormat);
     }
 
     /**
@@ -100,7 +100,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findPath(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.findPath(params, callback, resultFormat);
+      this._networkAnalystService.findPath(params, callback, resultFormat);
     }
 
     /**
@@ -112,7 +112,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findTSPPaths(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.findTSPPaths(params, callback, resultFormat);
+      this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
     }
 
     /**
@@ -124,7 +124,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findMTSPPaths(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.findMTSPPaths(params, callback, resultFormat);
+      this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
     }
 
     /**
@@ -136,7 +136,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findServiceAreas(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.networkAnalystService.findServiceAreas(params, callback, resultFormat);
+      this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
     }
 
     /**
@@ -146,7 +146,7 @@ export class NetworkAnalystService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     updateEdgeWeight(params, callback) {
-      this.networkAnalystService.updateEdgeWeight(params, callback);
+      this._networkAnalystService.updateEdgeWeight(params, callback);
     }
 
     /**
@@ -156,7 +156,7 @@ export class NetworkAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     updateTurnNodeWeight(params, callback) {
-      this.networkAnalystService.updateTurnNodeWeight(params, callback);
+      this._networkAnalystService.updateTurnNodeWeight(params, callback);
     }
 
     _processParams(params) {

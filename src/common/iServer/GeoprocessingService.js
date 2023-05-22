@@ -147,7 +147,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} jobId - 处理自动化任务ID。
      * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      */
-    getResults(identifier, jobId, callback, filter) {
+    getResults(identifier, jobId, filter, callback) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
         if (filter) {
             url = `${url}/${filter}`;
@@ -160,11 +160,15 @@ export class GeoprocessingService extends CommonServiceBase {
         let eventListeners = {
           scope: this,
           processCompleted: function(result) {
-            if (eventId === result.result.eventId) {
+            if (eventId === result.result.eventId && callback) {
               callback(result);
             }
           },
-          processFailed: callback
+          processFailed: function(result) {
+            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+              callback(result);
+            }
+          }
         }
         this.events.on(eventListeners);
           this.request({
@@ -175,12 +179,15 @@ export class GeoprocessingService extends CommonServiceBase {
               scope: this,
               success(result) {
                 result.eventId = eventId;
-                const callback = serviceProcessCompleted || this.serviceProcessCompleted;
+                const callback = serviceProcessCompleted || this.serviceProcessCompleted.bind(this);
                 callback(result, eventId);
               },
               failure(result) {
+                if (result.error) {
+                  result.error.eventId = eventId;
+                }
                 result.eventId = eventId;
-                const callback = serviceProcessFailed || this.serviceProcessFailed;
+                const callback = serviceProcessFailed || this.serviceProcessFailed.bind(this);
                 callback(result, eventId);
               }
           });

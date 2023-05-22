@@ -27,7 +27,7 @@ export class ChartService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.chartServiceBase = new CommonChartService(url, options);
+        this._chartService = new CommonChartService(url, options);
     }
 
     /**
@@ -39,7 +39,7 @@ export class ChartService extends ServiceBase {
      */
     queryChart(params, callback, resultFormat) {
       params = this._processParams(params),
-      this.chartServiceBase.queryChart(params, callback, resultFormat);
+      this._chartService.queryChart(params, callback, resultFormat);
     }
 
     /**
@@ -48,7 +48,7 @@ export class ChartService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getChartFeatureInfo(callback) {
-      this.chartServiceBase.getChartFeatureInfo(callback);
+      this._chartService.getChartFeatureInfo(callback);
     }
 
     _processParams(params) {

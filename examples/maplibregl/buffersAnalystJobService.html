@@ -1,0 +1,188 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_buffersAnalystJobService"></title>
+    <style>
+        .mb-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="mb-popup" style='width:350px'>
+        <div class="panel panel-default">
+            <div class='panel-heading'>
+                <h3 class='panel-title' data-i18n="resources.text_bufferAnalyst"></h3>
+            </div>
+            <div class='panel-body'>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_inputData"></span><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span>　</span>
+                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkPoint_P' />
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_analysisRange"></span>
+                    <input id='bounds' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950' />
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_bufferDistance"></span>
+                    <input id='distace' type='text' class='form-control' value='15' />
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_bufferDistanceField"></span>
+                    <input id='distanceField' type='text' class='form-control' value='pickup_latitude' />
+                </div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_bufferDistanceUnit"></span>
+                    <select class='form-control' id='distanceUnit' name='distanceUnit'>
+                        <option value='Meter' selected='selected'>Meter</option>
+                        <option value='Kilometer'>Kilometer</option>
+                        <option value='Yard'>Yard</option>
+                        <option value='Foot'>Foot</option>
+                        <option value='Mile'>Mile</option>
+                    </select></div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_fusionField"></span>
+                    <input id='dissoveField' type='text' class='form-control' value='pickup_longitude' />
+                </div>
+                <p></p>
+                <div align='right'>
+                    <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_analyst" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="draw" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script>
+        var map,
+            baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/map-world/rest/maps/World",
+            mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+            processingsUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/distributedanalyst/rest/v1/jobs";
+        var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+        map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [mapUrl],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                }]
+            },
+            center: [-73.95, 40.75],
+            zoom: 11
+        });
+        map.addControl(new maplibregl.NavigationControl(), 'top-left');
+        map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+        bindClick();
+
+        maplibregl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+        var processingService = new maplibregl.supermap.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
+        });
+
+        function bindClick() {
+            $('#btn').on('click', function () {
+                if ($('#msg_container')[0]) {
+                    $('#msg_container').remove();
+                }
+                widgets.loader.showLoader();
+                if (map.getLayer("createBufferAnalystJobLayer")) {
+                    map.removeLayer("createBufferAnalystJobLayer");
+                    map.removeSource("createBufferAnalystJobSource");
+                }
+                createBufferAnalystJobs();
+            });
+        }
+
+        function getBounds() {
+            if ($('#bounds').val() === "") {
+                return "";
+            }
+            var bounds = [];
+            $('#bounds').val().split(',').map(function (el) {
+                bounds.push(parseFloat(el));
+            });
+            var sw = new maplibregl.LngLat(bounds[0], bounds[1]);
+            var ne = new maplibregl.LngLat(bounds[2], bounds[3]);
+
+            return new maplibregl.LngLatBounds(sw, ne);
+        }
+
+        function createBufferAnalystJobs() {
+            var buffersAnalystJobsParameter = new maplibregl.supermap.BuffersAnalystJobsParameter({
+                datasetName: $('#datasetName').val(),
+                bounds: getBounds(),
+                distance: $('#distace').val(),
+                distanceField: $('#distanceField').val(),
+                distanceUnit: $('#distanceUnit option:selected').attr('value'),
+                dissolveField: $('#dissoveField').val()
+            });
+            processingService.addBuffersJob(buffersAnalystJobsParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        maplibregl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path +
+                                "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
+                            map.addSource("createBufferAnalystJobSource", {
+                                "type": "raster",
+                                "tiles": [mapUrl],
+                                "tileSize": 256
+                            });
+                            map.addLayer({
+                                "id": "createBufferAnalystJobLayer",
+                                "type": "raster",
+                                "source": "createBufferAnalystJobSource",
+                                "minzoom": 0,
+                                "maxzoom": 22
+                            });
+                            widgets.loader.removeLoader();
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+
+</body>
+
+</html>

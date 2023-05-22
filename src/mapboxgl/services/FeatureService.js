@@ -31,7 +31,7 @@ import { FeatureService as CommonFeatureService } from '@supermap/iclient-common
 export class FeatureService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.featureService = new CommonFeatureService(url, options);
+        this._featureService = new CommonFeatureService(url, options);
     }
 
     /**
@@ -43,7 +43,7 @@ export class FeatureService extends ServiceBase {
      */
     getFeaturesByIDs(params, callback, resultFormat) {
         params = this._processParams(params);
-        this.featureService.getFeaturesByIDs(params, callback, resultFormat);
+        this._featureService.getFeaturesByIDs(params, callback, resultFormat);
     }
 
     /**
@@ -55,7 +55,7 @@ export class FeatureService extends ServiceBase {
      */
     getFeaturesByBounds(params, callback, resultFormat) {
         params = this._processParams(params);
-        this.featureService.getFeaturesByBounds(params, callback, resultFormat);
+        this._featureService.getFeaturesByBounds(params, callback, resultFormat);
     }
 
     /**
@@ -67,7 +67,7 @@ export class FeatureService extends ServiceBase {
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
         params = this._processParams(params);
-        this.featureService.getFeaturesByBuffer(params, callback, resultFormat);
+        this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
     }
 
     /**
@@ -79,7 +79,7 @@ export class FeatureService extends ServiceBase {
      */
     getFeaturesBySQL(params, callback, resultFormat) {
         params = this._processParams(params);
-        this.featureService.getFeaturesBySQL(params, callback, resultFormat);
+        this._featureService.getFeaturesBySQL(params, callback, resultFormat);
     }
 
     /**
@@ -91,7 +91,7 @@ export class FeatureService extends ServiceBase {
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
         params = this._processParams(params);
-        this.featureService.getFeaturesByGeometry(params, callback, resultFormat);
+        this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
     }
 
     /**

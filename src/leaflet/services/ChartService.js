@@ -30,7 +30,7 @@ export var ChartService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.chartServiceBase = new CommonChartService(url, options);
+        this._chartServiceBase = new CommonChartService(url, options);
     },
 
     /**
@@ -42,7 +42,7 @@ export var ChartService = ServiceBase.extend({
      */
     queryChart: function (params, callback, resultFormat) {
         params = this._processParams(params),
-        this.chartServiceBase.queryChart(params, callback, resultFormat);
+        this._chartServiceBase.queryChart(params, callback, resultFormat);
     },
 
     /**
@@ -51,7 +51,7 @@ export var ChartService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getChartFeatureInfo: function (callback) {
-      this.chartServiceBase.getChartFeatureInfo(callback);
+      this._chartServiceBase.getChartFeatureInfo(callback);
     },
 
     _processParams: function (params) {

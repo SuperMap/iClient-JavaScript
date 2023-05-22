@@ -28,7 +28,7 @@ export class ThemeService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
         var me = this;
-        this.themeService = new CommonThemeService(me.url, {
+        this._themeService = new CommonThemeService(me.url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
@@ -43,6 +43,6 @@ export class ThemeService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getThemeInfo(params, callback) {
-        this.themeService.processAsync(params, callback);
+        this._themeService.processAsync(params, callback);
     }
 }

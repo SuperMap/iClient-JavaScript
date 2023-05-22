@@ -137,7 +137,7 @@ describe('ImageCollectionService', () => {
             expect(url).toEqual(requestUrl + '/collections/collectionId/statistics');
             return Promise.resolve(new Response(JSON.stringify(getCollectionStatisticsJson)));
         });
-        service.getStatistics('collectionId');
+        service.getStatistics();
     });
 
     it('should call getStatistics parameter wrong', function (done) {

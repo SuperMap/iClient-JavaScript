@@ -29,7 +29,7 @@ import CommonMatchImageService from '@supermap/iclient-common/iServer/ImageServi
 export var ImageService = ServiceBase.extend({
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.imageService = new CommonMatchImageService(this.url, {
+        this._imageService = new CommonMatchImageService(this.url, {
           proxy: this.options.proxy,
           withCredentials: this.options.withCredentials,
           crossOrigin: this.options.crossOrigin,
@@ -43,7 +43,7 @@ export var ImageService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollections: function (callback) {
-      this.imageService.getCollections(callback);
+      this._imageService.getCollections(callback);
     },
 
     /**
@@ -53,7 +53,7 @@ export var ImageService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollectionByID: function (collectionId, callback) {
-      this.imageService.getCollectionByID(collectionId, callback);
+      this._imageService.getCollectionByID(collectionId, callback);
     },
     /**
      * @function ImageService.prototype.search
@@ -62,7 +62,7 @@ export var ImageService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     search: function (itemSearch, callback) {
-      this.imageService.search(itemSearch, callback);
+      this._imageService.search(itemSearch, callback);
     }
 });
 

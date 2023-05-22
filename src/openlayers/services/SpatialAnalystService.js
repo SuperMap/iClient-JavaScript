@@ -30,7 +30,7 @@ export class SpatialAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.spatialAnalystService = new CommonSpatialAnalystService(url, options);
+        this._spatialAnalystService = new CommonSpatialAnalystService(url, options);
     }
 
     /**
@@ -41,7 +41,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     getAreaSolarRadiationResult(params, callback, resultFormat) {
-        this.spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
+        this._spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
     }
 
     /**
@@ -53,7 +53,7 @@ export class SpatialAnalystService extends ServiceBase {
      */
     bufferAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -65,7 +65,7 @@ export class SpatialAnalystService extends ServiceBase {
      */
     densityAnalysis(params, callback, resultFormat) {
         params = this._processParams(params);
-        this.spatialAnalystService.densityAnalysis(params, callback, resultFormat);
+        this._spatialAnalystService.densityAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -76,7 +76,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     generateSpatialData(params, callback, resultFormat) {
-      this.spatialAnalystService.generateSpatialData(params, callback, resultFormat);
+      this._spatialAnalystService.generateSpatialData(params, callback, resultFormat);
     }
 
     /**
@@ -87,8 +87,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     geoRelationAnalysis(params, callback, resultFormat) {
-        params = this.processAsync(params);
-        this.spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
+        params = this._processParams(params);
+        this._spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -99,8 +99,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     interpolationAnalysis(params, callback, resultFormat) {
-        params = this.processAsync(params);
-        this.spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
+        params = this._processParams(params);
+        this._spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
     }
     /**
      * @function SpatialAnalystService.prototype.mathExpressionAnalysis
@@ -110,8 +110,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     mathExpressionAnalysis(params, callback, resultFormat) {
-        params = this.processAsync(params);
-        this.spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
+        params = this._processParams(params);
+        this._spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -122,8 +122,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     overlayAnalysis(params, callback, resultFormat) {
-      params = this.processAsync(params);
-      this.spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -134,8 +134,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     routeCalculateMeasure(params, callback, resultFormat) {
-      params = this.processAsync(params);
-      this.spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
     }
 
     /**
@@ -146,8 +146,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     routeLocate(params, callback, resultFormat) {
-        params = this.processAsync(params);
-        this.spatialAnalystService.routeLocate(params, callback, resultFormat);
+        params = this._processParams(params);
+        this._spatialAnalystService.routeLocate(params, callback, resultFormat);
     }
 
     /**
@@ -158,8 +158,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     surfaceAnalysis(params, callback, resultFormat) {
-      params = this.processAsync(params);
-      this.spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
+      params = this._processParams(params);
+      this._spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -170,7 +170,7 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     terrainCurvatureCalculate(params, callback, resultFormat) {
-        this.spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
+        this._spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
     }
 
     /**
@@ -181,8 +181,8 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     thiessenAnalysis(params, callback, resultFormat) {
-        params = this.processAsync(params);
-        this.spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+        params = this._processParams(params);
+        this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -203,7 +203,7 @@ export class SpatialAnalystService extends ServiceBase {
         for (var i = 0; i < params.length; i++) {
           params[i].param = this._processParams(params[i].param)
         }
-        this.spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
+        this._spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
     }
 
     _processParams(params) {

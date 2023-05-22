@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
-import {QueryService} from './QueryService';
+import {QueryServiceBase} from './QueryServiceBase';
 import {QueryByGeometryParameters} from './QueryByGeometryParameters';
 import {ServerGeometry} from './ServerGeometry';
 
@@ -11,7 +11,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @deprecatedclass SuperMap.QueryByGeometryService
  * @category  iServer Map QueryResults
  * @classdesc Geometry查询服务类。
- * @extends {QueryService}
+ * @extends {QueryServiceBase}
  * @example
  * var myQueryByGeometryService = new QueryByGeometryService(url, {
  *     eventListeners: {
@@ -29,7 +29,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @param {Object} [options.headers] - 请求头。
  * @usage
  */
-export class QueryByGeometryService extends QueryService {
+export class QueryByGeometryService extends QueryServiceBase {
     constructor(url, options) {
         super(url, options);
         this.CLASS_NAME = "SuperMap.QueryByGeometryService";

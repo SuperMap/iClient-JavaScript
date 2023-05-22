@@ -60,11 +60,15 @@ export class ThemeService extends CommonServiceBase {
         let eventListeners = {
           scope: this,
           processCompleted: function(result) {
-            if (eventId === result.result.eventId) {
+            if (eventId === result.result.eventId && callback) {
               callback(result);
             }
           },
-          processFailed: callback
+          processFailed: function(result) {
+            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+              callback(result);
+            }
+          }
         }
         this.events.on(eventListeners);
         me.request({
@@ -76,6 +80,9 @@ export class ThemeService extends CommonServiceBase {
               this.serviceProcessCompleted(result);
             },
             failure(result) {
+              if (result.error) {
+                result.error.eventId = eventId;
+              }
               result.eventId = eventId;
               this.serviceProcessFailed(result);
             }

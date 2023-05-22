@@ -30,7 +30,7 @@ import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrinting
 export class WebPrintingJobService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.webPrintingService = new WebPrintingService(url, options);
+        this._webPrintingService = new WebPrintingService(url, options);
     }
 
     /**
@@ -40,7 +40,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     createWebPrintingJob(params, callback) {
-      this.webPrintingService.createWebPrintingJob(params, callback);
+      this._webPrintingService.createWebPrintingJob(params, callback);
     }
 
     /**
@@ -50,7 +50,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
-      this.webPrintingService.getPrintingJob(jobId, callback);
+      this._webPrintingService.getPrintingJob(jobId, callback);
     }
 
     /**
@@ -60,7 +60,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJobResult(jobId, callback) {
-      this.webPrintingService.getPrintingJobResult(jobId, callback);
+      this._webPrintingService.getPrintingJobResult(jobId, callback);
     }
 
     /**
@@ -69,7 +69,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getLayoutTemplates(callback) {
-      this.webPrintingService.getLayoutTemplates(callback);
+      this._webPrintingService.getLayoutTemplates(callback);
     }
 
     _processParams(params) {

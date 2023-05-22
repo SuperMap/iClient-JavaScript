@@ -29,7 +29,7 @@ export var ThemeService = ServiceBase.extend({
 
     initialize: function (url, options) {
       ServiceBase.prototype.initialize.call(this, url, options);
-      this.themeService = new CommonThemeService(this.url, {
+      this._themeService = new CommonThemeService(this.url, {
         proxy: this.options.proxy,
         withCredentials: this.options.withCredentials,
         crossOrigin:this.options.crossOrigin,
@@ -44,7 +44,7 @@ export var ThemeService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getThemeInfo: function (params, callback) {
-        this.themeService.processAsync(params, callback);
+      this._themeService.processAsync(params, callback);
     }
 });
 

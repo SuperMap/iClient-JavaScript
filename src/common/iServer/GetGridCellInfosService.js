@@ -92,7 +92,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
         Util.extend(this, params);
         var me = this;
         me.url = Util.urlPathAppend(me.url,`datasources/${me.dataSourceName}/datasets/${me.datasetName}`);
-        me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed, callback);
+        me.queryRequest(me.getDatasetInfoCompleted.bind(me), me.getDatasetInfoFailed.bind(me), callback);
     }
 
     /**
@@ -106,13 +106,13 @@ export class GetGridCellInfosService extends CommonServiceBase {
         let eventListeners = {
           scope: this,
           processCompleted: function(result) {
-            if (eventId === result.result.eventId) {
-              callback(result);
+            if (eventId === result.result.eventId && callback) {
+              callback && callback(result);
             }
           },
           processFailed: function(result) {
-            if (eventId === result.result.eventId) {
-              callback(result);
+            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+              callback && callback(result);
             }
           }
         }
@@ -125,9 +125,12 @@ export class GetGridCellInfosService extends CommonServiceBase {
             scope: me,
             success(result) {
               result.eventId = eventId;
-              successFun(result);
+              successFun(result, callback);
             },
             failure(result) {
+              if (result.error) {
+                result.error.eventId = eventId;
+              }
               result.eventId = eventId;
               failedFunc(result);
             }
@@ -139,11 +142,11 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @description 数据集查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    getDatasetInfoCompleted(result) {
+    getDatasetInfoCompleted(result, callback) {
         var me = this;
         result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
-        me.queryGridInfos();
+        me.queryGridInfos(callback);
     }
 
     /**
@@ -156,7 +159,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
         if (me.X != null && me.Y != null) {
             me.url = Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
         }
-        me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed, callback);
+        me.queryRequest(me.serviceProcessCompleted.bind(me), me.serviceProcessFailed.bind(me), callback);
     }
 
 

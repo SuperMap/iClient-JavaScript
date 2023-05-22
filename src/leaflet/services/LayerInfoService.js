@@ -27,7 +27,7 @@ export var LayerInfoService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.layerInfoService = new CommonLayerInfoService(url, options);
+        this._layerInfoService = new CommonLayerInfoService(url, options);
     },
 
     /**
@@ -36,7 +36,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getLayersInfo: function (callback) {
-      this.layerInfoService.getLayersInfo(callback);
+      this._layerInfoService.getLayersInfo(callback);
     },
 
     /**
@@ -46,7 +46,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayerInfo: function (params, callback) {
-      this.layerInfoService.setLayerInfo(params, callback);
+      this._layerInfoService.setLayerInfo(params, callback);
     },
 
 
@@ -57,7 +57,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo: function (params, callback) {
-      this.layerInfoService.setLayersInfo(params, callback);
+      this._layerInfoService.setLayersInfo(params, callback);
     },
 
 
@@ -68,7 +68,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayerStatus: function (params, callback) {
-      this.layerInfoService.setLayerStatus(params, callback);
+      this._layerInfoService.setLayerStatus(params, callback);
     }
 
 });

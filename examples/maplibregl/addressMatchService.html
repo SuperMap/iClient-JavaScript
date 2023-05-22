@@ -1,0 +1,241 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_addressMatchService"></title>
+    <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .panel-default {
+            width: 20%;
+            float: right;
+            margin: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div class='panel panel-default'>
+    <div class='panel-body'>
+        <ul class='nav nav-tabs nav-justified' style="margin-bottom: 15px">
+            <li id='geocode' role='presentation' class='active'>
+                <a href='#' data-i18n="resources.text_code"></a>
+            </li>
+            <li id='geodecode' role='presentation'>
+                <a href='#' data-i18n="resources.text_decode"></a>
+            </li>
+        </ul>
+        <div class='tab-content'>
+            <div id='geocodeParam' role='tabpanel' class='tab-pane deplistContent active'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_address"></span>
+                    <input id='address' type='text' class='form-control' placeholder='超图软件'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_filterField"></span>
+                    <input id='filters' type='text' class='form-control' placeholder='北京市,朝阳区'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_minIndex"></span>
+                    <input id='fromIndex' type='text' class='form-control' placeholder='0'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_maxIndex"></span>
+                    <input id='toIndex' type='text' class='form-control' placeholder='10'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_maxCount"></span>
+                    <input id='maxReturn' type='text' class='form-control' placeholder='-1'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_coorSystem"></span>
+                    <input id='prjCoordSys' type='text' class='form-control' placeholder='{epsgcode:4326}'/></div>
+                <div align='right'>
+                    <input type='button' id='codeBtn' class='btn btn-primary'
+                           data-i18n="[value]resources.text_input_value_match"/>
+                </div>
+            </div>
+            <div id='geodecodeParam' role='tabpanel' class='tab-pane deplistContent'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_abscissa"></span>
+                    <input id='xCoord' type='text' class='form-control' placeholder='116.3518541194752'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_ordinate"></span>
+                    <input id='yCoord' type='text' class='form-control' placeholder='40.00097839595237'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_filterField"></span>
+                    <input id='filters2' type='text' class='form-control' placeholder=''/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_minIndex"></span>
+                    <input id='fromIndex2' type='text' class='form-control' placeholder='0'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_maxIndex"></span>
+                    <input id='toIndex2' type='text' class='form-control' placeholder='10'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_maxCount"></span>
+                    <input id='maxReturn2' type='text' class='form-control' placeholder='-1'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_queryRadius"></span>
+                    <input id='geoDecodingRadius' type='text' class='form-control' placeholder='-1'/></div>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_coorSystem"></span>
+                    <input id='prjCoordSys2' type='text' class='form-control' placeholder='{epsgcode:4326}'/></div>
+                <div align='right'>
+                    <input type='button' id='decodeBtn' class='btn btn-primary'
+                           data-i18n="[value]resources.text_input_value_match"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript">
+    //绑定两个按钮触发事件
+    $("#geocode").click(function () {
+        $("#geocode")[0].className = 'active';
+        $("#geodecode")[0].className = '';
+        $("#geocodeParam").addClass('active');
+        $("#geodecodeParam").removeClass('active');
+    });
+    $("#geodecode").click(function () {
+        $("#geocode")[0].className = '';
+        $("#geodecode")[0].className = 'active';
+        $("#geodecodeParam").addClass('active');
+        $("#geocodeParam").removeClass('active');
+    });
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+
+    var codeMarkers = [], decodeMarkers = [],
+        attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ",
+        url = host + "/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}",
+        addressUrl = host + "/iserver/services/addressmatch-Address/restjsr/v1/address",
+
+        map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [url],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 2,
+                    "maxzoom": 18
+                }]
+            },
+            center: [116.383572, 39.914714],
+            zoom: 11
+        });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    //判断输入字符串是否为空或者全部都是空格
+    function isNull(str) {
+        if (str == "") return true;
+        var regu = "^[ ]+$";
+        var re = new RegExp(regu);
+        return re.test(str);
+    }
+
+    var addressMatchService = new maplibregl.supermap.AddressMatchService(addressUrl);
+
+    $("#codeBtn").click(function () {
+        var geoCodeParam = new maplibregl.supermap.GeoCodingParameter({
+            address: $('#address').val() || $('#address').attr('placeholder'),
+            fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
+            toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
+            filters: $('#filters').val() || $('#filters').attr('placeholder'),
+            prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
+            maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
+        });
+        addressMatchService.code(geoCodeParam, match);
+    });
+    $("#decodeBtn").click(function () {
+        var geoDecodeParam = new maplibregl.supermap.GeoDecodingParameter({
+            x: $('#xCoord').val() || $('#xCoord').attr('placeholder'),
+            y: $('#yCoord').val() || $('#yCoord').attr('placeholder'),
+            fromIndex: $('#fromIndex2').val() || $('#fromIndex2').attr('placeholder'),
+            toIndex: $('#toIndex2').val() || $('#toIndex2').attr('placeholder'),
+            filters: $('#filters2').val() || $('#filters2').attr('placeholder'),
+            prjCoordSys: $('#prjCoordSys2').val() || $('#prjCoordSys2').attr('placeholder'),
+            maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
+            geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
+        });
+        addressMatchService.decode(geoDecodeParam, match);
+    });
+
+    function match(obj) {
+        clearMarkers();
+        obj.result.map(function (item) {
+            var img = new Image();
+            img.src = '../img/marker-icon.png';
+
+            var marker = new maplibregl.Marker(img).setLngLat([item.location.x, item.location.y]);
+            decodeMarkers.push(marker);
+
+            var innerHTML = "";
+            innerHTML += resources.text_address + ":" + item.address + "<br>";
+            var x = Number(item.location.x.toString().match(/^\d+(?:\.\d{0,2})?/));
+            var y = Number(item.location.y.toString().match(/^\d+(?:\.\d{0,2})?/));
+            innerHTML += resources.text_coordinate + ":[" + x + "," + y + "]<br>";
+            if (item.score > 0) {
+                innerHTML += resources.text_matchDegree + ":" + item.score + "<br>";
+            }
+            innerHTML += resources.text_filterField + ":" + item.filters + "<br>";
+
+            var markerPopup = new maplibregl.Popup().setLngLat([item.location.x, item.location.y]).setHTML(innerHTML);
+            marker.setPopup(markerPopup);
+        });
+        for (var i = 0; i < decodeMarkers.length; i++) {
+            decodeMarkers[i].addTo(map);
+        }
+        map.setCenter([116.383572, 39.914714]);
+        map.setZoom(10);
+        // map.setView(L.latLng( 116.383572,39.914714), 10);
+    }
+
+    function clearMarkers() {
+        if (codeMarkers) {
+            for (var i = 0; i < codeMarkers.length; i++) {
+                codeMarkers[i].remove();
+            }
+        }
+        if (decodeMarkers) {
+            for (var i = 0; i < decodeMarkers.length; i++) {
+                decodeMarkers[i].remove();
+            }
+        }
+        codeMarkers = [];
+        decodeMarkers = [];
+    }
+</script>
+</body>
+</html>

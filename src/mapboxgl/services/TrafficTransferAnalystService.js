@@ -28,7 +28,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        this.trafficTransferAnalystServiceBase = new CommonTrafficTransferAnalystService(url, options);
+        this._trafficTransferAnalystService = new CommonTrafficTransferAnalystService(url, options);
     }
 
     /**
@@ -38,7 +38,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop(params, callback) {
-      this.trafficTransferAnalystServiceBase.queryStop(params, callback);
+      this._trafficTransferAnalystService.queryStop(params, callback);
     }
 
     /**
@@ -48,7 +48,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath(params, callback) {
-      this.trafficTransferAnalystServiceBase.analysisTransferPath(params, callback);
+      this._trafficTransferAnalystService.analysisTransferPath(params, callback);
     }
 
     /**
@@ -58,7 +58,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution(params, callback) {
-      this.trafficTransferAnalystServiceBase.analysisTransferSolution(params, callback);
+      this._trafficTransferAnalystService.analysisTransferSolution(params, callback);
     }
 
     _processParams(params) {

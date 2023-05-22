@@ -31,7 +31,7 @@ import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermap/
 export var SpatialAnalystService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.spatialAnalystService = new CommonSpatialAnalystService(url, options);
+        this._spatialAnalystService = new CommonSpatialAnalystService(url, options);
     },
     /**
      * @function SpatialAnalystService.prototype.getAreaSolarRadiationResult
@@ -41,7 +41,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getAreaSolarRadiationResult: function(params, callback, resultFormat) {
-      this.spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
+      this._spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
     },
 
     /**
@@ -53,7 +53,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     bufferAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -65,7 +65,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     densityAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.densityAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.densityAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -76,7 +76,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     generateSpatialData: function(params, callback, resultFormat) {
-      this.spatialAnalystService.generateSpatialData(params, callback, resultFormat);
+      this._spatialAnalystService.generateSpatialData(params, callback, resultFormat);
     },
 
     /**
@@ -88,7 +88,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     geoRelationAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -100,7 +100,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     interpolationAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -112,7 +112,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     mathExpressionAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -124,7 +124,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     overlayAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -136,7 +136,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     routeCalculateMeasure: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
+      this._spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
     },
 
     /**
@@ -148,7 +148,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     routeLocate: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.routeLocate(params, callback, resultFormat);
+      this._spatialAnalystService.routeLocate(params, callback, resultFormat);
     },
 
     /**
@@ -160,7 +160,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     surfaceAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -171,7 +171,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     terrainCurvatureCalculate: function(params, callback, resultFormat) {
-      this.spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
+      this._spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
     },
 
     /**
@@ -183,7 +183,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      */
     thiessenAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -204,7 +204,7 @@ export var SpatialAnalystService = ServiceBase.extend({
       for (var i = 0; i < params.length; i++) {
         params[i].param = this._processParams(params[i].param)
       }
-      this.spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
+      this._spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
     },
 
     _processParams: function(params) {

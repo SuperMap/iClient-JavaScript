@@ -31,7 +31,7 @@ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geo
 export class QueryService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.queryService = new CommonQueryService(url, options);
+        this._queryService = new CommonQueryService(url, options);
     }
 
     /**
@@ -43,7 +43,7 @@ export class QueryService extends ServiceBase {
      */
     queryByBounds(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryService.queryByBounds(params, callback, resultFormat);
+      this._queryService.queryByBounds(params, callback, resultFormat);
     }
 
     /**
@@ -55,7 +55,7 @@ export class QueryService extends ServiceBase {
      */
     queryByDistance(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryService.queryByDistance(params, callback, resultFormat);
+      this._queryService.queryByDistance(params, callback, resultFormat);
     }
 
     /**
@@ -67,7 +67,7 @@ export class QueryService extends ServiceBase {
      */
     queryBySQL(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryService.queryBySQL(params, callback, resultFormat);
+      this._queryService.queryBySQL(params, callback, resultFormat);
     }
 
     /**
@@ -79,7 +79,7 @@ export class QueryService extends ServiceBase {
      */
     queryByGeometry(params, callback, resultFormat) {
       params = this._processParams(params);
-      this.queryService.queryByGeometry(params, callback, resultFormat);
+      this._queryService.queryByGeometry(params, callback, resultFormat);
     }
 
     _processParams(params) {
