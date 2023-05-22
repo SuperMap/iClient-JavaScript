@@ -32,6 +32,7 @@ export class ThemeService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
+        this.eventCount = 0;
         this.url = Util.urlPathAppend(this.url, 'tempLayersSet');
         this.CLASS_NAME = 'SuperMap.ThemeService';
     }
@@ -48,19 +49,43 @@ export class ThemeService extends CommonServiceBase {
      * @description 负责将客户端的专题图参数传递到服务端。
      * @param {ThemeParameters} params - 专题图参数类。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof ThemeParameters)) {
             return;
         }
         var me = this,
             jsonParameters = null;
         jsonParameters = me.getJsonParameters(params);
+        let eventId = ++this.eventCount;
+        let eventListeners = {
+          scope: this,
+          processCompleted: function(result) {
+            if (eventId === result.result.eventId && callback) {
+              callback(result);
+            }
+          },
+          processFailed: function(result) {
+            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+              callback(result);
+            }
+          }
+        }
+        this.events.on(eventListeners);
         me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success(result) {
+              result.eventId = eventId;
+              this.serviceProcessCompleted(result);
+            },
+            failure(result) {
+              if (result.error) {
+                result.error.eventId = eventId;
+              }
+              result.eventId = eventId;
+              this.serviceProcessFailed(result);
+            }
         });
     }
 

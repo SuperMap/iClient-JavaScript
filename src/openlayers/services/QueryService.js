@@ -3,13 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { QueryByBoundsService } from '@supermap/iclient-common/iServer/QueryByBoundsService';
-import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryByDistanceService';
-import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
-import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
+import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
 import Point from 'ol/geom/Point';
 import GeoJSON from 'ol/format/GeoJSON';
 
@@ -36,6 +32,7 @@ export class QueryService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this._queryService = new CommonQueryService(url, options);
     }
 
     /**
@@ -47,22 +44,8 @@ export class QueryService extends ServiceBase {
      * @returns {QueryService}
      */
     queryByBounds(params, callback, resultFormat) {
-        var me = this;
-        var queryService = new QueryByBoundsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryByBounds(params, callback, resultFormat);
     }
 
     /**
@@ -73,22 +56,8 @@ export class QueryService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByDistance(params, callback, resultFormat) {
-        var me = this;
-        var queryByDistanceService = new QueryByDistanceService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryByDistanceService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryByDistance(params, callback, resultFormat);
     }
 
     /**
@@ -99,22 +68,8 @@ export class QueryService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL(params, callback, resultFormat) {
-        var me = this;
-        var queryBySQLService = new QueryBySQLService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryBySQLService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryBySQL(params, callback, resultFormat);
     }
 
     /**
@@ -125,22 +80,8 @@ export class QueryService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry(params, callback, resultFormat) {
-        var me = this;
-        var queryByGeometryService = new QueryByGeometryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryByGeometryService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryByGeometry(params, callback, resultFormat);
     }
 
     _processParams(params) {
@@ -167,9 +108,5 @@ export class QueryService extends ServiceBase {
             }
         }
         return params;
-    }
-
-    _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }

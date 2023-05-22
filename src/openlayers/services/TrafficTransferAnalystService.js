@@ -3,9 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { StopQueryService } from '@supermap/iclient-common/iServer/StopQueryService';
-import { TransferPathService } from '@supermap/iclient-common/iServer/TransferPathService';
-import { TransferSolutionService } from '@supermap/iclient-common/iServer/TransferSolutionService';
+import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } from '@supermap/iclient-common/iServer/TrafficTransferAnalystService';
 import Point from 'ol/geom/Point';
 
 /**
@@ -29,6 +27,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this._commonTrafficTransferAnalystService = new CommonTrafficTransferAnalystService(url, options);
     }
 
     /**
@@ -38,20 +37,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     queryStop(params, callback) {
-        var me = this;
-        var stopQueryService = new StopQueryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        stopQueryService.processAsync(params);
+      this._commonTrafficTransferAnalystService.queryStop(params, callback);
     }
 
     /**
@@ -61,20 +47,8 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferPath(params, callback) {
-        var me = this;
-        var transferPathService = new TransferPathService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        transferPathService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
     }
 
     /**
@@ -84,20 +58,8 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     analysisTransferSolution(params, callback) {
-        var me = this;
-        var transferSolutionService = new TransferSolutionService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        transferSolutionService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
     }
 
     _processParams(params) {

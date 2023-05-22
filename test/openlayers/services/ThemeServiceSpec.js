@@ -265,7 +265,7 @@ describe('openlayers_ThemeService', () => {
         });
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
-          try {
+            try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");

@@ -58,6 +58,9 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.json', '.css'],
         mainFields: ['browser', 'main'],
+        alias: {
+          process: "process/browser"
+        },
         fallback: {
           fs: false,
           http: require.resolve('stream-http'),
@@ -109,7 +112,10 @@ module.exports = {
             new LintExportWebpackPlugin(libName),
             new webpack.BannerPlugin(this.bannerInfo(productName)),
             new MiniCssExtractPlugin({filename:`./${productName}.css`}),
-            new ESLintPlugin({ failOnError: true, files: 'src' })
+            new ESLintPlugin({ failOnError: true, files: 'src' }),
+            new webpack.ProvidePlugin({ 
+              process: 'process/browser', 
+          }), 
         ];
     }
 };

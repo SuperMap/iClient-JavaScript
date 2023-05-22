@@ -1,0 +1,301 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_SummaryRegionJobService"></title>
+    <style>
+        .mb-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="mb-popup" data-i18n="[style]resources.style_width420px">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="resources.title_SummaryRegionJobService"></h3>
+            </div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-addon"><span data-i18n="resources.text_inputData"></span><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span>　　　　　</span>
+                    <input id="datasetName" type="text" class="form-control" value="samples_processing_newyorkZone_R" />
+                </div>
+                <p>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><span data-i18n="resources.text_summaryType"></span><span
+                                data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　　　　</span>
+
+                        <div>
+                            <select class="form-control" id="type" name="clientType">
+                                <option value="SUMMARYMESH" data-i18n="resources.text_summaryMesh" selected="selected"></option>
+                                <option value="SUMMARYREGION" data-i18n="resources.text_summaryRegion"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <p>
+
+                        <div id="meshTypeS" class="input-group">
+                            <span class="input-group-addon"><span data-i18n="resources.text_meshSurfaceType"></span><span
+                                    data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　</span>
+                            <select class="form-control" id="meshType" name="clientType">
+                                <option value="0" data-i18n="resources.text_4grid" selected="selected"></option>
+                                <option value="1" data-i18n="resources.text_6grid"></option>
+                            </select>
+                        </div>
+                        <p>
+
+                            <div id="regionDatasetS" class="input-group">
+                                <span class="input-group-addon" data-i18n="resources.text_summaryDataset"><span
+                                        data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　　</span>
+                                <input id="regionDataset" type="text" class="form-control" value="samples_processing_newyorkZone_R" />
+                            </div>
+                            <p>
+
+                                <div class="input-group">
+                                    <span class="input-group-addon" data-i18n="resources.text_analysisRange"></span>
+                                    <input id="query" type="text" class="form-control" value="-74.050,40.650,-73.850,40.850" />
+                                </div>
+                                <p>
+
+                                    <p>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" data-i18n="resources.text_statisticStandardField"></span>
+                                            <span class="form-control">
+                                                <input id="standardSummaryFields" type="checkbox">
+                                            </span>
+                                            <span class="input-group-addon" data-i18n="resources.text_statisticWeightField"></span>
+                                            <span class="form-control">
+                                                <input id="weightedSummaryFields" type="checkbox">
+                                            </span>
+                                        </div>
+                                        <p>
+                                            <div id="standardS" style="display: none">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span data-i18n="resources.text_statisticAttrFieldMode"></span><span
+                                                            data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                            * </span>　</span>
+                                                    <input id="standardStatisticModes" type="text" class="form-control"
+                                                        value="max" />
+                                                </div>
+                                                <p>
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span data-i18n="resources.text_AttrFieldName"></span><span
+                                                                data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                                * </span>　　　　</span>
+                                                        <input id="standardFields" type="text" class="form-control"
+                                                            value="LocationID" />
+                                                    </div>
+                                                    <p>
+                                            </div>
+                                            <div id="weightS" style="display: none">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span data-i18n="resources.text_statisticWeightFieldMode"></span><span
+                                                            data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                            * </span>　</span>
+                                                    <input id="weightedStatisticModes" type="text" class="form-control"
+                                                        value="max" />
+                                                </div>
+                                                <p>
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span data-i18n="resources.text_weightFieldName"></span><span
+                                                                data-i18n="[title]resources.text_requiredField" style="color: red;">
+                                                                * </span>　　　　</span>
+                                                        <input id="weightedFields" type="text" class="form-control"
+                                                            value="LocationID" />
+                                                    </div>
+                                                    <p>
+                                            </div>
+
+                                            <div id="resolutionS" class="input-group">
+                                                <span class="input-group-addon" data-i18n="resources.text_gridSize"></span>
+                                                <input id="resolution" type="text" class="form-control" value="100" />
+                                            </div>
+                                            <p>
+
+                                                <div id="meshSizeUnitS" class="input-group">
+                                                    <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit"></span>
+                                                    <select class="form-control" id="meshSizeUnit" name="clientType">
+                                                        <option value="Meter" selected="selected">Meter</option>
+                                                        <option value="Kilometer">Kilometer</option>
+                                                        <option value="Yard">Yard</option>
+                                                        <option value="Foot">Foot</option>
+                                                        <option value="Mile">Mile</option>
+                                                    </select>
+                                                </div>
+                                                <p>
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" data-i18n="resources.text_lengthAndArea"></span>
+                                                        <span class="form-control">
+                                                            <input id="sumShape" type="checkbox" checked>
+                                                        </span>
+                                                    </div>
+                                                    <p>
+
+                                                        <div align="right">
+                                                            <input type="button" id='btn' class="btn btn-primary"
+                                                                data-i18n="[value]resources.btn_summary" />
+                                                        </div>
+            </div>
+        </div>
+        <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+        <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+        <script>
+            var map,
+                baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+                "/iserver/services/map-world/rest/maps/World",
+                mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+                processingsUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+                "/iserver/services/distributedanalyst/rest/v1/jobs";
+            var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
+                " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+                " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+            map = new maplibregl.Map({
+                container: 'map',
+                style: {
+                    "version": 8,
+                    "sources": {
+                        "raster-tiles": {
+                            "attribution": attribution,
+                            "type": "raster",
+                            "tiles": [mapUrl],
+                            "tileSize": 256
+                        }
+                    },
+                    "layers": [{
+                        "id": "simple-tiles",
+                        "type": "raster",
+                        "source": "raster-tiles",
+                    }]
+                },
+                center: [-73.95, 40.75],
+                zoom: 10
+            });
+            map.addControl(new maplibregl.NavigationControl(), 'top-left');
+            map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+            $("#standardSummaryFields").change(function (e) {
+                if (e.target.checked) {
+                    $("#standardS").show();
+                    return;
+                }
+                $("#standardS").hide();
+            });
+            $("#weightedSummaryFields").change(function (e) {
+                if (e.target.checked) {
+                    $("#weightS").show();
+                    return;
+                }
+                $("#weightS").hide();
+            });
+            $("#type").change(function (e) {
+                if (e.target.selectedIndex === 0) {
+                    $("#meshTypeS").show();
+                    $("#resolutionS").show();
+                    $("#meshSizeUnitS").show();
+                    $("#regionDatasetS").hide();
+                    return;
+                }
+                $("#meshTypeS").hide();
+                $("#resolutionS").hide();
+                $("#meshSizeUnitS").hide();
+                $("#regionDatasetS").show();
+            });
+
+            maplibregl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+            var processingService = new maplibregl.supermap.ProcessingService(processingsUrl, {
+                withCredentials: window.isLocal
+            });
+
+            function getQuery() {
+                if ($('#query').val() === "") {
+                    return "";
+                }
+                var query = [];
+                $('#query').val().split(',').map(function (el) {
+                    query.push(parseFloat(el));
+                });
+                var sw = new maplibregl.LngLat(query[0], query[1]);
+                var ne = new maplibregl.LngLat(query[2], query[3]);
+
+                return new maplibregl.LngLatBounds(sw, ne);
+            }
+
+            $('#btn').on('click', function () {
+                if ($('#msg_container')[0]) {
+                    $('#msg_container').remove();
+                }
+                widgets.loader.showLoader();
+                if (map.getLayer("summaryLayer")) {
+                    map.removeLayer("summaryLayer");
+                    map.removeSource("summarySource");
+                }
+                var summaryRegionJobParameter = new maplibregl.supermap.SummaryRegionJobParameter({
+                    datasetName: $('#datasetName').val(),
+                    regionDataset: $('#regionDataset').val(),
+                    type: $('#type option:selected').attr('value'),
+                    meshType: $('#meshType option:selected').attr('value'),
+                    query: getQuery(),
+                    standardSummaryFields: $('#standardSummaryFields').get(0).checked,
+                    weightedSummaryFields: $('#weightedSummaryFields').get(0).checked,
+                    standardStatisticModes: $('#standardStatisticModes').val(),
+                    standardFields: $('#standardFields').val(),
+                    weightedStatisticModes: $('#weightedStatisticModes').val(),
+                    weightedFields: $('#weightedFields').val(),
+                    resolution: $('#resolution').val(),
+                    meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
+                    sumShape: $('#sumShape').get(0).checked
+                });
+                processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
+                    if (serviceResult.error) {
+                        widgets.loader.removeLoader();
+                        var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                        widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                        return;
+                    }
+                    serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                        if (info.serviceType === 'RESTMAP') {
+                            maplibregl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(
+                                function (response) {
+                                    return response.json();
+                                }).then(function (result) {
+                                var mapUrl = result[0].path +
+                                    "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
+                                map.addSource("summarySource", {
+                                    "type": "raster",
+                                    "tiles": [mapUrl],
+                                    "tileSize": 256
+                                });
+                                map.addLayer({
+                                    "id": "summaryLayer",
+                                    "type": "raster",
+                                    "source": "summarySource",
+                                    "minzoom": 0,
+                                    "maxzoom": 22
+                                });
+
+                                widgets.loader.removeLoader();
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>

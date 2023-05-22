@@ -25,7 +25,7 @@ export class WebPrintingService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-
+        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.WebPrintingService';
         if (!this.url) {
             return;
@@ -45,7 +45,7 @@ export class WebPrintingService extends CommonServiceBase {
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印的请求参数。
      */
-    createWebPrintingJob(params) {
+    createWebPrintingJob(params, callback) {
         if (!params) {
             return;
         }
@@ -66,15 +66,7 @@ export class WebPrintingService extends CommonServiceBase {
                 }
             }
         }
-        var me = this;
-        me.request({
-            url: me._processUrl('jobs'),
-            method: 'POST',
-            data: Util.toJSON(params),
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        this.processAsync('jobs', 'POST', callback, params)
     }
 
     /**
@@ -82,17 +74,10 @@ export class WebPrintingService extends CommonServiceBase {
      * @description 获取 Web 打印输出文档任务。
      * @param {string} jobId - Web 打印任务 ID
      */
-    getPrintingJob(jobId) {
+    getPrintingJob(jobId, callback) {
         var me = this;
-        var url = me._processUrl(`jobs/${jobId}`);
-        me.request({
-            url,
-            method: 'GET',
-            scope: me,
-            success: function (result) {
-                me.rollingProcess(result, url);
-            },
-            failure: me.serviceProcessFailed
+        me.processAsync(`jobs/${jobId}`, 'GET', function(result) {
+          me.rollingProcess(result, me._processUrl(`jobs/${jobId}`), callback);
         });
     }
 
@@ -101,30 +86,16 @@ export class WebPrintingService extends CommonServiceBase {
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
      */
-    getPrintingJobResult(jobId) {
-        var me = this;
-        me.request({
-            url: me._processUrl(`jobs/${jobId}/result`),
-            method: 'GET',
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getPrintingJobResult(jobId, callback) {
+        this.processAsync(`jobs/${jobId}/result`, 'GET', callback);
     }
 
     /**
      * @function WebPrintingService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
      */
-    getLayoutTemplates() {
-        var me = this;
-        me.request({
-            url: me._processUrl('layouts'),
-            method: 'GET',
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getLayoutTemplates(callback) {
+      this.processAsync('layouts', 'GET', callback);
     }
 
     /**
@@ -132,34 +103,87 @@ export class WebPrintingService extends CommonServiceBase {
      * @description 轮询查询 Web 打印任务。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    rollingProcess(result, url) {
+    rollingProcess(result, url, callback) {
         var me = this;
         if (!result) {
             return;
         }
         var id = setInterval(function () {
-            me.request({
-                url,
-                method: 'GET',
-                scope: me,
-                success: function (result) {
-                    switch (result.status) {
-                        case 'FINISHED':
-                            clearInterval(id);
-                            me.serviceProcessCompleted(result);
-                            break;
-                        case 'ERROR':
-                            clearInterval(id);
-                            me.serviceProcessFailed(result);
-                            break;
-                        case 'RUNNING':
-                            me.events.triggerEvent('processRunning', result);
-                            break;
-                    }
-                },
-                failure: me.serviceProcessFailed
-            });
+          let eventId = ++me.eventCount;
+          let eventListeners = {
+            scope: this,
+            processCompleted: function(result) {
+              if (eventId === result.result.eventId && callback) {
+                callback(result);
+              }
+            },
+            processFailed: function(result) {
+              if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+                callback(result);
+              }
+            }
+          }
+          me.events.on(eventListeners);
+          me.request({
+            url,
+            method: 'GET',
+            scope: me,
+            success: function (result) {
+                result.eventId = eventId;
+                switch (result.status) {
+                    case 'FINISHED':
+                        clearInterval(id);
+                        me.serviceProcessCompleted(result);
+                        break;
+                    case 'ERROR':
+                        clearInterval(id);
+                        me.serviceProcessFailed(result);
+                        break;
+                    case 'RUNNING':
+                        me.events.triggerEvent('processRunning', result);
+                        break;
+                }
+            },
+            failure: me.serviceProcessFailed 
+          });
         }, 1000);
+    }
+
+    processAsync(url, method, callback, params) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId) {
+            callback(result);
+          }
+        },
+        processFailed: function(result) {
+          if (eventId === result.error.eventId || eventId === result.eventId) {
+            callback(result);
+          }
+        }
+      }
+      this.events.on(eventListeners);
+      var me = this;
+      let requestConfig = {
+        url: me._processUrl(url),
+        method,
+        scope: me,
+        success(result) {
+          result.eventId = eventId;
+          this.serviceProcessCompleted(result);
+        },
+        failure(result) {
+          if (result.error) {
+            result.error.eventId = eventId;
+          }
+          result.eventId = eventId;
+          this.serviceProcessFailed(result);
+        }
+      };
+      params && (requestConfig.data = Util.toJSON(params));
+      me.request(requestConfig);
     }
 
     _processUrl(appendContent) {

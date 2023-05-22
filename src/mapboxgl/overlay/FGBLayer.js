@@ -21,7 +21,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @version 11.1.0
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("FGBlayer_") 创建图层 ID。
- * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全部加载， bbox为当前可见范围加载。
+ * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为当前可见范围加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法，接收要素作为参数，需返回要素。
  * @param {Object} [options.paint] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property}
@@ -72,16 +72,15 @@ const PAINT_MAP = {
 };
 
 export class FGBLayer {
-  constructor(options) {
-    this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('FGBLayer_');
+  constructor(options = {}) {
+    this.id = options.layerID ? options.layerID : CommonUtil.createUniqueID('FGBLayer_');
     this.layerId = this.id + 'outer';
     this.sourceId = this.layerId;
-    this.options = options || {};
+    this.options = options;
     this.strategy = options.strategy || 'bbox';
     this.url = options.url;
-    this.loadedExtentsRtree_ = new RBush();
     this.layerType = '';
-    this.extent = this.options.extent;
+    this.extent = options.extent;
     this._updateFeaturesFn = this._updateFeatures.bind(this);
   }
 
@@ -89,6 +88,7 @@ export class FGBLayer {
     this.map = map;
     let extent = [];
     if (this.strategy === 'bbox') {
+      this.loadedExtentsRtree_ = new RBush();
       this.map.on('moveend', this._updateFeaturesFn);
       const bounds = this.map.getBounds().toArray();
       extent = [

@@ -54,14 +54,9 @@ export var MapService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             projection: me.options.projection
         });
-        getMapStatusService.processAsync();
+        getMapStatusService.processAsync(callback);
     },
 
     /**
@@ -77,13 +72,9 @@ export var MapService = ServiceBase.extend({
           withoutFormatSuffix: true,
           crossOrigin: me.options.crossOrigin,
           headers: me.options.headers,
-          eventListeners: {
-              scope: me,
-              processCompleted: callback,
-              processFailed: callback
-          }, projection: me.options.projection
+          projection: me.options.projection
       });
-      getMapStatusService.processAsync();
+      getMapStatusService.processAsync(callback);
     },
 
     /**

@@ -29,6 +29,13 @@ export var AddressMatchService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        var me = this;
+        this._addressMatchService = new CommonMatchAddressService(this.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+      });
     },
 
     /**
@@ -38,19 +45,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     code: function (params, callback) {
-        var me = this;
-        var addressMatchService = new CommonMatchAddressService(this.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
+        this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
     },
 
     /**
@@ -60,19 +55,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     decode: function (params, callback) {
-        var me = this;
-        var addressMatchService = new CommonMatchAddressService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
+        this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 
 });

@@ -44,7 +44,7 @@ export class MeasureService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-
+        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.MeasureService";
     }
 
@@ -62,10 +62,25 @@ export class MeasureService extends CommonServiceBase {
      * @description 负责将客户端的量算参数传递到服务端。
      * @param {MeasureParameters} params - 量算参数。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof MeasureParameters)) {
             return;
         }
+        let eventId = ++this.eventCount;
+        let eventListeners = {
+          scope: this,
+          processCompleted: function(result) {
+            if (eventId === result.result.eventId && callback) {
+              callback(result);
+            }
+          },
+          processFailed: function(result) {
+            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+              callback(result);
+            }
+          }
+        }
+        this.events.on(eventListeners);
         var me = this,
             geometry = params.geometry,
             pointsCount = 0,
@@ -103,10 +118,17 @@ export class MeasureService extends CommonServiceBase {
             method: "GET",
             params: paramsTemp,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success(result) {
+              result.eventId = eventId;
+              this.serviceProcessCompleted(result);
+            },
+            failure(result) {
+              if (result.error) {
+                result.error.eventId = eventId;
+              }
+              result.eventId = eventId;
+              this.serviceProcessFailed(result);
+            }
         });
-
     }
-
 }

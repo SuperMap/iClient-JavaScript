@@ -2,12 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {ServiceBase} from './ServiceBase';
-import { FacilityAnalystSinks3DService } from '@supermap/iclient-common/iServer/FacilityAnalystSinks3DService';
-import { FacilityAnalystSources3DService } from '@supermap/iclient-common/iServer/FacilityAnalystSources3DService';
-import { FacilityAnalystTraceup3DService } from '@supermap/iclient-common/iServer/FacilityAnalystTraceup3DService';
-import { FacilityAnalystTracedown3DService } from '@supermap/iclient-common/iServer/FacilityAnalystTracedown3DService';
-import { FacilityAnalystUpstream3DService } from '@supermap/iclient-common/iServer/FacilityAnalystUpstream3DService';
-
+import { NetworkAnalyst3DService as CommonNetworkAnalyst3DService } from '@supermap/iclient-common/iServer/NetworkAnalyst3DService';
 /**
  * @class NetworkAnalyst3DService
  * @category  iServer FacilityAnalyst3D
@@ -31,6 +26,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this._networkAnalyst3DService = new CommonNetworkAnalyst3DService(url, options);
     }
 
     /**
@@ -41,20 +37,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sinksFacilityAnalyst(params, callback) {
-        var me = this;
-        var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        facilityAnalystSinks3DService.processAsync(params);
+      this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
     }
 
     /**
@@ -65,20 +48,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sourcesFacilityAnalyst(params, callback) {
-        var me = this;
-        var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        facilityAnalystSources3DService.processAsync(params);
+      this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
     }
 
     /**
@@ -90,20 +60,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      */
 
     traceUpFacilityAnalyst(params, callback) {
-        var me = this;
-        var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        facilityAnalystTraceup3DService.processAsync(params);
+      this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
     }
 
     /**
@@ -114,20 +71,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     traceDownFacilityAnalyst(params, callback) {
-        var me = this;
-        var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        facilityAnalystTracedown3DService.processAsync(params);
+      this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
     }
 
     /**
@@ -138,19 +82,6 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     upstreamFacilityAnalyst(params, callback) {
-        var me = this;
-        var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        facilityAnalystUpstream3DService.processAsync(params);
+      this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
     }
 }

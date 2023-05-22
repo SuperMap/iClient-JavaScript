@@ -4,7 +4,6 @@
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
 import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGridCellInfosService';
-import { GetGridCellInfosParameters } from '@supermap/iclient-common/iServer/GetGridCellInfosParameters';
 
 /**
  * @class GridCellInfosService
@@ -28,7 +27,13 @@ import { GetGridCellInfosParameters } from '@supermap/iclient-common/iServer/Get
 export var GridCellInfosService = ServiceBase.extend({
 
     initialize: function (url, options) {
-        ServiceBase.prototype.initialize.call(this, url, options);
+      ServiceBase.prototype.initialize.call(this, url, options);
+      this._gridCellQueryService = new GetGridCellInfosService(this.url, {
+        proxy: this.options.proxy,
+        withCredentials: this.options.withCredentials,
+        crossOrigin: this.options.crossOrigin,
+        headers: this.options.headers
+      });
     },
 
     /**
@@ -37,22 +42,10 @@ export var GridCellInfosService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getGridCellInfos: function (params, callback) {
-        if (!(params instanceof GetGridCellInfosParameters)) {
-            return;
-        }
-        var me = this;
-        var gridCellQueryService = new GetGridCellInfosService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        gridCellQueryService.processAsync(params);
+      if (!params) {
+        return null;
+      }
+      this._gridCellQueryService.processAsync(params, callback);
     }
 });
 export var gridCellInfosService = function (url, options) {

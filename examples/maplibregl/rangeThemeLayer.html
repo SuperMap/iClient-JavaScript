@@ -1,0 +1,217 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_popDensityRange"></title>
+    <style>
+        body, #map {
+            position: absolute;
+            width: 100%;
+            height: 100%
+        }
+
+        .legendItemHeader,
+        .legendItemValue {
+            width: 120px;
+            height: 18px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<div style="width: 272px;float:right">
+    <div id="infoBox" class="panel panel-primary infoPane"
+         style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
+        <div class="panel-heading">
+            <h5 class='panel-title text-center' data-i18n="resources.text_attributeTable"></h5>
+        </div>
+        <div id="infoContent" class="panel-body content">
+        </div>
+    </div>
+    <div class="panel panel-primary legend" style="width:272px;margin-top: 400px;position: absolute;float:right">
+        <div id="mapLegend" class="panel-heading">
+            <h5 class='panel-title text-center'>
+                <span data-i18n="resources.text_legend"></span>
+            </h5>
+        </div>
+        <div class="panel-body text-center">
+            <table>
+                <tr>
+                    <td class="legendItemHeader" data-i18n="resources.text_populationDensity"></td>
+                    <td class="legendItemValue" data-i18n="resources.text_color"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0 - 0.02</td>
+                    <td class="legendItemValue" style="background: #FDE2CA"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.02 - 0.04</td>
+                    <td class="legendItemValue" style="background: #FACE9C"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.04 - 0.06</td>
+                    <td class="legendItemValue" style="background: #F09C42"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.06 - 0.1</td>
+                    <td class="legendItemValue" style="background: #D0770B"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.1 - 0.2</td>
+                    <td class="legendItemValue" style="background: #945305"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var themeLayer,
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        dataUrl = host + "/iserver/services/data-jingjin/rest/data";
+    var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    var getFeatureParam, getFeatureBySQLParams;
+    getFeatureParam = new maplibregl.supermap.FilterParameter({
+        name: "Jingjin",
+        attributeFilter: "SMID > -1"
+    });
+    getFeatureBySQLParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        toIndex: 500,
+        datasetNames: ["Jingjin:BaseMap_R"]
+    });
+    new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+        getFeatureBySQLParams,
+        processCompleted,
+        maplibregl.supermap.DataFormat.ISERVER
+    );
+
+    function processCompleted(getFeaturesEventArgs) {
+        var result = getFeaturesEventArgs.result;
+        if (result && result.features) {
+            addThemeLayer();
+            themeLayer.addFeatures(result.features);
+            //显示图例
+            document.getElementById("mapLegend").style.display = "block";
+        }
+    }
+
+    function addThemeLayer() {
+        themeLayer = new maplibregl.supermap.RangeThemeLayer("ThemeLayer",
+            {
+//                map: map,//该可选参数将在下个版本遗弃
+                attributions: " ",
+                opacity: 0.8,
+                style: {
+                    shadowBlur: 16,
+                    shadowColor: "#000000",
+                    fillColor: "#FFFFFF"
+                },
+                isHoverAble: true,
+                highlightStyle: {
+                    stroke: true,
+                    strokeWidth: 4,
+                    strokeColor: 'blue',
+                    fillColor: "#00EEEE",
+                    fillOpacity: 0.8
+                },
+                themeField: "POP_DENSITY99",
+                styleGroups: [
+                    {
+                        start: 0,
+                        end: 0.02,
+                        style: {
+                            color: '#FDE2CA'
+                        }
+                    },
+                    {
+                        start: 0.02,
+                        end: 0.04,
+                        style: {
+                            color: '#FACE9C'
+                        }
+                    },
+                    {
+                        start: 0.04,
+                        end: 0.06,
+                        style: {
+                            color: '#F09C42'
+                        }
+                    },
+                    {
+                        start: 0.06,
+                        end: 0.1,
+                        style: {
+                            color: '#D0770B'
+                        }
+                    },
+                    {
+                        start: 0.1,
+                        end: 0.2,
+                        style: {
+                            color: '#945305'
+                        }
+                    }]
+            });
+
+        map.addLayer(themeLayer);
+        //专题图层 mousemove 事件
+        themeLayer.on('mousemove', function (e) {
+            if (e.target && e.target.refDataID) {
+                document.getElementById("infoBox").style.display = "block";
+                var fid = e.target.refDataID;
+                var fea = themeLayer.getFeatureById(fid);
+                if (fea) {
+                    document.getElementById("infoContent").innerHTML = "";
+                    document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
+                    document.getElementById("infoContent").innerHTML += resources.text_districtName + fea.attributes.NAME + "<br/>";
+                    document.getElementById("infoContent").innerHTML += resources.text_populationDensity + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + "<br/>";
+                }
+            }
+            else {
+                document.getElementById("infoContent").innerHTML = "";
+                document.getElementById("infoBox").style.display = "none";
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

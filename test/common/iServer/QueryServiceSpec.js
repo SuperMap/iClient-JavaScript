@@ -1,8 +1,8 @@
-import {QueryService} from '../../../src/common/iServer/QueryService';
+import {QueryServiceBase} from '../../../src/common/iServer/QueryServiceBase';
 
 var url = GlobeParameter.mapServiceURL + "World Map";
 var initQueryService = () => {
-    return new QueryService(url);
+    return new QueryServiceBase(url);
 }
 describe('QueryService', () => {
     it("constructor", () => {
@@ -13,14 +13,14 @@ describe('QueryService', () => {
 
     it('headers', () => {
         let myHeaders = new Headers();
-        var queryService = new QueryService(url, { headers: myHeaders });
+        var queryService = new QueryServiceBase(url, { headers: myHeaders });
         expect(queryService).not.toBeNull();
         expect(queryService.headers).not.toBeNull();
         queryService.destroy();
     });
     
     it('crossOrigin', () => {
-        var queryService = new QueryService(url, { crossOrigin: false });
+        var queryService = new QueryServiceBase(url, { crossOrigin: false });
         expect(queryService).not.toBeNull();
         expect(queryService.crossOrigin).toBeFalsy();
         queryService.destroy();

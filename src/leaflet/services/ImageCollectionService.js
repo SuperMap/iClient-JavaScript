@@ -30,6 +30,13 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
 export var ImageCollectionService = ServiceBase.extend({
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this._imageCollectionService = new CommonMatchImageCollectionService(this.url, {
+          collectionId: this.options.collectionId,
+          proxy: this.options.proxy,
+          withCredentials: this.options.withCredentials,
+          crossOrigin: this.options.crossOrigin,
+          headers: this.options.headers
+        });
     },
 
     /**
@@ -39,20 +46,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getLegend: function (queryParams, callback) {
-        var me = this;
-        var ImageCollectionService = new CommonMatchImageCollectionService(this.url, {
-            collectionId: me.options.collectionId,
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageCollectionService.getLegend(queryParams);
+      this._imageCollectionService.getLegend(queryParams, callback);
     },
 
     /**
@@ -61,20 +55,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getStatistics: function (callback) {
-        var me = this;
-        var ImageCollectionService = new CommonMatchImageCollectionService(me.url, {
-            collectionId: me.options.collectionId,
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageCollectionService.getStatistics();
+      this._imageCollectionService.getStatistics(callback);
     },
 
     /**
@@ -83,20 +64,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getTileInfo: function (callback) {
-        var me = this;
-        var ImageCollectionService = new CommonMatchImageCollectionService(me.url, {
-            collectionId: me.options.collectionId,
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageCollectionService.getTileInfo();
+      this._imageCollectionService.getTileInfo(callback);
     },
 
     /**
@@ -106,20 +74,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteItemByID(featureId, callback) {
-        var me = this;
-        var ImageCollectionService = new CommonMatchImageCollectionService(this.url, {
-            collectionId: me.options.collectionId,
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageCollectionService.deleteItemByID(featureId);
+      this._imageCollectionService.deleteItemByID(featureId, callback);
     },
 
     /**
@@ -129,20 +84,7 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getItemByID(featureId, callback) {
-        var me = this;
-        var ImageCollectionService = new CommonMatchImageCollectionService(me.url, {
-            collectionId: me.options.collectionId,
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        ImageCollectionService.getItemByID(featureId);
+      this._imageCollectionService.getItemByID(featureId, callback);
     }
 });
 

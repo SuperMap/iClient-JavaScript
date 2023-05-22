@@ -36,6 +36,12 @@ export class GeoprocessingService extends ServiceBase {
         this.crossOrigin = true;
         this.withCredentials = true;
         this.proxy = true;
+        this._geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
+          proxy: this.options.proxy,
+          withCredentials: this.options.withCredentials,
+          crossOrigin: this.options.crossOrigin,
+          headers: this.options.headers
+        });
     }
     /**
      * @function GeoprocessingService.prototype.getTools
@@ -43,19 +49,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getTools(callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.getTools();
+      this._geoprocessingJobsService.getTools(callback);
     }
     /**
      * @function GeoprocessingService.prototype.getTool
@@ -64,19 +58,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getTool(identifier, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.getTool(identifier);
+      this._geoprocessingJobsService.getTool(identifier, callback);
     }
 
     /**
@@ -88,19 +70,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     execute(identifier, parameter, environment, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.execute(identifier, parameter, environment);
+      this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
     }
 
     /**
@@ -112,19 +82,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     submitJob(identifier, parameter, environment, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.submitJob(identifier, parameter, environment);
+      this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
     }
 
     /**
@@ -138,19 +96,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     waitForJobCompletion(jobId, identifier, options, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options);
+      this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
     }
 
     /**
@@ -161,19 +107,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getJobInfo(identifier, jobId, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.getJobInfo(identifier, jobId);
+      this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
     }
 
     /**
@@ -184,19 +118,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     cancelJob(identifier, jobId, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.cancelJob(identifier, jobId);
+      this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
     }
 
     /**
@@ -206,19 +128,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getJobs(identifier, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.getJobs(identifier);
+      this._geoprocessingJobsService.getJobs(identifier, callback);
     }
 
     /**
@@ -230,19 +140,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getResults(identifier, jobId, filter, callback) {
-        const geoprocessingJobsService = new CommonGeoprocessingService(this.url, {
-            proxy: this.options.proxy,
-            withCredentials: this.options.withCredentials,
-            crossOrigin: this.options.crossOrigin,
-            headers: this.options.headers,
-
-            eventListeners: {
-                scope: this,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        geoprocessingJobsService.getResults(identifier, jobId, filter);
+      this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
     }
 }
 

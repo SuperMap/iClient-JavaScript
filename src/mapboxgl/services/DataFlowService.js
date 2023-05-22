@@ -4,7 +4,6 @@
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
 import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/DataFlowService';
-
 /**
  * @class DataFlowService
  * @category  iServer DataFlow

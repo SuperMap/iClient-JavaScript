@@ -3,12 +3,10 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../core/Base';
- import { ChartQueryService } from '@supermap/iclient-common/iServer/ChartQueryService';
- import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/ChartFeatureInfoSpecsService';
  import { DataFormat } from '@supermap/iclient-common/REST';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  import { ServiceBase } from './ServiceBase';
  import { CommontypesConversion } from '../core/CommontypesConversion';
+ import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
 /**
  * @class ChartService
  * @deprecatedclassinstance L.supermap.chartService
@@ -32,6 +30,7 @@ export var ChartService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this._chartServiceBase = new CommonChartService(url, options);
     },
 
     /**
@@ -42,23 +41,8 @@ export var ChartService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryChart: function (params, callback, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var chartQueryService = new ChartQueryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-
-        chartQueryService.processAsync(param);
+        params = this._processParams(params),
+        this._chartServiceBase.queryChart(params, callback, resultFormat);
     },
 
     /**
@@ -67,20 +51,7 @@ export var ChartService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     getChartFeatureInfo: function (callback) {
-        var me = this, url = me.url.concat();
-        url = CommonUtil.urlPathAppend(url, 'chartFeatureInfoSpecs');
-        var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        chartFeatureInfoSpecsService.processAsync();
+      this._chartServiceBase.getChartFeatureInfo(callback);
     },
 
     _processParams: function (params) {

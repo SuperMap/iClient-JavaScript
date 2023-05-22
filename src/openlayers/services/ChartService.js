@@ -3,11 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { ChartQueryService } from '@supermap/iclient-common/iServer/ChartQueryService';
-import { ChartFeatureInfoSpecsService } from '@supermap/iclient-common/iServer/ChartFeatureInfoSpecsService';
 import {ServiceBase} from './ServiceBase';
+import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
 
 /**
  * @class ChartService
@@ -30,6 +27,7 @@ export class ChartService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this._chartService = new CommonChartService(url, options);
     }
 
     /**
@@ -40,24 +38,8 @@ export class ChartService extends ServiceBase {
      * @param {DataFormat} resultFormat - 返回结果类型。
      */
     queryChart(params, callback, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var chartQueryService = new ChartQueryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-
-        chartQueryService.processAsync(param);
+      params = this._processParams(params),
+      this._chartService.queryChart(params, callback, resultFormat);
     }
 
     /**
@@ -66,21 +48,7 @@ export class ChartService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getChartFeatureInfo(callback) {
-        var me = this;
-        var url = CommonUtil.urlPathAppend(me.url, 'chartFeatureInfoSpecs');
-        var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        chartFeatureInfoSpecsService.processAsync();
+      this._chartService.getChartFeatureInfo(callback);
     }
 
     _processParams(params) {
@@ -99,9 +67,5 @@ export class ChartService extends ServiceBase {
                 params.bounds[3]
             );
         }
-    }
-
-    _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }

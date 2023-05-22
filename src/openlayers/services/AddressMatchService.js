@@ -26,6 +26,12 @@ export class AddressMatchService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this._addressMatchService = new CommonAddressMatchService(this.url, {
+          proxy: this.options.proxy,
+          withCredentials: this.options.withCredentials,
+          crossOrigin: this.options.crossOrigin,
+          headers: this.options.headers
+        });
     }
 
     /**
@@ -35,20 +41,7 @@ export class AddressMatchService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     code(params, callback) {
-        var me = this;
-        var addressMatchService = new CommonAddressMatchService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        addressMatchService.code(CommonUtil.urlPathAppend(me.url, 'geocoding'), params);
+        this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
     }
 
     /**
@@ -58,20 +51,7 @@ export class AddressMatchService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     decode(params, callback) {
-        var me = this;
-        var addressMatchService = new CommonAddressMatchService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        addressMatchService.decode(CommonUtil.urlPathAppend(me.url, 'geodecoding'), params);
+        this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 
 }

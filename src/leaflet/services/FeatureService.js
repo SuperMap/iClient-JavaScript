@@ -8,12 +8,8 @@
  import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  import { DataFormat } from '@supermap/iclient-common/REST';
  import { CommontypesConversion } from '../core/CommontypesConversion';
- import { GetFeaturesByIDsService } from '@supermap/iclient-common/iServer/GetFeaturesByIDsService';
- import { GetFeaturesBySQLService } from '@supermap/iclient-common/iServer/GetFeaturesBySQLService';
- import { GetFeaturesByBoundsService } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsService';
- import { GetFeaturesByBufferService } from '@supermap/iclient-common/iServer/GetFeaturesByBufferService';
- import { GetFeaturesByGeometryService } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryService';
  import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
+ import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
 
 /**
  * @class FeatureService
@@ -38,6 +34,7 @@ export var FeatureService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this._featureService = new CommonFeatureService(url, options);
     },
 
     /**
@@ -48,20 +45,8 @@ export var FeatureService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
-        var me = this;
-        var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeaturesByIDsService.processAsync(me._processParams(params));
-
+      params = this._processParams(params);
+      this._featureService.getFeaturesByIDs(params, callback, resultFormat);
     },
 
     /**
@@ -72,19 +57,8 @@ export var FeatureService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
-        var me = this;
-        var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeaturesByBoundsService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._featureService.getFeaturesByBounds(params, callback, resultFormat);
     },
 
     /**
@@ -95,19 +69,8 @@ export var FeatureService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
-        var me = this;
-        var getFeatureService = new GetFeaturesByBufferService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeatureService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
     },
 
     /**
@@ -118,19 +81,8 @@ export var FeatureService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
-        var me = this;
-        var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeatureBySQLService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._featureService.getFeaturesBySQL(params, callback, resultFormat);
     },
 
     /**
@@ -141,19 +93,8 @@ export var FeatureService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
-        var me = this;
-        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeaturesByGeometryService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
     },
 
     /**

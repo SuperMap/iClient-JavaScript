@@ -38,6 +38,7 @@ module.exports = function (config) {
               '../src/classic/libs/**',
               '../test/libs/**',
               '../node_modules/mapbox-gl/**',
+              '../node_modules/maplibre-gl/**',
               '../node_modules/three/**',
               '../node_modules/xlsx/**',
               '../node_modules/@turf/**',
@@ -90,7 +91,11 @@ module.exports = function (config) {
       { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: true },
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
-      './test-main-mapboxgl.js'
+      './test-main-mapboxgl.js',
+      { pattern: '../node_modules/maplibre-gl/dist/maplibre-gl.css', included: false },
+      '../src/maplibregl/**/!(index).js',
+      /**测试文件**/
+      './test-main-maplibregl.js'
     ],
 
     // list of files to exclude 测试时排除的文件
@@ -124,7 +129,10 @@ module.exports = function (config) {
       '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
       '../src/mapboxgl/**/!(index).js': ['browserify'],
       // './mapboxgl/**/*Spec.js': ['browserify'],
-      './test-main-mapboxgl.js': ['browserify']
+      './test-main-mapboxgl.js': ['browserify'],
+      '../node_modules/maplibre-gl/dist/maplibre-gl-dev.js': ['browserify'],
+      '../src/maplibregl/**/!(index).js': ['browserify'],
+      './test-main-maplibregl.js': ['browserify']
     },
 
     // test results reporter to use

@@ -60,14 +60,9 @@ export class MeasureService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            measureMode: type,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            measureMode: type
         });
-        measureService.processAsync(me._processParam(params));
+        measureService.processAsync(me._processParam(params), callback);
     }
 
     _processParam(params) {

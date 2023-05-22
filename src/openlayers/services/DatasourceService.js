@@ -4,7 +4,6 @@
 import {ServiceBase} from './ServiceBase';
 import {DatasourceService as CommonDatasourceService} from '@supermap/iclient-common/iServer/DatasourceService';
 import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util'
 
 /**
  * @class DatasourceService
@@ -23,6 +22,12 @@ export class DatasourceService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this._datasourceService = new CommonDatasourceService(this.url, {
+          proxy: this.proxy,
+          withCredentials: this.withCredentials,
+          crossOrigin: this.crossOrigin,
+          headers: this.headers
+        });
     }
 
     /**
@@ -31,19 +36,7 @@ export class DatasourceService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasources(callback) {
-        const me = this;
-        const datasourceService = new CommonDatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourcesService();
+      this._datasourceService.getDatasourcesService(callback);
     }
 
     /**
@@ -53,22 +46,10 @@ export class DatasourceService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getDatasource(datasourceName, callback) {
-        if (!datasourceName) {
-            return;
-        }
-        const me = this;
-        const datasourceService = new CommonDatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourceService(datasourceName);
+      if (!datasourceName) {
+          return;
+      }
+      this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
    /**
@@ -82,23 +63,11 @@ export class DatasourceService extends ServiceBase {
             return;
         }
         const datasourceParams = {
-            description: params.description ,
-            coordUnit: params.coordUnit,
-            distanceUnit: params.distanceUnit
+          description: params.description,
+          coordUnit: params.coordUnit,
+          distanceUnit: params.distanceUnit,
+          datasourceName: params.datasourceName
         };
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url,`datasources/name/${params.datasourceName}`);
-        const datasourceService = new CommonDatasourceService(url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.setDatasourceService(datasourceParams);
+        this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }

@@ -1,0 +1,38 @@
+{
+  "opts": {
+    "recurse": true,
+    "template": "../template",
+    "configPath": "../maplibregl",
+    "destination": "./docs/maplibregl"
+  },
+  "disqus": "",
+  "tags": {
+    "allowUnknownTags": true,
+    "linkdoc-maplibregl": "https://maplibre.org/maplibre-gl-js-docs/api/"
+  },
+  "i18n": {
+    "defaultLang": "en",
+    "possibleLang": ["en"],
+    "dbFilePath": "./build/jsdocs/maplibregl"
+  },
+  "source": {
+    "includePattern": ".+\\.js?$",
+    "excludePattern": ".+[\\\\/]src[\\\\/]common[\\\\/]iServer[\\\\/].*Service.js?$",
+    "include": ["src/maplibregl"],
+    "exclude": ["src/common"]
+  },
+  "plugins": ["plugins/markdown", "../plugins/usage"],
+  "markdown": {
+    "tags": ["usage"]
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "default": {
+      "outputSourceFiles": false
+    },
+    "namespace": "maplibregl.supermap",
+    "npm": "@supermap/iclient-maplibregl",
+    "cdn": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.js"
+  }
+}

@@ -131,13 +131,13 @@ describe('leaflet_FieldService', () => {
       serviceResult = result;
       try {
         expect(getFieldStatisticsInfoService).not.toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.fieldName).toBe('SmID');
-        expect(getFieldStatisticsInfoService.currentStatisticResult.AVERAGE).toEqual(4);
-        expect(getFieldStatisticsInfoService.currentStatisticResult.MAX).toEqual(7);
-        expect(getFieldStatisticsInfoService.currentStatisticResult.MIN).toEqual(1);
-        expect(getFieldStatisticsInfoService.currentStatisticResult.STDDEVIATION).toEqual(2.160246899469287);
-        expect(getFieldStatisticsInfoService.currentStatisticResult.SUM).toEqual(28);
-        expect(getFieldStatisticsInfoService.currentStatisticResult.VARIANCE).toEqual(4.666666666666667);
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.fieldName).toBe('SmID');
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.AVERAGE).toEqual(4);
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.MAX).toEqual(7);
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.MIN).toEqual(1);
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.STDDEVIATION).toEqual(2.160246899469287);
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.SUM).toEqual(28);
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.VARIANCE).toEqual(4.666666666666667);
         expect(serviceResult.result).not.toBeNull();
         expect(serviceResult.result.fieldName).toBe('SmID');
         expect(serviceResult.result.AVERAGE).toEqual(4);
@@ -217,13 +217,13 @@ describe('leaflet_FieldService', () => {
       serviceResult = result;
       try {
         expect(getFieldStatisticsInfoService).not.toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.fieldName).toBe('SmID');
-        expect(getFieldStatisticsInfoService.currentStatisticResult.AVERAGE).toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.MAX).toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.MIN).toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.STDDEVIATION).toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.SUM).toBeNull();
-        expect(getFieldStatisticsInfoService.currentStatisticResult.VARIANCE).toBeNull();
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.fieldName).toBe('SmID');
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.AVERAGE).toBeNull();
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.MAX).toBeNull();
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.MIN).toBeNull();
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.STDDEVIATION).toBeNull();
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.SUM).toBeNull();
+        expect(getFieldStatisticsInfoService._fieldService.currentStatisticResult.VARIANCE).toBeNull();
         expect(serviceResult.type).toEqual('processFailed');
         expect(serviceResult.error).not.toBeNull();
         expect(serviceResult.error.code).toEqual(404);

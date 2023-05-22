@@ -36,7 +36,7 @@ export class DatasetService extends CommonServiceBase {
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;
-
+        this.eventCount = 0;
         if (options) {
             Util.extend(this, options);
         }
@@ -59,66 +59,76 @@ export class DatasetService extends CommonServiceBase {
      * @function DatasetService.prototype.getDatasetsService
      * @description 执行服务，查询数据集服务。
      */
-    getDatasetsService(params) {
-        var me = this;
-        me.url = Util.urlPathAppend(me.url,`datasources/name/${params}/datasets`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasetsService(params, callback) {
+        const url = Util.urlPathAppend(this.url,`datasources/name/${params}/datasets`);
+        this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.getDatasetService
      * @description 执行服务，查询数据集信息服务。
      */
-    getDatasetService(datasourceName, datasetName) {
-        var me = this;
-        me.url = Util.urlPathAppend(me.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasetService(datasourceName, datasetName, callback) {
+        const url = Util.urlPathAppend(this.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+        this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.setDatasetService
      * @description 执行服务，更改数据集信息服务。
      */
-    setDatasetService(params) {
+    setDatasetService(params, callback) {
         if (!params) {
             return;
         }
-        var me = this;
-        var jsonParamsStr = Util.toJSON(params);
-        me.request({
-            method: "PUT",
-            data: jsonParamsStr,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        const url = Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
+        delete params.datasourceName;
+        this.processAsync(url, 'PUT', callback, params);
     }
 
      /**
      * @function DatasetService.prototype.deleteDatasetService
      * @description 执行服务，删除数据集信息服务。
      */
-    deleteDatasetService() {
-        var me = this;
-        me.request({
-            method: "DELETE",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    deleteDatasetService(datasourceName, datasetName, callback) {
+      const url = Util.urlPathAppend(this.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+       this.processAsync(url, 'DELETE', callback);
     }
 
+    processAsync(url, method, callback, params) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId && callback) {
+            callback(result);
+          }
+        },
+        processFailed: function(result) {
+          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+            callback(result);
+          }
+        }
+      }
+      this.events.on(eventListeners);
+       var me = this;
+       let requestConfig = {
+          url,
+          method,
+          scope: me,
+          success(result) {
+            result.eventId = eventId;
+            me.serviceProcessCompleted(result);
+          },
+          failure(result) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
+            result.eventId = eventId;
+            me.serviceProcessFailed(result);
+          }
+        }
+        params && (requestConfig.data = Util.toJSON(params));
+        me.request(requestConfig);
+    }
 }

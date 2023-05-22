@@ -76,14 +76,9 @@ export var MeasureService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            measureMode: type,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            measureMode: type
         });
-        measureService.processAsync(params);
+        measureService.processAsync(params, callback);
     }
 });
 

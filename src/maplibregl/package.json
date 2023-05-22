@@ -1,0 +1,21 @@
+{
+  "name": "@supermap/iclient-maplibregl",
+  "description": "",
+  "version": "11.1.0-dev",
+  "keywords": [
+    "SuperMap",
+    "maplibregl"
+  ],
+  "main": "namespace.js",
+  "homepage": "https://iclient.supermap.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuperMap/iClient-JavaScript.git"
+  },
+  "author": "SuperMap",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@supermap/iclient-common": "11.1.0-dev",
+    "maplibre-gl": "2.4.0"
+  }
+}

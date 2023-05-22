@@ -5,17 +5,7 @@ import L from "leaflet";
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
 import { DataFormat } from '@supermap/iclient-common/REST';
-import { BurstPipelineAnalystService } from '@supermap/iclient-common/iServer/BurstPipelineAnalystService';
-import { ComputeWeightMatrixService } from '@supermap/iclient-common/iServer/ComputeWeightMatrixService';
-import { FacilityAnalystStreamService } from '@supermap/iclient-common/iServer/FacilityAnalystStreamService';
-import { FindClosestFacilitiesService } from '@supermap/iclient-common/iServer/FindClosestFacilitiesService';
-import { FindLocationService } from '@supermap/iclient-common/iServer/FindLocationService';
-import { FindMTSPPathsService } from '@supermap/iclient-common/iServer/FindMTSPPathsService';
-import { FindPathService } from '@supermap/iclient-common/iServer/FindPathService';
-import { FindServiceAreasService } from '@supermap/iclient-common/iServer/FindServiceAreasService';
-import { FindTSPPathsService } from '@supermap/iclient-common/iServer/FindTSPPathsService';
-import { UpdateEdgeWeightService } from '@supermap/iclient-common/iServer/UpdateEdgeWeightService';
-import { UpdateTurnNodeWeightService } from '@supermap/iclient-common/iServer/UpdateTurnNodeWeightService';
+import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/iclient-common/iServer/NetworkAnalystService';
 
 /**
  * @class NetworkAnalystService
@@ -42,6 +32,7 @@ export var NetworkAnalystService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this._networkAnalystService = new CommonNetworkAnalystService(url, options);
     },
 
     /**
@@ -51,19 +42,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     burstPipelineAnalyst: function (params, callback) {
-        var me = this;
-        var burstPipelineAnalystService = new BurstPipelineAnalystService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        burstPipelineAnalystService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.burstPipelineAnalyst(params, callback);
     },
 
     /**
@@ -73,19 +53,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     computeWeightMatrix: function (params, callback) {
-        var me = this;
-        var computeWeightMatrixService = new ComputeWeightMatrixService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        computeWeightMatrixService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.computeWeightMatrix(params, callback);
     },
 
     /**
@@ -96,20 +65,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     findClosestFacilities: function (params, callback, resultFormat) {
-        var me = this;
-        var findClosestFacilitiesService = new FindClosestFacilitiesService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        findClosestFacilitiesService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
     },
 
     /**
@@ -120,20 +77,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     streamFacilityAnalyst: function (params, callback, resultFormat) {
-        var me = this;
-        var facilityAnalystStreamService = new FacilityAnalystStreamService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        facilityAnalystStreamService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
     },
 
     /**
@@ -144,20 +89,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     findLocation: function (params, callback, resultFormat) {
-        var me = this;
-        var findLocationService = new FindLocationService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        findLocationService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.findLocation(params, callback, resultFormat);
     },
 
     /**
@@ -168,20 +101,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     findPath: function (params, callback, resultFormat) {
-        var me = this;
-        var findPathService = new FindPathService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        findPathService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.findPath(params, callback, resultFormat);
     },
 
     /**
@@ -192,20 +113,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     findTSPPaths: function (params, callback, resultFormat) {
-        var me = this;
-        var findTSPPathsService = new FindTSPPathsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        findTSPPathsService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
     },
 
     /**
@@ -216,20 +125,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     findMTSPPaths: function (params, callback, resultFormat) {
-        var me = this;
-        var findMTSPPathsService = new FindMTSPPathsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        findMTSPPathsService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
     },
 
     /**
@@ -240,20 +137,8 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     findServiceAreas: function (params, callback, resultFormat) {
-        var me = this;
-        var findServiceAreasService = new FindServiceAreasService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        findServiceAreasService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
     },
 
     /**
@@ -263,19 +148,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback -回调函数。
      */
     updateEdgeWeight: function (params, callback) {
-        var me = this;
-        var updateEdgeWeightService = new UpdateEdgeWeightService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        updateEdgeWeightService.processAsync(params);
+      this._networkAnalystService.updateEdgeWeight(params, callback);
     },
 
     /**
@@ -285,19 +158,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {RequestCallback} callback - 回调函数。
      */
     updateTurnNodeWeight: function (params, callback) {
-        var me = this;
-        var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        updateTurnNodeWeightService.processAsync(params);
+      this._networkAnalystService.updateTurnNodeWeight(params, callback);
     },
 
     _processParams: function (params) {

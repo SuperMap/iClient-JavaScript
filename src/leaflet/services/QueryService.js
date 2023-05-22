@@ -4,14 +4,10 @@
 import L from 'leaflet';
 import '../core/Base';
 import { ServiceBase } from './ServiceBase';
+import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { QueryByBoundsService } from '@supermap/iclient-common/iServer/QueryByBoundsService';
-import { QueryByDistanceService } from '@supermap/iclient-common/iServer/QueryByDistanceService';
-import { QueryBySQLService } from '@supermap/iclient-common/iServer/QueryBySQLService';
-import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryByGeometryService';
 
 /**
  * @class  QueryService
@@ -34,6 +30,7 @@ import { QueryByGeometryService } from '@supermap/iclient-common/iServer/QueryBy
 export var QueryService = ServiceBase.extend({
     initialize: function(url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
+        this._queryService = new CommonQueryService(url, options);
     },
     /**
      * @function QueryService.prototype.queryByBounds
@@ -43,22 +40,8 @@ export var QueryService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByBounds: function(params, callback, resultFormat) {
-        var me = this;
-        var queryService = new QueryByBoundsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryByBounds(params, callback, resultFormat);
     },
 
     /**
@@ -69,22 +52,8 @@ export var QueryService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByDistance: function(params, callback, resultFormat) {
-        var me = this;
-        var queryByDistanceService = new QueryByDistanceService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryByDistanceService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryByDistance(params, callback, resultFormat);
     },
 
     /**
@@ -95,22 +64,8 @@ export var QueryService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryBySQL: function(params, callback, resultFormat) {
-        var me = this;
-        var queryBySQLService = new QueryBySQLService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryBySQLService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryBySQL(params, callback, resultFormat);
     },
 
     /**
@@ -121,21 +76,8 @@ export var QueryService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryByGeometry: function(params, callback, resultFormat) {
-        var me = this;
-        var queryByGeometryService = new QueryByGeometryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        queryByGeometryService.processAsync(me._processParams(params));
+      params = this._processParams(params);
+      this._queryService.queryByGeometry(params, callback, resultFormat);
     },
 
     _processParams: function(params) {
@@ -160,10 +102,6 @@ export var QueryService = ServiceBase.extend({
         }
 
         return params;
-    },
-
-    _processFormat: function(resultFormat) {
-        return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 });
 

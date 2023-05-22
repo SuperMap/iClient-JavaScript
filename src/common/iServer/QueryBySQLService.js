@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
-import {QueryService} from './QueryService';
+import {QueryServiceBase} from './QueryServiceBase';
 import {QueryBySQLParameters} from './QueryBySQLParameters';
 
 /**
@@ -10,7 +10,7 @@ import {QueryBySQLParameters} from './QueryBySQLParameters';
  * @deprecatedclass SuperMap.QueryBySQLService
  * @category  iServer Map QueryResults
  * @classdesc SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
- * @extends {QueryService}
+ * @extends {QueryServiceBase}
  * @example
  * var queryParam = new FilterParameter({
  *     name: "Countries@World.1",
@@ -35,7 +35,7 @@ import {QueryBySQLParameters} from './QueryBySQLParameters';
  * @param {Object} [options.headers] - 请求头。
  * @usage
  */
-export class QueryBySQLService extends QueryService {
+export class QueryBySQLService extends QueryServiceBase {
     constructor(url, options) {
         super(url, options);
         this.CLASS_NAME = "SuperMap.QueryBySQLService";
