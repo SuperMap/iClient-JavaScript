@@ -335,7 +335,7 @@ describe('leaflet_GeoprocessingService', () => {
         filterResultService.getResults(
             'sps.WorkflowProcessFactory.models:sps',
             'gp-20200910-200646-C2A3A',
-            null,
+            'countrdd-resultCount',
             (result) => {
                 serverResult = result;
                 try {
