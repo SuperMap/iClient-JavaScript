@@ -95,7 +95,7 @@ module.exports = function (config) {
       { pattern: '../node_modules/maplibre-gl/dist/maplibre-gl.css', included: false },
       '../src/maplibregl/**/!(index).js',
       /**测试文件**/
-      './test-main-maplibregl.js'
+      // './test-main-maplibregl.js'
     ],
 
     // list of files to exclude 测试时排除的文件

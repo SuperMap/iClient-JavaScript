@@ -53,8 +53,8 @@
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
-        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5')) {
-          inputCSS(`${libsurl}/openlayers/6.14.1/ol.css`);
+        if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
+            inputCSS(`${libsurl}/openlayers/6.14.1/ol.css`);
             inputScript(`${libsurl}/openlayers/6.14.1/ol.js`);
         }
         if (inArray(includes, 'ol@4.6.5')) {
