@@ -3,13 +3,12 @@ import {
     DataFlowService
 } from '../../../src/maplibregl/services/DataFlowService';
 
-
 import { Server } from 'mock-socket';
 var urlDataFlow = "ws:\//localhost:8003/";
 describe('maplibregl_DataFlowService', () => {
     var originalTimeout;
     var service;
-    var mockServer = new Server(urlDataFlow);
+    var mockServer;
     beforeAll(() => {
         var e = {
             "type": "Feature",
@@ -21,6 +20,7 @@ describe('maplibregl_DataFlowService', () => {
                 "id": 1
             }
         };
+        mockServer = new Server(urlDataFlow);
         mockServer.on('connection', socket => {
             socket.on('message', () => {
                 console.log("onmessage");
