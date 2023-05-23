@@ -21,7 +21,6 @@ module.exports = {
 
   externals: Object.assign({}, configBase.externals, {
     'maplibre-gl': 'maplibregl',
-    '@antv/l7': 'L7',
     three: 'THREE',
     'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()'
   }),
@@ -33,7 +32,7 @@ module.exports = {
       moduleRules.push(configBase.module.rules.img);
       const babelConfig = {
         test: [/\.js$/],
-        include: /node_modules[\/\\](proj4|@antv[\/\\]l7|maplibre-gl)/,
+        include: /node_modules[\/\\](proj4|maplibre-gl)/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env'],

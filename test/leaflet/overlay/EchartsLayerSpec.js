@@ -339,7 +339,6 @@ describe('leaflet_EChartsLayer', () => {
     });
 
     it('canvas top left', (done) => {
-      debugger;
       var data = [
         {
           value: [104.006244, 30.677465]
@@ -368,7 +367,6 @@ describe('leaflet_EChartsLayer', () => {
       expect(layer.style.left).toBe('0px');
       expect(layer.style.top).toBe('0px');
       expect(panel.style.transform).toBe('translate3d(0px, 0px, 0px)');
-      debugger;
       done();
     });
 });

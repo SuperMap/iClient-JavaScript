@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title data-i18n="resources.title_buffersAnalystJobService"></title>
+    <title data-i18n="resources.title_overlayAnalyst"></title>
     <style>
         .mb-popup {
             position: absolute;
@@ -18,48 +18,52 @@
 
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
     <div id="map" style="width: 100%;height:100%"></div>
-    <div id="popup" class="mb-popup" style='width:350px'>
+    <div id="popup" class="mb-popup" data-i18n="[style]resources.style_width350px">
         <div class="panel panel-default">
             <div class='panel-heading'>
-                <h3 class='panel-title' data-i18n="resources.text_bufferAnalyst"></h3>
+                <h3 class='panel-title' data-i18n="resources.title_overlayAnalyst"></h3>
             </div>
             <div class='panel-body'>
                 <div class='input-group'>
-                    <span class='input-group-addon'><span data-i18n="resources.text_inputData"></span><span data-i18n="[title]resources.text_requiredField"
-                            style="color: red;"> * </span>　</span>
-                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkPoint_P' />
+                    <span class='input-group-addon'><span data-i18n="resources.text_sourceDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span>　</span>
+                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R' /></div>
+                <p></p>
+
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_overlayDataset"></span>
+                        <span data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <input id='datasetOverlay' type='text' class='form-control' value='samples_processing_newyorkResidential_R' />
                 </div>
                 <p></p>
+
                 <div class='input-group'>
-                    <span class='input-group-addon' data-i18n="resources.text_analysisRange"></span>
-                    <input id='bounds' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950' />
+                    <span class='input-group-addon'><span data-i18n="resources.text_analystMode"></span><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span></span>
+                    <select class='form-control' id='mode' name='mode'>
+                        <option value='clip' selected data-i18n="resources.text_clip"></option>
+                        <option value='intersect' data-i18n="resources.text_intersect"></option>
+                        <option value='erase' data-i18n="resources.text_erase"></option>
+                        <option value='union' data-i18n="resources.text_union"></option>
+                        <option value='update' data-i18n="resources.text_update"></option>
+                        <option value='identity' data-i18n="resources.text_identity"></option>
+                        <option value='xor' data-i18n="resources.text_xor"></option>
+                    </select>
                 </div>
                 <p></p>
+
                 <div class='input-group'>
-                    <span class='input-group-addon' data-i18n="resources.text_bufferDistance"></span>
-                    <input id='distace' type='text' class='form-control' value='15' />
+                    <span class='input-group-addon' data-i18n="resources.text_retainedFieldSource"></span>
+                    <input id='srcFields' type='text' class='form-control' value='LocationID' />
                 </div>
                 <p></p>
-                <div class='input-group'>
-                    <span class='input-group-addon' data-i18n="resources.text_bufferDistanceField"></span>
-                    <input id='distanceField' type='text' class='form-control' value='pickup_latitude' />
+
+                <div class='input-group' id='overlayField' style='display: none'>
+                    <span class='input-group-addon' data-i18n="resources.text_retainedFieldOverlay"></span>
+                    <input id='overlayFields' type='text' class='form-control' value='type' />
                 </div>
                 <p></p>
-                <div class='input-group'>
-                    <span class='input-group-addon' data-i18n="resources.text_bufferDistanceUnit"></span>
-                    <select class='form-control' id='distanceUnit' name='distanceUnit'>
-                        <option value='Meter' selected='selected'>Meter</option>
-                        <option value='Kilometer'>Kilometer</option>
-                        <option value='Yard'>Yard</option>
-                        <option value='Foot'>Foot</option>
-                        <option value='Mile'>Mile</option>
-                    </select></div>
-                <p></p>
-                <div class='input-group'>
-                    <span class='input-group-addon' data-i18n="resources.text_fusionField"></span>
-                    <input id='dissoveField' type='text' class='form-control' value='pickup_longitude' />
-                </div>
-                <p></p>
+
                 <div align='right'>
                     <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_analyst" />
                 </div>
@@ -67,7 +71,7 @@
         </div>
     </div>
     <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="draw" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script>
         var map,
             baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
@@ -78,7 +82,6 @@
         var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
             " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
             " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-
         map = new maplibregl.Map({
             container: 'map',
             style: {
@@ -105,6 +108,14 @@
 
         bindClick();
 
+        $("#mode").change(function () {
+            var mode = $(this).val();
+            if (mode == "update" || mode == "clip" || mode == "erase") {
+                $("#overlayField").hide();
+            } else {
+                $("#overlayField").show();
+            }
+        });
         maplibregl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         var processingService = new maplibregl.supermap.ProcessingService(processingsUrl, {
@@ -117,38 +128,23 @@
                     $('#msg_container').remove();
                 }
                 widgets.loader.showLoader();
-                if (map.getLayer("createBufferAnalystJobLayer")) {
-                    map.removeLayer("createBufferAnalystJobLayer");
-                    map.removeSource("createBufferAnalystJobSource");
+                if (map.getLayer("overlayGeoJobLayer")) {
+                    map.removeLayer("overlayGeoJobLayer");
+                    map.removeSource("overlayGeoJobSource");
                 }
-                createBufferAnalystJobs();
+                overlayGeoJobs();
             });
         }
 
-        function getBounds() {
-            if ($('#bounds').val() === "") {
-                return "";
-            }
-            var bounds = [];
-            $('#bounds').val().split(',').map(function (el) {
-                bounds.push(parseFloat(el));
-            });
-            var sw = new maplibregl.LngLat(bounds[0], bounds[1]);
-            var ne = new maplibregl.LngLat(bounds[2], bounds[3]);
-
-            return new maplibregl.LngLatBounds(sw, ne);
-        }
-
-        function createBufferAnalystJobs() {
-            var buffersAnalystJobsParameter = new maplibregl.supermap.BuffersAnalystJobsParameter({
+        function overlayGeoJobs() {
+            var overlayGeoJobParameter = new maplibregl.supermap.OverlayGeoJobParameter({
                 datasetName: $('#datasetName').val(),
-                bounds: getBounds(),
-                distance: $('#distace').val(),
-                distanceField: $('#distanceField').val(),
-                distanceUnit: $('#distanceUnit option:selected').attr('value'),
-                dissolveField: $('#dissoveField').val()
+                datasetOverlay: $('#datasetOverlay').val(),
+                mode: $('#mode option:selected').attr('value'),
+                srcFields: $('#srcFields').val(),
+                overlayFields: $('#overlayFields').val()
             });
-            processingService.addBuffersJob(buffersAnalystJobsParameter, function (serviceResult) {
+            processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -163,15 +159,15 @@
                         }).then(function (result) {
                             var mapUrl = result[0].path +
                                 "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                            map.addSource("createBufferAnalystJobSource", {
+                            map.addSource("overlayGeoJobSource", {
                                 "type": "raster",
                                 "tiles": [mapUrl],
                                 "tileSize": 256
                             });
                             map.addLayer({
-                                "id": "createBufferAnalystJobLayer",
+                                "id": "overlayGeoJobLayer",
                                 "type": "raster",
-                                "source": "createBufferAnalystJobSource",
+                                "source": "overlayGeoJobSource",
                                 "minzoom": 0,
                                 "maxzoom": 22
                             });
@@ -182,7 +178,6 @@
             });
         }
     </script>
-
 </body>
 
 </html>

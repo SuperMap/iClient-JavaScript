@@ -1,6 +1,6 @@
 # @supermap/iclient-maplibregl
 
-@supermap/iclient-maplibregl 是一套基于 Mapbox GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
+@supermap/iclient-maplibregl 是一套基于 Maplibre GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
 * 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
@@ -17,19 +17,19 @@
 在 HTML 文件中引入 CSS  文件
 
 ```
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
+<link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
 
 ```
 
 在 JS 文件中加入如下代码
 
 ```
-import maplibre from 'mapbox-gl';
+import maplibre from 'maplibre-gl';
 import {Logo, QueryByBoundsParameters, QueryService} from '@supermap/iclient-maplibregl';
 
 var map, host = "https://iserver.supermap.io";
 var url = host + "/iserver/services/map-world/rest/maps/World";
-var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +
     "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
 var map = new maplibre.Map({

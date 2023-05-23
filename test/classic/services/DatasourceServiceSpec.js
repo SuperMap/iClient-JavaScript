@@ -123,7 +123,7 @@ describe('classic_DatasourceService', () => {
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.object).toBe(undefined);
-                expect(serviceResult.object.url).toBe(url + "/datasources/name/World");
+                expect(serviceResult.object.url).toBe(url);
                 done();
             } catch (exception) {
                 console.log("'fail:setDataSource'案例失败" + exception.name + ":" + exception.message);

@@ -5,7 +5,6 @@ import {SuperMap} from '../SuperMap';
 import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
 import {DatasourceService as CommonDatasourceService} from '@supermap/iclient-common/iServer/DatasourceService';
 import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class SuperMap.REST.DatasourceService
@@ -21,6 +20,13 @@ export class DatasourceService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        const me = this;
+        this._datasourceService = new CommonDatasourceService(me.url, {
+            proxy: me.proxy,
+            withCredentials: me.withCredentials,
+            crossOrigin: me.crossOrigin,
+            headers: me.headers
+        });
         this.CLASS_NAME = "SuperMap.REST.DatasourceService";
     }
 
@@ -34,19 +40,7 @@ export class DatasourceService extends CommonServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasources(callback) {
-        const me = this;
-        const datasourceService = new CommonDatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourcesService();
+        this._datasourceService.getDatasourcesService(callback);
     }
     
     /**
@@ -63,19 +57,7 @@ export class DatasourceService extends CommonServiceBase {
         if (!datasourceName) {
             return;
         }
-        const me = this;
-        const datasourceService = new CommonDatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourceService(datasourceName);
+        this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
    /**
@@ -95,21 +77,10 @@ export class DatasourceService extends CommonServiceBase {
         const datasourceParams = {
             description: params.description ,
             coordUnit: params.coordUnit,
-            distanceUnit: params.distanceUnit
+            distanceUnit: params.distanceUnit,
+            datasourceName: params.datasourceName
         };
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url,`datasources/name/${params.datasourceName}`);
-        const datasourceService = new CommonDatasourceService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.setDatasourceService(datasourceParams);
+        this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }
 SuperMap.REST.DatasourceService = DatasourceService;

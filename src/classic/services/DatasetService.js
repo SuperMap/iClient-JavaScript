@@ -6,7 +6,6 @@ import { CommonServiceBase } from '@supermap/iclient-common/iServer/CommonServic
 import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
 import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
 import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @class SuperMap.REST.DatasetService
@@ -22,6 +21,13 @@ export class DatasetService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        const me = this;
+        this._datasetService = new CommonDatasetService(me.url, {
+          proxy: me.proxy,
+          withCredentials: me.withCredentials,
+          crossOrigin: me.crossOrigin,
+          headers: me.headers
+        });
         this.CLASS_NAME = "SuperMap.REST.DatasetService";
     }
 
@@ -39,19 +45,7 @@ export class DatasetService extends CommonServiceBase {
         if (!datasourceName) {
             return;
         }
-        const me = this;
-        const datasetService = new CommonDatasetService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetsService(datasourceName);
+        this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
@@ -69,19 +63,7 @@ export class DatasetService extends CommonServiceBase {
         if (!datasourceName || !datasetName) {
             return;
         }
-        const me = this;
-        const datasetService = new CommonDatasetService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetService(datasourceName, datasetName);
+        this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -102,30 +84,20 @@ export class DatasetService extends CommonServiceBase {
         if (params instanceof CreateDatasetParameters) {
             datasetParams = {
                 "datasetType": params.datasetType,
+                "datasourceName": params.datasourceName,
                 "datasetName": params.datasetName
             }
         } else if (params instanceof UpdateDatasetParameters) {
             datasetParams = {
                 "datasetName": params.datasetName,
+                "datasourceName": params.datasourceName,
                 "isFileCache": params.isFileCache,
                 "description": params.description,
                 "prjCoordSys": params.prjCoordSys,
                 "charset": params.charset
             }
         }
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
-        const datasetService = new CommonDatasetService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.setDatasetService(datasetParams);
+        this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -140,19 +112,7 @@ export class DatasetService extends CommonServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteDataset(datasourceName, datasetName, callback) {
-        const me = this;
-        const url = CommonUtil.urlPathAppend(me.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        const datasetService = new CommonDatasetService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.deleteDatasetService();
+        this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 }
 SuperMap.REST.DatasetService = DatasetService;

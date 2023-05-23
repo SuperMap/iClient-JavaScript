@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
 var attribution = "<a href='https://maplibre.org/' target='_blank'>© Maplibre </a>" +

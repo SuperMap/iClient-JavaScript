@@ -54,8 +54,6 @@
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     inputCSS('https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css');
     inputScript('https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js');
-    // inputCSS('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css');
-    // inputScript('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js');
     if (inArray(includes, 'draw')) {
       inputCSS(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.css`);
       inputScript(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.js`);
@@ -69,6 +67,9 @@
       } else {
         inputScript('../../dist/maplibregl/iclient-maplibregl.min.js');
       }
+    }
+    if (inArray(includes, 'turf')) {
+      inputScript(`${libsurl}/turf/6.5.0/turf.min.js`);
     }
     if (!inArray(excludes, 'iclient-maplibregl-css')) {
       inputCSS('../../dist/maplibregl/iclient-maplibregl.min.css');

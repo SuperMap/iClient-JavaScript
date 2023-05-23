@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 // import "../core/Base";
@@ -58,7 +58,7 @@ export const Util = {
     },
 
     toSuperMapPoint(lnglat) {
-        //客户端可传入 geojson 对象 或者 mapboxgl lnglat 点对象,或者是点数组
+        //客户端可传入 geojson 对象 或者 maplibregl lnglat 点对象,或者是点数组
         if (isArray(lnglat)) {
             return new GeometryPoint(lnglat[0], lnglat[1]);
         } else if (lnglat.lng && lnglat.lat) {
@@ -68,8 +68,8 @@ export const Util = {
     },
     /**
      * @function Util.toSuperMapPolygon
-     * @description 将 Mapbox GL LngLatbounds 对象转为 SuperMap 几何图形。
-     * @param {mapboxgl.LngLatBounds} lnglatBounds - Mapbox GL LngLatbounds对象。
+     * @description 将 Maplibre GL LngLatbounds 对象转为 SuperMap 几何图形。
+     * @param {maplibregl.LngLatBounds} lnglatBounds - Maplibre GL LngLatbounds对象。
      * @returns {GeometryPolygon}
      */
     toSuperMapPolygon(lnglatBounds) {

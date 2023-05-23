@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * maplibregl 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -20,6 +20,13 @@ var exampleConfig = {
                         name_en: '3857 coordinate system',
                         thumbnail: 'mb_TileLayer.png',
                         fileName: '01_tiledMapLayer'
+                    },
+                    {
+                      name: '地图-栅格分析',
+                      name_en: 'map rasterFunction',
+                      version: '10.0.0',
+                      thumbnail: 'tiledMapLayerRasterfunction.png',
+                      fileName: '01_tiledMapLayer_rasterfunction'
                     },
                     {
                         name: '地图信息',

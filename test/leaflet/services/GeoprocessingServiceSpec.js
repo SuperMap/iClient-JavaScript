@@ -302,6 +302,7 @@ describe('leaflet_GeoprocessingService', () => {
         getResultsService.getResults(
             'sps.WorkflowProcessFactory.models:sps',
             'gp-20200910-200646-C2A3A',
+            null,
             (result) => {
                 serverResult = result;
                 try {
@@ -334,6 +335,7 @@ describe('leaflet_GeoprocessingService', () => {
         filterResultService.getResults(
             'sps.WorkflowProcessFactory.models:sps',
             'gp-20200910-200646-C2A3A',
+            null,
             (result) => {
                 serverResult = result;
                 try {
