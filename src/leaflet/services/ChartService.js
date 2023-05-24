@@ -41,7 +41,7 @@ export var ChartService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     queryChart: function (params, callback, resultFormat) {
-        params = this._processParams(params),
+        params = this._processParams(params);
         this._chartServiceBase.queryChart(params, callback, resultFormat);
     },
 

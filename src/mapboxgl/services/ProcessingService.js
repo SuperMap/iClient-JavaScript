@@ -61,7 +61,7 @@ export class ProcessingService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._processingService.addKernelDensityJob(params, callback, seconds, resultFormat);
     }
 
@@ -193,7 +193,7 @@ export class ProcessingService extends ServiceBase {
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
     }
 
@@ -369,7 +369,7 @@ export class ProcessingService extends ServiceBase {
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
     }
 
@@ -413,7 +413,7 @@ export class ProcessingService extends ServiceBase {
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
-        params = this._processParams(params),
+        params = this._processParams(params);
         this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
     }
 

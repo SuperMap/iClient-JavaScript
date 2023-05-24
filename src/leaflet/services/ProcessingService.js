@@ -205,7 +205,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addSummaryRegionJob: function(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
     },
 
@@ -381,7 +381,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addTopologyValidatorJob: function(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
     },
 
@@ -425,7 +425,7 @@ export var ProcessingService = ServiceBase.extend({
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addSummaryAttributesJob: function(params, callback, seconds, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
     },
 

@@ -38,7 +38,7 @@ export class ChartService extends ServiceBase {
      * @param {DataFormat} resultFormat - 返回结果类型。
      */
     queryChart(params, callback, resultFormat) {
-      params = this._processParams(params),
+      params = this._processParams(params);
       this._chartService.queryChart(params, callback, resultFormat);
     }
 
