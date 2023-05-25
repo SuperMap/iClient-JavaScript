@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "node ./build/server.js",
     "lint": "eslint src",
-    "release": "npm run release-leaflet && npm run release-openlayers && npm run release-mapboxgl  && npm run release-classic",
+    "release": "npm run release-leaflet && npm run release-openlayers && npm run release-mapboxgl  && npm run release-classic && npm run release-maplibregl",
     "release-leaflet": "npm run release-leaflet-es5 && npm run release-leaflet-es6",
     "release-openlayers": "npm run release-openlayers-es5 && npm run release-openlayers-es6 && npm run release-ol-es5 && npm run release-ol-es6",
     "release-mapboxgl": "npm run release-mapboxgl-es5 && npm run release-mapboxgl-es6",
