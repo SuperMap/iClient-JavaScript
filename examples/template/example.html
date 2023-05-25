@@ -16,6 +16,7 @@
     <section class="sidebar" id="sidebar">
         <a href="#" class="sidebar-toggle " data-toggle="offcanvas" role="button" title="fold">
             <div class="fa  fa-bars fold"></div>
+            <span id="suffix-title"></span>
         </a>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class=" sidebar-menu nav  nav-stacked" id="sidebar-menu">
@@ -33,5 +34,18 @@
 <!--内容区 end-->
 
 <!-- footer -->
-<footer class="main-footer icl-footer"></footer>
+<footer class="main-footer icl-footer simple-footer"></footer>
 <!--footer end-->
+
+<script>
+  $(document).ready(function () {
+    var notFor = ['iClient Classic', '3D-WebGL'];
+    var productArr = ['Leaflet', 'OpenLayers', 'MapboxGL', 'component', 'iClient Classic', '3D-WebGL']
+    var path = window.location.pathname.split('/');
+    var identification = productArr.find(name => name.toLowerCase().includes(path[2]) || name.toLowerCase().includes(path[3]));
+    if (identification) {
+      var suffixHeader = document.getElementById('suffix-title');
+      suffixHeader.innerText = (notFor.indexOf(identification) < 0 ? 'for ' : '') + identification;
+    }
+  })
+</script>

@@ -46,6 +46,8 @@
 
             inputScript("../js/utils.js");
             inputScript("../js/localization.js");
+            inputScript("../js/theme/themeConfig.js");
+            inputScript("../js/theme/theme.js");
             document.writeln("<script>Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();}); </script>");
             jQueryInclude = true;
         }

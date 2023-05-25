@@ -30,7 +30,7 @@ window.examplesResources = {
         },
         "component": {
           "_name": "Component"
-      },
+        },
         "product": {
             "_name": "Products",
             "introduce": "Introduction",
@@ -90,6 +90,9 @@ window.examplesResources = {
             "template": 'Templates',
             "machineLearning": 'Machine Learning'
         },
+        "language": {
+          "_name": "English"
+        },
         "more": {
             "_name": "More>>",
             "version": {
@@ -133,7 +136,7 @@ window.examplesResources = {
         "join": "Join us: SuperMap Web Client Team",
         "join_tips1": "(Please send email to: ",
         "join_tips2": " and attach your resume)",
-        "copyright": "Copyright © 2000-2022 SuperMap Software Co., Ltd. All rights reserved"
+        "copyright": "Powered by SuperMap iServer 11i(2023) (11.0.1-linux64) © 2000-2023 SuperMap Software Co."
     },
     "editor": {
         "expand": " Expand",

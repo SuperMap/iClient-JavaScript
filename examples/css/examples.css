@@ -5,8 +5,8 @@
 }
 
 .examples-container {
-    background-color: #f9f9f9;
-    margin-top: 60px;
+    background-color: #f5f6f6;
+    margin-top: 72px;
     overflow: auto;
 }
 
@@ -15,7 +15,7 @@
     padding: 0 20px;
     list-style: none;
     overflow: inherit;
-    background-color: #f9f9f9;
+    background-color: #f5f6f6;;
 }
 
 h3.category-title {
@@ -25,6 +25,11 @@ h3.category-title {
     margin-bottom: 0;
     margin-left: 2px;
     color: #555555
+}
+
+#suffix-title {
+    margin-left: 5px;
+    color: var(--text-color);
 }
 
 @media (min-width: 1400px) {
@@ -96,7 +101,7 @@ h3.category-title {
 }
 
 .box-header {
-    padding-top: 10px;
+    padding-top: 22px;
     padding-bottom: 5px;
     padding-left: 0;
     background-color: #f9f9f9;
@@ -112,5 +117,5 @@ h3.category-title {
 }
 
 .category {
-    padding-top: 60px;
+    padding-top: 72px;
 }

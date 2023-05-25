@@ -28,6 +28,9 @@ window.examplesResources = {
         "3dwebgl": {
             "_name": "3D-WebGL"
         },
+        "component": {
+          "_name": "组件"
+        },
         "examples": {
             "_name": "示例",
             "iServer": "iServer",
@@ -58,6 +61,9 @@ window.examplesResources = {
             "h5components": "H5",
             "template": '模板',
             "machineLearning": '机器学习'
+        },
+        "language": {
+          "_name": "中文"
         }
     },
     "footer": {
@@ -74,7 +80,7 @@ window.examplesResources = {
         "join": "加入我们： 超图Web客户端团队 ",
         "join_tips1": "（请发邮件至: ",
         "join_tips2": "，附上您的简历哦）",
-        "copyright": "版权所有 © 2000-2023 北京超图软件股份有限公司 蜀ICP备16000471号-1"
+        "copyright": "Powered by SuperMap iServer 11i(2023) (11.0.1-linux64) © 2000-2023 北京超图软件股份有限公司"
     },
     "editor": {
         "expand": " 展开",

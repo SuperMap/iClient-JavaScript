@@ -174,7 +174,7 @@ function createSideBarMenuTitle(id, title, collapse, hasNewExamples) {
     var titleBar = $("<span class='sidebar-title-bar'></span>");
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='var(--active-color)'></circle>/svg>";
     }
     var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + newIcon + "</span>");
     titleBar.append(firstMenuTitle);
@@ -195,7 +195,7 @@ function createSideBarMenuSecondTitle(id, title, collapse, hasNewExamples) {
     }
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='var(--active-color)'></circle>/svg>";
     }
     var div = $(
         "<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon +
@@ -217,7 +217,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
     }
     var newIcon="";
     if(window.version===version){
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='var(--active-color)'></circle>/svg>";
     }
 
     var div = $(
@@ -232,7 +232,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
 
 //创建右侧折叠菜单
 function createCollapsedIcon() {
-    return $("<span class='pull-right-container'> <i class='fa fa-angle-left pull-right'></i> </span>");
+    return $("<span class='pull-right-container'> <i class='fa fa-angle-down pull-right'></i> </span>");
 }
 
 //只处理三层节点,后续可优化
