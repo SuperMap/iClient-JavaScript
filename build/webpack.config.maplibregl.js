@@ -6,8 +6,7 @@ const productName = 'iclient-maplibregl';
 
 module.exports = {
   target: configBase.target,
-  mode: 'development' || configBase.mode,
-  devtool: 'inline-cheap-module-source-map',
+  mode: configBase.mode,
   //页面入口文件配置
   entry: configBase.entry,
   //入口文件输出配置
@@ -21,8 +20,14 @@ module.exports = {
 
   externals: Object.assign({}, configBase.externals, {
     'maplibre-gl': 'maplibregl',
-    three: 'THREE',
-    'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()'
+    three: 'function(){try{return THREE}catch(e){return {}}}()',
+    'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
+    'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
+    'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
+    xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
+    canvg: 'function(){try{return canvg}catch(e){return {}}}()',
+    jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
+    'xml-js': 'function(){try{return convert}catch(e){return {}}}()'
   }),
 
   module: {
@@ -32,7 +37,7 @@ module.exports = {
       moduleRules.push(configBase.module.rules.img);
       const babelConfig = {
         test: [/\.js$/],
-        include: /node_modules[\/\\](proj4|maplibre-gl)/,
+        exclude: /node_modules[\/\\]proj4|classic|webgl-debug/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env'],
@@ -46,12 +51,11 @@ module.exports = {
                 regenerator: true,
                 useESModules: false
               }
-            ],
-            '@babel/plugin-proposal-nullish-coalescing-operator'
+            ]
           ]
         }
       };
-      configBase.moduleVersion === 'es6';
+      configBase.moduleVersion === 'es6' && (babelConfig.include = /FGBLayer|flatgeobuf/);
       moduleRules.push(babelConfig);
       moduleRules.push(configBase.module.rules.css);
       return moduleRules;
