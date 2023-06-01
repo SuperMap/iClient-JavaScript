@@ -180,7 +180,11 @@
             queryResult = L.supermap.plotting.query(map).getGObjectsInCircle(latLngs[0], radius);
         }
         if (symbolType === SuperMap.Plot.SymbolType.RECTANGLESYMBOL) {
-            queryResult = L.supermap.plotting.query(map).getGObjectsInRect(latLngs[0], latLngs[1]);
+			if(latLngs[0].lng < latLngs[1].lng){
+                queryResult = L.supermap.plotting.query(map).getGObjectsInRect(latLngs[0], latLngs[1]);
+            } else {
+                queryResult = L.supermap.plotting.query(map).getGObjectsInRect(latLngs[1], latLngs[0]);
+            }
         }
         if (queryResult && queryResult.length !== 0) {
             for (var i in queryResult) {
