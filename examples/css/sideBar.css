@@ -102,8 +102,7 @@ a.sidebar-toggle {
 
 .skin-blue .treeview-menu > li > a {
     color: var(--text-color-secondary);
-    padding-left: 35px;
-    padding-right: 17px !important;
+    padding: 10px 40px;
 }
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
@@ -153,7 +152,7 @@ a.sidebar-toggle {
 }
 
 .main-sidebar .iconName {
-    margin-right: 10px;
+    margin-right: 4px;
     color: var(--text-color);
 }
 
@@ -173,8 +172,7 @@ li.menuTitle a {
 }
 
 .main-sidebar .secondMenuTitle {
-    padding-left: 10px;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--text-color-secondary);
 }
 

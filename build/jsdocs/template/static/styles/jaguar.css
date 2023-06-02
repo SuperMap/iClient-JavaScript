@@ -506,7 +506,7 @@ a.sidebar-toggle {
 }
 
 .content-wrapper {
-    background-color: var(--background-color);
+    background-color: #fff;
 }
 
 footer {

@@ -24,4 +24,14 @@ function setRootStyle (theme) {
     }
     rootStyleTag.innerHTML = rootStyle;
 }
-setRootStyle('light');
+document.addEventListener("DOMContentLoaded", function() {
+  initSkin();
+});
+
+function initSkin() {
+  var skin = window.sessionStorage.getItem('theme') || 'light';
+  var bodyElem = document.querySelector('body');
+  bodyElem.classList.remove("light", "dark");
+  bodyElem.classList.add(skin);
+  setRootStyle(skin);
+}

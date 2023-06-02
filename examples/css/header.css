@@ -151,6 +151,8 @@
   width: 120px;
   padding: 4px 0;
   left: 20px !important;
+  border: none;
+  border-radius: 4px;
   box-shadow: 0px 6px 18px 0px var(--dropdown-shadow-color);
 }
 .navbar-rightbar .dropdown .dropdown-menu{
