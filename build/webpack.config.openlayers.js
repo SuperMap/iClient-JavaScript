@@ -4,8 +4,13 @@ var libName = 'openlayers';
 //产品包名
 var productName = 'iclient-openlayers';
 
-var argv = JSON.parse(process.env['npm_config_argv']);
-var origin = argv.original;
+let origin;
+if (process.env['npm_config_argv']) {
+  var argv = JSON.parse(process.env['npm_config_argv']);
+  origin = argv.original;
+} else {
+  origin = process.env['npm_lifecycle_event'];
+}
 if (origin && origin.includes('deploy-ol')) {
     libName = 'ol';
     productName = 'iclient-ol';
@@ -34,7 +39,7 @@ module.exports = {
     target: configBase.target,
     mode: configBase.mode,
     //页面入口文件配置
-    entry: configBase.entry,
+    entry: [`${__dirname}/../src/openlayers/namespace.js`, `${__dirname}/../src/openlayers/css/index.js`, ...configBase.entry],
     //入口文件输出配置
     output: configBase.output(libName, productName),
     //是否启用压缩

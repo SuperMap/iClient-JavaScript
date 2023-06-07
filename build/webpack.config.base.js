@@ -33,7 +33,9 @@ module.exports = {
 
     mode: 'production',
     //页面入口文件配置
-    entry: {},
+    entry: moduleVersion === "es5" ? [
+      `${__dirname}/../node_modules/core-js/actual/symbol/async-iterator.js`, `${__dirname}/../node_modules/core-js/actual/object/assign.js`, `${__dirname}/polyfill.js`
+    ] : [],
 
     output: function (libName, productName) {
         let fileName = moduleVersion === 'es6' ? `${productName}-${moduleVersion}` : `${productName}`;
@@ -109,7 +111,7 @@ module.exports = {
             new LintExportWebpackPlugin(libName),
             new webpack.BannerPlugin(this.bannerInfo(productName)),
             new MiniCssExtractPlugin({filename:`./${productName}.css`}),
-            new ESLintPlugin({ failOnError: true, files: 'src' }),
+            new ESLintPlugin({ failOnError: true, files: 'src' })
         ];
     }
 };
