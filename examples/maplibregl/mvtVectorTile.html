@@ -1,0 +1,1515 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title data-i18n="resources.title_chinaMVTVectorTile"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude='iclient-maplibregl' src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+
+    var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+    var map = new maplibregl.Map({
+        container: 'map', // container id
+        style: {
+            "version": 8,
+            "sources": {
+                "vector-tiles": {
+                    "attribution": attribution,
+                    "type": "vector",
+                    "tiles": [host + "/iserver/services/map-china400/rest/maps/China/tileFeature.mvt?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"]
+                },
+            },
+            "glyphs": host + "/iserver/services/map-china400/rest/maps/China/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "layers": []
+        },
+        center: [120.143, 30.236], // starting position
+        zoom: 0 // starting zoom
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+    map.on('load', function () {
+        map.addLayer({
+            "id": "background",
+            "type": "background",
+            "layout": {},
+            "paint": {
+                "background-color": "#75CFF0"
+            }
+        });
+
+        map.addLayer({
+            "id": "World_Continent_pl",
+            "type": "fill",
+            "source": "vector-tiles",
+            "source-layer": "World_Continent_pg@China",
+            "paint": {
+                "fill-color": "#E6EBC9",
+            }
+        });
+
+        map.addLayer({
+            "id": "China_Boundary",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "China_Boundary_A_ln@China",
+            "paint": {
+                "line-color": "hsl(230, 8%, 51%)",
+                "line-width": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            3,
+                            0.5
+                        ],
+                        [
+                            10,
+                            2
+                        ]
+                    ]
+                }
+            }
+
+        });
+        map.addLayer({
+            "id": "China_Boundary_ln",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "China_Boundary_A_ln@China",
+            "paint": {
+                "line-color": "hsl(230, 8%, 51%)",
+                "line-width": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            3,
+                            0.5
+                        ],
+                        [
+                            10,
+                            2
+                        ]
+                    ]
+                }
+            }
+
+        });
+        map.addLayer({
+            "id": "China_Province_ln1",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "China_Province_ln@China",
+            "paint": {
+                "line-color": "hsl(255, 14%, 77%)"
+            }
+
+        });
+
+        map.addLayer({
+            "id": "Main_River",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Main_River_ln@China",
+            "paint": {
+                "line-color": "hsl(196, 80%, 70%)"
+            }
+
+        });
+
+        map.addLayer({
+            "id": "	Main_Road_L",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Main_Road_L@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+        });
+        map.addLayer({
+            "id": "Arterial_Road_ln",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Arterial_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+        });
+        map.addLayer({
+            "id": "Provincial_Road_ln1",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Provincial_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+
+        });
+        map.addLayer({
+            "id": "	Main_Road_L1",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Main_Road_L@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+        });
+        map.addLayer({
+            "id": "Arterial_Road_ln1",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Arterial_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+        });
+        map.addLayer({
+            "id": "	Main_Road_L11",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Main_Road_L@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+        });
+        map.addLayer({
+            "id": "Arterial_Road_ln11",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Arterial_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+        });
+        map.addLayer({
+            "id": "Provincial_Road_ln",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Provincial_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+
+        });
+        map.addLayer({
+            "id": "Provincial_Road_ln2",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "Provincial_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+
+        });
+        map.addLayer({
+            "id": "County_Road_ln",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "County_Road_ln@China",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            0.75
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            8,
+                            "hsl(26, 87%, 62%)"
+                        ],
+                        [
+                            9,
+                            "hsl(26, 100%, 68%)"
+                        ]
+                    ]
+                }
+            }
+
+        });
+        map.addLayer({
+            "id": "China_provincename_B_txt",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_provincename_B_txt@China",
+            "layout": {
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.4
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{TEXT_FEATURE_CONTENT}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+
+        });
+        map.addLayer({
+            "id": "China_Rural_pt",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_Rural_pt@China",
+            "layout": {
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.4
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{TEXT_FEATURE_CONTENT}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+
+        });
+        map.addLayer({
+            "id": "China_Rural_pt2",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_Rural_pt@China",
+            "layout": {
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.4
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{TEXT_FEATURE_CONTENT}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+
+        });
+        map.addLayer({
+            "id": "China_Capital",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_Capital_pt@China",
+            "layout": {
+                "icon-image": "star-11",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.4
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-color": "#ff0000",
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+
+        });
+        map.addLayer({
+            "id": "China_PreCenCity_pt_A",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_preCenCity_C_pt@China",
+            "layout": {
+                "icon-image": "dot-11",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "China_PreCenCity_pt",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_PreCenCity_A_pt@China",
+            "layout": {
+                "icon-image": "dot-11",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "China_ProCenCity_pt",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_ProCenCity_pt@China",
+            "layout": {
+                "icon-image": "dot-15",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 20%, 20%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "China_ProCenCity_pt3",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_ProCenCity_pt@China",
+            "layout": {
+                "icon-image": "circle-11",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 20%, 20%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "China_PreCenCity_pt3",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_PreCenCity_pt@China",
+            "layout": {
+                "icon-image": "dot-11",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "China_PreCenCity_pt1",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "China_PreCenCity_A_pt@China",
+            "layout": {
+                "icon-image": "dot-11",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "China_MainHydside_pg",
+            "type": "fill",
+            "source": "vector-tiles",
+            "source-layer": "China_MainHydside_pg@China",
+            "paint": {
+                "fill-color": "hsl(196, 80%, 70%)"
+            },
+        });
+        map.addLayer({
+            "id": "China_SecHydside_pl",
+            "type": "fill",
+            "source": "vector-tiles",
+            "source-layer": "China_SecHydside_pg_ip@China",
+            "paint": {
+                "fill-color": "hsl(196, 80%, 70%)"
+            },
+        });
+        map.addLayer({
+            "id": "District_A_pt",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "District_pt@China",
+            "layout": {
+                "icon-image": "dot-9",
+                "text-font": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            [
+                                "DIN Offc Pro Regular",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                "DIN Offc Pro Medium",
+                                "Arial Unicode MS Regular"
+                            ]
+                        ]
+                    ]
+                },
+                "text-offset": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            [
+                                0,
+                                -0.25
+                            ]
+                        ],
+                        [
+                            8,
+                            [
+                                0,
+                                0
+                            ]
+                        ]
+                    ]
+                },
+                "text-anchor": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7,
+                            "bottom"
+                        ],
+                        [
+                            8,
+                            "center"
+                        ]
+                    ]
+                },
+                "text-field": "{NAME}",
+                "text-max-width": 7,
+                "text-size": {
+                    "base": 0.9,
+                    "stops": [
+                        [
+                            4,
+                            12
+                        ],
+                        [
+                            10,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-opacity": 1,
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1,
+                "icon-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            7.99,
+                            1
+                        ],
+                        [
+                            8,
+                            0
+                        ]
+                    ]
+                },
+                "text-halo-blur": 1
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

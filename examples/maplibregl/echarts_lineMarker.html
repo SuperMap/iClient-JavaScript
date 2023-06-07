@@ -1,0 +1,231 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title data-i18n="resources.title_GraphLine"></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="echarts" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript">
+    var data;
+    var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+            " <a href='https://echarts.baidu.com' target='_blank'>© 2018 " + resources.title_3baidu + " ECharts</a>";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}';
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var chart, div, popup = '';
+    var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileURL],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 18
+            }]
+        },
+        center: [105.2, 31.6],
+        zoom: 5
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.loadImage('../img/marker-icon.png', function (error, image) {
+        if (error) throw error;
+        map.addImage('positionPoint', image);
+    });
+
+    var option = {
+        title: {
+            subtext: resources.text_fictitiouData
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: [resources.text_maxTemperature, resources.text_minTemperature]
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [resources.text_monday, resources.text_tuesday, resources.text_wednesday, resources.text_thursday, resources.text_friday, resources.text_saturday, resources.text_sunday]
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} °C'
+            }
+        },
+        series: [
+            {
+                name: resources.text_maxTemperature,
+                type: 'line',
+                data: [11, 11, 15, 13, 12, 13, 10],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: resources.text_maxValue},
+                        {type: 'min', name: resources.text_minValue}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: resources.text_averageValue},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'max'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: resources.text_maxValue
+                                }
+                            },
+                            type: 'max',
+                            name: '最高点'
+                        }]
+                    ]
+                }
+            },
+            {
+                name: resources.text_minTemperature,
+                type: 'line',
+                data: [1, -2, 2, 5, 3, 2, 0],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: resources.text_maxValue},
+                        {type: 'min', name: resources.text_minValue}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: resources.text_averageValue},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'min'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: resources.text_minValue
+                                }
+                            },
+                            type: 'min',
+                            name: '最低点'
+                        }]
+                    ]
+                }
+            }
+        ]
+    };
+
+    div = document.createElement('div');
+    chart = echarts.init(div, '', {
+        width: 600,
+        height: 400
+    });
+    chart.setOption(option);
+    query();
+
+    function query() {
+        var sqlParam = new maplibregl.supermap.QueryBySQLParameters({
+            queryParams: [{
+                name: "China_ProCenCity_pt@China",
+                attributeFilter: "1 = 1"
+            }, {
+                name: "China_Capital_pt@China",
+                attributeFilter: "1 = 1"
+            }]
+        });
+
+        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(sqlParam, function (serviceResult) {
+
+            var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
+            features = recordsets && recordsets[0] && recordsets[0].features;
+            map.addLayer({
+                "id": "points",
+                "type": "symbol",
+                "layout": {
+                    "icon-image": "positionPoint",
+                    "icon-size": 0.8,
+                    "icon-offset": [0, -15] //设置偏移量
+                },
+                "source": {
+                    "type": "geojson",
+                    "data": features
+                }
+            });
+
+            map.on('click', 'points', function (e) {
+
+                popup = new maplibregl.Popup({maxWidth: 'none'});
+                popup.setLngLat(e.lngLat.toArray())
+                    .setDOMContent(div) // sets a popup on this marker
+                    .addTo(map);
+
+                chart.setOption({
+                    title: {
+                        text: e.features[0].properties.NAME + resources.text_nextWeekTemperature
+                    },
+                    series: [
+                        {
+                            name: resources.text_maxTemperature,
+                            data: [10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10), 10 + Math.ceil(Math.random() * 10)],
+                        },
+                        {
+                            name: resources.text_minTemperature,
+                            data: [8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10), 8 - Math.ceil(Math.random() * 10)],
+
+                        }
+                    ]
+                });
+
+            });
+        });
+    }
+
+</script>
+</body>
+</html>
