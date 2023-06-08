@@ -46,6 +46,7 @@ var typeLinks = {
     "ol.control.Control": olapi + "module-ol_control_Control-Control.html",
     "ol.tilegrid.TileGrid": olapi + "module-ol_tilegrid_TileGrid-TileGrid.html",
     "ol.tilegrid.WMTS": olapi + "module-ol_tilegrid_WMTS.html",
+    "ol.loadingstrategy": olapi + "module-ol_loadingstrategy.html",
 
     //leaflet
     "L.Marker": lfapi + '#marker',
@@ -104,6 +105,7 @@ var typeLinks = {
     "GeoJSONFeature": geometryapi + '#section-3.2',
     // WebMap 结构
     "WebMapSummaryObject": helpDocApi + '#iP/Appendix/WebMap/WebMapSummary.htm',
+    "FlatGeobuf": 'https://github.com/flatgeobuf/flatgeobuf',
 
     // Web API
     "Promise": webApi + 'JavaScript/Reference/Global_Objects/Promise',

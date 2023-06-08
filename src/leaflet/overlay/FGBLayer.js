@@ -11,7 +11,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 /**
  * @class FGBLayer
  * @deprecatedclassinstance L.supermap.FGBLayer
- * @classdesc Fgb 图层源。
+ * @classdesc FGB 图层，该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
  * @version 11.1.0
  * @category Visualization FGB
  * @extends {L.LayerGroup}
@@ -19,11 +19,25 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {Object} options - 参数。
  * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。
- * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为按需加载。
+ * @param {string} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为按需加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法。
  * @param {function} [options.onEachFeature] - 要素创建时调用
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   new {namespace}.FGBLayer(url, options);
+ * 
+ * </script>
+ * 
+ * // ES6 Import
+ * import { FGBLayer } from '{npm}';
+ * 
+ * new FGBLayer(url, options);
+ * 
+ * ```
  */
 
 export var FGBLayer = L.LayerGroup.extend({

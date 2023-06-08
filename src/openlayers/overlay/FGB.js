@@ -11,13 +11,13 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @class FGB
  * @browsernamespace ol.source
  * @category Visualization FGB
- * @classdesc FGB 图层源。
+ * @classdesc FGB 图层源，该图层源把 {@link FlatGeobuf} 格式解析为点线面要素。
  * @version 11.1.0
  * @param {Object} opt_options - 参数。
  * @param {string} opt_options.url - FGB 服务地址，例如：http://localhost:8090/iserver/services/xxx/rest/data/featureResults/newResourceId.fgb。
- * @param {GeoJSONObject} [opt_options.strategy='bbox'] - 指定加载策略，可选值为 ol.loadingstrategy.all，ol/loadingstrategy.bbox。all为全部加载， bbox为当前可见范围加载
+ * @param {ol.loadingstrategy} [opt_options.strategy='bbox'] - 指定加载策略，可选值为 ol.loadingstrategy.all，ol/loadingstrategy.bbox。all为全部加载， bbox为当前可见范围加载
  * @param {Array} [opt_options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
- * @param {Function} [opt_options.featureLoader] - 要素加载回调函数
+ * @param {function} [opt_options.featureLoader] - 要素加载回调函数
  * @param {boolean} [opt_options.overlaps] - 是否优化重叠要素的填充与描边操作
  * @param {boolean} [opt_options.useSpatialIndex] - 是否启用要素空间索引
  * @param {boolean} [opt_options.wrapX] - 是否平铺地图

@@ -17,11 +17,11 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 /**
  * @class FGBLayer
  * @category Visualization FGB
- * @classdesc FGB。
+ * @classdesc FGB 图层，该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
  * @version 11.1.0
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("FGBlayer_") 创建图层 ID。
- * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为当前可见范围加载。
+ * @param {string} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为当前可见范围加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法，接收要素作为参数，需返回要素。
  * @param {Object} [options.paint] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property}
@@ -110,8 +110,8 @@ export class FGBLayer {
     this._handleFeatures(extent);
   }
 
-  moveLayer(id, beforeId) {
-    this.map.removeLayer(this.layerId, beforeId);
+  moveLayer(beforeId) {
+    this.map.moveLayer(this.layerId, beforeId);
   }
 
   removeLayer() {
