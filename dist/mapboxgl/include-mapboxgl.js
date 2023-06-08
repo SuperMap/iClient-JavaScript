@@ -184,9 +184,9 @@
     // dist
     if (!inArray(excludes, 'iclient-mapboxgl')) {
       if (supportES6()) {
-        inputScript(disturl + '/mapboxgl/iclient-mapboxgl.js');
+        inputScript(disturl + '/mapboxgl/iclient-mapboxgl-es6.min.js');
       } else {
-        inputScript(disturl + '/mapboxgl/iclient-mapboxgl.js');
+        inputScript(disturl + '/mapboxgl/iclient-mapboxgl.min.js');
       }
     }
     if (!inArray(excludes, 'iclient-mapboxgl-css')) {

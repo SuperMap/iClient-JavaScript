@@ -123,9 +123,9 @@
         // dist
         if (!inArray(excludes, 'iclient-ol')) {
             if (supportES6()) {
-                inputScript(disturl + '/ol/iclient-ol.js');
+                inputScript(disturl + '/ol/iclient-ol-es6.min.js');
             } else {
-                inputScript(disturl + '/ol/iclient-ol.js');
+                inputScript(disturl + '/ol/iclient-ol.min.js');
             }
         }
         if (!inArray(excludes, 'iclient-ol-css')) {

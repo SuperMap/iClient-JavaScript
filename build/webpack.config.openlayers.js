@@ -4,13 +4,9 @@ var libName = 'openlayers';
 //产品包名
 var productName = 'iclient-openlayers';
 
-let origin;
-if (process.env['npm_config_argv']) {
-  var argv = JSON.parse(process.env['npm_config_argv']);
-  origin = argv.original;
-} else {
-  origin = process.env['npm_lifecycle_event'];
-}
+var argv = JSON.parse(process.env['npm_config_argv']);
+var origin = argv.original;
+
 if (origin && origin.includes('deploy-ol')) {
     libName = 'ol';
     productName = 'iclient-ol';
