@@ -49,126 +49,128 @@
     }
 
     //加载类库资源文件
-    function load({ libsurl, disturl }) {
+    function load(config) {
+        var libsurl = config.libsurl;
+        var disturl = config.disturl;
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(excludes, 'leaflet')) {
-          inputCSS(`${libsurl}/leaflet/1.7.1/leaflet.css`);
-          inputScript(`${libsurl}/leaflet/1.7.1/leaflet.js`);
+          inputCSS(libsurl + '/leaflet/1.7.1/leaflet.css');
+          inputScript(libsurl + '/leaflet/1.7.1/leaflet.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
-            inputCSS(`${libsurl}/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css`);
-            inputScript(`${libsurl}/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js`);
+            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css');
+            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
-            inputScript(`${libsurl}/leaflet/plugins/leaflet.heat/leaflet-heat.js`);
+            inputScript(libsurl + '/leaflet/plugins/leaflet.heat/leaflet-heat.js');
         }
         if (inArray(includes, 'leaflet.markercluster')) {
-            inputCSS(`${libsurl}/leaflet/plugins/leaflet.markercluster/1.5.3/MarkerCluster.Default.css`);
-            inputCSS(`${libsurl}/leaflet/plugins/leaflet.markercluster/1.5.3/MarkerCluster.css`);
-            inputScript(`${libsurl}/leaflet/plugins/leaflet.markercluster/1.5.3/leaflet.markercluster.js`);
+            inputCSS(libsurl + '/leaflet/plugins/leaflet.markercluster/1.5.3/MarkerCluster.Default.css');
+            inputCSS(libsurl + '/leaflet/plugins/leaflet.markercluster/1.5.3/MarkerCluster.css');
+            inputScript(libsurl + '/leaflet/plugins/leaflet.markercluster/1.5.3/leaflet.markercluster.js');
         }
         if (inArray(includes, 'leaflet.draw')) {
-            inputCSS(`${libsurl}/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.css`);
-            inputScript(`${libsurl}/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.js`);
+            inputCSS(libsurl + '/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.css');
+            inputScript(libsurl + '/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.js');
         }
         if (inArray(includes, 'leaflet-geoman')) {
-          inputCSS(`${libsurl}/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.css`);
-          inputScript(`${libsurl}/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.min.js`);
+          inputCSS(libsurl + '/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.css');
+          inputScript(libsurl + '/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.min.js');
 
         }
         if (inArray(includes, 'leaflet.miniMap')) {
-            inputCSS(`${libsurl}/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.css`);
-            inputScript(`${libsurl}/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.js`);
+            inputCSS(libsurl + '/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.css');
+            inputScript(libsurl + '/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript(`${libsurl}/mapv/2.0.62/mapv.min.js`);
+            inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript(`${libsurl}/turf/6.5.0/turf.min.js`);
+            inputScript(libsurl + '/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript(`${libsurl}/echarts/4.9.0/echarts.min.js`);
+            inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'elasticsearch')) {
-            inputScript(`${libsurl}/elasticsearch/16.7.3/elasticsearch.min.js`);
+            inputScript(libsurl + '/elasticsearch/16.7.3/elasticsearch.min.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript(`${libsurl}/xlsx/0.19.3/xlsx.core.min.js`);
+            inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
-            inputScript(`${libsurl}/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js`);
+            inputScript(libsurl + '/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js');
         }
         if (inArray(includes, 'd3')) {
-            inputScript(`${libsurl}/d3/7.8.2/d3.min.js`);
+            inputScript(libsurl + '/d3/7.8.2/d3.min.js');
         }
         if (inArray(includes, 'd3-hexbin')) {
-            inputScript(`${libsurl}/d3-hexbin/0.2.2/d3-hexbin.v0.2.min.js`);
+            inputScript(libsurl + '/d3-hexbin/0.2.2/d3-hexbin.v0.2.min.js');
         }
         if (inArray(includes, 'd3Layer')) {
-            inputScript(`${libsurl}/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.js`);
+            inputScript(libsurl + '/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.js');
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript(`${libsurl}/osmbuildings/OSMBuildings-Leaflet.js`);
+            inputScript(libsurl + '/osmbuildings/OSMBuildings-Leaflet.js');
         }
         if (inArray(includes, 'leaflet-icon-pulse')) {
-            inputCSS(`${libsurl}/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css`);
-            inputScript(`${libsurl}/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js`);
+            inputCSS(libsurl + '/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css');
+            inputScript(libsurl + '/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js');
         }
         if (inArray(includes, 'deck')) {
-            inputScript(`${libsurl}/deck.gl/5.1.3/deck.gl.min.js`);
+            inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
         }
         if (inArray(includes, 'pixi')) {
-            inputScript(`${libsurl}/pixi/4.8.7/pixi.min.js`);
-            inputScript(`${libsurl}/leaflet/plugins/Leaflet.PixiOverlay/1.8.2/L.PixiOverlay.min.js`);
-            inputScript(`${libsurl}/leaflet/plugins/Leaflet.PixiOverlay/MarkerContainer.js`);
-            inputScript(`${libsurl}/bezier-easing/2.1.0/bezier-easing.js`);
+            inputScript(libsurl + '/pixi/4.8.7/pixi.min.js');
+            inputScript(libsurl + '/leaflet/plugins/Leaflet.PixiOverlay/1.8.2/L.PixiOverlay.min.js');
+            inputScript(libsurl + '/leaflet/plugins/Leaflet.PixiOverlay/MarkerContainer.js');
+            inputScript(libsurl + '/bezier-easing/2.1.0/bezier-easing.js');
         }
         if (inArray(includes, 'tensorflow')) {
-            inputScript(`${libsurl}/tensorflow/3.9.0/tf.min.js`);
+            inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
         }
 
         if (inArray(includes, 'FGB')) {
-          inputScript(`${libsurl}/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js`);
+          inputScript(libsurl + '/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
         }
 
         // iclient
         if (!inArray(excludes, 'iclient-leaflet')) {
             if (supportES6()) {
-                inputScript(`${disturl}/leaflet/iclient-leaflet-es6.min.js`);
+                inputScript(disturl + '/leaflet/iclient-leaflet-es6.min.js');
             } else {
-                inputScript(`${disturl}/leaflet/iclient-leaflet.min.js`);
+                inputScript(disturl + '/leaflet/iclient-leaflet.min.js');
             }
         }
         if (inArray(includes, 'iclient-leaflet-css')) {
-            inputCSS(`${disturl}/leaflet/iclient-leaflet.min.css`);
+            inputCSS(disturl + '/leaflet/iclient-leaflet.min.css');
         }
         if (inArray(includes, 'iclient-plot-leaflet')) {
-            inputCSS(`${libsurl}/plotting/leaflet/11.1.0/iclient-plot-leaflet.css`);
+            inputCSS(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet.css');
             if (supportES6()) {
-                inputScript(`${libsurl}/plotting/leaflet/11.1.0/iclient-plot-leaflet-es6.min.js`);
+                inputScript(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet-es6.min.js');
             } else {
-                inputScript(`${libsurl}/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js`);
+                inputScript(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {
-            inputCSS(`${libsurl}/ant-design-vue/1.7.8/antd.min.css`);
-            inputScript(`${libsurl}/ant-design-vue/1.7.8/antd.min.js`);
+            inputCSS(libsurl + '/ant-design-vue/1.7.8/antd.min.css');
+            inputScript(libsurl + '/ant-design-vue/1.7.8/antd.min.js');
         }
         if (inArray(includes, 'echarts-vue')) {
-            inputScript(`${libsurl}/echarts/4.9.0/echarts.min.js`);
-            inputScript(`${libsurl}/vue-echarts/4.1.0/vue-echarts.min.js`);
-            inputScript(`${libsurl}/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js`);
-            inputScript(`${libsurl}/echartsLayer/EchartsLayer.min.js`);
+            inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
+            inputScript(libsurl + '/vue-echarts/4.1.0/vue-echarts.min.js');
+            inputScript(libsurl + '/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
+            inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
         }
         if (inArray(includes, 'iclient-leaflet-vue')) {
-            inputCSS(`${disturl}/leaflet/iclient-leaflet-vue.css`);
-            inputScript(`${disturl}/leaflet/iclient-leaflet-vue.min.js`);
+            inputCSS(disturl + '/leaflet/iclient-leaflet-vue.css');
+            inputScript(disturl + '/leaflet/iclient-leaflet-vue.min.js');
         }
         if (inArray(includes, 'leaflet-mapbox-gl')) {
-            inputScript(`${libsurl}/leaflet-mapbox-gl/0.0.15/leaflet-mapbox-gl.min.js`);
+            inputScript(libsurl + '/leaflet-mapbox-gl/0.0.15/leaflet-mapbox-gl.min.js');
         }
     }
 

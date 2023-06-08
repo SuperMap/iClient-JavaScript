@@ -49,85 +49,87 @@
     }
 
     //加载类库资源文件
-    function load({ libsurl, disturl }) {
+    function load(config) {
+        var libsurl = config.libsurl;
+        var disturl = config.disturl;
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
-            inputCSS(`${libsurl}/openlayers/6.14.1/ol.css`);
-            inputScript(`${libsurl}/openlayers/6.14.1/ol.js`);
+            inputCSS(libsurl + '/openlayers/6.14.1/ol.css');
+            inputScript(libsurl + '/openlayers/6.14.1/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
-            inputCSS(`${libsurl}/openlayers/4.6.5/ol.css`);
-            inputScript(`${libsurl}/openlayers/4.6.5/ol.js`);
+            inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
+            inputScript(libsurl + '/openlayers/4.6.5/ol.js');
         }
         if (inArray(includes, 'ol-debug')) {
-            inputCSS(`${libsurl}/openlayers/4.6.5/ol-debug.css`);
-            inputScript(`${libsurl}/openlayers/4.6.5/ol-debug.js`);
+            inputCSS(libsurl + '/openlayers/4.6.5/ol-debug.css');
+            inputScript(libsurl + '/openlayers/4.6.5/ol-debug.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript(`${libsurl}/mapv/2.0.62/mapv.min.js`);
+            inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript(`${libsurl}/turf/6.5.0/turf.min.js`);
+            inputScript(libsurl + '/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript(`${libsurl}/echarts/4.9.0/echarts.min.js`);
+            inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript(`${libsurl}/proj4/2.9.0/proj4.js`);
+            inputScript(libsurl + '/proj4/2.9.0/proj4.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript(`${libsurl}/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js`);
+            inputScript(libsurl + '/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
-            inputScript(`${libsurl}/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js`);
+            inputScript(libsurl + '/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol-mapbox-style')) {
-            inputScript(`${libsurl}/openlayers/plugins/ol-mapbox-style/2.11.2-4/olms.js`);
+            inputScript(libsurl + '/openlayers/plugins/ol-mapbox-style/2.11.2-4/olms.js');
         }
         if (inArray(includes, 'deck')) {
-            inputScript(`${libsurl}/deck.gl/5.1.3/deck.gl.min.js`);
+            inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript(`${libsurl}/osmbuildings/OSMBuildings-OL3.js`);
+            inputScript(libsurl + '/osmbuildings/OSMBuildings-OL3.js');
         }
         if (inArray(includes, 'animatedclusterlayer')) {
-            inputScript(`${libsurl}/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js`);
+            inputScript(libsurl + '/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js');
         }
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS(`${libsurl}/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.css`);
-            inputScript(`${libsurl}/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js`);
+            inputCSS(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.css');
+            inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
         }
         if (inArray(includes, 'jsonsql')) {
-            inputScript(`${libsurl}/jsonsql/jsonsql.js`);
+            inputScript(libsurl + '/jsonsql/jsonsql.js');
         }
         if (inArray(includes, 'geostats')) {
-            inputScript(`${libsurl}/geostats/geostats.js`);
+            inputScript(libsurl + '/geostats/geostats.js');
         }
         if (inArray(includes, 'canvg')) {
-            inputScript(`${libsurl}/canvg/3.0.10/umd.min.js`);
+            inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript(`${libsurl}/tensorflow/3.9.0/tf.min.js`);
+          inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
         }
         if (inArray(includes, 'xlsx')) {
-            inputScript(`${libsurl}/xlsx/0.19.3/xlsx.core.min.js`);
+            inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
         }
         if (inArray(includes, 'FGB')) {
-          inputScript(`${libsurl}/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js`);
+          inputScript(libsurl + '/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
         }
        
         // dist
         if (!inArray(excludes, 'iclient-ol')) {
             if (supportES6()) {
-                inputScript(`${disturl}/ol/iclient-ol-es6.min.js`);
+                inputScript(disturl + '/ol/iclient-ol.js');
             } else {
-                inputScript(`${disturl}/ol/iclient-ol.min.js`);
+                inputScript(disturl + '/ol/iclient-ol.js');
             }
         }
         if (!inArray(excludes, 'iclient-ol-css')) {
-            inputCSS(`${disturl}/ol/iclient-ol.min.css`);
+            inputCSS(disturl + '/ol/iclient-ol.min.css');
         }
     }
 

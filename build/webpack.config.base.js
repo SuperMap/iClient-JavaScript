@@ -16,7 +16,7 @@ function compareDependencies(pkgName, dependenciesToCompare, rootDependencies = 
   });
 }
 
-const packageToClients = ['common', 'classic', 'leaflet', 'openlayers', 'mapboxgl'];
+const packageToClients = ['common', 'classic', 'leaflet', 'openlayers', 'mapboxgl', 'maplibregl'];
 packageToClients.forEach(client => {
   // eslint-disable-next-line import/no-dynamic-require
   const clientPkg = require(`../src/${client}/package.json`);

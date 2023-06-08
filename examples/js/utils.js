@@ -100,7 +100,7 @@ var utils = {
             throw new Error("element is required")
         }
         $.get(templateFilePath, function (html) {
-            if(data?.nav?.path) {
+            if(data && data.nav && data.nav.path) {
               window.path = data.nav.path
             }
             $(element).html(window.template.compile(html)(data));
