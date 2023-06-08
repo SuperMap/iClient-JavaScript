@@ -288,6 +288,11 @@ export class MapboxStyles extends Observable {
                         this._initStyleFunction();
                     };
                     img.src = this._spriteImageUrl;
+                })
+                .catch( err => {
+                    console.log(err);
+                    this._spriteImage = null;
+                    this._initStyleFunction();
                 });
         } else {
             this._initStyleFunction();
