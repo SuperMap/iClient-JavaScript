@@ -4095,14 +4095,14 @@ export class WebMap extends Observable {
      */
     createMigrationLayer(layerInfo, features) {
         // 获取图层外包DOM
-        if (!window.EChartsLayer.prototype.getContainer) {
-            window.EChartsLayer.prototype.getContainer = function () {
+        if (!window.ol3Echarts.prototype.getContainer) {
+            window.ol3Echarts.prototype.getContainer = function () {
                 return this.$container;
             };
         }
         // 设置图层可见性
-        if (!window.EChartsLayer.prototype.setVisible) {
-            window.EChartsLayer.prototype.setVisible = function (visible) {
+        if (!window.ol3Echarts.prototype.setVisible) {
+            window.ol3Echarts.prototype.setVisible = function (visible) {
                 if (visible) {
                     let options = this.get('options');
                     if (options) {
@@ -4118,8 +4118,8 @@ export class WebMap extends Observable {
             };
         }
         // 设置图层层级
-        if (!window.EChartsLayer.prototype.setZIndex) {
-            window.EChartsLayer.prototype.setZIndex = function (zIndex) {
+        if (!window.ol3Echarts.prototype.setZIndex) {
+            window.ol3Echarts.prototype.setZIndex = function (zIndex) {
                 let container = this.getContainer();
                 if (container) {
                     container.style.zIndex = zIndex;
@@ -4132,8 +4132,8 @@ export class WebMap extends Observable {
          *     cursor: default !important;
          * }
          */
-        if (!window.EChartsLayer.prototype.setCursor) {
-            window.EChartsLayer.prototype.setCursor = function (cursor = 'default') {
+        if (!window.ol3Echarts.prototype.setCursor) {
+            window.ol3Echarts.prototype.setCursor = function (cursor = 'default') {
                 let container = this.getContainer();
                 if (container && cursor === 'default') {
                     container.classList.add('cursor-default');
@@ -4144,7 +4144,7 @@ export class WebMap extends Observable {
         let lineData = this.createLinesData(layerInfo, properties);
         let pointData = this.createPointsData(lineData, layerInfo, properties);
         let options = this.createOptions(layerInfo, lineData, pointData);
-        let layer = new window.EChartsLayer(options, {
+        let layer = new window.ol3Echarts(options, {
             // hideOnMoving: true,
             // hideOnZooming: true
             //以下三个参数，如果不按照这样设置，会造成不可见图层时，缩放还会出现图层
