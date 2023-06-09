@@ -110,7 +110,7 @@ a {
 
 /*重写AdmineLTE 的部分效果 end*/
 .skin-blue .main-header .navbar {
-  background-color: var(--background-color);
+  background-color: var(--header-background-color);
 }
 /*footer */
 

@@ -101,7 +101,7 @@ h3.category-title {
 }
 
 .box-header {
-    padding-top: 22px;
+    padding-top: 10px;
     padding-bottom: 5px;
     padding-left: 0;
     background-color: #f9f9f9;
@@ -117,5 +117,5 @@ h3.category-title {
 }
 
 .category {
-    padding-top: 72px;
+    padding-top: 60px;
 }

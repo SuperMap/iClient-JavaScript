@@ -44,6 +44,7 @@
 
             inputScript(libsurl + '/i18next/i18next.min.js');
             inputScript(libsurl + '/jquery-i18next/jquery-i18next.min.js');
+            inputScript(libsurl + '/css-vars-ponyfill/2.4.8/css-vars-ponyfill.min.js');
 
             inputScript("../js/utils.js");
             inputScript("../js/localization.js");
