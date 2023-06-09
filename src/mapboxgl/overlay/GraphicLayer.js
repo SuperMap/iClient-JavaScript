@@ -152,6 +152,7 @@ export class GraphicLayer {
         }
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
+        console.log('deckOptions', deckOptions);
         this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         this.map.on('render', this._moveEvent.bind(this));
         this.map.on('resize', this._resizeEvent.bind(this));
@@ -462,6 +463,7 @@ export class GraphicLayer {
         }
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
+        console.log('deckOptions', deckOptions);
         this.deckGL.setProps(deckOptions);
     }
 

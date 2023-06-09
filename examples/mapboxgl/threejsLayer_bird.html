@@ -85,7 +85,9 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    loaderModels();
+    map.on('load', () => {
+      loaderModels();
+    });
 
     function loaderModels() {
         threeLayer = new mapboxgl.supermap.ThreeLayer('three');
@@ -157,10 +159,9 @@
             });
         }
 
-        threeLayer.addTo(map);
+        // threeLayer.addTo(map);
+        map.addLayer(threeLayer);
     }
-
-
 </script>
 </body>
 </html>

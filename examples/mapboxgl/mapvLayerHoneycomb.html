@@ -62,7 +62,9 @@
             });
             map.addControl(new mapboxgl.NavigationControl(), 'top-left');
             map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
-            loadData();
+            map.on('load', function() {
+              loadData();
+            });
 
             function loadData() {
                 var randomCount = 1000;

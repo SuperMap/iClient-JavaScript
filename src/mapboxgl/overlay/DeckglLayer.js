@@ -3,8 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { Util } from '../core/Util';
+import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglLayerBase';
 
 /**
  * @class DeckglLayer
@@ -72,32 +71,11 @@ import { Util } from '../core/Util';
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
  * @usage
  */
-export class DeckglLayer {
+export class DeckglLayer extends DeckglLayerBase {
     constructor(layerTypeID, options) {
-        // Util.extend(defaultProps, options);
-        /**
-         * @member {string} DeckglLayer.prototype.id
-         * @description 高效率点图层 ID。
-         */
-        this.layerTypeID = layerTypeID;
-        /**
-         * @member {Array.<Graphic>} DeckglLayer.prototype.graphics
-         * @description 点要素对象数组。
-         */
-        this.data = [].concat(options.data);
-
-        this.props = options.props ? options.props : {};
-        this.callback = options.callback ? options.callback : {};
-
-        this.id = options.layerId
-            ? options.layerId
-            : CommonUtil.createUniqueID('graphicLayer_' + this.layerTypeID + '_');
-
-        /**
-         * @member {boolean} [DeckglLayer.prototype.visibility=true]
-         * @description 图层显示状态属性。
-         */
-        this.visibility = true;
+        super(layerTypeID, options);
+        this.type='custom';
+        this.renderingMode = '3d';
     }
 
     /**
@@ -109,11 +87,10 @@ export class DeckglLayer {
         this.map = map;
         if (this.canvas) {
             this.mapContainer = this.map.getCanvasContainer();
-            this.mapContainer.appendChild(this.canvas);
             return this;
         }
         //当使用扩展的mapboxgl代码时有效
-        if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
+        if (this.isEPSG3857()) {
             this.coordinateSystem = 3;
             this.isGeographicCoordinateSystem = true;
         } else {
@@ -121,7 +98,7 @@ export class DeckglLayer {
             this.isGeographicCoordinateSystem = false;
         }
         //创建图层容器
-        this._initContainer();
+        this._initContainer(this.map.getCanvasContainer(), this.map.getCanvas());
 
         //创建 deckgl 图层
         this._createLayerByLayerTypeID();
@@ -134,462 +111,26 @@ export class DeckglLayer {
         deckOptions.layers = [this.layer];
         deckOptions.canvas = this.canvas;
         this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
-        this.map.on('render', this._moveEvent.bind(this));
-        this.map.on('resize', this._resizeEvent.bind(this));
-
-        this._draw();
-        return this;
-    }
-
-    /**
-     * @function DeckglLayer.prototype.remove
-     * @description 删除该图层。
-     */
-    remove() {
-        this.map.off('render', this._moveEvent.bind(this));
-        this.map.off('resize', this._resizeEvent.bind(this));
-        this.map.getCanvasContainer().removeChild(this.canvas);
-    }
-
-    /**
-     * @function DeckglLayer.prototype.removeFromMap
-     * @deprecated
-     * @description 删除该图层，并释放图层资源。
-     */
-    removeFromMap() {
-        this.remove();
-        this.clear();
-    }
-
-    /**
-     * @function DeckglLayer.prototype.moveTo
-     * @description 将图层移动到某个图层之前。
-     * @param {string} layerID - 待插入的图层 ID。
-     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
-     */
-    moveTo(layerID, before) {
-        var layer = document.getElementById(this.id);
-        before = before !== undefined ? before : true;
-        if (before) {
-            var beforeLayer = document.getElementById(layerID);
-            if (layer && beforeLayer) {
-                beforeLayer.parentNode.insertBefore(layer, beforeLayer);
-            }
-            return;
-        }
-        var nextLayer = document.getElementById(layerID);
-        if (layer) {
-            if (nextLayer.nextSibling) {
-                nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
-                return;
-            }
-            nextLayer.parentNode.appendChild(layer);
-        }
-    }
-
-    /**
-     * @function DeckglLayer.prototype.setVisibility
-     * @description 设置图层可见性。
-     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
-     */
-    setVisibility(visibility) {
-        if (this.canvas && visibility !== this.visibility) {
-            this.visibility = visibility;
-            this.canvas.style.display = visibility ? 'block' : 'none';
-        }
-    }
-
-    /**
-     * @function DeckglLayer.prototype.setStyle
-     * @description 设置图层整体样式。
-     * @param {Object} styleOptions - 样式对象。
-     * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-     * @param {number} [styleOptions.radius=10] - 点半径。
-     * @param {number} [styleOptions.opacity=0.8] - 不透明度。
-     * @param {Array.<number>}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
-     * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值（像素）。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值（像素）。
-     * @param {number} [styleOptions.strokeWidth=12] - 边框大小。
-     * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
-     */
-    setStyle(styleOptions) {
-        Util.extend(this.props, styleOptions);
-        this._createLayerByLayerTypeID();
-        this.update();
-    }
-
-    /**
-     * @function DeckglLayer.prototype.setData
-     * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
-     * @param {Array.<Object>}  data - 点要素对象数组。
-     */
-    setData(data) {
-        this.data = this.data || [];
-        this.data.length = 0;
-        let dataTemp = !Util.isArray(data) ? [data] : [].concat(data);
-        //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
-        if (!this.layer.props.data) {
-            this.layer.props.data = [];
-        }
-        this.layer.props.data.length = 0;
-        for (let i = 0; i < dataTemp.length; i++) {
-            this.layer.props.data.push(dataTemp[i]);
-        }
-        this.data = this.layer.props.data;
-        this.update();
-    }
-
-    /**
-     * @function DeckglLayer.prototype.addData
-     * @description 添加点要素，不会覆盖之前的要素。
-     * @param {Array.<Object>}  data - 点要素对象数组。
-     */
-    addData(data) {
-        this.data = this.data || [];
-        let dataTemp = !Util.isArray(data) ? [data] : [].concat(data);
-        //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
-        if (!this.layer.props.data) {
-            this.layer.props.data = [];
-        }
-        for (let i = 0; i < dataTemp.length; i++) {
-            this.layer.props.data.push(dataTemp[i]);
-        }
-        this.update();
-    }
-
-    /**
-     * @function DeckglLayer.prototype.update
-     * @description 更新图层。
-     */
-    update() {
-        if (this.layer.lifecycle !== 'Awaiting state') {
-            let changeFlags = {
-                dataChanged: true,
-                propsChanged: true,
-                viewportChanged: true,
-                updateTriggersChanged: true
-            };
-            this.layer.setChangeFlags(changeFlags);
-        }
         this._draw();
     }
 
-    /**
-     * @function DeckglLayer.prototype.clear
-     * @description 释放图层资源。
-     */
-    // todo 还有哪些资源应该被释放？
-    clear() {
-        this.removeData();
-        this.deckGL.finalize();
+    getMapInfo() {
+      let center = this.map.getCenter();
+      let zoom = this.map.getZoom();
+      let maxZoom = this.map.getMaxZoom();
+      let pitch = this.map.getPitch();
+      let bearing = this.map.getBearing();
+      let longitude = center.lng;
+      let latitude = center.lat;
+      return { center, zoom, maxZoom, pitch, bearing, longitude, latitude };
     }
 
-    /**
-     * @function DeckglLayer.prototype.removeData
-     * @description 移除所有要素。
-     */
-    removeData() {
-        this.data.length = 0;
-
-        if (this.layer.props.data) {
-            this.layer.props.data.length = 0;
-        }
-        this.update();
-    }
-
-    _draw() {
-        let deckOptions = this._getState();
-        deckOptions.layers = [this.layer];
-        deckOptions.canvas = this.canvas;
-        // this.deckGL.updateLayers();
-        this.deckGL.setProps(deckOptions);
-    }
-
-    _getState() {
-        //获取地图信息构建state
-        let map = this.map;
-        let width = parseInt(this.canvas.style.width);
-        let height = parseInt(this.canvas.style.height);
-        let center = map.getCenter();
-        let longitude = center.lng;
-        let latitude = center.lat;
-        let zoom = map.getZoom();
-        let maxZoom = map.getMaxZoom();
-        let pitch = map.getPitch();
-        let bearing = map.getBearing();
-
-        let mapViewport = {
-            width: width,
-            height: height,
-            longitude: longitude,
-            latitude: latitude,
-            zoom: zoom,
-            maxZoom: maxZoom,
-            pitch: pitch,
-            bearing: bearing
-        };
-
-        let state = {};
-
-        //克隆 mapViewport
-        for (let key in mapViewport) {
-            state[key] = mapViewport[key];
-        }
-        //克隆 props
-        for (let key in this.props) {
-            state[key] = this.props[key];
-        }
-        //当使用扩展的mapboxgl代码时有效
-        if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
-            state.coordinateSystem = this.coordinateSystem;
-            state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
-        } else {
-            state.coordinateSystem = 1;
-            state.isGeographicCoordinateSystem = false
-        }
-
-        //更行数据
-        state.data = this.data;
-
-        return state;
-    }
-
-    /**
-     * @function DeckglLayer.prototype._createLayerByLayerTypeID
-     * @description 判别当前创建图层类型。
-     * @private
-     */
-    _createLayerByLayerTypeID() {
-        //统一处理公共属性：
-        this.props.data = this.data;
-        this.props.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
-        this.props.coordinateSystem = this.coordinateSystem;
-        //添加事件监听
-        this.props.pickable = Boolean(this.props.onClick) || Boolean(this.props.onHover);
-
-        //各类型各自从 defaultProps 取出相形的参数：
-        if (this.layerTypeID === 'scatter-plot') {
-            this.props.id = 'scatter-plot';
-            this._createScatterPlotLayer();
-        } else if (this.layerTypeID === 'path-layer') {
-            this.props.id = 'path-layer';
-            this._createPathLayer();
-        } else if (this.layerTypeID === 'polygon-layer') {
-            this.props.id = 'polygon-layer';
-            this._createPolygonLayer();
-        } else if (this.layerTypeID === 'arc-layer') {
-            this.props.id = 'arc-layer';
-            this._createArcLineLayer();
-        } else if (this.layerTypeID === 'hexagon-layer') {
-            this.props.id = 'hexagon-layer';
-            this._createHexagonLayer();
-        } else {
-            throw new Error(this.layerTypeID + ' does not support');
-        }
-    }
-
-    /**
-     * @description scatter-plot
-     * @private
-     */
-    _createScatterPlotLayer() {
-        //处理回调
-        /*  this.props.getPosition = this.callback.getPosition ? this.callback.getPosition : function (point) {
-              if (!point) {
-                  return [0, 0, 0];
-              }
-              return point.geometry.coordinates;
-          };*/
-        var me = this;
-        this.props.getPosition = this.callback.getPosition
-            ? this.callback.getPosition
-            : function (point) {
-                  if (!point) {
-                      return [0, 0, 0];
-                  }
-                  let lngLat = point.getLngLat();
-                  return lngLat && [lngLat.lng, lngLat.lat, 0];
-              };
-        if (this.callback.getColor) {
-            this.props.getColor = this.callback.getColor
-                ? this.callback.getColor
-                : function (point) {
-                      let style = point && point.getStyle();
-                      return (style && style.color) || me.props.color;
-                  };
-        }
-
-        if (this.callback.getRadius) {
-            this.props.getRadius = this.callback.getRadius
-                ? this.callback.getRadius
-                : function (point) {
-                      let style = point && point.getStyle();
-                      return (style && style.radius) || me.props.radius;
-                  };
-        }
-
-        if (this.props.color || this.props.radius) {
-            this.props.updateTriggers = {};
-            if (this.props.radius) {
-                this.props.updateTriggers.getRadius = [this.props.radius];
-            }
-            if (this.props.color) {
-                this.props.updateTriggers.getColor = [this.props.color];
-            }
-        }
-        this.layer = new window.DeckGL.ScatterplotLayer(this.props);
-    }
-
-    /**
-     * @description path-layer
-     * @private
-     */
-    _createPathLayer() {
-        this.props.getPath = this.callback.getPath
-            ? this.callback.getPath
-            : function (feature) {
-                  return feature.geometry.coordinates;
-              };
-        //以下几个函数也可走默认值
-        if (this.callback.getColor) {
-            this.props.getColor = this.callback.getColor;
-        }
-        if (this.callback.getWidth) {
-            this.props.getWidth = this.callback.getWidth;
-        }
-        if (this.callback.getDashArray) {
-            this.props.getDashArray = this.callback.getDashArray;
-        }
-
-        this.layer = new window.DeckGL.PathLayer(this.props);
-    }
-
-    /**
-     * @description polygon-layer
-     * @private
-     */
-    _createPolygonLayer() {
-        this.props.getPolygon = this.callback.getPolygon
-            ? this.callback.getPolygon
-            : function (feature) {
-                  return feature.geometry.coordinates;
-              };
-
-        //todo 思考下真的让用户配这么多回调么，或者先判断下数据属性里面有没有配置的属性值？
-
-        if (this.callback.getElevation) {
-            this.props.getElevation = this.callback.getElevation;
-        }
-        if (this.callback.getFillColor) {
-            this.props.getFillColor = this.callback.getFillColor;
-        }
-        if (this.callback.getLineColor) {
-            this.props.getLineColor = this.callback.getLineColor;
-        }
-        if (this.callback.getLineWidth) {
-            this.props.getLineWidth = this.callback.getLineWidth;
-        }
-        this.props.updateTriggers = {};
-        this.props.updateTriggers.getColor = this.props.color ? this.props.color : [0, 0, 128, 128];
-        this.layer = new window.DeckGL.PolygonLayer(this.props);
-    }
-
-    /**
-     * @description arc-layer
-     * @private
-     */
-    _createArcLineLayer() {
-        //todo ArcLineLayer geojson coordinates数组中只能有一个线段
-        this.props.getSourcePosition = this.callback.getSourcePosition
-            ? this.callback.getSourcePosition
-            : function (feature) {
-                  if (!feature) {
-                      return [0, 0, 0];
-                  }
-
-                  return feature.geometry.coordinates[0];
-              };
-        this.props.getTargetPosition = this.callback.getTargetPosition
-            ? this.callback.getTargetPosition
-            : function (feature) {
-                  if (!feature) {
-                      return [0, 0, 0];
-                  }
-
-                  return feature.geometry.coordinates[1];
-              };
-
-        if (this.callback.getStrokeWidth) {
-            this.props.getStrokeWidth = this.callback.getStrokeWidth;
-        }
-        if (this.callback.getSourceColor) {
-            this.props.getSourceColor = this.callback.getSourceColor;
-        }
-        if (this.callback.getTargetColor) {
-            this.props.getTargetColor = this.callback.getTargetColor;
-        }
-
-        this.layer = new window.DeckGL.ArcLayer(this.props);
-    }
-
-    /**
-     * @description hexagon-layer
-     * @private
-     */
-    _createHexagonLayer() {
-        this.props.getPosition = this.callback.getPosition
-            ? this.callback.getPosition
-            : function (feature) {
-                  if (!feature) {
-                      return [0, 0, 0];
-                  }
-
-                  return feature.geometry.coordinates;
-              };
-
-        if (this.callback.getColorValue) {
-            this.props.getColorValue = this.callback.getColorValue;
-        }
-        if (this.callback.getElevationValue) {
-            this.props.getElevationValue = this.callback.getElevationValue;
-        }
-        this.layer = new window.DeckGL.HexagonLayer(this.props);
-    }
-
-    _initContainer() {
-        this.canvas = this._createCanvas();
-        this.mapContainer = this.map.getCanvasContainer();
-        this.mapContainer.appendChild(this.canvas);
-    }
-
-    _createCanvas() {
-        let canvas = document.createElement('canvas');
-        canvas.id = this.id;
-        canvas.style.position = 'absolute';
-        canvas.style.top = 0 + 'px';
-        canvas.style.left = 0 + 'px';
-        canvas.style.cursor = '';
-        let map = this.map;
-        canvas.width = parseInt(map.getCanvas().style.width);
-        canvas.height = parseInt(map.getCanvas().style.height);
-        canvas.style.width = map.getCanvas().style.width;
-        canvas.style.height = map.getCanvas().style.height;
-        return canvas;
-    }
-
-    _moveEvent() {
+    render() {
         this._draw();
     }
 
-    _resizeEvent() {
-        let canvas = this.canvas;
-        let map = this.map;
-        canvas.width = parseInt(map.getCanvas().style.width);
-        canvas.height = parseInt(map.getCanvas().style.height);
-        canvas.style.width = map.getCanvas().style.width;
-        canvas.style.height = map.getCanvas().style.height;
-        this._draw();
+    isEPSG3857() {
+      return this.map.getCRS && this.map.getCRS() !== mapboxgl.CRS.EPSG3857
     }
 }
 

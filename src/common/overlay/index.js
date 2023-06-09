@@ -25,6 +25,9 @@ import {
   FeatureTheme
 } from './feature';
 import {LevelRenderer} from './levelRenderer';
+import { MapvRenderer } from './mapv';
+import { ThreeLayerRenderer } from './threejs/ThreeLayerRenderer';
+import * as Transfrom from './threejs/Transform'
 
 export { FeatureThemeBar };
 export { FeatureThemeBar3D };
@@ -50,3 +53,6 @@ export {
   FeatureTheme
 };
 export { LevelRenderer };
+export { MapvRenderer };
+export { ThreeLayerRenderer };
+export { Transfrom };

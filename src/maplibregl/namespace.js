@@ -32,6 +32,17 @@ import {
 } from './services';
 
 import {
+  MapvLayer,
+  ThreeLayer,
+  DeckglLayer,
+  HeatMapLayer,
+  GraphicLayer,
+  Graphic,
+  GraticuleLayer,
+  FGBLayer
+} from './overlay';
+
+import {
   CommonUtil,
   SuperMap
 } from '@supermap/iclient-common/namespace';
@@ -39,6 +50,7 @@ import {
 export * from './index';
 
 maplibregl.supermap = {...SuperMap, ...maplibregl.supermap};
+maplibregl.supermap.Graphic = Graphic;
 maplibregl.supermap.AddressMatchService = AddressMatchService;
 maplibregl.supermap.ChartService = ChartService;
 maplibregl.supermap.DataFlowService = DataFlowService;
@@ -65,3 +77,10 @@ maplibregl.supermap.WebPrintingJobService = WebPrintingJobService;
 maplibregl.supermap.CommonUtil = CommonUtil;
 maplibregl.supermap.Util = Util;
 maplibregl.supermap.LogoControl = Logo;
+maplibregl.supermap.MapvLayer = MapvLayer;
+maplibregl.supermap.ThreeLayer = ThreeLayer;
+maplibregl.supermap.DeckglLayer = DeckglLayer;
+maplibregl.supermap.HeatMapLayer = HeatMapLayer;
+maplibregl.supermap.GraphicLayer = GraphicLayer;
+maplibregl.supermap.GraticuleLayer = GraticuleLayer;
+maplibregl.supermap.FGBLayer = FGBLayer;

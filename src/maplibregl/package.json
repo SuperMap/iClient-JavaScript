@@ -15,7 +15,13 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "@supermap/iclient-common": "11.1.0-dev",
-    "maplibre-gl": "2.4.0"
+    "@supermap/iclient-common": "11.1.0-beta",
+    "maplibre-gl": "2.4.0",
+    "echarts": "4.9.0",
+    "mapv": "2.0.62",
+    "mapbox-gl": "1.13.2",
+    "three": "0.150.1",
+    "canvg": "3.0.10",
+    "xml-js": "1.6.11"
   }
 }

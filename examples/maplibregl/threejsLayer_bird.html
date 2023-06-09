@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title data-i18n="resources.title_flyBird"></title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+<script type="text/javascript" include="three@0.121.1,LegacyJSONLoader" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript" src="js/bird/ImprovedNoise.js"></script>
+<script type="x-shader/x-vertex" id="vertexShader">
+			varying vec3 vWorldPosition;
+			void main() {
+				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+				vWorldPosition = worldPosition.xyz;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			}
+</script>
+<script type="x-shader/x-fragment" id="fragmentShader">
+			uniform vec3 topColor;
+			uniform vec3 bottomColor;
+			uniform float offset;
+			uniform float exponent;
+			varying vec3 vWorldPosition;
+			void main() {
+				float h = normalize( vWorldPosition + offset ).y;
+				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
+			}
+</script>
+<script>
+
+    var attribution = "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© maplibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+
+    var map, threeLayer, position = [104.05108830860604, 30.57183314034];
+
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [104.05108830860604, 30.57183314034],
+        zoom: 18.02,
+        bearing: 18.13,
+        pitch: 60
+
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+    map.on('load', () => {
+      loaderModels();
+    });
+
+    function loaderModels() {
+        threeLayer = new maplibregl.supermap.ThreeLayer('three');
+        threeLayer.on("initialized", render);
+
+        var mixers = [];
+        var clock = new THREE.Clock();
+
+        function render() {
+            var renderer = threeLayer.getThreeRenderer(),
+                scene = threeLayer.getScene(),
+                camera = threeLayer.getCamera();
+
+            //半球光光源
+            var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+            hemiLight.color.setHSL(0.6, 1, 0.6);
+            hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+            hemiLight.position.set(0, 50, 0);
+            scene.add(hemiLight);
+
+            // 方向光源
+            var dirLight = new THREE.DirectionalLight(0xffffff, 1);
+            dirLight.color.setHSL(0.1, 1, 0.95);
+            dirLight.position.set(-1, 1.75, 1);
+            dirLight.position.multiplyScalar(30);
+            scene.add(dirLight);
+
+            renderer.gammaInput = true;
+            renderer.gammaOutput = true;
+            renderer.shadowMap.enabled = true;
+
+            //加载飞鸟模型
+            var loader = new THREE.LegacyJSONLoader();
+            loader.load('./js/bird/bird.js', function (geometry) {
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0xffffff,
+                    specular: 0xffffff,
+                    shininess: 20,
+                    morphTargets: true,
+                    vertexColors: THREE.FaceColors,
+                    flatShading: true
+                });
+                var mesh = new THREE.Mesh(new THREE.BufferGeometry().fromGeometry(geometry), material);
+                mesh.position.y = 15;
+                mesh.rotation.y = -1;
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.rotation.x = -Math.PI / 2;
+                mesh.rotation.y = -Math.PI / 2;
+
+                //设置飞鸟在地图上显示位置
+                threeLayer.setPosition(mesh, position);
+                scene.add(mesh);
+
+                var mixer = new THREE.AnimationMixer(mesh);
+                mixer.clipAction(geometry.animations[0]).setDuration(1).play();
+                mixers.push(mixer);
+
+                (function animate() {
+                    requestAnimationFrame(animate);
+
+                    var delta = clock.getDelta();
+                    for (var i = 0; i < mixers.length; i++) {
+                        mixers[i].update(delta);
+                    }
+                    renderer.render(scene, camera);
+
+                })();
+            });
+        }
+
+        // threeLayer.addTo(map);
+        map.addLayer(threeLayer);
+    }
+</script>
+</body>
+</html>

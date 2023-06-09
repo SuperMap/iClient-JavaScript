@@ -3,10 +3,14 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import VectorSource from 'ol/source/Vector';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
+import { buildFeature } from 'flatgeobuf/lib/mjs/generic/feature';
+import { parseGeometry } from 'flatgeobuf/lib/mjs/generic/geometry';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { all, bbox } from 'ol/loadingstrategy';
 import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
 import GeoJSON from 'ol/format/GeoJSON';
+import clonedeep from 'lodash.clonedeep';
+import { v4 as uuidv4 } from 'uuid';
 /**
  * @class FGB
  * @browsernamespace ol.source
@@ -37,7 +41,7 @@ export class FGB extends VectorSource {
     this.setLoader(async function (extent) {
       if (this.extent && this.strategy === bbox) {
         const intersectExtent = getIntersection(this.extent, extent);
-        extent = (intersectExtent && intersectExtent.length) ? intersectExtent : this.extent;
+        extent = intersectExtent && intersectExtent.length ? intersectExtent : this.extent;
       }
       if (!this.extent && (this.strategy === all || !isFinite(extent[0]))) {
         extent = [];
@@ -60,9 +64,29 @@ export class FGB extends VectorSource {
         maxY: extent[3]
       };
     }
-    const fgb = deserialize(url, rect);
+    let headerMeta = {};
+    const fgb = deserialize(url, rect, function (metaInfo) {
+      headerMeta = clonedeep(metaInfo);
+      console.log('meta', headerMeta);
+    });
     for await (let feature of fgb) {
       feature = new GeoJSON().readFeature(feature);
+      let properties = feature.getProperties();
+      let columns = [];
+      headerMeta.columns.forEach((column) => {
+        if (properties[column.name]) {
+          columns.push(column);
+        }
+      });
+      headerMeta.columns = columns;
+      let res = buildFeature(
+        parseGeometry(feature.getGeometry(), headerMeta.geometryType),
+        properties,
+        headerMeta
+      );
+      console.log('res', res);
+      let xxx = uuidv4({}, Array.from(res));
+      console.log('xxx', xxx);
       if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
         feature = this.options.featureLoader(feature);
       }

@@ -26,8 +26,7 @@ import {
   GeoFeatureThemeLayer,
   Theme3DLayer,
   ThemeFeature,
-  ThemeLayer,
-  Transform
+  ThemeLayer
 } from './overlay';
 import {
   AddressMatchService,
@@ -57,7 +56,8 @@ import {
 
 import {
   CommonUtil,
-  SuperMap
+  SuperMap,
+  Transform
 } from '@supermap/iclient-common/namespace';
 
 import { WebMap } from './mapping';

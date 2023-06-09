@@ -20,4 +20,3 @@ export { FGBLayer } from './FGBLayer';
 export * from './graphic';
 export * from './mapv';
 export * from './theme';
-export * from './threejs';
