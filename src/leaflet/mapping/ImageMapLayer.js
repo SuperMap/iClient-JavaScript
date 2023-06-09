@@ -193,10 +193,10 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //获取请求瓦片宽高以及请求范围参数
-    _getImageParams: function() {
-        var size = this._calculateImageSize();
+    _getImageParams: function(bounds) {
+        var size = this._calculateImageSize(bounds);
         return {
-            viewBounds: this._compriseBounds(this._calculateBounds()),
+            viewBounds: this._compriseBounds(this._calculateBounds(bounds)),
             width: size.x,
             height: size.y
         };
@@ -345,7 +345,7 @@ export var ImageMapLayer = Layer.extend({
             }
             return;
         }
-        var params = this._getImageParams();
+        var params = this._getImageParams(bounds);
         if (params) {
             this._requestImage(params, bounds);
         } else if (this._currentImage) {
@@ -355,12 +355,9 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //将像素坐标转成点坐标
-    _calculateBounds: function() {
-        var pixelBounds = this._map.getPixelBounds();
-        var sw = this._map.unproject(pixelBounds.getBottomLeft());
-        var ne = this._map.unproject(pixelBounds.getTopRight());
-        var neProjected = this._map.options.crs.project(ne);
-        var swProjected = this._map.options.crs.project(sw);
+    _calculateBounds: function(bounds) {
+        var neProjected = this._map.options.crs.project(bounds.getNorthEast());
+        var swProjected = this._map.options.crs.project(bounds.getSouthWest());
         return L.bounds(neProjected, swProjected);
     },
 
@@ -380,21 +377,12 @@ export var ImageMapLayer = Layer.extend({
     },
 
     //计算图层的宽高
-    _calculateImageSize: function() {
-        var map = this._map;
-        var bounds = map.getPixelBounds();
-        var size = map.getSize();
-
-        var sw = map.unproject(bounds.getBottomLeft());
-        var ne = map.unproject(bounds.getTopRight());
-
-        var top = map.latLngToLayerPoint(ne).y;
-        var bottom = map.latLngToLayerPoint(sw).y;
-
-        if (top > 0 || bottom < size.y) {
-            size.y = bottom - top;
-        }
-        return size;
+    _calculateImageSize: function(bounds) {
+        // 与imageoverlay 内部逻辑一致
+        var sizeBounds = new L.Bounds(
+            this._map.latLngToLayerPoint(bounds.getNorthWest()),
+            this._map.latLngToLayerPoint(bounds.getSouthEast()));
+        return sizeBounds.getSize();
     }
 });
 
