@@ -76,6 +76,7 @@ export class GraticuleLayerRenderer {
         this.getMapStateByKey = callbackOptions.getMapStateByKey;
         this.getDefaultExtent = callbackOptions.getDefaultExtent;
         this.setVisibility = callbackOptions.setVisibility;
+        this._updateGraticuleLayer = callbackOptions._updateGraticuleLayer;
         this.init();
     }
 

@@ -104,6 +104,7 @@ export class GraticuleLayer {
     this.renderer = new GraticuleLayerRenderer(this.map, this.options, {
       getMapStateByKey: this.getMapStateByKey,
       getDefaultExtent: this.getDefaultExtent,
+      _updateGraticuleLayer: this._updateGraticuleLayer.bind(this),
       setVisibility: this.setVisibility.bind(this)
     }, {
       mapCanvas: this.map.getCanvas(),
@@ -132,7 +133,7 @@ export class GraticuleLayer {
   }
 
   onRemove() {
-    this.mapContainer.removeChild(this.canvas);
+    this.renderer.onRemove();
     this._unbindEvent();
   }
 
@@ -152,7 +153,7 @@ export class GraticuleLayer {
       this.renderer.visible = this.visible;
     }
     if (this.map.getLayer(this.sourceId)) {
-      this.map.setLayoutProperty(this.sourceId, 'visibility', this.renderer.visible ? 'visible' : 'none');
+      this.map.setLayoutProperty(this.sourceId, 'visibility', this.visible ? 'visible' : 'none');
     }
     this.renderer && this.renderer._drawLabel();
   }
@@ -193,7 +194,7 @@ export class GraticuleLayer {
    * @param {maplibregl.LngLatBounds} extent - 经纬网渲染的边界范围。
    */
   setExtent(extent) {
-    this.options.extent = this._getDefaultExtent(extent, this.map);
+    this.options.extent = this.getDefaultExtent(extent, this.map);
     // this.features = this._getGraticuleFeatures();
     this._updateGraticuleLayer();
     this.renderer._drawLabel();
@@ -277,6 +278,10 @@ export class GraticuleLayer {
         this.addGraticuleLayer();
       }
     }
+  }
+
+  _getLatPoints(lngRange, firstLng, lastLng, features) {
+     return this.renderer._getLatPoints(lngRange, firstLng, lastLng, features);
   }
 
   getDefaultExtent(extent, map = this.map) {

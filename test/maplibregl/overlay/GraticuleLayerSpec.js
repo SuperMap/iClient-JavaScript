@@ -64,7 +64,7 @@ describe('maplibregl_GraticuleLayer', () => {
     it('_initialize', done => {
         setTimeout(() => {
             expect(graticuleLayer).not.toBeNull();
-            expect(graticuleLayer.canvas).not.toBeNull();
+            expect(graticuleLayer.renderer.canvas).not.toBeNull();
             expect(graticuleLayer.map).not.toBeNull();
             expect(graticuleLayer.mapContainer).not.toBeNull();
             expect(graticuleLayer.features).not.toBeNull();
@@ -108,7 +108,7 @@ describe('maplibregl_GraticuleLayer', () => {
 
     it('setStrokeStyle', () => {
         graticuleLayer.setStrokeStyle({ lineWidth: 3 });
-        expect(graticuleLayer.renderer.options.strokeStyle.lineWidth).toEqual(3);
+        expect(graticuleLayer.options.strokeStyle.lineWidth).toEqual(3);
     });
 
     it('setLngLabelStyle', () => {
@@ -131,7 +131,7 @@ describe('maplibregl_GraticuleLayer', () => {
         const calcInterval = map => {
             return map.getZoom();
         };
-        graticuleLayer._calcInterval(calcInterval);
+        graticuleLayer.renderer._calcInterval(calcInterval);
         expect(graticuleLayer.renderer._currLngInterval).toBe(interval);
     });
 
@@ -153,8 +153,8 @@ describe('maplibregl_GraticuleLayer', () => {
         expect(points[0][1]).toEqual(80);
     });
 
-    it('removeFromMap', () => {
-        graticuleLayer.removeFromMap();
+    it('onRemove', () => {
+        graticuleLayer.onRemove();
         expect(graticuleLayer.renderer.canvas).toBeNull();
     });
 });
