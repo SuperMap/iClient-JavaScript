@@ -16,7 +16,7 @@ import maplibregl from 'maplibre-gl';
  * @class GraticuleLayer
  * @category Visualization GraticuleLayer
  * @classdesc 经纬网。
- * @version 10.1.1
+ * @version 11.1.0
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("graticuleLayer_") 创建图层 ID。
  * @param {boolean} [options.visible=true] - 是否显示经纬网。

@@ -23,6 +23,7 @@
   * @class GraphicLayer
   * @category  Visualization Graphic
   * @classdesc 高效率点图层。
+  * @version 11.1.0
   * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
   * @param {Object} options - 参数。
   * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。

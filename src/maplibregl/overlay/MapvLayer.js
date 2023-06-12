@@ -11,6 +11,7 @@ import {
  * @class MapvLayer
  * @category  Visualization MapV
  * @classdesc Mapv 图层。
+ * @version 11.1.0
  * @param {mapboxgl.Map} map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} options - Mapv 参数。
@@ -31,6 +32,7 @@ export class MapvLayer {
     this.pitchStartEvent = this.pitchStart.bind(this);
     this.pitchEndEvent = this.pitchEnd.bind(this);
     this.renderingMode = '3d';
+    this.context = this.options.context || '2d';
   }
 
   onAdd(map) {
@@ -69,7 +71,7 @@ export class MapvLayer {
     var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
     var center = map.getCenter();
     var centerPx = map.project(center);
-
+    var self = this;
     function transferCoordinate(coordinate) {
       if (map.transform.rotationMatrix || self.context === '2d') {
         var worldPoint = map.project(new maplibregl.LngLat(coordinate[0], coordinate[1]));

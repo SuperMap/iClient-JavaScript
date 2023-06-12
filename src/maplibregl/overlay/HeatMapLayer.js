@@ -9,6 +9,7 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @class HeatMapLayer
  * @classdesc 热力图层类。
  * @category  Visualization HeatMap
+ * @version 11.1.0
  * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
  * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
@@ -91,6 +92,8 @@ export class HeatMapLayer extends mapboxgl.Evented {
   onRemove() {
     this.removeAllFeatures();
     this.renderer.removeFromMap();
+    this.features = {};
+    this.renderer = null;
   }
 
   render() {
