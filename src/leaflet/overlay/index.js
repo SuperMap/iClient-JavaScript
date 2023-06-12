@@ -89,6 +89,7 @@ export {
     VectorTileJSON,
     VectorTilePBF
 };
+export { GraphMap } from './GraphMap'
 
 
 

@@ -99,7 +99,8 @@ import {
   CloverStyle,
   cloverStyle,
   ThemeFeature,
-  themeFeature
+  themeFeature,
+  GraphMap
 } from './overlay';
 
 import {
@@ -147,7 +148,8 @@ import {
   TrafficTransferAnalystService,
   trafficTransferAnalystService,
   WebPrintingJobService,
-  webPrintingJobService
+  webPrintingJobService,
+  KnowledgeGraphService
 } from './services';
 
 import {
@@ -399,6 +401,8 @@ L.supermap.trafficTransferAnalystService = trafficTransferAnalystService;
 L.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
 L.supermap.webPrintingJobService = webPrintingJobService;
 L.supermap.WebPrintingJobService = WebPrintingJobService;
+L.supermap.KnowledgeGraphService = KnowledgeGraphService;
+L.supermap.GraphMap = GraphMap;
 
 // 处理命名空间重名
 L.supermap.CommonUtil = CommonUtil;

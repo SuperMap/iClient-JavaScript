@@ -431,7 +431,8 @@ import {
   VectorClipJobsService,
   WebPrintingService,
   ImageCollectionService,
-  ImageService
+  ImageService,
+  KnowledgeGraph
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -911,4 +912,6 @@ SuperMap.WebExportFormatType = WebExportFormatType;
 SuperMap.WebScaleOrientationType = WebScaleOrientationType;
 SuperMap.WebScaleType = WebScaleType;
 SuperMap.WebScaleUnit = WebScaleUnit;
+SuperMap.KnowledgeGraph = KnowledgeGraph
+
 export * from './index.all';

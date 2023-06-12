@@ -27,7 +27,8 @@ import {
   Theme3DLayer,
   ThemeFeature,
   ThemeLayer,
-  Transform
+  Transform,
+  GraphMap
 } from './overlay';
 import {
   AddressMatchService,
@@ -52,7 +53,8 @@ import {
   TrafficTransferAnalystService,
   WebPrintingJobService,
   ImageService,
-  ImageCollectionService
+  ImageCollectionService,
+  KnowledgeGraphService
 } from './services';
 
 import {
@@ -93,6 +95,8 @@ mapboxgl.supermap.RankSymbolThemeLayer = RankSymbolThemeLayer;
 mapboxgl.supermap.ThreeLayer = ThreeLayer;
 mapboxgl.supermap.UniqueTheme3DLayer = UniqueTheme3DLayer;
 mapboxgl.supermap.UniqueThemeLayer = UniqueThemeLayer;
+mapboxgl.supermap.GraphMap = GraphMap;
+
 mapboxgl.supermap.AddressMatchService = AddressMatchService;
 mapboxgl.supermap.ChartService = ChartService;
 mapboxgl.supermap.DataFlowService = DataFlowService;
@@ -116,6 +120,7 @@ mapboxgl.supermap.SpatialAnalystService = SpatialAnalystService;
 mapboxgl.supermap.ThemeService = ThemeService;
 mapboxgl.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
 mapboxgl.supermap.WebPrintingJobService = WebPrintingJobService;
+mapboxgl.supermap.KnowledgeGraphService = KnowledgeGraphService;
 
 // 处理命名空间重名
 mapboxgl.supermap.CommonUtil = CommonUtil;

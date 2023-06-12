@@ -28,9 +28,11 @@ import {
   TrafficTransferAnalystService,
   WebPrintingJobService,
   ImageService,
-  ImageCollectionService
+  ImageCollectionService,
+  KnowledgeGraphService
 } from './services';
 
+import { GraphMap } from './overlay'
 import {
   CommonUtil,
   SuperMap
@@ -62,6 +64,8 @@ maplibregl.supermap.SpatialAnalystService = SpatialAnalystService;
 maplibregl.supermap.ThemeService = ThemeService;
 maplibregl.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
 maplibregl.supermap.WebPrintingJobService = WebPrintingJobService;
+maplibregl.supermap.KnowledgeGraphService = KnowledgeGraphService;
 maplibregl.supermap.CommonUtil = CommonUtil;
 maplibregl.supermap.Util = Util;
 maplibregl.supermap.LogoControl = Logo;
+maplibregl.supermap.GraphMap = GraphMap;

@@ -36,6 +36,7 @@ import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
 import './openlayers/overlay/FGBSpec.js';
+import './openlayers/overlay/GraphMapSpec';
 
 // /**openlayers --services**/
 import './openlayers/services/BufferAnalysisSpec.js';
@@ -74,3 +75,5 @@ import './openlayers/services/DatasetServiceSpec.js';
 import './openlayers/services/DatasourceServiceSpec.js';
 import './openlayers/services/ImageServiceSpec';
 import './openlayers/services/ImageCollectionServiceSpec';
+import './openlayers/services/KnowledgeGraphServiceSpec.js';
+

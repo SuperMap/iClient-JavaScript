@@ -253,6 +253,9 @@ import ImageGFOrtho from './ImageGFOrtho';
 import ImageGFSlope from './ImageGFSlope';
 import ImageStretchOption from './ImageStretchOption';
 import Sortby from './Sortby';
+import { KnowledgeGraphNodeParameter } from './KnowledgeGraphNodeParameter'
+import { KnowledgeGraphEdgeParameter } from './KnowledgeGraphEdgeParameter'
+import { KnowledgeGraphService } from './KnowledgeGraphService'
 
 export {
     FieldsFilter,
@@ -508,3 +511,4 @@ export { WebPrintingJobLayoutOptions };
 export { WebPrintingJobExportOptions };
 export { WebPrintingJobParameters };
 export { WebPrintingService };
+export { KnowledgeGraphEdgeParameter, KnowledgeGraphNodeParameter, KnowledgeGraphService };

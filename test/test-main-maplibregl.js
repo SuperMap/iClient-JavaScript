@@ -35,3 +35,6 @@ import './maplibregl/services/DatasetServiceSpec.js';
 import './maplibregl/services/DatasourceServiceSpec.js';
 import './maplibregl/services/ImageServiceSpec';
 import './maplibregl/services/ImageCollectionServiceSpec';
+import './maplibregl/services/KnowledgeGraphServiceSpec.js';
+// overlay
+import './maplibregl/overlay/GraphMapSpec';

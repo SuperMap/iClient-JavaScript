@@ -84,6 +84,9 @@
             inputCSS(libsurl + '/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.css');
             inputScript(libsurl + '/leaflet/plugins/leaflet-miniMap/3.6.1/dist/Control.MiniMap.min.js');
         }
+        if (inArray(includes, 'g6')) {
+          inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
+        }
         if (inArray(includes, 'mapv')) {
             inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }

@@ -1,4 +1,5 @@
 /**common -- iServer**/
+import './common/iServer/KnowledgeGraphServiceSpec.js';
 import './common/iServer/AddressMatchServiceSpec.js';
 import './common/iServer/AggregationParameterSpec.js';
 import './common/iServer/BucketAggParameterSpec.js';
@@ -162,6 +163,7 @@ import './common/overlay/levelRenderer/TransformableSpec.js';
 import './common/overlay/levelRenderer/UtilSpec.js';
 import './common/overlay/levelRenderer/VectorSpec.js';
 import './common/overlay/GraphSpec';
+import './common/overlay/KnowledgeGraphSpec.js'
 
 /**common -- online**/
 import './common/online/OnlineDataSpec.js';

@@ -292,6 +292,10 @@
         "name": "影像服务",
         "name_en": "Image"
       },
+      "KnowledgeGraph": {
+        "name": "知识图谱",
+        "name_en": "KnowledgeGraph"
+      },
       "Core": {
         "name": "核心类",
         "name_en": "Core"

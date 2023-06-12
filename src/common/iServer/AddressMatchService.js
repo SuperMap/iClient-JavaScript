@@ -69,6 +69,7 @@ export class AddressMatchService extends CommonServiceBase {
         scope: this,
         processCompleted: function(result) {
           if (eventId === result.result.eventId && callback) {
+            delete result.result.eventId;
             callback(result);
           }
         },
@@ -86,14 +87,14 @@ export class AddressMatchService extends CommonServiceBase {
           scope: this,
           success(result) {
             result.eventId = eventId;
-            this.serviceProcessCompleted(result, eventId);
+            this.serviceProcessCompleted(result);
           },
           failure(result) {
             if (result.error) {
               result.error.eventId = eventId;
             }
             result.eventId = eventId;
-            this.serviceProcessFailed(result, eventId);
+            this.serviceProcessFailed(result);
           }
       });
     }

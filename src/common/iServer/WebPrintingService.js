@@ -114,6 +114,7 @@ export class WebPrintingService extends CommonServiceBase {
             scope: this,
             processCompleted: function(result) {
               if (eventId === result.result.eventId && callback) {
+                delete result.result.eventId;
                 callback(result);
               }
             },
@@ -154,7 +155,8 @@ export class WebPrintingService extends CommonServiceBase {
       let eventListeners = {
         scope: this,
         processCompleted: function(result) {
-          if (eventId === result.result.eventId) {
+          if (eventId === result.result.eventId && callback) {
+            delete result.result.eventId;
             callback(result);
           }
         },

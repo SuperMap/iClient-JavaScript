@@ -378,6 +378,20 @@ var exampleConfig = {
           //     fileName: "machinelearning_landcoverclassification"
           // }
         ]
+      },
+      KnowledgeGraph: {
+        name: '知识图谱',
+        name_en: 'KnowledgeGraph',
+        version: '11.1.0',
+        content: [
+          {
+            name: '图谱图',
+            name_en: 'graticule',
+            version: '11.1.0',
+            thumbnail: 'knowledgeGraphMap.png',
+            fileName: 'knowledgeGraphMap'
+          }
+        ]
       }
     }
   },

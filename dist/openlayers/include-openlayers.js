@@ -67,6 +67,9 @@
             inputCSS(libsurl + '/openlayers/4.6.5/ol-debug.css');
             inputScript(libsurl + '/openlayers/4.6.5/ol-debug.js');
         }
+        if (inArray(includes, 'g6')) {
+          inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
+        }
         if (inArray(includes, 'mapv')) {
             inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }

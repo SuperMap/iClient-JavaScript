@@ -101,6 +101,7 @@ export class DatasetService extends CommonServiceBase {
         scope: this,
         processCompleted: function(result) {
           if (eventId === result.result.eventId && callback) {
+            delete result.result.eventId;
             callback(result);
           }
         },

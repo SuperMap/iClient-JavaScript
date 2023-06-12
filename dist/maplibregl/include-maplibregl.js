@@ -74,6 +74,9 @@
     if (!inArray(excludes, 'iclient-maplibregl-css')) {
       inputCSS('../../dist/maplibregl/iclient-maplibregl.min.css');
     }
+    if (inArray(includes, 'g6')) {
+      inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
+    }
   }
 
   load({

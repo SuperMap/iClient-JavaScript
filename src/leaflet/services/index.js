@@ -48,3 +48,4 @@ export {TrafficTransferAnalystService, trafficTransferAnalystService};
 export {WebPrintingJobService, webPrintingJobService};
 export {ImageService, imageService};
 export {ImageCollectionService, imageCollectionService};
+export { KnowledgeGraphService } from './KnowledgeGraphService';

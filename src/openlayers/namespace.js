@@ -43,7 +43,8 @@ import {
   Turf,
   Unique,
   FGB,
-  VectorTileSuperMapRest
+  VectorTileSuperMapRest,
+  GraphMap
 } from './overlay';
 
 /* service */
@@ -70,7 +71,8 @@ import {
   TrafficTransferAnalystService,
   WebPrintingJobService,
   ImageService,
-  ImageCollectionService
+  ImageCollectionService,
+  KnowledgeGraphService
 } from './services';
 
 if (window && window.ol) {
@@ -113,6 +115,7 @@ if (window && window.ol) {
   ol.source.FGB = FGB;
   ol.source.Unique = Unique;
   ol.source.VectorTileSuperMapRest = VectorTileSuperMapRest;
+  ol.supermap.GraphMap = GraphMap;
   // service
   ol.supermap.AddressMatchService = AddressMatchService;
   ol.supermap.ChartService = ChartService;
@@ -137,9 +140,9 @@ if (window && window.ol) {
   ol.supermap.WebPrintingJobService = WebPrintingJobService;
   ol.supermap.ImageService = ImageService;
   ol.supermap.ImageCollectionService = ImageCollectionService;
+  ol.supermap.KnowledgeGraphService = KnowledgeGraphService;
   ol.supermap.initMap = initMap;
   ol.supermap.viewOptionsFromMapJSON = viewOptionsFromMapJSON;
-
   // 处理命名空间重名问题
   ol.supermap.CommonUtil = CommonUtil;
 }

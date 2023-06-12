@@ -24,3 +24,4 @@ export { TrafficTransferAnalystService } from './TrafficTransferAnalystService';
 export { WebPrintingJobService } from './WebPrintingJobService';
 export { ImageService } from './ImageService';
 export { ImageCollectionService } from './ImageCollectionService';
+export { KnowledgeGraphService } from './KnowledgeGraphService';

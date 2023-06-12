@@ -107,7 +107,8 @@ export class GetGridCellInfosService extends CommonServiceBase {
           scope: this,
           processCompleted: function(result) {
             if (eventId === result.result.eventId && callback) {
-              callback && callback(result);
+              delete result.result.eventId;
+              callback(result);
             }
           },
           processFailed: function(result) {

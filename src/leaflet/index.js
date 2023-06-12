@@ -92,7 +92,8 @@ import {
     SVGRenderer,
     VectorGrid,
     FGBLayer,
-    fgbLayer
+    fgbLayer,
+    GraphMap
 } from './overlay';
 import {
     AddressMatchService,
@@ -137,7 +138,8 @@ import {
     WebPrintingJobService,
     webPrintingJobService,
     ImageCollectionService,
-    ImageService
+    ImageService,
+    KnowledgeGraphService
 } from './services';
 
 import {
@@ -339,5 +341,7 @@ export {
     WebPrintingJobService,
     webPrintingJobService,
     ImageCollectionService,
-    ImageService
+    ImageService,
+    KnowledgeGraphService,
+    GraphMap
 };

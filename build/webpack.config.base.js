@@ -74,6 +74,7 @@ module.exports = {
     externals: {
         echarts: 'function(){try{return echarts}catch(e){return {}}}()',
         mapv: 'function(){try{return mapv}catch(e){return {}}}()',
+        '@antv/g6': 'function(){try{return G6}catch(e){return {}}}()',
         '@elastic/elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
         '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()'
     },

@@ -1,7 +1,7 @@
 ﻿/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- (function () {
+(function () {
   var r = new RegExp('(^|(.*?\\/))(include-mapboxgl.js)(\\?|$)'),
     s = document.getElementsByTagName('script'),
     targetScript;
@@ -66,6 +66,9 @@
       inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.css');
       inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js');
     }
+    if (inArray(includes, 'g6')) {
+      inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
+    }
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
@@ -76,7 +79,7 @@
 
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
       inputScript(libsurl + '/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js');
-  }
+    }
     if (inArray(includes, 'compare')) {
       inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
       inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
@@ -206,8 +209,8 @@
   }
 
   load({
-      libsurl: 'https://iclient.supermap.io/web/libs',
-      disturl: '../../dist'
+    libsurl: 'https://iclient.supermap.io/web/libs',
+    disturl: '../../dist'
   });
   window.isLocal = false;
   window.server = document.location.toString().match(/file:\/\//)

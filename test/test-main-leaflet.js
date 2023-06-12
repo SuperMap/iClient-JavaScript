@@ -33,7 +33,10 @@ import './leaflet/overlay/vectortile/TextSymbolizerSpec.js';
 import './leaflet/overlay/TurfLayerSpec.js';
 import './leaflet/overlay/mapv/MapVRendererSpec.js';
 import './leaflet/overlay/FGBLayerSpec.js';
+import './leaflet/overlay/GraphMapSpec';
+
 /**leaflet -- services**/
+import './leaflet/services/KnowledgeGraphServiceSpec.js';
 import './leaflet/services/AddressMatchServiceSpec.js';
 import './leaflet/services/BufferAnalysisSpec.js';
 import './leaflet/services/DensityAnalysisSpec.js';

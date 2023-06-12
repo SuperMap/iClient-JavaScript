@@ -18,8 +18,10 @@ import './mapboxgl/overlay/graphic/GraphicSpec.js';
 import './mapboxgl/overlay/GraphicLayerSpec.js';
 import './mapboxgl/overlay/mapv/MapvRenderSpec.js';
 import './mapboxgl/overlay/GraticuleLayerSpec.js';
+import './mapboxgl/overlay/GraphMapSpec';
 
 /*mapboxgl -- services*/
+import './mapboxgl/services/KnowledgeGraphServiceSpec.js';
 import './mapboxgl/services/AddressMatchServiceSpec.js';
 import './mapboxgl/services/BufferAnalysisSpec.js';
 import './mapboxgl/services/DataFlowServiceSpec.js';
