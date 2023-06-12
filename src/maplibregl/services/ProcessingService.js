@@ -9,6 +9,7 @@ import { ProcessingService as CommonProcessingService } from '@supermap/iclient-
  * @class ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
+ * @version 11.1.0
  * @extends {ServiceBase}
  * @example
  * new ProcessingService(url,options)

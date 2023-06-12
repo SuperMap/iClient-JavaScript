@@ -9,6 +9,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
  * @class DatasetService
  * @category  iServer Data Dataset
  * @classdesc 数据源服务类。
+ * @version 11.1.0
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

@@ -7,6 +7,7 @@ var identification = {
 };
 
 var exampleConfig = {
+  version: '11.1.0',
   iServer: {
     name: 'iServer',
     name_en: 'iServer',
@@ -24,7 +25,6 @@ var exampleConfig = {
           {
             name: '地图-栅格分析',
             name_en: 'map rasterFunction',
-            version: '10.0.0',
             thumbnail: 'tiledMapLayerRasterfunction.png',
             fileName: '01_tiledMapLayer_rasterfunction'
           },
@@ -361,14 +361,12 @@ var exampleConfig = {
           {
             name: '二元分类结果叠加',
             name_en: 'Binary Classification Result Overlay',
-            version: '10.1.0',
             thumbnail: 'machinelearning_binaryclassification.png',
             fileName: 'machinelearning_binaryclassification'
           },
           {
             name: '目标检测结果叠加',
             name_en: 'Object Detection Result Overlay',
-            version: '10.1.0',
             thumbnail: 'machinelearning_objectdetection.png',
             fileName: 'machinelearning_objectdetection'
           }
@@ -376,7 +374,6 @@ var exampleConfig = {
           // {
           //     name: "地物分类",
           //     name_en: "Landcover Classification",
-          //     version: "10.1.0",
           //     thumbnail: "machinelearning_landcoverclassification.png",
           //     fileName: "machinelearning_landcoverclassification"
           // }
@@ -458,7 +455,6 @@ var exampleConfig = {
             name: '土地利用',
             name_en: 'Land Use',
             localIgnore: true,
-            version: '9.1.0',
             thumbnail: 'mvtVectorTile_landuse.png',
             fileName: 'mvtVectorTile_landuse'
           }
@@ -467,12 +463,10 @@ var exampleConfig = {
       cluster: {
         name: '聚合',
         name_en: 'Cluster',
-        version: '9.1.1',
         content: [
           {
             name: '点聚合',
             name_en: 'Marker cluster',
-            version: '9.1.1',
             thumbnail: 'markerCluster_3857.png',
             fileName: 'markerCluster_3857'
           }
@@ -559,7 +553,6 @@ var exampleConfig = {
             name: '北京道路网络图（130万点数据绘制）',
             name_en: 'Use lines to draw 1.3 millions Beijing streets',
             localIgnore: true,
-            version: '9.1.0',
             thumbnail: 'mb_echartsLinesMillionsBeijingRoads.png',
             fileName: 'echarts_linesDrawMillionsBeijingRoadsNetwork'
           },
@@ -567,7 +560,6 @@ var exampleConfig = {
             name: '纽约出租车上车点分布图（140万点数据绘制）',
             name_en: 'Use scatter to draw 1.4 millions New York Taxi Points',
             localIgnore: true,
-            version: '9.1.0',
             thumbnail: 'mb_echartScatterMillionsNewYorkTaxi.png',
             fileName: 'echarts_scatterDrawMillionsNewYorkTaxiPoints'
           },
@@ -575,7 +567,6 @@ var exampleConfig = {
             name: '全国铁路网络图（400万点数据绘制）',
             name_en: 'Use lines to draw 4 millions Chinese railways',
             localIgnore: true,
-            version: '9.1.0',
             thumbnail: 'mb_echartsLinesMillionsRailway.png',
             fileName: 'echarts_linesDrawMillionsRailwaysNetwork'
           },
@@ -583,7 +574,6 @@ var exampleConfig = {
             name: '全国水系图（1400万点数据绘制）',
             name_en: 'Use lines to draw 14 millions Chinese water system',
             localIgnore: true,
-            version: '9.1.0',
             thumbnail: 'mb_echartsLinesMillionsWaterSystem.png',
             fileName: 'echarts_linesDrawMillionsWaterSystem'
           },
@@ -591,14 +581,12 @@ var exampleConfig = {
             name: '全国道路网络图（2500万点数据绘制）',
             name_en: 'Use lines to draw 25 millions Chinese roads',
             localIgnore: true,
-            version: '9.1.0',
             thumbnail: 'mb_echartsLinesMillionsRoads.png',
             fileName: 'echarts_linesDrawMillionsRoadsNetwork_50WFeatures'
           },
           {
             name: '车辆监控模拟',
             name_en: 'Car Animation',
-            version: '9.1.0',
             thumbnail: 'mb_echartsAnimatorCar.png',
             fileName: 'echartsAnimatorCar'
           }

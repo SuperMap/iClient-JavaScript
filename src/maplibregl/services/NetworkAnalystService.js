@@ -10,6 +10,7 @@ import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/
  * @class NetworkAnalystService
  * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类。
+ * @version 11.1.0
  * @extends {ServiceBase}
  * @example
  * new NetworkAnalystService(url)

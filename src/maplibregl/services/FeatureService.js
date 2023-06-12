@@ -13,6 +13,7 @@ import { FeatureService as CommonFeatureService } from '@supermap/iclient-common
  * @class FeatureService
  * @category  iServer Data Feature
  * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、几何查询、bounds 查询、缓冲区查询、地物编辑。
+ * @version 11.1.0
  * @example
  * new FeatureService(url)
  *  .getFeaturesByIDs(param,function(result){

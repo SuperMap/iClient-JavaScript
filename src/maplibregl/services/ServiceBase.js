@@ -7,6 +7,7 @@ import maplibregl from 'maplibre-gl';
  * @class ServiceBase
  * @category  iServer Core
  * @classdesc maplibregl.supermap 服务基类。
+ * @version 11.1.0
  * @param {string} url - 服务地址。 
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

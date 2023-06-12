@@ -8,6 +8,7 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
  * @class GridCellInfosService
  * @category  iServer Data Grid
  * @classdesc 数据栅格查询服务。
+ * @version 11.1.0
  * @extends {ServiceBase}
  * @example
  * new GridCellInfosService(url)

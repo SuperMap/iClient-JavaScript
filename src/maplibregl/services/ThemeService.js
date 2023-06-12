@@ -8,6 +8,7 @@ import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iSe
  * @class ThemeService
  * @category  iServer Map Theme
  * @classdesc 专题图服务类。
+ * @version 11.1.0
  * @extends {ServiceBase}
  * @example
  * new ThemeService(url,{

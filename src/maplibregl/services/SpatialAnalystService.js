@@ -10,6 +10,7 @@ import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermap/
  * @class SpatialAnalystService
  * @extends {ServiceBase}
  * @category  iServer SpatialAnalyst
+ * @version 11.1.0
  * @classdesc 空间分析服务类。提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @example
  * new SpatialAnalystService(url)
