@@ -1,3 +1,5 @@
+
+/*maplibregl -- services*/
 import './maplibregl/services/AddressMatchServiceSpec.js';
 import './maplibregl/services/BufferAnalysisSpec.js';
 import './maplibregl/services/DataFlowServiceSpec.js';
@@ -35,3 +37,13 @@ import './maplibregl/services/DatasetServiceSpec.js';
 import './maplibregl/services/DatasourceServiceSpec.js';
 import './maplibregl/services/ImageServiceSpec';
 import './maplibregl/services/ImageCollectionServiceSpec';
+
+/*maplibregl -- overlay*/
+import './maplibregl/overlay/HeatMapLayerSpec.js';
+import './maplibregl/overlay/MapvLayerSpec.js';
+import './maplibregl/overlay/GraphicLayerSpec.js';
+import './maplibregl/overlay/GraticuleLayerSpec.js';
+import './maplibregl/overlay/FGBLayerSpec.js';
+import './maplibregl/overlay/DeckglLayerSpec.js';
+import './maplibregl/overlay/ThreeLayerSpec.js';
+import './maplibregl/overlay/graphic/GraphicSpec.js';

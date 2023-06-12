@@ -354,7 +354,7 @@ export class ThreeLayerRenderer {
    * @returns {THREE.Vector3} 目标点的 threejs 3D 矢量对象。
    */
   distanceToThreeVector3(x, y, lngLat) {
-    let map = this._map;
+    let map = this.map;
 
     let center = lngLat || map.getCenter(),
       maxZoom = Transform.projection.nativeMaxZoom,
