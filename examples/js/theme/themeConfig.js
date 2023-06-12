@@ -34,6 +34,7 @@ window.themeConfig = [
     "skinLightBg": "#ffffff",
     "skinDarkBg": "transparent",
     "dropdownShadowColor": "var(--alpha14)",
+    "menuWrapShadow": "var(--alpha08)",
     "suffixColor": "var(--alpha12)"
   },
   {
@@ -70,6 +71,7 @@ window.themeConfig = [
     "skinLightBg": "transparent",
     "skinDarkBg": "rgba(255,255,255,0.08);",
     "dropdownShadowColor": "rgba(0, 0, 0, 0.35)",
+    "menuWrapShadow": "rgba(0, 0  ,0, 0.04)",
     "suffixColor": "var(--alpha12)"
   }
 ]
