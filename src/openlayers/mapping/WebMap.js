@@ -563,7 +563,7 @@ export class WebMap extends Observable {
                     url,
                     tileGrid: TileSuperMapRest.optionsFromMapJSON(url, result).tileGrid
                 }
-                if (url && !me.isSameDomain(url)) {
+                if (url && !CommonUtil.isInTheSameDomain(url) && !this.isIportalProxyServiceUrl(url)) {
                     options.tileProxy = me.server + 'apps/viewer/getUrlResource.png?url=';
                 }
                 source = new TileSuperMapRest(options);
@@ -1167,7 +1167,7 @@ export class WebMap extends Observable {
             options.tileGrid = tileGrid;
         }
         //主机名相同时不添加代理,iportal geturlResource不支持webp代理
-        if (layerInfo.url && !this.isSameDomain(layerInfo.url) && layerInfo.format !== 'webp') {
+        if (layerInfo.url && !CommonUtil.isInTheSameDomain(layerInfo.url) && !this.isIportalProxyServiceUrl(layerInfo.url) && layerInfo.format !== 'webp') {
             options.tileProxy = this.server + 'apps/viewer/getUrlResource.png?url=';
         }
         let source = new TileSuperMapRest(options);
@@ -2631,7 +2631,7 @@ export class WebMap extends Observable {
         } else {
             let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
             serviceOptions.withCredentials = this.withCredentials;
-            if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
+            if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl) && !this.isIportalProxyServiceUrl(requestUrl)) {
                 serviceOptions.proxy = this.getProxy();
             }
             //因为itest上使用的https，iserver是http，所以要加上代理
@@ -3973,7 +3973,7 @@ export class WebMap extends Observable {
         if (this.excludePortalProxyUrl) {
             return;
         }
-        return CommonUtil.isInTheSameDomain(url) ? url : `${this.getProxy()}${encodeURIComponent(url)}`;
+        return CommonUtil.isInTheSameDomain(url) || this.isIportalProxyServiceUrl(url) ? url : `${this.getProxy()}${encodeURIComponent(url)}`;
     }
 
     /**
@@ -4817,28 +4817,6 @@ export class WebMap extends Observable {
         })
     }
 
-    /**
-     * @private
-     * @function WebMap.prototype.isSameDomain
-     * @description 判断是否同域名（如果是域名，只判断后门两级域名是否相同，第一级忽略），如果是ip地址则需要完全相同。
-     * @param {*} url
-     */
-    isSameDomain(url) {
-        let documentUrlArray = url.split("://"), substring = documentUrlArray[1];
-        let domainIndex = substring.indexOf("/"), domain = substring.substring(0, domainIndex);
-
-        let documentUrl = document.location.toString();
-        let docUrlArray = documentUrl.split("://"), documentSubstring = docUrlArray[1];
-        let docuDomainIndex = documentSubstring.indexOf("/"), docDomain = documentSubstring.substring(0, docuDomainIndex);
-
-        if (domain.indexOf(':') > -1 || window.location.port !== "") {
-            //说明用的是ip地址，判断完整域名判断
-            return domain === docDomain;
-        } else {
-            let domainArray = domain.split('.'), docDomainArray = docDomain.split('.');
-            return domainArray[1] === docDomainArray[1] && domainArray[2] === docDomainArray[2];
-        }
-    }
     /**
      * @private
      * @function WebMap.prototype.isSupportWebp
