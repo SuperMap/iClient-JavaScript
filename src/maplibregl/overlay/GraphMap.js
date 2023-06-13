@@ -17,7 +17,8 @@ import maplibregl from 'maplibre-gl';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @fires GraphMap#loaded 徐冉冉完成时触发。
+ * @fires GraphMap#loaded
+ * @extends {maplibregl.Evented}
  * @usage
  */
 export class GraphMap extends maplibregl.Evented {
@@ -55,6 +56,10 @@ export class GraphMap extends maplibregl.Evented {
     this.graph = new KnowledgeGraph(options && options.config);
     this.graph.setData(result);
     this.graph.on('afterrender', () => {
+      /**
+       * @event GraphMap#loaded
+       * @description 渲染完成时触发。
+       */
       this.fire(this.EVENT_TYPES[0]);
     });
   }

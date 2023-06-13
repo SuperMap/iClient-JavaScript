@@ -404,6 +404,9 @@ var whiteLists = {
     'ElasticSearch'
   ],
   leaflet: [
+    'KnowledgeGraphService',
+    'GraphMap',
+    'FGBLayer',
     'AddressMatchService',
     'ChartService',
     'CommonServiceBase',
@@ -491,6 +494,9 @@ var whiteLists = {
     'WKTFormat'
   ],
   mapboxgl: [
+    'KnowledgeGraphService',
+    'GraphMap',
+    'FGBLayer',
     'AddressMatchService',
     'ChartService',
     'CommonServiceBase',
@@ -563,9 +569,14 @@ var whiteLists = {
     'WKTFormat'
   ],
   maplibregl:[
+    'KnowledgeGraphService',
+    'GraphMap',
+    'FGBLayer',
     'L7Layer',
   ],
   openlayers: [
+    'KnowledgeGraphService',
+    'GraphMap',
     'AddressMatchService',
     'ChartService',
     'CommonServiceBase',
