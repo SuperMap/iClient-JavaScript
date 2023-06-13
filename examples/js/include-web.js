@@ -76,7 +76,7 @@
         }
 
         if (inArray(includes, 'template')) {
-            inputScript(libsurl + '/art-template/template-web.js');
+            inputScript(libsurl + '/art-template/4.12.2/template-web.js');
         }
         if (inArray(includes, 'randomcolor')) {
             inputScript(libsurl + '/randomcolor/randomColor.min.js');
