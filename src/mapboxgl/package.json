@@ -22,6 +22,7 @@
     "@supermap/iclient-common": "11.1.0-beta",
     "canvg": "3.0.10",
     "xml-js": "1.6.11",
-    "flatgeobuf": "3.23.1"
+    "flatgeobuf": "3.23.1",
+    "rbush": "^2.0.2"
   }
 }
