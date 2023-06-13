@@ -7,10 +7,17 @@ var knowledgegraphmapURL = knowledgegraphURL + '/graphmaps/xxx图谱';
 
 describe('GraphMap leaflet', () => {
   var originalTimeout;
-  var dom = window.document.createElement('div');
-  dom.setAttribute('id', 'knowledgeGraph');
-  dom.style.width = '450px';
-  dom.style.height = '350px';
+  var dom;
+  beforeAll(() => {
+    dom = window.document.createElement('div');
+    dom.setAttribute('id', 'knowledgeGraph');
+    dom.style.width = '450px';
+    dom.style.height = '350px';
+    window.document.body.appendChild(dom);
+  });
+  afterAll(() => {
+    window.document.body.removeChild(dom);
+  });
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
