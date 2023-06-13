@@ -19,8 +19,9 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {Object} options - 参数。
  * @param {function} [options.pointToLayer] - 定义点要素如何绘制在地图上。
  * @param {function} [options.style] - 定义点、线、面要素样式。参数为{@link L.Path-option}。
- * @param {string} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为按需加载。
+ * @param {string} [options.strategy='bbox'] - all为全量加载，要素会以流的方式渲染到地图。 bbox为当前可见范围加载，当地图范围改变时会重新加载要素，此时可以通过idField 参数来标识已被加载过的要素，被标识的要素无需再次加载。idField 参数无效时会清空要素，重新加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
+ * @param {boolean} [options.idField='SmID'] - 是否指定要素字段作为唯一id，当 strategy 为 bbox 时生效。
  * @param {function} [options.featureLoader] - 要素自定义方法。
  * @param {function} [options.onEachFeature] - 要素创建时调用
  * @usage
@@ -49,6 +50,10 @@ export var FGBLayer = L.LayerGroup.extend({
     this.previousLayer = null;
     this.loadedExtentsRtree_ = new RBush();
     this.extent = this.options.extent;
+    this._cacheIds = [];
+    this._validatedId = false;
+    this._checked = false;
+    this.idField = this.options.idField || 'SmID';
     this._updateFeaturesFn = this._updateFeatures.bind(this);
     L.Util.setOptions(this, options);
   },
@@ -57,7 +62,7 @@ export var FGBLayer = L.LayerGroup.extend({
     let extent = [];
     if (this.strategy === 'bbox') {
       const bounds = map.getBounds();
-      extent = [bounds.getWest(), bounds.getSouth(),  bounds.getEast(), bounds.getNorth()];
+      extent = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
       map.on('moveend', this._updateFeaturesFn);
     }
 
@@ -72,6 +77,7 @@ export var FGBLayer = L.LayerGroup.extend({
     this.loadedExtentsRtree_ = null;
     if (this.strategy === 'bbox') {
       map.off('moveend', this._updateFeaturesFn);
+      this._cacheIds = [];
     }
   },
   _updateFeatures: async function (e) {
@@ -82,9 +88,7 @@ export var FGBLayer = L.LayerGroup.extend({
       return this._containsExtent(object.extent, extentToLoad);
     });
     if (!alreadyLoaded) {
-    
       this._handleFeatures(extentToLoad);
-    
     }
   },
   _handleFeatures: async function (extent) {
@@ -101,19 +105,33 @@ export var FGBLayer = L.LayerGroup.extend({
       rect.value = { extent: extent.slice() };
       this.loadedExtentsRtree_.insert(rect);
     }
-    
+
     const fgb = deserialize((fgbStream && fgbStream.body) || this.url, rect);
-    
-    let curLayer = L.geoJSON(null, this.options);
-    curLayer.addTo(this);
+    if (!this._validatedId) {
+      this.curLayer = L.geoJSON(null, this.options);
+      this.previousLayer && this.removeLayer(this.previousLayer);
+      this.previousLayer = this.curLayer;
+      this.curLayer.addTo(this);
+    }
     for await (let feature of fgb) {
+      if (this.strategy === 'bbox') {
+        let id = feature.properties[this.idField];
+        if (id && !this._validatedId) {
+          this._validatedId = true;
+          this._checked = true;
+        }
+        if (id && this._checked) {
+          if (this._cacheIds.includes(id)) {
+            continue;
+          }
+          this._cacheIds.push(id);
+        }
+      }
       if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
         feature = this.options.featureLoader(feature);
       }
-      curLayer.addData(feature);
+      this.curLayer.addData(feature);
     }
-    this.previousLayer && this.removeLayer(this.previousLayer);
-    this.previousLayer = curLayer;
   },
   async _getStream(url) {
     return await FetchRequest.get(url, {}, { withoutFormatSuffix: true }).then(function (response) {
