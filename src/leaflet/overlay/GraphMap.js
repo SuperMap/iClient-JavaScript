@@ -19,6 +19,7 @@ import { KnowledgeGraph } from '@supermap/iclient-common/overlay/KnowledgeGraph'
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @fires GraphMap#loaded
+ * @extends {L.Evented}
  * @usage
  */
 export class GraphMap extends L.Evented {
@@ -59,6 +60,10 @@ export class GraphMap extends L.Evented {
     this.graph = new KnowledgeGraph(options && options.config);
     this.graph.setData(result);
     this.graph.on('afterrender', () => {
+      /**
+       * @event GraphMap#loaded
+       * @description 渲染完成时触发。
+       */
       this.fire(this.EVENT_TYPES[0]);
     });
   }

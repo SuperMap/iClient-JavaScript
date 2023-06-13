@@ -160,7 +160,7 @@ export class GeoprocessingService extends CommonServiceBase {
         let eventListeners = {
           scope: this,
           processCompleted: function(result) {
-            if (eventId === result.eventId && callback) {
+            if (eventId === result.result.eventId && callback) {
               delete result.result.eventId;
               callback(result);
             }

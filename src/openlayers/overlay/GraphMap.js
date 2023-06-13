@@ -16,7 +16,8 @@ import Observable from 'ol/Observable';
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @fires GraphMap#loaded 徐冉冉完成时触发。
+ * @fires GraphMap#loaded
+ * @extends {ol.Observable}
  * @usage
  */
 export class GraphMap extends Observable {
@@ -55,6 +56,10 @@ export class GraphMap extends Observable {
     const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap.styles.style);
     this.graph = new KnowledgeGraph(options && options.config);
     this.graph.on('afterrender', () => {
+      /**
+       * @event GraphMap#loaded
+       * @description 渲染完成时触发。
+       */
       this.dispatchEvent(this.EVENT_TYPES[0]);
     });
     this.graph.setData(result);
