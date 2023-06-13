@@ -351,6 +351,7 @@ export class HeatMapLayerRenderer {
   _createCanvasContainer(mapContainer) {
     //热点图要求使用canvas绘制，判断是否支持
     this.rootCanvas = document.createElement("canvas");
+    this.rootCanvas.id = this.options.id;
     this.rootCanvas.width = this.maxWidth = parseInt(this.mapCanvas.style.width);
     this.rootCanvas.height = this.maxHeight = parseInt(this.mapCanvas.style.height);
     this.canvasContext = this.rootCanvas.getContext('2d');

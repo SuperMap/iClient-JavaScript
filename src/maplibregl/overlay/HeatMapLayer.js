@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
+import maplibregl from 'maplibre-gl';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/HeatMapLayerRenderer';
 
@@ -12,7 +12,7 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @version 11.1.0
  * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
- * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {maplibregl.Map} options.map - maplibregl Map 对象。
  * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
@@ -20,13 +20,13 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
- * @extends {mapboxgl.Evented}
+ * @extends {maplibregl.Evented}
  * @fires HeatMapLayer#featuresadded
  * @fires HeatMapLayer#changelayer
  * @fires HeatMapLayer#featuresremoved
  * @usage
  */
-export class HeatMapLayer extends mapboxgl.Evented {
+export class HeatMapLayer extends maplibregl.Evented {
 
   constructor(name, options) {
     super();
@@ -82,7 +82,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
     this.map = map;
     const mapContainer = this.map.getCanvasContainer();
     const mapCanvas = this.map.getCanvas();
-    this.renderer = new HeatMapLayerRenderer({ ...this.options, convertLatlonToPixel: this._convertLatlonToPixel, mapContainer, mapCanvas });
+    this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel, mapContainer, mapCanvas });
     if (this.features.features && this.features.features.length) {
       this.renderer.setExtent(this.map.getBounds());
       this.renderer.addFeatures(this.features);
@@ -175,7 +175,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
   /**
    * @function HeatMapLayer.prototype.updateHeatPoints
    * @description 刷新热点图显示。
-   * @param {mapboxgl.LngLatBounds} bounds - 当前显示范围。
+   * @param {maplibregl.LngLatBounds} bounds - 当前显示范围。
    */
   updateHeatPoints(bounds) {
     this.renderer.updateHeatPoints(bounds);
@@ -197,7 +197,11 @@ export class HeatMapLayer extends mapboxgl.Evented {
    * @param {Array.<FeatureVector>|FeatureVector} features - 热点信息数组。
    */
   removeFeatures(features) {
-    const { heatPointsFailedRemoved, succeed } = this.renderer.removeFeatures(features);
+    const removeFeaturesRes = this.renderer.removeFeatures(features);
+    if(!removeFeaturesRes) {
+      return;
+    }
+    const { heatPointsFailedRemoved, succeed } = removeFeaturesRes;
     //派发删除features成功的事件
     /**
      * @event HeatMapLayer#featuresremoved
@@ -216,31 +220,31 @@ export class HeatMapLayer extends mapboxgl.Evented {
     this.renderer.removeAllFeatures();
   }
 
-  //  /**
-  //   * @function HeatMapLayer.prototype.moveTo
-  //   * @description 将图层移动到某个图层之前。
-  //   * @param {string} layerID - 待插入的图层ID。
-  //   * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 ID 为 layerID 的图层之后)。
-  //   */
-  //  moveTo(layerID, before) {
-  //      var layer = document.getElementById(this.rootCanvas.id);
-  //      before = before !== undefined ? before : true;
-  //      if (before) {
-  //          var beforeLayer = document.getElementById(layerID);
-  //          if (layer && beforeLayer) {
-  //              beforeLayer.parentNode.insertBefore(layer, beforeLayer);
-  //          }
-  //          return;
-  //      }
-  //      var nextLayer = document.getElementById(layerID);
-  //      if (layer) {
-  //          if (nextLayer.nextSibling) {
-  //              nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
-  //              return;
-  //          }
-  //          nextLayer.parentNode.appendChild(layer);
-  //      }
-  //  }
+   /**
+    * @function HeatMapLayer.prototype.moveTo
+    * @description 将图层移动到某个图层之前。
+    * @param {string} layerID - 待插入的图层ID。
+    * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前(如果为 false 则将本图层插入到图层 ID 为 layerID 的图层之后)。
+    */
+   moveTo(layerID, before) {
+       var layer = document.getElementById(this.renderer.rootCanvas.id);
+       before = before !== undefined ? before : true;
+       if (before) {
+           var beforeLayer = document.getElementById(layerID);
+           if (layer && beforeLayer) {
+               beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+           }
+           return;
+       }
+       var nextLayer = document.getElementById(layerID);
+       if (layer) {
+           if (nextLayer.nextSibling) {
+               nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+               return;
+           }
+           nextLayer.parentNode.appendChild(layer);
+       }
+   }
 
   /**
    * @function HeatMapLayer.prototype.setVisibility
@@ -252,6 +256,6 @@ export class HeatMapLayer extends mapboxgl.Evented {
   }
 
   _convertLatlonToPixel(coordinate) {
-    return this.map.project(new mapboxgl.LngLat(coordinate.lon, coordinate.lat));
+    return this.map.project(new maplibregl.LngLat(coordinate.lon, coordinate.lat));
   }
 }
