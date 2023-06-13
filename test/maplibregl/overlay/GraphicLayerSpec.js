@@ -61,7 +61,7 @@ describe('maplibregl_GraphicLayer', () => {
   it('constructor', (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
-      expect(graphicLayer.deckGL).not.toBeNull();
+      expect(graphicLayer.renderer.deckGL).not.toBeNull();
       graphicLayer.remove();
       done();
     }, 0)
@@ -71,7 +71,7 @@ describe('maplibregl_GraphicLayer', () => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
       graphicLayer.setVisibility(false);
-      expect(graphicLayer.visibility).toBeFalsy();
+      expect(graphicLayer.renderer.visibility).toBeFalsy();
       graphicLayer.remove();
       done();
     }, 0)
@@ -105,19 +105,20 @@ describe('maplibregl_GraphicLayer', () => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
       //删除单个
-      let deleteGraphic = graphicLayer.graphics[0];
-      expect(graphicLayer.graphics.length).toEqual(5);
+      const graphics = graphicLayer.renderer.graphics;
+      let deleteGraphic = graphics[0];
+      expect(graphics.length).toEqual(5);
       graphicLayer.removeGraphics(deleteGraphic);
-      expect(graphicLayer.graphics.length).toEqual(4);
+      expect(graphics.length).toEqual(4);
 
       //多个
-      deleteGraphic = [graphicLayer.graphics[1], graphicLayer.graphics[2]];
+      deleteGraphic = [graphics[1], graphics[2]];
       graphicLayer.removeGraphics(deleteGraphic);
-      expect(graphicLayer.graphics.length).toEqual(2);
+      expect(graphics.length).toEqual(2);
 
       //默认
       graphicLayer.removeGraphics();
-      expect(graphicLayer.graphics.length).toEqual(0);
+      expect(graphics.length).toEqual(0);
 
       graphicLayer.remove();
 
@@ -140,9 +141,10 @@ describe('maplibregl_GraphicLayer', () => {
   it("setStyle", (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
-      expect(graphicLayer.color).toEqual([0, 0, 0, 255]);
+      const renderer = graphicLayer.renderer;
+      expect(renderer.color).toEqual([0, 0, 0, 255]);
       graphicLayer.setStyle({ color: "blue" });
-      expect(graphicLayer.color).toEqual("blue");
+      expect(renderer.color).toEqual("blue");
 
       graphicLayer.remove();
       done();
@@ -153,7 +155,8 @@ describe('maplibregl_GraphicLayer', () => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
       graphicLayer.clear();
-      expect(graphicLayer.graphics.length).toEqual(0);
+      const renderer = graphicLayer.renderer;
+      expect(renderer.graphics.length).toEqual(0);
       let graphics = [];
       for (let i = 0; i < coors.length; i++) {
         let lngLat = {
@@ -165,7 +168,7 @@ describe('maplibregl_GraphicLayer', () => {
         graphics[i].setAttributes({ name: "graphic_" + i });
       }
       graphicLayer.addGraphics(graphics);
-      expect(graphicLayer.graphics.length).toEqual(5);
+      expect(renderer.graphics.length).toEqual(5);
 
       graphicLayer.remove();
       done();
@@ -186,7 +189,7 @@ describe('maplibregl_GraphicLayer', () => {
         graphics[i].setAttributes({ name: "graphic_" + i });
       }
       graphicLayer.setGraphics(graphics);
-      expect(graphicLayer.graphics.length).toEqual(5);
+      expect(graphicLayer.renderer.graphics.length).toEqual(5);
 
       graphicLayer.remove();
       done();

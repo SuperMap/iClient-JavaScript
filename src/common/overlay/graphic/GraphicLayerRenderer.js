@@ -36,7 +36,7 @@
  export class GraphicLayerRenderer {
  
      constructor(id, options, callbackOptions, mapOptions) {
-         let opt = CommonUtil.extend(this,  defaultProps, options);
+         let opt = CommonUtil.assign(this,  defaultProps, options);
          /**
           * @member {string} GraphicLayerRenderer.prototype.id
           * @description 高效率点图层 ID。
@@ -63,7 +63,7 @@
             this.mapOptions.mapContainer.appendChild(this.canvas);
         }
          this._initContainer();
-         let mapState = this.callbackOptions.getState();
+         let mapState = this.getState();
          let {
              data,
              color,
@@ -162,7 +162,7 @@
              outline: this.outline
          };
  
-         CommonUtil.extend(this, styleOpt, styleOptions);
+         CommonUtil.assign(this, styleOpt, styleOptions);
          this.update();
      }
  
@@ -304,7 +304,7 @@
                  viewportChanged: true,
                  updateTriggersChanged: true
              });
-             let state = this.callbackOptions.getState();
+             let state = this.getState();
              let width = parseInt(this.canvas.style.width);
              let height = parseInt(this.canvas.style.height);
              state.width = width;
@@ -327,7 +327,7 @@
       * @description 删除该图层。
       */
      remove() {
-        this.CanvasContainer.removeChild(this.canvas);
+        this.mapOptions.mapContainer.removeChild(this.canvas);
      }
  
      /**
@@ -383,7 +383,7 @@
       * @description 绘制图层。
       */
      draw() {
-         let mapState = this.callbackOptions.getState();
+         let mapState = this.getState();
          let deckOptions = {};
  
          for (let key in mapState) {
@@ -419,5 +419,22 @@
          canvas.style.height = mapCanvas.style.height;
          return canvas;
      }
+
+     getState() {
+        let mapState = this.callbackOptions.getMapState();
+        return {
+            data: this.graphics,
+            color: this.color,
+            radius: this.radius,
+            opacity: this.opacity,
+            highlightColor: this.highlightColor,
+            radiusScale: this.radiusScale,
+            radiusMinPixels: this.radiusMinPixels,
+            radiusMaxPixels: this.radiusMaxPixels,
+            strokeWidth: this.strokeWidth,
+            outline: this.outline,
+            ...mapState
+        };
+    }
  }
  

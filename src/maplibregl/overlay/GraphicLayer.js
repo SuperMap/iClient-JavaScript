@@ -4,20 +4,6 @@
  import mapboxgl from 'mapbox-gl';
  import { GraphicLayerRenderer } from '@supermap/iclient-common/overlay/graphic/GraphicLayerRenderer';
  import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
- import {
-     Util
- } from "../core/Util";
- 
- const defaultProps = {
-     color: [0, 0, 0, 255],
-     opacity: 0.8,
-     radius: 10,
-     radiusScale: 1,
-     radiusMinPixels: 0,
-     radiusMaxPixels: Number.MAX_SAFE_INTEGER,
-     strokeWidth: 1,
-     outline: false
- };
  
  /**
   * @class GraphicLayer
@@ -42,23 +28,11 @@
  
      constructor(id, options) {
         this.options = options;
-        let opt = Util.extend(this, defaultProps, options);
          /**
           * @member {string} GraphicLayer.prototype.id
           * @description 高效率点图层 ID。
           */
          this.id = id || CommonUtil.createUniqueID("graphicLayer_");
-         /**
-          * @member {Array.<Graphic>} GraphicLayer.prototype.graphics
-          * @description 点要素对象数组。
-          */
-         this.graphics = [].concat(opt.graphics);
- 
-         /**
-          * @member {boolean} [GraphicLayer.prototype.visibility=true]
-          * @description 图层显示状态属性。
-          */
-         this.visibility = true;
          this.type = 'custom';
          this.renderingMode = '3d';
      }
@@ -66,7 +40,7 @@
      /**
       * @function GraphicLayer.prototype.addTo
       * @description 添加该图层，将在下个版本废弃，请使用 onAdd() 代替。
-      * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
+      * @param {maplibregl.Map} map - maplibregl Map 对象。
       * @returns this
       */
      addTo(map) {
@@ -76,13 +50,13 @@
      /**
       * @function GraphicLayer.prototype.onAdd
       * @description 添加该图层。
-      * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
+      * @param {maplibregl.Map} map - maplibregl Map 对象。
       * @returns {GraphicLayer}
       */
      onAdd(map) {
          this.map = map;
          this.renderer = new GraphicLayerRenderer(this.id, this.options, {
-            getState: this.getState.bind(this)
+            getMapState: this.getMapState.bind(this)
          }, { mapContainer: this.map.getCanvasContainer(), mapCanvas: this.map.getCanvas() });
      }
 
@@ -219,43 +193,40 @@
       * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
       */
      getState() {
-         let map = this.map;
-         let center = map.getCenter();
-         let longitude = center.lng;
-         let latitude = center.lat;
-         let zoom = map.getZoom();
-         let maxZoom = map.getMaxZoom();
-         let pitch = map.getPitch();
-         let bearing = map.getBearing();
- 
-         let mapViewport = {
-             longitude: longitude,
-             latitude: latitude,
-             zoom: zoom,
-             maxZoom: maxZoom,
-             pitch: pitch,
-             bearing: bearing
-         };
-         let state = {};
-         for (let key in mapViewport) {
-             state[key] = mapViewport[key];
-         }
-         state.data = this.graphics;
-         state.color = this.color;
-         state.radius = this.radius;
-         state.opacity = this.opacity;
-         state.highlightColor = this.highlightColor;
-         state.radiusScale = this.radiusScale;
-         state.radiusMinPixels = this.radiusMinPixels;
-         state.radiusMaxPixels = this.radiusMaxPixels;
-         state.strokeWidth = this.strokeWidth;
-         state.outline = this.outline;
-         //当使用扩展的mapboxgl代码时有效
-         if (map.getCRS && map.getCRS() !== mapboxgl.CRS.EPSG3857) {
-             state.coordinateSystem = this.coordinateSystem;
-             state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
-         }
-         console.log('state', state);
+        return this.renderer.getState();
+     }
+
+     /**
+      * @function GraphicLayer.prototype.getMapState
+      * @description 获取当前地图状态。
+      * @returns {Object} 地图状态，包含地图状态信息。
+      */
+     getMapState() {
+        let state = {};
+        let center = this.map.getCenter();
+        let longitude = center.lng;
+        let latitude = center.lat;
+        let zoom = this.map.getZoom();
+        let maxZoom = this.map.getMaxZoom();
+        let pitch = this.map.getPitch();
+        let bearing = this.map.getBearing();
+
+        let mapViewport = {
+            longitude: longitude,
+            latitude: latitude,
+            zoom: zoom,
+            maxZoom: maxZoom,
+            pitch: pitch,
+            bearing: bearing
+        };
+        for (let key in mapViewport) {
+            state[key] = mapViewport[key];
+        }
+        //当使用扩展的mapboxgl代码时有效
+        if (this.map.getCRS && this.map.getCRS() !== mapboxgl.CRS.EPSG3857) {
+            state.coordinateSystem = this.coordinateSystem;
+            state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
+        }
          return state;
      }
  }

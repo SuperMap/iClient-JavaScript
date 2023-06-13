@@ -127,6 +127,33 @@ const DOTS_PER_INCH = 96;
  */
 
 const Util = {
+
+  /**
+     * @function Util.extend
+     * @description 对象拷贝赋值。
+     * @param {Object} dest - 目标对象。
+     * @param {Object} arguments - 待拷贝的对象。
+     * @returns {Object} 赋值后的目标对象。
+     */
+  assign(dest) {
+    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
+        var arg = Object.getOwnPropertyNames(arguments)[index];
+        if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+            continue;
+        }
+        var obj = arguments[arg];
+        if (obj) {
+            for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+                var key = Object.getOwnPropertyNames(obj)[j];
+                if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+                    continue;
+                }
+                dest[key] = obj[key];
+            }
+        }
+    }
+    return dest;
+  },
   /**
    * @memberOf CommonUtil
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
