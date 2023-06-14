@@ -181,9 +181,6 @@
       inputCSS(libsurl + '/video-js/7.10.2/video-js.min.css');
       inputScript(libsurl + '/video-js/7.10.2/video.min.js');
     }
-    if (inArray(includes, 'FGB')) {
-      inputScript(libsurl + '/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
-    }
     // dist
     if (!inArray(excludes, 'iclient-mapboxgl')) {
       if (supportES6()) {

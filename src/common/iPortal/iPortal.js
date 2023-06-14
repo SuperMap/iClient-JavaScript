@@ -57,7 +57,7 @@ export class IPortal extends IPortalServiceBase {
         queryParams.t = new Date().getTime();
         return this.request("GET", resourceUrl, queryParams).then(function(result) {
             var content = [];
-            result.content.forEach(function(item) {
+            (result.content || []).forEach(function(item) {
                 content.push(new IPortalResource(me.iportalUrl, item));
             });
             let queryResult = new IPortalQueryResult();

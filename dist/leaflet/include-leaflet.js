@@ -56,8 +56,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(excludes, 'leaflet')) {
-          inputCSS(libsurl + '/leaflet/1.7.1/leaflet.css');
-          inputScript(libsurl + '/leaflet/1.7.1/leaflet.js');
+          inputCSS(libsurl + '/leaflet/1.9.4/leaflet.css');
+          inputScript(libsurl + '/leaflet/1.9.4/leaflet.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
             inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css');
@@ -76,8 +76,8 @@
             inputScript(libsurl + '/leaflet/plugins/leaflet.draw/1.0.4/leaflet.draw.js');
         }
         if (inArray(includes, 'leaflet-geoman')) {
-          inputCSS(libsurl + '/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.css');
-          inputScript(libsurl + '/leaflet/plugins/leaflet-geoman/2.11.3/leaflet-geoman.min.js');
+          inputCSS(libsurl + '/leaflet/plugins/leaflet-geoman/2.14.2/leaflet-geoman.css');
+          inputScript(libsurl + '/leaflet/plugins/leaflet-geoman/2.14.2/leaflet-geoman.min.js');
 
         }
         if (inArray(includes, 'leaflet.miniMap')) {
@@ -104,7 +104,7 @@
         }
         // 本地
         if (inArray(includes, 'leaflet.sidebyside')) {
-            inputScript(libsurl + '/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js');
+            inputScript(libsurl + '/leaflet/plugins/leaflet-side-by-side/2.0.1/leaflet-side-by-side.min.js');
         }
         if (inArray(includes, 'd3')) {
             inputScript(libsurl + '/d3/7.8.2/d3.min.js');
@@ -127,16 +127,12 @@
         }
         if (inArray(includes, 'pixi')) {
             inputScript(libsurl + '/pixi/4.8.7/pixi.min.js');
-            inputScript(libsurl + '/leaflet/plugins/Leaflet.PixiOverlay/1.8.2/L.PixiOverlay.min.js');
+            inputScript(libsurl + '/leaflet/plugins/Leaflet.PixiOverlay/1.9.4/L.PixiOverlay.min.js');
             inputScript(libsurl + '/leaflet/plugins/Leaflet.PixiOverlay/MarkerContainer.js');
             inputScript(libsurl + '/bezier-easing/2.1.0/bezier-easing.js');
         }
         if (inArray(includes, 'tensorflow')) {
             inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
-        }
-
-        if (inArray(includes, 'FGB')) {
-          inputScript(libsurl + '/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
         }
 
         // iclient

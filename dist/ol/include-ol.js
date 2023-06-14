@@ -119,10 +119,7 @@
         if (inArray(includes, 'xlsx')) {
             inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
         }
-        if (inArray(includes, 'FGB')) {
-          inputScript(libsurl + '/flatgeobuf-geojson/3.24.0/flatgeobuf-geojson.min.js');
-        }
-       
+
         // dist
         if (!inArray(excludes, 'iclient-ol')) {
             if (supportES6()) {
