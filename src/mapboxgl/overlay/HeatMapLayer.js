@@ -31,6 +31,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         super();
 
         var _options = options ? options : {};
+        this.options = _options;
         /**
          * @member {string} HeatMapLayer.prototype.name
          * @description 图层名字。
@@ -81,10 +82,10 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.map = map;
         const mapContainer = this.map.getCanvasContainer();
         const mapCanvas = this.map.getCanvas();
-        this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel, mapContainer, mapCanvas });
+        this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel.bind(this), mapContainer, mapCanvas });
         if (this.features.features && this.features.features.length) {
-        this.renderer.setExtent(this.map.getBounds());
-        this.renderer.addFeatures(this.features);
+            this.renderer.setExtent(this.map.getBounds());
+            this.renderer.addFeatures(this.features);
         }
     }
 
@@ -92,11 +93,15 @@ export class HeatMapLayer extends mapboxgl.Evented {
      * @function HeatMapLayer.prototype.removeFromMap
      * @description 删除该图层。
      */
-    removeFromMap() {
+    onRemove() {
         this.removeAllFeatures();
         this.renderer.removeFromMap();
         this.features = {};
         this.renderer = null;
+    }
+
+    render() {
+        this.refresh();
     }
 
     /**

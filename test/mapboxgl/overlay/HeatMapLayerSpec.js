@@ -234,7 +234,7 @@ describe('mapboxgl_HeatMapLayer', () => {
         expect(heatMapLayerIndexBefore).toEqual(heatMapLayerIndexAfter);
         heatLayer.moveTo('heatmap_2', false);
         for (var i = 0; i < children.length; i++) {
-            if (heatLayer.rootCanvas === children[i]) {
+            if (rootCanvas === children[i]) {
                 heatMapLayerIndexAfter = i;
             }
         }

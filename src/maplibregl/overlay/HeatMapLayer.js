@@ -82,7 +82,7 @@ export class HeatMapLayer extends maplibregl.Evented {
     this.map = map;
     const mapContainer = this.map.getCanvasContainer();
     const mapCanvas = this.map.getCanvas();
-    this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel, mapContainer, mapCanvas });
+    this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel.bind(this), mapContainer, mapCanvas });
     if (this.features.features && this.features.features.length) {
       this.renderer.setExtent(this.map.getBounds());
       this.renderer.addFeatures(this.features);

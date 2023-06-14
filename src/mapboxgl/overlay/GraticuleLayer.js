@@ -104,7 +104,7 @@ export class GraticuleLayer {
     this.renderer = new GraticuleLayerRenderer(this.map, this.options, {
       getMapStateByKey: this.getMapStateByKey,
       getDefaultExtent: this.getDefaultExtent,
-      updateGraticuleLayer: this._updateGraticuleLayer.bind(this),
+      _updateGraticuleLayer: this._updateGraticuleLayer.bind(this),
       setVisibility: this.setVisibility.bind(this)
     }, {
       mapCanvas: this.map.getCanvas(),

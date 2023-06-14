@@ -33,7 +33,7 @@
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
-      var fgbUrl = 'https://iclient.supermap.io/minio/fgb/waterways.fgb';
+      var fgbUrl = 'https://iclient.supermap.io/minio/fgb/roads.fgb';
 
       var map = new maplibregl.Map({
         container: 'map',
