@@ -152,3 +152,12 @@ function formatFontStyle(fontStyle) {
 function compileFontSize(fontSize) {
   return fontSize * 0.8;
 }
+// 处理graphMap数据的展开 折叠 隐藏的实体数据
+export function transformExpandCollapseHiddenData(graphMap) {
+  const { expand, collapse, hidden } = graphMap.dataContent;
+  return {
+    expand: expand && JSON.parse(expand),
+    collapse: collapse && JSON.parse(collapse),
+    hidden: hidden && JSON.parse(hidden)
+  };
+}

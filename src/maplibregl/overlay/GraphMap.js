@@ -1,9 +1,10 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+import maplibregl from 'maplibre-gl';
 import { KnowledgeGraphService } from '../services/KnowledgeGraphService';
 import { KnowledgeGraph } from '@supermap/iclient-common/overlay/KnowledgeGraph';
-import maplibregl from 'maplibre-gl';
+import { transformExpandCollapseHiddenData } from '@supermap/iclient-common/overlay/knowledge-graph/format';
 
 /**
  * @class GraphMap
@@ -24,6 +25,12 @@ import maplibregl from 'maplibre-gl';
 export class GraphMap extends maplibregl.Evented {
   constructor(serverUrl, options) {
     super(serverUrl, options);
+    /**
+     * @member GraphMap.prototype.graph
+     * @description KnowledgeGraph的实例.
+     *
+     */
+    this.graph = null;
     /**
      * @member GraphMap.prototype.EVENT_TYPES
      * @description 监听一个自定义事件可用如下方式:
@@ -55,6 +62,7 @@ export class GraphMap extends maplibregl.Evented {
     const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap.styles.style);
     this.graph = new KnowledgeGraph(options && options.config);
     this.graph.setData(result);
+    this.graph.handleNodeStatus(transformExpandCollapseHiddenData(res.graphMap));
     this.graph.on('afterrender', () => {
       /**
        * @event GraphMap#loaded

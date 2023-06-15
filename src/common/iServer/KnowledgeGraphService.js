@@ -47,6 +47,18 @@ export class KnowledgeGraphService extends CommonServiceBase {
   }
 
   // /**
+  //  * @function KnowledgeGraphService.prototype.queryById
+  //  * @description 根据实体id查询关联节点。
+  //  * @param {string} id - 实体id。
+  //  * @param {RequestCallback} callback 回调函数。
+  //  */
+  // queryById(id, callback) {
+  //   const paramKey = 'cypherQuery';
+  //   const url = Util.urlAppend(this.url + '/query.json', `${paramKey}=match p=(n)-[]-(m) where id(n)=${id} return p;`);
+  //   this.processAsync({ url, method: 'GET', callback });
+  // }
+
+  // /**
   //  * @function KnowledgeGraphService.prototype.getMetaData
   //  * @description 获取元信息（展示所有实体类型和关系类型。）
   //  * @param {RequestCallback} callback 回调函数。
@@ -90,13 +102,30 @@ export class KnowledgeGraphService extends CommonServiceBase {
       return;
     }
     const queries = graphMap.dataContent.queries.query;
+    const expandQueries = this._getGraphMapExpandQuery(graphMap);
+    queries.push(...expandQueries);
     for (let j = 0; j < queries.length; j++) {
       const cypherQuery = queries[j];
       const res = await this._queryDataBySql(cypherQuery);
       data = data.concat([], res);
     }
-
     return { data, graphMap };
+  }
+
+  /**
+   * @private
+   * @function KnowledgeGraphService.prototype._getGraphMapExpandQuery
+   * @description 获取graphMap图谱展开节点的query条件
+   * @param {Object} graphMap -将iServer GraphMap图谱服务的数据
+   * @param {Array.<string>} 查询条件
+   */
+  _getGraphMapExpandQuery(graphMap) {
+    const queries = [];
+    const expandIds = (graphMap.dataContent.expand && JSON.parse(graphMap.dataContent.expand)) || [];
+    expandIds.forEach((id) => {
+      queries.push(`match p=(n)-[]-(m) where id(n)=${id} return p;`);
+    });
+    return queries;
   }
 
   // /**

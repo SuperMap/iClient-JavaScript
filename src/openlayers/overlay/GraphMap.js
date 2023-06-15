@@ -1,9 +1,11 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+import Observable from 'ol/Observable';
 import { KnowledgeGraphService } from '../services/KnowledgeGraphService';
 import { KnowledgeGraph } from '@supermap/iclient-common/overlay/KnowledgeGraph';
-import Observable from 'ol/Observable';
+import { transformExpandCollapseHiddenData } from '@supermap/iclient-common/overlay/knowledge-graph/format';
+
 /**
  * @class GraphMap
  * @classdesc 对接 iServer GraphMap。
@@ -23,6 +25,12 @@ import Observable from 'ol/Observable';
 export class GraphMap extends Observable {
   constructor(serviceUrl, options) {
     super();
+    /**
+     * @member GraphMap.prototype.graph
+     * @description KnowledgeGraph的实例.
+     *
+     */
+    this.graph = null;
     /**
      * @member GraphMap.prototype.EVENT_TYPES
      * @description 监听一个自定义事件可用如下方式:
@@ -63,6 +71,7 @@ export class GraphMap extends Observable {
       this.dispatchEvent(this.EVENT_TYPES[0]);
     });
     this.graph.setData(result);
+    this.graph.handleNodeStatus(transformExpandCollapseHiddenData(res.graphMap));
   }
 
   /**

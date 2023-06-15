@@ -21,7 +21,10 @@ import { G6Render } from './knowledge-graph/G6Render';
  * @property {string | HTMLElement} container - 创建的容器 id 或容器本身, 默认是'knowledgeGraph'。
  * @property {number} width - 图的宽度, 默认是container的width。
  * @property {number} height - 图的高度,默认是container的height。
- * @property {string} [layout='force'] - 布局, 可选值：['force']； 默认是经典力导向布局。
+ * @property {number} [zoom] - 缩放比例。
+ * @property {number} [minZoom] - 最小缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例小于该值，则将使用该值进行缩放，并返回 false。
+ * @property {number} [maxZoom] - 最大缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例大于该值，则将使用该值进行缩放，并返回 false。
+ * @property {KnowledgeGraph.Layout} [layout] - 布局。
  * @property {boolean} [autoResize=true] - 当视口变换时，是否自动重绘。
  * @property {KnowledgeGraph.NodeStyle} [defaultNode] - 默认状态下节点的配置，比如 type, size, color。会被写入的 data 覆盖。
  * @property {KnowledgeGraph.EdgeStyle} [defaultEdge] - 默认状态下边的配置，比如 type, size, color。会被写入的 data 覆盖。
@@ -30,6 +33,7 @@ import { G6Render } from './knowledge-graph/G6Render';
  * @property {boolean} [highlightNode = true] - 鼠标移入是否高亮节点。
  * @property {boolean} [highlightEdge = true] - 鼠标移入是否高亮边。
  * @property {boolean} [showToolBar = true] - 是否打开工具条， 包含放大，缩小，切换到实际大小功能。
+ * @property {boolean} [showContextMenu = true] - 是否打开节点的右键菜单， 包含展开\折叠、隐藏功能。
  * @property {boolean} [dragCanvas = true] - 是否可以拖拽canvas。
  * @property {boolean} [zoomCanvas = true] - 是否可以缩放canvas。
  * @property {boolean} [dragNode = true] - 是否可以拖拽node节点。
@@ -37,17 +41,9 @@ import { G6Render } from './knowledge-graph/G6Render';
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.Layout - node节点配置项。
- * @property {string} id - 元素的标识 ID，必须是唯一的 string
- * @property {string} [category] - 分类。
- * @property {number} [x] - x坐标。
- * @property {number} [y] - y坐标。
- * @property {number} [size=20] - 节点的大小。
- * @property {Array.<number>|number} [anchorPoints=20] - 指定边连入节点的连接点的位置（相对于该节点而言），可以为空。例如: [0, 0]，代表节点左上角的锚点，[1, 1],代表节点右下角的锚点。
- * @property {string} [type] - 元素的类型，不传则使用默认值，节点默认类型为 'circle'，边默认类型为 'line'，Combo 默认类型为 circle。
- * @property {string} [label] - 元素的文本标签，有该字段时默认会渲染 label 。
- * @property {KnowledgeGraph.NodeLabelCfg} [labelCfg] - 元素文本标签的配置项，详见各子模块内容。
- * @property {KnowledgeGraph.NodeStyle} [style] - 元素 keyShape 的样式属性，可配置内容与该 keyShape 的图形类型相关，各图形的具体属性参见各图形样式属性
+ * @typedef {Object} KnowledgeGraph.Layout - 布局。
+ * @property {string} [type='force'] - 布局类型， 可选值：['force']。 默认'force'。
+ * @property {Array.<number>} [center] - 布局的中心, 图的中心。
  */
 
 /**
@@ -117,6 +113,7 @@ import { G6Render } from './knowledge-graph/G6Render';
  * @property {boolean} [autoRotate=true] - 标签文字是否跟随边旋转，默认： true。
  * @property { KnowledgeGraph.TextStyle} [style] - 标签的样式属性，默认： {fontSize: 3,fill: '#333'}。
  */
+
 /**
  * @typedef {Object} KnowledgeGraph.EdgeStyle - 边样式通用配置项。
  * @property {string} [stroke] - 边的颜色。
@@ -131,6 +128,14 @@ import { G6Render } from './knowledge-graph/G6Render';
  * @property {number} [shadowOffsetY] - 阴影 y 方向偏移量。
  * @property {Array.<number>} [lineDash] - 设置线的虚线样式，可以指定一个数组。一组描述交替绘制线段和间距（坐标空间单位）长度的数字。 如果数组元素的数量是奇数， 数组的元素会被复制并重复。例如， [5, 15, 25] 会变成 [5, 15, 25, 5, 15, 25]。
  * @property {string} [cursor] - 鼠标在该边上时的鼠标样式，CSS 的 cursor 选项都支持。
+ */
+/**
+ * @typedef {Object} KnowledgeGraph.AnimateConfig - 动画配置项。
+ * @property {number} [duration= 500] - 一次动画的时长。
+ * @property {string} [easing='linearEasing'] - 动画函数。
+ * @property {number} [delay=0] - 是否重复执行动画。
+ * @property {boolean} [repeat=false] - 边透明度。
+ * @property {string} [shadowColor] - 阴影颜色。
  */
 
 export class KnowledgeGraph {
@@ -168,6 +173,63 @@ export class KnowledgeGraph {
    */
   static dataFromKnowledgeGraphQuery(queryResult) {
     return transformGraphMap(queryResult);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.handleNodeStatus
+   * @description 展开、折叠、隐藏节点
+   * @param {Object} data - 展开 折叠 隐藏的对象, eg: {expand:['id1'], collapse:['id2'], hidden:['id3']}
+   */
+  handleNodeStatus(data) {
+    const { expand, collapse, hidden } = data;
+    // 解析expand参数,里面的节点再执行一次查询显示出来
+    this.expandNodes(expand);
+    // 解析collapse参数,折叠这个里面的节点
+    this.collapseNodes(collapse);
+    // 解析hidden，隐藏这个里面额的节点
+    this.hideNodes(hidden);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.expandNodes
+   * @description 展开节点。
+   * @param {Array.<string>} expandData - 元素 ID 数组。
+   */
+  expandNodes(expandData) {
+    if (!expandData) {
+      return;
+    }
+    expandData.forEach((item) => {
+      this.expandNode(item + '');
+    });
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.collapseNodes
+   * @description 折叠节点。
+   * @param {Array.<string>} collapseData - 元素 ID 数组。
+   */
+  collapseNodes(collapseData) {
+    if (!collapseData) {
+      return;
+    }
+    collapseData.forEach((item) => {
+      this.collapseNode(item + '');
+    });
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.hideNodes
+   * @description 隐藏节点。
+   * @param {Array.<string>} hiddenData - 元素 ID 数组。
+   */
+  hideNodes(hiddenData) {
+    if (!hiddenData) {
+      return;
+    }
+    hiddenData.forEach((item) => {
+      this.hideItem(item + '');
+    });
   }
 
   /**
@@ -215,6 +277,124 @@ export class KnowledgeGraph {
   }
 
   /**
+   * @function KnowledgeGraph.prototype.zoom
+   * @description 改变视口的缩放比例，在当前画布比例下缩放，是相对比例。
+   * @param {number} ratio 缩放比例。
+   * @param {Object} [center] 以 center 的 x、y 坐标为中心缩放，如果省略了 center 参数，则以元素当前位置为中心缩放。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  zoom(ratio, center, animate, animateCfg) {
+    this.graphRender.zoom(ratio, center, animate, animateCfg);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.zoomTo
+   * @description 改变视口的缩放比例，在当前画布比例下缩放，是相对比例。
+   * @param {number} ratio 缩放比例。
+   * @param {Object} [center] 以 center 的 x、y 坐标为中心缩放，如果省略了 center 参数，则以元素当前位置为中心缩放。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  zoomTo(ratio, center, animate, animateCfg) {
+    this.graphRender.zoomTo(ratio, center, animate, animateCfg);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.fitView
+   * @description 让画布内容适应视口。
+   * @param {Array.<number>|number} [padding] [top, right, bottom, left] 四个方向上的间距值。
+   * @param {Object} [rules] fitView 的规则，参数如下：{ onlyOutOfViewPort?: boolean; direction?: 'x' / 'y' / 'both'; ratioRule?: 'max' / 'min}。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  fitView(padding, rules, animate, animateCfg) {
+    this.graphRender.fitView(padding, rules, animate, animateCfg);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.fitCenter
+   * @description 平移图到中心将对齐到画布中心，但不缩放。优先级低于 fitView。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画，参见基础动画教程。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  fitCenter(animate, animateCfg) {
+    this.graphRender.fitCenter(animate, animateCfg);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getGraphCenterPoint
+   * @description 获取图内容的中心绘制坐标。
+   * @return {Object} 包含的属性：x 和 y 属性，分别表示渲染坐标下的 x、y 值。
+   */
+  getGraphCenterPoint() {
+    return this.graph.getGraphCenterPoint();
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getZoom
+   * @description 获取当前视口的缩放比例。
+   * @return {number} 返回值表示当前视口的缩放比例， 默认值为 1。
+   */
+  getZoom() {
+    return this.graphRender.getZoom();
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getMinZoom
+   * @description 获取 graph 当前允许的最小缩放比例。
+   * @return {number} 返回值表示当前视口的最小缩放比例。
+   */
+  getMinZoom() {
+    return this.graphRender.getMinZoom();
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.setMinZoom
+   * @description 设置 graph 当前允许的最小缩放比例。
+   * @param {number} ratio 缩放比例。
+   */
+  setMinZoom(ratio) {
+    this.graphRender.setMinZoom(ratio);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getMaxZoom
+   * @description 获取 graph 当前允许的最大缩放比例。
+   * @return {number} 返回值表示当前视口的最大缩放比例。
+   */
+  getMaxZoom() {
+    return this.graphRender.getMaxZoom();
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.setMaxZoom
+   * @description 设置 graph 当前允许的最大缩放比例。
+   * @param {number} ratio 缩放比例。
+   */
+  setMaxZoom(ratio) {
+    this.graphRender.setMaxZoom(ratio);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getWidth
+   * @description获取 graph 当前的宽度。
+   * @return {number} graph 当前的宽度。
+   */
+  getWidth() {
+    return this.graphRender.getWidth();
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getHeight
+   * @description 获取 graph 当前的高度。
+   * @return {number} graph 当前的高度。
+   */
+  getHeight() {
+    return this.graphRender.getHeight();
+  }
+
+  /**
    * @function KnowledgeGraph.prototype.initGraph
    * @description 创建KnowledgeGraph实例
    * @param {Object} config - graph配置项。
@@ -237,9 +417,13 @@ export class KnowledgeGraph {
     if (this.config && this.config.nodeLabelMaxWidth) {
       data.nodes = this.nodeLabelOpenEllipsis(this.config.nodeLabelMaxWidth, data.nodes);
     }
-    this.data = data;
     this.graphRender.setData(data, graph);
     this.render(graph); // 渲染图
+    if (this.config.zoom !== undefined) {
+      const center = this.config.center ? { x: center[0], y: center[1] } : center;
+      this.zoomTo(this.config.zoom, center);
+    }
+    this.data = data;
   }
 
   /**
@@ -279,7 +463,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.resize
+   * @function KnowledgeGraph.prototype.resize
    * @description 改变画布大小后，重新渲染。
    * @param {number} width - 宽度。
    * @param {number} height - 高度。
@@ -368,7 +552,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.getEdgesByNode
+   * @function KnowledgeGraph.prototype.getEdgesByNode
    * @description 获取与当前节点有关联的所有边。
    * @param {Object} node - node实例。
    * @return {Array} edge实例数组。
@@ -378,7 +562,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.getInEdges
+   * @function KnowledgeGraph.prototype.getInEdges
    * @description 获取与当前节点关联的所有入边。
    * @param {Object} node - node实例。
    * @return {Array} edge实例数组。
@@ -388,7 +572,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.getOutEdges
+   * @function KnowledgeGraph.prototype.getOutEdges
    * @description 获取与当前节点关联的所有出边。
    * @param {Object} node - node实例。
    * @return {Array} edge实例数组。
@@ -398,7 +582,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.getSourceByEdge
+   * @function KnowledgeGraph.prototype.getSourceByEdge
    * @description 获取当前边的起始节点
    * @param {Object} edge - node实例。
    * @return {Object} 返回值为起始节点的实例。
@@ -408,13 +592,102 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.getTargetByEdge
+   * @function KnowledgeGraph.prototype.getTargetByEdge
    * @description 获取当前边的终止节点。
    * @param {Object} edge - node实例。
    * @return {Object} 终止节点的实例。
    */
   getTargetByEdge(edge) {
     return this.graphRender.getTargetByEdge(edge);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.expandNode
+   * @description 展开当前节点。
+   * @param {string} id - 元素 ID。
+   */
+  expandNode(id) {
+    const item = this.findById(id);
+    this.graphRender.expandNode(item);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.collapseNode
+   * @description 收起当前节点。
+   * @param {string} id - 元素 ID。
+   * @param {Object} graph - graph实例。
+   */
+  collapseNode(id) {
+    const item = this.findById(id);
+    this.graphRender.collapseNode(item);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.showItem
+   * @description 显示指定的元素。若 item 为节点，则相关边也会随之显示。而show() 则将只显示自身。
+   * @param {string|Object} item - 元素 ID 或元素实例。
+   * @param {boolean} [stack] - 	操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
+   */
+  showItem(item, stack) {
+    this.graphRender.showItem(item, stack);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.showItem
+   * @description 隐藏指定元素。若 item 为节点，则相关边也会随之隐藏。而 hide() 则将只隐藏自身。
+   * @param {string|Object} item - 元素 ID 或元素实例。
+   * @param {boolean} [stack] -操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
+   */
+  hideItem(item, stack) {
+    this.graphRender.hideItem(item, stack);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.show
+   * @description 显示元素。只显示 item 自身，若需要在显示节点的同时显示相关边，应调用showItem(item)。
+   * @param {Object} item - 元素实例。
+   */
+  show(item) {
+    this.graphRender.show(item);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.hide
+   * @description 隐藏元素。只隐藏 item 自身，若需要在隐藏节点的同时隐藏相关边，应调用 hideItem(item)。
+   * @param {Object} item - 元素实例。
+   */
+  hide(item) {
+    this.graphRender.hide(item);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.changeVisibility
+   * @description 更改元素是否显示。
+   * @param {Object} item - 元素实例。
+   * @param {boolean} visible - 是否显示元素，true 为显示，false 为隐藏。
+   */
+  changeVisibility(item, visible) {
+    this.graphRender.changeVisibility(item, visible);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.isVisible
+   * @description 查询元素显示状态。
+   * @param {Object} item - 元素实例。
+   * @return {boolean} - 返回值为 true，则表示当前元素处于显示状态，否则处于隐藏状态。
+   */
+  isVisible(item) {
+    return this.graphRender.isVisible(item);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getModel
+   * @description 获取元素的数据模型。
+   * @param {Object} item - 元素实例。
+   * @return {Object} - 返回值为节点的数据模型。
+   */
+  getModel(item) {
+    return this.graphRender.getModel(item);
   }
 
   /**
@@ -482,6 +755,9 @@ export class KnowledgeGraph {
    * afterupdateitem 调用 updateItem 方法之后触发
    * beforegraphrefresh 调用 refresh  方法之前触发
    * aftergraphrefresh 调用 refresh  方法之后触发
+   * beforelayout	布局前触发。调用 graph.render 时会进行布局，因此 render 时会触发。或用户主动调用图的 graph.layout 时触发
+   * afterlayout	布局完成后触发。调用 graph.render 时会进行布局，因此 render 时布局完成后会触发。或用户主动调用图的 graph.layout 时布局完成后触发
+   * viewportchange 调用 graph.moveTo 或 graph.zoom 均会触发该事件
    * @param {Function} handler -	监听函数。
    */
   on(eventName, handler) {
@@ -510,7 +786,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function G6Render.prototype.nodeLabelOpenEllipsis
+   * @function KnowledgeGraph.prototype.nodeLabelOpenEllipsis
    * @description 转换label的省略号。
    * @param {Object} nodeLabelMaxWidth - node节点标签是否开启省略号
    * @param {Object} nodes - graph的nodes数据。

@@ -15,6 +15,7 @@ export class G6Render {
     this.config = null;
     this.graph = null;
     this.data = null;
+    this.collpasedData = {};
     this.importG6();
     this.CLASS_NAME = 'SuperMap.G6Render';
   }
@@ -38,7 +39,77 @@ export class G6Render {
     if (!config || config.highlightEdge !== false) {
       this.highlightEdge(graph);
     }
+    if (config.dragCanvas !== false || config.dragNode !== false) {
+      // 阻止事件冒泡
+      this.stopDefaultEventPropagation();
+    }
     return graph;
+  }
+
+  _getContextMenu() {
+    const contextMenu = new G6.Menu({
+      shouldBegin(evt) {
+        if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
+          return true;
+        }
+        if (evt.item) {
+          return true;
+        }
+        return false;
+      },
+      getContent: (evt) => {
+        const { item } = evt;
+        if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
+          return;
+        }
+        if (!item) {
+          return;
+        }
+        const itemType = item.getType();
+        const model = item.getModel();
+        if (itemType && model) {
+          if (itemType === 'node') {
+            if (this.isCollpased(model.id)) {
+              return `<ul>
+              <li id='expand'>展开</li>
+              <li id='hide'>隐藏</li>
+            </ul>`;
+            } else {
+              return `<ul>
+              <li id='collapse'>折叠</li>
+              <li id='hide'>隐藏</li>
+            </ul>`;
+            }
+          }
+        }
+      },
+      handleMenuClick: (target, item) => {
+        const liIdStrs = target.id.split('-');
+        switch (liIdStrs[0]) {
+          case 'hide':
+            this.hideItem(item);
+            break;
+          case 'expand':
+            this.expandNode(item);
+            break;
+          case 'collapse':
+            this.collapseNode(item);
+            break;
+          case 'show':
+            this.showItem(item);
+            break;
+          default:
+            break;
+        }
+      },
+      // 需要加上父级容器的 padding-left 16 与自身偏移量 10
+      offsetX: 16 + 10,
+      // 需要加上父级容器的 padding-top 24 、画布兄弟元素高度、与自身偏移量 10
+      offsetY: 0,
+      // 在哪些类型的元素上响应
+      itemTypes: ['node', 'edge', 'canvas']
+    });
+    return contextMenu;
   }
 
   _getGraphConfig(config) {
@@ -47,8 +118,7 @@ export class G6Render {
       linkDistance: 80,
       nodeSpacing: 20,
       preventOverlap: true,
-      nodeStrength: 0,
-      animate: false
+      nodeStrength: 0
     };
     const defaultNode = {};
     const defaultEdge = {
@@ -67,8 +137,11 @@ export class G6Render {
         }
       }
     };
-    const defaultMode = { default: ['drag-canvas', 'zoom-canvas', 'drag-node'] };
-    const defaultPlugins = [new G6.ToolBar()];
+    const defaultMode = {
+      default: ['drag-canvas', 'zoom-canvas', 'drag-node']
+    };
+    const contextMenu = this._getContextMenu();
+    const defaultPlugins = [new G6.ToolBar(), contextMenu];
     const hoverColor = '#b4d6ff';
     const defaultNodeHighlightStyle = {
       lineWidth: 3,
@@ -110,10 +183,9 @@ export class G6Render {
       typeof config.container === 'string' ? document.querySelector(`#${config.container}`) : config.container;
     config.width = config.width || dom.scrollWidth;
     config.height = config.height || dom.scrollHeight;
-    config.center = [config.width / 2, config.height / 2];
-    config.layout = config.layout || defaultLayout;
-    config.defaultNode = config.defaultNode || defaultNode;
-    config.defaultEdge = config.defaultEdge || defaultEdge;
+    config.layout = { ...defaultLayout, ...(config.layout || {}) };
+    config.defaultNode = { ...defaultNode, ...(config.defaultNode || {}) };
+    config.defaultEdge = { ...defaultEdge, ...(config.defaultEdge || {}) };
     config.modes = {
       default: [
         config.dragCanvas !== false && 'drag-canvas',
@@ -122,16 +194,19 @@ export class G6Render {
       ]
     };
     config.nodeStateStyles = {
-      hover: config.nodeHighlightStyle || defaultNodeHighlightStyle
+      hover: { ...defaultNodeHighlightStyle, ...(config.nodeHighlightStyle || {}) }
     };
     config.edgeStateStyles = {
-      hover: config.edgeHighlightStyle || defaultEdgeHighlightStyle
+      hover: { ...defaultEdgeHighlightStyle, ...(config.edgeHighlightStyle || {}) }
     };
     if (config.showToolBar !== false) {
-      config.plugins = defaultPlugins;
+      config.plugins = [new G6.ToolBar()];
       this._setToolBarStyle();
     }
-
+    if (config.showContextMenu !== false) {
+      config.plugins = [...(config.plugins || []), contextMenu];
+      this._setToolBarStyle();
+    }
     return config;
   }
 
@@ -160,6 +235,123 @@ export class G6Render {
   }
 
   /**
+   * @function G6Render.prototype.zoom
+   * @description 改变视口的缩放比例，在当前画布比例下缩放，是相对比例。
+   * @param {number} ratio 缩放比例。
+   * @param {Object} [center] 以 center 的 x、y 坐标为中心缩放，如果省略了 center 参数，则以元素当前位置为中心缩放。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  zoom(ratio, center, animate, animateCfg) {
+    this.graph.zoom(ratio, center, animate, animateCfg);
+  }
+
+  /**
+   * @function G6Render.prototype.zoomTo
+   * @description 改变视口的缩放比例，在当前画布比例下缩放，是相对比例。
+   * @param {number} ratio 缩放比例。
+   * @param {Object} [center] 以 center 的 x、y 坐标为中心缩放，如果省略了 center 参数，则以元素当前位置为中心缩放。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  zoomTo(ratio, center, animate, animateCfg) {
+    this.graph.zoomTo(ratio, center, animate, animateCfg);
+  }
+
+  /**
+   * @function G6Render.prototype.fitView
+   * @description 让画布内容适应视口。
+   * @param {Array.<number>|number} [padding] [top, right, bottom, left] 四个方向上的间距值。
+   * @param {Object} [rules] fitView 的规则，参数如下：{ onlyOutOfViewPort?: boolean; direction?: 'x' / 'y' / 'both'; ratioRule?: 'max' / 'min}。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  fitView(padding, rules, animate, animateCfg) {
+    this.graph.fitView(padding, rules, animate, animateCfg);
+  }
+
+  /**
+   * @function G6Render.prototype.fitCenter
+   * @description 平移图到中心将对齐到画布中心，但不缩放。优先级低于 fitView。
+   * @param {boolean} [animate] 是否开启动画。
+   * @param {KnowledgeGraph.AnimateConfig} [animateCfg] 若带有动画，可配置动画，参见基础动画教程。若未配置，则跟随 graph 的 animateCfg 参数。
+   */
+  fitCenter(animate, animateCfg) {
+    this.graph.fitCenter(animate, animateCfg);
+  }
+
+  /**
+   * @function G6Render.prototype.getGraphCenterPoint
+   * @description 获取图内容的中心绘制坐标。
+   * @return {Object} 包含的属性：x 和 y 属性，分别表示渲染坐标下的 x、y 值。
+   */
+  getGraphCenterPoint() {
+    return this.graph.getGraphCenterPoint();
+  }
+
+  /**
+   * @function G6Render.prototype.getZoom
+   * @description 获取当前视口的缩放比例。
+   * @return {number} 返回值表示当前视口的缩放比例， 默认值为 1。
+   */
+  getZoom() {
+    return this.graph.getZoom();
+  }
+
+  /**
+   * @function G6Render.prototype.getMinZoom
+   * @description 获取 graph 当前允许的最小缩放比例。
+   * @return {number} 返回值表示当前视口的最小缩放比例。
+   */
+  getMinZoom() {
+    return this.graph.getMinZoom();
+  }
+
+  /**
+   * @function G6Render.prototype.setMinZoom
+   * @description 设置 graph 当前允许的最小缩放比例。
+   * @param {number} ratio 缩放比例。
+   */
+  setMinZoom(ratio) {
+    this.graph.setMinZoom(ratio);
+  }
+
+  /**
+   * @function G6Render.prototype.getMaxZoom
+   * @description 获取 graph 当前允许的最大缩放比例。
+   * @return {number} 返回值表示当前视口的最大缩放比例。
+   */
+  getMaxZoom() {
+    return this.graph.getMaxZoom();
+  }
+
+  /**
+   * @function G6Render.prototype.setMaxZoom
+   * @description 设置 graph 当前允许的最大缩放比例。
+   * @param {number} ratio 缩放比例。
+   */
+  setMaxZoom(ratio) {
+    this.graph.setMaxZoom(ratio);
+  }
+
+  /**
+   * @function G6Render.prototype.getWidth
+   * @description获取 graph 当前的宽度。
+   * @return {number} graph 当前的宽度。
+   */
+  getWidth() {
+    return this.graph.getWidth();
+  }
+
+  /**
+   * @function G6Render.prototype.getHeight
+   * @description 获取 graph 当前的高度。
+   * @return {number} graph 当前的高度。
+   */
+  getHeight() {
+    return this.graph.getHeight();
+  }
+  /**
    * @function G6Render.prototype._setToolBarStyle
    * @description 隐藏工具栏的redo undo realZoom按钮
    * @private
@@ -170,6 +362,34 @@ export class G6Render {
       .g6-component-toolbar li[code='undo'],
       .g6-component-toolbar li[code='realZoom'] {
         display: none;
+      }
+      .g6-component-contextmenu {
+        position: absolute;
+        z-index: 2;
+        list-style-type: none;
+        border-radius: 6px;
+        font-size: 14px;
+        width: fit-content;
+        transition: opacity .2s;
+        text-align: center;
+        box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.6);
+        border: 0px;
+      }
+      .g6-component-contextmenu ul {
+        padding-left: 0px;
+        margin: 0;
+      }
+      .g6-component-contextmenu li {
+        cursor: pointer;
+        list-style-type: none;
+        list-style: none;
+        margin-left: 0;
+        line-height: 38px;
+        padding: 0px 35px;
+      }
+      .g6-component-contextmenu li:hover {
+        color: #333;
+        background: #aaaaaa45;
       }
     `);
   }
@@ -270,7 +490,7 @@ export class G6Render {
    * @param {Object} graph - graph实例。
    */
   refresh(graph = this.graph) {
-    return graph.refresh();
+    graph.refresh();
   }
 
   /**
@@ -411,6 +631,165 @@ export class G6Render {
   }
 
   /**
+   * @function G6Render.prototype.expandNode
+   * @description 展开当前节点。
+   * @param {Object} item - 元素 ID 或元素实例。
+   */
+  expandNode(item) {
+    const id = item.getModel().id;
+    this._expandCollapseNode(this.collpasedData[id], 'show');
+    delete this.collpasedData[id];
+  }
+
+  /**
+   * @function G6Render.prototype.collapseNode
+   * @description 收起当前节点。
+   * @param {Object} item - 元素 ID 或元素实例。
+   * @param {Object} graph - graph实例。
+   */
+  collapseNode(item) {
+    const id = item.getModel().id;
+    const result = [];
+    this._collapseFunc(item, result);
+    this.collpasedData[id] = result;
+    this._expandCollapseNode(result);
+  }
+
+  isCollpased(id) {
+    return !!this.collpasedData[id];
+  }
+
+  _collapseFunc(item, res = []) {
+    const sourceNodes = this.getNeighbors(item, 'target');
+    const targetNodes = this.getNeighbors(item, 'source');
+
+    // 指出节点， 如果没有其他链接，隐藏
+    for (let i = 0; i < sourceNodes.length; i++) {
+      const sourceNode = sourceNodes[i];
+      const model = sourceNode.getModel();
+      let nodes = this.getNeighbors(sourceNode);
+      // if (nodes && exceptNode) {
+      //   nodes = nodes.filter((item) => item.id !== exceptNode);
+      // }
+      if (nodes.length === 1) {
+        res.push({ id: model.id });
+      }
+    }
+    // 指入节点， 如果没有其他链接或者没有指入节点隐藏，隐藏
+    for (let i = 0; i < targetNodes.length; i++) {
+      const targetNode = targetNodes[i];
+      const model = targetNode.getModel();
+      let nodes = this.getNeighbors(targetNode);
+      let targetNodeNodes = this.getNeighbors(targetNode, 'source');
+      // if (nodes && exceptNode) {
+      //   nodes = nodes.filter((item) => item.id !== exceptNode);
+      // }
+      // if (targetNodeNodes && exceptNode) {
+      //   targetNodeNodes = targetNodeNodes.filter((item) => item.id !== exceptNode);
+      // }
+      if (nodes.length === 1 || targetNodeNodes.length === 0) {
+        res.push({ id: model.id });
+      } else {
+        const result = [];
+        this._collapseFunc(targetNode, result);
+        res.push({ id: model.id, children: result });
+      }
+    }
+    return res;
+  }
+
+  _expandCollapseNode(data, type = 'hide') {
+    if (!data) {
+      return;
+    }
+    data.forEach((item) => {
+      if (type === 'hide') {
+        item;
+        this.hideItem(item.id);
+      } else {
+        this.showItem(item.id);
+        // 如果是把之前的折叠也展开了， 就要把之前的折叠数据删除
+        if (this.isCollpased(item.id)) {
+          delete this.collpasedData[item.id];
+        }
+      }
+      if (item.children) {
+        this._expandCollapseNode(item.children, type);
+      }
+    });
+  }
+
+  /**
+   * @function G6Render.prototype.showItem
+   * @description 显示指定的元素。若 item 为节点，则相关边也会随之显示。而show() 则将只显示自身。
+   * @param {string|Object} item - 元素 ID 或元素实例。
+   * @param {boolean} [stack] - 	操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
+   * @param {Object} graph - graph实例。
+   */
+  showItem(item, stack, graph = this.graph) {
+    graph.showItem(item, stack);
+  }
+
+  /**
+   * @function G6Render.prototype.showItem
+   * @description 隐藏指定元素。若 item 为节点，则相关边也会随之隐藏。而 hide() 则将只隐藏自身。
+   * @param {string|Object} item - 元素 ID 或元素实例。
+   * @param {boolean} [stack] -操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
+   * @param {Object} graph - graph实例。
+   */
+  hideItem(item, stack, graph = this.graph) {
+    graph.hideItem(item, stack);
+  }
+
+  /**
+   * @function G6Render.prototype.show
+   * @description 显示元素。只显示 item 自身，若需要在显示节点的同时显示相关边，应调用showItem(item)。
+   * @param {Object} item - 元素实例。
+   */
+  show(item) {
+    item.show();
+  }
+
+  /**
+   * @function G6Render.prototype.hide
+   * @description 隐藏元素。只隐藏 item 自身，若需要在隐藏节点的同时隐藏相关边，应调用 hideItem(item)。
+   * @param {Object} item - 元素实例。
+   */
+  hide(item) {
+    item.hide();
+  }
+
+  /**
+   * @function G6Render.prototype.changeVisibility
+   * @description 更改元素是否显示。
+   * @param {Object} item - 元素实例。
+   * @param {boolean} visible - 是否显示元素，true 为显示，false 为隐藏。
+   */
+  changeVisibility(item, visible) {
+    item.changeVisibility(visible);
+  }
+
+  /**
+   * @function G6Render.prototype.isVisible
+   * @description 查询元素显示状态。
+   * @param {Object} item - 元素实例。
+   * @return {boolean} - 返回值为 true，则表示当前元素处于显示状态，否则处于隐藏状态。
+   */
+  isVisible(item) {
+    return item.isVisible();
+  }
+
+  /**
+   * @function G6Render.prototype.getModel
+   * @description 获取元素的数据模型。
+   * @param {Object} item - 元素实例。
+   * @return {KnowledgeGraph.Data} - 返回值为节点的数据模型。
+   */
+  getModel(item) {
+    return item.getModel();
+  }
+
+  /**
    * @function G6Render.prototype.addItem
    * @description 新增元素（节点和边）。
    * @param {Object} graph - graph实例。
@@ -418,17 +797,17 @@ export class G6Render {
    * @param {Object} model - 元素的数据模型，具体内容参见元素配置项。
    */
   addItem(type, model, graph = this.graph) {
-    return graph.addItem(type, model);
+    graph.addItem(type, model);
   }
 
   /**
    * @function G6Render.prototype.addItem
    * @description 删除元素。
-   * @param {Object} graph - graph实例。
    * @param {string|Object} item - 	元素 ID 或元素实例
+   * @param {Object} graph - graph实例。
    */
   removeItem(item, graph = this.graph) {
-    return graph.removeItem(item);
+    graph.removeItem(item);
   }
 
   /**
@@ -439,7 +818,7 @@ export class G6Render {
    * @param {Object} model - 元素的数据模型，具体内容参见元素配置项。
    */
   updateItem(item, model, graph = this.graph) {
-    return graph.updateItem(item, model);
+    graph.updateItem(item, model);
   }
 
   /**
@@ -449,7 +828,7 @@ export class G6Render {
    * @param {string|Object} item - 元素 ID 或元素实例。
    */
   refreshItem(item, graph = this.graph) {
-    return graph.refreshItem(item);
+    graph.refreshItem(item);
   }
 
   /**
@@ -458,12 +837,12 @@ export class G6Render {
    *  @param {Object} graph - graph实例。
    */
   refreshPositions(graph = this.graph) {
-    return graph.refreshPositions();
+    graph.refreshPositions();
   }
   /**
    * @function G6Render.prototype.on
    * @description graph监听事件
-   *  @param {Object} graph - graph实例。
+   * @param {Object} graph - graph实例。
    * @param {string} eventName - 事件名，可选事件名参见 Event。
    * @param {Function} handler -	监听函数。
    */
@@ -508,6 +887,26 @@ export class G6Render {
     graph.on('node:dragend', function (e) {
       e.item.get('model').fx = null;
       e.item.get('model').fy = null;
+    });
+  }
+
+  /**
+   * @function G6Render.prototype.stopDefaultEventPropagation
+   * @description 阻止点击事件冒泡
+   * @param {Object} graph - graph实例。
+   */
+  stopDefaultEventPropagation(graph = this.graph) {
+    graph.on('click', function (e) {
+      e.stopPropagation();
+    });
+    graph.on('mousedown', function (e) {
+      e.stopPropagation();
+    });
+    graph.on('mouseover', function (e) {
+      e.stopPropagation();
+    });
+    graph.on('mouseout', function (e) {
+      e.stopPropagation();
     });
   }
 
