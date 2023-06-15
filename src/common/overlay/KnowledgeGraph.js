@@ -608,7 +608,7 @@ export class KnowledgeGraph {
    */
   expandNode(id) {
     const item = this.findById(id);
-    this.graphRender.expandNode(item);
+    item && this.graphRender.expandNode(item);
   }
 
   /**
@@ -619,7 +619,7 @@ export class KnowledgeGraph {
    */
   collapseNode(id) {
     const item = this.findById(id);
-    this.graphRender.collapseNode(item);
+    item && this.graphRender.collapseNode(item);
   }
 
   /**

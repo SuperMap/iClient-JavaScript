@@ -37,7 +37,9 @@ describe('GraphMap leaflet', () => {
       }
     });
     var graphMap = new GraphMap(knowledgegraphmapURL);
-    expect(graphMap).not.toBeNull();
-    done();
+    graphMap.on('loaded',()=>{
+      expect(graphMap).not.toBeNull();
+      done();
+    })
   });
 });
