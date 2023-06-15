@@ -73,7 +73,7 @@
     "@babel/preset-env": "~7.19.4",
     "@babel/traverse": "~7.19.6",
     "@babel/types": "~7.19.4",
-    "@geoman-io/leaflet-geoman-free": "^2.11.4",
+    "@geoman-io/leaflet-geoman-free": "^2.14.2",
     "@supermap/babel-plugin-import": "^0.0.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",

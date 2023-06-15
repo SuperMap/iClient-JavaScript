@@ -82,7 +82,11 @@ export var ComponentsViewBase = L.Control.extend({
      * @param {function} callback - 监听事件的回调函数。
      */
     off(eventType, callback) {
-        this._event.off(eventType, callback);
+        if (callback) {
+          this._event.off(eventType, callback);
+          return;
+        }
+        this._event.off(eventType);
     },
 
     /**

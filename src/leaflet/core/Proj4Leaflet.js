@@ -136,18 +136,22 @@ export var CRS = L.Class.extend({
 
     initialize: function(srsCode, options) {
         var code, proj, def;
+        if (options.bounds && options.bounds.length === 4) {
+          const [p1X, p1Y, p2X, p2Y] = options.bounds;
+          options.bounds = [[p1X, p1Y], [p2X, p2Y]];
+        }
 
         if (L.Proj._isProj4Obj(srsCode)) {
             proj = srsCode;
             code = proj.srsCode;
             options = options || {};
 
-            this.projection = new L.Proj.Projection(proj, options.bounds,options.wrapLng);
+            this.projection = new L.Proj.Projection(proj, options.bounds, options.wrapLng);
         } else {
             code = srsCode;
             options = options || {};
             def = options.def || '';
-            this.projection = new L.Proj.Projection(code, def, options.bounds,options.wrapLng);
+            this.projection = new L.Proj.Projection(code, def, options.bounds, options.wrapLng);
         }
 
         L.Util.setOptions(this, options);
