@@ -704,7 +704,6 @@ export class G6Render {
     }
     data.forEach((item) => {
       if (type === 'hide') {
-        item;
         this.hideItem(item.id);
       } else {
         this.showItem(item.id);
