@@ -32,7 +32,6 @@ import {
   KnowledgeGraphService
 } from './services';
 
-import { GraphMap } from './overlay'
 import {
   MapvLayer,
   ThreeLayer,
@@ -41,7 +40,8 @@ import {
   GraphicLayer,
   Graphic,
   GraticuleLayer,
-  FGBLayer
+  FGBLayer,
+  GraphMap
 } from './overlay';
 
 import {
