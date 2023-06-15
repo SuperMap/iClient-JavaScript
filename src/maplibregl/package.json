@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-maplibregl",
   "description": "",
-  "version": "11.1.0-dev",
+  "version": "11.1.0",
   "keywords": [
     "SuperMap",
     "maplibregl"
@@ -15,7 +15,7 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "@supermap/iclient-common": "11.1.0-dev",
+    "@supermap/iclient-common": "11.1.0",
     "maplibre-gl": "2.4.0"
   }
 }
