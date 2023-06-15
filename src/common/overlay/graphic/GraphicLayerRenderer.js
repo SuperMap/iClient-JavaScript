@@ -298,7 +298,6 @@
       * @description 更新图层。
       */
      update() {
-        console.log('update!');
          if (this.layer.lifecycle !== 'Awaiting state') {
              this.layer.setChangeFlags({
                  dataChanged: true,

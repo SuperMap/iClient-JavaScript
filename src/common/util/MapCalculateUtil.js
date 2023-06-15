@@ -222,8 +222,8 @@ export function scaleToResolution(scale, dpi, mapUnit) {
 
 /**
  * 范围是否相交
- * @param {Extent} extent1 范围1
- * @param {Extent} extent2 范围2
+ * @param {Array} extent1 范围1
+ * @param {Array} extent2 范围2
  * @return {boolean} 范围是否相交。
  */
  export function intersects(extent1, extent2) {

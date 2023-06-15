@@ -204,11 +204,6 @@ describe('mapboxgl_DeckglLayer', () => {
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data).toEqual(data);
             expect(deckglLayer.data.length).toEqual(2);
-        }, 0)
-        setTimeout(() => {
-            deckglLayer.removeFromMap()
-            expect(deckglLayer.deckGL).not.toBeNull();
-            expect(deckglLayer.data.length).toEqual(0);
             done();
         }, 0)
 

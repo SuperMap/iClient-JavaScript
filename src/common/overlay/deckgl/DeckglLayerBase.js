@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { Util as CommonUtil } from '../../commontypes/Util';
  /**
-  * @private
   * @class DeckglLayerBase
   * @category  Visualization DeckGL
   * @classdesc Deckgl 高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、

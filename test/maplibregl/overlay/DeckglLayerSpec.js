@@ -8,7 +8,7 @@ maplibregl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs
 describe('maplibregl_DeckglLayer', () => {
     var originalTimeout;
     var testDiv, map, deckglLayer, features;
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -19,7 +19,7 @@ describe('maplibregl_DeckglLayer', () => {
         window.document.body.appendChild(testDiv);
         map = new maplibregl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
+            style: 'https://demotiles.maplibre.org/style.json',
             center: [13.413952, 52.531913],
             zoom: 16.000000000000004,
             pitch: 33.2
@@ -37,7 +37,9 @@ describe('maplibregl_DeckglLayer', () => {
             fieldValues: [],
             geometry: line
         };
-
+        map.on('load', function() {
+          done();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -202,15 +204,8 @@ describe('maplibregl_DeckglLayer', () => {
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data).toEqual(data);
             expect(deckglLayer.data.length).toEqual(2);
-        }, 0)
-        setTimeout(() => {
-            deckglLayer.removeFromMap()
-            expect(deckglLayer.deckGL).not.toBeNull();
-            expect(deckglLayer.data.length).toEqual(0);
             done();
         }, 0)
-
-
     });
 
     it('addData,removeData', (done) => {

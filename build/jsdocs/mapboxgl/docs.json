@@ -64,7 +64,6 @@
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
             "src/common/components/templates/TemplateBase",
-            
             "src/mapboxgl/core/Util"
         ]
     },

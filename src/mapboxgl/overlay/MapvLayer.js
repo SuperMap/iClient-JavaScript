@@ -30,6 +30,7 @@ export class MapvLayer {
     this.visibility = true;
     this.renderingMode = '3d';
     this.overlay = true;
+    this.context = this.mapVOptions.context || '2d';
     //保留之前的用法
     if (this.map) {
       this.map.addLayer(this);
@@ -79,6 +80,7 @@ export class MapvLayer {
       resolutionY = dh / rect.height;
     var center = map.getCenter();
     var centerPx = map.project(center);
+    var self = this;
     return function (coordinate) {
       if (map.transform.rotationMatrix || self.context === '2d') {
         var worldPoint = map.project(new mapboxgl.LngLat(coordinate[0], coordinate[1]));
@@ -175,7 +177,7 @@ export class MapvLayer {
     */
   show() {
     if (this.renderer) {
-      this.renderer._show();
+      this.renderer.show();
     }
     return this;
   }
@@ -185,10 +187,24 @@ export class MapvLayer {
     */
   hide() {
     if (this.renderer) {
-      this.renderer._hide();
+      this.renderer.hide();
     }
     return this;
   }
+
+   /**
+     * @function MapvLayer.prototype.getTopLeft
+     * @description 获取左上的坐标。
+     */
+   getTopLeft() {
+    var map = this.map;
+    var topLeft;
+    if (map) {
+        var bounds = map.getBounds();
+        topLeft = bounds.getNorthWest();
+    }
+    return topLeft;
+}
 
   /**
   * @function MapvRenderer.prototype.bindEvent
@@ -244,7 +260,7 @@ export class MapvLayer {
    * @param {number} zIndex - canvas 层级。
    */
   setZIndex(z) {
-    this.canvas.style.zIndex = z;
+    this.renderer.setZIndex(z);
   }
 }
 
