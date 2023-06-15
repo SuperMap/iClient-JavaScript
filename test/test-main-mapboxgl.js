@@ -13,10 +13,8 @@ import './mapboxgl/overlay/ThreeLayerSpec.js';
 import './mapboxgl/overlay/UniqueThemeLayerSpec.js';
 import './mapboxgl/overlay/UniqueTheme3DLayerSpec.js';
 import './mapboxgl/overlay/DeckglLayerSpec.js';
-
 import './mapboxgl/overlay/graphic/GraphicSpec.js';
 import './mapboxgl/overlay/GraphicLayerSpec.js';
-import './mapboxgl/overlay/mapv/MapvRenderSpec.js';
 import './mapboxgl/overlay/GraticuleLayerSpec.js';
 import './mapboxgl/overlay/GraphMapSpec';
 
