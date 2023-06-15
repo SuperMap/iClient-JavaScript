@@ -1,8 +1,8 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
+import mapboxgl from 'mapbox-gl';
 import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglLayerBase';
 
 /**
@@ -76,6 +76,7 @@ export class DeckglLayer extends DeckglLayerBase {
         super(layerTypeID, options);
         this.type='custom';
         this.renderingMode = '3d';
+        this.overlay = true;
     }
 
     /**
@@ -90,7 +91,7 @@ export class DeckglLayer extends DeckglLayerBase {
             return this;
         }
         //当使用扩展的mapboxgl代码时有效
-        if (this.isEPSG3857()) {
+        if (this._isEPSG3857()) {
             this.coordinateSystem = 3;
             this.isGeographicCoordinateSystem = true;
         } else {
@@ -112,8 +113,22 @@ export class DeckglLayer extends DeckglLayerBase {
         deckOptions.canvas = this.canvas;
         this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         this._draw();
+        return this;
     }
 
+    /**
+     * @function DeckglLayer.prototype.onRemove
+     * @param {maplibregl.Map} map - MapLibreGL Map 对象。
+     */
+    onRemove() {
+      this.map.getCanvasContainer().removeChild(this.canvas);
+      this.clear();
+    }
+
+    /**
+     * @function DeckglLayer.prototype.getMapInfo
+     * @param {maplibregl.Map} map - MapLibreGL Map 对象。
+     */
     getMapInfo() {
       let center = this.map.getCenter();
       let zoom = this.map.getZoom();
@@ -125,11 +140,14 @@ export class DeckglLayer extends DeckglLayerBase {
       return { center, zoom, maxZoom, pitch, bearing, longitude, latitude };
     }
 
+    /**
+     * @function DeckglLayer.prototype.render
+     */
     render() {
-        this._draw();
+      this._draw();
     }
 
-    isEPSG3857() {
+    _isEPSG3857() {
       return this.map.getCRS && this.map.getCRS() !== mapboxgl.CRS.EPSG3857
     }
 }

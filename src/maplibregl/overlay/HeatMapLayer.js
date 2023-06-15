@@ -12,7 +12,7 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @version 11.1.0
  * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
- * @param {maplibregl.Map} options.map - maplibregl Map 对象。
+ * @param {maplibregl.Map} options.map - MapLibreGL Map 对象。
  * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
@@ -72,6 +72,7 @@ export class HeatMapLayer extends maplibregl.Evented {
     this.EVENT_TYPES = ["featuresadded", "featuresremoved", "featuresdrawcompleted"];
     this.type = 'custom';
     this.renderingMode = '3d';
+    this.overlay = true;
   }
 
   /**
@@ -80,15 +81,19 @@ export class HeatMapLayer extends maplibregl.Evented {
    */
   onAdd(map) {
     this.map = map;
-    const mapContainer = this.map.getCanvasContainer();
-    const mapCanvas = this.map.getCanvas();
-    this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel.bind(this), mapContainer, mapCanvas });
+    const targetElement = this.map.getCanvasContainer();
+    const mapElement = this.map.getCanvas();
+    this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel.bind(this), targetElement, mapElement });
     if (this.features.features && this.features.features.length) {
       this.renderer.setExtent(this.map.getBounds());
       this.renderer.addFeatures(this.features);
     }
   }
 
+  /**
+   * @function HeatMapLayer.prototype.onRemove
+   * @description 移除该图层
+   */
   onRemove() {
     this.removeAllFeatures();
     this.renderer.removeFromMap();
@@ -96,6 +101,10 @@ export class HeatMapLayer extends maplibregl.Evented {
     this.renderer = null;
   }
 
+  /**
+   * @function HeatMapLayer.prototype.render
+   * @description 渲染图层
+   */
   render() {
     this.refresh();
   }

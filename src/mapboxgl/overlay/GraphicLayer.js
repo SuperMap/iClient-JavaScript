@@ -35,6 +35,7 @@
          this.id = id || CommonUtil.createUniqueID("graphicLayer_");
          this.type = 'custom';
          this.renderingMode = '3d';
+         this.overlay = true;
      }
  
      /**
@@ -44,7 +45,8 @@
       * @returns this
       */
      addTo(map) {
-        this.onAdd(map);
+        map.addLayer(this);
+        return this;
      }
  
      /**
@@ -54,14 +56,27 @@
       * @returns {GraphicLayer}
       */
      onAdd(map) {
-         this.map = map;
-         this.renderer = new GraphicLayerRenderer(this.id, this.options, {
-            getMapState: this.getMapState.bind(this)
-         }, { mapContainer: this.map.getCanvasContainer(), mapCanvas: this.map.getCanvas() });
+        this.map = map;
+        this.renderer = new GraphicLayerRenderer(this.id, this.options, {
+          getMapState: this.getMapState.bind(this)
+        }, { targetElement: this.map.getCanvasContainer(), mapElement: this.map.getCanvas() });
      }
 
+     /**
+      * @function GraphicLayer.prototype.onRemove
+      * @deprecated
+      * @description 删除该图层，并释放图层资源。
+      */
+      onRemove() {
+        this.remove();
+        this.clear();
+      }
+    /**
+      * @function GraphicLayer.prototype.render
+      * @description 渲染图层。
+      */
      render() {
-      this.renderer.draw();
+        this.renderer.draw();
      }
  
      /**
@@ -156,17 +171,7 @@
      remove() {
          this.renderer && this.renderer.remove();
      }
- 
-     /**
-      * @function GraphicLayer.prototype.removeFromMap
-      * @deprecated
-      * @description 删除该图层，并释放图层资源。
-      */
-     onRemove() {
-        this.remove();
-        this.clear();
-     }
- 
+     
      /**
       * @function GraphicLayer.prototype.moveTo
       * @description 将图层移动到某个图层之前。

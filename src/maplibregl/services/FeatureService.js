@@ -174,7 +174,7 @@ export class FeatureService extends ServiceBase {
         return params;
     }
 
-    //geoFeature严格按照 maplibregl geojson的结构
+    //geoFeature严格按照 MapLibreGL geojson的结构
     _createServerFeature(geoFeature) {
         let feature = {},
             fieldNames = [],

@@ -71,7 +71,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
         this.EVENT_TYPES = ["featuresadded", "featuresremoved", "featuresdrawcompleted"];
         this.type = 'custom';
         this.renderingMode = '3d';
-
+        this.overlay = true;
     }
 
     /**
@@ -80,9 +80,9 @@ export class HeatMapLayer extends mapboxgl.Evented {
      */
     onAdd(map) {
         this.map = map;
-        const mapContainer = this.map.getCanvasContainer();
-        const mapCanvas = this.map.getCanvas();
-        this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel.bind(this), mapContainer, mapCanvas });
+        const targetElement = this.map.getCanvasContainer();
+        const mapElement = this.map.getCanvas();
+        this.renderer = new HeatMapLayerRenderer({ id: this.id, ...this.options, convertLatlonToPixel: this._convertLatlonToPixel.bind(this), targetElement, mapElement });
         if (this.features.features && this.features.features.length) {
             this.renderer.setExtent(this.map.getBounds());
             this.renderer.addFeatures(this.features);

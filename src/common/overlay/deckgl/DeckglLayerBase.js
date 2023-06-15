@@ -1,8 +1,9 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import { Util as CommonUtil} from '../../commontypes/Util';
+ import { Util as CommonUtil } from '../../commontypes/Util';
  /**
+  * @private
   * @class DeckglLayerBase
   * @category  Visualization DeckGL
   * @classdesc Deckgl 高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
@@ -92,19 +93,13 @@
  
      /**
       * @function DeckglLayerBase.prototype.onAdd
-      * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
-      * @returns {DeckglLayerBase}
       */
      onAdd() {
      }
- 
-     /**
-      * @function DeckglLayerBase.prototype.remove
-      * @description 删除该图层。
-      */
-     remove() {
-     }
 
+      /**
+      * @function DeckglLayerBase.prototype.render
+      */
      render() {
      }
  
@@ -136,7 +131,7 @@
      setData(data) {
          this.data = this.data || [];
          this.data.length = 0;
-         let dataTemp = !Array.isArray(data) ? [data] : [].concat(data);
+         let dataTemp = !CommonUtil.isArray(data) ? [data] : [].concat(data);
          //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
          if (!this.layer.props.data) {
              this.layer.props.data = [];
@@ -156,7 +151,7 @@
       */
      addData(data) {
          this.data = this.data || [];
-         let dataTemp = !Array.isArray(data) ? [data] : [].concat(data);
+         let dataTemp = !CommonUtil.isArray(data) ? [data] : [].concat(data);
          //this.layer.props.data不能被重新赋值，只能在原数组上进行操作
          if (!this.layer.props.data) {
              this.layer.props.data = [];
@@ -206,6 +201,44 @@
          }
          this.update();
      }
+
+    /**
+     * @function DeckglLayerBase.prototype.moveTo
+     * @description 将图层移动到某个图层之前。
+     * @param {string} layerID - 待插入的图层 ID。
+     * @param {boolean} [before=true] - 是否将本图层插入到图层 ID 为 layerID 的图层之前。
+     */
+    moveTo(layerID, before) {
+      var layer = document.getElementById(this.id);
+      before = before !== undefined ? before : true;
+      if (before) {
+          var beforeLayer = document.getElementById(layerID);
+          if (layer && beforeLayer) {
+              beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+          }
+          return;
+      }
+      var nextLayer = document.getElementById(layerID);
+      if (layer) {
+          if (nextLayer.nextSibling) {
+              nextLayer.parentNode.insertBefore(layer, nextLayer.nextSibling);
+              return;
+          }
+          nextLayer.parentNode.appendChild(layer);
+      }
+    }
+
+    /**
+     * @function DeckglLayerBase.prototype.setVisibility
+     * @description 设置图层可见性。
+     * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
+     */
+   setVisibility(visibility) {
+      if (this.canvas && visibility !== this.visibility) {
+          this.visibility = visibility;
+          this.canvas.style.display = visibility ? 'block' : 'none';
+      }
+    }
  
      _draw() {
          let deckOptions = this._getState();
@@ -236,8 +269,7 @@
          for (let key in this.props) {
              state[key] = this.props[key];
          }
-         //当使用扩展的mapboxgl代码时有效
-         if (this.isEPSG3857 && this.isEPSG3857()) {
+         if (this._isEPSG3857 && this._isEPSG3857()) {
              state.coordinateSystem = this.coordinateSystem;
              state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
          } else {
@@ -453,10 +485,10 @@
          this.layer = new window.DeckGL.HexagonLayer(this.props);
      }
  
-     _initContainer(mapContainer, mapCanvas) {
-        const { width, height } = mapCanvas.style;
+     _initContainer(targetElement, mapElement) {
+        const { width, height } = mapElement.style;
         this.canvas = this._createCanvas(width, height);
-        mapContainer.appendChild(this.canvas);
+        targetElement.appendChild(this.canvas);
      }
  
      _createCanvas(width, height) {

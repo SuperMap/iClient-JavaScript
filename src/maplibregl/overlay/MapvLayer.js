@@ -12,7 +12,7 @@ import {
  * @category  Visualization MapV
  * @classdesc Mapv 图层。
  * @version 11.1.0
- * @param {mapboxgl.Map} map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
+ * @param {maplibregl.Map} map - MapLibreGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} options - Mapv 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("mapvLayer_") 创建专题图层 ID。
@@ -20,37 +20,50 @@ import {
  */
 export class MapvLayer {
   constructor(map, dataSet, options) {
-    if (map) {
-      this.map = map;
-    }
+    this.map = map;
     this.id = options.layerID ? options.layerID : CommonUtil.createUniqueID('mapvLayer_');
     delete options['layerID'];
     this.options = options;
     this.dataSet = dataSet;
     this.type = 'custom';
     this.isPitching = false;
-    this.pitchStartEvent = this.pitchStart.bind(this);
-    this.pitchEndEvent = this.pitchEnd.bind(this);
+    this.pitchStartEvent = this._pitchStart.bind(this);
+    this.pitchEndEvent = this._pitchEnd.bind(this);
     this.renderingMode = '3d';
     this.context = this.options.context || '2d';
+    this.overlay = true;
+    //保留之前的用法
+    if (this.map) {
+      this.map.addLayer(this);
+    }
   }
-
+  /**
+   * @function MapvLayer.prototype.onAdd
+   * @description 添加该图层
+   */
   onAdd(map) {
     this.map = map;
     this.mapContainer = map.getCanvasContainer();
     this.renderer = new MapvRenderer(map, this.dataSet, this.options, {
-      getMapInfo: this.getMapInfo,
-      getOriginPixel: this.getOriginPixel
-    }, { mapContainer: this.mapContainer, mapCanvas: this.map.getCanvas() });
+      transferCoordinate: this._transferCoordinate,
+      getCenterPixel: this._getCenterPixel,
+      getResolution: this._getResolution,
+      validZoom: this._validZoom
+    }, { id: this.id, targetElement: this.mapContainer, mapElement: this.map.getCanvas() });
     this._bindEvent();
   }
-
+/**
+   * @function MapvLayer.prototype.onRemove
+   * @description 添加该图层
+   */
   onRemove() {
-    this.mapContainer.removeChild(this.canvas);
     this.renderer.destroy();
     this._unbindEvent();
   }
-
+/**
+   * @function MapvLayer.prototype.render
+   * @description 添加该图层
+   */
   render() {
     if (this.map.isZooming() || this.map.isRotating() || this.isPitching) {
       this.renderer.visible() && this.renderer.hide();
@@ -59,8 +72,35 @@ export class MapvLayer {
     !this.renderer.visible() && this.renderer.show();
     this.renderer.draw();
   }
+  /**
+   * @function MapvLayer.prototype.hide
+   * @description 隐藏该图层
+   */
+  hide() {
+    this.renderer && this.renderer.hide();
+    return this;
+  }
+  /**
+   * @function MapvLayer.prototype.show
+   * @description 显示该图层
+   */
+  show() {
+    this.renderer && this.renderer.show();
+    return this;
+  }
 
-  getMapInfo() {
+  _validZoom() {
+    var self = this;
+    if (
+      (self.options.minZoom && this.map.getZoom() < self.options.minZoom) ||
+      (self.options.maxZoom && this.map.getZoom() > self.options.maxZoom)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  _transferCoordinate() {
     let map = this.map;
     var bounds = map.getBounds(),
       dw = bounds.getEast() - bounds.getWest(),
@@ -68,11 +108,10 @@ export class MapvLayer {
     var resolutionX = dw / this.map.getCanvas().getBoundingClientRect().width,
       resolutionY = dh / this.map.getCanvas().getBoundingClientRect().height;
     // 一个像素是多少米
-    var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
     var center = map.getCenter();
     var centerPx = map.project(center);
     var self = this;
-    function transferCoordinate(coordinate) {
+    return function (coordinate) {
       if (map.transform.rotationMatrix || self.context === '2d') {
         var worldPoint = map.project(new maplibregl.LngLat(coordinate[0], coordinate[1]));
         return [worldPoint.x, worldPoint.y];
@@ -80,10 +119,18 @@ export class MapvLayer {
       var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
       return [pixel[0] + centerPx.x, pixel[1] + centerPx.y];
     }
-    return { transferCoordinate, zoomUnit }
   }
 
-  getOriginPixel() {
+  _getResolution() {
+    var bounds = this.map.getBounds();
+    var dw = bounds.getEast() - bounds.getWest();
+    var rect = this.map.getCanvas().getBoundingClientRect();
+    var resolutionX = dw / rect.width;
+    // 一个像素是多少米
+    return getMeterPerMapUnit('DEGREE') * resolutionX;
+  }
+
+  _getCenterPixel() {
     return this.map.project(new maplibregl.LngLat(0, 0));
   }
 
@@ -185,12 +232,20 @@ export class MapvLayer {
     }
   }
 
-  pitchStart() {
-    this.isPitching = true;
-  }
-
-  pitchEnd() {
-    this.isPitching = false;
+  /**
+   * @function MapvLayer.prototype.setVisibility
+   * @description 设置图层可见性。
+   * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
+   */
+  setVisibility(visibility) {
+    if (visibility !== this.visibility) {
+      this.visibility = visibility;
+      if (visibility) {
+        this.show();
+      } else {
+        this.hide();
+      }
+    }
   }
 
   /**
@@ -201,5 +256,12 @@ export class MapvLayer {
   setZIndex(z) {
     this.renderer.setZIndex(z);
   }
-}
 
+  _pitchStart() {
+    this.isPitching = true;
+  }
+
+  _pitchEnd() {
+    this.isPitching = false;
+  }
+}

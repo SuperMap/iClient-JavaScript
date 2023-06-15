@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-// import '../core/Base';
+import '../core/Base';
 import mapboxgl from 'mapbox-gl';
 import { MapvRenderer } from '@supermap/iclient-common/overlay/mapv/MapvRenderer';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
@@ -28,28 +28,48 @@ export class MapvLayer {
     this.dataSet = dataSet;
     this.type = 'custom';
     this.visibility = true;
-    this.renderingMode = '2d';
+    this.renderingMode = '3d';
+    this.overlay = true;
     //保留之前的用法
     if (this.map) {
       this.map.addLayer(this);
     }
   }
 
+  /**
+   * @function MapvLayer.prototype.onAdd
+   * @description 添加图层到地图。
+   * @param {Object} map - 地图对象。
+   */
   onAdd(map) {
     this.map = map;
     this.mapContainer = map.getCanvasContainer();
     this.renderer = new MapvRenderer(map, this.dataSet, this.mapVOptions, {
-      getMapInfo: this.getMapInfo,
-      getOriginPixel: this.getOriginPixel
-    }, { mapCanvas: this.map.getCanvas(), mapContainer: this.mapContainer });
-    // this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+      transferCoordinate: this._transferCoordinate,
+      getCenterPixel: this._getCenterPixel,
+      getResolution: this._getResolution,
+      validZoom: this._validZoom
+    }, { mapElement: this.map.getCanvas(), targetElement: this.mapContainer, id: this.id });
+    this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
   }
 
+  /**
+     * @function MapvLayer.prototype.onRemove
+     * @description 移除图层。
+     */
+  onRemove() {
+    this.renderer.destroy();
+  }
+
+  /**
+     * @function MapvLayer.prototype.render
+     * @description 渲染图层。
+     */
   render() {
     this.renderer.draw();
   }
 
-  getMapInfo() {
+  _transferCoordinate() {
     let map = this.map;
     var bounds = map.getBounds(),
       dw = bounds.getEast() - bounds.getWest(),
@@ -57,12 +77,9 @@ export class MapvLayer {
     let rect = map.getCanvas().getBoundingClientRect();
     var resolutionX = dw / rect.width,
       resolutionY = dh / rect.height;
-    // 一个像素是多少米
-    var zoomUnit = getMeterPerMapUnit('DEGREE') * resolutionX;
     var center = map.getCenter();
     var centerPx = map.project(center);
-
-    function transferCoordinate(coordinate) {
+    return function (coordinate) {
       if (map.transform.rotationMatrix || self.context === '2d') {
         var worldPoint = map.project(new mapboxgl.LngLat(coordinate[0], coordinate[1]));
         return [worldPoint.x, worldPoint.y];
@@ -70,10 +87,29 @@ export class MapvLayer {
       var pixel = [(coordinate[0] - center.lng) / resolutionX, (center.lat - coordinate[1]) / resolutionY];
       return [pixel[0] + centerPx.x, pixel[1] + centerPx.y];
     }
-    return { transferCoordinate, zoomUnit }
   }
 
-  getOriginPixel() {
+  _validZoom() {
+    var self = this;
+    if (
+      (self.options.minZoom && this.map.getZoom() < self.options.minZoom) ||
+      (self.options.maxZoom && this.map.getZoom() > self.options.maxZoom)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  _getResolution() {
+    var bounds = this.map.getBounds();
+    var dw = bounds.getEast() - bounds.getWest();
+    var rect = this.map.getCanvas().getBoundingClientRect();
+    var resolutionX = dw / rect.width;
+    // 一个像素是多少米
+    return getMeterPerMapUnit('DEGREE') * resolutionX;
+  }
+
+  _getCenterPixel() {
     return this.map.project(new mapboxgl.LngLat(0, 0));
   }
 
@@ -133,14 +169,20 @@ export class MapvLayer {
   clearData() {
     this.renderer.clearData();
   }
-
+  /**
+    * @function MapvLayer.prototype.show
+    * @description 显示该图层
+    */
   show() {
     if (this.renderer) {
       this.renderer._show();
     }
     return this;
   }
-
+  /**
+    * @function MapvLayer.prototype.hide
+    * @description 隐藏该图层
+    */
   hide() {
     if (this.renderer) {
       this.renderer._hide();

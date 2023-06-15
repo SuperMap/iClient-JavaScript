@@ -2,7 +2,7 @@ import { FGBLayer } from '../../../src/maplibregl/overlay/FGBLayer';
 import maplibregl from 'maplibre-gl';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 var fgbUrl = 'base/resources/data/capitals_data20.fgb';
-
+// var url = 'https://iserver.supermap.io/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'
 describe('maplibregl_FGBLayer', () => {
   var originalTimeout;
   var testDiv, map;

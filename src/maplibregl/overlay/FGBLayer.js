@@ -65,10 +65,14 @@ export class FGBLayer {
     this.layerType = '';
     this.type='custom';
     this.renderingMode = '3d';
+    this.overlay = true;
     this.extent = options.extent;
     this._updateFeaturesFn = this._updateFeatures.bind(this);
   }
-
+  /**
+   * @function FGBLayer.prototype.onAdd
+   * @param {maplibregl.Map} map - MapLibreGL Map 对象。
+   */
   onAdd(map) {
     this.map = map;
     let extent = [];
@@ -94,23 +98,32 @@ export class FGBLayer {
     this.renderer = new FGBLayerRenderer(this.options); 
     this._handleFeatures(extent);
   }
-
+  /**
+    * @function FGBLayer.prototype.render
+  */
   render() {
     
   }
-
+  /**
+   * @function FGBLayer.prototype.onRemove
+   */
   onRemove() {
-    this.removeLayer();
+    this.map.off('moveend', this._updateFeaturesFn);
   }
-
+  /**
+   * @function FGBLayer.prototype.moveLayer
+   * @description 设置图层可见性。
+   * @param {string} layerID - 待插入的图层 ID。
+   * @param {boolean} [beforeId=true] - 将本图层插入到图层 ID 为layerID 的图层之前。
+   */
   moveLayer(id, beforeId) {
     this.map.moveLayer(id, beforeId);
   }
-
-  removeLayer() {
-    this.map.removeLayer(this.layerId);
-  }
-
+  /**
+   * @function FGBLayer.prototype.setVisibility
+   * @description 设置图层可见性。
+   * @param {boolean} [visibility] - 是否显示图层（当前地图的 resolution 在最大最小 resolution 之间）。
+   */
   setVisibility(visibility) {
     const visible = visibility ? 'visible': 'none';
     this.map.setLayoutProperty(this.layerId, 'visibility', visible);

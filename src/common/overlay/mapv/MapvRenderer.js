@@ -15,19 +15,25 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @param {Object} layer - 图层。
  * @param {Mapv.DataSet} dataSet - 数据集。
  * @param {Object} options - 参数。
+ * @param {Object} [functions] - 图层传递给渲染器调用的方法。
+ * @param {Object} [mapOptions] - 图层传递给渲染器的地图元素信息。
  * @extends {MapV.BaseLayer}
  *
  */
 export class MapvRenderer extends BaseLayer {
-    constructor(map, dataSet, options, callbackOptions, mapOptions) {
+    constructor(map, dataSet, options, functions, mapOptions) {
         super(map, dataSet, options);
         if (!BaseLayer) {
             return;
         }
         this.options = options || {};
-        this.getMapInfo = callbackOptions.getMapInfo;
-        this.getOriginPixel = callbackOptions.getOriginPixel;
-        this.canvas = this._createCanvas(mapOptions.mapCanvas);
+        this.transferCoordinate = functions.transferCoordinate;
+        this.getCenterPixel = functions.getCenterPixel;
+        this.getResolution = functions.getResolution;
+        this.validZoom = functions.validZoom;
+        let { mapElement, targetElement, id } = mapOptions;
+        this.targetElement = targetElement;
+        this.canvas = this._createCanvas(id, mapElement);
         this.canvasLayer = {
           canvas: this.canvas
         }
@@ -38,7 +44,7 @@ export class MapvRenderer extends BaseLayer {
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this._canvasUpdate();
-        mapOptions.mapContainer.appendChild(this.canvas);
+        this.targetElement.appendChild(this.canvas);
         this._expectShow = true;
         this.isShow = true;
     }
@@ -163,12 +169,13 @@ export class MapvRenderer extends BaseLayer {
         });
     }
 
-    _createCanvas(mapCanvas) {
-      const { width, height } = mapCanvas.getBoundingClientRect();
+    _createCanvas(id, mapElement) {
+      const { width, height } = mapElement.getBoundingClientRect();
       var canvas = document.createElement('canvas');
       canvas.style.position = 'absolute';
       canvas.style.top = '0px';
       canvas.style.left = '0px';
+      canvas.id = id;
       var global$2 = typeof window === 'undefined' ? {} : window;
       var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
       canvas.width = width * devicePixelRatio;
@@ -215,16 +222,14 @@ export class MapvRenderer extends BaseLayer {
           context.clear(context.COLOR_BUFFER_BIT);
       }
 
-      // if (
-      //     (self.options.minZoom && map.getZoom() < self.options.minZoom) ||
-      //     (self.options.maxZoom && map.getZoom() > self.options.maxZoom)
-      // ) {
-      //     return;
-      // }
-      let { zoomUnit, transferCoordinate } = this.getMapInfo();
+      if (!this.validZoom()) {
+        return;
+      }
+      
       var dataGetOptions = {
-        transferCoordinate
+        transferCoordinate: this.transferCoordinate()
       };
+      var zoomUnit = this.getResolution();
       if (time !== undefined) {
           dataGetOptions.filter = function (item) {
               var trails = animationOptions.trails || 10;
@@ -253,7 +258,7 @@ export class MapvRenderer extends BaseLayer {
           self.options._width = self.options.width;
       }
 
-      var worldPoint = this.getOriginPixel();
+      var worldPoint = this.getCenterPixel();
       this.drawContext(context, data, self.options, worldPoint);
 
       self.options.updateCallback && self.options.updateCallback(time);
@@ -278,6 +283,7 @@ export class MapvRenderer extends BaseLayer {
      * @description 释放资源。
      */
     destroy() {
+        this.targetElement.removeChild(this.canvas);
         this.clearData();
         this.animator && this.animator.stop();
         this.animator = null;

@@ -43,17 +43,13 @@ const cancel = window.cancelAnimationFrame ||
  * @private
  * @class ThreeLayerRenderer
  * @category  Visualization Three
- * @classdesc Three图层渲染器
- * @param {ThreeLayer} layer - ThreeJs图层。</br>
- * @param {string} [renderer="gl"] - 图层渲染方式(canvas或WebGL)。取值："gl","canvas"。</br>
+ * @classdesc Three 图层渲染器
+ * @param {ThreeLayer} layer - ThreeJs图层。
+ * @param {string} [renderer="gl"] - 图层渲染方式(canvas或WebGL)。取值："gl","canvas"。
  * @param {Object} options - threejs渲染器初始化参数对象。参数内容详见:
  *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
  *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
  *
- * @extends {mapboxgl.Evented}
- * @fires ThreeLayer#initialized
- * @fires ThreeLayer#draw
- * @fires ThreeLayer#rendererinitialized
  */
 export class ThreeLayerRenderer {
 
@@ -214,7 +210,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-   * @function ThreeLayer.prototype.toThreeShape
+   * @function ThreeLayerRenderer.prototype.toThreeShape
    * @description  创建 threejs shape 对象。
    * @param {Array} coordinates - 坐标点数组。
    * @returns {THREE.Shape} threejs shape 对象。
@@ -234,7 +230,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-  * @function ThreeLayer.prototype.toThreeMesh
+  * @function ThreeLayerRenderer.prototype.toThreeMesh
   * @description 创建 threejs Mesh 对象。将地理坐标转换成 threejs 3D 模型（适用于挤压模型，如城市建筑）。
   * @param {Array.<Object>} coordinates - 坐标点数组。
   * @param {number} amount - 高度。
@@ -264,7 +260,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-   * @function ThreeLayer.prototype.addObject
+   * @function ThreeLayerRenderer.prototype.addObject
    * @description 设置threejs 3D 对象的坐标（经纬度）。
    * @param {THREE.Object3D} object3D - threejs 3D 对象及子类对象。
    * @param {(Array.<number>|Object)} coordinate - 添加的 three 对象坐标（经纬度）。
@@ -278,7 +274,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-    * @function ThreeLayer.prototype.clearMesh
+    * @function ThreeLayerRenderer.prototype.clearMesh
     * @description 清除所有 threejs mesh 对象。
     * @returns {ThreeLayer} ThreeLayer的实例对象。
     */
@@ -296,7 +292,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-       * @function ThreeLayer.prototype.clearAll
+       * @function ThreeLayerRenderer.prototype.clearAll
        * @description 清除所有 threejs 对象。
        * @param {boolean} clearCamera - 是否清除相机。
        * @returns {ThreeLayer} ThreeLayer的实例对象。
@@ -316,7 +312,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-     * @function ThreeLayer.prototype.setPosition
+     * @function ThreeLayerRenderer.prototype.setPosition
      * @description 设置 threejs 3D 对象的坐标（经纬度）。
      * @param {THREE.Object3D} object3D - threejs 3D 对象及子类对象。
      * @param {(Array.<number>|Object)} coordinate - 添加的 three 对象坐标（经纬度）。
@@ -334,7 +330,7 @@ export class ThreeLayerRenderer {
 
 
   /**
-   * @function ThreeLayer.prototype.lngLatToPosition
+   * @function ThreeLayerRenderer.prototype.lngLatToPosition
    * @description 经纬度转threejs 3D 矢量对象。
    * @param {(Array.<number>|Object)} lngLat - 经纬度坐标。
    * @returns {THREE.Vector3} threejs 3D 矢量对象。
@@ -346,7 +342,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-   * @function ThreeLayer.prototype.distanceToThreeVector3
+   * @function ThreeLayerRenderer.prototype.distanceToThreeVector3
    * @description 计算距离指定坐标给定距离的新坐标的 threejs 3D 矢量对象。
    * @param {number} x - x 轴距离，单位米。
    * @param {number} y - y 轴距离，单位米。
@@ -393,7 +389,7 @@ export class ThreeLayerRenderer {
   }
 
   /**
-   * @function ThreeLayer.prototype.getCoordinatesCenter
+   * @function ThreeLayerRenderer.prototype.getCoordinatesCenter
    * @description 获取给定坐标数组的中心坐标。
    * @param {(Array.<Array.<number>>)} coordinates - 坐标数组。
    * @returns {Object} 包含经纬度的坐标对象。
@@ -418,9 +414,7 @@ export class ThreeLayerRenderer {
   _initContainer() {
     var canvas = this._createCanvas();
     var container = this.container = document.createElement("div");
-    if (this._layer.id) {
-      container.id = this._layer.id;
-    }
+    container.id = this._layer.id;
     container.className = "threejs-wrapper";
     container.style.position = "absolute";
     container.style.left = "0px";
@@ -429,8 +423,8 @@ export class ThreeLayerRenderer {
     this._resetElementSize(container);
     container.appendChild(canvas);
 
-    var mapContainer = this.map.getCanvasContainer();
-    mapContainer.appendChild(container)
+    var targetElement = this.map.getCanvasContainer();
+    targetElement.appendChild(container)
   }
 
   _createCanvas() {

@@ -6,45 +6,61 @@ import { Vector as FeatureVector } from '../../commontypes/Vector';
 import { LonLat } from '../../commontypes/LonLat';
 import { GeoJSON as GeoJSONFormat } from '../../format/GeoJSON';
 
+/**
+ * @private
+ * @class HeatMapLayerRenderer
+ * @classdesc 热力图层渲染器类。
+ * @category  Visualization HeatMap
+ * @param {string} name - 图层名称。
+ * @param {Object} options - 构造参数。
+ * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
+ * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
+ * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
+ * @param {number} [options.opacity=1] - 图层不透明度。
+ * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
+ * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
+ * @usage
+ */
 export class HeatMapLayerRenderer {
   constructor(options) {
     this.options = options;
     /**
-         * @member {Object} HeatMapLayer.prototype.rootCanvas
-         * @description 热点图主绘制面板。
-         */
+     * @member {Object} HeatMapLayerRenderer.prototype.rootCanvas
+     * @description 热点图主绘制面板。
+     */
     this.rootCanvas = null;
 
     /**
-        * @member {Array.<FeatureVector>} HeatMapLayer.prototype.features
+        * @member {Array.<FeatureVector>} HeatMapLayerRenderer.prototype.features
         * @description 热点信息数组，记录存储图层上添加的所有热点信息。
         */
     this.features = [];
     /**
-      * @member {boolean} [HeatMapLayer.prototype.visibility=true]
+      * @member {boolean} [HeatMapLayerRenderer.prototype.visibility=true]
       * @description 图层显示状态属性。
       */
     this.visibility = true;
     /**
-     * @member {number} [HeatMapLayer.prototype.opacity=1]
+     * @member {number} [HeatMapLayerRenderer.prototype.opacity=1]
      * @description 图层不透明度，取值范围[0,1]。
      */
     this.opacity = options.opacity ? options.opacity : 1;
 
     /**
-      * @member {Array.<string>} [HeatMapLayer.prototype.colors=['blue','cyan','lime','yellow','red']]
+      * @member {Array.<string>} [HeatMapLayerRenderer.prototype.colors=['blue','cyan','lime','yellow','red']]
       * @description 颜色线性渐变数组。
       */
     this.colors = options.colors ? options.colors : ['blue', 'cyan', 'lime', 'yellow', 'red'];
 
     /**
-     * @member {boolean} [HeatMapLayer.prototype.useGeoUnit=false]
+     * @member {boolean} [HeatMapLayerRenderer.prototype.useGeoUnit=false]
      * @description 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
      */
     this.useGeoUnit = options.useGeoUnit ? options.useGeoUnit : false;
 
     /**
-     * @member {number} [HeatMapLayer.prototype.radius=50]
+     * @member {number} [HeatMapLayerRenderer.prototype.radius=50]
      * @description 热点渲染的最大半径（热点像素半径）,
      *              热点显示的时候以精确点为中心点开始往四周辐射衰减，
      *              其衰减半径和权重值成比列。
@@ -52,7 +68,7 @@ export class HeatMapLayerRenderer {
     this.radius = options.radius ? options.radius : 50;
 
     /**
-     * @member {string} HeatMapLayer.prototype.featureWeight
+     * @member {string} HeatMapLayerRenderer.prototype.featureWeight
      * @description 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
      * @example
      * //feature.attributes中表示权重的字段为 height,则在 HeatMapLayer 的 featureWeight 参数赋值为 "height"。
@@ -64,38 +80,38 @@ export class HeatMapLayerRenderer {
     this.featureWeight = options.featureWeight ? options.featureWeight : null;
 
     /**
-     * @member {number} HeatMapLayer.prototype.maxWeight
+     * @member {number} HeatMapLayerRenderer.prototype.maxWeight
      * @description 设置权重最大值。默认将按照当前屏幕范围内热点所拥有的权重最大值绘制热点图。
      */
     this.maxWeight = null;
 
     /**
-     * @member {number} HeatMapLayer.prototype.minWeight
+     * @member {number} HeatMapLayerRenderer.prototype.minWeight
      * @description 设置权重最小值。默认将按照当前屏幕范围内热点所拥有的权重最小值绘制热点图。
      */
     this.minWeight = null;
 
     /**
-       * @member {Object} HeatMapLayer.prototype.canvasContext
+       * @member {Object} HeatMapLayerRenderer.prototype.canvasContext
        * @description 热点图主绘制对象。
        */
     this.canvasContext = null;
 
     /**
-     * @member {number} HeatMapLayer.prototype.maxWidth
+     * @member {number} HeatMapLayerRenderer.prototype.maxWidth
      * @description 当前绘制面板宽度。默认和当前 map 窗口宽度一致。
      */
     this.maxWidth = null;
 
     /**
-     * @member {number} HeatMapLayer.prototype.maxHeight
+     * @member {number} HeatMapLayerRenderer.prototype.maxHeight
      * @description 当前绘制面板宽度。默认和当前 map 窗口高度一致。
      */
     this.maxHeight = null;
 
     this.extent = {};
-    this.mapCanvas = options.mapCanvas;
-    this._createCanvasContainer(options.mapContainer, options.size);
+    this.mapElement = options.mapElement;
+    this._createCanvasContainer(options.targetElement, options.size);
   }
 
   /**
@@ -177,12 +193,12 @@ export class HeatMapLayerRenderer {
     //获取当前像素下的地理范围
     var dw = bounds.getEast() - bounds.getWest();
     var dh = bounds.getNorth() - bounds.getSouth();
-    var mapCanvas = this.mapCanvas;
+    var mapElement = this.mapElement;
 
-    if (dw / mapCanvas.width > dh / mapCanvas.height) {
-      resolution = dw / mapCanvas.width;
+    if (dw / mapElement.width > dh / mapElement.height) {
+      resolution = dw / mapElement.width;
     } else {
-      resolution = dh / mapCanvas.height;
+      resolution = dh / mapElement.height;
     }
 
     //热点半径
@@ -348,19 +364,19 @@ export class HeatMapLayerRenderer {
     * @description 创建热力图绘制容器。
     * @private
     */
-  _createCanvasContainer(mapContainer) {
+  _createCanvasContainer(targetElement) {
     //热点图要求使用canvas绘制，判断是否支持
     this.rootCanvas = document.createElement("canvas");
     this.rootCanvas.id = this.options.id;
-    this.rootCanvas.width = this.maxWidth = parseInt(this.mapCanvas.style.width);
-    this.rootCanvas.height = this.maxHeight = parseInt(this.mapCanvas.style.height);
+    this.rootCanvas.width = this.maxWidth = parseInt(this.mapElement.style.width);
+    this.rootCanvas.height = this.maxHeight = parseInt(this.mapElement.style.height);
     this.canvasContext = this.rootCanvas.getContext('2d');
     const devicePixelRatio = window.devicePixelRatio || 1;
     devicePixelRatio !== 1 && this.canvasContext && this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
 
     CommonUtil.modifyDOMElement(this.rootCanvas, null, { x: 0, y: 0 }, { w: this.maxWidth, h: this.maxHeight },
       "absolute", null, null, this.opacity);
-    mapContainer.appendChild(this.rootCanvas);
+    targetElement.appendChild(this.rootCanvas);
   }
 
   /**
@@ -441,12 +457,12 @@ export class HeatMapLayerRenderer {
   }
 
    /**
-     * @function HeatMapLayer.prototype.removeFromMap
+     * @function HeatMapLayerRenderer.prototype.removeFromMap
      * @description 删除该图层。
      */
    removeFromMap() {
     this.removeAllFeatures();
-    this.options.mapContainer.removeChild(this.rootCanvas);
+    this.options.targetElement.removeChild(this.rootCanvas);
   }
 
   /**

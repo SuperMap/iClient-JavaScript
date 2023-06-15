@@ -8,6 +8,7 @@
  * Apache Licene 2.0
  * thanks dereklieu, cloudybay
  */
+import '../core/Base';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
 import { FGBLayerRenderer } from '@supermap/iclient-common/overlay/fgb/FGBLayerRenderer';
@@ -64,9 +65,16 @@ export class FGBLayer {
     this.url = options.url;
     this.layerType = '';
     this.extent = options.extent;
+    this.overlay = true;
+    this.type='custom';
+    this.renderingMode = '3d';
     this._updateFeaturesFn = this._updateFeatures.bind(this);
   }
 
+  /**
+   * @function DeckglLayer.prototype.onAdd
+   * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
+   */
   onAdd(map) {
     this.map = map;
     let extent = [];
@@ -92,15 +100,28 @@ export class FGBLayer {
     this.renderer = new FGBLayerRenderer(this.options); 
     this._handleFeatures(extent);
   }
-
+  /**
+   * @function DeckglLayer.prototype.onRemove
+   */
+  onRemove() {
+    this.map.off('moveend', this._updateFeaturesFn);
+  }
+/**
+   * @function DeckglLayer.prototype.moveLayer
+   */
   moveLayer(beforeId) {
     this.map.moveLayer(this.layerId, beforeId);
   }
-
-  removeLayer() {
-    this.map.removeLayer(this.layerId);
+  /**
+    * @function FGBLayer.prototype.render
+  */
+  render() {
+    
   }
-
+  /**
+    * @function FGBLayer.prototype.setVisibility
+    * @description 设置图层的显隐
+  */
   setVisibility(visibility) {
     const visible = visibility ? 'visible': 'none';
     this.map.setLayoutProperty(this.layerId, 'visibility', visible);

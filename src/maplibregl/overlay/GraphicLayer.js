@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import mapboxgl from 'mapbox-gl';
+ import maplibregl from 'maplibre-gl';
  import { GraphicLayerRenderer } from '@supermap/iclient-common/overlay/graphic/GraphicLayerRenderer';
  import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
  
@@ -35,31 +35,35 @@
          this.id = id || CommonUtil.createUniqueID("graphicLayer_");
          this.type = 'custom';
          this.renderingMode = '3d';
+         this.overlay = true;
      }
  
      /**
       * @function GraphicLayer.prototype.addTo
       * @description 添加该图层，将在下个版本废弃，请使用 onAdd() 代替。
-      * @param {maplibregl.Map} map - maplibregl Map 对象。
+      * @param {maplibregl.Map} map - MapLibreGL Map 对象。
       * @returns this
       */
      addTo(map) {
-        this.onAdd(map);
+        map.addLayer(this);
+        return this;
      }
  
      /**
       * @function GraphicLayer.prototype.onAdd
       * @description 添加该图层。
-      * @param {maplibregl.Map} map - maplibregl Map 对象。
-      * @returns {GraphicLayer}
+      * @param {maplibregl.Map} map - MapLibreGL Map 对象。
       */
      onAdd(map) {
          this.map = map;
          this.renderer = new GraphicLayerRenderer(this.id, this.options, {
             getMapState: this.getMapState.bind(this)
-         }, { mapContainer: this.map.getCanvasContainer(), mapCanvas: this.map.getCanvas() });
+         }, { targetElement: this.map.getCanvasContainer(), mapElement: this.map.getCanvas() });
      }
-
+      /**
+      * @function GraphicLayer.prototype.onAdd
+      * @description 添加该图层。
+      */
      render() {
       this.renderer.draw();
      }
@@ -158,7 +162,7 @@
      }
  
      /**
-      * @function GraphicLayer.prototype.removeFromMap
+      * @function GraphicLayer.prototype.onRemove
       * @deprecated
       * @description 删除该图层，并释放图层资源。
       */
@@ -222,8 +226,8 @@
         for (let key in mapViewport) {
             state[key] = mapViewport[key];
         }
-        //当使用扩展的mapboxgl代码时有效
-        if (this.map.getCRS && this.map.getCRS() !== mapboxgl.CRS.EPSG3857) {
+        //当使用扩展的maplibregl代码时有效
+        if (this.map.getCRS && this.map.getCRS() !== maplibregl.CRS.EPSG3857) {
             state.coordinateSystem = this.coordinateSystem;
             state.isGeographicCoordinateSystem = this.isGeographicCoordinateSystem;
         }

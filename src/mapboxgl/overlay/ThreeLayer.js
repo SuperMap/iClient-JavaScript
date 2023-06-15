@@ -8,6 +8,7 @@
  * Apache Licene 2.0
  * thanks maptalks
  */
+import '../core/Base';
 import mapboxgl from "mapbox-gl";
 import { ThreeLayerRenderer } from "@supermap/iclient-common/overlay/threejs/ThreeLayerRenderer";
 
@@ -54,12 +55,39 @@ export class ThreeLayer extends mapboxgl.Evented {
   //options.threeOptions是初始化threejs renderer的参数对象
   constructor(id, renderer, options) {
     super();
+    this.id = id;
     this.type = 'custom';
     this.renderingMode = '3d';
-    this.id = id;
+    this.overlay = true;
     this.options = options;
     let threeOptions = options && options.threeOptions;
     this.renderer = new ThreeLayerRenderer(this, renderer, threeOptions);
+  }
+
+  /**
+   * @function ThreeLayer.prototype.onAdd
+   * @description 添加图层到地图。
+   * @param {Object} map - 地图对象。
+   */
+  onAdd(map) {
+    this.addTo(map)
+  }
+
+  /**
+   * @function ThreeLayer.prototype.addTo
+   * @description 添加图层到地图。
+   * @param {Object} map - 地图对象。
+   * @returns {ThreeLayer} ThreeLayer的实例对象。
+   */
+  addTo(map) {
+    var me = this;
+    me._map = map;
+    me.renderer.setMap(map);
+    me.renderer.render();
+    me.on('render', (function () {
+      this.context && this.context.render(this.scene, this.camera);
+    }).bind(me.renderer));
+    return this;
   }
 
   /**
@@ -199,34 +227,13 @@ export class ThreeLayer extends mapboxgl.Evented {
    * @param {(Array.<Array.<number>>)} coordinates - 坐标数组。
    * @returns {Object} 包含经纬度的坐标对象。
    */
-  // 提工具
   getCoordinatesCenter(coordinates) {
     return this.renderer.getCoordinatesCenter(coordinates);
   }
 
-  onAdd(map) {
-    this.addTo(map)
-  }
-
   /**
-   * @function ThreeLayer.prototype.addTo
-   * @description 添加图层到地图。
-   * @param {Object} map - 地图对象。
-   * @returns {ThreeLayer} ThreeLayer的实例对象。
+   * @function ThreeLayer.prototype.render
    */
-  addTo(map) {
-    var me = this;
-    me._map = map;
-    me.renderer.setMap(map);
-    me.renderer.render();
-    // me._map.on('render', this._update.bind(me));
-    // me._map.on('resize', this._resize.bind(me));
-    me.on('render', (function () {
-      this.context && this.context.render(this.scene, this.camera);
-    }).bind(me.renderer));
-    return this;
-  }
-
   render() {
     this._update();
   }
@@ -288,10 +295,6 @@ export class ThreeLayer extends mapboxgl.Evented {
      */
     this.fire("renderscene");
     return this;
-  }
-
-  _resize() {
-    this.renderer.resize();
   }
 
   _update() {

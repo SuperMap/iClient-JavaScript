@@ -8,7 +8,7 @@
  * Apache Licene 2.0
  * thanks dereklieu, cloudybay
  */
-
+import '../core/Base';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { GraticuleLayerRenderer } from '@supermap/iclient-common/overlay/graticule/GraticuleLayerRenderer';
 import mapboxgl from 'mapbox-gl';
@@ -96,6 +96,7 @@ export class GraticuleLayer {
     this.options = Object.assign({}, defaultOptions, options);
     this.type = 'custom';
     this.renderingMode = '3d';
+    this.overlay = true;
     this.styleDataEevent = this._setLayerTop.bind(this);
   }
 
@@ -104,16 +105,22 @@ export class GraticuleLayer {
     this.renderer = new GraticuleLayerRenderer(this.map, this.options, {
       getMapStateByKey: this.getMapStateByKey,
       getDefaultExtent: this.getDefaultExtent,
-      _updateGraticuleLayer: this._updateGraticuleLayer.bind(this),
+      updateGraticuleLayer: this.updateGraticuleLayer.bind(this),
       setVisibility: this.setVisibility.bind(this)
     }, {
-      mapCanvas: this.map.getCanvas(),
-      mapContainer: this.map.getCanvasContainer()
+      mapElement: this.map.getCanvas(),
+      targetElement: this.map.getCanvasContainer(),
+      id: this.id
     });
     this.addGraticuleLayer();
     this.resizeEvent = this.renderer._resizeCallback;
-    this.zoomendEvent = this.renderer.setVisibility.bind(this);
+    this.zoomendEvent = this.setVisibility.bind(this);
     this._bindEvent()
+  }
+
+  onRemove() {
+    this.renderer.onRemove();
+    this._unbindEvent();
   }
 
   render() {
@@ -130,11 +137,6 @@ export class GraticuleLayer {
     } else if(key === 'unproject') {
       return this.map.unproject(params);
     }
-  }
-
-  onRemove() {
-    this.renderer.onRemove();
-    this._unbindEvent();
   }
 
   /**
@@ -196,7 +198,7 @@ export class GraticuleLayer {
   setExtent(extent) {
     this.options.extent = this.getDefaultExtent(extent, this.map);
     // this.features = this._getGraticuleFeatures();
-    this._updateGraticuleLayer();
+    this.updateGraticuleLayer();
     this.renderer._drawLabel();
   }
 
@@ -250,40 +252,6 @@ export class GraticuleLayer {
     }
   }
 
-  _getLatPoints(lngRange, firstLng, lastLng, features) {
-     return this.renderer._getLatPoints(lngRange, firstLng, lastLng, features);
-  }
-
-  _bindEvent() {
-    this.map.on('styledata', this.styleDataEevent);
-    this.map.on('resize', this.resizeEvent);
-    this.map.on('zoomend', this.zoomendEvent);
-  }
-
-  _unbindEvent() {
-    this.map.off('styledata', this.styleDataEevent);
-    this.map.off('resize', this.resizeEvent);
-    this.map.off('zoomend', this.zoomendEvent);
-  }
-
-  _setLayerTop() {
-    const map = this.map;
-    if (!map) {
-      return;
-    }
-    const layersOnMap = map.getStyle && map.getStyle().layers;
-    if (
-      layersOnMap &&
-      layersOnMap.length &&
-      layersOnMap.findIndex(item => item.id === this.sourceId) !== layersOnMap.length - 1
-    ) {
-      if (map.getLayer(this.sourceId)) {
-        map.removeLayer(this.sourceId);
-        this.addGraticuleLayer();
-      }
-    }
-  }
-
   getDefaultExtent(extent, map = this.map) {
     const crs = (map.getCRS && map.getCRS()) || {};
     let { extent: crsExtent } = crs;
@@ -325,7 +293,41 @@ export class GraticuleLayer {
     }
   }
 
-  _updateGraticuleLayer(features = this.features) {
+  _getLatPoints(lngRange, firstLng, lastLng, features) {
+     return this.renderer._getLatPoints(lngRange, firstLng, lastLng, features);
+  }
+
+  _bindEvent() {
+    this.map.on('styledata', this.styleDataEevent);
+    this.map.on('resize', this.resizeEvent);
+    this.map.on('zoomend', this.zoomendEvent);
+  }
+
+  _unbindEvent() {
+    this.map.off('styledata', this.styleDataEevent);
+    this.map.off('resize', this.resizeEvent);
+    this.map.off('zoomend', this.zoomendEvent);
+  }
+
+  _setLayerTop() {
+    const map = this.map;
+    if (!map) {
+      return;
+    }
+    const layersOnMap = map.getStyle && map.getStyle().layers;
+    if (
+      layersOnMap &&
+      layersOnMap.length &&
+      layersOnMap.findIndex(item => item.id === this.sourceId) !== layersOnMap.length - 1
+    ) {
+      if (map.getLayer(this.sourceId)) {
+        map.removeLayer(this.sourceId);
+        this.addGraticuleLayer();
+      }
+    }
+  }
+ 
+  updateGraticuleLayer(features = this.features) {
     if (this.map.getSource(this.sourceId)) {
       const geoJSONData = {
         type: 'FeatureCollection',

@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglLayerBase';
-
+import maplibregl from 'maplibre-gl';
 /**
  * @class DeckglLayer
  * @category  Visualization DeckGL
@@ -75,12 +75,12 @@ export class DeckglLayer extends DeckglLayerBase {
         super(layerTypeID, options);
         this.type='custom';
         this.renderingMode = '3d';
+        this.overlay = true;
     }
 
     /**
      * @function DeckglLayer.prototype.onAdd
      * @param {maplibregl.Map} map - MapLibreGL Map 对象。
-     * @returns {DeckglLayer}
      */
     onAdd(map) {
         this.map = map;
@@ -88,8 +88,13 @@ export class DeckglLayer extends DeckglLayerBase {
             this.mapContainer = this.map.getCanvasContainer();
             return this;
         }
-        this.coordinateSystem = 1;
-        this.isGeographicCoordinateSystem = false;
+        if (this._isEPSG3857()) {
+          this.coordinateSystem = 3;
+          this.isGeographicCoordinateSystem = true;
+        } else {
+          this.coordinateSystem = 1;
+          this.isGeographicCoordinateSystem = false;
+        }
         //创建图层容器
         this._initContainer(this.map.getCanvasContainer(), this.map.getCanvas());
 
@@ -106,9 +111,12 @@ export class DeckglLayer extends DeckglLayerBase {
         this.deckGL = new window.DeckGL.experimental.DeckGLJS(deckOptions);
         this._draw();
     }
-
+    /**
+     * @function DeckglLayer.prototype.onRemove
+     */
     onRemove() {
       this.map.getCanvasContainer().removeChild(this.canvas);
+      this.clear();
     }
 
     getMapInfo() {
@@ -122,8 +130,15 @@ export class DeckglLayer extends DeckglLayerBase {
       return { center, zoom, maxZoom, pitch, bearing, longitude, latitude };
     }
 
+    /**
+     * @function DeckglLayer.prototype.render
+     */
     render() {
       this._draw();
+    }
+
+    _isEPSG3857() {
+      return this.map.getCRS && this.map.getCRS() !== maplibregl.CRS.EPSG3857
     }
 }
 

@@ -55,10 +55,11 @@ export class ThreeLayer extends maplibregl.Evented {
   //options.threeOptions是初始化threejs renderer的参数对象
   constructor(id, renderer, options) {
     super();
-    this.type = 'custom';
-    this.renderingMode = '3d';
     this.id = id;
     this.options = options;
+    this.type = 'custom';
+    this.renderingMode = '3d';
+    this.overlay = true;
     let threeOptions = options && options.threeOptions;
     this.renderer = new ThreeLayerRenderer(this, renderer, threeOptions);
   }
@@ -200,11 +201,15 @@ export class ThreeLayer extends maplibregl.Evented {
    * @param {(Array.<Array.<number>>)} coordinates - 坐标数组。
    * @returns {Object} 包含经纬度的坐标对象。
    */
-  // 提工具
   getCoordinatesCenter(coordinates) {
     return this.renderer.getCoordinatesCenter(coordinates);
   }
 
+  /**
+   * @function ThreeLayer.prototype.onAdd
+   * @description 添加图层到地图。
+   * @param {Object} map - 地图对象。
+   */
   onAdd(map) {
     this.addTo(map)
   }
@@ -220,14 +225,15 @@ export class ThreeLayer extends maplibregl.Evented {
     me._map = map;
     me.renderer.setMap(map);
     me.renderer.render();
-    // me._map.on('render', this._update.bind(me));
-    // me._map.on('resize', this._resize.bind(me));
     me.on('render', (function () {
       this.context && this.context.render(this.scene, this.camera);
     }).bind(me.renderer));
     return this;
   }
 
+  /**
+   * @function ThreeLayer.prototype.render
+   */
   render() {
     this._update();
   }

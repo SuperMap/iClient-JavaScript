@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { Util as CommonUtil} from '../../commontypes/Util';
-//  import { extend } from '../../util';
 
  const defaultProps = {
      color: [0, 0, 0, 255],
@@ -16,10 +15,11 @@
  };
  
  /**
+  * @private
   * @class GraphicLayerRenderer
   * @category  Visualization Graphic
   * @classdesc 高效率点图层。
-  * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
+  * @param {string} [id] - 图层id。
   * @param {Object} options - 参数。
   * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
   * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
@@ -31,17 +31,19 @@
   * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
   * @param {number} [options.strokeWidth=1] - 边框大小。
   * @param {boolean} [options.outline=false] - 是否显示边框。
+  * @param {Object} [functions] - 图层传递给渲染器调用的方法。
+  * @param {Object} [mapOptions] - 图层传递给渲染器的地图元素信息。
   * @usage
   */
  export class GraphicLayerRenderer {
  
-     constructor(id, options, callbackOptions, mapOptions) {
+     constructor(id, options, functions, mapOptions) {
          let opt = CommonUtil.assign(this,  defaultProps, options);
          /**
           * @member {string} GraphicLayerRenderer.prototype.id
           * @description 高效率点图层 ID。
           */
-         this.id = id || CommonUtil.createUniqueID("graphicLayer_");
+         this.id = id;
          /**
           * @member {Array.<Graphic>} GraphicLayerRenderer.prototype.graphics
           * @description 点要素对象数组。
@@ -53,14 +55,14 @@
           * @description 图层显示状态属性。
           */
          this.mapOptions = mapOptions;
-         this.callbackOptions = callbackOptions;
+         this.functions = functions;
          this.visibility = true;
          this.init();
      }
 
      init() {
         if (this.canvas) {
-            this.mapOptions.mapContainer.appendChild(this.canvas);
+            this.mapOptions.targetElement.appendChild(this.canvas);
         }
          this._initContainer();
          let mapState = this.getState();
@@ -327,11 +329,11 @@
       * @description 删除该图层。
       */
      remove() {
-        this.mapOptions.mapContainer.removeChild(this.canvas);
+        this.mapOptions.targetElement.removeChild(this.canvas);
      }
  
      /**
-      * @function GraphicLayerRenderer.prototype.removeFromMap
+      * @function GraphicLayerRenderer.prototype.destroy
       * @deprecated
       * @description 删除该图层，并释放图层资源。
       */
@@ -395,16 +397,15 @@
          deckOptions.height = height;
          deckOptions.layers = [this.layer];
          deckOptions.canvas = this.canvas;
-         console.log('deckOptions', deckOptions);
          this.deckGL.setProps(deckOptions);
      }
  
      _initContainer() {
-         this.canvas = this._createCanvas(this.mapOptions.mapCanvas);
-         this.mapOptions.mapContainer.appendChild(this.canvas);
+        this.canvas = this._createCanvas(this.mapOptions.mapElement);
+        this.mapOptions.targetElement.appendChild(this.canvas);
      }
  
-     _createCanvas(mapCanvas) {
+     _createCanvas(mapElement) {
          let canvas = document.createElement('canvas');
          if (this.id) {
              canvas.id = this.id;
@@ -413,15 +414,15 @@
          canvas.style.top = 0 + "px";
          canvas.style.left = 0 + "px";
          canvas.style.cursor = "";
-         canvas.width = parseInt(mapCanvas.style.width);
-         canvas.height = parseInt(mapCanvas.style.height);
-         canvas.style.width = mapCanvas.style.width;
-         canvas.style.height = mapCanvas.style.height;
+         canvas.width = parseInt(mapElement.style.width);
+         canvas.height = parseInt(mapElement.style.height);
+         canvas.style.width = mapElement.style.width;
+         canvas.style.height = mapElement.style.height;
          return canvas;
      }
 
      getState() {
-        let mapState = this.callbackOptions.getMapState();
+        let mapState = this.functions.getMapState();
         return {
             data: this.graphics,
             color: this.color,

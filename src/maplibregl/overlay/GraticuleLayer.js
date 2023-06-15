@@ -96,30 +96,41 @@ export class GraticuleLayer {
     this.options = Object.assign({}, defaultOptions, options);
     this.type = 'custom';
     this.renderingMode = '3d';
+    this.overlay = true;
     this.styleDataEevent = this._setLayerTop.bind(this);
   }
-
+  /**
+    * @function GraphicLayer.prototype.onAdd
+    * @description 添加该图层。
+    * @param {maplibregl.Map} map - MapLibreGL Map 对象。
+    */
   onAdd(map) {
     this.map = map;
     this.renderer = new GraticuleLayerRenderer(this.map, this.options, {
       getMapStateByKey: this.getMapStateByKey,
       getDefaultExtent: this.getDefaultExtent,
-      _updateGraticuleLayer: this._updateGraticuleLayer.bind(this),
+      updateGraticuleLayer: this.updateGraticuleLayer.bind(this),
       setVisibility: this.setVisibility.bind(this)
     }, {
-      mapCanvas: this.map.getCanvas(),
-      mapContainer: this.map.getCanvasContainer()
+      mapElement: this.map.getCanvas(),
+      targetElement: this.map.getCanvasContainer(),
+      id: this.id
     });
     this.addGraticuleLayer();
     this.resizeEvent = this.renderer._resizeCallback;
-    this.zoomendEvent = this.renderer.setVisibility.bind(this);
+    this.zoomendEvent = this.setVisibility.bind(this);
     this._bindEvent()
   }
 
   render() {
     this.renderer.draw();
   }
-
+/**
+   * @function GraticuleLayer.prototype.getMapStateByKey
+   * @description 根据方法名与参数获取地图状态。
+   * @param {string} key - map 方法名。
+   * @param {Object} params - 参数。
+   */
   getMapStateByKey(key, params) {
     if (key === 'getBearing') {
       return this.map.getBearing();
@@ -131,7 +142,10 @@ export class GraticuleLayer {
       return this.map.unproject(params);
     }
   }
-
+  /**
+   * @function GraticuleLayer.prototype.onRemove
+   * @description 移除图层回调。
+   */
   onRemove() {
     this.renderer.onRemove();
     this._unbindEvent();
@@ -196,7 +210,7 @@ export class GraticuleLayer {
   setExtent(extent) {
     this.options.extent = this.getDefaultExtent(extent, this.map);
     // this.features = this._getGraticuleFeatures();
-    this._updateGraticuleLayer();
+    this.updateGraticuleLayer();
     this.renderer._drawLabel();
   }
 
@@ -250,40 +264,6 @@ export class GraticuleLayer {
     }
   }
 
-  _bindEvent() {
-    this.map.on('styledata', this.styleDataEevent);
-    this.map.on('resize', this.resizeEvent);
-    this.map.on('zoomend', this.zoomendEvent);
-  }
-
-  _unbindEvent() {
-    this.map.off('styledata', this.styleDataEevent);
-    this.map.off('resize', this.resizeEvent);
-    this.map.off('zoomend', this.zoomendEvent);
-  }
-
-  _setLayerTop() {
-    const map = this.map;
-    if (!map) {
-      return;
-    }
-    const layersOnMap = map.getStyle && map.getStyle().layers;
-    if (
-      layersOnMap &&
-      layersOnMap.length &&
-      layersOnMap.findIndex(item => item.id === this.sourceId) !== layersOnMap.length - 1
-    ) {
-      if (map.getLayer(this.sourceId)) {
-        map.removeLayer(this.sourceId);
-        this.addGraticuleLayer();
-      }
-    }
-  }
-
-  _getLatPoints(lngRange, firstLng, lastLng, features) {
-     return this.renderer._getLatPoints(lngRange, firstLng, lastLng, features);
-  }
-
   getDefaultExtent(extent, map = this.map) {
     const crs = (map.getCRS && map.getCRS()) || {};
     let { extent: crsExtent } = crs;
@@ -325,7 +305,7 @@ export class GraticuleLayer {
     }
   }
 
-  _updateGraticuleLayer(features = this.features) {
+  updateGraticuleLayer(features = this.features) {
     if (this.map.getSource(this.sourceId)) {
       const geoJSONData = {
         type: 'FeatureCollection',
@@ -334,6 +314,40 @@ export class GraticuleLayer {
       this.map.getSource(this.sourceId).setData(geoJSONData);
     }
     this.addGraticuleLayer();
+  }
+
+  _bindEvent() {
+    this.map.on('styledata', this.styleDataEevent);
+    this.map.on('resize', this.resizeEvent);
+    this.map.on('zoomend', this.zoomendEvent);
+  }
+
+  _unbindEvent() {
+    this.map.off('styledata', this.styleDataEevent);
+    this.map.off('resize', this.resizeEvent);
+    this.map.off('zoomend', this.zoomendEvent);
+  }
+
+  _setLayerTop() {
+    const map = this.map;
+    if (!map) {
+      return;
+    }
+    const layersOnMap = map.getStyle && map.getStyle().layers;
+    if (
+      layersOnMap &&
+      layersOnMap.length &&
+      layersOnMap.findIndex(item => item.id === this.sourceId) !== layersOnMap.length - 1
+    ) {
+      if (map.getLayer(this.sourceId)) {
+        map.removeLayer(this.sourceId);
+        this.addGraticuleLayer();
+      }
+    }
+  }
+
+  _getLatPoints(lngRange, firstLng, lastLng, features) {
+     return this.renderer._getLatPoints(lngRange, firstLng, lastLng, features);
   }
 }
 

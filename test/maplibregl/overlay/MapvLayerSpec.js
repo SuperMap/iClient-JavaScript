@@ -1,9 +1,9 @@
 import {MapvLayer} from '../../../src/maplibregl/overlay/MapvLayer';
 import maplibregl from 'maplibre-gl';
 import {utilCityCenter, DataSet} from 'mapv';
-
-var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
-
+var url = 'https://iserver.supermap.io/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'
+// var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
+maplibregl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('maplibregl_MapVLayer', () => {
     var originalTimeout;
     let data = [], dataSet;
@@ -19,7 +19,7 @@ describe('maplibregl_MapVLayer', () => {
         draw: 'intensity',
         layerID: "mapv"
     };
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -50,7 +50,9 @@ describe('maplibregl_MapVLayer', () => {
             center: [112, 37.94],
             zoom: 3
         });
-
+        map.on('load', function() {
+          done();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -138,7 +140,7 @@ describe('maplibregl_MapVLayer', () => {
         expect(mapvLayer.dataSet._data[1000].count).toEqual(111);
         expect(mapvLayer.dataSet._data[1000].geometry.coordinates[0]).toEqual(109);
         expect(mapvLayer.dataSet._data[1000].geometry.coordinates[1]).toEqual(32);
-        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(30);
+        expect(mapvLayer.options.shadowBlur).toEqual(30);
     });
 
     it('getData', () => {
@@ -179,7 +181,7 @@ describe('maplibregl_MapVLayer', () => {
         expect(mapvLayer.dataSet._data[0].count).toEqual(111);
         expect(mapvLayer.dataSet._data[0].geometry.coordinates[0]).toEqual(109);
         expect(mapvLayer.dataSet._data[0].geometry.coordinates[1]).toEqual(32);
-        expect(mapvLayer.mapVOptions.shadowBlur).toEqual(40);
+        expect(mapvLayer.options.shadowBlur).toEqual(40);
     });
 
     it('clearData', () => {
@@ -189,7 +191,7 @@ describe('maplibregl_MapVLayer', () => {
 
     it('setZIndex', () => {
         mapvLayer.setZIndex(2);
-        expect(mapvLayer.canvas.style.zIndex).toEqual('2');
+        expect(mapvLayer.renderer.canvas.style.zIndex).toEqual('2');
     });
 
 });

@@ -8,8 +8,8 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 import RBush from 'rbush';
 
 /**
- * @class FGBLayer
- * @category Visualization FGB
+ * @private
+ * @class FGBLayerRenderer
  * @classdesc FGB。
  * @version 11.1.0
  * @param {Object} options - 参数。
@@ -17,9 +17,6 @@ import RBush from 'rbush';
  * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为当前可见范围加载。
  * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法，接收要素作为参数，需返回要素。
- * @param {Object} [options.paint] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property}
- * @param {Object} [options.layout] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property}
- * @param {Object} [options.sourceOptions] - 参数内容详见: {@link mapboxgl.source}
  * @usage
  */
 

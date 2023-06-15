@@ -10,26 +10,26 @@
  */
 
 import { getWrapNum, conversionDegree } from '../../util/MapCalculateUtil';
-import { Util as CommonUtil} from '../../commontypes/Util';
 /**
- * @class GraticuleLayer
- * @category Visualization GraticuleLayer
+ * @private
+ * @class GraticuleLayerRenderer
  * @classdesc 经纬网。
- * @version 10.1.1
+ * @version 11.1.1
  * @param {Object} options - 参数。
- * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("graticuleLayer_") 创建图层 ID。
  * @param {boolean} [options.visible=true] - 是否显示经纬网。
  * @param {boolean} [options.showLabel=true] - 是否显示标签。
  * @param {number} [options.opacity=1] - 画布不透明度。
  * @param {number|function} [options.interval = 10] - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
- * @param {mapboxgl.LngLatBounds} [options.extent] - 经纬网渲染的边界范围（[minx, miny, maxx, maxy]），不传为整个地图范围。
+ * @param {Array.<number>} [options.extent] - 经纬网渲染的边界范围（[minx, miny, maxx, maxy]），不传为整个地图范围。
  * @param {number} [options.minZoom] - 最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。
  * @param {number} [options.maxZoom] - 该图层可见的最大视图缩放级别（含）。
  * @param {function} [options.lngLabelFormatter = null] - 经度标签转换函数。
  * @param {function} [options.latLabelFormatter = null] - 纬度标签转换函数。
- * @param {GraticuleLayer.LabelStyle} [options.lngLabelStyle] - 经度标签样式。
- * @param {GraticuleLayer.LabelStyle} [options.latLabelStyle] - 纬度标签样式。
- * @param {GraticuleLayer.StrokeStyle} [options.strokeStyle] - 绘制经纬线的样式。
+ * @param {GraticuleLayerRenderer.LabelStyle} [options.lngLabelStyle] - 经度标签样式。
+ * @param {GraticuleLayerRenderer.LabelStyle} [options.latLabelStyle] - 纬度标签样式。
+ * @param {GraticuleLayerRenderer.StrokeStyle} [options.strokeStyle] - 绘制经纬线的样式。
+ * @param {Object} [functions] - 图层传递给渲染器调用的方法。
+ * @param {Object} [mapOptions] - 图层传递给渲染器的地图元素信息。
  * @usage
  */
 
@@ -65,18 +65,18 @@ const defaultOptions = {
     latLabelStyle: defaultTextStyle
 };
 export class GraticuleLayerRenderer {
-    constructor(map, options, callbackOptions, mapOptions) {
+    constructor(map, options, functions, mapOptions) {
         this.map = map;
-        this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('graticuleLayer_');
+        this.id = mapOptions && mapOptions.id;
         this.sourceId = this.id + '_line';
         this.canvasId = this.id;
         this.options = options;
-        this.mapCanvas = mapOptions.mapCanvas;
-        this.mapContainer = mapOptions.mapContainer;
-        this.getMapStateByKey = callbackOptions.getMapStateByKey;
-        this.getDefaultExtent = callbackOptions.getDefaultExtent;
-        this.setVisibility = callbackOptions.setVisibility;
-        this._updateGraticuleLayer = callbackOptions._updateGraticuleLayer;
+        this.mapElement = mapOptions.mapElement;
+        this.targetElement = mapOptions.targetElement;
+        this.getMapStateByKey = functions.getMapStateByKey;
+        this.getDefaultExtent = functions.getDefaultExtent;
+        this.setVisibility = functions.setVisibility;
+        this.updateGraticuleLayer = functions.updateGraticuleLayer;
         this.init();
     }
 
@@ -89,12 +89,12 @@ export class GraticuleLayerRenderer {
     }
 
     onRemove() {
-      this.mapContainer.removeChild(this.canvas);
+      this.targetElement.removeChild(this.canvas);
       this.canvas = null;
     }
 
     /**
-     * @function GraticuleLayer.prototype.setMinZoom
+     * @function GraticuleLayerRenderer.prototype.setMinZoom
      * @description 设置最小视图缩放级别。
      * @param {number} minZoom - 最小视图缩放级别（不包括此级别），在该级别之上，该层将可见。
      */
@@ -104,7 +104,7 @@ export class GraticuleLayerRenderer {
     }
 
     /**
-     * @function GraticuleLayer.prototype.setMaxZoom
+     * @function GraticuleLayerRenderer.prototype.setMaxZoom
      * @description 该图层可见的最大视图缩放级别。
      * @param {number} maxZoom - 该图层可见的最大视图缩放级别（含）。
      */
@@ -114,7 +114,7 @@ export class GraticuleLayerRenderer {
     }
 
     /**
-     * @function GraticuleLayer.prototype.setShowLabel
+     * @function GraticuleLayerRenderer.prototype.setShowLabel
      * @description 设置显示标签。
      * @param {boolean} showLabel - 是否显示标签。
      */
@@ -124,21 +124,21 @@ export class GraticuleLayerRenderer {
     }
 
     /**
-     * @function GraticuleLayer.prototype.setExtent
+     * @function GraticuleLayerRenderer.prototype.setExtent
      * @description 设置经纬网渲染的边界范围。
-     * @param {mapboxgl.LngLatBounds} extent - 经纬网渲染的边界范围。
+     * @param {Array.<number>} extent - 经纬网渲染的边界范围。
      */
     setExtent(extent) {
         this.options.extent = this.getDefaultExtent(extent);
         this.features = this._getGraticuleFeatures();
-        this._updateGraticuleLayer();
+        this.updateGraticuleLayer();
         this._drawLabel();
     }
 
     /**
-     * @function GraticuleLayer.prototype.setLngLabelStyle
+     * @function GraticuleLayerRenderer.prototype.setLngLabelStyle
      * @description 设置经度标签样式。
-     * @param {GraticuleLayer.LabelStyle} labelStyle - 标签样式。
+     * @param {GraticuleLayerRenderer.LabelStyle} labelStyle - 标签样式。
      */
     setLngLabelStyle(labelStyle) {
         this.options.lngLabelStyle = labelStyle;
@@ -146,9 +146,9 @@ export class GraticuleLayerRenderer {
     }
 
     /**
-     * @function GraticuleLayer.prototype.setLatLabelStyle
+     * @function GraticuleLayerRenderer.prototype.setLatLabelStyle
      * @description 设置纬度标签样式。
-     * @param {GraticuleLayer.LabelStyle} labelStyle - 标签样式。
+     * @param {GraticuleLayerRenderer.LabelStyle} labelStyle - 标签样式。
      */
     setLatLabelStyle(labelStyle) {
         this.options.latLabelStyle = labelStyle;
@@ -156,7 +156,7 @@ export class GraticuleLayerRenderer {
     }
 
     /**
-     * @function GraticuleLayer.prototype.setIntervals
+     * @function GraticuleLayerRenderer.prototype.setIntervals
      * @description 设置经纬度的间隔（以度为单位）。
      * @param {number|function} interval - 经纬度的间隔（以度为单位），可以是数字，也可以是函数，参数是map。
      */
@@ -164,7 +164,7 @@ export class GraticuleLayerRenderer {
         this.options.interval = interval;
         this._calcInterval();
         this.features = this._getGraticuleFeatures();
-        this._updateGraticuleLayer();
+        this.updateGraticuleLayer();
         this._drawLabel();
     }
 
@@ -193,7 +193,7 @@ export class GraticuleLayerRenderer {
         if (this.canvas) {
             return;
         }
-        const mapCanvas = this.mapCanvas;
+        const mapElement = this.mapElement;
         this.canvas = document.createElement('canvas');
         this.canvas.id = this.canvasId;
         this.canvas.style.position = 'absolute';
@@ -201,12 +201,12 @@ export class GraticuleLayerRenderer {
         this.canvas.style.left = 0 + 'px';
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = global$2.devicePixelRatio || 1;
-        this.canvas.width = parseInt(mapCanvas.style.width) * devicePixelRatio;
-        this.canvas.height = parseInt(mapCanvas.style.height) * devicePixelRatio;
-        this.canvas.style.width = mapCanvas.style.width;
-        this.canvas.style.height = mapCanvas.style.height;
+        this.canvas.width = parseInt(mapElement.style.width) * devicePixelRatio;
+        this.canvas.height = parseInt(mapElement.style.height) * devicePixelRatio;
+        this.canvas.style.width = mapElement.style.width;
+        this.canvas.style.height = mapElement.style.height;
         this.canvas.globalAlpha = this.options.opacity;
-        this.mapContainer.appendChild(this.canvas);
+        this.targetElement.appendChild(this.canvas);
     }
 
     _drawCanvas() {
@@ -218,7 +218,7 @@ export class GraticuleLayerRenderer {
     }
 
     _resizeCallback() {
-        this.mapContainer && this.mapContainer.removeChild(this.canvas);
+        this.targetElement && this.targetElement.removeChild(this.canvas);
         this.canvas = null;
         this._drawCanvas();
     }
@@ -299,7 +299,7 @@ export class GraticuleLayerRenderer {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             return;
         }
-        if (this.mapCanvas) {
+        if (this.mapElement) {
             if (!this._currLngInterval || !this._currLatInterval) {
                 this._calcInterval();
             }

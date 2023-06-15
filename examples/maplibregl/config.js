@@ -3,7 +3,7 @@
  * maplibregl 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
 var identification = {
-  name: 'MaplibreGL'
+  name: 'MapLibreGL'
 };
 
 var exampleConfig = {

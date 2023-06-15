@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-// import "../core/Base";
+import "../core/Base";
 import { Bounds } from "@supermap/iclient-common/commontypes/Bounds";
 import { Point as GeometryPoint } from "@supermap/iclient-common/commontypes/geometry/Point";
 import { Polygon } from "@supermap/iclient-common/commontypes/geometry/Polygon";
