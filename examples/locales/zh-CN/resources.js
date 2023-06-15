@@ -406,6 +406,8 @@ window.examplesResources = {
         "title_examplesLeaflet": "iClient for Leaflet 示范程序",
         "title_editorMBGL": "iClient for MapboxGL 示例代码",
         "title_examplesMBGL": "iClient for MapboxGL 示范程序",
+        "title_editorMLBGL": "iClient for MapLibreGL 示例代码",
+        "title_examplesMLBGL": "iClient for MapLibreGL 示范程序",
         "title_examplesComponent": "组件示范程序",
         "title_editorComponent": "组件示例代码",
         "title_editorClassic": "iClient Classic 示例代码",

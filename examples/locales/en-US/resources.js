@@ -453,6 +453,8 @@ window.examplesResources = {
         "title_examplesLeaflet": "iClient for Leaflet Examples",
         "title_editorMBGL": "iClient for MapboxGL  Sample Code",
         "title_examplesMBGL": "iClient for MapboxGL Examples",
+        "title_editorMLBGL": "iClient for MapLibreGL  Sample Code",
+        "title_examplesMLBGL": "iClient for MapLibreGL Examples",
         "title_examplesComponent": "Component Examples",
         "title_editorComponent": "Component Sample Code",
         "title_editorClassic": "iClient Classic  Sample Code",

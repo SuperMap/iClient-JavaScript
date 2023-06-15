@@ -35,8 +35,8 @@
         <div id="map"></div>
         <script
             type="text/javascript"
-            exclude="iclient-mapboxgl"
-            src="../../dist/mapboxgl/include-mapboxgl.js"
+            exclude="iclient-maplibregl"
+            src="../../dist/maplibregl/include-maplibregl.js"
         ></script>
         <script type="text/javascript">
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
@@ -45,7 +45,7 @@
                 " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                 " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
-            var map = new mapboxgl.Map({
+            var map = new maplibregl.Map({
                 container: 'map',
                 style: {
                     version: 8,
@@ -73,7 +73,7 @@
                 center: [13.594505109654733, 7.3413038418022865],
                 zoom: 17
             });
-            map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+            map.addControl(new maplibregl.NavigationControl(), 'top-left');
             function addResultLayer() {
                 if (map.getLayer('result-layer')) {
                     map.removeLayer('result-layer');

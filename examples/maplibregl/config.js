@@ -69,6 +69,12 @@ var exampleConfig = {
             name_en: 'SQL query',
             thumbnail: 'mb_mapQueryBySQL.png',
             fileName: '01_mapQueryBySQL'
+          },
+          {
+            name: 'SQL查询 (FGB)',
+            name_en: 'SQL query (FGB)',
+            thumbnail: 'query_fgb_features.png',
+            fileName: '01_mapQueryBySQL_FGB'
           }
         ]
       },
@@ -87,6 +93,12 @@ var exampleConfig = {
             name_en: 'SQL query',
             thumbnail: 'mb_getFeatureBySQL.png',
             fileName: '02_getFeatureBySQL'
+          },
+          {
+            name: 'SQL查询 (FGB)',
+            name_en: 'SQL query (FGB)',
+            thumbnail: 'query_fgb_features.png',
+            fileName: '02_getFeatureBySQL_FGB'
           },
           {
             name: '范围查询',
@@ -209,10 +221,34 @@ var exampleConfig = {
             fileName: '04_bufferAnalystService'
           },
           {
-            name: '数据集泰森多边形',
+            name: '数据集缓冲区分析 (FGB)',
+            name_en: 'buffer',
+            thumbnail: 'mb_bufferAnalystService.png',
+            fileName: '04_bufferAnalystService_FGB'
+          },
+          {
+              name: '几何对象缓冲区分析',
+              name_en: 'buffer-geometry',
+              thumbnail: 'mb_bufferAnalystService_geometry.png',
+              fileName: '04_bufferAnalystService_geometry'
+          },
+          {
+            name: '几何对象缓冲区分析 (FGB)',
+            name_en: 'buffer-geometry',
+            thumbnail: 'mb_bufferAnalystService_geometry.png',
+            fileName: '04_bufferAnalystService_geometry_FGB'
+          },
+          {
+              name: '数据集泰森多边形',
+              name_en: 'thiessen-dataset',
+              thumbnail: 'mb_thiessenAnalystService-datasets.png',
+              fileName: '04_thiessenAnalystService_datasets'
+          },
+          {
+            name: '数据集泰森多边形 (FGB)',
             name_en: 'thiessen-dataset',
             thumbnail: 'mb_thiessenAnalystService-datasets.png',
-            fileName: '04_thiessenAnalystService_datasets'
+            fileName: '04_thiessenAnalystService_datasets_FGB'
           },
           {
             name: '几何泰森多边形',
@@ -221,10 +257,22 @@ var exampleConfig = {
             fileName: '04_thiessenAnalystService_geometry'
           },
           {
-            name: '叠加分析',
+            name: '几何泰森多边形 (FGB)',
+            name_en: 'thiessen-geometry',
+            thumbnail: 'mb_thiessenAnalystService-geometry.png',
+            fileName: '04_thiessenAnalystService_geometry_FGB'
+          },
+          {
+              name: '叠加分析',
+              name_en: 'overlay',
+              thumbnail: 'mb_overlayAnalystService.png',
+              fileName: '04_overlayAnalystService'
+          },
+          {
+            name: '叠加分析 (FGB)',
             name_en: 'overlay',
             thumbnail: 'mb_overlayAnalystService.png',
-            fileName: '04_overlayAnalystService'
+            fileName: '04_overlayAnalystService_FGB'
           },
           {
             name: '地形曲率计算',
@@ -382,12 +430,10 @@ var exampleConfig = {
       KnowledgeGraph: {
         name: '知识图谱',
         name_en: 'KnowledgeGraph',
-        version: '11.1.0',
         content: [
           {
             name: '图谱图',
             name_en: 'graticule',
-            version: '11.1.0',
             thumbnail: 'knowledgeGraphMap.png',
             fileName: 'knowledgeGraphMap'
           }
@@ -842,53 +888,53 @@ var exampleConfig = {
           }
         ]
       }
-    },
-    control: {
-      name: '控件',
-      name_en: 'Control',
-      content: {
-        BasicControl: {
-          name: '基础控件',
-          name_en: 'Basic Control',
-          content: [
-            {
-              name: '导航控件',
-              name_en: 'Navigation Control',
-              thumbnail: 'control_navigationControl.png',
-              fileName: 'control_navigationControl'
-            },
-            {
-              name: '比例尺控件',
-              name_en: 'Scale Control',
-              thumbnail: 'control_scaleControl.png',
-              fileName: 'control_scaleControl'
-            },
-            {
-              name: '全屏控件',
-              name_en: 'Fullscreen Control',
-              thumbnail: 'control_fullscreenControl.png',
-              fileName: 'control_fullscreenControl'
-            },
-            {
-              name: '定位控件',
-              name_en: 'Geolocate Control',
-              thumbnail: 'control_geolocateControl.png',
-              fileName: 'control_geolocateControl'
-            },
-            {
-              name: '版权控件',
-              name_en: 'Attribution Control',
-              thumbnail: 'control_attributionControl.png',
-              fileName: 'control_attributionControl'
-            },
-            {
-              name: '绘图控件',
-              name_en: 'Draw Control',
-              thumbnail: 'control_drawControl.png',
-              fileName: 'control_drawControl'
-            }
-          ]
-        }
+    }
+  },
+  control: {
+    name: '控件',
+    name_en: 'Control',
+    content: {
+      BasicControl: {
+        name: '基础控件',
+        name_en: 'Basic Control',
+        content: [
+          {
+            name: '导航控件',
+            name_en: 'Navigation Control',
+            thumbnail: 'control_navigationControl.png',
+            fileName: 'control_navigationControl'
+          },
+          {
+            name: '比例尺控件',
+            name_en: 'Scale Control',
+            thumbnail: 'control_scaleControl.png',
+            fileName: 'control_scaleControl'
+          },
+          {
+            name: '全屏控件',
+            name_en: 'Fullscreen Control',
+            thumbnail: 'control_fullscreenControl.png',
+            fileName: 'control_fullscreenControl'
+          },
+          {
+            name: '定位控件',
+            name_en: 'Geolocate Control',
+            thumbnail: 'control_geolocateControl.png',
+            fileName: 'control_geolocateControl'
+          },
+          {
+            name: '版权控件',
+            name_en: 'Attribution Control',
+            thumbnail: 'control_attributionControl.png',
+            fileName: 'control_attributionControl'
+          },
+          {
+            name: '绘图控件',
+            name_en: 'Draw Control',
+            thumbnail: 'control_drawControl.png',
+            fileName: 'control_drawControl'
+          }
+        ]
       }
     }
   }
