@@ -1,0 +1,475 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_mb_deckglLayer_nyBuilding"></title>
+    <style>
+        body {
+            font-family: "Avenir Next W00", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .splitContainer {
+            height: 200px;
+            width: 600px;
+            z-index: 1000;
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .whiteBackground {
+            background-color: rgba(225, 225, 225, 0.1);
+            border-top: 1px dotted;
+            border-image: linear-gradient(to right, rgba(114, 159, 207, 1), rgba(104, 104, 104, 1) 200px, rgba(104, 104, 104, 0) 75%) 30;
+        }
+
+        .blueBackground {
+            background: linear-gradient(to right, rgba(114, 159, 207, 0.3) 0%, rgba(255, 255, 255, 0.1) 200px, rgba(00, 00, 00, 0) 75%);
+            border-bottom: 1px dotted;
+            border-image: linear-gradient(to right, rgba(104, 104, 104, 1), rgba(104, 104, 104, 1) 200px, rgba(104, 104, 104, 0) 75%) 30;
+        }
+
+        ._flex {
+            display: flex;
+        }
+
+        ._topRight {
+            position: absolute;
+            /*bottom: 0;*/
+            top: 15px;
+            right: 50px;
+        }
+
+        .header-div {
+            display: flex;
+            height: 70px;
+            padding: 0 15px 0 12px;
+            color: #ffffff;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        ._playContainer {
+            padding: 20px 15px 0 12px;
+            height: auto;
+        }
+
+        .header-label {
+            flex: 1 1 100%;
+            order: 1;
+            font-size: 32px;
+            align-self: flex-end;
+        }
+
+        #sliderLabels {
+            flex: 1 1 auto;
+            order: 1;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        #rangeWrapper {
+            flex: 1 1 auto;
+            order: 2;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        #sliderValue {
+            flex: 0 0 100px;
+            order: 1;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            font-size: 300%;
+        }
+
+        #sliderInnerContainer {
+            flex: 1 1 auto;
+            order: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        #slider .ui-slider-range {
+            background: #729fcf;
+        }
+
+        #slider .ui-slider-handle {
+            border-color: #729fcf;
+        }
+
+        #slider .ui-slider-handle :hover {
+            cursor: pointer;
+        }
+
+        #playButton {
+            flex: 0 0 100px;
+            flex-flow: row nowrap;
+            display: flex;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            order: 3;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #playButton:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .toggle-button-icon {
+            padding: 10px 0 10px 0;
+        }
+
+        .icon-play, .icon-pause {
+            padding-right: 5px;
+        }
+
+        .legendContainer {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            width: 180px;
+            color: white;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .legendHead {
+            font-size: 20px;
+            align-self: flex-end;
+            flex-direction: column;
+        }
+
+        .legendBody {
+            padding-top: 10px;
+        }
+
+        .legendDiv {
+            flex: 0 0 50px;
+            height: 150px;
+            width: 50px;
+            background: linear-gradient(to bottom, rgba(0, 255, 255, 1), rgba(255, 0, 255, 0.6) 50%, rgba(68, 0, 68, 0.3));
+        }
+
+        .legendText {
+            flex: 0 0 auto;
+            flex-direction: column;
+            padding-left: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class="splitContainer whiteBackground _topRight">
+    <div class="header-div blueBackground _flex">
+        <div class="header-label" data-i18n="resources.title_mb_deckglLayer_nyBuilding"></div>
+    </div>
+    <div class="_playContainer _flex">
+        <div id="sliderValue">1880</div>
+        <div id="sliderInnerContainer">
+            <div id="sliderLabels">
+                <span id="startYear">1880</span>
+                <span id="endYear">2015</span>
+            </div>
+            <div id="rangeWrapper">
+                <div id="slider"></div>
+            </div>
+        </div>
+        <div id="playButton">
+            <div class="toggle-button-icon -play _flex">
+                <img src="../img/icon_play.png" class="icon-play">
+                <div data-i18n="resources.text_paly"></div>
+            </div>
+            <div class="toggle-button-icon -pause _flex" style="display:none">
+                <img src="../img/icon_pause.png" class="icon-pause">
+                <div data-i18n="resources.text_pause"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="legendContainer whiteBackground">
+    <div class="legendHead _flex">
+        <div>Polygon color</div>
+        <div>by years</div>
+    </div>
+    <div class="legendBody _flex">
+        <div class="legendDiv"></div>
+        <div class="legendText _flex">
+            <div id="legendStart" style="flex:1 1 auto; align-self: flex-start"></div>
+            <div id="legendMiddle" style="flex:1 1 auto;align-self: flex-start"></div>
+            <div id="legendEnd" style="align-self: flex-end"></div>
+        </div>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="papaparse,bootstrap,widgets,jquery-ui" src="../js/include-web.js"></script>
+<script type="text/javascript" include="deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io", map,
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        dataUrl = "https://iserver.supermap.io/iserver/services/data-ny/rest/data",
+        deckglLayer, popup,
+        currentYear = 1950,
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 13,
+                "maxzoom": 22
+            }]
+        },
+        center: [-73.981480, 40.702389],
+        zoom: 14,
+        minZoom: 14
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    initEvent();
+    init();
+
+    function initEvent() {
+        $("#sliderValue").html(currentYear);
+        $("#legendStart").html("in " + currentYear);
+        $("#legendMiddle").html("in " + (currentYear - 25));
+        $("#legendEnd").html("before " + (currentYear - 50));
+
+        $("#playButton").click(function () {
+            $(".toggle-button-icon").toggle();
+        });
+        $(".-play").click(function () {
+            start();
+        });
+        $(".-pause").click(function () {
+            pause();
+        });
+
+        $("#slider").slider({
+            orientation: "horizontal",
+            range: "min",
+            min: 1880,
+            max: 2015,
+            value: 1950,
+//            slide: refreshSwatch,
+            change: refreshSwatch
+        });
+        map.on("moveend", eventHandle);
+        map.on("resize", eventHandle);
+    }
+
+    //是否为新的请求
+    var isNewRequest = false;
+
+    //地图事件
+    function eventHandle() {
+        isNewRequest = true;
+        requestData();
+    }
+
+    //进度条更新事件
+    function refreshSwatch() {
+        currentYear = $("#slider").slider("value");
+        $("#sliderValue").html(currentYear);
+        $("#sliderValue").html(currentYear);
+
+        $("#legendStart").html("in " + currentYear);
+        $("#legendMiddle").html("in " + (currentYear - 25));
+        $("#legendEnd").html("before " + (currentYear - 50));
+        deckglLayer.update();
+    }
+
+
+    //初始加载
+    function init() {
+        currentYear = $("#slider").slider("value");
+        requestData();
+    }
+
+    //动画控制
+    function start() {
+        Animation();
+    }
+
+    //动画控制
+    function pause() {
+        clearInterval(animation);
+    }
+
+    var animation;
+
+    //动画
+    function Animation() {
+        //动画：
+        window.setTimeout(function () {
+            animation = window.setInterval(timeCount, 100);
+        }, 1000);
+
+        function timeCount() {
+            deckglLayer.update();
+            if (currentYear === 2015) {
+                currentYear = 1880;
+            }
+            currentYear++;
+            $("#slider").slider("value", currentYear);
+        }
+    }
+
+    //todo 一个合理的请求方式，初始化和界面范围变化时触发请求，还需要避免两种情况冲突
+    var responseCounts = 0;
+
+    //请求数据
+    function requestData() {
+        for (var i = 1; i <= 5; i++) {
+            query(i)
+        }
+
+        function query(count) {
+            var boundsParam = new maplibregl.supermap.GetFeaturesByBoundsParameters({
+                datasetNames: ["ny:Building_Footprints"],
+                attributeFilter: "cnstrct_yr > " + (1880 + 26 * (count - 1)) + " And cnstrct_yr <= " + (1880 + 26 * count),
+                bounds: map.getBounds(),
+                toIndex: 1000000,
+                maxFeatures: 1000000,
+            });
+
+            new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam, callback);
+        }
+
+        function callback(result) {
+            if (isNewRequest) {
+                responseCounts++;
+            }
+            if (deckglLayer) {
+                updateLayer(dataSetAdjust(result));
+            } else {
+                deckglLayer = new maplibregl.supermap.DeckglLayer("polygon-layer", {
+                    data: dataSetAdjust(result),
+                    props: {
+                        stroked: false,
+                        onHover: function (feature) {
+                            if (!popup) {
+                                popup = new maplibregl.Popup({
+                                    anchor: 'bottom',
+                                    closeButton: false,
+                                    offset: {
+                                        'bottom': [0, -10],
+                                    }
+                                });
+                            }
+                            if (!feature.object || !feature.object.properties.isShow) {
+                                popup.remove();
+                                return;
+                            }
+                            //+ "x:" + feature.lngLat[0] + ",y:" + feature.lngLat[1]
+                            popup.setHTML("于 " + feature.object.properties.CNSTRCT_YR + " 年建成");
+                            popup.setLngLat(map.unproject([feature.x, feature.y]));
+                            popup.addTo(map);
+                        }
+                    },
+                    callback: {getFillColor: updateLayerOptions},
+
+                });
+                map.addLayer(deckglLayer);
+
+            }
+
+        }
+    }
+
+    //调整请求回来得数据格式以支持图层绘制
+    function dataSetAdjust(result) {
+        return result.result.features.features.map(function (item) {
+            if (item.geometry.type !== "Polygon") {
+                item.geometry.coordinates[0] = item.geometry.coordinates[0][0];
+                item.geometry.type = 'Polygon';
+
+            }
+            return item;
+        });
+    }
+
+
+    //配置颜色的算法
+    function updateLayerOptions(feature) {
+        // rgba(0, 255, 255, 1), rgba(255, 0, 255, 0.6) 50%,rgba(68, 0,68, 0.3)
+        var proportion = 1, r, g, b, a;
+        if (Number(feature.properties.CNSTRCT_YR) > currentYear) {
+            feature.properties.isShow = false;
+            return [0, 0, 0, 0];
+        }
+        feature.properties.isShow = true;
+        if (Number(feature.properties.CNSTRCT_YR) <= (currentYear - 50)) {
+            return [68, 0, 68, 80];
+        }
+
+        var centerYear = currentYear - 25;
+        var endYear = currentYear - 50;
+
+        if (Number(feature.properties.CNSTRCT_YR) >= centerYear) {
+            if (currentYear !== endYear) {
+                proportion = 1 - ((Number(feature.properties.CNSTRCT_YR) - centerYear) / (currentYear - centerYear));
+            }
+
+            r = proportion * 255;
+            g = 255 - proportion * 255;
+            b = 255;
+            a = 127.5 + (1 - proportion) * 127.5;
+
+            return [r, g, b, a];
+        } else {
+            if (currentYear !== endYear) {
+                proportion = 1 - ((Number(feature.properties.CNSTRCT_YR) - endYear) / (centerYear - endYear));
+            }
+
+            r = 255 - proportion * (255 - 68);
+            g = 0;
+            b = 255 - proportion * (255 - 68);
+            a = 80 + (1 - proportion) * 127.5;
+
+            return [r, g, b, a];
+        }
+
+    }
+
+    //更新图层
+    function updateLayer(features) {
+        if (isNewRequest && responseCounts === 1) {
+            deckglLayer.setData(features);
+//            Animation();
+        } else {
+            deckglLayer.addData(features);
+        }
+
+        //当新的请求全部返回完成后，重置请求状态
+        if (isNewRequest && responseCounts === 5) {
+            isNewRequest = false;
+            responseCounts = 0;
+        }
+
+    }
+
+</script>
+</body>
+</html>

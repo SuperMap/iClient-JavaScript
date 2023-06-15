@@ -19,6 +19,9 @@
     "fetch-jsonp": "1.1.3",
     "promise-polyfill": "8.2.3",
     "lodash.topairs": "4.3.0",
+    "mapv": "2.0.62",
+    "flatgeobuf": "3.23.1",
+    "rbush": "^2.0.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   }
 }

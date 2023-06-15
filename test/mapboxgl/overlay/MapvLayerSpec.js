@@ -19,7 +19,7 @@ describe('mapboxgl_MapVLayer', () => {
         draw: 'intensity',
         layerID: "mapv"
     };
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -50,7 +50,9 @@ describe('mapboxgl_MapVLayer', () => {
             center: [112, 37.94],
             zoom: 3
         });
-
+        map.on('load', function() {
+          done();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -189,7 +191,7 @@ describe('mapboxgl_MapVLayer', () => {
 
     it('setZIndex', () => {
         mapvLayer.setZIndex(2);
-        expect(mapvLayer.canvas.style.zIndex).toEqual('2');
+        expect(mapvLayer.renderer.canvas.style.zIndex).toEqual('2');
     });
 
 });

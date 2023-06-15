@@ -1,0 +1,225 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_mb_deckglLayer_sftrees"></title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #title {
+            position: absolute;
+            color: white;
+            left: 40%;
+            top: 30px;
+            text-align: center;
+            width: 500px;
+            z-index: 2;
+        }
+
+        #title > h3 {
+            margin: 10px 0;
+            letter-spacing: 0.1em;
+        }
+
+        #title > h6 {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .whiteBackground {
+            background-color: rgba(225, 225, 225, 0.1);
+            border-top: 1px dotted;
+            border-image: linear-gradient(to right, rgba(114, 159, 207, 1), rgba(104, 104, 104, 1) 200px, rgba(104, 104, 104, 0) 75%) 30;
+        }
+
+        .legendContainer {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            color: white;
+            padding: 10px 10px 0px 10px;
+            z-index: 1000;
+        }
+
+        .legendHead {
+            align-self: flex-end;
+        }
+
+        .legendBody {
+            padding-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="title">
+    <h3 data-i18n="resources.title_mb_deckglLayer_sftrees"></h3>
+    <h6 data-i18n="resources.text_mb_deckglLayer_sftrees"></h6>
+</div>
+<div class="legendContainer whiteBackground">
+    <div class="legendHead _flex">
+        <div>Point</div>
+        <div>Hexbin color</div>
+        <div>by Point Count</div>
+    </div>
+    <div class="legendBody _flex">
+        <svg width="120" height="200">
+            <g transform="translate(0, 0)">
+                <rect width="30" height="20" style="fill: rgb(43, 30, 61);"></rect>
+                <text x="38" y="14" fill="white">[ 1.0, 5.1 ]</text>
+            </g>
+            <g transform="translate(0, 24)">
+                <rect width="30" height="20" style="fill: rgb(56, 60, 101);"></rect>
+                <text x="38" y="14" fill="white">( 5.1, 9.3 ]</text>
+            </g>
+            <g transform="translate(0, 48)">
+                <rect width="30" height="20" style="fill: rgb(62, 95, 126);"></rect>
+                <text x="38" y="14" fill="white">( 9.3, 13.4 ]</text>
+            </g>
+            <g transform="translate(0, 72)">
+                <rect width="30" height="20" style="fill: rgb(73, 131, 138);"></rect>
+                <text x="38" y="14" fill="white">( 13.4 , 17.6 ]</text>
+            </g>
+            <g transform="translate(0, 96)">
+                <rect width="30" height="20" style="fill: rgb(94, 162, 141);"></rect>
+                <text x="38" y="14" fill="white">( 17.6, 21.6 ]</text>
+            </g>
+            <g transform="translate(0, 120)">
+                <rect width="30" height="20" style="fill: rgb(130, 187, 146);"></rect>
+                <text x="38" y="14" fill="white">( 21.6, 25.8 ]</text>
+            </g>
+            <g transform="translate(0, 144)">
+                <rect width="30" height="20" style="fill: rgb(174, 206, 161);"></rect>
+                <text x="38" y="14" fill="white">( 25.8, 29.9 ]</text>
+            </g>
+            <g transform="translate(0, 168)">
+                <rect width="30" height="20" style="fill: rgb(214, 222, 191);"></rect>
+                <text x="38" y="14" fill="white">( 29.9, 34.0 ]</text>
+            </g>
+        </svg>
+    </div>
+
+</div>
+<div id="map"></div>
+<script type="text/javascript" include="papaparse,bootstrap,widgets" src="../js/include-web.js"></script>
+<script type="text/javascript" include="deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript">
+
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
+        url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var map, popup;
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
+
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [-122.430844, 37.772276],
+        zoom: 12,
+        pitch: 60,
+        bearing: 36
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+    widgets.loader.showLoader("data loading...");
+
+    $.get('../data/deck.gl/strees_data.csv', function (csvstr) {
+        widgets.loader.removeLoader();
+        var features = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
+        addLayer(features.data);
+    });
+
+
+    function addLayer(features) {
+        var deckglLayer = new maplibregl.supermap.DeckglLayer("hexagon-layer", {
+            data: features,
+            props: {
+                extruded: true,
+                radius: 55,
+                autoHighlight: true,
+                upperPercentile: 99,
+                coverage: 0.8,
+                elevationScale: 400,
+                colorRange: [[43, 30, 61, 255], [56, 60, 101, 255], [62, 95, 126, 255], [73, 131, 138, 255], [94, 162, 141, 255], [130, 187, 146, 255], [174, 206, 161, 255], [214, 222, 191, 255]],
+                opacity: 0.8,
+                // lightSettings 光照配置参数，配置三维光照效果，
+                lightSettings: {
+                    lightsPosition: [-122.5, 37.7, 3000, -122.2, 37.9, 3000], // 指定为`[x，y，z]`的光在平面阵列中的位置
+                    ambientRatio: 0.2,   //光照的环境比例
+                    diffuseRatio: 0.5,  //光的漫反射率
+                    specularRatio: 0.3, //光的镜面反射率
+                    lightsStrength: [1.0, 0.0, 2.0, 0.0], //平面阵列中指定为“[x，y]`的灯的强度。 长度应该是`2 x numberOfLights`
+                    numberOfLights: 4 //光照值
+                },
+                //如需了解其他配置详情，请查看 DeckglLayer api
+                onHover: function (feature) {
+                    if (!popup) {
+                        popup = new maplibregl.Popup({
+                            anchor: 'bottom',
+                            closeButton: false,
+                            offset: {
+                                'bottom': [0, -10],
+                            }
+                        });
+                    }
+                    if (!feature.object) {
+                        popup.remove();
+                        return;
+                    }
+                    //+" "+feature.lngLat
+                    popup.setHTML("Point Count： " + feature.object.points.length);
+                    popup.setLngLat(map.unproject([feature.x, feature.y]));
+                    popup.addTo(map);
+                }
+            },
+            callback: {
+                getPosition: function (feature) {
+                    if (!feature.latitude || !feature.longitude) {
+                        return [0, 0]
+                    }
+                    return [Number(feature.longitude), Number(feature.latitude)]
+                }
+            }
+        });
+        map.addLayer(deckglLayer);
+    }
+
+</script>
+</body>
+</html>

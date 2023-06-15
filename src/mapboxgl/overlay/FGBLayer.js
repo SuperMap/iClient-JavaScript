@@ -8,11 +8,10 @@
  * Apache Licene 2.0
  * thanks dereklieu, cloudybay
  */
+import '../core/Base';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import RBush from 'rbush';
 import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
+import { FGBLayerRenderer } from '@supermap/iclient-common/overlay/fgb/FGBLayerRenderer';
 
 /**
  * @class FGBLayer
@@ -29,21 +28,6 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * @param {Object} [options.sourceOptions] - 参数内容详见: {@link mapboxgl.source}
  * @usage
  */
-
-const GEOMETRY_TYPE_MAP = {
-  1: 'circle',
-  2: 'line',
-  3: 'fill',
-  5: 'line',
-  4: 'circle',
-  6: 'fill',
-  'MultiPolygon': 'fill',
-  'Point': 'circle',
-  'MultiLineString': 'line',
-  'MultiPoint': 'circle',
-  'LineString': 'line',
-  'Polygon': 'fill'
-};
 
 const PAINT_MAP = {
   circle: {
@@ -81,15 +65,20 @@ export class FGBLayer {
     this.url = options.url;
     this.layerType = '';
     this.extent = options.extent;
+    this.overlay = true;
+    this.type='custom';
+    this.renderingMode = '3d';
     this._updateFeaturesFn = this._updateFeatures.bind(this);
   }
 
+  /**
+   * @function DeckglLayer.prototype.onAdd
+   * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
+   */
   onAdd(map) {
     this.map = map;
     let extent = [];
     if (this.strategy === 'bbox') {
-      this.loadedExtentsRtree_ = new RBush();
-      this.map.on('moveend', this._updateFeaturesFn);
       const bounds = this.map.getBounds().toArray();
       extent = [
         bounds[0][0],
@@ -97,6 +86,7 @@ export class FGBLayer {
         bounds[1][0],
         bounds[1][1]
       ];
+      this.map.on('moveend', this._updateFeaturesFn);
     }
 
     if (this.extent) {
@@ -107,25 +97,39 @@ export class FGBLayer {
         extent = this.extent;
       }
     }
+    this.renderer = new FGBLayerRenderer(this.options); 
     this._handleFeatures(extent);
   }
-
+  /**
+   * @function DeckglLayer.prototype.onRemove
+   */
+  onRemove() {
+    this.map.off('moveend', this._updateFeaturesFn);
+  }
+/**
+   * @function DeckglLayer.prototype.moveLayer
+   */
   moveLayer(beforeId) {
     this.map.moveLayer(this.layerId, beforeId);
   }
-
-  removeLayer() {
-    this.map.removeLayer(this.layerId);
+  /**
+    * @function FGBLayer.prototype.render
+  */
+  render() {
+    
   }
-
+  /**
+    * @function FGBLayer.prototype.setVisibility
+    * @description 设置图层的显隐
+  */
   setVisibility(visibility) {
     const visible = visibility ? 'visible': 'none';
     this.map.setLayoutProperty(this.layerId, 'visibility', visible);
   }
 
   async _handleFeatures(bounds) {
-    let iter = await this._loadData(bounds);
-    const features = await this.iterateFeatures(iter);
+    let iter = await this.renderer._loadData(bounds);
+    const features = await this.renderer.iterateFeatures(iter);
     if (!this.map.getSource(this.sourceId)) {
       this.map.addSource(this.sourceId, {
         type: 'geojson',
@@ -135,6 +139,7 @@ export class FGBLayer {
       this.map.getSource(this.sourceId).setData(features);
     }
     if (!this.map.getLayer(this.layerId)) {
+      this.layerType = this.renderer.layerType;
       const layer = Object.assign({
         id: this.layerId,
         type: this.layerType,
@@ -149,88 +154,13 @@ export class FGBLayer {
   async _updateFeatures() {
     const bounds = this.map.getBounds().toArray();
     const extentToLoad = [bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1]];
-    const alreadyLoaded = this._forEachInExtent(extentToLoad, (object) => {
-      return this._containsExtent(object.extent, extentToLoad);
+    const alreadyLoaded = this.renderer._forEachInExtent(extentToLoad, (object) => {
+      return this.renderer._containsExtent(object.extent, extentToLoad);
     });
     if (!alreadyLoaded) {
-      let iter = await this._loadData(extentToLoad);
-      const features = await this.iterateFeatures(iter);
+      let iter = await this.renderer._loadData(extentToLoad);
+      const features = await this.renderer.iterateFeatures(iter);
       this.map.getSource(this.sourceId).setData(features);
     }
-  }
-
-  async iterateFeatures(iterator) {
-    const features = {
-      type: 'FeatureCollection',
-      features: []
-    };
-    for await (let feature of iterator) {
-      if (this.options.featureLoader && typeof this.options.featureLoader === 'function') {
-        feature = this.options.featureLoader(feature);
-      }
-      if (!this.layerType) {
-        this.layerType = GEOMETRY_TYPE_MAP[feature.geometry.type]
-      }
-      features.features.push(feature);
-    }
-    return features;
-  }
-
-  async _loadData(bounds) {
-    let fgbStream;
-    let rect = {
-      minX: bounds[0],
-      minY: bounds[1],
-      maxX: bounds[2],
-      maxY: bounds[3]
-    };
-    if (!bounds.length) {
-      fgbStream = await this._getStream(this.url);
-    } else {
-      rect.value = { extent: bounds.slice() };
-      this.loadedExtentsRtree_.insert(rect);
-    }
-   
-    return await deserialize((fgbStream && fgbStream.body) || this.url, rect, (headerMeta) => {
-      this.layerType = GEOMETRY_TYPE_MAP[headerMeta.geometryType];
-    });
-  }
-
-  async _getStream(url) {
-    return await FetchRequest.get(url, {}, { withoutFormatSuffix: true }).then(function (response) {
-      return response;
-    });
-  }
-
-  _containsExtent(extent1, extent2) {
-    return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] && extent1[1] <= extent2[1] && extent2[3] <= extent1[3];
-  }
-
-  _getInExtent(extent) {
-    const bbox = {
-      minX: extent[0],
-      minY: extent[1],
-      maxX: extent[2],
-      maxY: extent[3]
-    };
-    const items = this.loadedExtentsRtree_.search(bbox);
-    return items.map(function (item) {
-      return item.value;
-    });
-  }
-
-  _forEachInExtent(extent, callback) {
-    return this._forEach(this._getInExtent(extent), callback);
-  }
-
-  _forEach(values, callback) {
-    let result;
-    for (let i = 0, l = values.length; i < l; i++) {
-      result = callback(values[i]);
-      if (result) {
-        return result;
-      }
-    }
-    return result;
   }
 }

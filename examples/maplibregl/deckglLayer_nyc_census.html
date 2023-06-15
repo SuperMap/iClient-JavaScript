@@ -1,0 +1,233 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+    <title data-i18n="resources.title_mb_deckglLayer_nyc_census"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      #title {
+        position: absolute;
+        color: white;
+        left: 40%;
+        top: 30px;
+        text-align: center;
+        width: 500px;
+        z-index: 2;
+      }
+
+      #title > h3 {
+        margin: 10px 0;
+        letter-spacing: 0.1em;
+      }
+
+      #title > h6 {
+        margin: 0;
+        font-weight: normal;
+      }
+
+      .whiteBackground {
+        background-color: rgba(225, 225, 225, 0.1);
+        border-top: 1px dotted;
+        border-image: linear-gradient(
+            to right,
+            rgba(114, 159, 207, 1),
+            rgba(104, 104, 104, 1) 200px,
+            rgba(104, 104, 104, 0) 75%
+          )
+          30;
+      }
+
+      .legendContainer {
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        color: white;
+        padding: 10px 10px 0 10px;
+        z-index: 1000;
+      }
+
+      .legendHead {
+        align-self: flex-end;
+      }
+
+      .legendBody {
+        padding-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title">
+      <h3 data-i18n="resources.title_mb_deckglLayer_nyc_census"></h3>
+      <h6 data-i18n="resources.text_mb_deckglLayer_nyc_census"></h6>
+    </div>
+    <div class="legendContainer whiteBackground">
+      <div class="legendHead _flex">
+        <div>NYC 2010 Census Tracts</div>
+        <div>Polygon color</div>
+        <div>by Population</div>
+      </div>
+      <div class="legendBody _flex">
+        <svg width="180" height="200">
+          <g transform="translate(0, 0)">
+            <rect width="30" height="20" style="fill: rgb(25, 66, 102);"></rect>
+            <text x="38" y="14" fill="white">[ 0, 1670.5 ]</text>
+          </g>
+          <g transform="translate(0, 24)">
+            <rect width="30" height="20" style="fill: rgb(53, 92, 125);"></rect>
+            <text x="38" y="14" fill="white">( 1670.5, 2259.0]</text>
+          </g>
+          <g transform="translate(0, 48)">
+            <rect width="30" height="20" style="fill: rgb(99, 97, 127);"></rect>
+            <text x="38" y="14" fill="white">( 2259.0, 2862.88]</text>
+          </g>
+          <g transform="translate(0, 72)">
+            <rect width="30" height="20" style="fill: rgb(145, 102, 129);"></rect>
+            <text x="38" y="14" fill="white">( 2862.88, 3426.50]</text>
+          </g>
+          <g transform="translate(0, 96)">
+            <rect width="30" height="20" style="fill: rgb(192, 108, 132);"></rect>
+            <text x="38" y="14" fill="white">( 3426.50, 4013.25 ]</text>
+          </g>
+          <g transform="translate(0, 120)">
+            <rect width="30" height="20" style="fill: rgb(210, 131, 137);"></rect>
+            <text x="38" y="14" fill="white">( 4013.25, 4814.00 ]</text>
+          </g>
+          <g transform="translate(0, 144)">
+            <rect width="30" height="20" style="fill: rgb(229, 154, 143);"></rect>
+            <text x="38" y="14" fill="white">( 4814.00, 6204.25 ]</text>
+          </g>
+          <g transform="translate(0, 168)">
+            <rect width="30" height="20" style="fill: rgb(248, 177, 149);"></rect>
+            <text x="38" y="14" fill="white">( 6204.25, 26588.00 ]</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div id="map"></div>
+    <script
+      type="text/javascript"
+      include="jquery,bootstrap,papaparse,dat-gui,widgets"
+      src="../js/include-web.js"
+    ></script>
+    <script type="text/javascript" include="deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
+        url = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+      var map, deckglLayer;
+
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
+      map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [-73.83429, 40.725818],
+        zoom: 11.5,
+        pitch: 60,
+        bearing: -100
+      });
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+      widgets.loader.showLoader('data loading...');
+
+      $.get('../data/deck.gl/nyc_census_data.json', function(features) {
+        widgets.loader.removeLoader();
+        addLayer(features.features);
+      });
+
+      function addLayer(features) {
+        deckglLayer = new maplibregl.supermap.DeckglLayer('polygon-layer', {
+          data: features,
+          props: {
+            stroked: false,
+            extruded: true,
+            filled: true,
+            opacity: 0.7,
+            autoHighlight: true,
+            highlightColor: [255, 255, 0, 255],
+            lightSettings: {
+              lightsPosition: [-73, 40, 5000, -74, 41, 5000],
+              ambientRatio: 0.2,
+              diffuseRatio: 0.5,
+              specularRatio: 0.3,
+              lightsStrength: [1.0, 0.0, 2.0, 0.0],
+              numberOfLights: 2
+            }
+          },
+          callback: {
+            getPolygon: function(feature) {
+              if (!feature.geometry || !feature.geometry.coordinates) {
+                return [0, 0];
+              }
+              return feature.geometry.coordinates;
+            },
+            getElevation: function(d) {
+              return d.properties.Population / 8;
+            },
+            getFillColor: function(feature) {
+              if (feature.properties.Population >= 0 && feature.properties.Population < 1670.5) {
+                return [25, 66, 102];
+              } else if (feature.properties.Population >= 1670.5 && feature.properties.Population < 2259.0) {
+                return [53, 92, 125];
+              } else if (feature.properties.Population >= 2259.0 && feature.properties.Population < 2862.88) {
+                return [99, 97, 127];
+              } else if (feature.properties.Population >= 2862.88 && feature.properties.Population < 3426.5) {
+                return [145, 102, 129];
+              } else if (feature.properties.Population >= 3426.5 && feature.properties.Population < 4013.25) {
+                return [192, 108, 132];
+              } else if (feature.properties.Population >= 4013.25 && feature.properties.Population < 4814.0) {
+                return [210, 131, 137];
+              } else if (feature.properties.Population >= 4814.0 && feature.properties.Population < 6204.25) {
+                return [229, 154, 143];
+              } else if (feature.properties.Population >= 6204.25) {
+                return [248, 177, 149];
+              }
+
+              return [0, 0, 0, 0];
+            }
+          }
+        });
+        map.addLayer(deckglLayer);
+      }
+    </script>
+  </body>
+</html>

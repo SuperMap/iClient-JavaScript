@@ -15,6 +15,9 @@ export var MapExtend = (function () {
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
       if (layer.source || layer.type === 'custom' || layer.type === 'background') {
         this.addLayerBak(layer, before);
+        if (layer.overlay && !this.overlayLayersManager[layer.id]) {
+          this.overlayLayersManager[layer.id] = layer;
+        }
         return this;
       }
       if (this.overlayLayersManager[layer.id] || this.style._layers[layer.id]) {
@@ -52,9 +55,7 @@ export var MapExtend = (function () {
 
   mapboxgl.Map.prototype.removeLayer = function (id) {
     if (this.overlayLayersManager[id]) {
-      removeLayer(this.overlayLayersManager[id]);
       delete this.overlayLayersManager[id];
-      return this;
     }
     this.style.removeLayer(id);
     this._update(true);
@@ -118,14 +119,6 @@ export var MapExtend = (function () {
 
   function addLayer(layer, map) {
     layer.onAdd && layer.onAdd(map);
-  }
-
-  /**
-   * @function MapExtend.prototype.removeFromMap
-   * @description  移除事件。
-   */
-  function removeLayer(layer) {
-    layer.removeFromMap && layer.removeFromMap();
   }
 
   /**

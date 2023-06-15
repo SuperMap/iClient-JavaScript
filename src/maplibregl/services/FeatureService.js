@@ -104,13 +104,13 @@ export class FeatureService extends ServiceBase {
         if (!params || !params.dataSourceName || !params.dataSetName) {
             return;
         }
-        var me = this,
+        let me = this,
             url = me.url,
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 
         url = CommonUtil.urlPathAppend(url, 'datasources/' + dataSourceName + '/datasets/' + dataSetName);
-        var editFeatureService = new EditFeaturesService(url, {
+        let editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
@@ -134,7 +134,7 @@ export class FeatureService extends ServiceBase {
         if (!params) {
             return {};
         }
-        var me = this;
+        let me = this;
         params.returnContent = params.returnContent == null ? true : params.returnContent;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.toIndex === 0 ? 0 : params.toIndex ? params.toIndex : -1;
@@ -161,7 +161,7 @@ export class FeatureService extends ServiceBase {
         }
         //editFeature服务参数转换,传入单独得对象或对象数组
         if (params.features) {
-            var features = [];
+            let features = [];
             if (Util.isArray(params.features)) {
                 params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
@@ -175,13 +175,13 @@ export class FeatureService extends ServiceBase {
         return params;
     }
 
-    //geoFeature严格按照 maplibregl geojson的结构
+    //geoFeature严格按照 MapLibreGL geojson的结构
     _createServerFeature(geoFeature) {
-        var feature = {},
+        let feature = {},
             fieldNames = [],
             fieldValues = [];
-        var properties = geoFeature.properties;
-        for (var key in properties) {
+        let properties = geoFeature.properties;
+        for (let key in properties) {
             fieldNames.push(key);
             fieldValues.push(properties[key]);
         }

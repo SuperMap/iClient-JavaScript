@@ -86,6 +86,7 @@ var typeLinks = {
     //maplibregl
     "maplibregl.Map": mlbglapi + '#map',
     "maplibregl.Evented": mlbglapi + '#Evented',
+    "maplibregl.LngLatBounds": mlbglapi + '#lnglatbounds',
 
     //mapv
     "Mapv.DataSet": mapv + 'data/DataSet.md',

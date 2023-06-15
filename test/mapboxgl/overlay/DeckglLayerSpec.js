@@ -8,7 +8,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2Z
 describe('mapboxgl_DeckglLayer', () => {
     var originalTimeout;
     var testDiv, map, deckglLayer, features;
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -37,7 +37,9 @@ describe('mapboxgl_DeckglLayer', () => {
             fieldValues: [],
             geometry: line
         };
-
+        map.on('load', function() {
+          done();
+        })
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -202,11 +204,6 @@ describe('mapboxgl_DeckglLayer', () => {
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data).toEqual(data);
             expect(deckglLayer.data.length).toEqual(2);
-        }, 0)
-        setTimeout(() => {
-            deckglLayer.removeFromMap()
-            expect(deckglLayer.deckGL).not.toBeNull();
-            expect(deckglLayer.data.length).toEqual(0);
             done();
         }, 0)
 

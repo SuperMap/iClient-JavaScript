@@ -138,7 +138,7 @@
                 threeLayer.on('render', function () {
                     threeLayer.light.position.copy(threeLayer.renderer.camera.position);
                 });
-                threeLayer.addTo(map);
+                map.addLayer(threeLayer);
             }
 
             function loadOverlays() {

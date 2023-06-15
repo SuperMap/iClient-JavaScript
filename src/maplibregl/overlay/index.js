@@ -3,3 +3,11 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 export { GraphMap } from './GraphMap';
+export { MapvLayer } from './MapvLayer';
+export { ThreeLayer } from './ThreeLayer';
+export { DeckglLayer } from './DeckglLayer';
+export { HeatMapLayer } from './HeatMapLayer';
+export { GraphicLayer } from './GraphicLayer';
+export { GraticuleLayer } from './GraticuleLayer';
+export { FGBLayer } from './FGBLayer';
+export * from './graphic';

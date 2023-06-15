@@ -3,7 +3,7 @@
  * maplibregl 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
 var identification = {
-  name: 'MaplibreGL'
+  name: 'MapLibreGL'
 };
 
 var exampleConfig = {
@@ -399,6 +399,24 @@ var exampleConfig = {
     name: '可视化',
     name_en: 'Visualization',
     content: {
+      heat: {
+        name: '热力图',
+        name_en: 'Heat map',
+        content: [
+          {
+            name: '随机点',
+            name_en: 'random points',
+            thumbnail: 'mb_heatMapLayer.png',
+            fileName: 'heatmaplayer_mbgl'
+          },
+          {
+            name: '随机点 (Classic)',
+            name_en: 'random points (Classic)',
+            thumbnail: 'mb_heatMapLayer.png',
+            fileName: 'heatMapLayer'
+          }
+        ]
+      },
       VectorTileLayer: {
         name: '矢量瓦片',
         name_en: 'Vector tile',
@@ -483,6 +501,18 @@ var exampleConfig = {
             name_en: 'Marker cluster',
             thumbnail: 'markerCluster_3857.png',
             fileName: 'markerCluster_3857'
+          }
+        ]
+      },
+      graphicLayer: {
+        name: '高效率点图层',
+        name_en: 'High efficiency point layer',
+        content: [
+          {
+            name: '纽约出租车145万上车点',
+            name_en: 'points of 1.45 million NYC taxis',
+            thumbnail: 'mb_graphicLayer.png',
+            fileName: 'graphicLayer'
           }
         ]
       },
@@ -603,56 +633,262 @@ var exampleConfig = {
             name_en: 'Car Animation',
             thumbnail: 'mb_echartsAnimatorCar.png',
             fileName: 'echartsAnimatorCar'
+          }]
+      },
+      DeckGL: {
+        name: 'DeckGL',
+        name_en: 'DeckGL',
+        content: [
+          {
+            name: '路径图',
+            name_en: 'path',
+            thumbnail: 'mb_deckglLayer_pathLayer.png',
+            fileName: 'deckglLayer_pathLayer'
+          },
+          {
+            name: '曲线',
+            name_en: 'arcLine',
+            thumbnail: 'mb_deckglLayer_arcLayer.png',
+            fileName: 'deckglLayer_arcLayer'
+          },
+          {
+            name: '多边形(建筑物)',
+            name_en: 'polygon',
+            thumbnail: 'mb_deckglLayer_polygonLayer.png',
+            fileName: 'deckglLayer_polygonLayer'
+          },
+          {
+            name: '蜂巢图',
+            name_en: 'honeycomb',
+            thumbnail: 'mb_deckglLayer_hexagonLayer.png',
+            fileName: 'deckglLayer_hexagonLayer'
+          },
+          {
+            name: '纽约城市建筑变化图',
+            name_en: 'New York Construction',
+            localIgnore: true,
+            thumbnail: 'mb_deckgl_nyBuilding.png',
+            fileName: 'deckglLayer_nyBuilding'
+          },
+          {
+            name: '加州地震分布图',
+            name_en: 'California Earthquakes',
+            thumbnail: 'mb_deckglLayer_scatterPlot.png',
+            fileName: 'deckglLayer_scatterPlot'
+          },
+          {
+            name: '纽约城市人口分布图',
+            name_en: 'New york city population',
+            thumbnail: 'mb_deckglLayer_nyc_census.png',
+            fileName: 'deckglLayer_nyc_census'
+          },
+          {
+            name: '旧金山等高线图',
+            name_en: 'San Francisco Elevation Contour',
+            localIgnore: true,
+            thumbnail: 'mb_deckglLayer_sfcontour.png',
+            fileName: 'deckglLayer_sfcontour'
+          },
+          {
+            name: '旧金山街道树分布密度图',
+            name_en: 'San Francisco Street Tree Map',
+            thumbnail: 'mb_deckglLayer_sftrees.png',
+            fileName: 'deckglLayer_sftrees'
+          },
+          {
+            name: '英国通勤图',
+            name_en: 'Commute Patterns in the UK',
+            localIgnore: true,
+            thumbnail: 'mb_deckglLayer_ukcommute.png',
+            fileName: 'deckglLayer_ukcommute'
+          }
+        ]
+      },
+      MapV: {
+        name: 'MapV',
+        name_en: 'MapV',
+        content: [
+          {
+            name: '蜂巢图',
+            name_en: 'honeycomb',
+            thumbnail: 'mb_mapVLayer_honeycomb.png',
+            fileName: 'mapvLayerHoneycomb'
+          },
+          {
+            name: '纽约出租车上车点',
+            name_en: 'NY taxi car point',
+            thumbnail: 'mb_mapVLayer_point.png',
+            fileName: 'mapvNyTaxi'
+          },
+          {
+            name: '通勤图',
+            name_en: 'OD',
+            thumbnail: 'mapvCsvcar.png',
+            fileName: 'mapvCsvcar'
+          },
+          {
+            name: '强边界图',
+            name_en: 'force edge bundling',
+            thumbnail: 'mapvForceEdgeBuilding.gif',
+            fileName: 'mapvForceEdgeBuilding'
+          },
+          {
+            name: '强度线',
+            name_en: 'line density',
+            thumbnail: 'mapvPolylineIntensity.png',
+            fileName: 'mapvPolylineIntensity'
+          },
+          {
+            name: '简单线',
+            name_en: 'simple line',
+            thumbnail: 'mapvPolylineSimple.png',
+            fileName: 'mapvPolylineSimple'
+          },
+          {
+            name: '动态轨迹',
+            name_en: 'dynamic trajectory',
+            thumbnail: 'mapvPolylineTime.gif',
+            fileName: 'mapvPolylineTime'
+          },
+          {
+            name: '迁徙时序图',
+            name_en: 'Migration timing',
+            thumbnail: 'mapvQianxiTime.gif',
+            fileName: 'mapvQianxiTime'
+          },
+          {
+            name: '迁徙图',
+            name_en: 'migration',
+            thumbnail: 'mapvQianxi.gif',
+            fileName: 'mapvQianxi'
+          },
+          {
+            name: '面',
+            name_en: 'simple polygon',
+            thumbnail: 'mb_mapvLayer_polygon.png',
+            fileName: 'mapvLayerPolyon'
+          },
+          {
+            name: '北京村庄分布图',
+            name_en: 'village of beijing',
+            thumbnail: 'mapvBeijingVillage.png',
+            fileName: 'mapvBeijingVillage'
+          },
+          {
+            name: '2018年2月北京房价',
+            name_en: 'Beijing house prices(2018.2)',
+            localIgnore: true,
+            thumbnail: 'mb_mapvLianjia.png',
+            fileName: 'mapvLinanJiaData'
+          }
+        ]
+      },
+      threejs: {
+        name: 'threejs',
+        name_en: 'threejs',
+        content: [
+          {
+            name: '建筑模型',
+            name_en: 'buildings',
+            thumbnail: 'mb_threejs_buildings.png',
+            fileName: 'threejsLayer_buildings'
+          },
+          {
+            name: '设施点(mtl+obj格式)',
+            name_en: 'facility(mtl+obj)',
+            thumbnail: 'mb_threejs_facility.png',
+            fileName: 'threejsLayer_facility'
+          },
+          {
+            name: '飞机模型(gltf格式)',
+            name_en: 'airplane(gltf)',
+            thumbnail: 'mb_threejs_airplane.png',
+            fileName: 'threejsLayer_airplane'
+          },
+          {
+            name: '飞鸟模型',
+            name_en: 'bird',
+            thumbnail: 'mb_threejs_bird.png',
+            fileName: 'threejsLayer_bird'
+          }
+        ]
+      }, Graticule: {
+        name: '经纬网',
+        name_en: 'Graticule',
+        content: [
+          {
+            name: '经纬网',
+            name_en: 'graticule',
+            thumbnail: 'graticule_3857.png',
+            fileName: 'graticuleLayer_3857'
+          }
+        ]
+      },
+      FlatGeoBuf: {
+        name: 'FlatGeoBuf',
+        name_en: 'FlatGeoBuf',
+        content: [
+          {
+            name: 'FGB 全量加载（2500万点数据量）',
+            name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+            thumbnail: 'fgb_all_load.png',
+            fileName: 'fgb_all_load'
+          },
+          {
+            name: 'FGB 按需加载（2500万点数据量）',
+            name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+            thumbnail: 'fgb_bbox_load.png',
+            fileName: 'fgb_bbox_load'
           }
         ]
       }
-    }
-  },
-  control: {
-    name: '控件',
-    name_en: 'Control',
-    content: {
-      BasicControl: {
-        name: '基础控件',
-        name_en: 'Basic Control',
-        content: [
-          {
-            name: '导航控件',
-            name_en: 'Navigation Control',
-            thumbnail: 'control_navigationControl.png',
-            fileName: 'control_navigationControl'
-          },
-          {
-            name: '比例尺控件',
-            name_en: 'Scale Control',
-            thumbnail: 'control_scaleControl.png',
-            fileName: 'control_scaleControl'
-          },
-          {
-            name: '全屏控件',
-            name_en: 'Fullscreen Control',
-            thumbnail: 'control_fullscreenControl.png',
-            fileName: 'control_fullscreenControl'
-          },
-          {
-            name: '定位控件',
-            name_en: 'Geolocate Control',
-            thumbnail: 'control_geolocateControl.png',
-            fileName: 'control_geolocateControl'
-          },
-          {
-            name: '版权控件',
-            name_en: 'Attribution Control',
-            thumbnail: 'control_attributionControl.png',
-            fileName: 'control_attributionControl'
-          },
-          {
-            name: '绘图控件',
-            name_en: 'Draw Control',
-            thumbnail: 'control_drawControl.png',
-            fileName: 'control_drawControl'
-          }
-        ]
+    },
+    control: {
+      name: '控件',
+      name_en: 'Control',
+      content: {
+        BasicControl: {
+          name: '基础控件',
+          name_en: 'Basic Control',
+          content: [
+            {
+              name: '导航控件',
+              name_en: 'Navigation Control',
+              thumbnail: 'control_navigationControl.png',
+              fileName: 'control_navigationControl'
+            },
+            {
+              name: '比例尺控件',
+              name_en: 'Scale Control',
+              thumbnail: 'control_scaleControl.png',
+              fileName: 'control_scaleControl'
+            },
+            {
+              name: '全屏控件',
+              name_en: 'Fullscreen Control',
+              thumbnail: 'control_fullscreenControl.png',
+              fileName: 'control_fullscreenControl'
+            },
+            {
+              name: '定位控件',
+              name_en: 'Geolocate Control',
+              thumbnail: 'control_geolocateControl.png',
+              fileName: 'control_geolocateControl'
+            },
+            {
+              name: '版权控件',
+              name_en: 'Attribution Control',
+              thumbnail: 'control_attributionControl.png',
+              fileName: 'control_attributionControl'
+            },
+            {
+              name: '绘图控件',
+              name_en: 'Draw Control',
+              thumbnail: 'control_drawControl.png',
+              fileName: 'control_drawControl'
+            }
+          ]
+        }
       }
     }
   }

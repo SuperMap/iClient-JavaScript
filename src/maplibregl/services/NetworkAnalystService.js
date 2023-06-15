@@ -161,7 +161,7 @@ export class NetworkAnalystService extends ServiceBase {
     }
 
     /**
-     * @description 所有 Point 考虑 maplibregl.lnglat、maplibregl.Point、[]三种形式。
+     * @description 所有 Point 考虑 MapLibreGL.lnglat、MapLibreGL.Point、[]三种形式。
      * @param {Object} params - 待转换参数。
      * @returns {Object}  
      * @private
