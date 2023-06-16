@@ -1,4 +1,4 @@
-# SuperMap iClient for MaplibreGL API
+# SuperMap iClient for MapLibreGL API
 
 SuperMap iClient for MaplibreGL 是一套基于 MaplibreGL v1 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
