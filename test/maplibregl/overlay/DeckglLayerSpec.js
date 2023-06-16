@@ -259,4 +259,10 @@ describe('maplibregl_DeckglLayer', () => {
         }, 0)
         
     });
+
+    it('onRemove', (done) => {
+        deckglLayer.onRemove();
+        expect(deckglLayer.data.length).toEqual(0);
+        done();
+    });
 });

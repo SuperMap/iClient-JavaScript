@@ -1,0 +1,2 @@
+var queryChartResult = {};
+var getChartFeatureInfo = {};

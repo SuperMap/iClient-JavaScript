@@ -9,6 +9,7 @@ import {VectorClipJobsParameter} from '../../../src/common/iServer/VectorClipJob
 import {OverlayGeoJobParameter} from '../../../src/common/iServer/OverlayGeoJobParameter';
 import {BuffersAnalystJobsParameter} from '../../../src/common/iServer/BuffersAnalystJobsParameter';
 import {TopologyValidatorJobsParameter} from '../../../src/common/iServer/TopologyValidatorJobsParameter';
+import {SummaryAttributesJobsParameter} from '../../../src/common/iServer/SummaryAttributesJobsParameter';
 import {OutputSetting} from '../../../src/common/iServer/OutputSetting';
 import {DatasourceConnectionInfo} from '../../../src/common/iServer/DatasourceConnectionInfo';
 import maplibregl from 'maplibre-gl';
@@ -1704,6 +1705,119 @@ describe('maplibregl_ProcessingService', () => {
             expect(topologyValidatorJobState.publisherelapsedTime).toEqual(3113);
             expect(topologyValidatorJobState.runState).toBe("FINISHED");
             topologyValidatorJobParameter.destroy();
+            done();
+        });
+    });
+
+    it('addSummaryAttributesJob, getSummaryAttributesJobState', (done) => {
+        var id = id_summaryAttributesJob;
+        spyOn(FetchRequest, 'post').and.callFake((testUrl) => {
+            if (testUrl === url + "/spatialanalyst/summaryattributes?token=" + token) {
+                var escapedJson = summaryAttributesJob_post;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'get').and.callFake((newResourceLocationURL) => {
+            if (newResourceLocationURL.indexOf(url + "/spatialanalyst/summaryattributes/" + id)===0) {
+                var escapedJson = summaryAttributesJob_get;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        var summaryAttributesJobParams = new SummaryAttributesJobsParameter({
+            datasetName: 'testDatasetName',
+            groupField: 'testField',
+            attributeField: 'testAttrField',
+            statisticModes: 'testType'
+        });
+        processingService.addSummaryAttributesJob(summaryAttributesJobParams, (result) => {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryAttributesJobsService");
+            expect(result.object.url).toBe(url + "/spatialanalyst/summaryattributes");
+            expect(result.result.id).toBe(id);
+            var state = result.result.state;
+            expect(state.elapsedTime).toEqual(17);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1538016529288);
+            expect(state.endTime).toEqual(1538016534477);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(4348);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result.setting;
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toBe(1);
+            // getSummaryAttributesJobState
+            var summaryAttributesJobState = processingService.getSummaryAttributesJobState(id);
+            expect(summaryAttributesJobState.elapsedTime).toEqual(17);
+            expect(summaryAttributesJobState.endState).toBeTruthy();
+            expect(summaryAttributesJobState.startTime).toEqual(1538016529288);
+            expect(summaryAttributesJobState.endTime).toEqual(1538016534477);
+            expect(summaryAttributesJobState.errorMsg).toBeNull();
+            expect(summaryAttributesJobState.errorStackTrace).toBeNull();
+            expect(summaryAttributesJobState.publisherelapsedTime).toEqual(4348);
+            expect(summaryAttributesJobState.runState).toBe("FINISHED");
+            summaryAttributesJobParams.destroy();
+            done();
+        });
+    });
+    it('getSummaryAttributesJob', (done) => {
+        var id = id_summaryAttributesJob;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            if (testUrl.indexOf( url + "/spatialanalyst/summaryattributes/" + id)===0) {
+                var escapedJson = summaryAttributesJob_get;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        processingService.getSummaryAttributesJob(id, (result) => {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryAttributesJobsService");
+            expect(result.object.url).toBe(url + "/spatialanalyst/summaryattributes");
+            expect(result.result.id).toBe(id);
+            var state = result.result.state;
+            expect(state.elapsedTime).toEqual(17);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1538016529288);
+            expect(state.endTime).toEqual(1538016534477);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(4348);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result.setting;
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toBe(1);
+            done();
+        });
+    });
+
+    it('getSummaryAttributesJobs_processCompleted', (done) => {
+        var id = id_summaryAttributesJob;
+        spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+            if (testUrl.indexOf(url + "/spatialanalyst/summaryattributes")===0) {
+                var escapedJson = "[" + summaryAttributesJob_get + "]";
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        processingService.getSummaryAttributesJobs((result) => {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.SummaryAttributesJobsService");
+            expect(result.object.url).toBe(url + "/spatialanalyst/summaryattributes");
+            expect(result.result[0].id).toBe(id);
+            var state = result.result[0].state;
+            expect(state.elapsedTime).toEqual(17);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1538016529288);
+            expect(state.endTime).toEqual(1538016534477);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(4348);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result[0].setting;
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\summaryAttributes.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toBe(1);
             done();
         });
     });

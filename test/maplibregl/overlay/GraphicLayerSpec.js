@@ -195,4 +195,35 @@ describe('maplibregl_GraphicLayer', () => {
       done();
     }, 0);
   });
+
+  it("addTo moveTo onRemove render", (done) => {
+    let graphics = [];
+    for (let i = 0; i < coors.length; i++) {
+      let lngLat = {
+        lng: parseFloat(coors[i][0]),
+        lat: parseFloat(coors[i][1])
+      };
+      graphics.push(new Graphic(lngLat));
+      graphics[i].setId(i);
+      graphics[i].setAttributes({ name: "graphic_" + i });
+    }
+    let graphicLayer1 = new GraphicLayer("graphicLayer1", {
+      graphics: graphics
+    });
+    let map = new maplibregl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      center: [13.413952, 52.531913],
+      zoom: 16.000000000000004,
+      pitch: 33.2
+    });
+    map.on('load', () => {
+      graphicLayer1.addTo(map);
+      graphicLayer1.render();
+      graphicLayer1.moveTo('test', true);
+      graphicLayer1.onRemove();
+      expect(graphicLayer1.renderer.graphics.length).toEqual(0);
+      done();
+    });
+  });
 });

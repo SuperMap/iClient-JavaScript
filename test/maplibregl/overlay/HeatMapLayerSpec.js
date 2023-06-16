@@ -1,4 +1,6 @@
 import { HeatMapLayer } from '../../../src/maplibregl/overlay/HeatMapLayer';
+import {Bounds} from '../../../src/common/commontypes/Bounds';
+import {LonLat} from '../../../src/common/commontypes/LonLat';
 import maplibregl from 'maplibre-gl';
 import { truncate } from '@turf/turf';
 
@@ -269,5 +271,14 @@ describe('maplibregl_HeatMapLayer', () => {
             expect(heatLayer.renderer.rootCanvas.style.display).toBe('block');
             done();
         }, 0);
+    });
+    it('getPixelXY', () => {
+        let pixelXY = heatLayer.getPixelXY(new LonLat(109, 32));
+        expect(pixelXY).not.toBeNull();
+    });
+    it('updateHeatPoints', () => {
+        let bounds = new Bounds([-180, -90, 180, 90]);
+        heatLayer.updateHeatPoints(bounds);
+        expect(heatLayer.renderer.useRadius).toBe(45);
     });
 });

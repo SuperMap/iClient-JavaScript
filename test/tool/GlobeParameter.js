@@ -4,6 +4,7 @@
     mapTemperatureURL:"http://localhost:9876/iserver/services/map-temperature/rest/maps/",
     worldMapURL: "http://localhost:9876/iserver/services/map-world/rest/maps/世界地图",
     networkAnalystURL: "http://localhost:9876/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun",
+    networkAnalyst3DURL: "http://localhost:9876/iserver/services/networkAnalyst3D-Pipe3D/rest/facilityanalyst3d/Network@Pipe3D",
     spatialAnalystURL: "http://localhost:9876/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
     spatialAnalystURL_Changchun: "http://localhost:9876/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst",
     dataServiceURL: "http://localhost:9876/iserver/services/data-world/rest/data",
@@ -35,4 +36,5 @@
     distributedAnalysisURL:"http://localhost:9876/iserver/services/distributedanalyst/rest/v1/jobs",
     webPrintingURL: "http://localhost:9876/iserver/services/webprinting/rest/webprinting/v1",
     imageServiceURL: "http://localhost:9876/iserver/imageservice-imageserviceName/restjsr",
+    chartServiceURL: "http://localhost:9876/iserver/services/map-ChartW/rest/maps/海图",
     }

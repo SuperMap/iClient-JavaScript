@@ -192,7 +192,7 @@ export class ThreeLayer extends maplibregl.Evented {
    * @returns {(Array.<Array.<number>>)} 新的坐标数组。
    */
   removeDuplicatedCoordinates(coordinates) {
-    this.renderer.removeDuplicatedCoordinates(coordinates);
+    return this.renderer.removeDuplicatedCoordinates(coordinates);
   }
 
   /**

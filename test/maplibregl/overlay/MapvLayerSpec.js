@@ -1,8 +1,8 @@
+
 import {MapvLayer} from '../../../src/maplibregl/overlay/MapvLayer';
 import maplibregl from 'maplibre-gl';
 import {utilCityCenter, DataSet} from 'mapv';
-var url = 'https://iserver.supermap.io/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}'
-// var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
+var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 maplibregl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('maplibregl_MapVLayer', () => {
     var originalTimeout;
@@ -192,6 +192,19 @@ describe('maplibregl_MapVLayer', () => {
     it('setZIndex', () => {
         mapvLayer.setZIndex(2);
         expect(mapvLayer.renderer.canvas.style.zIndex).toEqual('2');
+    });
+
+    it('setVisibility', () => {
+        mapvLayer.setVisibility(true);
+        expect(mapvLayer.visibility).toBeTrue();
+        mapvLayer.setVisibility(false);
+        expect(mapvLayer.visibility).toBeFalse();
+    });
+    it('_pitchStart _pitchEnd', () => {
+        mapvLayer._pitchStart();
+        expect(mapvLayer.isPitching).toBeTrue();
+        mapvLayer._pitchEnd();
+        expect(mapvLayer.isPitching).toBeFalse();
     });
 
 });

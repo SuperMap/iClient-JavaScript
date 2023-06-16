@@ -6,7 +6,7 @@ var fgbUrl = 'base/resources/data/capitals_data20.fgb';
 describe('maplibregl_FGBLayer', () => {
   var originalTimeout;
   var testDiv, map;
-  beforeAll(() => {
+  beforeAll((done) => {
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
@@ -39,6 +39,9 @@ describe('maplibregl_FGBLayer', () => {
       center: [0, 0],
       zoom: 3
     });
+    map.on('load', function() {
+      done();
+    });
   });
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -55,24 +58,22 @@ describe('maplibregl_FGBLayer', () => {
   });
 
   it('load bbox', (done) => {
-    map.on('load', () => {
-      var count = 0;
-      var fgblayer = new FGBLayer({
-        url: fgbUrl,
-        featureLoader: function (feature) {
-          expect(['圣多美', '蒙罗维亚'].includes(feature.properties['CAPITAL'])).toBeTrue();
-          count++;
-          if (count === 2) {
-            done();
-          }
-          return feature;
+    var count = 0;
+    var fgblayer = new FGBLayer({
+      url: fgbUrl,
+      featureLoader: function (feature) {
+        expect(['圣多美', '蒙罗维亚'].includes(feature.properties['CAPITAL'])).toBeTrue();
+        count++;
+        if (count === 2) {
+          done();
         }
-      });
-      fgblayer.onAdd(map);
-      expect(fgblayer.strategy).toBe('bbox');
-      expect(fgblayer).not.toBeNull();
-      expect(fgblayer.url).toBe(fgbUrl);
-    })
+        return feature;
+      }
+    });
+    fgblayer.onAdd(map);
+    expect(fgblayer.strategy).toBe('bbox');
+    expect(fgblayer).not.toBeNull();
+    expect(fgblayer.url).toBe(fgbUrl);
   });
 
   it('load all', (done) => {
@@ -106,4 +107,25 @@ describe('maplibregl_FGBLayer', () => {
     expect(fgblayer).not.toBeNull();
     expect(fgblayer.url).toBe(fgbUrl);
   });
+
+  it('render moveLayer onRemove setVisibility', (done) => {
+    var fgblayer = new FGBLayer({
+      id: 'FGBLayer_1',
+      url: fgbUrl,
+      extent: [0, 0, 21, 21],
+      featureLoader: function (feature) {
+        expect(feature.properties['CAPITAL']).toBe('圣多美');
+        done();
+        return feature;
+      }
+    });
+    fgblayer.onAdd(map);
+    fgblayer.render();
+    fgblayer.moveLayer('FGBLayer_1', 'simple-tiles');
+    fgblayer.setVisibility(false);
+    expect(fgblayer.map.getLayer(fgblayer.id).getLayoutProperty('visibility')).toBe('none');
+    fgblayer.onRemove();
+    expect(fgblayer).not.toBeNull();
+  });
+
 });

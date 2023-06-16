@@ -353,3 +353,5 @@ var geoRelationAnalystCommonResultJson = [{
     }
 }
 ];
+
+var getAreaSolarRadiationResultJson = {};

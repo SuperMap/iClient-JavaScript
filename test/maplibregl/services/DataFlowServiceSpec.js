@@ -4,7 +4,7 @@ import {
 } from '../../../src/maplibregl/services/DataFlowService';
 
 import { Server } from 'mock-socket';
-var urlDataFlow = "ws:\//localhost:8003/";
+var urlDataFlow = "ws:\//localhost:8800/";
 describe('maplibregl_DataFlowService', () => {
     var originalTimeout;
     var service;
@@ -176,35 +176,7 @@ describe('maplibregl_DataFlowService', () => {
 
     it('broadcast_MultiPolygon', (done) => {
         var broadcast_MultiPolygon = (flowService) => {
-            var feature = {
-                geometry: {
-                    coordinates: [
-                        [
-                            [
-                                new maplibregl.LngLat(116.381741960923, 39.8765100055449),
-                                new maplibregl.LngLat(116.414681699817, 39.8765100055449),
-                                new maplibregl.LngLat(116.414681699817, 39.8415115329708),
-                                new maplibregl.LngLat(116.381741960923, 39.8765100055449)
-                            ]
-                        ],
-                        [
-                            [
-                                new maplibregl.LngLat(115.381741960923, 39.8765100055449),
-                                new maplibregl.LngLat(116.414681699817, 39.8765100055449),
-                                new maplibregl.LngLat(116.414681699817, 39.8415115329708),
-                                new maplibregl.LngLat(115.381741960923, 39.8765100055449)
-                            ]
-                        ]
-                    ],
-                    type: "MultiPolygon"
-                },
-                id: 4,
-                type: "Feature",
-                properties: {
-                    id: 4,
-                    time: new Date()
-                }
-            };
+
             flowService.broadcast(feature);
         }
 
@@ -243,5 +215,45 @@ describe('maplibregl_DataFlowService', () => {
             expect(service).not.toBeNull();
             done();
         }, 0)
-});
+    });
+
+    it('broadcast', (done) => {
+        var feature = {
+            geometry: {
+                coordinates: new maplibregl.Point(5605, -3375),
+                type: "Point"
+            },
+            id: 1,
+            type: "Feature",
+            properties: {
+                id: 1,
+                time: new Date()
+            }
+        };
+        service = new DataFlowService(urlDataFlow);
+        service.initBroadcast();
+        service.broadcast(feature);
+        expect(service.dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
+        done();
+    });
+
+    it('setGeometry', (done) => {
+        var feature = {
+            geometry: {
+                coordinates: new maplibregl.Point(5605, -3375),
+                type: "Point"
+            },
+            id: 1,
+            type: "Feature",
+            properties: {
+                id: 1,
+                time: new Date()
+            }
+        };
+        service = new DataFlowService(urlDataFlow);
+        service.initSubscribe();
+        service.setGeometry(feature);
+        expect(service.options.geometry).not.toBeNull();
+        done();
+    });
 });
