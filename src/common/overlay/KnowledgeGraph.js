@@ -21,6 +21,7 @@ import { G6Render } from './knowledge-graph/G6Render';
  * @property {string | HTMLElement} container - 创建的容器 id 或容器本身, 默认是'knowledgeGraph'。
  * @property {number} width - 图的宽度, 默认是container的width。
  * @property {number} height - 图的高度,默认是container的height。
+ * @property {Array.<number>} [center] - 中心点的渲染坐标。可以通过KnowledgeGraph.prototype.getViewPortCenterPoint获取。
  * @property {number} [zoom] - 缩放比例。
  * @property {number} [minZoom] - 最小缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例小于该值，则将使用该值进行缩放，并返回 false。
  * @property {number} [maxZoom] - 最大缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例大于该值，则将使用该值进行缩放，并返回 false。
@@ -43,7 +44,6 @@ import { G6Render } from './knowledge-graph/G6Render';
 /**
  * @typedef {Object} KnowledgeGraph.Layout - 布局。
  * @property {string} [type='force'] - 布局类型， 可选值：['force']。 默认'force'。
- * @property {Array.<number>} [center] - 布局的中心, 图的中心。
  */
 
 /**
@@ -415,6 +415,9 @@ export class KnowledgeGraph {
     const cb = () => {
       if (this.config.zoom !== undefined) {
         this.zoom(this.config.zoom);
+      }
+      if (this.config.center !== undefined) {
+        this.graphRender.setCenter({ x: this.config.center[0], y: this.config.center[1] });
       }
     };
     this.graph.on('beforelayout', cb);

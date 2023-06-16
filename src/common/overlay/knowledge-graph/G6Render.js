@@ -360,6 +360,14 @@ export class G6Render {
   getHeight() {
     return this.graph.getHeight();
   }
+
+  setCenter(centerDrawPoint) {
+    var centerCanvasPointX = this.graph.getWidth() / 2;
+    var centerCanvasPointY = this.graph.getHeight() / 2;
+    var centerCanvasPointNew = this.graph.getCanvasByPoint(centerDrawPoint.x, centerDrawPoint.y);
+    this.graph.translate(centerCanvasPointX - centerCanvasPointNew.x, centerCanvasPointY - centerCanvasPointNew.y);
+  }
+
   /**
    * @function G6Render.prototype._setToolBarStyle
    * @description 隐藏工具栏的redo undo realZoom按钮

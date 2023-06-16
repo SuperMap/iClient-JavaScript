@@ -36,10 +36,10 @@ describe('GraphMap mapboxgl', () => {
         return Promise.resolve(new Response(graphmapData));
       }
     });
-    var graphMap = new GraphMap(knowledgegraphmapURL);
-    graphMap.on('loaded',()=>{
+    var graphMap = new GraphMap(knowledgegraphmapURL, { config: { center: [0, 0] } });
+    graphMap.on('loaded', () => {
       expect(graphMap).not.toBeNull();
       done();
-    })
+    });
   });
 });
