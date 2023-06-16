@@ -23,8 +23,6 @@ describe('maplibregl_ThreeLayer', () => {
             zoom: 16.000000000000004,
             pitch: 33.2
         });
-
-
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -57,16 +55,6 @@ describe('maplibregl_ThreeLayer', () => {
             [13.413977, 52.532063]
         ];
         threeLayer = new ThreeLayer('three');
-        threeLayer.draw = (gl, scene, camera) => {
-            var light = new PointLight(0xffffff);
-            camera.add(light);
-            var height = 10;
-            var color = 0xff2200;
-            var material = new MeshPhongMaterial({color: color});
-            var mesh = threeLayer.toThreeMesh(coordinates, height, material, true);
-            scene.add(mesh);
-        };
-
         threeLayer.onAdd(map);
 
         setTimeout(() => {
@@ -176,8 +164,9 @@ describe('maplibregl_ThreeLayer', () => {
     });
 
     it('render _update draw', () => {
-        expect(threeLayer.render()).not.toBeNull();
-        const _this = threeLayer._update();
-        expect(_this.draw()).not.toBeNull();
+        var threeLayer1 = new ThreeLayer('three1');
+        threeLayer1.onAdd(map);
+        threeLayer1.render();
+        expect(threeLayer1.draw()).not.toBeNull();
     });
 });

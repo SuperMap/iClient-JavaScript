@@ -39,7 +39,7 @@ describe('maplibregl_FGBLayer', () => {
       center: [0, 0],
       zoom: 3
     });
-    map.on('load', function() {
+    map.on('load', function () {
       done();
     });
   });
@@ -110,7 +110,6 @@ describe('maplibregl_FGBLayer', () => {
 
   it('render moveLayer onRemove setVisibility', (done) => {
     var fgblayer = new FGBLayer({
-      id: 'FGBLayer_1',
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
