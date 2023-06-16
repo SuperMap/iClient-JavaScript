@@ -177,6 +177,7 @@ describe('maplibregl_ThreeLayer', () => {
 
     it('render _update draw', () => {
         expect(threeLayer.render()).not.toBeNull();
-        expect(threeLayer.draw()).not.toBeNull();
+        const _this = threeLayer._update();
+        expect(_this.draw()).not.toBeNull();
     });
 });
