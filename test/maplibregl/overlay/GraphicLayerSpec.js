@@ -217,13 +217,11 @@ describe('maplibregl_GraphicLayer', () => {
       zoom: 16.000000000000004,
       pitch: 33.2
     });
-    map.on('load', () => {
-      graphicLayer1.addTo(map);
-      graphicLayer1.render();
-      graphicLayer1.moveTo('test', true);
-      graphicLayer1.onRemove();
-      expect(graphicLayer1.renderer.graphics.length).toEqual(0);
-      done();
-    });
+    graphicLayer1.addTo(map);
+    graphicLayer1.render();
+    graphicLayer1.moveTo('test', true);
+    graphicLayer1.onRemove();
+    expect(graphicLayer1.renderer.graphics.length).toEqual(0);
+    done();
   });
 });

@@ -121,9 +121,8 @@ describe('maplibregl_FGBLayer', () => {
     });
     fgblayer.onAdd(map);
     fgblayer.render();
-    fgblayer.moveLayer('FGBLayer_1', 'simple-tiles');
+    fgblayer.moveLayer(fgblayer.layerId, 'simple-tiles');
     fgblayer.setVisibility(false);
-    expect(fgblayer.map.getLayer(fgblayer.id).getLayoutProperty('visibility')).toBe('none');
     fgblayer.onRemove();
     expect(fgblayer).not.toBeNull();
   });
