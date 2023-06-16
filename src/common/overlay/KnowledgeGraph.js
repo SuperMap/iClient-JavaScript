@@ -328,7 +328,16 @@ export class KnowledgeGraph {
    * @return {Object} 包含的属性：x 和 y 属性，分别表示渲染坐标下的 x、y 值。
    */
   getGraphCenterPoint() {
-    return this.graph.getGraphCenterPoint();
+    return this.graphRender.getGraphCenterPoint();
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.getViewPortCenterPoint
+   * @description 获取窗口的中心绘制坐标。
+   * @return {Object} 包含的属性：x 和 y 属性，分别表示渲染坐标下的 x、y 值。
+   */
+  getViewPortCenterPoint() {
+    return this.graphRender.getViewPortCenterPoint();
   }
 
   /**
@@ -403,6 +412,12 @@ export class KnowledgeGraph {
   initGraph(config) {
     const graph = this.graphRender.initGraph(config);
     this.graph = graph;
+    const cb = () => {
+      if (this.config.zoom !== undefined) {
+        this.zoom(this.config.zoom);
+      }
+    };
+    this.graph.on('beforelayout', cb);
     return graph;
   }
 
@@ -419,10 +434,6 @@ export class KnowledgeGraph {
     }
     this.graphRender.setData(data, graph);
     this.render(graph); // 渲染图
-    if (this.config.zoom !== undefined) {
-      const center = this.config.center ? { x: center[0], y: center[1] } : center;
-      this.zoomTo(this.config.zoom, center);
-    }
     this.data = data;
   }
 

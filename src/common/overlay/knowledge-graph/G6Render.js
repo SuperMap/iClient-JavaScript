@@ -290,6 +290,15 @@ export class G6Render {
   }
 
   /**
+   * @function G6Render.prototype.getViewPortCenterPoint
+   * @description 获取视口中心绘制坐标。
+   * @return {Object} 包含的属性：x 和 y 属性，分别表示渲染坐标下的 x、y 值。
+   */
+  getViewPortCenterPoint() {
+    return this.graph.getViewPortCenterPoint();
+  }
+
+  /**
    * @function G6Render.prototype.getZoom
    * @description 获取当前视口的缩放比例。
    * @return {number} 返回值表示当前视口的缩放比例， 默认值为 1。

@@ -1,0 +1,107 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_knowledgeGraphMap"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #knowledgeGraph {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="knowledgeGraph"></div>
+    <script type="text/javascript" include="g6" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      const data = {
+        nodes: [
+          {
+            id: '1',
+            label: '房地产',
+            x: 500,
+            y: 100,
+            style: { fill: '#f16667', lineWidth: 0 },
+            labelCfg: { style: { fontSize: 5, fill: '#fff' } }
+          },
+          {
+            id: '2',
+            label: '房屋',
+            x: 550,
+            y: 150,
+            style: { fill: '#ebc386', lineWidth: 0 },
+            labelCfg: { style: { fontSize: 5, fill: '#fff' } }
+          },
+          {
+            id: '3',
+            label: '宗地',
+            x: 600,
+            y: 100,
+            style: { fill: '#569480', lineWidth: 0 },
+            labelCfg: { style: { fontSize: 5, fill: '#fff' } }
+          },
+          {
+            id: '4',
+            label: '地籍子区',
+            x: 610,
+            y: 0,
+            style: { fill: '#da7194', lineWidth: 0 },
+            labelCfg: { style: { fontSize: 5, fill: '#fff' } }
+          },
+          {
+            id: '5',
+            label: '地籍区',
+            x: 650,
+            y: 250,
+            style: { fill: '#4c8eda', lineWidth: 0 },
+            labelCfg: { style: { fontSize: 5, fill: '#fff' } }
+          },
+          {
+            id: '6',
+            label: '行政区划',
+            x: 650,
+            y: 100,
+            style: { fill: '#00bcd4', lineWidth: 0 },
+            labelCfg: { style: { fontSize: 5, fill: '#fff' } }
+          }
+        ],
+        edges: [
+          { source: '2', target: '1', label: '开发商' },
+          { source: '2', target: '3', label: '隶属' },
+          { source: '3', target: '4', label: '所属地籍子区' },
+          { source: '4', target: '5', label: '所属地籍区' },
+          { source: '5', target: '6', label: '所属地区' }
+        ]
+      };
+      const data1 = {
+        nodes: [
+          { id: '1', label: '1' },
+          { id: '2', label: '2' },
+          { id: '3', label: '3' }
+        ],
+        edges: [
+          { source: '2', target: '1' },
+          { source: '3', target: '2' }
+        ]
+      };
+      const graph = new mapboxgl.supermap.KnowledgeGraph();
+      graph.setData(data1);
+      graph.collapseNode('1');
+      
+    </script>
+  </body>
+</html>

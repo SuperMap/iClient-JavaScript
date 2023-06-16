@@ -101,9 +101,17 @@ export class KnowledgeGraphService extends CommonServiceBase {
     if (!graphMap) {
       return;
     }
-    const queries = graphMap.dataContent.queries.query;
+    const query = (graphMap.dataContent.queries && graphMap.dataContent.queries.query) || [];
+    let queries = [];
+    if (typeof query === 'string') {
+      queries = [query];
+    } else {
+      queries = query;
+    }
     const expandQueries = this._getGraphMapExpandQuery(graphMap);
-    queries.push(...expandQueries);
+    if (expandQueries.length) {
+      queries.push(...expandQueries);
+    }
     for (let j = 0; j < queries.length; j++) {
       const cypherQuery = queries[j];
       const res = await this._queryDataBySql(cypherQuery);

@@ -59,17 +59,17 @@ export class GraphMap extends maplibregl.Evented {
   async createGraphMap(graphMapName, options) {
     this.knowledgeGraphService = this.createKnowledgeGraphService(this.url, options);
     const res = await this.knowledgeGraphService.getGraphMapData(graphMapName);
-    const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap.styles.style);
+    const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap.styles && res.graphMap.styles.style);
     this.graph = new KnowledgeGraph(options && options.config);
-    this.graph.setData(result);
-    this.graph.handleNodeStatus(transformExpandCollapseHiddenData(res.graphMap));
-    this.graph.on('afterrender', () => {
+    this.graph.on('beforelayout', () => {
       /**
        * @event GraphMap#loaded
        * @description 渲染完成时触发。
        */
       this.fire(this.EVENT_TYPES[0]);
     });
+    this.graph.setData(result);
+    this.graph.handleNodeStatus(transformExpandCollapseHiddenData(res.graphMap));
   }
 
   /**

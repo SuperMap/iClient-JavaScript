@@ -16,7 +16,6 @@
         height: 100vh;
         overflow: hidden;
       }
-
       #knowledgeGraph {
         width: 100%;
         height: 100%;
@@ -26,11 +25,11 @@
 
   <body>
     <div id="knowledgeGraph"></div>
-    <script type="text/javascript" include="g6" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="g6" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      const graphmap = new mapboxgl.supermap.GraphMap(
-        host + '/iserver/services/knowledgeGraph-budongchan/restjsr/graph/graphmaps/图谱'
+      const graphmap = new L.supermap.GraphMap(
+        host + '/iserver/services/knowledgeGraph-rivers/restjsr/graph/graphmaps/图谱'
       );
     </script>
   </body>

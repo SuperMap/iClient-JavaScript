@@ -469,14 +469,21 @@ var exampleConfig = {
               version: '11.1.0',
               content: [
                   {
-                      name: '图谱图',
-                      name_en: 'graticule',
+                      name: '不动产图谱',
+                      name_en: 'Real Estate GraphMap',
                       version: '11.1.0',
                       thumbnail: 'knowledgeGraphMap.png',
                       fileName: 'knowledgeGraphMap'
-                  }
+                  },
+                  {
+                    name: '河流流经省份图谱',
+                    name_en: 'Rivers flowing through provinces GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap1.png',
+                    fileName: 'knowledgeGraphMap1'
+                }
               ]
-          }
+            }
         }
     },
     iPortal: {
