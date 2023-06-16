@@ -219,8 +219,144 @@ describe('KnowledgeGraph', () => {
     expect(graph.data).not.toBeNull();
     done();
   });
-  it('graph_functions', (done) => {
+  it('expand collpase hidden Nodes', (done) => {
     var graph = new KnowledgeGraph();
+    graph.setData(data);
+    graph.handleNodeStatus({});
+    graph.handleNodeStatus({ expand: [], collpase: [2], hidden: [] });
+    console.log(graph.graphRender.collpasedData['2']);
+    graph.handleNodeStatus({ expand: [2], hidden: [] });
+    graph.handleNodeStatus({ expand: [2], collpase: [2, 5], hidden: [6] });
+    done();
+  });
+
+  it('collpaseNode', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+      edges: [{ source: '2', target: '1' }]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    expect(graph.graphRender.collpasedData['1'].length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children).toBeUndefined();
+    console.log('collpaseNodes4', graph.graphRender.collpasedData);
+    graph.expandNode('1');
+    done();
+  });
+  it('collpaseNode1', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = { nodes: [{ id: '1' }, { id: '2' }], edges: [{ source: '1', target: '2' }] };
+    graph.setData(data);
+    graph.collapseNode('1');
+    expect(graph.graphRender.collpasedData['1'].length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children).toBeUndefined();
+    done();
+  });
+  it('collpaseNode2', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+      edges: [
+        { source: '1', target: '2' },
+        { source: '3', target: '2' }
+      ]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    expect(graph.graphRender.collpasedData['1'].length).toBe(0);
+    done();
+  });
+  it('collpaseNode3', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+      edges: [
+        { source: '1', target: '2' },
+        { source: '2', target: '3' }
+      ]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    console.log('collpaseNodes3', graph.graphRender.collpasedData);
+    expect(graph.graphRender.collpasedData['1'].length).toBe(0);
+    graph.expandNode('1');
+    done();
+  });
+  xit('collpaseNode5', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+      edges: [
+        { source: '2', target: '1' },
+        { source: '2', target: '3' }
+      ]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    console.log('collpaseNodes5', graph.graphRender.collpasedData);
+    expect(graph.graphRender.collpasedData['1'].length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children.length).toBe(1);
+    graph.expandNode('1');
+    done();
+  });
+  xit('collpaseNode6', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }],
+      edges: [
+        { source: '2', target: '1' },
+        { source: '3', target: '2' }
+      ]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    console.log('collpaseNodes6', graph.graphRender.collpasedData, graph.graphRender.collpasedData['1'][0].children);
+    expect(graph.graphRender.collpasedData['1'].length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children.length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children[0].children).toBeUndefined();
+    graph.expandNode('1');
+    done();
+  });
+  xit('collpaseNode7', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }],
+      edges: [
+        { source: '2', target: '1' },
+        { source: '3', target: '2' },
+        { source: '3', target: '4' }
+      ]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    console.log('collpaseNodes7', graph.graphRender.collpasedData);
+    expect(graph.graphRender.collpasedData['1'].length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children).toBeUndefined();
+    graph.expandNode('1');
+    done();
+  });
+  xit('collpaseNode8', (done) => {
+    var graph = new KnowledgeGraph();
+    const data = {
+      nodes: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }],
+      edges: [
+        { source: '2', target: '1' },
+        { source: '3', target: '2' },
+        { source: '4', target: '3' }
+      ]
+    };
+    graph.setData(data);
+    graph.collapseNode('1');
+    console.log('collpaseNodes8', graph.graphRender.collpasedData);
+    expect(graph.graphRender.collpasedData['1'].length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children.length).toBe(1);
+    expect(graph.graphRender.collpasedData['1'][0].children).toBeUndefined();
+    graph.expandNode('1');
+    done();
+  });
+  it('graph_functions', (done) => {
+    var graph = new KnowledgeGraph({ zoom: 7 });
     graph.setData(data);
     expect(graph.getContainer()).not.toBeNull();
     expect(graph.getCanvas()).not.toBeNull();
@@ -231,31 +367,51 @@ describe('KnowledgeGraph', () => {
     expect(graph.getEdgesByNode(node)).not.toBeNull();
     expect(graph.getInEdges(node)).not.toBeNull();
     expect(graph.getOutEdges(node)).not.toBeNull();
+    graph.hide(node);
+    graph.show(node);
+    expect(graph.isVisible(node)).toBe(true);
+    expect(graph.getModel(node)).not.toBeNull();
     const edge = graph.find('edge', (res) => res);
     expect(graph.getSourceByEdge(edge)).not.toBeNull();
     expect(graph.getTargetByEdge(edge)).not.toBeNull();
-
     expect(node).not.toBeNull();
     expect(graph.find('node', (res) => res)).not.toBeNull();
     expect(graph.findAll('node', (res) => res)).not.toBeNull();
     expect(graph.findAll('node', (res) => res)).not.toBeNull();
     expect(graph.toDataURL('image')).not.toBeNull();
+    expect(graph.getZoom()).toBe(7);
+    graph.zoom(5);
+    graph.zoomTo(6);
+    expect(graph.getGraphCenterPoint()).not.toBeNull();
+    expect(graph.getViewPortCenterPoint()).not.toBeNull();
+    graph.setMinZoom(2);
+    expect(graph.getMinZoom()).toBe(2);
+    graph.setMaxZoom(3);
+    expect(graph.getMaxZoom()).toBe(3);
+    expect(graph.getWidth()).toBe(450);
     try {
       graph.addItem('node', { id: 'test' });
       graph.removeItem('node', 'test');
       graph.updateItem('1', { id: '1' });
       graph.refreshItem('1');
       graph.refreshPositions();
-      graph.clear();
-      graph.destroy();
       graph.on('beforerender', () => {});
       graph.off('beforerender', () => {});
+      graph.fitView();
+      graph.fitCenter();
+      graph.expandNode();
+      graph.collapseNode();
+      graph.showItem();
+      graph.hideItem();
+      graph.getHeight();
+      graph.clear();
+      graph.destroy();
     } catch {}
     done();
   });
   it('changeSize', (done) => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
-    expect(graph.changeSize(20,50)).not.toBeNull();
+    expect(graph.changeSize(20, 50)).not.toBeNull();
     done();
   });
   it('changeVisibility', (done) => {
@@ -265,7 +421,7 @@ describe('KnowledgeGraph', () => {
         expect(params).toBeTrue();
         done();
       }
-    }
+    };
     graph.changeVisibility(item, true);
   });
   it('nodeLabelOpenEllipsis', (done) => {
@@ -274,12 +430,14 @@ describe('KnowledgeGraph', () => {
     expect(result.length).toBe(0);
     result = graph.nodeLabelOpenEllipsis(0, ['node']);
     expect(result.length).toBe(1);
-    result = graph.nodeLabelOpenEllipsis(2, [{
-      labelCfg: {
-        fontSize: 12
-      },
-      label: 'label'
-    }]);
+    result = graph.nodeLabelOpenEllipsis(2, [
+      {
+        labelCfg: {
+          fontSize: 12
+        },
+        label: 'label'
+      }
+    ]);
     expect(result.length).toBe(1);
     done();
   });
