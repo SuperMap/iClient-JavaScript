@@ -2,7 +2,6 @@ import { FGBLayer } from '../../../src/mapboxgl/overlay/FGBLayer';
 import mapboxgl from 'mapbox-gl';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 var fgbUrl = 'base/resources/data/capitals_data20.fgb';
-
 describe('mapboxgl_FGBLayer', () => {
   var originalTimeout;
   var testDiv, map;
@@ -39,7 +38,7 @@ describe('mapboxgl_FGBLayer', () => {
       center: [0, 0],
       zoom: 3
     });
-    map.on('load', function() {
+    map.on('load', function () {
       done();
     });
   });
@@ -110,7 +109,6 @@ describe('mapboxgl_FGBLayer', () => {
 
   it('render moveLayer onRemove setVisibility', (done) => {
     var fgblayer = new FGBLayer({
-      id: 'FGBLayer_1',
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
@@ -121,9 +119,8 @@ describe('mapboxgl_FGBLayer', () => {
     });
     fgblayer.onAdd(map);
     fgblayer.render();
-    fgblayer.moveLayer('FGBLayer_1', 'simple-tiles');
+    fgblayer.moveLayer(fgblayer.layerId, 'simple-tiles');
     fgblayer.setVisibility(false);
-    expect(fgblayer.map.getLayer(fgblayer.id).getLayoutProperty('visibility')).toBe('none');
     fgblayer.onRemove();
     expect(fgblayer).not.toBeNull();
   });

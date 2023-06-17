@@ -45,7 +45,7 @@
       * @returns this
       */
      addTo(map) {
-        map.addLayer(this);
+        this.onAdd(map);
         return this;
      }
  
