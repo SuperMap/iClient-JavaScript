@@ -405,8 +405,7 @@ describe('KnowledgeGraph', () => {
       graph.hideItem();
       graph.getHeight();
       graph.updateGraph(data);
-      graph.clear();
-      graph.destroy();
+      graph.refresh();
     } catch {}
     done();
   });
@@ -442,5 +441,25 @@ describe('KnowledgeGraph', () => {
     ]);
     expect(result.length).toBe(1);
     done();
+  });
+
+  it('destroy', (done) => {
+    var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
+    const params = {
+      destroy: () => {
+        done();
+      }
+    };
+    graph.destroy(params);
+  });
+
+  it('clear', (done) => {
+    var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
+    const params = {
+      clear: () => {
+        done();
+      }
+    };
+    graph.clear(params);
   });
 });
