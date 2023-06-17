@@ -38,6 +38,9 @@ import './maplibregl/services/DatasourceServiceSpec.js';
 import './maplibregl/services/ImageServiceSpec';
 import './maplibregl/services/ImageCollectionServiceSpec';
 import './maplibregl/services/KnowledgeGraphServiceSpec.js';
+import './maplibregl/services/AreaSolarRadiationServiceSpec.js';
+import './maplibregl/services/NetworkAnalyst3DServiceSpec.js';
+import './maplibregl/services/ChartServiceSpec.js';
 // overlay
 import './maplibregl/overlay/GraphMapSpec';
 import './maplibregl/overlay/HeatMapLayerSpec.js';

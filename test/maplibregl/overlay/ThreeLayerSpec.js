@@ -169,4 +169,21 @@ describe('maplibregl_ThreeLayer', () => {
         threeLayer1.render();
         expect(threeLayer1.draw()).not.toBeNull();
     });
+
+    it('toThreeMesh', () => {
+        var coordinates = [
+            [13.413977, 52.532063],
+            [13.414156, 52.532003],
+            [13.414062, 52.531902],
+            [13.413939, 52.531944],
+            [13.41393, 52.531936],
+            [13.413952, 52.531913],
+            [13.41391, 52.531869],
+            [13.41383, 52.531897],
+            [13.413878, 52.531952],
+            [13.413977, 52.532063]
+        ];
+        var shape = threeLayer.toThreeMesh(coordinates, 10, new THREE.Material(), true);
+        expect(shape).not.toBeNull();
+    });
 });

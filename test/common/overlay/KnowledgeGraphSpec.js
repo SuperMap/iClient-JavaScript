@@ -404,6 +404,7 @@ describe('KnowledgeGraph', () => {
       graph.showItem();
       graph.hideItem();
       graph.getHeight();
+      graph.updateGraph(data);
       graph.clear();
       graph.destroy();
     } catch {}
@@ -411,6 +412,7 @@ describe('KnowledgeGraph', () => {
   });
   it('changeSize', (done) => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
+    graph.resize(20, 50);
     expect(graph.changeSize(20, 50)).not.toBeNull();
     done();
   });
