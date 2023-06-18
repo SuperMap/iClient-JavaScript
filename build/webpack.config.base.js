@@ -34,7 +34,7 @@ module.exports = {
     mode: 'production',
     //页面入口文件配置
     entry: moduleVersion === "es5" ? [
-      `${__dirname}/../node_modules/core-js/actual/symbol/async-iterator.js`, `${__dirname}/../node_modules/core-js/actual/object/assign.js`, `${__dirname}/polyfill.js`
+      `${__dirname}/../node_modules/core-js/actual/symbol/async-iterator.js`, `${__dirname}/../node_modules/core-js/actual/object/assign.js`
     ] : [],
 
     output: function (libName, productName) {
