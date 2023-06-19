@@ -63,7 +63,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     mapboxgl.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
-    var popup = new mapboxgl.Popup();
+    var popup = new mapboxgl.Popup({
+      focusAfterOpen: false
+    });
 
     map.on('load', function () {
       var options = {
