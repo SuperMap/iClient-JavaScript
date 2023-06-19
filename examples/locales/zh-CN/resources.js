@@ -1743,6 +1743,7 @@ window.examplesResources = {
         "msg_clickLayerToPopup": '点击图层上的要素，查看属性',
         "msg_addSuccess": "添加成功!",
         "msg_addFailed": "添加失败!",
+        "msg_addWebSymbolFailed": "添加符号失败!",
 
         "set_style": "top: -23px;left: 86px;",
         "style_width420px": 'width: 420px',

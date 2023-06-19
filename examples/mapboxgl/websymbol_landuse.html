@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title>土地利用</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <script type="text/javascript"  include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+  <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script>
+    var serverUrl = "https://iserver.supermap.io/iserver/services/map-mvt-landuse2/rest/maps/landuse";
+    var map = new mapboxgl.Map({
+      container: "map",
+      style: {
+        "sources": {
+          "landuse": {
+            "tiles": [
+              serverUrl + "/tileFeature.mvt?z={z}&x={x}&y={y}"
+            ],
+            "type": "vector"
+          }
+        },
+        "name": "landuse",
+        "layers": [],
+        "version": 8
+      },
+      minZoom: 11,
+      maxZoom: 15,
+      zoom: 13,
+      center: [
+        108.9131713726414,
+        23.82622655814832
+      ]
+    });
+
+    var loadSymbol = function (symbolId) {
+        return new Promise(function (resolve) {
+          map.loadSymbol(symbolId, function (error, symbol) {
+            if (error) {
+              widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
+              resolve();
+            }
+            map.addSymbol(symbolId, symbol);
+            resolve();
+          });
+        });
+      };
+
+    // 批量加载符号
+    var loadSymbols = function () {
+      var symbols = [
+        "polygon-955452",
+        "polygon-955550",
+        "polygon-955871",
+        "polygon-955875",
+        "polygon-955525",
+        "polygon-955508",
+        "polygon-955400",
+        "polygon-955545",
+        "polygon-955529",
+        "polygon-955385",
+        "polygon-955872",
+        "polygon-955527",
+        "polygon-955532",
+        "polygon-955433",
+        "polygon-955880",
+        "polygon-955464",
+        "polygon-955519",
+        "polygon-955879",
+        "polygon-955878",
+        "polygon-955483",
+        "polygon-955537",
+        "polygon-955398",
+        "line-962543",
+        "line-962524",
+        "line-962613",
+        "line-964935",
+        "polygon-0"
+      ];
+      var loadSymbolPromises = symbols.map(function (symbolId) {
+        return loadSymbol(symbolId);
+      });
+      return Promise.all(loadSymbolPromises);
+    };
+
+    // 添加面图层
+    var createPolygonLayer = function () {
+      map.addLayer({
+        "id": "landuse@landuse(0_24)",
+        "source": "landuse",
+        "source-layer": "landuse@landuse",
+        "type": "fill",
+        "symbol": [
+          "match",
+          ["get", "DLBM"],
+          "011", "polygon-955880", //水田
+          "013", "polygon-955464", //旱地
+          "021", "polygon-955519", //果园
+          "023", "polygon-955879", //其他园地
+          "031", "polygon-955483", //有林地
+          "032", "polygon-955537", //灌木林地
+          "033", "polygon-955878", //其他林地
+          "043", "polygon-955398", //其他草地
+          "127", "polygon-955385", //裸地
+          "201", "polygon-955872", //城市
+          "203", "polygon-955527", //村庄
+          "101", "polygon-955452", //铁路用地
+          "102", "polygon-955550", //公路用地
+          "104", "polygon-955550", //农村道路
+          "117", "polygon-955400", //沟渠
+          "118", "polygon-955545", //水工建筑
+          "122", "polygon-955529", //设施农用地
+          "204", "polygon-955532", //采矿用地
+          "205", "polygon-955433", //风景名胜及特殊用地
+          "111", "polygon-955871", //河流水面
+          "112", "polygon-955871", //湖泊水面
+          "113", "polygon-955875", //水库水面
+          "114", "polygon-955525", //坑塘水面
+          "116", "polygon-955508", //内陆滩涂
+          "polygon-0"
+        ]
+      });
+    };
+
+    // 添加线图层
+    var createLineLayer = function () {
+      map.addLayer({
+        "id": "pl@landuse(0_24)",
+        "source": "landuse",
+        "source-layer": "pl@landuse",
+        "type": "line",
+        "symbol": [
+          "match",
+          ["get", "DLBM"],
+          "011", "line-962543", //公路用地
+          "013", "line-962524", //农村道路
+          "021", "line-962613", //河流水面
+          "023", "line-962613", //河流水面
+          "line-964935"
+        ]
+      });
+    };
+
+    map.on("load", function () {
+      // 配置基础路径
+      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
+      loadSymbols().then(function () {
+        createPolygonLayer();
+        createLineLayer();
+      });
+    });
+
+  </script>
+</body>
+
+</html>

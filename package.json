@@ -25,7 +25,7 @@
     "release-leaflet-es6": "cross-env moduleVersion=es6 npm run deploy-leaflet && node ./node_modules/uglify-es/bin/uglifyjs ./dist/leaflet/iclient-leaflet-es6.js  --ecma 6 --comments /iclient-/i -c -m -o ./dist/leaflet/iclient-leaflet-es6.min.js && cleancss -o  ./dist/leaflet/iclient-leaflet.min.css ./dist/leaflet/iclient-leaflet.css",
     "release-openlayers-es6": "cross-env moduleVersion=es6 npm run deploy-openlayers && node ./node_modules/uglify-es/bin/uglifyjs ./dist/openlayers/iclient-openlayers-es6.js  --ecma 6 --comments /iclient-/i -c -m -o ./dist/openlayers/iclient-openlayers-es6.min.js && cleancss -o  ./dist/openlayers/iclient-openlayers.min.css ./dist/openlayers/iclient-openlayers.css",
     "release-ol-es6": "cross-env moduleVersion=es6 npm run deploy-ol && node ./node_modules/uglify-es/bin/uglifyjs ./dist/ol/iclient-ol-es6.js  --ecma 6 --comments /iclient-/i -c -m -o ./dist/ol/iclient-ol-es6.min.js && cleancss -o  ./dist/ol/iclient-ol.min.css ./dist/ol/iclient-ol.css",
-    "release-mapboxgl-es6": "cross-env moduleVersion=es6 npm run deploy-mapboxgl && node ./node_modules/uglify-es/bin/uglifyjs ./dist/mapboxgl/iclient-mapboxgl-es6.js  --ecma 6 --comments /iclient-/i -c -m -o ./dist/mapboxgl/iclient-mapboxgl-es6.min.js && cleancss -o  ./dist/mapboxgl/iclient-mapboxgl.min.css ./dist/mapboxgl/iclient-mapboxgl.css",
+    "release-mapboxgl-es6": "cross-env moduleVersion=es6 npm run deploy-mapboxgl && node ./node_modules/terser/bin/terser ./dist/mapboxgl/iclient-mapboxgl-es6.js  --ecma 6 --comments /iclient-/i -c -m -o ./dist/mapboxgl/iclient-mapboxgl-es6.min.js && cleancss -o  ./dist/mapboxgl/iclient-mapboxgl.min.css ./dist/mapboxgl/iclient-mapboxgl.css",
     "release-classic-es6": "cross-env moduleVersion=es6 npm run deploy-classic && node ./node_modules/uglify-es/bin/uglifyjs ./dist/classic/iclient-classic-es6.js  --ecma 6 --comments /iclient-/i -c -m -o ./dist/classic/iclient-classic-es6.min.js",
     "release-maplibregl-es5": "cross-env moduleVersion=es5 npm run deploy-maplibregl && uglifyjs ./dist/maplibregl/iclient-maplibregl.js  --ecma 5 --comments  /iclient-/i -c -m -o ./dist/maplibregl/iclient-maplibregl.min.js",
     "release-maplibregl-es6": "cross-env moduleVersion=es6 npm run deploy-maplibregl && node ./node_modules/uglify-es/bin/uglifyjs ./dist/maplibregl/iclient-maplibregl-es6.js  --ecma 6 --comments  /iclient-/i -c -m -o ./dist/maplibregl/iclient-maplibregl-es6.min.js",
@@ -47,8 +47,9 @@
     "build-docs-mapboxgl": "rimraf ./docs/mapboxgl && jsdoc -c ./build/jsdocs/mapboxgl/docs.json -R ./build/jsdocs/mapboxgl/index.md",
     "build-docs-maplibregl": "rimraf ./docs/maplibregl && jsdoc -c ./build/jsdocs/maplibregl/docs.json -R ./build/jsdocs/maplibregl/index.md",
     "build-docs-classic": "rimraf ./docs/classic && jsdoc -c ./build/jsdocs/classic/docs.json -R ./build/jsdocs/classic/index.md",
-    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic",
-    "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../maplibregl && npm publish && cd ../classic && npm publish"
+    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic && npm run pre-publish-symbol",
+    "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../maplibregl && npm publish && cd ../classic && npm publish",
+    "pre-publish-symbol": "copyfiles -u 1 ./dist/resources/** ./src/mapboxgl/ "
   },
   "keywords": [
     "SuperMap",
@@ -86,6 +87,7 @@
     "chromedriver": "87.0.5",
     "clean-css-cli": "^4.3.0",
     "commander": "^9.0.0",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.2",
     "css-loader": "^6.7.1",
     "elasticsearch": "16.7.3",
