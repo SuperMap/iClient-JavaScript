@@ -21,11 +21,17 @@ import {
  */
 export class MapvLayer {
   constructor(map, dataSet, mapVOptions) {
-    this.map = map;
-    this.id = mapVOptions.layerID ? mapVOptions.layerID : CommonUtil.createUniqueID('mapvLayer_');
-    delete mapVOptions['layerID'];
-    this.mapVOptions = mapVOptions;
-    this.dataSet = dataSet;
+    if (map instanceof mapboxgl.Map) {
+      this.map = map;
+      delete mapVOptions['layerID'];
+      this.mapVOptions = mapVOptions;
+      this.dataSet = dataSet;
+    } else {
+      this.dataSet = map;
+      delete dataSet['layerID'];
+      this.mapVOptions = dataSet;
+    }
+    this.id = this.mapVOptions.layerID ? this.mapVOptions.layerID : CommonUtil.createUniqueID('mapvLayer_');
     this.type = 'custom';
     this.visibility = true;
     this.renderingMode = '3d';

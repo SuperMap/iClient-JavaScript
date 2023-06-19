@@ -19,8 +19,7 @@ import {
  * @usage
  */
 export class MapvLayer {
-  constructor(map, dataSet, options) {
-    this.map = map;
+  constructor(dataSet, options) {
     this.id = options.layerID ? options.layerID : CommonUtil.createUniqueID('mapvLayer_');
     delete options['layerID'];
     this.options = options;
@@ -32,10 +31,6 @@ export class MapvLayer {
     this.renderingMode = '3d';
     this.context = this.options.context || '2d';
     this.overlay = true;
-    //保留之前的用法
-    if (this.map) {
-      this.map.addLayer(this);
-    }
   }
   /**
    * @function MapvLayer.prototype.onAdd

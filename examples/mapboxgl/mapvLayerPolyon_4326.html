@@ -91,8 +91,7 @@
                     globalAlpha: 0.8,
                     draw: 'intensity'
                 };
-                //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-                var mapVLayer1 = new mapboxgl.supermap.MapvLayer("", dataSet1, options);
+                var mapVLayer1 = new mapboxgl.supermap.MapvLayer(dataSet1, options);
                 map.addLayer(mapVLayer1);
 
                 var data2 = [];
@@ -116,8 +115,7 @@
                     zIndex: 11,
                     shadowBlur: 10
                 };
-                //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-                var mapVLayer2 = new mapboxgl.supermap.MapvLayer("", dataSet2, textOptions);
+                var mapVLayer2 = new mapboxgl.supermap.MapvLayer(dataSet2, textOptions);
                 map.addLayer(mapVLayer2);
             });
         });

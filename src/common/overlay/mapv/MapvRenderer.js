@@ -170,7 +170,7 @@ export class MapvRenderer extends BaseLayer {
     }
 
     _createCanvas(id, mapElement) {
-      const { width, height } = mapElement.getBoundingClientRect();
+      const { width, height } = mapElement.style;
       var canvas = document.createElement('canvas');
       canvas.style.position = 'absolute';
       canvas.style.top = '0px';
@@ -178,8 +178,8 @@ export class MapvRenderer extends BaseLayer {
       canvas.id = id;
       var global$2 = typeof window === 'undefined' ? {} : window;
       var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
-      canvas.width = width * devicePixelRatio;
-      canvas.height = height * devicePixelRatio;
+      canvas.width = parseInt(width) * devicePixelRatio;
+      canvas.height = parseInt(height) * devicePixelRatio;
       if (!this.options.context || this.options.context == '2d') {
         canvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
       }

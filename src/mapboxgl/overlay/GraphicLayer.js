@@ -40,6 +40,7 @@
  
      /**
       * @function GraphicLayer.prototype.addTo
+      * @deprecated
       * @description 添加该图层，将在下个版本废弃，请使用 onAdd() 代替。
       * @param {mapboxgl.Map} map - mapboxgl Map 对象。
       * @returns this

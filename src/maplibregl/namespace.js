@@ -46,13 +46,15 @@ import {
 
 import {
   CommonUtil,
-  SuperMap
+  SuperMap,
+  Transform
 } from '@supermap/iclient-common/namespace';
 
 export * from './index';
 
 maplibregl.supermap = {...SuperMap, ...maplibregl.supermap};
 maplibregl.supermap.Graphic = Graphic;
+maplibregl.supermap.Transform = Transform;
 maplibregl.supermap.AddressMatchService = AddressMatchService;
 maplibregl.supermap.ChartService = ChartService;
 maplibregl.supermap.DataFlowService = DataFlowService;

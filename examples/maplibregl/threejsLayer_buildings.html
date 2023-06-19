@@ -75,7 +75,6 @@
         //gl参数表示使用webgl渲染，forceRefresh强制不断刷新three的场景
         threeLayer = new maplibregl.supermap.ThreeLayer('three');
         threeLayer.on("initialized", render);
-        // threeLayer.addTo(map);
         map.addLayer(threeLayer);
 
         function render() {

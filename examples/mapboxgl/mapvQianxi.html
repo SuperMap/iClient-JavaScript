@@ -225,8 +225,7 @@
         });
         geojsonDataSet = new mapv.DataSet(data);
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVlayer = new mapboxgl.supermap.MapvLayer("", geojsonDataSet, geojsonOptions);
+        var mapVlayer = new mapboxgl.supermap.MapvLayer(geojsonDataSet, geojsonOptions);
         map.addLayer(mapVlayer);
 
         var textDataSet = new mapv.DataSet(textData);
@@ -240,8 +239,7 @@
             zIndex: 11,
             shadowBlur: 10
         };
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var textLayer = new mapboxgl.supermap.MapvLayer("", textDataSet, textOptions);
+        var textLayer = new mapboxgl.supermap.MapvLayer(textDataSet, textOptions);
         map.addLayer(textLayer);
 
         var lineDataSet = new mapv.DataSet(lineData);
@@ -254,8 +252,7 @@
             zIndex: 100,
             draw: 'simple'
         };
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var lineLayer = new mapboxgl.supermap.MapvLayer("", lineDataSet, lineOptions);
+        var lineLayer = new mapboxgl.supermap.MapvLayer(lineDataSet, lineOptions);
         map.addLayer(lineLayer);
 
         var pointOptions = {
@@ -270,8 +267,7 @@
 
         var pointDataSet = new mapv.DataSet(pointData);
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var pointLayer = new mapboxgl.supermap.MapvLayer("", pointDataSet, pointOptions);
+        var pointLayer = new mapboxgl.supermap.MapvLayer(pointDataSet, pointOptions);
         map.addLayer(pointLayer);
 
 
@@ -292,8 +288,7 @@
             },
             draw: 'simple'
         };
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var timeLayer = new mapboxgl.supermap.MapvLayer("", timeDataSet, timeOptions);
+        var timeLayer = new mapboxgl.supermap.MapvLayer(timeDataSet, timeOptions);
         map.addLayer(timeLayer);
 
     });

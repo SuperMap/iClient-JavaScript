@@ -76,7 +76,8 @@ describe('maplibregl_MapVLayer', () => {
         dataSet = new DataSet(data);
 
         if (!map.getLayer("mapv")) {
-            mapvLayer = new MapvLayer(map, dataSet, options);
+            mapvLayer = new MapvLayer(dataSet, options);
+            map.addLayer(mapvLayer);
         }
     });
     afterEach(() => {

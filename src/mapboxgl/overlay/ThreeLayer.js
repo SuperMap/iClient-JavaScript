@@ -70,16 +70,6 @@ export class ThreeLayer extends mapboxgl.Evented {
    * @param {Object} map - 地图对象。
    */
   onAdd(map) {
-    this.addTo(map)
-  }
-
-  /**
-   * @function ThreeLayer.prototype.addTo
-   * @description 添加图层到地图。
-   * @param {Object} map - 地图对象。
-   * @returns {ThreeLayer} ThreeLayer的实例对象。
-   */
-  addTo(map) {
     var me = this;
     me._map = map;
     me.renderer.setMap(map);
@@ -87,6 +77,18 @@ export class ThreeLayer extends mapboxgl.Evented {
     me.on('render', (function () {
       this.context && this.context.render(this.scene, this.camera);
     }).bind(me.renderer));
+    return this;
+  }
+
+  /**
+   * @function ThreeLayer.prototype.addTo
+   * @deprecated
+   * @description 添加图层到地图。
+   * @param {Object} map - 地图对象。
+   * @returns {ThreeLayer} ThreeLayer的实例对象。
+   */
+  addTo(map) {
+    map.addLayer(this);
     return this;
   }
 

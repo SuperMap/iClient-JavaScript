@@ -218,8 +218,7 @@
           });
           geojsonDataSet = new mapv.DataSet(data);
 
-          //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-          var mapVlayer = new maplibregl.supermap.MapvLayer('', geojsonDataSet, geojsonOptions);
+          var mapVlayer = new maplibregl.supermap.MapvLayer(geojsonDataSet, geojsonOptions);
           map.addLayer(mapVlayer);
 
           var textDataSet = new mapv.DataSet(textData);
@@ -233,8 +232,7 @@
             zIndex: 11,
             shadowBlur: 10
           };
-          //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-          var textLayer = new maplibregl.supermap.MapvLayer('', textDataSet, textOptions);
+          var textLayer = new maplibregl.supermap.MapvLayer(textDataSet, textOptions);
           map.addLayer(textLayer);
 
           var lineDataSet = new mapv.DataSet(lineData);
@@ -247,8 +245,7 @@
             zIndex: 100,
             draw: 'simple'
           };
-          //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-          var lineLayer = new maplibregl.supermap.MapvLayer('', lineDataSet, lineOptions);
+          var lineLayer = new maplibregl.supermap.MapvLayer(lineDataSet, lineOptions);
           map.addLayer(lineLayer);
 
           var pointOptions = {
@@ -262,8 +259,7 @@
 
           var pointDataSet = new mapv.DataSet(pointData);
 
-          //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-          var pointLayer = new maplibregl.supermap.MapvLayer('', pointDataSet, pointOptions);
+          var pointLayer = new maplibregl.supermap.MapvLayer(pointDataSet, pointOptions);
           map.addLayer(pointLayer);
 
           var timeDataSet = new mapv.DataSet(timeData);
@@ -283,8 +279,7 @@
             },
             draw: 'simple'
           };
-          //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-          var timeLayer = new maplibregl.supermap.MapvLayer('', timeDataSet, timeOptions);
+          var timeLayer = new maplibregl.supermap.MapvLayer(timeDataSet, timeOptions);
           map.addLayer(timeLayer);
         });
       });

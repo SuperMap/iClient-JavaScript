@@ -140,8 +140,7 @@
                 };
 
                 //创建MapV图层
-                //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-                var mapVLayer = new maplibregl.supermap.MapvLayer('', dataSet, options);
+                var mapVLayer = new maplibregl.supermap.MapvLayer(dataSet, options);
                 map.addLayer(mapVLayer);
             }
         </script>

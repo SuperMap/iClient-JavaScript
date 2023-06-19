@@ -76,7 +76,6 @@
         threeLayer = new mapboxgl.supermap.ThreeLayer('three');
         threeLayer.on("initialized", render);
         map.addLayer(threeLayer);
-
         function render() {
             var renderer = threeLayer.getThreeRenderer(),
                 scene = threeLayer.getScene(),

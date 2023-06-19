@@ -95,9 +95,10 @@
         max: 30,
         draw: 'intensity'
     };
-    //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-    var mapVlayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+   map.on('load', function() {
+    var mapVlayer = new mapboxgl.supermap.MapvLayer(dataSet, options);
     map.addLayer(mapVlayer);
+   })
 
 </script>
 </body>

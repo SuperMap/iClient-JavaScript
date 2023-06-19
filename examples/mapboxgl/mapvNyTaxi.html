@@ -73,8 +73,7 @@
         dataSet.initGeometry();
         $('#loading').hide();
 
-        layer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+        layer = new mapboxgl.supermap.MapvLayer(dataSet, options);
         map.addLayer(layer);
 
         $('#loading').hide();

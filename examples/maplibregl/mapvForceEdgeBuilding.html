@@ -172,8 +172,7 @@
           lineWidth: 1.0,
           draw: 'simple'
         };
-        //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVLinelayer = new maplibregl.supermap.MapvLayer('', dataSet, options);
+        var mapVLinelayer = new maplibregl.supermap.MapvLayer(dataSet, options);
         map.addLayer(mapVLinelayer);
 
         var dataSet = new mapv.DataSet(timeData);
@@ -194,8 +193,7 @@
           draw: 'simple'
         };
 
-        //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVAnimationLinelayer = new maplibregl.supermap.MapvLayer('', dataSet, options);
+        var mapVAnimationLinelayer = new maplibregl.supermap.MapvLayer(dataSet, options);
 
         map.addLayer(mapVAnimationLinelayer);
       });
