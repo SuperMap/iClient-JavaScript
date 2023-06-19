@@ -287,8 +287,9 @@ export class WebMap extends Observable {
         let that = this,
             mapUrl = url;
         if (url.indexOf('.json') === -1) {
+            url = this.handleJSONSuffix(url);
             //传递过来的url,没有包括.json,在这里加上。
-            mapUrl = `${url}.json`
+            mapUrl = url;
         }
         FetchRequest.get(that.getRequestUrl(mapUrl), null, {
             withCredentials: this.withCredentials
@@ -543,7 +544,8 @@ export class WebMap extends Observable {
 
         let source;
         if (baseLayerType === "TILE") {
-            FetchRequest.get(me.getRequestUrl(`${url}.json`), null, {
+            url = this.handleJSONSuffix(url);
+            FetchRequest.get(me.getRequestUrl(url), null, {
                 withCredentials: this.withCredentials
             }).then(function (response) {
                 return response.json();
@@ -1354,7 +1356,8 @@ export class WebMap extends Observable {
             url = `${url}&token=${encodeURI(credential.token)}`;
             token = credential.token;
         }
-        return FetchRequest.get(that.getRequestUrl(`${url}.json`), null, options).then(function (response) {
+        url = this.handleJSONSuffix(url);
+        return FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return response.json();
         }).then(async (result) => {
             if (result.succeed === false) {
@@ -1399,7 +1402,8 @@ export class WebMap extends Observable {
             that.credentialValue = layerInfo.credential = layerInfo.url.split("?token=")[1];
             layerInfo.url = layerInfo.url.split("?token=")[0];
         }
-        return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
+        let url = this.handleJSONSuffix(layerInfo.url);
+        return FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return response.json();
         }).then(async function (result) {
             // layerInfo.projection = mapInfo.projection;
@@ -2104,7 +2108,8 @@ export class WebMap extends Observable {
     getDataflowInfo(layerInfo, success, faild) {
         let that = this;
         let url = layerInfo.url, token;
-        let requestUrl = that.getRequestUrl(`${url}.json`, false);
+        url = this.handleJSONSuffix(url);
+        let requestUrl = that.getRequestUrl(url, false);
         if (layerInfo.credential && layerInfo.credential.token) {
             token = layerInfo.credential.token;
             requestUrl += `?token=${token}`;
@@ -2984,11 +2989,14 @@ export class WebMap extends Observable {
    async createVectorLayer(layerInfo, features) {
         const {featureType, style} = layerInfo;
         let newStyle;
-        if (featureType === 'LINE' && Util.isArray(style)) {
+        if (featureType === 'LINE' && Util.isArray(style) && style.length === 2) {
             const [outlineStyle, strokeStyle] = style;
-            newStyle = strokeStyle.lineDash === 'solid' ? StyleUtils.getRoadPath(strokeStyle, outlineStyle)
+            newStyle = (!strokeStyle.lineDash || strokeStyle.lineDash === 'solid') ? StyleUtils.getRoadPath(strokeStyle, outlineStyle)
                 : StyleUtils.getPathway(strokeStyle, outlineStyle);
         } else {
+            if (Util.isArray(style)) {
+              layerInfo.style = style[0];
+            }
             newStyle = await StyleUtils.toOpenLayersStyle(layerInfo.style, layerInfo.featureType);
         }
         return new olLayer.Vector({
@@ -5146,5 +5154,16 @@ export class WebMap extends Observable {
             return [-1000,-1].includes(+projection)
         }
         return ['EPSG:-1000','EPSG:-1'].includes(projection);
+    }
+
+    handleJSONSuffix(url) {
+      if (url.includes('?')) {
+        let urlArr = url.split('?');
+        urlArr[0] = urlArr[0] + ".json";
+        url = urlArr.join('?');
+      } else {
+        url = url + ".json"
+      }
+      return url;
     }
 }

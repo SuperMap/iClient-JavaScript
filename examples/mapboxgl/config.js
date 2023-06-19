@@ -1118,9 +1118,9 @@ var exampleConfig = {
                     }
                 ]
             },
-            FlatGeoBuf: {
-              name: 'FlatGeoBuf',
-              name_en: 'FlatGeoBuf',
+            FlatGeobuf: {
+              name: 'FlatGeobuf',
+              name_en: 'FlatGeobuf',
               version: '11.0.1',
               content: [
                   {

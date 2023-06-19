@@ -876,9 +876,9 @@ var exampleConfig = {
           }
         ]
       },
-      FlatGeoBuf: {
-        name: 'FlatGeoBuf',
-        name_en: 'FlatGeoBuf',
+      FlatGeobuf: {
+        name: 'FlatGeobuf',
+        name_en: 'FlatGeobuf',
         content: [
           {
             name: 'FGB 全量加载（2500万点数据量）',
