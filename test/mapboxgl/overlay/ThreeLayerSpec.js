@@ -7,7 +7,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2Z
 describe('mapboxgl_ThreeLayer', () => {
     var originalTimeout;
     var testDiv, map, threeLayer;
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -23,6 +23,9 @@ describe('mapboxgl_ThreeLayer', () => {
             zoom: 16.000000000000004,
             pitch: 33.2
         });
+        map.on('load',()=>{
+            done();
+        })
 
 
     });
