@@ -1205,7 +1205,7 @@ export class StyleUtils {
     let outlineColorArray = this.hexToRgb(outlineColor);
     // opacity使用style的透明度。保持两根线透明度一致
     outlineColorArray && outlineColorArray.push(strokeOpacity);
-    let outlineWidth = strokeWidth === 0 ? ZERO : strokeWidth + 2; //外部宽度=内部样式宽度 + 2
+    let outlineWidth = outlineStyle.strokeWidth || (strokeWidth === 0 ? ZERO : strokeWidth + 2); //外部宽度=内部样式宽度 + 2
     var outlineStroke = new Style({
         stroke: new StrokeStyle({
             width: outlineWidth, //外部宽度=内部样式宽度 + 2

@@ -2,7 +2,7 @@
 
 ## 新特性
 
-### 新增支持云原生矢量交换格式（FlatGeoBuf），支持直接访问云存储和SuperMap iServer服务返回的FlatGeoBuf格式文件，并支持流式传输和渲染
+### 新增支持云原生矢量交换格式（FlatGeobuf），支持直接访问云存储和SuperMap iServer服务返回的FlatGeobuf格式文件，并支持流式传输和渲染
 
  - 新增 L.supermap.FGBLayer、mapboxgl.supermap.FGBLayer 、ol.source.FGB，支持全量或按需渲染FlatGeobuf格式数据
 
