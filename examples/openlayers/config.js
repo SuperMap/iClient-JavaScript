@@ -217,6 +217,7 @@ var exampleConfig = {
                 }, {
                   name: "数据集缓冲区分析 (FGB)",
                   name_en: "buffer (FGB)",
+                  version: '11.1.0',
                   thumbnail: "ol_bufferAnalystService.png",
                   fileName: "04_bufferAnalystService_FGB"
                 },{
@@ -227,6 +228,7 @@ var exampleConfig = {
                 },{
                   name: "几何对象缓冲区分析 (FGB)",
                   name_en: "buffer-geometry",
+                  version: '11.1.0',
                   thumbnail: "ol_bufferAnalystService_geometry.png",
                   fileName: "04_bufferAnalystService_geometry_FGB"
                 }, {
@@ -237,6 +239,7 @@ var exampleConfig = {
                 },{
                   name: "数据集泰森多边形 (FGB)",
                   name_en: "thiessen-dataset (FGB)",
+                  version: '11.1.0',
                   thumbnail: "ol_thiessenAnalystService-datasets.png",
                   fileName: "04_thiessenAnalystService_datasets_FGB"
                 },  {
@@ -247,6 +250,7 @@ var exampleConfig = {
                 }, {
                   name: "几何泰森多边形 (FGB)",
                   name_en: "thiessen-geometry (FGB)",
+                  version: '11.1.0',
                   thumbnail: "ol_thiessenAnalystService-geometry.png",
                   fileName: "04_thiessenAnalystService_geometry_FGB"
                 }, {
@@ -257,6 +261,7 @@ var exampleConfig = {
                 }, {
                   name: "叠加分析 (FGB)",
                   name_en: "overlay (FGB)",
+                  version: '11.1.0',
                   thumbnail: "ol_overlayAnalystService.png",
                   fileName: "04_overlayAnalystService_FGB"
                 },{
@@ -267,7 +272,7 @@ var exampleConfig = {
                 }, {
                   name: "表面分析(提取等值线) (FGB)",
                   name_en: "surface(Getting Contour Line) (FGB)",
-                  version: "11.1.0",
+                  version: '11.1.0',
                   thumbnail: "ol_surfaceAnalystService.png",
                   fileName: "04_surfaceAnalystService_FGB"
                 },{

@@ -52,8 +52,8 @@
   function load({ libsurl }) {
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
-    inputCSS('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css');
-    inputScript('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js');
+    inputCSS(`${libsurl}/maplibre-gl-js/3.1.0/maplibre-gl.css`);
+    inputScript(`${libsurl}/maplibre-gl-js/3.1.0/maplibre-gl.js`);
     if (inArray(includes, 'turf')) {
       inputScript(`${libsurl}/turf/6.5.0/turf.min.js`);
     }
@@ -64,7 +64,7 @@
 
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
       inputScript(`${libsurl}/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js`);
-  }
+    }
     if (inArray(includes, 'compare')) {
       inputCSS(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css`);
       inputScript(`${libsurl}/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js`);
@@ -181,9 +181,6 @@
       } else {
         inputScript('../../dist/maplibregl/iclient-maplibregl.min.js');
       }
-    }
-    if (!inArray(excludes, 'iclient-maplibregl-css')) {
-      inputCSS('../../dist/maplibregl/iclient-maplibregl.min.css');
     }
   }
 
