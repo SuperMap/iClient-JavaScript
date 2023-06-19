@@ -26,7 +26,7 @@
 	});
 
 	new L.supermap.TiledMapLayer(url).addTo(map);
-	//L.supermap.plotting.editControl().addTo(map);
+	L.supermap.plotting.editControl().addTo(map);
 	var movingTargetLayer = L.supermap.plotting.movingTargetLayer("Moving-Target", serverUrl).addTo(map);
 
 	map.on("zoomstart", function(){

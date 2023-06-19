@@ -63,7 +63,7 @@
         zoom: 3
     });
 
-    L.supermap.tiledMapLayer(url).addTo(map);
+    var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
     drawControl = L.supermap.plotting.drawControl();
     drawControl.addTo(map);
     var editControl = L.supermap.plotting.editControl();
@@ -130,22 +130,40 @@
     }
 
     function setPlottingLayerMinScale() {
-        plotMapManager.getActivePlottingLayer().setMinVisibleScale(map._layers[27].getScale());
+      widgets.alert.clearAlert();
+      if (plotMapManager.getActivePlottingLayer() != null) {
+          plotMapManager.getActivePlottingLayer().setMinVisibleScale(baseLayer.getScale());
+      } else {
+          widgets.alert.showAlert("当前地图无标绘图层",false);
+      }
+        //plotMapManager.getActivePlottingLayer().setMinVisibleScale(baseLayer.getScale());
     }
 
     function setPlottingLayerMaxScale() {
-        plotMapManager.getActivePlottingLayer().setMaxVisibleScale(map._layers[27].getScale());
+      widgets.alert.clearAlert();
+      if (plotMapManager.getActivePlottingLayer() != null) {
+          plotMapManager.getActivePlottingLayer().setMaxVisibleScale(baseLayer.getScale());
+      } else {
+          widgets.alert.showAlert("当前地图无标绘图层",false);
+      }
+        //plotMapManager.getActivePlottingLayer().setMaxVisibleScale(baseLayer.getScale());
     }
 
     function clearScale() {
-        plotMapManager.getActivePlottingLayer().clearVisibleScale();
+      widgets.alert.clearAlert();
+      if (plotMapManager.getActivePlottingLayer() != null) {
+          plotMapManager.getActivePlottingLayer().clearVisibleScale();
+      } else {
+          widgets.alert.showAlert("当前地图无标绘图层",false);
+      }
+        //plotMapManager.getActivePlottingLayer().clearVisibleScale();
     }
 
     function setSymScaleDefinition() {
         if(document.getElementById("plotSize").selectedIndex === 0) {
-            plotMapManager.getActivePlottingLayer().setSymScaleDefinition(map._layers[27].getScale(),false);
+            plotMapManager.getActivePlottingLayer().setSymScaleDefinition(baseLayer.getScale(),false);
         }else{
-            plotMapManager.getActivePlottingLayer().setSymScaleDefinition(map._layers[27].getScale(),true);
+            plotMapManager.getActivePlottingLayer().setSymScaleDefinition(baseLayer.getScale(),true);
         }
     }
 
