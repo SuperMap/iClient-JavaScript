@@ -1,29 +1,19 @@
 import maplibregl from 'maplibre-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
-import {Point} from '../../../src/common/commontypes/geometry/Point';
-import {LineString} from '../../../src/common/commontypes/geometry/LineString';
-import {DeckglLayer} from '../../../src/maplibregl/overlay/DeckglLayer';
+import { Point } from '../../../src/common/commontypes/geometry/Point';
+import { LineString } from '../../../src/common/commontypes/geometry/LineString';
+import { DeckglLayer } from '../../../src/maplibregl/overlay/DeckglLayer';
 
-maplibregl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
+var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 describe('maplibregl_DeckglLayer', () => {
     var originalTimeout;
     var testDiv, map, deckglLayer, features;
     beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
-        testDiv.style.styleFloat = "left";
-        testDiv.style.marginLeft = "8px";
-        testDiv.style.marginTop = "50px";
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        map = new maplibregl.Map({
-            container: 'map',
-            style: 'https://demotiles.maplibre.org/style.json',
-            center: [13.413952, 52.531913],
-            zoom: 16.000000000000004,
-            pitch: 33.2
-        });
         var pointList = [],
             p1 = new Point(20.05408801141, 38.837029131724),
             p2 = new Point(18.80757663534, 38.606951847395),
@@ -37,9 +27,47 @@ describe('maplibregl_DeckglLayer', () => {
             fieldValues: [],
             geometry: line
         };
-        map.on('load', function() {
-          done();
+        map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    'route': {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                                'type': 'LineString',
+                                'coordinates': [
+                                    [-122.483696, 37.833818],
+                                    [-122.493782, 37.833683]
+                                ]
+                            }
+                        }
+                    }
+                },
+                "layers": [{
+                    'id': 'route',
+                    'type': 'line',
+                    'source': 'route',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#888',
+                        'line-width': 8
+                    }
+                }]
+            },
+            center: [112, 37.94],
+            zoom: 3
         });
+
+        setTimeout(() => {
+            done();
+        }, 0)
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -49,7 +77,7 @@ describe('maplibregl_DeckglLayer', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(() => {
-        document.body.removeChild(testDiv);
+        // document.body.removeChild(testDiv);
     });
 
     it('onAdd_PathLayer', (done) => {
@@ -141,7 +169,7 @@ describe('maplibregl_DeckglLayer', () => {
         var p2 = new Point(18.80757663534, 38.606951847395);
         var p3 = new Point(17.43207212138, 38.530259419285);
         deckglLayer = new DeckglLayer("scatter-plot", {
-            data: {p1, p2, p3},
+            data: { p1, p2, p3 },
             props: {
                 radiusScale: 300,
                 radiusMaxPixels: 500,
@@ -183,8 +211,8 @@ describe('maplibregl_DeckglLayer', () => {
 
     it('setData,removeFromMap', (done) => {
         var data = [
-            {"ADDRESS": "939 ELLIS ST", "RACKS": 2, "SPACES": 4, "COORDINATES": [-122.42177834, 37.78346622]},
-            {"ADDRESS": "1380 HOWARD ST", "RACKS": 1, "SPACES": 2, "COORDINATES": [-122.414411, 37.774458]}
+            { "ADDRESS": "939 ELLIS ST", "RACKS": 2, "SPACES": 4, "COORDINATES": [-122.42177834, 37.78346622] },
+            { "ADDRESS": "1380 HOWARD ST", "RACKS": 1, "SPACES": 2, "COORDINATES": [-122.414411, 37.774458] }
         ];
         deckglLayer = new DeckglLayer("hexagon-layer", {
             data: features,
@@ -210,9 +238,9 @@ describe('maplibregl_DeckglLayer', () => {
 
     it('addData,removeData', (done) => {
         var data = [
-            {"ADDRESS": "939 ELLIS ST", "RACKS": 2, "SPACES": 4, "COORDINATES": [-122.42177834, 37.78346622]},
-            {"ADDRESS": "1380 HOWARD ST", "RACKS": 1, "SPACES": 2, "COORDINATES": [-122.414411, 37.774458]},
-            {"ADDRESS": "685 CHENERY ST", "RACKS": 1, "SPACES": 2, "COORDINATES": [-122.433618, 37.73435]}
+            { "ADDRESS": "939 ELLIS ST", "RACKS": 2, "SPACES": 4, "COORDINATES": [-122.42177834, 37.78346622] },
+            { "ADDRESS": "1380 HOWARD ST", "RACKS": 1, "SPACES": 2, "COORDINATES": [-122.414411, 37.774458] },
+            { "ADDRESS": "685 CHENERY ST", "RACKS": 1, "SPACES": 2, "COORDINATES": [-122.433618, 37.73435] }
         ];
         deckglLayer = new DeckglLayer("arc-layer", {
             data: features,
@@ -257,7 +285,7 @@ describe('maplibregl_DeckglLayer', () => {
             expect(deckglLayer.deckGL.props.radius).toEqual(1000);
             done();
         }, 0)
-        
+
     });
 
     it('onRemove', (done) => {
