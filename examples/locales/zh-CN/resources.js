@@ -227,7 +227,6 @@ window.examplesResources = {
         "title_DatasourceInfo": "数据源信息查询",
         "title_DatasetInfo": "数据集信息查询",
         "title_getFeatureByBounds": "范围查询",
-        "title_getFeatureByBounds_FGB": "范围查询 (FGB)",
         "title_getFeatureByBuffer": "缓冲区查询",
         "title_getFeatureByGeometry": "几何查询",
         "title_getFeatureByIDs": "ID 查询",
