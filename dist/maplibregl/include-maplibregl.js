@@ -78,13 +78,13 @@
     if (inArray(includes, 'echarts')) {
       inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
       inputScript(libsurl + '/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
-      inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
+      inputScript(libsurl + '/maplibre-echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'echarts-vue')) {
       inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
       inputScript(libsurl + '/vue-echarts/4.1.0/vue-echarts.min.js');
       inputScript(libsurl + '/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
-      inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
+      inputScript(libsurl + '/maplibre-echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'three')) {
       inputScript(libsurl+ '/three/0.150.1/three.min.js');
