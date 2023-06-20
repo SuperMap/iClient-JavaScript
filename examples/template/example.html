@@ -42,7 +42,8 @@
     var notFor = ['iClient Classic', '3D-WebGL'];
     var productArr = ['Leaflet', 'OpenLayers', 'MapboxGL', 'MapLibreGL', 'component', 'iClient Classic', '3D-WebGL']
     var path = window.location.pathname.split('/');
-    var identification = productArr.filter(function(name) { return name.toLowerCase().includes(path[2]) || name.toLowerCase().includes(path[3]) })[0];
+    var examplesStrIndex = path.indexOf('examples');
+    var identification = productArr.filter(function(name) { return name.toLowerCase().includes(path[examplesStrIndex + 1])})[0];
     if (identification) {
       var suffixHeader = document.getElementById('suffix-title');
       suffixHeader.innerText = (notFor.indexOf(identification) < 0 ? 'for ' : '') + identification;
