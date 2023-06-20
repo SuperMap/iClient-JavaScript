@@ -53,8 +53,10 @@
     var libsurl = config.libsurl;
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
-    inputCSS(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.css');
-    inputScript(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.js');
+    if (!inArray(excludes, 'maplibregl')) {
+      inputCSS(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.css');
+      inputScript(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.js');
+    }
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
