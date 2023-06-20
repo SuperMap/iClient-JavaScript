@@ -1,7 +1,8 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 $(document).ready(function () {
     window.initI18N(function(){
-    initPage();
+    var pageConfig = getActiveExampleConfig();
+    initPage(pageConfig);
     bindEvents();
     sidebarScrollFix();
 });
@@ -10,10 +11,31 @@ $(document).ready(function () {
 var aceEditor;
 var containExamples = true;
 
-function initPage() {
+function initPage(pageConfig) {
+    var showCode = pageConfig.showCode;
     initSideBar();
-    initEditor();
+    initEditor(showCode);
     screenResize();
+}
+
+
+//获取示例页面的配置信息
+function getActiveExampleConfig(){
+  var activeId = getActiveId();
+  var config = exampleConfig;
+  for(var key in config){
+    const item = config[key];
+    for(var contentKey in item.content){
+      const contentItem = item.content[contentKey];
+      for(var i=0; i< contentItem.content.length; i++ ){
+         var arrItem = contentItem.content[i];
+         if(activeId === arrItem.fileName){
+           return arrItem;
+         }
+      }
+    }
+  }
+  return {}
 }
 
 function initSideBar() {
@@ -35,7 +57,12 @@ function screenResize() {
 }
 
 //初始化编辑器
-function initCodeEditor() {
+function initCodeEditor(showCode) {
+    if(showCode === false){
+      return
+    }
+    const codeBtn = document.getElementById("showCodeBtn");
+    codeBtn.classList.remove('hide');
     if (!aceEditor) {
         aceEditor = ace.edit("editor");
         aceEditor.setTheme("ace/theme/textmate");
@@ -50,9 +77,9 @@ function initCodeEditor() {
 }
 
 //初始化编辑器以及预览内容
-function initEditor() {
+function initEditor(showCode) {
     loadExampleHtml();
-    initCodeEditor();
+    initCodeEditor(showCode);
 }
 
 function loadExampleHtml() {
@@ -136,14 +163,20 @@ function refresh() {
     run();
 }
 
+//获取当前页的id
+function getActiveId(){
+  var hash = window.location.hash;
+  if (hash.indexOf("#") === -1) {
+      return $("section#sidebar .thirdMenu a.link").first().attr('id');
+  }
+  return hash.split("#")[1];
+}
+
 function initSelect() {
     var hash = window.location.hash;
-    var id;
+    var id = getActiveId();
     if (hash.indexOf("#") === -1) {
-        id = $("section#sidebar .thirdMenu a.link").first().attr('id');
         window.location.hash = (id) ? "#" + id : window.location.hash;
-    } else {
-        id = hash.split("#")[1];
     }
     selectMenu(id);
 }

@@ -1781,6 +1781,7 @@ window.examplesResources = {
         "msg_clickLayerToPopup": 'Please click the layer\'s feature to check properties',
         "msg_addSuccess": "Added successfully!",
         "msg_addFailed": "Added failed!",
+        "msg_addWebSymbolFailed": "Added websymbol failed!",
 
         "set_style": "",
         "style_width420px": 'width: 500px',
