@@ -210,7 +210,7 @@ var exampleConfig = {
           },
           {
             name: '数据集缓冲区分析 (FGB)',
-            name_en: 'buffer',
+            name_en: 'buffer (FGB)',
             thumbnail: 'mb_bufferAnalystService.png',
             fileName: '04_bufferAnalystService_FGB'
           },
@@ -222,7 +222,7 @@ var exampleConfig = {
           },
           {
             name: '几何对象缓冲区分析 (FGB)',
-            name_en: 'buffer-geometry',
+            name_en: 'buffer-geometry (FGB)',
             thumbnail: 'mb_bufferAnalystService_geometry.png',
             fileName: '04_bufferAnalystService_geometry_FGB'
           },
@@ -234,7 +234,7 @@ var exampleConfig = {
           },
           {
             name: '数据集泰森多边形 (FGB)',
-            name_en: 'thiessen-dataset',
+            name_en: 'thiessen-dataset (FGB)',
             thumbnail: 'mb_thiessenAnalystService-datasets.png',
             fileName: '04_thiessenAnalystService_datasets_FGB'
           },
@@ -246,7 +246,7 @@ var exampleConfig = {
           },
           {
             name: '几何泰森多边形 (FGB)',
-            name_en: 'thiessen-geometry',
+            name_en: 'thiessen-geometry (FGB)',
             thumbnail: 'mb_thiessenAnalystService-geometry.png',
             fileName: '04_thiessenAnalystService_geometry_FGB'
           },
@@ -258,7 +258,7 @@ var exampleConfig = {
           },
           {
             name: '叠加分析 (FGB)',
-            name_en: 'overlay',
+            name_en: 'overlay (FGB)',
             thumbnail: 'mb_overlayAnalystService.png',
             fileName: '04_overlayAnalystService_FGB'
           },
