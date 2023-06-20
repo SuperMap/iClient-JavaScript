@@ -35,18 +35,6 @@ var exampleConfig = {
             fileName: '01_mapService'
           },
           {
-            name: '距离测量',
-            name_en: 'distance measurement service',
-            thumbnail: 'mb_measure-distance.png',
-            fileName: '01_measure_distance'
-          },
-          {
-            name: '面积测量',
-            name_en: 'area measurement service',
-            thumbnail: 'mb_measure-area.png',
-            fileName: '01_measure_area'
-          },
-          {
             name: '范围查询',
             name_en: 'bounds query',
             thumbnail: 'mb_mapQueryByBounds.png',
@@ -933,12 +921,6 @@ var exampleConfig = {
             name_en: 'Attribution Control',
             thumbnail: 'control_attributionControl.png',
             fileName: 'control_attributionControl'
-          },
-          {
-            name: '绘图控件',
-            name_en: 'Draw Control',
-            thumbnail: 'control_drawControl.png',
-            fileName: 'control_drawControl'
           }
         ]
       }
