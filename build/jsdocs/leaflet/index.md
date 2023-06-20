@@ -27,7 +27,7 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
 <table><tr>
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%">投影</th>
 </tr><tr>
-    <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库 <a href="https://echarts.baidu.com/">ECharts</a>，<a href="https://mapv.baidu.com/">MapV</a></p>
+    <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库 <a href="https://echarts.apache.org/">ECharts</a>，<a href="https://mapv.baidu.com/">MapV</a></p>
         <a href="TiledVectorLayer.html">TiledVectorLayer</a><br>
         <a href="GraphicLayer.html">GraphicLayer</a><br>
         <a href="DataFlowLayer.html">DataFlowLayer</a><br>
@@ -50,5 +50,5 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
 ## 参考API
 
 *   Leaflet API:<a href="https://leafletjs.com/reference.html" target="_blank">https://leafletjs.com/reference.html</a>
-*   ECharts API:<a href="https://echarts.baidu.com/api.html#echarts" target="_blank">https://echarts.baidu.com/api.html#echarts</a>
+*   ECharts API:<a href="https://echarts.apache.org/api.html#echarts" target="_blank">https://echarts.apache.org/api.html#echarts</a>
 *   MapV API:<a href="https://github.com/huiyan-fe/mapv/blob/master/API.md" target="_blank">https://github.com/huiyan-fe/mapv/blob/master/API.md</a>

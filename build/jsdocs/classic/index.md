@@ -7,5 +7,5 @@ SuperMap iClient Classic 是一套基于SuperMap iClient 8C(2017) for JavaScript
 ## 参考API
 
 *   iClient8C API:<a href="https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap/Map-js.html" target="_blank">https://iclient.supermap.io/web/libs/iclient8c/apidoc/files/SuperMap/Map-js.html</a>
-*   ECharts API:<a href="https://echarts.baidu.com/api.html#echarts" target="_blank">https://echarts.baidu.com/api.html#echarts</a>
+*   ECharts API:<a href="https://echarts.apache.org/api.html#echarts" target="_blank">https://echarts.apache.org/api.html#echarts</a>
 *   MapV API:<a href="https://github.com/huiyan-fe/mapv/blob/master/API.md" target="_blank">https://github.com/huiyan-fe/mapv/blob/master/API.md</a>

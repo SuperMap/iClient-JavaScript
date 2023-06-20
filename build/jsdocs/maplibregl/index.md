@@ -9,5 +9,5 @@ SuperMap iClient for MaplibreGL 是一套基于 MaplibreGL v1 的云 GIS 网络�
 ## 参考 API
 
 - Maplibre GL JS API:<a href="https://www.maplibre.com/maplibre-gl-js/api/" target="_blank">https://www.maplibre.com/maplibre-gl-js/api/</a>
-- ECharts API:<a href="https://echarts.baidu.com/api.html#echarts" target="_blank">https://echarts.baidu.com/api.html#echarts</a>
+- ECharts API:<a href="https://echarts.apache.org/api.html#echarts" target="_blank">https://echarts.apache.org/api.html#echarts</a>
 - MapV API:<a href="https://github.com/huiyan-fe/mapv/blob/master/API.md" target="_blank">https://github.com/huiyan-fe/mapv/blob/master/API.md</a>

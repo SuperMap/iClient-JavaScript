@@ -27,7 +27,7 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
 <table><tr>
     <th width="33.3%">可视化</th><th width="33.3%">地图</th><th width="33.3%"></th>
 </tr><tr>
-    <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库 <a href="https://echarts.baidu.com/">ECharts</a>，<a href="https://mapv.baidu.com/">MapV</a></p>
+    <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库 <a href="https://echarts.apache.org/">ECharts</a>，<a href="https://mapv.baidu.com/">MapV</a></p>
         <a href="VectorTileSuperMapRest.html">VectorTileSuperMapRest</a><br>
         <a href="Graphic.html">Graphic</a><br>
         <a href="DataFlow.html">DataFlow</a><br>
@@ -47,5 +47,5 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
 ## 参考API
 
 *   OpenLayers API:<a href="https://openlayers.org/en/latest/apidoc/" target="_blank">https://openlayers.org/en/latest/apidoc/</a>
-*   ECharts API:<a href="https://echarts.baidu.com/api.html#echarts" target="_blank">https://echarts.baidu.com/api.html#echarts</a>
+*   ECharts API:<a href="https://echarts.apache.org/api.html#echarts" target="_blank">https://echarts.apache.org/api.html#echarts</a>
 *   MapV API:<a href="https://github.com/huiyan-fe/mapv/blob/master/API.md" target="_blank">https://github.com/huiyan-fe/mapv/blob/master/API.md</a>
