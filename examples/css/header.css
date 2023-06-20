@@ -153,6 +153,7 @@
   left: 20px !important;
   border: none;
   border-radius: 4px !important;
+  background-color: var(--dropdown-background-color);
   box-shadow: 0px 6px 18px 0px var(--dropdown-shadow-color);
 }
 .navbar-rightbar .dropdown .dropdown-menu{

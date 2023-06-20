@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function initSkin() {
-  var skin = utils.getCookie('theme') || 'light';
+  var skin = utils.getCookie('theme') || 'dark';
   var bodyElem = document.querySelector('body');
   bodyElem.classList.remove("light", "dark");
   bodyElem.classList.add(skin);
