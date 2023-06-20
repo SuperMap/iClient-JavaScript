@@ -558,7 +558,7 @@ deps = {
                     "./src/leaflet/components/openfile/OpenFileView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.openFile",
+                    "name": "L.supermap.components.openFileView",
                     "des": "打开文件组件",
                     "des_en": "Open file components"
                 }]
@@ -569,7 +569,7 @@ deps = {
                     "./src/leaflet/components/clientcomputation/ClientComputationView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.clientComputation",
+                    "name": "L.supermap.components.clientComputationView",
                     "des": "客户端计算组件",
                     "des_en": "Client computation component"
                 }]
@@ -580,7 +580,7 @@ deps = {
                     "./src/leaflet/components/distributedanalysis/DistributedAnalysisView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.distributedAnalysis",
+                    "name": "L.supermap.components.distributedAnalysisView",
                     "des": "分布式分析组件",
                     "des_en": "Distributed analysis component"
                 }]
@@ -591,7 +591,7 @@ deps = {
                     "./src/leaflet/components/search/SearchView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.search",
+                    "name": "L.supermap.components.searchView",
                     "des": "图层查询组件",
                     "des_en": "Search"
                 }]
@@ -602,7 +602,7 @@ deps = {
                     "./src/leaflet/components/dataflow/DataFlowView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.dataFlow",
+                    "name": "L.supermap.components.dataFlowView",
                     "des": "数据流组件",
                     "des_en": "Data flow"
                 }]
@@ -613,7 +613,7 @@ deps = {
                     "./src/leaflet/components/dataservicequery/DataServiceQueryView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.dataServiceQuery",
+                    "name": "L.supermap.components.dataServiceQueryView",
                     "des": "数据服务查询组件",
                     "des_en": "Data service query"
                 }]
@@ -1304,7 +1304,7 @@ deps = {
                     "./src/mapboxgl/control/Logo.js"
                 ],
                 "modules": [{
-                    "name": "mapboxgl.supermap.LogoControl",
+                    "name": "mapboxgl.supermap.control.Logo",
                     "des": "Logo 控件",
                     "des_en": "Logo control"
                 }]

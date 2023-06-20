@@ -19,6 +19,8 @@
     "include": [
       "src/classic",
       "src/common/thirdparty/elasticsearch",
+      "src/common/iServer/AddressMatchService.js",
+      "src/common/iServer/ProcessingService.js",
       "src/common/iServer/CommonServiceBase.js",
       "src/common/iServer/GeoCodingParameter.js",
       "src/common/iServer/GeoDecodingParameter.js",
