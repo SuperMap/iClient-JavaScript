@@ -164,11 +164,8 @@
       inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
     }
     if (inArray(includes, 'videojs')) {
-      inputCSS(libsurl + 'video-js/7.10.2/video-js.min.css');
+      inputCSS(libsurl + '/video-js/7.10.2/video-js.min.css');
       inputScript(libsurl + '/video-js/7.10.2/video.min.js');
-    }
-    if (inArray(includes, 'FGB')) {
-      inputScript(libsurl + '/flatgeobuf-geojson/3.23.1/flatgeobuf-geojson.min.js');
     }
     if (inArray(includes, 'g6')) {
       inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
