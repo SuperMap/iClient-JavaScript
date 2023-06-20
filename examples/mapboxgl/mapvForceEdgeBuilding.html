@@ -170,8 +170,7 @@
           draw: 'simple'
         };
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVLinelayer = new mapboxgl.supermap.MapvLayer('', dataSet, options);
+        var mapVLinelayer = new mapboxgl.supermap.MapvLayer(dataSet, options);
         map.addLayer(mapVLinelayer);
 
         var dataSet = new mapv.DataSet(timeData);
@@ -192,8 +191,7 @@
           draw: 'simple'
         };
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVAnimationLinelayer = new mapboxgl.supermap.MapvLayer('', dataSet, options);
+        var mapVAnimationLinelayer = new mapboxgl.supermap.MapvLayer(dataSet, options);
 
         map.addLayer(mapVAnimationLinelayer);
       });
