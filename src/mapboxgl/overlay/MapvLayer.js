@@ -21,7 +21,7 @@ import {
  */
 export class MapvLayer {
   constructor(map, dataSet, mapVOptions) {
-    if (map instanceof mapboxgl.Map) {
+    if (arguments.length === 3) {
       this.map = map;
       delete mapVOptions['layerID'];
       this.mapVOptions = mapVOptions;
