@@ -3,6 +3,8 @@ const configBase = require('./webpack.config.base');
 const libName = 'mapboxgl';
 //产品包名
 const productName = 'iclient-mapboxgl';
+//复制文件
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   target: configBase.target,
@@ -62,5 +64,10 @@ module.exports = {
       return moduleRules;
     })()
   },
-  plugins: configBase.plugins(libName, productName)
+  plugins: [
+    ...configBase.plugins(libName, productName),
+    new CopyPlugin([
+        { from: `${__dirname}/../dist/resources/symbols`, to: `${__dirname}/../dist/mapboxgl/resources/symbols`}
+    ])
+  ]
 };

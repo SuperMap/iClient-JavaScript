@@ -1,5 +1,7 @@
 var fs = require('fs');
 var path = require('path');
+const fse = require('fs-extra')
+
 var key = process.argv[2] ? process.argv[2].replace("--", "") : "leaflet";
 var filePath = path.join(__dirname, "../dist");
 var destDir = path.join(__dirname, "../src/" + key + "/dist");
@@ -40,4 +42,12 @@ fs.readdir(path.join(filePath, key), function (err, files) {
             })
         }
     })
+});
+
+// 拷贝resources文件夹到src/mapboxgl
+const resourcePath = path.join(__dirname, "../dist/resources");
+const srouceDestDir = path.join(__dirname, "../src/mapboxgl/resources");
+fse.copy(resourcePath, srouceDestDir, err => {
+    if (err) {throw err}
+    console.log('success')
 })
