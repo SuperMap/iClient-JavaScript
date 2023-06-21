@@ -81,6 +81,4 @@ export { DateExt } from './commontypes/Date';
 export { FileConfig, FileTypes } from './components/CommonTypes';
 export { FileModel } from './components/openfile/FileModel';
 export { LevelRenderer } from './overlay/levelRenderer/LevelRenderer';
-export { Transform } from './overlay/threejs/Transform';
 export { inheritExt, mixinExt, StringExt, NumberExt, FunctionExt, ArrayExt } from './commontypes/BaseTypes';
-export { KnowledgeGraph } from './overlay/KnowledgeGraph'

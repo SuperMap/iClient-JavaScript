@@ -332,7 +332,8 @@ import {
     ShapeParametersPolygon,
     ShapeParametersRectangle,
     ShapeParametersSector,
-    FeatureTheme
+    FeatureTheme,
+    Transform
 } from './overlay';
 import {
     MessageBox,
@@ -697,7 +698,8 @@ export {
     ShapeParametersPolygon,
     ShapeParametersRectangle,
     ShapeParametersSector,
-    FeatureTheme
+    FeatureTheme,
+    Transform
 };
 export { KeyServiceParameter, SecurityManager, ServerInfo, TokenServiceParameter };
 export { CartoCSS, ThemeStyle };

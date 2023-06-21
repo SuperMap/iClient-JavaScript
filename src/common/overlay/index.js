@@ -25,7 +25,7 @@ import {
   FeatureTheme
 } from './feature';
 import {LevelRenderer} from './levelRenderer';
-import * as Transfrom from './threejs/Transform'
+import { Transform } from './threejs/Transform'
 
 export { FeatureThemeBar };
 export { FeatureThemeBar3D };
@@ -51,4 +51,4 @@ export {
   FeatureTheme
 };
 export { LevelRenderer };
-export { Transfrom };
+export { Transform };
