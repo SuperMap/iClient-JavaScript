@@ -42,7 +42,9 @@ function initSideBar() {
     var config = exampleConfig;
     var sideBar = $("ul#sidebar-menu");
     for (var key in config) {
+      if (typeof config[key] === 'object' && config[key] !== null) {
         sideBar.append(createSideBarMenuItem(key, config[key], containExamples));
+      }
     }
     $(sideBar).ready(function () {
         initSelect();

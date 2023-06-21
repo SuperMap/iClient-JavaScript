@@ -37,4 +37,5 @@
     webPrintingURL: "http://localhost:9876/iserver/services/webprinting/rest/webprinting/v1",
     imageServiceURL: "http://localhost:9876/iserver/imageservice-imageserviceName/restjsr",
     chartServiceURL: "http://localhost:9876/iserver/services/map-ChartW/rest/maps/海图",
+    populationURL: "http://localhost:9876/iserver/services/map-Population/rest/maps/PopulationDistribution"
     }

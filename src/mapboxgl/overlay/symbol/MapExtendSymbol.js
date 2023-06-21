@@ -10,7 +10,7 @@ import { FetchRequest } from "@supermap/iclient-common/util/FetchRequest";
  * @description  扩展了 mapboxgl.Map 对图层相关的操作。
  * @private
  */
-export var MapExtendSymbol = (function () {
+function MapExtendSymbol(){
   /**
    * 获取symbol管理
    * @param {*} map
@@ -257,5 +257,5 @@ export var MapExtendSymbol = (function () {
     }
   }
 
-})();
-
+}
+export default MapExtendSymbol

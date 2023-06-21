@@ -70,6 +70,7 @@ mapboxgl.supermap = {...SuperMap, ...mapboxgl.supermap};
 mapboxgl.supermap.map = mapboxgl.supermap.map || {};
 
 mapboxgl.supermap.LogoControl = Logo;
+mapboxgl.supermap.Logo = Logo;
 mapboxgl.supermap.Util = Util;
 mapboxgl.supermap.WebMap = WebMap;
 mapboxgl.supermap.Graphic = Graphic;

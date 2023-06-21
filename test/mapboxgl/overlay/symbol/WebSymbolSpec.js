@@ -13,6 +13,7 @@ describe('mapboxgl_WebSymbol', () => {
     testDiv.style.width = '500px';
     testDiv.style.height = '500px';
     window.document.body.appendChild(testDiv);
+    new mapboxgl.supermap.WebSymbol().init();
     map = new mapboxgl.Map({
       container: 'map',
       style: {

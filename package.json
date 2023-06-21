@@ -47,7 +47,7 @@
     "build-docs-mapboxgl": "rimraf ./docs/mapboxgl && jsdoc -c ./build/jsdocs/mapboxgl/docs.json -R ./build/jsdocs/mapboxgl/index.md",
     "build-docs-maplibregl": "rimraf ./docs/maplibregl && jsdoc -c ./build/jsdocs/maplibregl/docs.json -R ./build/jsdocs/maplibregl/index.md",
     "build-docs-classic": "rimraf ./docs/classic && jsdoc -c ./build/jsdocs/classic/docs.json -R ./build/jsdocs/classic/index.md",
-    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && npm run pre-publish-symbol && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic",
+    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic && npm run pre-publish-symbol",
     "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../maplibregl && npm publish && cd ../classic && npm publish",
     "pre-publish-symbol": "copyfiles -u 1 ./dist/resources/** ./src/mapboxgl/ "
   },

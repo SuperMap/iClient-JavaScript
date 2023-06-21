@@ -82,6 +82,7 @@ maplibregl.supermap.KnowledgeGraphService = KnowledgeGraphService;
 maplibregl.supermap.CommonUtil = CommonUtil;
 maplibregl.supermap.Util = Util;
 maplibregl.supermap.LogoControl = Logo;
+maplibregl.supermap.Logo = Logo;
 maplibregl.supermap.GraphMap = GraphMap;
 maplibregl.supermap.MapvLayer = MapvLayer;
 maplibregl.supermap.ThreeLayer = ThreeLayer;
