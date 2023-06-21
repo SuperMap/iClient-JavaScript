@@ -5,6 +5,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
   var testDiv, map, handler;
   var originalTimeout;
   beforeAll((done) => {
+    new mapboxgl.supermap.WebSymbol().init();
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';

@@ -5,6 +5,7 @@ var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 describe('SingleSymbolRender', () => {
   var testDiv, map, singleSymbolRender;
   beforeAll(() => {
+    new mapboxgl.supermap.WebSymbol().init();
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
