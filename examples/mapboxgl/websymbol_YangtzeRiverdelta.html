@@ -244,38 +244,34 @@
       });
     };
 
-    var addSource = function () {
+    map.on("load", function () {
+      // 配置基础路径
+      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
       var uploadedDataURL = "../data/yangtze-river-delta.json";
       $.get(uploadedDataURL, function (data) {
         map.addSource("sanjiaozhou", {
           type: "geojson",
           data: data,
         });
-      });
-    };
-
-    map.on("load", function () {
-      // 配置基础路径
-      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
-      addSource();
-      loadSymbols().then(function () {
-        createPolygonLayer("Frame", "polygon-955463");
-        createPolygonLayer("Province_R", "polygon-955464");
-        createPolygonLayer("SuHuZhe_R", "polygon-955514");
-        createPolygonLayer("Lake_R", "polygon-955463");
-        createPolygonLayer("River_R", "polygon-955463");
-        createPolygonLayer("MainRiver_R", "polygon-955463");
-        createPolygonLayer("SuHuZheInsideBuffer", "polygon-955441");
-        createPolygonLayer("SuHuZheBuffer2", "polygon-955383");
-        createPolygonLayer("SuHuZheBuffer1", "polygon-955453");
-        createLineLayer("Frame", "line-962558");
-        createLineLayer("Province_L", "line-964890");
-        createLineLayer("Coast_L", "line-962614");
-        createLineLayer("City_L", "line-962475");
-        createLineLayer("SuHuZheInside_L", "line-964890");
-        createLineLayer("SuHuZhe_L", "line-964890");
-        createTextLayer();
-        createDevelopLayer();
+        loadSymbols().then(function () {
+          createPolygonLayer("Frame", "polygon-955463");
+          createPolygonLayer("Province_R", "polygon-955464");
+          createPolygonLayer("SuHuZhe_R", "polygon-955514");
+          createPolygonLayer("Lake_R", "polygon-955463");
+          createPolygonLayer("River_R", "polygon-955463");
+          createPolygonLayer("MainRiver_R", "polygon-955463");
+          createPolygonLayer("SuHuZheInsideBuffer", "polygon-955441");
+          createPolygonLayer("SuHuZheBuffer2", "polygon-955383");
+          createPolygonLayer("SuHuZheBuffer1", "polygon-955453");
+          createLineLayer("Frame", "line-962558");
+          createLineLayer("Province_L", "line-964890");
+          createLineLayer("Coast_L", "line-962614");
+          createLineLayer("City_L", "line-962475");
+          createLineLayer("SuHuZheInside_L", "line-964890");
+          createLineLayer("SuHuZhe_L", "line-964890");
+          createTextLayer();
+          createDevelopLayer();
+        });
       });
     });
 
