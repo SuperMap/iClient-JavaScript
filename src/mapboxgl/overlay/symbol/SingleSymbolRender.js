@@ -17,7 +17,9 @@ class SingleSymbolRender {
      * @param {*} before
      */
     addLayer(layer, symbol, before) {
-        delete symbol.layout?.visibility;
+        if(layer.layout && layer.layout.visibility === 'none') {
+            Object.assign(layer.layout, {visibility: 'visible'});
+        }
         layer.paint && Object.assign(symbol.paint ?? {}, layer.paint);
         layer.layout && Object.assign(symbol.layout ?? {}, layer.layout);
         this.map.addLayerBySymbolBak({ ...layer, ...symbol }, before);
