@@ -23,6 +23,11 @@ class SymbolHandler {
         this.#layerSymbols = {};
     }
 
+    _update(map) {
+        this.map = map;
+        return this;
+    }
+
     /**
      * 添加符号图层
      * @param {Object} layer
@@ -339,7 +344,7 @@ class SymbolHandler {
      */
     moveLayer(layerId, beforeId) {
         const layerIds = this.getLayerIds(layerId);
-        const realBeforeId =  beforeId && (this.map.style.getLayer(beforeId)?.id ?? this.getFirstLayerId(beforeId));
+        const realBeforeId = beforeId && (this.map.style.getLayer(beforeId)?.id ?? this.getFirstLayerId(beforeId));
         if (layerIds?.length > 0) {
             layerIds.forEach(id => this.map.style.moveLayer(id, realBeforeId));
         } else {

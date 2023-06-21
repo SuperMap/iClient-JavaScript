@@ -20,7 +20,7 @@ function MapExtendSymbol(){
     if (!mapboxgl.Map.prototype.symbolHandler) {
       mapboxgl.Map.prototype.symbolHandler = new SymbolHandler(map);
     }
-    return mapboxgl.Map.prototype.symbolHandler;
+    return mapboxgl.Map.prototype.symbolHandler._update(map);
   }
 
   if (mapboxgl.Map.prototype.addLayerBySymbolBak === undefined) {
