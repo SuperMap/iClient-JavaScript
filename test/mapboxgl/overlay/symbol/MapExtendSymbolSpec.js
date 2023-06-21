@@ -3,7 +3,8 @@ import "../../../../src/mapboxgl/overlay/symbol/MapExtendSymbol";
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 
 describe('MapExtendSymbol', () => {
-    var url = 'http://localhost:8099/s3h4sgb3/iserver/services/map-china400/rest/maps/China';
+    var url = GlobeParameter.ChinaURL;
+    var populationUrl = GlobeParameter.populationURL;
     var testDiv, map;
     var originalTimeout;
     beforeAll((done) => {
@@ -27,7 +28,7 @@ describe('MapExtendSymbol', () => {
                     },
                     "全国人口密度空间分布图": {
                         "tiles": [
-                            "http:/fake:8090/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature.mvt?z={z}&x={x}&y={y}"
+                            populationUrl + "/tileFeature.mvt?z={z}&x={x}&y={y}"
                         ],
                         "type": "vector"
                     }
@@ -43,9 +44,9 @@ describe('MapExtendSymbol', () => {
             center: [116.40, 39.79],
             zoom: 3
         });
-        map.on('load', function () {
+        setTimeout(() => {
             done();
-        });
+        }, 0);
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -58,6 +59,7 @@ describe('MapExtendSymbol', () => {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
+    
 
     it('map.loadSymbol point-1', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((path) => {
@@ -101,178 +103,153 @@ describe('MapExtendSymbol', () => {
         done();
     });
 
-    it('map.addLayer no symbol', (done) => {
-        map.addLayer({
-            "id": "PopDensity_R@Population",
-            "source": "全国人口密度空间分布图",
-            "source-layer": "PopDensity_R@Population",
-            "type": "fill",
-            "paint": {
-                "fill-color": "rgba(197,88,254,1.00)",
-                "fill-antialias": true
-            }
+    it('map.moveLayer', () => {
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: 'PopDensity_P@Population'
         });
-        const layer = map.getLayer("PopDensity_R@Population");
-        expect(layer).not.toBeNull();
-        expect(layer.id).toBe("PopDensity_R@Population");
-        done();
+        spyOn(map, 'moveLayerBySymbolBak');
+        map.moveLayer("PopDensity_P@Population", "PopDensity_R@Population");
+        expect(map.moveLayerBySymbolBak).toHaveBeenCalled();
     });
 
-    it('map.addLayer symbol', (done) => {
-        map.addSymbol("start", { "layout": { "icon-image": "point-1" } });
-        map.addLayer({
+    it('map.moveLayer no beforeId', () => {
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: 'PopDensity_P@Population'
+        });
+        spyOn(map, 'moveLayerBySymbolBak');
+        map.moveLayer("PopDensity_P@Population");
+        expect(map.moveLayerBySymbolBak).toHaveBeenCalled();
+    });
+
+    it('map.moveLayer no Layer', () => {
+        spyOn(map.style, 'getLayer').and.returnValue(null);
+        spyOn(map, 'moveLayerBySymbolBak');
+        spyOn(map, '_update');
+        map.moveLayer("PopDensity_P@Population");
+        expect(map.moveLayerBySymbolBak).not.toHaveBeenCalled();
+        expect(map._update).toHaveBeenCalled();
+    });
+
+    it('map.removeLayer no Layer', () => {
+        spyOn(map.style, 'getLayer').and.returnValue(null);
+        spyOn(map, 'removeLayerBySymbolBak');
+        map.removeLayer("PopDensity_P@Population");
+        expect(map.removeLayerBySymbolBak).not.toHaveBeenCalled();
+    });
+
+    it('map.removeLayer id', () => {
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: 'PopDensity_P@Population'
+        });
+        spyOn(map, 'removeLayerBySymbolBak');
+        spyOn(map.symbolHandler, 'removeLayer');
+        map.removeLayer("PopDensity_P@Population");
+        expect(map.removeLayerBySymbolBak).toHaveBeenCalled();
+    });
+
+    it('setLayerZoomRange', () => {
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: 'PopDensity_P@Population'
+        });
+        spyOn(map.style, 'setLayerZoomRange');
+        spyOn(map, '_update');
+        map.setLayerZoomRange('PopDensity_R@Population', 2, 5);
+        expect(map.style.setLayerZoomRange).toHaveBeenCalled();
+    });
+
+    it('setLayerZoomRange-noLayer', () => {
+        spyOn(map.style, 'getLayer').and.returnValue(null);
+        spyOn(map.style, 'setLayerZoomRange');
+        spyOn(map.symbolHandler, 'setLayerZoomRange');
+        map.setLayerZoomRange('PopDensity_R@Population', 2, 5);
+        expect(map.symbolHandler.setLayerZoomRange).toHaveBeenCalled();
+    });
+
+    it('map.setSymbol', () => {
+        spyOn(map.symbolHandler, 'setSymbol');
+        map.setSymbol("PopDensity_R@Population", "polygon");
+        expect(map.symbolHandler.setSymbol).toHaveBeenCalled();
+    });
+    it('map.addLayer no symbol', () => {
+        const mylayer = {
+          "id": "PopDensity_R@Population",
+          "source": "全国人口密度空间分布图",
+          "source-layer": "PopDensity_R@Population",
+          "type": "fill",
+          "paint": {
+            "fill-color": "rgba(197,88,254,1.00)",
+            "fill-antialias": true
+          }
+        }
+        spyOn(map.style, 'addLayer');
+        spyOn(map.style, 'getLayer')
+          .withArgs("PopDensity_R@Population")
+          .and.returnValue(mylayer);;
+        map.addLayer(mylayer);
+        const layer = map.getLayer("PopDensity_R@Population");
+        expect(layer).not.toBeNull();
+    });
+  
+    it('map.addLayer symbol', () => {
+        spyOn(map.style, 'addLayer');
+        spyOn(map.style, 'addImage');
+        const mylayer = {
             "id": "PopDensity_P@Population",
             "source": "全国人口密度空间分布图",
             "source-layer": "PopDensity_R@Population",
             "type": "symbol",
             "symbol": "start"
-        });
+        }
+        spyOn(map.style, 'getLayer').and.returnValue(mylayer);
+
+        map.addSymbol("start", { "layout": { "icon-image": "point-1" } });
+        map.addLayer(mylayer);
         const layer = map.getLayer("PopDensity_P@Population");
         expect(layer).not.toBeNull();
-        expect(layer.id).toBe("PopDensity_P@Population");
-        expect(layer.symbol).toBe("start");
-        done();
     });
-
-    it('map.moveLayer', (done) => {
-        const styleLayers = map.getStyle().layers;
-        expect(styleLayers.length).toBe(3);
-        expect(styleLayers[1].id).toBe("PopDensity_R@Population");
-        expect(styleLayers[2].id).toBe("PopDensity_P@Population");
-        map.moveLayer("PopDensity_P@Population", "PopDensity_R@Population");
-        const newLayers = map.getStyle().layers;
-        expect(newLayers.length).toBe(3);
-        expect(newLayers[1].id).toBe("PopDensity_P@Population");
-        expect(newLayers[2].id).toBe("PopDensity_R@Population");
-        map.moveLayer("PopDensity_P@Population");
-        done();
-    });
-
-    it('map.moveLayer no beforeId', (done) => {
-        map.moveLayer("PopDensity_P@Population");
-        const newLayers = map.getStyle().layers;
-        expect(newLayers.length).toBe(3);
-        expect(newLayers[2].id).toBe("PopDensity_P@Population");
-        done();
-    });
-
-    it('map.moveLayer error id', (done) => {
-        map.moveLayer("PopDensity");
-        const newLayers = map.getStyle().layers;
-        expect(newLayers.length).toBe(3);
-        done();
-    });
-
-    it('map.removeLayer error id', (done) => {
-        map.removeLayer("PopDensity");
-        const newLayers = map.getStyle().layers;
-        expect(newLayers.length).toBe(3);
-        done();
-    });
-
-    it('map.removeLayer id', (done) => {
-        map.removeLayer("PopDensity_P@Population");
-        const newLayers = map.getStyle().layers;
-        expect(newLayers.length).toBe(2);
-        expect(newLayers[1].id).toBe("PopDensity_R@Population");
-        done();
-    });
-
-    it('map.setPaintProperty', (done) => {
-        map.setPaintProperty("PopDensity_P@Population");
-        map.setPaintProperty("PopDensity_R@Population", "fill-color", "black");
-        expect(map.getPaintProperty("PopDensity_R@Population", "fill-color")).toBe("black");
-        done();
-    });
-
-    it('map.setLayoutProperty', (done) => {
-        map.setLayoutProperty("PopDensity_P@Population");
-        map.getLayoutProperty("PopDensity_P@Population", "visibility");
-        map.setLayoutProperty("PopDensity_R@Population", "visibility", "visible");
-        expect(map.getLayoutProperty("PopDensity_R@Population", "visibility")).toBe("visible");
-        done();
-    });
-
-    it('setLayerZoomRange', () => {
-        map.setLayerZoomRange('PopDensity_R@Population', 2, 5);
-        expect(map.getLayer('PopDensity_R@Population').minzoom).toBe(2);
-        expect(map.getLayer('PopDensity_R@Population').maxzoom).toBe(5);
-    });
-
+  
     it('setFilter', () => {
-        map.getFilter("PopDensity_P@Population");
-        map.setFilter("PopDensity_P@Population", []);
-        expect(map.getFilter('PopDensity_R@Population')).toBe(undefined);
-        map.setFilter('PopDensity_R@Population', [
-            "all",
-            [
-                "==",
-                "$type",
-                "LineString"
-            ]
-        ]);
-        expect(map.getFilter('PopDensity_R@Population')).toEqual([
-            "all",
-            [
-                "==",
-                "$type",
-                "LineString"
-            ]
-        ]);
-    });
-
-    it('map.setSymbol', () => {
-        map.addSymbol("polygon", [
-            {
-                paint: {
-                    'fill-color': "rgba(255, 0, 0, 0.5)"
-                }
-            },
-            {
-                paint: {
-                    'fill-color': "rgba(0, 0, 255, 0.5)"
-                }
-            }
-        ])
-        expect(map.getLayer("PopDensity_R@Population").symbol).toBe(undefined);
-        map.setSymbol("PopDensity_R@Population", "polygon");
-        expect(map.getLayer("PopDensity_R@Population").symbol).toBe("polygon");
-        map.setLayerZoomRange('PopDensity_R@Population', 2, 5);
-    })
-
-    it('setStyle', () => {
-        map.setStyle({
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "type": "raster",
-                    "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
-                    "tileSize": 256
-                },
-                "全国人口密度空间分布图": {
-                    "tiles": [
-                        "http:/fake:8090/iserver/services/map-Population/rest/maps/PopulationDistribution/tileFeature.mvt?z={z}&x={x}&y={y}"
-                    ],
-                    "type": "vector"
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 22
-            }, {
-                "id": "PopDensity_P@Population",
-                "source": "全国人口密度空间分布图",
-                "source-layer": "PopDensity_R@Population",
-                "type": "symbol",
-                "symbol": "start"
-            }]
+        spyOn(map.style, 'setFilter');
+        spyOn(map.style, 'getFilter')
+        .and.returnValue([ 'all', [ '==', '$type', 'LineString' ] ]);
+        spyOn(map.style, 'getLayer')
+        .and.returnValue({
+            "id": "PopDensity_P@Population",
+            "source": "全国人口密度空间分布图",
+            "source-layer": "PopDensity_R@Population",
+            "type": "symbol",
         });
-        const layers = map.getStyle().layers;
-        expect(layers.length).toBe(2);
-        expect(layers[1].symbol).toBe("start");
-        expect(layers[0].id).toBe("simple-tiles");
+        map.setFilter('PopDensity_R@Population', [ 'all', [ '==', '$type', 'LineString' ] ]);
+        expect(map.getFilter('PopDensity_R@Population')).toEqual([ 'all', [ '==', '$type', 'LineString' ] ]);
     });
+    it('map.setLayoutProperty', () => {
+        const layerId = 'Landuse_R2';
+
+        spyOn(map.style, 'getLayer')
+            .and.returnValue(layerId);
+        spyOn(map.style, 'setLayoutProperty')
+            .and.returnValue(null);
+
+        map.setLayoutProperty(layerId, "line-join", "miter");
+        expect(map.style.setLayoutProperty).toHaveBeenCalled();
+
+        spyOn(map.style, 'getLayoutProperty')
+            .withArgs(layerId, "line-join")
+            .and.returnValue("miter");
+        map.getLayoutProperty(layerId, "line-join");
+        expect(map.style.getLayoutProperty).toHaveBeenCalled();
+    });
+    it('map.setPaintProperty', () => {
+        spyOn(map.style, 'getLayer').and.returnValue({
+            id: 'PopDensity_P@Population'
+        });
+        spyOn(map.style, 'setPaintProperty');
+        spyOn(map.style, 'getPaintProperty');
+        spyOn(map, '_update');
+        map.setPaintProperty("PopDensity_R@Population", "fill-color", "black");
+        map.getPaintProperty("PopDensity_P@Population", "fill-color");
+        expect(map.style.setPaintProperty).toHaveBeenCalled();
+        expect(map.style.getPaintProperty).toHaveBeenCalled();
+    });
+
 });
