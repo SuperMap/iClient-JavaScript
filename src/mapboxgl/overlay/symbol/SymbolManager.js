@@ -1,3 +1,6 @@
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 class SymbolManager {
     symbols;// addSymbol接口添加的symbol信息
     images; // 在loadImage的时候存下image
