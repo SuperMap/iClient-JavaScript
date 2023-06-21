@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from "mapbox-gl";
-import './MapExtendSymbol';
+import MapExtendSymbol from './MapExtendSymbol';
 /**
 * @class WebSymbol
 * @classdesc SuperMap iClient for MapboxGL 支持 Web 符号库，扩展了 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API。
@@ -188,5 +188,6 @@ export class WebSymbol {
    */
   init(config) {
     mapboxgl.Map.prototype.basePath = config?.basePath ?? this.defaultBasePath;
+    MapExtendSymbol();
   }
 }

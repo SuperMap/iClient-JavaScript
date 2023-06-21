@@ -1,5 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-import "../../../../src/mapboxgl/overlay/symbol/MapExtendSymbol";
+import MapExtendSymbol from "../../../../src/mapboxgl/overlay/symbol/MapExtendSymbol";
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 
 describe('MapExtendSymbol', () => {
@@ -8,6 +8,7 @@ describe('MapExtendSymbol', () => {
     var testDiv, map;
     var originalTimeout;
     beforeAll((done) => {
+        MapExtendSymbol();
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
