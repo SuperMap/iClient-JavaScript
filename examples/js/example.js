@@ -21,8 +21,10 @@ function initPage() {
     var sideBar = $("ul#sidebar-menu");
     var chartList = $("#charts-list");
     for (var key in exConfig) {
+      if (typeof exConfig[key] === 'object' && exConfig[key] !== null) {
         sideBar.append(createSideBarMenuItem(key, exConfig[key], containExamples));
         chartList.append(createGalleryItem(key, exConfig[key]));
+      }
     }
     resizeCharts();
     initSelect();
