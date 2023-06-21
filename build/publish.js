@@ -44,10 +44,12 @@ fs.readdir(path.join(filePath, key), function (err, files) {
     })
 });
 
-// 拷贝resources文件夹到src/mapboxgl
-const resourcePath = path.join(__dirname, "../dist/resources");
-const srouceDestDir = path.join(__dirname, "../src/mapboxgl/resources");
-fse.copy(resourcePath, srouceDestDir, err => {
-    if (err) {throw err}
-    console.log('success')
-})
+if (key === 'mapboxgl') {
+    // 拷贝resources文件夹到src/mapboxgl
+    const resourcePath = path.join(__dirname, "../dist/resources");
+    const srouceDestDir = path.join(__dirname, "../src/mapboxgl/resources");
+    fse.copySync(resourcePath, srouceDestDir, err => {
+        if (err) { throw err }
+        console.log('success')
+    })
+}
