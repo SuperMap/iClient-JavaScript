@@ -712,6 +712,15 @@ window.examplesResources = {
         "title_object_detection": "Object Detection",
         "title_fgb_all": "FGB Full Load",
         "title_fgb_extent": "FGB Extent Load",
+        "title_websymbol_DLG_I49": "DLG_I49",
+        "title_websymbol_2019ChinaGDP": "2019 China's GDP by Province",
+        "title_websymbol_editor": "WebSymbol Editor",
+        "title_websymbol_gallery": "WebSymbol Gallery",
+        "title_websymbol_YangtzeRiverdelta": "Yangtze River Delta",
+        "title_websymbol_landuseOfXinjiang": "Land Use of Xinjiang",
+        "title_websymbol_landuseOfJingjin": "Land Use of Jingjin",
+        "title_websymbol_landuse": "Land Use",
+        "title_websymbol_customWebSymbol": "Custom WebSymbol",
 
         "text_district_search": "Administrative region search",
         "text_rectangle_search": "Rectangle retrieval",
@@ -1791,6 +1800,7 @@ window.examplesResources = {
         "msg_clickLayerToPopup": 'Please click the layer\'s feature to check properties',
         "msg_addSuccess": "Added successfully!",
         "msg_addFailed": "Added failed!",
+        "msg_addWebSymbolFailed": "Added WebSymbol failed!",
 
         "set_style": "",
         "style_width420px": 'width: 500px',

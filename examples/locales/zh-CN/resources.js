@@ -666,6 +666,15 @@ window.examplesResources = {
         "title_object_detection": "目标检测",
         "title_fgb_all": "FGB 全量加载",
         "title_fgb_extent": "FGB 按需加载",
+        "title_websymbol_DLG_I49": "数字线划地图",
+        "title_websymbol_2019ChinaGDP": "2019年中国各省GDP",
+        "title_websymbol_editor": "Web符号编辑器",
+        "title_websymbol_gallery": "Web符号库",
+        "title_websymbol_YangtzeRiverdelta": "长江三角洲",
+        "title_websymbol_landuseOfXinjiang": "新疆土地利用",
+        "title_websymbol_landuseOfJingjin": "京津地区土地利用现状图",
+        "title_websymbol_landuse": "土地利用",
+        "title_websymbol_customWebSymbol":"自定义Web符号",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
@@ -1742,6 +1751,7 @@ window.examplesResources = {
         "msg_clickLayerToPopup": '点击图层上的要素，查看属性',
         "msg_addSuccess": "添加成功!",
         "msg_addFailed": "添加失败!",
+        "msg_addWebSymbolFailed": "添加符号失败!",
 
         "set_style": "top: -23px;left: 86px;",
         "style_width420px": 'width: 420px',

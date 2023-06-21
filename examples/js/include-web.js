@@ -38,6 +38,7 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         inputScript("../js/tokengenerator.js");
+        inputScript("../js/websymbol.js");
         var jQueryInclude = false;
         if (!inArray(excludes, 'example-i18n')) {
             inputScript(libsurl + '/jquery/jquery.min.js');
