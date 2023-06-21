@@ -10,7 +10,7 @@ module.exports = {
   target: configBase.target,
   mode: configBase.mode,
   //页面入口文件配置
-  entry: [...configBase.entry, `${__dirname}/../src/mapboxgl/namespace.js` ,`${__dirname}/../src/mapboxgl/css/index.js`],
+  entry: [...configBase.entry, `${__dirname}/../src/mapboxgl/namespace.js`, `${__dirname}/../src/mapboxgl/css/index.js`],
   //入口文件输出配置
   output: configBase.output(libName, productName),
   //是否启用压缩
@@ -35,7 +35,7 @@ module.exports = {
   module: {
     noParse: /[\/\\]node_modules[\/\\]mapbox-gl[\/\\]dist[\/\\]mapbox-gl\.js$/,
 
-    rules: (function() {
+    rules: (function () {
       let moduleRules = [];
       moduleRules.push(configBase.module.rules.img);
       const babelConfig = {
@@ -46,16 +46,16 @@ module.exports = {
           presets: ['@babel/preset-env'],
           plugins: [
             [
-                '@babel/plugin-transform-runtime',
-                {
-                    absoluteRuntime: false,
-                    corejs: false,
-                    helpers: false,
-                    regenerator: true,
-                    useESModules: false
-                }
+              '@babel/plugin-transform-runtime',
+              {
+                absoluteRuntime: false,
+                corejs: false,
+                helpers: false,
+                regenerator: true,
+                useESModules: false
+              }
             ]
-        ]
+          ]
         }
       }
       configBase.moduleVersion === "es6" && (babelConfig.include = /FGBLayer|flatgeobuf/);
@@ -66,8 +66,10 @@ module.exports = {
   },
   plugins: [
     ...configBase.plugins(libName, productName),
-    new CopyPlugin([
-        { from: `${__dirname}/../dist/resources/symbols`, to: `${__dirname}/../dist/mapboxgl/resources/symbols`}
-    ])
+    new CopyPlugin({
+      patterns: [
+        { from: `${__dirname}/../dist/resources/symbols`, to: `${__dirname}/../dist/mapboxgl/resources/symbols` }
+      ]
+    })
   ]
 };

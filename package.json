@@ -86,6 +86,7 @@
     "chromedriver": "87.0.5",
     "clean-css-cli": "^4.3.0",
     "commander": "^9.0.0",
+    "copy-webpack-plugin": "^9.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^6.7.1",
     "elasticsearch": "16.7.3",
