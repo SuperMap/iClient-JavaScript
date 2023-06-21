@@ -5157,12 +5157,14 @@ export class WebMap extends Observable {
     }
 
     handleJSONSuffix(url) {
-      if (url.includes('?')) {
-        let urlArr = url.split('?');
-        urlArr[0] = urlArr[0] + ".json";
-        url = urlArr.join('?');
-      } else {
-        url = url + ".json"
+      if(!url.includes('.json')) {
+        if (url.includes('?')) {
+          let urlArr = url.split('?');
+          urlArr[0] = urlArr[0] + ".json";
+          url = urlArr.join('?');
+        } else {
+          url = url + ".json"
+        }
       }
       return url;
     }
