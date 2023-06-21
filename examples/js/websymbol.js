@@ -1,1 +1,1 @@
-window.exampleWebSymbolBasePath =  "../../dist/resources/symbols";
+window.exampleWebSymbolBasePath =  "../../dist/mapboxgl/resources/symbols";
