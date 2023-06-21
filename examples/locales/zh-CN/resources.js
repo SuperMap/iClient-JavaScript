@@ -80,7 +80,7 @@ window.examplesResources = {
         "join": "加入我们： 超图Web客户端团队 ",
         "join_tips1": "（请发邮件至: ",
         "join_tips2": "，附上您的简历哦）",
-        "copyright": "版权所有 © 2000-2023 北京超图软件股份有限公司 蜀ICP备16000471号-1"
+        "copyright": "版权所有 © 2000 - 2023 北京超图软件股份有限公司 蜀ICP备16000471号-1"
     },
     "editor": {
         "expand": " 展开",
