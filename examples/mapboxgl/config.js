@@ -351,11 +351,11 @@ var exampleConfig = {
             },
             webPrinting: {
                 name: 'Web 打印',
-                name_en: 'Web Printing',
+                name_en: 'Web printing',
                 content: [
                     {
                         name: 'Web 地图打印',
-                        name_en: 'Web Map Print',
+                        name_en: 'web map print',
                         version: '10.1.0',
                         thumbnail: 'webPrintingJob.png',
                         fileName: 'webPrintingJob'
@@ -364,7 +364,7 @@ var exampleConfig = {
             },
             processingService: {
                 name: '分布式分析',
-                name_en: 'Distributed analysis services',
+                name_en: 'Distributed analysis service',
                 content: [
                     {
                         name: '密度分析',
@@ -452,7 +452,7 @@ var exampleConfig = {
             },
             image: {
               name: "影像服务",
-              name_en: "Image Service",
+              name_en: "Image service",
               content: [
                   {
                       name: "影像服务",

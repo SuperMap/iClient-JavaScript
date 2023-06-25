@@ -67,7 +67,7 @@
       innerHTML += "Bounds:" + JSON.stringify(result.bounds) + "<br>";
       new mapboxgl.Popup({ closeOnClick: false })
         .setLngLat([-96, 37.8])
-        .setHTML(innerHTML + "</br>")
+        .setHTML("<div style='word-wrap: break-word;'>" + innerHTML + "</br>"+ "</div>")
         .addTo(map);
     }
 
