@@ -14,7 +14,7 @@
     "release": "npm run release-leaflet && npm run release-openlayers && npm run release-mapboxgl  && npm run release-classic && npm run release-maplibregl",
     "release-leaflet": "npm run release-leaflet-es5 && npm run release-leaflet-es6",
     "release-openlayers": "npm run release-openlayers-es5 && npm run release-openlayers-es6 && npm run release-ol-es5 && npm run release-ol-es6",
-    "release-mapboxgl": "npm run release-mapboxgl-es5 && npm run release-mapboxgl-es6 && copyfiles -u 1 ./dist/resources/** ./dist/mapboxgl/",
+    "release-mapboxgl": "npm run release-mapboxgl-es5 && npm run release-mapboxgl-es6",
     "release-maplibregl": "npm run release-maplibregl-es5 && npm run release-maplibregl-es6",
     "release-classic": "npm run release-classic-es5 && npm run release-classic-es6",
     "release-leaflet-es5": "cross-env moduleVersion=es5 npm run deploy-leaflet && uglifyjs ./dist/leaflet/iclient-leaflet.js  --ecma 5 --comments /iclient-/i -c -m -o ./dist/leaflet/iclient-leaflet.min.js && cleancss -o  ./dist/leaflet/iclient-leaflet.min.css ./dist/leaflet/iclient-leaflet.css",
@@ -47,9 +47,8 @@
     "build-docs-mapboxgl": "rimraf ./docs/mapboxgl && jsdoc -c ./build/jsdocs/mapboxgl/docs.json -R ./build/jsdocs/mapboxgl/index.md",
     "build-docs-maplibregl": "rimraf ./docs/maplibregl && jsdoc -c ./build/jsdocs/maplibregl/docs.json -R ./build/jsdocs/maplibregl/index.md",
     "build-docs-classic": "rimraf ./docs/classic && jsdoc -c ./build/jsdocs/classic/docs.json -R ./build/jsdocs/classic/index.md",
-    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic && npm run pre-publish-symbol",
-    "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../maplibregl && npm publish && cd ../classic && npm publish",
-    "pre-publish-symbol": "copyfiles -u 1 ./dist/resources/** ./src/mapboxgl/ "
+    "pre-publish": "node ./build/publish.js --leaflet && node  ./build/publish.js --openlayers && node  ./build/publish.js --mapboxgl && node ./build/publish.js --maplibregl && node  ./build/publish.js --classic",
+    "publish": "npm run pre-publish && cd ./src/common && npm publish && cd ../leaflet && npm publish && cd ../openlayers && npm publish && cd ../mapboxgl && npm publish && cd ../maplibregl && npm publish && cd ../classic && npm publish"
   },
   "keywords": [
     "SuperMap",
@@ -87,7 +86,7 @@
     "chromedriver": "87.0.5",
     "clean-css-cli": "^4.3.0",
     "commander": "^9.0.0",
-    "copyfiles": "^2.4.1",
+    "copy-webpack-plugin": "^9.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^6.7.1",
     "elasticsearch": "16.7.3",
@@ -96,6 +95,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-webpack-plugin": "^2.1.0",
     "express": "^4.17.1",
+    "fs-extra": "^11.1.1",
     "get-pixels": "^3.3.2",
     "image-size": "^0.9.2",
     "istanbul": "^0.4.5",
