@@ -6,12 +6,13 @@
  import { DatasetService as CommonDatasetService } from '@supermap/iclient-common/iServer/DatasetService';
  import { CreateDatasetParameters } from '@supermap/iclient-common/iServer/CreateDatasetParameters';
  import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
- 
+
 /**
  * @class  DatasetService
  * @deprecatedclassinstance L.supermap.datasetService
  * @classdesc 数据集信息服务类。
  * @category iServer Data Dataset
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -33,7 +34,7 @@ export var DatasetService = ServiceBase.extend({
         });
     },
 
-    
+
     /**
      * @function DatasetService.prototype.getDatasets
      * @description 数据集查询服务。

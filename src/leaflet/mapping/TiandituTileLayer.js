@@ -11,6 +11,7 @@ import Attributions from '../core/Attributions';
  * @deprecatedclassinstance L.supermap.tiandituTileLayer
  * @classdesc 天地图图层类。
  * @category ThirdPartyMap
+ * @modulecategory Mapping
  * @extends WMTSLayer
  * @param {Object} options - 参数。
  * @param {string} [options.url='https://t{s}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。

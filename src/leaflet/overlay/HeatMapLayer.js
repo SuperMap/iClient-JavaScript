@@ -17,6 +17,7 @@
  * @category Visualization HeatMap
  * @classdesc 客户端专题图要素类。
  *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
+ * @modulecategory Overlay
  * @extends {L.Class}
  * @param {(L.Point|L.LatLng|L.CircleMarker)} geometry - 要素图形。
  * @param {Object} attributes - 要素属性。

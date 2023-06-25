@@ -15,7 +15,8 @@ import { ThreeLayerRenderer } from "@supermap/iclient-common/overlay/threejs/Thr
 /**
  * @class ThreeLayer
  * @category  Visualization Three
- * @classdesc Three 图层。
+ * @classdesc Three 图层类。
+ * @modulecategory Overlay
  * @param {string} id - 图层 ID。
  * @param {string} [renderer="gl"] - 图层渲染方式( canvas 或 WebGL )。取值："gl","canvas"。
  * @param {Object} options - 初始化参数。

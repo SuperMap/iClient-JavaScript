@@ -8,8 +8,9 @@ import Attributions from '../core/Attributions'
 /**
  * @class CloudTileLayer
  * @deprecatedclassinstance L.supermap.cloudTileLayer
- * @classdesc 超图云服务图层。
+ * @classdesc 超图云服务图层类。
  * @category ThirdPartyMap
+ * @modulecategory Mapping
  * @extends {L.TileLayer}
  * @param {string} [url='http://t2.dituhui.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}'] - 服务地址。
  * @param {Object} options - 参数。

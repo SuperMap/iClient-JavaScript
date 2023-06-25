@@ -14,6 +14,7 @@ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geo
  * @deprecatedclassinstance L.supermap.queryService
  * @classdesc 地图查询服务类。
  * @category  iServer Map QueryResults
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url -  服务地址。
  * @param {Object} options - 参数。

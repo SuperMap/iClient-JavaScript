@@ -10,6 +10,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @deprecatedclass SuperMap.Online
  * @classdesc 对接 SuperMap Online 所有基础服务。
  * @category iPortal/Online Resources
+ * @modulecategory Services
  * @example
  * var online=new Online();
  * var services = online.queryDatas(param);

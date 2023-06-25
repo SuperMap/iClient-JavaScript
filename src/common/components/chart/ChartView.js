@@ -11,9 +11,10 @@ import {
 
 /**
  * @class ChartView
- * @aliasclass Components.Chart
+ * @aliasclass Components.ChartView
  * @deprecatedclass SuperMap.Components.Chart
  * @classdesc 图表组件。
+ * @modulecategory Components
  * @version 9.1.2
  * @param {string} domID - 图表dom元素ID。
  * @param {Object} options - 可选参数。

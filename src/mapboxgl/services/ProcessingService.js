@@ -10,13 +10,14 @@ import { ProcessingService as CommonProcessingService } from '@supermap/iclient-
  * @class ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new ProcessingService(url,options)
  *  .getKernelDensityJobs(function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务地址。 
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
@@ -44,7 +45,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getKernelDensityJob
      * @description 获取某个密度分析。
-     * @param {string} id - 空间分析的ID。 
+     * @param {string} id - 空间分析的ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -55,9 +56,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addKernelDensityJob
      * @description 密度分析。
-     * @param {KernelDensityJobParameter} params -密度分析参数类。 
-     * @param {RequestCallback} callback 回调函数。 
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {KernelDensityJobParameter} params -密度分析参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
@@ -88,7 +89,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryMeshJob
      * @description 获取某个点聚合分析。
-     * @param {string} id - 空间分析的 ID。 
+     * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -99,7 +100,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addSummaryMeshJob
      * @description 点聚合分析。
-     * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。 
+     * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -132,7 +133,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getQueryJob
      * @description 获取某个单对象查询分析。
-     * @param {string} id - 空间分析的 ID。 
+     * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -143,9 +144,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addQueryJob
      * @description 单对象查询分析。
-     * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。 
+     * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addQueryJob(params, callback, seconds, resultFormat) {
@@ -176,7 +177,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某个区域汇总分析。
-     * @param {string} id - 区域汇总分析的 ID。 
+     * @param {string} id - 区域汇总分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -220,7 +221,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJob
      * @description 获取某个矢量裁剪分析。
-     * @param {string} id - 空间分析的 ID。 
+     * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -231,9 +232,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addVectorClipJob
      * @description 矢量裁剪分析。
-     * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。 
+     * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
@@ -275,9 +276,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addOverlayGeoJob
      * @description 叠加分析。
-     * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。 
+     * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addOverlayGeoJob(params, callback, seconds, resultFormat) {
@@ -308,7 +309,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getBuffersJob
      * @description 获取某个缓冲区分析。
-     * @param {string} id - 空间分析的 ID。 
+     * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -319,9 +320,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addBuffersJob
      * @description 缓冲区分析。
-     * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。 
+     * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {number} seconds - 获取创建成功结果的时间间隔。 
+     * @param {number} seconds - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addBuffersJob(params, callback, seconds, resultFormat) {
@@ -352,7 +353,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取某个拓扑检查分析。
-     * @param {string} id - 空间分析的 ID。 
+     * @param {string} id - 空间分析的 ID。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
@@ -363,9 +364,9 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addTopologyValidatorJob
      * @description 拓扑检查分析。
-     * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。 
+     * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
+     * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */
     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
@@ -407,7 +408,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.addSummaryAttributesJob
      * @description 属性汇总分析。
-     * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。 
+     * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -420,7 +421,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryAttributesJobState
      * @description 获取属性汇总分析的状态。
-     * @param {string} id - 属性汇总分析的 ID。 
+     * @param {string} id - 属性汇总分析的 ID。
      * @returns {Object} 属性汇总分析的状态
      */
     getSummaryAttributesJobState(id) {

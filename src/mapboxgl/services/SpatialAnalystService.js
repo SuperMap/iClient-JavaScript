@@ -12,6 +12,7 @@ import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermap/
  * @extends {ServiceBase}
  * @category  iServer SpatialAnalyst
  * @classdesc 空间分析服务类。提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
+ * @modulecategory Services
  * @example
  * new SpatialAnalystService(url)
  *  .bufferAnalysis(params,function(result){
@@ -117,7 +118,7 @@ export class SpatialAnalystService extends ServiceBase {
     /**
      * @function SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析。
-     * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或者几何对象叠加分析参数类。 
+     * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或者几何对象叠加分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      */

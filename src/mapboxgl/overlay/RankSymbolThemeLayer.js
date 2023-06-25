@@ -8,7 +8,8 @@ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/
 /**
  * @class RankSymbolThemeLayer
  * @category  Visualization Theme
- * @classdesc 等级符号专题图层。
+ * @classdesc 等级符号专题图层类。
+ * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {string} symbolType - 符号类型。
  * @param {Object} opt_options - 参数。

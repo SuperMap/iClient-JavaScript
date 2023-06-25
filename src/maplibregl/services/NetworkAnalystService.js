@@ -11,6 +11,7 @@ import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/
  * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类。
  * @version 11.1.0
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new NetworkAnalystService(url)
@@ -20,7 +21,7 @@ import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：</br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}。
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -163,7 +164,7 @@ export class NetworkAnalystService extends ServiceBase {
     /**
      * @description 所有 Point 考虑 MapLibreGL.lnglat、MapLibreGL.Point、[]三种形式。
      * @param {Object} params - 待转换参数。
-     * @returns {Object}  
+     * @returns {Object}
      * @private
      */
     _processParams(params) {

@@ -9,8 +9,9 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @class AddressMatchService
  * @deprecatedclassinstance L.supermap.addressMatchService
  * @constructs AddressMatchService
- * @classdesc 地址匹配服务。
+ * @classdesc 地址匹配服务类。
  * @category  iServer AddressMatch
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new AddressMatchService(url,options)

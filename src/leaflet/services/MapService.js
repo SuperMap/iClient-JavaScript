@@ -13,6 +13,7 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
  * @deprecatedclassinstance L.supermap.mapService
  * @classdesc 地图信息服务类。
  * @category  iServer Map
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

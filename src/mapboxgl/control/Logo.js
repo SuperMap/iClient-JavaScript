@@ -8,7 +8,8 @@ import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
  * @class Logo
  * @deprecatedclass mapboxgl.supermap.LogoControl
  * @category  Control
- * @classdesc Logo 控件。默认不显示。
+ * @classdesc Logo 控件类。默认不显示。
+ * @modulecategory Control
  *
  * @example
  * (start code)

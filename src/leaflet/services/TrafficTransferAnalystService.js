@@ -10,6 +10,7 @@ import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } 
  * @deprecatedclassinstance L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类。
  * @category  iServer TrafficTransferAnalyst
+ * @modulecategory Services
  * @example
  * new TrafficTransferAnalystService(url).queryStop(params,function(result){
  *   //doSomething

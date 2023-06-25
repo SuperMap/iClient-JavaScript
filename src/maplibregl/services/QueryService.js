@@ -14,6 +14,7 @@ import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geo
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL 查询，几何查询，距离查询。
  * @version 11.1.0
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

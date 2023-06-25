@@ -77,7 +77,7 @@
             "src/leaflet/core/CommontypesConversion"
         ]
     },
-    "plugins": ["plugins/markdown","../plugins/usage"],
+    "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],
     "markdown": {
         "tags": ["usage"]
     },

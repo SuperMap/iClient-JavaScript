@@ -10,7 +10,8 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 /**
  * @class UniqueThemeLayer
  * @category  Visualization Theme
- * @classdesc  单值专题图层。
+ * @classdesc  单值专题图层类。
+ * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} opt_options - 参数。
  * @param {string} opt_options.themeField - 指定创建专题图字段。

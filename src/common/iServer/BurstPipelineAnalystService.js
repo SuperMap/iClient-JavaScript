@@ -9,7 +9,7 @@ import { BurstPipelineAnalystParameters } from './BurstPipelineAnalystParameters
  * @class BurstPipelineAnalystService
  * @deprecatedclass SuperMap.BurstPipelineAnalystService
  * @category iServer NetworkAnalyst BurstAnalyse
- * @classdesc 爆管分析服务类，即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组、普通结点 ID 数组及其上下游弧段 ID 数组。
+ * @classdesc 爆管分析服务类。即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组、普通结点 ID 数组及其上下游弧段 ID 数组。
  * @extends {NetworkAnalystServiceBase}
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}，

@@ -12,7 +12,8 @@ import {
 /**
  * @class MapvLayer
  * @category  Visualization MapV
- * @classdesc Mapv 图层。
+ * @classdesc Mapv 图层类。
+ * @modulecategory Overlay
  * @param {mapboxgl.Map} map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - Mapv 参数。

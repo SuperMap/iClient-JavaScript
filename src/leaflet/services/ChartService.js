@@ -12,6 +12,7 @@
  * @deprecatedclassinstance L.supermap.chartService
  * @classdesc 海图服务。
  * @category  iServer Map Chart
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new ChartService(url)

@@ -8,6 +8,7 @@ import { NetworkAnalyst3DService as CommonNetworkAnalyst3DService } from '@super
  * @class NetworkAnalyst3DService
  * @category  iServer FacilityAnalyst3D
  * @classdesc 3D 网络分析服务类。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new NetworkAnalyst3DService(url)

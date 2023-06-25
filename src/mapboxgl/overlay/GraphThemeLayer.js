@@ -12,7 +12,8 @@ import {
 /**
  * @class GraphThemeLayer
  * @category  Visualization Theme
- * @classdesc 统计专题图层。
+ * @classdesc 统计专题图层类。
+ * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {string} chartsType - 图表类别。
  * @param {Object} options - 参数。

@@ -8,7 +8,8 @@ import { AddressMatchService as CommonAddressMatchService } from '@supermap/icli
 /**
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @classdesc 地址匹配服务类。包括正向匹配和反向匹配。
+ * @modulecategory Services
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

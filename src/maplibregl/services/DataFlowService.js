@@ -6,8 +6,9 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
 /**
  * @class DataFlowService
  * @category  iServer DataFlow
- * @classdesc 数据流服务。
+ * @classdesc 数据流服务类。
  * @version 11.1.0
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new DataFlowService(url)

@@ -10,6 +10,7 @@ import { FieldService as CommonFieldService } from '@supermap/iclient-common/iSe
  * @deprecatedclassinstance L.supermap.fieldService
  * @classdesc 字段服务类。
  * @category iServer Data Field
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *   new FieldService(url).getFields(function(result){

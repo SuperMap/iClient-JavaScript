@@ -10,6 +10,7 @@ import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iSe
  * @deprecatedclassinstance L.supermap.themeService
  * @classdesc 专题图服务类。
  * @category  iServer Map Theme
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new ThemeService(url,{

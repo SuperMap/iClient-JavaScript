@@ -11,7 +11,8 @@ import {Theme} from './ThemeLayer';
 /**
  * @class GeoFeatureThemeLayer
  * @category Visualization Theme
- * @classdesc 地理几何专题要素型专题图层。
+ * @modulecategory Overlay
+ * @classdesc 地理几何专题要素型专题图层类。
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。

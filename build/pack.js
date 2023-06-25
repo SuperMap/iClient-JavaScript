@@ -1,7 +1,6 @@
 const { Command } = require('commander');
 const program = new Command();
 var shell = require("shelljs");
-require("./deps");
 program.description('Customized pack iClient.');
 
 var excludeFields = ['title', 'description', 'description_en'];

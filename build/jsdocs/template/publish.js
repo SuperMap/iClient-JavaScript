@@ -8,6 +8,7 @@ var template = require('jsdoc/template'),
   helper = require('jsdoc/util/templateHelper'),
   logger = require('jsdoc/util/logger'),
   typeLinks = require('./typeLinkExt').typeLinks,
+  moduleCategoriesConfig = require('./module-categories.json'),
   _ = require('underscore'),
   htmlsafe = helper.htmlsafe,
   linkto = helper.linkto,
@@ -20,6 +21,7 @@ var template = require('jsdoc/template'),
   language,
   outdir = env.opts.destination;
 var util = require('util');
+var chalk = require('chalk');
 
 function find(spec) {
   return helper.find(data, spec);
@@ -259,7 +261,7 @@ function buildNav(members, view, templatePath) {
       }else{
         methods[element.fileName] = m;
       }
-      
+
     }
   }
   var methodsPath = path.join(outdir, 'methods.json');
@@ -295,6 +297,50 @@ function buildCategories(members, templatePath) {
   });
   var outpath = path.resolve(templatePath, 'categories.json');
   fs.writeFileSync(outpath, JSON.stringify(categories), 'utf8');
+  return categories;
+}
+
+function buildModuleCategories(data, outdir, conf) {
+  var clientModuleName = conf.namespace.replace('.supermap', '');
+  var moduleCategories = moduleCategoriesConfig.moduleCategories;
+  var rootDes = moduleCategoriesConfig.moduleRoots[clientModuleName];
+  var categories = Object.keys(moduleCategories).reduce((sum, key) => {
+    const info = moduleCategories[key];
+    sum[key] = {
+      name: key,
+      ...info,
+      children: []
+    }
+    return sum;
+  }, {});
+
+  data().each(function (v) {
+    var categoryInfo = v.modulecategory;
+    if (!categoryInfo) {
+      return;
+    }
+    if (!categories[categoryInfo.category]) {
+      console.log(chalk.red(`ERROR [${clientModuleName}]: The @modulecategory(${categoryInfo.category}) is not exsist in ${v.meta.filename}\n`));
+      return;
+    }
+    if (!categoryInfo.des) {
+      console.log(chalk.red(`ERROR [${clientModuleName}]: The @classdesc cannot be empty in ${v.meta.filename}\n`));
+    }
+    categories[categoryInfo.category].children.push({
+      name: categoryInfo.name,
+      des: categoryInfo.des,
+      des_en: categoryInfo.des_en,
+      docName: categoryInfo.className
+    });
+  });
+  const finalContent = {
+    id: clientModuleName,
+    name: rootDes,
+    des: rootDes,
+    children: Object.values(categories).filter(item => item.children.length > 0)
+  }
+  var outpath = path.join(outdir, 'module-categories.js');
+  fs.writeFileSync(outpath, `var deps = ${JSON.stringify(finalContent, null, 2)}`, 'utf8');
   return categories;
 }
 
@@ -1139,7 +1185,8 @@ exports.publish = function (taffyData, opts, tutorials) {
     const dir = outdir.replace('./docs/', '');
     return whiteLists[dir];
   }
-
+  // 生成产品介绍中模块说明的g6配置
+  buildModuleCategories(data, outdir, conf);
   const allFiles = getFileNames();
   console.error('生成的多余的文档页面: ', getMorePages(allFiles, getHtmlLinks(allFiles)));
   console.error('没有链接的类型: ', getWrongLink(allFiles));

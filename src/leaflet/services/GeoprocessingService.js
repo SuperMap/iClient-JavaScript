@@ -3,12 +3,13 @@ import '../core/Base';
 import { GeoprocessingService as CommonGeoprocessingService } from '@supermap/iclient-common/iServer/GeoprocessingService';
 import { ServiceBase } from './ServiceBase';
 
-/** 
+/**
  * @class GeoprocessingService
  * @deprecatedclassinstance L.supermap.geoprocessingService
  * @classdesc 处理自动化服务接口类。
  * @version 10.1.0
  * @category  iServer ProcessingAutomationService
+ * @modulecategory Services
  * @extends  ServiceBase
  * @example
  *  //为了安全访问受保护的处理自动化服务，必须通过传递 iserver 令牌（ token ），才能正确访问相关资源。
@@ -27,7 +28,7 @@ import { ServiceBase } from './ServiceBase';
                 console.log(serverResult);
             })
         })
- *  
+ *
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @usage

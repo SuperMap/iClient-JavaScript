@@ -8,8 +8,9 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
 /**
  * @class GridCellInfosService
  * @deprecatedclassinstance L.supermap.gridCellInfosService
- * @classdesc 数据栅格查询服务。
+ * @classdesc 数据栅格查询服务类。
  * @category  iServer Data Grid
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new GridCellInfosService(url)

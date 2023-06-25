@@ -7,8 +7,9 @@ import '../../core/Base';
 /**
  * @class CircleStyle
  * @deprecatedclassinstance L.supermap.circleStyle
- * @classdesc 圆形要素风格。
+ * @classdesc 圆形要素风格类。
  * @category Visualization Graphic
+ * @modulecategory Overlay
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {boolean} [options.stroke=true] - 是否描边。

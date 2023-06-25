@@ -11,9 +11,10 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 /**
  * @class FGBLayer
  * @deprecatedclassinstance L.supermap.FGBLayer
- * @classdesc FGB 图层，该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * @classdesc FGB 图层类。该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
  * @version 11.1.0
  * @category Visualization FGB
+ * @modulecategory Overlay
  * @extends {L.LayerGroup}
  * @param {string} url - FGB 服务地址，例如：http://localhost:8090/iserver/services/xxx/rest/data/featureResults/newResourceId.fgb。
  * @param {Object} options - 参数。
@@ -30,14 +31,14 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * <script type="text/javascript" src="{cdn}"></script>
  * <script>
  *   new {namespace}.FGBLayer(url, options);
- * 
+ *
  * </script>
- * 
+ *
  * // ES6 Import
  * import { FGBLayer } from '{npm}';
- * 
+ *
  * new FGBLayer(url, options);
- * 
+ *
  * ```
  */
 

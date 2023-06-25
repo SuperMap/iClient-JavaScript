@@ -15,8 +15,9 @@ import { FGBLayerRenderer } from '@supermap/iclient-common/overlay/fgb/FGBLayerR
 /**
  * @class FGBLayer
  * @category Visualization FGB
- * @classdesc FGB。
+ * @classdesc FGB 图层类。
  * @version 11.1.0
+ * @modulecategory Overlay
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("FGBlayer_") 创建图层 ID。
  * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为当前可见范围加载。
@@ -95,14 +96,14 @@ export class FGBLayer {
         extent = this.extent;
       }
     }
-    this.renderer = new FGBLayerRenderer(this.options); 
+    this.renderer = new FGBLayerRenderer(this.options);
     this._handleFeatures(extent);
   }
   /**
     * @function FGBLayer.prototype.render
   */
   render() {
-    
+
   }
   /**
    * @function FGBLayer.prototype.onRemove

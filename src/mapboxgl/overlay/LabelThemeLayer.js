@@ -14,7 +14,8 @@ import { GeoFeature } from './theme/GeoFeatureThemeLayer';
 /**
  * @class LabelThemeLayer
  * @category  Visualization Theme
- * @classdesc  标签专题图层。
+ * @classdesc  标签专题图层类。
+ * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
@@ -36,18 +37,18 @@ export class Label extends GeoFeature {
     constructor(name, options) {
         super(name, options);
         /**
-         * @member {boolean} [LabelThemeLayer.prototype.isOverLay=true] 
+         * @member {boolean} [LabelThemeLayer.prototype.isOverLay=true]
          * @description 是否进行压盖处理，如果设为 true，将隐藏被压盖的标签。
          */
         this.isOverLay = true;
         /**
-         * @member {boolean} [LabelThemeLayer.prototype.isAvoid=true] 
+         * @member {boolean} [LabelThemeLayer.prototype.isAvoid=true]
          * @description 是否进行地图边缘的避让处理，如果设为 true，将把与地图边缘相交的标签移到地图范围内，在地图边缘处做避让处理。
          */
         this.isAvoid = true;
 
         /**
-         * @member {string} LabelThemeLayer.prototype.themeField 
+         * @member {string} LabelThemeLayer.prototype.themeField
          * @description  用于指定专题要素样式的属性字段名称。</br>
          *               此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。</br>
          *               使用标签分组显示还需要设置 styleGroups 属性。
@@ -55,7 +56,7 @@ export class Label extends GeoFeature {
         this.themeField = null;
 
         /**
-         * @member {Array.<Object>} LabelThemeLayer.prototype.styleGroups 
+         * @member {Array.<Object>} LabelThemeLayer.prototype.styleGroups
          * @description 分组样式。使用此属性需要设置 themeField 属性。</br>
          *              1.没有同时设置 themeField 和 styleGroups，则所有专题要素都使用本图层的 style 进行渲染；</br>
          *              2.同时设置 themeField 和 styleGroups，则按照 themeField 指定的字段名称获取用户数据（feature）attributes 中对应的属性值；</br>
@@ -491,7 +492,7 @@ export class Label extends GeoFeature {
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。 
+     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

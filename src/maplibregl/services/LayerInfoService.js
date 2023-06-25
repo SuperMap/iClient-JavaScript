@@ -6,8 +6,9 @@ import { LayerInfoService as CommonLayerInfoService } from '@supermap/iclient-co
 /**
  * @class LayerInfoService
  * @category  iServer Map Layer
- * @classdesc 图层信息服务类 。
+ * @classdesc 图层信息服务类。
  * @version 11.1.0
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new LayerInfoService(url).getLayersInfo(function(result){
@@ -52,7 +53,7 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
-     * @param {SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。 
+     * @param {SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo(params, callback) {

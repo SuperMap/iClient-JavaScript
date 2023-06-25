@@ -7,8 +7,9 @@ import '../../core/Base';
 /**
  * @class CloverStyle
  * @deprecatedclassinstance L.supermap.cloverStyle
- * @classdesc 三叶草要素风格。
+ * @classdesc 三叶草要素风格类。
  * @category Visualization Graphic
+ * @modulecategory Overlay
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {number} [options.angle=60] - 三叶草每个扇叶的圆心角，单位弧度。
@@ -48,7 +49,7 @@ export var CloverStyle = L.Class.extend({
         strokeWidth:1
     },
 
-    
+
     initialize: function (options) {
         options = options || {};
         L.Util.setOptions(this, options);

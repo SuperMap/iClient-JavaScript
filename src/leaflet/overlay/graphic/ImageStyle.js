@@ -7,8 +7,9 @@ import '../../core/Base';
 /**
  * @class ImageStyle
  * @deprecatedclassinstance L.supermap.imageStyle
- * @classdesc 自定义图形要素风格。
+ * @classdesc 自定义图形要素风格类。
  * @category Visualization Graphic
+ * @modulecategory Overlay
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {HTMLImageElement} options.img - image 对象。

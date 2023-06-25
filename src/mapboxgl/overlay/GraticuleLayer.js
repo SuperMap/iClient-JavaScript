@@ -15,7 +15,8 @@ import mapboxgl from 'mapbox-gl';
 /**
  * @class GraticuleLayer
  * @category Visualization GraticuleLayer
- * @classdesc 经纬网。
+ * @classdesc 经纬网类。
+ * @modulecategory Overlay
  * @version 10.1.1
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("graticuleLayer_") 创建图层 ID。
@@ -326,7 +327,7 @@ export class GraticuleLayer {
       }
     }
   }
- 
+
   updateGraticuleLayer(features = this.features) {
     if (this.map.getSource(this.sourceId)) {
       const geoJSONData = {

@@ -11,12 +11,13 @@
 /**
  * @class LabelThemeLayer
  * @deprecatedclassinstance L.supermap.labelThemeLayer
- * @classdesc 标签专题图。
+ * @classdesc 标签专题图类。
  * @category Visualization Theme
+ * @modulecategory Overlay
  * @extends GeoFeatureThemeLayer
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
- * @param {string} options.themeFields - 指定创建专题图字段。 
+ * @param {string} options.themeFields - 指定创建专题图字段。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
@@ -33,17 +34,17 @@
  */
 export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
-    /** 
+    /**
      * @member {Object} LabelThemeLayer.prototype.style
      * @description 专题图样式。
      */
 
-    /** 
+    /**
      * @member {Object} LabelThemeLayer.prototype.styleGroups
      * @description 各专题类型样式组。
      */
 
-    /** 
+    /**
      * @member {Object} LabelThemeLayer.prototype.highlightStyle
      * @description 开启 hover 事件后，触发的样式风格。
      */

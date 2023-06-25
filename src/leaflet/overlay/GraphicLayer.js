@@ -33,6 +33,7 @@ const DEFAULT_ZOOM_OFFSET = {
  * @deprecatedclassinstance L.supermap.graphicLayer
  * @classdesc 高效率点图层类。
  * @category Visualization Graphic
+ * @modulecategory Overlay
  * @extends {L.Path}
  * @param {Array.<Graphic>} graphics - 要素对象。
  * @param {Object} options - 参数。

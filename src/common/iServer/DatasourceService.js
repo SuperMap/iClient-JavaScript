@@ -8,7 +8,7 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @class DatasourceService
  * @deprecatedclass SuperMap.DatasourceService
  * @category iServer Data Datasource
- * @classdesc 数据源查询服务。
+ * @classdesc 数据源查询服务类。
  * @param {string} url - 服务地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
