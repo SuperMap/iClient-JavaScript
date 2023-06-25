@@ -123,10 +123,7 @@ export class ThreeLayer extends mapboxgl.Evented {
    * @returns {ThreeLayer} ThreeLayer的实例对象。
    */
   addObject(object3D, coordinate) {
-    if (coordinate && object3D) {
-      this.setPosition(object3D, coordinate);
-    }
-    this.renderer && this.renderer.scene.add(object3D);
+    this.renderer && this.renderer.addObject(object3D, coordinate);
   }
 
   /**

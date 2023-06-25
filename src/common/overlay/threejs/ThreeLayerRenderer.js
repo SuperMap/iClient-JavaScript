@@ -267,7 +267,7 @@ export class ThreeLayerRenderer {
     if (coordinate && object3D) {
       this.setPosition(object3D, coordinate);
     }
-    this.renderer && this.renderer.scene.add(object3D);
+    this.scene.add(object3D);
   }
 
   /**
@@ -276,7 +276,7 @@ export class ThreeLayerRenderer {
     * @returns {ThreeLayer} ThreeLayer的实例对象。
     */
   clearMesh() {
-    let scene = this.renderer.scene;
+    let scene = this.scene;
     if (!scene) {
       return this;
     }
@@ -295,7 +295,7 @@ export class ThreeLayerRenderer {
        * @returns {ThreeLayer} ThreeLayer的实例对象。
        */
   clearAll(clearCamera) {
-    let scene = this.renderer.scene;
+    let scene = this.scene;
     if (!scene) {
       return this;
     }
