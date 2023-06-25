@@ -43,7 +43,7 @@ export class MapvLayer {
       transferCoordinate: this._transferCoordinate,
       getCenterPixel: this._getCenterPixel,
       getResolution: this._getResolution,
-      validZoom: this._validZoom
+      validZoom: this._validZoom.bind(this)
     }, { id: this.id, targetElement: this.mapContainer, mapElement: this.map.getCanvas() });
     this._bindEvent();
   }
