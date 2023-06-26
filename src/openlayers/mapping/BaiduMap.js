@@ -11,6 +11,7 @@ import { Util } from '../core/Util';
  * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
+ * @modulecategory Mapping
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。

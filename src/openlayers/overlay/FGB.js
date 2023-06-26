@@ -12,6 +12,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @browsernamespace ol.source
  * @category Visualization FGB
  * @classdesc FGB 图层源，该图层源把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * @modulecategory Overlay
  * @version 11.1.0
  * @param {Object} opt_options - 参数。
  * @param {string} opt_options.url - FGB 地址，例如：http://localhost:8090/iserver/services/xxx/rest/data/featureResults/newResourceId.fgb。

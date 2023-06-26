@@ -10,6 +10,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @class MeasureService
  * @category  iServer Map Measure
  * @classdesc 量算服务。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url -  服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options -  参数。

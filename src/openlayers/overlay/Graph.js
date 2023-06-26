@@ -14,6 +14,7 @@ import {
  * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 统计专题图图层基类。
+ * @modulecategory Overlay
  * @param {string} chartsType - 图表类别。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。

@@ -9,6 +9,7 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
  * @version 10.2.0
  * @constructs ImageCollectionService
  * @classdesc 影像集合服务类。
+ * @modulecategory Services
  * @category  iServer Image
  * @extends {ServiceBase}
  * @example

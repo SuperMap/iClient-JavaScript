@@ -11,6 +11,7 @@ import Point from 'ol/geom/Point';
  * @class NetworkAnalystService
  * @category  iServer NetworkAnalyst
  * @classdesc 网络分析服务类。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new NetworkAnalystService(url).findPath(params,function(result){

@@ -8,6 +8,7 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
  * @class DataFlowService
  * @category  iServer DataFlow
  * @classdesc 数据流服务。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new DataFlowService(url).queryChart(param,function(result){

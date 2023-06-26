@@ -11,6 +11,7 @@ import { Util } from '../core/Util';
  * @browsernamespace ol.source
  * @category  Visualization Turf
  * @classdesc Turf.js 图层源。
+ * @modulecategory Overlay
  * @param {Object} opt_options - 参数。
  * @extends {ol.source.Vector}
  * @usage

@@ -12,6 +12,7 @@ import Style from 'ol/style/Style';
  * @aliasclass Graphic
  * @category  Visualization Graphic
  * @classdesc 高效率点图层点要素类。
+ * @modulecategory Overlay
  * @param {ol.geom.Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。
  * @extends {ol.Object}

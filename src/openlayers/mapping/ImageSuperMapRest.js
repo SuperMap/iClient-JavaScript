@@ -17,6 +17,7 @@ import { containsExtent, getCenter, getHeight, getWidth, getForViewAndSize } fro
  * @browsernamespace ol.source
  * @category iServer Map Tile
  * @classdesc SuperMap iServer Image 图层源。
+ * @modulecategory Mapping
  * @param {Object} options - 参数。
  * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {ServerType} [options.serverType=SuperMap.ServerType.ISERVER] - 服务类型 ISERVER|IPORTAL|ONLINE。

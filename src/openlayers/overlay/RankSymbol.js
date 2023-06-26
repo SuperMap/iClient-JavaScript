@@ -9,6 +9,7 @@ import {Graph} from './Graph';
  * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 等级符号专题图图层源。
+ * @modulecategory Overlay
  * @param {string} name - 专题图层名。
  * @param {string} symbolType - 标志类型。
  * @param {Object} opt_options - 参数。

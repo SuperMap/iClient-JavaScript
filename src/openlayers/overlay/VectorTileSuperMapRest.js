@@ -22,6 +22,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @browsernamespace ol.source
  * @category  Visualization VectorTile
  * @classdesc 矢量瓦片图层源。
+ * @modulecategory Overlay
  * @param {Object} options - 参数。
  * @param {(string|undefined)} options.url - 服务地址。
  * @param {(string|Object|undefined)} options.style - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。当 `options.format` 为 {@link ol.format.MVT} 且 `options.source` 不为空时有效，优先级高于 `options.url`。

@@ -11,6 +11,7 @@ import Point from 'ol/geom/Point';
  * @extends {ServiceBase}
  * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类。
+ * @modulecategory Services
  * @example
  *      new TrafficTransferAnalystService(url).queryStop(params,function(result){
  *           //doSomething

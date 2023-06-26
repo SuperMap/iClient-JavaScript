@@ -10,6 +10,7 @@ import { ChartService as CommonChartService } from '@supermap/iclient-common/iSe
  * @class ChartService
  * @category  iServer Map Chart
  * @classdesc 海图服务。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new ChartService(url).queryChart(param,function(result){

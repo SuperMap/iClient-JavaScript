@@ -12,6 +12,7 @@ import { FieldService as CommonFieldService } from '@supermap/iclient-common/iSe
  *      new FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
+ * @modulecategory Services
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

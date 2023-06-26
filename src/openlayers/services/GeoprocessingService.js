@@ -4,6 +4,7 @@ import { ServiceBase } from './ServiceBase';
 /**
  * @class GeoprocessingService
  * @classdesc 处理自动化服务接口类。
+ * @modulecategory Services
  * @version 10.1.0
  * @category  iServer ProcessingAutomationService
  * @extends  {ServiceBase}

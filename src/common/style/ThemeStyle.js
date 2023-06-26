@@ -7,6 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class ThemeStyle
  * @deprecatedclass SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类。
+ * @modulecategory Overlay
  * @category Visualization Theme
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.fill=true] - 是否填充，不需要填充则设置为 false。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。

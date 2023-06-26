@@ -9,6 +9,7 @@ import Control from 'ol/control/Control';
  * @aliasclass control.Logo
  * @category  Control
  * @classdesc Logo控件。默认不显示，需手动添加控件。
+ * @modulecategory Control
  * @extends {ol.control.Control}
  * @example
  * var control = new Logo();

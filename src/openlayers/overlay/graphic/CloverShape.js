@@ -10,6 +10,7 @@ import StrokeStyle from 'ol/style/Stroke';
  * @browsernamespace ol.style
  * @category  Visualization Graphic
  * @classdesc 三叶草要素风格。
+ * @modulecategory Overlay
  * @extends {ol.style.RegularShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。

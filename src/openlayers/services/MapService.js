@@ -8,6 +8,7 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
  * @class MapService
  * @category  iServer Map
  * @classdesc 地图信息服务类。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
