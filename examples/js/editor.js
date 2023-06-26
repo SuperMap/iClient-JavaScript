@@ -1,8 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 $(document).ready(function () {
     window.initI18N(function(){
-    var pageConfig = getActiveExampleConfig();
-    initPage(pageConfig);
+    initPage();
     bindEvents();
     sidebarScrollFix();
 });
@@ -11,10 +10,9 @@ $(document).ready(function () {
 var aceEditor;
 var containExamples = true;
 
-function initPage(pageConfig) {
-    var showCode = pageConfig.showCode;
+function initPage() {
     initSideBar();
-    initEditor(showCode);
+    initEditor();
     screenResize();
 }
 
@@ -60,10 +58,11 @@ function screenResize() {
 
 //初始化编辑器
 function initCodeEditor(showCode) {
+  const codeBtn = document.getElementById("showCodeBtn");
     if(showCode === false){
+      codeBtn.classList.add('hide');
       return
     }
-    const codeBtn = document.getElementById("showCodeBtn");
     codeBtn.classList.remove('hide');
     if (!aceEditor) {
         aceEditor = ace.edit("editor");
@@ -79,9 +78,10 @@ function initCodeEditor(showCode) {
 }
 
 //初始化编辑器以及预览内容
-function initEditor(showCode) {
+function initEditor() {
+  var pageConfig = getActiveExampleConfig();
     loadExampleHtml();
-    initCodeEditor(showCode);
+    initCodeEditor(pageConfig.showCode);
 }
 
 function loadExampleHtml() {
