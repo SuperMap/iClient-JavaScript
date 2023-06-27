@@ -47,12 +47,13 @@ function setRootStyle (theme) {
   rootStyleTag.innerHTML = rootStyle;
 }
 
+var getCookie = utils.getCookie;
 document.addEventListener("DOMContentLoaded", function() {
   initSkin();
 });
 
 function initSkin() {
-  var skin = utils.getCookie('theme') || 'dark';
+  var skin = getCookie('theme') || 'dark';
   var bodyElem = document.querySelector('body');
   bodyElem.classList.remove("light", "dark");
   bodyElem.classList.add(skin);
