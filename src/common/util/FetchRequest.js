@@ -31,12 +31,6 @@ export var RequestJSONPPromise = {
           uid = me.getUid(),
           url = config.url,
           splitQuestUrl = [];
-      var p = new Promise(function (resolve) {
-          me.supermap_callbacks[uid] = function (response) {
-              delete me.supermap_callbacks[uid];
-              resolve(response);
-          };
-      });
 
       // me.addQueryStrings({
       //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
@@ -94,12 +88,11 @@ export var RequestJSONPPromise = {
           }
       }
       splitQuestUrl.push(sectionURL);
-      me.send(
+      return me.send(
           splitQuestUrl,
-          'RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+          'SuperMapJSONPCallbacks_' + uid,
           config && config.proxy
       );
-      return p;
   },
 
   getUid: function () {
@@ -126,9 +119,11 @@ export var RequestJSONPPromise = {
                   url = decodeURIComponent(url);
                   url = proxy + encodeURIComponent(url);
               }
-              fetchJsonp(url, {
+              return fetchJsonp(url, {
                   jsonpCallbackFunction: callback,
                   timeout: 30000
+              }).then((result) => {
+                return result.json();
               });
           }
       }
