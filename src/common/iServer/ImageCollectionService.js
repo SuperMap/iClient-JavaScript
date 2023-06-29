@@ -22,7 +22,7 @@ import { CommonServiceBase } from './CommonServiceBase';
 export default class ImageCollectionService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
-        this.options = options || {};
+        this._serviceOptions = options || {};
         if (options) {
             Util.extend(this, options);
         }
@@ -47,7 +47,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     getLegend(queryParams, callback) {
         var me = this;
         var pathParams = {
-            collectionId: me.options.collectionId
+            collectionId: me._serviceOptions.collectionId
         };
         var path = Util.convertPath('/collections/{collectionId}/legend', pathParams);
         var url = Util.urlPathAppend(me.url, path);
@@ -61,7 +61,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     getStatistics(callback) {
         var me = this;
         var pathParams = {
-            collectionId: me.options.collectionId
+            collectionId: me._serviceOptions.collectionId
         };
         var path = Util.convertPath('/collections/{collectionId}/statistics', pathParams);
         var url = Util.urlPathAppend(me.url, path);
@@ -76,7 +76,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     getTileInfo(callback) {
         var me = this;
         var pathParams = {
-            collectionId: me.options.collectionId
+            collectionId: me._serviceOptions.collectionId
         };
         var path = Util.convertPath('/collections/{collectionId}/tileInfo', pathParams);
         var url = Util.urlPathAppend(me.url, path);
@@ -91,7 +91,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     deleteItemByID(featureId, callback) {
         var me = this;
         var pathParams = {
-            collectionId: me.options.collectionId,
+            collectionId: me._serviceOptions.collectionId,
             featureId: featureId
         };
         var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
@@ -107,7 +107,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     getItemByID(featureId, callback) {
         var me = this;
         var pathParams = {
-            collectionId: me.options.collectionId,
+            collectionId: me._serviceOptions.collectionId,
             featureId: featureId
         };
         var path = Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
@@ -132,7 +132,6 @@ export default class ImageCollectionService extends CommonServiceBase {
           }
         }
         this.events.on(eventListeners);
-        
         this.request({
           method: method || 'GET',
           url,
