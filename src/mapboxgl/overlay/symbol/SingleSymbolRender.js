@@ -20,8 +20,8 @@ class SingleSymbolRender {
         if(layer.layout && layer.layout.visibility === 'none') {
             Object.assign(layer.layout, {visibility: 'visible'});
         }
-        layer.paint && Object.assign(symbol.paint ?? {}, layer.paint);
-        layer.layout && Object.assign(symbol.layout ?? {}, layer.layout);
+        layer.paint && Object.assign(symbol.paint || {}, layer.paint);
+        layer.layout && Object.assign(symbol.layout || {}, layer.layout);
         this.map.addLayerBySymbolBak({ ...layer, ...symbol }, before);
     }
 }

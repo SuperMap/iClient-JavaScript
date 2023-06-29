@@ -91,7 +91,7 @@ function MapExtendSymbol(){
     (mapboxgl.Map.prototype).setStyleBak = mapboxgl.Map.prototype.setStyle;
     mapboxgl.Map.prototype.setStyle = function (style, options) {
       this.setStyleBak(style, options);
-      this.style?.once('style.load', () => {
+      this.style && this.style.once('style.load', () => {
         const symbolLayers = style.layers.filter(l => l.symbol);
         symbolLayers.forEach((l) => {
           this.setSymbol(l.id, l.symbol);
@@ -240,7 +240,9 @@ function MapExtendSymbol(){
     if (!value) {
       return null;
     }
-    const hasImage = value?.paint?.['fill-pattern'] || value?.paint?.['line-pattern'] || value?.layout?.['icon-image'];
+    const paint = value.paint || {};
+    const layout = value.layout || {};
+    const hasImage = paint['fill-pattern'] || paint['line-pattern'] || layout['icon-image'];
     const image = hasImage && await new Promise((resolve) => {
       const image = new Image();
       image.src = `${url}.png`;

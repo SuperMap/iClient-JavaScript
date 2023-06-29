@@ -13,14 +13,13 @@ import { getImageKey, isMapboxExpression, isMultiSymbol, validateSymbol } from "
  * @private
  */
 class SymbolHandler {
-    #layerSymbols; // 图层与symbol的映射关系
 
     constructor(map) {
         this.map = map;
         this.symbolManager = new SymbolManager();
         this.singleSymbolRender = new SingleSymbolRender(map);
         this.compositeSymbolRender = new CompositeSymbolRender(map);
-        this.#layerSymbols = {};
+        this._layerSymbols = {};// 图层与symbol的映射关系
     }
 
     _update(map) {
@@ -66,11 +65,12 @@ class SymbolHandler {
             });
         }
         this.map.removeLayer(layerId);
-        const beforeId = layers[layerIndex + 1]?.id;
-        const before = beforeId && (this.map.style.getLayer(beforeId)?.id ?? this.getFirstLayerId(beforeId));
+        const beforeId = layers[layerIndex + 1] && layers[layerIndex + 1].id;
+        const layer = beforeId && this.map.style.getLayer(beforeId);
+        const before = (layer && layer.id) || (beforeId && this.getFirstLayerId(beforeId));
         const orginLayer = layers[layerIndex];
         this.addLayer({ ...orginLayer, paint: {}, layout: {
-            visibility: orginLayer.layout?.visibility ?? 'visible'
+            visibility: (orginLayer.layout && orginLayer.layout.visibility) || 'visible'
         }, symbol }, before);
     }
 
@@ -145,7 +145,8 @@ class SymbolHandler {
             match: this.getMatchLayers,
             case: this.getCaseLayers
         }
-        const layers = rules[layer.symbol[0]]?.(layer);
+        const getLayersFn = rules[layer.symbol[0]];
+        const layers = getLayersFn && getLayersFn(layer);
         if (!layers) {
             return this.map.fire('error', {
                 error: new Error(`This expressions not supported`)
@@ -174,7 +175,7 @@ class SymbolHandler {
      */
     addSymbolImageToMap(symbol, image) {
         const { type, name } = getImageKey(symbol);
-        const id = symbol[type]?.[name];
+        const id = symbol[type] && symbol[type][name];
         if (id && !this.map.hasImage(id)) {
             // 如果需要使用到image 的需要addImage
             this.map.addImage(id, image);
@@ -209,7 +210,7 @@ class SymbolHandler {
      * @param {string | array} symbol
      */
     setSymbolTolayer(layerId, symbol) {
-        this.#layerSymbols[layerId] = symbol;
+        this._layerSymbols[layerId] = symbol;
     }
 
     /**
@@ -218,7 +219,7 @@ class SymbolHandler {
      * @return {string | array} symbol
      */
     getSymbol(layerId) {
-        return this.#layerSymbols[layerId];
+        return this._layerSymbols[layerId];
     }
 
     /**
@@ -226,7 +227,7 @@ class SymbolHandler {
      * @return {boolean}
      */
     hasSymbol() {
-        return Object.keys(this.#layerSymbols).length > 0;
+        return Object.keys(this._layerSymbols).length > 0;
     }
 
     /**
@@ -251,7 +252,7 @@ class SymbolHandler {
      * @returns {array}
      */
     getLayerIds(layerId) {
-        return this.compositeSymbolRender.getLayerIds(layerId);
+        return this.compositeSymbolRender.getLayerIds(layerId) || [];
     }
 
     /**
@@ -284,7 +285,7 @@ class SymbolHandler {
             return symbol ? { ...layer, symbol } : layer;
         } else {
             const layerIds = this.getLayerIds(layerId);
-            if (layerIds?.[0]) {
+            if (layerIds[0]) {
                 const reallayer = this.map.getLayerBySymbolBak(layerIds[0]);
                 return reallayer && { ...reallayer, symbol, id: layerId }
             }
@@ -297,7 +298,7 @@ class SymbolHandler {
      */
     removeLayer(layerId) {
         const layerIds = this.getLayerIds(layerId);
-        if (layerIds?.length > 0) {
+        if (layerIds.length > 0) {
             layerIds.forEach(id => this.map.style.removeLayer(id));
             this.removeLayerId(layerId);
         } else {
@@ -334,7 +335,7 @@ class SymbolHandler {
      */
     getFirstLayerId(layerId) {
         const layerIds = this.getLayerIds(layerId);
-        return layerIds?.[0];
+        return layerIds[0];
     }
 
     /**
@@ -344,8 +345,9 @@ class SymbolHandler {
      */
     moveLayer(layerId, beforeId) {
         const layerIds = this.getLayerIds(layerId);
-        const realBeforeId = beforeId && (this.map.style.getLayer(beforeId)?.id ?? this.getFirstLayerId(beforeId));
-        if (layerIds?.length > 0) {
+        const layer = beforeId && this.map.style.getLayer(beforeId);
+        const realBeforeId = (layer && layer.id) || (beforeId && this.getFirstLayerId(beforeId));
+        if (layerIds.length > 0) {
             layerIds.forEach(id => this.map.style.moveLayer(id, realBeforeId));
         } else {
             this.map.style.moveLayer(layerId, realBeforeId);
@@ -369,7 +371,7 @@ class SymbolHandler {
             return;
         }
         const layerIds = this.getLayerIds(layerId);
-        if (layerIds?.length > 0) {
+        if (layerIds.length > 0) {
             layerIds.forEach(id => this.map.style.setFilter(id, filter, options));
         } else {
             this.map.style.setFilter(layerId, filter, options);
@@ -396,7 +398,7 @@ class SymbolHandler {
      */
     setLayerZoomRange(layerId, minzoom, maxzoom) {
         const layerIds = this.getLayerIds(layerId);
-        if (layerIds?.length > 0) {
+        if (layerIds.length > 0) {
             layerIds.forEach(id => this.map.style.setLayerZoomRange(id, minzoom, maxzoom));
         } else {
             this.map.style.setLayerZoomRange(layerId, minzoom, maxzoom);
@@ -412,7 +414,7 @@ class SymbolHandler {
      */
     setPaintProperty(layerId, name, value, options) {
         const layerIds = this.getLayerIds(layerId);
-        if (layerIds?.length > 0) {
+        if (layerIds.length > 0) {
             layerIds.forEach(id => this.map.style.setPaintProperty(id, name, value, options));
         } else {
             this.map.style.setPaintProperty(layerId, name, value, options);
@@ -439,7 +441,7 @@ class SymbolHandler {
      */
     setLayoutProperty(layerId, name, value, options) {
         const layerIds = this.getLayerIds(layerId);
-        if (layerIds?.length > 0) {
+        if (layerIds.length > 0) {
             layerIds.forEach(id => this.map.style.setLayoutProperty(id, name, value, options));
         } else {
             this.map.style.setLayoutProperty(layerId, name, value, options);
