@@ -43,15 +43,10 @@ export class CommonServiceBase {
 
         this.length = null;
 
-        this.options = null;
 
         this.totalTimes = null;
 
         this.POLLING_TIMES = 3;
-
-        this._processSuccess = null;
-
-        this._processFailed = null;
 
         this.isInTheSameDomain = null;
 
@@ -105,7 +100,6 @@ export class CommonServiceBase {
             me.totalTimes = null;
         }
         me.url = null;
-        me.options = null;
         me._processSuccess = null;
         me._processFailed = null;
         me.isInTheSameDomain = null;
@@ -157,55 +151,66 @@ export class CommonServiceBase {
         options.url = SecurityManager.appendCredential(options.url);
 
         me.calculatePollingTimes();
-        me._processSuccess = options.success;
-        me._processFailed = options.failure;
         options.scope = me;
-        options.success = me.getUrlCompleted;
-        options.failure = me.getUrlFailed;
-        me.options = options;
-        me._commit(me.options);
+        var success = options.scope? options.success.bind(options.scope) : options.success;
+        var failure = options.scope? options.failure.bind(options.scope) : options.failure;
+        options.success = me.getUrlCompleted(success, options);
+        options.failure = me.getUrlFailed(failure, options);
+        me._commit(options);
     }
 
     /**
      * @function CommonServiceBase.prototype.getUrlCompleted
      * @description 请求成功后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} cb - 成功回调函数。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    getUrlCompleted(result) {
-        let me = this;
-        me._processSuccess(result);
+    getUrlCompleted(cb, options) {
+      // @param {Object} result - 服务器返回的结果对象。
+      return function(result) {
+        cb && cb(result, options);
+      }
     }
 
     /**
      * @function CommonServiceBase.prototype.getUrlFailed
      * @description 请求失败后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
+
+     * @param {Object} cb - 失败回调函数。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    getUrlFailed(result) {
-        let me = this;
+    getUrlFailed(cb, options) {
+      const me = this;
+      // @param {Object} result - 服务器返回的结果对象。
+      return function(result) {
         if (me.totalTimes > 0) {
-            me.totalTimes--;
-            me.ajaxPolling();
+          me.totalTimes--;
+          me.ajaxPolling(options);
         } else {
-            me._processFailed(result);
+          cb && cb(result, options);
         }
-    }
+      }
+  }
 
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
      * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    ajaxPolling() {
+    ajaxPolling(options) {
         let me = this,
-            url = me.options.url,
+            url = options.url,
             re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
         me.index = parseInt(Math.random() * me.length);
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
-        me.options.url = url;
-        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
-        me._commit(me.options);
+        options.url = url;
+        options.isInTheSameDomain = Util.isInTheSameDomain(url);
+        me._commit(options);
     }
 
     /**
@@ -249,11 +254,14 @@ export class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessCompleted
      * @description 状态完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         result = Util.transformResult(result);
         this.events.triggerEvent('processCompleted', {
-            result: result
+            result: result,
+            options: options
         });
     }
 
@@ -261,12 +269,15 @@ export class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。对象
+     * @private
      */
-    serviceProcessFailed(result) {
+    serviceProcessFailed(result, options) {
         result = Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent('processFailed', {
-            error: error
+            error: error,
+            options: options
         });
     }
 

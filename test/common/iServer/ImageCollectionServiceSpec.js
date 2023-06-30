@@ -579,7 +579,7 @@ describe('ImageCollectionService', () => {
     
     it('should call search options null', function (done) {
         service = new ImageCollectionService(null);
-        expect(Object.keys(service._serviceOptions).length).toBe(0);
+        expect(Object.keys(service.options).length).toBe(0);
         done();
     });
 });
