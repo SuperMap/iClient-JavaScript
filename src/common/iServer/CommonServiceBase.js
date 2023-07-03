@@ -43,7 +43,6 @@ export class CommonServiceBase {
 
         this.length = null;
 
-
         this.totalTimes = null;
 
         this.POLLING_TIMES = 3;
@@ -387,4 +386,5 @@ export class CommonServiceBase {
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
  * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
+ * @param {Object} serviceResult.options 请求参数。
  */
