@@ -131,14 +131,13 @@ export class SetLayerStatusService extends CommonServiceBase {
      * @description 设置完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象，记录设置操作是否成功。
      */
-    serviceProcessCompleted(result) {
-        var me = this;
-        result = Util.transformResult(result);
-        if (result != null && me.lastparams != null) {
-            result.newResourceID = me.lastparams.resourceID;
-        }
-        me.events.triggerEvent("processCompleted", {result: result});
+    serviceProcessCompleted(result, options) {
+      var me = this;
+      result = Util.transformResult(result);
+      if (result != null && me.lastparams != null) {
+          result.newResourceID = me.lastparams.resourceID;
+      }
+      me.events.triggerEvent("processCompleted", {result: result, options});
     }
-
 }
 

@@ -44,7 +44,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
      * @description 分析完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         var me = this, analystResult;
         result = Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
@@ -62,7 +62,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult});
+        me.events.triggerEvent("processCompleted", {result: analystResult, options});
     }
 
     /**

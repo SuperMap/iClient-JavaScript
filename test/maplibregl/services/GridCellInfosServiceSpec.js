@@ -46,7 +46,7 @@ describe('maplibregl_GridCellInfosService', () => {
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.object.dataSourceName).toEqual("World");
                 expect(serviceResult.object.datasetName).toEqual("WorldEarth");
-                expect(serviceResult.object.options.method).toEqual("GET");
+                expect(serviceResult.options.method).toEqual("GET");
                 expect(serviceResult.result.centerPoint.x).toEqual(4);
                 expect(serviceResult.result.centerPoint.y).toEqual(20);
                 expect(serviceResult.result.color).not.toBeNull();

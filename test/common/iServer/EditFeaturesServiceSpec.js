@@ -31,9 +31,9 @@ describe('EditFeaturesService', () => {
                 expect(addFeatureService.isInTheSameDomain).toBeTruthy();
                 expect(addFeatureService.isUseBatch).toBeFalsy();
                 expect(addFeatureService.returnContent).toBeTruthy();
-                expect(addFeatureService.options.method).toBe("POST");
-                expect(addFeatureService.options.data).toContain("'parts':[4]");
-                expect(addFeatureService.options.data).toContain('"REGION"');
+                expect(addFeatureSuccessEventArgsSystem.options.method).toBe("POST");
+                expect(addFeatureSuccessEventArgsSystem.options.data).toContain("'parts':[4]");
+                expect(addFeatureSuccessEventArgsSystem.options.data).toContain('"REGION"');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
                 expect(serviceResult[0]).not.toBeNull();
@@ -100,7 +100,7 @@ describe('EditFeaturesService', () => {
                 expect(updateFeaturesService.isInTheSameDomain).toBeTruthy();
                 expect(updateFailedEventArgsSystem).toBeNull();
                 expect(updateSuccessEventArgsSystem.type).toBe("processCompleted");
-                expect(updateSuccessEventArgsSystem.object.options.method).toBe("PUT");
+                expect(updateSuccessEventArgsSystem.options.method).toBe("PUT");
                 expect(updateSuccessEventArgsSystem.result.succeed).toBeTruthy();
                 updateFeaturesService.destroy();
                 updateFeaturesParams.destroy();
@@ -162,8 +162,8 @@ describe('EditFeaturesService', () => {
 
                 expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
                 var id = "[" + id1 + "]";
-                expect(deleteSuccessEventArgsSystem.object.options.data).toBe(id);
-                expect(deleteSuccessEventArgsSystem.object.options.method).toBe("DELETE");
+                expect(deleteSuccessEventArgsSystem.options.data).toBe(id);
+                expect(deleteSuccessEventArgsSystem.options.method).toBe("DELETE");
                 expect(deleteSuccessEventArgsSystem.result.succeed).toBeTruthy();
                 deleteFeaturesService.destroy();
                 deleteFeaturesParams.destroy();
@@ -212,8 +212,8 @@ describe('EditFeaturesService', () => {
             try {
                 expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
                 var id = JSON.stringify(ids);
-                expect(deleteSuccessEventArgsSystem.object.options.data).toBe(id);
-                expect(deleteSuccessEventArgsSystem.object.options.method).toBe("POST");
+                expect(deleteSuccessEventArgsSystem.options.data).toBe(id);
+                expect(deleteSuccessEventArgsSystem.options.method).toBe("POST");
                 expect(deleteSuccessEventArgsSystem.result.succeed).toBeTruthy();
                 deleteFeaturesService.destroy();
                 deleteFeaturesParams.destroy();
@@ -262,8 +262,8 @@ describe('EditFeaturesService', () => {
             try {
                 expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
                 var id = JSON.stringify(ids);
-                expect(deleteSuccessEventArgsSystem.object.options.data).toBe(id);
-                expect(deleteSuccessEventArgsSystem.object.options.method).toBe("POST");
+                expect(deleteSuccessEventArgsSystem.options.data).toBe(id);
+                expect(deleteSuccessEventArgsSystem.options.method).toBe("POST");
                 expect(deleteSuccessEventArgsSystem.result.succeed).toBeTruthy();
                 deleteFeaturesService.destroy();
                 deleteFeaturesParams.destroy();
@@ -306,7 +306,7 @@ describe('EditFeaturesService', () => {
 
                 expect(noParamsFailedEventArgsSystem).not.toBeNull();
                 expect(noParamsFailedEventArgsSystem.type).toBe('processFailed');
-                expect(noParamsFailedEventArgsSystem.object.options.method).toBe('POST');
+                expect(noParamsFailedEventArgsSystem.options.method).toBe('POST');
                 expect(noParamsFailedEventArgsSystem.error).not.toBeNull();
                 expect(noParamsFailedEventArgsSystem.error.code).toEqual(400);
                 expect(noParamsFailedEventArgsSystem.error.errorMsg).not.toBeNull();

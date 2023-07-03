@@ -52,10 +52,10 @@ describe('maplibregl_FeatureService_editFeatures', () => {
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result[0]).not.toBeNull();
                 id = serviceResult.result[0];
-                expect(serviceResult.object.options.method).toBe("POST");
-                expect(serviceResult.object.options.data).toContain('"POINT"');
-                expect(serviceResult.object.options.data).toContain("'x':10");
-                expect(serviceResult.object.options.data).toContain("'y':15");
+                expect(serviceResult.options.method).toBe("POST");
+                expect(serviceResult.options.data).toContain('"POINT"');
+                expect(serviceResult.options.data).toContain("'x':10");
+                expect(serviceResult.options.data).toContain("'y':15");
                 done();
             } catch (e) {
                 console.log("'editFeatures_addFeature'案例失败" + e.name + ":" + e.message);
@@ -87,8 +87,8 @@ describe('maplibregl_FeatureService_editFeatures', () => {
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
-                expect(serviceResult.object.options.method).toBe("DELETE");
-                expect(serviceResult.object.options.data).toContain(id);
+                expect(serviceResult.options.method).toBe("DELETE");
+                expect(serviceResult.options.data).toContain(id);
                 done();
             } catch (e) {
                 console.log("'editFeatures_deleteFeature'案例失败" + e.name + ":" + e.message);

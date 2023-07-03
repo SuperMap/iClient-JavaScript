@@ -76,7 +76,7 @@ export class GetLayersInfoService extends CommonServiceBase {
      * @description 编辑完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         var me = this, existRes, layers, len;
         result = Util.transformResult(result);
 
@@ -84,7 +84,7 @@ export class GetLayersInfoService extends CommonServiceBase {
         layers = existRes ? result[0].subLayers.layers : null;
         len = layers ? layers.length : 0;
         me.handleLayers(len, layers);
-        me.events.triggerEvent("processCompleted", {result: result[0]});
+        me.events.triggerEvent("processCompleted", {result: result[0], options});
     }
 
     /**

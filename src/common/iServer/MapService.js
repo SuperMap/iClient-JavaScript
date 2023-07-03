@@ -98,16 +98,16 @@ export class MapService extends CommonServiceBase {
         me.request({
             method: "GET",
             scope: me,
-            success(result) {
+            success(result, options) {
               result.eventId = eventId;
-              this.serviceProcessCompleted(result);
+              this.serviceProcessCompleted(result, options);
             },
-            failure(result) {
+            failure(result, options) {
               if (result.error) {
                 result.error.eventId = eventId;
               }
               result.eventId = eventId;
-              this.serviceProcessFailed(result);
+              this.serviceProcessFailed(result, options);
             }
         });
     }
@@ -119,16 +119,16 @@ export class MapService extends CommonServiceBase {
      * Parameters:
      * {Object} result - 服务器返回的结果对象。
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         var me = this;
         result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
-            me.events && me.events.triggerEvent("processCompleted", {result: result});
+            me.events && me.events.triggerEvent("processCompleted", {result: result, options});
         } else {
             ////在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
-            me.events.triggerEvent("processFailed", {error: result});
+            me.events.triggerEvent("processFailed", {error: result, options});
         }
     }
 }

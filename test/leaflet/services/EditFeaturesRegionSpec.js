@@ -44,9 +44,9 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_REGION.type).toBe("processCompleted");
                 expect(addFeatureResult_REGION.object.isInTheSameDomain).toBeTruthy();
-                expect(addFeatureResult_REGION.object.options.method).toBe("POST");
-                expect(addFeatureResult_REGION.object.options.data).toContain("'parts':[4]");
-                expect(addFeatureResult_REGION.object.options.data).toContain('"REGION"');
+                expect(addFeatureResult_REGION.options.method).toBe("POST");
+                expect(addFeatureResult_REGION.options.data).toContain("'parts':[4]");
+                expect(addFeatureResult_REGION.options.data).toContain('"REGION"');
                 expect(addFeatureResult_REGION.result).not.toBeNull();
                 expect(addFeatureResult_REGION.result.succeed).toBeTruthy();
                 expect(addFeatureResult_REGION.result.length).toEqual(1);
@@ -89,9 +89,9 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult.type).toBe("processCompleted");
                 expect(addFeatureResult.object.isInTheSameDomain).toBeTruthy();
-                expect(addFeatureResult.object.options.method).toBe("POST");
-                expect(addFeatureResult.object.options.data).toContain("'parts':[4]");
-                expect(addFeatureResult.object.options.data).toContain('"REGION"');
+                expect(addFeatureResult.options.method).toBe("POST");
+                expect(addFeatureResult.options.data).toContain("'parts':[4]");
+                expect(addFeatureResult.options.data).toContain('"REGION"');
                 expect(addFeatureResult.result).not.toBeNull();
                 expect(addFeatureResult.result.succeed).toBeTruthy();
                 expect(addFeatureResult.result.newResourceID.length).toBeGreaterThan(0);
@@ -132,8 +132,8 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(deleteFeatureResult).not.toBeNull();
                 expect(deleteFeatureResult.type).toBe("processCompleted");
                 var id = "[" + id1 + "," + id2 + "]";
-                expect(deleteFeatureResult.object.options.data).toBe(id);
-                expect(deleteFeatureResult.object.options.method).toBe("DELETE");
+                expect(deleteFeatureResult.options.data).toBe(id);
+                expect(deleteFeatureResult.options.method).toBe("DELETE");
                 expect(deleteFeatureResult.result.succeed).toBeTruthy();
                 deleteFeaturesService.destroy();
                 done();

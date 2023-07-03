@@ -168,8 +168,8 @@ describe('maplibregl_LayerInfoService', () => {
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.object.resourceID).toEqual(id);
-                expect(serviceResult.object.options.method).toEqual("PUT");
-                expect(serviceResult.object.options.data).toContain("'description':\"test\"");
+                expect(serviceResult.options.method).toEqual("PUT");
+                expect(serviceResult.options.data).toContain("'description':\"test\"");
                 done();
             } catch (e) {
                 console.log("'setLayersInfo_isTempLayer'案例失败" + e.name + ":" + e.message);
@@ -199,8 +199,8 @@ describe('maplibregl_LayerInfoService', () => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
-                expect(serviceResult.object.options.method).toEqual("PUT");
-                expect(serviceResult.object.options.data).toContain("this is a test");
+                expect(serviceResult.options.method).toEqual("PUT");
+                expect(serviceResult.options.data).toContain("this is a test");
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.succeed).toEqual(true);
                 expect(serviceResult.result.newResourceLocation).not.toBeNull();

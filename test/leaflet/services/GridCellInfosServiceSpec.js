@@ -48,7 +48,7 @@ describe('leaflet_GridCellInfosService', () => {
                     expect(serviceResult.result.column).not.toBeUndefined();
                     expect(serviceResult.result.row).not.toBeUndefined();
                     expect(serviceResult.result.value).not.toBeUndefined();
-                    expect(serviceResult.object.options.method).toBe("GET");
+                    expect(serviceResult.options.method).toBe("GET");
                     expect(serviceResult.object.X).toEqual(4);
                     expect(serviceResult.object.Y).toEqual(20);
                     expect(serviceResult.object.dataSourceName).toBe("World");

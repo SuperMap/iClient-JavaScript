@@ -95,7 +95,7 @@ export class FieldService {
         statisticService.processAsync();
     }
 
-    _processCompleted(fieldStatisticResult) {
+    _processCompleted(fieldStatisticResult, options) {
         var me = this;
         var getAll = true,
             result = fieldStatisticResult.result;
@@ -111,7 +111,7 @@ export class FieldService {
             }
         }
         if (getAll) {
-            me._statisticsCallback({result: me.currentStatisticResult});
+            me._statisticsCallback({result: me.currentStatisticResult, options});
         }
     }
 }

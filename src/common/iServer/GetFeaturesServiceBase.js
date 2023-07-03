@@ -140,14 +140,14 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
      * @description 查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         var me = this;
         result = Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON();
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
-        me.events.triggerEvent("processCompleted", {result: result});
+        me.events.triggerEvent("processCompleted", {result: result, options});
     }
 
     dataFormat() {
