@@ -19,7 +19,6 @@ describe('KnowledgeGraphService', () => {
     expect(knowledgeGraphService.url).toEqual(knowledgegraphURL);
     knowledgeGraphService.destroy();
     expect(knowledgeGraphService.events).toBeNull();
-    expect(knowledgeGraphService.options).toBeNull();
     expect(knowledgeGraphService.url).toBeNull();
   });
 

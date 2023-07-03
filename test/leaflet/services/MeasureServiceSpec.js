@@ -36,8 +36,8 @@ describe('leaflet_MeasureService', () => {
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.unit).toBe("METER");
                 expect(serviceResult.object.measureMode).toBe("DISTANCE");
-                expect(serviceResult.object.options.method).toBe("GET");
-                expect(serviceResult.object.options.params.point2Ds).not.toBeNull();
+                expect(serviceResult.options.method).toBe("GET");
+                expect(serviceResult.options.params.point2Ds).not.toBeNull();
                 params.destroy();
                 done();
             } catch (exception) {
@@ -63,8 +63,8 @@ describe('leaflet_MeasureService', () => {
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.unit).toBe("METER");
                 expect(serviceResult.object.measureMode).toBe("DISTANCE");
-                expect(serviceResult.object.options.method).toBe("GET");
-                expect(serviceResult.object.options.params.point2Ds).not.toBeNull();
+                expect(serviceResult.options.method).toBe("GET");
+                expect(serviceResult.options.params.point2Ds).not.toBeNull();
                 params.destroy();
                 done();
             } catch (exception) {
@@ -90,7 +90,7 @@ describe('leaflet_MeasureService', () => {
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe("传入参数 points 的长度小于3。");
                 expect(serviceResult.object.measureMode).toBe("AREA");
-                expect(serviceResult.object.options.method).toBe("GET");
+                expect(serviceResult.options.method).toBe("GET");
                 params.destroy();
                 done();
             } catch (exception) {
@@ -117,8 +117,8 @@ describe('leaflet_MeasureService', () => {
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.unit).toBe("METER");
                 expect(serviceResult.object.measureMode).toBe("AREA");
-                expect(serviceResult.object.options.method).toBe("GET");
-                expect(serviceResult.object.options.params.point2Ds).not.toBeNull();
+                expect(serviceResult.options.method).toBe("GET");
+                expect(serviceResult.options.params.point2Ds).not.toBeNull();
                 params.destroy();
                 done();
             } catch (exception) {
@@ -144,8 +144,8 @@ describe('leaflet_MeasureService', () => {
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.unit).toBe("METER");
                 expect(serviceResult.object.measureMode).toBe("DISTANCE");
-                expect(serviceResult.object.options.method).toBe("GET");
-                expect(serviceResult.object.options.params.point2Ds).not.toBeNull();
+                expect(serviceResult.options.method).toBe("GET");
+                expect(serviceResult.options.params.point2Ds).not.toBeNull();
                 params.destroy();
                 done();
             } catch (exception) {
@@ -172,8 +172,8 @@ describe('leaflet_MeasureService', () => {
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.unit).toBe("METER");
                 expect(serviceResult.object.measureMode).toBe("AREA");
-                expect(serviceResult.object.options.method).toBe("GET");
-                expect(serviceResult.object.options.params.point2Ds).not.toBeNull();
+                expect(serviceResult.options.method).toBe("GET");
+                expect(serviceResult.options.params.point2Ds).not.toBeNull();
                 params.destroy();
                 done();
             } catch (exception) {

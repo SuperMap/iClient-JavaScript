@@ -39,9 +39,9 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_LINE.type).toBe("processCompleted");
                 expect(addFeatureResult_LINE.object.isInTheSameDomain).toBeTruthy();
-                expect(addFeatureResult_LINE.object.options.method).toBe("POST");
-                expect(addFeatureResult_LINE.object.options.data).toContain("'parts':[2]");
-                expect(addFeatureResult_LINE.object.options.data).toContain('"LINE"');
+                expect(addFeatureResult_LINE.options.method).toBe("POST");
+                expect(addFeatureResult_LINE.options.data).toContain("'parts':[2]");
+                expect(addFeatureResult_LINE.options.data).toContain('"LINE"');
                 expect(addFeatureResult_LINE.result).not.toBeNull();
                 expect(addFeatureResult_LINE.result.succeed).toBeTruthy();
                 expect(addFeatureResult_LINE.result.length).toEqual(1);
@@ -79,8 +79,8 @@ describe('leaflet_FeatureService_editFeatures_Line', () => {
                 expect(deleteLineResult).not.toBeNull();
                 expect(deleteLineResult.type).toBe("processCompleted");
                 var id = "[" + id1 + "]";
-                expect(deleteLineResult.object.options.data).toBe(id);
-                expect(deleteLineResult.object.options.method).toBe("DELETE");
+                expect(deleteLineResult.options.data).toBe(id);
+                expect(deleteLineResult.options.method).toBe("DELETE");
                 expect(deleteLineResult.result.succeed).toBeTruthy();
                 deleteLineService.destroy();
                 done();

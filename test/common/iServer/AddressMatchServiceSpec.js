@@ -24,7 +24,6 @@ describe('AddressMatchService', () => {
         expect(addressMatchService.EVENT_TYPES).toBeNull();
         expect(addressMatchService.events).toBeNull();
         expect(addressMatchService.isInTheSameDomain).toBeNull();
-        expect(addressMatchService.options).toBeNull();
         expect(addressMatchService.url).toBeNull();
     });
 

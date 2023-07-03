@@ -79,8 +79,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -127,8 +127,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -200,8 +200,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -257,8 +257,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -309,8 +309,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -381,8 +381,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -450,8 +450,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');
@@ -522,8 +522,8 @@ describe('maplibregl_ThemeService', () => {
         service.getThemeInfo(themeParameters, (result) => {
             serviceResult = result;
             expect(serviceResult.type).toBe('processCompleted');
-            expect(serviceResult.object.options.method).toEqual('POST');
-            expect(serviceResult.object.options.data).toBe(expectParams);
+            expect(serviceResult.options.method).toEqual('POST');
+            expect(serviceResult.options.data).toBe(expectParams);
             expect(serviceResult.result.succeed).toBe(true);
             expect(serviceResult.result.postResultType).toBe('CreateChild');
             expect(serviceResult.result.newResourceID).toBe('93dtest');

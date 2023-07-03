@@ -125,7 +125,7 @@ export class MapService extends CommonServiceBase {
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
-            me.events && me.events.triggerEvent("processCompleted", {result: result});
+            me.events && me.events.triggerEvent("processCompleted", {result: result, options});
         } else {
             ////在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
             me.events.triggerEvent("processFailed", {error: result, options});

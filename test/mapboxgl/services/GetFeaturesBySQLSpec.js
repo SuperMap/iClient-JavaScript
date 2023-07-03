@@ -53,8 +53,8 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.object.options.data).toContain('Countries@World');
-                expect(serviceResult.object.options.data).toContain('SMID = 247');
+                expect(serviceResult.options.data).toContain('Countries@World');
+                expect(serviceResult.options.data).toContain('SMID = 247');
                 expect(serviceResult.result.featureCount).toEqual(1);
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual('FeatureCollection');

@@ -30,7 +30,7 @@ describe('leaflet_MapService', () => {
                     expect(serviceResult).not.toBeNull();
                     expect(serviceResult.type).toBe("processCompleted");
                     expect(serviceResult.result).not.toBeNull();
-                    expect(serviceResult.object.options.method).toBe("GET");
+                    expect(serviceResult.options.method).toBe("GET");
                     done();
                     } catch (exception) {
                         expect(false).toBeTruthy();
