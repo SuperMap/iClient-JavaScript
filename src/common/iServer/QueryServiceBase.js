@@ -119,7 +119,7 @@ export class QueryServiceBase extends CommonServiceBase {
      * @description 查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         var me = this;
         result = Util.transformResult(result);
         var geoJSONFormat = new GeoJSON();
@@ -140,7 +140,8 @@ export class QueryServiceBase extends CommonServiceBase {
         }
 
         me.events.triggerEvent("processCompleted", {
-            result: result
+            result: result,
+            options
         });
     }
 

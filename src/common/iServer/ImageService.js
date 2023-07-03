@@ -98,16 +98,16 @@ export default class ImageService extends CommonServiceBase {
       url,
       data,
       scope: this,
-      success(result) {
+      success(result, options) {
         result.eventId = eventId;
-        me.serviceProcessCompleted(result);
+        me.serviceProcessCompleted(result, options);
       },
-      failure(result) {
+      failure(result, options) {
         if (result.error) {
           result.error.eventId = eventId;
         }
         result.eventId = eventId;
-        me.serviceProcessFailed(result);
+        me.serviceProcessFailed(result, options);
       }
     });
   }

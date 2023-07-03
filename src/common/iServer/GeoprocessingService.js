@@ -78,29 +78,31 @@ export class GeoprocessingService extends CommonServiceBase {
     waitForJobCompletion(jobId, identifier, options, callback) {
         const me = this;
         const timer = setInterval(function () {
-            const serviceProcessCompleted = function (serverResult, eventId) {
+            const serviceProcessCompleted = function (serverResult, options) {
                 const state = serverResult.state.runState;
                 if (options.statusCallback) {
                     options.statusCallback(state);
                 }
-                serverResult.eventId = eventId;
                 switch (state) {
                     case 'FINISHED':
                         clearInterval(timer);
                         me.events.triggerEvent('processCompleted', {
-                            result: serverResult
+                            result: serverResult,
+                            options
                         });
                         break;
                     case 'FAILED':
                         clearInterval(timer);
                         me.events.triggerEvent('processFailed', {
-                            result: serverResult
+                            result: serverResult,
+                            options
                         });
                         break;
                     case 'CANCELED':
                         clearInterval(timer);
                         me.events.triggerEvent('processFailed', {
-                            result: serverResult
+                            result: serverResult,
+                            options
                         });
                         break;
                 }
@@ -178,18 +180,18 @@ export class GeoprocessingService extends CommonServiceBase {
               params: paramter,
               headers: { 'Content-type': 'application/json' },
               scope: this,
-              success(result) {
+              success(result, options) {
                 result.eventId = eventId;
                 const callback = serviceProcessCompleted || this.serviceProcessCompleted.bind(this);
-                callback(result, eventId);
+                callback(result, options);
               },
-              failure(result) {
+              failure(result, options) {
                 if (result.error) {
                   result.error.eventId = eventId;
                 }
                 result.eventId = eventId;
                 const callback = serviceProcessFailed || this.serviceProcessFailed.bind(this);
-                callback(result, eventId);
+                callback(result, options);
               }
           });
       }

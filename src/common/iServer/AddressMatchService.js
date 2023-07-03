@@ -85,16 +85,16 @@ export class AddressMatchService extends CommonServiceBase {
           url,
           params,
           scope: this,
-          success(result) {
+          success(result, options) {
             result.eventId = eventId;
-            this.serviceProcessCompleted(result);
+            this.serviceProcessCompleted(result, options);
           },
-          failure(result) {
+          failure(result, options) {
             if (result.error) {
               result.error.eventId = eventId;
             }
             result.eventId = eventId;
-            this.serviceProcessFailed(result);
+            this.serviceProcessFailed(result, options);
           }
       });
     }
@@ -103,11 +103,11 @@ export class AddressMatchService extends CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      * @description 服务流程是否完成
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }
-        super.serviceProcessCompleted(result);
+        super.serviceProcessCompleted(result, options);
     }
 
     /**
@@ -115,8 +115,8 @@ export class AddressMatchService extends CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      * @description 服务流程是否失败
      */
-    serviceProcessFailed(result) {
-        super.serviceProcessFailed(result);
+    serviceProcessFailed(result, options) {
+        super.serviceProcessFailed(result, options);
     }
 }
 
