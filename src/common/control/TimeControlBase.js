@@ -7,6 +7,7 @@ import {Events} from '../commontypes/Events';
  * @class TimeControlBase
  * @deprecatedclass SuperMap.TimeControlBase
  * @classdesc 时间控制基类。
+ * @modulecategory Control
  * @category  Control
  * @param {Object} options - 可选参数。
  * @param {number} [options.speed=1] - 速度。不能小于 0，（每帧渲染的数据之间的间隔为1），设置越大速度越快。

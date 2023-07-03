@@ -77,6 +77,7 @@ const dpiConfig = {
  * @class WebMap
  * @category  iPortal/Online Resources Map
  * @classdesc 对接 iPortal/Online 地图类
+ * @modulecategory Mapping
  * @param {Object} options - 参数
  * @param {string} [options.target='map'] - 地图容器id
  * @param {Object | string} [options.webMap] - webMap对象，或者是获取webMap的url地址。存在webMap，优先使用webMap, id的选项则会被忽略

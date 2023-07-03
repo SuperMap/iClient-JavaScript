@@ -161,7 +161,7 @@
                 color: rgba(0, 0, 0, 0.65);
             }
             .modal-dialog {
-                width: 800px !important;
+                width: 1100px !important;
                 top: 50px;
             }
             .modal-body {
@@ -189,6 +189,12 @@
                 border-right: 1px solid #e8e8e8;
                 font-size: 14px;
                 line-height: 1.5;
+            }
+            .modal-content-row .modal-content-item-content:nth-child(2){
+                width: 193px;
+            }
+            .modal-content-row .modal-content-item-content:nth-child(4){
+                width: 479px;
             }
         </style>
     </head>
@@ -473,7 +479,7 @@
                         function (feature) {
                             selectedFeature = feature;
                             $('#myModal').modal('show');
-                            showTifInfo(selectedFeature.id_);
+                            showTifInfo(selectedFeature.V);
                             return true;
                         },
                         {

@@ -9,6 +9,7 @@ import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDat
  * @class DatasourceService
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。
+ * @modulecategory Services
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

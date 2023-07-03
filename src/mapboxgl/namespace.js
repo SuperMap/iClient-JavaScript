@@ -60,7 +60,8 @@ import {
 import {
   CommonUtil,
   SuperMap,
-  Transform
+  Transform,
+  ChartView
 } from '@supermap/iclient-common/namespace';
 
 import { WebMap } from './mapping';
@@ -124,6 +125,8 @@ mapboxgl.supermap.ThemeService = ThemeService;
 mapboxgl.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
 mapboxgl.supermap.WebPrintingJobService = WebPrintingJobService;
 mapboxgl.supermap.KnowledgeGraphService = KnowledgeGraphService;
+
+mapboxgl.supermap.Components.ChartView = ChartView;
 
 // 处理命名空间重名
 mapboxgl.supermap.CommonUtil = CommonUtil;

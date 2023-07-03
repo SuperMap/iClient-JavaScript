@@ -6,6 +6,7 @@ import { ServiceBase } from './ServiceBase';
  * @classdesc 处理自动化服务接口类。
  * @version 11.1.0
  * @category  iServer ProcessingAutomationService
+ * @modulecategory Services
  * @extends  {ServiceBase}
  * @example
  *  //为了安全访问受保护的处理自动化服务，必须通过传递iserver令牌(token)，才能正确访问相关资源。

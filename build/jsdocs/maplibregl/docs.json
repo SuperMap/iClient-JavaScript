@@ -65,7 +65,7 @@
       "src/mapboxgl/core/Util"
     ]
   },
-  "plugins": ["plugins/markdown", "../plugins/usage"],
+  "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories"],
   "markdown": {
     "tags": ["usage"]
   },

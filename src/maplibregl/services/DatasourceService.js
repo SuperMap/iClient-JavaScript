@@ -9,7 +9,9 @@ import { DatasourceService as CommonDatasourceService } from '@supermap/iclient-
  * @class DatasourceService
  * @category  iServer Data Datasource
  * @classdesc 数据源服务类。
+ * @modulecategory Services
  * @version 11.1.0
+ * @modulecategory Services
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。

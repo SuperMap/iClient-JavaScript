@@ -9,6 +9,7 @@ import { FieldService as CommonFieldService } from '@supermap/iclient-common/iSe
  * @class FieldService
  * @category  iServer Data Field
  * @classdesc 字段服务类。
+ * @modulecategory Services
  * @example
  * new FieldService(url).getFields(function(result){
  *     //doSomething

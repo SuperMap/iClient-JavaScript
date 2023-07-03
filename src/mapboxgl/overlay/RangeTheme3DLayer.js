@@ -7,7 +7,8 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 /**
  * @class RangeTheme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维分段专题图。
+ * @classdesc 三维分段专题图类。
+ * @modulecategory Overlay
  * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
  * @param  {Array} [layerOptions.heightStops] - 新增参数，数据高度分段数组。
@@ -33,18 +34,18 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     constructor(id, layerOptions) {
         super(id, layerOptions);
         /**
-         * @member  {Array} RangeTheme3DLayer.prototype.heightStops 
+         * @member  {Array} RangeTheme3DLayer.prototype.heightStops
          * @description 数据高度分段数组。
          */
         this.heightStops = null;
 
         /**
-         * @member  {Array} RangeTheme3DLayer.prototype.colorStops 
+         * @member  {Array} RangeTheme3DLayer.prototype.colorStops
          * @description 数据颜色分段数组。
          */
         this.colorStops = null;
         /**
-         * @member  {number} RangeTheme3DLayer.prototype.base 
+         * @member  {number} RangeTheme3DLayer.prototype.base
          * @description 数据分段线性增量。
          */
         this.base = null;

@@ -10,6 +10,7 @@
  * @deprecatedclassinstance L.supermap.datasourceService
  * @classdesc 数据源服务类。
  * @category iServer Data Datasource
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

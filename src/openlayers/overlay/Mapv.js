@@ -14,6 +14,7 @@ import ImageCanvasSource from 'ol/source/ImageCanvas';
  * @browsernamespace ol.source
  * @category  Visualization MapV
  * @classdesc MapV 图层源。
+ * @modulecategory Overlay
  * @param {Object} opt_options - 参数。
  * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {Mapv.DataSet} opt_options.dataSet - MapV 的数据集。

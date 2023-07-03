@@ -13,7 +13,8 @@
  * @class GraphThemeLayer
  * @deprecatedclassinstance L.supermap.graphThemeLayer
  * @category Visualization Theme
- * @classdesc 统计专题图图层。统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。
+ * @modulecategory Overlay
+ * @classdesc 统计专题图图层类。统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。
  * 统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  * 目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
  * @extends ThemeLayer

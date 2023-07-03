@@ -8,7 +8,7 @@ describe('FetchRequest', () => {
         fetch = jasmine.createSpy('fetch').and.resolveTo({ success: 'ok' });
         setFetch(fetch);
     });
-    xit('RequestJSONPPromise', () => {
+    it('RequestJSONPPromise', () => {
         var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
         var params;
         var options;

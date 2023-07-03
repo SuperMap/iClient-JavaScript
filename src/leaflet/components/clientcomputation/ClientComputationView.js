@@ -13,8 +13,9 @@
  * @class ClientComputationView
  * @aliasclass Components.ClientComputationView
  * @deprecatedclassinstance L.supermap.components.clientComputation
- * @classdesc 叠加图层的客户端计算。
+ * @classdesc 叠加图层的客户端计算类。
  * @version 9.1.1
+ * @modulecategory Components
  * @param {string} workerUrl - worker 地址，原始位置为 dist/leaflet/workers/TurfWorker.js。
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。

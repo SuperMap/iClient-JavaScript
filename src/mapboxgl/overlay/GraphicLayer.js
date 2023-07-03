@@ -4,11 +4,12 @@
  import mapboxgl from 'mapbox-gl';
  import { GraphicLayerRenderer } from '@supermap/iclient-common/overlay/graphic/GraphicLayerRenderer';
  import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
- 
+
  /**
   * @class GraphicLayer
   * @category  Visualization Graphic
-  * @classdesc 高效率点图层。
+  * @classdesc 高效率点图层类。
+  * @modulecategory Overlay
   * @version 11.1.0
   * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
   * @param {Object} options - 参数。
@@ -25,7 +26,7 @@
   * @usage
   */
  export class GraphicLayer {
- 
+
      constructor(id, options) {
         this.options = options;
          /**
@@ -37,7 +38,7 @@
          this.renderingMode = '3d';
          this.overlay = true;
      }
- 
+
      /**
       * @function GraphicLayer.prototype.addTo
       * @deprecated
@@ -49,7 +50,7 @@
         this.onAdd(map);
         return this;
      }
- 
+
      /**
       * @function GraphicLayer.prototype.onAdd
       * @description 添加该图层。
@@ -79,7 +80,7 @@
      render() {
         this.renderer.draw();
      }
- 
+
      /**
       * @function GraphicLayer.prototype.setStyle
       * @description 设置图层整体样式。
@@ -97,7 +98,7 @@
      setStyle(styleOptions) {
         this.renderer && this.renderer.setStyle(styleOptions);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.setGraphics
       * @description 设置绘制的点要素数据，会覆盖之前的所有要素。
@@ -106,7 +107,7 @@
      setGraphics(graphics) {
         this.renderer && this.renderer.setGraphics(graphics);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.addGraphics
       * @description 添加点要素，不会覆盖之前的要素。
@@ -115,7 +116,7 @@
      addGraphics(graphics) {
         this.renderer && this.renderer.addGraphics(graphics);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.getGraphicBy
       * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
@@ -126,7 +127,7 @@
      getGraphicBy(property, value) {
         return this.renderer && this.renderer.getGraphicBy(property, value);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.getGraphicById
       * @description 通过给定一个 ID，返回对应的矢量要素。
@@ -136,7 +137,7 @@
      getGraphicById(graphicId) {
          return this.getGraphicBy("id", graphicId);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.getGraphicsByAttribute
       * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
@@ -147,7 +148,7 @@
      getGraphicsByAttribute(attrName, attrValue) {
         return this.renderer && this.renderer.getGraphicsByAttribute(attrName, attrValue);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.removeGraphics
       * @description 删除要素数组，默认将删除所有要素
@@ -156,7 +157,7 @@
      removeGraphics(graphics = null) {
          this.renderer && this.renderer.removeGraphics(graphics);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.clear
       * @description 释放图层资源。
@@ -164,7 +165,7 @@
      clear() {
          this.renderer && this.renderer.clear();
      }
- 
+
      /**
       * @function GraphicLayer.prototype.remove
       * @description 删除该图层。
@@ -172,7 +173,7 @@
      remove() {
          this.renderer && this.renderer.remove();
      }
-     
+
      /**
       * @function GraphicLayer.prototype.moveTo
       * @description 将图层移动到某个图层之前。
@@ -182,7 +183,7 @@
      moveTo(layerID, before) {
         this.renderer.moveTo(layerID, before);
      }
- 
+
      /**
       * @function GraphicLayer.prototype.setVisibility
       * @description 设置图层可见性。
@@ -191,8 +192,8 @@
      setVisibility(visibility) {
          this.renderer.setVisibility(visibility);
      }
- 
- 
+
+
      /**
       * @function GraphicLayer.prototype.getState
       * @description 获取当前地图及图层状态。
@@ -236,4 +237,3 @@
          return state;
      }
  }
- 

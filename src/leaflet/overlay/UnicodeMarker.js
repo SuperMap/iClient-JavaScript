@@ -7,8 +7,9 @@ import '../core/Base';
 /**
  * @class UnicodeMarker
  * @deprecatedclassinstance L.supermap.unicodeMarker
- * @classdesc Unicode 字符图标。
+ * @classdesc Unicode 字符图标类。
  * @category Visualization Marker
+ * @modulecategory Overlay
  * @extends {L.Path}
  * @param {L.LatLngBounds} latlng - 经纬度坐标。
  * @param {Object} options - 参数。

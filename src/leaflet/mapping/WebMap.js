@@ -66,6 +66,7 @@ import Attributions from '../core/Attributions'
  * @deprecatedclassinstance L.supermap.webMap
  * @classdesc 对接 iPortal/Online 地图类。
  * @category iPortal/Online Resources Map
+ * @modulecategory Mapping
  * @extends {L.LayerGroup}
  * @param {number} id - iPortal/Online 地图 id。
  * @param {Object} options - 参数。

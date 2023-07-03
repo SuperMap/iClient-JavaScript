@@ -12,7 +12,8 @@ import {
 /**
  * @class MapvLayer
  * @category  Visualization MapV
- * @classdesc Mapv 图层。
+ * @classdesc Mapv 图层类。
+ * @modulecategory Overlay
  * @param {mapboxgl.Map} map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - Mapv 参数。
@@ -55,9 +56,10 @@ export class MapvLayer {
       transferCoordinate: this._transferCoordinate,
       getCenterPixel: this._getCenterPixel,
       getResolution: this._getResolution,
-      validZoom: this._validZoom
+      validZoom: this._validZoom.bind(this)
     }, { mapElement: this.map.getCanvas(), targetElement: this.mapContainer, id: this.id });
     this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
+    this.bindEvent();
   }
 
   /**
@@ -66,6 +68,7 @@ export class MapvLayer {
      */
   onRemove() {
     this.renderer.destroy();
+    this.unbindEvent();
   }
 
   /**
@@ -73,7 +76,7 @@ export class MapvLayer {
      * @description 渲染图层。
      */
   render() {
-    this.renderer.draw();
+    this.renderer && this.renderer.draw();
   }
 
   _transferCoordinate() {
@@ -98,10 +101,9 @@ export class MapvLayer {
   }
 
   _validZoom() {
-    var self = this;
     if (
-      (self.options.minZoom && this.map.getZoom() < self.options.minZoom) ||
-      (self.options.maxZoom && this.map.getZoom() > self.options.maxZoom)
+      (this.mapVOptions.minZoom && this.map.getZoom() < this.mapVOptions.minZoom) ||
+      (this.mapVOptions.maxZoom && this.map.getZoom() > this.mapVOptions.maxZoom)
     ) {
       return false;
     }
@@ -218,12 +220,12 @@ export class MapvLayer {
   */
   bindEvent() {
     var map = this.map;
-    if (this.options.methods) {
-      if (this.options.methods.click) {
-        map.on('click', this.clickEvent);
+    if (this.mapVOptions.methods) {
+      if (this.mapVOptions.methods.click) {
+        map.on('click', this.renderer.clickEvent);
       }
-      if (this.options.methods.mousemove) {
-        map.on('mousemove', this.mousemoveEvent);
+      if (this.mapVOptions.methods.mousemove) {
+        map.on('mousemove', this.renderer.mousemoveEvent);
       }
     }
   }
@@ -234,11 +236,11 @@ export class MapvLayer {
    */
   unbindEvent() {
     var map = this.map;
-    if (this.options.methods) {
-      if (this.options.methods.click) {
+    if (this.mapvOptions.methods) {
+      if (this.mapvOptions.methods.click) {
         map.off('click', this.clickEvent);
       }
-      if (this.options.methods.mousemove) {
+      if (this.mapvOptions.methods.mousemove) {
         map.off('mousemove', this.mousemoveEvent);
       }
     }

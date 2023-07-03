@@ -10,6 +10,7 @@ import {IManagerCreateNodeParam} from './iManagerCreateNodeParam';
  * @deprecatedclass SuperMap.iManager
  * @classdesc iManager 服务类。
  * @category iManager
+ * @modulecategory Services
  * @param {string} serviceUrl - iManager 首页地址。
  * @usage
  */

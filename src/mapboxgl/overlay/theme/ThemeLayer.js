@@ -17,6 +17,7 @@ import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
  * @class ThemeLayer
  * @category Visualization Theme
  * @classdesc 专题图基类。
+ * @modulecategory Overlay
  * @param {string} name - 专题图图层名。
  * @param {Object} options -可选参数。
  * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象，将在下个版本弃用，请用 map.addLayer()方法添加图层。

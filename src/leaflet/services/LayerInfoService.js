@@ -10,6 +10,7 @@ import { LayerInfoService as CommonLayerInfoService } from '@supermap/iclient-co
  * @deprecatedclassinstance L.supermap.layerInfoService
  * @classdesc 图层信息类。
  * @category  iServer Map Layer
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new LayerInfoService(url).getLayersInfo(function(result){

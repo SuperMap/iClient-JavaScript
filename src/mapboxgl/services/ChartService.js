@@ -9,7 +9,8 @@ import { ChartService as CommonChartService } from '@supermap/iclient-common/iSe
 /**
  * @class ChartService
  * @category  iServer Map Chart
- * @classdesc 海图服务。
+ * @classdesc 海图服务类。
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new ChartService(url)

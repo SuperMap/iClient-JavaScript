@@ -35,7 +35,8 @@ export class MapvRenderer extends BaseLayer {
         this.targetElement = targetElement;
         this.canvas = this._createCanvas(id, mapElement);
         this.canvasLayer = {
-          canvas: this.canvas
+          canvas: this.canvas,
+          devicePixelRatio: this.devicePixelRatio
         }
         this.init(options);
         this.argCheck(options);

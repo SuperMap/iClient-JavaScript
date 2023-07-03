@@ -12,6 +12,7 @@ import {MapService} from "../services/MapService";
  * @classdesc 版本切换控件，支持 IE10 及以上。
  * @category  Control
  * @extends {L.Control}
+ * @modulecategory Control
  * @example
  * new ChangeTileVersion({
  *      layer: baseLayer,

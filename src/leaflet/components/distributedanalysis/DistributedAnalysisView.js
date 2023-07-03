@@ -15,8 +15,9 @@
  * @class DistributedAnalysisView
  * @aliasclass Components.DistributedAnalysisView
  * @deprecatedclassinstance L.supermap.components.distributedAnalysis
- * @classdesc 分布式分析组件。
+ * @classdesc 分布式分析组件类。
  * @version 9.1.1
+ * @modulecategory Components
  * @param {string} processingUrl - 分布式分析服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
@@ -53,7 +54,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
      * @private
      */
     _fillDataToView: function () {
-        
+
         // 获取数据集
         this.viewModel.on('datasetsloaded', (e) => {
             let datasetOptionsArr = e.result.dataset.datasetNames;
@@ -190,7 +191,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         gridSizeInput.value = '1000';
         let gridSizeUnitSelectName = gridSizeContainer.children[1].children[1].children[0].children[0].children[0];
 
-        // 搜索半径 
+        // 搜索半径
         let searchRadiusUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         };
@@ -346,7 +347,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
                      */
                     this._event.fire('analysissucceeded', {'layer': e.layer, 'name': e.name})
                 });
-                
+
                 this.viewModel.on('analysisfailed', (e) => {
                     this.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
                     analysingContainer.style.display = 'none';

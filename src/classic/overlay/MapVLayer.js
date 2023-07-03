@@ -7,7 +7,8 @@ import { MapVRenderer } from './mapv/MapVRenderer';
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV 图层。
+ * @classdesc MapV 图层类。
+ * @modulecategory Overlay
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
@@ -52,7 +53,7 @@ export class MapVLayer extends SuperMap.Layer {
         if (options) {
           SuperMap.Util.extend(this, options);
         }
-        
+
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
@@ -202,7 +203,7 @@ export class MapVLayer extends SuperMap.Layer {
                 this.canvas.width = parseInt(size.w);
                 this.canvas.height = parseInt(size.h);
             }
-           
+
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;

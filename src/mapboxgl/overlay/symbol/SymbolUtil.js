@@ -21,7 +21,7 @@ const GET_TYPE_RULE = [{
 }];
 
 export function isMultiSymbol(symbol) {
-    return symbol?.length > 0;
+    return symbol && symbol.length > 0;
 }
 
 /**
@@ -67,7 +67,7 @@ export function getSymbolType(symbol) {
             break;
         }
     }
-    return type ?? LayerType.symbol;
+    return type || LayerType.symbol;
 }
 
 const MAPBOX_EXPRESSION_FIRST_VALUE = [
@@ -155,7 +155,7 @@ const MAPBOX_EXPRESSION_FIRST_VALUE = [
  * @private
  */
 export function isMapboxExpression(value) {
-    if (value?.length > 0) {
+    if (value && value.length > 0) {
         const [v] = value;
         return typeof v === 'string' && MAPBOX_EXPRESSION_FIRST_VALUE.includes(v);
     }
@@ -171,6 +171,6 @@ export function validateStyleKey(value) {
 export function validateSymbol(symbol) {
     const symbolInfo = isMultiSymbol(symbol) ? symbol : [symbol];
     return symbolInfo.every((s) => {
-        return validateStyleKey(s.paint ?? {}) && validateStyleKey(s.layout ?? {});
+        return validateStyleKey(s.paint || {}) && validateStyleKey(s.layout || {});
     });
 }

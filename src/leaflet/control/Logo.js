@@ -13,6 +13,7 @@ import {
  * @deprecatedclassinstance L.supermap.control.logo
  * @classdesc Logo 控件。
  * @category  Control
+ * @modulecategory Control
  * @extends {L.Control}
  * @example
  *  new Logo({

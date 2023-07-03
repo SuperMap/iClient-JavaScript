@@ -13,6 +13,7 @@ import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParam
  * @deprecatedclassinstance L.supermap.measureService
  * @classdesc 量算服务类。
  * @category  iServer Map Measure
+ * @modulecategory Services
  * @example
  * 用法：
  * new MeasureService(url).measureDistance({

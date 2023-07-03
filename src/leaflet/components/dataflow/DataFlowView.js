@@ -11,9 +11,10 @@
  * @class DataFlowView
  * @aliasclass Components.DataFlowView
  * @deprecatedclassinstance L.supermap.components.dataFlow
- * @classdesc 数据流组件。
+ * @classdesc 数据流组件类。
  * @version 9.1.1
  * @category Components DataFlow
+ * @modulecategory Components
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
  * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。<br>

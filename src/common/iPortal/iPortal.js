@@ -14,6 +14,7 @@ import { IPortalShareParam } from "./iPortalShareParam";
  * @deprecatedclass SuperMap.iPortal
  * @classdesc 对接 SuperMap iPortal 基础服务。
  * @category iPortal/Online Resources
+ * @modulecategory Services
  * @extends {IPortalServiceBase}
  * @param {string} iportalUrl - 服务地址。
  * @param {Object} options - 可选参数。

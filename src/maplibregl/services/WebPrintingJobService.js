@@ -10,6 +10,7 @@ import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrinting
  * @class WebPrintingJobService
  * @category  iServer WebPrintingJob
  * @version 11.1.0
+ * @modulecategory Services
  * @classdesc Web 打印服务类。
  *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
  * @extends {ServiceBase}

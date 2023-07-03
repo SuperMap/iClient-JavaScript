@@ -10,6 +10,7 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @classdesc 热力图层类。
  * @category  Visualization HeatMap
  * @version 11.1.0
+ * @modulecategory Overlay
  * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
  * @param {maplibregl.Map} options.map - MapLibreGL Map 对象。

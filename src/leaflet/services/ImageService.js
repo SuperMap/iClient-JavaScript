@@ -12,6 +12,7 @@ import CommonMatchImageService from '@supermap/iclient-common/iServer/ImageServi
  * @constructs ImageService
  * @classdesc 影像服务类。
  * @category  iServer Image
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  *      new ImageService(url,options)

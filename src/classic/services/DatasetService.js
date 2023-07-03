@@ -10,7 +10,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
 /**
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集查询。
+ * @classdesc 数据集信息服务。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -79,7 +79,7 @@ export class DatasetService extends CommonServiceBase {
     setDataset(params, callback) {
         if (!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)) {
             return;
-        } 
+        }
         let datasetParams;
         if (params instanceof CreateDatasetParameters) {
             datasetParams = {

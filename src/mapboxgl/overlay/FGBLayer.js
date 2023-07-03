@@ -16,7 +16,8 @@ import { FGBLayerRenderer } from '@supermap/iclient-common/overlay/fgb/FGBLayerR
 /**
  * @class FGBLayer
  * @category Visualization FGB
- * @classdesc FGB 图层，该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * @classdesc FGB 图层类。该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * @modulecategory Overlay
  * @version 11.1.0
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("FGBlayer_") 创建图层 ID。
@@ -97,7 +98,7 @@ export class FGBLayer {
         extent = this.extent;
       }
     }
-    this.renderer = new FGBLayerRenderer(this.options); 
+    this.renderer = new FGBLayerRenderer(this.options);
     this._handleFeatures(extent);
   }
   /**
@@ -116,7 +117,7 @@ export class FGBLayer {
     * @function FGBLayer.prototype.render
   */
   render() {
-    
+
   }
   /**
     * @function FGBLayer.prototype.setVisibility

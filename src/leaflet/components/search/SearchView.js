@@ -16,8 +16,9 @@
  * @class SearchView
  * @aliasclass Components.Search
  * @deprecatedclassinstance L.supermap.components.search
- * @classdesc 图层查询组件。
+ * @classdesc 图层查询组件类。
  * @category Components Search
+ * @modulecategory Components
  * @version 9.1.1
  * @param {Object} options - 参数。
  * @param {Object|Array.<string>} [options.cityConfig] - 城市地址匹配配置，默认为全国城市，与 options.cityGeoCodingConfig 支持匹配的服务对应；

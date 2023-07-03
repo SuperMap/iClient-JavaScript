@@ -10,7 +10,6 @@
  */
 
 import * as THREE from "three";
-import { Util } from '../../commontypes/Util';
 import { Transform } from "./Transform";
 
 const projection = Transform.projection;
@@ -18,7 +17,6 @@ const {
   Color,
   Scene,
   WebGLRenderer,
-  CanvasRenderer,
   PerspectiveCamera,
   Vector3,
   Shape,
@@ -45,10 +43,9 @@ const cancel = window.cancelAnimationFrame ||
  * @category  Visualization Three
  * @classdesc Three 图层渲染器
  * @param {ThreeLayer} layer - ThreeJs图层。
- * @param {string} [renderer="gl"] - 图层渲染方式(canvas或WebGL)。取值："gl","canvas"。
+ * @param {string} [renderer="gl"] - 图层渲染器，仅支持"gl"。'canvas'在v11.1.0后被弃用。
  * @param {Object} options - threejs渲染器初始化参数对象。参数内容详见:
- *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}/
- *          [CanvasRenderer]{@link https://threejs.org/docs/index.html#examples/renderers/CanvasRenderer}
+ *          [WebGLRenderer]{@link https://threejs.org/docs/index.html#api/renderers/WebGLRenderer}
  *
  */
 export class ThreeLayerRenderer {
@@ -270,7 +267,7 @@ export class ThreeLayerRenderer {
     if (coordinate && object3D) {
       this.setPosition(object3D, coordinate);
     }
-    this.renderer && this.renderer.scene.add(object3D);
+    this.scene.add(object3D);
   }
 
   /**
@@ -279,7 +276,7 @@ export class ThreeLayerRenderer {
     * @returns {ThreeLayer} ThreeLayer的实例对象。
     */
   clearMesh() {
-    let scene = this.renderer.scene;
+    let scene = this.scene;
     if (!scene) {
       return this;
     }
@@ -298,7 +295,7 @@ export class ThreeLayerRenderer {
        * @returns {ThreeLayer} ThreeLayer的实例对象。
        */
   clearAll(clearCamera) {
-    let scene = this.renderer.scene;
+    let scene = this.scene;
     if (!scene) {
       return this;
     }
@@ -470,11 +467,6 @@ export class ThreeLayerRenderer {
       }, this.options);
       context.autoClear = true;
       context.clear();
-    } else {
-      context = new CanvasRenderer(Util.extend({
-        'canvas': this.canvas,
-        'alpha': true
-      }, this.options));
     }
     context.setClearColor(new Color(1, 1, 1), 0);
     context.canvas = this.canvas;

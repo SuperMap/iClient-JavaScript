@@ -9,8 +9,9 @@ import Attributions from '../core/Attributions'
 /**
  * @class MapVLayer
  * @deprecatedclassinstance L.supermap.mapVLayer
- * @classdesc MapV 图层。
+ * @classdesc MapV 图层类。
  * @category Visualization MapV
+ * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - MapV 图层参数。

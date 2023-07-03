@@ -18,6 +18,7 @@ import { SummaryAttributesJobsService } from '@supermap/iclient-common/iServer/S
  * @class SuperMap.REST.ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
+ * @modulecategory Services
  * @augments CommonServiceBase
  * @example
  * new SuperMap.REST.ProcessingService(url,options)

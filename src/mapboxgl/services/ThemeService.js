@@ -16,7 +16,7 @@ import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iSe
  * }).getThemeInfo(params,function(result){
  *      //doSomething
  * });
- * @param {string} url - 服务地址。 
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。

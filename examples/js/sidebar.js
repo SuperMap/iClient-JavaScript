@@ -27,15 +27,7 @@ function sidebarScrollFix() {
             "width": "233px"
         });
 
-        //如果底部空间不够，动态增加侧边栏高度
         var visibleOffsetTop = $(this).offset().top - $(window).scrollTop();
-        var offsetBottom = $('.sidebar-menu').height() - visibleOffsetTop;
-        var requireVisibleHeight = $(this).height() + $(this).children('ul').height();
-        if (offsetBottom <= requireVisibleHeight) {
-            $('.sidebar-menu').css({
-                "height": (requireVisibleHeight + $(window).height()) + "px"
-            })
-        }
 
         //调整一级菜单li下子列表的布局位置至右侧
         var offsetTop = visibleOffsetTop + $(this).height();
@@ -45,16 +37,11 @@ function sidebarScrollFix() {
 
         //fix小尺寸屏幕下二级菜单高度高于窗口高度时显示不全的情况
         var $activeList = $(this).children('ul');
-        var activeListOffsetBottom = Math.abs($(window).height() - visibleOffsetTop - $(this).height());
-        var requireActiveListHeight = $activeList.height();
-        if (activeListOffsetBottom < requireActiveListHeight) {
-            $activeList.css({
-                "height": requireActiveListHeight
-            });
-            //滚动条样式
-            $activeList.addClass('scroll-list');
-        }
-
+        var maxHeight = Math.abs($(window).height() - offsetTop);
+        $activeList.css({
+          "max-height": maxHeight
+        });
+        $activeList.addClass('scroll-list');
     }, function (evt) {
         if (!$('body').hasClass('sidebar-collapse')) {
             return;
@@ -63,7 +50,7 @@ function sidebarScrollFix() {
         $(this).children('ul').removeClass('scroll-list');
         //恢复原来的高度
         $(this).children('ul').css({
-            "height": "auto"
+            "max-height": ''
         });
     });
     $('.main-sidebar').on('scroll', function (evt) {

@@ -11,6 +11,7 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/Data
  * @deprecatedclassinstance L.supermap.dataFlowService
  * @classdesc 数据流服务类。
  * @category  iServer DataFlow
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

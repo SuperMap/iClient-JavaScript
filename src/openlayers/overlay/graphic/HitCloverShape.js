@@ -10,6 +10,7 @@ import {
  * @browsernamespace ol.style
  * @category  Visualization Graphic
  * @classdesc 三叶草要素高亮风格。
+ * @modulecategory Overlay
  * @extends {CloverShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} options.sAngle - 扇叶起始角度。

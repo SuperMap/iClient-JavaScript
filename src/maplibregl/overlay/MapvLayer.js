@@ -10,8 +10,9 @@ import {
 /**
  * @class MapvLayer
  * @category  Visualization MapV
- * @classdesc Mapv 图层。
+ * @classdesc Mapv 图层类。
  * @version 11.1.0
+ * @modulecategory Overlay
  * @param {maplibregl.Map} map - MapLibreGL Map 对象，将在下个版本弃用，请用 map.addLayer() 方法添加图层。
  * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} options - Mapv 参数。
@@ -43,7 +44,7 @@ export class MapvLayer {
       transferCoordinate: this._transferCoordinate,
       getCenterPixel: this._getCenterPixel,
       getResolution: this._getResolution,
-      validZoom: this._validZoom
+      validZoom: this._validZoom.bind(this)
     }, { id: this.id, targetElement: this.mapContainer, mapElement: this.map.getCanvas() });
     this._bindEvent();
   }

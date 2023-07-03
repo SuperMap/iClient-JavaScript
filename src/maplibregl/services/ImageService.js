@@ -10,6 +10,7 @@ import CommonMatchImageService  from '@supermap/iclient-common/iServer/ImageServ
  * @constructs ImageService
  * @classdesc 影像服务类。
  * @category  iServer Image
+ * @modulecategory Services
  * @example
  *      new ImageService(url,options)
  *      .getCollections(function(result){

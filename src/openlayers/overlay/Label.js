@@ -17,6 +17,7 @@ import Point from 'ol/geom/Point';
  * @browsernamespace ol.source
  * @category  Visualization Theme
  * @classdesc 标签专题图图层源。
+ * @modulecategory Overlay
  * @param {string} name - 名称。
  * @param {Object} opt_options - 参数。
  * @param {ol.Map} opt_options.map - 当前 Map 对象。

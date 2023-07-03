@@ -9,8 +9,9 @@ import Attributions from '../core/Attributions'
 /**
  * @class TurfLayer
  * @deprecatedclassinstance L.supermap.turfLayer
- * @classdesc Turf 图层。
+ * @classdesc Turf 图层类。
  * @category Visualization Turf
+ * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Object} options - 参数。
  * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。

@@ -173,12 +173,14 @@ import MapExtendSymbol from './MapExtendSymbol';
 */
 export class WebSymbol {
 
-  /**
-   * @member WebSymbol.prototype.defaultBasePath
-   * @description 符号资源路径。
-   * @private
-   */
-  defaultBasePath = './resources/symbols';
+  constructor() {
+    /**
+     * @member WebSymbol.prototype.defaultBasePath
+     * @description 符号资源路径。
+     * @private
+     */
+    this.defaultBasePath = './resources/symbols';
+  }
 
   /**
    * @function WebSymbol.prototype.init
@@ -187,7 +189,7 @@ export class WebSymbol {
    * @param {string} [config.basePath] - 指定符号资源路径
    */
   init(config) {
-    mapboxgl.Map.prototype.basePath = config?.basePath ?? this.defaultBasePath;
+    mapboxgl.Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
     MapExtendSymbol();
   }
 }

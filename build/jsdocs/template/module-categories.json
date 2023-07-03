@@ -1,0 +1,31 @@
+{
+  "moduleRoots": {
+    "ol": "SuperMap iClient for OpenLayers",
+    "L": "SuperMap iClient for Leaflet",
+    "SuperMap": "SuperMap iClient Classic",
+    "mapboxgl": "SuperMap iClient for MapboxGL",
+    "maplibregl": "SuperMap iClient for MapLibreGL"
+  },
+  "moduleCategories": {
+    "Mapping": {
+      "des": "基础地图模块",
+      "des_en": "Basic map module"
+    },
+    "Services": {
+      "des": "服务模块",
+      "des_en": "Service module"
+    },
+    "Overlay": {
+      "des": "可视化与计算模块",
+      "des_en": "Visualization and calculation module"
+    },
+    "Control": {
+      "des": "功能控件模块",
+      "des_en": "Control module"
+    },
+    "Components": {
+      "des": "组件模块",
+      "des_en": "Component module"
+    }
+  }
+}

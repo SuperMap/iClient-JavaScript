@@ -14,7 +14,7 @@
 }
 
 .skin-blue .main-sidebar {
-    background-color: var(--background-color);
+    background-color: var(--sidebar-background-color);
 }
 
 .skin-blue .sidebar-menu > li.treeview:hover > a {
@@ -62,7 +62,7 @@ a.sidebar-toggle {
     height: 36px;
     line-height: 36px;
     text-align: center;
-    background-color: var(--background-color);
+    background-color: var(--sidebar-background-color);
     color: var(--text-color) !important;
     display: block;
 }
@@ -86,7 +86,7 @@ a.sidebar-toggle {
   color: var(--active-color);
 }
 .skin-blue .treeview-menu li > a {
-    border-left: 3px solid var(--background-color);
+    border-left: 3px solid var(--sidebar-background-color);
 }
   
 .skin-blue .treeview-menu li > a:hover,
@@ -107,11 +107,11 @@ a.sidebar-toggle {
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
     margin: 0;
-    background: var(--background-color);
+    background: var(--sidebar-background-color);
 }
 
 .sidebar-menu li.active > .treeview-menu {
-    background: var(--background-color);
+    background: var(--sidebar-background-color);
 }
 
 .sidebar-title-bar .fa-angle-down,
@@ -143,7 +143,7 @@ a.sidebar-toggle {
 .skin-blue .sidebar-menu > li:hover > a,
 .skin-blue .sidebar-menu > li.active > a {
     color: var(--text-color);
-    background: var(--background-color);
+    background: var(--sidebar-background-color);
 }
 
 .skin-blue .treeview-menu > li.active > a,

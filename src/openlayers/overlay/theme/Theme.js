@@ -20,6 +20,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @browsernamespace ol.source
  * @category Visualization Theme
  * @classdesc 专题图基类。
+ * @modulecategory Overlay
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。
  * @param {ol.Map} opt_option.map - 当前 openlayers 的 Map 对象。

@@ -8,8 +8,9 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
  * @class AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务。
+ * @classdesc 地址匹配服务类。
  * @version 11.1.0
+ * @modulecategory Services
  * @example
  * new AddressMatchService(url,options)
  * .code(function(result){

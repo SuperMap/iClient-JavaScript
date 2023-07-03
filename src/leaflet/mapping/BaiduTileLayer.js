@@ -7,12 +7,13 @@ import Attributions from '../core/Attributions'
 /**
  * @class BaiduTileLayer
  * @deprecatedclassinstance L.supermap.baiduTileLayer
- * @classdesc 百度地图图层。
+ * @classdesc 百度地图图层类。
  * @category ThirdPartyMap
+ * @modulecategory Mapping
  * @extends {L.TileLayer}
  * @param {string} [url='https://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
  * @param {Object} options - 参数。
- * @param {number} [options.minZoom=3] - 最小缩放级别。 
+ * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=19] - 最大缩放级别。
  * @param {L.LatLngBounds} [options.bounds=L.latLngBounds([-85.0511287798, -180],[85.0511287798, 180])] - 显示范围。
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
@@ -23,7 +24,7 @@ import Attributions from '../core/Attributions'
 export var BaiduTileLayer = L.TileLayer.extend({
 
     /**
-     * @member {string} BaiduTileLayer.prototype.url 
+     * @member {string} BaiduTileLayer.prototype.url
      * @description 切片地址。
      */
     url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",

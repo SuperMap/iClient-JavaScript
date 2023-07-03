@@ -7,7 +7,7 @@
  import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
  import { Unit } from '@supermap/iclient-common/REST';
  import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
- 
+
  import * as Util from '../core/Util';
  import Attributions from '../core/Attributions';
 
@@ -17,6 +17,7 @@
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 TileImage 资源出图。
  * @category iServer Map Tile
  * @extends {L.TileLayer}
+ * @modulecategory Mapping
  * @example
  *      new TiledMapLayer(url).addTo(map);
  * @param {string} url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。

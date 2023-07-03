@@ -14,14 +14,14 @@ import { ThreeLayerRenderer } from "@supermap/iclient-common/overlay/threejs/Thr
 /**
  * @class ThreeLayer
  * @category  Visualization Three
- * @classdesc Three 图层。
+ * @classdesc Three 图层类。
  * @version 11.1.0
+ * @modulecategory Overlay
  * @param {string} id - 图层 ID。
- * @param {string} [renderer="gl"] - 图层渲染方式( canvas 或 WebGL )。取值："gl","canvas"。
+ * @param {string} [renderer="gl"] - 图层渲染器，仅支持"gl"。'canvas'在v11.1.0后被弃用。
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
- *          {@link THREE.WebGLRenderer}
- *          {@link THREE.CanvasRenderer}。
+ *          {@link THREE.WebGLRenderer}。
  *
  * @extends {maplibregl.Evented}
  * @fires ThreeLayer#render
@@ -95,10 +95,7 @@ export class ThreeLayer extends maplibregl.Evented {
    * @returns {ThreeLayer} ThreeLayer的实例对象。
    */
   addObject(object3D, coordinate) {
-    if (coordinate && object3D) {
-      this.setPosition(object3D, coordinate);
-    }
-    this.renderer && this.renderer.scene.add(object3D);
+    this.renderer && this.renderer.addObject(object3D, coordinate);
   }
 
   /**
@@ -122,7 +119,7 @@ export class ThreeLayer extends maplibregl.Evented {
   /**
    * @function ThreeLayer.prototype.getThreeRenderer
    * @description 获取 threejs renderer。
-   * @returns {THREE.WebGLRenderer|THREE.CanvasRenderer} threejs renderer。
+   * @returns {THREE.WebGLRenderer} threejs renderer。
    */
   getThreeRenderer() {
     return this.renderer.context;

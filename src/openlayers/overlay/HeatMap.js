@@ -17,6 +17,7 @@ import Point from 'ol/geom/Point';
  * @class HeatMap
  * @browsernamespace ol.source
  * @classdesc 热力图层类。
+ * @modulecategory Overlay
  * @category Visualization HeatMap
  * @param {string} name - 图层名称。
  * @param {Object} options - 参数。

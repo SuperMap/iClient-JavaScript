@@ -6,9 +6,10 @@ import maplibregl from 'maplibre-gl';
 /**
  * @class DeckglLayer
  * @category  Visualization DeckGL
- * @classdesc Deckgl 高效率图层，该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
+ * @classdesc Deckgl 高效率图层类。该图图层为综合图层，通过该图层可创建 高效率点图层、路径图层（线图层）、高效率面图层、曲线图层、
  *            正六边形图层（蜂巢图层）、网格图层，只需给定相依配置，因此，在创建图层之前，请仔细阅读参数配置。
  * @version 11.1.0
+ * @modulecategory Overlay
  * @param {string} layerTypeID - 高效率图层类型 ID，包括 "scatter-plot" 高效率点图层、"path-layer" 路径图层（线图层）、
  *                 "polygon-layer" 高效率面图层、"arc-layer" 曲线图层、"hexagon-layer" 正六边形图层（蜂巢图层）、"screen-grid-layer" 网格图层。
  *
@@ -68,7 +69,7 @@ import maplibregl from 'maplibre-gl';
  * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
  * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
- * @extends {DeckglLayerBase} 
+ * @extends {DeckglLayerBase}
  * @usage
  */
 export class DeckglLayer extends DeckglLayerBase {

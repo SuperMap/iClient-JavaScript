@@ -18,8 +18,9 @@
  * @class DataServiceQueryView
  * @aliasclass Components.DataServiceQueryView
  * @deprecatedclassinstance L.supermap.components.dataServiceQuery
- * @classdesc 数据服务查询组件。
+ * @classdesc 数据服务查询组件类。
  * @version 9.1.1
+ * @modulecategory Components
  * @param {string} dataServiceUrl - 数据服务地址。
  * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
  * @param {Object} options - 参数。

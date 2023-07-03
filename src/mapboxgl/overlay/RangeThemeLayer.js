@@ -10,7 +10,8 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 /**
  * @class RangeThemeLayer
  * @category  Visualization Theme
- * @classdesc 分段专题图层。
+ * @classdesc 分段专题图层类。
+ * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。

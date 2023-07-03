@@ -10,9 +10,10 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
  * @category  iServer Map
  * @classdesc 地图信息服务类。
  * @version 11.1.0
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
- * @param {Object} options - 参数。 
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

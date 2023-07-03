@@ -48,8 +48,7 @@ a:hover, a:active, a:focus{
     width: 240px;
     height: 100%;
     padding-top: 0px;
-    background-color: var(--background-color);
-
+    background-color: var(--sidebar-background-color)
 }
 
 .main-sidebar .applicationName {
@@ -114,7 +113,7 @@ a:hover, a:active, a:focus{
 }
 
 .main-sidebar li.item a:hover {
-    color: #282828 ;
+    color: var(--active-color) ;
 }
 
 .main-sidebar li.item .title {

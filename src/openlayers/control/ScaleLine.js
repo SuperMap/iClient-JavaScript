@@ -16,6 +16,7 @@ import AssertionError from 'ol/AssertionError';
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能继承 {@link ol.control.ScaleLine },与 {@link ol.control.ScaleLine } 功能完全相同。仅为修复 `openlayers` v4.6.5 版本中 WGS84 等地理坐标系比例尺数值错误的问题。
  * </div>
+ * @modulecategory Control
  * @extends {ol.control.ScaleLine}
  * @param {Object} options -参数。
  * @param {string} [options.className='ol-scale-line'] - CSS Class name.。

@@ -10,6 +10,7 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
  * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
+ * @modulecategory Mapping
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。
  * @param {string} opt_options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}

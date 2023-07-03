@@ -11,8 +11,9 @@
  * @class OpenFileView
  * @aliasclass Components.OpenFileView
  * @deprecatedclassinstance L.supermap.components.openFile
- * @classdesc 打开文件组件，用于打开本地数据文件并加载到地图，目前支持打开.csv|.xls|.xlsx|.geojson|.json 格式，只支持 WGS84 经纬度坐标。
+ * @classdesc 打开文件组件类。用于打开本地数据文件并加载到地图，目前支持打开.csv|.xls|.xlsx|.geojson|.json 格式，只支持 WGS84 经纬度坐标。
  * @version 9.1.1
+ * @modulecategory Components
  * @param {Object} options - 参数。
  * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
  * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。

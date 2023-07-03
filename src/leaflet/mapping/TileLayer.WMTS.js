@@ -11,6 +11,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @deprecatedclassinstance L.supermap.wmtsLayer
  * @classdesc wmts 图层类。
  * @category OGC
+ * @modulecategory Mapping
  * @extends {L.TileLayer}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -71,7 +72,7 @@ export var WMTSLayer = L.TileLayer.extend({
 
             opt.requestEncoding = "KVP";
         }
-        
+
     },
 
     /**
@@ -113,7 +114,7 @@ export var WMTSLayer = L.TileLayer.extend({
         } else if (this.options.requestEncoding === 'REST') {
             var params = "/" + obj.layer + "/" + obj.style + "/" + obj.tilematrixSet + "/" + obj.tilematrix + "/" + obj.tilerow + "/" + obj.tilecol + this.formatSuffix;
             url += params;
-        } 
+        }
         url = CommonUtil.urlAppend(url, urlParams);
         url = SecurityManager.appendCredential(url);
         return url;

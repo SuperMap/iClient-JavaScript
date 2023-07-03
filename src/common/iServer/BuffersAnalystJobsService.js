@@ -9,7 +9,7 @@ import { BuffersAnalystJobsParameter } from './BuffersAnalystJobsParameter';
  * @class BuffersAnalystJobsService
  * @deprecatedclass SuperMap.BuffersAnalystJobsService
  * @category iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析服务类
+ * @classdesc 缓冲区分析服务类。
  * @extends {ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

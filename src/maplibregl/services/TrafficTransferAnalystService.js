@@ -11,6 +11,7 @@ import { TrafficTransferAnalystService as CommonTrafficTransferAnalystService } 
  * @category  iServer TrafficTransferAnalyst
  * @classdesc 交通换乘分析服务类。
  * @version 11.1.0
+ * @modulecategory Services
  * @example
  * new TrafficTransferAnalystService(url)
  *  .queryStop(params,function(result){

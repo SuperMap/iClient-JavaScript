@@ -9,6 +9,7 @@ import Control from 'ol/control/Control';
  * @aliasclass control.ChangeTileVersion
  * @category  Control
  * @classdesc 版本切换控件（目前仅支持 IE10 及以上）暂时不支持自定义位置。
+ * @modulecategory Control
  * @extends {ol.control.Control}
  * @param {Object} options -参数。
  * @param {string} [options.title='switch tile version'] - 提示信息。

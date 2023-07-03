@@ -60,7 +60,7 @@
       "src/common/lang/locales"
     ]
   },
-  "plugins": ["plugins/markdown"],
+  "plugins": ["plugins/markdown", "../plugins/moduleCategories"],
   "templates": {
     "cleverLinks": false,
     "monospaceLinks": false,

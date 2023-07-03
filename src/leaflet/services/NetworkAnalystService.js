@@ -12,6 +12,7 @@ import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/
  * @deprecatedclassinstance L.supermap.networkAnalystService
  * @classdesc 网络分析服务类。
  * @category  iServer NetworkAnalyst
+ * @modulecategory Services
  * @example
  * new NetworkAnalystService(url)
  *  .findPath(params,function(result){

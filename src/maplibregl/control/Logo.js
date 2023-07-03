@@ -2,12 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
- 
+
  /**
   * @class Logo
   * @deprecatedclass maplibregl.supermap.LogoControl
   * @category  Control
-  * @classdesc Logo 控件。默认不显示。
+  * @classdesc Logo 控件类。默认不显示。
+  * @modulecategory Control
   *
   * @example
   * (start code)
@@ -35,7 +36,7 @@
          this.alt = "SuperMap iClient";
          this._extend(this, options)
      }
- 
+
      /**
       * @function Logo.prototype.onAdd
       * @description 添加Logo。
@@ -49,13 +50,13 @@
          this._container.style.marginBottom = 0;
          this._container.style.marginLeft = 0;
          this._container.style.marginRight = 0;
- 
+
          var imgSrc = LogoBase64;
          if (this.imageUrl) {
              imgSrc = this.imageUrl;
          }
          var alt = this.alt;
- 
+
          var imageWidth = "94px";
          var imageHeight = "29px";
          var styleSize = "width:" + imageWidth + ";height:" + imageHeight + ";";
@@ -73,7 +74,7 @@
          this._createStyleSheet();
          return this._container;
      }
- 
+
      _createStyleSheet() {
          var style = document.createElement('style');
          style.type = 'text/css';
@@ -91,7 +92,7 @@
              "}";
          document.getElementsByTagName('head')[0].appendChild(style);
      }
- 
+
      _extend(dest) {
          for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
              var arg = Object.getOwnPropertyNames(arguments)[index];
@@ -112,4 +113,3 @@
          return dest;
      }
  }
- 

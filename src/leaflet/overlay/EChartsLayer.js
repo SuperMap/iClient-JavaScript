@@ -11,6 +11,7 @@ import Attributions from '../core/Attributions'
  * @deprecatedclassinstance L.supermap.echartsLayer
  * @classdesc 百度 ECharts 图层类。
  * @category  Visualization ECharts
+ * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Object} echartsOptions - 图表参数。
  * @param {Object} options - 参数。
@@ -180,7 +181,7 @@ export const EchartsLayer = L.Layer.extend({
         this._ec.dispose();
         delete this._ec;
         L.DomUtil.remove(this._echartsContainer);
-        
+
         if (this._oldZoomEndHandler) {
             this._map.off("zoomend", this._oldZoomEndHandler);
             this._oldZoomEndHandler = null;

@@ -9,6 +9,7 @@
  * @deprecatedclassinstance L.supermap.networkAnalyst3DService
  * @classdesc 3D 网络分析服务类。
  * @category  iServer FacilityAnalyst3D
+ * @modulecategory Services
  * @extends {ServiceBase}
  * @example
  * new NetworkAnalyst3DService(url)
