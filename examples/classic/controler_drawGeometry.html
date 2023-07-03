@@ -72,7 +72,7 @@
             new SuperMap.Control.LayerSwitcher()
             , drawPoint, drawLine, drawPolygon, selectCtrl, modifyCtrl]
     });
-    layer = new SuperMap.Layer.CloudLayer();
+    layer = new SuperMap.Layer.OSM("OSM");
     addLayer();
     //layer.events.on({"layerInitialized":addLayer});
     vecotrLayer.style = {
