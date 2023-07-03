@@ -151,6 +151,7 @@ var SceneBuilder = {
                     is3DDataLoaded = false;
                     SceneBuilder.viewBuilder(app).build();
                     clearInterval(slowLoopIntervalId);
+                    app.threeLayer.renderScene();
                 }
             }, 500);
         }
