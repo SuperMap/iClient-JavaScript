@@ -581,4 +581,86 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     expect(handler.map.style.setPaintProperty).toHaveBeenCalled();
   });
 
+  it('updateSymbol', () => {
+    // symbol不存在
+    handler.updateSymbol("test", {});
+    // symbol包含表达式
+    handler.addSymbol("line-single", {
+      paint: {
+        "line-width":5.29,
+        "line-color": "black"
+      }
+    })
+    handler.updateSymbol("line-single", {
+      paint: {
+        "line-width":5.29,
+        "line-color": ["match"]
+      }
+    });
+    handler.updateSymbol("line-single", {
+      paint: {
+        "line-width": 10,
+        "line-color": "red"
+      }
+    });
+    expect(handler.symbolManager.getSymbol("line-single").paint["line-width"]).toBe(10);
+    expect(handler.symbolManager.getSymbol("line-single").paint["line-color"]).toBe("red");
+  })
+
+  it('setSymbolProperty', () => {
+    // symbol不存在
+    handler.setSymbolProperty("test");
+    handler.addSymbol("line-single", {
+      paint: {
+        "line-width":5.29,
+        "line-color": "black"
+      }
+    })
+    handler.addSymbol("line-composite", [{
+      "paint":{
+        "line-width": 5.29,
+        "line-color":"rgba(254, 177, 0, 1.00)"
+      },
+      "layout":{
+        "line-cap":"round",
+        "line-join":"round"
+      }},
+      {"paint":{
+        "line-width":3.02,
+        "line-color":"rgba(255, 255, 255, 1.00)"
+      }
+      }]);
+    // value为表达式
+    handler.setSymbolProperty("line-single", 0, "line-color", ["match"]);
+    // index错误
+    handler.setSymbolProperty("line-composite", 3, "line-cap", "butt");
+    handler.setSymbolProperty("line-composite", 0, "line-cap", "butt");
+    const cap = handler.getSymbolProperty("line-composite", 0, "line-cap");
+    expect(cap).toBe('butt');
+
+    handler.setSymbolProperty("line-composite", 1, "line-join", "butt");
+    const joinc = handler.getSymbolProperty("line-composite", 1, "line-join");
+    expect(joinc).toBe('butt');
+
+    handler.setSymbolProperty("line-single", 0, "line-width", 10);
+    const width = handler.getSymbolProperty("line-single", 0, "line-width");
+    expect(width).toBe(10);
+
+    handler.setSymbolProperty("line-single", 0, "line-join", "butt");
+    const join = handler.getSymbolProperty("line-single", 0, "line-join");
+    expect(join).toBe('butt');
+  });
+
+  it("getSymbolProperty", () => {
+    expect(handler.getSymbolProperty("test")).toBe(undefined);
+  })
+
+  it("updateLayerSymbol", () => {
+    spyOn(handler, 'setSymbol');
+    handler.setSymbolTolayer("layerId", "line-single");
+    handler.updateLayerSymbol("line-composit");
+    expect(handler.setSymbol).not.toHaveBeenCalled();
+    handler.updateLayerSymbol("line-single");
+    expect(handler.setSymbol).toHaveBeenCalled();
+  })
 });

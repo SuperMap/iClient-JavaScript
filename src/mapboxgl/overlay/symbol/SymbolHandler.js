@@ -5,7 +5,7 @@ import { Util } from "@supermap/iclient-common/commontypes/Util";
 import CompositeSymbolRender from "./CompositeSymbolRender";
 import SingleSymbolRender from "./SingleSymbolRender";
 import SymbolManager from "./SymbolManager";
-import { getImageKey, isMapboxExpression, isMultiSymbol, validateSymbol } from "./SymbolUtil";
+import { getImageKey, isMapboxExpression, isMultiSymbol, isPaintKey, validateSymbol } from "./SymbolUtil";
 
 /**
  * 符号图层管理器
@@ -385,7 +385,7 @@ class SymbolHandler {
      */
     getFilter(layerId) {
         const realLayerId = this.getFirstLayerId(layerId);
-        if(this.map.style.getLayer(realLayerId)) {
+        if (this.map.style.getLayer(realLayerId)) {
             return this.map.style.getFilter(realLayerId);
         }
     }
@@ -457,6 +457,110 @@ class SymbolHandler {
     getLayoutProperty(layerId, name) {
         const realLayerId = this.getFirstLayerId(layerId);
         return this.map.style.getLayoutProperty(realLayerId, name);
+    }
+
+    /**
+     * 遍历this._layerSymbols， 更新使用到symbolId的图层
+     * @param {string} symbolId 
+     */
+    updateLayerSymbol(symbolId) {
+        Object.keys(this._layerSymbols).forEach(layerId => {
+            const symbol = this._layerSymbols[layerId];
+            if (symbol.includes(symbolId)) {
+                this.setSymbol(layerId, symbol);
+            }
+        })
+    }
+
+    /**
+     * 更新符号
+     * @param {string} symbolId 
+     * @param {object | array} symbol 
+     */
+    updateSymbol(symbolId, symbol) {
+        // symbol不存在
+        if (!this.symbolManager.getSymbol(symbolId)) {
+            return this.map.fire('error', {
+                error: new Error(`Symbol "${symbolId}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
+            });
+        }
+        if (validateSymbol(symbol)) {
+            // 更新symbol
+            this.symbolManager.addSymbol(symbolId, symbol);
+            this.updateLayerSymbol(symbolId);
+        } else {
+            return this.map.fire('error', {
+                error: new Error('Symbol is not supported expressions.')
+            });
+        }
+    }
+
+    /**
+     * 设置symbol属性值
+     * @param {string} symbolId 
+     * @param {number} symbolIndex 
+     * @param {string} name 
+     * @param {any} value
+     */
+    setSymbolProperty(symbolId, symbolIndex, name, value) {
+        const symbol = this.symbolManager.getSymbol(symbolId);
+        // symbol不存在
+        if (!symbol) {
+            return this.map.fire('error', {
+                error: new Error(`Symbol "${symbolId}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
+            });
+        }
+        // value不支持表达式
+        if (isMapboxExpression(value)) {
+            return this.map.fire('error', {
+                error: new Error('Symbol value is not supported expressions.')
+            });
+        }
+        const paintOrLayout = isPaintKey(name) ? 'paint' : 'layout';
+        if (symbol.length > 0) {
+            const symbolChild = symbol[symbolIndex];
+            if (!symbolChild) {
+                return this.map.fire('error', {
+                    error: new Error(`symbol[${symbolIndex}] does not exist.`)
+                });
+            }
+            if (!symbolChild[paintOrLayout]) {
+                symbolChild[paintOrLayout] = {};
+            }
+            Object.assign(symbolChild[paintOrLayout], { [name]: value });
+        } else {
+            if (!symbol[paintOrLayout]) {
+                symbol[paintOrLayout] = {};
+            }
+            Object.assign(symbol[paintOrLayout], { [name]: value });
+        }
+        // 更新symbol
+        this.symbolManager.addSymbol(symbolId, symbol);
+        this.updateLayerSymbol(symbolId);
+    }
+
+    /**
+     * 获取symbol的属性值
+     * @param {string} symbolId 
+     * @param {number} symbolIndex 
+     * @param {string} name 
+     * @returns {any}
+     */
+    getSymbolProperty(symbolId, symbolIndex, name) {
+        const symbol = this.symbolManager.getSymbol(symbolId);
+        // symbol不存在
+        if (!symbol) {
+            this.map.fire('error', {
+                error: new Error(`Symbol "${symbolId}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
+            });
+            return;
+        }
+        const paintOrLayout = isPaintKey(name) ? 'paint' : 'layout';
+        if (symbol.length > 0) {
+            return symbol[symbolIndex] && symbol[symbolIndex][paintOrLayout] && symbol[symbolIndex][paintOrLayout][name];
+        } else {
+            return symbol[paintOrLayout] && symbol[paintOrLayout][name];
+        }
     }
 }
 
