@@ -174,7 +174,6 @@
         }
         var table = $("<table id='trafficRes' border='1'></table>");
         var startStop = $("<tr></tr>");
-        $("<td class='start_transfer' width='10px'></td>").appendTo(startStop);
         $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[0].startPosition.x + "," + transGuide.items[0].startPosition.y + "</span>" + transGuide.items[0].startStopName + "</span></td>").appendTo(startStop);
         startStop.appendTo(table);
         var indexY = 0;
@@ -182,7 +181,6 @@
             var item = transGuide.items[iiii];
             var tr2 = $("<tr></tr>");
             if (item.isWalking) {
-                $("<td class='step_transfer' ></td>").appendTo(tr2);
                 $("<td>" + resources.text_walkTO + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
                 $("<td>" + parseInt(item.distance) + resources.msg_m + "</td>").appendTo(tr2);
             } else {
@@ -198,7 +196,6 @@
                         }
                     }
                 }
-                $("<td class='bus_transfer'></td>").appendTo(tr2);
                 var points = item.route.points, pointStr = "";
                 for (var i = 0; i < points.length; i++) {
                     pointStr += points[i].x + " " + points[i].y;
@@ -214,7 +211,6 @@
         }
         var endStop = $("<tr></tr>");
         endStop.appendTo(table);
-        $("<td class='end_transfer' width='10px'></td>").appendTo(endStop);
         $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[transGuide.items.length - 1].endPosition.x + "," + transGuide.items[transGuide.items.length - 1].endPosition.y + "</span>" + transGuide.items[transGuide.items.length - 1].endStopName + "</span></td>").appendTo(endStop);
         return table;
     }
