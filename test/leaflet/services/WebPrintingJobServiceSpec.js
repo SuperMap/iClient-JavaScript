@@ -60,22 +60,23 @@ describe('leaflet_WebPrintingJobService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(createWebPringintJobResultJson)));
         });
+        jobService.createWebPrintingJob(null);
         jobService.createWebPrintingJob(param, (serviceResult) => {
-            try {
-                expect(jobService).not.toBeNull();
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toEqual('processCompleted');
-                expect(serviceResult.result[0].resourceConfigID).not.toBeNull();
-                expect(serviceResult.result[0].path).toEqual(url + '/jobs/' + serviceResult.result[0].resourceConfigID);
-                expect(serviceResult.result[0].name).toEqual(serviceResult.result[0].resourceConfigID);
-                done();
-            } catch (e) {
-                console.log("'createWebPrintingJob'案例失败" + e.name + ':' + e.message);
-                expect(false).toBeTruthy();
-                jobService.destroy();
-                done();
-            }
-        });
+          try {
+              expect(jobService).not.toBeNull();
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.type).toEqual('processCompleted');
+              expect(serviceResult.result[0].resourceConfigID).not.toBeNull();
+              expect(serviceResult.result[0].path).toEqual(url + '/jobs/' + serviceResult.result[0].resourceConfigID);
+              expect(serviceResult.result[0].name).toEqual(serviceResult.result[0].resourceConfigID);
+              done();
+          } catch (e) {
+              console.log("'createWebPrintingJob'案例失败" + e.name + ':' + e.message);
+              expect(false).toBeTruthy();
+              jobService.destroy();
+              done();
+          }
+      });
     });
 
     it('getPrintingJob', (done) => {

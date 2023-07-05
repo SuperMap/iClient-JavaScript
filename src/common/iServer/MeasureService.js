@@ -73,11 +73,15 @@ export class MeasureService extends CommonServiceBase {
             if (eventId === result.result.eventId && callback) {
               delete result.result.eventId;
               callback(result);
+              this.events.un(eventListeners);
+              return false;
             }
           },
           processFailed: function(result) {
             if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
               callback(result);
+              this.events.un(eventListeners);
+              return false;
             }
           }
         }
@@ -119,16 +123,16 @@ export class MeasureService extends CommonServiceBase {
             method: "GET",
             params: paramsTemp,
             scope: me,
-            success(result) {
+            success(result, options) {
               result.eventId = eventId;
-              this.serviceProcessCompleted(result);
+              this.serviceProcessCompleted(result, options);
             },
-            failure(result) {
+            failure(result, options) {
               if (result.error) {
                 result.error.eventId = eventId;
               }
               result.eventId = eventId;
-              this.serviceProcessFailed(result);
+              this.serviceProcessFailed(result, options);
             }
         });
     }

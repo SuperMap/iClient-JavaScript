@@ -103,11 +103,15 @@ export class DatasetService extends CommonServiceBase {
           if (eventId === result.result.eventId && callback) {
             delete result.result.eventId;
             callback(result);
+            this.events.un(eventListeners);
+            return false;
           }
         },
         processFailed: function(result) {
           if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
             callback(result);
+            this.events.un(eventListeners);
+            return false;
           }
         }
       }
@@ -117,16 +121,16 @@ export class DatasetService extends CommonServiceBase {
           url,
           method,
           scope: me,
-          success(result) {
+          success(result, options) {
             result.eventId = eventId;
-            me.serviceProcessCompleted(result);
+            me.serviceProcessCompleted(result, options);
           },
-          failure(result) {
+          failure(result, options) {
             if (result.error) {
               result.error.eventId = eventId;
             }
             result.eventId = eventId;
-            me.serviceProcessFailed(result);
+            me.serviceProcessFailed(result, options);
           }
         }
         params && (requestConfig.data = Util.toJSON(params));

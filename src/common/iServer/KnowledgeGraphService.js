@@ -220,13 +220,16 @@ export class KnowledgeGraphService extends CommonServiceBase {
         if (eventId === result.result.eventId && callback) {
           delete result.result.eventId;
           callback(result);
+          this.events.un(eventListeners);
+          return false;
         }
       },
       processFailed: function (result) {
         if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
           delete result.eventId;
-          delete result.error.eventId;
           callback(result);
+          this.events.un(eventListeners);
+          return false;
         }
       }
     };
@@ -235,39 +238,19 @@ export class KnowledgeGraphService extends CommonServiceBase {
       method,
       url,
       scope: this,
-      success(result) {
+      success(result, options) {
         result.eventId = eventId;
-        this.serviceProcessCompleted(result);
+        this.serviceProcessCompleted(result, options);
       },
-      failure(result) {
+      failure(result, options) {
         result.eventId = eventId;
-        this.serviceProcessFailed(result);
+        this.serviceProcessFailed(result, options);
       }
     };
     if (params) {
       requestParams.params = params;
     }
     this.request(requestParams);
-  }
-  /**
-   * @function KnowledgeGraphService.prototype.serviceProcessCompleted
-   * @param {Object} result - 服务器返回的结果对象
-   * @description 服务流程是否完成
-   */
-  serviceProcessCompleted(result) {
-    if (result.succeed) {
-      delete result.succeed;
-    }
-    super.serviceProcessCompleted(result);
-  }
-
-  /**
-   * @function KnowledgeGraphService.prototype.serviceProcessCompleted
-   * @param {Object} result - 服务器返回的结果对象
-   * @description 服务流程是否失败
-   */
-  serviceProcessFailed(result) {
-    super.serviceProcessFailed(result);
   }
   /**
    * @private

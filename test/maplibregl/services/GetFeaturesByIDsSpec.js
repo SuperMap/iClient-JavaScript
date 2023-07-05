@@ -41,7 +41,7 @@ describe('maplibregl_FeatureService_getFeaturesByIDs', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.object.options.data).toContain('World:Countries');
+                expect(serviceResult.options.data).toContain('World:Countries');
                 expect(serviceResult.result.featureCount).toEqual(1);
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual('FeatureCollection');

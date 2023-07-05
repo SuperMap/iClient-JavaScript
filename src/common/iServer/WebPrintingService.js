@@ -116,11 +116,15 @@ export class WebPrintingService extends CommonServiceBase {
               if (eventId === result.result.eventId && callback) {
                 delete result.result.eventId;
                 callback(result);
+                me.events.un(eventListeners);
+                return false;
               }
             },
             processFailed: function(result) {
               if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
                 callback(result);
+                me.events.un(eventListeners);
+                return false;
               }
             }
           }
@@ -129,16 +133,16 @@ export class WebPrintingService extends CommonServiceBase {
             url,
             method: 'GET',
             scope: me,
-            success: function (result) {
+            success: function (result, options) {
                 result.eventId = eventId;
                 switch (result.status) {
                     case 'FINISHED':
                         clearInterval(id);
-                        me.serviceProcessCompleted(result);
+                        me.serviceProcessCompleted(result, options);
                         break;
                     case 'ERROR':
                         clearInterval(id);
-                        me.serviceProcessFailed(result);
+                        me.serviceProcessFailed(result, options);
                         break;
                     case 'RUNNING':
                         me.events.triggerEvent('processRunning', result);
@@ -158,11 +162,15 @@ export class WebPrintingService extends CommonServiceBase {
           if (eventId === result.result.eventId && callback) {
             delete result.result.eventId;
             callback(result);
+            this.events.un(eventListeners);
+            return false;
           }
         },
         processFailed: function(result) {
           if (eventId === result.error.eventId || eventId === result.eventId) {
             callback(result);
+            this.events.un(eventListeners);
+            return false;
           }
         }
       }
@@ -172,16 +180,16 @@ export class WebPrintingService extends CommonServiceBase {
         url: me._processUrl(url),
         method,
         scope: me,
-        success(result) {
+        success(result, options) {
           result.eventId = eventId;
-          this.serviceProcessCompleted(result);
+          this.serviceProcessCompleted(result, options);
         },
-        failure(result) {
+        failure(result, options) {
           if (result.error) {
             result.error.eventId = eventId;
           }
           result.eventId = eventId;
-          this.serviceProcessFailed(result);
+          this.serviceProcessFailed(result, options);
         }
       };
       params && (requestConfig.data = Util.toJSON(params));

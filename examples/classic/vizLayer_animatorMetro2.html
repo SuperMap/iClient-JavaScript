@@ -183,7 +183,7 @@
                 })],
             projection: "EPSG:3857"
         });
-        layer = new SuperMap.Layer.CloudLayer();
+        layer = new SuperMap.Layer.OSM("OSM");
         addLayer();
         map.events.on({"zoomend": showLayer});
     }

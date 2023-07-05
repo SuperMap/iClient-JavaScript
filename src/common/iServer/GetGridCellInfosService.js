@@ -109,11 +109,15 @@ export class GetGridCellInfosService extends CommonServiceBase {
             if (eventId === result.result.eventId && callback) {
               delete result.result.eventId;
               callback(result);
+              this.events.un(eventListeners);
+              return false;
             }
           },
           processFailed: function(result) {
             if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback && callback(result);
+              callback(result);
+              this.events.un(eventListeners);
+              return false;
             }
           }
         }
@@ -124,16 +128,16 @@ export class GetGridCellInfosService extends CommonServiceBase {
             method: "GET",
             data: null,
             scope: me,
-            success(result) {
+            success(result, options) {
               result.eventId = eventId;
-              successFun(result, callback);
+              successFun(result, options, callback);
             },
-            failure(result) {
+            failure(result, options) {
               if (result.error) {
                 result.error.eventId = eventId;
               }
               result.eventId = eventId;
-              failedFunc(result);
+              failedFunc(result, options);
             }
         });
     }
@@ -143,7 +147,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @description 数据集查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    getDatasetInfoCompleted(result, callback) {
+    getDatasetInfoCompleted(result, options, callback) {
         var me = this;
         result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
@@ -152,7 +156,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
 
     /**
      * @function GetGridCellInfosService.prototype.queryGridInfos
-     * @description 执行服务，查询数据集栅格信息信息。
+     * @description 执行服务，查询数据集栅格信息。
      */
     queryGridInfos(callback) {
         var me = this;
@@ -169,8 +173,8 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @description 数据集查询失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    getDatasetInfoFailed(result) {
+    getDatasetInfoFailed(result, options) {
         var me = this;
-        me.serviceProcessFailed(result);
+        me.serviceProcessFailed(result, options);
     }
 }

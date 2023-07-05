@@ -134,7 +134,7 @@ describe('MapService', () => {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.type).toBe('processFailed');
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
-                expect(serviceFailedEventArgsSystem.object.options.method).toBe('GET');
+                expect(serviceFailedEventArgsSystem.options.method).toBe('GET');
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();

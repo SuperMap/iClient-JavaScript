@@ -75,6 +75,7 @@ describe('maplibregl_WebPrintingJobService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(createWebPringintJobResultJson)));
         });
+        webPrintingJobService.createWebPrintingJob(null);
         webPrintingJobService.createWebPrintingJob(param, (result) => {
             serviceResult = result;
             try {

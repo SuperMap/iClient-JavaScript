@@ -124,7 +124,7 @@ describe('leaflet_DatasetService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.events).not.toBeNull();
-                expect(serviceResult.object.options).not.toBeNull;
+                expect(serviceResult.options).not.toBeNull;
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (exception) {
@@ -156,7 +156,7 @@ describe('leaflet_DatasetService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.events).not.toBeNull();
-                expect(serviceResult.object.options).not.toBeNull;
+                expect(serviceResult.options).not.toBeNull;
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (exception) {

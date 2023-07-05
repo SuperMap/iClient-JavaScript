@@ -40,7 +40,10 @@ export class WebPrintingJobService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     createWebPrintingJob(params, callback) {
-      this._webPrintingService.createWebPrintingJob(params, callback);
+      if (!params) {
+        return;
+      }
+      this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
     }
 
     /**

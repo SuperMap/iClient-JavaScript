@@ -84,11 +84,15 @@ export default class ImageService extends CommonServiceBase {
       processCompleted: function (result) {
         if (eventId === result.result.eventId && callback) {
           callback(result);
+          this.events.un(eventListeners);
+          return false;
         }
       },
       processFailed: function (result) {
         if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
           callback(result);
+          this.events.un(eventListeners);
+          return false;
         }
       }
     };
@@ -98,16 +102,16 @@ export default class ImageService extends CommonServiceBase {
       url,
       data,
       scope: this,
-      success(result) {
+      success(result, options) {
         result.eventId = eventId;
-        me.serviceProcessCompleted(result);
+        me.serviceProcessCompleted(result, options);
       },
-      failure(result) {
+      failure(result, options) {
         if (result.error) {
           result.error.eventId = eventId;
         }
         result.eventId = eventId;
-        me.serviceProcessFailed(result);
+        me.serviceProcessFailed(result, options);
       }
     });
   }

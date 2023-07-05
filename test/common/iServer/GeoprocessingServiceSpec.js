@@ -21,7 +21,6 @@ describe('GeoprocessingService', () => {
         expect(geoprocessing.url).toEqual(serverUrl);
         geoprocessing.destroy();
         expect(geoprocessing.EVENT_TYPES).toBeNull();
-        expect(geoprocessing.options).toBeNull();
         expect(geoprocessing.url).toBeNull();
     });
 
