@@ -220,13 +220,16 @@ export class KnowledgeGraphService extends CommonServiceBase {
         if (eventId === result.result.eventId && callback) {
           delete result.result.eventId;
           callback(result);
+          this.events.un(eventListeners);
+          return false;
         }
       },
       processFailed: function (result) {
         if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
           delete result.eventId;
-          delete result.error.eventId;
           callback(result);
+          this.events.un(eventListeners);
+          return false;
         }
       }
     };
@@ -248,26 +251,6 @@ export class KnowledgeGraphService extends CommonServiceBase {
       requestParams.params = params;
     }
     this.request(requestParams);
-  }
-  /**
-   * @function KnowledgeGraphService.prototype.serviceProcessCompleted
-   * @param {Object} result - 服务器返回的结果对象
-   * @description 服务流程是否完成
-   */
-  serviceProcessCompleted(result, options) {
-    if (result.succeed) {
-      delete result.succeed;
-    }
-    super.serviceProcessCompleted(result, options);
-  }
-
-  /**
-   * @function KnowledgeGraphService.prototype.serviceProcessCompleted
-   * @param {Object} result - 服务器返回的结果对象
-   * @description 服务流程是否失败
-   */
-  serviceProcessFailed(result, options) {
-    super.serviceProcessFailed(result, options);
   }
   /**
    * @private
