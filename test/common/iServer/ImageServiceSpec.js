@@ -35,6 +35,7 @@ describe('ImageService', () => {
         var getCollectionsProcessCompleted = (res) => {
             try {
                 var result = res.result;
+                expect(result.eventId).toBeUndefined();
                 expect(result).not.toBeNull();
                 expect(result.length).toEqual(1);
                 expect(result[0].id).toEqual('Sentinel-2');

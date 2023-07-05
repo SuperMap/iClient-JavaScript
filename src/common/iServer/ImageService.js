@@ -84,14 +84,14 @@ export default class ImageService extends CommonServiceBase {
       processCompleted: function (result) {
         if (eventId === result.result.eventId && callback) {
           callback(result);
-          this.events.un(eventListeners);
+          this.events && this.events.un(eventListeners);
           return false;
         }
       },
       processFailed: function (result) {
         if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
           callback(result);
-          this.events.un(eventListeners);
+          this.events && this.events.un(eventListeners);
           return false;
         }
       }

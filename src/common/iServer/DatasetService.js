@@ -103,14 +103,14 @@ export class DatasetService extends CommonServiceBase {
           if (eventId === result.result.eventId && callback) {
             delete result.result.eventId;
             callback(result);
-            this.events.un(eventListeners);
+            this.events && this.events.un(eventListeners);
             return false;
           }
         },
         processFailed: function(result) {
           if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
             callback(result);
-            this.events.un(eventListeners);
+            this.events && this.events.un(eventListeners);
             return false;
           }
         }
