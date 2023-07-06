@@ -37,7 +37,7 @@ module.exports = {
         /*判断初始交互控件*/
         browser.waitForElementPresent('.panel.panel-primary.leaflet-control', 10000);
         /*单击'9路'，判断path是否有变化*/
-        browser.useXpath().click('//*[@id="trafficRes"]/tr[2]/td[2]/a[1]', function () {
+        browser.useXpath().click('//*[@id="trafficRes"]/tr[2]/td[1]/a[1]', function () {
             browser.pause(1500);
             browser.elements('tag name', 'path', function (result) {
                 browser.assert.equal(result.value.length, 2, "expect Number of trafficTransferAnalystService path after click '9路' to be 2, actual is " + result.value.length);
@@ -47,7 +47,7 @@ module.exports = {
         /*选择方案2中的'抚松路'，判断marker是否有变化*/
         browser.useXpath().click('//*[@id="transferSolution-1"]');
         browser.pause(1500);
-        browser.useXpath().click('//*[@id="trafficRes"]/tr[3]/td[2]/a[2]', function () {
+        browser.useXpath().click('//*[@id="trafficRes"]/tr[3]/td[1]/a[2]', function () {
             browser.pause(1500);
             browser.elements('css selector', '.leaflet-marker-icon', function (result) {
                 browser.assert.equal(result.value.length, 3, "expect Number of marker after click '抚松路' in '方案2' to be 3, actual is " + result.value.length);

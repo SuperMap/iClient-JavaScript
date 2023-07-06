@@ -220,7 +220,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
         if (eventId === result.result.eventId && callback) {
           delete result.result.eventId;
           callback(result);
-          this.events.un(eventListeners);
+          this.events && this.events.un(eventListeners);
           return false;
         }
       },
@@ -228,7 +228,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
         if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
           delete result.eventId;
           callback(result);
-          this.events.un(eventListeners);
+          this.events && this.events.un(eventListeners);
           return false;
         }
       }

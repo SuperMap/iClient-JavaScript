@@ -75,7 +75,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 
 * 
 * ## mapboxgl.Map.prototype.hasSymbol
-* 检查是否存在特定 ID 的符号。
+* 检查是否存在指定 ID 的符号。
 * 
 * 参数名称			     |类型			 |描述  
 * :----			    |:---		    |:---	
@@ -88,7 +88,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 
 * 
 * ## mapboxgl.Map.prototype.removeSymbol
-* 删除特定 ID 的符号。
+* 删除指定 ID 的符号。
 * 
 * 参数名称			     |类型			 |描述  
 * :----				|:---		    |:---	
@@ -97,6 +97,56 @@ import MapExtendSymbol from './MapExtendSymbol';
 * **Example**
 * ```
 * map.removeSymbol('point-1');
+* ```
+* 
+* 
+* ## mapboxgl.Map.prototype.updateSymbol
+* 更新指定 ID 的符号。
+* 
+* 参数名称			     |类型			 |描述  
+* :----				|:---		    |:---	
+* id			      |string		    |已经添加的符号ID
+* |symbol			  |object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
+* |             |             |参数名称			 |类型			     |描述  |
+* |             |             |paint				|object		      |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |             |             |layout			  |object	        |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* 
+* **Example**
+* ```
+* map.updateSymbol('point-1', symbol);
+* ```
+* 
+* 
+* ## mapboxgl.Map.prototype.setSymbolProperty
+* 设置指定ID符号的属性值。
+* 
+* 参数名称			   |类型			  |描述  
+* :----				    |:---		      |:---	
+* id			        |string		    |符号ID
+* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* name			      |string		    |属性名称
+* value			      |any		      |属性值
+* 
+* **Example**
+* ```
+* map.setSymbolProperty('point-1', null, "icon-color", "black");
+* map.setSymbolProperty('line-962529', 0, "line-width", 10);
+* ```
+* 
+* 
+* ## mapboxgl.Map.prototype.getSymbolProperty
+* 获取指定ID符号的属性值。
+* 
+* 参数名称			   |类型			  |描述  
+* :----				    |:---		      |:---	
+* id			        |string		    |符号ID
+* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* name			      |string		    |属性名称
+* 
+* **Example**
+* ```
+* map.getSymbolProperty('point-1', null, "icon-color");
+* map.getSymbolProperty('line-962529', 0, "line-width");
 * ```
 * 
 * 

@@ -251,5 +251,24 @@ describe('MapExtendSymbol', () => {
         expect(map.style.setPaintProperty).toHaveBeenCalled();
         expect(map.style.getPaintProperty).toHaveBeenCalled();
     });
-
+    it('map.updateSymbol', () => {
+        spyOn(map.symbolHandler, 'updateSymbol');
+        map.updateSymbol("line-1", {
+            paint: {
+                "line-width": 10
+            }
+        });
+        expect(map.symbolHandler.updateSymbol).toHaveBeenCalled();
+    });
+    it('map.setSymbolProperty', () => {
+        spyOn(map.symbolHandler, 'setSymbolProperty');
+        map.setSymbolProperty("line-1", 0, "line-width", 5);
+        expect(map.symbolHandler.setSymbolProperty).toHaveBeenCalled();
+    });
+    it('map.getSymbolProperty', () => {
+        spyOn(map.symbolHandler, 'getSymbolProperty').and.returnValue(5);
+        const value = map.getSymbolProperty("line-1", 0, "line-width");
+        expect(map.symbolHandler.getSymbolProperty).toHaveBeenCalled();
+        expect(value).toBe(5);
+    });
 });

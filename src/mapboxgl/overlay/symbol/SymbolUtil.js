@@ -174,3 +174,38 @@ export function validateSymbol(symbol) {
         return validateStyleKey(s.paint || {}) && validateStyleKey(s.layout || {});
     });
 }
+
+export const isPaintKey = (key) => {
+    return [
+        'icon-color',
+        'icon-opacity',
+        'icon-translate',
+        'line-opacity',
+        'line-blur',
+        'line-translate',
+        'line-color',
+        'line-width',
+        'line-offset',
+        'line-dasharray',
+        'line-pattern',
+        'fill-color',
+        'fill-opacity',
+        'fill-pattern',
+        'fill-outline-color',
+        'text-color',
+        'text-halo-blur',
+        'text-halo-color',
+        'text-halo-width',
+        'text-opacity',
+        'text-translate',
+        'text-translate-anchor',
+        'circle-blur',
+        'circle-color',
+        'circle-opacity',
+        'circle-translate',
+        'circle-radius',
+        'circle-stroke-color',
+        'circle-stroke-opacity',
+        'circle-stroke-width'
+    ].includes(key);
+}

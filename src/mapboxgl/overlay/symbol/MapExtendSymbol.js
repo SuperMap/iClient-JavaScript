@@ -156,10 +156,40 @@ function MapExtendSymbol(){
   /**
    * 删除符号
    * @param {string} id
-   * @param {object} symbol
    */
   mapboxgl.Map.prototype.removeSymbol = function (id) {
     getSymbolHandler(this).removeSymbol(id);
+  };
+  
+  /**
+   * 更新符号
+   * @param {string} id
+   * @param {object} symbol
+   */
+  mapboxgl.Map.prototype.updateSymbol = function (id, symbol) {
+    getSymbolHandler(this).updateSymbol(id, symbol);
+  };
+
+  /**
+   * 设置symbol属性值
+   * @param {string} id 
+   * @param {number} index 
+   * @param {string} name 
+   * @param {any} value
+   */
+  mapboxgl.Map.prototype.setSymbolProperty = function (id, index, name, value) {
+    getSymbolHandler(this).setSymbolProperty(id, index, name, value);
+  };
+
+  /**
+   * 获取symbol的属性值
+   * @param {string} id 
+   * @param {number} index 
+   * @param {string} name 
+   * @returns {any}
+   */
+  mapboxgl.Map.prototype.getSymbolProperty = function (id, index, name) {
+    return getSymbolHandler(this).getSymbolProperty(id, index, name);
   };
 
   mapboxgl.Map.prototype.getStyle = function () {
@@ -175,14 +205,14 @@ function MapExtendSymbol(){
     }
     getSymbolHandler(this).setFilter(layerId, filter, options);
     return this._update(true);
-  }
+  };
 
   mapboxgl.Map.prototype.getFilter = function (layerId) {
     if (this.style.getLayer(layerId)) {
       return this.style.getFilter(layerId);
     }
     return getSymbolHandler(this).getFilter(layerId);
-  }
+  };
 
   mapboxgl.Map.prototype.setLayerZoomRange = function (layerId, minzoom, maxzoom) {
     if (this.style.getLayer(layerId)) {
@@ -191,7 +221,7 @@ function MapExtendSymbol(){
     }
     getSymbolHandler(this).setLayerZoomRange(layerId, minzoom, maxzoom);
     return this._update(true);
-  }
+  };
 
   mapboxgl.Map.prototype.setPaintProperty = function (layerId, name, value, options) {
     if (this.style.getLayer(layerId)) {
@@ -200,22 +230,21 @@ function MapExtendSymbol(){
     }
     getSymbolHandler(this).setPaintProperty(layerId, name, value, options);
     return this._update(true);
-  }
+  };
 
   mapboxgl.Map.prototype.getPaintProperty = function (layerId, name) {
     if (this.style.getLayer(layerId)) {
       return this.style.getPaintProperty(layerId, name);
     }
     return getSymbolHandler(this).getPaintProperty(layerId, name);
-  }
+  };
 
   mapboxgl.Map.prototype.getLayoutProperty = function (layerId, name) {
     if (this.style.getLayer(layerId)) {
       return this.style.getLayoutProperty(layerId, name);
     }
     return getSymbolHandler(this).getLayoutProperty(layerId, name);
-  }
-
+  };
 
   /**
    * @function WebSymbol.prototype.getSymbol
