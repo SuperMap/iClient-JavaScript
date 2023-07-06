@@ -15,6 +15,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetOverlay - 裁剪对象数据集。
  * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
+ * @param {string} [options.geometryClip] - 裁剪几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
