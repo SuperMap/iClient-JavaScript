@@ -135,7 +135,7 @@ function getNodeStyle(entity, style) {
 
 function getNodeLabel(entity) {
   const { properties } = entity;
-  const name = properties.labelfieldname;
+  const name = properties._labelfieldname;
   return properties[name] || '';
 }
 

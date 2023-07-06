@@ -213,8 +213,8 @@ describe('KnowledgeGraph', () => {
     done();
   });
 
-  it('nodeLabelMaxWidth', (done) => {
-    var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
+  it('nodeLabelMaxWidth animate false', (done) => {
+    var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100, animate: false });
     expect(graph).not.toBeNull();
     expect(graph.data).not.toBeNull();
     done();

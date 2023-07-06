@@ -26,6 +26,7 @@ import { G6Render } from './knowledge-graph/G6Render';
  * @property {number} [minZoom] - 最小缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例小于该值，则将使用该值进行缩放，并返回 false。
  * @property {number} [maxZoom] - 最大缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例大于该值，则将使用该值进行缩放，并返回 false。
  * @property {KnowledgeGraph.Layout} [layout] - 布局。
+ * @property {boolean} [animate=true] - 是否开启动画。
  * @property {boolean} [autoResize=true] - 当视口变换时，是否自动重绘。
  * @property {KnowledgeGraph.NodeStyle} [defaultNode] - 默认状态下节点的配置，比如 type, size, color。会被写入的 data 覆盖。
  * @property {KnowledgeGraph.EdgeStyle} [defaultEdge] - 默认状态下边的配置，比如 type, size, color。会被写入的 data 覆盖。
@@ -43,7 +44,7 @@ import { G6Render } from './knowledge-graph/G6Render';
 
 /**
  * @typedef {Object} KnowledgeGraph.Layout - 布局。
- * @property {string} [type='force'] - 布局类型， 可选值：['force']。 默认'force'。
+ * @property {string} [type='fruchterman'] - 布局类型， 可选值：['fruchterman']。 默认'fruchterman'。
  */
 
 /**

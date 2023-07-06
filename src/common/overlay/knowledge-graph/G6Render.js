@@ -113,12 +113,16 @@ export class G6Render {
   }
 
   _getGraphConfig(config) {
+    const animateConfig = {
+      speed: 120,
+      maxIteration: 83,
+      tick: () => {
+        this.refreshPositions()
+      }
+    };
     const defaultLayout = {
-      type: 'force',
-      linkDistance: 80,
-      nodeSpacing: 20,
-      preventOverlap: true,
-      nodeStrength: 0
+      type: 'fruchterman',
+      gravity: 5
     };
     const defaultNode = {};
     const defaultEdge = {
@@ -163,7 +167,7 @@ export class G6Render {
         height: dom.scrollHeight, // Number，必须，图的高度
         plugins: defaultPlugins,
         modes: defaultMode,
-        layout: defaultLayout,
+        layout: { ...defaultLayout, ...animateConfig },
         defaultNode,
         defaultEdge,
         nodeStateStyles: {
@@ -183,7 +187,7 @@ export class G6Render {
       typeof config.container === 'string' ? document.querySelector(`#${config.container}`) : config.container;
     config.width = config.width || dom.scrollWidth;
     config.height = config.height || dom.scrollHeight;
-    config.layout = { ...defaultLayout, ...(config.layout || {}) };
+    config.layout = { ...defaultLayout, ...(config.layout || {}), ...(config.animate !== false ? animateConfig : {}) };
     config.defaultNode = { ...defaultNode, ...(config.defaultNode || {}) };
     config.defaultEdge = { ...defaultEdge, ...(config.defaultEdge || {}) };
     config.modes = {
