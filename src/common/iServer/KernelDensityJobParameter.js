@@ -29,6 +29,9 @@ import {
  * @param {number} [options.method=0] - 分析方法。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
+ * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
+ * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
