@@ -645,12 +645,6 @@ var exampleConfig = {
             }
         }
     },
-    "iManager": {
-        name: "iManager",
-        name_en: "iManager",
-        localIgnore: true,
-        content: null
-    },
     "viz": {
         name: "可视化",
         name_en: "Visualization",
