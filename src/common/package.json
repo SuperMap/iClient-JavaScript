@@ -22,6 +22,7 @@
     "promise-polyfill": "8.2.3",
     "lodash.topairs": "4.3.0",
     "lodash.uniqby": "^4.7.0",
+    "lodash.clonedeep": "^4.5.0",
     "mapv": "2.0.62",
     "flatgeobuf": "3.23.1",
     "rbush": "^2.0.2",

@@ -1,5 +1,6 @@
 import { transformGraphMap } from './knowledge-graph/format';
 import { G6Render } from './knowledge-graph/G6Render';
+import clonedeep from 'lodash.clonedeep';
 
 /**
  * @class KnowledgeGraph
@@ -146,7 +147,7 @@ export class KnowledgeGraph {
      * @description graph实例。
      */
     this.graph = null;
-    this.config = config;
+    this.config = clonedeep(config);
     this.graphRender = null;
     this.type = type;
     this.createGraphRender(this.type);
@@ -429,7 +430,7 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.prototype.setData
    * @description 设置默认数据
    * @param {KnowledgeGraph.Data} data - graph数据。
-   * @param {Object} [graph = this.graph] - graph实例, 默认是。
+   * @param {Object} [graph = this.graph] - graph实例。
    */
   setData(data, graph = this.graph) {
     data = data || { nodes: [], edges: [] };
@@ -444,19 +445,20 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.render
    * @description 根据提供的数据渲染视图。
+   * @param {Object} [graph = this.graph] - graph实例。
    */
-  render(graph) {
-    this.graphRender.render(graph);
+  render(graph = this.graph) {
+    graph && this.graphRender.render(graph);
   }
 
   /**
    * @function KnowledgeGraph.prototype.updateGraph
    * @description 更新数据
    * @param {KnowledgeGraph.Data} data - graph数据。
-   * @param {Object} graph - graph实例。
+   * @param {Object} [graph = this.graph] - graph实例。
    */
-  updateGraph(data, graph) {
-    this.graphRender.updateGraph(data, graph);
+  updateGraph(data, graph = this.graph) {
+    graph && this.graphRender.updateGraph(data, graph);
   }
 
   /**
@@ -630,7 +632,6 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.prototype.collapseNode
    * @description 收起当前节点。
    * @param {string} id - 元素 ID。
-   * @param {Object} graph - graph实例。
    */
   collapseNode(id) {
     const item = this.findById(id);
@@ -827,19 +828,19 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.clear
    * @description 清除画布元素。
-   * @param {Object} graph - graph实例。
+   * @param {Object} [graph = this.graph] - graph实例。
    */
-  clear(graph) {
-    graph.clear();
+  clear(graph = this.graph) {
+    graph && graph.clear();
   }
 
   /**
    * @function KnowledgeGraph.prototype.destroy
    * @description 销毁画布。
-   * @param {Object} graph - graph实例。
+   * @param {Object} [graph = this.graph] - graph实例。
    */
-  destroy(graph) {
-    graph.destroy();
+  destroy(graph = this.graph) {
+    graph && graph.destroy();
   }
 }
 
