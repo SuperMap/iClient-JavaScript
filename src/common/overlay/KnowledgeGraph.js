@@ -160,11 +160,11 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.dataFromGraphMap
    * @description 将iServer GraphMap数据转换成KnowledgeGraph数据。
    * @param {Object} queryResult - iServer知识图谱服务query数据。
-   * @param {Object} graphMapStyle - iServer知识图谱服务GraphMap的style属性(graphMap.styles.style)。
+   * @param {Object} graphMap - iServer知识图谱服务GraphMap数据(data.graphMap)。
    * @return {KnowledgeGraph.Data} 返回数据。
    */
-  static dataFromGraphMap(queryResult, graphMapStyle) {
-    return transformGraphMap(queryResult, graphMapStyle);
+  static dataFromGraphMap(queryResult, graphMap) {
+    return transformGraphMap(queryResult, graphMap);
   }
 
   /**

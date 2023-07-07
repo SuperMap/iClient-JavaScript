@@ -159,9 +159,94 @@ describe('KnowledgeGraph', () => {
         entityTypes: '["地籍子区"]'
       }
     ];
-    var data = KnowledgeGraph.dataFromGraphMap(graphData, style);
+    var data = KnowledgeGraph.dataFromGraphMap(graphData, { styles: { style } });
     expect(data.nodes).not.toBeNull();
     expect(data.edges).not.toBeNull();
+    done();
+  });
+
+  it('dataFromGraphMap captionField array', (done) => {
+    var graphData = [
+      {
+        path: [
+          {
+            id: 17732923532771331,
+            properties: {
+              server: '--server=E:/00testdata/知识图谱/基础地理实体/院落.udbx --dbType=UDBX --dataset=面1'
+            },
+            labels: ['面1']
+          },
+          {
+            start: 17732923532771331,
+            end: 18014398509481990,
+            id: 20547673299877890,
+            type: '邻接',
+            properties: {}
+          },
+          {
+            id: 18014398509481990,
+            properties: {
+              server: '--server=E:/00testdata/知识图谱/基础地理实体/院落.udbx --dbType=UDBX --dataset=面2'
+            },
+            labels: ['面2']
+          }
+        ]
+      },
+      {
+        id: 177329231,
+        properties: {
+          server: '--server=E:/00testdata/知识图谱/基础地理实体/院落.udbx --dbType=UDBX --dataset=面1'
+        },
+        labels: ['面1']
+      },
+      {
+        start: 177329231,
+        end: 17732923,
+        id: 20547673890,
+        type: '邻接1',
+        properties: {}
+      }
+    ];
+    var style = [
+      {
+        type: 'entity',
+        color: '#ffc454',
+        textColor: '#ffffff',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 13,
+          fontStyle: 0
+        },
+        size: 20,
+        entityIds: '[12,16,18,21,23,25,28,29]'
+      },
+      {
+        type: 'entity',
+        color: '#c990c0',
+        textColor: '#595959',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 6,
+          fontStyle: 0
+        },
+        size: 20,
+        entityTypes: '["地籍子区"]'
+      }
+    ];
+    var captionField = { entityTypes: '["面1"]', name: 'server' };
+    var data = KnowledgeGraph.dataFromGraphMap(graphData, {
+      styles: { style },
+      captionFields: { captionField: [captionField] }
+    });
+    expect(data.nodes[0].label).toBe(
+      '--server=E:/00testdata/知识图谱/基础地理实体/院落.udbx --dbType=UDBX --dataset=面1'
+    );
+    expect(data.edges).not.toBeNull();
+    var data1 = KnowledgeGraph.dataFromGraphMap(graphData, { styles: { style }, captionFields: { captionField } });
+    expect(data1.nodes[0].label).toBe(
+      '--server=E:/00testdata/知识图谱/基础地理实体/院落.udbx --dbType=UDBX --dataset=面1'
+    );
+    expect(data1.edges).not.toBeNull();
     done();
   });
 

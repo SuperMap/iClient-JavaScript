@@ -1,18 +1,21 @@
 import uniqBy from 'lodash.uniqby';
 
-export function transformGraphMap(data, style) {
+export function transformGraphMap(data, graphMap) {
+  const style = graphMap && graphMap.styles && graphMap.styles.style;
+  const captionField = graphMap && graphMap.captionFields && graphMap.captionFields.captionField;
+
   const rst = { nodes: [], edges: [] };
   data.forEach((item) => {
     const pathData = item.path;
     if (pathData) {
-      const { nodes, edges } = transformPath(pathData, style);
+      const { nodes, edges } = transformPath(pathData, style, captionField);
       rst.nodes.push(...nodes);
       rst.edges.push(...edges);
     } else if (isEdge(item)) {
       const edge = edgeFromGraphMap(item, style);
       rst.edges.push(edge);
     } else {
-      const node = nodeFromGraphMap(item, style);
+      const node = nodeFromGraphMap(item, style, captionField);
       rst.nodes.push(node);
     }
   });
@@ -27,24 +30,24 @@ function isEdge(entity) {
   return entity.hasOwnProperty('start') && entity.hasOwnProperty('end');
 }
 
-function transformPath(pathData, style) {
+function transformPath(pathData, style, captionField) {
   const rst = { nodes: [], edges: [] };
   pathData.forEach((item) => {
     if (isEdge(item)) {
       const edge = edgeFromGraphMap(item, style);
       rst.edges.push(edge);
     } else {
-      const node = nodeFromGraphMap(item, style);
+      const node = nodeFromGraphMap(item, style, captionField);
       rst.nodes.push(node);
     }
   });
   return rst;
 }
 
-export function nodeFromGraphMap(entity, style) {
+export function nodeFromGraphMap(entity, style, captionField) {
   const { id, properties, lables } = entity;
   const styleData = style ? getNodeStyle(entity, style) : {};
-  const label = getNodeLabel(entity);
+  const label = getNodeLabel(entity, captionField);
   const fillColor = styleData.fillColor || '';
   const node = {
     id: id + '',
@@ -133,10 +136,20 @@ function getNodeStyle(entity, style) {
   return {};
 }
 
-function getNodeLabel(entity) {
-  const { properties } = entity;
-  const name = properties._labelfieldname;
-  return properties[name] || '';
+function getNodeLabel(entity, captionField) {
+  const { id, labels, properties } = entity;
+  if (captionField) {
+    const data = captionField instanceof Array ? captionField : [captionField];
+    for (let i = 0; i < data.length; i++) {
+      const { name, entityTypes, entityIds } = data[i];
+      const ids = JSON.parse(entityIds || '[]');
+      const types = JSON.parse(entityTypes || '[]');
+      if (ids.includes(id) || types.includes(labels[0])) {
+        return properties[name] || '';
+      }
+    }
+  }
+  return properties[properties._labelfieldname] || '';
 }
 
 function formatFontStyle(fontStyle) {

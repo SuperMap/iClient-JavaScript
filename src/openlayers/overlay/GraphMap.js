@@ -61,7 +61,7 @@ export class GraphMap extends Observable {
   async createGraphMap(graphMapName, options) {
     this.knowledgeGraphService = this.createKnowledgeGraphService(this.url, options);
     const res = await this.knowledgeGraphService.getGraphMapData(graphMapName);
-    const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap.styles && res.graphMap.styles.style);
+    const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap);
     this.graph = new KnowledgeGraph(options && options.config);
     this.graph.on('beforelayout', () => {
       /**
