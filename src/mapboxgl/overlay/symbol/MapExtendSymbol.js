@@ -108,7 +108,7 @@ function MapExtendSymbol(){
    */
   mapboxgl.Map.prototype.loadSymbol = async function (id, callback) {
     if (typeof id === 'string') {
-      let symbolInfo = getSymbolHandler(this).getSymbolInfo(id);
+      let symbolInfo = this.getSymbol(id);
       if (!symbolInfo) {
         const symbolResult = await getSymbol(id, this);
         if (!symbolResult) {
@@ -139,6 +139,14 @@ function MapExtendSymbol(){
   };
 
   /**
+   * 获取符号信息
+   * @param {string} id
+   */
+  mapboxgl.Map.prototype.getSymbol = function (id) {
+    return getSymbolHandler(this).getSymbol(id);
+  };
+
+  /**
    * 判断符号是否存在
    * @param {string} id
    */
@@ -150,7 +158,7 @@ function MapExtendSymbol(){
       return false;
     }
 
-    return !!getSymbolHandler(this).getSymbolInfo(id);
+    return !!this.getSymbol(id);
   };
 
   /**

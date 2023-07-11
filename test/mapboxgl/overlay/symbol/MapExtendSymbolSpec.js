@@ -271,4 +271,14 @@ describe('MapExtendSymbol', () => {
         expect(map.symbolHandler.getSymbolProperty).toHaveBeenCalled();
         expect(value).toBe(5);
     });
+    it('map.getSymbol', () => {
+        spyOn(map.symbolHandler, 'getSymbol').and.returnValue({
+            paint: {
+                "icon-color": "red"
+            }
+        });
+        const value = map.getSymbol("point-1");
+        expect(map.symbolHandler.getSymbol).toHaveBeenCalled();
+        expect(value.paint["icon-color"]).toBe("red");
+    });
 });

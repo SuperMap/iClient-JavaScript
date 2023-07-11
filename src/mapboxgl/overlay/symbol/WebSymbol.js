@@ -117,6 +117,19 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
+* ## mapboxgl.Map.prototype.getSymbol
+* 获取指定 ID 的符号信息。
+* 
+* 参数名称			     |类型			 |描述  
+* :----			    |:---		    |:---	
+* id			    |string		    |符号ID
+* 
+* **Example**
+* ```
+* const point1 = map.getSymbol('point-1');
+* ```
+* 
+* 
 * ## mapboxgl.Map.prototype.setSymbolProperty
 * 设置指定ID符号的属性值。
 * 
