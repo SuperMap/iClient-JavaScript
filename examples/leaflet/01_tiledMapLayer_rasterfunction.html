@@ -14,21 +14,17 @@
     <script type="text/javascript">
       var host = window.isLocal ? window.server : "https://iserver.supermap.io";
       var map,
-        url = host + '/iserver/services/map-ndvi/rest/maps/ndvi';
+        url = host + '/iserver/services/map-ndvi/rest/maps/hainanImage';
       map = L.map('map', {
-        center: L.CRS.EPSG3857.unproject(L.point(15600549.07, 4306191.95)),
+        center: L.CRS.EPSG3857.unproject(L.point(12189483.19 , 2155290.02)),
         maxZoom: 12,
         zoom: 12
       });
       new L.supermap
         .TiledMapLayer(url, {
           cacheEnabled: false,
+          format:'jpg',
           rasterfunction: new L.supermap.NDVIParameter({ redIndex: 0, nirIndex: 2 })
-          // rasterfunction: new L.supermap.HillshadeParameter({
-          //   altitude: 45,
-          //   azimuth: 315,
-          //   zFactor:1
-          // }),
         })
         .addTo(map);
     </script>
