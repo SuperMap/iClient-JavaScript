@@ -1702,6 +1702,7 @@ window.examplesResources = {
         "msg_queryFailure": "Query failed",
         "msg_updateFailure": "Update failed",
         "msg_deleteFailure": "Delete failed",
+        "msg_resourceNotExist": "The resource does not exist or has no permission",
         "msg_getRoute": "Please get the routing object by query!",
         "msg_MByQuery": "The measured value is:",
         "msg_queryRouteSuccess": "Query route object successful",
