@@ -44,6 +44,8 @@ import {
   GraphMap
 } from './overlay';
 
+import { initMap } from './mapping';
+
 import {
   CommonUtil,
   SuperMap,
@@ -91,3 +93,4 @@ maplibregl.supermap.HeatMapLayer = HeatMapLayer;
 maplibregl.supermap.GraphicLayer = GraphicLayer;
 maplibregl.supermap.GraticuleLayer = GraticuleLayer;
 maplibregl.supermap.FGBLayer = FGBLayer;
+maplibregl.supermap.initMap = initMap;
