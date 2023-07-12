@@ -24,37 +24,44 @@
 </head>
 <body>
 <div id='map'></div>
-<script type="text/javascript" exclude='iclient-maplibregl' src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
         " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
-    var map = new maplibregl.Map({
-        container: 'map', // container id
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
-                    "tileSize": 256
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 0,
-                "maxzoom": 22
-            }]
-        },
-        center: [120.143, 30.236], // starting position
-        zoom: 3 // starting zoom
-    });
-    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    // 方式一：1.调用 maplibregl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
+    maplibregl.supermap.initMap(host + '/iserver/services/map-china400/rest/maps/China').then(function (dataRes) {
+      var map = dataRes.map;
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    })
+
+    // 方法二： 直接用 maplibregl.Map 初始化
+    // var map = new maplibregl.Map({
+    //     container: 'map', // container id
+    //     style: {
+    //         "version": 8,
+    //         "sources": {
+    //             "raster-tiles": {
+    //                 "attribution": attribution,
+    //                 "type": "raster",
+    //                 "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+    //                 "tileSize": 256
+    //             }
+    //         },
+    //         "layers": [{
+    //             "id": "simple-tiles",
+    //             "type": "raster",
+    //             "source": "raster-tiles",
+    //             "minzoom": 0,
+    //             "maxzoom": 22
+    //         }]
+    //     },
+    //     center: [120.143, 30.236], // starting position
+    //     zoom: 3 // starting zoom
+    // });
+    // map.addControl(new maplibregl.NavigationControl(), 'top-left');
 
 </script>
 

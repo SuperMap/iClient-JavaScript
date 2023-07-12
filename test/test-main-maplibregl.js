@@ -51,3 +51,6 @@ import './maplibregl/overlay/FGBLayerSpec.js';
 import './maplibregl/overlay/DeckglLayerSpec.js';
 import './maplibregl/overlay/ThreeLayerSpec.js';
 import './maplibregl/overlay/graphic/GraphicSpec.js';
+
+/*mapboxgl -- mapping*/
+import './maplibregl/mapping/InitMapSpec.js';
