@@ -28,7 +28,6 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
 export class MapService extends ServiceBase {
 
     constructor(url, options) {
-      console.log(options);
         super(url, options);
     }
 
