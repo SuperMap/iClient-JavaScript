@@ -85,6 +85,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(2);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -98,8 +99,16 @@ class SymbolHandler {
                         ]
                     ], symbol: r
                 });
+                defaultFilter.push([
+                    "!=",
+                    layer.symbol[1][1],
+                    expression[index - 1]
+                ]);
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
@@ -116,6 +125,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(1);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -125,8 +135,12 @@ class SymbolHandler {
                         expression[index - 1]
                     ], symbol: r
                 });
+                defaultFilter.push(['!', expression[index - 1]])
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
@@ -153,7 +167,7 @@ class SymbolHandler {
             });
         }
         layers.forEach((l) => {
-            l.id = Util.createUniqueID(`${layer.id}_`);
+            l.id = Util.createUniqueID(`${layer.id}_compositeLayer_`);
             this.compositeSymbolRender.addLayerId(layer.id, l.id);
             this.addLayer(l, before);
         });

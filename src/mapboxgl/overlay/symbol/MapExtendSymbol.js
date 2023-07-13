@@ -26,8 +26,15 @@ function MapExtendSymbol(){
   if (mapboxgl.Map.prototype.addLayerBySymbolBak === undefined) {
     mapboxgl.Map.prototype.addLayerBySymbolBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
+      const symbolHandler = getSymbolHandler(this);
+      if(symbolHandler.getLayerIds(layer.id).length > 0) {
+        this.fire('error', {
+          error: new Error('A layer with this id already exists.')
+        });
+        return;
+      }
       if (layer.symbol) {
-        getSymbolHandler(this).addLayer(layer, before);
+        symbolHandler.addLayer(layer, before);
         return this;
       }
       this.addLayerBySymbolBak(layer, before);
@@ -253,6 +260,42 @@ function MapExtendSymbol(){
     }
     return getSymbolHandler(this).getLayoutProperty(layerId, name);
   };
+  
+  if (mapboxgl.Map.prototype.onBak === undefined) {
+    mapboxgl.Map.prototype.onBak = mapboxgl.Map.prototype.on;
+    mapboxgl.Map.prototype.on = function (type, layerId, listener) {
+      if (listener === undefined || this.style.getLayer(layerId)) {
+        return this.onBak(type, layerId, listener);
+      }
+      const layerIds = getSymbolHandler(this).getLayerIds(layerId);
+      layerIds.forEach(id => this.onBak(type, id, listener));
+      return this;
+    };
+  }
+  
+  if (mapboxgl.Map.prototype.onceBak === undefined) {
+    mapboxgl.Map.prototype.onceBak = mapboxgl.Map.prototype.once;
+    mapboxgl.Map.prototype.once = function (type, layerId, listener) {
+      if (listener === undefined || this.style.getLayer(layerId)) {
+        return this.onceBak(type, layerId, listener);
+      }
+      const layerIds = getSymbolHandler(this).getLayerIds(layerId);
+      layerIds.forEach(id => this.onceBak(type, id, listener));
+      return this;
+    };
+  }
+  
+  if (mapboxgl.Map.prototype.offBak === undefined) {
+    mapboxgl.Map.prototype.offBak = mapboxgl.Map.prototype.off;
+    mapboxgl.Map.prototype.off = function (type, layerId, listener) {
+      if (listener === undefined || this.style.getLayer(layerId)) {
+        return this.offBak(type, layerId, listener);
+      }
+      const layerIds = getSymbolHandler(this).getLayerIds(layerId);
+      layerIds.forEach(id => this.offBak(type, id, listener));
+      return this;
+    };
+  }
 
   /**
    * @function WebSymbol.prototype.getSymbol
