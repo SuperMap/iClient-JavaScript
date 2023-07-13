@@ -81,6 +81,12 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----			    |:---		    |:---	
 * id			    |string		    |符号ID
 * 
+* 
+* **Returns**
+* 类型			   |描述  
+* :---		     |:---	
+* boolean		   |符号是否存在
+*   
 * **Example**
 * ```
 * const pointExists = map.hasSymbol('point-1');
@@ -103,9 +109,9 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ## mapboxgl.Map.prototype.updateSymbol
 * 更新指定 ID 的符号。
 * 
-* 参数名称			     |类型			 |描述  
-* :----				|:---		    |:---	
-* id			      |string		    |已经添加的符号ID
+* |参数名称			     |类型			     |描述                | ||
+* |----				|---		        |---			    |---|---|
+* id			      |string		    |已经添加的符号ID|||
 * |symbol			  |object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |             |             |参数名称			 |类型			     |描述  |
 * |             |             |paint				|object		      |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
@@ -123,6 +129,12 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 参数名称			     |类型			 |描述  
 * :----			    |:---		    |:---	
 * id			    |string		    |符号ID
+* 
+* **Returns**
+* 类型			   |描述  
+* :---		     |:---	
+* object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象
+* 
 * 
 * **Example**
 * ```
@@ -155,6 +167,11 @@ import MapExtendSymbol from './MapExtendSymbol';
 * id			        |string		    |符号ID
 * index			      |number		    |符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
+* 
+* **Returns**
+* 类型			  |描述  
+* :---		        |:---	
+* any		        |属性值 
 * 
 * **Example**
 * ```
