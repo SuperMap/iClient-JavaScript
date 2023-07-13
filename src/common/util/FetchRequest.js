@@ -104,6 +104,7 @@ export var RequestJSONPPromise = {
   send: function (splitQuestUrl, callback, proxy) {
       var len = splitQuestUrl.length;
       if (len > 0) {
+         return new Promise((resolve) => {
           var jsonpUserID = new Date().getTime();
           for (var i = 0; i < len; i++) {
               var url = splitQuestUrl[i];
@@ -119,13 +120,14 @@ export var RequestJSONPPromise = {
                   url = decodeURIComponent(url);
                   url = proxy + encodeURIComponent(url);
               }
-              return fetchJsonp(url, {
+              fetchJsonp(url, {
                   jsonpCallbackFunction: callback,
                   timeout: 30000
               }).then((result) => {
-                return result.json();
+                resolve(result.json());
               });
           }
+         })
       }
   },
 
