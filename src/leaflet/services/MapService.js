@@ -61,11 +61,11 @@ export var MapService = ServiceBase.extend({
     },
 
     /**
-     * @function  MapService.prototype.getWKT
+     * @function  MapService.prototype.getWkt
      * @description 获取WKT。
      * @param {RequestCallback} callback - 回调函数。
      */
-    getWKT(callback) {
+    getWkt(callback) {
       var me = this;
       var getMapStatusService = new CommonMapService(`${me.url}/prjCoordSys.wkt`, {
           proxy: me.options.proxy,

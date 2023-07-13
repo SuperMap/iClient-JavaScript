@@ -17,7 +17,7 @@ const Map = function (options) {
   this.fire = evented.fire;
   this.listens = evented.listens;
 
-  this.options = options;
+  this.options = options;                                                                                                                                                
   this._events = {};
   this._sources = {};
   this._collectResourceTiming = !!this.options.collectResourceTiming;
@@ -37,11 +37,8 @@ const Map = function (options) {
   this.resize = function () {};
   this.style = options.style;
   this.setStyle = function (style, options) {
-    if (style.layers) {
-      for (let i = 0, list = style.layers; i < list.length; i += 1) {
-        const layer = list[i];
-        this._layers[layer.id] = list[i];
-      }
+    for (let i = 0, list = style.layers; i < list.length; i += 1) {
+      this._layers[layer.id] = list[i];
     }
     this.sources = style.sources
   };

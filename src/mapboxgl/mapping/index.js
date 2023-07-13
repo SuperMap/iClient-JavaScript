@@ -1,2 +1,1 @@
-export { WebMap } from './WebMap';
-export { initMap } from './InitMap';
+export {WebMap} from './WebMap';
