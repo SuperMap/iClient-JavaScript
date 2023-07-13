@@ -6,3 +6,4 @@ export * from './control';
 export * from './core';
 export * from './services';
 export * from './overlay';
+export * from './mapping';

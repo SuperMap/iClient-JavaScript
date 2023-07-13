@@ -1653,6 +1653,7 @@ window.examplesResources = {
         "msg_queryFailure": "查询失败",
         "msg_updateFailure": "更新失败",
         "msg_deleteFailure": "删除失败",
+        "msg_resourceNotExist": "资源不存在或无权限",
         "msg_getRoute": "请通过查询获取路由对象！",
         "msg_MByQuery": "查询获取的M值为：",
         "msg_queryRouteSuccess": "查询路由对象成功",
@@ -1780,3 +1781,4 @@ window.examplesResources = {
         "text_print": "打印"
     }
 };
+window.resources = window.examplesResources.resources;

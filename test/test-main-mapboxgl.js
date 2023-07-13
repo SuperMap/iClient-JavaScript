@@ -68,3 +68,4 @@ import './mapboxgl/services/ImageCollectionServiceSpec';
 
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';
+import './mapboxgl/mapping/InitMapSpec.js';

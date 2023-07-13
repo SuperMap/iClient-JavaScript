@@ -125,10 +125,10 @@
     //若示例与SuperMap Online不在同一域下，欲查看示例效果请打开该句注释
     //SuperMap.Support.cors = false;
     $(document).ready(function () {
-        $("#serviceUrl_online").val("https://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
-        $('#key_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
-        $("#serviceUrlMap_online").val("https://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
-        $('#mapKey_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+        $("#serviceUrl_online").val("https://www.supermapol.com/proxy/u8ln9hj3/iserver/services/map-world/rest/maps/World");
+        $('#key_online').val("6hAJDddxt9Xv4s3j8bauH61K");
+        $("#serviceUrlMap_online").val("https://www.supermapol.com/proxy/u8ln9hj3/iserver/services/map-world/rest/maps/World");
+        $('#mapKey_online').val("6hAJDddxt9Xv4s3j8bauH61K");
     });
 
     /*登录*/
@@ -150,9 +150,9 @@
             serverType: L.supermap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error), false);
+                widgets.alert.showAlert(JSON.stringify(json.error), false, 700);
             } else {
-                widgets.alert.showAlert(JSON.stringify(json.result), true);
+                widgets.alert.showAlert(JSON.stringify(json.result), true, 700);
             }
         });
     }

@@ -11,14 +11,14 @@
     <script type="text/javascript">
       var host = window.isLocal ? window.server : "https://iserver.supermap.io";
       var map,
-        url = host + '/iserver/services/map-ndvi/rest/maps/ndvi';
+        url = host + '/iserver/services/map-ndvi/rest/maps/hainanImage';
       map = new ol.Map({
         target: 'map',
         controls: ol.control
           .defaults({ attributionOptions: { collapsed: false } })
           .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
-          center: [15600549.07, 4306191.95],
+          center: [12189483.19 , 2155290.02],
           zoom: 12,
           maxZoom: 12,
           projection: 'EPSG:3857',
@@ -29,7 +29,8 @@
         source: new ol.source.TileSuperMapRest({
           url: url,
           rasterfunction: new ol.supermap.NDVIParameter({ redIndex: 0, nirIndex: 2 }),
-          cacheEnabled: false
+          cacheEnabled: false,
+          format:'jpg'
         }),
         projection: 'EPSG:3857'
       });

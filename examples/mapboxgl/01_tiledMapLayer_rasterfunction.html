@@ -8,7 +8,7 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title data-i18n="resources.title_tiledMapLayer_rasterfunction"></title>
     <script type="text/javascript" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       body {
         margin: 0;
@@ -36,10 +36,8 @@
             'raster-tiles': {
               type: 'raster',
               tileSize: 256,
-              tiles: [host + '/iserver/services/map-ndvi/rest/maps/ndvi'],
-              rasterfunction: new mapboxgl.supermap.NDVIParameter({ redIndex: 0, nirIndex: 2 }),
-              cacheEnabled: false,
-              rasterSource: 'iserver'
+              tiles: [host +
+                  '/iserver/services/map-ndvi/rest/maps/hainanImage/zxyTileImage.jpg?z={z}&x={x}&y={y}&width=256&height=256&transparent=true&redirect=false&cacheEnabled=false&rasterfunction=' + encodeURIComponent('{"redIndex":0,"nirIndex":2,"colorMap":"0:ffffe5ff;0.1:f7fcb9ff;0.2:d9f0a3ff;0.3:addd8eff;0.4:78c679ff;0.5:41ab5dff;0.6:238443ff;0.7:006837ff;1:004529ff","type":"NDVI"}')],
             }
           },
 
@@ -53,7 +51,7 @@
             }
           ]
         },
-        center: [140.14211670237586, 36.04047391197882],
+        center: [109.49999055094979, 19.00300764713883],
         zoom: 11,
         maxZoom: 11
       });

@@ -71,6 +71,7 @@ import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglL
  * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
  * @usage
+ * @extends {DeckglLayerBase}
  */
 export class DeckglLayer extends DeckglLayerBase {
     constructor(layerTypeID, options) {
