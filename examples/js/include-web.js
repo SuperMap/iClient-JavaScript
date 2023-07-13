@@ -41,14 +41,34 @@
           if (c.indexOf(name) !== -1) return c.substring(name.length, c.length);
       }
       return "";
-  }
+    }
+
+    function getLanguage() {
+      var lang = getCookie('language');
+      if (!lang) {
+          if (navigator.appName === 'Netscape') {
+              lang = navigator.language;
+          } else {
+              lang = navigator.browserLanguage;
+          }
+      }
+      if (lang) {
+          if (lang.indexOf('zh') === 0) {
+              return 'zh-CN';
+          }
+          if (lang.indexOf('en') === 0) {
+              return 'en-US';
+          }
+      }
+      return 'zh-CN';
+    }
 
     //加载类库资源文件
     function load(config) {
         var libsurl = config.libsurl;
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
-        const resourceLanguage = getCookie('language');
+        const resourceLanguage = getLanguage();
         inputScript("../locales/" + resourceLanguage + "/resources.js");
         inputScript("../js/tokengenerator.js");
         inputScript("../js/websymbol.js");
