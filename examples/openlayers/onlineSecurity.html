@@ -150,9 +150,9 @@
             serverType: ol.supermap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error), false);
+                widgets.alert.showAlert(JSON.stringify(json.error), false, 700);
             } else {
-                widgets.alert.showAlert(JSON.stringify(json.result), true);
+                widgets.alert.showAlert(JSON.stringify(json.result), true, 700);
             }
         });
     }
