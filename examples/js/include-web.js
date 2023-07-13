@@ -32,11 +32,24 @@
         return false;
     }
 
+    function getCookie(cKey) {
+      var name = cKey + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) === ' ') c = c.substring(1);
+          if (c.indexOf(name) !== -1) return c.substring(name.length, c.length);
+      }
+      return "";
+  }
+
     //加载类库资源文件
     function load(config) {
         var libsurl = config.libsurl;
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
+        const resourceLanguage = getCookie('language');
+        inputScript("../locales/" + resourceLanguage + "/resources.js");
         inputScript("../js/tokengenerator.js");
         inputScript("../js/websymbol.js");
         var jQueryInclude = false;

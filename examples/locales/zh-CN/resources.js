@@ -1781,3 +1781,4 @@ window.examplesResources = {
         "text_print": "打印"
     }
 };
+window.resources = window.examplesResources.resources;

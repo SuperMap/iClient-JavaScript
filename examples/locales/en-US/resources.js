@@ -1830,3 +1830,5 @@ window.examplesResources = {
         "text_print": "Print"
     }
 };
+
+window.resources = window.examplesResources.resources;
