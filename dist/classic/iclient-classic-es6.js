@@ -1941,6 +1941,33 @@ const DOTS_PER_INCH = 96;
  */
 
 const Util_Util = {
+
+  /**
+     * @function Util.extend
+     * @description 对象拷贝赋值。
+     * @param {Object} dest - 目标对象。
+     * @param {Object} arguments - 待拷贝的对象。
+     * @returns {Object} 赋值后的目标对象。
+     */
+  assign(dest) {
+    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
+        var arg = Object.getOwnPropertyNames(arguments)[index];
+        if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+            continue;
+        }
+        var obj = arguments[arg];
+        if (obj) {
+            for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+                var key = Object.getOwnPropertyNames(obj)[j];
+                if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+                    continue;
+                }
+                dest[key] = obj[key];
+            }
+        }
+    }
+    return dest;
+  },
   /**
    * @memberOf CommonUtil
    * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
@@ -3906,13 +3933,14 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @deprecatedclass SuperMap.ElasticSearch
  * @classdesc ElasticSearch服务类。
  * @category ElasticSearch
+ * @modulecategory Services
  * @param {string} url - ElasticSearch服务地址。
  * @param {Object} options - 参数。
  * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description 
+ * @description
  * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
  * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
   <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
@@ -4621,12 +4649,6 @@ var RequestJSONPPromise = {
           uid = me.getUid(),
           url = config.url,
           splitQuestUrl = [];
-      var p = new Promise(function (resolve) {
-          me.supermap_callbacks[uid] = function (response) {
-              delete me.supermap_callbacks[uid];
-              resolve(response);
-          };
-      });
 
       // me.addQueryStrings({
       //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
@@ -4684,12 +4706,11 @@ var RequestJSONPPromise = {
           }
       }
       splitQuestUrl.push(sectionURL);
-      me.send(
+      return me.send(
           splitQuestUrl,
-          'RequestJSONPPromise.supermap_callbacks[' + uid + ']',
+          'SuperMapJSONPCallbacks_' + uid,
           config && config.proxy
       );
-      return p;
   },
 
   getUid: function () {
@@ -4701,6 +4722,7 @@ var RequestJSONPPromise = {
   send: function (splitQuestUrl, callback, proxy) {
       var len = splitQuestUrl.length;
       if (len > 0) {
+         return new Promise((resolve) => {
           var jsonpUserID = new Date().getTime();
           for (var i = 0; i < len; i++) {
               var url = splitQuestUrl[i];
@@ -4719,8 +4741,11 @@ var RequestJSONPPromise = {
               fetch_jsonp_default()(url, {
                   jsonpCallbackFunction: callback,
                   timeout: 30000
+              }).then((result) => {
+                resolve(result.json());
               });
           }
+         })
       }
   },
 
@@ -4998,15 +5023,16 @@ var FetchRequest = {
      */
     post: function (url, params, options) {
         options = options || {};
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
-                url: url += "&_method=POST",
+                url: Util_Util.urlAppend(url, "_method=POST"),
                 data: params
             };
             return RequestJSONPPromise.POST(config);
         }
-        return this._fetch(this._processUrl(url, options), params, options, 'POST');
+        return this._fetch(url, params, options, 'POST');
     },
     /**
      * @function FetchRequest.put
@@ -8295,6 +8321,9 @@ class MappingParameters {
  * @param {number} [options.method=0] - 分析方法。
  * @param {number} [options.meshType=0] - 分析类型。
  * @param {number} [options.radius=300] - 分析的影响半径。
+ * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
+ * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
+ * @param {AnalystAreaUnit} [options.areaUnit=AnalystAreaUnit.SQUAREMILE] - 面积单位。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -8689,6 +8718,7 @@ class SummaryAttributesJobsParameter {
  * @classdesc 点聚合分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
+ * @param {string} [options.regionDataset ] - 聚合面数据集（聚合类型为多边形聚合时使用的参数）
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} options.fields - 权重索引。
  * @param {number} [options.resolution=100] - 分辨率。
@@ -8861,6 +8891,7 @@ class SummaryMeshJobParameter {
  * @classdesc 区域汇总分析任务参数类。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名。
+ * @param {string} [options.regionDataset] - 汇总数据源（多边形汇总时用到的参数）。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
@@ -9531,6 +9562,7 @@ class GeoCodingParameter {
  * @param {number} options.x - 查询位置的横坐标。
  * @param {number} options.y - 查询位置的纵坐标。
  * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。
+ * @param {number} [options.toIndex] - 设置返回对象的结束索引值。
  * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。
  * @param {string} [options.prjCoordSys] - 查询结果的坐标系。
  * @param {number} [options.maxReturn] - 最大返回结果数。
@@ -9842,8 +9874,8 @@ function scaleToResolution(scale, dpi, mapUnit) {
 
 /**
  * 范围是否相交
- * @param {Extent} extent1 范围1
- * @param {Extent} extent2 范围2
+ * @param {Array} extent1 范围1
+ * @param {Array} extent2 范围2
  * @return {boolean} 范围是否相交。
  */
  function intersects(extent1, extent2) {
@@ -10248,7 +10280,8 @@ class MapVRenderer extends MapVBaseLayer {
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV 图层。
+ * @classdesc MapV 图层类。
+ * @modulecategory Overlay
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
@@ -10293,7 +10326,7 @@ class MapVLayer extends SuperMap.Layer {
         if (options) {
           SuperMap.Util.extend(this, options);
         }
-        
+
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
@@ -10443,7 +10476,7 @@ class MapVLayer extends SuperMap.Layer {
                 this.canvas.width = parseInt(size.w);
                 this.canvas.height = parseInt(size.h);
             }
-           
+
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;
@@ -10908,15 +10941,9 @@ class CommonServiceBase {
 
         this.length = null;
 
-        this.options = null;
-
         this.totalTimes = null;
 
         this.POLLING_TIMES = 3;
-
-        this._processSuccess = null;
-
-        this._processFailed = null;
 
         this.isInTheSameDomain = null;
 
@@ -10970,7 +10997,6 @@ class CommonServiceBase {
             me.totalTimes = null;
         }
         me.url = null;
-        me.options = null;
         me._processSuccess = null;
         me._processFailed = null;
         me.isInTheSameDomain = null;
@@ -11022,55 +11048,66 @@ class CommonServiceBase {
         options.url = SecurityManager.appendCredential(options.url);
 
         me.calculatePollingTimes();
-        me._processSuccess = options.success;
-        me._processFailed = options.failure;
         options.scope = me;
-        options.success = me.getUrlCompleted;
-        options.failure = me.getUrlFailed;
-        me.options = options;
-        me._commit(me.options);
+        var success = options.scope? options.success.bind(options.scope) : options.success;
+        var failure = options.scope? options.failure.bind(options.scope) : options.failure;
+        options.success = me.getUrlCompleted(success, options);
+        options.failure = me.getUrlFailed(failure, options);
+        me._commit(options);
     }
 
     /**
      * @function CommonServiceBase.prototype.getUrlCompleted
      * @description 请求成功后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} cb - 成功回调函数。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    getUrlCompleted(result) {
-        let me = this;
-        me._processSuccess(result);
+    getUrlCompleted(cb, options) {
+      // @param {Object} result - 服务器返回的结果对象。
+      return function(result) {
+        cb && cb(result, options);
+      }
     }
 
     /**
      * @function CommonServiceBase.prototype.getUrlFailed
      * @description 请求失败后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
+
+     * @param {Object} cb - 失败回调函数。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    getUrlFailed(result) {
-        let me = this;
+    getUrlFailed(cb, options) {
+      const me = this;
+      // @param {Object} result - 服务器返回的结果对象。
+      return function(result) {
         if (me.totalTimes > 0) {
-            me.totalTimes--;
-            me.ajaxPolling();
+          me.totalTimes--;
+          me.ajaxPolling(options);
         } else {
-            me._processFailed(result);
+          cb && cb(result, options);
         }
-    }
+      }
+  }
 
     /**
      *
      * @function CommonServiceBase.prototype.ajaxPolling
      * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    ajaxPolling() {
+    ajaxPolling(options) {
         let me = this,
-            url = me.options.url,
+            url = options.url,
             re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
         me.index = parseInt(Math.random() * me.length);
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
-        me.options.url = url;
-        me.options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
-        me._commit(me.options);
+        options.url = url;
+        options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
+        me._commit(options);
     }
 
     /**
@@ -11114,11 +11151,14 @@ class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessCompleted
      * @description 状态完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         result = Util_Util.transformResult(result);
         this.events.triggerEvent('processCompleted', {
-            result: result
+            result: result,
+            options: options
         });
     }
 
@@ -11126,12 +11166,15 @@ class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。对象
+     * @private
      */
-    serviceProcessFailed(result) {
+    serviceProcessFailed(result, options) {
         result = Util_Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent('processFailed', {
-            error: error
+            error: error,
+            options: options
         });
     }
 
@@ -11241,6 +11284,7 @@ class CommonServiceBase {
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
  * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
+ * @param {Object} serviceResult.options 请求参数。
  */
 
 ;// CONCATENATED MODULE: ./src/common/iServer/AddressMatchService.js
@@ -11266,6 +11310,7 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         this.options = options || {};
+        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
@@ -11282,11 +11327,11 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @param {string} url - 正向地址匹配服务地址。
      * @param {GeoCodingParameter} params - 正向地址匹配服务参数。
      */
-    code(url, params) {
+    code(url, params, callback) {
         if (!(params instanceof GeoCodingParameter)) {
             return;
         }
-        this.processAsync(url, params);
+        this.processAsync(url, params, callback);
     }
 
     /**
@@ -11294,11 +11339,11 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @param {string} url - 反向地址匹配服务地址。
      * @param {GeoDecodingParameter} params - 反向地址匹配服务参数。
      */
-    decode(url, params) {
+    decode(url, params, callback) {
         if (!(params instanceof GeoDecodingParameter)) {
             return;
         }
-        this.processAsync(url, params);
+        this.processAsync(url, params, callback);
     }
 
     /**
@@ -11308,27 +11353,55 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @param {Object} params - 参数。
      */
 
-    processAsync(url, params) {
-        this.request({
-            method: 'GET',
-            url,
-            params,
-            scope: this,
-            success: this.serviceProcessCompleted,
-            failure: this.serviceProcessFailed
-        });
+    processAsync(url, params, callback) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId && callback) {
+            delete result.result.eventId;
+            callback(result);
+            this.events && this.events.un(eventListeners);
+            return false;
+          }
+        },
+        processFailed: function(result) {
+          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+            callback(result);
+            this.events && this.events.un(eventListeners);
+            return false;
+          }
+        }
+      }
+      this.events.on(eventListeners);
+      this.request({
+          method: 'GET',
+          url,
+          params,
+          scope: this,
+          success(result, options) {
+            result.eventId = eventId;
+            this.serviceProcessCompleted(result, options);
+          },
+          failure(result, options) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
+            result.eventId = eventId;
+            this.serviceProcessFailed(result, options);
+          }
+      });
     }
-
     /**
      * @function AddressMatchService.prototype.serviceProcessCompleted
      * @param {Object} result - 服务器返回的结果对象。
      * @description 服务流程是否完成
      */
-    serviceProcessCompleted(result) {
+    serviceProcessCompleted(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }
-        super.serviceProcessCompleted(result);
+        super.serviceProcessCompleted(result, options);
     }
 
     /**
@@ -11336,8 +11409,8 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @param {Object} result - 服务器返回的结果对象。
      * @description 服务流程是否失败
      */
-    serviceProcessFailed(result) {
-        super.serviceProcessFailed(result);
+    serviceProcessFailed(result, options) {
+        super.serviceProcessFailed(result, options);
     }
 }
 
@@ -11353,7 +11426,8 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
 /**
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @classdesc 地址匹配服务类。包括正向匹配和反向匹配。
+ * @modulecategory Services
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -11452,7 +11526,7 @@ class DatasetService_DatasetService extends CommonServiceBase {
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;
-
+        this.eventCount = 0;
         if (options) {
             Util_Util.extend(this, options);
         }
@@ -11475,68 +11549,83 @@ class DatasetService_DatasetService extends CommonServiceBase {
      * @function DatasetService.prototype.getDatasetsService
      * @description 执行服务，查询数据集服务。
      */
-    getDatasetsService(params) {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources/name/${params}/datasets`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasetsService(params, callback) {
+        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params}/datasets`);
+        this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.getDatasetService
      * @description 执行服务，查询数据集信息服务。
      */
-    getDatasetService(datasourceName, datasetName) {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasetService(datasourceName, datasetName, callback) {
+        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+        this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.setDatasetService
      * @description 执行服务，更改数据集信息服务。
      */
-    setDatasetService(params) {
+    setDatasetService(params, callback) {
         if (!params) {
             return;
         }
-        var me = this;
-        var jsonParamsStr = Util_Util.toJSON(params);
-        me.request({
-            method: "PUT",
-            data: jsonParamsStr,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        const url = Util_Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
+        delete params.datasourceName;
+        this.processAsync(url, 'PUT', callback, params);
     }
 
      /**
      * @function DatasetService.prototype.deleteDatasetService
      * @description 执行服务，删除数据集信息服务。
      */
-    deleteDatasetService() {
-        var me = this;
-        me.request({
-            method: "DELETE",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    deleteDatasetService(datasourceName, datasetName, callback) {
+      const url = Util_Util.urlPathAppend(this.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
+       this.processAsync(url, 'DELETE', callback);
     }
 
+    processAsync(url, method, callback, params) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId && callback) {
+            delete result.result.eventId;
+            callback(result);
+            this.events && this.events.un(eventListeners);
+            return false;
+          }
+        },
+        processFailed: function(result) {
+          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+            callback(result);
+            this.events && this.events.un(eventListeners);
+            return false;
+          }
+        }
+      }
+      this.events.on(eventListeners);
+       var me = this;
+       let requestConfig = {
+          url,
+          method,
+          scope: me,
+          success(result, options) {
+            result.eventId = eventId;
+            me.serviceProcessCompleted(result, options);
+          },
+          failure(result, options) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
+            result.eventId = eventId;
+            me.serviceProcessFailed(result, options);
+          }
+        }
+        params && (requestConfig.data = Util_Util.toJSON(params));
+        me.request(requestConfig);
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/CreateDatasetParameters.js
@@ -11710,11 +11799,10 @@ class UpdateDatasetParameters {
 
 
 
-
 /**
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集查询。
+ * @classdesc 数据集信息服务。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -11725,6 +11813,13 @@ class DatasetService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        const me = this;
+        this._datasetService = new DatasetService_DatasetService(me.url, {
+          proxy: me.proxy,
+          withCredentials: me.withCredentials,
+          crossOrigin: me.crossOrigin,
+          headers: me.headers
+        });
         this.CLASS_NAME = "SuperMap.REST.DatasetService";
     }
 
@@ -11742,19 +11837,7 @@ class DatasetService extends CommonServiceBase {
         if (!datasourceName) {
             return;
         }
-        const me = this;
-        const datasetService = new DatasetService_DatasetService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetsService(datasourceName);
+        this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
@@ -11772,19 +11855,7 @@ class DatasetService extends CommonServiceBase {
         if (!datasourceName || !datasetName) {
             return;
         }
-        const me = this;
-        const datasetService = new DatasetService_DatasetService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.getDatasetService(datasourceName, datasetName);
+        this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -11800,35 +11871,25 @@ class DatasetService extends CommonServiceBase {
     setDataset(params, callback) {
         if (!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)) {
             return;
-        } 
+        }
         let datasetParams;
         if (params instanceof CreateDatasetParameters) {
             datasetParams = {
                 "datasetType": params.datasetType,
+                "datasourceName": params.datasourceName,
                 "datasetName": params.datasetName
             }
         } else if (params instanceof UpdateDatasetParameters) {
             datasetParams = {
                 "datasetName": params.datasetName,
+                "datasourceName": params.datasourceName,
                 "isFileCache": params.isFileCache,
                 "description": params.description,
                 "prjCoordSys": params.prjCoordSys,
                 "charset": params.charset
             }
         }
-        const me = this;
-        const url = Util_Util.urlPathAppend(me.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
-        const datasetService = new DatasetService_DatasetService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.setDatasetService(datasetParams);
+        this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -11843,19 +11904,7 @@ class DatasetService extends CommonServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteDataset(datasourceName, datasetName, callback) {
-        const me = this;
-        const url = Util_Util.urlPathAppend(me.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        const datasetService = new DatasetService_DatasetService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasetService.deleteDatasetService();
+        this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 }
 SuperMap.REST.DatasetService = DatasetService;
@@ -11871,7 +11920,7 @@ SuperMap.REST.DatasetService = DatasetService;
  * @class DatasourceService
  * @deprecatedclass SuperMap.DatasourceService
  * @category iServer Data Datasource
- * @classdesc 数据源查询服务。
+ * @classdesc 数据源查询服务类。
  * @param {string} url - 服务地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
  * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
@@ -11891,6 +11940,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
+        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.DatasourceService";
     }
 
@@ -11900,6 +11950,7 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
      * @override
      */
     destroy() {
+        this.eventCount = 0;
         super.destroy();
     }
 
@@ -11908,50 +11959,71 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
      */
-    getDatasourceService(datasourceName) {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources/name/${datasourceName}`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasourceService(datasourceName, callback) {
+        let url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
+        this.processAsync(url, "GET", callback);
     }
 
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
      */
-    getDatasourcesService() {
-        var me = this;
-        me.url = Util_Util.urlPathAppend(me.url,`datasources`);
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getDatasourcesService(callback) {
+        let url = Util_Util.urlPathAppend(this.url,`datasources`);
+        this.processAsync(url, "GET", callback);
     }
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
      */
-    setDatasourceService(params) {
+    setDatasourceService(params, callback) {
         if (!params) {
             return;
         }
-        var me = this;
-        var jsonParamsStr = Util_Util.toJSON(params);
-        me.request({
-            method: "PUT",
-            data: jsonParamsStr,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
+        this.processAsync(url, "PUT", callback, params);
+    }
+
+    processAsync(url, method, callback, params) {
+      let eventId = ++this.eventCount;
+      let eventListeners = {
+        scope: this,
+        processCompleted: function(result) {
+          if (eventId === result.result.eventId && callback) {
+            delete result.result.eventId;
+            callback(result);
+            this.events && this.events.un(eventListeners);
+            return false;
+          }
+        },
+        processFailed: function(result) {
+          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
+            callback(result);
+            this.events && this.events.un(eventListeners);
+            return false;
+          }
+        }
+      }
+      this.events.on(eventListeners);
+       var me = this;
+       let requestConfig = {
+          url,
+          method,
+          scope: me,
+          success(result, options) {
+            result.eventId = eventId;
+            this.serviceProcessCompleted(result, options);
+          },
+          failure(result, options) {
+            if (result.error) {
+              result.error.eventId = eventId;
+            }
+            result.eventId = eventId;
+            this.serviceProcessFailed(result, options);
+          }
+        }
+        params && (requestConfig.data = Util_Util.toJSON(params));
+        me.request(requestConfig);
     }
 }
 
@@ -12034,7 +12106,6 @@ class SetDatasourceParameters {
 
 
 
-
 /**
  * @class SuperMap.REST.DatasourceService
  * @category  iServer Data Datasource
@@ -12049,6 +12120,13 @@ class DatasourceService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        const me = this;
+        this._datasourceService = new DatasourceService_DatasourceService(me.url, {
+            proxy: me.proxy,
+            withCredentials: me.withCredentials,
+            crossOrigin: me.crossOrigin,
+            headers: me.headers
+        });
         this.CLASS_NAME = "SuperMap.REST.DatasourceService";
     }
 
@@ -12062,19 +12140,7 @@ class DatasourceService extends CommonServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getDatasources(callback) {
-        const me = this;
-        const datasourceService = new DatasourceService_DatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourcesService();
+        this._datasourceService.getDatasourcesService(callback);
     }
     
     /**
@@ -12091,19 +12157,7 @@ class DatasourceService extends CommonServiceBase {
         if (!datasourceName) {
             return;
         }
-        const me = this;
-        const datasourceService = new DatasourceService_DatasourceService(me.url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.getDatasourceService(datasourceName);
+        this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
    /**
@@ -12123,21 +12177,10 @@ class DatasourceService extends CommonServiceBase {
         const datasourceParams = {
             description: params.description ,
             coordUnit: params.coordUnit,
-            distanceUnit: params.distanceUnit
+            distanceUnit: params.distanceUnit,
+            datasourceName: params.datasourceName
         };
-        const me = this;
-        const url = Util_Util.urlPathAppend(me.url,`datasources/name/${params.datasourceName}`);
-        const datasourceService = new DatasourceService_DatasourceService(url, {
-            proxy: me.proxy,
-            withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            headers: me.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-        datasourceService.setDatasourceService(datasourceParams);
+        this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }
 SuperMap.REST.DatasourceService = DatasourceService;
@@ -12574,6 +12617,7 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
  * @param {string} options.datasetName - 数据集名。
  * @param {string} options.datasetOverlay - 裁剪对象数据集。
  * @param {ClipAnalystMode} [options.mode=ClipAnalystMode.CLIP] - 裁剪分析模式。
+ * @param {string} [options.geometryClip] - 裁剪几何对象。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -12813,7 +12857,7 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
  * @class BuffersAnalystJobsService
  * @deprecatedclass SuperMap.BuffersAnalystJobsService
  * @category iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析服务类
+ * @classdesc 缓冲区分析服务类。
  * @extends {ProcessingServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -13013,6 +13057,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
  * @class SuperMap.REST.ProcessingService
  * @category  iServer ProcessingService
  * @classdesc 分布式分析相关服务类。
+ * @modulecategory Services
  * @augments CommonServiceBase
  * @example
  * new SuperMap.REST.ProcessingService(url,options)

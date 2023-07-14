@@ -80,7 +80,7 @@
             inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript(libsurl + '/proj4/2.9.0/proj4.js');
+            inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');
