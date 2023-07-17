@@ -46,6 +46,7 @@ export class MapvLayer {
       getResolution: this._getResolution,
       validZoom: this._validZoom.bind(this)
     }, { id: this.id, targetElement: this.mapContainer, mapElement: this.map.getCanvas() });
+    this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
     this._bindEvent();
   }
 /**
