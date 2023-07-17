@@ -114,7 +114,7 @@ export class GraticuleLayer {
       id: this.id
     });
     this.addGraticuleLayer();
-    this.resizeEvent = this.renderer._resizeCallback;
+    this.resizeEvent = this.renderer._resizeCallback.bind(this.renderer);
     this.zoomendEvent = this.setVisibility.bind(this);
     this._bindEvent()
   }
