@@ -49,25 +49,6 @@ export class MapService extends ServiceBase {
         getMapStatusService.processAsync(callback);
     }
 
-
-    /**
-     * @function  MapService.prototype.getWKT
-     * @description 获取WKT。
-     * @param {RequestCallback} callback - 回调函数。
-     */
-    getWKT(callback) {
-      var me = this;
-      var getMapStatusService = new CommonMapService(`${me.url}/prjCoordSys.wkt`, {
-          proxy: me.options.proxy,
-          withCredentials: me.options.withCredentials,
-          withoutFormatSuffix: true,
-          crossOrigin: me.options.crossOrigin,
-          headers: me.options.headers,
-          projection: me.options.projection
-      });
-      getMapStatusService.processAsync(callback);
-    }
-
     /**
      * @function MapService.prototype.getTilesets
      * @description 切片列表信息查询服务。

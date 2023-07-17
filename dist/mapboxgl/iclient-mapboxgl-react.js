@@ -1,9 +1,9 @@
 /*!
  * 
  *       @supermap/react-iclient.(https://iclient.supermap.io)
- *       Copyright© 2000 - 2022 SuperMap Software Co.Ltd
+ *       Copyright© 2000 - 2023 SuperMap Software Co.Ltd
  *       license: Apache-2.0
- *       version: v11.1.0-beta
+ *       version: v11.1.0
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -14827,7 +14827,7 @@ _antd.message.error('获取图层信息失败！');});};_this.state={spinning:tr
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _geometryUtil=__webpack_require__(3595);var _util=__webpack_require__(9752);__webpack_require__(2395);__webpack_require__(8399);__webpack_require__(8553);var convert=_interopRequireWildcard(__webpack_require__(7888));var _canvg=_interopRequireDefault(__webpack_require__(5973));var _echarts=_interopRequireDefault(__webpack_require__(550));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));var _ProvinceCenter=_interopRequireDefault(__webpack_require__(5385));var _MunicipalCenter=_interopRequireDefault(__webpack_require__(2158));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(3465));/* eslint-disable */ /* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+var _interopRequireWildcard=(__webpack_require__(5263)["default"]);var _interopRequireDefault=(__webpack_require__(4836)["default"]);Object.defineProperty(exports, "__esModule", ({value:true}));exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(__webpack_require__(5671));var _createClass2=_interopRequireDefault(__webpack_require__(3144));var _inherits2=_interopRequireDefault(__webpack_require__(9340));var _createSuper2=_interopRequireDefault(__webpack_require__(8557));var _mapboxGlEnhance=_interopRequireDefault(__webpack_require__(375));var _SourceListModel=_interopRequireDefault(__webpack_require__(8383));var _geometryUtil=__webpack_require__(3595);var _util=__webpack_require__(9752);__webpack_require__(2395);__webpack_require__(8399);__webpack_require__(8553);var convert=_interopRequireWildcard(__webpack_require__(7888));var _canvg=_interopRequireDefault(__webpack_require__(5973));var _echarts=_interopRequireDefault(__webpack_require__(550));var _EchartsLayer=_interopRequireDefault(__webpack_require__(3094));var _ProvinceCenter=_interopRequireDefault(__webpack_require__(5385));var _MunicipalCenter=_interopRequireDefault(__webpack_require__(2158));var _lodash=_interopRequireDefault(__webpack_require__(4461));var _lodash2=_interopRequireDefault(__webpack_require__(3465));/* eslint-disable */ /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html. */ // eslint-disable-line import/extensions
 // eslint-disable-line import/extensions
@@ -29931,7 +29931,7 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _arrayLikeToArray; }
+/* harmony export */   Z: function() { return /* binding */ _arrayLikeToArray; }
 /* harmony export */ });
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
@@ -30321,7 +30321,7 @@ function _toConsumableArray(arr) {
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "Z": function() { return /* binding */ _toPropertyKey; }
+  Z: function() { return /* binding */ _toPropertyKey; }
 });
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
@@ -30353,7 +30353,7 @@ function _toPropertyKey(arg) {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _typeof; }
+/* harmony export */   Z: function() { return /* binding */ _typeof; }
 /* harmony export */ });
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -30372,7 +30372,7 @@ function _typeof(obj) {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _unsupportedIterableToArray; }
+/* harmony export */   Z: function() { return /* binding */ _unsupportedIterableToArray; }
 /* harmony export */ });
 /* harmony import */ var _arrayLikeToArray_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(907);
 

@@ -1,6 +1,5 @@
 # SuperMap iClient JavaScript
 
-[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.supermap%3Aiclient-javascript9&metric=coverage)](https://sonarcloud.io/dashboard?id=com.supermap%3Aiclient-javascript9)
 [![npm version](https://img.shields.io/npm/v/@supermap/iclient-common.svg)](https://www.npmjs.com/~supermap)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript?ref=badge_shield)
 
