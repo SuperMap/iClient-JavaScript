@@ -651,6 +651,7 @@ window.examplesResources = {
         "title_componentsEcharts_Vue": 'Echarts Layer component(Vue)',
         "title_componentsRaster_Vue": 'Raster Layer component(Vue)',
         "title_componentsGeoJSON_Vue": 'GeoJSON Layer component(Vue)',
+        "title_componentsKnowledgeGraphMap_Vue": 'Knowledge GraphMap component(Vue)',
         "title_componentsMapV_Vue": 'MapV Layer component(Vue)',
         "title_componentsDeckGL_Vue": 'DeckGL Layer component(Vue)',
         "title_componentsVectorTile_Vue": 'Vector Tile Layer component(Vue)',
