@@ -42,8 +42,8 @@ import MapExtendSymbol from './MapExtendSymbol';
 * |id				    |string		        |符号ID              |||
 * |symbol			    |object	            |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |                    |                   |参数名称			 |类型			     |描述  |
-* |                    |                   |paint				|object		        |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |                    |                   |layout			    |object	            |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |                    |                   |paint				|object		        |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |                    |                   |layout			    |object	            |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
 * 
 * **Example**
 * ```
@@ -114,8 +114,8 @@ import MapExtendSymbol from './MapExtendSymbol';
 * id			      |string		    |已经添加的符号ID|||
 * |symbol			  |object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |             |             |参数名称			 |类型			     |描述  |
-* |             |             |paint				|object		      |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |             |             |layout			  |object	        |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |             |             |paint				|object		      |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |             |             |layout			  |object	        |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
 * 
 * **Example**
 * ```
@@ -148,7 +148,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 参数名称			   |类型			  |描述  
 * :----				    |:---		      |:---	
 * id			        |string		    |符号ID
-* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* index			      |number、null	|符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
 * value			      |any		      |属性值
 * 
@@ -165,8 +165,8 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 参数名称			   |类型			  |描述  
 * :----				    |:---		      |:---	
 * id			        |string		    |符号ID
-* index			      |number		    |符号数组的index， 符号不是数组的设置为null
-* name			      |string		    |属性名称
+* index			      |number、null	|符号数组的index， 符号不是数组的设置为null
+* name			      |string		    |可选，属性名称
 * 
 * **Returns**
 * 类型			  |描述  
