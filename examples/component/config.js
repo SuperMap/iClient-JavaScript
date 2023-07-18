@@ -354,6 +354,13 @@ var exampleConfig = {
             version: '10.0.0',
             thumbnail: 'components_geojson_vue.png',
             fileName: 'components_geojson_vue'
+          },
+          {
+            name: '知识图谱',
+            name_en: 'Knowledge GraphMap',
+            version: '11.1.0',
+            thumbnail: 'knowledgeGraphMap.png',
+            fileName: 'components_knowledgeGraphMap_vue'
           }
         ]
       },

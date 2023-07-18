@@ -600,6 +600,7 @@ window.examplesResources = {
         "title_componentsEcharts_Vue": 'Echarts 图层组件',
         "title_componentsRaster_Vue": '栅格图层组件',
         "title_componentsGeoJSON_Vue": 'GeoJSON 图层组件',
+        "title_componentsKnowledgeGraphMap_Vue": '知识图谱组件',
         "title_componentsMapV_Vue": 'MapV 图层组件',
         "title_componentsDeckGL_Vue": 'DeckGL 图层组件',
         "title_componentsVectorTile_Vue": '矢量瓦片图层组件',

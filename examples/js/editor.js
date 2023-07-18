@@ -95,17 +95,20 @@ function loadExampleHtml() {
     if (!mapUrl) {
         return;
     }
+    var isError = false;
     var html = $.ajax({
         url: mapUrl,
         async: false,
         error: function (error) {
             alert(resources.editor.envTips);
-            html = "";
+            isError = true;
         }
     }).responseText;
-    if (html && html != "") {
+    if (html && html != "" && !isError) {
         $('#editor').val(html);
         loadPreview(html);
+    } else {
+      window.location.href = window.location.origin + '/web/404.html';
     }
 }
 
