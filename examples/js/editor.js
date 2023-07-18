@@ -96,19 +96,27 @@ function loadExampleHtml() {
         return;
     }
     var isError = false;
-    var html = $.ajax({
+    var notFoundPath = '/web/404.html';
+    var response = $.ajax({
         url: mapUrl,
         async: false,
         error: function (error) {
             alert(resources.editor.envTips);
             isError = true;
         }
-    }).responseText;
+    });
+    if (response && response.status === 302) {
+      var location = response.getResponseHeader('Location');
+      if (location && location.indexOf(notFoundPath) !== -1) {
+        isError = true;
+      }
+    }
+    var html = response.responseText;
     if (html && html != "" && !isError) {
         $('#editor').val(html);
         loadPreview(html);
     } else {
-      window.location.href = window.location.origin + '/web/404.html';
+      window.location.href = window.location.origin + notFoundPath;
     }
 }
 
