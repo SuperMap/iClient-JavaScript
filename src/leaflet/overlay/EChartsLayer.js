@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import echarts from "echarts";
+import * as echarts from "echarts";
 import Attributions from '../core/Attributions'
 
 /**
@@ -329,7 +329,7 @@ LeafletMapCoordSys.create = function (ecModel) {
         leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || _getMapOffset(leafletMap));
     });
     ecModel.eachSeries(function (seriesModel) {
-        if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
+        if (seriesModel.get('coordinateSystem') === 'leaflet') {
             if (!coordSys) {
                 coordSys = new LeafletMapCoordSys(leafletMap);
             }
