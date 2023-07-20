@@ -49974,6 +49974,7 @@ class MapvLayer {
       getResolution: this._getResolution,
       validZoom: this._validZoom.bind(this)
     }, { id: this.id, targetElement: this.mapContainer, mapElement: this.map.getCanvas() });
+    this.mapContainer.style.perspective = this.map.transform.cameraToCenterDistance + 'px';
     this._bindEvent();
   }
 /**
@@ -54583,7 +54584,7 @@ class GraticuleLayer {
       id: this.id
     });
     this.addGraticuleLayer();
-    this.resizeEvent = this.renderer._resizeCallback;
+    this.resizeEvent = this.renderer._resizeCallback.bind(this.renderer);
     this.zoomendEvent = this.setVisibility.bind(this);
     this._bindEvent()
   }
