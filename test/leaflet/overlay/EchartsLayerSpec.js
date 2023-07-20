@@ -1,4 +1,4 @@
-import { echartsLayer } from '../../../src/leaflet/overlay/EChartsLayer';
+import { echartsLayer, LeafletMapCoordSys } from '../../../src/leaflet/overlay/EChartsLayer';
 import { tiledMapLayer } from '../../../src/leaflet/mapping/TiledMapLayer';
 
 var url = GlobeParameter.imageURL;
@@ -367,6 +367,30 @@ describe('leaflet_EChartsLayer', () => {
       expect(layer.style.left).toBe('0px');
       expect(layer.style.top).toBe('0px');
       expect(panel.style.transform).toBe('translate3d(0px, 0px, 0px)');
+      done();
+    });
+
+    it('LeafletMapCoordSys create coordinateSystem', (done)=>{
+      const mockECModel = {
+        scheduler: {ecInstance: { leafletMap: {}}},
+        eachComponent: () => {},
+        eachSeries: (cb) => {
+          var obj = { get: () => {} };
+          cb(obj);
+          expect(obj.coordinateSystem).toBeUndefined();
+        }
+      }
+      const mockECModel1 = {
+        scheduler: { ecInstance: { leafletMap: { containerPointToLayerPoint: () => ({ x:0, y:0 }) } } },
+        eachComponent: () => {},
+        eachSeries: (cb) => {
+          var obj = { get: () => { return 'leaflet'} };
+          cb(obj);
+          expect(obj.coordinateSystem).not.toBeUndefined();
+        }
+      }
+      LeafletMapCoordSys.create(mockECModel)
+      LeafletMapCoordSys.create(mockECModel1)
       done();
     });
 });

@@ -85,11 +85,9 @@
 
         var echartslayer = new EchartsLayer(map);
         echartslayer.chart.setOption(option = {
-
             GLMap: {
                 roam: true
             },
-            coordinateSystem: 'GLMap',
             title: {
                 text: resources.text_weiboChina,
                 subtext: 'From ThinkGIS',
@@ -107,25 +105,6 @@
                 data: [resources.text_strong, resources.text_middle, resources.text_weak],
                 textStyle: {
                     color: '#ccc'
-                }
-            },
-            geo: {
-                name: resources.text_strong,
-                type: 'scatter',
-                map: 'GLMap',
-                label: {
-                    emphasis: {
-                        show: false
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        areaColor: '#323c48',
-                        borderColor: '#111'
-                    },
-                    emphasis: {
-                        areaColor: '#2a333d'
-                    }
                 }
             },
             series: [{

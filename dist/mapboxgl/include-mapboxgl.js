@@ -84,8 +84,7 @@
       inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
     }
     if (inArray(includes, 'echarts')) {
-      inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
-      inputScript(libsurl + '/echarts-liquidfill/2.0.6/echarts-liquidfill.min.js');
+      inputScript(libsurl + '/echarts/5.4.3/echarts.min.js');
       inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'echarts-vue')) {
@@ -159,7 +158,7 @@
       inputScript(libsurl + '/three/0.129.0/examples/js/loaders/GLTFLoader.js');
     }
     if (inArray(includes, 'echarts-gl')) {
-      inputScript(libsurl + '/echarts-gl/1.1.2-fix/echarts-gl.min.js');
+      inputScript(libsurl + '/echarts-gl/2.0.8/echarts-gl.min.js');
     }
     if (inArray(includes, 'mapbox-print-pdf')) {
       inputScript(libsurl + '/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
