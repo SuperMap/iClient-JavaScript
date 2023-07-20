@@ -36,7 +36,7 @@ class SymbolHandler {
         if (typeof layer.symbol === 'string') {
             const id = layer.symbol;
             if (id) {
-                const symbol = this.symbolManager.getSymbol(id);
+                const symbol = this.getSymbol(id);
                 if (!symbol) {
                     return this.map.fire('error', {
                         error: new Error(`Symbol "${id}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
@@ -85,6 +85,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(2);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -98,8 +99,16 @@ class SymbolHandler {
                         ]
                     ], symbol: r
                 });
+                defaultFilter.push([
+                    "!=",
+                    layer.symbol[1][1],
+                    expression[index - 1]
+                ]);
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
@@ -116,6 +125,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(1);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -125,8 +135,12 @@ class SymbolHandler {
                         expression[index - 1]
                     ], symbol: r
                 });
+                defaultFilter.push(['!', expression[index - 1]])
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
@@ -153,7 +167,7 @@ class SymbolHandler {
             });
         }
         layers.forEach((l) => {
-            l.id = Util.createUniqueID(`${layer.id}_`);
+            l.id = Util.createUniqueID(`${layer.id}_compositeLayer_`);
             this.compositeSymbolRender.addLayerId(layer.id, l.id);
             this.addLayer(l, before);
         });
@@ -190,7 +204,7 @@ class SymbolHandler {
      * @param {object} symbol
      */
     addSymbol(id, symbol) {
-        if (this.symbolManager.getSymbol(id)) {
+        if (this.getSymbol(id)) {
             return this.map.fire('error', {
                 error: new Error('An symbol with this name already exists.')
             });
@@ -218,7 +232,7 @@ class SymbolHandler {
      * @param {string} layerId
      * @return {string | array} symbol
      */
-    getSymbol(layerId) {
+    getLayerSymbol(layerId) {
         return this._layerSymbols[layerId];
     }
 
@@ -242,7 +256,7 @@ class SymbolHandler {
      * 通过symbolId获取symbol内容
      * @param {string} symbolId
      */
-    getSymbolInfo(symbolId) {
+    getSymbol(symbolId) {
         return this.symbolManager.getSymbol(symbolId);
     }
 
@@ -280,7 +294,7 @@ class SymbolHandler {
      */
     getLayer(layerId) {
         const layer = this.map.getLayerBySymbolBak(layerId);
-        const symbol = this.getSymbol(layerId);
+        const symbol = this.getLayerSymbol(layerId);
         if (layer) {
             return symbol ? { ...layer, symbol } : layer;
         } else {
@@ -316,9 +330,9 @@ class SymbolHandler {
             style.layers = style.layers.reduce((pre, layer) => {
                 const compositeId = this.getLayerId(layer.id);
                 if (compositeId) {
-                    !pre.find(l => l.id === compositeId) && pre.push({ ...layer, symbol: this.getSymbol(compositeId), id: compositeId })
-                } else if (this.getSymbol(layer.id)) {
-                    pre.push({ ...layer, symbol: this.getSymbol(layer.id) })
+                    !pre.find(l => l.id === compositeId) && pre.push({ ...layer, symbol: this.getLayerSymbol(compositeId), id: compositeId })
+                } else if (this.getLayerSymbol(layer.id)) {
+                    pre.push({ ...layer, symbol: this.getLayerSymbol(layer.id) })
                 } else {
                     pre.push(layer);
                 }
@@ -361,12 +375,12 @@ class SymbolHandler {
      * @param {object} options
      */
     setFilter(layerId, filter, options) {
-        const symbol = this.getSymbol(layerId);
+        const symbol = this.getLayerSymbol(layerId);
         if (isMapboxExpression(symbol)) {
             // 如果 symbol 是数据驱动，filter需要重新计算
             const realLayerId = this.getFirstLayerId(layerId);
             this.map.style.setFilter(realLayerId, filter, options);
-            const symbol = this.getSymbol(layerId);
+            const symbol = this.getLayerSymbol(layerId);
             this.setSymbol(layerId, symbol);
             return;
         }
@@ -479,7 +493,7 @@ class SymbolHandler {
      */
     updateSymbol(symbolId, symbol) {
         // symbol不存在
-        if (!this.symbolManager.getSymbol(symbolId)) {
+        if (!this.getSymbol(symbolId)) {
             return this.map.fire('error', {
                 error: new Error(`Symbol "${symbolId}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
             });
@@ -503,7 +517,7 @@ class SymbolHandler {
      * @param {any} value
      */
     setSymbolProperty(symbolId, symbolIndex, name, value) {
-        const symbol = this.symbolManager.getSymbol(symbolId);
+        const symbol = this.getSymbol(symbolId);
         // symbol不存在
         if (!symbol) {
             return this.map.fire('error', {
@@ -547,7 +561,7 @@ class SymbolHandler {
      * @returns {any}
      */
     getSymbolProperty(symbolId, symbolIndex, name) {
-        const symbol = this.symbolManager.getSymbol(symbolId);
+        const symbol = this.getSymbol(symbolId);
         // symbol不存在
         if (!symbol) {
             this.map.fire('error', {

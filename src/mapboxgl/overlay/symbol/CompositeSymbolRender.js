@@ -23,7 +23,7 @@ class CompositeSymbolRender {
      */
     addLayer(layer, symbol, before) {
         symbol.forEach((style) => {
-            const id = Util.createUniqueID(`${layer.id}_`);
+            const id = Util.createUniqueID(`${layer.id}_compositeLayer_`);
             this.singleSymbol.addLayer({ ...layer, id }, style, before);
             this.addLayerId(layer.id, id);
         })

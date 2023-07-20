@@ -83,7 +83,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
   //   spyOn(handler, 'setSymbolTolayer')
   //   spyOn(handler.singleSymbolRender, 'addLayer')
   //   handler.addLayer(layer);
-  //   const result = handler.getSymbol("Landuse_R@Jingjin#line");
+  //   const result = handler.getLayerSymbol("Landuse_R@Jingjin#line");
   //   expect(result).toEqual("line-962464");
   // });
   it('addLayer-symbolId-1', () => {
@@ -116,7 +116,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     spyOn(handler.symbolManager, 'getSymbol').and.returnValue(null);
     spyOn(handler.compositeSymbolRender, 'addLayerId');
     handler.addLayer(layer);
-    const result = handler.getSymbol("Landuse_R@Jingjin#line");
+    const result = handler.getLayerSymbol("Landuse_R@Jingjin#line");
     expect(result).toEqual(expression);
     expect(handler.compositeSymbolRender.addLayerId).toHaveBeenCalled();
   });
@@ -314,7 +314,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
         id: 'testRemoveLayerId'
     });
     const symbol = {'paint': {'line-color': '#0fffff'}};
-    spyOn(handler, 'getSymbol').and.returnValue(symbol);
+    spyOn(handler, 'getLayerSymbol').and.returnValue(symbol);
     const result = handler.getLayer('testRemoveLayerId');
     expect(result.symbol).toEqual(symbol);
   });
@@ -323,7 +323,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     spyOn(handler.map, 'getLayerBySymbolBak').and.returnValue({
         id: 'testRemoveLayerId'
     });
-    spyOn(handler, 'getSymbol').and.returnValue(null);
+    spyOn(handler, 'getLayerSymbol').and.returnValue(null);
     const result = handler.getLayer('testRemoveLayerId');
     expect(result.symbol).toBeUndefined();
   });
@@ -338,7 +338,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
             "line-color": "#000000"
         }
     };
-    spyOn(handler, 'getSymbol').and.returnValue(symbol);
+    spyOn(handler, 'getLayerSymbol').and.returnValue(symbol);
     spyOn(handler, 'getLayerIds').and.returnValue(['child1', 'child2']);
     const result = handler.getLayer('testRemoveLayerId');
     expect(result.id).toBe('testRemoveLayerId');
@@ -373,7 +373,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     });
     spyOn(handler, 'hasSymbol').and.returnValue(true);
     spyOn(handler, 'getLayerId').and.returnValue(["child1", "child2"]);
-    spyOn(handler, 'getSymbol').and.returnValue({
+    spyOn(handler, 'getLayerSymbol').and.returnValue({
         paint: {
             'line-color': '#ffffff'
         }
@@ -396,7 +396,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     });
     spyOn(handler, 'hasSymbol').and.returnValue(true);
     spyOn(handler, 'getLayerId').and.returnValue(undefined);
-    spyOn(handler, 'getSymbol').and.returnValue({
+    spyOn(handler, 'getLayerSymbol').and.returnValue({
         paint: {
             'line-color': '#ffffff'
         }
@@ -419,7 +419,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     });
     spyOn(handler, 'hasSymbol').and.returnValue(true);
     spyOn(handler, 'getLayerId').and.returnValue(undefined);
-    spyOn(handler, 'getSymbol').and.returnValue(undefined);
+    spyOn(handler, 'getLayerSymbol').and.returnValue(undefined);
     const result = handler.getStyle();
     expect(result.layers[0].symbol).toBeUndefined();
   });
