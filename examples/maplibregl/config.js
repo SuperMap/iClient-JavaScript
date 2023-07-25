@@ -881,6 +881,65 @@ var exampleConfig = {
             fileName: 'fgb_bbox_load'
           }
         ]
+      },
+      WebSymbol: {
+        name: 'Web符号',
+        name_en: 'WebSymbol',
+        version: '11.1.0',
+        content: [{
+            name: 'Web符号库',
+            name_en: 'WebSymbol Gallery',
+            version: '11.1.0',
+            showCode: false,
+            thumbnail: 'websymbol_gallery.png',
+            fileName: 'websymbol_gallery'
+          }, {
+            name: 'Web符号编辑器',
+            name_en: 'WebSymbol Editor',
+            version: '11.1.0',
+            showCode: false,
+            thumbnail: 'websymbol_editor.png',
+            fileName: 'websymbol_editor'
+          }, {
+            name: '长江三角洲',
+            name_en: 'Yangtze River Delta',
+            version: '11.1.0',
+            thumbnail: 'websymbol_YangtzeRiverdelta.png',
+            fileName: 'websymbol_YangtzeRiverdelta'
+          },{
+            name: '土地利用',
+            name_en: 'Land Use',
+            version: '11.1.0',
+            thumbnail: 'websymbol_landuse.png',
+            fileName: 'websymbol_landuse'
+          }
+          ,{
+            name: '数字线划地图',
+            name_en: 'DLG_I49',
+            version: '11.1.0',
+            thumbnail: 'websymbol_DLG_I49.png',
+            fileName: 'websymbol_DLG_I49'
+          }
+          ,{
+            name: '新疆土地利用',
+            name_en: 'Land Use of Xinjiang',
+            version: '11.1.0',
+            thumbnail: 'websymbol_landuseOfXinjiang.png',
+            fileName: 'websymbol_landuseOfXinjiang'
+          },{
+            name: '自定义Web符号',
+            name_en: 'Custom WebSymbol',
+            version: '11.1.0',
+            thumbnail: 'websymbol_customWebSymbol.png',
+            fileName: 'websymbol_customWebSymbol'
+          },{
+            name: '2019年中国各省GDP',
+            name_en: "2019 China's GDP by Province",
+            version: '11.1.0',
+            thumbnail: 'websymbol_2019ChinaGDP.png',
+            fileName: 'websymbol_2019ChinaGDP'
+          }
+        ]
       }
     }
   },

@@ -1,0 +1,281 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title data-i18n="resources.title_websymbol_YangtzeRiverdelta"></title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  <script>
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var serverUrl =
+    host + "/iserver/services/map-YangtzeRiverDelta/restjsr/v1/vectortile/maps/长江三角洲发展结构图";
+    var map = new maplibregl.Map({
+      container: "map",
+      style: {
+        "sources": {
+          "长江三角洲发展结构图": {
+            "tiles": [serverUrl + "/tiles/{z}/{x}/{y}.mvt"],
+            "type": "vector"
+          }
+        },
+        "name": "长江三角洲发展结构图",
+        "layers": [],
+        "glyphs": serverUrl + "/fonts/{fontstack}/{range}",
+        "version": 8
+      },
+      zoom: 6.2,
+      center: [
+        119.39127282760124,
+        31.426028827046886
+      ]
+    });
+
+    var loadSymbol = function (symbolId) {
+      return new Promise(function (resolve) {
+        map.loadSymbol(symbolId, function (error, symbol) {
+          if(error){
+            widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
+            resolve();
+          }
+          map.addSymbol(symbolId, symbol);
+          resolve();
+        });
+      });
+    };
+
+    // 批量加载符号
+    var loadSymbols = function () {
+      var symbols = [
+        "polygon-955463", //Frame
+        "polygon-955464", //Province_R
+        "polygon-955514", //SuHuZhe_R
+        "polygon-955441", //SuHuZheInsideBuffer
+        "polygon-955383", //SuHuZheBuffer2
+        "polygon-955453", //SuHuZheBuffer1
+        "line-962558", //直线
+        "line-964890", //省级行政区界线
+        "line-962614", //海岸线
+        "line-962475", //地级行政区界线
+        "line-964890", //省级行政区界线
+        "line-964890" //省级行政区界线
+      ];
+      var loadSymbolPromises = symbols.map(function (symbolId) {
+        return loadSymbol(symbolId);
+      });
+      return Promise.all(loadSymbolPromises);
+    };
+
+    var createPolygonLayer = function (name, symbolId) {
+      map.addLayer({
+        "id": name + "@YangtzeRiverDelta(0_24)",
+        "source": "长江三角洲发展结构图",
+        "source-layer": name + "@YangtzeRiverDelta",
+        "type": "fill",
+        "symbol": symbolId
+      });
+    };
+
+    var createLineLayer = function (name, symbolId) {
+      map.addLayer({
+        "id": name + "Line@YangtzeRiverDelta(0_24)",
+        "source": "长江三角洲发展结构图",
+        "source-layer": name + "@YangtzeRiverDelta",
+        "type": "line",
+        "symbol": symbolId
+      });
+    };
+
+    // 三角洲发展结构图
+    var createDevelopLayer = function () {
+      map.loadSymbol("line-964890", function (error, newSymbol) {
+        if(error){
+          widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
+          return;
+        }
+        Object.assign(newSymbol, {
+          paint: {
+            "line-width": 8,
+            "line-dasharray": [2, 0.5]
+          },
+          layout: {
+            "line-cap": "butt"
+          }
+        });
+        var symbolId = "line-custom-964890";
+        map.addSymbol(symbolId, newSymbol);
+        map.addLayer({
+          "id": "line",
+          "source": "sanjiaozhou",
+          "type": "line",
+          "paint": {
+            "line-color": [
+              "match", ["get", "title"],
+              "nanjing", "rgba( 221, 88, 117, 255)",
+              "hangzhou", "rgba( 221, 88, 117, 255)",
+              "ningbo", "rgba( 221, 88, 117, 255)",
+              "hufa", "rgba( 75, 109, 199, 255)",
+              "yanjiang", "rgba( 75, 109, 199, 255)",
+              "hangyong", "rgba( 75, 109, 199, 255)",
+              "shanghai", "rgba( 197, 39, 72, 255)",
+              "quyu", "rgba( 197, 39, 72, 255)",
+              "yanhai", "rgba( 220, 186, 63, 255)",
+              "sujiahang", "rgba( 226, 205, 129, 255)",
+              "#000"
+            ]
+          },
+          "symbol": symbolId
+        });
+      });
+    };
+
+    // 省会城市名称
+    var createTextLayer = function () {
+      map.addLayer({
+        "id": "ProvinceCapital_P@YangtzeRiverDelta#1(0_24)",
+        "type": "symbol",
+        "source": "长江三角洲发展结构图",
+        "source-layer": "ProvinceCapital_P@YangtzeRiverDelta",
+        "layout": {
+          "text-field": "{Name}",
+          "text-size": 12,
+          "text-allow-overlap": true
+        },
+        "paint": {
+          "text-color": "#000",
+          "text-translate": [
+            6.89,
+            0
+          ]
+        }
+      });
+      map.addLayer({
+        "id": "City_P@YangtzeRiverDelta#1",
+        "type": "symbol",
+        "source": "长江三角洲发展结构图",
+        "source-layer": "City_P@YangtzeRiverDelta",
+        "layout": {
+          "text-field": "{Name}",
+          "text-size": 12,
+          "text-allow-overlap": true
+        },
+        "paint": {
+          "text-color": "#000",
+          "text-translate": [
+            6.89,
+            0
+          ]
+        }
+      });
+      map.addLayer({
+        "id": "symbol",
+        "type": "symbol",
+        "source": "sanjiaozhou",
+        "layout": {
+          "text-field": "{description}",
+          "text-size": 18,
+          "text-anchor": [
+            "match",
+            [
+              "get",
+              "title"
+            ],
+            "yanjiang",
+            "bottom",
+            "yanhai",
+            "bottom",
+            "top"
+          ],
+          "text-allow-overlap": false,
+          "symbol-placement": "line"
+        },
+        "paint": {
+          "text-color": [
+            "match",
+            [
+              "get",
+              "title"
+            ],
+            "nanjing",
+            "rgba( 221, 88, 117, 255)",
+            "hangzhou",
+            "rgba( 221, 88, 117, 255)",
+            "ningbo",
+            "rgba( 221, 88, 117, 255)",
+            "hufa",
+            "rgba( 75, 109, 199, 255)",
+            "yanjiang",
+            "rgba( 75, 109, 199, 255)",
+            "hangyong",
+            "rgba( 75, 109, 199, 255)",
+            "shanghai",
+            "rgba( 197, 39, 72, 255)",
+            "quyu",
+            "rgba( 197, 39, 72, 255)",
+            "yanhai",
+            "rgba( 220, 186, 63, 255)",
+            "sujiahang",
+            "rgba( 226, 205, 129, 255)",
+            "#000"
+          ]
+        }
+      });
+    };
+
+    map.on("load", function () {
+      // 配置基础路径
+      new maplibregl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
+      var uploadedDataURL = "../data/yangtze-river-delta.json";
+      $.get(uploadedDataURL, function (data) {
+        map.addSource("sanjiaozhou", {
+          type: "geojson",
+          data: data,
+        });
+        loadSymbols().then(function () {
+          createPolygonLayer("Frame", "polygon-955463");
+          createPolygonLayer("Province_R", "polygon-955464");
+          createPolygonLayer("SuHuZhe_R", "polygon-955514");
+          createPolygonLayer("Lake_R", "polygon-955463");
+          createPolygonLayer("River_R", "polygon-955463");
+          createPolygonLayer("MainRiver_R", "polygon-955463");
+          createPolygonLayer("SuHuZheInsideBuffer", "polygon-955441");
+          createPolygonLayer("SuHuZheBuffer2", "polygon-955383");
+          createPolygonLayer("SuHuZheBuffer1", "polygon-955453");
+          createLineLayer("Frame", "line-962558");
+          createLineLayer("Province_L", "line-964890");
+          createLineLayer("Coast_L", "line-962614");
+          createLineLayer("City_L", "line-962475");
+          createLineLayer("SuHuZheInside_L", "line-964890");
+          createLineLayer("SuHuZhe_L", "line-964890");
+          createTextLayer();
+          createDevelopLayer();
+        });
+      });
+    });
+
+  </script>
+</body>
+
+</html>

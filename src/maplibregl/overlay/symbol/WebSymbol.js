@@ -1,27 +1,27 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from "mapbox-gl";
+import maplibregl from 'maplibre-gl';
 import MapExtendSymbol from './MapExtendSymbol';
 /**
 * @class WebSymbol
-* @classdesc SuperMap iClient for MapboxGL 支持 Web 符号库，扩展了 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API。
+* @classdesc SuperMap iClient for MaplibreGL 支持 Web 符号库，扩展了 [MaplibreGL](https://maplibre.org/maplibre-gl-js/docs/API/classes/maplibregl.Map/) 的 API。
 * @category Visualization WebSymbol
 * @description 
 * 
 * ## 初始化
 * 使用Web符号资源时, 通过接口指定符号资源路径。
 * ```
-* new mapboxgl.supermap.WebSymbol().init({basePath: "./resources/symbols"});
+* new maplibregl.supermap.WebSymbol().init({basePath: "./resources/symbols"});
 * ```
 *
 * ## 新增 API
-* ## mapboxgl.Map.prototype.loadSymbol
-* 通过[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)加载Web符号， 用于Map#addSymbol。
+* ## maplibregl.Map.prototype.loadSymbol
+* 通过[Web符号ID](../../../../../examples/maplibregl/websymbol_gallery.html)加载Web符号， 用于Map#addSymbol。
 * 
 * 参数名称			     |类型			 |描述  
 * :----				|:---		    |:---	
-* id				    |string		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
+* id				    |string		    |[Web符号ID](../../../../../examples/maplibregl/websymbol_gallery.html)
 * callback			    |function		|在符号加载完成后调用，返回符号信息；如果有错误，则返回错误参数。
 * 
 * **Example**
@@ -34,16 +34,16 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.addSymbol
-* 添加一个符号。该符号可以显示在地图上。Mapbox layers 的 symbol属性可以使用该符号ID。
+* ## maplibregl.Map.prototype.addSymbol
+* 添加一个符号。该符号可以显示在地图上。Maplibre layers 的 symbol属性可以使用该符号ID。
 * 
 * |参数名称			     |类型			     |描述                | ||
 * |----				|---		        |---			    |---|---|
 * |id				    |string		        |符号ID              |||
-* |symbol			    |object	            |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
+* |symbol			    |object	            |由Maplibre Layers中的[paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)、[layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |                    |                   |参数名称			 |类型			     |描述  |
-* |                    |                   |paint				|object		        |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |                    |                   |layout			    |object	            |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |                    |                   |paint				|object		        |可选，Maplibre Layers [paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)|
+* |                    |                   |layout			    |object	            |可选，Maplibre Layers [layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）|
 * 
 * **Example**
 * ```
@@ -51,7 +51,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.setSymbol
+* ## maplibregl.Map.prototype.setSymbol
 * 给指定图层设置符号。
 * 
 * 参数名称			     |类型			 |描述
@@ -74,7 +74,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.hasSymbol
+* ## maplibregl.Map.prototype.hasSymbol
 * 检查是否存在指定 ID 的符号。
 * 
 * 参数名称			     |类型			 |描述  
@@ -93,7 +93,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.removeSymbol
+* ## maplibregl.Map.prototype.removeSymbol
 * 删除指定 ID 的符号。
 * 
 * 参数名称			     |类型			 |描述  
@@ -106,16 +106,16 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.updateSymbol
+* ## maplibregl.Map.prototype.updateSymbol
 * 更新指定 ID 的符号。
 * 
 * |参数名称			     |类型			     |描述                | ||
 * |----				|---		        |---			    |---|---|
 * id			      |string		    |已经添加的符号ID|||
-* |symbol			  |object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
+* |symbol			  |object	      |由Maplibre Layers中的[paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)、[layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |             |             |参数名称			 |类型			     |描述  |
-* |             |             |paint				|object		      |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |             |             |layout			  |object	        |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |             |             |paint				|object		      |可选，Maplibre Layers [paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)|
+* |             |             |layout			  |object	        |可选，Maplibre Layers [layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）|
 * 
 * **Example**
 * ```
@@ -123,7 +123,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.getSymbol
+* ## maplibregl.Map.prototype.getSymbol
 * 获取指定 ID 的符号信息。
 * 
 * 参数名称			     |类型			 |描述  
@@ -133,7 +133,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * **Returns**
 * 类型			   |描述  
 * :---		     |:---	
-* object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象
+* object	      |由Maplibre Layers中的[paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)、[layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象
 * 
 * 
 * **Example**
@@ -142,7 +142,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.setSymbolProperty
+* ## maplibregl.Map.prototype.setSymbolProperty
 * 设置指定ID符号的属性值。
 * 
 * 参数名称			   |类型			  |描述  
@@ -159,7 +159,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## mapboxgl.Map.prototype.getSymbolProperty
+* ## maplibregl.Map.prototype.getSymbolProperty
 * 获取指定ID符号的属性值。
 * 
 * 参数名称			   |类型			  |描述  
@@ -180,8 +180,8 @@ import MapExtendSymbol from './MapExtendSymbol';
 * ```
 * 
 * 
-* ## 扩展 [Mapbox Layers](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/)
-* 在[Mapbox Layers](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/) 属性的基础上新增了symbol 属性， 指定符号ID 或者 [符号表达式](#expression)。
+* ## 扩展 [Maplibre Layers](https://maplibre.org/maplibre-style-spec/layers/)
+* 在[Maplibre Layers](https://maplibre.org/maplibre-style-spec/layers/) 属性的基础上新增了symbol 属性， 指定符号ID 或者 [符号表达式](#expression)。
 * 
 * **符号ID**
 * ```
@@ -204,9 +204,9 @@ import MapExtendSymbol from './MapExtendSymbol';
 *     }]
 * })
 * ```
-* **<a id="expression">符号支持的MapboxGL表达式</a>**
+* **<a id="expression">符号支持的MaplibreGL表达式</a>**
 * 
-* **[Match](https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/#match)**
+* **[Match](https://maplibre.org/maplibre-style-spec/expressions/#match)**
 * 
 * ```
 * map.addLayer({
@@ -224,7 +224,7 @@ import MapExtendSymbol from './MapExtendSymbol';
       ]
 * });
 * ```
-* **[Case](https://docs.mapbox.com/mapbox-gl-js/style-spec/expressions/#case)**
+* **[Case](https://maplibre.org/maplibre-style-spec/expressions/#case)**
 * ```
 * map.addLayer({
 *     id: "symbol",
@@ -269,7 +269,7 @@ export class WebSymbol {
    * @param {string} [config.basePath] - 指定符号资源路径
    */
   init(config) {
-    mapboxgl.Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
+    maplibregl.Map.prototype.basePath = config && config.basePath || this.defaultBasePath;
     MapExtendSymbol();
   }
 }

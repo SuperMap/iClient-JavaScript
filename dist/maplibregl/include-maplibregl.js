@@ -190,4 +190,5 @@
   window.server = document.location.toString().match(/file:\/\//)
     ? 'http://localhost:8090'
     : document.location.protocol + '//' + document.location.host;
+  window.exampleWebSymbolBasePath =  "../../dist/maplibregl/resources/symbols";
 })();

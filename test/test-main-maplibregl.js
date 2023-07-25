@@ -51,6 +51,13 @@ import './maplibregl/overlay/FGBLayerSpec.js';
 import './maplibregl/overlay/DeckglLayerSpec.js';
 import './maplibregl/overlay/ThreeLayerSpec.js';
 import './maplibregl/overlay/graphic/GraphicSpec.js';
+import './maplibregl/overlay/symbol/CompositeSymbolRenderSpec';
+import './maplibregl/overlay/symbol/SingleSymbolRenderSpec';
+import './maplibregl/overlay/symbol/SymbolManagerSpec';
+import './maplibregl/overlay/symbol/WebSymbolSpec';
+import './maplibregl/overlay/symbol/SymbolHandlerSpec';
+import './maplibregl/overlay/symbol/SymbolUtilSpec';
+import './maplibregl/overlay/symbol/MapExtendSymbolSpec.js';
 
-/*mapboxgl -- mapping*/
+/*maplibregl -- mapping*/
 import './maplibregl/mapping/InitMapSpec.js';

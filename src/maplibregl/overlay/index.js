@@ -10,4 +10,5 @@ export { HeatMapLayer } from './HeatMapLayer';
 export { GraphicLayer } from './GraphicLayer';
 export { GraticuleLayer } from './GraticuleLayer';
 export { FGBLayer } from './FGBLayer';
+export { WebSymbol } from './symbol/WebSymbol';
 export * from './graphic';
