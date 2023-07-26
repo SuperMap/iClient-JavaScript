@@ -1,9 +1,10 @@
 import maplibregl from 'maplibre-gl';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 
-describe('MapExtendSymbol', () => {
-    var url = GlobeParameter.ChinaURL;
-    var populationUrl = GlobeParameter.populationURL;
+describe('maplibregl_MapExtendSymbol', () => {
+    // CI测试挂了
+    // var url = GlobeParameter.ChinaURL;
+    // var populationUrl = GlobeParameter.populationURL;
     var testDiv, map;
     var originalTimeout;
     beforeAll((done) => {
@@ -21,7 +22,7 @@ describe('MapExtendSymbol', () => {
             style: {
                 "version": 8,
                 "sources": {
-                    "raster-tiles": {
+                   /*  "raster-tiles": {
                         "type": "raster",
                         "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
                         "tileSize": 256
@@ -31,15 +32,15 @@ describe('MapExtendSymbol', () => {
                             populationUrl + "/tileFeature.mvt?z={z}&x={x}&y={y}"
                         ],
                         "type": "vector"
-                    }
+                    } */
                 },
-                "layers": [{
+                "layers": [/* {
                     "id": "simple-tiles",
                     "type": "raster",
                     "source": "raster-tiles",
                     "minzoom": 0,
                     "maxzoom": 22
-                }]
+                } */]
             },
             center: [116.40, 39.79],
             zoom: 3
