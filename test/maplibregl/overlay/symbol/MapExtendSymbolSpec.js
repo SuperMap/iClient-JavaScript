@@ -7,7 +7,7 @@ describe('maplibregl_MapExtendSymbol', () => {
     // var populationUrl = GlobeParameter.populationURL;
     var testDiv, map;
     var originalTimeout;
-    beforeAll((done) => {
+    beforeAll(() => {
         new maplibregl.supermap.WebSymbol().init();
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -45,9 +45,6 @@ describe('maplibregl_MapExtendSymbol', () => {
             center: [116.40, 39.79],
             zoom: 3
         });
-        setTimeout(() => {
-            done();
-        }, 0);
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
