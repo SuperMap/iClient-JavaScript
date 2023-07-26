@@ -100,10 +100,9 @@ function getEdgeStyle(entity, style) {
     const types = JSON.parse(relationTypes || '[]');
     if (ids.includes(id) || types.includes(type)) {
       return {
-        fontSize: compileFontSize(font.fontSize),
-        fontFamily: font.fontName,
+        fontSize: font.fontSize,
         fill: textColor,
-
+        ...formatFontName(font.fontName),
         ...formatFontStyle(font.fontStyle)
       };
     }
@@ -124,11 +123,10 @@ function getNodeStyle(entity, style) {
     if (ids.includes(id) || types.includes(labels[0])) {
       return {
         fillColor: color,
-        fontSize: compileFontSize(font.fontSize),
-        fontFamily: font.fontName,
+        fontSize: font.fontSize,
         fill: textColor,
         size: size,
-        // stroke: color,
+        ...formatFontName(font.fontName),
         ...formatFontStyle(font.fontStyle)
       };
     }
@@ -153,18 +151,30 @@ function getNodeLabel(entity, captionField) {
 }
 
 function formatFontStyle(fontStyle) {
-  if (fontStyle === 1) {
-    return { fontWeight: 600 };
+  //TODO: fontStyle为0是plain
+  if (fontStyle === 1 || fontStyle === 'bold') {
+    return { fontWeight: 'bold' };
   }
-  if (fontStyle === 2) {
+  if (fontStyle === 2 || fontStyle === 'italic') {
     return { fontStyle: 'italic' };
+  }
+  if (fontStyle === 'bolditalic') {
+    return { fontWeight: 'bold', fontStyle: 'italic' };
   }
   return {};
 }
 
-function compileFontSize(fontSize) {
-  return fontSize * 0.8;
+function formatFontName(fontName) {
+  if (!fontName) {
+    return {};
+  }
+  const arrs = fontName.split('.');
+  return {
+    fontFamily: arrs[0],
+    ...formatFontStyle(arrs[1])
+  };
 }
+
 // 处理graphMap数据的展开 折叠 隐藏的实体数据
 export function transformExpandCollapseHiddenData(graphMap) {
   const { expand, collapse, hidden } = graphMap.dataContent;
