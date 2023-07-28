@@ -77,7 +77,7 @@
             inputScript(libsurl + '/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript(libsurl + '/echarts/4.9.0/echarts.min.js');
+            inputScript(libsurl + '/echarts/5.4.3/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
             inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
