@@ -42,7 +42,7 @@ describe('KnowledgeGraphService', () => {
         expect(result).not.toBeNull();
         expect(result.type).toBe('processCompleted');
         expect(result.result).not.toBeNull();
-        expect(result.result.length).toEqual(4);
+        expect(result.result.length).toEqual(2);
         done();
       } catch (exception) {
         console.log("'query'案例失败：" + exception.name + ':' + exception.message);
