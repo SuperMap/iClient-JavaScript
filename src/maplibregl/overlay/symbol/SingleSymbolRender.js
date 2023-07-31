@@ -13,13 +13,11 @@ class SingleSymbolRender {
 
     /**
      * 符号转换成图层
-     * @param {*} layer
-     * @param {*} before
+     * @param {object} layer
+     * @param {object} symbol
+     * @param {string | undefined} before
      */
     addLayer(layer, symbol, before) {
-        if(layer.layout && layer.layout.visibility === 'none') {
-            Object.assign(layer.layout, {visibility: 'visible'});
-        }
         layer.paint && Object.assign(symbol.paint || {}, layer.paint);
         layer.layout && Object.assign(symbol.layout || {}, layer.layout);
         this.map.addLayerBySymbolBak({ ...layer, ...symbol }, before);

@@ -9,6 +9,7 @@ class SymbolManager {
     }
 
     addSymbol(id, symbol) {
+        symbol.layout && delete symbol.layout.visibility;
         this.symbols[id] = symbol;
     }
 

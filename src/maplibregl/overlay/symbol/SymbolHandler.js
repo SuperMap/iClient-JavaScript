@@ -152,9 +152,6 @@ class SymbolHandler {
      * @param {string} before
      */
     addExpressionLayer(layer, before) {
-        // symbol支持表达式的话，paint、layout不生效
-        delete layer.paint;
-        delete layer.layout;
         const rules = {
             match: this.getMatchLayers,
             case: this.getCaseLayers
