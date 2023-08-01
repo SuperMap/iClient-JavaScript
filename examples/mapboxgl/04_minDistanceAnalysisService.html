@@ -1,0 +1,171 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_minDistanceCalculation"></title>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 100;
+        border-radius: 4px;
+      }
+  </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_minDistanceCalculation"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_minDistanceCalculation"
+              onclick="geometryMinDistanceAnalystProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+              onclick="removeLayer()"/>
+  </div>
+</div>
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, options, pointGeometryData, lineVectorSource,lineResultLayer,
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.on("load", function () {
+      addCalcPoint()
+      addReference()
+    });
+
+    function geometryMinDistanceAnalystProcess() {
+      removeLayer();
+      // 进行分析，查找距离参考数据集的最近距离
+      var minDistanceAnalystParameters = new mapboxgl.supermap.GeometryMinDistanceAnalystParameters({
+          inputGeometries:[pointGeometryData],
+          referenceDatasetName:"Neighbor_P@Jingjin",
+          createResultDataset:false,
+          minDistance:0,
+          maxDistance:-1,
+      });
+      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters, function (serviceResult) {
+          var minDistanceAnalystResult = serviceResult.result.distanceResults
+          var referenceIds = minDistanceAnalystResult[0].referenceGeometryIDs
+          addPathLine(referenceIds)
+      });
+    }
+    // 添加被计算的点
+    function addCalcPoint() {
+      pointGeometryData = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [116, 40]
+        }
+      };
+      var img = new Image();
+      img.src = '../img/marker-icon.png';
+      var marker = new mapboxgl.Marker(img).setLngLat([116, 40]).addTo(map);
+    }
+    // 添加参考数据集的要素
+    function addReference() { 
+      var sqlParam = new mapboxgl.supermap.QueryBySQLParameters({
+          toIndex: -1,
+          queryParams: {
+              name: "Neighbor_P@Jingjin.1",
+              attributeFilter: "SMID >= 0 "
+          }
+      });
+      new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(sqlParam, function (serviceResult) {
+        map.addLayer({
+          "id": "Neighbor",
+          "type": "circle",
+          "source": {
+            "type": "geojson",
+            "data": serviceResult.result.recordsets[0].features
+          },
+          "paint": {
+            "circle-radius": 4,
+            "circle-color": "#007cbf",
+            "circle-opacity": 0.1,
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#007cbf",
+            "circle-stroke-opacity": 0.5
+          },
+        });
+      });
+    }
+    // 创建被计算对象与参考对象之间的连线
+    function addPathLine(referenceIds) { 
+      var referenceIdsStr = '(' + referenceIds.join(', ') + ')';
+      var sqlParam = new mapboxgl.supermap.QueryBySQLParameters({
+          toIndex: -1,
+          queryParams: {
+              name: "Neighbor_P@Jingjin.1",
+              attributeFilter: "SMID IN " + referenceIdsStr
+          }
+      });
+      new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(sqlParam, function (serviceResult) {
+        var resFrature = serviceResult.result.recordsets[0].features;
+        var routeSource = {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: [resFrature.features[0].geometry.coordinates, pointGeometryData.geometry.coordinates,]
+            }
+          }
+        };
+        map.addLayer({
+          id: 'route',
+          type: 'line',
+          source: routeSource,
+          paint: {
+            'line-color': '#304DBE',
+            'line-width': 2
+          }
+        });
+      });
+    }
+    //移除结果图层
+    function removeLayer() {
+      if (map.getLayer('route')) {
+        map.removeLayer('route');
+        map.removeSource('route');
+      }
+    }
+</script>
+</body>
+</html>

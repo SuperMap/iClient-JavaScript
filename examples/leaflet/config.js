@@ -108,6 +108,12 @@ var exampleConfig = {
                   version: '11.1.0',
                   thumbnail: "query_fgb_features.png",
                   fileName: "01_mapQueryBySQL_FGB"
+                }, {
+                  name: "图例",
+                  name_en: "Legend",
+                  version: '11.1.1',
+                  thumbnail: "layersLegend.png",
+                  fileName: "01_layersLegend"
               }]
             },
             "data": {
@@ -358,6 +364,30 @@ var exampleConfig = {
                     thumbnail: "l_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
                 }, {
+                    name: "地形坡度计算",
+                    name_en: "terrain slope calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainSlopeCalculationService.png",
+                    fileName: "04_terrainSlopeCalculationService"
+                }, {
+                    name: "地形坡向计算",
+                    name_en: "terrain aspect calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainAspectCalculationService.png",
+                    fileName: "04_terrainAspectCalculationService"
+                }, {
+                    name: "填挖方计算",
+                    name_en: "terrain cutfill calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainCutFillCalculationService.png",
+                    fileName: "04_terrainCutFillCalculationService"
+                }, {
+                    name: "最近距离计算",
+                    name_en: "min distance analysis",
+                    version: '11.1.1',
+                    thumbnail: "minDistanceAnalysisService.png",
+                    fileName: "04_minDistanceAnalysisService"
+                }, {
                     name: "栅格代数运算",
                     name_en: "math expression",
                     thumbnail: "l_mathExpressionAnalysisService.png",
@@ -412,6 +442,18 @@ var exampleConfig = {
                     name_en: "best path",
                     thumbnail: "l_findPathService.png",
                     fileName: "05_findPathService"
+                }, {
+                  name: "连通性分析",
+                  name_en: "connectivity analysis",
+                  version: '11.1.1',
+                  thumbnail: "connectedEdgesService.png",
+                  fileName: "05_connectedEdges"
+                }, {
+                  name: "上下游追踪分析",
+                  name_en: "upstream and downstream trace",
+                  version: '11.1.1',
+                  thumbnail: "traceAnalystService.png",
+                  fileName: "05_traceAnalystService"
                 }]
             },
             "trafficTransferAnalyst": {

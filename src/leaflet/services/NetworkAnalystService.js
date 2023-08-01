@@ -71,6 +71,30 @@ export var NetworkAnalystService = ServiceBase.extend({
     },
 
     /**
+     * @function NetworkAnalystService.prototype.traceAnalyst
+     * @description 上游/下游 追踪分析服务:查找给定弧段或节点的上游/下游弧段和结点。
+     * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    traceAnalyst(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._networkAnalystService.traceAnalyst(params, callback, resultFormat);
+    },
+
+    /**
+     * @function NetworkAnalystService.prototype.connectedEdgesAnalyst
+     * @description 连通性分析服务。
+     * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    connectedEdgesAnalyst(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._networkAnalystService.connectedEdgesAnalyst(params, callback, resultFormat);
+    },
+
+    /**
      * @function NetworkAnalystService.prototype.streamFacilityAnalyst
      * @description 上游/下游关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param {FacilityAnalystStreamParameters} params - 上游/下游关键设施查找资源参数类。

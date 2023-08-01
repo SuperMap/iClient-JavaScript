@@ -26,10 +26,13 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var map, marker, featureGroup, resultLayer, featureService,
+    var host = window.isLocal ? window.server : "http://localhost:8090/";
+    var map, marker, featureGroup, resultLayer, featureService, newAddId,
         baseUrl = host + "/iserver/services/map-world/rest/maps/World",
         url = host + "/iserver/services/data-world/rest/data";
+    var popup = L.popup({
+        offset: [0, -20]
+    })
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -72,7 +75,8 @@
                 "<input type='button' class='btn btn-default' value='" + resources.btn_addMarker + "' onclick='addMarker()'/>&nbsp;" +
                 "<input type='button' class='btn btn-default' value='" + resources.btn_undoAdd + "' onclick='revocationMarker()'/>&nbsp;" +
                 "<input type='button' class='btn btn-default' value='" + resources.text_input_value_submit + "' onclick='commit()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value='" + resources.text_input_value_clear + "' onclick='clearLayer()'/></div>";
+                "<input type='button' class='btn btn-default' value='" + resources.text_input_value_clear + "' onclick='clearLayer()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value='" + resources.btn_getMetadata + "' onclick='getMetadata()'/></div>";
 
             handleMapEvent(me._div, me._map);
             return me._div;
@@ -160,6 +164,7 @@
             });
             featureService.editFeatures(addFeatureParams, function (serviceResult) {
                 if (serviceResult.result.succeed) {
+                    newAddId = serviceResult.result[0];
                     featureGroup.clearLayers();
                     marker = null;
                     if (resultLayer) {
@@ -173,6 +178,43 @@
         } else {
             widgets.alert.showAlert(resources.msg_addMarker, false);
         }
+    }
+
+    function getMetadata() {
+      // 检查是否支持元信息功能
+      new L.supermap.DatasetService(url).getDataset("World", "Capitals", function (serviceResult) {
+        if(!serviceResult.result.supportFeatureMetadatas) {
+            return widgets.alert.showAlert(resources.msg_notSupportMetadatas, false);
+        }
+        if(!newAddId) {
+            return widgets.alert.showAlert(resources.msg_noNewFeature, false);
+        }
+        // 获取地理要素元信息
+        featureService.getMetadata({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            featureId: newAddId
+        }, function (serviceResult) {
+            var createTime = new Date(serviceResult.result.createTime).toLocaleString();
+            var createUser = serviceResult.result.createUser;
+            var lastEditTime = new Date(serviceResult.result.lastEditTime).toLocaleString();
+            var lastEditUser = serviceResult.result.lastEditUser;
+            // 获取新增要素坐标
+            var idsParam = new L.supermap.GetFeaturesByIDsParameters({
+                IDs: [newAddId],
+                datasetNames: ["World:Capitals"]
+            });
+            new L.supermap.FeatureService(url).getFeaturesByIDs(idsParam, function (serviceResult) {
+                var newAddCoor = serviceResult.result.features.features[0].geometry.coordinates;
+                var contentHTML = resources.text_createUser + createUser + "<br/>";
+                contentHTML += resources.text_createTime + createTime + "<br/>";
+                contentHTML += resources.text_lastEditUser + lastEditUser + "<br/>";
+                contentHTML += resources.text_lastEditTime + lastEditTime
+                popup.setLatLng([newAddCoor[1], newAddCoor[0]]).setContent(contentHTML).openOn(map);
+            });
+        });
+
+      })
     }
 
     function clearLayer() {
@@ -199,6 +241,10 @@
                 initFeature();
                 widgets.alert.showAlert(resources.text_deleteSuccess, true);
                 closeClearListener();
+                if(e.layer.feature.id === newAddId) {
+                  newAddId = undefined;
+                  map.closePopup();
+                }
             } else {
                 widgets.alert.showAlert(resources.msg_deleteFailed, false);
             }

@@ -186,6 +186,32 @@ export class FeatureService {
         });
         editFeatureService.processAsync(params);
     }
+
+    /**
+     * @function FeatureService.prototype.getMetadata
+     * @description 地理要素元信息服务。
+     * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+    getMetadata(params, callback) {
+        var me = this,
+            url = me.url,
+            dataSourceName = params.dataSourceName,
+            dataSetName = params.dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+        var editFeatureService = new EditFeaturesService(url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        editFeatureService.getMetaData(params);
+    }
     _processFormat(resultFormat) {
       return resultFormat ? resultFormat : DataFormat.GEOJSON;
   }

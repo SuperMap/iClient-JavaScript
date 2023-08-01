@@ -14,7 +14,12 @@ import { RouteCalculateMeasureService } from './RouteCalculateMeasureService';
 import { RouteLocatorService } from './RouteLocatorService';
 import { SurfaceAnalystService } from './SurfaceAnalystService';
 import { TerrainCurvatureCalculationService } from './TerrainCurvatureCalculationService';
+import { TerrainCutFillCalculationService } from './TerrainCutFillCalculationService';
+import { TerrainAspectCalculationService } from './TerrainAspectCalculationService';
+import { TerrainSlopeCalculationService } from './TerrainSlopeCalculationService';
 import { ThiessenAnalystService } from './ThiessenAnalystService';
+import { MinDistanceAnalystService } from './MinDistanceAnalystService';
+import { ConvexHullAnalystService } from './ConvexHullAnalystService';
 import { GeometryBatchAnalystService } from './GeometryBatchAnalystService';
 
 /**
@@ -340,6 +345,81 @@ export class SpatialAnalystService {
         terrainCurvatureCalculationService.processAsync(params);
     }
 
+     /**
+     * @function SpatialAnalystService.prototype.terrainCutFillCalculate
+     * @description 填挖方计算。
+     * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+     terrainCutFillCalculate(params, callback, resultFormat) {
+      var me = this;
+      var terrainCutFillCalculationService = new TerrainCutFillCalculationService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+
+          eventListeners: {
+              scope: me,
+              processCompleted: callback,
+              processFailed: callback
+          },
+          format: me._processFormat(resultFormat)
+      });
+      terrainCutFillCalculationService.processAsync(params);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainAspectCalculate
+     * @description 地形坡向分析。
+     * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainAspectCalculate(params, callback, resultFormat) {
+        var me = this;
+        var terrainAspectCalculationService = new TerrainAspectCalculationService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        terrainAspectCalculationService.processAsync(params);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainSlopeCalculate
+     * @description 地形坡度分析。
+     * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainSlopeCalculate(params, callback, resultFormat) {
+        var me = this;
+        var terrainSlopeCalculationService = new TerrainSlopeCalculationService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        terrainSlopeCalculationService.processAsync(params);
+    }
+
     /**
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
@@ -363,6 +443,56 @@ export class SpatialAnalystService {
             format: me._processFormat(resultFormat)
         });
         thiessenAnalystService.processAsync(params);
+    }
+
+     /**
+     * @function SpatialAnalystService.prototype.minDistanceAnalysis
+     * @description 最近距离计算。
+     * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+     minDistanceAnalysis(params, callback, resultFormat) {
+      var me = this;
+      var minDistanceAnalystService = new MinDistanceAnalystService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+
+          eventListeners: {
+              scope: me,
+              processCompleted: callback,
+              processFailed: callback
+          },
+          format: me._processFormat(resultFormat)
+      });
+      minDistanceAnalystService.processAsync(params);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.convexHullAnalysis
+     * @description 凸包计算。
+     * @param {ConvexHullAnalystParameters} params - 凸包计算参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    convexHullAnalysis(params, callback, resultFormat) {
+        var me = this;
+        var convexHullAnalystService = new ConvexHullAnalystService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        convexHullAnalystService.processAsync(params);
     }
 
     /**

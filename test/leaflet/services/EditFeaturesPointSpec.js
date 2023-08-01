@@ -180,4 +180,36 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             }
         });
     });
+    // 获取地理要素元信息
+    it('getMetadata', (done) => {
+      var metaFeatureService = featureService(editServiceURL);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(editServiceURL+"/datasources/Jingjin/datasets/Neighbor_P/features/238/metadata");
+
+          return Promise.resolve(new Response(`{
+              "createTime": 1436945830474,
+              "createUser": "admin",
+              "lastEditTime": 1436945830474,
+              "lastEditUser": "admin"
+            }`
+          ));
+      });
+      metaFeatureService.getMetadata({
+          dataSourceName: "Jingjin",
+          dataSetName: "Neighbor_P",
+          featureId: 238
+        }, (serviceResult) => {
+          try {
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.result.createTime).toBe(1436945830474);
+              expect(serviceResult.result.succeed).toBe(true);
+              done();
+          } catch (e) {
+              console.log("'addFeature'案例失败" + e.name + ":" + e.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+    });
 });

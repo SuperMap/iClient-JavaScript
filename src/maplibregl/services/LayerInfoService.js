@@ -41,6 +41,15 @@ export class LayerInfoService extends ServiceBase {
     }
 
     /**
+     * @function LayerInfoService.prototype.getLayersLegendInfo
+     * @description 获取地图的图例信息。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+    getLayersLegendInfo(params, callback) {
+      this._layerInfoService.getLayersLegendInfo(params, callback);
+    }
+
+    /**
      * @function LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
      * @param {SetLayerInfoParameters} params - 设置图层信息参数类。

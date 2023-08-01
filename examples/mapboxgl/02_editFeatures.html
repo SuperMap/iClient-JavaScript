@@ -28,13 +28,14 @@
             <input type='button' class='btn btn-default' data-i18n="[value]resources.btn_undoAdd" onclick='revocationMarker()'/>
             <input type='button' class='btn btn-default' data-i18n="[value]resources.text_input_value_submit" onclick='commit()'/>&nbsp;
             <input type='button' class='btn btn-default' data-i18n="[value]resources.text_input_value_clear" onclick='clearLayer()'/>
+            <input type='button' class='btn btn-default' data-i18n="[value]resources.btn_getMetadata" onclick='getMetadata()'/>
         </div>
     </div>
 </div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 <script>
-    var map, id = [], pointFeature, alertDiv, featureService,
+    var map, newAddId, pointFeature, alertDiv, featureService,
         baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
         dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
@@ -214,6 +215,7 @@
         });
         featureService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
+                newAddId = serviceResult.result[0];
                 addPointFeaturesData.features = [];
                 map.getSource("addPointsSource").setData(addPointFeaturesData);
                 pointFeature = null;
@@ -224,7 +226,46 @@
             }
         });
     }
+    var metadataPopup = new mapboxgl.Popup({
+      offset: [0, -20]
+    });
 
+    function getMetadata() {
+      // 检查是否支持元信息功能
+      new mapboxgl.supermap.DatasetService(dataUrl).getDataset("World", "Capitals", function (serviceResult) {
+        if(!serviceResult.result.supportFeatureMetadatas) {
+            return widgets.alert.showAlert(resources.msg_notSupportMetadatas, false);
+        }
+        if(!newAddId) {
+            return widgets.alert.showAlert(resources.msg_noNewFeature, false);
+        }
+        // 获取地理要素元信息
+        featureService.getMetadata({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            featureId: newAddId
+        }, function (serviceResult) {
+            var createTime = new Date(serviceResult.result.createTime).toLocaleString();
+            var createUser = serviceResult.result.createUser;
+            var lastEditTime = new Date(serviceResult.result.lastEditTime).toLocaleString();
+            var lastEditUser = serviceResult.result.lastEditUser;
+            // 获取新增要素坐标
+            var idsParam = new mapboxgl.supermap.GetFeaturesByIDsParameters({
+                IDs: [newAddId],
+                datasetNames: ["World:Capitals"]
+            });
+            new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByIDs(idsParam, function (serviceResult) {
+                var newAddCoor = serviceResult.result.features.features[0].geometry.coordinates;
+                var contentHTML = resources.text_createUser + createUser + "<br/>";
+                contentHTML += resources.text_createTime + createTime + "<br/>";
+                contentHTML += resources.text_lastEditUser + lastEditUser + "<br/>";
+                contentHTML += resources.text_lastEditTime + lastEditTime
+                metadataPopup.setLngLat(newAddCoor).setHTML(contentHTML).addTo(map);
+            });
+        });
+
+      })
+    }
 
     var popup = new mapboxgl.Popup({
         anchor: 'left',
@@ -244,11 +285,11 @@
     }
 
     function dataClickListener(e) {
-
+        var deletedId = e.features[0].id;
         var deleteParams = new mapboxgl.supermap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
-            IDs: [e.features[0].id],
+            IDs: [deletedId],
             editType: "delete"
         });
 
@@ -259,6 +300,10 @@
                 initFeature();
                 map.getCanvas().style.cursor = '';
                 closeClearListener();
+                if(deletedId === newAddId) {
+                  newAddId = undefined;
+                  metadataPopup.remove();
+                }
                 widgets.alert.showAlert(resources.text_deleteSuccess, true);
             } else {
                 widgets.alert.showAlert(resources.msg_deleteFailed, false);

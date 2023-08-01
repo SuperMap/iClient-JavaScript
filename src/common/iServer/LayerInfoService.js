@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util as CommonUtil} from '../commontypes/Util';
 import { GetLayersInfoService } from './GetLayersInfoService';
+import { GetLayersLegendInfoService } from './GetLayersLegendInfoService';
 import { SetLayerInfoService } from './SetLayerInfoService';
 import { SetLayersInfoService } from './SetLayersInfoService';
 import { SetLayerStatusService } from './SetLayerStatusService';
@@ -50,6 +51,26 @@ export class LayerInfoService {
             }
         });
         getLayersInfoService.processAsync();
+    }
+
+    /**
+     * @function LayerInfoService.prototype.getLayersLegendInfo
+     * @description 获取地图的图例信息。
+     * @param {RequestCallback} callback - 回调函数。
+     */
+    getLayersLegendInfo(params, callback) {
+      var me = this;
+      var getLayersLegendInfoService = new GetLayersLegendInfoService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+          eventListeners: {
+              processCompleted: callback,
+              processFailed: callback
+          }
+      });
+      getLayersLegendInfoService.processAsync(params);
     }
 
     /**

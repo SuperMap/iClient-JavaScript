@@ -167,4 +167,38 @@ describe('mapboxgl_FeatureService_editFeatures', () => {
         }
     });
   });
+
+    // 获取地理要素元信息
+    it('getMetadata', (done) => {
+      var featureService = new FeatureService(url);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(url+"/datasources/World/datasets/Capitals/features/238/metadata");
+
+          return Promise.resolve(new Response(`{
+              "createTime": 1436945830474,
+              "createUser": "admin",
+              "lastEditTime": 1436945830474,
+              "lastEditUser": "admin"
+            }`
+          ));
+      });
+      featureService.getMetadata({
+          dataSourceName: "World",
+          dataSetName: "Capitals",
+          featureId: 238
+        }, (serviceResult) => {
+          try {
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.result.createTime).toBe(1436945830474);
+              expect(serviceResult.result.succeed).toBe(true);
+              done();
+          } catch (e) {
+              console.log("'addFeature'案例失败" + e.name + ":" + e.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+    });
+
 });

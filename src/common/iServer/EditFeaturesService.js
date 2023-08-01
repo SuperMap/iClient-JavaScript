@@ -123,4 +123,16 @@ export class EditFeaturesService extends CommonServiceBase {
         });
     }
 
+    getMetaData(params){
+      var me = this;
+      var featureId = params.featureId;
+      me.url = Util.urlPathAppend(me.url, featureId +'/metadata');
+      me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
 }

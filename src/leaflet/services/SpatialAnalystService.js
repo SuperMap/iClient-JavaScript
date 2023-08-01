@@ -176,6 +176,42 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
+     * @function SpatialAnalystService.prototype.terrainCutFillCalculate
+     * @description 填挖方计算。
+     * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainCutFillCalculate(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._spatialAnalystService.terrainCutFillCalculate(params, callback, resultFormat);
+    },
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainAspectCalculate
+     * @description 地形坡向分析。
+     * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainAspectCalculate(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._spatialAnalystService.terrainAspectCalculate(params, callback, resultFormat);
+    },
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainSlopeCalculate
+     * @description 地形坡度分析。
+     * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainSlopeCalculate(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._spatialAnalystService.terrainSlopeCalculate(params, callback, resultFormat);
+    },
+
+    /**
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
@@ -185,6 +221,30 @@ export var SpatialAnalystService = ServiceBase.extend({
     thiessenAnalysis: function(params, callback, resultFormat) {
       params = this._processParams(params);
       this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+    },
+
+    /**
+     * @function SpatialAnalystService.prototype.minDistanceAnalysis
+     * @description 最近距离计算。
+     * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    minDistanceAnalysis(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._spatialAnalystService.minDistanceAnalysis(params, callback, resultFormat);
+    },
+
+    /**
+     * @function SpatialAnalystService.prototype.convexHullAnalysis
+     * @description 凸包计算。
+     * @param {ConvexHullAnalystParameters} params - 凸包计算参数类。
+     * @param {RequestCallback} callback 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    convexHullAnalysis(params, callback, resultFormat) {
+      params = this._processParams(params);
+      this._spatialAnalystService.convexHullAnalysis(params, callback, resultFormat);
     },
 
     /**
@@ -284,6 +344,14 @@ export var SpatialAnalystService = ServiceBase.extend({
                 operateGeometries.push(Util.toSuperMapGeometry(params.operateGeometries[j]));
             }
             params.operateGeometries = operateGeometries;
+        }
+        // 最近距离
+        if (params.inputGeometries) {
+          var inputGeometries = [];
+          for (var l = 0; l < params.inputGeometries.length; l++) {
+            inputGeometries.push(Util.toSuperMapGeometry(params.inputGeometries[l]));
+          }
+          params.inputGeometries = inputGeometries;
         }
         if (params.sourceRoute) {
             if (params.sourceRoute instanceof L.Polyline) {

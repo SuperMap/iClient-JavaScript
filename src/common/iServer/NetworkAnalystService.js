@@ -5,6 +5,8 @@ import { DataFormat } from '../REST';
 import { BurstPipelineAnalystService } from './BurstPipelineAnalystService';
 import { ComputeWeightMatrixService } from './ComputeWeightMatrixService';
 import { FacilityAnalystStreamService } from './FacilityAnalystStreamService';
+import { TraceAnalystService } from './TraceAnalystService';
+import { ConnectedEdgesAnalystService } from './ConnectedEdgesAnalystService';
 import { FindClosestFacilitiesService } from './FindClosestFacilitiesService';
 import { FindLocationService } from './FindLocationService';
 import { FindMTSPPathsService } from './FindMTSPPathsService';
@@ -111,6 +113,56 @@ export class NetworkAnalystService {
         });
         findClosestFacilitiesService.processAsync(params);
     }
+
+    /**
+     * @function NetworkAnalystService.prototype.traceAnalyst
+     * @description 上游/下游 追踪分析服务:查找给定弧段或节点的上游/下游弧段和结点。
+     * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+      traceAnalyst(params, callback, resultFormat) {
+        var me = this;
+        var traceAnalystService = new TraceAnalystService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        traceAnalystService.processAsync(params);
+      }
+  
+      /**
+       * @function NetworkAnalystService.prototype.connectedEdgesAnalyst
+       * @description 连通性分析服务。
+       * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
+       * @param {RequestCallback} callback - 回调函数。
+       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+       */
+      connectedEdgesAnalyst(params, callback, resultFormat) {
+        var me = this;
+        var connectedEdgesAnalystService = new ConnectedEdgesAnalystService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: me._processFormat(resultFormat)
+        });
+        connectedEdgesAnalystService.processAsync(params);
+      }
 
     /**
      * @function NetworkAnalystService.prototype.streamFacilityAnalyst

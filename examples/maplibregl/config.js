@@ -63,6 +63,13 @@ var exampleConfig = {
             name_en: 'SQL query (FGB)',
             thumbnail: 'query_fgb_features.png',
             fileName: '01_mapQueryBySQL_FGB'
+          }, 
+          {
+            name: "图例",
+            name_en: "Legend",
+            version: '11.1.1',
+            thumbnail: "layersLegend.png",
+            fileName: "01_layersLegend"
           }
         ]
       },
@@ -267,6 +274,34 @@ var exampleConfig = {
             name_en: 'terrain curvature calculation',
             thumbnail: 'mb_terrainCurvatureCalculationService.png',
             fileName: '04_terrainCurvatureCalculationService'
+          },
+          {
+            name: "地形坡度计算",
+            name_en: "terrain slope calculation",
+            version: '11.1.1',
+            thumbnail: "terrainSlopeCalculationService.png",
+            fileName: "04_terrainSlopeCalculationService"
+          }, 
+          {
+            name: "地形坡向计算",
+            name_en: "terrain aspect calculation",
+            version: '11.1.1',
+            thumbnail: "terrainAspectCalculationService.png",
+            fileName: "04_terrainAspectCalculationService"
+          }, 
+          {
+            name: "填挖方计算",
+            name_en: "terrain cutfill calculation",
+            version: '11.1.1',
+            thumbnail: "terrainCutFillCalculationService.png",
+            fileName: "04_terrainCutFillCalculationService"
+          }, 
+          {
+            name: "最近距离计算",
+            name_en: "min distance analysis",
+            version: '11.1.1',
+            thumbnail: "minDistanceAnalysisService.png",
+            fileName: "04_minDistanceAnalysisService"
           },
           {
             name: '栅格代数运算',

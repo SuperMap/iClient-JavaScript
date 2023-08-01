@@ -214,6 +214,15 @@ import {
   QueryByDistanceParameters,
   QueryByGeometryParameters,
   QueryBySQLParameters,
+  DatasetMinDistanceAnalystParameters,
+  TerrainCutFillCalculationParameters,
+  TerrainAspectCalculationParameters,
+  TerrainSlopeCalculationParameters,
+  GeometryMinDistanceAnalystParameters,
+  ConvexHullAnalystParameters,
+  TraceAnalystParameters,
+  ConnectedEdgesAnalystParameters,
+  GetLayersLegendInfoParameters,
   QueryParameters,
   Route,
   RouteCalculateMeasureParameters,
@@ -407,6 +416,14 @@ import {
   QueryByDistanceService,
   QueryByGeometryService,
   QueryBySQLService,
+  MinDistanceAnalystService,
+  TerrainCutFillCalculationService,
+  TerrainAspectCalculationService,
+  TerrainSlopeCalculationService,
+  ConvexHullAnalystService,
+  TraceAnalystService,
+  ConnectedEdgesAnalystService,
+  GetLayersLegendInfoService,
   QueryService,
   RouteCalculateMeasureService,
   RouteLocatorService,
@@ -686,6 +703,23 @@ SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;
 SuperMap.QueryByGeometryService = QueryByGeometryService;
 SuperMap.QueryBySQLParameters = QueryBySQLParameters;
 SuperMap.QueryBySQLService = QueryBySQLService;
+SuperMap.DatasetMinDistanceAnalystParameters = DatasetMinDistanceAnalystParameters;
+SuperMap.MinDistanceAnalystService = MinDistanceAnalystService;
+SuperMap.TerrainCutFillCalculationParameters = TerrainCutFillCalculationParameters;
+SuperMap.TerrainCutFillCalculationService = TerrainCutFillCalculationService;
+SuperMap.TerrainAspectCalculationParameters = TerrainAspectCalculationParameters;
+SuperMap.TerrainAspectCalculationService = TerrainAspectCalculationService;
+SuperMap.TerrainSlopeCalculationParameters = TerrainSlopeCalculationParameters;
+SuperMap.TerrainSlopeCalculationService = TerrainSlopeCalculationService;
+SuperMap.GeometryMinDistanceAnalystParameters = GeometryMinDistanceAnalystParameters;
+SuperMap.ConvexHullAnalystParameters = ConvexHullAnalystParameters;
+SuperMap.ConvexHullAnalystService = ConvexHullAnalystService;
+SuperMap.TraceAnalystParameters = TraceAnalystParameters;
+SuperMap.TraceAnalystService = TraceAnalystService;
+SuperMap.ConnectedEdgesAnalystParameters = ConnectedEdgesAnalystParameters;
+SuperMap.ConnectedEdgesAnalystService = ConnectedEdgesAnalystService;
+SuperMap.GetLayersLegendInfoParameters = GetLayersLegendInfoParameters;
+SuperMap.GetLayersLegendInfoService = GetLayersLegendInfoService;
 SuperMap.QueryParameters = QueryParameters;
 SuperMap.QueryService = QueryService;
 SuperMap.RasterFunctionParameter = RasterFunctionParameter;

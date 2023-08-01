@@ -89,7 +89,14 @@ var exampleConfig = {
                   version: '11.1.0',
                   thumbnail: "query_fgb_features.png",
                   fileName: "01_mapQueryBySQL_FGB"
-              }
+                }, 
+                {
+                  name: "图例",
+                  name_en: "Legend",
+                  version: '11.1.1',
+                  thumbnail: "layersLegend.png",
+                  fileName: "01_layersLegend"
+                }
               ]
             },
             "data": {
@@ -326,6 +333,30 @@ var exampleConfig = {
                     thumbnail: "ol_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
                 }, {
+                    name: "地形坡度计算",
+                    name_en: "terrain slope calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainSlopeCalculationService.png",
+                    fileName: "04_terrainSlopeCalculationService"
+                }, {
+                    name: "地形坡向计算",
+                    name_en: "terrain aspect calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainAspectCalculationService.png",
+                    fileName: "04_terrainAspectCalculationService"
+                }, {
+                    name: "填挖方计算",
+                    name_en: "terrain cutfill calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainCutFillCalculationService.png",
+                    fileName: "04_terrainCutFillCalculationService"
+                }, {
+                    name: "最近距离计算",
+                    name_en: "min distance analysis",
+                    version: '11.1.1',
+                    thumbnail: "minDistanceAnalysisService.png",
+                    fileName: "04_minDistanceAnalysisService"
+                },{
                     name: "离散点插值分析",
                     name_en: "discrete point interpolation",
                     thumbnail: "ol_interpolationAnalystService_IDW_geometry.png",
@@ -385,6 +416,18 @@ var exampleConfig = {
                     name_en: "traveler - quality inspection",
                     thumbnail: "ol_findTSPPathsService.png",
                     fileName: "05_findTSPPathsService"
+                }, {
+                    name: "连通性分析",
+                    name_en: "connectivity analysis",
+                    version: '11.1.1',
+                    thumbnail: "connectedEdgesService.png",
+                    fileName: "05_connectedEdges"
+                }, {
+                    name: "上下游追踪分析",
+                    name_en: "upstream and downstream trace",
+                    version: '11.1.1',
+                    thumbnail: "traceAnalystService.png",
+                    fileName: "05_traceAnalystService"
                 }]
             },
             "trafficTransferAnalyst": {

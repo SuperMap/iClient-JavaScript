@@ -124,6 +124,16 @@ export class FeatureService extends ServiceBase {
     editFeatureService.processAsync(me._processParams(params));
   }
 
+  /**
+   * @function FeatureService.prototype.getMetadata
+   * @description 地理要素元信息。
+   * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
+   * @param {RequestCallback} callback - 回调函数。
+   */
+  getMetadata(params, callback) {
+    this._featureService.getMetadata(params, callback);
+  }
+
   _processParams(params) {
     if (!params) {
       return {};

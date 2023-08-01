@@ -202,3 +202,26 @@ var layerInfo = {
     "ugcLayerType": "VECTOR",
     "visible": true
 };
+
+var legendInfo = {
+  "layerLegends": [
+      {
+        "subLayerLegends": null,
+        "layerType": "UGC",
+        "legends": [
+          {
+            "imageData": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbUlEQVR4XmNgGAV4gUFAgYBhYNEBdHGiAVDzAyD+jy5ONABqvgAywCCgKAFdjiAwCioqANEgA8hyBVDTByi9AeKKAgF0NXgByNkGASUOIAx1xQN0NTgBesiT5A2YjUAnK8DEYAaAAhVJ6SiAAgABsy5InB3ROAAAAABJRU5ErkJggg==",
+            "values": null,
+            "width": 16,
+            "label": "continent_T@World",
+            "contentType": "image/png",
+            "url": "https://iserver.supermap.io:443/iserver/manager/static/Theme/image/Text.png",
+            "height": 16
+          }
+        ],
+        "maxScale": 1.350238165824801e-8,
+        "layerName": "continent_T@World",
+        "minScale": 0
+      }
+  ]
+}
