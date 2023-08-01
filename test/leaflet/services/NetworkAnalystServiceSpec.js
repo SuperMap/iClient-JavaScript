@@ -11,6 +11,8 @@ import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEd
 import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
 import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
 import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { TraceAnalystParameters } from '../../../src/common/iServer/TraceAnalystParameters';
+import { ConnectedEdgesAnalystParameters } from '../../../src/common/iServer/ConnectedEdgesAnalystParameters';
 import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
 import { SupplyCenterType } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -241,7 +243,7 @@ describe('leaflet_NetworkAnalystService', () => {
             isUncertainDirectionValid: true,
             returnFeatures: true
         });
-        var service = new NetworkAnalystService(url, options);
+        var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url + "/traceup");
@@ -271,7 +273,7 @@ describe('leaflet_NetworkAnalystService', () => {
             returnFeatures: true,
             edgeIDs:[2,3,500]
         });
-        var service = new NetworkAnalystService(url, options);
+        var service = networkAnalystService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url + "/connectededges");

@@ -12,6 +12,8 @@ import { FindServiceAreasParameters } from '../../../src/common/iServer/FindServ
 import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
 import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
 import { FacilityAnalystStreamParameters } from '../../../src/common/iServer/FacilityAnalystStreamParameters';
+import { TraceAnalystParameters } from '../../../src/common/iServer/TraceAnalystParameters';
+import { ConnectedEdgesAnalystParameters } from '../../../src/common/iServer/ConnectedEdgesAnalystParameters';
 import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
 import { SupplyCenterType } from '../../../src/common/REST';
 import maplibregl from 'maplibre-gl';

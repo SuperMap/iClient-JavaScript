@@ -2,7 +2,6 @@ import {SpatialAnalystService} from '../../../src/leaflet/services/SpatialAnalys
 import {DatasetMinDistanceAnalystParameters} from '../../../src/common/iServer/DatasetMinDistanceAnalystParameters';
 import {GeometryMinDistanceAnalystParameters} from '../../../src/common/iServer/GeometryMinDistanceAnalystParameters';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { Point } from '../../../src/common/commontypes/geometry/Point';
 
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -54,8 +53,15 @@ describe('leaflet_SpatialAnalystService_minDistanceAnalysis', () => {
         });
     });
     it('minDistanceAnalysis_byGeometry', (done) => {
+        var pointGeometryData = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [40, 116]
+          }
+        };
         var geometryMinDistanceAnalystParameters = new GeometryMinDistanceAnalystParameters({
-            inputGeometries:[new Point(23, 23), new Point(33, 37)],
+            inputGeometries:[pointGeometryData],
             referenceDatasetName:"Bounds@Interpolation",
             createResultDataset:false,
             minDistance:0,
@@ -67,7 +73,7 @@ describe('leaflet_SpatialAnalystService_minDistanceAnalysis', () => {
           expect(testUrl).toBe(url + "/geometry/mindistance?returnContent=true");
           var paramsObj = JSON.parse(params.replace(/'/g, "\""));
           expect(paramsObj.createResultDataset).toBeFalsy();
-          expect(paramsObj.inputGeometries.length).toEqual(2);
+          expect(paramsObj.inputGeometries.length).toEqual(1);
           return Promise.resolve(new Response((JSON.stringify(minDistanceAnalystEscapedJson))));
         });
         service.minDistanceAnalysis(geometryMinDistanceAnalystParameters, (result) => {
