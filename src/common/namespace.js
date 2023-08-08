@@ -151,6 +151,7 @@ import {
   DatasetThiessenAnalystParameters,
   DatasourceConnectionInfo,
   DensityKernelAnalystParameters,
+  EditFeatureAttachmentsParameters,
   EditFeaturesParameters,
   FacilityAnalyst3DParameters,
   FacilityAnalystSinks3DParameters,
@@ -370,6 +371,7 @@ import {
   DatasourceService,
   DataFlowService,
   DensityAnalystService,
+  EditFeatureAttachmentsService,
   EditFeaturesService,
   FacilityAnalystSinks3DService,
   FacilityAnalystSources3DService,
@@ -572,6 +574,8 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 SuperMap.DatasourceService = DatasourceService;
 SuperMap.DensityAnalystService = DensityAnalystService;
 SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
+SuperMap.EditFeatureAttachmentsParameters = EditFeatureAttachmentsParameters;
+SuperMap.EditFeatureAttachmentsService = EditFeatureAttachmentsService;
 SuperMap.EditFeaturesParameters = EditFeaturesParameters;
 SuperMap.EditFeaturesService = EditFeaturesService;
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;

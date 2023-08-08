@@ -43,6 +43,7 @@ import './leaflet/services/DensityAnalysisSpec.js';
 import './leaflet/services/EditFeaturesLineSpec.js';
 import './leaflet/services/EditFeaturesPointSpec.js';
 import './leaflet/services/EditFeaturesRegionSpec.js';
+import './leaflet/services/FeatureAttachmentsServiceSpec.js';
 import './leaflet/services/FieldServiceSpec.js';
 import './leaflet/services/GenerateSpatialDataSpec.js';
 import './leaflet/services/GeoRelationAnalysisSpec.js';

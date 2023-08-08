@@ -3,57 +3,245 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getGridCellInfos"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
-</head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;background-color: white"></div>
-<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
-<script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var map, marker,
-            baseUrl = host + "/iserver/services/map-world/rest/maps/世界地图_Day",
-            url = host + "/iserver/services/data-world/rest/data";
-    map = L.map('map', {
-        preferCanvas: true,
-        crs: L.CRS.EPSG4326,
-        center: {lon: 0, lat: 0},
-        maxZoom: 18,
-        zoom: 2
-    });
-    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
-
-    map.on("click", function (evt) {
-        var x = evt.latlng.lng;
-        var y = evt.latlng.lat;
-        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
-            return;
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
         }
-        var getGridCellInfosParam = new L.supermap.GetGridCellInfosParameters({
-            dataSourceName: "World",
-            datasetName: "WorldEarth",
-            X: x,
-            Y: y
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 500;
+            border-radius: 4px;
+        }
+
+        .leaflet-popup-scrollable {
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="toolbar" class="panel panel-primary">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center' data-i18n="resources.title_DatasourceInfo"></h5>
+        </div>
+        <div class='panel-body content'>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_Datasources"></span>
+                    <select id='datasourcesSelect' class='form-control'></select>
+                </div>
+            </div>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_dataset"></span>
+                    <select id='datasetsSelect' class='form-control'></select>
+                </div>
+            </div>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_query"
+                onclick="resultPrint()" />
+        </div>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="leaflet.draw" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript">
+        var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+            url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
+            draw,
+            querylist = [],
+            bounds,
+            datasourceName,
+            datasetName,
+            datasourcesSelect,
+            datasetsSelect,
+            selectMethod,
+            querylist;
+
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: { lon: 116, lat: 38 },
+            maxZoom: 18,
+            zoom: 3
+        })
+
+        new L.supermap.TiledMapLayer(baseUrl, { noWrap: true }).addTo(map)
+
+        var editableLayers = new L.FeatureGroup();
+        map.addLayer(editableLayers);
+
+        var options = {
+            position: 'topleft',
+            draw: {
+                polyline: false,
+                polygon: {},
+                circle: {},
+                rectangle: {},
+                marker: {},
+                circlemarker: false
+            },
+            edit: {
+                featureGroup: editableLayers,
+                remove: true,
+            }
+        };
+        var drawControl = new L.Control.Draw(options);
+        map.addControl(drawControl);
+        handleMapEvent(drawControl._container, map);
+
+        map.on(L.Draw.Event.CREATED, function (e) {
+            var type = e.layerType,
+                layer = e.layer;
+            editableLayers.addLayer(layer);
         });
-        new L.supermap
-                .GridCellInfosService(url)
-                .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-                    if (!serviceResult.result) {
-                        return;
+
+        dataSourceService()
+
+        function dataSourceService() {
+            new L.supermap.DatasourceService(url).getDatasources(function (serviceResult) {
+                datasourcesSelect = document.getElementById("datasourcesSelect");
+                const datasourceNames = serviceResult.result.datasourceNames;
+                for (let i = 0, len = datasourceNames.length; i < len; i++) {
+                    datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
+                }
+                datasourceName = datasourcesSelect.value;
+                dataSetService(datasourceName)
+            })
+        }
+        function dataSetService(datasourceName) {
+            new L.supermap.DatasetService(url).getDatasets(datasourceName, function (serviceResult) {
+                datasetsSelect = document.getElementById("datasetsSelect");
+                const datasetNames = serviceResult.result.datasetNames;
+                for (let i = 0, len = datasetNames.length; i < len; i++) {
+                    if (datasetNames[i] === "LandCover" || datasetNames[i] === "WorldEarth" || datasetNames[i] === "worldimage") {
+                        datasetsSelect.appendChild(new Option(datasetNames[i], datasetNames[i]))
                     }
-                    if (marker) {
-                        marker.setLatLng(evt.latlng);
-                    } else {
-                        marker = L.marker(evt.latlng).addTo(map);
+
+                }
+            })
+        }
+        function resultPrint() {
+            var getGridCellInfosParam
+            var parm = {
+                dataSourceName: datasourcesSelect.value,
+                datasetName: datasetsSelect.value,
+            }
+            let len = querylist.length
+            if (len === 1) {
+                if (querylist[0].hasOwnProperty('point')) {
+                    parm.X = querylist[0]['point']['x']
+                    parm.Y = querylist[0]['point']['y']
+                } else {
+                    parm.bounds = querylist[0]
+                }
+
+            } else {
+                parm.bounds = querylist
+            }
+            // console.log(parm);
+            getGridCellInfosParam = new L.supermap.GetGridCellInfosParameters(parm);
+            new L.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (res) {
+                let innerHTML = "";
+
+                innerHTML += "dataSourceName：" + JSON.stringify(res.object.dataSourceName, null, 2) + "<br>";
+                innerHTML += "dataSeteName：" + JSON.stringify(res.object.datasetName, null, 2) + "<br>";
+                innerHTML += "datasetType" + JSON.stringify(res.object.datasetType, null, 2) + "<br>";
+                innerHTML += "values" + JSON.stringify(res.result) + "<br>";
+
+                infoWin = L.popup({
+                    minWidth: 180,
+                    maxWidth: 300,
+                    maxHeight: 200,
+                })
+                    .setLatLng(map.getCenter())
+                    .setContent("<div style='word-wrap: break-word;'>" + innerHTML + "</br>"+ "</div>")
+                    .openOn(map);
+
+                querylist.length = 0
+
+                editableLayers.eachLayer(function (la) {
+                    map.removeLayer(la)
+                })
+            })
+        }
+        function handleMapEvent(div, map) {
+            if (!div || !map) {
+                return;
+            }
+            div.addEventListener('mouseover', function () {
+                map.scrollWheelZoom.disable();
+                map.doubleClickZoom.disable();
+            });
+            div.addEventListener('mouseout', function () {
+                map.scrollWheelZoom.enable();
+                map.doubleClickZoom.enable();
+            });
+        }
+        map.on('draw:created', function (event) {
+            // console.log(event);
+            var layer = event.layer
+            var type = event.layerType;
+            let feature = event.feature;
+            // console.log(type);
+            // let geometry = feature.getGeometry();
+            if (type === "circle") {
+                let center = layer.getLatLng();
+                querylist.push({
+                    'circle': {
+                        'centerPoint': {
+                            'x': center.lng,
+                            'y': center.lat
+                        },
+                        'radius': layer._radius
                     }
-                    var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + serviceResult.result.column + "<br>";
-                    innerHTML += "row: " + serviceResult.result.row + "<br>";
-                    innerHTML += "value: " + serviceResult.result.value + "<br>";
-                    marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
-                });
-    });
-</script>
+                })
+            } else if (type === "marker") {
+                var coordinates = layer.getLatLng();
+                querylist.push({
+                    'point': {
+                        'x': coordinates.lng,
+                        'y': coordinates.lat,
+                    }
+                })
+            } else if (type === "polygon") {
+                var coordinates = layer.getLatLngs()[0];
+                var len = coordinates.length
+                let points = []
+                for (let i = 0; i < len; i++) {
+                    points.push({ 'x': coordinates[i].lng, 'y': coordinates[i].lat })
+                }
+                querylist.push({
+                    'points': points
+                })
+            } else {
+                var bounds = layer.getBounds();
+                querylist.push({
+                    'leftBottom': { 'x': bounds._southWest.lng, 'y': bounds._southWest.lat },
+                    'rightTop': { 'x': bounds._northEast.lng, 'y': bounds._northEast.lat }
+                })
+            }
+        })
+
+    </script>
 </body>
+
 </html>

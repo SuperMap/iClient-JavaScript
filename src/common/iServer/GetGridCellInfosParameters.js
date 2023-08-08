@@ -11,8 +11,9 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.dataSourceName - 数据源名称。
- * @param {number} options.X - 地理位置 X 轴。
- * @param {number} options.Y - 地理位置 Y 轴。
+ * @param {number} options.X - 地理位置 X 轴（单影像查询时有效）。
+ * @param {number} options.Y - 地理位置 Y 轴（单影像查询时有效）。
+ * @param {Array} options.bounds - 查询范围（多影像查询时有效）。
  * @usage
  */
 export class GetGridCellInfosParameters {
@@ -40,6 +41,12 @@ export class GetGridCellInfosParameters {
         /**
          * @member {number} GetGridCellInfosParameters.prototype.Y
          * @description 要查询的地理位置 Y 轴。
+         */
+        this.Y = null;
+
+        /**
+         * @member {Array} GetGridCellInfosParameters.prototype.bounds
+         * @description 要查询的地理范围。
          */
         this.Y = null;
         Util.extend(this, options);

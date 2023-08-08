@@ -14,6 +14,7 @@ import './common/iServer/ChartQueryParametersSpec.js';
 import './common/iServer/ClipParameterSpec.js';
 import './common/iServer/ComputeWeightMatrixServiceSpec.js';
 import './common/iServer/DensityAnalystServiceSpec.js';
+import './common/iServer/EditFeatureAttachmentsServiceSpec.js';
 import './common/iServer/EditFeaturesServiceSpec.js';
 import './common/iServer/FacilityAnalystStreamParametersSpec.js';
 import './common/iServer/FacilityAnalystUpstream3DParametersSpec.js';

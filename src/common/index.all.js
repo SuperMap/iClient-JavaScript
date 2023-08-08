@@ -15,6 +15,7 @@ export {
   DatasourceService,
   DataFlowService,
   DensityAnalystService,
+  EditFeatureAttachmentsService,
   EditFeaturesService,
   FacilityAnalystSinks3DService,
   FacilityAnalystSources3DService,

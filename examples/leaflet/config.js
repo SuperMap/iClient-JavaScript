@@ -171,6 +171,12 @@ var exampleConfig = {
                     fileName: "02_editFeatures"
                 },
                 {
+                    name: "要素关联附件",
+                    name_en: "feature attachment",
+                    thumbnail: "l_featureattachment.png",
+                    fileName: "editFeatureAttachment"
+                },
+                {
                     name: "数据源信息查询",
                     name_en: "datasource information service",
                     thumbnail: "02_datasourceService.png",

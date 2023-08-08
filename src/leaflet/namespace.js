@@ -114,6 +114,8 @@ import {
   datasetService,
   DatasourceService,
   datasourceService,
+  FeatureAttachmentsService,
+  featureAttachmentsService,
   FeatureService,
   featureService,
   FieldService,
@@ -366,6 +368,8 @@ L.supermap.datasetService = datasetService;
 L.supermap.DatasetService = DatasetService;
 L.supermap.datasourceService = datasourceService;
 L.supermap.DatasourceService = DatasourceService;
+L.supermap.FeatureAttachmentsService = FeatureAttachmentsService;
+L.supermap.featureAttachmentsService = featureAttachmentsService;
 L.supermap.featureService = featureService;
 L.supermap.FeatureService = FeatureService;
 L.supermap.fieldService = fieldService;

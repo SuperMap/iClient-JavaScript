@@ -147,8 +147,12 @@ var exampleConfig = {
                     name_en: "data editing",
                     thumbnail: "ol_editFeatures.png",
                     fileName: "02_editFeatures"
-                },                    
-                {
+                }, {
+                    name: "要素关联附件",
+                    name_en: "feature attachment",
+                    thumbnail: "featureattachment.png",
+                    fileName: "editFeatureAttachment"
+                }, {
                     name: "数据源信息查询",
                     name_en: "datasource information service",
                     thumbnail: "02_datasourceService.png",

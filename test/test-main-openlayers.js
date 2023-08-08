@@ -42,6 +42,7 @@ import './openlayers/overlay/GraphMapSpec';
 import './openlayers/services/BufferAnalysisSpec.js';
 import './openlayers/services/DensityAnalysisSpec.js';
 import './openlayers/services/EditFeaturesSpec.js';
+import './openlayers/services/FeatureAttachmentsServiceSpec.js';
 import './openlayers/services/FieldServiceSpec.js';
 import './openlayers/services/GenerateSpatialDataSpec.js';
 import './openlayers/services/GeoRelationAnalysisSpec.js';

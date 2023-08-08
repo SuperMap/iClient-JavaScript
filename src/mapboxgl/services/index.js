@@ -6,6 +6,7 @@ export { ChartService } from './ChartService';
 export { DataFlowService } from './DataFlowService';
 export { DatasetService } from './DatasetService';
 export { DatasourceService } from './DatasourceService';
+export { FeatureAttachmentsService } from './FeatureAttachmentsService';
 export { FeatureService } from './FeatureService';
 export { FieldService } from './FieldService';
 export { GridCellInfosService } from './GridCellInfosService';

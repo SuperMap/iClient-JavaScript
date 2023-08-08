@@ -36,6 +36,7 @@ import {
   DataFlowService,
   DatasetService,
   DatasourceService,
+  FeatureAttachmentsService,
   FeatureService,
   FieldService,
   GridCellInfosService,
@@ -106,6 +107,7 @@ mapboxgl.supermap.ChartService = ChartService;
 mapboxgl.supermap.DataFlowService = DataFlowService;
 mapboxgl.supermap.DatasetService = DatasetService;
 mapboxgl.supermap.DatasourceService = DatasourceService;
+mapboxgl.supermap.FeatureAttachmentsService = FeatureAttachmentsService;
 mapboxgl.supermap.FeatureService = FeatureService;
 mapboxgl.supermap.FieldService = FieldService;
 mapboxgl.supermap.GeoprocessingService = GeoprocessingService;

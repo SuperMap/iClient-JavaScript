@@ -4,6 +4,7 @@
 export {AddressMatchService} from './AddressMatchService';
 export {ChartService} from './ChartService';
 export {DataFlowService} from './DataFlowService';
+export {FeatureAttachmentsService} from './FeatureAttachmentsService';
 export {FeatureService} from './FeatureService';
 export {FieldService} from './FieldService';
 export {DatasetService} from './DatasetService';

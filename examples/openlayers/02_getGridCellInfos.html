@@ -3,12 +3,37 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getGridCellInfos"></title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <!-- <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script> -->
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 365px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
         .ol-popup {
             position: absolute;
             background-color: white;
@@ -19,10 +44,12 @@
             border: 1px solid #cccccc;
             bottom: 12px;
             left: -50px;
-            min-width: 280px;
+            min-width: 200px;
+            word-wrap: break-word;
         }
 
-        .ol-popup:after, .ol-popup:before {
+        .ol-popup:after,
+        .ol-popup:before {
             top: 100%;
             border: solid transparent;
             content: " ";
@@ -45,70 +72,278 @@
             left: 48px;
             margin-left: -11px;
         }
+        #popup-content {
+            height: 200px;
+            overflow: auto;
+        }
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
     </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="ol-popup">
-    <div id="popup-content"></div>
-</div>
-<script type="text/javascript">
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var overlay = new ol.Overlay(({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    }));
-    var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
-            url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
-    map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
-        view: new ol.View({
-            center: [0, 0],
-            zoom: 3,
-            projection: 'EPSG:4326',
-            multiWorld: true
-        }),
-        overlays: [overlay]
-    });
-    var layer = new ol.layer.Tile({
-        source: new ol.source.TileSuperMapRest({
-            url: baseUrl
-        }),
-        projection: 'EPSG:4326'
-    });
-    map.addLayer(layer);
+    <div id="toolbar" class="panel panel-primary">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center' data-i18n="resources.title_DatasetInfo"></h5>
+        </div>
+        <div class='panel-body content'>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_Datasources"></span>
+                    <select id='datasourcesSelect' class='form-control'></select>
+                </div>
+            </div>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_dataset"></span>
+                    <select id='datasetsSelect' class='form-control'></select>
+                </div>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <button id="drawPoint" value='Point' type="button" class="btn btn-default"
+                    data-i18n="resources.text_input_value_drawPoint">
+                </button>
+                <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default"
+                    data-i18n="resources.text_input_value_drawPolygon">
+                </button>
+                <button id="drawPolygon" value='Box' type="button" class="btn btn-default"
+                    data-i18n="resources.text_input_value_drawRectangle">
+                </button>
+                <button id="drawCircle" value='Circle' type="button" class="btn btn-default"
+                    data-i18n="resources.btn_drawCircle">
+                </button>
+                <button id="none" value='None' type="button" class="btn btn-default" data-i18n="resources.btn_notDraw">
+                </button>
+                <button id="clear" value='Clear' type="button" class="btn btn-default"
+                    data-i18n="resources.text_input_value_clear">
+                </button>
+            </div>
+            <hr>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_query"
+                onclick="resultPrint()" />
+        </div>
+    </div>
+    <div id="map"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+            url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
+            draw,
+            querylist = [],
+            bounds,
+            datasourceName,
+            datasetName,
+            datasourcesSelect,
+            datasetsSelect,
+            selectMethod,
+            content = document.getElementById('popup-content'),
+            closer = document.getElementById('popup-closer')
+            ;
 
-    map.on("click", function (evt) {
-        var x = evt.coordinate[0];
-        var y = evt.coordinate[1];
-        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
-            return;
-        }
-        var getGridCellInfosParam = new ol.supermap.GetGridCellInfosParameters({
-            dataSourceName: "World",
-            datasetName: "WorldEarth",
-            X: x,
-            Y: y
-        });
-
-        new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-            if (!serviceResult.result) {
-                return;
+        let container = document.getElementById('popup');
+        let overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
             }
-            var result = serviceResult.result;
-            var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + result.column + "<br>";
-            innerHTML += "row: " + result.row + "<br>";
-            innerHTML += "value: " + result.value + "<br>";
-            content.innerHTML = innerHTML;
-            overlay.setPosition([evt.coordinate[0], evt.coordinate[1]]);
+        }))
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({ attributionOptions: { collapsed: false } }).extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 3,
+                projection: 'EPSG:4326',
+                multiWorld: true,
+            }),
+            overlays: [overlay]
+        })
+
+        let layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: baseUrl
+            }),
+            projection: 'EPSG:4326'
+        })
+
+        let source = new ol.source.Vector({ wrapX: false });
+        let vector = new ol.layer.Vector({
+            source: source
         });
-    });
-</script>
+        map.addLayer(layer)
+        map.addLayer(vector)
+
+        dataSourceService()
+
+        function dataSourceService() {
+            new ol.supermap.DatasourceService(url).getDatasources(function (serviceResult) {
+                datasourcesSelect = document.getElementById("datasourcesSelect");
+                const datasourceNames = serviceResult.result.datasourceNames;
+                for (let i = 0, len = datasourceNames.length; i < len; i++) {
+                    datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
+                }
+                datasourceName = datasourcesSelect.value;
+                dataSetService(datasourceName)
+            })
+        }
+        function dataSetService(datasourceName) {
+            new ol.supermap.DatasetService(url).getDatasets(datasourceName, function (serviceResult) {
+                datasetsSelect = document.getElementById("datasetsSelect");
+                const datasetNames = serviceResult.result.datasetNames;
+                for (let i = 0, len = datasetNames.length; i < len; i++) {
+                    if (datasetNames[i] === "LandCover" || datasetNames[i] === "WorldEarth" || datasetNames[i] === "worldimage") {
+                        datasetsSelect.appendChild(new Option(datasetNames[i], datasetNames[i]))
+                    }
+
+                }
+            })
+        }
+        function resultPrint() {
+            var getGridCellInfosParam
+            var parm = {
+                dataSourceName: datasourcesSelect.value,
+                datasetName: datasetsSelect.value,
+            }
+            let len = querylist.length
+            if (len === 1) {
+                if (querylist[0].hasOwnProperty('point')) {
+                    parm.X = querylist[0]['point']['x']
+                    parm.Y = querylist[0]['point']['y']
+                } else {
+                    parm.bounds = querylist[0]
+                }
+
+            } else {
+                parm.bounds = querylist
+            }
+            // console.log(parm);
+            getGridCellInfosParam = new ol.supermap.GetGridCellInfosParameters(parm);
+            new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (res) {
+                console.log(res);
+                let innerHTML = "";
+
+                innerHTML += "dataSourceName：" + JSON.stringify(res.object.dataSourceName, null, 2) + "<br>";
+                innerHTML += "dataSeteName：" + JSON.stringify(res.object.datasetName, null, 2) + "<br>";
+                innerHTML += "datasetType" + JSON.stringify(res.object.datasetType, null, 2) + "<br>";
+                innerHTML += "values" + JSON.stringify(res.result.customResult || res.result) + "<br>";
+                content.innerHTML = innerHTML
+                overlay.setPosition([0, 0])
+                // console.log("请求完成,res:", res);
+
+                source.clear()
+                querylist.length = 0
+                clearInteraction()
+            })
+
+
+        }
+        var buttons = $('.btn-group').children();
+
+        buttons.map(function (key) {
+            var value = buttons[key].value
+            if (value === 'None') {
+                $(buttons[key]).on('click', function () {
+                    clearInteraction();
+                });
+                return
+            }
+            if (value === 'Clear') {
+                $(buttons[key]).on('click', function () {
+                    clearInteraction();
+                    source.clear()
+                });
+                return
+            }
+            $(buttons[key]).on('click', function () {
+                clearInteraction();
+                draw = new ol.interaction.Draw({
+                    source: source,
+                    type: buttons[key].value === "Box" ? 'Circle' : buttons[key].value,
+                    snapTolerance: 20,
+                    geometryFunction: buttons[key].value === "Box" ? ol.interaction.Draw.createBox(4) : null
+                })
+                map.addInteraction(draw);
+                snap = new ol.interaction.Snap({
+                    source: source
+                });
+                map.addInteraction(snap);
+                draw.on('drawend', function (event) {
+                    let feature = event.feature;
+                    let geometry = feature.getGeometry();
+                    let type = geometry.getType()
+                    if (type === 'Circle') {
+                        let center = geometry.getCenter();
+                        let radius = geometry.getRadius();
+                        querylist.push({
+                            'circle': {
+                                'centerPoint': {
+                                    'x': center[0],
+                                    'y': center[1]
+                                },
+                                'radius': radius
+                            }
+                        })
+                    } else if (type === 'Point') {
+                        let coordinates = geometry.getCoordinates();
+                        querylist.push({
+                            'point': {
+                                'x': coordinates[0],
+                                'y': coordinates[1],
+                            }
+                        })
+                    } else if (type === 'Polygon') {
+                        let coordinates = geometry.getCoordinates();
+                        coordinate = coordinates[0]
+                        DvalueXButtom = coordinate[1][0] - coordinate[0][0]
+                        DvalueXTop = coordinate[2][0] - coordinate[3][0]
+
+                        DvalueYLeft = coordinate[3][1] - coordinate[0][1]
+                        DvalueYRight = coordinate[2][1] - coordinate[1][1]
+
+                        if (DvalueXButtom === DvalueXTop && DvalueYLeft === DvalueYRight) {
+                            querylist.push({
+                                'leftBottom': { 'x': coordinate[0][0], 'y': coordinate[0][1] },
+                                'rightTop': { 'x': coordinate[2][0], 'y': coordinate[2][1] }
+                            })
+                        } else {
+                            let points = []
+                            for (let i = 0; i < coordinate.length - 1; i++) {
+                                points.push({ 'x': coordinate[i][0], 'y': coordinate[i][1] })
+                            }
+                            querylist.push({
+                                'points': points
+                            })
+                        }
+
+                    }
+                })
+            })
+        })
+        function clearInteraction() {
+            if (draw) {
+                map.removeInteraction(draw);
+            }
+        }
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
+    </script>
 </body>
+
 </html>

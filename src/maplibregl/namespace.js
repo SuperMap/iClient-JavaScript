@@ -11,6 +11,7 @@ import {
   DataFlowService,
   DatasetService,
   DatasourceService,
+  FeatureAttachmentsService,
   FeatureService,
   FieldService,
   GridCellInfosService,
@@ -60,6 +61,7 @@ maplibregl.supermap.ChartService = ChartService;
 maplibregl.supermap.DataFlowService = DataFlowService;
 maplibregl.supermap.DatasetService = DatasetService;
 maplibregl.supermap.DatasourceService = DatasourceService;
+maplibregl.supermap.FeatureAttachmentsService = FeatureAttachmentsService;
 maplibregl.supermap.FeatureService = FeatureService;
 maplibregl.supermap.FieldService = FieldService;
 maplibregl.supermap.GeoprocessingService = GeoprocessingService;

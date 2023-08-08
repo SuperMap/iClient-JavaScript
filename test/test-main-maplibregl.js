@@ -5,6 +5,7 @@ import './maplibregl/services/BufferAnalysisSpec.js';
 import './maplibregl/services/DataFlowServiceSpec.js';
 import './maplibregl/services/DensityAnalysisSpec.js';
 import './maplibregl/services/EditFeaturesSpec.js';
+import './maplibregl/services/FeatureAttachmentsServiceSpec.js';
 import './maplibregl/services/FieldServiceSpec.js';
 import './maplibregl/services/GenerateSpatialDataSpec.js';
 import './maplibregl/services/GeoRelationAnalysisSpec.js';

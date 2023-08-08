@@ -3,73 +3,201 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getGridCellInfos"></title>
     <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
-</head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<h5 data-i18n="resources.text_clickGridCellToQuery"
-    style=" position: absolute; display: block; margin-left: 60px; z-index: 100;"></h5>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../js/include-web.js"></script>
-<script>
-    var map,
-        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World Map/zxyTileImage.png?z={z}&x={x}&y={y}",
-        dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
-    var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
-        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-
-    map = new maplibregl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [baseUrl],
-                    "tileSize": 256
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-            }]
-        },
-        center: [0, 0],
-        zoom: 3
-    });
-    map.addControl(new maplibregl.NavigationControl(), 'top-left');
-    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
-
-    map.on("click", function (evt) {
-        var x = evt.lngLat.lng;
-        var y = evt.lngLat.lat;
-        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
-            return;
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
         }
-        var getGridCellInfosParam = new maplibregl.supermap.GetGridCellInfosParameters({
-            dataSourceName: "World",
-            datasetName: "WorldEarth",
-            X: x,
-            Y: y
-        });
 
-        new maplibregl.supermap.GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-            if (!serviceResult.result) {
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="toolbar" class="panel panel-primary">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center' data-i18n="resources.title_DatasetInfo"></h5>
+        </div>
+        <div class='panel-body content'>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_Datasources"></span>
+                    <select id='datasourcesSelect' class='form-control'></select>
+                </div>
+            </div>
+            <div class='panel'>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_dataset"></span>
+                    <select id='datasetsSelect' class='form-control'></select>
+                </div>
+            </div>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_query"
+                onclick="datasetsPrint()" />
+        </div>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script>
+        var map,
+            baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+            dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
+            mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+            querylist = [];
+        var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+        map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [mapUrl],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                }]
+            },
+            center: [0, 0],
+            zoom: 3
+        });
+        map.addControl(new maplibregl.NavigationControl(), 'top-left');
+        map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+        dataSourceService()
+        function dataSourceService() {
+            new maplibregl.supermap.DatasourceService(dataUrl).getDatasources(function (serviceResult) {
+                datasourcesSelect = document.getElementById("datasourcesSelect");
+                const datasourceNames = serviceResult.result.datasourceNames;
+                for (let i = 0, len = datasourceNames.length; i < len; i++) {
+                    datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
+                }
+                datasourceName = datasourcesSelect.value;
+                dataSetService(datasourceName)
+            })
+        }
+        function dataSetService(datasourceName) {
+            new maplibregl.supermap.DatasetService(dataUrl).getDatasets(datasourceName, function (serviceResult) {
+                datasetsSelect = document.getElementById("datasetsSelect");
+                const datasetNames = serviceResult.result.datasetNames;
+                for (let i = 0, len = datasetNames.length; i < len; i++) {
+                    if (datasetNames[i] === "LandCover" || datasetNames[i] === "WorldEarth" || datasetNames[i] === "worldimage") {
+                        datasetsSelect.appendChild(new Option(datasetNames[i], datasetNames[i]))
+                    }
+
+                }
+            })
+        }
+        function resultPrint() {
+            return
+            var getGridCellInfosParam
+            var parm = {
+                dataSourceName: datasourcesSelect.value,
+                datasetName: datasetsSelect.value,
+            }
+            let len = querylist.length
+            if (len === 1) {
+                if (querylist[0].hasOwnProperty('point')) {
+                    parm.X = querylist[0]['point']['x']
+                    parm.Y = querylist[0]['point']['y']
+                } else {
+                    parm.bounds = querylist[0]
+                }
+
+            } else {
+                parm.bounds = querylist
+            }
+            // console.log(parm);
+            getGridCellInfosParam = new mapboxgl.supermap.GetGridCellInfosParameters(parm);
+            new mapboxgl.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (res) {
+                console.log(res);
+                let innerHTML = "";
+
+                innerHTML += "dataSourceName：" + JSON.stringify(res.object.dataSourceName, null, 2) + "<br>";
+                innerHTML += "dataSeteName：" + JSON.stringify(res.object.datasetName, null, 2) + "<br>";
+                innerHTML += "datasetType" + JSON.stringify(res.object.datasetType, null, 2) + "<br>";
+                innerHTML += "values" + JSON.stringify(res.result) + "<br>";
+
+                popup = new mapboxgl.Popup({ closeOnClick: false, className: 'my-popup-class' })
+                    .setLngLat(map.getCenter())
+                    .setHTML(innerHTML + "</br>")
+                    .addTo(map);
+
+                querylist.length = 0
+
+            })
+        }
+
+        map.on("click", function (evt) {
+            var x = evt.lngLat.lng;
+            var y = evt.lngLat.lat;
+            if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
                 return;
             }
-            var result = serviceResult.result;
-            var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + result.column + "<br>";
-            innerHTML += "row: " + result.row + "<br>";
-            innerHTML += "value: " + result.value + "<br>";
-            new maplibregl.Popup().setLngLat([x, y]).setHTML(innerHTML).addTo(map);
+            querylist.push({
+                'point': {
+                    'x': x,
+                    'y': y,
+                }
+            })
+            var getGridCellInfosParam
+            var parm = {
+                dataSourceName: datasourcesSelect.value,
+                datasetName: datasetsSelect.value,
+                X:querylist[0]['point']['x'],
+                Y:querylist[0]['point']['y']
+            }
+            getGridCellInfosParam = new maplibregl.supermap.GetGridCellInfosParameters(parm);
+            new maplibregl.supermap.GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam, function (res) {
+                console.log(res);
+                let innerHTML = "";
+
+                innerHTML += "dataSourceName：" + JSON.stringify(res.object.dataSourceName, null, 2) + "<br>";
+                innerHTML += "dataSeteName：" + JSON.stringify(res.object.datasetName, null, 2) + "<br>";
+                innerHTML += "datasetType" + JSON.stringify(res.object.datasetType, null, 2) + "<br>";
+                innerHTML += "values" + JSON.stringify(res.result) + "<br>";
+
+                new maplibregl.Popup()
+                    .setLngLat([x, y])
+                    .setHTML("<div style='word-wrap: break-word;'>" + innerHTML + "</br>"+ "</div>")
+                    .addTo(map);
+
+                querylist.length = 0
+
+            })
+            querylist.length = 0
         });
-    });
-</script>
+    </script>
 
 </body>
+
 </html>

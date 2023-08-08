@@ -3,13 +3,13 @@ import { GetGridCellInfosParameters } from '../../../src/common/iServer/GetGridC
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
-var eventCompleted, eventFailed;
+var eventCompleted, eventFailed, requestType
 
-var initGetGridCellInfosService = (url, queryCompleted, queryError) => {
+var initGetGridCellInfosService = (url, succ, fail) => {
     return new GetGridCellInfosService(url, {
         eventListeners: {
-            processCompleted: queryCompleted,
-            processFailed: queryError
+            processCompleted: succ,
+            processFailed: fail
         }
     });
 };
@@ -17,11 +17,13 @@ var initGetGridCellInfosService = (url, queryCompleted, queryError) => {
 describe('GetGridCellInfosService', () => {
     var originalTimeout;
     beforeEach(() => {
+        requestType = null
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        requestType = null
     });
 
     it('headers', () => {
@@ -64,54 +66,40 @@ describe('GetGridCellInfosService', () => {
         expect(getGridCellInfosService.eventListeners).toBeNull();
     });
 
-    it('success:processAsync', done => {
-        var queryParam = new GetGridCellInfosParameters({
-            datasetName: 'LandCover',
-            dataSourceName: 'World',
-            X: '110',
-            Y: '50'
+    it('getGridCellInfosWithNoBounds', done => {
+        var GP = new GetGridCellInfosParameters({
+            dataSourceName: "World",
+            datasetName: "WorldEarth",
+            X: 4,
+            Y: 20
         });
+        expect(GP).not.toBeNull()
         var queryCompleted = event => {
             eventCompleted = event;
-            try {
-                expect(myService.url).toEqual(
-                    dataServiceURL + '/datasources/World/datasets/LandCover/gridValue?x=110&y=50'
-                );
-                myService.destroy();
-                queryParam.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
-                myService.destroy();
-                queryParam.destroy();
-                done();
-            }
+            expect(myService.url).toEqual(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValue?x=4&y=20')
+            done()
         };
         var queryError = event => {
             eventFailed = event;
+            done()
         };
-        var myService = initGetGridCellInfosService(dataServiceURL, queryCompleted, queryError);
+
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe('GET');
-            expect(options).not.toBeNull();
-            if (testUrl.indexOf('/datasources/World/datasets/LandCover') > 0) {
-                return Promise.resolve(
-                    new Response(
-                        `{"childUriList":["http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/LandCover/fields","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/LandCover/features","http://localhost:8090/iserver/services/data-world/rest/data/datasources/World/datasets/LandCover/domain"],"supportAttachments":false,"supportFeatureMetadatas":false,"datasetInfo":{"pixelFormat":"BIT32","maxValue":13,"description":"","type":"GRID","blockSize":256,"dataSourceName":"World","tableName":"LandCover","noValue":-9999,"minValue":0,"isReadOnly":false,"encodeType":"SGL","width":5760,"bounds":{"top":90,"left":-180,"bottom":-90,"leftBottom":{"x":-180,"y":-90},"right":180,"rightTop":{"x":180,"y":90}},"name":"LandCover","prjCoordSys":{"distanceUnit":"METER","projectionParam":null,"epsgCode":4326,"coordUnit":"DEGREE","name":"Longitude / Latitude Coordinate System---GCS_WGS_1984","projection":null,"type":"PCS_EARTH_LONGITUDE_LATITUDE","coordSystem":{"datum":{"name":"D_WGS_1984","type":"DATUM_WGS_1984","spheroid":{"flatten":0.00335281066474748,"name":"WGS_1984","axis":6378137,"type":"SPHEROID_WGS_1984"}},"unit":"DEGREE","spatialRefType":"SPATIALREF_EARTH_LONGITUDE_LATITUDE","name":"GCS_WGS_1984","type":"GCS_WGS_1984","primeMeridian":{"longitudeValue":0,"name":"Greenwich","type":"PRIMEMERIDIAN_GREENWICH"}}},"datasourceConnectionInfo":null,"height":2880}}`
-                    )
-                );
+            // 首先判断是否为数据集的请求
+            JudgeMethod(GP, method, testUrl, params, options)
+            expect(params).toBeUndefined()
+            if (testUrl.indexOf("imageValue") > 0) {
+                requestType = "gridInfoRequest"
+                return Promise.resolve(new Response(JSON.stringify(imageValueJson)))
             } else {
-                if (testUrl.indexOf('/datasources/World/datasets/LandCover/gridValue?x=110&y=50') > 0) {
-                    return Promise.resolve(
-                        new Response(`{"column":4640,"row":640,"value":1,"centerPoint":{"x":110,"y":50}}`)
-                    );
-                }
+                requestType = "dataSetRequest"
+                return Promise.resolve(new Response(JSON.stringify(getDatasetWordEarthJson)))
             }
-            return null;
         });
-        myService.processAsync(queryParam);
-    });
+
+        var myService = initGetGridCellInfosService(dataServiceURL, queryCompleted, queryError)
+        myService.processAsync(GP);
+    })
 
     it('fail:processAsync', done => {
         var url = dataServiceURL + '/datasources/World/datasets';
@@ -172,7 +160,6 @@ describe('GetGridCellInfosService', () => {
         myService.getDatasetInfoCompleted(result);
         expect(myService.datasetType).toBe('GRID');
     });
-
     it('getDatasetInfoFailed', () => {
         var queryCompleted = event => {
             eventCompleted = event;
@@ -225,3 +212,16 @@ describe('GetGridCellInfosService', () => {
         );
     });
 });
+
+function JudgeMethod(para, m, u, p, o) {
+    if (para.bounds) {
+        if (Array.isArray(para.bounds) && u.indexOf('imageValue') > -1) {
+            expect(m).toBe("POST");
+            expect(o).not.toBeNull()
+        } else {
+            expect(m).toBe("GET");
+        }
+    } else {
+        expect(m).toBe("GET");
+    }
+}

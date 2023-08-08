@@ -131,6 +131,12 @@ var exampleConfig = {
             fileName: '02_editFeatures'
           },
           {
+            name: "要素关联附件",
+            name_en: "feature attachment",
+            thumbnail: "mb_featureattachment.png",
+            fileName: "editFeatureAttachment"
+          },
+          {
             name: '数据源信息查询',
             name_en: 'datasource information service',
             thumbnail: '02_datasourceService.png',
@@ -215,10 +221,10 @@ var exampleConfig = {
             fileName: '04_bufferAnalystService_FGB'
           },
           {
-              name: '几何对象缓冲区分析',
-              name_en: 'buffer-geometry',
-              thumbnail: 'mb_bufferAnalystService_geometry.png',
-              fileName: '04_bufferAnalystService_geometry'
+            name: '几何对象缓冲区分析',
+            name_en: 'buffer-geometry',
+            thumbnail: 'mb_bufferAnalystService_geometry.png',
+            fileName: '04_bufferAnalystService_geometry'
           },
           {
             name: '几何对象缓冲区分析 (FGB)',
@@ -227,10 +233,10 @@ var exampleConfig = {
             fileName: '04_bufferAnalystService_geometry_FGB'
           },
           {
-              name: '数据集泰森多边形',
-              name_en: 'thiessen-dataset',
-              thumbnail: 'mb_thiessenAnalystService-datasets.png',
-              fileName: '04_thiessenAnalystService_datasets'
+            name: '数据集泰森多边形',
+            name_en: 'thiessen-dataset',
+            thumbnail: 'mb_thiessenAnalystService-datasets.png',
+            fileName: '04_thiessenAnalystService_datasets'
           },
           {
             name: '数据集泰森多边形 (FGB)',
@@ -251,10 +257,10 @@ var exampleConfig = {
             fileName: '04_thiessenAnalystService_geometry_FGB'
           },
           {
-              name: '叠加分析',
-              name_en: 'overlay',
-              thumbnail: 'mb_overlayAnalystService.png',
-              fileName: '04_overlayAnalystService'
+            name: '叠加分析',
+            name_en: 'overlay',
+            thumbnail: 'mb_overlayAnalystService.png',
+            fileName: '04_overlayAnalystService'
           },
           {
             name: '叠加分析 (FGB)',
@@ -419,17 +425,17 @@ var exampleConfig = {
         name: '知识图谱',
         name_en: 'KnowledgeGraph',
         content: [
-            {
-                name: '不动产图谱',
-                name_en: 'Real Estate GraphMap',
-                thumbnail: 'knowledgeGraphMap.png',
-                fileName: 'knowledgeGraphMap'
-            },
-            {
-              name: '河流流经省份图谱',
-              name_en: 'Rivers flowing through provinces GraphMap',
-              thumbnail: 'knowledgeGraphMap1.png',
-              fileName: 'knowledgeGraphMap1'
+          {
+            name: '不动产图谱',
+            name_en: 'Real Estate GraphMap',
+            thumbnail: 'knowledgeGraphMap.png',
+            fileName: 'knowledgeGraphMap'
+          },
+          {
+            name: '河流流经省份图谱',
+            name_en: 'Rivers flowing through provinces GraphMap',
+            thumbnail: 'knowledgeGraphMap1.png',
+            fileName: 'knowledgeGraphMap1'
           }
         ]
       },

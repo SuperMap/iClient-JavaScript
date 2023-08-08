@@ -125,8 +125,8 @@ export class GetGridCellInfosService extends CommonServiceBase {
 
         var me = this;
         me.request({
-            method: "GET",
-            data: null,
+            method: eventId == 2 && Util.isArray(me.bounds) ? "POST" : "GET",
+            data: Util.isArray(me.bounds) ? me.bounds : null,
             scope: me,
             success(result, options) {
               result.eventId = eventId;
@@ -160,9 +160,15 @@ export class GetGridCellInfosService extends CommonServiceBase {
      */
     queryGridInfos(callback) {
         var me = this;
-        me.url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
-        if (me.X != null && me.Y != null) {
+        var infoType = me.datasetType == "GRID" ? "gridValue": "imageValue"
+        infoType = me.bounds? infoType+"s" : infoType
+        me.url = Util.urlPathAppend(me.url, infoType);
+        if (infoType == "gridValue" || infoType == "imageValue"){
+          if (me.X != null && me.Y != null){
             me.url = Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
+          }
+        }else if(!Util.isArray(me.bounds)){
+          me.url = Util.urlAppend(me.url, `bounds=${encodeURI(JSON.stringify(me.bounds))}`);
         }
         me.queryRequest(me.serviceProcessCompleted.bind(me), me.serviceProcessFailed.bind(me), callback);
     }
