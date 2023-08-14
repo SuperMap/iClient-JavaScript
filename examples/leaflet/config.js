@@ -447,7 +447,7 @@ var exampleConfig = {
                   name_en: "connectivity analysis",
                   version: '11.1.1',
                   thumbnail: "connectedEdgesService.png",
-                  fileName: "05_connectedEdges"
+                  fileName: "05_connectedEdgesService"
                 }, {
                   name: "上下游追踪分析",
                   name_en: "upstream and downstream trace",

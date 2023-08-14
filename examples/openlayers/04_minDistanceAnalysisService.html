@@ -172,7 +172,8 @@
             image: new ol.style.Icon(({
               src: '../img/marker.png'
             }))
-          })
+          }),
+          zIndex: 9
       });
       map.addLayer(vectorLayer);
     }
@@ -196,7 +197,8 @@
                 image: new ol.style.Icon(({
                   src: '../img/marker-gold.png'
                 }))
-              })
+              }),
+              zIndex: 9
           });
           map.addLayer(resultLayer);
       });
