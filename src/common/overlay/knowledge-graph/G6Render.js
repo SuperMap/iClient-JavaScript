@@ -153,7 +153,8 @@ export class G6Render {
     };
     const defaultEdgeHighlightStyle = {
       stroke: hoverColor,
-      lineWidth: 2,
+      shadowColor: hoverColor,
+      shadowBlur: 5,
       endArrow: {
         path: 'M 0,0 L 2,1 L 2,-1 Z',
         fill: hoverColor
