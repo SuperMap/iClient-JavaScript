@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Events} from '../../commontypes/Events';
-import es from '@elastic/elasticsearch';
 import {Util} from "../../commontypes/Util";
 
 /**
@@ -60,6 +59,7 @@ export class ElasticSearch {
          *  @member {Object} ElasticSearch.prototype.client
          *  @description client ES客户端。
          */
+        var es = require('@elastic/elasticsearch');
         try {
           // 老版本
           this.client = new es.Client({

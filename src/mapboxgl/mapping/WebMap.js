@@ -16,7 +16,7 @@ import { Lang } from '@supermap/iclient-common/lang/Lang';
 import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/util/FilterCondition';
 import { Util } from '../core/Util';
 import { QueryService } from '../services/QueryService';
-import convert from 'xml-js';
+import convert from 'xml-js/dist/xml-js.min';
 import Canvg from 'canvg';
 
 
