@@ -17,9 +17,9 @@ import {Util} from "../../commontypes/Util";
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
  * @description
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
+ * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">Tips</h3>
  * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
+  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process events util -D</code></pre>
   然后配置webpack<pre><code>module.exports: {
     resolve: {
       alias: {
@@ -33,7 +33,10 @@ import {Util} from "../../commontypes/Util";
         os: require.resolve('os-browserify/browser'),
         stream: require.resolve('stream-browserify'),
         tty: require.resolve('tty-browserify'),
-        zlib: require.resolve('browserify-zlib')
+        zlib: require.resolve('browserify-zlib'),
+        assert: require.resolve('assert'),
+        util: require.resolve('util'),
+        events: require.resolve('events')
       }
     }
     plugins: [
