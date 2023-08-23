@@ -13,7 +13,7 @@ import { Util } from '../core/Util';
  * @classdesc 百度地图图层源。
  * @modulecategory Mapping
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
+ * @param {string} [opt_options.url='https://online3.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
  * @extends {ol.source.TileImage}
@@ -31,7 +31,7 @@ export class BaiduMap extends TileImage {
         var url =
             options.url !== undefined
                 ? options.url
-                : 'http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408';
+                : 'https://online3.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408';
         var hidpi =
             options.hidpi || (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI) > 1;
         url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
