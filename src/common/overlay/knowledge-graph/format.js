@@ -87,6 +87,10 @@ export function edgeFromGraphMap(entity, style) {
   };
   if (styleData.stroke) {
     edge.style.stroke = styleData.stroke;
+    edge.style.endArrow = {
+      path: 'M 0,0 L 4,2 L 4,-2 Z',
+      fill: styleData.stroke
+    },
     delete styleData.stroke;
   }
   if (styleData.lineWidth) {

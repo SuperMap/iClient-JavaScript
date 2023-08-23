@@ -72,12 +72,10 @@ export class G6Render {
             if (this.isCollpased(model.id)) {
               return `<ul>
               <li id='expand'>展开</li>
-              <li id='hide'>隐藏</li>
             </ul>`;
             } else {
               return `<ul>
               <li id='collapse'>折叠</li>
-              <li id='hide'>隐藏</li>
             </ul>`;
             }
           }
@@ -129,7 +127,8 @@ export class G6Render {
       type: 'line',
       style: {
         endArrow: {
-          path: 'M 0,0 L 2,1 L 2,-1 Z'
+          path: 'M 0,0 L 4,2 L 4,-2 Z',
+          fill: '#333'
         },
         lineWidth: 0.5
       },
@@ -156,7 +155,7 @@ export class G6Render {
       shadowColor: hoverColor,
       shadowBlur: 5,
       endArrow: {
-        path: 'M 0,0 L 2,1 L 2,-1 Z',
+        path: 'M 0,0 L 4,2 L 4,-2 Z',
         fill: hoverColor
       }
     };
