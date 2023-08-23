@@ -76,16 +76,31 @@ export function nodeFromGraphMap(entity, style, captionField) {
 export function edgeFromGraphMap(entity, style) {
   const { start, end, id, type, properties } = entity;
   const styleData = style ? getEdgeStyle(entity, style) : {};
-  return {
+  const edge = {
     source: start + '',
     target: end + '',
     edgeId: id + '',
     label: type,
-    labelCfg: {
-      style: styleData
-    },
+    style: {},
+    labelCfg: {},
     properties
   };
+  if (styleData.stroke) {
+    edge.style.stroke = styleData.stroke;
+    edge.style.endArrow = {
+      path: 'M 0,0 L 4,2 L 4,-2 Z',
+      fill: styleData.stroke
+    },
+    delete styleData.stroke;
+  }
+  if (styleData.lineWidth) {
+    edge.style.lineWidth = styleData.lineWidth;
+    delete styleData.lineWidth;
+  }
+  edge.labelCfg = {
+    style: styleData
+  };
+  return edge;
 }
 
 function getEdgeStyle(entity, style) {
@@ -95,11 +110,13 @@ function getEdgeStyle(entity, style) {
   const { id, type } = entity;
   const data = style.filter((item) => item.type === 'relationShip');
   for (let i = 0; i < data.length; i++) {
-    const { textColor, font, relationTypes, relationIds } = data[i];
+    const { color, width, textColor, font, relationTypes, relationIds } = data[i];
     const ids = JSON.parse(relationIds || '[]');
     const types = JSON.parse(relationTypes || '[]');
     if (ids.includes(id) || types.includes(type)) {
       return {
+        stroke: color,
+        lineWidth: Number(width) * 1.4,
         fontSize: font.fontSize,
         fill: textColor,
         ...formatFontName(font.fontName),

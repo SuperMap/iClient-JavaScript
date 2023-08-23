@@ -47,9 +47,8 @@ function setRootStyle (theme) {
   rootStyleTag.innerHTML = rootStyle;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  initSkin();
-});
+
+initSkin();
 function initSkin() {
   var skin = utils.getCookie('theme') || 'dark';
   var rootElem = document.querySelector('html');

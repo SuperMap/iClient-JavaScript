@@ -119,7 +119,8 @@
                 var legendLabel = document.createElement('span');
                 legendLabel.innerHTML = legend.label;
                 legendLabel.style.marginLeft = "15px"
-                legendPic.src = legend.url;
+                // legendPic.src = legend.url;
+                legendPic.src = 'data:image/png;base64,' + legend.imageData;
                 legendContainer.appendChild(legendPic);
                 legendContainer.appendChild(legendLabel);
                 var brElement = document.createElement('br');

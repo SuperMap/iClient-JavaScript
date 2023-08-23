@@ -47,7 +47,7 @@ describe('KnowledgeGraphService', () => {
         expect(result).not.toBeNull();
         expect(result.type).toBe('processCompleted');
         expect(result.result).not.toBeNull();
-        expect(result.result.length).toEqual(4);
+        expect(result.result.length).toEqual(5);
         knowledgeGraphService.destroy();
         done();
       } catch (exception) {

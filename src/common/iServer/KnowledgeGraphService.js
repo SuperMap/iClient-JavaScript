@@ -42,7 +42,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
    */
   query(params, callback) {
     const paramKey = 'cypherQuery';
-    const url = Util.urlAppend(this.url + '/query.json', `${paramKey}=${params}`);
+    const url = Util.urlAppend(this.url + '/query.json', `${paramKey}=${encodeURI(params)}`);
     this.processAsync({ url, method: 'GET', callback });
   }
 

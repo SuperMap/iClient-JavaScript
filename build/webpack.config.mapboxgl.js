@@ -20,17 +20,24 @@ module.exports = {
   //其它解决方案配置
   resolve: configBase.resolve,
 
-  externals: Object.assign({}, configBase.externals, {
-    'mapbox-gl': 'mapboxgl',
-    three: 'function(){try{return THREE}catch(e){return {}}}()',
-    'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
-    'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
-    'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
-    xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
-    canvg: 'function(){try{return canvg}catch(e){return {}}}()',
-    jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
-    'xml-js': 'function(){try{return convert}catch(e){return {}}}()'
-  }),
+  externals: [
+    Object.assign({}, configBase.externals, {
+      'mapbox-gl': 'mapboxgl',
+      three: 'function(){try{return THREE}catch(e){return {}}}()',
+      'deck.gl': '(function(){try{return DeckGL}catch(e){return {}}})()',
+      'luma.gl': '(function(){try{return luma}catch(e){return {}}})()',
+      'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
+      xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
+      canvg: 'function(){try{return canvg}catch(e){return {}}}()',
+      jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()'
+    }),
+    function ({context, request}, callback) {
+      if (/xml-js\/lib\/xml2json/.test(request)) {
+        return callback(null, 'function(){try{return xml2json}catch(e){return {}}}()');
+      }
+      callback();
+    }
+  ],
 
   module: {
     noParse: /[\/\\]node_modules[\/\\]mapbox-gl[\/\\]dist[\/\\]mapbox-gl\.js$/,
