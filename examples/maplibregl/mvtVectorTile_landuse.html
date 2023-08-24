@@ -34,12 +34,10 @@
     maplibregl.supermap.initMap(host + '/iserver/services/map-mvt-landuse2/rest/maps/landuse', {
       type: 'vector-tile',
       mapOptions: {
-        zoom: 13,
-        minZoom: 11,
-        maxZoom: 15,
+        zoom: 13
       }
-    }).then(function (dataRes) {
-      var map = dataRes.map;
+    }).then(function (result) {
+      var map = result.map;
       map.addControl(new maplibregl.NavigationControl(), 'top-left');
     });
 
@@ -49,9 +47,7 @@
     //   style: host +
     //     '/iserver/services/map-mvt-landuse2/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
     //   center: [108.913171372641, 23.8262192695701], // starting position
-    //   zoom: 13,
-    //   minZoom: 11,
-    //   maxZoom: 15,
+    //   zoom: 13
     //   attributionControl: false
     // });
     // map.addControl(new maplibregl.NavigationControl(), 'top-left');
