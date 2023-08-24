@@ -102,19 +102,13 @@ describe('leaflet_search_SearchView', () => {
                     done();
                 }
             };
-            var options = {
-                eventListeners: {
-                    'processFailed': QueryBySQLFailed,
-                    'processCompleted': QueryBySQLCompleted
-                }
-            };
             var polygon = L.polygon([[90, 180], [90, -180], [-90, -180], [-90, 180], [90, 180]]);
             var params = new QueryBySQLParameters({
                 queryParams: { name: "Capitals@World.1" },
                 bounds: polygon.getBounds()
             });
-            queryBySQLService = new QueryBySQLService(queryUrl, options);
-            queryBySQLService.processAsync(params);
+            queryBySQLService = new QueryBySQLService(queryUrl);
+            queryBySQLService.processAsync(params, QueryBySQLCompleted);
         // }, 4000);
     });
 
