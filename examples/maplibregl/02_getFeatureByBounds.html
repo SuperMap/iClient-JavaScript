@@ -91,7 +91,7 @@
             bounds: lngLatBounds
         });
 
-        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam, function (serviceResult) {
+        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features

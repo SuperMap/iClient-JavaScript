@@ -52,7 +52,7 @@
             dataset: "Town_P@Jingjin"
         });
 
-        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, null, 'FGB').then(function (serviceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               strategy: 'all',
@@ -62,7 +62,7 @@
               }
             });
             map.addLayer(FGBLayer);
-        }, 'FGB');
+        });
     }
 </script>
 </body>

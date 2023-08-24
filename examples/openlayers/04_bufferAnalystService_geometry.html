@@ -155,7 +155,27 @@
                 spatialQueryMode: ol.supermap.SpatialQueryMode.INTERSECT
             });
 
-            new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+            // new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+            //     var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features);
+            //     var iconStyle = new ol.style.Style({
+            //         image: new ol.style.Icon(({
+            //             anchor: [0.5, 1],
+            //             src: '../img/marker-gold.png'
+            //         }))
+            //     });
+            //     for (var i = 0; i < features.length; i++) {
+            //         features[i].setStyle(iconStyle);
+            //     }
+            //     var vectorSource = new ol.source.Vector({
+            //         features: features
+            //     });
+            //     var resultLayer1 = new ol.layer.Vector({
+            //         source: vectorSource
+            //     });
+            //     map.addLayer(resultLayer1);
+            // });
+
+            new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters).then(function (serviceResult) {
                 var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features);
                 var iconStyle = new ol.style.Style({
                     image: new ol.style.Icon(({

@@ -16,17 +16,11 @@ import { FacilityAnalystSinks3DParameters } from './FacilityAnalystSinks3DParame
  *             最近设施分析结果通过该类支持的事件的监听函数参数获取
  * @extends {CommonServiceBase}
  * @example
- * var myFacilityAnalystSinks3DService = new FacilityAnalystSinks3DService(url, {
- *     eventListeners: {
- *	       "processCompleted": facilityAnalystSinks3DCompleted,
- *		   "processFailed": facilityAnalystSinks3DError
- *		   }
- * });
+ * var myFacilityAnalystSinks3DService = new FacilityAnalystSinks3DService(url);
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。<br>
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -52,8 +46,10 @@ export class FacilityAnalystSinks3DService extends CommonServiceBase {
      * @function FacilityAnalystSinks3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystSinks3DParameters} params - 最近设施分析参数类(汇查找资源)
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystSinks3DParameters)) {
             return;
         }
@@ -65,12 +61,12 @@ export class FacilityAnalystSinks3DService extends CommonServiceBase {
             weightName: params.weightName,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

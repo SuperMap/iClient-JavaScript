@@ -127,7 +127,7 @@
         operation: maplibregl.supermap.OverlayOperationType.INTERSECT
       });
 
-      new maplibregl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
+      new maplibregl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters).then(function (serviceResult) {
         map.addSource("queryDatas", {
           "type": "geojson",
           "data": {

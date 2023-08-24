@@ -15,7 +15,6 @@ import { BurstPipelineAnalystParameters } from './BurstPipelineAnalystParameters
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}，
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -39,8 +38,10 @@ export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
      * @function BurstPipelineAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @params {BurstPipelineAnalystParameters} params - 爆管分析参数类
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof BurstPipelineAnalystParameters)) {
             return null;
         }
@@ -64,14 +65,12 @@ export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
             jsonObject.nodeID = params.nodeID;
         }
 
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
-
-
 }

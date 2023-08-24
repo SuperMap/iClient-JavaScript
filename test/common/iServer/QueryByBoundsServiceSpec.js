@@ -7,13 +7,8 @@ import {QueryOption} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var initQueryByBoundsService = (url,QueryByBoundsFailed,QueryByBoundsCompleted) => {
-    return new QueryByBoundsService(url,{
-        eventListeners: {
-            'processFailed': QueryByBoundsFailed,
-            'processCompleted': QueryByBoundsCompleted
-        }
-    });
+var initQueryByBoundsService = (url) => {
+    return new QueryByBoundsService(url);
 };
 describe('QueryByBoundsService_processAsync', () => {
     var originalTimeout;
@@ -44,18 +39,10 @@ describe('QueryByBoundsService_processAsync', () => {
 
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-        var QueryByBoundsFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var QueryByBoundsCompleted = (serviceCompletedEventArgs) => {
-            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-        };
-        var queryByBoundsService = initQueryByBoundsService(worldMapURL,QueryByBoundsFailed,QueryByBoundsCompleted);
+        var queryByBoundsService = initQueryByBoundsService(worldMapURL);
         expect(queryByBoundsService).not.toBeNull();
         expect(queryByBoundsService.url).toEqual(worldMapURL + "/queryResults");
         queryByBoundsService.destroy();
-        expect(queryByBoundsService.EVENT_TYPES).toBeNull();
-        expect(queryByBoundsService.events).toBeNull();
         expect(queryByBoundsService.returnContent).toBeNull();
     });
 
@@ -72,8 +59,6 @@ describe('QueryByBoundsService_processAsync', () => {
                 expect(queryResult.type).toBe("FeatureCollection");
                 expect(queryResult.features.length).toEqual(1);
                 queryByBoundsService.destroy();
-                expect(queryByBoundsService.EVENT_TYPES).toBeNull();
-                expect(queryByBoundsService.events).toBeNull();
                 expect(queryByBoundsService.returnContent).toBeNull();
                 queryByBoundsParameters.destroy();
                 done();
@@ -85,7 +70,7 @@ describe('QueryByBoundsService_processAsync', () => {
                 done();
             }
         };
-        var queryByBoundsService = initQueryByBoundsService(worldMapURL,QueryByBoundsFailed,QueryByBoundsCompleted);
+        var queryByBoundsService = initQueryByBoundsService(worldMapURL);
         var queryByBoundsParameters = new QueryByBoundsParameters({
             customParams: null,
             expectCount: 100,
@@ -110,14 +95,11 @@ describe('QueryByBoundsService_processAsync', () => {
             expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;21");
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
-        queryByBoundsService.processAsync(queryByBoundsParameters);
+        queryByBoundsService.processAsync(queryByBoundsParameters, QueryByBoundsCompleted);
     });
 
     it('processAsync_customsResult', (done) => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-        var QueryByBoundsFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var QueryByBoundsCompleted = (serviceCompletedEventArgs) => {
             serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
             try {
@@ -141,7 +123,7 @@ describe('QueryByBoundsService_processAsync', () => {
                 done();
             }
         };
-        var queryByBoundsService = initQueryByBoundsService(worldMapURL,QueryByBoundsFailed,QueryByBoundsCompleted);
+        var queryByBoundsService = initQueryByBoundsService(worldMapURL);
         var queryByBoundsParameters = new QueryByBoundsParameters({
             customParams: null,
             expectCount: 100,
@@ -167,7 +149,7 @@ describe('QueryByBoundsService_processAsync', () => {
             expect(paramsObj.queryParameters.queryParams[0].attributeFilter).toBe("SmID%26lt;3");
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_74e108f826bb45e2be52a31c6d448486","succeed":true,"customResult":{"top":37.95041694606847,"left":1.2015454003744992,"bottom":0.32300103608403674,"leftBottom":{"x":1.2015454003744992,"y":0.32300103608403674},"right":58.588002445423115,"rightTop":{"x":58.588002445423115,"y":37.95041694606847}},"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/c01d29d8d41743adb673cd1cecda6ed0_74e108f826bb45e2be52a31c6d448486.json"}`));
         });
-        queryByBoundsService.processAsync(queryByBoundsParameters);
+        queryByBoundsService.processAsync(queryByBoundsParameters, QueryByBoundsCompleted);
     });
 
     //查询参数为空
@@ -194,7 +176,7 @@ describe('QueryByBoundsService_processAsync', () => {
         var QueryByBoundsCompleted = (serviceCompletedEventArgs) => {
             serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
         };
-        var queryByBoundsService = initQueryByBoundsService(worldMapURL,QueryByBoundsFailed,QueryByBoundsCompleted);
+        var queryByBoundsService = initQueryByBoundsService(worldMapURL);
         var queryByBoundsParameters = new QueryByBoundsParameters({
             customParams: null,
             expectCount: 100,
@@ -215,7 +197,7 @@ describe('QueryByBoundsService_processAsync', () => {
             expect(paramsObj.queryParameters.networkType).toBe("POINT");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
         });
-        queryByBoundsService.processAsync(queryByBoundsParameters);
+        queryByBoundsService.processAsync(queryByBoundsParameters, QueryByBoundsFailed);
     })
 });
 

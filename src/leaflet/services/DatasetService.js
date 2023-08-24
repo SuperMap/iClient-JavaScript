@@ -44,12 +44,13 @@ export var DatasetService = ServiceBase.extend({
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getDatasets: function (datasourceName, callback) {
       if (!datasourceName) {
         return;
       }
-      this._datasetService.getDatasetsService(datasourceName, callback);
+      return this._datasetService.getDatasetsService(datasourceName, callback);
     },
 
     /**
@@ -62,12 +63,13 @@ export var DatasetService = ServiceBase.extend({
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getDataset: function (datasourceName, datasetName, callback) {
       if (!datasourceName || !datasetName) {
         return;
       }
-      this._datasetService.getDatasetService(datasourceName, datasetName, callback);
+      return this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     },
 
     /**
@@ -79,6 +81,7 @@ export var DatasetService = ServiceBase.extend({
      *   });
      * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类(当前数据源下的数据集存在时，更改数据集信息)
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     setDataset(params, callback) {
       if(!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)){
@@ -99,7 +102,7 @@ export var DatasetService = ServiceBase.extend({
                   "charset": params.charset
               }
       }
-      this._datasetService.setDatasetService(datasetParams, callback);
+      return this._datasetService.setDatasetService(datasetParams, callback);
     },
 
     /**
@@ -112,9 +115,10 @@ export var DatasetService = ServiceBase.extend({
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     deleteDataset: function (datasourceName, datasetName, callback) {
-      this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
+      return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 });
 

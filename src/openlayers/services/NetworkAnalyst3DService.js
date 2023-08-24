@@ -38,7 +38,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sinksFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
     }
 
     /**
@@ -49,7 +49,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sourcesFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
     }
 
     /**
@@ -61,7 +61,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      */
 
     traceUpFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
     }
 
     /**
@@ -72,7 +72,7 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     traceDownFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
     }
 
     /**
@@ -83,6 +83,6 @@ export class NetworkAnalyst3DService extends ServiceBase {
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     upstreamFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
     }
 }

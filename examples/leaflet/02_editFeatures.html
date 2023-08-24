@@ -54,7 +54,7 @@
             geometry: polygon
         });
 
-        featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
+        featureService.getFeaturesByGeometry(getFeatureParams).then(function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.features).addTo(map);
             resultLayer.on("mousemove", function (e) {
                 e.layer.bindPopup(resources.text_capital + "：" + e.layer.feature.properties.CAPITAL).openPopup();
@@ -162,7 +162,7 @@
                 editType: "add",
                 returnContent: true
             });
-            featureService.editFeatures(addFeatureParams, function (serviceResult) {
+            featureService.editFeatures(addFeatureParams).then(function (serviceResult) {
                 if (serviceResult.result.succeed) {
                     newAddId = serviceResult.result[0];
                     featureGroup.clearLayers();
@@ -232,7 +232,7 @@
             IDs: [e.layer.feature.id],
             editType: "delete"
         });
-        featureService.editFeatures(deleteParams, function (serviceResult) {
+        featureService.editFeatures(deleteParams).then(function (serviceResult) {
             if (serviceResult.result && serviceResult.result.succeed) {
                 if (resultLayer) {
                     map.removeLayer(resultLayer);

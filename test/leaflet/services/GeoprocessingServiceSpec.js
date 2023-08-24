@@ -268,7 +268,7 @@ describe('leaflet_GeoprocessingService', () => {
                 )
             );
         });
-        getJobsService.getJobs(null, (result) => {
+        getJobsService.getJobs((result) => {
             serverResult = result;
             try {
                 expect(getJobsService).not.toBeNull();

@@ -98,7 +98,7 @@
                     datasource: dataInfo.dataSourceName,
                     dataset: dataInfo.dataSetName
                 });
-                new ol.supermap.FieldService(dataURL).getFields(param, function (serviceResult) {
+                new ol.supermap.FieldService(dataURL).getFields(param).then(function (serviceResult) {
                     fieldStatistic();
                 });
             }

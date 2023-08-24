@@ -37,6 +37,7 @@
       * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryByBounds(params, callback, resultFormat) {
          var me = this;
@@ -45,17 +46,10 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
- 
              format: me._processFormat(resultFormat)
          });
- 
-         queryService.processAsync(params);
+
+         return queryService.processAsync(params, callback);
      }
  
      /**
@@ -64,6 +58,7 @@
       * @param {QueryByDistanceParameters} params - Distance 查询参数类。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型
+      * @returns {Promise} Promise 对象。
       */
      queryByDistance(params, callback, resultFormat) {
          var me = this;
@@ -72,16 +67,10 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: resultFormat
          });
  
-         queryByDistanceService.processAsync(params);
+         return queryByDistanceService.processAsync(params, callback);
      }
  
      /**
@@ -90,6 +79,7 @@
       * @param {QueryBySQLParameters} params - SQL 查询参数类。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryBySQL(params, callback, resultFormat) {
          var me = this;
@@ -98,16 +88,10 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: resultFormat
          });
  
-         queryBySQLService.processAsync(params);
+         return queryBySQLService.processAsync(params, callback);
      }
  
      /**
@@ -116,6 +100,7 @@
       * @param {QueryByGeometryParameters} params - Geometry 查询参数类。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryByGeometry(params, callback, resultFormat) {
          var me = this;
@@ -124,16 +109,10 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: resultFormat
          });
  
-         queryByGeometryService.processAsync(params);
+         return queryByGeometryService.processAsync(params, callback);
      }
  
      _processFormat(resultFormat) {

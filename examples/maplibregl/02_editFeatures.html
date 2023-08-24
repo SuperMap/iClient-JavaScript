@@ -93,7 +93,7 @@
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
+        featureService.getFeaturesByGeometry(getFeatureParams).then(function (serviceResult) {
             sourceFeatures = serviceResult.result.features;
 
             if (!map.getSource("queryDatas")) {
@@ -213,7 +213,7 @@
             editType: "add",
             returnContent: true
         });
-        featureService.editFeatures(addFeatureParams, function (serviceResult) {
+        featureService.editFeatures(addFeatureParams).then(function (serviceResult) {
             if (serviceResult.result.succeed) {
                 newAddId = serviceResult.result[0];
                 addPointFeaturesData.features = [];
@@ -294,7 +294,7 @@
             editType: "delete"
         });
 
-        featureService.editFeatures(deleteParams, function (serviceResult) {
+        featureService.editFeatures(deleteParams).then(function (serviceResult) {
             if (serviceResult.result.succeed) {
                 map.removeLayer("queryDatasLayer");
                 //重载数据默认集

@@ -45,6 +45,33 @@ describe('leaflet_DatasetService', () => {
             }
         });
     });
+
+     it('success:getDatasets promise', (done) => {
+      var service = new DatasetService(url, options);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(url+"/datasources/name/World/datasets");
+          expect(options).not.toBeNull();
+          var getDatasourceEscapedJson = `{"datasetCount":34,"childUriList":[""LandCover","WorldEarth","worldimage","Night","Ocean","Ocean_Label","Country_Label","Continent_Label","Lakes","Rivers","Grids","continent_T","Ocean_Label_1","Capitals","OceanLabel","CountryLabel1","CountryLabel","China_island_part","China_Boundary_nanhai","China_Boundary_1","capital","world","ocean_label_2","continent_common","continent_robinson","continent_vanderGrintenI","airline","China_boundary_unsettling","China_Boundary","China_island","BackUp_Countries","BackUp_Countries_1","BackUp_Countries_2","Countries"]}`;
+          return Promise.resolve(new Response(getDatasourceEscapedJson));
+      });
+      service.getDatasets("World").then((result) => {
+        serviceResult = result;
+        try {
+            expect(service).not.toBeNull();
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toBe("processCompleted");
+            expect(serviceResult.result.element).toBe(undefined);
+            expect(serviceResult.object.totalTimes).toBe(0);;
+            expect(serviceResult.result.succeed).toBe(true);
+            done();
+        } catch (exception) {
+            console.log("'success:getDatasets'案例失败" + exception.name + ":" + exception.message);
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  });
     
     //数据集信息查询服务成功事件
     it('success:getDataset', (done) => {
@@ -173,7 +200,6 @@ describe('leaflet_DatasetService', () => {
         spyOn(FetchRequest,'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
             expect(testUrl).toBe('http://localhost:9876/iserver/services/data-world/rest/data/datasources/name/World/datasets/name/continent_T');
-            expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.deleteDataset("World","continent_T", (result) => {
@@ -183,7 +209,6 @@ describe('leaflet_DatasetService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.element).toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (exception) {

@@ -27,7 +27,7 @@
     function layerService() {
         new L.supermap
             .LayerInfoService(url)
-            .getLayersInfo(function (serviceResult) {
+            .getLayersInfo().then((serviceResult) => {
                 var result = serviceResult.result;
                 var innerHTML = "";
                 result.subLayers.layers.map(function (layer) {

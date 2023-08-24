@@ -37,16 +37,17 @@ export class LayerInfoService extends ServiceBase {
      * @returns {LayerInfoService} 返回图层信息类。
      */
     getLayersInfo(callback) {
-      this._layerInfoService.getLayersInfo(callback);
+      return this._layerInfoService.getLayersInfo(callback);
     }
 
     /**
      * @function LayerInfoService.prototype.getLayersLegendInfo
      * @description 获取地图的图例信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getLayersLegendInfo(params, callback) {
-      this._layerInfoService.getLayersLegendInfo(params, callback);
+      return this._layerInfoService.getLayersLegendInfo(params, callback);
     }
 
     /**
@@ -56,7 +57,7 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayerInfo(params, callback) {
-      this._layerInfoService.setLayerInfo(params, callback);
+      return this._layerInfoService.setLayerInfo(params, callback);
     }
 
     /**
@@ -66,7 +67,7 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     setLayersInfo(params, callback) {
-      this._layerInfoService.setLayersInfo(params, callback);
+      return this._layerInfoService.setLayersInfo(params, callback);
     }
 
     /**
@@ -76,6 +77,6 @@ export class LayerInfoService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     setLayerStatus(params, callback) {
-      this._layerInfoService.setLayerStatus(params, callback);
+      return this._layerInfoService.setLayerStatus(params, callback);
     }
 }

@@ -561,5 +561,69 @@ describe('leaflet_ThemeService', () => {
             }
         });
     });
+
+    it('successEvent:ThemeUnique promise', (done) => {
+      var style1 = new ServerStyle({
+              fillForeColor: new ServerColor(248, 203, 249),
+              lineColor: new ServerColor(255, 255, 255),
+              lineWidth: 0.1
+          }),
+          style2 = new ServerStyle({
+              fillForeColor: new ServerColor(196, 255, 189),
+              lineColor: new ServerColor(255, 255, 255),
+              lineWidth: 0.1
+          });
+      var themeUniqueIteme1 = new ThemeUniqueItem({
+              unique: "黑龙江省",
+              style: style1
+          }),
+          themeUniqueIteme2 = new ThemeUniqueItem({
+              unique: "湖北省",
+              style: style2
+          });
+      var themeUniqueItemes = [themeUniqueIteme1, themeUniqueIteme2];
+      var themeUnique = new ThemeUnique({
+          uniqueExpression: "Name",
+          items: themeUniqueItemes,
+          defaultStyle: style1
+      });
+      var themeUniqueParameters = new ThemeParameters({
+          datasetNames: ["China_Province_pg"],
+          dataSourceNames: ["China"],
+          themes: [themeUnique]
+      });
+      var themeUniqueService = themeService(ChinaURL, options);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+          expect(method).toBe("POST");
+          expect(testUrl).toBe(ChinaURL + "/tempLayersSet");
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-china400/rest/maps/China/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_2cbb15b9a3dc4fddad377781f250d3a7.json"}`));
+      });
+      themeUniqueService.getThemeInfo(themeUniqueParameters).then((result) => {
+        serviceResult = result
+  
+        try {
+            expect(themeUniqueService).not.toBeNull();
+            expect(serviceResult.type).toBe("processCompleted");
+            expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
+            expect(serviceResult.options.method).toBe("POST");
+            expect(serviceResult.options.data).not.toBeNull();
+            expect(serviceResult.options.data).toContain("UNIQUE");
+            expect(serviceResult.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
+            expect(serviceResult.result).not.toBeNull();
+            expect(serviceResult.result.succeed).toBeTruthy();
+            expect(serviceResult.result.newResourceID.length).toBeGreaterThan(0);
+            expect(serviceResult.result.newResourceLocation.length).toBeGreaterThan(0);
+            expect(serviceResult.result.postResultType).toBe("CreateChild");
+            themeUniqueService.destroy();
+            done();
+        } catch (exception) {
+            console.log("leafletThemeService_'successEvent:ThemeUnique'案例失败：" + exception.name + ":" + exception.message);
+            themeUniqueService.destroy();
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  });
 });
 

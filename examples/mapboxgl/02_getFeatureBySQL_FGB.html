@@ -77,7 +77,9 @@
 
         new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
           sqlParam,
-          function (serviceResult) {
+        null,
+          'FGB'
+        ).then(function (serviceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               layerId: 'queryDatas',
@@ -100,9 +102,7 @@
                 )
                 .addTo(map);
             });
-          },
-          'FGB'
-        );
+          });
       }
     </script>
   </body>

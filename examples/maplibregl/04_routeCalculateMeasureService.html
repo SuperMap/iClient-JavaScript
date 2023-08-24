@@ -115,8 +115,7 @@
         "tolerance": 0.0001,
         "isIgnoreGap": false
       });
-      routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCaculateServiceResult) {
-
+      routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters).then(function (routeCaculateServiceResult) {
         map.addLayer({
           "id": "Point",
           "type": "circle",
@@ -129,7 +128,6 @@
             "circle-color": "red",
           },
         });
-
         var innerHTML = resources.msg_MByQuery + routeCaculateServiceResult.result.measure;
         new maplibregl.Popup().setLngLat(point).setHTML(innerHTML).addTo(map);
       });

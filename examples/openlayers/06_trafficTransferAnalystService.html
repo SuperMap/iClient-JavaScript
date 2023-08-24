@@ -362,7 +362,7 @@
             transferLines: transLines
         });
         new ol.supermap.TrafficTransferAnalystService(serviceUrl)
-            .analysisTransferPath(params, function (serviceResult) {
+            .analysisTransferPath(params).then(function (serviceResult) {
                 $("#transferInfo-" + id).empty();
                 var transGuide = serviceResult.result;
                 transSolutions = paths["transSolutions"];

@@ -53,13 +53,22 @@
         service = new L.supermap.NetworkAnalystService(serviceUrl);
         resultLayer = L.featureGroup().addTo(map);
         parameter.weights = [400 + Math.random() * 100];
-        service.findServiceAreas(parameter, function (serviceResult) {
-            var result = serviceResult.result;
-            result && result.serviceAreaList.map(function (serviceArea) {
-                resultLayer.addLayer(L.geoJSON(serviceArea.serviceRegion));
-            });
+        // 用法 1 回调方法
+        // service.findServiceAreas(parameter, function (serviceResult) {
+        //     var result = serviceResult.result;
+        //     result && result.serviceAreaList.map(function (serviceArea) {
+        //         resultLayer.addLayer(L.geoJSON(serviceArea.serviceRegion));
+        //     });
 
+        // });
+        // 用法 2 Promise
+        service.findServiceAreas(parameter).then((serviceResult) => {
+          var result = serviceResult.result;
+          result && result.serviceAreaList.map(function (serviceArea) {
+              resultLayer.addLayer(L.geoJSON(serviceArea.serviceRegion));
+          });
         });
+
     }
 </script>
 </body>

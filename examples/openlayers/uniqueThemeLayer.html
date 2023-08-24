@@ -131,9 +131,9 @@
             });
             getFeatureBySQLService = new ol.supermap.FeatureService(url2).getFeaturesBySQL(
                 getFeatureBySQLParams,
-                processAsync,
+                null,
                 ol.supermap.DataFormat.ISERVER
-            );
+            ).then(processAsync);
         });
     })
 

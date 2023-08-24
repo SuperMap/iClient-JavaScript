@@ -6,14 +6,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
 var serviceFailedEventArgsSystem = null,analystEventArgsSystem = null;
-var initMinDistanceAnalystService = (url,analyzeCompleted,analyzeFailed) => {
-    return new MinDistanceAnalystService(url,
-        {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        });
+var initMinDistanceAnalystService = (url) => {
+    return new MinDistanceAnalystService(url);
 };
 describe('MinDistanceAnalystService', () => {
     var originalTimeout;
@@ -53,8 +47,6 @@ describe('MinDistanceAnalystService', () => {
                 expect(result).not.toBeNull();
                 expect(result[0].distance).toBe(1941565.658677927);
                 minDisServiceByDatasets.destroy();
-                expect(minDisServiceByDatasets.events).toBeNull();
-                expect(minDisServiceByDatasets.eventListeners).toBeNull();
                 dsMinDistanceAnalystParameters.destroy();
                 done();
             } catch (exception) {
@@ -65,7 +57,7 @@ describe('MinDistanceAnalystService', () => {
                 done();
             }
         };
-        var minDisServiceByDatasets = initMinDistanceAnalystService(spatialAnalystURL,analyzeCompleted,analyzeFailed);
+        var minDisServiceByDatasets = initMinDistanceAnalystService(spatialAnalystURL);
         expect(minDisServiceByDatasets).not.toBeNull();
         expect(minDisServiceByDatasets.url).toEqual(spatialAnalystURL);
 
@@ -86,7 +78,7 @@ describe('MinDistanceAnalystService', () => {
             expect(paramsObj.createResultDataset).toBeFalsy();
             return Promise.resolve(new Response((JSON.stringify(minDistanceAnalystEscapedJson))));
         });
-        minDisServiceByDatasets.processAsync(dsMinDistanceAnalystParameters);
+        minDisServiceByDatasets.processAsync(dsMinDistanceAnalystParameters, analyzeCompleted);
     });
 
     //成功事件 AnalyzeByGeometry
@@ -102,8 +94,6 @@ describe('MinDistanceAnalystService', () => {
                 expect(result).not.toBeNull();
                 expect(result[0].distance).toBe(1941565.658677927);
                 minDisServiceByGeometry.destroy();
-                expect(minDisServiceByGeometry.events).toBeNull();
-                expect(minDisServiceByGeometry.eventListeners).toBeNull();
                 geoMinDistanceAnalystParameters.destroy();
                 done();
             } catch (exception) {
@@ -114,7 +104,7 @@ describe('MinDistanceAnalystService', () => {
                 done();
             }
         };
-        var minDisServiceByGeometry = initMinDistanceAnalystService(spatialAnalystURL,analyzeCompleted,analyzeFailed);
+        var minDisServiceByGeometry = initMinDistanceAnalystService(spatialAnalystURL);
         var geoMinDistanceAnalystParameters = new GeometryMinDistanceAnalystParameters({
             inputGeometries:[new Point(23, 23), new Point(33, 37)],
             referenceDatasetName:"Bounds@Interpolation",
@@ -130,7 +120,7 @@ describe('MinDistanceAnalystService', () => {
             expect(paramsObj.inputGeometries.length).toEqual(2);
             return Promise.resolve(new Response((JSON.stringify(minDistanceAnalystEscapedJson))));
         });
-        minDisServiceByGeometry.processAsync(geoMinDistanceAnalystParameters);
+        minDisServiceByGeometry.processAsync(geoMinDistanceAnalystParameters, analyzeCompleted);
     });
 
     //测试失败事件 AnalyzeByGeometry
@@ -158,7 +148,7 @@ describe('MinDistanceAnalystService', () => {
         var analyzeCompleted = (analyseEventArgs) => {
             analystEventArgsSystem = analyseEventArgs;
         };
-        var minDisServiceByGeometry = initMinDistanceAnalystService(spatialAnalystURL,analyzeCompleted,analyzeFailed);
+        var minDisServiceByGeometry = initMinDistanceAnalystService(spatialAnalystURL);
         var geoMinDistanceAnalystParameters = new GeometryMinDistanceAnalystParameters();
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
@@ -167,7 +157,7 @@ describe('MinDistanceAnalystService', () => {
             expect(paramsObj.inputGeometries).toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 points 错误：不能为空。"}}`));
         });
-        minDisServiceByGeometry.processAsync(geoMinDistanceAnalystParameters);
+        minDisServiceByGeometry.processAsync(geoMinDistanceAnalystParameters, analyzeFailed);
     });
 
     //测试失败事件 AnalyzeByDataset
@@ -195,7 +185,7 @@ describe('MinDistanceAnalystService', () => {
         var analyzeCompleted = (analyseEventArgs) => {
             analystEventArgsSystem = analyseEventArgs;
         };
-        var minDisServiceByDataset = initMinDistanceAnalystService(spatialAnalystURL,analyzeCompleted,analyzeFailed);
+        var minDisServiceByDataset = initMinDistanceAnalystService(spatialAnalystURL);
         var dsThiessenAnalystParameters = new DatasetMinDistanceAnalystParameters({
             dataset: 'test'
         });
@@ -206,7 +196,7 @@ describe('MinDistanceAnalystService', () => {
             expect(paramsObj.dataset).toBe('test');
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":404,"errorMsg":"数据集test不存在"}}`));
         });
-        minDisServiceByDataset.processAsync(dsThiessenAnalystParameters);
+        minDisServiceByDataset.processAsync(dsThiessenAnalystParameters, analyzeFailed);
     })
 });
 

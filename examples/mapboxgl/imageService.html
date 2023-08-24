@@ -584,7 +584,7 @@
                     targetPrj: { epsgCode: 4326 },
                     maxFeatures: 10000
                 });
-                new mapboxgl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+                new mapboxgl.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
                     var featureResults = serviceResult.result;
                     if (featureResults) {
                         var features = featureResults.features;

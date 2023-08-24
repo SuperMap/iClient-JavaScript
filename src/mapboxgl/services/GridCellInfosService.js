@@ -46,6 +46,6 @@ export class GridCellInfosService extends ServiceBase {
       if (!params) {
         return null;
       }
-      this._gridCellQueryService.processAsync(params, callback);
+      return this._gridCellQueryService.processAsync(params, callback);
     }
 }

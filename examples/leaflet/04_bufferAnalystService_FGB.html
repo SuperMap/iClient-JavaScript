@@ -51,14 +51,14 @@
             })
         });
   
-        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, null, 'FGB').then(function (serviceResult) {
             new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
               style: {
                 color: 'red'
               },
               strategy: 'all'
             }).addTo(map);
-        }, 'FGB');
+        });
 
     }
 </script>

@@ -19,23 +19,16 @@ import { DataFormat } from '../REST';
  * 执行几何对象泰森多边形分析。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myThiessenAnalystService = new ThiessenAnalystService(url, {
-     *     eventListeners: {
-     *           "processCompleted": bufferCompleted,
-     *           "processFailed": bufferFailed
-     *           }
-     *    });
+ * var myThiessenAnalystService = new ThiessenAnalystService(url);
  * (end)
  * @usage
  */
 export class ThiessenAnalystService extends SpatialAnalystBase {
-
 
     constructor(url, options) {
         super(url, options);
@@ -62,8 +55,10 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
      * @function ThiessenAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} parameter - 泰森多边形分析参数基类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
         if (parameter instanceof DatasetThiessenAnalystParameters) {
@@ -78,12 +73,12 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
 
         var jsonParameters = Util.toJSON(parameterObject);
         this.returnContent = true;
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

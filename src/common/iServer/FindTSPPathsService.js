@@ -18,18 +18,12 @@ import { GeoJSON } from '../format/GeoJSON';
  * @extends {NetworkAnalystServiceBase}
  * @example
  * (start code)
- * var myFindTSPPathsService = new FindTSPPathsService(url, {
- *     eventListeners: {
- *	      "processCompleted": findTSPPathsCompleted,
- *		  "processFailed": findTSPPathsError
- *		  }
- *  });
+ * var myFindTSPPathsService = new FindTSPPathsService(url);
  * (end)
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -53,9 +47,11 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     /**
      * @function FindTSPPathsService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
+     * @param {RequestCallback} callback - 回调函数。
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindTSPPathsParameters)) {
             return;
         }
@@ -66,12 +62,12 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
             endNodeAssigned: params.endNodeAssigned,
             nodes: me.getNodesJson(params)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

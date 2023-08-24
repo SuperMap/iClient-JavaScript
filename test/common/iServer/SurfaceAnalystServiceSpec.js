@@ -31,13 +31,8 @@ import {
 
 var surfaceAnalystEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var initSurfaceService = (url,surfaceAnalystCompleted,surfaceAnalystFailed) => {
-    return new SurfaceAnalystService(url, {
-        eventListeners: {
-            "processCompleted": surfaceAnalystCompleted,
-            'processFailed': surfaceAnalystFailed
-        }
-    });
+var initSurfaceService = (url) => {
+    return new SurfaceAnalystService(url);
 };
 
 describe('SurfaceAnalystService', () => {
@@ -95,16 +90,10 @@ describe('SurfaceAnalystService', () => {
             expect(surfaceAnalystResult.recordset.fieldTypes.length).toEqual(fieldCaptions);
             expect(surfaceAnalystResult.recordset.fields.length).toEqual(fieldCaptions);
             surfaceAnalystService.destroy();
-            expect(surfaceAnalystService.EVENT_TYPES == null).toBeTruthy();
-            expect(surfaceAnalystService.events == null).toBeTruthy();
             expect(surfaceAnalystService.lastResult == null).toBeTruthy();
-            expect(surfaceAnalystService.eventListeners == null).toBeTruthy();
             params.destroy();
             surfaceAnalystService.destroy();
             done();
-        };
-        var surfaceAnalystFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
         var surfaceAnalystParameters = new SurfaceAnalystParametersSetting({
             datumValue: 0,
@@ -124,7 +113,7 @@ describe('SurfaceAnalystService', () => {
                 expectCount: 1
             })
         });
-        var surfaceAnalystService = initSurfaceService(spatialAnalystURL,surfaceAnalystCompleted,surfaceAnalystFailed);
+        var surfaceAnalystService = initSurfaceService(spatialAnalystURL);
         expect(surfaceAnalystService).not.toBeNull();
         expect(surfaceAnalystService.url).toEqual(spatialAnalystURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
@@ -137,7 +126,7 @@ describe('SurfaceAnalystService', () => {
             expect(paramsObj.zValueFieldName).toBe("AVG_TMP");
             return Promise.resolve(new Response(surfaceAnalystEscapedJson));
         });
-        surfaceAnalystService.processAsync(params);
+        surfaceAnalystService.processAsync(params, surfaceAnalystCompleted);
     });
 
     //点数据集提取等值面
@@ -152,9 +141,6 @@ describe('SurfaceAnalystService', () => {
             surfaceAnalystService.destroy();
             params.destroy();
             done();
-        };
-        var surfaceAnalystFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
         var surfaceAnalystParameters = new SurfaceAnalystParametersSetting({
             datumValue: 70,
@@ -182,8 +168,8 @@ describe('SurfaceAnalystService', () => {
             expect(paramsObj.zValueFieldName).toBe("AVG_WTR");
             return Promise.resolve(new Response(surfaceAnalysis_Dataset_ISOREGION));
         });
-        var surfaceAnalystService = initSurfaceService(spatialAnalystURL,surfaceAnalystCompleted,surfaceAnalystFailed);
-        surfaceAnalystService.processAsync(params);
+        var surfaceAnalystService = initSurfaceService(spatialAnalystURL);
+        surfaceAnalystService.processAsync(params, surfaceAnalystCompleted);
     });
 
     //对象提取等值线
@@ -201,9 +187,6 @@ describe('SurfaceAnalystService', () => {
             surfaceAnalystService.destroy();
             params.destroy();
             done();
-        };
-        var surfaceAnalystFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
         var surfaceAnalystParameters = new SurfaceAnalystParametersSetting({
             datumValue: -3,
@@ -241,8 +224,8 @@ describe('SurfaceAnalystService', () => {
             expect(paramsObj.surfaceAnalystMethod).toBe(SurfaceAnalystMethod.ISOLINE);
             return Promise.resolve(new Response(surfaceAnalysis_Geometry_ISOLINE));
         });
-        var surfaceAnalystService = initSurfaceService(spatialAnalystURL,surfaceAnalystCompleted,surfaceAnalystFailed);
-        surfaceAnalystService.processAsync(params);
+        var surfaceAnalystService = initSurfaceService(spatialAnalystURL);
+        surfaceAnalystService.processAsync(params, surfaceAnalystCompleted);
     });
 
     //对象提取等值面
@@ -260,9 +243,6 @@ describe('SurfaceAnalystService', () => {
             surfaceAnalystService.destroy();
             params.destroy();
             done();
-        };
-        var surfaceAnalystFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
         var surfaceAnalystParameters = new SurfaceAnalystParametersSetting({
             datumValue: -3,
@@ -300,16 +280,13 @@ describe('SurfaceAnalystService', () => {
             expect(paramsObj.surfaceAnalystMethod).toBe(SurfaceAnalystMethod.ISOREGION);
             return Promise.resolve(new Response(surfaceAnalysis_Geometry_ISOREGION));
         });
-        var surfaceAnalystService = initSurfaceService(spatialAnalystURL,surfaceAnalystCompleted,surfaceAnalystFailed);
-        surfaceAnalystService.processAsync(params);
+        var surfaceAnalystService = initSurfaceService(spatialAnalystURL);
+        surfaceAnalystService.processAsync(params, surfaceAnalystCompleted);
     });
 
     //失败
     it('fail', (done) => {
         var spatialAnalystURL = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
-        var surfaceAnalystCompleted = (surfaceAnalystEventArgs) => {
-            surfaceAnalystEventArgsSystem = surfaceAnalystEventArgs;
-        };
         var surfaceAnalystFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
@@ -341,7 +318,44 @@ describe('SurfaceAnalystService', () => {
             expect(paramsObj.zValueFieldName).toBe("AVG_WTR");
             return Promise.resolve(new Response(escapedJson));
         });
-        var surfaceAnalystService = initSurfaceService(spatialAnalystURL,surfaceAnalystCompleted,surfaceAnalystFailed);
-        surfaceAnalystService.processAsync(params);
+        var surfaceAnalystService = initSurfaceService(spatialAnalystURL);
+        surfaceAnalystService.processAsync(params, surfaceAnalystFailed);
     })
+
+    it('fail promise', (done) => {
+      var spatialAnalystURL = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+      var surfaceAnalystFailed = (serviceFailedEventArgs) => {
+          serviceFailedEventArgsSystem = serviceFailedEventArgs;
+          expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
+          expect(serviceFailedEventArgsSystem.error.errorMsg).toBe("数据集SamplesP1@Interpolation不存在");
+          expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
+          surfaceAnalystService.destroy();
+          params.destroy();
+          done();
+      };
+      var surfaceAnalystParameters = new SurfaceAnalystParametersSetting({
+          datumValue: 70,
+          interval: 100,
+          resampleTolerance: 0.7,
+          smoothMethod: SmoothMethod.BSPLINE,
+          smoothness: 3
+      });
+      var params = new DatasetSurfaceAnalystParameters({
+          extractParameter: surfaceAnalystParameters,
+          dataset: "SamplesP1@Interpolation",
+          resolution: 3000,
+          zValueFieldName: "AVG_WTR"
+      });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(spatialAnalystURL + "/datasets/SamplesP1@Interpolation/isoline?returnContent=true");
+          var escapedJson = "{\"succeed\":false,\"error\":{\"code\":400,\"errorMsg\":\"数据集SamplesP1@Interpolation不存在\"}}";
+          var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+          expect(paramsObj.resolution).toEqual(3000);
+          expect(paramsObj.zValueFieldName).toBe("AVG_WTR");
+          return Promise.resolve(new Response(escapedJson));
+      });
+      var surfaceAnalystService = initSurfaceService(spatialAnalystURL);
+      surfaceAnalystService.processAsync(params).then(surfaceAnalystFailed);
+  })
 });

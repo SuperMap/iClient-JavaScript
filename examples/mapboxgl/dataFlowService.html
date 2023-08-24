@@ -92,13 +92,12 @@
           attributeFilter: "SMID = 1755"
         }
       });
-      queryService = new mapboxgl.supermap.QueryService(urlQuery).queryBySQL(param, function (serviceResult) {
+      queryService = new mapboxgl.supermap.QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {
         featureResult = serviceResult;
         dataFlowBroadcast = new mapboxgl.supermap.DataFlowService(urlDataFlow).initBroadcast();
         dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
           timer = window.setInterval("broadcast()", 2000);
         });
-
       });
     }
 

@@ -20,8 +20,6 @@ describe('classic_AddressMatchService', () => {
         expect(addressMatchService.url).toEqual(addressMatchURL);
         expect(addressMatchService.isInTheSameDomain).toBeTruthy();
         addressMatchService.destroy();
-        expect(addressMatchService.EVENT_TYPES).toBeNull();
-        expect(addressMatchService.events).toBeNull();
         expect(addressMatchService.isInTheSameDomain).toBeNull();
         expect(addressMatchService.url).toBeNull();
     });

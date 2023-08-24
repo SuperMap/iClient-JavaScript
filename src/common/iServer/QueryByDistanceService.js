@@ -13,17 +13,11 @@ import {ServerGeometry} from './ServerGeometry';
  * @classdesc Distance查询服务类。
  * @extends {QueryServiceBase}
  * @example
- * var myQueryByDistService = new QueryByDistanceService(url, {
- *     eventListeners: {
- *         "processCompleted": queryCompleted,
- *		   "processFailed": queryError
- *		   }
- * });
+ * var myQueryByDistService = new QueryByDistanceService(url);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。

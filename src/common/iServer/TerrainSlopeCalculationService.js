@@ -12,7 +12,6 @@ import {TerrainSlopeCalculationParameters} from './TerrainSlopeCalculationParame
  * @classdesc 填挖方计算服务类。
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -46,7 +45,7 @@ export class TerrainSlopeCalculationService extends SpatialAnalystBase {
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {TerrainSlopeCalculationParameters} parameter - 地形坡度计算参数类。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = {};
 
@@ -57,12 +56,12 @@ export class TerrainSlopeCalculationService extends SpatialAnalystBase {
         TerrainSlopeCalculationParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util.toJSON(parameterObject);
         me.url = Util.urlAppend(me.url, 'returnContent=true');
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }

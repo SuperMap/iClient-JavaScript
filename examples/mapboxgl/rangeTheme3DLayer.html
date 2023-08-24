@@ -76,9 +76,9 @@
 
         new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
             getFeatureBySQLParams,
-            processCompleted,
+            null,
             mapboxgl.supermap.DataFormat.GEOJSON
-            );
+            ).then(processCompleted);
     }
 
     function processCompleted(serviceResult) {

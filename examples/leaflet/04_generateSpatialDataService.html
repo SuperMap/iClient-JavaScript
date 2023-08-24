@@ -103,7 +103,7 @@
             datasetNames: ["GenerateSpatialData_Result"],
             dataSourceNames: ["Changchun"]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult1) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
                 themeLayer = new L.supermap.TiledMapLayer(baseUrl, {

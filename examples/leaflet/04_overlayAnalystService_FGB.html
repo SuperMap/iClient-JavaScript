@@ -34,11 +34,11 @@
             operation: L.supermap.OverlayOperationType.UNION
         });
         
-        overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
+        overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, null, 'FGB').then(function (serviceResult) {
           new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
             strategy: 'all'
           }).addTo(map);
-        }, 'FGB');
+        });
     }
 </script>
 </body>

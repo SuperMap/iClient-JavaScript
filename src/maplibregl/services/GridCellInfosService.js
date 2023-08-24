@@ -41,11 +41,12 @@ export class GridCellInfosService extends ServiceBase {
      * @function GridCellInfosService.prototype.getGridCellInfos
      * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getGridCellInfos(params, callback) {
       if (!params) {
         return null;
       }
-      this._gridCellQueryService.processAsync(params, callback);
+      return this._gridCellQueryService.processAsync(params, callback);
     }
 }

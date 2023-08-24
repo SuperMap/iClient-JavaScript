@@ -142,6 +142,35 @@ describe('ImageService', () => {
         });
     });
 
+    it('should call search successfully promise', function (done) {
+      var bodyParam = new ImageSearchParameter({
+          bbox: [-110, 39.5, -105, 40.5],
+          datetimeFilter: '2018-02-12T00:00:00Z/2018-03-18T12:31:12Z',
+          limit: 10
+      });
+      service = new ImageService(requestUrl);
+
+      spyOn(FetchRequest, 'post').and.callFake((url) => {
+          expect(url).toEqual(requestUrl + '/search');
+          return Promise.resolve(new Response(JSON.stringify(ItemSearchJson)));
+      });
+      service.search(bodyParam).then((res) => {
+        try {
+            var result = res.result;
+            expect(result).not.toBeNull();
+            expect(result.type).toEqual('FeatureCollection');
+            expect(result.stac_extensions.length).toEqual(2);
+            expect(result.features.length).toEqual(1);
+            expect(result.links.length).toEqual(1);
+            done();
+        } catch (exception) {
+            expect(false).toBeTruthy();
+            console.log('ImageService' + exception.name + ':' + exception.message);
+            done();
+        }
+    });
+  });
+
     it('should call search parameter wrong', function (done) {
         var bodyParam = new ImageSearchParameter({
             bbox: ['fff']

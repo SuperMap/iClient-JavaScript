@@ -2040,18 +2040,14 @@ export class WebMap extends mapboxgl.Evented {
 			toIndex: 100000,
 			returnContent: true
 		});
-		let options = {
-			eventListeners: {
-				processCompleted: getFeaturesEventArgs => {
-					processCompleted && processCompleted(getFeaturesEventArgs);
-				},
-				processFailed: e => {
-					processFaild && processFaild(e);
-				}
-			}
-		};
-		getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
-		getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+		getFeatureBySQLService = new GetFeaturesBySQLService(url);
+		getFeatureBySQLService.processAsync(getFeatureBySQLParams, function(result) {
+      if (result.type === 'processCompleted') {
+        processCompleted(result);
+      } else {
+        processFaild(result);
+      }
+    });
 	}
 
 	/**

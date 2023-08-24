@@ -20,7 +20,6 @@ import {Vector} from './Vector';
  *        如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：
  *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -55,19 +54,20 @@ export class GetLayersInfoService extends CommonServiceBase {
     /**
      * @function GetLayersInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this,
             method = "GET";
         if (!me.isTempLayers) {
             me.url = Util.urlPathAppend(me.url, 'layers');
         }
-        me.request({
+        return me.request({
             method: method,
             params: null,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -79,12 +79,11 @@ export class GetLayersInfoService extends CommonServiceBase {
     serviceProcessCompleted(result, options) {
         var me = this, existRes, layers, len;
         result = Util.transformResult(result);
-
         existRes = !!result && result.length > 0;
         layers = existRes ? result[0].subLayers.layers : null;
         len = layers ? layers.length : 0;
         me.handleLayers(len, layers);
-        me.events.triggerEvent("processCompleted", {result: result[0], options});
+        return { result: result[0], options };
     }
 
     /**
@@ -131,6 +130,4 @@ export class GetLayersInfoService extends CommonServiceBase {
             }
         }
     }
-
-
 }

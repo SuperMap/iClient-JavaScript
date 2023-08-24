@@ -124,7 +124,26 @@
             })
 
         });
-        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+        // new mapboxgl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+        //     map.addSource("queryDatas", {
+        //         "type": "geojson",
+        //         "data": {
+        //             "type": "FeatureCollection",
+        //             "features": [serviceResult.result.resultGeometry]
+        //         }
+        //     });
+        //     map.addLayer({
+        //         "id": "queryDatas",
+        //         "type": "fill",
+        //         "source": "queryDatas",
+        //         "paint": {
+        //             "fill-color": "red", /* 填充的颜色 */
+        //             "fill-opacity": 0.4  /* 透明度 */
+        //         },
+        //     });
+        // });
+
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": {

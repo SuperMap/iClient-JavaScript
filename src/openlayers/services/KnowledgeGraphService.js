@@ -33,9 +33,10 @@ export class KnowledgeGraphService extends ServiceBase {
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} cypherQuery - 查询条件。
    * @param {RequestCallback} callback - 回调函数。
+   * @returns {Promise} Promise 对象。
    */
   query(cypherQuery, callback) {
-    this._knowledgeGraphService.query(cypherQuery, callback);
+    return this._knowledgeGraphService.query(cypherQuery, callback);
   }
 
   // /**
@@ -51,9 +52,10 @@ export class KnowledgeGraphService extends ServiceBase {
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表。
    * @param {RequestCallback} callback 回调函数。
+   * @returns {Promise} Promise 对象。
    */
   getGraphMaps(callback) {
-    this._knowledgeGraphService.getGraphMaps(callback);
+    return this._knowledgeGraphService.getGraphMaps(callback);
   }
 
   /**
@@ -61,9 +63,10 @@ export class KnowledgeGraphService extends ServiceBase {
    * @description 获取图谱图序列化数据。
    * @param {string} params 图谱名称。
    * @param {RequestCallback} callback 回调函数。
+   * @returns {Promise} Promise 对象。
    */
   getGraphMap(params, callback) {
-    this._knowledgeGraphService.getGraphMap(params, callback);
+    return this._knowledgeGraphService.getGraphMap(params, callback);
   }
 
   /**

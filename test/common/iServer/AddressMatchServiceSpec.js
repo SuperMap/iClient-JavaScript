@@ -21,8 +21,6 @@ describe('AddressMatchService', () => {
         expect(addressMatchService.url).toEqual(addressMatchURL_code);
         expect(addressMatchService.isInTheSameDomain).toBeTruthy();
         addressMatchService.destroy();
-        expect(addressMatchService.EVENT_TYPES).toBeNull();
-        expect(addressMatchService.events).toBeNull();
         expect(addressMatchService.isInTheSameDomain).toBeNull();
         expect(addressMatchService.url).toBeNull();
     });
@@ -44,11 +42,8 @@ describe('AddressMatchService', () => {
     });
 
     it('code', done => {
-        var codingFailedEventArgs = null,
-            codingSuccessEventArgs = null;
-        var codeFailed = serviceFailedEventArgs => {
-            codingFailedEventArgs = serviceFailedEventArgs;
-        };
+      var codingFailedEventArgs = null,
+      codingSuccessEventArgs = null;
         var codeCompleted = analyseEventArgs => {
             codingSuccessEventArgs = analyseEventArgs;
             try {
@@ -72,9 +67,6 @@ describe('AddressMatchService', () => {
                 done();
             }
         };
-        var options = {
-            eventListeners: { processCompleted: codeCompleted, processFailed: codeFailed }
-        };
         var GeoCodingParams = new GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
@@ -83,7 +75,7 @@ describe('AddressMatchService', () => {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var addressCodeService = new AddressMatchService(addressMatchURL_code, options);
+        var addressCodeService = new AddressMatchService(addressMatchURL_code);
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL_code);
             expect(params.address).toBe('公司');
@@ -91,15 +83,13 @@ describe('AddressMatchService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(codeSuccessEscapedJson));
         });
-        addressCodeService.code(addressMatchURL_code, GeoCodingParams);
+        addressCodeService.code(addressMatchURL_code, GeoCodingParams, codeCompleted);
     });
 
     it('decode', done => {
-        var decodingFailedEventArgs = null,
-            decodingSuccessEventArgs = null;
-        var decodeFailed = serviceFailedEventArgs => {
-            decodingFailedEventArgs = serviceFailedEventArgs;
-        };
+      var decodingFailedEventArgs = null,
+          decodingSuccessEventArgs = null;
+      decodingSuccessEventArgs = null;
         var decodeCompleted = analyseEventArgs => {
             decodingSuccessEventArgs = analyseEventArgs;
             try {
@@ -123,9 +113,6 @@ describe('AddressMatchService', () => {
                 done();
             }
         };
-        var options = {
-            eventListeners: { processCompleted: decodeCompleted, processFailed: decodeFailed }
-        };
         var GeoDeCodingParams = new GeoDecodingParameter({
             x: 116.31740122415627,
             y: 39.92311315752059,
@@ -136,7 +123,7 @@ describe('AddressMatchService', () => {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var addressDeCodeService = new AddressMatchService(addressMatchURL_decode, options);
+        var addressDeCodeService = new AddressMatchService(addressMatchURL_decode);
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL_decode);
             expect(params).not.toBeNull();
@@ -145,6 +132,54 @@ describe('AddressMatchService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(decodeSuccessEscapedJson));
         });
-        addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
+        addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams, decodeCompleted);
     });
+
+    it('decode promise', done => {
+      var decodingSuccessEventArgs = null;
+      var decodingFailedEventArgs = null;
+      var decodeCompleted = analyseEventArgs => {
+          decodingSuccessEventArgs = analyseEventArgs;
+          try {
+              expect(addressDeCodeService).not.toBeNull();
+              expect(decodingSuccessEventArgs).not.toBeNull();
+              expect(decodingSuccessEventArgs.type).toBe('processCompleted');
+              expect(decodingSuccessEventArgs.result).not.toBeNull();
+              expect(decodingSuccessEventArgs.result.length).toEqual(5);
+              addressDeCodeService.destroy();
+              GeoDeCodingParams.destroy();
+              decodingFailedEventArgs = null;
+              decodingSuccessEventArgs = null;
+              done();
+          } catch (exception) {
+              console.log("'code'案例失败：" + exception.name + ':' + exception.message);
+              addressDeCodeService.destroy();
+              GeoDeCodingParams.destroy();
+              decodingFailedEventArgs = null;
+              decodingSuccessEventArgs = null;
+              expect(false).toBeTruthy();
+              done();
+          }
+      };
+      var GeoDeCodingParams = new GeoDecodingParameter({
+          x: 116.31740122415627,
+          y: 39.92311315752059,
+          fromIndex: 0,
+          toIndex: 5,
+          filters: '北京市,海淀区',
+          prjCoordSys: '{epsgcode:4326}',
+          maxReturn: -1,
+          geoDecodingRadius: 500
+      });
+      var addressDeCodeService = new AddressMatchService(addressMatchURL_decode);
+      spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+          expect(testUrl).toBe(addressMatchURL_decode);
+          expect(params).not.toBeNull();
+          expect(params.x).toBe(116.31740122415627);
+          expect(params.prjCoordSys).toBe('{epsgcode:4326}');
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(decodeSuccessEscapedJson));
+      });
+      addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams).then(decodeCompleted);
+  });
 });

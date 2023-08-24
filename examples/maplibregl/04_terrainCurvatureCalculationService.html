@@ -113,7 +113,7 @@
             joinItems: null,
             themes: [themeGridRange]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult1) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
                 map.addLayer({

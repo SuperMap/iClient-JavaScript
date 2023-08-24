@@ -72,7 +72,7 @@
             toIndex: 10000,
             maxFeatures: 10000
         });
-        new L.supermap.QueryService(dataUrl).queryBySQL(param, function (serviceResult) {
+        new L.supermap.QueryService(dataUrl).queryBySQL(param).then(function (serviceResult) {
             var result = serviceResult.result;
             var features = result.recordsets[0].features.features;
             //构造数据

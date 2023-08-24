@@ -73,7 +73,7 @@
             });
             new L.supermap
                 .QueryService(urlQuery)
-                .queryBySQL(param, function (serviceResult) {
+                .queryBySQL(param).then(function (serviceResult) {
                     featureResult = serviceResult;
                     dataFlowBroadcast = new L.supermap.DataFlowService(urlDataFlow).initBroadcast();
                     dataFlowBroadcast.on('broadcastSocketConnected', function (e) {

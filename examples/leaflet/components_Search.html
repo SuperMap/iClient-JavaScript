@@ -66,7 +66,7 @@
             });
             new L.supermap
                 .QueryService(sqlurl)
-                .queryByBounds(param, function (serviceResult) {
+                .queryByBounds(param).then(function (serviceResult) {
                     var result = serviceResult.result;
                     var resultLayer = L.geoJSON(result.recordsets[0].features, {
                         pointToLayer: function (geoJsonPoint, latlng) {

@@ -41,6 +41,7 @@ export class FeatureService {
      * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
@@ -49,15 +50,9 @@ export class FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: resultFormat
         });
-        getFeaturesByIDsService.processAsync(params);
-
+        return getFeaturesByIDsService.processAsync(params, callback);
     }
 
     /**
@@ -66,6 +61,7 @@ export class FeatureService {
      * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
@@ -74,14 +70,9 @@ export class FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        getFeaturesByBoundsService.processAsync(params);
+        return getFeaturesByBoundsService.processAsync(params, callback);
     }
 
     /**
@@ -90,6 +81,7 @@ export class FeatureService {
      * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
@@ -98,14 +90,9 @@ export class FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        getFeatureService.processAsync(params);
+        return getFeatureService.processAsync(params, callback);
     }
 
     /**
@@ -114,6 +101,7 @@ export class FeatureService {
      * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
@@ -122,15 +110,9 @@ export class FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-
-        getFeatureBySQLService.processAsync(params);
+        return getFeatureBySQLService.processAsync(params, callback);
     }
 
     /**
@@ -139,6 +121,7 @@ export class FeatureService {
      * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -147,14 +130,9 @@ export class FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        getFeaturesByGeometryService.processAsync(params);
+        return getFeaturesByGeometryService.processAsync(params, callback);
     }
 
     /**
@@ -162,6 +140,7 @@ export class FeatureService {
      * @description 地物编辑服务。
      * @param {EditFeaturesParameters} params - 数据服务中数据集添加、修改、删除参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     editFeatures(params, callback) {
         if (!params || !params.dataSourceName || !params.dataSetName) {
@@ -177,14 +156,9 @@ export class FeatureService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        editFeatureService.processAsync(params);
+        return editFeatureService.processAsync(params, callback);
     }
 
     /**
@@ -203,14 +177,9 @@ export class FeatureService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        editFeatureService.getMetaData(params);
+        return editFeatureService.getMetaData(params, callback);
     }
     _processFormat(resultFormat) {
       return resultFormat ? resultFormat : DataFormat.GEOJSON;

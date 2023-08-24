@@ -128,7 +128,7 @@
         } else {
             sqlParam.queryParameter.attributeFilter = "id>0";
         }
-        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
             renderLive(serviceResult.result.aggregations[0].buckets);
         });
     }

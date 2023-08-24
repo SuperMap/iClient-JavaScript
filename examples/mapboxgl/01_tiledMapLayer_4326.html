@@ -42,7 +42,7 @@
           datasetNames: ['World:Countries']
         });
         var service = new mapboxgl.supermap.FeatureService(host + '/iserver/services/data-world/rest/data');
-        service.getFeaturesByIDs(idsParam, function (serviceResult) {
+        service.getFeaturesByIDs(idsParam).then(function (serviceResult) {
           map.addSource('queryDatas', {
             type: 'geojson',
             data: serviceResult.result.features

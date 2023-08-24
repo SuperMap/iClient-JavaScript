@@ -62,7 +62,7 @@
             widgets.alert.showAlert(resources.msg_noDataRedraw, false);
         }
         var param = new mapboxgl.supermap.MeasureParameters(e.features[0]);
-        new mapboxgl.supermap.MeasureService(url).measureArea(param, function (serviceResult) {
+        new mapboxgl.supermap.MeasureService(url).measureArea(param).then(function (serviceResult) {
             var area = serviceResult.result.area;
             var rounded_area = Math.round(area * 100) / 100;
             widgets.alert.showAlert(rounded_area + resources.msg_sqm, true);

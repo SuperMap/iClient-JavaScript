@@ -4,13 +4,8 @@ import request from 'request';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
-var initTerrainCurvatureCalculationService = (url,TerrainCurvatureCalculationServiceCompleted,TerrainCurvatureCalculationServiceFailed) => {
-    return new TerrainCurvatureCalculationService(url, {
-        eventListeners: {
-            "processCompleted": TerrainCurvatureCalculationServiceCompleted,
-            'processFailed': TerrainCurvatureCalculationServiceFailed
-        }
-    });
+var initTerrainCurvatureCalculationService = (url) => {
+    return new TerrainCurvatureCalculationService(url);
 };
 
 describe('TerrainCurvatureCalculationService', () => {
@@ -51,8 +46,6 @@ describe('TerrainCurvatureCalculationService', () => {
                 expect(terrainCurvatureCalculationResult.succeed).toBeTruthy();
                 expect(terrainCurvatureCalculationResult.averageCurvatureResult.dataset).toBe(resultDataset + "@Jingjin");
                 terrainCurvatureCalculationService.destroy();
-                expect(terrainCurvatureCalculationService.events).toBeNull();
-                expect(terrainCurvatureCalculationService.eventListeners).toBeNull();
                 terrainCurvatureCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -63,10 +56,7 @@ describe('TerrainCurvatureCalculationService', () => {
                 done();
             }
         };
-        var TerrainCurvatureCalculationServiceFailed = (event) => {
-            serviceFailedEventArgsSystem = event;
-        };
-        var terrainCurvatureCalculationService = initTerrainCurvatureCalculationService(spatialAnalystURL,TerrainCurvatureCalculationServiceCompleted,TerrainCurvatureCalculationServiceFailed);
+        var terrainCurvatureCalculationService = initTerrainCurvatureCalculationService(spatialAnalystURL);
         expect(terrainCurvatureCalculationService).not.toBeNull();
         expect(terrainCurvatureCalculationService.url).toEqual(spatialAnalystURL);
         var terrainCurvatureCalculationParameters = new TerrainCurvatureCalculationParameters({
@@ -84,7 +74,7 @@ describe('TerrainCurvatureCalculationService', () => {
             expect(paramsObj.averageCurvatureName).toBe("TerrainCurvature_commonTest");
             return Promise.resolve(new Response(`{"averageCurvatureResult":{"succeed":true,"recordset":null,"message":null,"dataset":"TerrainCurvature_commonTest@Jingjin"}}`));
         });
-        terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
+        terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters, TerrainCurvatureCalculationServiceCompleted);
     });
 
     //测试失败事件
@@ -102,8 +92,6 @@ describe('TerrainCurvatureCalculationService', () => {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("数据集XX@Jingjin不存在");
                 terrainCurvatureCalculationService.destroy();
-                expect(terrainCurvatureCalculationService.events).toBeNull();
-                expect(terrainCurvatureCalculationService.eventListeners).toBeNull();
                 terrainCurvatureCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -114,7 +102,7 @@ describe('TerrainCurvatureCalculationService', () => {
                 done();
             }
         };
-        var terrainCurvatureCalculationService = initTerrainCurvatureCalculationService(spatialAnalystURL,TerrainCurvatureCalculationServiceCompleted,TerrainCurvatureCalculationServiceFailed);
+        var terrainCurvatureCalculationService = initTerrainCurvatureCalculationService(spatialAnalystURL);
         var terrainCurvatureCalculationParameters = new TerrainCurvatureCalculationParameters({
             dataset: "XX@Jingjin",
             zFactor: 1.0,
@@ -130,7 +118,7 @@ describe('TerrainCurvatureCalculationService', () => {
             expect(paramsObj.averageCurvatureName).toBe("TerrainCurvatureFail_commonTest");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
-        terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
+        terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters, TerrainCurvatureCalculationServiceFailed);
     });
 });
 

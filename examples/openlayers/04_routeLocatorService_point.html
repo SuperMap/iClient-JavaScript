@@ -140,7 +140,7 @@
                 "offset": 0,
                 "isIgnoreGap": true
             });
-            routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocateServiceResult) {
+            routeLocatorService.routeLocate(routeLocatorParameters_point).then(function (routeLocateServiceResult) {
                 var vectorSource = new ol.source.Vector({
                     features: [(new ol.format.GeoJSON()).readFeature(routeLocateServiceResult.result.resultGeometry)],
                     wrapX: false

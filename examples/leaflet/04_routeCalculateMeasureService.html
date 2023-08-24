@@ -62,7 +62,7 @@
                     "isIgnoreGap": false
                 });
                 routeCalculateMeasureService = new L.supermap.SpatialAnalystService(serviceUrl);
-                routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCalculateServiceResult) {
+                routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters).then(function (routeCalculateServiceResult) {
                     if (routeCalculateServiceResult.result && routeCalculateServiceResult.result.measure) {
                         marker.bindTooltip(resources.msg_MByQuery + routeCalculateServiceResult.result.measure + "", {
                             direction: "top",

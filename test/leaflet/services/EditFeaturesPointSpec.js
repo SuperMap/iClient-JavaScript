@@ -41,9 +41,6 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
             expect(addFeaturesService).not.toBeNull();
             expect(addFeatureResult_POINT.type).toBe("processCompleted");
             expect(addFeatureResult_POINT.object.isInTheSameDomain).toBeTruthy();
-            expect(addFeatureResult_POINT.options.method).toBe("POST");
-            expect(addFeatureResult_POINT.options.data).toContain("'parts':[1]");
-            expect(addFeatureResult_POINT.options.data).toContain('"POINT"');
             expect(addFeatureResult_POINT.result).not.toBeNull();
             expect(addFeatureResult_POINT.result.succeed).toBeTruthy();
             expect(addFeatureResult_POINT.result.length).toEqual(1);
@@ -87,9 +84,6 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
                 expect(addFeaturesResult.type).toBe("processCompleted");
                 expect(addFeaturesResult.object.isInTheSameDomain).toBeTruthy();
                 expect(addFeaturesResult.object.isUseBatch).toBeTruthy();
-                expect(addFeaturesResult.options.method).toBe("POST");
-                expect(addFeaturesResult.options.data).toContain("'x':100,'y':51");
-                expect(addFeaturesResult.options.data).toContain("'x':120,'y':40");
                 expect(addFeaturesResult.result).not.toBeNull();
                 expect(addFeaturesResult.result.succeed).toBeTruthy();
                 expect(addFeaturesResult.result.postResultType).toBe("CreateChild");
@@ -129,8 +123,6 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
                 expect(deletePointsResult).not.toBeNull();
                 expect(deletePointsResult.type).toBe("processCompleted");
                 var id = "[" + id1 + "," + id2 + "," + id3 + "]";
-                expect(deletePointsResult.options.data).toBe(id);
-                expect(deletePointsResult.options.method).toBe("DELETE");
                 expect(deletePointsResult.result.succeed).toBeTruthy();
                 deletePointsService.destroy();
                 done();
@@ -166,7 +158,6 @@ describe('leaflet_FeatureService_editFeatures_Point', () => {
                 expect(nullFeaturesService).not.toBeNull();
                 expect(featuresNullResult.type).toBe("processFailed");
                 expect(featuresNullResult.object.isInTheSameDomain).toBeTruthy();
-                expect(featuresNullResult.options.method).toBe("POST");
                 expect(featuresNullResult.error).not.toBeNull();
                 expect(featuresNullResult.error.code).toEqual(400);
                 expect(featuresNullResult.error.errorMsg).toBe("the features is empty addFeatures method");

@@ -127,7 +127,7 @@
                             attributeFilter: "SMID = 1755"
                         }
                     });
-                    new ol.supermap.QueryService(urlQuery).queryBySQL(param, function(serviceResult) {
+                    new ol.supermap.QueryService(urlQuery).queryBySQL(param).then(function(serviceResult) {
                         featureResult = serviceResult;
                         dataFlowBroadcast = new ol.supermap.DataFlowService(urlDataFlow).initBroadcast();
                         dataFlowBroadcast.on("broadcastSocketConnected", function(e) {

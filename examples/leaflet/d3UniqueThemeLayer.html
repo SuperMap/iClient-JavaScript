@@ -63,7 +63,7 @@
             fromIndex: 0,
             toIndex: 200
         });
-        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
             var d3Layer = L.supermap.d3Layer(function (sel, proj) {
                 var upd = sel.selectAll('path').data(serviceResult.result.features.features);
                 upd.enter()

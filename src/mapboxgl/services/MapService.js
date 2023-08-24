@@ -46,7 +46,7 @@ export class MapService extends ServiceBase {
             headers: me.options.headers,
             projection: me.options.projection
         });
-        getMapStatusService.processAsync(callback);
+        return getMapStatusService.processAsync(callback);
     }
 
     /**
@@ -64,7 +64,7 @@ export class MapService extends ServiceBase {
           headers: me.options.headers,
           projection: me.options.projection
       });
-      getMapStatusService.processAsync(callback);
+      return getMapStatusService.processAsync(callback);
     }
 
     /**
@@ -79,14 +79,8 @@ export class MapService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        tilesetsService.processAsync();
+        return tilesetsService.processAsync(callback);
     }
 }

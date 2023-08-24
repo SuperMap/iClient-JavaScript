@@ -4,12 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
 var initTerrainSlopeCalculationService = (url,TerrainSlopeCalculationServiceCompleted,TerrainSlopeCalculationServiceFailed) => {
-    return new TerrainSlopeCalculationService(url, {
-        eventListeners: {
-            "processCompleted": TerrainSlopeCalculationServiceCompleted,
-            'processFailed': TerrainSlopeCalculationServiceFailed
-        }
-    });
+    return new TerrainSlopeCalculationService(url);
 };
 
 describe('TerrainSlopeCalculationService', () => {
@@ -49,8 +44,6 @@ describe('TerrainSlopeCalculationService', () => {
                 expect(terrainSlopeCalculationResult.succeed).toBeTruthy();
                 expect(terrainSlopeCalculationResult.dataset).toBe("testResult@Jingjin");
                 terrainSlopeCalculationService.destroy();
-                expect(terrainSlopeCalculationService.events).toBeNull();
-                expect(terrainSlopeCalculationService.eventListeners).toBeNull();
                 terrainSlopeCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -89,7 +82,7 @@ describe('TerrainSlopeCalculationService', () => {
                 "status": null
             }`));
         });
-        terrainSlopeCalculationService.processAsync(terrainSlopeCalculationParameters);
+        terrainSlopeCalculationService.processAsync(terrainSlopeCalculationParameters, TerrainSlopeCalculationServiceCompleted);
     });
 
     //测试失败事件
@@ -107,8 +100,6 @@ describe('TerrainSlopeCalculationService', () => {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("数据集XX@Jingjin不存在");
                 terrainSlopeCalculationService.destroy();
-                expect(terrainSlopeCalculationService.events).toBeNull();
-                expect(terrainSlopeCalculationService.eventListeners).toBeNull();
                 terrainSlopeCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -119,7 +110,7 @@ describe('TerrainSlopeCalculationService', () => {
                 done();
             }
         };
-        var terrainSlopeCalculationService = initTerrainSlopeCalculationService(spatialAnalystURL,TerrainSlopeCalculationServiceCompleted,TerrainSlopeCalculationServiceFailed);
+        var terrainSlopeCalculationService = initTerrainSlopeCalculationService(spatialAnalystURL);
         var terrainSlopeCalculationParameters = new TerrainSlopeCalculationParameters({
             dataset: "XX@Jingjin",
             terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
@@ -134,7 +125,7 @@ describe('TerrainSlopeCalculationService', () => {
             expect(paramsObj.deleteExistResultDataset).toBeTruthy();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
-        terrainSlopeCalculationService.processAsync(terrainSlopeCalculationParameters);
+        terrainSlopeCalculationService.processAsync(terrainSlopeCalculationParameters, TerrainSlopeCalculationServiceFailed);
     });
 });
 

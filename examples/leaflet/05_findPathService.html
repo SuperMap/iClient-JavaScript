@@ -70,7 +70,7 @@
                 iconSize: [20, 20]
             });
             //进行查找
-            findPathService.findPath(findPathParameter, function (serviceResult) {
+            findPathService.findPath(findPathParameter).then(function (serviceResult) {
                 var result = serviceResult.result;
                 result.pathList.map(function (result) {
                     L.geoJSON(result.route).addTo(map);

@@ -36,7 +36,7 @@ export class FieldService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getFields(params, callback) {
-        this._fieldService.getFields(params, callback);
+      return this._fieldService.getFields(params, callback);
     }
 
     /**
@@ -46,6 +46,6 @@ export class FieldService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {
-      this._fieldService.getFieldStatisticsInfo(params, callback);
+      return this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 }

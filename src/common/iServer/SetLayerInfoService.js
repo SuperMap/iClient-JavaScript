@@ -14,7 +14,6 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                 http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -44,19 +43,21 @@ export class SetLayerInfoService extends CommonServiceBase {
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。
      *        该参数可以使用获取图层信息服务<{@link GetLayersInfoService}>返回图层信息，解析结果result.subLayers.layers[i]，然后对其属性进行修改来获取。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
         var me = this;
         var jsonParamsStr = Util.toJSON(params);
-        me.request({
+        return me.request({
             method: "PUT",
             data: jsonParamsStr,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }

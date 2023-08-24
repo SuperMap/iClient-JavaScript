@@ -96,7 +96,7 @@
         });
 
         //进行查找
-        new ol.supermap.NetworkAnalystService(serviceUrl).findPath(findPathParameter, function (serviceResult) {
+        new ol.supermap.NetworkAnalystService(serviceUrl).findPath(findPathParameter).then(function (serviceResult) {
             var guideLayerStyle = new ol.style.Style({
                 image: new ol.style.Icon(({
                     src: '../img/walk.png',

@@ -16,19 +16,13 @@ import { DataFormat } from '../REST';
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
  * @param {string} url - 服务地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myOverlayAnalystService = new OverlayAnalystService(url, {
- *     eventListeners: {
- *	       "processCompleted": OverlayCompleted,
- *		   "processFailed": OverlayFailed
- *		   }
- * });
+ * var myOverlayAnalystService = new OverlayAnalystService(url);
  * (end)
  * @usage
  */
@@ -62,8 +56,10 @@ export class OverlayAnalystService extends SpatialAnalystBase {
      * @function OverlayAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {OverlayAnalystParameters} parameter - 叠加分析参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
 
@@ -84,12 +80,12 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         }
         this.returnContent = true;
         var jsonParameters = Util.toJSON(parameterObject);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

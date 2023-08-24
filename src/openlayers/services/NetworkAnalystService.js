@@ -42,7 +42,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     burstPipelineAnalyst(params, callback) {
       params = this._processParams(params);
-      this._networkAnalystService.burstPipelineAnalyst(params, callback);
+      return this._networkAnalystService.burstPipelineAnalyst(params, callback);
     }
 
     /**
@@ -53,7 +53,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     computeWeightMatrix(params, callback) {
       params = this._processParams(params);
-      this._networkAnalystService.computeWeightMatrix(params, callback);
+      return this._networkAnalystService.computeWeightMatrix(params, callback);
     }
 
     /**
@@ -65,7 +65,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findClosestFacilities(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
+      return this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
     }
 
     /**
@@ -74,10 +74,11 @@ export class NetworkAnalystService extends ServiceBase {
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     traceAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.traceAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.traceAnalyst(params, callback, resultFormat);
     }
 
     /**
@@ -86,10 +87,11 @@ export class NetworkAnalystService extends ServiceBase {
      * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     connectedEdgesAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.connectedEdgesAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.connectedEdgesAnalyst(params, callback, resultFormat);
     }
 
     /**
@@ -101,7 +103,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     streamFacilityAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
     }
 
     /**
@@ -113,7 +115,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findLocation(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findLocation(params, callback, resultFormat);
+      return this._networkAnalystService.findLocation(params, callback, resultFormat);
     }
 
     /**
@@ -125,7 +127,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findPath(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findPath(params, callback, resultFormat);
+      return this._networkAnalystService.findPath(params, callback, resultFormat);
     }
 
     /**
@@ -137,7 +139,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findTSPPaths(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
+      return this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
     }
 
     /**
@@ -149,7 +151,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findMTSPPaths(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
+      return this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
     }
 
     /**
@@ -161,7 +163,7 @@ export class NetworkAnalystService extends ServiceBase {
      */
     findServiceAreas(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
+      return this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
     }
 
     /**
@@ -171,7 +173,7 @@ export class NetworkAnalystService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     updateEdgeWeight(params, callback) {
-      this._networkAnalystService.updateEdgeWeight(params, callback);
+      return this._networkAnalystService.updateEdgeWeight(params, callback);
     }
 
     /**
@@ -181,7 +183,7 @@ export class NetworkAnalystService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     updateTurnNodeWeight(params, callback) {
-      this._networkAnalystService.updateTurnNodeWeight(params, callback);
+      return this._networkAnalystService.updateTurnNodeWeight(params, callback);
     }
 
     _processParams(params) {

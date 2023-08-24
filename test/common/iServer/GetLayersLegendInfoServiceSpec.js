@@ -3,14 +3,8 @@ import { GetLayersLegendInfoParameters } from '../../../src/common/iServer/GetLa
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null,analystEventArgsSystem = null;
-var initGetLayersLegendInfoService = (url,analyzeCompleted,analyzeFailed) => {
-    return new GetLayersLegendInfoService(url,
-        {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        });
+var initGetLayersLegendInfoService = (url) => {
+    return new GetLayersLegendInfoService(url);
 };
 
 describe('GetLayersLegendInfoService', () => {
@@ -49,8 +43,6 @@ describe('GetLayersLegendInfoService', () => {
             var result = analystEventArgsSystem.result;
             expect(result.layerLegends[0].legends[0].url).not.toBeUndefined();
             getLayersLegendInfoService.destroy();
-            expect(getLayersLegendInfoService.events).toBeNull();
-            expect(getLayersLegendInfoService.eventListeners).toBeNull();
             getLayersLegendInfoParameters.destroy();
             done();
         } catch (exception) {
@@ -60,7 +52,7 @@ describe('GetLayersLegendInfoService', () => {
             done();
         }
       };
-      var getLayersLegendInfoService = initGetLayersLegendInfoService(worldMapURL,getLegendCompleted,getLegendFailed);
+      var getLayersLegendInfoService = initGetLayersLegendInfoService(worldMapURL);
       var getLayersLegendInfoParameters = new GetLayersLegendInfoParameters({
         bbox: "-180,90,180,90",
         width: 18,
@@ -71,7 +63,7 @@ describe('GetLayersLegendInfoService', () => {
           expect(testUrl).toBe(worldMapURL + "/legend");
           return Promise.resolve(new Response(JSON.stringify(legendInfo)));
       });
-      getLayersLegendInfoService.processAsync(getLayersLegendInfoParameters);
+      getLayersLegendInfoService.processAsync(getLayersLegendInfoParameters, getLegendCompleted);
     });
 
     it('processAsync_fail', (done) => {
@@ -95,7 +87,7 @@ describe('GetLayersLegendInfoService', () => {
       var getLegendCompleted = (analyseEventArgs) => {
         analystEventArgsSystem = analyseEventArgs;
       };
-      var getLayersLegendInfoService = initGetLayersLegendInfoService(worldMapURL,getLegendCompleted,getLegendFailed);
+      var getLayersLegendInfoService = initGetLayersLegendInfoService(worldMapURL);
       var getLayersLegendInfoParameters = new GetLayersLegendInfoParameters({});
       spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
           expect(method).toBe("GET");
@@ -104,6 +96,6 @@ describe('GetLayersLegendInfoService', () => {
             new Response(`{"succeed":false,"error":{"code":400,"description":"bbox或layers参数必须至少设置一个参数"}}`)
           );
       });
-      getLayersLegendInfoService.processAsync(getLayersLegendInfoParameters);
+      getLayersLegendInfoService.processAsync(getLayersLegendInfoParameters, getLegendFailed);
     });
 });

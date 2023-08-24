@@ -125,6 +125,52 @@ describe('openlayers_AddressMatchService', () => {
         });
         addressDeCodeService.decode(GeoDeCodingParams, decodeCompleted);
     });
+
+    it('decode promise', (done) => {
+      var decodingFailedEventArgs = null, decodingSuccessEventArgs = null;
+      var decodeCompleted = (analyseEventArgs) => {
+          decodingSuccessEventArgs = analyseEventArgs;
+          try {
+              expect(addressDeCodeService).not.toBeNull();
+              expect(decodingSuccessEventArgs).not.toBeNull();
+              expect(decodingSuccessEventArgs.type).toBe('processCompleted');
+              expect(decodingSuccessEventArgs.result).not.toBeNull();
+              expect(decodingSuccessEventArgs.result.length).toEqual(5);
+              GeoDeCodingParams.destroy();
+              decodingFailedEventArgs = null;
+              decodingSuccessEventArgs = null;
+              done();
+          } catch (exception) {
+              console.log("'decode'案例失败：" + exception.name + ":" + exception.message);
+              GeoDeCodingParams.destroy();
+              decodingFailedEventArgs = null;
+              decodingSuccessEventArgs = null;
+              expect(false).toBeTruthy();
+              done();
+          }
+      };
+      var GeoDeCodingParams = new GeoDecodingParameter({
+          x: 116.31740122415627,
+          y: 39.92311315752059,
+          fromIndex: 0,
+          toIndex: 5,
+          filters: '北京市,海淀区',
+          prjCoordSys: '{epsgcode:4326}',
+          maxReturn: -1,
+          geoDecodingRadius: 500
+      });
+      var addressDeCodeService = new AddressMatchService(addressMatchURL);
+      spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+          expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+          expect(params).not.toBeNull();
+          expect(params.maxReturn).toEqual(-1);
+          expect(params.prjCoordSys).toBe('{epsgcode:4326}');
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(decodeSuccessEscapedJson));
+      });
+      addressDeCodeService.decode(GeoDeCodingParams).then(decodeCompleted);
+  });
+
     it('code_customQueryParam', (done) => {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
         var codeCompleted = (analyseEventArgs) => {

@@ -32,11 +32,10 @@
         var areaMeasureParam = new L.supermap.MeasureParameters(polygon);
         new L.supermap
             .MeasureService(url)
-            .measureArea(areaMeasureParam, function (serviceResult) {
+            .measureArea(areaMeasureParam).then(function (serviceResult) {
                 var content = resources.text_area + serviceResult.result.area + resources.msg_sqm;
                 polygon.bindPopup(content).openPopup(polygon.getCenter());
             });
-
     }
 </script>
 </body>

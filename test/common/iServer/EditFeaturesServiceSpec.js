@@ -20,10 +20,6 @@ describe('EditFeaturesService', () => {
 
     // 成功：增加一个REGION要素，returnContent为true
     it('successEvent:addFeature_returnContent=true', (done) => {
-        var addFeatureFailedEventArgsSystem = null, addFeatureSuccessEventArgsSystem = null;
-        var addFeatureFailed = (serviceFailedEventArgs) => {
-            addFeatureFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var addFeatureCompleted = (addFeatureSuccessEventArgsSystem) => {
             try {
                 var serviceResult = addFeatureSuccessEventArgsSystem.result;
@@ -49,12 +45,6 @@ describe('EditFeaturesService', () => {
                 done();
             }
         };
-        var addFeatureOptions = {
-            eventListeners: {
-                'processCompleted': addFeatureCompleted,
-                'processFailed': addFeatureFailed
-            }
-        };
         var pointList = [],
             p1 = new Point(118.05408801141, 38.837029131724),
             p2 = new Point(117.80757663534, 38.606951847395),
@@ -75,7 +65,7 @@ describe('EditFeaturesService', () => {
             editType: EditType.ADD,
             returnContent: true
         });
-        var addFeatureService = new EditFeaturesService(editServiceURL, addFeatureOptions);
+        var addFeatureService = new EditFeaturesService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/features?returnContent=true");
@@ -85,15 +75,12 @@ describe('EditFeaturesService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`[134]`));
         });
-        addFeatureService.processAsync(addFeaturesParams);
+        addFeatureService.processAsync(addFeaturesParams, addFeatureCompleted);
     });
 
     // 更新要素
     it('successEvent:updateFeatures', (done) => {
-        var updateFailedEventArgsSystem = null, updateSuccessEventArgsSystem = null;
-        var updateFeaturesFailed = (serviceFailedEventArgs) => {
-            updateFailedEventArgsSystem = serviceFailedEventArgs;
-        };
+        var updateFailedEventArgsSystem = null;
         var updateFeaturesCompleted = (updateSuccessEventArgsSystem) => {
             try {
                 expect(updateFeaturesService).not.toBeNull();
@@ -111,12 +98,6 @@ describe('EditFeaturesService', () => {
                 updateFeaturesService.destroy();
                 updateFeaturesParams.destroy();
                 done();
-            }
-        };
-        var updateFeaturesOptions = {
-            eventListeners: {
-                'processCompleted': updateFeaturesCompleted,
-                'processFailed': updateFeaturesFailed
             }
         };
         var pointList = [],
@@ -139,7 +120,7 @@ describe('EditFeaturesService', () => {
             features: [features],
             editType: EditType.UPDATE
         });
-        var updateFeaturesService = new EditFeaturesService(editServiceURL, updateFeaturesOptions);
+        var updateFeaturesService = new EditFeaturesService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("PUT");
             expect(testUrl).toBe(editServiceURL + "/features");
@@ -149,14 +130,11 @@ describe('EditFeaturesService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        updateFeaturesService.processAsync(updateFeaturesParams);
+        updateFeaturesService.processAsync(updateFeaturesParams, updateFeaturesCompleted);
     });
 
     // 删除要素
     it('successEvent:deleteFeature', (done) => {
-        var deleteFeaturesFailed = (deleteFailedEventArgsSystem) => {
-            expect(deleteFailedEventArgsSystem).toBeNull();
-        };
         var deleteFeaturesCompleted = (deleteSuccessEventArgsSystem) => {
             try {
 
@@ -176,19 +154,13 @@ describe('EditFeaturesService', () => {
                 done();
             }
         };
-        var deleteFeaturesOptions = {
-            eventListeners: {
-                'processCompleted': deleteFeaturesCompleted,
-                'processFailed': deleteFeaturesFailed
-            }
-        };
         var deleteFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             IDs: [id1],
             editType: EditType.DELETE
         });
-        var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        var deleteFeaturesService = new EditFeaturesService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("DELETE");
             expect(testUrl).toBe(editServiceURL + "/features?ids=%5B134%5D");
@@ -196,7 +168,7 @@ describe('EditFeaturesService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        deleteFeaturesService.processAsync(deleteFeaturesParams);
+        deleteFeaturesService.processAsync(deleteFeaturesParams, deleteFeaturesCompleted);
     });
 
     // 删除要素-url超过长度转post
@@ -205,9 +177,6 @@ describe('EditFeaturesService', () => {
         for(var i =0; i<500; i++){
             ids.push(i)
         }
-        var deleteFeaturesFailed = (deleteFailedEventArgsSystem) => {
-            expect(deleteFailedEventArgsSystem).toBeNull();
-        };
         var deleteFeaturesCompleted = (deleteSuccessEventArgsSystem) => {
             try {
                 expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
@@ -226,19 +195,13 @@ describe('EditFeaturesService', () => {
                 done();
             }
         };
-        var deleteFeaturesOptions = {
-            eventListeners: {
-                'processCompleted': deleteFeaturesCompleted,
-                'processFailed': deleteFeaturesFailed
-            }
-        };
         var deleteFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             IDs: ids,
             editType: EditType.DELETE
         });
-        var deleteFeaturesService = new EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        var deleteFeaturesService = new EditFeaturesService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/features?_method=DELETE");
@@ -246,7 +209,7 @@ describe('EditFeaturesService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        deleteFeaturesService.processAsync(deleteFeaturesParams);
+        deleteFeaturesService.processAsync(deleteFeaturesParams, deleteFeaturesCompleted);
     });
     // 删除要素-url超过长度且原本带有参数
     it('successEvent:deleteFeature-longurl-withParms', (done) => {
@@ -255,9 +218,6 @@ describe('EditFeaturesService', () => {
             ids.push(i)
         }
         var editServiceURL2 = editServiceURL + "?token=test&key=123"
-        var deleteFeaturesFailed = (deleteFailedEventArgsSystem) => {
-            expect(deleteFailedEventArgsSystem).toBeNull();
-        };
         var deleteFeaturesCompleted = (deleteSuccessEventArgsSystem) => {
             try {
                 expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
@@ -276,19 +236,13 @@ describe('EditFeaturesService', () => {
                 done();
             }
         };
-        var deleteFeaturesOptions = {
-            eventListeners: {
-                'processCompleted': deleteFeaturesCompleted,
-                'processFailed': deleteFeaturesFailed
-            }
-        };
         var deleteFeaturesParams = new EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
             IDs: ids,
             editType: EditType.DELETE
         });
-        var deleteFeaturesService = new EditFeaturesService(editServiceURL2, deleteFeaturesOptions);
+        var deleteFeaturesService = new EditFeaturesService(editServiceURL2);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe( editServiceURL + "/features?token=test&key=123&_method=DELETE");
@@ -296,7 +250,7 @@ describe('EditFeaturesService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        deleteFeaturesService.processAsync(deleteFeaturesParams);
+        deleteFeaturesService.processAsync(deleteFeaturesParams, deleteFeaturesCompleted);
     });
 
     // 失败事件
@@ -321,21 +275,12 @@ describe('EditFeaturesService', () => {
                 done();
             }
         };
-        var noParamsCompleted = (noParamsSuccessEventArgsSystem) => {
-            expect(noParamsSuccessEventArgsSystem).toBeNull();
-        };
-        var noParamsOptions = {
-            eventListeners: {
-                'processCompleted': noParamsCompleted,
-                'processFailed': noParamsFailed
-            }
-        };
         var noParams = new EditFeaturesParameters({
             features: null,
             editType: EditType.ADD,
             returnContent: true
         });
-        var noParamsService = new EditFeaturesService(editServiceURL, noParamsOptions);
+        var noParamsService = new EditFeaturesService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(editServiceURL + "/features?returnContent=true");
@@ -346,13 +291,10 @@ describe('EditFeaturesService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the features is empty addFeatures method"}}`));
         });
-        noParamsService.processAsync(noParams);
+        noParamsService.processAsync(noParams, noParamsFailed);
     });
     it('successEvent:addFeature_customQueryParam', (done) => {
         var addFeatureFailedEventArgsSystem = null, addFeatureSuccessEventArgsSystem = null;
-        var addFeatureFailed = (serviceFailedEventArgs) => {
-            addFeatureFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var addFeatureCompleted = (addFeatureSuccessEventArgsSystem) => {
             try {
                 addFeatureService.destroy();
@@ -364,12 +306,6 @@ describe('EditFeaturesService', () => {
                 addFeatureService.destroy();
                 addFeaturesParams.destroy();
                 done();
-            }
-        };
-        var addFeatureOptions = {
-            eventListeners: {
-                'processCompleted': addFeatureCompleted,
-                'processFailed': addFeatureFailed
             }
         };
         var pointList = [],
@@ -392,12 +328,12 @@ describe('EditFeaturesService', () => {
             editType: EditType.ADD,
             returnContent: true
         });
-        var addFeatureService = new EditFeaturesService(editServiceURL + '?key=111', addFeatureOptions);
+        var addFeatureService = new EditFeaturesService(editServiceURL + '?key=111');
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(testUrl).toBe(editServiceURL + "/features?key=111&returnContent=true");
             return Promise.resolve(new Response(`[134]`));
         });
-        addFeatureService.processAsync(addFeaturesParams);
+        addFeatureService.processAsync(addFeaturesParams, addFeatureCompleted);
     });
 
 });

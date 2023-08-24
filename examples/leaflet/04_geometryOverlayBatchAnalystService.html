@@ -92,7 +92,7 @@
             operation: L.supermap.OverlayOperationType.INTERSECT
         });
 
-        new L.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
+        new L.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters).then(function (serviceResult) {
             var overlayResultStyle = {
                 "color": "red",
                 "opacity": 0.65

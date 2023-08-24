@@ -14,7 +14,6 @@ import {DensityKernelAnalystParameters} from './DensityKernelAnalystParameters';
  * 密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。目前提供1种密度分析：核密度分析（Kernel）。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -58,8 +57,10 @@ export class DensityAnalystService extends SpatialAnalystBase {
      * @function DensityAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {DensityKernelAnalystParameters} parameter - 核密度分析参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = new Object();
 
@@ -72,12 +73,12 @@ export class DensityAnalystService extends SpatialAnalystBase {
         var jsonParameters = Util.toJSON(parameterObject);
         me.url = Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

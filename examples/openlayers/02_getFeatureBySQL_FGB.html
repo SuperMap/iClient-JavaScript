@@ -51,7 +51,9 @@
         });
         new ol.supermap.FeatureService(url).getFeaturesBySQL(
           sqlParam,
-          function (serviceResult) {
+          null,
+          'FGB'
+        ).then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               format: new ol.format.GeoJSON(),
               url: serviceResult.result.newResourceLocation,
@@ -63,9 +65,7 @@
               source: vectorSource
             });
             map.addLayer(resultLayer);
-          },
-          'FGB'
-        );
+          });
       }
     </script>
   </body>

@@ -17,7 +17,6 @@ import {CommonServiceBase} from './CommonServiceBase';
  *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -46,18 +45,20 @@ export class ChartFeatureInfoSpecsService extends CommonServiceBase {
      *              事件。用可以通过户两种方式获取图层信息:
      *              1. 通过 AsyncResponder 类获取（推荐使用）；
      *              2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this, method = "GET";
         if (!me.isTempLayers) {
             Util.urlPathAppend(me.url,'chartFeatureInfoSpecs');
         }
-        me.request({
+        return me.request({
             method: method,
             params: null,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }

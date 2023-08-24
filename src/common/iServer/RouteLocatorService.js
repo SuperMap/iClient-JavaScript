@@ -13,7 +13,6 @@ import {RouteLocatorParameters} from './RouteLocatorParameters';
  * @extends {SpatialAnalystBase}
  * @param {string} url -服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
@@ -50,12 +49,7 @@ import {RouteLocatorParameters} from './RouteLocatorParameters';
      *   "offset":3,
      *   "isIgnoreGap":true
      * });
-     * var routeLocatorService = new RouteLocatorService(spatialAnalystURL, {
-     *     eventListeners:{
-     *         processCompleted:routeLocatorCompleted,
-     *         processFailed:routeLocatorFailded
-     *     }
-     * );
+     * var routeLocatorService = new RouteLocatorService(spatialAnalystURL);
      * routeLocatorService.processAsync(routeLocatorParameters_point);
      *
      *  //执行
@@ -82,8 +76,10 @@ export class RouteLocatorService extends SpatialAnalystBase {
      * @function RouteLocatorService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof RouteLocatorParameters)) {
             return;
         }
@@ -91,12 +87,12 @@ export class RouteLocatorService extends SpatialAnalystBase {
 
         jsonParameters = me.getJsonParameters(params);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

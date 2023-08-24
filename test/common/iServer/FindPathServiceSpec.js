@@ -12,18 +12,6 @@ var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
 var initFindPathService = () => {
     return new FindPathService(url, options);
 };
-var findPathServiceCompleted = (serviceSucceedEventArgs) => {
-    serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-};
-var findPathServiceFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var options = {
-    eventListeners: {
-        'processFailed': findPathServiceFailed,
-        'processCompleted': findPathServiceCompleted
-    }
-};
 
 describe('FindPathService', () => {
     var originalTimeout;
@@ -75,8 +63,6 @@ describe('FindPathService', () => {
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].route).not.toBeNull();
                 findPathService.destroy();
-                expect(findPathService.EVENT_TYPES).toBeNull();
-                expect(findPathService.events).toBeNull();
                 parameter.destroy();
                 done();
             } catch (exception) {
@@ -87,21 +73,12 @@ describe('FindPathService', () => {
                 done();
             }
         };
-        var findPathServiceFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var options = {
-            eventListeners: {
-                'processFailed': findPathServiceFailed,
-                'processCompleted': findPathServiceCompleted
-            }
-        };
-        var findPathService = new FindPathService(url, options);;
+        var findPathService = new FindPathService(url);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(JSON.stringify(findPathResultJson)))
         });
-        findPathService.processAsync(parameter);
+        findPathService.processAsync(parameter, findPathServiceCompleted);
     });
 
     //设置返回信息的有效性
@@ -138,8 +115,6 @@ describe('FindPathService', () => {
                 expect(analystResult[0].pathGuideItems == null).toBeTruthy();
                 expect(analystResult[0].route == null).toBeTruthy();
                 findPathService.destroy();
-                expect(findPathService.EVENT_TYPES).toBeNull();
-                expect(findPathService.events).toBeNull();
                 parameter.destroy();
                 done();
             } catch (exception) {
@@ -153,19 +128,13 @@ describe('FindPathService', () => {
         var findPathServiceFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
-        var options = {
-            eventListeners: {
-                'processFailed': findPathServiceFailed,
-                'processCompleted': findPathServiceCompleted
-            }
-        };
 
-        var findPathService = new FindPathService(url, options);;
+        var findPathService = new FindPathService(url);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"pathList":[{"pathGuideItems":null,"nodeIDs":[],"route":null,"edgeFeatures":null,"weight":53,"nodeFeatures":null,"stopWeights":[53],"edgeIDs":[]}]}`))
         });
-        findPathService.processAsync(parameter);
+        findPathService.processAsync(parameter, findPathServiceCompleted);
     });
 
     //id为空
@@ -193,16 +162,11 @@ describe('FindPathService', () => {
             hasLeastEdgeCount: true,
             parameter: analystParameter
         });
-        var findPathServiceCompleted = (serviceSucceedEventArgs) => {
-            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-        };
         var findPathServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findPathService.destroy();
-                expect(findPathService.EVENT_TYPES).toBeNull();
-                expect(findPathService.events).toBeNull();
                 parameter.destroy();
                 done();
             } catch (exception) {
@@ -213,19 +177,13 @@ describe('FindPathService', () => {
                 done();
             }
         };
-        var options = {
-            eventListeners: {
-                'processFailed': findPathServiceFailed,
-                'processCompleted': findPathServiceCompleted
-            }
-        };
 
-        var findPathService = new FindPathService(url, options);;
+        var findPathService = new FindPathService(url);;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`))
         });
-        findPathService.processAsync(parameter);
+        findPathService.processAsync(parameter, findPathServiceFailed);
     });
 
     //参数错误
@@ -254,16 +212,11 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
 
-        var findPathServiceCompleted = (serviceSucceedEventArgs) => {
-            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-        };
         var findPathServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 findPathService.destroy();
-                expect(findPathService.EVENT_TYPES).toBeNull();
-                expect(findPathService.events).toBeNull();
                 parameter.destroy();
                 done();
             } catch (exception) {
@@ -274,31 +227,19 @@ describe('FindPathService', () => {
                 done();
             }
         };
-        var options = {
-            eventListeners: {
-                'processFailed': findPathServiceFailed,
-                'processCompleted': findPathServiceCompleted
-            }
-        };
 
-        var findPathService = new FindPathService(url, options);;
+        var findPathService = new FindPathService(url);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：权重字段TurnCost1不存在。 "}}`))
         });
-        findPathService.processAsync(parameter);
+        findPathService.processAsync(parameter, findPathServiceFailed);
     });
 
     //参数为空
     it('processAsync_parameterNull', () => {
         var flag = false;
-        var findPathServiceCompleted = (serviceSucceedEventArgs) => {
-            flag = true;
-        };
-        var findPathServiceFailed = (serviceFailedEventArgsSystem) => {
-            flag = true;
-        }
-        var findPathService = new FindPathService(url, options);;
+        var findPathService = new FindPathService(url);;
         findPathService.processAsync();
         expect(flag).toBeFalsy;
     });
@@ -329,16 +270,11 @@ describe('FindPathService', () => {
             parameter: analystParameter
         });
 
-        var findPathServiceCompleted = (serviceSucceedEventArgs) => {
-            serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
-        };
         var findPathServiceFailed = (serviceFailedEventArgsSystem) => {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg !== null).toBeTruthy();
                 findPathService.destroy();
-                expect(findPathService.EVENT_TYPES).toBeNull();
-                expect(findPathService.events).toBeNull();
                 parameter.destroy();
                 done();
             } catch (exception) {
@@ -349,19 +285,62 @@ describe('FindPathService', () => {
                 done();
             }
         };
-        var options = {
-            eventListeners: {
-                'processFailed': findPathServiceFailed,
-                'processCompleted': findPathServiceCompleted
-            }
-        };
 
-        var findPathService = new FindPathService(url, options);;
+        var findPathService = new FindPathService(url);
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`))
         });
-        findPathService.processAsync(parameter);
+        findPathService.processAsync(parameter, findPathServiceFailed);
     });
+
+    it('AnalyzeById_null promise', (done) => {
+      var nodeArray = [new Point(119.6100397551, -122.6278394459),
+      new Point(171.9035599945, -113.2491141857)
+      ];
+      var resultSetting = new TransportationAnalystResultSetting({
+          returnEdgeFeatures: true,
+          returnEdgeGeometry: true,
+          returnEdgeIDs: true,
+          returnNodeFeatures: true,
+          returnNodeGeometry: true,
+          returnNodeIDs: true,
+          returnPathGuides: true,
+          returnRoutes: true
+      });
+      var analystParameter = new TransportationAnalystParameter({
+          resultSetting: resultSetting,
+          weightFieldName: "length"
+      });
+      var parameter = new FindPathParameters({
+          isAnalyzeById: "AnalyzeById",
+          nodes: nodeArray,
+          hasLeastEdgeCount: false,
+          parameter: analystParameter
+      });
+
+      var findPathServiceFailed = (serviceFailedEventArgsSystem) => {
+          try {
+              expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
+              expect(serviceFailedEventArgsSystem.error.errorMsg !== null).toBeTruthy();
+              findPathService.destroy();
+              parameter.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("FindPathService_" + exception.name + ":" + exception.message);
+              findPathService.destroy();
+              parameter.destroy();
+              done();
+          }
+      };
+
+      var findPathService = new FindPathService(url);
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/path");
+          return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findPath 操作时出错,原因是：parameter\\nNode或者Point的个数至少有一个大于0 "}}`))
+      });
+      findPathService.processAsync(parameter).then(findPathServiceFailed);
+  });
 });
 

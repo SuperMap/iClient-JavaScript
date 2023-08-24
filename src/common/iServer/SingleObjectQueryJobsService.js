@@ -34,18 +34,22 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
     /**
      * @function SingleObjectQueryJobsService.protitype.getQueryJobs
      * @description 获取单对象空间查询分析所有任务
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getQueryJobs() {
-        super.getJobs(this.url);
+    getQueryJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getQueryJob
      * @description 获取指定id的单对象空间查询分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getQueryJob(id) {
-        super.getJobs(Util.urlPathAppend(this.url, id));
+    getQueryJob(id, callback) {
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -53,9 +57,11 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
      * @description 新建单对象空间查询分析服务
      * @param {SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addQueryJob(params, seconds) {
-        super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
+    addQueryJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 

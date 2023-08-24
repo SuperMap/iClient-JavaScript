@@ -50,7 +50,7 @@
                 semicircleLineSegment: 10
             })
         });
-        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             resultLayer = L.geoJSON(result.recordset.features, {color: "red"}).addTo(map);
         });

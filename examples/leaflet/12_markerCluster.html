@@ -45,7 +45,7 @@
     function loadMarkerCluster() {
         new L.supermap
             .FeatureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, function (serviceResult) {
+            .getFeaturesBySQL(getFeatureBySQLParams).then(function (serviceResult) {
                 createLayers(serviceResult.result.features);
             });
     }

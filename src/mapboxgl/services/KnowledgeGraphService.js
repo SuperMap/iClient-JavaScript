@@ -36,7 +36,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @param {RequestCallback} callback - 回调函数。
    */
   query(cypherQuery, callback) {
-    this._knowledgeGraphService.query(cypherQuery, callback);
+    return this._knowledgeGraphService.query(cypherQuery, callback);
   }
 
   // /**
@@ -54,7 +54,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @param {RequestCallback} callback 回调函数。
    */
   getGraphMaps(callback) {
-    this._knowledgeGraphService.getGraphMaps(callback);
+    return this._knowledgeGraphService.getGraphMaps(callback);
   }
 
   /**
@@ -64,7 +64,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @param {RequestCallback} callback 回调函数。
    */
   getGraphMap(params, callback) {
-    this._knowledgeGraphService.getGraphMap(params, callback);
+    return this._knowledgeGraphService.getGraphMap(params, callback);
   }
 
   /**

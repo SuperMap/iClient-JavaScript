@@ -33,6 +33,7 @@ export class FieldService {
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getFields(params, callback) {
         var me = this;
@@ -41,15 +42,10 @@ export class FieldService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             datasource: params.datasource,
             dataset: params.dataset
         });
-        getFieldsService.processAsync();
+        return getFieldsService.processAsync(callback);
     }
 
     /**
@@ -80,11 +76,6 @@ export class FieldService {
     _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
         var me = this;
         var statisticService = new FieldStatisticService(me.url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: me._processCompleted.bind(me),
-                processFailed: me._statisticsCallback
-            },
             datasource: datasource,
             dataset: dataset,
             field: fieldName,
@@ -92,11 +83,15 @@ export class FieldService {
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers
         });
-        statisticService.processAsync();
+        statisticService.processAsync(me._processCompleted.bind(me));
     }
 
-    _processCompleted(fieldStatisticResult, options) {
+    _processCompleted(fieldStatisticResult) {
         var me = this;
+        if (fieldStatisticResult.error) {
+          me._statisticsCallback(fieldStatisticResult);
+          return;
+        }
         var getAll = true,
             result = fieldStatisticResult.result;
         if (this.currentStatisticResult) {
@@ -111,7 +106,7 @@ export class FieldService {
             }
         }
         if (getAll) {
-            me._statisticsCallback({result: me.currentStatisticResult, options});
+            me._statisticsCallback({result: me.currentStatisticResult});
         }
     }
 }

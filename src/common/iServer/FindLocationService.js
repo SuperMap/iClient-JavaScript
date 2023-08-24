@@ -17,17 +17,11 @@ import {GeoJSON} from '../format/GeoJSON';
  * @extends {NetworkAnalystServiceBase}
  * @example
  * (start code)
- * var findLocationService = new FindLocationService(url, {
- *     eventListeners: {
- *         "processCompleted": findLocationCompleted,
- *		   "processFailed": findLocationError
- *		   }
- * });
+ * var findLocationService = new FindLocationService(url);
  * (end)
  * @param {string} url - 服务地址。
  *                       如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -52,8 +46,10 @@ export class FindLocationService extends NetworkAnalystServiceBase {
      * @function FindLocationService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FindLocationParameters} params - 选址分区分析服务参数类
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindLocationParameters)) {
             return;
         }
@@ -71,12 +67,12 @@ export class FindLocationService extends NetworkAnalystServiceBase {
             mapParameter: Util.toJSON(params.mapParameter),
             supplyCenters: me.getCentersJson(params.supplyCenters)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

@@ -10,13 +10,8 @@ import {SpatialQueryMode} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var initQueryByGeometryService = (url,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted) => {
-    return new QueryByGeometryService(url,{
-        eventListeners: {
-            'processFailed': QueryByGeometryServiceFailed,
-            'processCompleted': QueryByGeometryServiceCompleted
-        }
-    });
+var initQueryByGeometryService = (url) => {
+    return new QueryByGeometryService(url);
 };
 describe('QueryByGeometryService', () => {
     var originalTimeout;
@@ -47,20 +42,12 @@ describe('QueryByGeometryService', () => {
 
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-        var QueryByGeometryServiceFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
-            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-        };
-        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL);
         expect(queryByGeometryService).not.toBeNull();
         expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults");
         expect(queryByGeometryService).not.toBeNull();
         expect(queryByGeometryService.url).toEqual(worldMapURL + "/queryResults");
         queryByGeometryService.destroy();
-        expect(queryByGeometryService.EVENT_TYPES).toBeNull();
-        expect(queryByGeometryService.events).toBeNull();
         expect(queryByGeometryService.returnContent).toBeNull();
     });
 
@@ -89,7 +76,7 @@ describe('QueryByGeometryService', () => {
                 done();
             }
         };
-        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL);
         var points = [new Point(-90, -45),
             new Point(90, -45),
             new Point(90, 45),
@@ -122,7 +109,7 @@ describe('QueryByGeometryService', () => {
             expect(paramsObj.queryParameters.customParams).toBeNull();
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_86887442ecde4880b55f40812fd898b6.json"}`));
         });
-        queryByGeometryService.processAsync(queryByGeometryParameters);
+        queryByGeometryService.processAsync(queryByGeometryParameters, QueryByGeometryServiceCompleted);
     });
 
     it('processAsync_returnContent:true', (done) => {
@@ -148,7 +135,7 @@ describe('QueryByGeometryService', () => {
                 done();
             }
         };
-        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL);
         var points = [
             new Point(-90, -45),
             new Point(90, -45),
@@ -183,7 +170,7 @@ describe('QueryByGeometryService', () => {
             expect(paramsObj.queryParameters.customParams).toBeNull();
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
-        queryByGeometryService.processAsync(queryByGeometryParameters);
+        queryByGeometryService.processAsync(queryByGeometryParameters, QueryByGeometryServiceCompleted);
     });
 
     //查询参数为空
@@ -210,7 +197,7 @@ describe('QueryByGeometryService', () => {
         var QueryByGeometryServiceCompleted = (serviceCompletedEventArgs) => {
             serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
         };
-        var queryByGeometryService = initQueryByGeometryService(worldMapURL,QueryByGeometryServiceFailed,QueryByGeometryServiceCompleted);
+        var queryByGeometryService = initQueryByGeometryService(worldMapURL);
         var queryByGeometryParameters = new QueryByGeometryParameters({
             customParams: null,
             expectCount: 100,
@@ -231,7 +218,7 @@ describe('QueryByGeometryService', () => {
             expect(paramsObj.queryParameters.customParams).toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
         });
-        queryByGeometryService.processAsync(queryByGeometryParameters);
+        queryByGeometryService.processAsync(queryByGeometryParameters, QueryByGeometryServiceFailed);
 
     })
 });

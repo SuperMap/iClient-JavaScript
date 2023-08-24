@@ -63,7 +63,7 @@
         });
 
         var themeService = new maplibregl.supermap.ThemeService(dataUrl);
-        themeService.getThemeInfo(themeParameters, function (serviceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
 
             if (result && result.newResourceID) {
@@ -79,7 +79,7 @@
                     "source": "theme",
                 });
             }
-        })
+        });
     }
 
     map.on('load', function () {

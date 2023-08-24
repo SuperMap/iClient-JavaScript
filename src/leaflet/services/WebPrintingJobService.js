@@ -45,12 +45,13 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
       if (!params) {
         return;
       }
-      this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
+      return this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
     },
 
     /**
@@ -68,18 +69,20 @@ export var WebPrintingJobService = ServiceBase.extend({
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult: function(jobId, callback) {
-      this._webPrintingService.getPrintingJobResult(jobId, callback);
+      return this._webPrintingService.getPrintingJobResult(jobId, callback);
     },
 
     /**
      * @function WebPrintingJobService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates: function(callback) {
-      this._webPrintingService.getLayoutTemplates(callback);
+      return this._webPrintingService.getLayoutTemplates(callback);
     },
 
     _processParams(params) {

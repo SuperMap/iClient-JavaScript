@@ -33,7 +33,7 @@
             tolerance: 0,
             operation: L.supermap.OverlayOperationType.UNION
         });
-        overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
+        overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             resultLayer = L.geoJSON(result.recordset.features).addTo(map);
         });

@@ -147,9 +147,9 @@
     });
     new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
         getFeatureBySQLParams,
-        processCompleted,
+       null,
         mapboxgl.supermap.DataFormat.ISERVER
-    );
+    ).then(processCompleted);
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;

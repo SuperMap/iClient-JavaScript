@@ -19,7 +19,6 @@ import {GeoJSON} from '../format/GeoJSON';
  * @extends {CommonServiceBase}
  * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -101,8 +100,10 @@ export class ChartQueryService extends CommonServiceBase {
      * @function ChartQueryService.prototype.processAsync
      * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
      * @param {ChartQueryParameters} params - 查询参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         //todo重点需要添加代码的地方
         if (!(params instanceof ChartQueryParameters)) {
             return;
@@ -113,12 +114,12 @@ export class ChartQueryService extends CommonServiceBase {
         if (me.returnContent) {
             me.url = Util.urlAppend(me.url, 'returnContent=true');
         }
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -140,7 +141,7 @@ export class ChartQueryService extends CommonServiceBase {
             }
 
         }
-        me.events.triggerEvent("processCompleted", {result: result, options});
+        return { result, options };
     }
 
     /**

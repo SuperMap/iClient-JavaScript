@@ -41,10 +41,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 爆管分析服务：即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param {BurstPipelineAnalystParameters} params - 爆管分析参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     burstPipelineAnalyst: function (params, callback) {
       params = this._processParams(params);
-      this._networkAnalystService.burstPipelineAnalyst(params, callback);
+      return this._networkAnalystService.burstPipelineAnalyst(params, callback);
     },
 
     /**
@@ -52,10 +53,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 耗费矩阵分析服务：根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     computeWeightMatrix: function (params, callback) {
       params = this._processParams(params);
-      this._networkAnalystService.computeWeightMatrix(params, callback);
+      return this._networkAnalystService.computeWeightMatrix(params, callback);
     },
 
     /**
@@ -64,10 +66,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FindClosestFacilitiesParameters} params - 最近设施分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findClosestFacilities: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
+      return this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
     },
 
     /**
@@ -76,10 +79,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     traceAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.traceAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.traceAnalyst(params, callback, resultFormat);
     },
 
     /**
@@ -88,10 +92,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     connectedEdgesAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.connectedEdgesAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.connectedEdgesAnalyst(params, callback, resultFormat);
     },
 
     /**
@@ -100,10 +105,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FacilityAnalystStreamParameters} params - 上游/下游关键设施查找资源参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     streamFacilityAnalyst: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
     },
 
     /**
@@ -112,10 +118,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FindLocationParameters} params - 选址分区分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findLocation: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findLocation(params, callback, resultFormat);
+      return this._networkAnalystService.findLocation(params, callback, resultFormat);
     },
 
     /**
@@ -124,10 +131,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FindPathParameters} params - 最佳路径分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findPath: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findPath(params, callback, resultFormat);
+      return this._networkAnalystService.findPath(params, callback, resultFormat);
     },
 
     /**
@@ -136,10 +144,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findTSPPaths: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
+      return this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
     },
 
     /**
@@ -148,10 +157,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findMTSPPaths: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
+      return this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
     },
 
     /**
@@ -160,10 +170,11 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param {FindServiceAreasParameters} params -  服务区分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findServiceAreas: function (params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
+      return this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
     },
 
     /**
@@ -171,9 +182,10 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 更新边的耗费权重服务。
      * @param {UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
      * @param {RequestCallback} callback -回调函数。
+     * @returns {Promise} Promise 对象。
      */
     updateEdgeWeight: function (params, callback) {
-      this._networkAnalystService.updateEdgeWeight(params, callback);
+      return this._networkAnalystService.updateEdgeWeight(params, callback);
     },
 
     /**
@@ -181,9 +193,10 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 转向耗费权重更新服务。
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     updateTurnNodeWeight: function (params, callback) {
-      this._networkAnalystService.updateTurnNodeWeight(params, callback);
+      return this._networkAnalystService.updateTurnNodeWeight(params, callback);
     },
 
     _processParams: function (params) {

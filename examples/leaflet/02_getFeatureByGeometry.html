@@ -37,7 +37,7 @@
         });
         new L.supermap
             .FeatureService(url)
-            .getFeaturesByGeometry(geometryParam, function (serviceResult) {
+            .getFeaturesByGeometry(geometryParam).then(function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup(resources.text_country + "：" + feature.properties.COUNTRY);

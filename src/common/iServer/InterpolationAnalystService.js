@@ -19,18 +19,12 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * 包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var myTInterpolationAnalystService = new InterpolationAnalystService(url);
- * myTInterpolationAnalystService.events.on({
-     *     "processCompleted": processCompleted,
-     *     "processFailed": processFailed
-     *     }
- * );
  * (end)
  * @usage
  */
@@ -64,8 +58,9 @@ export class InterpolationAnalystService extends SpatialAnalystBase {
      * @function InterpolationAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} parameter - 插值分析参数类。
+     * @param {RequestCallback} callback - 回调函数。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
 
@@ -102,12 +97,12 @@ export class InterpolationAnalystService extends SpatialAnalystBase {
         var jsonParameters = Util.toJSON(parameterObject);
         me.url = Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }

@@ -13,7 +13,6 @@ import {GeometryMinDistanceAnalystParameters} from './GeometryMinDistanceAnalyst
  * @classdesc 空间关系分析服务类。该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -42,7 +41,7 @@ export class MinDistanceAnalystService extends SpatialAnalystBase {
      * @description 负责将客户端的参数传递到服务端
      * @param {MinDistanceAnalystParameters} parameter - 最短距离分析所需的参数信息。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = {};
         if (parameter instanceof DatasetMinDistanceAnalystParameters) {
@@ -56,12 +55,12 @@ export class MinDistanceAnalystService extends SpatialAnalystBase {
         var jsonParameters = Util.toJSON(parameterObject);
         me.url = Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

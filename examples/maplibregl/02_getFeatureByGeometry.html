@@ -74,7 +74,7 @@
             geometry: queryPolygonGeometry,
             spatialQueryMode: "INTERSECT"
         });
-        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByGeometry(geometryParam, function (serviceResult) {
+        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByGeometry(geometryParam).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features

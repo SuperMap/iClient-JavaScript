@@ -361,7 +361,7 @@
             }]
         });
 
-        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam, function (serviceResult) {
+        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam).then(function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
             features = recordsets && recordsets[0] && recordsets[0].features;
             var featureCollection = features.features;

@@ -17,7 +17,6 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @param {Object} options - 参数。
  * @param {string} options.resourceID - 图层资源ID，临时图层的资源ID标记。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -59,8 +58,10 @@ export class SetLayersInfoService extends CommonServiceBase {
      * @function SetLayersInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务 <{@link GetLayersInfoService}>返回图层信息，然后对其属性进行修改来获取。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
@@ -111,12 +112,12 @@ export class SetLayersInfoService extends CommonServiceBase {
         jsonParams.subLayers = {"layers": subLayers};
         jsonParams.object = null;
         var jsonParamsStr = Util.toJSON([jsonParams]);
-        me.request({
+        return me.request({
             method: method,
             data: jsonParamsStr,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

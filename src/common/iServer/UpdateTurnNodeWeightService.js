@@ -12,16 +12,10 @@ import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters
  * @classdesc 转向耗费权重更新服务类
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url, {
- *     eventListeners: {
- *         "processCompleted": UpdateTurnNodeWeightCompleted,
- *		   "processFailed": UpdateTurnNodeWeightError
- *		   }
- * });
+ * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url);
  * @param {string} url - 服务地址。如:
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -44,6 +38,8 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
      * @function UpdateTurnNodeWeightService.prototype.processAsync
      * @description 开始异步执行转向耗费权重的更新
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      * @example
      * (code)
      *  var updateTurnNodeWeightParam=new UpdateTurnNodeWeightParameters({
@@ -56,7 +52,7 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
      *  updateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
      * (end)
      **/
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof UpdateTurnNodeWeightParameters)) {
             return;
         }
@@ -64,12 +60,12 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
         var paramStr = me.parse(params);
         me.url = Util.urlPathAppend(me.url, paramStr);
         var data = params.turnNodeWeight ? params.turnNodeWeight : null;
-        me.request({
+        return me.request({
             method: "PUT",
             scope: me,
             data: data,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

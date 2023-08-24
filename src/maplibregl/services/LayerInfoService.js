@@ -34,19 +34,20 @@ export class LayerInfoService extends ServiceBase {
      * @function LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {LayerInfoService} 返回图层信息类。
+     * @returns {Promise} Promise 对象。
      */
     getLayersInfo(callback) {
-      this._layerInfoService.getLayersInfo(callback);
+      return this._layerInfoService.getLayersInfo(callback);
     }
 
     /**
      * @function LayerInfoService.prototype.getLayersLegendInfo
      * @description 获取地图的图例信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getLayersLegendInfo(params, callback) {
-      this._layerInfoService.getLayersLegendInfo(params, callback);
+      return this._layerInfoService.getLayersLegendInfo(params, callback);
     }
 
     /**
@@ -54,9 +55,10 @@ export class LayerInfoService extends ServiceBase {
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
      * @param {SetLayerInfoParameters} params - 设置图层信息参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     setLayerInfo(params, callback) {
-      this._layerInfoService.setLayerInfo(params, callback);
+      return this._layerInfoService.setLayerInfo(params, callback);
     }
 
     /**
@@ -64,9 +66,10 @@ export class LayerInfoService extends ServiceBase {
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
      * @param {SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     setLayersInfo(params, callback) {
-      this._layerInfoService.setLayersInfo(params, callback);
+      return this._layerInfoService.setLayersInfo(params, callback);
     }
 
     /**
@@ -74,8 +77,9 @@ export class LayerInfoService extends ServiceBase {
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SetLayerStatusParameters} params - 子图层显示控制参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     setLayerStatus(params, callback) {
-      this._layerInfoService.setLayerStatus(params, callback);
+      return this._layerInfoService.setLayerStatus(params, callback);
     }
 }

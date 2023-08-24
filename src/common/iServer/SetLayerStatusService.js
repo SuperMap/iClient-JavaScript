@@ -17,7 +17,6 @@ import {SetLayerStatusParameters} from './SetLayerStatusParameters';
  * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -52,8 +51,10 @@ export class SetLayerStatusService extends CommonServiceBase {
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务{@link SetLayerStatusParameters}
      *                          返回图层信息，然后对其属性进行修改来获取。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof SetLayerStatusParameters)) {
             return;
         }
@@ -65,11 +66,11 @@ export class SetLayerStatusService extends CommonServiceBase {
             me.url = Util.urlPathAppend(me.url, 'tempLayersSet');
             me.lastparams = params;
 
-            me.request({
+            return me.request({
                 method: method,
                 scope: me,
-                success: me.createTempLayerComplete,
-                failure: me.serviceProcessFailed
+                success: me.createTempLayerComplete.bind(me, callback),
+                failure: callback
             });
         } else {
             me.url = Util.urlPathAppend(me.url, "tempLayersSet/" + params.resourceID);
@@ -86,12 +87,12 @@ export class SetLayerStatusService extends CommonServiceBase {
 
             jsonParameters += '}]';
 
-            me.request({
+            return me.request({
                 method: "PUT",
                 data: jsonParameters,
                 scope: me,
-                success: me.serviceProcessCompleted,
-                failure: me.serviceProcessFailed
+                success: callback,
+                failure: callback
             });
         }
     }
@@ -99,16 +100,18 @@ export class SetLayerStatusService extends CommonServiceBase {
     /**
      * @function SetLayerStatusService.prototype.createTempLayerComplete
      * @description 设置完成，执行此方法。
+     * @param {RequestCallback} callback - 回调函数。
      * @param {Object} result - 服务器返回的结果对象，记录设置操作是否成功。
+     * @returns {Promise} Promise 对象。
      */
-    createTempLayerComplete(result) {
+    createTempLayerComplete(callback, result) {
         var me = this;
-        result = Util.transformResult(result);
-        if (result.succeed) {
-            me.lastparams.resourceID = result.newResourceID;
+        result.result = Util.transformResult(result.result);
+        if (result.result.succeed) {
+            me.lastparams.resourceID = result.result.newResourceID;
         }
 
-        me.processAsync(me.lastparams);
+        return me.processAsync(me.lastparams, callback);
     }
 
     /**
@@ -134,10 +137,10 @@ export class SetLayerStatusService extends CommonServiceBase {
     serviceProcessCompleted(result, options) {
       var me = this;
       result = Util.transformResult(result);
-      if (result != null && me.lastparams != null) {
+      if (result != null && me.lastparams != null && me.lastparams.resourceID != null) {
           result.newResourceID = me.lastparams.resourceID;
       }
-      me.events.triggerEvent("processCompleted", {result: result, options});
+      return { result, options };
     }
 }
 

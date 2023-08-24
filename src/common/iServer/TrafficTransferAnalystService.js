@@ -34,6 +34,7 @@ export class TrafficTransferAnalystService {
      * @description 站点查询服务。
      * @param {StopQueryParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     queryStop(params, callback) {
         var me = this;
@@ -41,15 +42,9 @@ export class TrafficTransferAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        stopQueryService.processAsync(params);
+        return stopQueryService.processAsync(params, callback);
     }
 
     /**
@@ -57,6 +52,7 @@ export class TrafficTransferAnalystService {
      * @description 交通换乘线路查询服务。
      * @param {TransferPathParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferPath(params, callback) {
         var me = this;
@@ -64,15 +60,9 @@ export class TrafficTransferAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        transferPathService.processAsync(params);
+        return transferPathService.processAsync(params, callback);
     }
 
     /**
@@ -80,6 +70,7 @@ export class TrafficTransferAnalystService {
      * @description 交通换乘方案查询服务。
      * @param {TransferSolutionParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferSolution(params, callback) {
         var me = this;
@@ -87,14 +78,8 @@ export class TrafficTransferAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        transferSolutionService.processAsync(params);
+        return transferSolutionService.processAsync(params, callback);
     }
 }

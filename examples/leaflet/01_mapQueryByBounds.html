@@ -34,7 +34,7 @@
         });
         new L.supermap
             .QueryService(url)
-            .queryByBounds(param, function (serviceResult) {
+            .queryByBounds(param).then(function (serviceResult) {
                 var result = serviceResult.result;
                 resultLayer = L.geoJSON(result.recordsets[0].features).addTo(map);
             });

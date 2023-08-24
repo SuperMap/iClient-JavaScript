@@ -120,7 +120,7 @@
             supplyCenters: supplyCenters
         });
         //进行查找
-        findLocationService.findLocation(findLocationParameter, function (serviceResult) {
+        findLocationService.findLocation(findLocationParameter).then(function (serviceResult) {
             L.geoJSON(serviceResult.result.demandResults, {
                 pointToLayer: function (geoJsonPoint, latlng) {
                     return L.circleMarker(latlng, {radius: 1, color: "green"});

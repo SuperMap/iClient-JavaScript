@@ -4,14 +4,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
 var serviceFailedEventArgsSystem = null,analystEventArgsSystem = null;
-var initConvexHullAnalystService = (url,analyzeCompleted,analyzeFailed) => {
-    return new ConvexHullAnalystService(url,
-        {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        });
+var initConvexHullAnalystService = (url) => {
+    return new ConvexHullAnalystService(url);
 };
 
 describe('ConvexHullAnalystService', () => {
@@ -51,8 +45,6 @@ describe('ConvexHullAnalystService', () => {
                 var result = analystEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 convexHullAnalystService.destroy();
-                expect(convexHullAnalystService.events).toBeNull();
-                expect(convexHullAnalystService.eventListeners).toBeNull();
                 convexHullAnalystParameters.destroy();
                 done();
             } catch (exception) {
@@ -63,7 +55,7 @@ describe('ConvexHullAnalystService', () => {
                 done();
             }
         };
-        var convexHullAnalystService = initConvexHullAnalystService(spatialAnalystURL,analyzeCompleted,analyzeFailed);
+        var convexHullAnalystService = initConvexHullAnalystService(spatialAnalystURL);
         var convexHullAnalystParameters = new ConvexHullAnalystParameters({
             model:{
                 "type":"GEOMODEL3D", 
@@ -78,7 +70,7 @@ describe('ConvexHullAnalystService', () => {
             expect(paramsObj.model.type).toBe('GEOMODEL3D');
             return Promise.resolve(new Response(`{"streamBytes":null,"volume":0,"dataContent":null,"succeed":false,"position":null,"message":"can not download file."}`));
         });
-        convexHullAnalystService.processAsync(convexHullAnalystParameters);
+        convexHullAnalystService.processAsync(convexHullAnalystParameters, analyzeCompleted);
     });
 
     //失败事件
@@ -106,7 +98,7 @@ describe('ConvexHullAnalystService', () => {
         var analyzeCompleted = (analyseEventArgs) => {
             analystEventArgsSystem = analyseEventArgs;
         };
-        var convexHullAnalystService = initConvexHullAnalystService(spatialAnalystURL,analyzeCompleted,analyzeFailed);
+        var convexHullAnalystService = initConvexHullAnalystService(spatialAnalystURL);
         var convexHullAnalystParameters = new ConvexHullAnalystParameters({});
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe("POST");
@@ -115,7 +107,7 @@ describe('ConvexHullAnalystService', () => {
             expect(paramsObj.model).toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"用于叠加的Geometry数组中索引为0的元素错误。Geometry为null。"}}`));
         });
-        convexHullAnalystService.processAsync(convexHullAnalystParameters);
+        convexHullAnalystService.processAsync(convexHullAnalystParameters, analyzeFailed);
     });
 
 });

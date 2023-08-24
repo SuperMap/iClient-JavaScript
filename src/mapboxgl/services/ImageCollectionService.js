@@ -45,7 +45,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getLegend(queryParams, callback) {
-      this._imageCollectionService.getLegend(queryParams, callback);
+      return this._imageCollectionService.getLegend(queryParams, callback);
     }
 
     /**
@@ -54,7 +54,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getStatistics(callback) {
-      this._imageCollectionService.getStatistics(callback);
+      return this._imageCollectionService.getStatistics(callback);
     }
 
     /**
@@ -63,7 +63,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getTileInfo(callback) {
-      this._imageCollectionService.getTileInfo(callback);
+      return this._imageCollectionService.getTileInfo(callback);
     }
 
     /**
@@ -73,7 +73,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteItemByID(featureId, callback) {
-      this._imageCollectionService.deleteItemByID(featureId, callback);
+      return this._imageCollectionService.deleteItemByID(featureId, callback);
     }
 
     /**
@@ -83,7 +83,7 @@ export class ImageCollectionService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getItemByID(featureId, callback) {
-      this._imageCollectionService.getItemByID(featureId, callback);
+      return this._imageCollectionService.getItemByID(featureId, callback);
     }
 }
 

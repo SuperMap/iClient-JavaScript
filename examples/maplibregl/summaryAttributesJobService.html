@@ -149,8 +149,7 @@
                             },
                             datasetNames: ["UntitledDatasource:analystResult"]
                         });
-                        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam,
-                            function (serviceResult) {
+                        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
                                 result = serviceResult.result.features.features;
                                 var names = [];
                                 var data1 = [];

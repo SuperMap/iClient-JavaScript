@@ -135,7 +135,7 @@
 			libID: 421,
 			code: randomCode[symbolDataIndex]
 		});
-		L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
+		L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params).then(getSymbolInfoSuccess);
 	}
 </script>
 </body>

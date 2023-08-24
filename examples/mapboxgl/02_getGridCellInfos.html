@@ -58,7 +58,7 @@
             Y: y
         });
 
-        new mapboxgl.supermap.GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
+        new mapboxgl.supermap.GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam).then(function (serviceResult) {
             if (!serviceResult.result) {
                 return;
             }

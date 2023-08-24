@@ -34,18 +34,22 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析任务集合。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryRegionJobs() {
-        super.getJobs(this.url);
+    getSummaryRegionJobs(callback) {
+      return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
      * @description 获取指定id的区域汇总分析任务。
      * @param {string} id -要获取区域汇总分析任务的id
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryRegionJob(id) {
-        super.getJobs(Util.urlPathAppend(this.url, id));
+    getSummaryRegionJob(id, callback) {
+       return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -53,9 +57,11 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
      * @description 新建区域汇总任务。
      * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryRegionJob(params, seconds) {
-        super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
+    addSummaryRegionJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback);
     }
 }
 

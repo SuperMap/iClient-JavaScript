@@ -75,7 +75,7 @@
             parameter: analystParameter
         });
         //进行查找
-        findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter, function (serviceResult) {
+        findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter).then(function (serviceResult) {
             var rersult = serviceResult.result;
             rersult.facilityPathList.map(function (result) {
                 resultLayer = L.geoJSON(result.route).addTo(map);

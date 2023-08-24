@@ -57,7 +57,7 @@
             }
         });
 
-        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
+        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(param, null, 'FGB').then(function (serviceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               layerID: 'points',
@@ -68,7 +68,7 @@
               }
             });
             map.addLayer(FGBLayer);
-        }, 'FGB');
+        });
     }
 
 </script>

@@ -66,7 +66,24 @@
         });
 
         var service = new mapboxgl.supermap.FeatureService(dataUrl);
-        service.getFeaturesByIDs(idsParam, function (serviceResult) {
+        // service.getFeaturesByIDs(idsParam, function (serviceResult) {
+        //     map.addSource("queryDatas", {
+        //         "type": "geojson",
+        //         "data": serviceResult.result.features
+        //     });
+        //     map.addLayer({
+        //         "id": "queryDatas",
+        //         "type": "fill",
+        //         "source": "queryDatas",
+        //         "paint": {
+        //             "fill-color": "#008080", /* 填充的颜色 */
+        //             "fill-opacity": 0.4      /* 透明度 */
+        //         },
+        //         "filter": ["==", "$type", "Polygon"]
+        //     });
+
+        // });
+        service.getFeaturesByIDs(idsParam).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features

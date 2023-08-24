@@ -34,7 +34,7 @@
         dsThiessenAnalystParameters = new L.supermap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
-        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, function (serviceResult) {
+        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters).then(function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.regions, {weight: 2}).addTo(map);
         });
     }

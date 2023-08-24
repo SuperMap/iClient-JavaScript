@@ -5,13 +5,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var initMathExpressionAnalysisService = (url,MathExpressionAnalysisServiceFailed,MathExpressionAnalysisServiceCompleted) => {
-    return new MathExpressionAnalysisService(url, {
-        eventListeners: {
-            'processFailed': MathExpressionAnalysisServiceFailed,
-            'processCompleted': MathExpressionAnalysisServiceCompleted
-        }
-    });
+var initMathExpressionAnalysisService = (url) => {
+    return new MathExpressionAnalysisService(url);
 };
 describe('MathExpressionAnalysisService', () => {
     var originalTimeout;
@@ -50,9 +45,6 @@ describe('MathExpressionAnalysisService', () => {
                 expect(mathExpressionAnalysisResult).not.toBeNull();
                 expect(mathExpressionAnalysisResult.dataset).not.toBeNull();
                 mathExpressionAnalysisService.destroy();
-                expect(mathExpressionAnalysisService.EVENT_TYPES).toBeNull();
-                expect(mathExpressionAnalysisService.events).toBeNull();
-                expect(mathExpressionAnalysisService.eventListeners).toBeNull();
                 mathExpressionAnalysisParameters.destroy();
                 done();
             } catch (exception) {
@@ -63,10 +55,7 @@ describe('MathExpressionAnalysisService', () => {
                 done();
             }
         };
-        var MathExpressionAnalysisServiceFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var mathExpressionAnalysisService = initMathExpressionAnalysisService(spatialAnalystURL,MathExpressionAnalysisServiceFailed,MathExpressionAnalysisServiceCompleted);
+        var mathExpressionAnalysisService = initMathExpressionAnalysisService(spatialAnalystURL);
         expect(mathExpressionAnalysisService).not.toBeNull();
         expect(mathExpressionAnalysisService.url).toEqual(spatialAnalystURL);
         var mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
@@ -84,14 +73,11 @@ describe('MathExpressionAnalysisService', () => {
             expect(paramsObj.resultGridName).toBe("MathExpression_commonTest");
             return Promise.resolve(new Response(`{"succeed":true,"recordset":null,"message":null,"dataset":"MathExpression_commonTest@Jingjin"}`));
         });
-        mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
+        mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters, MathExpressionAnalysisServiceCompleted);
     });
 
     it('fail:processAsync', (done) => {
         var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
-        var MathExpressionAnalysisServiceCompleted = (getMapStatusEventArgs) => {
-            analystEventArgsSystem = getMapStatusEventArgs;
-        };
         var MathExpressionAnalysisServiceFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -109,7 +95,7 @@ describe('MathExpressionAnalysisService', () => {
                 done();
             }
         };
-        var mathExpressionAnalysisService = initMathExpressionAnalysisService(spatialAnalystURL,MathExpressionAnalysisServiceFailed,MathExpressionAnalysisServiceCompleted);
+        var mathExpressionAnalysisService = initMathExpressionAnalysisService(spatialAnalystURL);
         expect(mathExpressionAnalysisService).not.toBeNull();
         var mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
             dataset: "XX@Jingjin",
@@ -126,7 +112,7 @@ describe('MathExpressionAnalysisService', () => {
             expect(paramsObj.resultGridName).toBe("MathExpressionFail_commonTest");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
-        mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
+        mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters, MathExpressionAnalysisServiceFailed);
     });
 });
 

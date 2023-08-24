@@ -95,7 +95,7 @@
 
         });
 
-        new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+        new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

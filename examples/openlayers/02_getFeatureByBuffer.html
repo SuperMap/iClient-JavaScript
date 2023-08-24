@@ -60,7 +60,7 @@
             bufferDistance: 30,
             geometry: polygon
         });
-        new ol.supermap.FeatureService(url).getFeaturesByBuffer(bufferParam, function (serviceResult) {
+        new ol.supermap.FeatureService(url).getFeaturesByBuffer(bufferParam).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
                 wrapX: false

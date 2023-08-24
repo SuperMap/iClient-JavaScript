@@ -61,7 +61,7 @@
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        new ol.supermap.FeatureService(url).getFeaturesByGeometry(geometryParam, function (serviceResult) {
+        new ol.supermap.FeatureService(url).getFeaturesByGeometry(geometryParam).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
                 wrapX: false

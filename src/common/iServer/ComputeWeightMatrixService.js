@@ -15,17 +15,11 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
  *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var mycomputeWeightMatrixService = new ComputeWeightMatrixService(url,{
- *     eventListeners: {
- *	       "processCompleted": computeWeightMatrixCompleted,
- *		   "processFailed": computeWeightMatrixnError
- *	   }
- * });
+ * var mycomputeWeightMatrixService = new ComputeWeightMatrixService(url);
  * @param {string} url - 耗费矩阵分析服务地址。请求服务的URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如："http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -51,8 +45,9 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
      * @function ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof ComputeWeightMatrixParameters)) {
             return;
         }
@@ -63,12 +58,12 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
             parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

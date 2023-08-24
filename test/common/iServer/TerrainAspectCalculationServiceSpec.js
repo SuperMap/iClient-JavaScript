@@ -3,13 +3,8 @@ import {TerrainAspectCalculationParameters} from '../../../src/common/iServer/Te
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
-var initTerrainAspectCalculationService = (url,TerrainAspectCalculationServiceCompleted,TerrainAspectCalculationServiceFailed) => {
-    return new TerrainAspectCalculationService(url, {
-        eventListeners: {
-            "processCompleted": TerrainAspectCalculationServiceCompleted,
-            'processFailed': TerrainAspectCalculationServiceFailed
-        }
-    });
+var initTerrainAspectCalculationService = (url) => {
+    return new TerrainAspectCalculationService(url);
 };
 
 describe('TerrainAspectCalculationService', () => {
@@ -48,8 +43,6 @@ describe('TerrainAspectCalculationService', () => {
                 expect(terrainAspectCalculationResult.succeed).toBeTruthy();
                 expect(terrainAspectCalculationResult.dataset).toBe("testResult@Jingjin");
                 terrainAspectCalculationService.destroy();
-                expect(terrainAspectCalculationService.events).toBeNull();
-                expect(terrainAspectCalculationService.eventListeners).toBeNull();
                 terrainAspectCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -63,7 +56,7 @@ describe('TerrainAspectCalculationService', () => {
         var TerrainAspectCalculationServiceFailed = (event) => {
             serviceFailedEventArgsSystem = event;
         };
-        var terrainAspectCalculationService = initTerrainAspectCalculationService(spatialAnalystURL,TerrainAspectCalculationServiceCompleted,TerrainAspectCalculationServiceFailed);
+        var terrainAspectCalculationService = initTerrainAspectCalculationService(spatialAnalystURL);
         expect(terrainAspectCalculationService).not.toBeNull();
         expect(terrainAspectCalculationService.url).toEqual(spatialAnalystURL);
         var terrainAspectCalculationParameters = new TerrainAspectCalculationParameters({
@@ -86,7 +79,7 @@ describe('TerrainAspectCalculationService', () => {
                 "status": null
             }`));
         });
-        terrainAspectCalculationService.processAsync(terrainAspectCalculationParameters);
+        terrainAspectCalculationService.processAsync(terrainAspectCalculationParameters, TerrainAspectCalculationServiceCompleted);
     });
 
     //测试失败事件
@@ -104,8 +97,6 @@ describe('TerrainAspectCalculationService', () => {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("数据集XX@Jingjin不存在");
                 terrainAspectCalculationService.destroy();
-                expect(terrainAspectCalculationService.events).toBeNull();
-                expect(terrainAspectCalculationService.eventListeners).toBeNull();
                 terrainAspectCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -116,7 +107,7 @@ describe('TerrainAspectCalculationService', () => {
                 done();
             }
         };
-        var terrainAspectCalculationService = initTerrainAspectCalculationService(spatialAnalystURL,TerrainAspectCalculationServiceCompleted,TerrainAspectCalculationServiceFailed);
+        var terrainAspectCalculationService = initTerrainAspectCalculationService(spatialAnalystURL);
         var terrainAspectCalculationParameters = new TerrainAspectCalculationParameters({
             dataset: "XX@Jingjin",
             terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
@@ -131,7 +122,7 @@ describe('TerrainAspectCalculationService', () => {
             expect(paramsObj.deleteExistResultDataset).toBeTruthy();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
-        terrainAspectCalculationService.processAsync(terrainAspectCalculationParameters);
+        terrainAspectCalculationService.processAsync(terrainAspectCalculationParameters, TerrainAspectCalculationServiceFailed);
     });
 });
 

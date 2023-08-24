@@ -50,7 +50,7 @@
             zValueFieldName: "AVG_TMP"
         });
         surfaceAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (serviceResult) {
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.recordset && result.recordset.features) {
                 resultLayer = L.geoJSON(result.recordset.features, {weight: 3}).addTo(map);

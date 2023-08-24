@@ -12,15 +12,9 @@ import {ThemeParameters} from './ThemeParameters';
  * @classdesc 专题图服务类。
  * @extends {CommonServiceBase}
  * @example
- * var myThemeService = new ThemeService(url, {
- *     eventListeners: {
- *           "processCompleted": themeCompleted,
- *           "processFailed": themeFailed
- *           }
- * });
+ * var myThemeService = new ThemeService(url);
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -32,7 +26,6 @@ export class ThemeService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.url = Util.urlPathAppend(this.url, 'tempLayersSet');
         this.CLASS_NAME = 'SuperMap.ThemeService';
     }
@@ -48,6 +41,8 @@ export class ThemeService extends CommonServiceBase {
      * @function ThemeService.prototype.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
      * @param {ThemeParameters} params - 专题图参数类。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
         if (!(params instanceof ThemeParameters)) {
@@ -56,41 +51,12 @@ export class ThemeService extends CommonServiceBase {
         var me = this,
             jsonParameters = null;
         jsonParameters = me.getJsonParameters(params);
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              this.serviceProcessCompleted(result, options);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              this.serviceProcessFailed(result, options);
-            }
+            success: callback,
+            failure: callback
         });
     }
 

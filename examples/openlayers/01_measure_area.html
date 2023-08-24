@@ -46,7 +46,7 @@
     });
     interaction.on('drawend', function () {
         var areaMeasureParam = new ol.supermap.MeasureParameters(feature.getGeometry());
-        new ol.supermap.MeasureService(url).measureArea(areaMeasureParam, function (serviceResult) {
+        new ol.supermap.MeasureService(url).measureArea(areaMeasureParam).then(function (serviceResult) {
             widgets.alert.showAlert(serviceResult.result.area + resources.msg_sqm, true);
         });
     });

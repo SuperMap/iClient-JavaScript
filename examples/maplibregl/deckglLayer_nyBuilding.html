@@ -358,7 +358,7 @@
                 maxFeatures: 1000000,
             });
 
-            new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam, callback);
+            new maplibregl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam).then(callback);
         }
 
         function callback(result) {

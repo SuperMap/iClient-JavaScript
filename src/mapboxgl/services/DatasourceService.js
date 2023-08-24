@@ -39,9 +39,10 @@ export class DatasourceService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getDatasources(callback) {
-      this._datasourceService.getDatasourcesService(callback);
+      return this._datasourceService.getDatasourcesService(callback);
     }
 
     /**
@@ -53,12 +54,13 @@ export class DatasourceService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
       if (!datasourceName) {
         return;
       }
-      this._datasourceService.getDatasourceService(datasourceName, callback);
+      return this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
     /**
@@ -70,6 +72,7 @@ export class DatasourceService extends ServiceBase {
      *   });
      * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {
       if (!(params instanceof SetDatasourceParameters)) {
@@ -81,7 +84,7 @@ export class DatasourceService extends ServiceBase {
           distanceUnit: params.distanceUnit,
           datasourceName: params.datasourceName
       };
-      this._datasourceService.setDatasourceService(datasourceParams, callback);
+      return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }
 

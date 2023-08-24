@@ -16,33 +16,29 @@
       var map,
         resultLayer,
         baseUrl = host + '/iserver/services/map-world/rest/maps/World',
-        url = host + "/iserver/services/data-world/rest/data";
+        url = host + '/iserver/services/data-world/rest/data';
       map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
         center: { lon: 0, lat: 0 },
         maxZoom: 18,
-        zoom: 2,
+        zoom: 2
       });
-      new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+      new L.supermap.TiledMapLayer(baseUrl, { noWrap: true }).addTo(map);
       query();
       function query() {
         var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
           queryParameter: {
-                name: "world@World",
-                attributeFilter: "SMID > 0"
+            name: 'world@World',
+            attributeFilter: 'SMID > 0'
           },
-          datasetNames: ["World:world"]
+          datasetNames: ['World:world']
         });
-        new L.supermap.FeatureService(url).getFeaturesBySQL(
-          sqlParam,
-          function (serviceResult) {
-            new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
-              strategy: 'all'
-            }).addTo(map);
-          },
-          'FGB'
-        );
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, null, 'FGB').then(function (serviceResult) {
+          new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+            strategy: 'all'
+          }).addTo(map);
+        });
       }
     </script>
   </body>

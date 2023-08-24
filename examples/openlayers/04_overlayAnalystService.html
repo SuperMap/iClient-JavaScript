@@ -44,7 +44,7 @@
             tolerance: 0,
             operation: ol.supermap.OverlayOperationType.UNION
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters).then(function (serviceResult) {
             var resultLayer = new ol.layer.Vector({
                 source: new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordset.features)

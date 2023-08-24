@@ -37,7 +37,7 @@
         });
         new L.supermap
             .FeatureService(url)
-            .getFeaturesByBuffer(bufferParam, function (serviceResult) {
+            .getFeaturesByBuffer(bufferParam).then(function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup(resources.text_capital+"：" + feature.properties.CAPITAL);

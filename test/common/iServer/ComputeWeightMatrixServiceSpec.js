@@ -7,13 +7,8 @@ import { Point } from '../../../src/common/commontypes/geometry/Point';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.networkAnalystURL;
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var initComputeWeightMatrixService_RegisterListener = (ComputeWeightMatrixServiceCompleted, ComputeWeightMatrixServiceFailed) => {
-    return new ComputeWeightMatrixService(url, {
-        eventListeners: {
-            'processCompleted': ComputeWeightMatrixServiceCompleted,
-            'processFailed': ComputeWeightMatrixServiceFailed
-        }
-    });
+var initComputeWeightMatrixService_RegisterListener = () => {
+    return new ComputeWeightMatrixService(url);
 };
 
 
@@ -38,8 +33,6 @@ describe('ComputeWeightMatrixService', () => {
                 expect(serviceCompletedEventArgsSystem.result[1][0]).toEqual(53);
                 expect(serviceCompletedEventArgsSystem.result[1][1]).toEqual(0);
                 computeWeightMatrixService.destroy();
-                expect(computeWeightMatrixService.EVENT_TYPES).toBeNull();
-                expect(computeWeightMatrixService.events).toBeNull();
                 expect(computeWeightMatrixService.isAnalyzeById == null).toBeTruthy();
                 expect(computeWeightMatrixService.nodes == null).toBeTruthy();
                 expect(computeWeightMatrixService.parameter == null).toBeTruthy();
@@ -53,10 +46,7 @@ describe('ComputeWeightMatrixService', () => {
                 done();
             }
         };
-        var ComputeWeightMatrixServiceFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener(ComputeWeightMatrixServiceCompleted, ComputeWeightMatrixServiceFailed);
+        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
 
         var nodeArray = [new Point(119.6100397551, -122.6278394459),
         new Point(171.9035599945, -113.2491141857)
@@ -89,14 +79,11 @@ describe('ComputeWeightMatrixService', () => {
             return Promise.resolve(new Response(`[[0,53],[53,0]]`));
         });
 
-        computeWeightMatrixService.processAsync(parameter);
+        computeWeightMatrixService.processAsync(parameter, ComputeWeightMatrixServiceCompleted);
     });
 
     //id为空
     it('processAsync_isAnalyzeById:null', (done) => {
-        var ComputeWeightMatrixServiceCompleted = (getFeaturesEventArgs) => {
-            serviceCompletedEventArgsSystem = getFeaturesEventArgs;
-        };
         var ComputeWeightMatrixServiceFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -144,17 +131,14 @@ describe('ComputeWeightMatrixService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`));
         });
-        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener(ComputeWeightMatrixServiceCompleted, ComputeWeightMatrixServiceFailed);
-        computeWeightMatrixService.processAsync(parameter);
+        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
+        computeWeightMatrixService.processAsync(parameter, ComputeWeightMatrixServiceFailed);
     });
 
     //参数错误
     it('processAsync_parametersWrong', () => {
         var flag = false;
         var ComputeWeightMatrixServiceCompleted = (getFeaturesEventArgs) => {
-            flag = true;
-        };
-        var ComputeWeightMatrixServiceFailed = (serviceFailedEventArgsSystem) => {
             flag = true;
         };
 
@@ -180,8 +164,8 @@ describe('ComputeWeightMatrixService', () => {
             nodes: nodeArray,
             parameter: analystParameter
         });
-        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener(ComputeWeightMatrixServiceCompleted, ComputeWeightMatrixServiceFailed);
-        computeWeightMatrixService.processAsync(parameter);
+        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
+        computeWeightMatrixService.processAsync(parameter, ComputeWeightMatrixServiceCompleted);
         expect(flag).toBeFalsy;
     });
 
@@ -195,8 +179,8 @@ describe('ComputeWeightMatrixService', () => {
             flag = true;
         };
 
-        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener(ComputeWeightMatrixServiceCompleted, ComputeWeightMatrixServiceFailed);
-        computeWeightMatrixService.processAsync();
+        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
+        computeWeightMatrixService.processAsync(ComputeWeightMatrixServiceCompleted);
         expect(flag).toBeFalsy;
     });
 
@@ -248,7 +232,7 @@ describe('ComputeWeightMatrixService', () => {
                 done();
             }
         };
-        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener(ComputeWeightMatrixServiceCompleted, ComputeWeightMatrixServiceFailed);
-        computeWeightMatrixService.processAsync(parameter);
+        var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
+        computeWeightMatrixService.processAsync(parameter, ComputeWeightMatrixServiceFailed);
     })
 });
