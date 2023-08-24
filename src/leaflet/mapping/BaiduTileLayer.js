@@ -11,7 +11,7 @@ import Attributions from '../core/Attributions'
  * @category ThirdPartyMap
  * @modulecategory Mapping
  * @extends {L.TileLayer}
- * @param {string} [url='https://online3.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
+ * @param {string} [url='https://maponline{num}.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1'] - 切片地址。
  * @param {Object} options - 参数。
  * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=19] - 最大缩放级别。
@@ -27,7 +27,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
      * @member {string} BaiduTileLayer.prototype.url
      * @description 切片地址。
      */
-    url: "https://online3.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
+    url: "https://maponline{num}.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
 
     options: {
         minZoom: 3,
@@ -56,7 +56,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
      */
     getTileUrl: function (coords) {
         var url = L.Util.template(this.url, {
-            num: Math.abs((coords.x + coords.y) % 8) + 1,
+            num: Math.abs((coords.x + coords.y) % 4),
             x: coords.x,
             y: -coords.y - 1,
             z: this._getZoomForUrl(),
