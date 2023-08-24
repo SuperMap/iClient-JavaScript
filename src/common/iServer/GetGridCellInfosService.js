@@ -97,7 +97,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
           },
           failure: callback
         }).then(({result}) => {
-          return me.getDatasetInfoCompleted(result, callback);
+          return me.getDatasetInfoCompleted(result);
         });
     }
 
