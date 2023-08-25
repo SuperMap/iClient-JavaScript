@@ -17,7 +17,7 @@ import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/
 import { Util } from '../core/Util';
 import { QueryService } from '../services/QueryService';
 import Canvg from 'canvg';
-
+import { XMLParser } from "fast-xml-parser";
 
 const MB_SCALEDENOMINATOR_3857 = [
 	'559082264.0287178',
@@ -88,19 +88,6 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
  * @fires WebMap#getfeaturesfailed
  * @fires WebMap#addlayerssucceeded
  * @extends {mapboxgl.Evented}
- * @description
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">Tips</h3>
- * 该功能的WMTS地图依赖<a href="https://github.com/nashwaan/xml-js">xml-js</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-browserify -D</code></pre>
-  然后配置webpack<pre><code>module.exports: {
-    resolve: {
-      mainFields: ['browser', 'main'],
-      fallback: {
-        fs: false,
-        stream: require.resolve('stream-browserify')
-      }
-    }
-}</code></pre>
  * @usage
  */
 export class WebMap extends mapboxgl.Evented {
@@ -468,8 +455,8 @@ export class WebMap extends mapboxgl.Evented {
 				return response.text();
 			})
 			.then(capabilitiesText => {
-        const xml2json = require('xml-js/lib/xml2json');
-                let tileMatrixSet = JSON.parse(xml2json(capabilitiesText, { compact: true, spaces: 4 }))
+        const parser = new XMLParser({numberParseOptions:{hex : false, leadingZeros: false,eNotation: false},alwaysCreateTextNode: true, textNodeName: "_text"});
+                let tileMatrixSet = parser.parse(capabilitiesText)
                     .Capabilities.Contents.TileMatrixSet;
                 if (!Array.isArray(tileMatrixSet)) {
                     tileMatrixSet = [tileMatrixSet];
@@ -477,7 +464,7 @@ export class WebMap extends mapboxgl.Evented {
 				for (let i = 0; i < tileMatrixSet.length; i++) {
 					if (
 						tileMatrixSet[i]['ows:Identifier'] &&
-						tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet
+						(tileMatrixSet[i]['ows:Identifier']['_text'] + '') === mapInfo.tileMatrixSet
 					) {
 						if (DEFAULT_WELLKNOWNSCALESET.indexOf(tileMatrixSet[i]['WellKnownScaleSet']['_text']) > -1) {
 							isMatched = true;
@@ -496,7 +483,7 @@ export class WebMap extends mapboxgl.Evented {
 								}
 								if (
 									defaultCRSScaleDenominators[j] !==
-									tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']['_text']
+									(tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']['_text'] + '')
 								) {
 									break;
 								}

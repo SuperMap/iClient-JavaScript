@@ -56,7 +56,7 @@
             return popup;
         };
         info.addTo(map);
-        liveESService = new L.supermap.ElasticSearch(dataUrl);
+        liveESService = new L.supermap.ElasticSearch(dataUrl, elasticsearch);
     }
 
     function handleMapEvent(div, map) {
