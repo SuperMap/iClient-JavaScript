@@ -67,7 +67,9 @@ export class DataFlowService extends CommonServiceBase {
         var me = this;
         this.broadcastWebSocket = this._connect(Util.urlPathAppend(me.url, 'broadcast'));
         this.broadcastWebSocket.onopen = function (e) {
-            me.broadcastWebSocket.isOpen = true;
+            if (me.broadcastWebSocket) {
+              me.broadcastWebSocket.isOpen = true;
+            }
             e.eventType = 'broadcastSocketConnected';
             me.callback(e);
         };
@@ -95,7 +97,7 @@ export class DataFlowService extends CommonServiceBase {
             this.callback({ eventType: 'broadcastFailed' });
             return;
         }
-        this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
+        this.subscribeWebSocket && this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
         this.callback({ eventType: 'broadcastSucceeded' });
     }
 
@@ -108,7 +110,7 @@ export class DataFlowService extends CommonServiceBase {
         var me = this;
         this.subscribeWebSocket = this._connect(Util.urlPathAppend(me.url, 'subscribe'));
         this.subscribeWebSocket.onopen = function (e) {
-            me.subscribeWebSocket.send(me._getFilterParams());
+            me.subscribeWebSocket && me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
             me.callback(e);
         };
@@ -135,7 +137,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
-        this.subscribeWebSocket.send(this._getFilterParams());
+        this.subscribeWebSocket && this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 
@@ -147,7 +149,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     setGeometry(geometry) {
         this.geometry = geometry;
-        this.subscribeWebSocket.send(this._getFilterParams());
+        this.subscribeWebSocket && this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 

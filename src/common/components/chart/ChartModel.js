@@ -390,7 +390,7 @@ export class ChartModel {
         });
         getFeatureBySQLService = new GetFeaturesBySQLService(url);
         getFeatureBySQLService.processAsync(getFeatureBySQLParams, function(getFeaturesEventArgs) {
-          if (getFeaturesEventArgs.type = 'processCompleted') {
+          if (getFeaturesEventArgs.type === 'processCompleted') {
             processCompleted && processCompleted(getFeaturesEventArgs);
           } else {
             processFaild && processFaild(getFeaturesEventArgs);
