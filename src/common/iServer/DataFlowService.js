@@ -67,9 +67,7 @@ export class DataFlowService extends CommonServiceBase {
         var me = this;
         this.broadcastWebSocket = this._connect(Util.urlPathAppend(me.url, 'broadcast'));
         this.broadcastWebSocket.onopen = function (e) {
-            if (me.broadcastWebSocket) {
-              me.broadcastWebSocket.isOpen = true;
-            }
+            me.broadcastWebSocket.isOpen = true;
             e.eventType = 'broadcastSocketConnected';
             me.callback(e);
         };
@@ -97,7 +95,7 @@ export class DataFlowService extends CommonServiceBase {
             this.callback({ eventType: 'broadcastFailed' });
             return;
         }
-        this.subscribeWebSocket && this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
+        this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
         this.callback({ eventType: 'broadcastSucceeded' });
     }
 
@@ -110,7 +108,7 @@ export class DataFlowService extends CommonServiceBase {
         var me = this;
         this.subscribeWebSocket = this._connect(Util.urlPathAppend(me.url, 'subscribe'));
         this.subscribeWebSocket.onopen = function (e) {
-            me.subscribeWebSocket && me.subscribeWebSocket.send(me._getFilterParams());
+            me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
             me.callback(e);
         };

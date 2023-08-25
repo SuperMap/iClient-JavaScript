@@ -312,6 +312,7 @@ describe('leaflet_DataFlowLayer', () => {
         layer.addTo(map);
 
         var e = {
+            eventType: 'messageSucceeded',
             featureResult:
             {
                 "type": "Feature",
@@ -338,7 +339,7 @@ describe('leaflet_DataFlowLayer', () => {
                 }
             });
             // done();
-            // layer.dataService.dataFlow.events.triggerEvent('messageSucceeded', e);
+            layer.dataService.dataFlow.callback(e);
         }, 0)
 
     });
