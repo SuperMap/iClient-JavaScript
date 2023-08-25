@@ -132,6 +132,9 @@
     if (inArray(includes, 'convert')) {
       inputScript(libsurl + '/xml-js/1.6.8/xml-js.min.js');
     }
+    if (inArray(includes, 'XMLParser')) {
+      inputScript(libsurl + '/fast-xml-parser/4.2.7/fxparser.min.js');
+    }
     if (inArray(includes, 'LegacyJSONLoader')) {
       inputScript(libsurl + '/three/0.110.0/examples/js/loaders/deprecated/LegacyJSONLoader.js');
     }
