@@ -51,7 +51,7 @@
                                            data-i18n="resources.text_userName"></label>
 
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="username_iManager" value="admin">
+                                        <input type="text" class="form-control" id="username_iManager">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -59,8 +59,7 @@
                                            data-i18n="resources.text_password"></label>
 
                                     <div class="col-md-8">
-                                        <input type="password" class="form-control" id="password_iManager"
-                                               value="admin">
+                                        <input type="password" class="form-control" id="password_iManager">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -216,7 +215,7 @@
 <script>
 
     $(document).ready(function () {
-        $("#loginUrl_iManager").val("http://imgr.supermapol.com/imanager");
+        $("#loginUrl_iManager").val("http://localhost:8090/imanager");
     });
 
     /*登录*/

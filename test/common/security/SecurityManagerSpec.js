@@ -98,6 +98,18 @@ describe('SecurityManager', () => {
         SecurityManager.loginiPortal(url, 'admin', 'admin');
     });
 
+    it('loginManager', () => {
+      spyOn(FetchRequest, 'post').and.callFake((testUrl, params, options) => {
+          expect(testUrl).toBe("http://fakeimanager/imanager/security/tokens");
+          expect(params).not.toBeNull();
+          return Promise.resolve(new Response(`test`));
+      });
+      var url = 'http://fakeimanager/imanager';
+      SecurityManager.loginManager(url, 'admin', 'admin').then(res => {
+        expect(res).toBe('test');
+      })
+  });
+
     it('destroyAllCredentials', () => {
         SecurityManager.destroyAllCredentials();
         expect(SecurityManager.keys).toBeNull();

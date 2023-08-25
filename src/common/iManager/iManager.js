@@ -36,7 +36,7 @@ export class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     createIServer(createParam) {
-        return this.request("POST", this.serviceUrl + '/icloud/web/nodes/server.json', new IManagerCreateNodeParam(createParam));
+        return this.request("POST", this.serviceUrl + '/cloud/web/nodes/server.json', new IManagerCreateNodeParam(createParam));
     }
 
     /**
@@ -55,7 +55,7 @@ export class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     iServerList() {
-        return this.request("GET", this.serviceUrl + '/icloud/web/nodes/server.json');
+        return this.request("GET", this.serviceUrl + '/cloud/web/nodes/server.json');
     }
 
     /**
@@ -74,7 +74,7 @@ export class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     startNodes(ids) {
-        return this.request("POST", this.serviceUrl + '/icloud/web/nodes/started.json', ids);
+        return this.request("POST", this.serviceUrl + '/cloud/web/nodes/started.json', ids);
     }
 
     /**
@@ -84,7 +84,7 @@ export class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     stopNodes(ids) {
-        return this.request("POST", this.serviceUrl + '/icloud/web/nodes/stopped.json', ids);
+        return this.request("POST", this.serviceUrl + '/cloud/web/nodes/stopped.json', ids);
     }
 }
 
