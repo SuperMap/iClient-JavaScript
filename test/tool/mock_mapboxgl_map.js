@@ -34,7 +34,7 @@ const Map = function (options) {
   } catch (e) {
     this.center = this.options.center ? new mapboxgl.LngLat(this.options.center[0], this.options.center[1]) : new mapboxgl.LngLat(0, 0);
   }
-  this.resize = function () {};
+  this.resize = function () { };
   this.style = options.style;
   this.setStyle = function (style, options) {
     if (style.layers) {
@@ -53,7 +53,7 @@ const Map = function (options) {
   };
   this._controlCorners = {
     'top-left': {
-      appendChild: function () {}
+      appendChild: function () { }
     }
   };
 
@@ -81,7 +81,7 @@ const Map = function (options) {
     this[setters[i]] = genericSetter;
   }
 
-  this.setLayoutProperty = function (layerid) {};
+  this.setLayoutProperty = function (layerid) { };
 
   this.addControl = function (control) {
     control.onAdd(this);
@@ -89,25 +89,25 @@ const Map = function (options) {
 
   this.getStyle = function () {
     return {
-      version:8,
-      source:this._sources,
-      layers:Object.values(this._layers)
+      version: 8,
+      source: this._sources,
+      layers: Object.values(this._layers)
     }
   };
 
   this.getContainer = function () {
     const container = {
       parentNode: container,
-      appendChild: function () {},
-      removeChild: function () {},
+      appendChild: function () { },
+      removeChild: function () { },
       getElementsByClassName: function () {
         return [container];
       },
-      addEventListener: function (name, handle) {},
-      removeEventListener: function () {},
+      addEventListener: function (name, handle) { },
+      removeEventListener: function () { },
       classList: {
-        add: function () {},
-        remove: function () {}
+        add: function () { },
+        remove: function () { }
       }
     };
 
@@ -134,7 +134,7 @@ const Map = function (options) {
   this.removeSource = function (name) {
     delete this._sources[name];
   };
-  this.off = function () {};
+  this.off = function () { };
   this.addLayer = function (layer, before) {
     this._layers[layer.id] = layer;
     if (layer.onAdd) {
@@ -150,15 +150,15 @@ const Map = function (options) {
     return style;
   };
 
-  this.removeLayer = function (layerId) {};
-  this.moveLayer = function (layerId) {};
-  this.getFilter = function (layerId) {};
-  this.setFilter = function (layerId, filter) {};
+  this.removeLayer = function (layerId) { };
+  this.moveLayer = function (layerId) { };
+  this.getFilter = function (layerId) { };
+  this.setFilter = function (layerId, filter) { };
   this.getLayer = function (id) {
-    return this._layers[layer.id]
+    return this._layers[id]
   };
   this.getBounds = function () {
-    return this.bounds;
+    return this.bounds || mapboxgl.LngLatBounds.convert([[-180, -90], [180, 90]]);;
   };
 
   this.getZoom = function () {
@@ -184,38 +184,38 @@ const Map = function (options) {
     return 22;
   };
   this.doubleClickZoom = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.boxZoom = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.dragPan = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.scrollZoom = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.dragRotate = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.keyboard = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.touchZoomRotate = {
-    disable: function () {},
-    enable: function () {}
+    disable: function () { },
+    enable: function () { }
   };
 
   this.project = function () {
@@ -249,28 +249,28 @@ const Map = function (options) {
     return this.zoom;
   };
   this.loadImage = function (src, callback) {
-      callback(null, [1, 2, 3]);
+    callback(null, [1, 2, 3]);
   };
-  this.addImage = function () {};
+  this.addImage = function () { };
   this.hasImage = function () {
     return true;
   };
-  this.getPaintProperty = function () {};
-  this.removeImage = function () {};
+  this.getPaintProperty = function () { };
+  this.removeImage = function () { };
   this.getCanvasContainer = () => {
-    return {
-      appendChild() {},
-      addEventListener(eventName, callback) {},
-      style: {
-        cursor: null
-      }
-    };
+    return this._container;
   };
   this.getCanvas = () => {
     return {
       style: {
         width: 100,
         height: 100
+      },
+      getBoundingClientRect: function () {
+        return {
+          width: 100,
+          height: 100
+        }
       }
     };
   };
@@ -279,13 +279,13 @@ const Map = function (options) {
       getExtent: () => jest.fn()
     };
   };
-  this.setCRS = () => {};
-  this.flyTo = options => {};
-  this.setRenderWorldCopies = epsgCode => {};
-  this.triggerRepaint = () => {};
-    setTimeout(() => {
-      this.fire('load');
-    }, 0);
+  this.setCRS = () => { };
+  this.flyTo = options => { };
+  this.setRenderWorldCopies = epsgCode => { };
+  this.triggerRepaint = () => { };
+  setTimeout(() => {
+    this.fire('load');
+  }, 0);
 };
 
 export default Map;

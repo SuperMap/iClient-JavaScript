@@ -1,6 +1,7 @@
 import {MapvLayer} from '../../../src/mapboxgl/overlay/MapvLayer';
 import mapboxgl from 'mapbox-gl';
 import {utilCityCenter, DataSet} from 'mapv';
+import mbglmap from '../../tool/mock_mapboxgl_map';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
@@ -20,6 +21,7 @@ describe('mapboxgl_MapVLayer', () => {
         layerID: "mapv"
     };
     beforeAll((done) => {
+        spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -29,7 +31,7 @@ describe('mapboxgl_MapVLayer', () => {
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
         map = new mapboxgl.Map({
-            container: 'map',
+            container: testDiv,
             style: {
                 "version": 8,
                 "sources": {
