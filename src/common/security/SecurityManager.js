@@ -205,7 +205,7 @@ export class SecurityManager {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            withCredentials: true
+            withCredentials: false
         };
         return FetchRequest.post(url, loginInfo, requestOptions).then(function(response) {
             return response.json();
@@ -247,13 +247,8 @@ export class SecurityManager {
      * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
      * @returns {Promise} 包含 iManager 登录请求结果的 Promise 对象。
      */
-    static loginManager(url, loginInfoParams, options) {
-        if (!Util.isInTheSameDomain(url)) {
-            var isNewTab = options ? options.isNewTab : true;
-            this._open(url, isNewTab);
-            return;
-        }
-        var requestUrl = Util.urlPathAppend(url, 'icloud/security/tokens');
+    static loginManager(url, loginInfoParams) {
+        var requestUrl = Util.urlPathAppend(url, '/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),
@@ -263,15 +258,15 @@ export class SecurityManager {
         var requestOptions = {
             headers: {
                 Accept: '*/*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             }
         };
         var me = this;
         return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function(response) {
-            response.text().then(function(result) {
-                me.imanagerToken = result;
-                return result;
-            });
+          return response.text();
+        }).then(function(result) {
+          me.imanagerToken = result;
+          return result;
         });
     }
 

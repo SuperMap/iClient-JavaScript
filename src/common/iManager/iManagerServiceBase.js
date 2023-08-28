@@ -44,15 +44,12 @@ export class IManagerServiceBase {
                 'Content-Type': 'application/json'
             }
         };
-        if (!requestOptions.hasOwnProperty("withCredentials")) {
-            requestOptions['withCredentials'] = true;
-        }
         requestOptions['crossOrigin'] = this.options.crossOrigin;
         requestOptions['headers'] = this.options.headers;
         var token = SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {
-                requestOptions.headers = [];
+                requestOptions.headers = {};
             }
             requestOptions.headers['X-Auth-Token'] = token;
         }

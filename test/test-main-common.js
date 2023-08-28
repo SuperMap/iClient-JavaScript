@@ -171,6 +171,7 @@ import './common/online/OnlineSpec.js';
 import './common/online/OnlineQueryDatasParameterSpec';
 
 /**common -- iManager**/
+import './common/iManager/iManagerSpec.js';
 import './common/iManager/iManagerCreateNodeParamSpec.js';
 
 /**common -- iPortal**/
