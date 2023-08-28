@@ -22,7 +22,7 @@ describe('maplibregl_FGBLayer', () => {
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: [url],
+            tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
             tileSize: 256
           }
         },
