@@ -1,6 +1,6 @@
 import maplibregl from 'maplibre-gl';
 import { MapService } from '../services/MapService';
-import { InitMapServiceBase, isPlaneProjection } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection, getZoom } from '@supermap/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 /**
  * @function initMap
@@ -77,7 +77,7 @@ async function createMapOptions(url, resetServiceInfo, options) {
   }
   const sourceType = options.type || 'raster';
   const mapOptions = options.mapOptions || {};
-  const { center } = resetServiceInfo;
+  const { center, bounds, scale, dpi, coordUnit } = resetServiceInfo;
   const mapCenter = center ? proj4('EPSG:3857', 'EPSG:4326', [center.x, center.y]) : [0, 0];
   let tileUrl =
     sourceType === 'vector-tile'
@@ -90,9 +90,11 @@ async function createMapOptions(url, resetServiceInfo, options) {
     const transparent = mapOptions.transparent !== false;
     tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
   }
+  const zoom = getZoom({ scale, dpi, coordUnit }, bounds);
   return {
     container: 'map',
     center: mapCenter,
+    zoom,
     style:
       sourceType === 'raster'
         ? {

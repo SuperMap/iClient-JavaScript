@@ -1,8 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import { MapService } from '../services/MapService';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { InitMapServiceBase, isPlaneProjection } from '@supermap/iclient-common/iServer/InitMapServiceBase';
-import { scaleToResolution, getZoomByResolution } from '@supermap/iclient-common/util/MapCalculateUtil';
+import { InitMapServiceBase, isPlaneProjection, getZoom  } from '@supermap/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 
 /**
@@ -241,35 +240,4 @@ async function createMapOptions(url, resetServiceInfo, options) {
   };
 }
 
-/**
- * @private
- * @function createMapOptions
- * @description 获取地图resolutions。
- * @returns {Array} resolutions
- */
-function scalesToResolutions(bounds, maxZoom = 22, tileSize = 512) {
-  var resolutions = [];
-  const maxReolution = Math.abs(bounds.left - bounds.right) / tileSize;
-  for (let i = 0; i < maxZoom; i++) {
-    resolutions.push(maxReolution / Math.pow(2, i));
-  }
-  return resolutions.sort(function (a, b) {
-    return b - a;
-  });
-}
 
-/**
- * @private
- * @function getZoom
- * @description 获取地图zoom。
- * @param {Object} resetServiceInfo - rest 地图服务信息。
- * @param {string} resetServiceInfo.scale - scale
- * @param {Object} resetServiceInfo.dpi - dpi
- * @param {Object} resetServiceInfo.coordUnit- coordUnit。
- * @param {Object} extent - extent。
- * @returns {number} zoom
- */
-function getZoom({ scale, dpi, coordUnit }, extent) {
-  const resolutions = scalesToResolutions(extent);
-  return getZoomByResolution(scaleToResolution(scale, dpi, coordUnit), resolutions);
-}

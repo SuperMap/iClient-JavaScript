@@ -1,6 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ import { scaleToResolution, getZoomByResolution } from '../util/MapCalculateUtil';
 
 /**
  * @private
@@ -103,4 +104,38 @@ export function getEpsgCode(prjCoordSys) {
     return '';
   }
   return 'EPSG:' + epsgCode;
+}
+
+
+/**
+ * @private
+ * @function createMapOptions
+ * @description mapboxgl maplibregl 获取地图resolutions。
+ * @returns {Array} resolutions
+ */
+ export function scalesToResolutions(bounds, maxZoom = 22, tileSize = 512) {
+  var resolutions = [];
+  const maxReolution = Math.abs(bounds.left - bounds.right) / tileSize;
+  for (let i = 0; i < maxZoom; i++) {
+    resolutions.push(maxReolution / Math.pow(2, i));
+  }
+  return resolutions.sort(function (a, b) {
+    return b - a;
+  });
+}
+
+/**
+ * @private
+ * @function getZoom
+ * @description mapboxgl maplibregl 获取地图zoom。
+ * @param {Object} resetServiceInfo - rest 地图服务信息。
+ * @param {string} resetServiceInfo.scale - scale
+ * @param {Object} resetServiceInfo.dpi - dpi
+ * @param {Object} resetServiceInfo.coordUnit- coordUnit。
+ * @param {Object} extent - extent。
+ * @returns {number} zoom
+ */
+ export function getZoom({ scale, dpi, coordUnit }, extent) {
+  const resolutions = scalesToResolutions(extent);
+  return getZoomByResolution(scaleToResolution(scale, dpi, coordUnit), resolutions);
 }
