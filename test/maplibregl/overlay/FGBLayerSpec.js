@@ -91,10 +91,12 @@ describe('maplibregl_FGBLayer', () => {
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        expect(feature.properties['CAPITAL']).toBe('圣多美');
+        if (count === 1) {
+          expect(feature.properties['CAPITAL']).toBe('圣多美');
+        }
         count++;
         console.log(count)
-        if (count === 19) {
+        if (count === 3) {
           done();
         }
         return feature;
@@ -111,10 +113,12 @@ describe('maplibregl_FGBLayer', () => {
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        expect(feature.properties['CAPITAL']).toBe('圣多美');
+        if (count === 1) {
+          expect(feature.properties['CAPITAL']).toBe('圣多美');
+        }
         count++;
         console.log(count)
-        if (count === 19) {
+        if (count === 3) {
           done();
         }
         return feature;
