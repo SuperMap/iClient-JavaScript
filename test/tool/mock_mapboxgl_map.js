@@ -49,6 +49,7 @@ const Map = function (options) {
     this.setStyle(options.style);
   }
   this.transform = {
+    zoomScale:function () { },
     angle: 0
   };
   this._controlCorners = {
@@ -258,6 +259,9 @@ const Map = function (options) {
   this.getPaintProperty = function () { };
   this.removeImage = function () { };
   this.getCanvasContainer = () => {
+    if (typeof this._container === 'string') {
+      return document.getElementById(this._container);
+    }
     return this._container;
   };
   this.getCanvas = () => {
