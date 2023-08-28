@@ -35,18 +35,22 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJobs
      * @description 获取属性汇总分析所有任务
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryAttributesJobs (){
-        super.getJobs(this.url);
+    getSummaryAttributesJobs (callback){
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJob
      * @description 获取指定id的属性汇总分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryAttributesJob(id) {
-        super.getJobs(Util.urlPathAppend(this.url, id));
+    getSummaryAttributesJob(id, callback) {
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -54,9 +58,10 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
      * @description 新建属性汇总分析服务
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryAttributesJob(params, seconds) {
-        super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);
+    addSummaryAttributesJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback);
     }
 
 }

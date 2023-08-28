@@ -176,7 +176,8 @@
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });
-        addressMatchService.code(geoCodeParam, match);
+        // addressMatchService.code(geoCodeParam, match);
+        addressMatchService.code(geoCodeParam).then(match);
     });
     $("#decodeBtn").click(function () {
         var geoDecodeParam = new mapboxgl.supermap.GeoDecodingParameter({
@@ -189,7 +190,8 @@
             maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
             geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
         });
-        addressMatchService.decode(geoDecodeParam, match);
+        // addressMatchService.decode(geoDecodeParam, match);
+        addressMatchService.decode(geoDecodeParam).then(match);
     });
 
     function match(obj) {

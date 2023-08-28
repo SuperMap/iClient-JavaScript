@@ -34,7 +34,6 @@ describe('classic_DatasetService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.result.element).toBe(undefined);
                 expect(serviceResult.object.totalTimes).toBe(0);;
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
@@ -183,7 +182,6 @@ describe('classic_DatasetService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.object.isInTheSameDomain).toBe(true);
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.element).toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (exception) {

@@ -193,7 +193,7 @@
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
+        featureService.getFeaturesByGeometry(getFeatureParams).then(function (serviceResult) {
             var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features);
             for (var i = 0; i < features.length; i++) {
                 features[i].setStyle(new ol.style.Style({

@@ -74,7 +74,7 @@
         var subLayer;
         new L.supermap
             .LayerInfoService(mapURL)
-            .getLayersInfo(function (serviceResult) {
+            .getLayersInfo().then(function (serviceResult) {
                 var result = serviceResult.result;
                 var layers = result.subLayers.layers;
                 if (!layers) return;
@@ -92,7 +92,7 @@
                     }
                 }
                 getFields();
-            });
+            })
     }
 
     //获取字段
@@ -108,7 +108,7 @@
                     datasource: currentData.dataSourceName,
                     dataset: currentData.dataSetName,
                 });
-                new L.supermap.FieldService(dataURL).getFields(param, function (serviceResult) {
+                new L.supermap.FieldService(dataURL).getFields(param).then(function (serviceResult) {
                     if (serviceResult.result && serviceResult.result.fieldNames) {
                         fieldStatistic(serviceResult.result.fieldNames[0]);
                     }

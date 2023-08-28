@@ -57,8 +57,8 @@
 
     function init() {
         initMap();
-        liveESService = new L.supermap.ElasticSearch(dataUrl);
-        trackESService = new L.supermap.ElasticSearch(dataUrl);
+        liveESService = new L.supermap.ElasticSearch(dataUrl, elasticsearch);
+        trackESService = new L.supermap.ElasticSearch(dataUrl, elasticsearch);
         planeStyles = initPlaneStyles();
     }
 

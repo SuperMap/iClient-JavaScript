@@ -4,14 +4,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 
 var serviceFailedEventArgsSystem = null,analystEventArgsSystem = null;
-var initTraceAnalystService = (url,analyzeCompleted,analyzeFailed) => {
-    return new TraceAnalystService(url,
-        {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        });
+var initTraceAnalystService = (url) => {
+    return new TraceAnalystService(url);
 };
 
 describe('TraceAnalystService', () => {
@@ -52,8 +46,6 @@ describe('TraceAnalystService', () => {
                 expect(result).not.toBeNull();
                 expect(result.nodes.length).toBe(1);
                 traceAnalystService.destroy();
-                expect(traceAnalystService.events).toBeNull();
-                expect(traceAnalystService.eventListeners).toBeNull();
                 traceAnalystParameters.destroy();
                 done();
             } catch (exception) {
@@ -64,7 +56,7 @@ describe('TraceAnalystService', () => {
                 done();
             }
         };
-        var traceAnalystService = initTraceAnalystService(networkAnalystURL,analyzeCompleted,analyzeFailed);
+        var traceAnalystService = initTraceAnalystService(networkAnalystURL);
         var traceAnalystParameters = new TraceAnalystParameters({
             edgeID:336,
             // nodeID:336,
@@ -80,7 +72,7 @@ describe('TraceAnalystService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
         });
-        traceAnalystService.processAsync(traceAnalystParameters);
+        traceAnalystService.processAsync(traceAnalystParameters, analyzeCompleted);
     });
 
     //参数不对,不发请求
@@ -93,7 +85,7 @@ describe('TraceAnalystService', () => {
         var analyzeFailed = (serviceFailedEventArgs) => {
             flag = true;
         };
-        var traceAnalystService = initTraceAnalystService(networkAnalystURL,analyzeCompleted,analyzeFailed);
+        var traceAnalystService = initTraceAnalystService(networkAnalystURL);
         // edgeID和nodeID同时没有
         var traceAnalystParameters1 = new TraceAnalystParameters({
             traceType:1,
@@ -117,9 +109,9 @@ describe('TraceAnalystService', () => {
             isUncertainDirectionValid: true,
             returnFeatures: true
         });
-        traceAnalystService.processAsync(traceAnalystParameters1);
-        traceAnalystService.processAsync(traceAnalystParameters2);
-        traceAnalystService.processAsync(traceAnalystParameters3);
+        traceAnalystService.processAsync(traceAnalystParameters1, analyzeCompleted);
+        traceAnalystService.processAsync(traceAnalystParameters2, analyzeCompleted);
+        traceAnalystService.processAsync(traceAnalystParameters3, analyzeCompleted);
         expect(flag).toBeFalsy;
         done();
     });

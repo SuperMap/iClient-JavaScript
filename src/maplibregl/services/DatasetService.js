@@ -47,7 +47,7 @@ export class DatasetService extends ServiceBase {
       if (!datasourceName) {
         return;
       }
-      this._datasetService.getDatasetsService(datasourceName, callback);
+      return this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
@@ -65,7 +65,7 @@ export class DatasetService extends ServiceBase {
       if (!datasourceName || !datasetName) {
         return;
       }
-      this._datasetService.getDatasetService(datasourceName, datasetName, callback);
+      return this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -97,7 +97,7 @@ export class DatasetService extends ServiceBase {
                   "charset": params.charset
               }
       }
-      this._datasetService.setDatasetService(datasetParams, callback);
+      return this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -112,6 +112,6 @@ export class DatasetService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     deleteDataset(datasourceName, datasetName, callback) {
-      this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
+      return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 }

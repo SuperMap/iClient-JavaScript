@@ -81,7 +81,7 @@
                     resolution: 9000,
                     bounds: L.bounds([-2640403.63, 1873792.1], [3247669.39, 5921501.4])
                 });
-                interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (interpolationServiceResult) {
+                interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters).then(function (interpolationServiceResult) {
                     interpolationAnalystResult = interpolationServiceResult.result;
                     if (interpolationAnalystResult && interpolationAnalystResult.dataset) {
                         //用栅格专题图展示分析结果
@@ -247,7 +247,7 @@
             types: ["REGION"]
         });
 
-        themeService.getThemeInfo(themeParameters, function (serviceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new L.supermap.TiledMapLayer(baseUrl, {

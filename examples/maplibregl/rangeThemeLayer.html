@@ -119,9 +119,9 @@
     });
     new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
         getFeatureBySQLParams,
-        processCompleted,
+        null,
         maplibregl.supermap.DataFormat.ISERVER
-    );
+    ).then(processCompleted);
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;

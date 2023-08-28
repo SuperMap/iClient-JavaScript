@@ -66,63 +66,60 @@ describe('mapboxgl_UniqueTheme3DLayer', () => {
                 datasetNames: ["Jingjin:Landuse_R"]
             });
             var queryFeatures = new GetFeaturesBySQLService(dataUrl, {
-                eventListeners: {
-                    processCompleted: (serviceResult) => {
-                        if (serviceResult.error) {
-                            alert("error:" + JSON.stringify(serviceResult.error));
-                            return;
-                        }
-                        var result = serviceResult.result;
-                        if (result.features) {
-                            themeLayer = new UniqueTheme3DLayer("uniqueTheme3DLayer", {
-                                height: 6000,
-                                enableHighlight: true,
-                                themeField: themeField,
-                                colorStops: [
-                                    ["草地", "#C1FFC1"], ["城市", "#CD7054"], ["灌丛", "#7CCD7C"], ["旱地", "#EE9A49"],
-                                    ["湖泊水库", "#8EE5EE"], ["经济林", "#548B54"], ["沙漠", "#DEB887"], ["水浇地", "#E0FFFF"],
-                                    ["水田", "#388E8E"], ["用材林", "#556B2F"], ["沼泽", "#2F4F4F"]
-                                ],
-                                // 显示图例
-                                showLegend: true,
-                                legendTitle: "土地利用类型"
-                            });
-                            themeLayer.setData(result.features).addTo(map);
-                            map.easeTo({
-                                pitch: 60,
-                                bearing: 0
-                            });
-                        }
-                        expect(themeLayer).not.toBeNull();
-                        expect(themeLayer.colorStops.length).toEqual(11);
-                        expect(themeLayer.data.type).toBe("FeatureCollection");
-                        expect(themeLayer.data.features.length).toBeGreaterThan(0);
-                        for (var i = 0; i < themeLayer.data.features.length; i++) {
-                            expect(themeLayer.data.features[i].type).toBe("Feature");
-                            expect(themeLayer.data.features[i].id).not.toBeNull();
-                            expect(themeLayer.data.features[i].properties).not.toBeNull();
-                            expect(themeLayer.data.features[i].geometry).not.toBeNull();
-                        }
-                        expect(themeLayer.enableHighlight).toBeTruthy();
-                        expect(themeLayer.height).toEqual(6000);
-                        expect(themeLayer.heightField).toBe("height");
-                        expect(themeLayer.id).toBe("uniqueTheme3DLayer");
-                        expect(themeLayer._highlightLayerId).toBe("uniqueTheme3DLayer-highlightLayer");
-                        expect(themeLayer.highlight.color).toBe("#ADA91E");
-                        expect(themeLayer.legendTitle).toBe("土地利用类型");
-                        var layerStyleOptions = themeLayer.getLayerStyleOptions();
-                        expect(layerStyleOptions).not.toBeNull();
-                        expect(layerStyleOptions).not.toBeUndefined();
-                        var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
-                        expect(highlightStyleOptions).not.toBeNull();
-                        expect(highlightStyleOptions).not.toBeUndefined();
-                        themeLayer.remove();
-                        done();
-                    }
-                },
                 format: DataFormat.GEOJSON
             });
-            queryFeatures.processAsync(getFeatureBySQLParams);
+            queryFeatures.processAsync(getFeatureBySQLParams, (serviceResult) => {
+              if (serviceResult.error) {
+                  alert("error:" + JSON.stringify(serviceResult.error));
+                  return;
+              }
+              var result = serviceResult.result;
+              if (result.features) {
+                  themeLayer = new UniqueTheme3DLayer("uniqueTheme3DLayer", {
+                      height: 6000,
+                      enableHighlight: true,
+                      themeField: themeField,
+                      colorStops: [
+                          ["草地", "#C1FFC1"], ["城市", "#CD7054"], ["灌丛", "#7CCD7C"], ["旱地", "#EE9A49"],
+                          ["湖泊水库", "#8EE5EE"], ["经济林", "#548B54"], ["沙漠", "#DEB887"], ["水浇地", "#E0FFFF"],
+                          ["水田", "#388E8E"], ["用材林", "#556B2F"], ["沼泽", "#2F4F4F"]
+                      ],
+                      // 显示图例
+                      showLegend: true,
+                      legendTitle: "土地利用类型"
+                  });
+                  themeLayer.setData(result.features).addTo(map);
+                  map.easeTo({
+                      pitch: 60,
+                      bearing: 0
+                  });
+              }
+              expect(themeLayer).not.toBeNull();
+              expect(themeLayer.colorStops.length).toEqual(11);
+              expect(themeLayer.data.type).toBe("FeatureCollection");
+              expect(themeLayer.data.features.length).toBeGreaterThan(0);
+              for (var i = 0; i < themeLayer.data.features.length; i++) {
+                  expect(themeLayer.data.features[i].type).toBe("Feature");
+                  expect(themeLayer.data.features[i].id).not.toBeNull();
+                  expect(themeLayer.data.features[i].properties).not.toBeNull();
+                  expect(themeLayer.data.features[i].geometry).not.toBeNull();
+              }
+              expect(themeLayer.enableHighlight).toBeTruthy();
+              expect(themeLayer.height).toEqual(6000);
+              expect(themeLayer.heightField).toBe("height");
+              expect(themeLayer.id).toBe("uniqueTheme3DLayer");
+              expect(themeLayer._highlightLayerId).toBe("uniqueTheme3DLayer-highlightLayer");
+              expect(themeLayer.highlight.color).toBe("#ADA91E");
+              expect(themeLayer.legendTitle).toBe("土地利用类型");
+              var layerStyleOptions = themeLayer.getLayerStyleOptions();
+              expect(layerStyleOptions).not.toBeNull();
+              expect(layerStyleOptions).not.toBeUndefined();
+              var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
+              expect(highlightStyleOptions).not.toBeNull();
+              expect(highlightStyleOptions).not.toBeUndefined();
+              themeLayer.remove();
+              done();
+          });
             // setTimeout(() => {
             
             // }, 5000)

@@ -54,9 +54,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getTools: function (callback) {
-      this._geoprocessingJobsService.getTools(callback);
+      return this._geoprocessingJobsService.getTools(callback);
     },
 
     /**
@@ -64,9 +65,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @description 获取工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getTool: function (identifier, callback) {
-      this._geoprocessingJobsService.getTool(identifier, callback);
+      return this._geoprocessingJobsService.getTool(identifier, callback);
     },
 
     /**
@@ -76,9 +78,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     execute: function (identifier, parameter, environment, callback) {
-      this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
+      return this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
     },
 
     /**
@@ -88,9 +91,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     submitJob: function (identifier, parameter, environment, callback) {
-      this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
+      return this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
     },
 
     /**
@@ -102,9 +106,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {number} options.interval - 定时器时间间隔。
      * @param {RequestCallback} options.statusCallback - 任务状态的回调函数。
      * @param {function} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     waitForJobCompletion: function (jobId, identifier, options, callback) {
-      this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
+      return this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
     },
 
     /**
@@ -113,9 +118,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getJobInfo: function (identifier, jobId, callback) {
-      this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
+      return this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
     },
 
     /**
@@ -124,9 +130,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     cancelJob: function (identifier, jobId, callback) {
-      this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
+      return this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
     },
 
     /**
@@ -134,9 +141,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @description 获取处理自动化服务任务列表。
      * @param {string} identifier - 处理自动化工具 ID。(传参代表 identifier 算子的任务列表，不传参代表所有任务的列表)
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getJobs: function (identifier, callback) {
-      this._geoprocessingJobsService.getJobs(identifier, callback);
+      return this._geoprocessingJobsService.getJobs(identifier, callback);
     },
 
     /**
@@ -146,9 +154,10 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {string} jobId - 处理自动化任务 ID。
      * @param {string} filter - 输出异步结果的 ID。(可选，传入 filter 参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getResults: function (identifier, jobId, filter, callback) {
-      this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
+      return this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
     }
 });
 export const geoprocessingService = function (url, options) {

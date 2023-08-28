@@ -77,7 +77,7 @@
             bounds: new mapboxgl.LngLatBounds([0, 0], [60, 39])
         });
 
-        queryService = new mapboxgl.supermap.QueryService(url).queryByBounds(param, function (serviceResult) {
+        queryService = new mapboxgl.supermap.QueryService(url).queryByBounds(param).then(function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
 
             var features = recordsets && recordsets[0] && recordsets[0].features;

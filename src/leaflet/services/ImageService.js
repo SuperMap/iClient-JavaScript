@@ -42,9 +42,10 @@ export var ImageService = ServiceBase.extend({
      * @function ImageService.prototype.getCollections
      * @description 返回影像集合列表（Collections）。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getCollections: function (callback) {
-      this._imageService.getCollections(callback);
+      return this._imageService.getCollections(callback);
     },
 
     /**
@@ -52,18 +53,20 @@ export var ImageService = ServiceBase.extend({
      * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（ Collection ）的 ID ，在一个影像服务中唯一标识影像集合。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getCollectionByID: function (collectionId, callback) {
-      this._imageService.getCollectionByID(collectionId, callback);
+      return this._imageService.getCollectionByID(collectionId, callback);
     },
     /**
      * @function ImageService.prototype.search
      * @description 查询与过滤条件匹配的影像数据。
      * @param {ImageSearchParameter} [itemSearch] 查询参数。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     search: function (itemSearch, callback) {
-      this._imageService.search(itemSearch, callback);
+      return this._imageService.search(itemSearch, callback);
     }
 });
 

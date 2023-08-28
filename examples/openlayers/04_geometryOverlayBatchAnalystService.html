@@ -166,7 +166,7 @@
             operation: ol.supermap.OverlayOperationType.INTERSECT
         });
 
-        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters).then(function (serviceResult) {
             serviceResult.result[0].resultGeometry.properties.isResultLayer = true;
             var resultSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result[0].resultGeometry)

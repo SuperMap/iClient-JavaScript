@@ -73,19 +73,19 @@
     dataSetService();
 
     function dataSetService() {
-        new L.supermap.DatasourceService(url).getDatasources(function (serviceResult) {
-        datasourcesSelect = document.getElementById("datasourcesSelect");
-        const datasourceNames = serviceResult.result.datasourceNames;
-        for (let i = 0, len = datasourceNames.length; i < len; i++) {
-            datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
-        }
-        datasourceName = datasourcesSelect.value;
-        datasetsService(datasourceName)
+        new L.supermap.DatasourceService(url).getDatasources().then(function (serviceResult) {
+          datasourcesSelect = document.getElementById("datasourcesSelect");
+          const datasourceNames = serviceResult.result.datasourceNames;
+          for (let i = 0, len = datasourceNames.length; i < len; i++) {
+              datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
+          }
+          datasourceName = datasourcesSelect.value;
+          datasetsService(datasourceName)
         })
     }
     //数据集信息
     function datasetsService(datasourceName){
-        new L.supermap.DatasetService(url).getDatasets(datasourceName,function (serviceResult) {
+        new L.supermap.DatasetService(url).getDatasets(datasourceName).then(function (serviceResult) {
             const datasetNames = serviceResult.result.datasetNames;
             datasetsSelect = document.getElementById("datasetsSelect");
         for (let i = 0,len = datasetNames.length; i < len; i++) {
@@ -96,7 +96,7 @@
 
     function datasetsPrint(){
         const datasetName = datasetsSelect.value;
-        new L.supermap.DatasetService(url).getDataset(datasourceName,datasetName,function (serviceResult) {
+        new L.supermap.DatasetService(url).getDataset(datasourceName,datasetName).then(function (serviceResult) {
             let innerHTML = "(" + resources.text_datasetInfoPrint + ")" + "<br><br>";
             innerHTML += "dataSourceName：" + JSON.stringify(serviceResult.result.datasetInfo.dataSourceName, null, 2) + "<br>";
             innerHTML += "description:" + JSON.stringify(serviceResult.result.datasetInfo.description, null, 2) + "<br>";

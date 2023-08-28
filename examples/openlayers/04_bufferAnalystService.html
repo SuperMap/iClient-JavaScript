@@ -80,7 +80,7 @@
                 semicircleLineSegment: 10
             })
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordset.features)
             });

@@ -129,7 +129,6 @@ describe('ol_DataFlow', () => {
     service.on('broadcastSocketConnected', e => {
       var dataFlow = service.dataFlow;
       expect(dataFlow.CLASS_NAME).toBe('SuperMap.DataFlowService');
-      expect(dataFlow.EVENT_TYPES.length).toEqual(10);
       expect(dataFlow.broadcastWebSocket.binaryType).toBe('blob');
       expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + 'broadcast');
       broadcast_Point(service);

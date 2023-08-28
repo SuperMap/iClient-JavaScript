@@ -93,7 +93,7 @@
                     });
                     new mapboxgl.supermap.FeatureService(
                         host + '/iserver/services/data-world/rest/data'
-                    ).getFeaturesByGeometry(geometryParam, function(serviceResult) {
+                    ).getFeaturesByGeometry(geometryParam).then(function(serviceResult) {
                         map.addSource('queryDatas', {
                             type: 'geojson',
                             data: serviceResult.result.features

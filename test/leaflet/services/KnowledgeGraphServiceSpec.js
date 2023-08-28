@@ -33,94 +33,64 @@ describe('KnowledgeGraphService', () => {
   });
 
   it('query', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/query.json?cypherQuery=cypherQuery');
+      return Promise.resolve(new Response(queryData));
+    });
+    knowledgeGraphService.query('cypherQuery', (res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
-        expect(result.result.length).toEqual(5);
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        expect(res.result.length).toEqual(5);
         done();
       } catch (exception) {
         console.log("'query'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
-    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-      expect(testUrl).toBe(knowledgegraphURL + '/query.json?cypherQuery=cypherQuery');
-      expect(options).not.toBeNull();
-      return Promise.resolve(new Response(queryData));
-    });
-    knowledgeGraphService.query('cypherQuery', (res) => {
-      expect(res.result).not.toBeNull();
     });
   });
   it('getGraphMap', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps/xxx图谱.json');
+      return Promise.resolve(new Response(graphmapData));
+    });
+    knowledgeGraphService.getGraphMap('xxx图谱', (res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
         done();
       } catch (exception) {
         console.log("'getGraphMap'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
-    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps/xxx图谱.json');
-      expect(options).not.toBeNull();
-      return Promise.resolve(new Response(graphmapData));
-    });
-    knowledgeGraphService.getGraphMap('xxx图谱', (res) => {
-      expect(res.result).not.toBeNull();
     });
   });
   it('getGraphMaps', (done) => {
-    var reqFailed = (serviceFailedEventArgs) => {
-      codingFailedEventArgs = serviceFailedEventArgs;
-    };
-    var reqCompleted = (result) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps.json');
+      return Promise.resolve(new Response(graphmaps));
+    });
+    knowledgeGraphService.getGraphMaps((res) => {
       try {
         expect(knowledgeGraphService).not.toBeNull();
-        expect(result).not.toBeNull();
-        expect(result.type).toBe('processCompleted');
-        expect(result.result).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
         done();
       } catch (exception) {
         console.log("'getGraphMaps'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }
-    };
-    var options = {
-      eventListeners: { processCompleted: reqCompleted, processFailed: reqFailed }
-    };
-    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL, options);
-    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
-      expect(testUrl).toBe(knowledgegraphURL + '/graphmaps.json');
-      expect(options).not.toBeNull();
-      return Promise.resolve(new Response(graphmaps));
-    });
-    knowledgeGraphService.getGraphMaps((res) => {
-      expect(res.result).not.toBeNull();
     });
   });
   it('getGraphMapData', (done) => {

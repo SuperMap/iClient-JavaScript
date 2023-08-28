@@ -37,9 +37,10 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 汇查找服务。
      * @param {FacilityAnalystSinks3DParameters} params - 最近设施分析参数类（汇查找资源）。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     sinksFacilityAnalyst: function (params, callback) {
-      this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
     },
 
     /**
@@ -47,10 +48,10 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 源查找服务。
      * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找资源）。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {NetworkAnalyst3DService} NetworkAnalyst3DService的实例对象。
+     * @returns {Promise} Promise 对象。
      */
     sourcesFacilityAnalyst: function (params, callback) {
-      this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
     },
 
     /**
@@ -58,10 +59,10 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 上游追踪资源服务。
      * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {NetworkAnalyst3DService} NetworkAnalyst3DService的实例对象。
+     * @returns {Promise} Promise 对象。
      */
     traceUpFacilityAnalyst: function (params, callback) {
-      this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
     },
 
     /**
@@ -69,9 +70,10 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 下游追踪资源服务。
      * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     traceDownFacilityAnalyst: function (params, callback) {
-      this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
     },
 
     /**
@@ -79,9 +81,10 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 上游关键设施查找服务。
      * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找资源参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     upstreamFacilityAnalyst: function (params, callback) {
-      this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
     }
 });
 

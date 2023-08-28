@@ -16,17 +16,11 @@ import {GeoJSON} from '../format/GeoJSON';
  * URL应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new GetFeaturesServiceBase(url, {
- *     eventListeners: {
- *         "processCompleted": getFeatureCompleted,
- *         "processFailed": getFeatureError
- *     }
- * });
+ * var myService = new GetFeaturesServiceBase(url);
  * @usage
  */
 export class GetFeaturesServiceBase extends CommonServiceBase {
@@ -99,8 +93,10 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
      * @function GetFeaturesServiceBase.prototype.processAsync
      * @description 将客户端的查询参数传递到服务端。
      * @param {Object} params - 查询参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
@@ -126,12 +122,12 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         }
 
         jsonParameters = me.getJsonParameters(params);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -147,7 +143,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
             var geoJSONFormat = new GeoJSON();
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
-        me.events.triggerEvent("processCompleted", {result: result, options});
+       return { result, options };
     }
 
     dataFormat() {

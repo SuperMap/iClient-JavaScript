@@ -59,7 +59,7 @@
         datasource: "World",
         dataset: "continent_T"
       });
-      new mapboxgl.supermap.FieldService(dataUrl).getFields(param, function (serviceResult) {
+      new mapboxgl.supermap.FieldService(dataUrl).getFields(param).then(function (serviceResult) {
         var innerHTML = serviceResult.result.fieldNames.join(', ');
         new mapboxgl.Popup().setLngLat([0, 0]).setHTML(innerHTML).addTo(map);
       });

@@ -24,14 +24,13 @@ import {SecurityManager} from '../security/SecurityManager';
 export class DataFlowService extends CommonServiceBase {
 
 
-    constructor(url, options) {
+    constructor(url, options, callback) {
         options = options || {};
         /*
          * @constant EVENT_TYPES
          * {Array.<string>}
          * 此类支持的事件类型
          */
-        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketClosed", "broadcastSocketError", "broadcastFailed", "broadcastSucceeded", "subscribeSocketConnected", "subscribeSocketClosed", "subscribeSocketError", "messageSucceeded", "setFilterParamSucceeded"]
         super(url, options);
 
         /**
@@ -52,6 +51,8 @@ export class DataFlowService extends CommonServiceBase {
          */
         this.excludeField = null;
 
+        this.callback = callback;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.DataFlowService";
@@ -68,18 +69,18 @@ export class DataFlowService extends CommonServiceBase {
         this.broadcastWebSocket.onopen = function (e) {
             me.broadcastWebSocket.isOpen = true;
             e.eventType = 'broadcastSocketConnected';
-            me.events.triggerEvent('broadcastSocketConnected', e);
+            me.callback(e);
         };
         this.broadcastWebSocket.onclose = function (e) {
             if (me.broadcastWebSocket) {
                 me.broadcastWebSocket.isOpen = false;
             }
             e.eventType = 'broadcastSocketClosed';
-            me.events.triggerEvent('broadcastSocketClosed', e);
+            me.callback(e);
         };
         this.broadcastWebSocket.onerror = function (e) {
             e.eventType = 'broadcastSocketError';
-            me.events.triggerEvent('broadcastSocketError', e);
+            me.callback(e);
         };
         return this;
     }
@@ -91,12 +92,11 @@ export class DataFlowService extends CommonServiceBase {
      */
     broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket||!this.broadcastWebSocket.isOpen) {
-            this.events.triggerEvent('broadcastFailed');
+            this.callback({ eventType: 'broadcastFailed' });
             return;
         }
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
-        this.events.triggerEvent('broadcastSucceeded');
-
+        this.callback({ eventType: 'broadcastSucceeded' });
     }
 
     /**
@@ -110,15 +110,15 @@ export class DataFlowService extends CommonServiceBase {
         this.subscribeWebSocket.onopen = function (e) {
             me.subscribeWebSocket.send(me._getFilterParams());
             e.eventType = 'subscribeSocketConnected';
-            me.events.triggerEvent('subscribeSocketConnected', e);
+            me.callback(e);
         };
         this.subscribeWebSocket.onclose = function (e) {
             e.eventType = 'subscribeWebSocketClosed';
-            me.events.triggerEvent('subscribeWebSocketClosed', e);
+            me.callback(e);
         };
         this.subscribeWebSocket.onerror = function (e) {
             e.eventType = 'subscribeSocketError';
-            me.events.triggerEvent('subscribeSocketError', e);
+            me.callback(e);
         };
         this.subscribeWebSocket.onmessage = function (e) {
             me._onMessage(e);
@@ -135,7 +135,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
-        this.subscribeWebSocket.send(this._getFilterParams());
+        this.subscribeWebSocket && this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 
@@ -147,7 +147,7 @@ export class DataFlowService extends CommonServiceBase {
      */
     setGeometry(geometry) {
         this.geometry = geometry;
-        this.subscribeWebSocket.send(this._getFilterParams());
+        this.subscribeWebSocket && this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 
@@ -208,13 +208,13 @@ export class DataFlowService extends CommonServiceBase {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
             e.eventType = 'setFilterParamSucceeded';
-            this.events.triggerEvent('setFilterParamSucceeded', e);
+            this.callback(e);
             return;
         }
         var feature = JSON.parse(e.data);
         e.featureResult = feature;
         e.eventType = 'messageSucceeded';
-        this.events.triggerEvent('messageSucceeded', e);
+        this.callback(e);
     }
 
 

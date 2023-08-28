@@ -1,5 +1,6 @@
 import { HeatMapLayer } from '../../../src/mapboxgl/overlay/HeatMapLayer';
 import mapboxgl from 'mapbox-gl';
+import mbglmap from '../../tool/mock_mapboxgl_map';
 import { truncate } from '@turf/turf';
 
 var url = GlobeParameter.worldMapURL;
@@ -7,6 +8,7 @@ describe('mapboxgl_HeatMapLayer', () => {
     var originalTimeout;
     var testDiv, map, heatLayer;
     beforeAll((done) => {
+        spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
         testDiv = window.document.createElement('div');
         testDiv.setAttribute('id', 'map');
         testDiv.style.styleFloat = 'left';
@@ -17,7 +19,7 @@ describe('mapboxgl_HeatMapLayer', () => {
         window.document.body.appendChild(testDiv);
 
         map = new mapboxgl.Map({
-            container: 'map',
+            container: testDiv,
             style: {
                 version: 8,
                 sources: {
@@ -71,6 +73,7 @@ describe('mapboxgl_HeatMapLayer', () => {
         
     });
     beforeEach(() => {
+        
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });

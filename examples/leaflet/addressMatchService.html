@@ -133,7 +133,9 @@
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });
-        addressMatchService.code(geoCodeParam, match);
+        addressMatchService.code(geoCodeParam).then((obj) => {
+          match(obj);
+        });
     });
     $("#decodeBtn").click(function () {
         var geoDecodeParam = new L.supermap.GeoDecodingParameter({
@@ -146,7 +148,9 @@
             maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
             geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
         });
-        addressMatchService.decode(geoDecodeParam, match);
+        addressMatchService.decode(geoDecodeParam).then((obj) => {
+          match(obj);
+        });
     });
 
     function match(obj) {

@@ -49,7 +49,7 @@
     });
     interaction.on('drawend', function () {
         var distanceMeasureParam = new ol.supermap.MeasureParameters(feature.getGeometry());
-        new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam, function (serviceResult) {
+        new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam).then(function (serviceResult) {
             widgets.alert.showAlert(serviceResult.result.distance + resources.msg_m, true);
         });
     });

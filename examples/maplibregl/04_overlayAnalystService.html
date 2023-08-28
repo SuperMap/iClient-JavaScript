@@ -54,7 +54,7 @@
             tolerance: 0,
             operation: maplibregl.supermap.OverlayOperationType.UNION
         });
-        new maplibregl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
+        new maplibregl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters).then(function (serviceResult) {
             map.addSource("analystDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.recordset.features

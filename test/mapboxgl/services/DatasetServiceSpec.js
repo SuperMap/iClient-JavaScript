@@ -172,10 +172,9 @@ describe('mapboxgl_DatasetService', () => {
     // 数据集服务删除成功事件
     it('success:deleteDataset', (done) => {
         var service = new DatasetService(url, options);
-        spyOn(FetchRequest,'commit').and.callFake((method, testUrl, options) => {
+        spyOn(FetchRequest,'commit').and.callFake((method, testUrl) => {
             expect(method).toBe("DELETE");
             expect(testUrl).toBe('http://localhost:9876/iserver/services/data-world/rest/data/datasources/name/World/datasets/name/continent_T');
-            expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
         service.deleteDataset("World","continent_T", (result) => {
@@ -185,7 +184,6 @@ describe('mapboxgl_DatasetService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.object.isInTheSameDomain).toBe(true);
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.element).toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (exception) {

@@ -34,9 +34,10 @@ export class FieldService extends ServiceBase {
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getFields(params, callback) {
-      this._fieldService.getFields(params, callback);
+      return this._fieldService.getFields(params, callback);
     }
 
     /**
@@ -44,8 +45,9 @@ export class FieldService extends ServiceBase {
      * @description 字段统计服务。
      * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getFieldStatisticsInfo(params, callback) {
-      this._fieldService.getFieldStatisticsInfo(params, callback);
+      return this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 }

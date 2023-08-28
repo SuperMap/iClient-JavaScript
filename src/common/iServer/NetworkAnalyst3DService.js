@@ -38,7 +38,7 @@
       * @description 汇查找服务
       * @param {FacilityAnalystSinks3DParameters} params- 最近设施分析参数类（汇查找资源）。
       * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @returns {Promise} Promise 对象。
       */
      sinksFacilityAnalyst(params, callback) {
          var me = this;
@@ -46,15 +46,9 @@
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystSinks3DService.processAsync(params);
+         return facilityAnalystSinks3DService.processAsync(params, callback);
      }
  
      /**
@@ -62,7 +56,7 @@
       * @description 源查找服务。
       * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
       * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @returns {Promise} Promise 对象。
       */
      sourcesFacilityAnalyst(params, callback) {
          var me = this;
@@ -70,15 +64,9 @@
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystSources3DService.processAsync(params);
+         return facilityAnalystSources3DService.processAsync(params, callback);
      }
  
      /**
@@ -86,7 +74,7 @@
       * @description 上游追踪资源服务。
       * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
       * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @returns {Promise} Promise 对象。
       */
  
      traceUpFacilityAnalyst(params, callback) {
@@ -95,15 +83,9 @@
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystTraceup3DService.processAsync(params);
+         return facilityAnalystTraceup3DService.processAsync(params, callback);
      }
  
      /**
@@ -111,7 +93,7 @@
       * @description 下游追踪资源服务。
       * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类。
       * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @returns {Promise} Promise 对象。
       */
      traceDownFacilityAnalyst(params, callback) {
          var me = this;
@@ -119,15 +101,9 @@
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystTracedown3DService.processAsync(params);
+         return facilityAnalystTracedown3DService.processAsync(params, callback);
      }
  
      /**
@@ -135,7 +111,7 @@
       * @description 上游关键设施查找服务。
       * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类。
       * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @returns {Promise} Promise 对象。
       */
      upstreamFacilityAnalyst(params, callback) {
          var me = this;
@@ -143,15 +119,9 @@
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystUpstream3DService.processAsync(params);
+         return facilityAnalystUpstream3DService.processAsync(params, callback);
      }
  }
  

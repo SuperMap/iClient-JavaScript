@@ -71,7 +71,7 @@
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new L.supermap.TiledMapLayer(url, {

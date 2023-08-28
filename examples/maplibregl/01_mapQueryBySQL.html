@@ -56,7 +56,7 @@
             }
         });
 
-        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
+        queryService = new maplibregl.supermap.QueryService(url).queryBySQL(param).then(function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
             var features = recordsets && recordsets[0] && recordsets[0].features;
             map.addLayer({

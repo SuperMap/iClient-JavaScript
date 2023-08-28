@@ -43,7 +43,7 @@
         });
         new L.supermap
             .FeatureService(dataUrl)
-            .getFeaturesByBounds(boundsParam, function (serviceResult) {
+            .getFeaturesByBounds(boundsParam).then(function (serviceResult) {
                 createLayers(serviceResult.result.features);
             });
     }

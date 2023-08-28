@@ -11,47 +11,21 @@ import {Util} from "../../commontypes/Util";
  * @category ElasticSearch
  * @modulecategory Services
  * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} es - elasticsearch的全局变量。注意：需要@elastic/elasticsearch@5.6.22或者elasticsearch@16.7.3。
  * @param {Object} options - 参数。
  * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">Tips</h3>
- * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process events util -D</code></pre>
-  然后配置webpack<pre><code>module.exports: {
-    resolve: {
-      alias: {
-        process: 'process/browser',
-      },
-      mainFields: ['browser', 'main'],
-      fallback: {
-        fs: false,
-        http: require.resolve('stream-http'),
-        https: require.resolve('https-browserify'),
-        os: require.resolve('os-browserify/browser'),
-        stream: require.resolve('stream-browserify'),
-        tty: require.resolve('tty-browserify'),
-        zlib: require.resolve('browserify-zlib'),
-        assert: require.resolve('assert'),
-        util: require.resolve('util'),
-        events: require.resolve('events')
-      }
-    }
-    plugins: [
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-        Buffer: ['buffer', 'Buffer']
-      }),
-    ]
-}</code></pre>
  * @usage
  */
 
 export class ElasticSearch {
 
-    constructor(url, options) {
+    constructor(url, es, options) {
+        if (!es || (typeof es !== 'function' && typeof es !== 'object') || typeof es.Client !== 'function') {
+          throw Error('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+        }
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
@@ -62,7 +36,6 @@ export class ElasticSearch {
          *  @member {Object} ElasticSearch.prototype.client
          *  @description client ES客户端。
          */
-        var es = require('@elastic/elasticsearch');
         try {
           // 老版本
           this.client = new es.Client({

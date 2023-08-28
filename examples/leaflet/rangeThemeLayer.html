@@ -116,7 +116,7 @@
             datasetNames: ["Jingjin:BaseMap_R"]
         });
         new L.supermap.featureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, processComplete, L.supermap.DataFormat.ISERVER);
+            .getFeaturesBySQL(getFeatureBySQLParams, L.supermap.DataFormat.ISERVER).then(processComplete);
 
     }
 

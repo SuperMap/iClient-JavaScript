@@ -26,7 +26,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
          * @member {DataFormat} [SpatialAnalystBase.prototype.format=DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
          */
-        this.format = options.format || DataFormat.GEOJSON;
+        this.format = (options && options.format) || DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
@@ -62,7 +62,7 @@ export class SpatialAnalystBase extends CommonServiceBase {
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, options});
+        return { result: analystResult, options };
     }
 
     /**

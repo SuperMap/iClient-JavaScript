@@ -2,16 +2,9 @@ import {UpdateEdgeWeightService} from '../../../src/common/iServer/UpdateEdgeWei
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEdgeWeightParameters';
 
-var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var initUpdateEdgeWeightService_RegisterListener = (url,updateEdgeWeightFailed,updateEdgeWeightCompleted) => {
-    return new UpdateEdgeWeightService(url,
-        {
-            eventListeners: {
-                'processFailed': updateEdgeWeightFailed,
-                'processCompleted': updateEdgeWeightCompleted
-            }
-        }
-    );
+var serviceCompletedEventArgsSystem = null;
+var initUpdateEdgeWeightService_RegisterListener = (url) => {
+    return new UpdateEdgeWeightService(url);
 };
 
 describe('UpdateEdgeWeightService', () => {
@@ -42,17 +35,11 @@ describe('UpdateEdgeWeightService', () => {
     it('processAsync_noParams', (done) => {
         var networkAnalystURL = GlobeParameter.networkAnalystURL;
         var myUpdateEdgeWeightService;
-        var updateEdgeWeightFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var updateEdgeWeightCompleted = (serviceCompletedEventArgs) => {
             serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
             try {
                 expect(typeof(myUpdateEdgeWeightService.processAsync()) === "undefined").toBeTruthy();
                 myUpdateEdgeWeightService.destroy();
-                expect(myUpdateEdgeWeightService.EVENT_TYPES).toBeNull();
-                expect(myUpdateEdgeWeightService.events).toBeNull();
-                expect(myUpdateEdgeWeightService.eventListeners).toBeNull();
                 expect(serviceCompletedEventArgsSystem).not.toBeNull();
                 done();
             } catch (exception) {
@@ -69,14 +56,14 @@ describe('UpdateEdgeWeightService', () => {
             weightField:"time",
             edgeWeight:"25"
         });
-        myUpdateEdgeWeightService = initUpdateEdgeWeightService_RegisterListener(networkAnalystURL,updateEdgeWeightFailed,updateEdgeWeightCompleted);
+        myUpdateEdgeWeightService = initUpdateEdgeWeightService_RegisterListener(networkAnalystURL);
         expect(myUpdateEdgeWeightService).not.toBeNull();
         spyOn(FetchRequest, 'put').and.callFake((testUrl,params) => {
             expect(testUrl).toBe(networkAnalystURL+"/edgeweight/20/fromnode/26/tonode/109/weightfield/time");
             expect(params).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
-        myUpdateEdgeWeightService.processAsync(updateEdgeWeightParam);
+        myUpdateEdgeWeightService.processAsync(updateEdgeWeightParam, updateEdgeWeightCompleted);
 
     });
 });

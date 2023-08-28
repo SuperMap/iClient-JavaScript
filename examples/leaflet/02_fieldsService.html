@@ -31,7 +31,7 @@
             datasource: "World",
             dataset: "continent_T"
         });
-        new L.supermap.FieldService(url).getFields(param, function (serviceResult) {
+        new L.supermap.FieldService(url).getFields(param).then(function (serviceResult) {
             var innerHTML = serviceResult.result.fieldNames.join(', ');
             infoWin = L.popup({maxWidth: 420})
                 .setLatLng(map.getCenter())

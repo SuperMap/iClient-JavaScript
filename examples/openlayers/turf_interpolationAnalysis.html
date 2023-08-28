@@ -147,7 +147,7 @@
 
             //只请求一次数据：
             if (!tinQueryResultLayer) {
-                new ol.supermap.QueryService(tinDataUrl).queryBySQL(param, function (serviceResult) {
+                new ol.supermap.QueryService(tinDataUrl).queryBySQL(param).then(function (serviceResult) {
                     interpolationAnalyst.resultFeatures = serviceResult.result.recordsets[0].features;
                     for (var i = 0; i < interpolationAnalyst.resultFeatures.features.length; i++) {
                         interpolationAnalyst.resultFeatures.features[i].properties.z = ~~(Math.random() * 9);

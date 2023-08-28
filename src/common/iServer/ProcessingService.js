@@ -51,6 +51,7 @@
       * @description 获取密度分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getKernelDensityJobs(callback, resultFormat) {
          var me = this,
@@ -60,15 +61,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         kernelDensityJobsService.getKernelDensityJobs();
+         return kernelDensityJobsService.getKernelDensityJobs(callback);
      }
  
      /**
@@ -77,6 +72,7 @@
       * @param {string} id - 空间分析的ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getKernelDensityJob(id, callback, resultFormat) {
          var me = this,
@@ -86,15 +82,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         kernelDensityJobsService.getKernelDensityJob(id);
+         return kernelDensityJobsService.getKernelDensityJob(id, callback);
      }
  
      /**
@@ -104,6 +94,7 @@
       * @param {RequestCallback} callback 回调函数。 
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addKernelDensityJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -113,17 +104,11 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.kernelDensityJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         kernelDensityJobsService.addKernelDensityJob(params, seconds);
+         return kernelDensityJobsService.addKernelDensityJob(params, seconds, callback, function (job) {
+          me.kernelDensityJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -141,6 +126,7 @@
       * @description 获取点聚合分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryMeshJobs(callback, resultFormat) {
          var me = this,
@@ -150,15 +136,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryMeshJobsService.getSummaryMeshJobs();
+         return summaryMeshJobsService.getSummaryMeshJobs(callback);
      }
  
      /**
@@ -167,6 +147,7 @@
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryMeshJob(id, callback, resultFormat) {
          var me = this,
@@ -176,15 +157,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryMeshJobsService.getSummaryMeshJob(id);
+         return summaryMeshJobsService.getSummaryMeshJob(id, callback);
      }
  
      /**
@@ -194,6 +169,7 @@
       * @param {RequestCallback} callback 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addSummaryMeshJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -203,17 +179,11 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.summaryMeshJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         summaryMeshJobsService.addSummaryMeshJob(params, seconds);
+         return summaryMeshJobsService.addSummaryMeshJob(params, seconds, callback, function (job) {
+          me.summaryMeshJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -231,6 +201,7 @@
       * @description 获取单对象查询分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getQueryJobs(callback, resultFormat) {
          var me = this,
@@ -238,17 +209,11 @@
          var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         singleObjectQueryJobsService.getQueryJobs();
+         return singleObjectQueryJobsService.getQueryJobs(callback);
      }
  
      /**
@@ -257,6 +222,7 @@
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getQueryJob(id, callback, resultFormat) {
          var me = this,
@@ -266,15 +232,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         singleObjectQueryJobsService.getQueryJob(id);
+         return singleObjectQueryJobsService.getQueryJob(id, callback);
      }
  
      /**
@@ -284,6 +244,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addQueryJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -293,17 +254,11 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.queryJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         singleObjectQueryJobsService.addQueryJob(params, seconds);
+         return singleObjectQueryJobsService.addQueryJob(params, seconds, callback, function (job) {
+          me.queryJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -321,6 +276,7 @@
       * @description 获取区域汇总分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryRegionJobs(callback, resultFormat) {
          var me = this,
@@ -330,15 +286,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryRegionJobsService.getSummaryRegionJobs();
+         return summaryRegionJobsService.getSummaryRegionJobs(callback);
      }
  
      /**
@@ -347,6 +297,7 @@
       * @param {string} id - 区域汇总分析的 ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryRegionJob(id, callback, resultFormat) {
          var me = this,
@@ -356,15 +307,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryRegionJobsService.getSummaryRegionJob(id);
+         return summaryRegionJobsService.getSummaryRegionJob(id, callback);
      }
  
      /**
@@ -374,6 +319,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addSummaryRegionJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -383,17 +329,11 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.summaryRegionJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         summaryRegionJobsService.addSummaryRegionJob(params, seconds);
+         return summaryRegionJobsService.addSummaryRegionJob(params, seconds, callback, function (job) {
+          me.summaryRegionJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -411,6 +351,7 @@
       * @description 获取矢量裁剪分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getVectorClipJobs(callback, resultFormat) {
          var me = this,
@@ -420,15 +361,9 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         vectorClipJobsService.getVectorClipJobs();
+         return vectorClipJobsService.getVectorClipJobs(callback);
      }
  
      /**
@@ -437,6 +372,7 @@
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getVectorClipJob(id, callback, resultFormat) {
          var me = this,
@@ -444,17 +380,11 @@
          var vectorClipJobsService = new VectorClipJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         vectorClipJobsService.getVectorClipJob(id);
+         return vectorClipJobsService.getVectorClipJob(id, callback);
      }
  
      /**
@@ -464,6 +394,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addVectorClipJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -471,20 +402,13 @@
          var vectorClipJobsService = new VectorClipJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.vectorClipJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         vectorClipJobsService.addVectorClipJob(params, seconds);
+         return vectorClipJobsService.addVectorClipJob(params, seconds, callback, function (job) {
+          me.vectorClipJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -502,6 +426,7 @@
       * @description 获取叠加分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getOverlayGeoJobs(callback, resultFormat) {
          var me = this,
@@ -509,17 +434,11 @@
          var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         overlayGeoJobsService.getOverlayGeoJobs();
+         return overlayGeoJobsService.getOverlayGeoJobs(callback);
      }
  
      /**
@@ -528,6 +447,7 @@
       * @param {string} id - 空间分析的 ID。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getOverlayGeoJob(id, callback, resultFormat) {
          var me = this,
@@ -535,17 +455,11 @@
          var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         overlayGeoJobsService.getOverlayGeoJob(id);
+         return overlayGeoJobsService.getOverlayGeoJob(id, callback);
      }
  
      /**
@@ -555,6 +469,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addOverlayGeoJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -562,20 +477,13 @@
          var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.overlayGeoJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         overlayGeoJobsService.addOverlayGeoJob(params, seconds);
+         return overlayGeoJobsService.addOverlayGeoJob(params, seconds, callback, function (job) {
+          me.overlayGeoJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -593,6 +501,7 @@
       * @description 获取缓冲区分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getBuffersJobs(callback, resultFormat) {
          var me = this,
@@ -600,17 +509,11 @@
          var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         buffersAnalystJobsService.getBuffersJobs();
+         return buffersAnalystJobsService.getBuffersJobs(callback);
      }
  
      /**
@@ -619,6 +522,7 @@
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getBuffersJob(id, callback, resultFormat) {
          var me = this,
@@ -626,17 +530,11 @@
          var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         buffersAnalystJobsService.getBuffersJob(id);
+         return buffersAnalystJobsService.getBuffersJob(id, callback);
      }
  
      /**
@@ -646,6 +544,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} seconds - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addBuffersJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -653,20 +552,13 @@
          var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.buffersJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         buffersAnalystJobsService.addBuffersJob(params, seconds);
+         return buffersAnalystJobsService.addBuffersJob(params, seconds, callback, function (job) {
+          me.buffersJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -684,6 +576,7 @@
       * @description 获取拓扑检查分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getTopologyValidatorJobs(callback, resultFormat) {
          var me = this,
@@ -691,17 +584,11 @@
          var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         topologyValidatorJobsService.getTopologyValidatorJobs();
+         return topologyValidatorJobsService.getTopologyValidatorJobs(callback);
      }
  
      /**
@@ -710,6 +597,7 @@
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getTopologyValidatorJob(id, callback, resultFormat) {
          var me = this,
@@ -717,17 +605,11 @@
          var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         topologyValidatorJobsService.getTopologyValidatorJob(id);
+         return topologyValidatorJobsService.getTopologyValidatorJob(id, callback);
      }
  
      /**
@@ -737,6 +619,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addTopologyValidatorJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -744,20 +627,13 @@
          var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.topologyValidatorJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         topologyValidatorJobsService.addTopologyValidatorJob(params, seconds);
+         return topologyValidatorJobsService.addTopologyValidatorJob(params, seconds, callback, function (job) {
+          me.topologyValidatorJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -775,6 +651,7 @@
       * @description 获取属性汇总分析的列表。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryAttributesJobs(callback, resultFormat) {
          var me = this,
@@ -782,17 +659,11 @@
          var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryAttributesJobsService.getSummaryAttributesJobs();
+         return summaryAttributesJobsService.getSummaryAttributesJobs(callback);
      }
  
      /**
@@ -801,6 +672,7 @@
       * @param {string} id - 空间分析的 ID。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryAttributesJob(id, callback, resultFormat) {
          var me = this,
@@ -808,17 +680,11 @@
          var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryAttributesJobsService.getSummaryAttributesJob(id);
+         return summaryAttributesJobsService.getSummaryAttributesJob(id, callback);
      }
  
      /**
@@ -828,6 +694,7 @@
       * @param {RequestCallback} callback - 回调函数。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addSummaryAttributesJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -835,20 +702,13 @@
          var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.summaryAttributesJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         summaryAttributesJobsService.addSummaryAttributesJob(params, seconds);
+         return summaryAttributesJobsService.addSummaryAttributesJob(params, seconds, callback, function (job) {
+          me.summaryAttributesJobs[job.id] = job.state;
+      });
      }
  
      /**

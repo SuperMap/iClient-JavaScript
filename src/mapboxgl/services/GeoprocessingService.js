@@ -50,7 +50,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getTools(callback) {
-      this._geoprocessingJobsService.getTools(callback);
+      return this._geoprocessingJobsService.getTools(callback);
     }
     /**
      * @function GeoprocessingService.prototype.getTool
@@ -71,7 +71,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     execute(identifier, parameter, environment, callback) {
-      this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
+      return this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
     }
 
     /**
@@ -83,7 +83,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     submitJob(identifier, parameter, environment, callback) {
-      this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
+      return this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
     }
 
     /**
@@ -97,7 +97,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     waitForJobCompletion(jobId, identifier, options, callback) {
-      this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
+      return this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
     }
 
     /**
@@ -108,7 +108,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getJobInfo(identifier, jobId, callback) {
-      this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
+      return this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
     }
 
     /**
@@ -119,7 +119,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     cancelJob(identifier, jobId, callback) {
-      this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
+      return this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
     }
 
     /**
@@ -129,7 +129,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getJobs(identifier, callback) {
-      this._geoprocessingJobsService.getJobs(identifier, callback);
+      return this._geoprocessingJobsService.getJobs(identifier, callback);
     }
 
     /**
@@ -141,7 +141,7 @@ export class GeoprocessingService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getResults(identifier, jobId, filter, callback) {
-      this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
+      return this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
     }
 }
 

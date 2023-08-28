@@ -95,7 +95,7 @@
             libID: 421,
             code: randomCode[symbolDataIndex]
         });
-        L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, getSymbolInfoSuccess, null);
+        L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, null, null).then(getSymbolInfoSuccess);
     }
     $(document).ready(function(){
         $('#panelheading').click(function(){

@@ -257,7 +257,7 @@
                 themes: [themeGridRange]
             });
 
-            themeService.getThemeInfo(themeParameters, function (serviceResult) {
+            themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     var themeLayer = new ol.layer.Tile({

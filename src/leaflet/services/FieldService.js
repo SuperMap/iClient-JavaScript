@@ -36,9 +36,10 @@ export var FieldService = ServiceBase.extend({
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getFields: function (params, callback) {
-      this._fieldService.getFields(params, callback);
+      return this._fieldService.getFields(params, callback);
     },
 
     /**
@@ -46,9 +47,10 @@ export var FieldService = ServiceBase.extend({
      * @description 字段统计服务。
      * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getFieldStatisticsInfo: function (params, callback) {
-      this._fieldService.getFieldStatisticsInfo(params, callback);
+      return this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 });
 export var fieldService = function (url, options) {

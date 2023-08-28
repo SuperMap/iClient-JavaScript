@@ -36,6 +36,7 @@
       * @param {ChartQueryParameters} params - 海图查询所需参数类。
       * @param {RequestCallback} callback - 回调函数。
       * @param {DataFormat} resultFormat - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryChart(params, callback, resultFormat) {
          var me = this,
@@ -46,22 +47,17 @@
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
  
-         chartQueryService.processAsync(param);
+         return chartQueryService.processAsync(param, callback);
      }
  
      /**
       * @function ChartService.prototype.getChartFeatureInfo
       * @description 获取海图物标信息服务。
       * @param {RequestCallback} callback 回调函数。
+      * @returns {Promise} Promise 对象。
       */
      getChartFeatureInfo(callback) {
          var me = this;
@@ -70,15 +66,9 @@
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         chartFeatureInfoSpecsService.processAsync();
+         return chartFeatureInfoSpecsService.processAsync(callback);
      }
  
      _processFormat(resultFormat) {

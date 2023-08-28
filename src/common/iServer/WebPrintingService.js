@@ -13,7 +13,6 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -25,7 +24,6 @@ export class WebPrintingService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.WebPrintingService';
         if (!this.url) {
             return;
@@ -44,6 +42,8 @@ export class WebPrintingService extends CommonServiceBase {
      * @function WebPrintingService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印的请求参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
         if (!params) {
@@ -66,13 +66,14 @@ export class WebPrintingService extends CommonServiceBase {
                 }
             }
         }
-        this.processAsync('jobs', 'POST', callback, params)
+        return this.processAsync('jobs', 'POST', callback, params)
     }
 
     /**
      * @function WebPrintingService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
      * @param {string} jobId - Web 打印任务 ID
+     * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
         var me = this;
@@ -85,17 +86,21 @@ export class WebPrintingService extends CommonServiceBase {
      * @function WebPrintingService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult(jobId, callback) {
-        this.processAsync(`jobs/${jobId}/result`, 'GET', callback);
+        return this.processAsync(`jobs/${jobId}/result`, 'GET', callback);
     }
 
     /**
      * @function WebPrintingService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates(callback) {
-      this.processAsync('layouts', 'GET', callback);
+      return this.processAsync('layouts', 'GET', callback);
     }
 
     /**
@@ -108,92 +113,37 @@ export class WebPrintingService extends CommonServiceBase {
         if (!result) {
             return;
         }
-        var id = setInterval(function () {
-          let eventId = ++me.eventCount;
-          let eventListeners = {
-            scope: this,
-            processCompleted: function(result) {
-              if (eventId === result.result.eventId && callback) {
-                delete result.result.eventId;
-                callback(result);
-                me.events.un(eventListeners);
-                return false;
-              }
-            },
-            processFailed: function(result) {
-              if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-                callback(result);
-                me.events.un(eventListeners);
-                return false;
-              }
-            }
-          }
-          me.events.on(eventListeners);
+        this.id && clearInterval(this.id);
+        this.id = setInterval(function () {
           me.request({
             url,
             method: 'GET',
             scope: me,
-            success: function (result, options) {
-                result.eventId = eventId;
-                switch (result.status) {
-                    case 'FINISHED':
-                        clearInterval(id);
-                        me.serviceProcessCompleted(result, options);
-                        break;
-                    case 'ERROR':
-                        clearInterval(id);
-                        me.serviceProcessFailed(result, options);
-                        break;
-                    case 'RUNNING':
-                        me.events.triggerEvent('processRunning', result);
-                        break;
-                }
-            },
-            failure: me.serviceProcessFailed 
+            success: callback,
+            failure: callback
           });
         }, 1000);
     }
 
     processAsync(url, method, callback, params) {
-      let eventId = ++this.eventCount;
-      let eventListeners = {
-        scope: this,
-        processCompleted: function(result) {
-          if (eventId === result.result.eventId && callback) {
-            delete result.result.eventId;
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        },
-        processFailed: function(result) {
-          if (eventId === result.error.eventId || eventId === result.eventId) {
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        }
-      }
-      this.events.on(eventListeners);
       var me = this;
       let requestConfig = {
         url: me._processUrl(url),
         method,
         scope: me,
-        success(result, options) {
-          result.eventId = eventId;
-          this.serviceProcessCompleted(result, options);
-        },
-        failure(result, options) {
-          if (result.error) {
-            result.error.eventId = eventId;
-          }
-          result.eventId = eventId;
-          this.serviceProcessFailed(result, options);
-        }
+        success: callback,
+        failure: callback
       };
       params && (requestConfig.data = Util.toJSON(params));
-      me.request(requestConfig);
+      return me.request(requestConfig);
+    }
+
+     serviceProcessCompleted(result, options) {
+      result = Util.transformResult(result);
+      if (result.status === 'FINISHED' || result.status === 'ERROR') {
+        clearInterval(this.id);
+      }
+      return { result, options };
     }
 
     _processUrl(appendContent) {

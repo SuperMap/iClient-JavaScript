@@ -7,13 +7,8 @@ import {QueryOption} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var initQueryByDistanceService = (url,QueryByDistanceFailed,QueryByDistanceCompleted) => {
-    return new QueryByDistanceService(url,{
-        eventListeners: {
-        'processFailed': QueryByDistanceFailed,
-        'processCompleted': QueryByDistanceCompleted
-        }
-    });
+var initQueryByDistanceService = (url) => {
+    return new QueryByDistanceService(url);
 };
 describe('QueryByBoundsService', () => {
     var originalTimeout;
@@ -44,18 +39,10 @@ describe('QueryByBoundsService', () => {
 
     it('constructor, destroy', () => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-        var QueryByDistanceFailed = (serviceFailedEventArgs) => {
-        serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var QueryByDistanceCompleted = (serviceCompletedEventArgs) => {
-        serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-        };
-        var queryByDistanceService = initQueryByDistanceService(worldMapURL,QueryByDistanceFailed,QueryByDistanceCompleted);
+        var queryByDistanceService = initQueryByDistanceService(worldMapURL);
         expect(queryByDistanceService).not.toBeNull();
         expect(queryByDistanceService.url).toEqual(worldMapURL + "/queryResults");
         queryByDistanceService.destroy();
-        expect(queryByDistanceService.EVENT_TYPES).toBeNull();
-        expect(queryByDistanceService.events).toBeNull();
         expect(queryByDistanceService.returnContent).toBeNull();
     });
 
@@ -79,10 +66,7 @@ describe('QueryByBoundsService', () => {
                 done();
             }
         };
-        var QueryByDistanceFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-            };
-        var queryByDistanceService = initQueryByDistanceService(worldMapURL, QueryByDistanceFailed,QueryByDistanceCompleted);
+        var queryByDistanceService = initQueryByDistanceService(worldMapURL);
         expect(queryByDistanceService).not.toBeNull();
         expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults");
         var queryByDistanceParameters = new QueryByDistanceParameters({
@@ -106,7 +90,7 @@ describe('QueryByBoundsService', () => {
             expect(paramsObj.queryParameters.startRecord).toEqual(1);
             return Promise.resolve(new Response(JSON.stringify(queryResultJson)));
         });
-        queryByDistanceService.processAsync(queryByDistanceParameters);
+        queryByDistanceService.processAsync(queryByDistanceParameters, QueryByDistanceCompleted);
     });
 
     it('processAsync_returnCotent:false', (done) => {
@@ -131,10 +115,7 @@ describe('QueryByBoundsService', () => {
                 done();
             }
         };
-        var QueryByDistanceFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var queryByDistanceService = initQueryByDistanceService(worldMapURL,QueryByDistanceFailed,QueryByDistanceCompleted);
+        var queryByDistanceService = initQueryByDistanceService(worldMapURL);
         expect(queryByDistanceService).not.toBeNull();
         expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults");
         var queryByDistanceParameters = new QueryByDistanceParameters({
@@ -160,15 +141,12 @@ describe('QueryByBoundsService', () => {
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"f701028a2b7144b19b582f55c1902b18_d96d9c6b2d4641cdbb5fc7867b956ecf","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-world/rest/maps/World Map/queryResults/f701028a2b7144b19b582f55c1902b18_d96d9c6b2d4641cdbb5fc7867b956ecf.json"}`));
         });
-        queryByDistanceService.processAsync(queryByDistanceParameters);
+        queryByDistanceService.processAsync(queryByDistanceParameters, QueryByDistanceCompleted);
     });
 
     it('fail:processAsync', (done) => {
         var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
         var serviceFailedEventArgsSystem;
-        var QueryByDistanceCompleted = (serviceCompletedEventArgs) => {
-            serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
-        };
         var QueryByDistanceFailed = (serviceFailedEventArgs) => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -187,7 +165,7 @@ describe('QueryByBoundsService', () => {
                 done();
             }
         };
-        var queryByDistanceService = initQueryByDistanceService(worldMapURL,QueryByDistanceFailed,QueryByDistanceCompleted);
+        var queryByDistanceService = initQueryByDistanceService(worldMapURL);
         expect(queryByDistanceService).not.toBeNull();
         expect(queryByDistanceService.url).toEqual(worldMapURL+"/queryResults");
         var queryByDistanceParameters = new QueryByDistanceParameters({
@@ -210,7 +188,7 @@ describe('QueryByBoundsService', () => {
             expect(paramsObj.queryParameters.expectCount).toEqual(100);
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数 queryParameters 非法，queryParameters.queryParams 不能为空。"}}`));
         });
-        queryByDistanceService.processAsync(queryByDistanceParameters);
+        queryByDistanceService.processAsync(queryByDistanceParameters, QueryByDistanceFailed);
     });
 });
 

@@ -13,7 +13,6 @@ import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
  * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -43,14 +42,9 @@ import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
      *      dataReturnOption: option
      *  }),
      *  //配置动态分段iService
-     *  iService = new GenerateSpatialDataService(Changchun_spatialanalyst, {
-     *      eventListeners: {
-     *          processCompleted: generateCompleted,
-     *          processFailed: generateFailded
-     *      }
-     *  });
+     *  iService = new GenerateSpatialDataService(Changchun_spatialanalyst);
      *  //执行
-     *  iService.processAsync(parameters);
+     *  iService.processAsync(parameters, generateCompleted);
      *  function Completed(generateSpatialDataEventArgs){//todo};
      *  function Error(generateSpatialDataEventArgs){//todo};
      * (end)
@@ -76,9 +70,11 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
     /**
      * @function GenerateSpatialDataService.prototype.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
+     * @param {RequestCallback} callback - 回调函数。
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof GenerateSpatialDataParameters)) {
             return;
         }
@@ -87,12 +83,12 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
 
         jsonParameters = me.getJsonParameters(params);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 

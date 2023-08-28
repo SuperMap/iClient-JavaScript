@@ -11,16 +11,10 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @classdesc 地图信息服务类。
  * @extends {CommonServiceBase}
  * @example
- * var myMapService = new MapService(url, {
- * eventListeners:{
- *     "processCompleted": MapServiceCompleted,
- *       "processFailed": MapServiceFailed
- *       }
- * });
+ * var myMapService = new MapService(url);
  *
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -54,7 +48,6 @@ export class MapService extends CommonServiceBase {
                 }
             }
         }
-        this.eventCount = 0;
     }
 
     /**
@@ -63,56 +56,21 @@ export class MapService extends CommonServiceBase {
      */
     destroy() {
         super.destroy();
-        var me = this;
-        if (me.events) {
-            me.events.un(me.eventListeners);
-            me.events.listeners = null;
-            me.events.destroy();
-            me.events = null;
-            me.eventListeners = null;
-        }
     }
 
     /**
      * @function  MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(callback) {
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
         var me = this;
-        me.request({
+        return me.request({
             method: "GET",
             scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              this.serviceProcessCompleted(result, options);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              this.serviceProcessFailed(result, options);
-            }
+            success: callback,
+            failure: callback
         });
     }
 
@@ -124,15 +82,14 @@ export class MapService extends CommonServiceBase {
      * {Object} result - 服务器返回的结果对象。
      */
     serviceProcessCompleted(result, options) {
-        var me = this;
         result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
-            me.events && me.events.triggerEvent("processCompleted", {result: result, options});
+            return {result: result, options};
         } else {
             ////在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
-            me.events.triggerEvent("processFailed", {error: result, options});
+            return {error: result, options};
         }
     }
 }

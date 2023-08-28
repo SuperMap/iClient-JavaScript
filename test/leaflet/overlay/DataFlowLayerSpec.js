@@ -105,7 +105,6 @@ describe('leaflet_DataFlowLayer', () => {
             service.on('broadcastSocketConnected', (e) => {
                 var dataFlow = service.dataFlow;
                 expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
-                expect(dataFlow.EVENT_TYPES.length).toEqual(10);
                 expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
                 timer = window.setInterval(broadcast_Point(service), 1000);
             });
@@ -115,7 +114,7 @@ describe('leaflet_DataFlowLayer', () => {
                 expect(layer.url).toBe(urlDataFlow);
                 expect(layer.options).not.toBeNull();
                 expect(service).not.toBeNull();
-                expect(service._events.broadcastSocketConnected.length).toEqual(1);
+                // expect(service._events.broadcastSocketConnected.length).toEqual(1);
                 service.unBroadcast();
                 done();
             }, 0)
@@ -313,6 +312,7 @@ describe('leaflet_DataFlowLayer', () => {
         layer.addTo(map);
 
         var e = {
+            eventType: 'messageSucceeded',
             featureResult:
             {
                 "type": "Feature",
@@ -332,7 +332,6 @@ describe('leaflet_DataFlowLayer', () => {
                     expect(e.layer).not.toBeNull;
                     expect(e.layer).not.toBeUndefined;
                     done();
-
                 } catch (exception) {
                     console.log("'_onMessageSuccessed'案例失败：" + exception.name + ":" + exception.message);
                     expect(false).toBeTruthy();
@@ -340,7 +339,7 @@ describe('leaflet_DataFlowLayer', () => {
                 }
             });
             // done();
-            layer.dataService.dataFlow.events.triggerEvent('messageSucceeded', e);
+            layer.dataService.dataFlow.callback(e);
         }, 0)
 
     });

@@ -156,7 +156,7 @@
         });
 
         //进行查找
-        new ol.supermap.NetworkAnalystService(serviceUrl).findLocation(findLocationParameter, function (serviceResult) {
+        new ol.supermap.NetworkAnalystService(serviceUrl).findLocation(findLocationParameter).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.demandResults)
             });

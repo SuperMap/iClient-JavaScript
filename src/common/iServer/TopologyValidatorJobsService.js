@@ -35,18 +35,22 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析所有任务
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getTopologyValidatorJobs() {
-        super.getJobs(this.url);
+    getTopologyValidatorJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJob
      * @description 获取指定id的拓扑检查分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getTopologyValidatorJob(id) {
-        super.getJobs( Util.urlPathAppend(this.url, id));
+    getTopologyValidatorJob(id, callback) {
+        return super.getJobs(Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -54,9 +58,11 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @description 新建拓扑检查分析服务
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
      * @param {number} seconds -创建成功结果的时间间隔。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addTopologyValidatorJob(params, seconds) {
-        super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds);
+    addTopologyValidatorJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback);
     }
 
 }

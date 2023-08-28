@@ -42,7 +42,7 @@ import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
  * ```
  */
 
-export var FGBLayer = L.LayerGroup.extend({
+export var FGBLayer = L.FeatureGroup.extend({
   initialize: function (url, options) {
     this.options = options || {};
     this.strategy = this.options.strategy || 'bbox';

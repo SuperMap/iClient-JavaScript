@@ -45,7 +45,7 @@
         });
         //创建一个核密度分析服务实例
         densityAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
-        densityAnalystService.densityAnalysis(densityAnalystParameters, function (densityServiceResult) {
+        densityAnalystService.densityAnalysis(densityAnalystParameters).then(function (densityServiceResult) {
             densityAnalystResult = densityServiceResult.result;
             if (densityAnalystResult && densityAnalystResult.dataset) {
                 //用栅格专题图展示分析结果
@@ -110,7 +110,7 @@
             themes: [themeGridRange]
         });
 
-        themeService.getThemeInfo(themeParameters, function (getThemeInfoServiceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (getThemeInfoServiceResult) {
             var result = getThemeInfoServiceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new L.supermap.TiledMapLayer(baseUrl, {

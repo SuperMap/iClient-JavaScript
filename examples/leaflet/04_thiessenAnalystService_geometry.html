@@ -48,9 +48,9 @@
             points: pointsList
         });
         thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
-        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters).then(function (serviceResult) {
             L.geoJSON(serviceResult.result.regions, {weight: 2}).addTo(map);
-        })
+        });
     }
 </script>
 </body>

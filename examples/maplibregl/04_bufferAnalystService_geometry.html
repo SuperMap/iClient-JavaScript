@@ -124,7 +124,7 @@
             })
 
         });
-        new maplibregl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+        new maplibregl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": {

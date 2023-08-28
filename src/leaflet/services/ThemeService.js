@@ -43,9 +43,10 @@ export var ThemeService = ServiceBase.extend({
      * @description 获取专题图信息。
      * @param {ThemeParameters} params - 专题图参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getThemeInfo: function (params, callback) {
-      this._themeService.processAsync(params, callback);
+      return this._themeService.processAsync(params, callback);
     }
 });
 

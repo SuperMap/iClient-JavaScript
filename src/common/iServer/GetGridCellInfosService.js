@@ -12,17 +12,12 @@ import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息。
  * @param {string} url - 服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example
- * var myService = new GetGridCellInfosService(url, {eventListeners: {
- *     "processCompleted": queryCompleted,
- *     "processFailed": queryError
- *     }
- * });
+ * var myService = new GetGridCellInfosService(url);
  * @usage
  */
 export class GetGridCellInfosService extends CommonServiceBase {
@@ -62,7 +57,6 @@ export class GetGridCellInfosService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.GetGridCellInfosService";
     }
 
@@ -84,6 +78,8 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.processAsync
      * @description 执行服务，查询数据集信息。
      * @param {GetGridCellInfosParameters} params - 查询参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
         if (!(params instanceof GetGridCellInfosParameters)) {
@@ -92,53 +88,16 @@ export class GetGridCellInfosService extends CommonServiceBase {
         Util.extend(this, params);
         var me = this;
         me.url = Util.urlPathAppend(me.url,`datasources/${me.dataSourceName}/datasets/${me.datasetName}`);
-        me.queryRequest(me.getDatasetInfoCompleted.bind(me), me.getDatasetInfoFailed.bind(me), callback);
-    }
-
-    /**
-     * @function GetGridCellInfosService.prototype.queryRequest
-     * @description 执行服务，查询。
-     * @callback {function} successFun - 成功后执行的函数。
-     * @callback {function} failedFunc - 失败后执行的函数。
-     */
-    queryRequest(successFun, failedFunc, callback) {
-      let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
+        return me.request({
+          method: "GET",
+          data: null,
+          scope: me,
+          success({result}) {
+            callback && me.getDatasetInfoCompleted(result, callback);
           },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
-
-        var me = this;
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              successFun(result, options, callback);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              failedFunc(result, options);
-            }
+          failure: callback
+        }).then(({result}) => {
+          return me.getDatasetInfoCompleted(result);
         });
     }
 
@@ -146,35 +105,35 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.getDatasetInfoCompleted
      * @description 数据集查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasetInfoCompleted(result, options, callback) {
+    getDatasetInfoCompleted(result, callback) {
         var me = this;
         result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
-        me.queryGridInfos(callback);
+        return me.queryGridInfos(callback);
     }
 
     /**
      * @function GetGridCellInfosService.prototype.queryGridInfos
      * @description 执行服务，查询数据集栅格信息。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     queryGridInfos(callback) {
         var me = this;
-        me.url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
+        var url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
         if (me.X != null && me.Y != null) {
-            me.url = Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
+            url = Util.urlAppend(url, `x=${me.X}&y=${me.Y}`);
         }
-        me.queryRequest(me.serviceProcessCompleted.bind(me), me.serviceProcessFailed.bind(me), callback);
-    }
-
-
-    /**
-     * @function GetGridCellInfosService.prototype.getDatasetInfoFailed
-     * @description 数据集查询失败，执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getDatasetInfoFailed(result, options) {
-        var me = this;
-        me.serviceProcessFailed(result, options);
+        return me.request({
+          url,
+          method: "GET",
+          data: null,
+          scope: me,
+          success: callback,
+          failure: callback
+      });
     }
 }

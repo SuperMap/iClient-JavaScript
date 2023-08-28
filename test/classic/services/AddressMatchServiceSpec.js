@@ -20,8 +20,6 @@ describe('classic_AddressMatchService', () => {
         expect(addressMatchService.url).toEqual(addressMatchURL);
         expect(addressMatchService.isInTheSameDomain).toBeTruthy();
         addressMatchService.destroy();
-        expect(addressMatchService.EVENT_TYPES).toBeNull();
-        expect(addressMatchService.events).toBeNull();
         expect(addressMatchService.isInTheSameDomain).toBeNull();
         expect(addressMatchService.url).toBeNull();
     });
@@ -63,9 +61,6 @@ describe('classic_AddressMatchService', () => {
         var codeFailed = (serviceFailedEventArgs) => {
             codingFailedEventArgs = serviceFailedEventArgs;
         };
-        var options = {
-            eventListeners: {"processCompleted": codeCompleted, "processFailed": codeFailed}
-        };
         var GeoCodingParams = new GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
@@ -74,7 +69,7 @@ describe('classic_AddressMatchService', () => {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var addressCodeService = new AddressMatchService(addressMatchURL, options);
+        var addressCodeService = new AddressMatchService(addressMatchURL);
 
         spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
             expect(testUrl).toBe(addressMatchURL + "/geocoding");

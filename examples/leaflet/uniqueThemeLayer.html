@@ -155,7 +155,7 @@
         });
 
         new L.supermap.FeatureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, processComplete, L.supermap.DataFormat.ISERVER);
+            .getFeaturesBySQL(getFeatureBySQLParams, null, L.supermap.DataFormat.ISERVER).then(processComplete);
     }
 
     //数据预处理并添加到专题图图层

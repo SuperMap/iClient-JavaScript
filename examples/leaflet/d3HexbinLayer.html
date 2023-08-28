@@ -42,7 +42,7 @@
             fromIndex: 0,
             toIndex: 600
         });
-        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
             var points = [];
             serviceResult.result.features.features.map(function (feature) {
                 var point = map.latLngToLayerPoint(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));

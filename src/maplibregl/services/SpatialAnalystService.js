@@ -39,9 +39,10 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {AreaSolarRadiationParameters} params -查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getAreaSolarRadiationResult(params, callback, resultFormat) {
-      this._spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
+      return this._spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
     }
 
     /**
@@ -50,10 +51,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     bufferAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -62,10 +64,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DensityKernelAnalystParameters} params - 核密度分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     densityAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.densityAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.densityAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -74,9 +77,10 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     generateSpatialData(params, callback, resultFormat) {
-      this._spatialAnalystService.generateSpatialData(params, callback, resultFormat);
+        return this._spatialAnalystService.generateSpatialData(params, callback, resultFormat);
     }
 
     /**
@@ -85,10 +89,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geoRelationAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -97,10 +102,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值（径向基函数插值法）分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     interpolationAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -109,10 +115,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {MathExpressionAnalysisParameters} params - 栅格代数运算参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     mathExpressionAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -121,10 +128,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或者几何对象叠加分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     overlayAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -133,10 +141,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeCalculateMeasure(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
+      return this._spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
     }
 
     /**
@@ -145,10 +154,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeLocate(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.routeLocate(params, callback, resultFormat);
+      return this._spatialAnalystService.routeLocate(params, callback, resultFormat);
     }
 
     /**
@@ -157,10 +167,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     surfaceAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -169,9 +180,10 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {TerrainCurvatureCalculationParameters} params - 地形曲率计算参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainCurvatureCalculate(params, callback, resultFormat) {
-      this._spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
+        return this._spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
     }
 
     /**
@@ -180,10 +192,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainCutFillCalculate(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.terrainCutFillCalculate(params, callback, resultFormat);
+      return this._spatialAnalystService.terrainCutFillCalculate(params, callback, resultFormat);
     }
 
     /**
@@ -192,10 +205,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainAspectCalculate(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.terrainAspectCalculate(params, callback, resultFormat);
+      return this._spatialAnalystService.terrainAspectCalculate(params, callback, resultFormat);
     }
 
     /**
@@ -204,10 +218,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainSlopeCalculate(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.terrainSlopeCalculate(params, callback, resultFormat);
+      return this._spatialAnalystService.terrainSlopeCalculate(params, callback, resultFormat);
     }
 
     /**
@@ -216,10 +231,11 @@ export class SpatialAnalystService extends ServiceBase {
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     thiessenAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
     } 
 
     /**
@@ -231,7 +247,7 @@ export class SpatialAnalystService extends ServiceBase {
      */
     minDistanceAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.minDistanceAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.minDistanceAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -243,7 +259,7 @@ export class SpatialAnalystService extends ServiceBase {
      */
     convexHullAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.convexHullAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.convexHullAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -259,12 +275,13 @@ export class SpatialAnalystService extends ServiceBase {
      *                                {@link SurfaceAnalystParameters} 表面分析参数类。</br>
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geometrybatchAnalysis(params, callback, resultFormat) {
         for (var i = 0; i < params.length; i++) {
             params[i].param = this._processParams(params[i].param)
         }
-        this._spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
+        return this._spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
     }
 
 

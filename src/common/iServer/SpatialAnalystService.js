@@ -52,6 +52,7 @@ export class SpatialAnalystService {
      * @param {AreaSolarRadiationParameters} params - 地区太阳辐射参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getAreaSolarRadiationResult(params, callback, resultFormat) {
         var me = this;
@@ -60,15 +61,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        areaSolarRadiationService.processAsync(params);
+        return areaSolarRadiationService.processAsync(params, callback);
     }
 
     /**
@@ -77,6 +72,7 @@ export class SpatialAnalystService {
      * @param {DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     bufferAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -85,15 +81,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        bufferAnalystService.processAsync(params);
+        return bufferAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -102,6 +92,7 @@ export class SpatialAnalystService {
      * @param {DensityKernelAnalystParameters} params - 核密度分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     densityAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -110,15 +101,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        densityAnalystService.processAsync(params);
+        return densityAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -127,6 +112,7 @@ export class SpatialAnalystService {
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     generateSpatialData(params, callback, resultFormat) {
         var me = this;
@@ -135,15 +121,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        generateSpatialDataService.processAsync(params);
+        return generateSpatialDataService.processAsync(params, callback);
     }
 
     /**
@@ -152,6 +132,7 @@ export class SpatialAnalystService {
      * @param {GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geoRelationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -160,15 +141,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        geoRelationAnalystService.processAsync(params);
+        return geoRelationAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -177,6 +152,7 @@ export class SpatialAnalystService {
      * @param {InterpolationRBFAnalystParameters|InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     interpolationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -185,15 +161,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        interpolationAnalystService.processAsync(params);
+        return interpolationAnalystService.processAsync(params, callback);
     }
     /**
      * @function SpatialAnalystService.prototype.mathExpressionAnalysis
@@ -201,6 +171,7 @@ export class SpatialAnalystService {
      * @param {MathExpressionAnalysisParameters} params - 栅格代数运算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     mathExpressionAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -209,15 +180,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        mathExpressionAnalysisService.processAsync(params);
+        return mathExpressionAnalysisService.processAsync(params, callback);
     }
 
     /**
@@ -226,6 +191,7 @@ export class SpatialAnalystService {
      * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或几何对象叠加分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     overlayAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -234,15 +200,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        overlayAnalystService.processAsync(params);
+        return overlayAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -251,6 +211,7 @@ export class SpatialAnalystService {
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeCalculateMeasure(params, callback, resultFormat) {
         var me = this;
@@ -259,15 +220,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        routeCalculateMeasureService.processAsync(params);
+        return routeCalculateMeasureService.processAsync(params, callback);
     }
 
     /**
@@ -276,6 +231,7 @@ export class SpatialAnalystService {
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeLocate(params, callback, resultFormat) {
         var me = this;
@@ -284,15 +240,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        routeLocatorService.processAsync(params);
+        return routeLocatorService.processAsync(params, callback);
     }
 
     /**
@@ -301,6 +251,7 @@ export class SpatialAnalystService {
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     surfaceAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -309,15 +260,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        surfaceAnalystService.processAsync(params);
+        return surfaceAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -326,6 +271,7 @@ export class SpatialAnalystService {
      * @param {TerrainCurvatureCalculationParameters} params - 地形曲率计算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainCurvatureCalculate(params, callback, resultFormat) {
         var me = this;
@@ -334,15 +280,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        terrainCurvatureCalculationService.processAsync(params);
+        return terrainCurvatureCalculationService.processAsync(params, callback);
     }
 
      /**
@@ -359,15 +299,9 @@ export class SpatialAnalystService {
           withCredentials: me.options.withCredentials,
           crossOrigin: me.options.crossOrigin,
           headers: me.options.headers,
-
-          eventListeners: {
-              scope: me,
-              processCompleted: callback,
-              processFailed: callback
-          },
           format: me._processFormat(resultFormat)
       });
-      terrainCutFillCalculationService.processAsync(params);
+      return terrainCutFillCalculationService.processAsync(params, callback);
     }
 
     /**
@@ -384,15 +318,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        terrainAspectCalculationService.processAsync(params);
+        return terrainAspectCalculationService.processAsync(params, callback);
     }
 
     /**
@@ -409,15 +337,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        terrainSlopeCalculationService.processAsync(params);
+        return terrainSlopeCalculationService.processAsync(params, callback);
     }
 
     /**
@@ -426,6 +348,7 @@ export class SpatialAnalystService {
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     thiessenAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -434,15 +357,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        thiessenAnalystService.processAsync(params);
+        return thiessenAnalystService.processAsync(params, callback);
     }
 
      /**
@@ -459,15 +376,9 @@ export class SpatialAnalystService {
           withCredentials: me.options.withCredentials,
           crossOrigin: me.options.crossOrigin,
           headers: me.options.headers,
-
-          eventListeners: {
-              scope: me,
-              processCompleted: callback,
-              processFailed: callback
-          },
           format: me._processFormat(resultFormat)
       });
-      minDistanceAnalystService.processAsync(params);
+      return minDistanceAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -484,15 +395,9 @@ export class SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        convexHullAnalystService.processAsync(params);
+        return convexHullAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -508,16 +413,11 @@ export class SpatialAnalystService {
      *                                {@link SurfaceAnalystParameters} 表面分析参数类。</br>
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geometrybatchAnalysis(params, callback, resultFormat) {
         var me = this;
         var geometryBatchAnalystService = new GeometryBatchAnalystService(me.url, {
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
 
@@ -531,7 +431,7 @@ export class SpatialAnalystService {
             })
         }
 
-        geometryBatchAnalystService.processAsync(analystParameters);
+        return geometryBatchAnalystService.processAsync(analystParameters, callback);
     }
 
     _processFormat(resultFormat) {

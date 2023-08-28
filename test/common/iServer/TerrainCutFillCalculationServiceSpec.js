@@ -3,13 +3,8 @@ import {TerrainCutFillCalculationParameters} from '../../../src/common/iServer/T
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
-var initTerrainCutFillCalculationService = (url,TerrainCutFillCalculationServiceCompleted,TerrainCutFillCalculationServiceFailed) => {
-    return new TerrainCutFillCalculationService(url, {
-        eventListeners: {
-            "processCompleted": TerrainCutFillCalculationServiceCompleted,
-            'processFailed': TerrainCutFillCalculationServiceFailed
-        }
-    });
+var initTerrainCutFillCalculationService = (url) => {
+    return new TerrainCutFillCalculationService(url);
 };
 
 describe('TerrainCutFillCalculationService', () => {
@@ -49,8 +44,6 @@ describe('TerrainCutFillCalculationService', () => {
                 expect(terrainCutFillCalculationResult.dataset).toBe("cutfill@Jingjin");
                 expect(terrainCutFillCalculationResult.fillArea).toBe(6584.200807058389);
                 terrainCutFillCalculationService.destroy();
-                expect(terrainCutFillCalculationService.events).toBeNull();
-                expect(terrainCutFillCalculationService.eventListeners).toBeNull();
                 terrainCutFillCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -64,7 +57,7 @@ describe('TerrainCutFillCalculationService', () => {
         var TerrainCutFillCalculationServiceFailed = (event) => {
             serviceFailedEventArgsSystem = event;
         };
-        var terrainCutFillCalculationService = initTerrainCutFillCalculationService(spatialAnalystURL,TerrainCutFillCalculationServiceCompleted,TerrainCutFillCalculationServiceFailed);
+        var terrainCutFillCalculationService = initTerrainCutFillCalculationService(spatialAnalystURL);
         expect(terrainCutFillCalculationService).not.toBeNull();
         expect(terrainCutFillCalculationService.url).toEqual(spatialAnalystURL);
         var terrainCutFillCalculationParameters = new TerrainCutFillCalculationParameters({
@@ -93,7 +86,7 @@ describe('TerrainCutFillCalculationService', () => {
                 "status": null
             }`));
         });
-        terrainCutFillCalculationService.processAsync(terrainCutFillCalculationParameters);
+        terrainCutFillCalculationService.processAsync(terrainCutFillCalculationParameters, TerrainCutFillCalculationServiceCompleted);
     });
 
     //测试失败事件
@@ -111,8 +104,6 @@ describe('TerrainCutFillCalculationService', () => {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("数据集XX@Jingjin不存在");
                 terrainCutFillCalculationService.destroy();
-                expect(terrainCutFillCalculationService.events).toBeNull();
-                expect(terrainCutFillCalculationService.eventListeners).toBeNull();
                 terrainCutFillCalculationParameters.destroy();
                 done();
             } catch (exception) {
@@ -123,7 +114,7 @@ describe('TerrainCutFillCalculationService', () => {
                 done();
             }
         };
-        var terrainCutFillCalculationService = initTerrainCutFillCalculationService(spatialAnalystURL,TerrainCutFillCalculationServiceCompleted,TerrainCutFillCalculationServiceFailed);
+        var terrainCutFillCalculationService = initTerrainCutFillCalculationService(spatialAnalystURL);
         var terrainCutFillCalculationParameters = new TerrainCutFillCalculationParameters({
             dataset: "XX@Jingjin",
             cutFillType:"REGION3D",
@@ -140,7 +131,7 @@ describe('TerrainCutFillCalculationService', () => {
             expect(paramsObj.deleteExistResultDataset).toBeTruthy();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集XX@Jingjin不存在"}}`));
         });
-        terrainCutFillCalculationService.processAsync(terrainCutFillCalculationParameters);
+        terrainCutFillCalculationService.processAsync(terrainCutFillCalculationParameters, TerrainCutFillCalculationServiceFailed);
     });
 });
 

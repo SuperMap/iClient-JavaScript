@@ -103,7 +103,7 @@
             points: pointsList
         });
         //创建泰森多边形服务实例
-        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(gThiessenAnalystParameters, null, 'FGB').then(function (serviceResult) {
           var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               strategy: 'all',
@@ -113,7 +113,7 @@
               }
             });
             map.addLayer(FGBLayer);
-        }, 'FGB')
+        })
     }
 </script>
 </body>

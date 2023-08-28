@@ -17,20 +17,14 @@ import { FetchRequest } from '../util/FetchRequest';
  * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。</br>
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new EditFeaturesService(url, {eventListeners: {
- *     "processCompleted": editFeatureCompleted,
- *     "processFailed": editFeatureError
- *       }
- * };
+ * var myService = new EditFeaturesService(url);
  * @usage
  */
 export class EditFeaturesService extends CommonServiceBase {
-
 
     constructor(url, options) {
         super(url, options);
@@ -75,8 +69,10 @@ export class EditFeaturesService extends CommonServiceBase {
      * @function EditFeaturesService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {EditFeaturesParameters} params - 编辑要素参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof EditFeaturesParameters)) {
             return;
         }
@@ -114,25 +110,25 @@ export class EditFeaturesService extends CommonServiceBase {
             }
         }
 
-        me.request({
+        return me.request({
             method: method,
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
-    getMetaData(params){
+    getMetaData(params, callback){
       var me = this;
       var featureId = params.featureId;
       me.url = Util.urlPathAppend(me.url, featureId +'/metadata');
-      me.request({
+      return me.request({
         method: "GET",
         data: null,
         scope: me,
-        success: me.serviceProcessCompleted,
-        failure: me.serviceProcessFailed
+        success: callback,
+        failure: callback
       });
     }
 }

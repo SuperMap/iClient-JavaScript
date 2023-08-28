@@ -20,8 +20,9 @@
     "three": "0.150.1",
     "@supermap/iclient-common": "11.1.1-dev",
     "canvg": "3.0.10",
-    "xml-js": "1.6.11",
+    "fast-xml-parser": "^4.2.7",
     "flatgeobuf": "3.23.1",
-    "rbush": "^2.0.2"
+    "rbush": "^2.0.2",
+    "proj4": "2.9.0"
   }
 }

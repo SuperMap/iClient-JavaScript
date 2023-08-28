@@ -40,9 +40,10 @@ export class AddressMatchService extends ServiceBase {
      * @description 获取正向地址匹配结果。
      * @param {GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
-        this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
+        return this._addressMatchService.code(CommonUtil.urlPathAppend(this.url, 'geocoding'), params, callback);
     }
 
     /**
@@ -50,9 +51,10 @@ export class AddressMatchService extends ServiceBase {
      * @description 获取反向地址匹配结果。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {
-        this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
+        return this._addressMatchService.decode(CommonUtil.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 
 }

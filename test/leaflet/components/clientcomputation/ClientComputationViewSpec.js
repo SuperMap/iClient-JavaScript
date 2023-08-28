@@ -82,13 +82,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
             }
            
         };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(queryUrl, options);
+        var queryBySQLService = new QueryBySQLService(queryUrl);
         var params = new QueryBySQLParameters({
 
             expectCount: 2,
@@ -98,7 +92,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 name: "中国历史5级以上地震_1900至2016@自然气候数据",
             }))
         })
-        queryBySQLService.processAsync(params);
+        queryBySQLService.processAsync(params, QueryBySQLCompleted);
     
     });
 

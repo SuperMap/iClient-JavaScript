@@ -220,7 +220,7 @@
         var paramter = [geoBufferAnalystParams, OverlayBatchAnalystParameters, geoBufferAnalystParams_Point];
 
         //批量分析
-        new ol.supermap.SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).geometrybatchAnalysis(paramter).then(function (serviceResult) {
             //结果展示
             serviceResult.result[0].resultGeometry.properties.analystType = "buffer_line";
             serviceResult.result[1].resultGeometry.properties.analystType = "overlay";

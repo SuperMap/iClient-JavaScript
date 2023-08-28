@@ -28,6 +28,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 正向匹配。
      * @param {GeoCodingParameter} params - 正向匹配参数。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
         var me = this;
@@ -35,14 +36,9 @@ export class AddressMatchService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            crossOrigin: me.crossOrigin
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        return addressMatchService.code(me.url + '/geocoding', params, callback);
     }
 
     /**
@@ -50,6 +46,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 反向匹配。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {
         var me = this;
@@ -57,14 +54,9 @@ export class AddressMatchService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            crossOrigin: me.crossOrigin
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        return addressMatchService.decode(me.url + '/geodecoding', params, callback);
     }
 }
 SuperMap.REST.AddressMatchService = AddressMatchService;

@@ -79,19 +79,16 @@
                     attributeFilter: "SMID in " + str,
                 }
             });
-            new L.supermap
-                .QueryService(urlQuery)
-                .queryBySQL(param, function (serviceResult) {
-
-                    featureResult = serviceResult;
-                    dataFlowBroadcast = new L.supermap.DataFlowService(urlDataFlow).initBroadcast();
-                    dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
-                        widgets.loader.removeLoader();
-                        broadcast();
-                        timer = window.setInterval("broadcast()", 2000);
-                    })
-                });
-        }
+            new L.supermap.QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {
+              featureResult = serviceResult;
+              dataFlowBroadcast = new L.supermap.DataFlowService(urlDataFlow).initBroadcast();
+              dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
+                widgets.loader.removeLoader();
+                broadcast();
+                timer = window.setInterval('broadcast()', 2000);
+              });
+            });
+          }
 
         var count = 0;
 

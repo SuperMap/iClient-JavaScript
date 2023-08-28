@@ -100,7 +100,7 @@
             maxFeatures: 10000,
         });
 
-        new ol.supermap.QueryService(queryUrl).queryBySQL(sqlParam, function (data) {
+        new ol.supermap.QueryService(queryUrl).queryBySQL(sqlParam).then(function (data) {
             echartslayer.hideLoading();
             var features = data.result.recordsets[0].features.features;
 

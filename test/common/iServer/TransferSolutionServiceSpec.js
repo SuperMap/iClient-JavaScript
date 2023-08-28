@@ -5,14 +5,9 @@ import {TransferPreference} from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
-var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
-var initTransferSolutionService = (url,succeed,failed) => {
-    return new TransferSolutionService(trafficTransferURL, {
-        eventListeners: {
-            processCompleted: succeed,
-            processFailed: failed
-        }
-    });
+var serviceCompletedEventArgsSystem = null;
+var initTransferSolutionService = (url) => {
+    return new TransferSolutionService(url);
 };
 
 describe('TransferSolutionService', () => {
@@ -41,9 +36,8 @@ describe('TransferSolutionService', () => {
     });
 
     it('processAsync_noParams', (done) => {
-        var service = initTransferSolutionService();
+        var service = initTransferSolutionService(trafficTransferURL);
         service.processAsync();
-
         setTimeout(() => {
             try {
                 expect(typeof(service.processAsync()) === "undefined").toBeTruthy();
@@ -68,8 +62,6 @@ describe('TransferSolutionService', () => {
                 expect(result.defaultGuide.count).toEqual(1);
                 expect(result.solutionItems).not.toBeNull();
                 service.destroy();
-                expect(service.events == null).toBeTruthy();
-                expect(service.eventListeners == null).toBeTruthy();
                 params.destroy();
                 done();
             } catch (exception) {
@@ -80,10 +72,7 @@ describe('TransferSolutionService', () => {
                 done();
             }
         };
-        var failed = (event) => {
-            serviceFailedEventArgsSystem = event;
-        };
-        var service = initTransferSolutionService(trafficTransferURL,succeed,failed);
+        var service = initTransferSolutionService(trafficTransferURL);
         var params = new TransferSolutionParameters({
             solutionCount: 5,
             transferTactic: TransferTactic.LESS_TIME,
@@ -96,6 +85,43 @@ describe('TransferSolutionService', () => {
             expect(testUrl).toBe(trafficTransferURL+"/solutions");
             return Promise.resolve(new Response(JSON.stringify(TransferSolutionServiceResult)));
         });
-        service.processAsync(params);
+        service.processAsync(params, succeed);
     });
+
+    it('success:processAsync promise', (done) => {
+      var trafficTransferURL = GlobeParameter.trafficTransferURL;
+      var succeed = (event) => {
+          serviceCompletedEventArgsSystem = event;
+          try {
+              var result = serviceCompletedEventArgsSystem.result;
+              expect(result).not.toBeNull();
+              expect(result.defaultGuide).not.toBeNull();
+              expect(result.defaultGuide.count).toEqual(1);
+              expect(result.solutionItems).not.toBeNull();
+              service.destroy();
+              params.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("TransferSolutionService_" + exception.name + ":" + exception.message);
+              service.destroy();
+              params.destroy();
+              done();
+          }
+      };
+      var service = initTransferSolutionService(trafficTransferURL);
+      var params = new TransferSolutionParameters({
+          solutionCount: 5,
+          transferTactic: TransferTactic.LESS_TIME,
+          transferPreference: TransferPreference.NONE,
+          walkingRatio: 10,
+          points: [175, 179]
+      });
+      spyOn(FetchRequest, 'commit').and.callFake((method,testUrl) => {
+          expect(method).toBe("GET");
+          expect(testUrl).toBe(trafficTransferURL+"/solutions");
+          return Promise.resolve(new Response(JSON.stringify(TransferSolutionServiceResult)));
+      });
+      service.processAsync(params, succeed);
+  });
 });

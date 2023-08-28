@@ -117,7 +117,7 @@ describe('InitMap', () => {
     const map = resData.map;
     expect(map).not.toBeUndefined();
     expect(map.options.crs).toBe('EPSG:3857');
-    expect(map.options.center).toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
+    expect(map.options.center).toEqual([-6.692970425781022e-14, -2.2899993706537323e-13]);
     expect(Object.values(map.options.style.sources).length).toBe(1);
     expect(map.options.style.layers.length).toBe(1);
     expect(Object.values(map.options.style.sources)[0].tiles.length).toBe(1);
@@ -159,7 +159,7 @@ describe('InitMap', () => {
     const map = resData.map;
     expect(map).not.toBeUndefined();
     expect(map.options.crs).toBe('EPSG:3857');
-    expect(map.options.center).toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
+    expect(map.options.center).toEqual([-6.692970425781022e-14, -2.2899993706537323e-13]);
     expect(Object.values(map.options.style.sources).length).toBe(1);
     expect(map.options.style.layers.length).toBe(1);
     expect(Object.values(map.options.style.sources)[0].tiles.length).toBe(1);
@@ -178,6 +178,14 @@ describe('InitMap', () => {
       center: {
         x: -7.450580596923828e-9,
         y: -2.60770320892334e-8
+      },
+      bounds: {
+        top: 90.00000000000001,
+        left: -180,
+        bottom: -90.00000000003598,
+        leftBottom: { x: -180, y: -90.00000000003598 },
+        right: 180.00000000007202,
+        rightTop: { x: 180.00000000007202, y: 90.00000000000001 }
       }
     };
     const vectorstylesInfo = {

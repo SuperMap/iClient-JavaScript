@@ -63,7 +63,7 @@
                 attributeFilter: "SmID > 0"
             }
         });
-        new ol.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
+        new ol.supermap.QueryService(url).queryBySQL(param).then(function (serviceResult) {
             addlayers(processData(serviceResult.result.recordsets[0].features.features));
         });
 

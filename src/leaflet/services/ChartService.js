@@ -40,19 +40,21 @@ export var ChartService = ServiceBase.extend({
      * @param {ChartQueryParameters} params - 海图查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryChart: function (params, callback, resultFormat) {
         params = this._processParams(params);
-        this._chartServiceBase.queryChart(params, callback, resultFormat);
+        return this._chartServiceBase.queryChart(params, callback, resultFormat);
     },
 
     /**
      * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getChartFeatureInfo: function (callback) {
-      this._chartServiceBase.getChartFeatureInfo(callback);
+      return this._chartServiceBase.getChartFeatureInfo(callback);
     },
 
     _processParams: function (params) {

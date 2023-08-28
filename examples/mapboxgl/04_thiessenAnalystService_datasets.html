@@ -51,7 +51,7 @@
         var dThiessenAnalystParameters = new mapboxgl.supermap.DatasetThiessenAnalystParameters({
             dataset: "Town_P@Jingjin"
         });
-        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters).then(function (serviceResult) {
             map.addSource("analystDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.regions

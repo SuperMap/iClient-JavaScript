@@ -36,10 +36,8 @@ import {Util} from '../commontypes/Util';
      *       queryBySQLParams = new QueryBySQLParameters({
      *             queryParams: [queryParam]
      *         }),
-     *       queryBySQLService = new QueryBySQLService(url, {
-     *             eventListeners: { "processCompleted": processCompleted, "processFailed": processFailed}
-     *         });
-     *       queryBySQLService.processAsync(queryBySQLParams);
+     *       queryBySQLService = new QueryBySQLService(url);
+     *       queryBySQLService.processAsync(queryBySQLParams, processCompleted);
      *  }
  *  function processCompleted(queryEventArgs) {//todo}
  *  function processFailed(e) {//todo}

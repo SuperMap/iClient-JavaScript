@@ -60,7 +60,7 @@
 
             new L.supermap
                 .QueryService(queryUrl)
-                .queryBySQL(params, function (serviceResult) {
+                .queryBySQL(params).then(function (serviceResult) {
                     var result = L.supermap.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
                     var resultLayer = L.geoJSON(result, {
                         style: { fillColor: '#ff7373', color: '#ff7373', opacity: 1, fillOpacity: 0.8 },

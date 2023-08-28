@@ -104,7 +104,7 @@
             maxFeatures: 10000,
         });
 
-        new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(param, function (serviceResult) {
+        new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(param).then(function (serviceResult) {
             var features = serviceResult.result.recordsets[0].features.features;
 
             //构造mapv数据

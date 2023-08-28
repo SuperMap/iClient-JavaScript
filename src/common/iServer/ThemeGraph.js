@@ -168,13 +168,8 @@ export class ThemeGraph extends Theme {
          *                   datasetNames: ["BaseMap_R"]
          *               }),
          *                   //与服务端交互
-         *               themeService=new ThemeService(url, {
-         *                   eventListeners: {
-         *                       "processCompleted": ThemeCompleted,
-         *                        "processFailed": themeFailed
-         *                  }
-         *              });
-         *       themeService.processAsync(themeParameters);
+         *               themeService=new ThemeService(url);
+         *       themeService.processAsync(themeParameters, ThemeCompleted);
          *   }
          */
         this.memoryKeys = null;

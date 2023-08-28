@@ -33,9 +33,10 @@ export class MeasureService extends ServiceBase {
      * @description 距离量算。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance(params, callback) {
-        this.measure(params, 'DISTANCE', callback);
+        return this.measure(params, 'DISTANCE', callback);
     }
 
     /**
@@ -43,9 +44,10 @@ export class MeasureService extends ServiceBase {
      * @description 面积量算。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     measureArea(params, callback) {
-        this.measure(params, 'AREA', callback);
+        return this.measure(params, 'AREA', callback);
     }
 
     /**
@@ -54,7 +56,7 @@ export class MeasureService extends ServiceBase {
      * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 量算类型。
      * @param {RequestCallback} callback - 回调函数。
-     * @returns {MeasureService} 量算服务。
+     * @returns {Promise} Promise 对象。
      */
     measure(params, type, callback) {
         var me = this;
@@ -65,7 +67,7 @@ export class MeasureService extends ServiceBase {
             headers: me.options.headers,
             measureMode: type
         });
-        measureService.processAsync(me._processParam(params), callback);
+        return measureService.processAsync(me._processParam(params), callback);
     }
 
     _processParam(params) {

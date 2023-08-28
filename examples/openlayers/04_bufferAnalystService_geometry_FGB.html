@@ -181,7 +181,7 @@
               spatialQueryMode: ol.supermap.SpatialQueryMode.INTERSECT
             });
 
-            new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+            new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters).then(function (serviceResult) {
               var features = new ol.format.GeoJSON().readFeatures(serviceResult.result.recordsets[0].features);
               var iconStyle = new ol.style.Style({
                 image: new ol.style.Icon({

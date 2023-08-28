@@ -35,14 +35,9 @@
 
       // 方式一：1.调用 mapboxgl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
       mapboxgl.supermap
-        .initMap(host + '/iserver/services/map-china400/rest/maps/China', {
-          mapOptions: {
-            center: [120.143, 30.236], // starting position
-            zoom: 3 // starting zoom
-          }
-        })
-        .then(function (dataRes) {
-          var map = dataRes.map;
+        .initMap(host + '/iserver/services/map-china400/rest/maps/China')
+        .then(function (result) {
+          var map = result.map;
           map.addControl(new mapboxgl.NavigationControl(), 'top-left');
         });
 

@@ -43,7 +43,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollections(callback) {
-      this._imageService.getCollections(callback);
+      return this._imageService.getCollections(callback);
     }
 
     /**
@@ -53,7 +53,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     getCollectionByID(collectionId, callback) {
-      this._imageService.getCollectionByID(collectionId, callback);
+      return this._imageService.getCollectionByID(collectionId, callback);
     }
 
     /**
@@ -63,7 +63,7 @@ export class ImageService extends ServiceBase {
      * @param {RequestCallback} callback - 回调函数。
      */
     search(itemSearch, callback) {
-      this._imageService.search(itemSearch, callback);
+      return this._imageService.search(itemSearch, callback);
     }
 }
 

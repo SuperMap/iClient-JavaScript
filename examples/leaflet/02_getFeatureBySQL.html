@@ -36,7 +36,7 @@
         });
         new L.supermap
             .FeatureService(url)
-            .getFeaturesBySQL(sqlParam, function (serviceResult) {
+            .getFeaturesBySQL(sqlParam).then(function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features).addTo(map).bindPopup('SMID = 234');
             });
     }

@@ -58,7 +58,7 @@
             queryParams: {name: "Capitals@World.1"},
             geometry: polygon
         });
-        new ol.supermap.QueryService(url).queryByGeometry(param, function (serviceResult) {
+        new ol.supermap.QueryService(url).queryByGeometry(param).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false

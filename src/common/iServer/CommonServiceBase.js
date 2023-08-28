@@ -2,11 +2,9 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
-import { Events } from '../commontypes/Events';
 import { SecurityManager } from '../security/SecurityManager';
 import { Util } from '../commontypes/Util';
 import { JSONFormat } from '../format/JSON';
-import { FunctionExt } from '../commontypes/BaseTypes';
 import {DataFormat} from '../REST';
 
 /**
@@ -16,7 +14,6 @@ import {DataFormat} from '../REST';
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -26,12 +23,6 @@ import {DataFormat} from '../REST';
 export class CommonServiceBase {
     constructor(url, options) {
         let me = this;
-
-        this.EVENT_TYPES = ['processCompleted', 'processFailed'];
-
-        this.events = null;
-
-        this.eventListeners = null;
 
         this.url = null;
 
@@ -78,11 +69,6 @@ export class CommonServiceBase {
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
-        me.events = new Events(me, null, me.EVENT_TYPES, true);
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
-        }
-
         this.CLASS_NAME = 'SuperMap.CommonServiceBase';
     }
 
@@ -99,18 +85,7 @@ export class CommonServiceBase {
             me.totalTimes = null;
         }
         me.url = null;
-        me._processSuccess = null;
-        me._processFailed = null;
         me.isInTheSameDomain = null;
-
-        me.EVENT_TYPES = null;
-        if (me.events) {
-            me.events.destroy();
-            me.events = null;
-        }
-        if (me.eventListeners) {
-            me.eventListeners = null;
-        }
     }
 
     /**
@@ -151,47 +126,13 @@ export class CommonServiceBase {
 
         me.calculatePollingTimes();
         options.scope = me;
-        var success = options.scope? options.success.bind(options.scope) : options.success;
-        var failure = options.scope? options.failure.bind(options.scope) : options.failure;
-        options.success = me.getUrlCompleted(success, options);
-        options.failure = me.getUrlFailed(failure, options);
-        me._commit(options);
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlCompleted
-     * @description 请求成功后执行此方法。
-     * @param {Object} cb - 成功回调函数。
-     * @param {Object} options - 请求参数对象。
-     * @private
-     */
-    getUrlCompleted(cb, options) {
-      // @param {Object} result - 服务器返回的结果对象。
-      return function(result) {
-        cb && cb(result, options);
-      }
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlFailed
-     * @description 请求失败后执行此方法。
-
-     * @param {Object} cb - 失败回调函数。
-     * @param {Object} options - 请求参数对象。
-     * @private
-     */
-    getUrlFailed(cb, options) {
-      const me = this;
-      // @param {Object} result - 服务器返回的结果对象。
-      return function(result) {
         if (me.totalTimes > 0) {
           me.totalTimes--;
-          me.ajaxPolling(options);
-        } else {
-          cb && cb(result, options);
+          return me.ajaxPolling(options);
         }
-      }
-  }
+        return me._commit(options);
+    }
+
 
     /**
      *
@@ -209,7 +150,7 @@ export class CommonServiceBase {
         url = url.replace(re, re.exec(me.url)[0]);
         options.url = url;
         options.isInTheSameDomain = Util.isInTheSameDomain(url);
-        me._commit(options);
+        return me._commit(options);
     }
 
     /**
@@ -253,31 +194,23 @@ export class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessCompleted
      * @description 状态完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
-     * @param {Object} options - 请求参数对象。
      * @private
      */
     serviceProcessCompleted(result, options) {
         result = Util.transformResult(result);
-        this.events.triggerEvent('processCompleted', {
-            result: result,
-            options: options
-        });
+        return { result, options };
     }
 
     /**
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
-     * @param {Object} options - 请求参数对象。对象
      * @private
      */
     serviceProcessFailed(result, options) {
         result = Util.transformResult(result);
         let error = result.error || result;
-        this.events.triggerEvent('processFailed', {
-            error: error,
-            options: options
-        });
+        return { error, options };
     }
 
     _returnContent(options) {
@@ -313,7 +246,7 @@ export class CommonServiceBase {
                 options.params = options.data;
             }
         }
-        FetchRequest.commit(options.method, options.url, options.params, {
+        return FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
@@ -359,14 +292,20 @@ export class CommonServiceBase {
                 return { error: e };
             })
             .then((requestResult) => {
+                let response = {
+                  object: this
+                };
                 if (requestResult.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(requestResult);
+                    response = {...response, ...this.serviceProcessFailed(requestResult, options)};
+                    response.type = 'processFailed';
+                    options.failure && options.failure(response);
                 } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(requestResult);
+                    response = {...response, ...this.serviceProcessCompleted(requestResult, options)};
+                    response.type = 'processCompleted';
+                    options.success && options.success(response);
                 }
+                return response;
             });
     }
 }
@@ -385,6 +324,4 @@ export class CommonServiceBase {
  * @param {Object} serviceResult.result 服务器返回结果。
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
- * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
- * @param {Object} serviceResult.options 请求参数。
  */

@@ -22,7 +22,6 @@ export class KnowledgeGraphService extends CommonServiceBase {
   constructor(url, options) {
     super(url, options);
     this.options = options || {};
-    this.eventCount = 0;
     this.CLASS_NAME = 'SuperMap.KnowledgeGraphService';
   }
 
@@ -210,47 +209,22 @@ export class KnowledgeGraphService extends CommonServiceBase {
    * @description 负责将客户端的动态分段服务参数传递到服务端。
    * @param {string} url - 服务地址
    * @param {Object} params - 参数
+   * @param {RequestCallback} callback - 回调函数。
+   * @returns {Promise} Promise 对象。
    */
 
   processAsync({ url, params, method, callback }) {
-    let eventId = ++this.eventCount;
-    let eventListeners = {
-      scope: this,
-      processCompleted: function (result) {
-        if (eventId === result.result.eventId && callback) {
-          delete result.result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      },
-      processFailed: function (result) {
-        if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-          delete result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      }
-    };
-    this.events.on(eventListeners);
     const requestParams = {
       method,
       url,
       scope: this,
-      success(result, options) {
-        result.eventId = eventId;
-        this.serviceProcessCompleted(result, options);
-      },
-      failure(result, options) {
-        result.eventId = eventId;
-        this.serviceProcessFailed(result, options);
-      }
+      success: callback,
+      failure: callback
     };
     if (params) {
       requestParams.params = params;
     }
-    this.request(requestParams);
+    return this.request(requestParams);
   }
   /**
    * @private

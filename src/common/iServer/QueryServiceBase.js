@@ -25,17 +25,11 @@ import {
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new QueryService(url, {
- *     eventListeners: {
- *	       "processCompleted": queryCompleted,
- *		   "processFailed": queryError
- *		   }
- * };
+ * var myService = new QueryService(url);
  * @usage
  */
 export class QueryServiceBase extends CommonServiceBase {
@@ -85,8 +79,10 @@ export class QueryServiceBase extends CommonServiceBase {
      * @function QueryService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {QueryParameters} params - 查询参数。
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof QueryParameters)) {
             return;
         }
@@ -105,12 +101,12 @@ export class QueryServiceBase extends CommonServiceBase {
             }
         }
         me.returnFeatureWithFieldCaption = params.returnFeatureWithFieldCaption;
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -139,10 +135,7 @@ export class QueryServiceBase extends CommonServiceBase {
             }
         }
 
-        me.events.triggerEvent("processCompleted", {
-            result: result,
-            options
-        });
+        return { result, options };
     }
 
     dataFormat() {

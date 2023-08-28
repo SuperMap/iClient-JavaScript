@@ -16,7 +16,6 @@ import { ConnectedEdgesAnalystParameters } from './ConnectedEdgesAnalystParamete
   *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
   *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
   * @param {Object} options - 参数。
-  * @param {Object} options.eventListeners - 需要被注册的监听器对象。
   * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
   * @param {Object} [options.headers] - 请求头。
   * @usage
@@ -43,7 +42,7 @@ import { ConnectedEdgesAnalystParameters } from './ConnectedEdgesAnalystParamete
       * @description 负责将客户端的查询参数传递到服务端。
       * @param {ConnectedEdgesAnalystParameters} params - 上游/下游追踪分析参数类。
       */
-     processAsync(params) {
+     processAsync(params, callback) {
          if (!(params instanceof ConnectedEdgesAnalystParameters)) {
              return;
          }
@@ -67,12 +66,12 @@ import { ConnectedEdgesAnalystParameters } from './ConnectedEdgesAnalystParamete
              jsonObject.nodeIDs = params.nodeIDs;
          }
  
-         me.request({
+         return me.request({
              method: "GET",
              params: jsonObject,
              scope: me,
-             success: me.serviceProcessCompleted,
-             failure: me.serviceProcessFailed
+             success: callback,
+             failure: callback
          });
      }
 

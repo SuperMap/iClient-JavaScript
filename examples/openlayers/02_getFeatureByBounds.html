@@ -60,7 +60,7 @@
             datasetNames: ["World:Capitals"],
             bounds: polygon.getExtent()
         });
-        new ol.supermap.FeatureService(url).getFeaturesByBounds(boundsParam, function (serviceResult) {
+        new ol.supermap.FeatureService(url).getFeaturesByBounds(boundsParam).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
                 wrapX: false

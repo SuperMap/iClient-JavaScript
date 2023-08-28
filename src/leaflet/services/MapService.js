@@ -47,6 +47,7 @@ export var MapService = ServiceBase.extend({
      * @function  MapService.prototype.getMapInfo
      * @description 获取地图信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getMapInfo: function (callback) {
         var me = this;
@@ -57,13 +58,14 @@ export var MapService = ServiceBase.extend({
             headers: me.options.headers,
             projection: me.options.projection
         });
-        getMapStatusService.processAsync(callback);
+        return getMapStatusService.processAsync(callback);
     },
 
     /**
      * @function  MapService.prototype.getWKT
      * @description 获取WKT。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getWKT(callback) {
       var me = this;
@@ -75,13 +77,14 @@ export var MapService = ServiceBase.extend({
           headers: me.options.headers,
           projection: me.options.projection
       });
-      getMapStatusService.processAsync(callback);
+      return getMapStatusService.processAsync(callback);
     },
 
     /**
      * @function  MapService.prototype.getTilesets
      * @description 获取切片列表信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getTilesets: function (callback) {
         var me = this;
@@ -89,15 +92,9 @@ export var MapService = ServiceBase.extend({
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-
-        tilesetsService.processAsync();
+        return tilesetsService.processAsync(callback);
     }
 });
 

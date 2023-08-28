@@ -80,7 +80,7 @@
         });
         //创建表面分析服务实例
         surfaceAnalystService = new maplibregl.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters).then(function (surfaceAnalystServiceResult) {
             var resultFeatures = surfaceAnalystServiceResult.result.recordset.features.features;
             var i, j, changesFeatures = [];
             for (i = 0; i < resultFeatures.length; i++) {

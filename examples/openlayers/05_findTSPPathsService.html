@@ -97,7 +97,7 @@
             parameter: analystParameter
         });
         //进行查找
-        new ol.supermap.NetworkAnalystService(serviceUrl).findTSPPaths(findTSPPathsParameter, function (serviceResult) {
+        new ol.supermap.NetworkAnalystService(serviceUrl).findTSPPaths(findTSPPathsParameter).then(function (serviceResult) {
             serviceResult.result.tspPathList.map(function (result) {
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(result.route)

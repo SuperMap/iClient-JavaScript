@@ -105,7 +105,7 @@
         "offset": 0,
         "isIgnoreGap": true
       });
-      routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocateServiceResult) {
+      routeLocatorService.routeLocate(routeLocatorParameters_point).then(function (routeLocateServiceResult) {
         var point = routeLocateServiceResult.result.resultGeometry.geometry.coordinates;
         map.addLayer({
           "id": "Point",

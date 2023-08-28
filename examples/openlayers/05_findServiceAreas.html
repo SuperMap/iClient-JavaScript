@@ -80,7 +80,17 @@
         });
         parameter.weights = [400 + Math.random() * 100];
 
-        new ol.supermap.NetworkAnalystService(serviceUrl).findServiceAreas(parameter, function (serviceResult) {
+        // new ol.supermap.NetworkAnalystService(serviceUrl).findServiceAreas(parameter, function (serviceResult) {
+        //     var vectorSource = new ol.source.Vector({
+        //         features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.serviceAreaList[0].edgeFeatures)
+        //     });
+        //     var resultLayer = new ol.layer.Vector({
+        //         source: vectorSource
+        //     });
+        //     map.addLayer(resultLayer);
+        // });
+
+        new ol.supermap.NetworkAnalystService(serviceUrl).findServiceAreas(parameter).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.serviceAreaList[0].edgeFeatures)
             });

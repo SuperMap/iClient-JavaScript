@@ -35,7 +35,7 @@ export class MeasureService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     measureDistance(params, callback) {
-        this.measure(params, 'DISTANCE', callback);
+        return this.measure(params, 'DISTANCE', callback);
     }
 
     /**
@@ -45,7 +45,7 @@ export class MeasureService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     measureArea(params, callback) {
-        this.measure(params, 'AREA', callback);
+        return this.measure(params, 'AREA', callback);
     }
 
     /**
@@ -65,7 +65,7 @@ export class MeasureService extends ServiceBase {
             headers: me.options.headers,
             measureMode: type
         });
-        measureService.processAsync(me._processParam(params), callback);
+        return measureService.processAsync(me._processParam(params), callback);
     }
 
     _processParam(params) {

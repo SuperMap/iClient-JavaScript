@@ -331,7 +331,7 @@
                 })
             });
             filterEmptyData(params);
-            webPrintingJobService.createWebPrintingJob(params, function (e) {
+            webPrintingJobService.createWebPrintingJob(params).then(function (e) {
                 if (e.result && e.result[0] && e.result[0].path) {
                     webPrintingJobService.getPrintingJob(e.result[0].resourceConfigID, function ( res ) {
                         if (res.result && res.result.status === 'FINISHED') {
@@ -344,7 +344,7 @@
                             window.URL.revokeObjectURL(link.href);
                             $('#printBtn').show();
                             $('.progress').hide();
-                        } else {
+                        } else if (!res.result) {
                             alert('打印失败');
                             $('#printBtn').show();
                             $('.progress').hide();

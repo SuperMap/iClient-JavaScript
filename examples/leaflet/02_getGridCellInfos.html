@@ -38,21 +38,21 @@
             Y: y
         });
         new L.supermap
-                .GridCellInfosService(url)
-                .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-                    if (!serviceResult.result) {
-                        return;
-                    }
-                    if (marker) {
-                        marker.setLatLng(evt.latlng);
-                    } else {
-                        marker = L.marker(evt.latlng).addTo(map);
-                    }
-                    var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + serviceResult.result.column + "<br>";
-                    innerHTML += "row: " + serviceResult.result.row + "<br>";
-                    innerHTML += "value: " + serviceResult.result.value + "<br>";
-                    marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
-                });
+        .GridCellInfosService(url)
+        .getGridCellInfos(getGridCellInfosParam).then((serviceResult) => {
+            if (!serviceResult.result) {
+                return;
+            }
+            if (marker) {
+                marker.setLatLng(evt.latlng);
+            } else {
+                marker = L.marker(evt.latlng).addTo(map);
+            }
+            var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + serviceResult.result.column + "<br>";
+            innerHTML += "row: " + serviceResult.result.row + "<br>";
+            innerHTML += "value: " + serviceResult.result.value + "<br>";
+            marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
+        });
     });
 </script>
 </body>

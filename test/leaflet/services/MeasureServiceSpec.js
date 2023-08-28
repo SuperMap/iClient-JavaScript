@@ -183,4 +183,32 @@ describe('leaflet_MeasureService', () => {
             }
         });
     });
+
+    it('measure_AREA promise', (done) => {
+      var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
+      var params = new MeasureParameters(polygon);
+      spyOn(FetchRequest, 'commit').and.callFake((method) => {
+          expect(method).toBe("GET");
+          return Promise.resolve(new Response(`{"area":2.619618191560064E13,"unit":"METER","distance":-1}`));
+      });
+      measureService(url).measure("AREA", params).then((serviceResult) => {
+        try {
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toBe("processCompleted");
+            expect(serviceResult.result.area).toBeGreaterThan(0);
+            expect(serviceResult.result.distance).toEqual(-1);
+            expect(serviceResult.result.succeed).toBeTruthy();
+            expect(serviceResult.result.unit).toBe("METER");
+            expect(serviceResult.object.measureMode).toBe("AREA");
+            expect(serviceResult.options.method).toBe("GET");
+            expect(serviceResult.options.params.point2Ds).not.toBeNull();
+            params.destroy();
+            done();
+        } catch (exception) {
+            console.log("measure_AREA'案例失败：" + exception.name + ":" + exception.message);
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  });
 });

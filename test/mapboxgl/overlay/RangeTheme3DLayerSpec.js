@@ -66,67 +66,64 @@ describe('mapboxgl_RangeTheme3DLayer', () => {
                 datasetNames: ["Jingjin:BaseMap_R"]
             });
             var queryFeatures = new GetFeaturesBySQLService(dataUrl, {
-                eventListeners: {
-                    processCompleted: (serviceResult) => {
-                        if (serviceResult.error) {
-                            alert("error:" + JSON.stringify(serviceResult.error));
-                            return;
-                        }
-                        var result = serviceResult.result;
-                        if (result.features) {
-                            //创建专题图图层
-                            themeLayer = new RangeTheme3DLayer("range3DThemeLayer", {
-                                heightField: themeField,
-                                parseNumber: true,
-                                enableHighlight: true,
-
-                                heightStops: [
-                                    [0.01, 1000], [0.1, 5000], [0.2, 6000]
-                                ],
-                                colorStops: [
-                                    [0, "#FDE2CA"], [0.02, "#FACE9C"], [0.04, "#F09C42"], [0.06, "#D0770B"], [0.1, "#945305"], [0.2, "#593000"]
-                                ],
-                                // 显示图例
-                                showLegend: true,
-                                legendTitle: "人口密度"
-                            });
-                            themeLayer.setHighlightStyleOptions({color: "#058e94"});
-                            themeLayer.setData(result.features).addTo(map);
-                            map.easeTo({
-                                pitch: 60,
-                                bearing: 0
-                            })
-                        }
-                        expect(themeLayer).not.toBeNull();
-                        expect(themeLayer.colorStops.length).toEqual(6);
-                        expect(themeLayer.data.type).toBe("FeatureCollection");
-                        expect(themeLayer.data.features.length).toBeGreaterThan(0);
-                        for (var i = 0; i < themeLayer.data.features.length; i++) {
-                            expect(themeLayer.data.features[i].type).toBe("Feature");
-                            expect(themeLayer.data.features[i].id).not.toBeNull();
-                            expect(themeLayer.data.features[i].properties).not.toBeNull();
-                            expect(themeLayer.data.features[i].geometry).not.toBeNull();
-                        }
-                        expect(themeLayer.enableHighlight).toBeTruthy();
-                        expect(themeLayer.heightField).toBe("POP_DENSITY99");
-                        expect(themeLayer.heightStops.length).toEqual(3);
-                        expect(themeLayer.id).toBe("range3DThemeLayer");
-                        expect(themeLayer._highlightLayerId).toBe("range3DThemeLayer-highlightLayer");
-                        expect(themeLayer.highlight.color).toBe("#058e94");
-                        expect(themeLayer.legendTitle).toBe("人口密度");
-                        var layerStyleOptions = themeLayer.getLayerStyleOptions();
-                        expect(layerStyleOptions).not.toBeNull();
-                        expect(layerStyleOptions).not.toBeUndefined();
-                        var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
-                        expect(highlightStyleOptions).not.toBeNull();
-                        expect(highlightStyleOptions).not.toBeUndefined();
-                        themeLayer.remove();
-                        done();
-                    }
-                },
                 format: DataFormat.GEOJSON
             });
-            queryFeatures.processAsync(getFeatureBySQLParams);
+            queryFeatures.processAsync(getFeatureBySQLParams, (serviceResult) => {
+              if (serviceResult.error) {
+                  alert("error:" + JSON.stringify(serviceResult.error));
+                  return;
+              }
+              var result = serviceResult.result;
+              if (result.features) {
+                  //创建专题图图层
+                  themeLayer = new RangeTheme3DLayer("range3DThemeLayer", {
+                      heightField: themeField,
+                      parseNumber: true,
+                      enableHighlight: true,
+
+                      heightStops: [
+                          [0.01, 1000], [0.1, 5000], [0.2, 6000]
+                      ],
+                      colorStops: [
+                          [0, "#FDE2CA"], [0.02, "#FACE9C"], [0.04, "#F09C42"], [0.06, "#D0770B"], [0.1, "#945305"], [0.2, "#593000"]
+                      ],
+                      // 显示图例
+                      showLegend: true,
+                      legendTitle: "人口密度"
+                  });
+                  themeLayer.setHighlightStyleOptions({color: "#058e94"});
+                  themeLayer.setData(result.features).addTo(map);
+                  map.easeTo({
+                      pitch: 60,
+                      bearing: 0
+                  })
+              }
+              expect(themeLayer).not.toBeNull();
+              expect(themeLayer.colorStops.length).toEqual(6);
+              expect(themeLayer.data.type).toBe("FeatureCollection");
+              expect(themeLayer.data.features.length).toBeGreaterThan(0);
+              for (var i = 0; i < themeLayer.data.features.length; i++) {
+                  expect(themeLayer.data.features[i].type).toBe("Feature");
+                  expect(themeLayer.data.features[i].id).not.toBeNull();
+                  expect(themeLayer.data.features[i].properties).not.toBeNull();
+                  expect(themeLayer.data.features[i].geometry).not.toBeNull();
+              }
+              expect(themeLayer.enableHighlight).toBeTruthy();
+              expect(themeLayer.heightField).toBe("POP_DENSITY99");
+              expect(themeLayer.heightStops.length).toEqual(3);
+              expect(themeLayer.id).toBe("range3DThemeLayer");
+              expect(themeLayer._highlightLayerId).toBe("range3DThemeLayer-highlightLayer");
+              expect(themeLayer.highlight.color).toBe("#058e94");
+              expect(themeLayer.legendTitle).toBe("人口密度");
+              var layerStyleOptions = themeLayer.getLayerStyleOptions();
+              expect(layerStyleOptions).not.toBeNull();
+              expect(layerStyleOptions).not.toBeUndefined();
+              var highlightStyleOptions = themeLayer.getHighlightStyleOptions();
+              expect(highlightStyleOptions).not.toBeNull();
+              expect(highlightStyleOptions).not.toBeUndefined();
+              themeLayer.remove();
+              done();
+          });
             // setTimeout(() => {
 
             // }, 5000)

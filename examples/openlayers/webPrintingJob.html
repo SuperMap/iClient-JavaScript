@@ -339,7 +339,7 @@
                             window.URL.revokeObjectURL(link.href);
                             $('#printBtn').show();
                             $('.progress').hide();
-                        } else {
+                        } else if (!res.result) {
                             alert('打印失败');
                             $('#printBtn').show();
                             $('.progress').hide();

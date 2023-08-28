@@ -39,10 +39,11 @@ export var QueryService = ServiceBase.extend({
      * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByBounds: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByBounds(params, callback, resultFormat);
+      return this._queryService.queryByBounds(params, callback, resultFormat);
     },
 
     /**
@@ -51,10 +52,11 @@ export var QueryService = ServiceBase.extend({
      * @param {QueryByDistanceParameters} params - Distance 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByDistance: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByDistance(params, callback, resultFormat);
+      return this._queryService.queryByDistance(params, callback, resultFormat);
     },
 
     /**
@@ -63,10 +65,11 @@ export var QueryService = ServiceBase.extend({
      * @param {QueryBySQLParameters} params - SQL 查询参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryBySQL: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryBySQL(params, callback, resultFormat);
+      return this._queryService.queryBySQL(params, callback, resultFormat);
     },
 
     /**
@@ -75,10 +78,11 @@ export var QueryService = ServiceBase.extend({
      * @param {QueryByGeometryParameters} params - Geometry 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByGeometry: function(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByGeometry(params, callback, resultFormat);
+      return this._queryService.queryByGeometry(params, callback, resultFormat);
     },
 
     _processParams: function(params) {

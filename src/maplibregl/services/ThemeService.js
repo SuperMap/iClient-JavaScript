@@ -36,8 +36,9 @@ export class ThemeService extends ServiceBase {
      * @description 获取专题图信息。
      * @param {ThemeParameters} params - 专题图参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getThemeInfo(params, callback) {
-      this._commonThemeService.processAsync(params, callback);
+      return this._commonThemeService.processAsync(params, callback);
     }
 }

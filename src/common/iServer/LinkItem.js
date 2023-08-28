@@ -59,12 +59,7 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
  *      queryBySQLParams = new QueryBySQLParameters({
  *           queryParams: [queryParam]
  *              }),
- *      queryBySQLService = new QueryBySQLService(url, {
-     *          eventListeners: {
-     *              "processCompleted": processCompleted,
-     *              "processFailed": processFailed
-     *              }
-     *      });
+ *      queryBySQLService = new QueryBySQLService(url);
      *      queryBySQLService.processAsync(queryBySQLParams);
      *  }
  *  function processCompleted(queryEventArgs) {//todo}

@@ -60,7 +60,9 @@
 
         new mapboxgl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(
           datasetOverlayAnalystParameters,
-          function (serviceResult) {
+          null,
+          'FGB'
+        ).then(function (serviceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: serviceResult.result.newResourceLocation,
               strategy: 'all',
@@ -70,9 +72,7 @@
               }
             });
             map.addLayer(FGBLayer);
-          },
-          'FGB'
-        );
+          });
       }
     </script>
   </body>

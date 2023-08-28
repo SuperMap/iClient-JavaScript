@@ -53,7 +53,7 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, options});
+        return { result: analystResult, options };
     }
 
     /**

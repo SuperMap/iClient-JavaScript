@@ -98,7 +98,7 @@
                 geometry: resultLayer,
                 spatialQueryMode: L.supermap.SpatialQueryMode.INTERSECT
             });
-            queryService.queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+            queryService.queryByGeometry(queryByGeometryParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 resultLayer1 = L.geoJSON(result.recordsets[0].features).addTo(map);
             });

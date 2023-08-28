@@ -77,7 +77,7 @@
             parameter: analystParameter
         });
         //进行查找
-        findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter, function (serviceResult) {
+        findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter).then(function (serviceResult) {
             var result = serviceResult.result;
             result.pathList.map(function (result) {
                 L.geoJSON(result.route, {color: "green"}).addTo(map);

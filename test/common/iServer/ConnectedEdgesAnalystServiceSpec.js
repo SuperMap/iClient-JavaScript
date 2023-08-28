@@ -4,14 +4,8 @@ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 
 var serviceFailedEventArgsSystem = null,analystEventArgsSystem = null;
-var initConnectedEdgesAnalystService = (url,analyzeCompleted,analyzeFailed) => {
-    return new ConnectedEdgesAnalystService(url,
-        {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        });
+var initConnectedEdgesAnalystService = (url) => {
+    return new ConnectedEdgesAnalystService(url);
 };
 
 describe('ConnectedEdgesAnalystService', () => {
@@ -52,8 +46,6 @@ describe('ConnectedEdgesAnalystService', () => {
                 expect(result).not.toBeNull();
                 expect(result.nodes.length).toBe(1);
                 connectedEdgesAnalystService.destroy();
-                expect(connectedEdgesAnalystService.events).toBeNull();
-                expect(connectedEdgesAnalystService.eventListeners).toBeNull();
                 connectedEdgesAnalystParameters.destroy();
                 done();
             } catch (exception) {
@@ -64,7 +56,7 @@ describe('ConnectedEdgesAnalystService', () => {
                 done();
             }
         };
-        var connectedEdgesAnalystService = initConnectedEdgesAnalystService(networkAnalystURL,analyzeCompleted,analyzeFailed);
+        var connectedEdgesAnalystService = initConnectedEdgesAnalystService(networkAnalystURL);
         var connectedEdgesAnalystParameters = new ConnectedEdgesAnalystParameters({
             connected: false,
             returnFeatures: true,
@@ -77,7 +69,7 @@ describe('ConnectedEdgesAnalystService', () => {
             expect(options.connected).toBeFalsy();
             return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
         });
-        connectedEdgesAnalystService.processAsync(connectedEdgesAnalystParameters);
+        connectedEdgesAnalystService.processAsync(connectedEdgesAnalystParameters, analyzeCompleted);
     });
 
     //参数不对
@@ -90,7 +82,7 @@ describe('ConnectedEdgesAnalystService', () => {
         var analyzeFailed = (serviceFailedEventArgs) => {
             flag = true;
         };
-        var connectedEdgesAnalystService = initConnectedEdgesAnalystService(networkAnalystURL,analyzeCompleted,analyzeFailed);
+        var connectedEdgesAnalystService = initConnectedEdgesAnalystService(networkAnalystURL);
         // edgeIDs和nodeIDs同时没有
         var connectedEdgesAnalystParameters1 = new ConnectedEdgesAnalystParameters({});
         // edgeIDs和nodeIDs同时拥有
@@ -98,8 +90,8 @@ describe('ConnectedEdgesAnalystService', () => {
             edgeIDs:[1],
             nodeIDs:[1]
         });
-        connectedEdgesAnalystService.processAsync(connectedEdgesAnalystParameters1);
-        connectedEdgesAnalystService.processAsync(connectedEdgesAnalystParameters2);
+        connectedEdgesAnalystService.processAsync(connectedEdgesAnalystParameters1, analyzeCompleted);
+        connectedEdgesAnalystService.processAsync(connectedEdgesAnalystParameters2, analyzeCompleted);
         expect(flag).toBeFalsy;
         done();
     });

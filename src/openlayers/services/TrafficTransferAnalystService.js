@@ -36,9 +36,10 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @description 站点查询服务。
      * @param {StopQueryParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     queryStop(params, callback) {
-      this._commonTrafficTransferAnalystService.queryStop(params, callback);
+      return this._commonTrafficTransferAnalystService.queryStop(params, callback);
     }
 
     /**
@@ -46,10 +47,11 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @description 交通换乘线路查询服务。
      * @param {TransferPathParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferPath(params, callback) {
       params = this._processParams(params);
-      this._commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
+      return this._commonTrafficTransferAnalystService.analysisTransferPath(params, callback);
     }
 
     /**
@@ -57,10 +59,11 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @description 交通换乘方案查询服务。
      * @param {TransferSolutionParameters} params - 查询相关参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferSolution(params, callback) {
       params = this._processParams(params);
-      this._commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
+      return this._commonTrafficTransferAnalystService.analysisTransferSolution(params, callback);
     }
 
     _processParams(params) {

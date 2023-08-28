@@ -1,7 +1,8 @@
 import mapboxgl from 'mapbox-gl';
 import { MapService } from '../services/MapService';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { InitMapServiceBase, isPlaneProjection } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection, getZoom  } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import proj4 from 'proj4';
 
 /**
  * @function initMap
@@ -54,7 +55,13 @@ export function initMap(url, options = {}) {
         }
         const mapOptions = await createMapOptions(url, res.result, { ...options, initMapService });
         const map = new mapboxgl.Map(mapOptions);
-        resolve({ map });
+        if (mapOptions.style && mapOptions.style.layers && mapOptions.style.layers.length > 0) {
+          map.on('load', () => {
+            resolve({ map });
+          });
+        } else {
+          resolve({ map });
+        }
         return;
       }
       reject(new Error('Fetch mapService is failed.'));
@@ -106,8 +113,11 @@ function defineCRSByWKT(crsName, wkt, extent) {
  */
 function transformMapCenter(mapInfoCenter, sourceProjection) {
   let center = mapInfoCenter;
+  if (sourceProjection === 'EPSG:3857') {
+    return proj4(sourceProjection, 'EPSG:4326', mapInfoCenter);
+  }
   if (sourceProjection !== 'EPSG:4326') {
-    center = mapboxgl.proj4(sourceProjection, 'EPSG:4326', mapInfoCenter);
+    return mapboxgl.proj4(sourceProjection, 'EPSG:4326', mapInfoCenter);
   }
   return center;
 }
@@ -118,20 +128,20 @@ function transformMapCenter(mapInfoCenter, sourceProjection) {
  * @description 获取矢量瓦片坐标系范围。
  * @param {string} vectorStyleUrl - 矢量瓦片 style json 服务地址。
  * @param {string} restMapUrl - 矢量瓦片 rest 地图服务地址。
- * @returns {Array}
+ * @returns {Object}
  */
 async function getVectorTileCRSExtent(vectorStyleUrl, restMapUrl) {
   try {
     const vectorStyleDataRes = await FetchRequest.get(vectorStyleUrl);
     const vectorStyleData = await vectorStyleDataRes.json();
     if (vectorStyleData.metadata && vectorStyleData.metadata.indexbounds) {
-      return vectorStyleData.metadata.indexbounds;
+      return { extent: vectorStyleData.metadata.indexbounds };
     }
     const vectorExtentDataRes = await FetchRequest.get(`${restMapUrl}/prjCoordSys/projection/extent.json`);
     const vectorExtentData = await vectorExtentDataRes.json();
-    return vectorExtentData;
+    return { extent: vectorExtentData, center: vectorStyleData.center };
   } catch (error) {
-    return [];
+    return { extent: [] };
   }
 }
 
@@ -156,7 +166,10 @@ async function createMapOptions(url, resetServiceInfo, options) {
   const {
     prjCoordSys: { epsgCode },
     bounds,
-    center
+    center,
+    dpi,
+    coordUnit,
+    scale
   } = resetServiceInfo;
   let mapCenter = center ? [center.x, center.y] : [0, 0];
   let crs = `EPSG:${epsgCode}`;
@@ -170,16 +183,23 @@ async function createMapOptions(url, resetServiceInfo, options) {
   if (mapboxgl.CRS) {
     const baseProjection = crs;
     const wkt = await options.initMapService.getWKT();
+    let vectorTileInfo;
     if (sourceType === 'vector-tile') {
-      extent = await getVectorTileCRSExtent(tileUrl, url);
+      vectorTileInfo = await getVectorTileCRSExtent(tileUrl, url);
+      extent = vectorTileInfo.extent;
     }
     crs = defineCRSByWKT(baseProjection, wkt, extent);
-    mapCenter = transformMapCenter(mapCenter, baseProjection);
     if (sourceType === 'raster') {
       enhanceExtraInfo.rasterSource = 'iserver';
     }
+    if (vectorTileInfo && vectorTileInfo.center) {
+      mapCenter = vectorTileInfo.center;
+    } else {
+      mapCenter = transformMapCenter(mapCenter, baseProjection);
+    }
   } else {
     crs = 'EPSG:3857';
+    mapCenter = transformMapCenter(mapCenter, crs);
     if (sourceType === 'raster') {
       const tileSize = 256;
       nonEnhanceExtraInfo.tileSize = tileSize;
@@ -187,10 +207,12 @@ async function createMapOptions(url, resetServiceInfo, options) {
       tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
     }
   }
+  const zoom = getZoom({ scale, dpi, coordUnit }, extent);
   return {
     container: 'map',
     crs,
     center: mapCenter,
+    zoom,
     style:
       sourceType === 'raster'
         ? {
@@ -217,3 +239,5 @@ async function createMapOptions(url, resetServiceInfo, options) {
     ...mapOptions
   };
 }
+
+

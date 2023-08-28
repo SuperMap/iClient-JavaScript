@@ -158,14 +158,13 @@
             if (!nearestQueryResultLayer) {
                 new L.supermap
                     .QueryService(nearestDataUrl)
-                    .queryBySQL(airportsParam, function (serviceResult) {
+                    .queryBySQL(airportsParam).then(function (serviceResult) {
                         classificationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
                         nearestQueryResultLayer = L.geoJSON(classificationAnalyst.sourcePoints, {
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {icon: airportBlueIcon}).bindPopup(feature.properties.NAME);
                             }
                         }).addTo(map);
-
                     });
             } else {
                 nearestQueryResultLayer.addTo(map);

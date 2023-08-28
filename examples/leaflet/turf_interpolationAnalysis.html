@@ -121,7 +121,7 @@
             if (!tinQueryResultLayer) {
                 new L.supermap
                     .QueryService(tinDataUrl)
-                    .queryBySQL(param, function (serviceResult) {
+                    .queryBySQL(param).then(function (serviceResult) {
                         interpolationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
                         tinQueryResultLayer = L.geoJSON(interpolationAnalyst.sourcePoints, {
                             pointToLayer: function (feature, latlng) {

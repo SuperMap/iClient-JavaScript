@@ -48,6 +48,7 @@ export class NetworkAnalystService {
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param {BurstPipelineAnalystParameters} params - 爆管分析服务参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     burstPipelineAnalyst(params, callback) {
         var me = this;
@@ -55,15 +56,9 @@ export class NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        burstPipelineAnalystService.processAsync(params);
+        return burstPipelineAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -71,6 +66,7 @@ export class NetworkAnalystService {
      * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     computeWeightMatrix(params, callback) {
         var me = this;
@@ -78,15 +74,9 @@ export class NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        computeWeightMatrixService.processAsync(params);
+        return computeWeightMatrixService.processAsync(params, callback);
     }
 
     /**
@@ -95,6 +85,7 @@ export class NetworkAnalystService {
      * @param {FindClosestFacilitiesParameters} params - 最近设施分析服务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findClosestFacilities(params, callback, resultFormat) {
         var me = this;
@@ -103,15 +94,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findClosestFacilitiesService.processAsync(params);
+        return findClosestFacilitiesService.processAsync(params, callback);
     }
 
     /**
@@ -128,15 +113,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        traceAnalystService.processAsync(params);
+        return traceAnalystService.processAsync(params, callback);
       }
   
       /**
@@ -153,15 +132,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        connectedEdgesAnalystService.processAsync(params);
+        return connectedEdgesAnalystService.processAsync(params, callback);
       }
 
     /**
@@ -170,6 +143,7 @@ export class NetworkAnalystService {
      * @param {FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     streamFacilityAnalyst(params, callback, resultFormat) {
         var me = this;
@@ -178,15 +152,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        facilityAnalystStreamService.processAsync(params);
+        return facilityAnalystStreamService.processAsync(params, callback);
     }
 
     /**
@@ -195,6 +163,7 @@ export class NetworkAnalystService {
      * @param {FindLocationParameters} params - 选址分区分析服务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findLocation(params, callback, resultFormat) {
         var me = this;
@@ -203,15 +172,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findLocationService.processAsync(params);
+        return findLocationService.processAsync(params, callback);
     }
 
     /**
@@ -220,6 +183,7 @@ export class NetworkAnalystService {
      * @param {FindPathParameters} params - 最佳路径分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findPath(params, callback, resultFormat) {
         var me = this;
@@ -228,15 +192,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findPathService.processAsync(params);
+        return findPathService.processAsync(params, callback);
     }
 
     /**
@@ -245,6 +203,7 @@ export class NetworkAnalystService {
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -253,15 +212,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findTSPPathsService.processAsync(params);
+        return findTSPPathsService.processAsync(params, callback);
     }
 
     /**
@@ -270,6 +223,7 @@ export class NetworkAnalystService {
      * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findMTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -278,15 +232,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findMTSPPathsService.processAsync(params);
+        return findMTSPPathsService.processAsync(params, callback);
     }
 
     /**
@@ -295,6 +243,7 @@ export class NetworkAnalystService {
      * @param {FindServiceAreasParameters} params - 服务区分析服务参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findServiceAreas(params, callback, resultFormat) {
         var me = this;
@@ -303,15 +252,9 @@ export class NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findServiceAreasService.processAsync(params);
+        return findServiceAreasService.processAsync(params, callback);
     }
 
     /**
@@ -319,6 +262,7 @@ export class NetworkAnalystService {
      * @description 更新边的耗费权重服务。
      * @param {UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
      * @param {RequestCallback} callback 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     updateEdgeWeight(params, callback) {
         var me = this;
@@ -326,15 +270,9 @@ export class NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        updateEdgeWeightService.processAsync(params);
+        return updateEdgeWeightService.processAsync(params, callback);
     }
 
     /**
@@ -342,6 +280,7 @@ export class NetworkAnalystService {
      * @description 转向耗费权重更新服务。
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     updateTurnNodeWeight(params, callback) {
         var me = this;
@@ -349,15 +288,9 @@ export class NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        updateTurnNodeWeightService.processAsync(params);
+        return updateTurnNodeWeightService.processAsync(params, callback);
     }
 
     _processFormat(resultFormat) {

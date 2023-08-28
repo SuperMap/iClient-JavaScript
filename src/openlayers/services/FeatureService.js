@@ -40,10 +40,11 @@ export class FeatureService extends ServiceBase {
    * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
    * @param {RequestCallback} callback - 回调函数。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+   * @returns {Promise} Promise 对象。
    */
   getFeaturesByIDs(params, callback, resultFormat) {
     params = this._processParams(params);
-    this._featureService.getFeaturesByIDs(params, callback, resultFormat);
+    return this._featureService.getFeaturesByIDs(params, callback, resultFormat);
   }
 
   /**
@@ -52,10 +53,11 @@ export class FeatureService extends ServiceBase {
    * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
    * @param {RequestCallback} callback - 回调函数。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+   * @returns {Promise} Promise 对象。
    */
   getFeaturesByBounds(params, callback, resultFormat) {
     params = this._processParams(params);
-    this._featureService.getFeaturesByBounds(params, callback, resultFormat);
+    return this._featureService.getFeaturesByBounds(params, callback, resultFormat);
   }
 
   /**
@@ -64,10 +66,11 @@ export class FeatureService extends ServiceBase {
    * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
    * @param {RequestCallback} callback - 回调函数。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+   * @returns {Promise} Promise 对象。
    */
   getFeaturesByBuffer(params, callback, resultFormat) {
     params = this._processParams(params);
-    this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
+    return this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
   }
 
   /**
@@ -76,10 +79,11 @@ export class FeatureService extends ServiceBase {
    * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
    * @param {RequestCallback} callback - 回调函数。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+   * @returns {Promise} Promise 对象。
    */
   getFeaturesBySQL(params, callback, resultFormat) {
     params = this._processParams(params);
-    this._featureService.getFeaturesBySQL(params, callback, resultFormat);
+    return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
   }
 
   /**
@@ -88,10 +92,11 @@ export class FeatureService extends ServiceBase {
    * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
    * @param {RequestCallback} callback - 回调函数。
    * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+   * @returns {Promise} Promise 对象。
    */
   getFeaturesByGeometry(params, callback, resultFormat) {
     params = this._processParams(params);
-    this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
+    return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
   }
 
   /**
@@ -99,6 +104,7 @@ export class FeatureService extends ServiceBase {
    * @description 地物编辑服务。
    * @param {EditFeaturesParameters} params - 数据服务中数据集添加、修改、删除参数类。
    * @param {RequestCallback} callback - 回调函数。
+   * @returns {Promise} Promise 对象。
    */
   editFeatures(params, callback) {
     if (!params || !params.dataSourceName || !params.dataSetName) {
@@ -114,14 +120,9 @@ export class FeatureService extends ServiceBase {
       proxy: me.options.proxy,
       withCredentials: me.options.withCredentials,
       crossOrigin: me.options.crossOrigin,
-      headers: me.options.headers,
-
-      eventListeners: {
-        processCompleted: callback,
-        processFailed: callback
-      }
+      headers: me.options.headers
     });
-    editFeatureService.processAsync(me._processParams(params));
+    return editFeatureService.processAsync(me._processParams(params), callback);
   }
 
   /**
@@ -129,9 +130,10 @@ export class FeatureService extends ServiceBase {
    * @description 地理要素元信息。
    * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
    * @param {RequestCallback} callback - 回调函数。
+   * @returns {Promise} Promise 对象。
    */
   getMetadata(params, callback) {
-    this._featureService.getMetadata(params, callback);
+    return this._featureService.getMetadata(params, callback);
   }
 
   _processParams(params) {

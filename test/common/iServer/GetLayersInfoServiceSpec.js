@@ -1,15 +1,8 @@
 import { GetLayersInfoService } from '../../../src/common/iServer/GetLayersInfoService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-var serviceFailedEventArgsSystem = null;
-var getFieldsEventArgsSystem = null;
-var initGetLayersInfoService = (url, getLayersInfoServiceCompleted, getLayersInfoServiceFailed) => {
-    return new GetLayersInfoService(url, {
-        eventListeners: {
-            processCompleted: getLayersInfoServiceCompleted,
-            processFailed: getLayersInfoServiceFailed
-        }
-    });
+var initGetLayersInfoService = (url) => {
+    return new GetLayersInfoService(url);
 };
 
 describe('GetLayersInfoService', () => {
@@ -39,21 +32,11 @@ describe('GetLayersInfoService', () => {
 
     it('constructor, destroy', () => {
         var vectorURL = GlobeParameter.vectorURL;
-        var getLayersInfoServiceCompleted = result => {
-            getFieldsEventArgsSystem = result;
-        };
-        var getLayersInfoServiceFailed = result => {
-            serviceFailedEventArgsSystem = result;
-        };
         var getLayersInfoService = initGetLayersInfoService(
-            vectorURL,
-            getLayersInfoServiceCompleted,
-            getLayersInfoServiceFailed
+            vectorURL
         );
         expect(getLayersInfoService).not.toBeNull();
         getLayersInfoService.destroy();
-        expect(getLayersInfoService.events).toBeNull();
-        expect(getLayersInfoService.eventListeners).toBeNull();
     });
 
     it('processAsync_Vector', done => {
@@ -93,15 +76,10 @@ describe('GetLayersInfoService', () => {
                 done();
             }
         };
-        var getLayersInfoServiceFailed = result => {
-            serviceFailedEventArgsSystem = result;
-        };
         var getLayersInfoService = initGetLayersInfoService(
-            vectorURL,
-            getLayersInfoServiceCompleted,
-            getLayersInfoServiceFailed
+            vectorURL
         );
-        getLayersInfoService.processAsync();
+        getLayersInfoService.processAsync(getLayersInfoServiceCompleted);
     });
 
     it('processAsync_image', done => {
@@ -120,19 +98,14 @@ describe('GetLayersInfoService', () => {
                 done();
             }
         };
-        var getLayersInfoServiceFailed = result => {
-            serviceFailedEventArgsSystem = result;
-        };
         var getLayersInfoService = initGetLayersInfoService(
-            imageURL,
-            getLayersInfoServiceCompleted,
-            getLayersInfoServiceFailed
+            imageURL
         );
         spyOn(FetchRequest, 'get').and.callFake(url => {
             expect(url).toBe(imageURL + '/layers');
             return Promise.resolve(new Response('[' + JSON.stringify(layersInfo) + ']'));
         });
-        getLayersInfoService.processAsync();
+        getLayersInfoService.processAsync(getLayersInfoServiceCompleted);
     });
 
     it('processAsync_grid', done => {
@@ -151,19 +124,14 @@ describe('GetLayersInfoService', () => {
                 done();
             }
         };
-        var getLayersInfoServiceFailed = result => {
-            serviceFailedEventArgsSystem = result;
-        };
         var getLayersInfoService = initGetLayersInfoService(
-            gridURL,
-            getLayersInfoServiceCompleted,
-            getLayersInfoServiceFailed
+            gridURL
         );
         spyOn(FetchRequest, 'get').and.callFake(url => {
             expect(url).toBe(gridURL + '/layers');
             return Promise.resolve(new Response('[' + JSON.stringify(layersInfo) + ']'));
         });
-        getLayersInfoService.processAsync();
+        getLayersInfoService.processAsync(getLayersInfoServiceCompleted);
     });
     it('processAsync_customQueryParam', done => {
         var vectorURL = GlobeParameter.vectorURL;
@@ -182,14 +150,9 @@ describe('GetLayersInfoService', () => {
                 done();
             }
         };
-        var getLayersInfoServiceFailed = result => {
-            serviceFailedEventArgsSystem = result;
-        };
         var getLayersInfoService = initGetLayersInfoService(
-            vectorURL+'?key=123',
-            getLayersInfoServiceCompleted,
-            getLayersInfoServiceFailed
+            vectorURL+'?key=123'
         );
-        getLayersInfoService.processAsync();
+        getLayersInfoService.processAsync(getLayersInfoServiceCompleted);
     });
 });

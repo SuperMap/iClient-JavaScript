@@ -92,7 +92,7 @@
                         attributeFilter: 'SMID =14'
                     }
                 });
-                new mapboxgl.supermap.QueryService(url).queryBySQL(param, function(serviceResult) {
+                new mapboxgl.supermap.QueryService(url).queryBySQL(param).then(function(serviceResult) {
                     map.addSource('queryDatas', {
                         type: 'geojson',
                         data: serviceResult.result.recordsets[0].features

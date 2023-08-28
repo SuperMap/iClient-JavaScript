@@ -45,27 +45,30 @@ export var ImageCollectionService = ServiceBase.extend({
      * @param {Object} queryParams query 参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。默认使用发布服务时所配置的风格。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getLegend: function (queryParams, callback) {
-      this._imageCollectionService.getLegend(queryParams, callback);
+      return this._imageCollectionService.getLegend(queryParams, callback);
     },
 
     /**
      * @function ImageCollectionService.prototype.getStatistics
      * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getStatistics: function (callback) {
-      this._imageCollectionService.getStatistics(callback);
+      return this._imageCollectionService.getStatistics(callback);
     },
 
     /**
      * @function ImageCollectionService.prototype.getTileInfo
      * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getTileInfo: function (callback) {
-      this._imageCollectionService.getTileInfo(callback);
+      return this._imageCollectionService.getTileInfo(callback);
     },
 
     /**
@@ -73,9 +76,10 @@ export var ImageCollectionService = ServiceBase.extend({
      * @description 删除影像集合中指定ID （`featureId`）的Item对象，即从影像集合中删除指定的影像。
      * @param {string} featureId Feature 的本地标识符。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     deleteItemByID(featureId, callback) {
-      this._imageCollectionService.deleteItemByID(featureId, callback);
+      return this._imageCollectionService.deleteItemByID(featureId, callback);
     },
 
     /**
@@ -83,9 +87,10 @@ export var ImageCollectionService = ServiceBase.extend({
      * @description 返回影像集合中指定ID （`featureId`）的Item对象，即返回影像集合中指定的影像。
      * @param {string} featureId Feature 的本地标识符。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     getItemByID(featureId, callback) {
-      this._imageCollectionService.getItemByID(featureId, callback);
+      return this._imageCollectionService.getItemByID(featureId, callback);
     }
 });
 

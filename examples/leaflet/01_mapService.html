@@ -25,7 +25,7 @@
     mapService();
 
     function mapService() {
-        new L.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        new L.supermap.MapService(url).getMapInfo().then((serviceResult) => {
             var result = serviceResult.result;
             var innerHTML = "("+resources.text_mapInfoPrint+")" + "<br><br>";
             innerHTML += resources.text_mapName+"：" + JSON.stringify(result.name, null, 2) + "<br>";

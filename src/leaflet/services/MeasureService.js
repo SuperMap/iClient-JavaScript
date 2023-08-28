@@ -41,10 +41,10 @@ export var MeasureService = ServiceBase.extend({
      * @description 测距。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance: function (params, callback) {
-        this.measure(MeasureMode.DISTANCE, params, callback);
-        return this;
+      return this.measure(MeasureMode.DISTANCE, params, callback);
     },
 
     /**
@@ -52,10 +52,10 @@ export var MeasureService = ServiceBase.extend({
      * @description 测面积。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     measureArea: function (params, callback) {
-        this.measure(MeasureMode.AREA, params, callback);
-        return this;
+      return this.measure(MeasureMode.AREA, params, callback);
     },
 
     /**
@@ -63,6 +63,7 @@ export var MeasureService = ServiceBase.extend({
      * @param {MeasureMode} [type=MeasureMode.DISTANCE] - 量算模式。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
     measure: function (type, params, callback) {
         if (!(params instanceof MeasureParameters)) {
@@ -79,7 +80,7 @@ export var MeasureService = ServiceBase.extend({
             headers: me.options.headers,
             measureMode: type
         });
-        measureService.processAsync(params, callback);
+        return measureService.processAsync(params, callback);
     }
 });
 

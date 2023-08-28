@@ -19,16 +19,10 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @extends {SpatialAnalystBase}
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myOverlayAnalystService = new GeometryBatchAnalystService(url, {
- *     eventListeners: {
- *	       "processCompleted": OverlayCompleted,
- *		   "processFailed": OverlayFailed
- *		   }
- * });
+ * var myOverlayAnalystService = new GeometryBatchAnalystService(url);
  * @usage
  */
 export class GeometryBatchAnalystService extends SpatialAnalystBase {
@@ -47,21 +41,22 @@ export class GeometryBatchAnalystService extends SpatialAnalystBase {
      * @function GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {GeometryOverlayAnalystParameter} parameter - 批量几何对象叠加分析参数类
-     *
+     * @param {RequestCallback} callback - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameters) {
+    processAsync(parameters, callback) {
         var me = this;
         me.url = Util.urlPathAppend(me.url, 'geometry/batchanalyst');
         me.url = Util.urlAppend(me.url, 'returnContent=true&ignoreAnalystParam=true');
         var parameterObjects = me._processParams(parameters);
         var jsonParameters = Util.toJSON(parameterObjects);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
