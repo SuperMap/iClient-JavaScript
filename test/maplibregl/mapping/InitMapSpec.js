@@ -139,7 +139,21 @@ describe('InitMap', () => {
       center: {
         x: 12124158.777882982,
         y: 2732247.310535573
-      }
+      },
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
     };
     spyOn(FetchRequest, 'get').and.callFake(() => {
       return Promise.resolve(new Response(JSON.stringify(mapServiceInfo)));
