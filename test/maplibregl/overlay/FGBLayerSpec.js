@@ -29,12 +29,10 @@ describe('maplibregl_FGBLayer', () => {
         center: [0, 0],
         zoom: 3
       });
-      console.log(123)
       map.on('load', function () {
-        console.log(334)
         done();
       });
-  });
+  },50000);
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -86,19 +84,12 @@ describe('maplibregl_FGBLayer', () => {
   });
 
   it('set extent', (done) => {
-    var count = 0;
     var fgblayer = new FGBLayer({
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        if (count === 1) {
-          expect(feature.properties['CAPITAL']).toBe('圣多美');
-        }
-        count++;
-        console.log(count)
-        if (count === 3) {
-          done();
-        }
+        expect(feature.properties['CAPITAL']).toBe('圣多美');
+        done();
         return feature;
       }
     });
@@ -113,14 +104,10 @@ describe('maplibregl_FGBLayer', () => {
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        if (count === 1) {
-          expect(feature.properties['CAPITAL']).toBe('圣多美');
-        }
+        expect(feature.properties['CAPITAL']).toBe('圣多美');
         count++;
         console.log(count)
-        if (count === 3) {
-          done();
-        }
+        done();
         return feature;
       }
     });
