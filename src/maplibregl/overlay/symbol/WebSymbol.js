@@ -24,6 +24,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * id				    |string		    |[Web符号ID](../../../../../examples/maplibregl/websymbol_gallery.html)
 * callback			    |function		|在符号加载完成后调用，返回符号信息；如果有错误，则返回错误参数。
 * 
+* **Version:**
+* 
+* 11.1.1
+* 
 * **Example**
 * ```
 * map.loadSymbol('point-1', (error, symbol) => {
@@ -45,6 +49,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * |                    |                   |paint				|object		        |可选，Maplibre Layers [paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)|
 * |                    |                   |layout			    |object	            |可选，Maplibre Layers [layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）|
 * 
+* **Version:**
+* 
+* 11.1.1
+* 
 * **Example**
 * ```
 * map.addSymbol('point-1', symbol);
@@ -58,6 +66,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----				|:---		    |:---	
 * layerId				|string		    |图层ID
 * symbol			    |string、array		    |已经添加的符号ID（addSymbol中的符号ID), 或者[符号表达式](#expression)
+* 
+* **Version:**
+* 
+* 11.1.1
 * 
 * **Example**
 * ```
@@ -81,6 +93,9 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----			    |:---		    |:---	
 * id			    |string		    |符号ID
 * 
+* **Version:**
+* 
+* 11.1.1
 * 
 * **Returns**
 * 类型			   |描述  
@@ -100,6 +115,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * :----				|:---		    |:---	
 * id			      |string		    |已经添加的符号ID
 * 
+* **Version:**
+* 
+* 11.1.1
+* 
 * **Example**
 * ```
 * map.removeSymbol('point-1');
@@ -117,6 +136,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * |             |             |paint				|object		      |可选，Maplibre Layers [paint](https://maplibre.org/maplibre-style-spec/layers/#paint-property)|
 * |             |             |layout			  |object	        |可选，Maplibre Layers [layout](https://maplibre.org/maplibre-style-spec/layers/#layout-property)（visibility 属性除外）|
 * 
+* **Version:**
+* 
+* 11.1.1
+* 
 * **Example**
 * ```
 * map.updateSymbol('point-1', symbol);
@@ -129,6 +152,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 参数名称			     |类型			 |描述  
 * :----			    |:---		    |:---	
 * id			    |string		    |符号ID
+* 
+* **Version:**
+* 
+* 11.1.1
 * 
 * **Returns**
 * 类型			   |描述  
@@ -152,6 +179,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * name			      |string		    |属性名称
 * value			      |any		      |可选，属性值
 * 
+* **Version:**
+* 
+* 11.1.1
+* 
 * **Example**
 * ```
 * map.setSymbolProperty('point-1', null, "icon-color", "black");
@@ -167,6 +198,10 @@ import MapExtendSymbol from './MapExtendSymbol';
 * id			        |string		    |符号ID
 * index			      |number、null	|符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
+* 
+* **Version:**
+* 
+* 11.1.1
 * 
 * **Returns**
 * 类型			  |描述  
@@ -265,6 +300,7 @@ export class WebSymbol {
   /**
    * @function WebSymbol.prototype.init
    * @description 初始化Web符号配置。
+   * @version 11.1.1
    * @param {object} config - 配置信息
    * @param {string} [config.basePath] - 指定符号资源路径
    */
