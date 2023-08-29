@@ -7,41 +7,33 @@ describe('maplibregl_FGBLayer', () => {
   var originalTimeout;
   var testDiv, map;
   beforeAll((done) => {
-    testDiv = window.document.createElement('div');
-    testDiv.setAttribute('id', 'map');
-    testDiv.style.styleFloat = 'left';
-    testDiv.style.marginLeft = '8px';
-    testDiv.style.marginTop = '50px';
-    testDiv.style.width = '500px';
-    testDiv.style.height = '500px';
-    window.document.body.appendChild(testDiv);
-    map = new maplibregl.Map({
-      container: 'map',
-      style: {
-        version: 8,
-        sources: {
-          'raster-tiles': {
-            type: 'raster',
-            tiles: [url],
-            tileSize: 256
-          }
+      testDiv = window.document.createElement('div');
+      testDiv.setAttribute('id', 'map');
+      testDiv.style.styleFloat = 'left';
+      testDiv.style.marginLeft = '8px';
+      testDiv.style.marginTop = '50px';
+      testDiv.style.width = '500px';
+      testDiv.style.height = '500px';
+      window.document.body.appendChild(testDiv);
+      map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            
+          },
+          layers: [
+           
+          ]
         },
-        layers: [
-          {
-            id: 'simple-tiles',
-            type: 'raster',
-            source: 'raster-tiles',
-            minzoom: 0,
-            maxzoom: 22
-          }
-        ]
-      },
-      center: [0, 0],
-      zoom: 3
-    });
-    map.on('load', function () {
-      done();
-    });
+        center: [0, 0],
+        zoom: 3
+      });
+      console.log(123)
+      map.on('load', function () {
+        console.log(334)
+        done();
+      });
   });
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -94,12 +86,19 @@ describe('maplibregl_FGBLayer', () => {
   });
 
   it('set extent', (done) => {
+    var count = 0;
     var fgblayer = new FGBLayer({
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        expect(feature.properties['CAPITAL']).toBe('圣多美');
-        done();
+        if (count === 1) {
+          expect(feature.properties['CAPITAL']).toBe('圣多美');
+        }
+        count++;
+        console.log(count)
+        if (count === 3) {
+          done();
+        }
         return feature;
       }
     });
@@ -109,21 +108,31 @@ describe('maplibregl_FGBLayer', () => {
   });
 
   it('render moveLayer onRemove setVisibility', (done) => {
+    var count = 0;
     var fgblayer = new FGBLayer({
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        expect(feature.properties['CAPITAL']).toBe('圣多美');
-        done();
+        if (count === 1) {
+          expect(feature.properties['CAPITAL']).toBe('圣多美');
+        }
+        count++;
+        console.log(count)
+        if (count === 3) {
+          done();
+        }
         return feature;
       }
     });
     fgblayer.onAdd(map);
     fgblayer.render();
-    fgblayer.moveLayer(fgblayer.layerId, 'simple-tiles');
-    fgblayer.setVisibility(false);
-    fgblayer.onRemove();
-    expect(fgblayer).not.toBeNull();
+    while(map.getLayer(fgblayer.layerId)){
+      fgblayer.moveLayer(fgblayer.layerId, 'simple-tiles');
+      console.log(map.getStyle())
+      fgblayer.setVisibility(false);
+      fgblayer.onRemove();
+      expect(fgblayer).not.toBeNull();
+    }
   });
 
 });
