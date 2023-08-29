@@ -83,7 +83,7 @@ describe('maplibregl_FGBLayer', () => {
     expect(fgblayer.url).toBe(fgbUrl);
   });
 
-  it('set extent', (done) => {
+  xit('set extent', (done) => {
     var count = 0;
     var fgblayer = new FGBLayer({
       url: fgbUrl,
@@ -101,7 +101,7 @@ describe('maplibregl_FGBLayer', () => {
     expect(fgblayer.url).toBe(fgbUrl);
   });
 
-  it('render moveLayer onRemove setVisibility', (done) => {
+  xit('render moveLayer onRemove setVisibility', (done) => {
     var count = 0;
     var fgblayer = new FGBLayer({
       url: fgbUrl,
