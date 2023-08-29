@@ -92,9 +92,7 @@ describe('maplibregl_FGBLayer', () => {
         count++;
         console.log(count, feature.properties);
         expect(feature.properties['CAPITAL']).toBe('圣多美');
-        if(count === 2){
-          done();
-        }
+        done();
         return feature;
       }
     });
@@ -112,9 +110,7 @@ describe('maplibregl_FGBLayer', () => {
         count++;
         console.log(count, feature.properties);
         expect(feature.properties['CAPITAL']).toBe('圣多美');
-        if(count === 2){
-          done();
-        }
+        done();
         return feature;
       }
     });
