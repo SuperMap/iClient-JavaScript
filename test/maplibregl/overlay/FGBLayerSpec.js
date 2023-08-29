@@ -84,12 +84,17 @@ describe('maplibregl_FGBLayer', () => {
   });
 
   it('set extent', (done) => {
+    var count = 0;
     var fgblayer = new FGBLayer({
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
+        count++;
+        console.log(count, feature.properties);
         expect(feature.properties['CAPITAL']).toBe('圣多美');
-        done();
+        if(count === 2){
+          done();
+        }
         return feature;
       }
     });
@@ -104,10 +109,12 @@ describe('maplibregl_FGBLayer', () => {
       url: fgbUrl,
       extent: [0, 0, 21, 21],
       featureLoader: function (feature) {
-        expect(feature.properties['CAPITAL']).toBe('圣多美');
         count++;
-        console.log(count)
-        done();
+        console.log(count, feature.properties);
+        expect(feature.properties['CAPITAL']).toBe('圣多美');
+        if(count === 2){
+          done();
+        }
         return feature;
       }
     });
