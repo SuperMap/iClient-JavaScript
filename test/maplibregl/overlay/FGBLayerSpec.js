@@ -136,6 +136,7 @@ describe('maplibregl_FGBLayer', () => {
 
     var cb = () => {
       if (fgblayer && map.getLayer(fgblayer.layerId)) {
+        map.off('sourcedata', cb);
         fgblayer.moveLayer(fgblayer.id);
         fgblayer.setVisibility(false);
         map.removeLayer(fgblayer.id);
