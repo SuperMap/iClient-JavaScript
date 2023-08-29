@@ -60,7 +60,10 @@
         removeTheme();
         var terrainAspectCalculationParameters = new ol.supermap.TerrainAspectCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
-            terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
+            terrainAnalystSetting: new ol.supermap.terrainAnalystSetting({
+              boundsType: ol.supermap.BoundsType.UNION,
+              cellSizeType: ol.supermap.CellSizeType.MAX
+            }), 
             resultDatasetName:"testAspect", 
             deleteExistResultDataset:true
         }

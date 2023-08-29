@@ -8,6 +8,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.ConnectedEdgesAnalystParameters
  * @category iServer NetworkAnalyst ConnectedEdges
  * @classdesc 连通性分析参数类。
+ * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {boolean} [options.connected] - 查询是否相连通的弧段。为 true 时，查询相连通的弧段；为 false 时，查询不连通的弧段。
  * @param {boolean} [options.returnFeatures=true] - 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。

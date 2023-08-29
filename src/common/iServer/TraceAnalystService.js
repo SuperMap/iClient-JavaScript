@@ -11,6 +11,7 @@
   * @deprecatedclass SuperMap.TraceAnalystService
   * @category iServer NetworkAnalyst TraceAnalystService
   * @classdesc 上游/下游 追踪分析服务类；即查找给定弧段或节点的上游/下游弧段和结点。
+  * @version 11.1.1
   * @extends NetworkAnalystServiceBase
   * @param {string} url - 服务地址。请求网络分析服务，URL应为：
   *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；

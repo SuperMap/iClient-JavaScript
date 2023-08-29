@@ -8,6 +8,7 @@
   * @deprecatedclass SuperMap.TraceAnalystParameters
   * @category iServer NetworkAnalyst TraceAnalystService
   * @classdesc 上游/下游追踪分析参数类。
+  * @version 11.1.1
   * @param {Object} options - 参数。
   * @param {number} options.traceType - 分析类型，只能是 0 (上游追踪分析) 或者是 1 (下游追踪分析)。
   * @param {number} [options.edgeID] - 【与nodeID必填一项】需查找上游设施的弧段 ID 。

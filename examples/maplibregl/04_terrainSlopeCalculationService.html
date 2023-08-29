@@ -70,7 +70,10 @@
             dataset: "JingjinTerrain@Jingjin",
             zFactor:0.00001, 
             slopeType:"DEGREE", 
-            terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
+            terrainAnalystSetting: new maplibregl.supermap.terrainAnalystSetting({
+              boundsType: maplibregl.supermap.BoundsType.UNION,
+              cellSizeType: maplibregl.supermap.CellSizeType.MAX
+            }), 
             resultDatasetName:"testSlope", 
             deleteExistResultDataset:true
 

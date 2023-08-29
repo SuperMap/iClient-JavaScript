@@ -9,9 +9,10 @@
   * @constructs ConvexHullAnalystParameters
   * @category iServer SpatialAnalyst ConvexHullAnalyst
   * @classdesc 凸包运算参数类。
+  * @version 11.1.1
   * @param {Object} options - 参数。
-  * @param {GeoModel3D} options.model - 源模型对象，即凸包计算中被操作的模型对象
-  * @param {GeometrySpatialAnalystResultSetting} [options.resultSetting] - 凸包计算结果设置，即模型对象凸包结果设置
+  * @param {Object} options.model - 源模型对象，即凸包计算中被操作的模型对象
+  * @param {Object} [options.resultSetting] - 凸包计算结果设置，即模型对象凸包结果设置
   * @usage
   */
  
@@ -19,13 +20,13 @@
  
      constructor(options) {
          /**
-          * @member {GeoModel3D} ConvexHullAnalystParameters.prototype.model
+          * @member {Object} ConvexHullAnalystParameters.prototype.model
           * @description 源模型对象，即凸包计算中被操作的模型对象
           */
          this.model = null;
 
          /**
-          * @member {GeometrySpatialAnalystResultSetting} [ConvexHullAnalystParameters.prototype.resultSetting]
+          * @member {Object} [ConvexHullAnalystParameters.prototype.resultSetting]
           * @description 凸包计算结果设置，即模型对象凸包结果设置
           */
          this.resultSetting = null;

@@ -72,7 +72,9 @@ import {
     WebScaleOrientationType,
     WebScaleType,
     WebScaleUnit,
-    DataItemType
+    DataItemType,
+    BoundsType,
+    CellSizeType
 } from './REST';
 import {
     GeometryCollection,
@@ -92,6 +94,7 @@ import {
     Events,
     Feature,
     Geometry,
+    Geometry3D,
     LonLat,
     Pixel,
     Size,
@@ -209,6 +212,7 @@ import {
     DatasetMinDistanceAnalystParameters,
     TerrainCutFillCalculationParameters,
     TerrainAspectCalculationParameters,
+    terrainAnalystSetting,
     TerrainSlopeCalculationParameters,
     GeometryMinDistanceAnalystParameters,
     ConvexHullAnalystParameters,
@@ -451,7 +455,9 @@ export {
     WebScaleOrientationType,
     WebScaleType,
     WebScaleUnit,
-    DataItemType
+    DataItemType,
+    BoundsType,
+    CellSizeType
 };
 export {
     GeometryCollection,
@@ -471,6 +477,7 @@ export {
     Events,
     Feature,
     Geometry,
+    Geometry3D,
     LonLat,
     Pixel,
     Size,
@@ -596,6 +603,7 @@ export {
     QueryBySQLParameters,
     DatasetMinDistanceAnalystParameters,
     TerrainCutFillCalculationParameters,
+    terrainAnalystSetting,
     TerrainAspectCalculationParameters,
     TerrainSlopeCalculationParameters,
     GeometryMinDistanceAnalystParameters,

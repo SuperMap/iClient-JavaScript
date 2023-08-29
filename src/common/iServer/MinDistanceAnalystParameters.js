@@ -8,6 +8,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.MinDistanceAnalystParameters
  * @category iServer SpatialAnalyst MinDistanceAnalyst
  * @classdesc 最近距离分析参数基类。
+ * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
  * @param {FilterParameter} [options.referenceFilterQueryParameter=null] - 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。

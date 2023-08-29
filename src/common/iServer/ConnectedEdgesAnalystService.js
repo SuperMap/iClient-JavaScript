@@ -11,6 +11,7 @@ import { ConnectedEdgesAnalystParameters } from './ConnectedEdgesAnalystParamete
   * @deprecatedclass SuperMap.ConnectedEdgesAnalystService
   * @category iServer NetworkAnalyst UpstreamCirticalFaclilities
   * @classdesc 连通性分析服务类，查找与给定结点或者弧段相连通的弧段。
+  * @version 11.1.1
   * @extends NetworkAnalystServiceBase
   * @param {string} url - 服务地址。请求网络分析服务，URL应为：
   *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；

@@ -100,6 +100,7 @@ import {
   Events,
   Feature,
   Geometry,
+  Geometry3D,
   Pixel,
   Size,
   CommonUtil,
@@ -216,6 +217,7 @@ import {
   QueryBySQLParameters,
   DatasetMinDistanceAnalystParameters,
   TerrainCutFillCalculationParameters,
+  terrainAnalystSetting,
   TerrainAspectCalculationParameters,
   TerrainSlopeCalculationParameters,
   GeometryMinDistanceAnalystParameters,
@@ -449,7 +451,9 @@ import {
   WebPrintingService,
   ImageCollectionService,
   ImageService,
-  KnowledgeGraph
+  KnowledgeGraph,
+  BoundsType,
+  CellSizeType
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -497,6 +501,7 @@ SuperMap.Credential = Credential;
 SuperMap.Events = Events;
 SuperMap.Feature = Feature;
 SuperMap.Geometry = Geometry;
+SuperMap.Geometry3D = Geometry3D;
 SuperMap.Pixel = Pixel;
 SuperMap.Size = Size;
 SuperMap.Feature.Vector = FeatureVector;
@@ -707,6 +712,7 @@ SuperMap.DatasetMinDistanceAnalystParameters = DatasetMinDistanceAnalystParamete
 SuperMap.MinDistanceAnalystService = MinDistanceAnalystService;
 SuperMap.TerrainCutFillCalculationParameters = TerrainCutFillCalculationParameters;
 SuperMap.TerrainCutFillCalculationService = TerrainCutFillCalculationService;
+SuperMap.terrainAnalystSetting = terrainAnalystSetting;
 SuperMap.TerrainAspectCalculationParameters = TerrainAspectCalculationParameters;
 SuperMap.TerrainAspectCalculationService = TerrainAspectCalculationService;
 SuperMap.TerrainSlopeCalculationParameters = TerrainSlopeCalculationParameters;
@@ -947,5 +953,7 @@ SuperMap.WebScaleOrientationType = WebScaleOrientationType;
 SuperMap.WebScaleType = WebScaleType;
 SuperMap.WebScaleUnit = WebScaleUnit;
 SuperMap.KnowledgeGraph = KnowledgeGraph
+SuperMap.BoundsType = BoundsType
+SuperMap.CellSizeType = CellSizeType
 
 export * from './index.all';

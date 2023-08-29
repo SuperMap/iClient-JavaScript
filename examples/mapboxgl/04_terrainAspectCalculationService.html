@@ -68,7 +68,10 @@
         removeTheme();
         var terrainAspectCalculationParameters = new mapboxgl.supermap.TerrainAspectCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
-            terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
+            terrainAnalystSetting: new mapboxgl.supermap.terrainAnalystSetting({
+              boundsType: mapboxgl.supermap.BoundsType.UNION,
+              cellSizeType: mapboxgl.supermap.CellSizeType.MAX
+            }), 
             resultDatasetName:"testAspect", 
             deleteExistResultDataset:true
         }

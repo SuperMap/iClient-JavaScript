@@ -8,6 +8,7 @@ import {Util} from '../commontypes/Util';
  * @deprecatedclass SuperMap.GetLayersLegendInfoParameters
  * @category iServer Map Layer
  * @classdesc 图例参数类。
+ * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {string} options.bbox - 查询与此矩形框有交集的图层的图例，当layers参数未设置时，bbox是必填参数。格式：bbox=xmin,ymin,xmax,ymax。
  * @param {string} options.layers - 图层过滤，当bbox参数未设置时，layers是必填参数。语法：[show|hide]:layerName1,layerName2。show表示只返回指定图层的图例，hide表示指定图层图例不返回，其他查询出来的图层图例都返回。例如：show:country@World@@World，表示只返回country@World@@World图层的图例。

@@ -44,6 +44,7 @@ export var LayerInfoService = ServiceBase.extend({
     /**
      * @function LayerInfoService.prototype.getLayersLegendInfo
      * @description 获取地图的图例信息。
+     * @version 11.1.1
      * @param {RequestCallback} callback - 回调函数。
      * @returns {Promise} Promise 对象。
      */

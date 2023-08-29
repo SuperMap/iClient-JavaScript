@@ -11,6 +11,7 @@ import {GeometryMinDistanceAnalystParameters} from './GeometryMinDistanceAnalyst
  * @deprecatedclass SuperMap.MinDistanceAnalystService
  * @category iServer SpatialAnalyst MinDistanceAnalyst
  * @classdesc 空间关系分析服务类。该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
+ * @version 11.1.1
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

@@ -49,7 +49,10 @@
             dataset: "JingjinTerrain@Jingjin",
             zFactor:0.00001, 
             slopeType:"DEGREE", 
-            terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
+            terrainAnalystSetting: new L.supermap.terrainAnalystSetting({
+              boundsType: L.supermap.BoundsType.UNION,
+              cellSizeType: L.supermap.CellSizeType.MAX
+            }), 
             resultDatasetName:"testSlope", 
             deleteExistResultDataset:true
 
