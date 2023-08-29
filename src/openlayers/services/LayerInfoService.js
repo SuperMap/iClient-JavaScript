@@ -26,7 +26,7 @@ export class LayerInfoService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        return this._layerInfoService = new CommonLayerInfoService(url, options);
+        this._layerInfoService = new CommonLayerInfoService(url, options);
     }
 
     /**
