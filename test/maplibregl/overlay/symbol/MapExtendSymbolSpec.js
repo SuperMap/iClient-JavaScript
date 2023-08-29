@@ -43,7 +43,7 @@ describe('maplibregl_MapExtendSymbol', () => {
             });
         })
     }
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         new maplibregl.supermap.WebSymbol().init();
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -54,6 +54,7 @@ describe('maplibregl_MapExtendSymbol', () => {
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
         map = await createMap();
+        done();
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
