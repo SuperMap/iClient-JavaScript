@@ -119,6 +119,11 @@ export class EditFeaturesService extends CommonServiceBase {
         });
     }
 
+    /**
+     * @function EditFeaturesService.prototype.getMetaData
+     * @description 获取地理要素元信息。
+     * @version 11.1.1
+     */
     getMetaData(params, callback){
       var me = this;
       var featureId = params.featureId;

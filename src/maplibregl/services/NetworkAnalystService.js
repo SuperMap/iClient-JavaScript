@@ -75,6 +75,7 @@ export class NetworkAnalystService extends ServiceBase {
     /**
      * @function NetworkAnalystService.prototype.traceAnalyst
      * @description 上游/下游 追踪分析服务:查找给定弧段或节点的上游/下游弧段和结点。
+     * @version 11.1.1
      * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -88,6 +89,7 @@ export class NetworkAnalystService extends ServiceBase {
     /**
      * @function NetworkAnalystService.prototype.connectedEdgesAnalyst
      * @description 连通性分析服务。
+     * @version 11.1.1
      * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
      * @param {RequestCallback} callback - 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。

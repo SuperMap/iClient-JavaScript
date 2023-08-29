@@ -2,12 +2,14 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../commontypes/Util';
+// import {Geometry3D} from '../commontypes/Geometry3D';
 
 /**
  * @class TerrainCutFillCalculationParameters
  * @deprecatedclass SuperMap.TerrainCutFillCalculationParameters
  * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 填挖方计算参数类。
+ * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 填挖方计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {string} [options.cutFillType="GRID"] - 填挖方分析的类型，包含： 

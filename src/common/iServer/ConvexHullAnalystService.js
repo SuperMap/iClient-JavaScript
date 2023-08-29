@@ -9,8 +9,8 @@
   * @class ConvexHullAnalystService
   * @deprecatedclass SuperMap.ConvexHullAnalystService
   * @category  iServer SpatialAnalyst ConvexHullAnalyst
-  * @classdesc
-  * 凸包运算服务类
+  * @classdesc 凸包运算服务类
+  * @version 11.1.1
   * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
   * @param {Object} options - 参数。
   * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

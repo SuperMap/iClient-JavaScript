@@ -11,6 +11,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @deprecatedclass SuperMap.GeometryMinDistanceAnalystParameters
  * @category iServer SpatialAnalyst MinDistanceAnalyst
  * @classdesc 几何对象最近距离分析参数类。
+ * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {Array.<Geometry>} options.inputGeometries - 被计算几何对象集合，目前只支持二维点对象
  * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集

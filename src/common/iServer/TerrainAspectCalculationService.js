@@ -9,7 +9,8 @@ import {TerrainAspectCalculationParameters} from './TerrainAspectCalculationPara
  * @class TerrainAspectCalculationService
  * @deprecatedclass SuperMap.TerrainAspectCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 填挖方计算服务类。
+ * @classdesc 地形坡向计算服务类。
+ * @version 11.1.1
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。

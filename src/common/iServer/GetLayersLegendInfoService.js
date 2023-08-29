@@ -9,6 +9,7 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @deprecatedclass SuperMap.GetLayersLegendInfoService
  * @category iServer Map Layer
  * @classdesc 获取图例信息服务类构造函数。
+ * @version 11.1.1
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。请求地图服务,URL 应为：
  *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；

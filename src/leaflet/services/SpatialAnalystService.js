@@ -190,6 +190,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.terrainCutFillCalculate
      * @description 填挖方计算。
+     * @version 11.1.1
      * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -203,6 +204,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.terrainAspectCalculate
      * @description 地形坡向分析。
+     * @version 11.1.1
      * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -216,6 +218,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.terrainSlopeCalculate
      * @description 地形坡度分析。
+     * @version 11.1.1
      * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -242,6 +245,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.minDistanceAnalysis
      * @description 最近距离计算。
+     * @version 11.1.1
      * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
@@ -254,6 +258,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     /**
      * @function SpatialAnalystService.prototype.convexHullAnalysis
      * @description 凸包计算。
+     * @version 11.1.1
      * @param {ConvexHullAnalystParameters} params - 凸包计算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。

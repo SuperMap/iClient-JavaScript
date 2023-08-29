@@ -47,7 +47,10 @@
         removeTheme();
         var terrainAspectCalculationParameters = new L.supermap.TerrainAspectCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
-            terrainAnalystSetting:{"boundsType":"UNION", "cellSizeType":"MAX"}, 
+            terrainAnalystSetting: new L.supermap.terrainAnalystSetting({
+              boundsType: L.supermap.BoundsType.UNION,
+              cellSizeType: L.supermap.CellSizeType.MAX
+            }), 
             resultDatasetName:"testAspect", 
             deleteExistResultDataset:true
         }

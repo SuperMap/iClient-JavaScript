@@ -123,7 +123,16 @@
         var terrainCutFillCalculationParameters = new ol.supermap.TerrainCutFillCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             cutFillType:"REGION3D",
-            region3D:{"points":[{"x":116.2,"y":40.1,"z":-5.0},{"x":116.5,"y":40.5,"z":0.0},{"x":116.5,"y":40.1,"z":30.0},{"x":116.2,"y":40.1,"z":-5.0}],"rotationX":0.0,"rotationY":0.0,"rotationZ":0.0,"scaleX":0.0,"scaleY":0.0,"scaleZ":0.0,"type":"REGION3D"},
+            region3D: new ol.supermap.Geometry3D({
+              points:[{"x":116.2,"y":40.1,"z":-5.0},{"x":116.5,"y":40.5,"z":0.0},{"x":116.5,"y":40.1,"z":30.0},{"x":116.2,"y":40.1,"z":-5.0}],
+              rotationX: 0.0,
+              rotationY: 0.0,
+              rotationZ: 0.0,
+              scaleX: 0.0,
+              scaleY: 0.0,
+              scaleZ: 0.0,
+              type: "REGION3D",
+            }),
             resultDataset:"cutfill", 
             buildPyramid:true,
             deleteExistResultDataset:true

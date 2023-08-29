@@ -133,6 +133,7 @@ export var FeatureService = ServiceBase.extend({
     /**
      * @function FeatureService.prototype.getMetadata
      * @description 地理要素元信息。
+     * @version 11.1.1
      * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
      * @param {RequestCallback} callback - 回调函数。
      * @returns {Promise} Promise 对象。
