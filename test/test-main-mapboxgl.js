@@ -61,6 +61,7 @@ import './mapboxgl/services/TerrainAspectCalculateSpec.js';
 import './mapboxgl/services/TerrainSlopeCalculateSpec.js';
 import './mapboxgl/services/TerrainCutFillCalculateSpec.js';
 import './mapboxgl/services/MinDistanceAnalysisSpec.js';
+import './mapboxgl/services/ConvexHullAnalysisSpec.js';
 import './mapboxgl/services/ThemeServiceSpec.js';
 import './mapboxgl/services/ThiessenAnalysisSpec.js';
 import './mapboxgl/services/TrafficTransferAnalystServiceSpec.js';

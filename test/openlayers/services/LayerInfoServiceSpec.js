@@ -231,30 +231,30 @@ describe('openlayers_LayerInfoService', () => {
 
     // 获取图例
     it('getLayersLegend', (done) => {
-    var layerService = new LayerInfoService(url);
-    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
-      expect(method).toBe("GET");
-      expect(testUrl).toBe(url+"/legend");
-      return Promise.resolve(new Response(JSON.stringify(legendInfo)));
-    });
-    var getLayersLegendInfoParams = new GetLayersLegendInfoParameters({
-      bbox: "-180,90,180,90",
-      width: 18,
-      height: 18
-    })
-    layerService.getLayersLegendInfo(getLayersLegendInfoParams, (serviceResult) => {
-      try {
-        expect(serviceResult).not.toBeNull();
-        expect(serviceResult.type).toEqual("processCompleted");
-        expect(serviceResult.result.succeed).toEqual(true);
-        expect(serviceResult.result.layerLegends[0].legends[0].url).not.toBeUndefined();
-        done();
-      } catch (e) {
-          console.log("'getLayersLegend'案例失败" + e.name + ":" + e.message);
-          service.destroy();
-          expect(false).toBeTruthy();
-          done();
-        }
+      var layerService = new LayerInfoService(url);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+        expect(method).toBe("GET");
+        expect(testUrl).toBe(url+"/legend");
+        return Promise.resolve(new Response(JSON.stringify(legendInfo)));
+      });
+      var getLayersLegendInfoParams = new GetLayersLegendInfoParameters({
+        bbox: "-180,90,180,90",
+        width: 18,
+        height: 18
       })
+      layerService.getLayersLegendInfo(getLayersLegendInfoParams, (serviceResult) => {
+        try {
+          expect(serviceResult).not.toBeNull();
+          expect(serviceResult.type).toEqual("processCompleted");
+          expect(serviceResult.result.succeed).toEqual(true);
+          expect(serviceResult.result.layerLegends[0].legends[0].url).not.toBeUndefined();
+          done();
+        } catch (e) {
+            console.log("'getLayersLegend'案例失败" + e.name + ":" + e.message);
+            service.destroy();
+            expect(false).toBeTruthy();
+            done();
+          }
+        })
     })
 });
