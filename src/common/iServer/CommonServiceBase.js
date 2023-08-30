@@ -125,7 +125,14 @@ export class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
-        const format = options.scope.format;
+        let format = options.scope.format;
+        // 兼容 callback 未传，dataFormat 传入的情况
+        if (typeof options.success === 'string') {
+          format = options.success;
+          options.success = null;
+          options.failure = null;
+        }
+       
         if (format && !this.supportDataFormat(format)) {
           throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
         }
