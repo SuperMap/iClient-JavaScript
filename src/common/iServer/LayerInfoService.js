@@ -52,6 +52,7 @@ export class LayerInfoService {
 
     /**
      * @function LayerInfoService.prototype.getLayersLegendInfo
+     * @version 11.1.1
      * @description 获取地图的图例信息。
      * @param {RequestCallback} callback - 回调函数。
      */

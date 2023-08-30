@@ -69,6 +69,7 @@ import './openlayers/services/TerrainAspectCalculateSpec.js';
 import './openlayers/services/TerrainSlopeCalculateSpec.js';
 import './openlayers/services/TerrainCutFillCalculateSpec.js';
 import './openlayers/services/MinDistanceAnalysisSpec.js';
+import './openlayers/services/ConvexHullAnalysisSpec.js';
 import './openlayers/services/ThemeServiceSpec.js';
 import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
