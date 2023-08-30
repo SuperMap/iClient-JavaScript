@@ -83,11 +83,9 @@
 
             var echartslayer = new EchartsLayer(map);
             echartslayer.chart.setOption(option = {
-
                 GLMap: {
                     roam: true
                 },
-                coordinateSystem: 'GLMap',
                 tooltip: {},
                 legend: {
                     left: 'left',
@@ -95,25 +93,6 @@
                     data: ['强', '中', '弱'],
                     textStyle: {
                         color: '#ccc'
-                    }
-                },
-                geo: {
-                    name: '强',
-                    type: 'scatter',
-                    map: 'GLMap',
-                    label: {
-                        emphasis: {
-                            show: false
-                        }
-                    },
-                    itemStyle: {
-                        normal: {
-                            areaColor: '#323c48',
-                            borderColor: '#111'
-                        },
-                        emphasis: {
-                            areaColor: '#2a333d'
-                        }
                     }
                 },
                 series: [{
