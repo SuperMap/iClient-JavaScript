@@ -34,7 +34,7 @@
             .MeasureService(url)
             .measureArea(areaMeasureParam).then(function (serviceResult) {
                 var content = resources.text_area + serviceResult.result.area + resources.msg_sqm;
-                polygon.bindPopup(content).openPopup(polygon.getCenter());
+                polygon.bindPopup(content, {closeOnClick:false}).openPopup(polygon.getCenter());
             });
     }
 </script>

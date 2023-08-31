@@ -33,7 +33,7 @@
                 result.subLayers.layers.map(function (layer) {
                     innerHTML += layer.name + "<br>";
                 });
-                infowin = L.popup({maxWidth: 400})
+                infowin = L.popup({maxWidth: 400, closeOnClick:false})
                     .setLatLng(map.getCenter())
                     .setContent(innerHTML)
                     .openOn(map);

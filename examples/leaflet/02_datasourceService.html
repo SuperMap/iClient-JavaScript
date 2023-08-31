@@ -87,7 +87,7 @@
                 innerHTML += "engineType:" + JSON.stringify(serviceResult.result.datasourceInfo.engineType, null, 2) + "<br>";
                 innerHTML += "name:" + JSON.stringify(serviceResult.result.datasourceInfo.name, null, 2) + "<br>";
                 innerHTML += "prjCoordSys:" + "(...)" + "<br>";
-                infoWin = L.popup({maxWidth: 420})
+                infoWin = L.popup({maxWidth: 420, closeOnClick:false})
                     .setLatLng(map.getCenter())
                     .setContent(innerHTML)
                     .openOn(map);

@@ -223,8 +223,8 @@ a:hover, a:active, a:focus{
 .main h4.name span.type-signature {
     display: inline-block;
     border-radius: 3px;
-    background-color: gray;
-    color: #fff;
+    background-color: #c4bdbd;
+    color: #605e5e;
     font-size: 0.7em;
     padding: 2px 4px;
 }
@@ -369,9 +369,9 @@ a:hover, a:active, a:focus{
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-.main .nameContainer h4 .type-signature.type a {
+/* .main .nameContainer h4 .type-signature.type a {
     color: #fff;
-}
+} */
 
 .main pre {
     font-size: 11px;
