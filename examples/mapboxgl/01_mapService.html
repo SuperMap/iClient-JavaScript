@@ -56,8 +56,7 @@
     });
 
     function mapService() {
-      // new mapboxgl.supermap.MapService(url).getMapInfo(callback);
-      mapboxgl.supermap.MapService(url).getMapInfo().then(callback);
+      new mapboxgl.supermap.MapService(url).getMapInfo().then(callback);
     }
 
     function callback(serviceResult) {
