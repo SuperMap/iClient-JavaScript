@@ -58,7 +58,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
- * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
+ * @param {PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
  * @param {string} [options.dataset] - 要用来做插值分析的数据源中数据集的名称。该名称用形如 ”数据集名称@数据源别名” 形式来表示。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 dataset 时。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 geometry 时。
  * @extends {InterpolationAnalystParameters}
