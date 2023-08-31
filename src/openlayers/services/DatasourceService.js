@@ -34,7 +34,7 @@ export class DatasourceService extends ServiceBase {
     /**
      * @function DatasourceService.prototype.getDatasources
      * @description 数据源集查询服务。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      */
     getDatasources(callback) {
       return this._datasourceService.getDatasourcesService(callback);
@@ -44,7 +44,7 @@ export class DatasourceService extends ServiceBase {
      * @function DatasourceService.prototype.getDatasource
      * @description 数据源信息查询服务。
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
@@ -58,7 +58,7 @@ export class DatasourceService extends ServiceBase {
      * @function DatasourceService.prototype.setDatasource
      * @description 数据源信息设置服务。可实现更改当前数据源信息。
      * @param {SetDatasourceParameters} params - 数据源信息设置参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {

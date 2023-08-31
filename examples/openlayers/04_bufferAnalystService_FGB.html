@@ -80,7 +80,7 @@
                 semicircleLineSegment: 10
             })
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, null, 'FGB').then(function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, 'FGB').then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all,

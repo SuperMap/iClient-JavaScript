@@ -61,7 +61,7 @@
             points: pointsList
         });
         //创建泰森多边形服务实例
-        new ol.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(gThiessenAnalystParameters, 'FGB').then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all,
@@ -80,7 +80,7 @@
                 })
             });
             map.addLayer(resultLayer);
-        }, 'FGB')
+        })
     }
 </script>
 </body>

@@ -51,7 +51,6 @@
         });
         new ol.supermap.FeatureService(url).getFeaturesBySQL(
           sqlParam,
-          null,
           'FGB'
         ).then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({

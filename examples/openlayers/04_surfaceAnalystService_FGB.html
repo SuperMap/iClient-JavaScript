@@ -66,7 +66,7 @@
         });
         //创建表面分析服务实例
         surfaceAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, 'FGB').then(function (surfaceAnalystServiceResult) {
             const vectorSource = new ol.source.FGB({
               url: surfaceAnalystServiceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all
@@ -85,7 +85,7 @@
                 })
             });
             map.addLayer(resultLayer);
-        }, 'FGB');
+        });
     }
 </script>
 </body>

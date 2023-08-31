@@ -101,18 +101,9 @@
         });
         getFeatureBySQLService = new ol.supermap.FeatureService(url2).getFeaturesBySQL(
             getFeatureBySQLParams,
-            processAsync,
             ol.supermap.DataFormat.ISERVER
-        );
+        ).then(processCompleted).catch(processFailed);
     });
-
-    function processAsync(result) {
-        if(result.type === 'processCompleted') {
-            processCompleted(result);
-        } else {
-            processFailed(result);
-        }
-    }
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;

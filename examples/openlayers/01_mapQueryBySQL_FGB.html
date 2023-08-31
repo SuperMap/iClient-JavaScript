@@ -42,7 +42,7 @@
                 attributeFilter: "SMID > 0"
             }
         });
-        new ol.supermap.QueryService(url).queryBySQL(param, null, 'FGB').then(function (serviceResult) {
+        new ol.supermap.QueryService(url).queryBySQL(param, 'FGB').then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all,

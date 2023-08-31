@@ -96,7 +96,7 @@
             })
         });
       //缓冲区分析服务 使用 FGB 格式
-      new maplibregl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+      new maplibregl.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, 'FGB').then(function (serviceResult) {
               var FGBLayer = new maplibregl.supermap.FGBLayer({
                 url: serviceResult.result.newResourceLocation,
                 strategy: 'all',
@@ -106,7 +106,7 @@
                 }
               });
               map.addLayer(FGBLayer);
-          }, 'FGB')
+          })
       }
 </script>
 </body>

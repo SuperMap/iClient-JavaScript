@@ -39,7 +39,7 @@ export class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
      * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -52,7 +52,7 @@ export class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.getFeaturesByBounds
      * @description 数据集 Bounds 查询服务。
      * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -65,7 +65,7 @@ export class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 Buffer 查询服务。
      * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -78,7 +78,7 @@ export class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
      * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -91,7 +91,7 @@ export class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类。
      * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -104,7 +104,7 @@ export class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.editFeatures
      * @description 地物编辑服务。
      * @param {EditFeaturesParameters} params - 数据集添加、修改、删除参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     editFeatures(params, callback) {
@@ -131,7 +131,7 @@ export class FeatureService extends ServiceBase {
      * @description 地理要素元信息。
      * @version 11.1.1
      * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getMetadata(params, callback) {

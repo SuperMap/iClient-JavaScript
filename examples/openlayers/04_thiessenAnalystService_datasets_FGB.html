@@ -46,7 +46,7 @@
         var dThiessenAnalystParameters = new ol.supermap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, 'FGB').then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all
@@ -65,7 +65,7 @@
                 })
             });
             map.addLayer(resultLayer);
-        }, 'FGB');
+        });
     }
 </script>
 </body>

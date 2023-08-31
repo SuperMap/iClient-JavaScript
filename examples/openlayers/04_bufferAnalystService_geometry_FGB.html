@@ -142,7 +142,8 @@
         var spatialAnalystService =  new ol.supermap.SpatialAnalystService(serviceUrl);
         spatialAnalystService.bufferAnalysis(
           geoBufferAnalystParams1,
-          function (serviceResult) {
+          'FGB'
+        ).then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all
@@ -162,7 +163,6 @@
             });
             map.addLayer(resultLayer);
           },
-          'FGB'
         );
 
         spatialAnalystService.bufferAnalysis(
