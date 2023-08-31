@@ -60,8 +60,8 @@
           inputScript(libsurl + '/leaflet/1.9.4/leaflet.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
-            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css');
-            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js');
+            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.css');
+            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript(libsurl + '/leaflet/plugins/leaflet.heat/leaflet-heat.js');
