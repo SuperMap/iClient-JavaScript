@@ -42,7 +42,7 @@ export default class ImageCollectionService extends CommonServiceBase {
      * @description 返回当前影像集合的图例信息。默认为服务发布所配置的风格，支持根据风格参数生成新的图例。
      * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] renderingRule 对象，用来指定影像的渲染风格，从而确定图例内容。影像的渲染风格包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。该参数未设置时，将使用发布服务时所配置的风格。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getLegend(queryParams, callback) {
@@ -62,7 +62,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     /**
      * @function ImageCollectionService.prototype.getStatistics
      * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getStatistics(callback) {
@@ -78,7 +78,7 @@ export default class ImageCollectionService extends CommonServiceBase {
     /**
      * @function ImageCollectionService.prototype.getTileInfo
      * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTileInfo(callback) {
@@ -95,7 +95,7 @@ export default class ImageCollectionService extends CommonServiceBase {
      * @function ImageCollectionService.prototype.deleteItemByID
      * @description 删除影像集合中指定 ID 的 Item，即从影像集合中删除指定的影像。
      * @param {string} featureId Feature 的本地标识符。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     deleteItemByID(featureId, callback) {
@@ -113,7 +113,7 @@ export default class ImageCollectionService extends CommonServiceBase {
      * @function ImageCollectionService.prototype.getItemByID
      * @description 返回指定ID（`collectionId`）的影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
      * @param {string} featureId Feature 的本地标识符。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getItemByID(featureId, callback) {

@@ -89,7 +89,7 @@
             attributeFilter: "SMID = 101"
         }
         });
-        new ol.supermap.QueryService(baseUrl).queryBySQL(param, function (serviceResult) {
+        new ol.supermap.QueryService(baseUrl).queryBySQL(param).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false
@@ -120,7 +120,7 @@
         });
 
         //进行查找
-        new ol.supermap.NetworkAnalystService(serviceUrl).traceAnalyst(traceAnalystParameters, function (serviceResult) {
+        new ol.supermap.NetworkAnalystService(serviceUrl).traceAnalyst(traceAnalystParameters).then(function (serviceResult) {
             var traceSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.edgesFeatures)
             });

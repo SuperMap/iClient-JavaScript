@@ -56,6 +56,7 @@ export class DatasetService extends CommonServiceBase {
     /**
      * @function DatasetService.prototype.getDatasetsService
      * @description 执行服务，查询数据集服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasetsService(params, callback) {
@@ -66,6 +67,7 @@ export class DatasetService extends CommonServiceBase {
     /**
      * @function DatasetService.prototype.getDatasetService
      * @description 执行服务，查询数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasetService(datasourceName, datasetName, callback) {
@@ -90,6 +92,7 @@ export class DatasetService extends CommonServiceBase {
      /**
      * @function DatasetService.prototype.deleteDatasetService
      * @description 执行服务，删除数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     deleteDatasetService(datasourceName, datasetName, callback) {

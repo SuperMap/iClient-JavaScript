@@ -43,7 +43,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param {GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     code: function (params, callback) {
@@ -54,7 +54,7 @@ export var AddressMatchService = ServiceBase.extend({
      * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     decode: function (params, callback) {

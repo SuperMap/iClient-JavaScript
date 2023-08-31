@@ -27,7 +27,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @function SuperMap.REST.AddressMatchService.prototype.code
      * @description 正向匹配。
      * @param {GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
@@ -45,7 +45,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @function SuperMap.REST.AddressMatchService.prototype.decode
      * @description 反向匹配。
      * @param {GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {

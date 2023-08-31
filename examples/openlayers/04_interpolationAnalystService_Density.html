@@ -21,7 +21,7 @@
         extent: extent,
         units: 'm'
     });
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',

@@ -36,7 +36,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取核密度分析任务
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getKernelDensityJobs(callback) {
@@ -47,7 +47,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取指定id的核密度分析服务
      * @param {string} id - 指定要获取数据的id
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getKernelDensityJob(id, callback) {
@@ -59,8 +59,8 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
      * @description 新建核密度分析服务
      * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
-     * @param {RequestCallback} processRunningCallback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
      * @returns {Promise} Promise 对象。
      */
     addKernelDensityJob(params, seconds, callback, processRunningCallback) {

@@ -43,7 +43,7 @@ export var DatasetService = ServiceBase.extend({
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasets: function (datasourceName, callback) {
@@ -62,7 +62,7 @@ export var DatasetService = ServiceBase.extend({
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDataset: function (datasourceName, datasetName, callback) {
@@ -80,7 +80,7 @@ export var DatasetService = ServiceBase.extend({
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters | UpdateDatasetParameters } params - 数据集创建参数类(当前数据源下的数据集不存在时，新建数据集) || 数据集信息更改参数类(当前数据源下的数据集存在时，更改数据集信息)
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setDataset(params, callback) {
@@ -114,7 +114,7 @@ export var DatasetService = ServiceBase.extend({
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     deleteDataset: function (datasourceName, datasetName, callback) {

@@ -36,7 +36,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务。
      * @param {FacilityAnalystSinks3DParameters} params - 最近设施分析参数类（汇查找资源）。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     sinksFacilityAnalyst: function (params, callback) {
@@ -47,7 +47,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务。
      * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找资源）。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     sourcesFacilityAnalyst: function (params, callback) {
@@ -58,7 +58,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务。
      * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     traceUpFacilityAnalyst: function (params, callback) {
@@ -69,7 +69,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务。
      * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     traceDownFacilityAnalyst: function (params, callback) {
@@ -80,7 +80,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @function NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务。
      * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找资源参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     upstreamFacilityAnalyst: function (params, callback) {

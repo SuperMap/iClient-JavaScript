@@ -33,7 +33,7 @@ export var KnowledgeGraphService = ServiceBase.extend({
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} cypherQuery - 查询条件。
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   query(cypherQuery, callback) {

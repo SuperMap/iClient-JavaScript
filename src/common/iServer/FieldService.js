@@ -32,7 +32,7 @@ export class FieldService {
      * @function FieldService.prototype.getFields
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getFields(params, callback) {
@@ -52,7 +52,7 @@ export class FieldService {
      * @function FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务。
      * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getFieldStatisticsInfo(params, callback) {
       if (!(params instanceof FieldStatisticsParameters)) {

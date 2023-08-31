@@ -77,7 +77,7 @@
           minDistance: minDistance,
           maxDistance: maxDistance
       });
-      new L.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters, function (serviceResult) {
+      new L.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters).then(function (serviceResult) {
           // 检查参数，给予错误信息提示
           if(serviceResult.error){
             return widgets.alert.showAlert(serviceResult.error.errorMsg,false);
@@ -127,7 +127,7 @@
               attributeFilter: "SMID IN " + referenceIdsStr
           }
       });
-      new L.supermap.QueryService(baseUrl).queryBySQL(sqlParam, function (serviceResult) {
+      new L.supermap.QueryService(baseUrl).queryBySQL(sqlParam).then(function (serviceResult) {
         var resFrature = serviceResult.result.recordsets[0].features;
         var resFratureCoor = [resFrature.features[0].geometry.coordinates[1], resFrature.features[0].geometry.coordinates[0]]
         lineResultLayer = L.polyline([resFratureCoor, marker1.getLatLng()], {color: '#304DBE'}).addTo(map);

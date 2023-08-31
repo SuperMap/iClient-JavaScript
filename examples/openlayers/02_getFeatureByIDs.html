@@ -41,16 +41,6 @@
             IDs: [233, 234],
             datasetNames: ["World:Countries"]
         });
-        // new ol.supermap.FeatureService(url).getFeaturesByIDs(idsParam, function (serviceResult) {
-        //     var vectorSource = new ol.source.Vector({
-        //         features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
-        //         wrapX: false
-        //     });
-        //     resultLayer = new ol.layer.Vector({
-        //         source: vectorSource
-        //     });
-        //     map.addLayer(resultLayer);
-        // });
         new ol.supermap.FeatureService(url).getFeaturesByIDs(idsParam).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),

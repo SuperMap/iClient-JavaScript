@@ -100,7 +100,7 @@ export class ChartQueryService extends CommonServiceBase {
      * @function ChartQueryService.prototype.processAsync
      * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
      * @param {ChartQueryParameters} params - 查询参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {

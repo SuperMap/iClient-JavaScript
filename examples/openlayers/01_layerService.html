@@ -86,15 +86,6 @@
     layerService();
 
     function layerService() {
-        // new ol.supermap.LayerInfoService(url).getLayersInfo(function (serviceResult) {
-        //     var innerHtml = "";
-        //     serviceResult.result.subLayers.layers.map(function (layer) {
-        //         innerHtml += layer.name + "<br>";
-        //     });
-        //     content.innerHTML = innerHtml;
-        //     overlay.setPosition([0, 0]);
-        // });
-
         new ol.supermap.LayerInfoService(url)
             .getLayersInfo().then((serviceResult) => {
                 var innerHtml = "";

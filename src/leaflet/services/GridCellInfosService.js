@@ -40,7 +40,7 @@ export var GridCellInfosService = ServiceBase.extend({
     /**
      * @function GridCellInfosService.prototype.getGridCellInfos
      * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getGridCellInfos: function (params, callback) {

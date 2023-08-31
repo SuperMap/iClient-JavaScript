@@ -143,7 +143,7 @@
         dataSourcesService();
 
         function dataSourcesService() {
-            new ol.supermap.DatasourceService(url).getDatasources(function (serviceResult) {
+            new ol.supermap.DatasourceService(url).getDatasources().then(function (serviceResult) {
                 datasourcesSelect = document.getElementById("datasourcesSelect");
                 const datasourceNames = serviceResult.result.datasourceNames;
                 for (let i = 0, len = serviceResult.result.datasourceNames.length; i < len; i++) {
@@ -154,7 +154,7 @@
         //打印数据源信息
         function datasourcesPrint() {
             const datasourceName = datasourcesSelect.value;
-            new ol.supermap.DatasourceService(url).getDatasource(datasourceName, function (serviceResult) {
+            new ol.supermap.DatasourceService(url).getDatasource(datasourceName).then(function (serviceResult) {
                 let innerHTML = "(" + resources.text_datasourceInfoPrint + ")" + "<br><br>";
                 innerHTML += "coordUnit：" + JSON.stringify(serviceResult.result.datasourceInfo.coordUnit, null, 2) + "<br>";
                 innerHTML += "description:" + JSON.stringify(serviceResult.result.datasourceInfo.description, null, 2) + "<br>";

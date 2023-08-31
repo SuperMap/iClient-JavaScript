@@ -50,7 +50,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射。
      * @param {AreaSolarRadiationParameters} params - 地区太阳辐射参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -70,7 +70,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析。
      * @param {DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -90,7 +90,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析。
      * @param {DensityKernelAnalystParameters} params - 核密度分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -110,7 +110,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析。
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -130,7 +130,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析。
      * @param {GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -150,7 +150,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析。
      * @param {InterpolationRBFAnalystParameters|InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -169,7 +169,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算。
      * @param {MathExpressionAnalysisParameters} params - 栅格代数运算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -189,7 +189,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析。
      * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或几何对象叠加分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -209,7 +209,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算。
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -229,7 +229,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.routeLocate
      * @description 路由定位。
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -249,7 +249,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析。
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -269,7 +269,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算。
      * @param {TerrainCurvatureCalculationParameters} params - 地形曲率计算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -289,7 +289,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.terrainCutFillCalculate
      * @description 填挖方计算。
      * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
      terrainCutFillCalculate(params, callback, resultFormat) {
@@ -308,7 +308,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.terrainAspectCalculate
      * @description 地形坡向分析。
      * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     terrainAspectCalculate(params, callback, resultFormat) {
@@ -327,7 +327,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.terrainSlopeCalculate
      * @description 地形坡度分析。
      * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     terrainSlopeCalculate(params, callback, resultFormat) {
@@ -346,7 +346,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -366,7 +366,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.minDistanceAnalysis
      * @description 最近距离计算。
      * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
      minDistanceAnalysis(params, callback, resultFormat) {
@@ -385,7 +385,7 @@ export class SpatialAnalystService {
      * @function SpatialAnalystService.prototype.convexHullAnalysis
      * @description 凸包计算。
      * @param {ConvexHullAnalystParameters} params - 凸包计算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
     convexHullAnalysis(params, callback, resultFormat) {
@@ -411,7 +411,7 @@ export class SpatialAnalystService {
      *                                {@link GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
      *                                {@link InterpolationAnalystParameters} 插值分析参数类。</br>
      *                                {@link SurfaceAnalystParameters} 表面分析参数类。</br>
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      * @returns {Promise} Promise 对象。
      */

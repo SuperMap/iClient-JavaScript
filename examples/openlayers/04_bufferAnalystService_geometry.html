@@ -21,7 +21,7 @@
         extent: extent,
         units: 'm'
     });
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
@@ -124,7 +124,7 @@
             })
         });
         //向iServer发送请求并返回结果
-        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams).then(function (serviceResult) {
             var bufferSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.resultGeometry)
             });
@@ -154,26 +154,6 @@
                 geometry: geometry,
                 spatialQueryMode: ol.supermap.SpatialQueryMode.INTERSECT
             });
-
-            // new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters, function (serviceResult) {
-            //     var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features);
-            //     var iconStyle = new ol.style.Style({
-            //         image: new ol.style.Icon(({
-            //             anchor: [0.5, 1],
-            //             src: '../img/marker-gold.png'
-            //         }))
-            //     });
-            //     for (var i = 0; i < features.length; i++) {
-            //         features[i].setStyle(iconStyle);
-            //     }
-            //     var vectorSource = new ol.source.Vector({
-            //         features: features
-            //     });
-            //     var resultLayer1 = new ol.layer.Vector({
-            //         source: vectorSource
-            //     });
-            //     map.addLayer(resultLayer1);
-            // });
 
             new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters).then(function (serviceResult) {
                 var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features);

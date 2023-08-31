@@ -57,7 +57,7 @@
             deleteExistResultDataset:true
 
         });
-        new L.supermap.SpatialAnalystService(serviceUrl).terrainSlopeCalculate(terrainSlopeCalculationParameters, function (serviceResult) {
+        new L.supermap.SpatialAnalystService(serviceUrl).terrainSlopeCalculate(terrainSlopeCalculationParameters).then(function (serviceResult) {
             terrainCurvatureCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();   
@@ -129,7 +129,7 @@
               themes: [themeGridRange]
           });
 
-          new L.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult1) {
+          new L.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
                 var result = serviceResult1.result;
                 if (result && result.newResourceID) {
                     themeLayer = new L.supermap.TiledMapLayer(baseUrl, {

@@ -39,7 +39,7 @@ export class TransferPathService extends CommonServiceBase {
      * @function TransferPathService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {TransferPathParameters} params - 交通换乘参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {

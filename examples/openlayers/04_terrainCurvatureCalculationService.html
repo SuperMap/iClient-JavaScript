@@ -46,7 +46,7 @@
             deleteExistResultDataset: true
         });
         //向iServer发起地形曲率计算请求
-        new ol.supermap.SpatialAnalystService(serviceUrl).terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).terrainCurvatureCalculate(terrainCurvatureCalculationParameters).then(function (serviceResult) {
             terrainCurvatureCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -100,7 +100,7 @@
                 themes: [themeGridRange]
             });
 
-            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     var themeLayer = new ol.layer.Tile({

@@ -46,7 +46,7 @@ export class FacilityAnalystSinks3DService extends CommonServiceBase {
      * @function FacilityAnalystSinks3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystSinks3DParameters} params - 最近设施分析参数类(汇查找资源)
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {

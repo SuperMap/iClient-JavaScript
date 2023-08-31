@@ -35,7 +35,7 @@
             dataset: "Factory@Changchun"
         });
         
-        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, null, 'FGB').then(function (serviceResult) {
+        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, 'FGB').then(function (serviceResult) {
           new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
             strategy: 'all'
           }).addTo(map);

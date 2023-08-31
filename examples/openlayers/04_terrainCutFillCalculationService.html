@@ -97,7 +97,7 @@
         }
     }));
     closer.onclick = closeOverlay;
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
@@ -138,7 +138,7 @@
             deleteExistResultDataset:true
 
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters).then(function (serviceResult) {
             terrainCutFillCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -194,7 +194,7 @@
                 themes: [themeGridRange]
             });
 
-            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     themeLayer = new ol.layer.Tile({

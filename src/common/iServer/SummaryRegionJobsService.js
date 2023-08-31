@@ -34,7 +34,7 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析任务集合。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJobs(callback) {
@@ -45,7 +45,7 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
      * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
      * @description 获取指定id的区域汇总分析任务。
      * @param {string} id -要获取区域汇总分析任务的id
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJob(id, callback) {
@@ -57,7 +57,7 @@ export class SummaryRegionJobsService extends ProcessingServiceBase {
      * @description 新建区域汇总任务。
      * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     addSummaryRegionJob(params, seconds, callback, processRunningCallback) {

@@ -34,7 +34,7 @@ export class VectorClipJobsService extends ProcessingServiceBase {
     /**
      * @function VectorClipJobsService.protitype.getVectorClipJobs
      * @description 获取矢量裁剪分析所有任务
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getVectorClipJobs(callback) {
@@ -45,7 +45,7 @@ export class VectorClipJobsService extends ProcessingServiceBase {
      * @function KernelDensityJobsService.protitype.getVectorClipJob
      * @description 获取指定id的矢量裁剪分析服务
      * @param {string} id - 指定要获取数据的id
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getVectorClipJob(id, callback) {
@@ -57,7 +57,8 @@ export class VectorClipJobsService extends ProcessingServiceBase {
      * @description 新建矢量裁剪分析服务
      * @param {VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
      * @returns {Promise} Promise 对象。
      */
     addVectorClipJob(params, seconds, callback, processRunningCallback) {

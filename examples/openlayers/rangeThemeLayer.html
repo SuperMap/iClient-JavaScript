@@ -70,7 +70,7 @@
     baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         url2 = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-jingjin/rest/data",
         extent = [104.07, 30.54, 119.51, 42.31];
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',

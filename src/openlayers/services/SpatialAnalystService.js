@@ -224,7 +224,7 @@ export class SpatialAnalystService extends ServiceBase {
      */
     terrainSlopeCalculate(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.terrainSlopeCalculate(params, callback, resultFormat);
+      return this._spatialAnalystService.terrainSlopeCalculate(params, callback, resultFormat);
     }
 
     /**
@@ -237,7 +237,7 @@ export class SpatialAnalystService extends ServiceBase {
      */
     thiessenAnalysis(params, callback, resultFormat) {
         params = this._processParams(params);
-        this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+        return this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
     } 
 
     /**

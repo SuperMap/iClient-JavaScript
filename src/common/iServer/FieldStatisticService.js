@@ -85,7 +85,7 @@ export class FieldStatisticService extends CommonServiceBase {
     /**
      * @function FieldStatisticService.prototype.processAsync
      * @description 执行服务，进行指定字段的查询统计。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(callback) {

@@ -34,7 +34,7 @@
           },
           datasetNames: ['World:world']
         });
-        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, null, 'FGB').then(function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, 'FGB').then(function (serviceResult) {
           new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
             strategy: 'all'
           }).addTo(map);

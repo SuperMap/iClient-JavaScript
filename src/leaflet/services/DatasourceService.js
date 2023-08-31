@@ -39,7 +39,7 @@ export var DatasourceService = ServiceBase.extend({
      *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasources: function (callback) {
@@ -54,7 +54,7 @@ export var DatasourceService = ServiceBase.extend({
      *     //doSomething
      *   });
      * @param datasourceName - 数据源名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasource: function (datasourceName, callback) {
@@ -72,7 +72,7 @@ export var DatasourceService = ServiceBase.extend({
      *     //doSomething
      *   });
      * @param {SetDatasourceParameters} params - 数据源信息设置参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setDatasource: function(params, callback) {

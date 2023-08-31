@@ -27,7 +27,7 @@
                 duration: 250
             }
         }));
-    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(url).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',

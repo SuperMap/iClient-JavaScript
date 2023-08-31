@@ -37,7 +37,7 @@ export class DatasourceService extends CommonServiceBase {
      *   new SuperMap.REST.DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasources(callback) {
@@ -52,7 +52,7 @@ export class DatasourceService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
@@ -70,7 +70,7 @@ export class DatasourceService extends CommonServiceBase {
      *     //doSomething
      *   });
      * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {

@@ -51,7 +51,7 @@
             })
         });
   
-        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, null, 'FGB').then(function (serviceResult) {
+        dsBufferAnalystService.bufferAnalysis(dsBufferAnalystParameters, 'FGB').then(function (serviceResult) {
             new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
               style: {
                 color: 'red'

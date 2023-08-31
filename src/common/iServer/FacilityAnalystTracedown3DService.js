@@ -38,7 +38,8 @@ export class FacilityAnalystTracedown3DService extends CommonServiceBase {
      * @function FacilityAnalystTracedown3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystTracedown3DParameters)) {

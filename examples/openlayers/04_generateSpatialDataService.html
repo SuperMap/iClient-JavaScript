@@ -21,7 +21,7 @@
         extent: extent,
         units: 'm'
     });
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
@@ -61,7 +61,7 @@
                 dataReturnMode: ol.supermap.DataReturnMode.DATASET_ONLY
             })
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).generateSpatialData(generateSpatialDataParameters).then(function (serviceResult) {
             var a = serviceResult.result;
             //用专题图展示分析结果
             showAnalysisResult_ThemeGridUnique();

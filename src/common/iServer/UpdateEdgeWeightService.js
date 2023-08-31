@@ -39,7 +39,7 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
      * @function UpdateEdgeWeightService.prototype.processAsync
      * @description 开始异步执行边的边的耗费权重的更新
      * @param {UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      * @example
      * (code)

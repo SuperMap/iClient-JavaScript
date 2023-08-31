@@ -26,7 +26,7 @@
         extent: extent,
         units: 'm'
       });
-      new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+      new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
           target: 'map',
@@ -166,8 +166,8 @@
         );
 
         spatialAnalystService.bufferAnalysis(
-          geoBufferAnalystParams,
-          function (serviceResult) {
+          geoBufferAnalystParams
+        ).then(function (serviceResult) {
             //将组成缓冲区的边界点提出来，为了构造下面查询服务的geometry
             var bufferPoints = [];
             var coordinate = serviceResult.result.resultGeometry.geometry.coordinates[0][0];
@@ -200,8 +200,7 @@
               });
               map.addLayer(resultLayer1);
             });
-          }
-        );
+          });
       }
     </script>
   </body>

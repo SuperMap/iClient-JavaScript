@@ -15,7 +15,7 @@
     var map, themeLayer, options,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China";
     var mapService = new ol.supermap.MapService(url);
-    mapService.getMapInfo(function (serviceResult) {
+    mapService.getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',

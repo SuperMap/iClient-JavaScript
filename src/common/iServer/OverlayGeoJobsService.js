@@ -36,7 +36,7 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析任务
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJobs(callback) {
@@ -47,7 +47,7 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJob
      * @description 获取指定id的叠加分析任务
      * @param {string} id - 指定要获取数据的id
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJob(id, callback) {
@@ -59,7 +59,7 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
      * @description 新建点叠加析服务
      * @param {OverlayGeoJobParameter} params - 创建一个叠加分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     addOverlayGeoJob(params, seconds, callback, processRunningCallback) {
