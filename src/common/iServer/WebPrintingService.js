@@ -138,7 +138,7 @@ export class WebPrintingService extends CommonServiceBase {
       return me.request(requestConfig);
     }
 
-     serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
       result = Util.transformResult(result);
       if (result.status === 'FINISHED' || result.status === 'ERROR') {
         clearInterval(this.id);

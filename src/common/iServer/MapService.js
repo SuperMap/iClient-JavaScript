@@ -74,14 +74,14 @@ export class MapService extends CommonServiceBase {
         });
     }
 
-    /*
-     * Method: getMapStatusCompleted
-     * 获取地图状态完成，执行此方法。
-     *
-     * Parameters:
-     * {Object} result - 服务器返回的结果对象。
+    /**
+     * @function  MapService.prototype.transformResult
+     * @description 状态完成时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;

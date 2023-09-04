@@ -82,7 +82,7 @@ export class GeoprocessingService extends CommonServiceBase {
     waitForJobCompletion(jobId, identifier, options, callback) {
         const me = this;
         const timer = setInterval(function () {
-            const serviceProcessCompleted = function (serverResult) {
+            const transformResult = function (serverResult) {
                 const state = serverResult.result.state.runState;
                 if (serverResult.options.statusCallback) {
                     serverResult.options.statusCallback(state);
@@ -92,7 +92,7 @@ export class GeoprocessingService extends CommonServiceBase {
                   callback(serverResult);
                 }
             };
-            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, callback: serviceProcessCompleted });
+            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, callback: transformResult });
         }, options.interval);
     }
 

@@ -102,16 +102,16 @@ export class ProcessingServiceBase extends CommonServiceBase {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
-                return me.serviceProcessCompleted(result, seconds, callback, processRunningCallback);
+                return me.transformResult(result, seconds, callback, processRunningCallback);
             } else {
-              result = me.serviceProcessFailed(result);
+              result = me.transformErrorResult(result);
               result.options = me;
               result.type = 'processFailed';
               callback(result);
               return result;
             }
         }).catch(function (e) {
-            e = me.serviceProcessFailed({ error: e });
+            e = me.transformErrorResult({ error: e });
             e.options = me;
             e.type = 'processFailed';
             callback(e);
@@ -119,7 +119,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
         });
     }
 
-    serviceProcessCompleted(result, seconds, callback, processRunningCallback) {
+    transformResult(result, seconds, callback, processRunningCallback) {
         result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;

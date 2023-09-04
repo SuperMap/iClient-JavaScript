@@ -79,11 +79,13 @@ export class AddressMatchService extends CommonServiceBase {
       });
     }
     /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
+     * @function AddressMatchService.prototype.transformResult
      * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否完成
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @description 状态完成时转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }

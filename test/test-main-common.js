@@ -110,6 +110,7 @@ import './common/iServer/ImageSearchParameterSpec';
 import './common/iServer/ImageRenderingRuleSpec';
 import './common/iServer/SortbySpec';
 import './common/iServer/ImageStretchOptionSpec';
+import './common/iServer/CompatibleSpec.js';
 
 /**common -- control**/
 import './common/control/TimeControlBaseSpec.js';

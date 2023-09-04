@@ -7,6 +7,7 @@ import { SecurityManager } from '../security/SecurityManager';
 import { Util } from '../commontypes/Util';
 import { JSONFormat } from '../format/JSON';
 import {DataFormat} from '../REST';
+import { FunctionExt } from '../commontypes/BaseTypes';
 
 /**
  * @class CommonServiceBase
@@ -25,7 +26,7 @@ export class CommonServiceBase {
     constructor(url, options) {
         let me = this;
 
-        this.EVENT_TYPES = [];
+        this.EVENT_TYPES = ['processCompleted', 'processFailed'];
 
         this.events = null;
 
@@ -219,26 +220,61 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function CommonServiceBase.prototype.serviceProcessCompleted
-     * @description 状态完成，执行此方法。
+     * @function CommonServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      * @private
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         result = Util.transformResult(result);
         return { result, options };
+    }
+
+    /**
+     * @function CommonServiceBase.prototype.transformErrorResult
+     * @description 状态失败时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
+     */
+    transformErrorResult(result, options) {
+        result = Util.transformResult(result);
+        let error = result.error || result;
+        return { error, options };
+    }
+
+    /**
+    * @function CommonServiceBase.prototype.serviceProcessCompleted
+    * @description 状态完成，执行此方法。
+    * @param {Object} result - 服务器返回的结果对象。
+    * @param {Object} options - 请求参数对象。
+    * @private
+    */
+    serviceProcessCompleted(result, options) {
+        result = Util.transformResult(result);
+        this.events.triggerEvent('processCompleted', {
+            result: result,
+            options: options
+        });
     }
 
     /**
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。对象
      * @private
      */
     serviceProcessFailed(result, options) {
-        result = Util.transformResult(result);
-        let error = result.error || result;
-        return { error, options };
+      result = Util.transformResult(result);
+      let error = result.error || result;
+      this.events.triggerEvent('processFailed', {
+          error: error,
+          options: options
+      });
     }
 
     _returnContent(options) {
@@ -324,14 +360,25 @@ export class CommonServiceBase {
                   object: this
                 };
                 if (requestResult.error) {
-                    response = {...response, ...this.serviceProcessFailed(requestResult, options)};
+                  // 兼容服务在构造函数中使用 eventListeners 的老用法
+                  if (options.failure === this.serviceProcessFailed) {
+                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(requestResult, options);
+                  } else {
+                    response = {...response, ...this.transformErrorResult(requestResult, options)};
                     response.type = 'processFailed';
                     options.failure && options.failure(response);
+                  }
                 } else {
+                  if (options.success === this.serviceProcessCompleted) {
+                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(requestResult, options);
+                  } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-                    response = {...response, ...this.serviceProcessCompleted(requestResult, options)};
+                    response = {...response, ...this.transformResult(requestResult, options)};
                     response.type = 'processCompleted';
                     options.success && options.success(response);
+                  }
                 }
                 return response;
             });
