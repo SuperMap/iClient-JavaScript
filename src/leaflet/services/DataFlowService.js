@@ -45,7 +45,50 @@ export var DataFlowService = ServiceBase.extend({
             this.options.prjCoordSys = options.projection;
         }
         ServiceBase.prototype.initialize.call(this, url, options);
-        this.dataFlow = new DataFlow(url, options, this._defaultEvent.bind(this));
+        this.dataFlow = new DataFlow(url, options);
+        /**
+        * @event DataFlowService#broadcastSocketConnected
+        * @description broadcast Socket 连接成功。
+        */
+        /**
+        * @event DataFlowService#broadcastSocketError
+        * @description broadcast Socket 连接失败。
+        */
+        /**
+        * @event DataFlowService#broadcastFailed
+        * @description 广播失败。
+        */
+        /**
+        * @event DataFlowService#broadcastSucceeded
+        * @description 广播成功。
+        */
+        /**
+        * @event DataFlowService#subscribeSocketConnected
+        * @description 订阅数据连接成功。
+        */
+        /**
+        * @event DataFlowService#subscribeSocketError
+        * @description 订阅数据连接失败。
+        */
+        /**
+        * @event DataFlowService#messageSucceeded
+        * @description 获取信息成功。
+        */
+        /**
+        * @event DataFlowService#setFilterParamSucceeded
+        * @description 设置过滤参数成功。
+        */
+        this.dataFlow.events.on({
+            "broadcastSocketConnected": this._defaultEvent,
+            "broadcastSocketError": this._defaultEvent,
+            "broadcastFailed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
+            "subscribeSocketConnected": this._defaultEvent,
+            "subscribeSocketError": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
+            scope: this
+        })
     },
 
     /**

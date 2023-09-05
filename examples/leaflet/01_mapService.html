@@ -31,7 +31,7 @@
             innerHTML += resources.text_mapName+"：" + JSON.stringify(result.name, null, 2) + "<br>";
             innerHTML +=  resources.text_center+":" + JSON.stringify(result.center, null, 2) + "<br>";
             innerHTML += "Bounds:" + JSON.stringify(result.bounds, null, 2) + "<br>";
-            infoWin = L.popup({maxWidth: 400})
+            infoWin = L.popup({maxWidth: 400, closeOnClick:false})
                 .setLatLng(map.getCenter())
                 .setContent(innerHTML)
                 .openOn(map);

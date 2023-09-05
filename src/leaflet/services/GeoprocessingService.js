@@ -53,7 +53,7 @@ export const GeoprocessingService = ServiceBase.extend({
     /**
      * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTools: function (callback) {
@@ -64,7 +64,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @function GeoprocessingService.prototype.getTool
      * @description 获取工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTool: function (identifier, callback) {
@@ -77,7 +77,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     execute: function (identifier, parameter, environment, callback) {
@@ -90,7 +90,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     submitJob: function (identifier, parameter, environment, callback) {
@@ -117,7 +117,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @description 获取处理自动化任务的执行信息。
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getJobInfo: function (identifier, jobId, callback) {
@@ -129,7 +129,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @description 取消处理自动化任务的异步执行。
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     cancelJob: function (identifier, jobId, callback) {
@@ -140,7 +140,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
      * @param {string} identifier - 处理自动化工具 ID。(传参代表 identifier 算子的任务列表，不传参代表所有任务的列表)
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getJobs: function (identifier, callback) {
@@ -153,7 +153,7 @@ export const GeoprocessingService = ServiceBase.extend({
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
      * @param {string} filter - 输出异步结果的 ID。(可选，传入 filter 参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getResults: function (identifier, jobId, filter, callback) {

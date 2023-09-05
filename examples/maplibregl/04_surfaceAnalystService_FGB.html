@@ -80,7 +80,7 @@
         });
         //创建表面分析服务实例
         surfaceAnalystService = new maplibregl.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, 'FGB').then(function (surfaceAnalystServiceResult) {
             var FGBLayer = new maplibregl.supermap.FGBLayer({
               url: surfaceAnalystServiceResult.result.newResourceLocation,
               featureLoader: function(feature) {
@@ -106,7 +106,7 @@
               }
             });
             map.addLayer(FGBLayer);
-        }, 'FGB');
+        });
     }
 </script>
 </body>

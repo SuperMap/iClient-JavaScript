@@ -61,7 +61,7 @@ export class MapService extends CommonServiceBase {
     /**
      * @function  MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(callback) {
@@ -74,14 +74,14 @@ export class MapService extends CommonServiceBase {
         });
     }
 
-    /*
-     * Method: getMapStatusCompleted
-     * 获取地图状态完成，执行此方法。
-     *
-     * Parameters:
-     * {Object} result - 服务器返回的结果对象。
+    /**
+     * @function  MapService.prototype.transformResult
+     * @description 状态完成时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;

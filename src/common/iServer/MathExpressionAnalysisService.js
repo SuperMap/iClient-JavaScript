@@ -40,7 +40,7 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
      * @function MathExpressionAnalysisService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {MathExpressionAnalysisParameters} parameter - 栅格代数运算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(parameter, callback) {

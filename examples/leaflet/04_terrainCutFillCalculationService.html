@@ -64,7 +64,7 @@
             deleteExistResultDataset:true
 
         });
-        new L.supermap.SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters, function (serviceResult) {
+        new L.supermap.SpatialAnalystService(serviceUrl).terrainCutFillCalculate(terrainCutFillCalculationParameters).then(function (serviceResult) {
             terrainCutFillCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -121,7 +121,7 @@
                 themes: [themeGridRange]
             });
 
-            new L.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult1) {
+            new L.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
               console.log(serviceResult1)
                 var result = serviceResult1.result;
                 if (result && result.newResourceID) {

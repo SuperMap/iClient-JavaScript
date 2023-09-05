@@ -36,7 +36,7 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析任务
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJobs(callback) {
@@ -47,7 +47,7 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJob
      * @description 获取指定ip的点聚合分析任务
      * @param {string} id - 指定要获取数据的id
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJob(id, callback) {
@@ -59,7 +59,7 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
      * @description 新建点聚合分析服务
      * @param {SummaryMeshJobParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     addSummaryMeshJob(params, seconds, callback, processRunningCallback) {

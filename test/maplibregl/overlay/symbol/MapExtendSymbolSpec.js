@@ -7,43 +7,8 @@ describe('maplibregl_MapExtendSymbol', () => {
     // var populationUrl = GlobeParameter.populationURL;
     var testDiv, map;
     var originalTimeout;
-    // 尝试解决方法来源 https://github.com/jestjs/jest/issues/1256
-    var createMap = () => {
-        return new Promise((resolve) => {
-            var map = new maplibregl.Map({
-                container: 'map',
-                style: {
-                    "version": 8,
-                    "sources": {
-                       /*  "raster-tiles": {
-                            "type": "raster",
-                            "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
-                            "tileSize": 256
-                        },
-                        "全国人口密度空间分布图": {
-                            "tiles": [
-                                populationUrl + "/tileFeature.mvt?z={z}&x={x}&y={y}"
-                            ],
-                            "type": "vector"
-                        } */
-                    },
-                    "layers": [/* {
-                        "id": "simple-tiles",
-                        "type": "raster",
-                        "source": "raster-tiles",
-                        "minzoom": 0,
-                        "maxzoom": 22
-                    } */]
-                },
-                center: [116.40, 39.79],
-                zoom: 3
-            });
-            map.on('load', function () {
-                resolve(map);
-            });
-        })
-    }
-    beforeAll(async (done) => {
+
+    beforeAll((done) => {
         new maplibregl.supermap.WebSymbol().init();
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -53,9 +18,39 @@ describe('maplibregl_MapExtendSymbol', () => {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
-        map = await createMap();
-        done();
-    });
+        map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                   /*  "raster-tiles": {
+                        "type": "raster",
+                        "tiles": [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                        "tileSize": 256
+                    },
+                    "全国人口密度空间分布图": {
+                        "tiles": [
+                            populationUrl + "/tileFeature.mvt?z={z}&x={x}&y={y}"
+                        ],
+                        "type": "vector"
+                    } */
+                },
+                "layers": [/* {
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                    "minzoom": 0,
+                    "maxzoom": 22
+                } */]
+            },
+            center: [116.40, 39.79],
+            zoom: 3
+        });
+        map.on('load', function () {
+            done();
+        });
+        
+    }, 50000);
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;

@@ -93,7 +93,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
      * @function GetFeaturesServiceBase.prototype.processAsync
      * @description 将客户端的查询参数传递到服务端。
      * @param {Object} params - 查询参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
@@ -132,11 +132,13 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function GetFeaturesServiceBase.prototype.getFeatureComplete
-     * @description 查询完成，执行此方法。
+     * @function GetFeaturesServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {

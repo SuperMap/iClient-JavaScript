@@ -78,7 +78,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.processAsync
      * @description 执行服务，查询数据集信息。
      * @param {GetGridCellInfosParameters} params - 查询参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
@@ -105,7 +105,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.getDatasetInfoCompleted
      * @description 数据集查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasetInfoCompleted(result, callback) {
@@ -118,7 +118,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
     /**
      * @function GetGridCellInfosService.prototype.queryGridInfos
      * @description 执行服务，查询数据集栅格信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     queryGridInfos(callback) {

@@ -68,7 +68,7 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
      * @function GeoRelationAnalystService.prototype.processAsync
      * @description 负责将客户端的空间关系分析参数传递到服务端
      * @param {GeoRelationAnalystParameters} parameter - 空间关系分析所需的参数信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(parameter, callback) {

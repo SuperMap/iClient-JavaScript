@@ -33,7 +33,7 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJobs
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @description 获取缓冲区分析所有任务
      * @returns {Promise} Promise 对象。
      */
@@ -45,7 +45,7 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
      * @function BuffersAnalystJobsService.prototype.getBufferJob
      * @description 获取指定id的缓冲区分析服务
      * @param {string} id - 指定要获取数据的id。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getBuffersJob(id, callback) {
@@ -57,8 +57,8 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
      * @description 新建缓冲区分析服务
      * @param {BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
-     * @param {RequestCallback} processRunningCallback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
      * @returns {Promise} Promise 对象。
      */
     addBuffersJob(params, seconds, callback, processRunningCallback) {

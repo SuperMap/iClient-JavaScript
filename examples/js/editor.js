@@ -1,9 +1,6 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
-var exampleNameList = [];
-
 $(document).ready(function () {
     window.initI18N(function(){
-    generateExampleNameList();
     initPage();
     bindEvents();
     sidebarScrollFix();
@@ -18,16 +15,6 @@ function initPage() {
     screenResize();
 }
 
-function generateExampleNameList() {
-  var config = window.exampleConfig;
-  Object.keys(config).forEach((menuItem) => {
-    config[menuItem].content && Object.keys(config[menuItem].content).forEach((secondMenuItem) => {
-      config[menuItem].content[secondMenuItem].content && config[menuItem].content[secondMenuItem].content.forEach((exampleInfo) => {
-        exampleNameList.push(exampleInfo.fileName);
-      });
-    });
-  });
-}
 
 
 //获取示例页面的配置信息
@@ -101,10 +88,6 @@ function loadExampleHtml() {
     var locationParam = getLocationParam();
     if (!locationParam) {
         return;
-    }
-    if (exampleNameList.indexOf(locationParam) === -1) {
-      window.location.href = window.location.origin + '/web/404.html';
-      return;
     }
     var href = window.location.toString();
     var mapUrl = href.substr(0, href.lastIndexOf('/') + 1);

@@ -44,7 +44,7 @@
             tolerance: 0,
             operation: ol.supermap.OverlayOperationType.UNION
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, null, 'FGB').then(function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(datasetOverlayAnalystParameters, 'FGB').then(function (serviceResult) {
             const vectorSource = new ol.source.FGB({
               url: serviceResult.result.newResourceLocation,
               strategy: ol.loadingstrategy.all

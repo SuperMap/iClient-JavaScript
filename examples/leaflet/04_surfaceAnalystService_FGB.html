@@ -50,13 +50,13 @@
             zValueFieldName: "AVG_TMP"
         });
         surfaceAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters).then(function (serviceResult) {
-            var result = serviceResult.result;
-            if (result && result.recordset && result.recordset.features) {
-                resultLayer = L.geoJSON(result.recordset.features, {weight: 3}).addTo(map);
-            } else {
-                alert(serviceResult.error.errorMsg);
-            }
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, 'FGB').then(function (serviceResult) {
+            new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+              strategy: 'all',
+              style: {
+                weight: 3
+              },
+          }).addTo(map);
         });
     }
 </script>

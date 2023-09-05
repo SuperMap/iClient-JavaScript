@@ -138,7 +138,7 @@
                 srcFields: $('#srcFields').val(),
                 overlayFields: $('#overlayFields').val()
             });
-            processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
+            processingService.addOverlayGeoJob(overlayGeoJobParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;

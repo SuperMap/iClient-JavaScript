@@ -24,7 +24,7 @@ export class BufferSetting {
     constructor(options) {
         /**
          * @member {BufferEndType} [BufferSetting.prototype.endType = BufferEndType.FLAT]
-         * @description 缓冲区端点枚举值。分为平头和圆头两种。
+         * @description 缓冲区端点枚举值。分为平头和圆头两种。当设置缓冲区端点为平头时，左侧、右侧缓冲距离需为相同数值。
          */
         this.endType = BufferEndType.FLAT;
 

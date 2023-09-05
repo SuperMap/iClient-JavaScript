@@ -100,7 +100,7 @@ export class ChartQueryService extends CommonServiceBase {
      * @function ChartQueryService.prototype.processAsync
      * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
      * @param {ChartQueryParameters} params - 查询参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
@@ -125,11 +125,13 @@ export class ChartQueryService extends CommonServiceBase {
 
 
     /**
-     * @function ChartQueryService.prototype.serviceProcessCompleted
-     * @description 查询完成，执行此方法。
+     * @function ChartQueryService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util.transformResult(result);
         if (result && result.recordsets && me.format === DataFormat.GEOJSON) {

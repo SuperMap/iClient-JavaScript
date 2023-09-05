@@ -308,7 +308,7 @@
                 editType: "add",
                 returnContent: true
             });
-            editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
+            editFeaturesService.editFeatures(addFeatureParams).then(function (serviceResult) {
                 if (serviceResult.result.succeed) {
                     newAddId = serviceResult.result[0];
                     addPointsSource.clear();
@@ -337,7 +337,7 @@
             dataSourceName: "World",
             dataSetName: "Capitals",
             featureId: newAddId
-        }, function (serviceResult) {
+        }).then(function (serviceResult) {
             var createTime = new Date(serviceResult.result.createTime).toLocaleString();
             var createUser = serviceResult.result.createUser;
             var lastEditTime = new Date(serviceResult.result.lastEditTime).toLocaleString();
@@ -347,7 +347,7 @@
                 IDs: [newAddId],
                 datasetNames: ["World:Capitals"]
             });
-            new ol.supermap.FeatureService(url).getFeaturesByIDs(idsParam, function (serviceResult) {
+            new ol.supermap.FeatureService(url).getFeaturesByIDs(idsParam).then(function (serviceResult) {
                 var newAddCoor = serviceResult.result.features.features[0].geometry.coordinates;
                 var contentHTML = resources.text_createUser + createUser + "<br/>";
                 contentHTML += resources.text_createTime + createTime + "<br/>";
@@ -358,7 +358,6 @@
                 map.addOverlay(overlay2);
             });
         });
-
       })
     }
     
@@ -381,7 +380,7 @@
                     editType: "delete"
                 });
 
-                editFeaturesService.editFeatures(deleteParams, function (serviceResult) {
+                editFeaturesService.editFeatures(deleteParams).then(function (serviceResult) {
                     if (serviceResult.result.succeed) {
                         initFeature();
                         vectorSource.clear();

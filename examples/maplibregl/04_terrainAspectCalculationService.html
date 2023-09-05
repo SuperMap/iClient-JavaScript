@@ -76,7 +76,7 @@
             deleteExistResultDataset:true
         }
         );
-        new maplibregl.supermap.SpatialAnalystService(serviceUrl).terrainAspectCalculate(terrainAspectCalculationParameters, function (serviceResult) {
+        new maplibregl.supermap.SpatialAnalystService(serviceUrl).terrainAspectCalculate(terrainAspectCalculationParameters).then(function (serviceResult) {
             terrainAspectCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -162,7 +162,7 @@
                 themes: [themeGridRange]
             });
 
-            new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult1) {
+            new maplibregl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
                 map.addLayer({

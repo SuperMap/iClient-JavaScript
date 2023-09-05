@@ -37,7 +37,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} params - 查询条件。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
   query(params, callback) {
     const paramKey = 'cypherQuery';
@@ -70,7 +70,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
   getGraphMaps(callback) {
     const url = this.url + '/graphmaps.json';
@@ -209,7 +209,7 @@ export class KnowledgeGraphService extends CommonServiceBase {
    * @description 负责将客户端的动态分段服务参数传递到服务端。
    * @param {string} url - 服务地址
    * @param {Object} params - 参数
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
 

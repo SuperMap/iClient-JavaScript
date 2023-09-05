@@ -37,7 +37,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @function WebPrintingJobService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
@@ -51,7 +51,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @function WebPrintingJobService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
      * @param {string} jobId - Web 打印输入文档任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getPrintingJob(jobId, callback) {
@@ -62,7 +62,7 @@ export class WebPrintingJobService extends ServiceBase {
      * @function WebPrintingJobService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult(jobId, callback) {
@@ -72,7 +72,7 @@ export class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates(callback) {

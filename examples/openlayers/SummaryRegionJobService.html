@@ -239,7 +239,7 @@
                 meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
                 sumShape: $('#sumShape').get(0).checked
             });
-            processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
+            processingService.addSummaryRegionJob(summaryRegionJobParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -253,7 +253,7 @@
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            new ol.supermap.MapService(mapUrl).getMapInfo(function (
+                            new ol.supermap.MapService(mapUrl).getMapInfo().then(function (
                                 mapInfo) {
                                 layer = new ol.layer.Tile({
                                     source: new ol.source.ImageSuperMapRest(

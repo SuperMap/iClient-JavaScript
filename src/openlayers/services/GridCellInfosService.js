@@ -39,8 +39,9 @@ export class GridCellInfosService extends ServiceBase {
 
     /**
      * @function GridCellInfosService.prototype.getGridCellInfos
+     * @description 获取某一地理位置所对应的栅格单元信息。
      * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getGridCellInfos(params, callback) {

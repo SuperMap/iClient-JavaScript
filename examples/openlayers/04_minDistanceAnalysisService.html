@@ -137,7 +137,7 @@
           minDistance: minDistance,
           maxDistance: maxDistance,
       });
-      new ol.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters, function (serviceResult) {
+      new ol.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters).then(function (serviceResult) {
           // 检查参数，给予错误信息提示
           if(serviceResult.error){
             return widgets.alert.showAlert(serviceResult.error.errorMsg,false);
@@ -186,7 +186,7 @@
               attributeFilter: "SMID >= 0 "
           }
       });
-      new ol.supermap.QueryService(baseUrl).queryBySQL(sqlParam, function (serviceResult) {
+      new ol.supermap.QueryService(baseUrl).queryBySQL(sqlParam).then(function (serviceResult) {
           var vectorSource = new ol.source.Vector({
               features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
               wrapX: false
@@ -213,7 +213,7 @@
               attributeFilter: "SMID IN " + referenceIdsStr
           }
       });
-      new ol.supermap.QueryService(baseUrl).queryBySQL(sqlParam, function (serviceResult) {
+      new ol.supermap.QueryService(baseUrl).queryBySQL(sqlParam).then(function (serviceResult) {
         var resFrature = serviceResult.result.recordsets[0].features;
         var lineFeature = new ol.Feature({
           geometry: new ol.geom.LineString([

@@ -40,11 +40,13 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function NetworkAnalystServiceBase.prototype.serviceProcessCompleted
-     * @description 分析完成，执行此方法。
+     * @function NetworkAnalystServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this, analystResult;
         result = Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {

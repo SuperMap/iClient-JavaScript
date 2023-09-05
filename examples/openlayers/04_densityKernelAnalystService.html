@@ -21,7 +21,7 @@
         extent: extent,
         units: 'm'
     });
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
@@ -56,7 +56,7 @@
             resultGridName: "KernelDensity_Result",
             deleteExistResultDataset: true
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).densityAnalysis(densityAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).densityAnalysis(densityAnalystParameters).then(function (serviceResult) {
             densityAnalystResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();

@@ -111,7 +111,7 @@
                 attributeField: $('#attributeField').val(),
                 statisticModes: $('#statisticModes').val()
             });
-            processingService.addSummaryAttributesJob(summaryAttributesJobsParameter, function (serviceResult) {
+            processingService.addSummaryAttributesJob(summaryAttributesJobsParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error;
@@ -129,7 +129,7 @@
                             datasetNames: ["UntitledDatasource:analystResult"]
                         });
                         new ol.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam,
-                            function (serviceResult) {
+                            ).then(function (serviceResult) {
                                 result = serviceResult.result.features.features;
                                 var names = [];
                                 var data1 = [];

@@ -72,11 +72,13 @@ export class GetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @function GetLayersInfoService.prototype.serviceProcessCompleted
-     * @description 编辑完成，执行此方法。
+     * @function GetLayersInfoService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this, existRes, layers, len;
         result = Util.transformResult(result);
         existRes = !!result && result.length > 0;

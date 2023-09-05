@@ -33,7 +33,7 @@ export class LayerInfoService extends ServiceBase {
     /**
      * @function LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getLayersInfo(callback) {
@@ -44,7 +44,7 @@ export class LayerInfoService extends ServiceBase {
      * @function LayerInfoService.prototype.getLayersLegendInfo
      * @description 获取地图的图例信息。
      * @version 11.1.1
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getLayersLegendInfo(params, callback) {
@@ -55,7 +55,7 @@ export class LayerInfoService extends ServiceBase {
      * @function LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
      * @param {SetLayerInfoParameters} params - 设置图层信息参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setLayerInfo(params, callback) {
@@ -66,7 +66,7 @@ export class LayerInfoService extends ServiceBase {
      * @function LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
      * @param {SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setLayersInfo(params, callback) {
@@ -77,7 +77,7 @@ export class LayerInfoService extends ServiceBase {
      * @function LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SetLayerStatusParameters} params - 子图层显示控制参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setLayerStatus(params, callback) {

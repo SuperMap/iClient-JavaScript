@@ -97,18 +97,6 @@
             Y: y
         });
 
-        // new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-        //     if (!serviceResult.result) {
-        //         return;
-        //     }
-        //     var result = serviceResult.result;
-        //     var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + result.column + "<br>";
-        //     innerHTML += "row: " + result.row + "<br>";
-        //     innerHTML += "value: " + result.value + "<br>";
-        //     content.innerHTML = innerHTML;
-        //     overlay.setPosition([evt.coordinate[0], evt.coordinate[1]]);
-        // });
-
         new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam).then(function (serviceResult) {
             if (!serviceResult.result) {
                 return;

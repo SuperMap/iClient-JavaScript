@@ -28,7 +28,7 @@
                 2.调用 ol.supermap.viewOptionsFromMapJSON 获取地图视图参数
                 3.调用 ol.Map 创建地图
                 4.调用 ol.layer.Tile 与 ol.source.TileSuperMapRest 创建底图
-      new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+      new ol.supermap.MapService(url).getMapInfo().then(function (serviceResult) {
           var mapObj = serviceResult.result;
           var map = new ol.Map({
               target: 'map',

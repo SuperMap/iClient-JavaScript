@@ -23,7 +23,7 @@ export class GeoprocessingService extends CommonServiceBase {
     /**
      * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTools(callback) {
@@ -33,7 +33,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @function GeoprocessingService.prototype.getTool
      * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTool(identifier, callback) {
@@ -45,7 +45,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     execute(identifier, parameter, environment, callback) {
@@ -60,7 +60,7 @@ export class GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environments - 处理自动化工具的环境参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     submitJob(identifier, parameter, environments, callback) {
@@ -82,7 +82,7 @@ export class GeoprocessingService extends CommonServiceBase {
     waitForJobCompletion(jobId, identifier, options, callback) {
         const me = this;
         const timer = setInterval(function () {
-            const serviceProcessCompleted = function (serverResult) {
+            const transformResult = function (serverResult) {
                 const state = serverResult.result.state.runState;
                 if (serverResult.options.statusCallback) {
                     serverResult.options.statusCallback(state);
@@ -92,7 +92,7 @@ export class GeoprocessingService extends CommonServiceBase {
                   callback(serverResult);
                 }
             };
-            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, callback: serviceProcessCompleted });
+            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, callback: transformResult });
         }, options.interval);
     }
 

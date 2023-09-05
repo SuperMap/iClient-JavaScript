@@ -51,7 +51,7 @@ export class SetLayerStatusService extends CommonServiceBase {
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务{@link SetLayerStatusParameters}
      *                          返回图层信息，然后对其属性进行修改来获取。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
@@ -100,7 +100,7 @@ export class SetLayerStatusService extends CommonServiceBase {
     /**
      * @function SetLayerStatusService.prototype.createTempLayerComplete
      * @description 设置完成，执行此方法。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {Object} result - 服务器返回的结果对象，记录设置操作是否成功。
      * @returns {Promise} Promise 对象。
      */
@@ -130,11 +130,13 @@ export class SetLayerStatusService extends CommonServiceBase {
     }
 
     /**
-     * @function SetLayerStatusService.prototype.setLayerCompleted
-     * @description 设置完成，执行此方法。
+     * @function SetLayerStatusService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象，记录设置操作是否成功。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
       var me = this;
       result = Util.transformResult(result);
       if (result != null && me.lastparams != null && me.lastparams.resourceID != null) {

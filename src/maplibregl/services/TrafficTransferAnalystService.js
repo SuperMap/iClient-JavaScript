@@ -36,7 +36,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @function TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
      * @param {StopQueryParameters} params - 站点查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     queryStop(params, callback) {
@@ -47,7 +47,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @function TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
      * @param {TransferPathParameters} params - 交通换乘线路查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     analysisTransferPath(params, callback) {
@@ -58,7 +58,7 @@ export class TrafficTransferAnalystService extends ServiceBase {
      * @function TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
      * @param {TransferSolutionParameters} params - 交通换乘方案查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     analysisTransferSolution(params, callback) {

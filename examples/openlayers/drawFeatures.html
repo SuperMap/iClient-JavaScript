@@ -3,167 +3,95 @@
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
     <title data-i18n="resources.title_drawFeatures"></title>
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
-      .ol-popup {
-        position: absolute;
-        top: 50px;
-        right: 20px;
-      }
+        .ol-popup {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+        }
     </style>
-  </head>
-  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
-    <div id="map" style="width: 100%; height: 100%"></div>
-    <div id="popup" class="ol-popup">
-      <div class="btn-group" role="group" aria-label="...">
-        <button
-          id="drawPoint"
-          value="Point"
-          type="button"
-          class="btn btn-default"
-          data-i18n="resources.text_input_value_drawPoint"
-        ></button>
-        <button
-          id="drawLine"
-          value="LineString"
-          type="button"
-          class="btn btn-default"
-          data-i18n="resources.text_input_value_drawLine"
-        ></button>
-        <button
-          id="drawPolygon"
-          value="Polygon"
-          type="button"
-          class="btn btn-default"
-          data-i18n="resources.text_input_value_drawPolygon"
-        ></button>
-        <button
-          id="drawCircle"
-          value="Circle"
-          type="button"
-          class="btn btn-default"
-          data-i18n="resources.btn_drawCircle"
-        ></button>
-        <button id="none" value="None" type="button" class="btn btn-default" data-i18n="resources.btn_notDraw"></button>
-        <button
-          id="clear"
-          value="Clear"
-          type="button"
-          class="btn btn-default"
-          data-i18n="resources.text_input_value_clear"
-        ></button>
-      </div>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="popup" class="ol-popup">
+    <div class="btn-group" role="group" aria-label="...">
+        <button id="drawPoint" value='Point' type="button" class="btn btn-default" data-i18n="resources.text_input_value_drawPoint"></button>
+        <button id="drawLine" value='LineString' type="button" class="btn btn-default" data-i18n="resources.text_input_value_drawLine"></button>
+        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default" data-i18n="resources.text_input_value_drawPolygon"></button>
+        <button id="drawCircle" value='Circle' type="button" class="btn btn-default" data-i18n="resources.btn_drawCircle"></button>
+        <button id="none" value='None' type="button" class="btn btn-default" data-i18n="resources.btn_notDraw"></button>
+        <button id="clear" value='Clear' type="button" class="btn btn-default" data-i18n="resources.text_input_value_clear"></button>
     </div>
-    <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript">
-      var map,
-        draw,
-        url =
-          (window.isLocal ? window.server : 'http://172.16.14.44:8090') +
-          '/iserver/services/map-china400/rest/maps/China';
-      map = new ol.Map({
+</div>
+<script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript">
+    var map, draw,
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China";
+    map = new ol.Map({
         target: 'map',
-        wrapX: true,
-        controls: ol.control
-          .defaults({ attributionOptions: { collapsed: false } })
-          .extend([new ol.supermap.control.Logo({ link: 'https://iclient.supermap.io' })]),
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
-          center: [12957388, 4853991],
-          zoom: 1,
-          projection: 'EPSG:3857',
-          multiWorld: true
+            center: [12957388, 4853991],
+            zoom: 4,
+            projection: 'EPSG:3857',
+            multiWorld: true
         })
-      });
-      var layer = new ol.layer.Tile({
+    });
+    var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
-          url: url,
-          wrapX: true
+            url: url,
+            wrapX: true
         }),
         projection: 'EPSG:3857'
-      });
-      var source = new ol.source.Vector({ wrapX: true, useSpatialIndex: false });
-      var vector = new ol.layer.Vector({
-        renderBuffer: 100000,
+    });
+    var source = new ol.source.Vector({wrapX: false});
+    var vector = new ol.layer.Vector({
         source: source
-      });
-      map.addLayer(layer);
-      map.addLayer(vector);
-      var info = new ol.control.Control({ element: document.getElementById('popup') });
-      info.setMap(map);
-      map.addControl(info);
+    });
+    map.addLayer(layer);
+    map.addLayer(vector);
+    var info = new ol.control.Control({element: document.getElementById('popup')});
+    info.setMap(map);
+    map.addControl(info);
 
-      var buttons = $('.btn-group').children();
-      buttons.map(function (key) {
+    var buttons = $('.btn-group').children();
+    buttons.map(function (key) {
         var value = buttons[key].value;
         if (value === 'None') {
-          $(buttons[key]).on('click', function () {
-            clearInteraction();
-          });
-          return;
+            $(buttons[key]).on('click', function () {
+                clearInteraction();
+            });
+            return;
         }
         if (value === 'Clear') {
-          $(buttons[key]).on('click', function () {
-            clearInteraction();
-            source.clear();
-          });
-          return;
+            $(buttons[key]).on('click', function () {
+                clearInteraction();
+                source.clear();
+            });
+            return;
         }
         $(buttons[key]).on('click', function () {
-          clearInteraction();
-          draw = new ol.interaction.Draw({
-            source: source,
-            type: buttons[key].value,
-            snapTolerance: 20,
-            geometryFunction: function(coord, geometry, projection) {
-              let newGeometry = coord.map((coordinate) => {
-                return wrapX(coordinate, projection)
-              });
-              if (geometry) {
-                geometry.setCoordinates(newGeometry, this.geometryLayout_);
-              } else {
-                geometry = new ol.geom.LineString(newGeometry, 'XY');
-              }
-              return geometry;
-            },
-            wrapX: true
-          });
-          map.addInteraction(draw);
+            clearInteraction();
+            draw = new ol.interaction.Draw({
+                source: source,
+                type: buttons[key].value,
+                snapTolerance: 20
+            });
+            map.addInteraction(draw);
         });
-      });
+    });
 
-      function clearInteraction() {
+    function clearInteraction() {
         if (draw) {
-          map.removeInteraction(draw);
+            map.removeInteraction(draw);
         }
-      }
+    }
 
-      function wrapX(coordinate, projection) {
-        if (projection.canWrapX()) {
-          const worldWidth = getWidth(projection.getExtent());
-          const worldsAway = getWorldsAway(coordinate, projection, worldWidth);
-          if (worldsAway) {
-            coordinate[0] -= worldsAway * worldWidth;
-          }
-        }
-        return coordinate;
-      }
-
-      function getWorldsAway(coordinate, projection, sourceExtentWidth) {
-        const projectionExtent = projection.getExtent();
-        let worldsAway = 0;
-        if (projection.canWrapX() && (coordinate[0] < projectionExtent[0] || coordinate[0] > projectionExtent[2])) {
-          sourceExtentWidth = sourceExtentWidth || getWidth(projectionExtent);
-          worldsAway = Math.floor((coordinate[0] - projectionExtent[0]) / sourceExtentWidth);
-        }
-        return worldsAway;
-      }
-
-      function getWidth(extent) {
-        return extent[2] - extent[0];
-      }
-    </script>
-  </body>
+</script>
+</body>
 </html>

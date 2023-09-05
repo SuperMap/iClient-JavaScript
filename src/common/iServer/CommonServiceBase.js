@@ -2,10 +2,12 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { FetchRequest } from '../util/FetchRequest';
+import { Events } from '../commontypes/Events';
 import { SecurityManager } from '../security/SecurityManager';
 import { Util } from '../commontypes/Util';
 import { JSONFormat } from '../format/JSON';
 import {DataFormat} from '../REST';
+import { FunctionExt } from '../commontypes/BaseTypes';
 
 /**
  * @class CommonServiceBase
@@ -23,6 +25,12 @@ import {DataFormat} from '../REST';
 export class CommonServiceBase {
     constructor(url, options) {
         let me = this;
+
+        this.EVENT_TYPES = ['processCompleted', 'processFailed'];
+
+        this.events = null;
+
+        this.eventListeners = null;
 
         this.url = null;
 
@@ -69,6 +77,11 @@ export class CommonServiceBase {
 
         me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
+        me.events = new Events(me, null, me.EVENT_TYPES, true);
+        if (me.eventListeners instanceof Object) {
+            me.events.on(me.eventListeners);
+        }
+
         this.CLASS_NAME = 'SuperMap.CommonServiceBase';
     }
 
@@ -86,6 +99,14 @@ export class CommonServiceBase {
         }
         me.url = null;
         me.isInTheSameDomain = null;
+        me.EVENT_TYPES = null;
+        if (me.events) {
+            me.events.destroy();
+            me.events = null;
+        }
+        if (me.eventListeners) {
+            me.eventListeners = null;
+        }
     }
 
     /**
@@ -105,7 +126,15 @@ export class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
-        const format = options.scope.format;
+        let format = options.scope.format;
+        // 兼容 callback 未传，dataFormat 传入的情况
+        if (typeof options.success === 'string') {
+          options.scope.format = options.success;
+          format = options.success;
+          options.success = null;
+          options.failure = null;
+        }
+       
         if (format && !this.supportDataFormat(format)) {
           throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
         }
@@ -191,26 +220,61 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function CommonServiceBase.prototype.serviceProcessCompleted
-     * @description 状态完成，执行此方法。
+     * @function CommonServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      * @private
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         result = Util.transformResult(result);
         return { result, options };
+    }
+
+    /**
+     * @function CommonServiceBase.prototype.transformErrorResult
+     * @description 状态失败时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
+     */
+    transformErrorResult(result, options) {
+        result = Util.transformResult(result);
+        let error = result.error || result;
+        return { error, options };
+    }
+
+    /**
+    * @function CommonServiceBase.prototype.serviceProcessCompleted
+    * @description 状态完成，执行此方法。
+    * @param {Object} result - 服务器返回的结果对象。
+    * @param {Object} options - 请求参数对象。
+    * @private
+    */
+    serviceProcessCompleted(result, options) {
+        result = Util.transformResult(result);
+        this.events.triggerEvent('processCompleted', {
+            result: result,
+            options: options
+        });
     }
 
     /**
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。对象
      * @private
      */
     serviceProcessFailed(result, options) {
-        result = Util.transformResult(result);
-        let error = result.error || result;
-        return { error, options };
+      result = Util.transformResult(result);
+      let error = result.error || result;
+      this.events.triggerEvent('processFailed', {
+          error: error,
+          options: options
+      });
     }
 
     _returnContent(options) {
@@ -296,14 +360,25 @@ export class CommonServiceBase {
                   object: this
                 };
                 if (requestResult.error) {
-                    response = {...response, ...this.serviceProcessFailed(requestResult, options)};
+                  // 兼容服务在构造函数中使用 eventListeners 的老用法
+                  if (options.failure === this.serviceProcessFailed) {
+                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
+                    failure(requestResult, options);
+                  } else {
+                    response = {...response, ...this.transformErrorResult(requestResult, options)};
                     response.type = 'processFailed';
                     options.failure && options.failure(response);
+                  }
                 } else {
+                  if (options.success === this.serviceProcessCompleted) {
+                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
+                    success(requestResult, options);
+                  } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-                    response = {...response, ...this.serviceProcessCompleted(requestResult, options)};
+                    response = {...response, ...this.transformResult(requestResult, options)};
                     response.type = 'processCompleted';
                     options.success && options.success(response);
+                  }
                 }
                 return response;
             });
@@ -324,4 +399,5 @@ export class CommonServiceBase {
  * @param {Object} serviceResult.result 服务器返回结果。
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
+ * @param {Object} serviceResult.options 请求参数。
  */

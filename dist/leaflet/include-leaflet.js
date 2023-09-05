@@ -60,8 +60,8 @@
           inputScript(libsurl + '/leaflet/1.9.4/leaflet.js');
         }
         if (inArray(includes, 'mapbox-gl-enhance')) {
-            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.css');
-            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.0-1/mapbox-gl-enhance.js');
+            inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.css');
+            inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-3/mapbox-gl-enhance.js');
         }
         if (inArray(includes, 'leaflet.heat')) {
             inputScript(libsurl + '/leaflet/plugins/leaflet.heat/leaflet-heat.js');
@@ -149,9 +149,9 @@
         if (inArray(includes, 'iclient-plot-leaflet')) {
             inputCSS(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet.css');
             if (supportES6()) {
-                inputScript(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet-es6.min.js');
+                inputScript(libsurl + '/plotting/leaflet/11.1.1/iclient-plot-leaflet-es6.min.js');
             } else {
-                inputScript(libsurl + '/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js');
+                inputScript(libsurl + '/plotting/leaflet/11.1.1/iclient-plot-leaflet.min.js');
             }
         }
         if (inArray(includes, 'ant-design-vue')) {

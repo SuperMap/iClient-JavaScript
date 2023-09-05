@@ -76,7 +76,6 @@
 
         new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
             getFeatureBySQLParams,
-            null,
             mapboxgl.supermap.DataFormat.GEOJSON
             ).then(processCompleted);
     }

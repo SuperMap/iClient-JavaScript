@@ -66,7 +66,7 @@
     //获取子图层信息
     function showLayersInfo() {
         var subLayer;
-        new ol.supermap.LayerInfoService(mapURL).getLayersInfo(function (serviceResult) {
+        new ol.supermap.LayerInfoService(mapURL).getLayersInfo().then(function (serviceResult) {
             var layers = serviceResult.result.subLayers.layers;
             if (!layers) return;
             for (var i = 0, len = layers.length; i < len; i++) {

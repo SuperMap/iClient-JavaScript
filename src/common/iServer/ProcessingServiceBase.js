@@ -50,7 +50,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
      * @function ProcessingServiceBase.prototype.getJobs
      * @description 获取分布式分析任务。
      * @param {string} url - 资源地址。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getJobs(url, callback) {
@@ -77,8 +77,8 @@ export class ProcessingServiceBase extends CommonServiceBase {
      * @param {Object} params - 创建一个空间分析的请求参数。
      * @param {string} paramType - 请求参数类型。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
-     * @param {RequestCallback} processRunningCallback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
      * @returns {Promise} Promise 对象。
      */
     addJob(url, params, paramType, seconds, callback, processRunningCallback) {
@@ -102,16 +102,16 @@ export class ProcessingServiceBase extends CommonServiceBase {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
-                return me.serviceProcessCompleted(result, seconds, callback, processRunningCallback);
+                return me.transformResult(result, seconds, callback, processRunningCallback);
             } else {
-              result = me.serviceProcessFailed(result);
+              result = me.transformErrorResult(result);
               result.options = me;
               result.type = 'processFailed';
               callback(result);
               return result;
             }
         }).catch(function (e) {
-            e = me.serviceProcessFailed({ error: e });
+            e = me.transformErrorResult({ error: e });
             e.options = me;
             e.type = 'processFailed';
             callback(e);
@@ -119,7 +119,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
         });
     }
 
-    serviceProcessCompleted(result, seconds, callback, processRunningCallback) {
+    transformResult(result, seconds, callback, processRunningCallback) {
         result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;

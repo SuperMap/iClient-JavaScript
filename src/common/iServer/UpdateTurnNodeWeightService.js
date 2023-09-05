@@ -38,7 +38,7 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
      * @function UpdateTurnNodeWeightService.prototype.processAsync
      * @description 开始异步执行转向耗费权重的更新
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      * @example
      * (code)

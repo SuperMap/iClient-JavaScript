@@ -45,7 +45,7 @@ export class ChartFeatureInfoSpecsService extends CommonServiceBase {
      *              事件。用可以通过户两种方式获取图层信息:
      *              1. 通过 AsyncResponder 类获取（推荐使用）；
      *              2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(callback) {

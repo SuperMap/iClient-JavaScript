@@ -41,6 +41,7 @@
      /**
       * @function TraceAnalystService.prototype.processAsync
       * @description 负责将客户端的查询参数传递到服务端。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {TraceAnalystParameters} params - 上游/下游追踪分析参数类。
       */
      processAsync(params, callback) {

@@ -33,6 +33,7 @@ import './maplibregl/services/TerrainAspectCalculateSpec.js';
 import './maplibregl/services/TerrainSlopeCalculateSpec.js';
 import './maplibregl/services/TerrainCutFillCalculateSpec.js';
 import './maplibregl/services/MinDistanceAnalysisSpec.js';
+import './maplibregl/services/ConvexHullAnalysisSpec.js';
 import './maplibregl/services/ThemeServiceSpec.js';
 import './maplibregl/services/ThiessenAnalysisSpec.js';
 import './maplibregl/services/TrafficTransferAnalystServiceSpec.js';

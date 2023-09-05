@@ -47,7 +47,7 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
     /**
      * @function FindTSPPathsService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
      * @returns {Promise} Promise 对象。
      */

@@ -35,7 +35,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析所有任务
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJobs(callback) {
@@ -46,7 +46,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJob
      * @description 获取指定id的拓扑检查分析服务
      * @param {string} id - 指定要获取数据的id
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJob(id, callback) {
@@ -58,7 +58,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @description 新建拓扑检查分析服务
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
      * @param {number} seconds -创建成功结果的时间间隔。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     addTopologyValidatorJob(params, seconds, callback, processRunningCallback) {

@@ -61,7 +61,7 @@
             deleteExistResultDataset: true
         });
         //向iServer发起地形曲率计算请求
-        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters).then(function (serviceResult) {
             terrainCurvatureCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();

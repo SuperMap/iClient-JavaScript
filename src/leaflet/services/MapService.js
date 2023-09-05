@@ -46,7 +46,7 @@ export var MapService = ServiceBase.extend({
     /**
      * @function  MapService.prototype.getMapInfo
      * @description 获取地图信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getMapInfo: function (callback) {
@@ -64,7 +64,7 @@ export var MapService = ServiceBase.extend({
     /**
      * @function  MapService.prototype.getWKT
      * @description 获取WKT。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getWKT(callback) {
@@ -83,7 +83,7 @@ export var MapService = ServiceBase.extend({
     /**
      * @function  MapService.prototype.getTilesets
      * @description 获取切片列表信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getTilesets: function (callback) {

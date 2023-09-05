@@ -80,7 +80,7 @@
         });
         //创建表面分析服务实例
         surfaceAnalystService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
-        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, null, 'FGB').then(function (surfaceAnalystServiceResult) {
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, 'FGB').then(function (surfaceAnalystServiceResult) {
             var FGBLayer = new mapboxgl.supermap.FGBLayer({
               url: surfaceAnalystServiceResult.result.newResourceLocation,
               featureLoader: function(feature) {

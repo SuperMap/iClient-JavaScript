@@ -79,7 +79,7 @@ export class QueryServiceBase extends CommonServiceBase {
      * @function QueryService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {QueryParameters} params - 查询参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
@@ -102,20 +102,22 @@ export class QueryServiceBase extends CommonServiceBase {
         }
         me.returnFeatureWithFieldCaption = params.returnFeatureWithFieldCaption;
         return me.request({
-            method: "POST",
-            data: jsonParameters,
-            scope: me,
-            success: callback,
-            failure: callback
+          method: "POST",
+          data: jsonParameters,
+          scope: me,
+          success: callback,
+          failure: callback
         });
     }
 
     /**
-     * @function QueryService.prototype.serviceProcessCompleted
-     * @description 查询完成，执行此方法。
+     * @function QueryService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util.transformResult(result);
         var geoJSONFormat = new GeoJSON();

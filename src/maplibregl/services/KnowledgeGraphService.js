@@ -32,7 +32,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} cypherQuery - 查询条件。
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   query(cypherQuery, callback) {
@@ -42,7 +42,7 @@ export class KnowledgeGraphService extends ServiceBase {
   // /**
   //  * @function KnowledgeGraphService.prototype.getMetaData
   //  * @description 获取元信息（展示所有实体类型和关系类型）。
-  //  * @param {RequestCallback} callback 回调函数。
+  //  * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
   //  */
   // getMetaData(callback) {
   //   this._knowledgeGraphService.getMetaData(callback);
@@ -51,7 +51,7 @@ export class KnowledgeGraphService extends ServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getGraphMaps(callback) {
@@ -62,7 +62,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @function KnowledgeGraphService.prototype.getGraphMap
    * @description 获取图谱图序列化数据。
    * @param {string} params 图谱名称。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getGraphMap(params, callback) {

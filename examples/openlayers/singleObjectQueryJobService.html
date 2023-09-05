@@ -214,7 +214,7 @@
                 geometryQuery: points,
                 mode: $('#mode option:selected').attr('value')
             });
-            processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
+            processingService.addQueryJob(singleObjectQueryJobsParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -228,7 +228,7 @@
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                            new ol.supermap.MapService(mapUrl).getMapInfo().then(function (mapInfo) {
                                 layer = new ol.layer.Tile({
                                     source: new ol.source.ImageSuperMapRest(ol.source
                                         .ImageSuperMapRest.optionsFromMapJSON(

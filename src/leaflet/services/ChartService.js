@@ -38,7 +38,7 @@ export var ChartService = ServiceBase.extend({
      * @function ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param {ChartQueryParameters} params - 海图查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -50,7 +50,7 @@ export var ChartService = ServiceBase.extend({
     /**
      * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getChartFeatureInfo: function (callback) {

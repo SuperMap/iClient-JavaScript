@@ -67,7 +67,7 @@
             attributeFilter: "SMID = 100"
           }
         });
-        new L.supermap.QueryService(baseUrl).queryBySQL(param, function (serviceResult) {
+        new L.supermap.QueryService(baseUrl).queryBySQL(param).then(function (serviceResult) {
           var resultFeatures = serviceResult.result.recordsets[0].features;
           vectorLayer = L.geoJSON(resultFeatures,{
             style: function (feature) {
@@ -87,9 +87,9 @@
             edgeIDs:[100],
             connected: isConnected
         });
-        new L.supermap.NetworkAnalystService(serviceUrl).connectedEdgesAnalyst(connectedEdgesAnalystParameters, function (serviceResult) {
+        new L.supermap.NetworkAnalystService(serviceUrl).connectedEdgesAnalyst(connectedEdgesAnalystParameters).then(function (serviceResult) {
           resultLayer = L.geoJSON(serviceResult.result.edgesFeatures).addTo(map);
-        })
+        });
     }
     //移除结果图层
     function removeLayer() {

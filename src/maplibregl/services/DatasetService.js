@@ -41,7 +41,7 @@ export class DatasetService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      */
     getDatasets(datasourceName, callback) {
       if (!datasourceName) {
@@ -59,7 +59,7 @@ export class DatasetService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      */
     getDataset(datasourceName, datasetName, callback) {
       if (!datasourceName || !datasetName) {
@@ -76,7 +76,7 @@ export class DatasetService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters|UpdateDatasetParameters} params - 数据集创建参数类或数据集信息更改参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      */
     setDataset(params, callback) {
       if(!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)){
@@ -109,7 +109,7 @@ export class DatasetService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      */
     deleteDataset(datasourceName, datasetName, callback) {
       return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);

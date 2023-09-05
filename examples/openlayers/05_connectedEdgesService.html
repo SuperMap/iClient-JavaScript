@@ -79,7 +79,7 @@
               attributeFilter: "SMID = 100"
           }
         });
-        new ol.supermap.QueryService(baseUrl).queryBySQL(param, function (serviceResult) {
+        new ol.supermap.QueryService(baseUrl).queryBySQL(param).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false
@@ -104,7 +104,7 @@
             edgeIDs:[100],
             connected: isConnected
         });
-        new ol.supermap.NetworkAnalystService(serviceUrl).connectedEdgesAnalyst(connectedEdgesAnalystParameters, function (serviceResult) {
+        new ol.supermap.NetworkAnalystService(serviceUrl).connectedEdgesAnalyst(connectedEdgesAnalystParameters).then(function (serviceResult) {
             var connectedEdgesSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.edgesFeatures)
             });

@@ -75,6 +75,7 @@ import './leaflet/services/TerrainAspectCalculateSpec.js';
 import './leaflet/services/TerrainSlopeCalculateSpec.js';
 import './leaflet/services/TerrainCutFillCalculateSpec.js';
 import './leaflet/services/MinDistanceAnalysisSpec.js';
+import './leaflet/services/ConvexHullAnalysisSpec.js';
 import './leaflet/services/ThemeServiceSpec.js';
 import './leaflet/services/ThiessenAnalysisSpec.js';
 import './leaflet/services/TrafficTransferAnalystServiceSpec.js';

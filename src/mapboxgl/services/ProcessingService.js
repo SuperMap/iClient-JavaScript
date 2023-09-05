@@ -35,7 +35,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -47,7 +47,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getKernelDensityJob
      * @description 获取某个密度分析。
      * @param {string} id - 空间分析的ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -59,7 +59,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addKernelDensityJob
      * @description 密度分析。
      * @param {KernelDensityJobParameter} params -密度分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -82,7 +82,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -94,7 +94,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getSummaryMeshJob
      * @description 获取某个点聚合分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -106,7 +106,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addSummaryMeshJob
      * @description 点聚合分析。
      * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -129,7 +129,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -141,7 +141,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getQueryJob
      * @description 获取某个单对象查询分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -153,7 +153,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addQueryJob
      * @description 单对象查询分析。
      * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -176,7 +176,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -188,7 +188,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某个区域汇总分析。
      * @param {string} id - 区域汇总分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -200,7 +200,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addSummaryRegionJob
      * @description 区域汇总分析。
      * @param {SummaryRegionJobParameter} params - 区域汇总分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -223,7 +223,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -235,7 +235,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getVectorClipJob
      * @description 获取某个矢量裁剪分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -247,7 +247,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addVectorClipJob
      * @description 矢量裁剪分析。
      * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -270,7 +270,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -282,7 +282,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getOverlayGeoJob
      * @description 获取某个叠加分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -294,7 +294,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addOverlayGeoJob
      * @description 叠加分析。
      * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -317,7 +317,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -329,7 +329,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getBuffersJob
      * @description 获取某个缓冲区分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -341,7 +341,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addBuffersJob
      * @description 缓冲区分析。
      * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} seconds - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -364,7 +364,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -376,7 +376,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取某个拓扑检查分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -388,7 +388,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addTopologyValidatorJob
      * @description 拓扑检查分析。
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -411,7 +411,7 @@ export class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -423,7 +423,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取某个属性汇总分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -435,7 +435,7 @@ export class ProcessingService extends ServiceBase {
      * @function ProcessingService.prototype.addSummaryAttributesJob
      * @description 属性汇总分析。
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。

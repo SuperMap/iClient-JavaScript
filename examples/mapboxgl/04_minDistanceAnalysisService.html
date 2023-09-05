@@ -78,7 +78,7 @@
           minDistance:0,
           maxDistance:-1,
       });
-      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters, function (serviceResult) {
+      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters).then(function (serviceResult) {
           var minDistanceAnalystResult = serviceResult.result.distanceResults
           var referenceIds = minDistanceAnalystResult[0].referenceGeometryIDs
           addPathLine(referenceIds)
@@ -106,7 +106,7 @@
               attributeFilter: "SMID >= 0 "
           }
       });
-      new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(sqlParam, function (serviceResult) {
+      new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(sqlParam).then(function (serviceResult) {
         map.addLayer({
           "id": "Neighbor",
           "type": "circle",
@@ -135,7 +135,7 @@
               attributeFilter: "SMID IN " + referenceIdsStr
           }
       });
-      new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(sqlParam, function (serviceResult) {
+      new mapboxgl.supermap.QueryService(dataUrl).queryBySQL(sqlParam).then(function (serviceResult) {
         var resFrature = serviceResult.result.recordsets[0].features;
         var routeSource = {
           type: 'geojson',

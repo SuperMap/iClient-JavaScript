@@ -41,7 +41,7 @@ export class ThemeService extends ServiceBase {
      * @function ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息。
      * @param {ThemeParameters} params - 专题图参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getThemeInfo(params, callback) {

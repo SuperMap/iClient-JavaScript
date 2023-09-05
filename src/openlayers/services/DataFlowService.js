@@ -32,7 +32,18 @@ export class DataFlowService extends ServiceBase {
             options.prjCoordSys = options.projection;
         }
         super(url, options);
-        this.dataFlow = new DataFlow(url, options, this._defaultEvent.bind(this));
+        this.dataFlow = new DataFlow(url, options);
+        this.dataFlow.events.on({
+            "broadcastSocketConnected": this._defaultEvent,
+            "broadcastSocketError": this._defaultEvent,
+            "broadcastFailed": this._defaultEvent,
+            "broadcastSucceeded": this._defaultEvent,
+            "subscribeSocketConnected": this._defaultEvent,
+            "subscribeSocketError": this._defaultEvent,
+            "messageSucceeded": this._defaultEvent,
+            "setFilterParamSucceeded": this._defaultEvent,
+            scope: this
+        });
     }
 
     /**

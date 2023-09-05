@@ -569,6 +569,13 @@ var exampleConfig = {
                       fileName: 'knowledgeGraphMap'
                   },
                   {
+                    name: '不动产图谱-样式',
+                    name_en: 'Real Estate GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap2.png',
+                    fileName: 'knowledgeGraphMap2'
+                  },
+                  {
                     name: '河流流经省份图谱',
                     name_en: 'Rivers flowing through provinces GraphMap',
                     version: '11.1.0',

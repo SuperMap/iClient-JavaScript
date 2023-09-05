@@ -24,7 +24,7 @@
     });
     new L.supermap.TiledMapLayer(url).addTo(map);
     circleMarker = L.circleMarker([30, 104], {color: 'red'}).addTo(map);
-    circleMarker.bindPopup('distance = 10').openPopup();
+    circleMarker.bindPopup('distance = 10',{closeOnClick:false}).openPopup();
     query();
 
     function query() {

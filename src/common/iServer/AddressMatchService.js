@@ -35,7 +35,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @function AddressMatchService.prototype.code
      * @param {string} url - 正向地址匹配服务地址。
      * @param {GeoCodingParameter} params - 正向地址匹配服务参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     code(url, params, callback) {
@@ -49,7 +49,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @function AddressMatchService.prototype.decode
      * @param {string} url - 反向地址匹配服务地址。
      * @param {GeoDecodingParameter} params - 反向地址匹配服务参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     decode(url, params, callback) {
@@ -64,7 +64,7 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param {string} url - 服务地址。
      * @param {Object} params - 参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
 
@@ -79,11 +79,13 @@ export class AddressMatchService extends CommonServiceBase {
       });
     }
     /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
+     * @function AddressMatchService.prototype.transformResult
      * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否完成
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @description 状态完成时转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }

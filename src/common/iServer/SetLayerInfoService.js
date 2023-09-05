@@ -43,7 +43,7 @@ export class SetLayerInfoService extends CommonServiceBase {
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。
      *        该参数可以使用获取图层信息服务<{@link GetLayersInfoService}>返回图层信息，解析结果result.subLayers.layers[i]，然后对其属性进行修改来获取。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {

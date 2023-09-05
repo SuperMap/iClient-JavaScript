@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-classic",
   "description": "",
-  "version": "11.1.1-dev",
+  "version": "11.1.1",
   "keywords": [
     "SuperMap"
   ],
@@ -15,6 +15,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "mapv": "2.0.62",
-    "@supermap/iclient-common": "11.1.1-dev"
+    "@supermap/iclient-common": "11.1.1"
   }
 }

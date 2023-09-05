@@ -30,7 +30,7 @@ export class MeasureService extends ServiceBase {
      * @function MeasureService.prototype.measureDistance
      * @description 测距。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     measureDistance(params, callback) {
@@ -41,7 +41,7 @@ export class MeasureService extends ServiceBase {
      * @function MeasureService.prototype.measureArea
      * @description 测面积。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     measureArea(params, callback) {
@@ -53,7 +53,7 @@ export class MeasureService extends ServiceBase {
      * @description 测量。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 类型。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     measure(params, type, callback) {

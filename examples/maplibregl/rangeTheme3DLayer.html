@@ -76,9 +76,8 @@
 
         new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
             getFeatureBySQLParams,
-            processCompleted,
             maplibregl.supermap.DataFormat.GEOJSON
-            );
+            ).then(processCompleted);
     }
 
     function processCompleted(serviceResult) {

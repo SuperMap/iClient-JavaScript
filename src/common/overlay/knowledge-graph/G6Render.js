@@ -128,7 +128,7 @@ export class G6Render {
       style: {
         endArrow: {
           path: 'M 0,0 L 4,2 L 4,-2 Z',
-          fill: '#333'
+          fill: '#e0e0e0'
         },
         lineWidth: 0.5
       },
