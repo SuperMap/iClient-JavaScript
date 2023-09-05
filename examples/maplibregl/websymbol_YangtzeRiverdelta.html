@@ -20,7 +20,6 @@
       bottom: 0;
       width: 100%;
     }
-
   </style>
 </head>
 
@@ -31,7 +30,7 @@
   <script>
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var serverUrl =
-    host + "/iserver/services/map-YangtzeRiverDelta/restjsr/v1/vectortile/maps/长江三角洲发展结构图";
+      host + "/iserver/services/map-YangtzeRiverDelta/restjsr/v1/vectortile/maps/长江三角洲发展结构图";
     var map = new maplibregl.Map({
       container: "map",
       style: {
@@ -52,41 +51,6 @@
         31.426028827046886
       ]
     });
-
-    var loadSymbol = function (symbolId) {
-      return new Promise(function (resolve) {
-        map.loadSymbol(symbolId, function (error, symbol) {
-          if(error){
-            widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
-            resolve();
-          }
-          map.addSymbol(symbolId, symbol);
-          resolve();
-        });
-      });
-    };
-
-    // 批量加载符号
-    var loadSymbols = function () {
-      var symbols = [
-        "polygon-955463", //Frame
-        "polygon-955464", //Province_R
-        "polygon-955514", //SuHuZhe_R
-        "polygon-955441", //SuHuZheInsideBuffer
-        "polygon-955383", //SuHuZheBuffer2
-        "polygon-955453", //SuHuZheBuffer1
-        "line-962558", //直线
-        "line-964890", //省级行政区界线
-        "line-962614", //海岸线
-        "line-962475", //地级行政区界线
-        "line-964890", //省级行政区界线
-        "line-964890" //省级行政区界线
-      ];
-      var loadSymbolPromises = symbols.map(function (symbolId) {
-        return loadSymbol(symbolId);
-      });
-      return Promise.all(loadSymbolPromises);
-    };
 
     var createPolygonLayer = function (name, symbolId) {
       map.addLayer({
@@ -111,7 +75,7 @@
     // 三角洲发展结构图
     var createDevelopLayer = function () {
       map.loadSymbol("line-964890", function (error, newSymbol) {
-        if(error){
+        if (error) {
           widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
           return;
         }
@@ -246,14 +210,32 @@
 
     map.on("load", function () {
       // 配置基础路径
-      new maplibregl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
+      new maplibregl.supermap.WebSymbol().init({ basePath: window.exampleWebSymbolBasePath });
       var uploadedDataURL = "../data/yangtze-river-delta.json";
       $.get(uploadedDataURL, function (data) {
         map.addSource("sanjiaozhou", {
           type: "geojson",
           data: data,
         });
-        loadSymbols().then(function () {
+        // 批量加载Web符号
+        var symbolIds = [
+          "polygon-955463", //Frame
+          "polygon-955464", //Province_R
+          "polygon-955514", //SuHuZhe_R
+          "polygon-955441", //SuHuZheInsideBuffer
+          "polygon-955383", //SuHuZheBuffer2
+          "polygon-955453", //SuHuZheBuffer1
+          "line-962558", //直线
+          "line-964890", //省级行政区界线
+          "line-962614", //海岸线
+          "line-962475", //地级行政区界线
+          "line-964890", //省级行政区界线
+          "line-964890" //省级行政区界线
+        ];
+        map.loadSymbol(symbolIds, function (_error, symbols) {
+          symbols.forEach((symbol, index) => {
+            symbol && map.addSymbol(symbolIds[index], symbol);
+          });
           createPolygonLayer("Frame", "polygon-955463");
           createPolygonLayer("Province_R", "polygon-955464");
           createPolygonLayer("SuHuZhe_R", "polygon-955514");

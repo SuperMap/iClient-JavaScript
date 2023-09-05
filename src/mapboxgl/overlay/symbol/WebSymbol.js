@@ -21,7 +21,7 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 
 * 参数名称			     |类型			 |描述  
 * :----				|:---		    |:---	
-* id				    |string		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
+* id				    |string、string[]		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
 * callback			    |function		|在符号加载完成后调用，返回符号信息；如果有错误，则返回错误参数。
 * 
 * **Version:**
@@ -30,10 +30,19 @@ import MapExtendSymbol from './MapExtendSymbol';
 * 
 * **Example**
 * ```
+* // 加载单个Web符号
 * map.loadSymbol('point-1', (error, symbol) => {
 *       if (error) throw error;
 *       // Add the loaded symbol with the ID 'point-1'.
 *       map.addSymbol('point-1', symbol);
+* });
+*
+* // 加载多个Web符号
+* var symbolIds = ['point-1', 'point-2'];
+* map.loadSymbol(symbolIds, (error, symbols) => {
+*      symbols.forEach((symbol, index) => {
+*          symbol && map.addSymbol(symbolIds[index], symbol);
+*      })
 * });
 * ```
 * 

@@ -25,7 +25,6 @@
       width: 100%;
       height: 100%;
     }
-
   </style>
 </head>
 
@@ -67,39 +66,6 @@
       zoom: 7,
       crs: "EPSG:4326"
     });
-    var loadSymbol = function (symbolId) {
-      return new Promise(function (resolve) {
-        map.loadSymbol(symbolId, function (error, symbol) {
-          if (error) {
-            widgets.alert.showAlert(resources.msg_addFailed, false);
-            resolve();
-          }
-          map.addSymbol(symbolId, symbol);
-          resolve();
-        });
-      });
-    };
-    // 批量加载Web符号
-    var loadSymbols = function () {
-      var symbols = [
-        "polygon-955877",
-        "polygon-955872",
-        "polygon-955395",
-        "polygon-955451",
-        "polygon-955875",
-        "polygon-955549",
-        "polygon-955529",
-        "polygon-955548",
-        "polygon-955523",
-        "polygon-955537",
-        "polygon-955399",
-        "polygon-0"
-      ];
-      var loadSymbolPromises = symbols.map(function (symbolId) {
-        return loadSymbol(symbolId);
-      });
-      return Promise.all(loadSymbolPromises);
-    };
 
     // 添加土地利用图层
     var createLandUseLayer = function () {
@@ -139,8 +105,26 @@
 
     map.on("load", function () {
       // 配置基础路径
-      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
-      loadSymbols().then(function () {
+      new mapboxgl.supermap.WebSymbol().init({ basePath: window.exampleWebSymbolBasePath });
+      // 批量加载Web符号
+      var symbolIds = [
+        "polygon-955877",
+        "polygon-955872",
+        "polygon-955395",
+        "polygon-955451",
+        "polygon-955875",
+        "polygon-955549",
+        "polygon-955529",
+        "polygon-955548",
+        "polygon-955523",
+        "polygon-955537",
+        "polygon-955399",
+        "polygon-0"
+      ];
+      map.loadSymbol(symbolIds, function (_error, symbols) {
+        symbols.forEach((symbol, index) => {
+          symbol && map.addSymbol(symbolIds[index], symbol);
+        });
         createLandUseLayer();
       });
     });

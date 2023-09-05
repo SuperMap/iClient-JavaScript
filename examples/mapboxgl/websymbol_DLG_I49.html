@@ -20,7 +20,6 @@
       bottom: 0;
       width: 100%;
     }
-
   </style>
 </head>
 
@@ -150,21 +149,11 @@
       });
     };
 
-    var loadSymbol = function (symbolId) {
-      return new Promise(function (resolve) {
-        map.loadSymbol(symbolId, function (error, symbol) {
-          if (error) {
-            widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
-            resolve();
-          }
-          map.addSymbol(symbolId, symbol);
-          resolve();
-        });
-      });
-    };
-
-    var loadSymbols = function () {
-      var symbols = [
+    map.on("load", function () {
+      // 配置基础路径
+      new mapboxgl.supermap.WebSymbol().init({ basePath: window.exampleWebSymbolBasePath });
+      // 批量加载Web符号
+      var symbolIds = [
         "line-963379",
         "line-963381",
         "line-962613",
@@ -172,24 +161,17 @@
         "line-964861",
         "line-962597"
       ];
-      var loadSymbolPromises = symbols.map(function (symbolId) {
-        return loadSymbol(symbolId);
-      });
-      return Promise.all(loadSymbolPromises);
-    };
-
-    map.on("load", function () {
-      // 配置基础路径
-      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
-      loadSymbols()
-        .then(function () {
-          createBOULLayer(630200, "line-963379");
-          createBOULLayer(640200, "line-963381");
-          createHYDLLayer(210101, "line-962613");
-          createLRDLLayer(420101, "line-962604");
-          createLRDLLayer(420201, "line-964861");
-          createLRDLLayer(420202, "line-962597");
+      map.loadSymbol(symbolIds, function (_error, symbols) {
+        symbols.forEach((symbol, index) => {
+          symbol && map.addSymbol(symbolIds[index], symbol);
         });
+        createBOULLayer(630200, "line-963379");
+        createBOULLayer(640200, "line-963381");
+        createHYDLLayer(210101, "line-962613");
+        createLRDLLayer(420101, "line-962604");
+        createLRDLLayer(420201, "line-964861");
+        createLRDLLayer(420202, "line-962597");
+      });
     });
 
   </script>

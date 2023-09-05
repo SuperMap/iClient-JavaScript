@@ -20,7 +20,6 @@
       bottom: 0;
       width: 100%;
     }
-
   </style>
 </head>
 
@@ -32,7 +31,7 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var baseServiceUrl = host + "/iserver/services/map-china400/rest/maps/China";
     var serverUrl =
-    host + "/iserver/services/map-Xinjiang/restjsr/v1/vectortile/maps/新疆土地利用类型空间分布图";
+      host + "/iserver/services/map-Xinjiang/restjsr/v1/vectortile/maps/新疆土地利用类型空间分布图";
     var map = new mapboxgl.Map({
       container: "map",
       style: {
@@ -65,47 +64,6 @@
         42.2
       ]
     });
-
-    var loadSymbol = function (symbolId) {
-      return new Promise(function (resolve) {
-        map.loadSymbol(symbolId, function (error, symbol) {
-            if(error){
-              widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
-              resolve();
-            }
-            map.addSymbol(symbolId, symbol);
-            resolve();
-        });
-      });
-    };
-
-    var loadSymbols = function () {
-      var symbols = [
-        "polygon-955524",
-        "polygon-955464",
-        "polygon-955483",
-        "polygon-955544",
-        "polygon-955537",
-        "polygon-955526",
-        "polygon-955404",
-        "polygon-955399",
-        "polygon-955386",
-        "polygon-955416",
-        "polygon-955389",
-        "polygon-955543",
-        "polygon-955429",
-        "polygon-955445",
-        "polygon-955430",
-        "polygon-955518",
-        "polygon-955495",
-        "polygon-955451",
-        "polygon-955536"
-      ];
-      var loadSymbolPromises = symbols.map(function (symbolId) {
-        return loadSymbol(symbolId);
-      });
-      return Promise.all(loadSymbolPromises);
-    };
 
     var createLandUseLayer = function () {
       map.addLayer({
@@ -155,8 +113,33 @@
 
     map.on("load", function () {
       // 配置基础路径
-      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
-      loadSymbols().then(function () {
+      new mapboxgl.supermap.WebSymbol().init({ basePath: window.exampleWebSymbolBasePath });
+      // 批量加载Web符号
+      var symbolIds = [
+        "polygon-955524",
+        "polygon-955464",
+        "polygon-955483",
+        "polygon-955544",
+        "polygon-955537",
+        "polygon-955526",
+        "polygon-955404",
+        "polygon-955399",
+        "polygon-955386",
+        "polygon-955416",
+        "polygon-955389",
+        "polygon-955543",
+        "polygon-955429",
+        "polygon-955445",
+        "polygon-955430",
+        "polygon-955518",
+        "polygon-955495",
+        "polygon-955451",
+        "polygon-955536"
+      ];
+      map.loadSymbol(symbolIds, function (_error, symbols) {
+        symbols.forEach((symbol, index) => {
+          symbol && map.addSymbol(symbolIds[index], symbol);
+        });
         createLandUseLayer();
         createWaterLayer();
       });

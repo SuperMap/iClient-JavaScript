@@ -20,7 +20,6 @@
       bottom: 0;
       width: 100%;
     }
-
   </style>
 </head>
 
@@ -54,56 +53,6 @@
         23.82622655814832
       ]
     });
-
-    var loadSymbol = function (symbolId) {
-        return new Promise(function (resolve) {
-          map.loadSymbol(symbolId, function (error, symbol) {
-            if (error) {
-              widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
-              resolve();
-            }
-            map.addSymbol(symbolId, symbol);
-            resolve();
-          });
-        });
-      };
-
-    // 批量加载符号
-    var loadSymbols = function () {
-      var symbols = [
-        "polygon-955452",
-        "polygon-955550",
-        "polygon-955871",
-        "polygon-955875",
-        "polygon-955525",
-        "polygon-955508",
-        "polygon-955400",
-        "polygon-955545",
-        "polygon-955529",
-        "polygon-955385",
-        "polygon-955872",
-        "polygon-955527",
-        "polygon-955532",
-        "polygon-955433",
-        "polygon-955880",
-        "polygon-955464",
-        "polygon-955519",
-        "polygon-955879",
-        "polygon-955878",
-        "polygon-955483",
-        "polygon-955537",
-        "polygon-955398",
-        "line-962543",
-        "line-962524",
-        "line-962613",
-        "line-964935",
-        "polygon-0"
-      ];
-      var loadSymbolPromises = symbols.map(function (symbolId) {
-        return loadSymbol(symbolId);
-      });
-      return Promise.all(loadSymbolPromises);
-    };
 
     // 添加面图层
     var createPolygonLayer = function () {
@@ -144,31 +93,39 @@
       });
     };
 
-    // 添加线图层
-    var createLineLayer = function () {
-      map.addLayer({
-        "id": "pl@landuse(0_24)",
-        "source": "landuse",
-        "source-layer": "pl@landuse",
-        "type": "line",
-        "symbol": [
-          "match",
-          ["get", "DLBM"],
-          "011", "line-962543", //公路用地
-          "013", "line-962524", //农村道路
-          "021", "line-962613", //河流水面
-          "023", "line-962613", //河流水面
-          "line-964935"
-        ]
-      });
-    };
-
     map.on("load", function () {
       // 配置基础路径
-      new maplibregl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
-      loadSymbols().then(function () {
+      new mapboxgl.supermap.WebSymbol().init({ basePath: window.exampleWebSymbolBasePath });
+      var symbolIds = [
+        "polygon-955452",
+        "polygon-955550",
+        "polygon-955871",
+        "polygon-955875",
+        "polygon-955525",
+        "polygon-955508",
+        "polygon-955400",
+        "polygon-955545",
+        "polygon-955529",
+        "polygon-955385",
+        "polygon-955872",
+        "polygon-955527",
+        "polygon-955532",
+        "polygon-955433",
+        "polygon-955880",
+        "polygon-955464",
+        "polygon-955519",
+        "polygon-955879",
+        "polygon-955878",
+        "polygon-955483",
+        "polygon-955537",
+        "polygon-955398",
+        "polygon-0"
+      ];
+      map.loadSymbol(symbolIds, function (_error, symbols) {
+        symbols.forEach((symbol, index) => {
+          symbol && map.addSymbol(symbolIds[index], symbol);
+        });
         createPolygonLayer();
-        createLineLayer();
       });
     });
 

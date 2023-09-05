@@ -4,6 +4,7 @@
 import mapboxgl from 'mapbox-gl';
 import SymbolHandler from './SymbolHandler';
 import { FetchRequest } from "@supermap/iclient-common/util/FetchRequest";
+import { Util } from '@supermap/iclient-common/commontypes/Util';
 
 /**
  * @function MapExtendSymbol
@@ -106,32 +107,33 @@ function MapExtendSymbol(){
       });
       return this;
     }
-  }
+  } 
 
   /**
    * 加载Web符号
-   * @param {string} id
+   * @param {string | string[]} id
    * @param {function} callback
    */
   mapboxgl.Map.prototype.loadSymbol = async function (id, callback) {
     if (typeof id === 'string') {
-      let symbolInfo = this.getSymbol(id);
-      if (!symbolInfo) {
-        const symbolResult = await getSymbol(id, this);
-        if (!symbolResult) {
-          callback({
-            message: 'This symbol is not exists.'
-          });
-          return;
-        }
-        const { value, image } = symbolResult;
-        symbolInfo = value;
-        image && getSymbolHandler(this).addSymbolImageToMap(value, image);
+      const symbolInfo = await loadSymbol(id, this);
+      let message = null;
+      if(!symbolInfo) {
+        message = `Symbol ${id} is not exists`;
       }
-      callback(null, symbolInfo);
+      callback(message, symbolInfo);
+    } else if (Util.isArray(id)) {
+      const promises = id.map(i => loadSymbol(i, this));
+      const symbolInfo = await Promise.all(promises);
+      let message = null;
+      const errorIds = id.filter((_i, index) => !symbolInfo[index]);
+      if(errorIds.length > 0){
+        message = `Symbol ${errorIds.join(',')} is not exists`;
+      }
+      callback(message, symbolInfo);
     } else {
       callback({
-        message: 'Symbol id must be a string.'
+        message: 'Symbol id must be a string or string[].'
       });
     }
   };
@@ -312,7 +314,7 @@ function MapExtendSymbol(){
 
     const value = await FetchRequest.get(`${url}.json`).then(response => {
       if (!response.ok) {
-        return;
+        return null;
       }
       return response.json();
     })
@@ -339,5 +341,21 @@ function MapExtendSymbol(){
     }
   }
 
+  /**
+   * 加载单个Web符号
+   * @param {string} id 
+   * @param {Mapboxgl.Map} map 
+   * @returns {object} symbol对象
+   */
+  function loadSymbol(id, map) {
+    return getSymbol(id, map).then((symbolResult) => {
+      if (!symbolResult) {
+        return null;
+      }
+      const { value, image } = symbolResult;
+      image && getSymbolHandler(map).addSymbolImageToMap(value, image);
+      return value;
+    })
+  }
 }
 export default MapExtendSymbol

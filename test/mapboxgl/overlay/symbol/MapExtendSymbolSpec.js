@@ -86,6 +86,30 @@ describe('MapExtendSymbol', () => {
         })
     });
 
+    it('map.loadSymbol symbols success', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.resolve(new Response("{\"layout\":{\"icon-image\":\"point-1\"}}"));
+        });
+        map.loadSymbol(["point-1", "point-2"], (error, symbol) => {
+            expect(error).toBe(null);
+            expect(symbol[0].layout["icon-image"]).toBe("point-1");
+            expect(symbol[1].layout["icon-image"]).toBe("point-1");
+            done();
+        })
+    });
+
+    it('map.loadSymbol symbols error', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake(() => {
+            return Promise.reject();
+        });
+        map.loadSymbol(["error-1", "error-2"], (error, symbol) => {
+            expect(error).not.toBe(null);
+            expect(symbol[0]).toBe(null);
+            expect(symbol[1]).toBe(null);
+            done();
+        })
+    });
+
     it('map.addSymbol', (done) => {
         map.addSymbol("start", { "layout": { "icon-image": "point-1" } });
         expect(map.hasSymbol('start')).toBeTruthy();
