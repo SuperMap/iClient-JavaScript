@@ -85,7 +85,7 @@ describe('maplibregl_MapExtendSymbol', () => {
         });
         map.loadSymbol("point-1", (error, symbol) => {
             expect(error).not.toBeNull();
-            expect(symbol).toBe(undefined);
+            expect(symbol).toBe(null);
         })
     });
 
