@@ -254,7 +254,7 @@ export class CommonServiceBase {
     * @private
     */
     serviceProcessCompleted(result, options) {
-        result = Util.transformResult(result);
+        result = this.transformResult(result).result;
         this.events.triggerEvent('processCompleted', {
             result: result,
             options: options
@@ -269,7 +269,7 @@ export class CommonServiceBase {
      * @private
      */
     serviceProcessFailed(result, options) {
-      result = Util.transformResult(result);
+      result = this.transformErrorResult(result).error;
       let error = result.error || result;
       this.events.triggerEvent('processFailed', {
           error: error,
@@ -360,23 +360,25 @@ export class CommonServiceBase {
                   object: this
                 };
                 if (requestResult.error) {
+                  const type = 'processFailed';
                   // 兼容服务在构造函数中使用 eventListeners 的老用法
-                  if (options.failure === this.serviceProcessFailed) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(requestResult, options);
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var failure = options.failure && (options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure);
+                    failure ? failure(requestResult, options) : this.serviceProcessFailed(requestResult, options);
                   } else {
                     response = {...response, ...this.transformErrorResult(requestResult, options)};
-                    response.type = 'processFailed';
+                    response.type = type;
                     options.failure && options.failure(response);
                   }
                 } else {
-                  if (options.success === this.serviceProcessCompleted) {
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(requestResult, options);
+                  const type = 'processCompleted';
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var success = options.success && (options.scope ? FunctionExt.bind(options.success, options.scope) : options.success);
+                    success ? success(requestResult, options) : this.serviceProcessCompleted(requestResult, options);
                   } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
                     response = {...response, ...this.transformResult(requestResult, options)};
-                    response.type = 'processCompleted';
+                    response.type = type;
                     options.success && options.success(response);
                   }
                 }
