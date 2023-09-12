@@ -77,7 +77,6 @@ export var ProcessingService = ServiceBase.extend({
      * @description 获取密度分析的状态。
      * @param {string} id - 密度分析 ID。
      * @returns {Object} 密度分析的状态。
-     * @returns {Promise} Promise 对象。
      */
     getKernelDensityJobState: function(id) {
       return this._processingService.getKernelDensityJobState(id);

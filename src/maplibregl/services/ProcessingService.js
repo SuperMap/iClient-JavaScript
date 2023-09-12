@@ -74,7 +74,6 @@ export class ProcessingService extends ServiceBase {
      * @description 获取密度分析的状态。
      * @param {string} id - 密度分析的id。
      * @returns {Object} 密度分析的状态。
-     * @returns {Promise} Promise 对象。
      */
     getKernelDensityJobState(id) {
       return this._processingService.getKernelDensityJobState(id);
