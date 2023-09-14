@@ -436,7 +436,7 @@ export class ProcessingService extends ServiceBase {
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
-     * @returns {Promise} Promise 对象。* @returns {Promise} Promise 对象。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);

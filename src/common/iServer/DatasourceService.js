@@ -43,6 +43,9 @@ export class DatasourceService extends CommonServiceBase {
     /**
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
+     * @param {string} datasourceName - 数据源名称。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasourceService(datasourceName, callback) {
         let url = Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
@@ -52,6 +55,8 @@ export class DatasourceService extends CommonServiceBase {
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasourcesService(callback) {
         let url = Util.urlPathAppend(this.url,`datasources`);
@@ -60,6 +65,9 @@ export class DatasourceService extends CommonServiceBase {
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
+     * @param {Object} params 请求参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDatasourceService(params, callback) {
         if (!params) {

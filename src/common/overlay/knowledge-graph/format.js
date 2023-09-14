@@ -159,7 +159,8 @@ function getNodeLabel(entity, captionField) {
       const { name, entityTypes, entityIds } = data[i];
       const ids = JSON.parse(entityIds || '[]');
       const types = JSON.parse(entityTypes || '[]');
-      if (ids.includes(id) || types.includes(labels[0])) {
+      const labelStr = labels && labels.join('&');
+      if (ids.includes(id) || types.includes(labelStr)) {
         return properties[name] || '';
       }
     }
