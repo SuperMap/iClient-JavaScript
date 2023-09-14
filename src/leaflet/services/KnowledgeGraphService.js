@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
 import '../core/Base';
-import { KnowledgeGraphService as CommonMatchAddressService } from '@supermap/iclient-common/iServer/KnowledgeGraphService';
+import { KnowledgeGraphService as CommonKnowledgeGraphService } from '@supermap/iclient-common/iServer/KnowledgeGraphService';
 /**
  * @class KnowledgeGraphService
  * @category  iServer KnowledgeGraph
@@ -26,7 +26,7 @@ import { KnowledgeGraphService as CommonMatchAddressService } from '@supermap/ic
 export var KnowledgeGraphService = ServiceBase.extend({
   initialize: function (url, options) {
     ServiceBase.prototype.initialize.call(this, url, options);
-    this._knowledgeGraphService = new CommonMatchAddressService(this.url, options);
+    this._knowledgeGraphService = new CommonKnowledgeGraphService(this.url, options);
   },
 
   /**
