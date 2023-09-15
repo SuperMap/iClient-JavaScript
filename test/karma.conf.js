@@ -147,7 +147,7 @@ module.exports = function (config) {
 
     coverageReporter: {
       dir: 'testcoverage/',
-      reporters: [{ type: 'lcov', subdir: '.' }]
+      reporters: [{ type: 'lcov', subdir: '.' },{ type: 'json', subdir: '.' }]
     },
     sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST',
