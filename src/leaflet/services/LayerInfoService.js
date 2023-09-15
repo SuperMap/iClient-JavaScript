@@ -65,7 +65,7 @@ export var LayerInfoService = ServiceBase.extend({
 
 
     /**
-     * @function  LayerInfoService.prototype.setLayersInfo
+     * @function LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息。可以实现创建新的临时图层和修改现有的临时图层。
      * @param {SetLayersInfoParameters} params - 设置图层信息参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。

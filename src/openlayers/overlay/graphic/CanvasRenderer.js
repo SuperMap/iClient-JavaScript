@@ -97,7 +97,7 @@ export class GraphicCanvasRenderer extends olObject {
 
     /**
      * @private
-     * @function  GraphicCanvasRenderer.prototype.getCanvas
+     * @function GraphicCanvasRenderer.prototype.getCanvas
      * @description 返回画布。
      * @returns {HTMLCanvasElement} canvas 对象。
      */
@@ -107,7 +107,7 @@ export class GraphicCanvasRenderer extends olObject {
 
     /**
      * @private
-     * @function  GraphicCanvasRenderer.prototype.drawGraphics
+     * @function GraphicCanvasRenderer.prototype.drawGraphics
      * @description 绘制点要素。
      */
     drawGraphics(graphics) {

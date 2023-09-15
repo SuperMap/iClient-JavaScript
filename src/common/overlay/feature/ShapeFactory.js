@@ -52,7 +52,7 @@ export class ShapeFactory {
 
 
     /**
-     * @function  FeatureShapeFactory.prototype.destroy
+     * @function FeatureShapeFactory.prototype.destroy
      * @description 销毁图形工厂类对象。
      */
     destroy() {
@@ -61,7 +61,7 @@ export class ShapeFactory {
 
 
     /**
-     * @function  FeatureShapeFactory.prototype.createShape
+     * @function FeatureShapeFactory.prototype.createShape
      * @description 创建一个图形。具体图形由 shapeParameters 决定。
      * @param {Object} shapeParameters - 图形参数对象，<{@link ShapeParameters}> 子类对象。
      * 此参数可选，如果使用此参数（不为 null），shapeParameters 属性值将被修改为参数的值，然后再使用 shapeParameters 属性值创建图形；
@@ -255,7 +255,7 @@ export class ShapeFactory {
 
 
     /**
-     * @function  FeatureShapeFactory.prototype.transformStyle
+     * @function FeatureShapeFactory.prototype.transformStyle
      * @description 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
      * @param {Object} style - 用户 style。
      * @returns {Object} 符合 levelRenderer 的 style。
@@ -368,7 +368,7 @@ export class ShapeFactory {
     }
 
     /**
-     * @function  FeatureShapeFactory.prototype.Background
+     * @function FeatureShapeFactory.prototype.Background
      * @description 创建一个矩形背景框图形对象。
      * @param {FeatureShapeFactory} shapeFactory - 图形工厂对象。
      * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
@@ -406,7 +406,7 @@ export class ShapeFactory {
     }
 
     /**
-     * @function  FeatureShapeFactory.prototype.GraphAxis
+     * @function FeatureShapeFactory.prototype.GraphAxis
      * @description 创建一个统计图表坐标轴图形对象组。
      * @param {FeatureShapeFactory} shapeFactory - 图形工厂对象。
      * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
@@ -751,7 +751,7 @@ export class ShapeFactory {
     }
 
     /**
-     * @function  FeatureShapeFactory.prototype.ShapeStyleTool
+     * @function FeatureShapeFactory.prototype.ShapeStyleTool
      * @description 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
      * @param {Object} defaultStyle - 默认style，此样式对象可设属性根据图形类型参考 <{@link ShapeParameters}> 子类对象的 style 属性。
      * @param {Object} style - 图形对象基础 style，此参数控制图形的基础样式，可设属性根据图形类型参考 <{@link ShapeParameters}> 子类对象的 style 属性。优先级低于 styleGroup，styleByCodomain。

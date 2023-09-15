@@ -14,7 +14,7 @@ export class LandcoverClassification extends MachineLearningBase {
         super(options);
     }
     /**
-     * @function  ObjectDetection.prototype.handleResult
+     * @function ObjectDetection.prototype.handleResult
      * @description 对模型进行预测
      * @param {Object} prediction - 模型预测后的张量。
      * @returns {Object} 处理返回的数据

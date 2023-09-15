@@ -256,7 +256,7 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function  Theme3DLayer.prototype.getLayerStyleOptions
+     * @function Theme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */

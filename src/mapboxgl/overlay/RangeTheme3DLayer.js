@@ -60,7 +60,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function  RangeTheme3DLayer.prototype.getLayerStyleOptions
+     * @function RangeTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */

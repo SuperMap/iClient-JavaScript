@@ -73,7 +73,7 @@ export var DatasetService = ServiceBase.extend({
     },
 
     /**
-     * @function  DatasetService.prototype.setDataset
+     * @function DatasetService.prototype.setDataset
      * @description 数据集信息设置服务。可实现修改已存在数据集，新增不存在数据集。
      * @example
      *   new DatasetService(url).setDataset(params, function(result){
@@ -106,7 +106,7 @@ export var DatasetService = ServiceBase.extend({
     },
 
     /**
-     * @function  DatasetService.prototype.deleteDataset
+     * @function DatasetService.prototype.deleteDataset
      * @description 指定数据源下的数据集删除服务。
      * @example
      *   new DatasetService(url).deleteDataset(datasourceName, datasetName, function(result){

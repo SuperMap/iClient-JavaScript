@@ -123,7 +123,7 @@ export class GraphicWebGLRenderer extends BaseObject {
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.getCanvas
+     * @function GraphicWebGLRenderer.prototype.getCanvas
      * @description 返回画布。
      * @returns {HTMLCanvasElement} canvas 对象。
      */
@@ -133,7 +133,7 @@ export class GraphicWebGLRenderer extends BaseObject {
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.update
+     * @function GraphicWebGLRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
     update(graphics) {
@@ -159,7 +159,7 @@ export class GraphicWebGLRenderer extends BaseObject {
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.drawGraphics
+     * @function GraphicWebGLRenderer.prototype.drawGraphics
      * @description 绘制点要素。
      */
     drawGraphics(graphics) {

@@ -117,14 +117,14 @@ export class CloverShape extends RegularShape {
         }
     }
      /**
-     * @function  CloverShape.prototype.getCount
+     * @function CloverShape.prototype.getCount
      * @description 获取扇叶数量。
      */
     getCount() {
         return this.count_;
     }
     /**
-     * @function  CloverShape.prototype.getSpaceAngle
+     * @function CloverShape.prototype.getSpaceAngle
      * @description 获取扇叶间隔角度。
      */
     getSpaceAngle() {

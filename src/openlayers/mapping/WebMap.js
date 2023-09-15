@@ -4643,7 +4643,7 @@ export class WebMap extends Observable {
     }
     /**
      * @private
-     * @function  WebMap.prototype.renameLayerId
+     * @function WebMap.prototype.renameLayerId
      * @description  mapboxstyle图层 id重复的layer添加后缀编码 (n)[参考mapstudio]
      * @param {mapboxgl.Layer[]} layers 已添加到地图的图层组
      * @param {mapboxgl.Layer} curLayer 当前图层
@@ -4680,7 +4680,7 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function  WebMap.prototype.renameLayerId
+     * @function WebMap.prototype.renameLayerId
      * @description 判断url是否是iportal的代理地址
      * @param {*} serviceUrl
      */
@@ -4706,7 +4706,7 @@ export class WebMap extends Observable {
     }
     /**
      * @private
-     * @function  WebMap.prototype.getStyleResolutions
+     * @function WebMap.prototype.getStyleResolutions
      * @description 创建图层分辨率
      * @param {Object} bounds  图层上下左右范围
      * @returns {Array} styleResolutions 样式分辨率
@@ -4729,7 +4729,7 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function  WebMap.prototype.createVisibleResolution
+     * @function WebMap.prototype.createVisibleResolution
      * @description 创建图层可视分辨率
      * @param {Array.<number>} visibleScales 可视比例尺范围
      * @param {Array} indexbounds
@@ -4756,7 +4756,7 @@ export class WebMap extends Observable {
 
     /**
      * @private
-     * @function  WebMap.prototype.createVisibleResolution
+     * @function WebMap.prototype.createVisibleResolution
      * @description 图层边界范围
      * @param {Array} indexbounds
      * @param {Object} bounds  图层上下左右范围

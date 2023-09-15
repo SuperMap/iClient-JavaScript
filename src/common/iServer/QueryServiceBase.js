@@ -65,7 +65,7 @@ export class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.destroy
+     * @function QueryServiceBase.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -76,7 +76,7 @@ export class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.processAsync
+     * @function QueryServiceBase.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {QueryParameters} params - 查询参数。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -111,7 +111,7 @@ export class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.transformResult
+     * @function QueryServiceBase.prototype.transformResult
      * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
      * @param {Object} options - 请求参数。
@@ -145,7 +145,7 @@ export class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.getQueryParameters
+     * @function QueryServiceBase.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
      * @param {Object} params - JSON 字符串表示的查询参数。
      * @returns {QueryParameters} 返回转化后的 QueryParameters 对象。

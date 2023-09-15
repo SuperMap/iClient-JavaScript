@@ -101,7 +101,7 @@ export class GraticuleLayer {
     this.styleDataEevent = this._setLayerTop.bind(this);
   }
   /**
-    * @function GraphicLayer.prototype.onAdd
+    * @function GraticuleLayer.prototype.onAdd
     * @description 添加该图层。
     * @param {maplibregl.Map} map - MapLibreGL Map 对象。
     */

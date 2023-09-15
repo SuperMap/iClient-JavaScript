@@ -63,7 +63,7 @@
          }, { targetElement: this.map.getCanvasContainer(), mapElement: this.map.getCanvas() });
      }
       /**
-      * @function GraphicLayer.prototype.onAdd
+      * @function GraphicLayer.prototype.render
       * @description 添加该图层。
       */
      render() {

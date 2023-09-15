@@ -29,7 +29,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function  UniqueTheme3DLayer.prototype.getLayerStyleOptions
+     * @function UniqueTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */

@@ -649,7 +649,7 @@ export class KnowledgeGraph {
   }
 
   /**
-   * @function KnowledgeGraph.prototype.showItem
+   * @function KnowledgeGraph.prototype.hideItem
    * @description 隐藏指定元素。若 item 为节点，则相关边也会随之隐藏。而 hide() 则将只隐藏自身。
    * @param {string|Object} item - 元素 ID 或元素实例。
    * @param {boolean} [stack] -操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。

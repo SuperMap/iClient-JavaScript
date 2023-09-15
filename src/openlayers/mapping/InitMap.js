@@ -67,7 +67,7 @@ export function initMap(url, options = {}) {
 }
 
 /**
- * @function  viewOptionsFromMapJSON
+ * @function viewOptionsFromMapJSON
  * @category BaseTypes Util
  * @version 11.0.1
  * @description 通过 iServer REST 地图参数构造 ol 视图对象。

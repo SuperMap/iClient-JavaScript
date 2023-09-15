@@ -129,7 +129,7 @@ const DOTS_PER_INCH = 96;
 const Util = {
 
   /**
-     * @function Util.extend
+     * @memberOf CommonUtil
      * @description 对象拷贝赋值。
      * @param {Object} dest - 目标对象。
      * @param {Object} arguments - 待拷贝的对象。

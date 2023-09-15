@@ -215,7 +215,7 @@ export class G6Render {
   }
 
   /**
-   * @function KnowledgeGraph.prototype.changeSize
+   * @function G6Render.prototype.changeSize
    * @description 当源数据中现有节点/边 的数据项发生配置的变更时，根据新数据刷新视图。
    * @param {number} width - 宽度。
    * @param {number} height - 高度。

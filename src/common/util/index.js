@@ -42,13 +42,6 @@ function toSuperMapPolygon(lnglatBounds) {
     ]);
 }
 
- /**
-* @function Util.extend
-* @description 对象拷贝赋值。
-* @param {Object} dest - 目标对象。
-* @param {Object} arguments - 待拷贝的对象。
-* @returns {Object} 赋值后的目标对象。
-*/
 function extend(dest) {
    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
        var arg = Object.getOwnPropertyNames(arguments)[index];

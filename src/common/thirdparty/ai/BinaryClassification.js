@@ -14,7 +14,7 @@ export class BinaryClassification extends MachineLearningBase {
       super(options);
     }
     /**
-     * @function  BinaryClassification.prototype.handleResult
+     * @function BinaryClassification.prototype.handleResult
      * @description 对预测数据进行处理
      * @param {Object} prediction - 模型预测后的张量。
      * @returns {Object} 处理返回的数据
