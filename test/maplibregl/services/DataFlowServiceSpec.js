@@ -4,7 +4,7 @@ import {
 } from '../../../src/maplibregl/services/DataFlowService';
 
 import { Server } from 'mock-socket';
-var urlDataFlow = "ws:\//localhost:8800/";
+var urlDataFlow = "ws:\//localhost:8005/";
 describe('maplibregl_DataFlowService', () => {
     var originalTimeout;
     var service;
