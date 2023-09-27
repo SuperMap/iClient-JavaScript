@@ -3,11 +3,1982 @@
  *          iclient-mapboxgl
  *          Copyright© 2000 - 2023 SuperMap Software Co.Ltd
  *          license: Apache-2.0
- *          version: v11.1.0
+ *          version: v11.1.1
  *
  */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
+
+/***/ 932:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+const validator = __webpack_require__(501);
+const XMLParser = __webpack_require__(844);
+const XMLBuilder = __webpack_require__(192);
+
+module.exports = {
+  XMLParser: XMLParser,
+  XMLValidator: validator,
+  XMLBuilder: XMLBuilder
+}
+
+/***/ }),
+
+/***/ 849:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+const nameStartChar = ':A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD';
+const nameChar = nameStartChar + '\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040';
+const nameRegexp = '[' + nameStartChar + '][' + nameChar + ']*'
+const regexName = new RegExp('^' + nameRegexp + '$');
+
+const getAllMatches = function(string, regex) {
+  const matches = [];
+  let match = regex.exec(string);
+  while (match) {
+    const allmatches = [];
+    allmatches.startIndex = regex.lastIndex - match[0].length;
+    const len = match.length;
+    for (let index = 0; index < len; index++) {
+      allmatches.push(match[index]);
+    }
+    matches.push(allmatches);
+    match = regex.exec(string);
+  }
+  return matches;
+};
+
+const isName = function(string) {
+  const match = regexName.exec(string);
+  return !(match === null || typeof match === 'undefined');
+};
+
+exports.isExist = function(v) {
+  return typeof v !== 'undefined';
+};
+
+exports.isEmptyObject = function(obj) {
+  return Object.keys(obj).length === 0;
+};
+
+/**
+ * Copy all the properties of a into b.
+ * @param {*} target
+ * @param {*} a
+ */
+exports.merge = function(target, a, arrayMode) {
+  if (a) {
+    const keys = Object.keys(a); // will return an array of own properties
+    const len = keys.length; //don't make it inline
+    for (let i = 0; i < len; i++) {
+      if (arrayMode === 'strict') {
+        target[keys[i]] = [ a[keys[i]] ];
+      } else {
+        target[keys[i]] = a[keys[i]];
+      }
+    }
+  }
+};
+/* exports.merge =function (b,a){
+  return Object.assign(b,a);
+} */
+
+exports.getValue = function(v) {
+  if (exports.isExist(v)) {
+    return v;
+  } else {
+    return '';
+  }
+};
+
+// const fakeCall = function(a) {return a;};
+// const fakeCallNoReturn = function() {};
+
+exports.isName = isName;
+exports.getAllMatches = getAllMatches;
+exports.nameRegexp = nameRegexp;
+
+
+/***/ }),
+
+/***/ 501:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+const util = __webpack_require__(849);
+
+const defaultOptions = {
+  allowBooleanAttributes: false, //A tag can have attributes without any value
+  unpairedTags: []
+};
+
+//const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
+exports.validate = function (xmlData, options) {
+  options = Object.assign({}, defaultOptions, options);
+
+  //xmlData = xmlData.replace(/(\r\n|\n|\r)/gm,"");//make it single line
+  //xmlData = xmlData.replace(/(^\s*<\?xml.*?\?>)/g,"");//Remove XML starting tag
+  //xmlData = xmlData.replace(/(<!DOCTYPE[\s\w\"\.\/\-\:]+(\[.*\])*\s*>)/g,"");//Remove DOCTYPE
+  const tags = [];
+  let tagFound = false;
+
+  //indicates that the root tag has been closed (aka. depth 0 has been reached)
+  let reachedRoot = false;
+
+  if (xmlData[0] === '\ufeff') {
+    // check for byte order mark (BOM)
+    xmlData = xmlData.substr(1);
+  }
+  
+  for (let i = 0; i < xmlData.length; i++) {
+
+    if (xmlData[i] === '<' && xmlData[i+1] === '?') {
+      i+=2;
+      i = readPI(xmlData,i);
+      if (i.err) return i;
+    }else if (xmlData[i] === '<') {
+      //starting of tag
+      //read until you reach to '>' avoiding any '>' in attribute value
+      let tagStartPos = i;
+      i++;
+      
+      if (xmlData[i] === '!') {
+        i = readCommentAndCDATA(xmlData, i);
+        continue;
+      } else {
+        let closingTag = false;
+        if (xmlData[i] === '/') {
+          //closing tag
+          closingTag = true;
+          i++;
+        }
+        //read tagname
+        let tagName = '';
+        for (; i < xmlData.length &&
+          xmlData[i] !== '>' &&
+          xmlData[i] !== ' ' &&
+          xmlData[i] !== '\t' &&
+          xmlData[i] !== '\n' &&
+          xmlData[i] !== '\r'; i++
+        ) {
+          tagName += xmlData[i];
+        }
+        tagName = tagName.trim();
+        //console.log(tagName);
+
+        if (tagName[tagName.length - 1] === '/') {
+          //self closing tag without attributes
+          tagName = tagName.substring(0, tagName.length - 1);
+          //continue;
+          i--;
+        }
+        if (!validateTagName(tagName)) {
+          let msg;
+          if (tagName.trim().length === 0) {
+            msg = "Invalid space after '<'.";
+          } else {
+            msg = "Tag '"+tagName+"' is an invalid name.";
+          }
+          return getErrorObject('InvalidTag', msg, getLineNumberForPosition(xmlData, i));
+        }
+
+        const result = readAttributeStr(xmlData, i);
+        if (result === false) {
+          return getErrorObject('InvalidAttr', "Attributes for '"+tagName+"' have open quote.", getLineNumberForPosition(xmlData, i));
+        }
+        let attrStr = result.value;
+        i = result.index;
+
+        if (attrStr[attrStr.length - 1] === '/') {
+          //self closing tag
+          const attrStrStart = i - attrStr.length;
+          attrStr = attrStr.substring(0, attrStr.length - 1);
+          const isValid = validateAttributeString(attrStr, options);
+          if (isValid === true) {
+            tagFound = true;
+            //continue; //text may presents after self closing tag
+          } else {
+            //the result from the nested function returns the position of the error within the attribute
+            //in order to get the 'true' error line, we need to calculate the position where the attribute begins (i - attrStr.length) and then add the position within the attribute
+            //this gives us the absolute index in the entire xml, which we can use to find the line at last
+            return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, attrStrStart + isValid.err.line));
+          }
+        } else if (closingTag) {
+          if (!result.tagClosed) {
+            return getErrorObject('InvalidTag', "Closing tag '"+tagName+"' doesn't have proper closing.", getLineNumberForPosition(xmlData, i));
+          } else if (attrStr.trim().length > 0) {
+            return getErrorObject('InvalidTag', "Closing tag '"+tagName+"' can't have attributes or invalid starting.", getLineNumberForPosition(xmlData, tagStartPos));
+          } else {
+            const otg = tags.pop();
+            if (tagName !== otg.tagName) {
+              let openPos = getLineNumberForPosition(xmlData, otg.tagStartPos);
+              return getErrorObject('InvalidTag',
+                "Expected closing tag '"+otg.tagName+"' (opened in line "+openPos.line+", col "+openPos.col+") instead of closing tag '"+tagName+"'.",
+                getLineNumberForPosition(xmlData, tagStartPos));
+            }
+
+            //when there are no more tags, we reached the root level.
+            if (tags.length == 0) {
+              reachedRoot = true;
+            }
+          }
+        } else {
+          const isValid = validateAttributeString(attrStr, options);
+          if (isValid !== true) {
+            //the result from the nested function returns the position of the error within the attribute
+            //in order to get the 'true' error line, we need to calculate the position where the attribute begins (i - attrStr.length) and then add the position within the attribute
+            //this gives us the absolute index in the entire xml, which we can use to find the line at last
+            return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, i - attrStr.length + isValid.err.line));
+          }
+
+          //if the root level has been reached before ...
+          if (reachedRoot === true) {
+            return getErrorObject('InvalidXml', 'Multiple possible root nodes found.', getLineNumberForPosition(xmlData, i));
+          } else if(options.unpairedTags.indexOf(tagName) !== -1){
+            //don't push into stack
+          } else {
+            tags.push({tagName, tagStartPos});
+          }
+          tagFound = true;
+        }
+
+        //skip tag text value
+        //It may include comments and CDATA value
+        for (i++; i < xmlData.length; i++) {
+          if (xmlData[i] === '<') {
+            if (xmlData[i + 1] === '!') {
+              //comment or CADATA
+              i++;
+              i = readCommentAndCDATA(xmlData, i);
+              continue;
+            } else if (xmlData[i+1] === '?') {
+              i = readPI(xmlData, ++i);
+              if (i.err) return i;
+            } else{
+              break;
+            }
+          } else if (xmlData[i] === '&') {
+            const afterAmp = validateAmpersand(xmlData, i);
+            if (afterAmp == -1)
+              return getErrorObject('InvalidChar', "char '&' is not expected.", getLineNumberForPosition(xmlData, i));
+            i = afterAmp;
+          }else{
+            if (reachedRoot === true && !isWhiteSpace(xmlData[i])) {
+              return getErrorObject('InvalidXml', "Extra text at the end", getLineNumberForPosition(xmlData, i));
+            }
+          }
+        } //end of reading tag text value
+        if (xmlData[i] === '<') {
+          i--;
+        }
+      }
+    } else {
+      if ( isWhiteSpace(xmlData[i])) {
+        continue;
+      }
+      return getErrorObject('InvalidChar', "char '"+xmlData[i]+"' is not expected.", getLineNumberForPosition(xmlData, i));
+    }
+  }
+
+  if (!tagFound) {
+    return getErrorObject('InvalidXml', 'Start tag expected.', 1);
+  }else if (tags.length == 1) {
+      return getErrorObject('InvalidTag', "Unclosed tag '"+tags[0].tagName+"'.", getLineNumberForPosition(xmlData, tags[0].tagStartPos));
+  }else if (tags.length > 0) {
+      return getErrorObject('InvalidXml', "Invalid '"+
+          JSON.stringify(tags.map(t => t.tagName), null, 4).replace(/\r?\n/g, '')+
+          "' found.", {line: 1, col: 1});
+  }
+
+  return true;
+};
+
+function isWhiteSpace(char){
+  return char === ' ' || char === '\t' || char === '\n'  || char === '\r';
+}
+/**
+ * Read Processing insstructions and skip
+ * @param {*} xmlData
+ * @param {*} i
+ */
+function readPI(xmlData, i) {
+  const start = i;
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] == '?' || xmlData[i] == ' ') {
+      //tagname
+      const tagname = xmlData.substr(start, i - start);
+      if (i > 5 && tagname === 'xml') {
+        return getErrorObject('InvalidXml', 'XML declaration allowed only at the start of the document.', getLineNumberForPosition(xmlData, i));
+      } else if (xmlData[i] == '?' && xmlData[i + 1] == '>') {
+        //check if valid attribut string
+        i++;
+        break;
+      } else {
+        continue;
+      }
+    }
+  }
+  return i;
+}
+
+function readCommentAndCDATA(xmlData, i) {
+  if (xmlData.length > i + 5 && xmlData[i + 1] === '-' && xmlData[i + 2] === '-') {
+    //comment
+    for (i += 3; i < xmlData.length; i++) {
+      if (xmlData[i] === '-' && xmlData[i + 1] === '-' && xmlData[i + 2] === '>') {
+        i += 2;
+        break;
+      }
+    }
+  } else if (
+    xmlData.length > i + 8 &&
+    xmlData[i + 1] === 'D' &&
+    xmlData[i + 2] === 'O' &&
+    xmlData[i + 3] === 'C' &&
+    xmlData[i + 4] === 'T' &&
+    xmlData[i + 5] === 'Y' &&
+    xmlData[i + 6] === 'P' &&
+    xmlData[i + 7] === 'E'
+  ) {
+    let angleBracketsCount = 1;
+    for (i += 8; i < xmlData.length; i++) {
+      if (xmlData[i] === '<') {
+        angleBracketsCount++;
+      } else if (xmlData[i] === '>') {
+        angleBracketsCount--;
+        if (angleBracketsCount === 0) {
+          break;
+        }
+      }
+    }
+  } else if (
+    xmlData.length > i + 9 &&
+    xmlData[i + 1] === '[' &&
+    xmlData[i + 2] === 'C' &&
+    xmlData[i + 3] === 'D' &&
+    xmlData[i + 4] === 'A' &&
+    xmlData[i + 5] === 'T' &&
+    xmlData[i + 6] === 'A' &&
+    xmlData[i + 7] === '['
+  ) {
+    for (i += 8; i < xmlData.length; i++) {
+      if (xmlData[i] === ']' && xmlData[i + 1] === ']' && xmlData[i + 2] === '>') {
+        i += 2;
+        break;
+      }
+    }
+  }
+
+  return i;
+}
+
+const doubleQuote = '"';
+const singleQuote = "'";
+
+/**
+ * Keep reading xmlData until '<' is found outside the attribute value.
+ * @param {string} xmlData
+ * @param {number} i
+ */
+function readAttributeStr(xmlData, i) {
+  let attrStr = '';
+  let startChar = '';
+  let tagClosed = false;
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] === doubleQuote || xmlData[i] === singleQuote) {
+      if (startChar === '') {
+        startChar = xmlData[i];
+      } else if (startChar !== xmlData[i]) {
+        //if vaue is enclosed with double quote then single quotes are allowed inside the value and vice versa
+      } else {
+        startChar = '';
+      }
+    } else if (xmlData[i] === '>') {
+      if (startChar === '') {
+        tagClosed = true;
+        break;
+      }
+    }
+    attrStr += xmlData[i];
+  }
+  if (startChar !== '') {
+    return false;
+  }
+
+  return {
+    value: attrStr,
+    index: i,
+    tagClosed: tagClosed
+  };
+}
+
+/**
+ * Select all the attributes whether valid or invalid.
+ */
+const validAttrStrRegxp = new RegExp('(\\s*)([^\\s=]+)(\\s*=)?(\\s*([\'"])(([\\s\\S])*?)\\5)?', 'g');
+
+//attr, ="sd", a="amit's", a="sd"b="saf", ab  cd=""
+
+function validateAttributeString(attrStr, options) {
+  //console.log("start:"+attrStr+":end");
+
+  //if(attrStr.trim().length === 0) return true; //empty string
+
+  const matches = util.getAllMatches(attrStr, validAttrStrRegxp);
+  const attrNames = {};
+
+  for (let i = 0; i < matches.length; i++) {
+    if (matches[i][1].length === 0) {
+      //nospace before attribute name: a="sd"b="saf"
+      return getErrorObject('InvalidAttr', "Attribute '"+matches[i][2]+"' has no space in starting.", getPositionFromMatch(matches[i]))
+    } else if (matches[i][3] !== undefined && matches[i][4] === undefined) {
+      return getErrorObject('InvalidAttr', "Attribute '"+matches[i][2]+"' is without value.", getPositionFromMatch(matches[i]));
+    } else if (matches[i][3] === undefined && !options.allowBooleanAttributes) {
+      //independent attribute: ab
+      return getErrorObject('InvalidAttr', "boolean attribute '"+matches[i][2]+"' is not allowed.", getPositionFromMatch(matches[i]));
+    }
+    /* else if(matches[i][6] === undefined){//attribute without value: ab=
+                    return { err: { code:"InvalidAttr",msg:"attribute " + matches[i][2] + " has no value assigned."}};
+                } */
+    const attrName = matches[i][2];
+    if (!validateAttrName(attrName)) {
+      return getErrorObject('InvalidAttr', "Attribute '"+attrName+"' is an invalid name.", getPositionFromMatch(matches[i]));
+    }
+    if (!attrNames.hasOwnProperty(attrName)) {
+      //check for duplicate attribute.
+      attrNames[attrName] = 1;
+    } else {
+      return getErrorObject('InvalidAttr', "Attribute '"+attrName+"' is repeated.", getPositionFromMatch(matches[i]));
+    }
+  }
+
+  return true;
+}
+
+function validateNumberAmpersand(xmlData, i) {
+  let re = /\d/;
+  if (xmlData[i] === 'x') {
+    i++;
+    re = /[\da-fA-F]/;
+  }
+  for (; i < xmlData.length; i++) {
+    if (xmlData[i] === ';')
+      return i;
+    if (!xmlData[i].match(re))
+      break;
+  }
+  return -1;
+}
+
+function validateAmpersand(xmlData, i) {
+  // https://www.w3.org/TR/xml/#dt-charref
+  i++;
+  if (xmlData[i] === ';')
+    return -1;
+  if (xmlData[i] === '#') {
+    i++;
+    return validateNumberAmpersand(xmlData, i);
+  }
+  let count = 0;
+  for (; i < xmlData.length; i++, count++) {
+    if (xmlData[i].match(/\w/) && count < 20)
+      continue;
+    if (xmlData[i] === ';')
+      break;
+    return -1;
+  }
+  return i;
+}
+
+function getErrorObject(code, message, lineNumber) {
+  return {
+    err: {
+      code: code,
+      msg: message,
+      line: lineNumber.line || lineNumber,
+      col: lineNumber.col,
+    },
+  };
+}
+
+function validateAttrName(attrName) {
+  return util.isName(attrName);
+}
+
+// const startsWithXML = /^xml/i;
+
+function validateTagName(tagname) {
+  return util.isName(tagname) /* && !tagname.match(startsWithXML) */;
+}
+
+//this function returns the line number for the character at the given index
+function getLineNumberForPosition(xmlData, index) {
+  const lines = xmlData.substring(0, index).split(/\r?\n/);
+  return {
+    line: lines.length,
+
+    // column number is last line's length + 1, because column numbering starts at 1:
+    col: lines[lines.length - 1].length + 1
+  };
+}
+
+//this function returns the position of the first character of match within attrStr
+function getPositionFromMatch(match) {
+  return match.startIndex + match[1].length;
+}
+
+
+/***/ }),
+
+/***/ 192:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+//parse Empty Node as self closing node
+const buildFromOrderedJs = __webpack_require__(592);
+
+const defaultOptions = {
+  attributeNamePrefix: '@_',
+  attributesGroupName: false,
+  textNodeName: '#text',
+  ignoreAttributes: true,
+  cdataPropName: false,
+  format: false,
+  indentBy: '  ',
+  suppressEmptyNode: false,
+  suppressUnpairedNode: true,
+  suppressBooleanAttributes: true,
+  tagValueProcessor: function(key, a) {
+    return a;
+  },
+  attributeValueProcessor: function(attrName, a) {
+    return a;
+  },
+  preserveOrder: false,
+  commentPropName: false,
+  unpairedTags: [],
+  entities: [
+    { regex: new RegExp("&", "g"), val: "&amp;" },//it must be on top
+    { regex: new RegExp(">", "g"), val: "&gt;" },
+    { regex: new RegExp("<", "g"), val: "&lt;" },
+    { regex: new RegExp("\'", "g"), val: "&apos;" },
+    { regex: new RegExp("\"", "g"), val: "&quot;" }
+  ],
+  processEntities: true,
+  stopNodes: [],
+  // transformTagName: false,
+  // transformAttributeName: false,
+  oneListGroup: false
+};
+
+function Builder(options) {
+  this.options = Object.assign({}, defaultOptions, options);
+  if (this.options.ignoreAttributes || this.options.attributesGroupName) {
+    this.isAttribute = function(/*a*/) {
+      return false;
+    };
+  } else {
+    this.attrPrefixLen = this.options.attributeNamePrefix.length;
+    this.isAttribute = isAttribute;
+  }
+
+  this.processTextOrObjNode = processTextOrObjNode
+
+  if (this.options.format) {
+    this.indentate = indentate;
+    this.tagEndChar = '>\n';
+    this.newLine = '\n';
+  } else {
+    this.indentate = function() {
+      return '';
+    };
+    this.tagEndChar = '>';
+    this.newLine = '';
+  }
+}
+
+Builder.prototype.build = function(jObj) {
+  if(this.options.preserveOrder){
+    return buildFromOrderedJs(jObj, this.options);
+  }else {
+    if(Array.isArray(jObj) && this.options.arrayNodeName && this.options.arrayNodeName.length > 1){
+      jObj = {
+        [this.options.arrayNodeName] : jObj
+      }
+    }
+    return this.j2x(jObj, 0).val;
+  }
+};
+
+Builder.prototype.j2x = function(jObj, level) {
+  let attrStr = '';
+  let val = '';
+  for (let key in jObj) {
+    if (typeof jObj[key] === 'undefined') {
+      // supress undefined node only if it is not an attribute
+      if (this.isAttribute(key)) {
+        val += '';
+      }
+    } else if (jObj[key] === null) {
+      // null attribute should be ignored by the attribute list, but should not cause the tag closing
+      if (this.isAttribute(key)) {
+        val += '';
+      } else if (key[0] === '?') {
+        val += this.indentate(level) + '<' + key + '?' + this.tagEndChar;
+      } else {
+        val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+      }
+      // val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+    } else if (jObj[key] instanceof Date) {
+      val += this.buildTextValNode(jObj[key], key, '', level);
+    } else if (typeof jObj[key] !== 'object') {
+      //premitive type
+      const attr = this.isAttribute(key);
+      if (attr) {
+        attrStr += this.buildAttrPairStr(attr, '' + jObj[key]);
+      }else {
+        //tag value
+        if (key === this.options.textNodeName) {
+          let newval = this.options.tagValueProcessor(key, '' + jObj[key]);
+          val += this.replaceEntitiesValue(newval);
+        } else {
+          val += this.buildTextValNode(jObj[key], key, '', level);
+        }
+      }
+    } else if (Array.isArray(jObj[key])) {
+      //repeated nodes
+      const arrLen = jObj[key].length;
+      let listTagVal = "";
+      for (let j = 0; j < arrLen; j++) {
+        const item = jObj[key][j];
+        if (typeof item === 'undefined') {
+          // supress undefined node
+        } else if (item === null) {
+          if(key[0] === "?") val += this.indentate(level) + '<' + key + '?' + this.tagEndChar;
+          else val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+          // val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+        } else if (typeof item === 'object') {
+          if(this.options.oneListGroup ){
+            listTagVal += this.j2x(item, level + 1).val;
+          }else{
+            listTagVal += this.processTextOrObjNode(item, key, level)
+          }
+        } else {
+          listTagVal += this.buildTextValNode(item, key, '', level);
+        }
+      }
+      if(this.options.oneListGroup){
+        listTagVal = this.buildObjectNode(listTagVal, key, '', level);
+      }
+      val += listTagVal;
+    } else {
+      //nested node
+      if (this.options.attributesGroupName && key === this.options.attributesGroupName) {
+        const Ks = Object.keys(jObj[key]);
+        const L = Ks.length;
+        for (let j = 0; j < L; j++) {
+          attrStr += this.buildAttrPairStr(Ks[j], '' + jObj[key][Ks[j]]);
+        }
+      } else {
+        val += this.processTextOrObjNode(jObj[key], key, level)
+      }
+    }
+  }
+  return {attrStr: attrStr, val: val};
+};
+
+Builder.prototype.buildAttrPairStr = function(attrName, val){
+  val = this.options.attributeValueProcessor(attrName, '' + val);
+  val = this.replaceEntitiesValue(val);
+  if (this.options.suppressBooleanAttributes && val === "true") {
+    return ' ' + attrName;
+  } else return ' ' + attrName + '="' + val + '"';
+}
+
+function processTextOrObjNode (object, key, level) {
+  const result = this.j2x(object, level + 1);
+  if (object[this.options.textNodeName] !== undefined && Object.keys(object).length === 1) {
+    return this.buildTextValNode(object[this.options.textNodeName], key, result.attrStr, level);
+  } else {
+    return this.buildObjectNode(result.val, key, result.attrStr, level);
+  }
+}
+
+Builder.prototype.buildObjectNode = function(val, key, attrStr, level) {
+  if(val === ""){
+    if(key[0] === "?") return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar;
+    else {
+      return this.indentate(level) + '<' + key + attrStr + this.closeTag(key) + this.tagEndChar;
+    }
+  }else{
+
+    let tagEndExp = '</' + key + this.tagEndChar;
+    let piClosingChar = "";
+    
+    if(key[0] === "?") {
+      piClosingChar = "?";
+      tagEndExp = "";
+    }
+  
+    // attrStr is an empty string in case the attribute came as undefined or null
+    if ((attrStr || attrStr === '') && val.indexOf('<') === -1) {
+      return ( this.indentate(level) + '<' +  key + attrStr + piClosingChar + '>' + val + tagEndExp );
+    } else if (this.options.commentPropName !== false && key === this.options.commentPropName && piClosingChar.length === 0) {
+      return this.indentate(level) + `<!--${val}-->` + this.newLine;
+    }else {
+      return (
+        this.indentate(level) + '<' + key + attrStr + piClosingChar + this.tagEndChar +
+        val +
+        this.indentate(level) + tagEndExp    );
+    }
+  }
+}
+
+Builder.prototype.closeTag = function(key){
+  let closeTag = "";
+  if(this.options.unpairedTags.indexOf(key) !== -1){ //unpaired
+    if(!this.options.suppressUnpairedNode) closeTag = "/"
+  }else if(this.options.suppressEmptyNode){ //empty
+    closeTag = "/";
+  }else{
+    closeTag = `></${key}`
+  }
+  return closeTag;
+}
+
+function buildEmptyObjNode(val, key, attrStr, level) {
+  if (val !== '') {
+    return this.buildObjectNode(val, key, attrStr, level);
+  } else {
+    if(key[0] === "?") return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar;
+    else {
+      return  this.indentate(level) + '<' + key + attrStr + '/' + this.tagEndChar;
+      // return this.buildTagStr(level,key, attrStr);
+    }
+  }
+}
+
+Builder.prototype.buildTextValNode = function(val, key, attrStr, level) {
+  if (this.options.cdataPropName !== false && key === this.options.cdataPropName) {
+    return this.indentate(level) + `<![CDATA[${val}]]>` +  this.newLine;
+  }else if (this.options.commentPropName !== false && key === this.options.commentPropName) {
+    return this.indentate(level) + `<!--${val}-->` +  this.newLine;
+  }else if(key[0] === "?") {//PI tag
+    return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar; 
+  }else{
+    let textValue = this.options.tagValueProcessor(key, val);
+    textValue = this.replaceEntitiesValue(textValue);
+  
+    if( textValue === ''){
+      return this.indentate(level) + '<' + key + attrStr + this.closeTag(key) + this.tagEndChar;
+    }else{
+      return this.indentate(level) + '<' + key + attrStr + '>' +
+         textValue +
+        '</' + key + this.tagEndChar;
+    }
+  }
+}
+
+Builder.prototype.replaceEntitiesValue = function(textValue){
+  if(textValue && textValue.length > 0 && this.options.processEntities){
+    for (let i=0; i<this.options.entities.length; i++) {
+      const entity = this.options.entities[i];
+      textValue = textValue.replace(entity.regex, entity.val);
+    }
+  }
+  return textValue;
+}
+
+function indentate(level) {
+  return this.options.indentBy.repeat(level);
+}
+
+function isAttribute(name /*, options*/) {
+  if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) {
+    return name.substr(this.attrPrefixLen);
+  } else {
+    return false;
+  }
+}
+
+module.exports = Builder;
+
+
+/***/ }),
+
+/***/ 592:
+/***/ ((module) => {
+
+const EOL = "\n";
+
+/**
+ * 
+ * @param {array} jArray 
+ * @param {any} options 
+ * @returns 
+ */
+function toXml(jArray, options) {
+    let indentation = "";
+    if (options.format && options.indentBy.length > 0) {
+        indentation = EOL;
+    }
+    return arrToStr(jArray, options, "", indentation);
+}
+
+function arrToStr(arr, options, jPath, indentation) {
+    let xmlStr = "";
+    let isPreviousElementTag = false;
+
+    for (let i = 0; i < arr.length; i++) {
+        const tagObj = arr[i];
+        const tagName = propName(tagObj);
+        let newJPath = "";
+        if (jPath.length === 0) newJPath = tagName
+        else newJPath = `${jPath}.${tagName}`;
+
+        if (tagName === options.textNodeName) {
+            let tagText = tagObj[tagName];
+            if (!isStopNode(newJPath, options)) {
+                tagText = options.tagValueProcessor(tagName, tagText);
+                tagText = replaceEntitiesValue(tagText, options);
+            }
+            if (isPreviousElementTag) {
+                xmlStr += indentation;
+            }
+            xmlStr += tagText;
+            isPreviousElementTag = false;
+            continue;
+        } else if (tagName === options.cdataPropName) {
+            if (isPreviousElementTag) {
+                xmlStr += indentation;
+            }
+            xmlStr += `<![CDATA[${tagObj[tagName][0][options.textNodeName]}]]>`;
+            isPreviousElementTag = false;
+            continue;
+        } else if (tagName === options.commentPropName) {
+            xmlStr += indentation + `<!--${tagObj[tagName][0][options.textNodeName]}-->`;
+            isPreviousElementTag = true;
+            continue;
+        } else if (tagName[0] === "?") {
+            const attStr = attr_to_str(tagObj[":@"], options);
+            const tempInd = tagName === "?xml" ? "" : indentation;
+            let piTextNodeName = tagObj[tagName][0][options.textNodeName];
+            piTextNodeName = piTextNodeName.length !== 0 ? " " + piTextNodeName : ""; //remove extra spacing
+            xmlStr += tempInd + `<${tagName}${piTextNodeName}${attStr}?>`;
+            isPreviousElementTag = true;
+            continue;
+        }
+        let newIdentation = indentation;
+        if (newIdentation !== "") {
+            newIdentation += options.indentBy;
+        }
+        const attStr = attr_to_str(tagObj[":@"], options);
+        const tagStart = indentation + `<${tagName}${attStr}`;
+        const tagValue = arrToStr(tagObj[tagName], options, newJPath, newIdentation);
+        if (options.unpairedTags.indexOf(tagName) !== -1) {
+            if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
+            else xmlStr += tagStart + "/>";
+        } else if ((!tagValue || tagValue.length === 0) && options.suppressEmptyNode) {
+            xmlStr += tagStart + "/>";
+        } else if (tagValue && tagValue.endsWith(">")) {
+            xmlStr += tagStart + `>${tagValue}${indentation}</${tagName}>`;
+        } else {
+            xmlStr += tagStart + ">";
+            if (tagValue && indentation !== "" && (tagValue.includes("/>") || tagValue.includes("</"))) {
+                xmlStr += indentation + options.indentBy + tagValue + indentation;
+            } else {
+                xmlStr += tagValue;
+            }
+            xmlStr += `</${tagName}>`;
+        }
+        isPreviousElementTag = true;
+    }
+
+    return xmlStr;
+}
+
+function propName(obj) {
+    const keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        if (key !== ":@") return key;
+    }
+}
+
+function attr_to_str(attrMap, options) {
+    let attrStr = "";
+    if (attrMap && !options.ignoreAttributes) {
+        for (let attr in attrMap) {
+            let attrVal = options.attributeValueProcessor(attr, attrMap[attr]);
+            attrVal = replaceEntitiesValue(attrVal, options);
+            if (attrVal === true && options.suppressBooleanAttributes) {
+                attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}`;
+            } else {
+                attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}="${attrVal}"`;
+            }
+        }
+    }
+    return attrStr;
+}
+
+function isStopNode(jPath, options) {
+    jPath = jPath.substr(0, jPath.length - options.textNodeName.length - 1);
+    let tagName = jPath.substr(jPath.lastIndexOf(".") + 1);
+    for (let index in options.stopNodes) {
+        if (options.stopNodes[index] === jPath || options.stopNodes[index] === "*." + tagName) return true;
+    }
+    return false;
+}
+
+function replaceEntitiesValue(textValue, options) {
+    if (textValue && textValue.length > 0 && options.processEntities) {
+        for (let i = 0; i < options.entities.length; i++) {
+            const entity = options.entities[i];
+            textValue = textValue.replace(entity.regex, entity.val);
+        }
+    }
+    return textValue;
+}
+module.exports = toXml;
+
+
+/***/ }),
+
+/***/ 780:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const util = __webpack_require__(849);
+
+//TODO: handle comments
+function readDocType(xmlData, i){
+    
+    const entities = {};
+    if( xmlData[i + 3] === 'O' &&
+         xmlData[i + 4] === 'C' &&
+         xmlData[i + 5] === 'T' &&
+         xmlData[i + 6] === 'Y' &&
+         xmlData[i + 7] === 'P' &&
+         xmlData[i + 8] === 'E')
+    {    
+        i = i+9;
+        let angleBracketsCount = 1;
+        let hasBody = false, comment = false;
+        let exp = "";
+        for(;i<xmlData.length;i++){
+            if (xmlData[i] === '<' && !comment) { //Determine the tag type
+                if( hasBody && isEntity(xmlData, i)){
+                    i += 7; 
+                    [entityName, val,i] = readEntityExp(xmlData,i+1);
+                    if(val.indexOf("&") === -1) //Parameter entities are not supported
+                        entities[ validateEntityName(entityName) ] = {
+                            regx : RegExp( `&${entityName};`,"g"),
+                            val: val
+                        };
+                }
+                else if( hasBody && isElement(xmlData, i))  i += 8;//Not supported
+                else if( hasBody && isAttlist(xmlData, i))  i += 8;//Not supported
+                else if( hasBody && isNotation(xmlData, i)) i += 9;//Not supported
+                else if( isComment)                         comment = true;
+                else                                        throw new Error("Invalid DOCTYPE");
+
+                angleBracketsCount++;
+                exp = "";
+            } else if (xmlData[i] === '>') { //Read tag content
+                if(comment){
+                    if( xmlData[i - 1] === "-" && xmlData[i - 2] === "-"){
+                        comment = false;
+                        angleBracketsCount--;
+                    }
+                }else{
+                    angleBracketsCount--;
+                }
+                if (angleBracketsCount === 0) {
+                  break;
+                }
+            }else if( xmlData[i] === '['){
+                hasBody = true;
+            }else{
+                exp += xmlData[i];
+            }
+        }
+        if(angleBracketsCount !== 0){
+            throw new Error(`Unclosed DOCTYPE`);
+        }
+    }else{
+        throw new Error(`Invalid Tag instead of DOCTYPE`);
+    }
+    return {entities, i};
+}
+
+function readEntityExp(xmlData,i){
+    //External entities are not supported
+    //    <!ENTITY ext SYSTEM "http://normal-website.com" >
+
+    //Parameter entities are not supported
+    //    <!ENTITY entityname "&anotherElement;">
+
+    //Internal entities are supported
+    //    <!ENTITY entityname "replacement text">
+    
+    //read EntityName
+    let entityName = "";
+    for (; i < xmlData.length && (xmlData[i] !== "'" && xmlData[i] !== '"' ); i++) {
+        // if(xmlData[i] === " ") continue;
+        // else 
+        entityName += xmlData[i];
+    }
+    entityName = entityName.trim();
+    if(entityName.indexOf(" ") !== -1) throw new Error("External entites are not supported");
+
+    //read Entity Value
+    const startChar = xmlData[i++];
+    let val = ""
+    for (; i < xmlData.length && xmlData[i] !== startChar ; i++) {
+        val += xmlData[i];
+    }
+    return [entityName, val, i];
+}
+
+function isComment(xmlData, i){
+    if(xmlData[i+1] === '!' &&
+    xmlData[i+2] === '-' &&
+    xmlData[i+3] === '-') return true
+    return false
+}
+function isEntity(xmlData, i){
+    if(xmlData[i+1] === '!' &&
+    xmlData[i+2] === 'E' &&
+    xmlData[i+3] === 'N' &&
+    xmlData[i+4] === 'T' &&
+    xmlData[i+5] === 'I' &&
+    xmlData[i+6] === 'T' &&
+    xmlData[i+7] === 'Y') return true
+    return false
+}
+function isElement(xmlData, i){
+    if(xmlData[i+1] === '!' &&
+    xmlData[i+2] === 'E' &&
+    xmlData[i+3] === 'L' &&
+    xmlData[i+4] === 'E' &&
+    xmlData[i+5] === 'M' &&
+    xmlData[i+6] === 'E' &&
+    xmlData[i+7] === 'N' &&
+    xmlData[i+8] === 'T') return true
+    return false
+}
+
+function isAttlist(xmlData, i){
+    if(xmlData[i+1] === '!' &&
+    xmlData[i+2] === 'A' &&
+    xmlData[i+3] === 'T' &&
+    xmlData[i+4] === 'T' &&
+    xmlData[i+5] === 'L' &&
+    xmlData[i+6] === 'I' &&
+    xmlData[i+7] === 'S' &&
+    xmlData[i+8] === 'T') return true
+    return false
+}
+function isNotation(xmlData, i){
+    if(xmlData[i+1] === '!' &&
+    xmlData[i+2] === 'N' &&
+    xmlData[i+3] === 'O' &&
+    xmlData[i+4] === 'T' &&
+    xmlData[i+5] === 'A' &&
+    xmlData[i+6] === 'T' &&
+    xmlData[i+7] === 'I' &&
+    xmlData[i+8] === 'O' &&
+    xmlData[i+9] === 'N') return true
+    return false
+}
+
+function validateEntityName(name){
+    if (util.isName(name))
+	return name;
+    else
+        throw new Error(`Invalid entity name ${name}`);
+}
+
+module.exports = readDocType;
+
+
+/***/ }),
+
+/***/ 745:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+const defaultOptions = {
+    preserveOrder: false,
+    attributeNamePrefix: '@_',
+    attributesGroupName: false,
+    textNodeName: '#text',
+    ignoreAttributes: true,
+    removeNSPrefix: false, // remove NS from tag name or attribute name if true
+    allowBooleanAttributes: false, //a tag can have attributes without any value
+    //ignoreRootElement : false,
+    parseTagValue: true,
+    parseAttributeValue: false,
+    trimValues: true, //Trim string values of tag and attributes
+    cdataPropName: false,
+    numberParseOptions: {
+      hex: true,
+      leadingZeros: true,
+      eNotation: true
+    },
+    tagValueProcessor: function(tagName, val) {
+      return val;
+    },
+    attributeValueProcessor: function(attrName, val) {
+      return val;
+    },
+    stopNodes: [], //nested tags will not be parsed even for errors
+    alwaysCreateTextNode: false,
+    isArray: () => false,
+    commentPropName: false,
+    unpairedTags: [],
+    processEntities: true,
+    htmlEntities: false,
+    ignoreDeclaration: false,
+    ignorePiTags: false,
+    transformTagName: false,
+    transformAttributeName: false,
+    updateTag: function(tagName, jPath, attrs){
+      return tagName
+    },
+    // skipEmptyListItem: false
+};
+   
+const buildOptions = function(options) {
+    return Object.assign({}, defaultOptions, options);
+};
+
+exports.buildOptions = buildOptions;
+exports.defaultOptions = defaultOptions;
+
+/***/ }),
+
+/***/ 78:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+///@ts-check
+
+const util = __webpack_require__(849);
+const xmlNode = __webpack_require__(311);
+const readDocType = __webpack_require__(780);
+const toNumber = __webpack_require__(153);
+
+const regx =
+  '<((!\\[CDATA\\[([\\s\\S]*?)(]]>))|((NAME:)?(NAME))([^>]*)>|((\\/)(NAME)\\s*>))([^<]*)'
+  .replace(/NAME/g, util.nameRegexp);
+
+//const tagsRegx = new RegExp("<(\\/?[\\w:\\-\._]+)([^>]*)>(\\s*"+cdataRegx+")*([^<]+)?","g");
+//const tagsRegx = new RegExp("<(\\/?)((\\w*:)?([\\w:\\-\._]+))([^>]*)>([^<]*)("+cdataRegx+"([^<]*))*([^<]+)?","g");
+
+class OrderedObjParser{
+  constructor(options){
+    this.options = options;
+    this.currentNode = null;
+    this.tagsNodeStack = [];
+    this.docTypeEntities = {};
+    this.lastEntities = {
+      "apos" : { regex: /&(apos|#39|#x27);/g, val : "'"},
+      "gt" : { regex: /&(gt|#62|#x3E);/g, val : ">"},
+      "lt" : { regex: /&(lt|#60|#x3C);/g, val : "<"},
+      "quot" : { regex: /&(quot|#34|#x22);/g, val : "\""},
+    };
+    this.ampEntity = { regex: /&(amp|#38|#x26);/g, val : "&"};
+    this.htmlEntities = {
+      "space": { regex: /&(nbsp|#160);/g, val: " " },
+      // "lt" : { regex: /&(lt|#60);/g, val: "<" },
+      // "gt" : { regex: /&(gt|#62);/g, val: ">" },
+      // "amp" : { regex: /&(amp|#38);/g, val: "&" },
+      // "quot" : { regex: /&(quot|#34);/g, val: "\"" },
+      // "apos" : { regex: /&(apos|#39);/g, val: "'" },
+      "cent" : { regex: /&(cent|#162);/g, val: "¢" },
+      "pound" : { regex: /&(pound|#163);/g, val: "£" },
+      "yen" : { regex: /&(yen|#165);/g, val: "¥" },
+      "euro" : { regex: /&(euro|#8364);/g, val: "€" },
+      "copyright" : { regex: /&(copy|#169);/g, val: "©" },
+      "reg" : { regex: /&(reg|#174);/g, val: "®" },
+      "inr" : { regex: /&(inr|#8377);/g, val: "₹" },
+    };
+    this.addExternalEntities = addExternalEntities;
+    this.parseXml = parseXml;
+    this.parseTextData = parseTextData;
+    this.resolveNameSpace = resolveNameSpace;
+    this.buildAttributesMap = buildAttributesMap;
+    this.isItStopNode = isItStopNode;
+    this.replaceEntitiesValue = replaceEntitiesValue;
+    this.readStopNodeData = readStopNodeData;
+    this.saveTextToParentTag = saveTextToParentTag;
+    this.addChild = addChild;
+  }
+
+}
+
+function addExternalEntities(externalEntities){
+  const entKeys = Object.keys(externalEntities);
+  for (let i = 0; i < entKeys.length; i++) {
+    const ent = entKeys[i];
+    this.lastEntities[ent] = {
+       regex: new RegExp("&"+ent+";","g"),
+       val : externalEntities[ent]
+    }
+  }
+}
+
+/**
+ * @param {string} val
+ * @param {string} tagName
+ * @param {string} jPath
+ * @param {boolean} dontTrim
+ * @param {boolean} hasAttributes
+ * @param {boolean} isLeafNode
+ * @param {boolean} escapeEntities
+ */
+function parseTextData(val, tagName, jPath, dontTrim, hasAttributes, isLeafNode, escapeEntities) {
+  if (val !== undefined) {
+    if (this.options.trimValues && !dontTrim) {
+      val = val.trim();
+    }
+    if(val.length > 0){
+      if(!escapeEntities) val = this.replaceEntitiesValue(val);
+      
+      const newval = this.options.tagValueProcessor(tagName, val, jPath, hasAttributes, isLeafNode);
+      if(newval === null || newval === undefined){
+        //don't parse
+        return val;
+      }else if(typeof newval !== typeof val || newval !== val){
+        //overwrite
+        return newval;
+      }else if(this.options.trimValues){
+        return parseValue(val, this.options.parseTagValue, this.options.numberParseOptions);
+      }else{
+        const trimmedVal = val.trim();
+        if(trimmedVal === val){
+          return parseValue(val, this.options.parseTagValue, this.options.numberParseOptions);
+        }else{
+          return val;
+        }
+      }
+    }
+  }
+}
+
+function resolveNameSpace(tagname) {
+  if (this.options.removeNSPrefix) {
+    const tags = tagname.split(':');
+    const prefix = tagname.charAt(0) === '/' ? '/' : '';
+    if (tags[0] === 'xmlns') {
+      return '';
+    }
+    if (tags.length === 2) {
+      tagname = prefix + tags[1];
+    }
+  }
+  return tagname;
+}
+
+//TODO: change regex to capture NS
+//const attrsRegx = new RegExp("([\\w\\-\\.\\:]+)\\s*=\\s*(['\"])((.|\n)*?)\\2","gm");
+const attrsRegx = new RegExp('([^\\s=]+)\\s*(=\\s*([\'"])([\\s\\S]*?)\\3)?', 'gm');
+
+function buildAttributesMap(attrStr, jPath, tagName) {
+  if (!this.options.ignoreAttributes && typeof attrStr === 'string') {
+    // attrStr = attrStr.replace(/\r?\n/g, ' ');
+    //attrStr = attrStr || attrStr.trim();
+
+    const matches = util.getAllMatches(attrStr, attrsRegx);
+    const len = matches.length; //don't make it inline
+    const attrs = {};
+    for (let i = 0; i < len; i++) {
+      const attrName = this.resolveNameSpace(matches[i][1]);
+      let oldVal = matches[i][4];
+      let aName = this.options.attributeNamePrefix + attrName;
+      if (attrName.length) {
+        if (this.options.transformAttributeName) {
+          aName = this.options.transformAttributeName(aName);
+        }
+        if(aName === "__proto__") aName  = "#__proto__";
+        if (oldVal !== undefined) {
+          if (this.options.trimValues) {
+            oldVal = oldVal.trim();
+          }
+          oldVal = this.replaceEntitiesValue(oldVal);
+          const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPath);
+          if(newVal === null || newVal === undefined){
+            //don't parse
+            attrs[aName] = oldVal;
+          }else if(typeof newVal !== typeof oldVal || newVal !== oldVal){
+            //overwrite
+            attrs[aName] = newVal;
+          }else{
+            //parse
+            attrs[aName] = parseValue(
+              oldVal,
+              this.options.parseAttributeValue,
+              this.options.numberParseOptions
+            );
+          }
+        } else if (this.options.allowBooleanAttributes) {
+          attrs[aName] = true;
+        }
+      }
+    }
+    if (!Object.keys(attrs).length) {
+      return;
+    }
+    if (this.options.attributesGroupName) {
+      const attrCollection = {};
+      attrCollection[this.options.attributesGroupName] = attrs;
+      return attrCollection;
+    }
+    return attrs
+  }
+}
+
+const parseXml = function(xmlData) {
+  xmlData = xmlData.replace(/\r\n?/g, "\n"); //TODO: remove this line
+  const xmlObj = new xmlNode('!xml');
+  let currentNode = xmlObj;
+  let textData = "";
+  let jPath = "";
+  for(let i=0; i< xmlData.length; i++){//for each char in XML data
+    const ch = xmlData[i];
+    if(ch === '<'){
+      // const nextIndex = i+1;
+      // const _2ndChar = xmlData[nextIndex];
+      if( xmlData[i+1] === '/') {//Closing Tag
+        const closeIndex = findClosingIndex(xmlData, ">", i, "Closing Tag is not closed.")
+        let tagName = xmlData.substring(i+2,closeIndex).trim();
+
+        if(this.options.removeNSPrefix){
+          const colonIndex = tagName.indexOf(":");
+          if(colonIndex !== -1){
+            tagName = tagName.substr(colonIndex+1);
+          }
+        }
+
+        if(this.options.transformTagName) {
+          tagName = this.options.transformTagName(tagName);
+        }
+
+        if(currentNode){
+          textData = this.saveTextToParentTag(textData, currentNode, jPath);
+        }
+
+        //check if last tag of nested tag was unpaired tag
+        const lastTagName = jPath.substring(jPath.lastIndexOf(".")+1);
+        if(tagName && this.options.unpairedTags.indexOf(tagName) !== -1 ){
+          throw new Error(`Unpaired tag can not be used as closing tag: </${tagName}>`);
+        }
+        let propIndex = 0
+        if(lastTagName && this.options.unpairedTags.indexOf(lastTagName) !== -1 ){
+          propIndex = jPath.lastIndexOf('.', jPath.lastIndexOf('.')-1)
+          this.tagsNodeStack.pop();
+        }else{
+          propIndex = jPath.lastIndexOf(".");
+        }
+        jPath = jPath.substring(0, propIndex);
+
+        currentNode = this.tagsNodeStack.pop();//avoid recursion, set the parent tag scope
+        textData = "";
+        i = closeIndex;
+      } else if( xmlData[i+1] === '?') {
+
+        let tagData = readTagExp(xmlData,i, false, "?>");
+        if(!tagData) throw new Error("Pi Tag is not closed.");
+
+        textData = this.saveTextToParentTag(textData, currentNode, jPath);
+        if( (this.options.ignoreDeclaration && tagData.tagName === "?xml") || this.options.ignorePiTags){
+
+        }else{
+  
+          const childNode = new xmlNode(tagData.tagName);
+          childNode.add(this.options.textNodeName, "");
+          
+          if(tagData.tagName !== tagData.tagExp && tagData.attrExpPresent){
+            childNode[":@"] = this.buildAttributesMap(tagData.tagExp, jPath, tagData.tagName);
+          }
+          this.addChild(currentNode, childNode, jPath)
+
+        }
+
+
+        i = tagData.closeIndex + 1;
+      } else if(xmlData.substr(i + 1, 3) === '!--') {
+        const endIndex = findClosingIndex(xmlData, "-->", i+4, "Comment is not closed.")
+        if(this.options.commentPropName){
+          const comment = xmlData.substring(i + 4, endIndex - 2);
+
+          textData = this.saveTextToParentTag(textData, currentNode, jPath);
+
+          currentNode.add(this.options.commentPropName, [ { [this.options.textNodeName] : comment } ]);
+        }
+        i = endIndex;
+      } else if( xmlData.substr(i + 1, 2) === '!D') {
+        const result = readDocType(xmlData, i);
+        this.docTypeEntities = result.entities;
+        i = result.i;
+      }else if(xmlData.substr(i + 1, 2) === '![') {
+        const closeIndex = findClosingIndex(xmlData, "]]>", i, "CDATA is not closed.") - 2;
+        const tagExp = xmlData.substring(i + 9,closeIndex);
+
+        textData = this.saveTextToParentTag(textData, currentNode, jPath);
+
+        //cdata should be set even if it is 0 length string
+        if(this.options.cdataPropName){
+          // let val = this.parseTextData(tagExp, this.options.cdataPropName, jPath + "." + this.options.cdataPropName, true, false, true);
+          // if(!val) val = "";
+          currentNode.add(this.options.cdataPropName, [ { [this.options.textNodeName] : tagExp } ]);
+        }else{
+          let val = this.parseTextData(tagExp, currentNode.tagname, jPath, true, false, true);
+          if(val == undefined) val = "";
+          currentNode.add(this.options.textNodeName, val);
+        }
+        
+        i = closeIndex + 2;
+      }else {//Opening tag
+        let result = readTagExp(xmlData,i, this.options.removeNSPrefix);
+        let tagName= result.tagName;
+        let tagExp = result.tagExp;
+        let attrExpPresent = result.attrExpPresent;
+        let closeIndex = result.closeIndex;
+
+        if (this.options.transformTagName) {
+          tagName = this.options.transformTagName(tagName);
+        }
+        
+        //save text as child node
+        if (currentNode && textData) {
+          if(currentNode.tagname !== '!xml'){
+            //when nested tag is found
+            textData = this.saveTextToParentTag(textData, currentNode, jPath, false);
+          }
+        }
+
+        //check if last tag was unpaired tag
+        const lastTag = currentNode;
+        if(lastTag && this.options.unpairedTags.indexOf(lastTag.tagname) !== -1 ){
+          currentNode = this.tagsNodeStack.pop();
+          jPath = jPath.substring(0, jPath.lastIndexOf("."));
+        }
+        if(tagName !== xmlObj.tagname){
+          jPath += jPath ? "." + tagName : tagName;
+        }
+        if (this.isItStopNode(this.options.stopNodes, jPath, tagName)) { //TODO: namespace
+          let tagContent = "";
+          //self-closing tag
+          if(tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1){
+            i = result.closeIndex;
+          }
+          //unpaired tag
+          else if(this.options.unpairedTags.indexOf(tagName) !== -1){
+            i = result.closeIndex;
+          }
+          //normal tag
+          else{
+            //read until closing tag is found
+            const result = this.readStopNodeData(xmlData, tagName, closeIndex + 1);
+            if(!result) throw new Error(`Unexpected end of ${tagName}`);
+            i = result.i;
+            tagContent = result.tagContent;
+          }
+
+          const childNode = new xmlNode(tagName);
+          if(tagName !== tagExp && attrExpPresent){
+            childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+          }
+          if(tagContent) {
+            tagContent = this.parseTextData(tagContent, tagName, jPath, true, attrExpPresent, true, true);
+          }
+          
+          jPath = jPath.substr(0, jPath.lastIndexOf("."));
+          childNode.add(this.options.textNodeName, tagContent);
+          
+          this.addChild(currentNode, childNode, jPath)
+        }else{
+  //selfClosing tag
+          if(tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1){
+            if(tagName[tagName.length - 1] === "/"){ //remove trailing '/'
+              tagName = tagName.substr(0, tagName.length - 1);
+              jPath = jPath.substr(0, jPath.length - 1);
+              tagExp = tagName;
+            }else{
+              tagExp = tagExp.substr(0, tagExp.length - 1);
+            }
+            
+            if(this.options.transformTagName) {
+              tagName = this.options.transformTagName(tagName);
+            }
+
+            const childNode = new xmlNode(tagName);
+            if(tagName !== tagExp && attrExpPresent){
+              childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+            }
+            this.addChild(currentNode, childNode, jPath)
+            jPath = jPath.substr(0, jPath.lastIndexOf("."));
+          }
+    //opening tag
+          else{
+            const childNode = new xmlNode( tagName);
+            this.tagsNodeStack.push(currentNode);
+            
+            if(tagName !== tagExp && attrExpPresent){
+              childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+            }
+            this.addChild(currentNode, childNode, jPath)
+            currentNode = childNode;
+          }
+          textData = "";
+          i = closeIndex;
+        }
+      }
+    }else{
+      textData += xmlData[i];
+    }
+  }
+  return xmlObj.child;
+}
+
+function addChild(currentNode, childNode, jPath){
+  const result = this.options.updateTag(childNode.tagname, jPath, childNode[":@"])
+  if(result === false){
+  }else if(typeof result === "string"){
+    childNode.tagname = result
+    currentNode.addChild(childNode);
+  }else{
+    currentNode.addChild(childNode);
+  }
+}
+
+const replaceEntitiesValue = function(val){
+
+  if(this.options.processEntities){
+    for(let entityName in this.docTypeEntities){
+      const entity = this.docTypeEntities[entityName];
+      val = val.replace( entity.regx, entity.val);
+    }
+    for(let entityName in this.lastEntities){
+      const entity = this.lastEntities[entityName];
+      val = val.replace( entity.regex, entity.val);
+    }
+    if(this.options.htmlEntities){
+      for(let entityName in this.htmlEntities){
+        const entity = this.htmlEntities[entityName];
+        val = val.replace( entity.regex, entity.val);
+      }
+    }
+    val = val.replace( this.ampEntity.regex, this.ampEntity.val);
+  }
+  return val;
+}
+function saveTextToParentTag(textData, currentNode, jPath, isLeafNode) {
+  if (textData) { //store previously collected data as textNode
+    if(isLeafNode === undefined) isLeafNode = Object.keys(currentNode.child).length === 0
+    
+    textData = this.parseTextData(textData,
+      currentNode.tagname,
+      jPath,
+      false,
+      currentNode[":@"] ? Object.keys(currentNode[":@"]).length !== 0 : false,
+      isLeafNode);
+
+    if (textData !== undefined && textData !== "")
+      currentNode.add(this.options.textNodeName, textData);
+    textData = "";
+  }
+  return textData;
+}
+
+//TODO: use jPath to simplify the logic
+/**
+ * 
+ * @param {string[]} stopNodes 
+ * @param {string} jPath
+ * @param {string} currentTagName 
+ */
+function isItStopNode(stopNodes, jPath, currentTagName){
+  const allNodesExp = "*." + currentTagName;
+  for (const stopNodePath in stopNodes) {
+    const stopNodeExp = stopNodes[stopNodePath];
+    if( allNodesExp === stopNodeExp || jPath === stopNodeExp  ) return true;
+  }
+  return false;
+}
+
+/**
+ * Returns the tag Expression and where it is ending handling single-double quotes situation
+ * @param {string} xmlData 
+ * @param {number} i starting index
+ * @returns 
+ */
+function tagExpWithClosingIndex(xmlData, i, closingChar = ">"){
+  let attrBoundary;
+  let tagExp = "";
+  for (let index = i; index < xmlData.length; index++) {
+    let ch = xmlData[index];
+    if (attrBoundary) {
+        if (ch === attrBoundary) attrBoundary = "";//reset
+    } else if (ch === '"' || ch === "'") {
+        attrBoundary = ch;
+    } else if (ch === closingChar[0]) {
+      if(closingChar[1]){
+        if(xmlData[index + 1] === closingChar[1]){
+          return {
+            data: tagExp,
+            index: index
+          }
+        }
+      }else{
+        return {
+          data: tagExp,
+          index: index
+        }
+      }
+    } else if (ch === '\t') {
+      ch = " "
+    }
+    tagExp += ch;
+  }
+}
+
+function findClosingIndex(xmlData, str, i, errMsg){
+  const closingIndex = xmlData.indexOf(str, i);
+  if(closingIndex === -1){
+    throw new Error(errMsg)
+  }else{
+    return closingIndex + str.length - 1;
+  }
+}
+
+function readTagExp(xmlData,i, removeNSPrefix, closingChar = ">"){
+  const result = tagExpWithClosingIndex(xmlData, i+1, closingChar);
+  if(!result) return;
+  let tagExp = result.data;
+  const closeIndex = result.index;
+  const separatorIndex = tagExp.search(/\s/);
+  let tagName = tagExp;
+  let attrExpPresent = true;
+  if(separatorIndex !== -1){//separate tag name and attributes expression
+    tagName = tagExp.substr(0, separatorIndex).replace(/\s\s*$/, '');
+    tagExp = tagExp.substr(separatorIndex + 1);
+  }
+
+  if(removeNSPrefix){
+    const colonIndex = tagName.indexOf(":");
+    if(colonIndex !== -1){
+      tagName = tagName.substr(colonIndex+1);
+      attrExpPresent = tagName !== result.data.substr(colonIndex + 1);
+    }
+  }
+
+  return {
+    tagName: tagName,
+    tagExp: tagExp,
+    closeIndex: closeIndex,
+    attrExpPresent: attrExpPresent,
+  }
+}
+/**
+ * find paired tag for a stop node
+ * @param {string} xmlData 
+ * @param {string} tagName 
+ * @param {number} i 
+ */
+function readStopNodeData(xmlData, tagName, i){
+  const startIndex = i;
+  // Starting at 1 since we already have an open tag
+  let openTagCount = 1;
+
+  for (; i < xmlData.length; i++) {
+    if( xmlData[i] === "<"){ 
+      if (xmlData[i+1] === "/") {//close tag
+          const closeIndex = findClosingIndex(xmlData, ">", i, `${tagName} is not closed`);
+          let closeTagName = xmlData.substring(i+2,closeIndex).trim();
+          if(closeTagName === tagName){
+            openTagCount--;
+            if (openTagCount === 0) {
+              return {
+                tagContent: xmlData.substring(startIndex, i),
+                i : closeIndex
+              }
+            }
+          }
+          i=closeIndex;
+        } else if(xmlData[i+1] === '?') { 
+          const closeIndex = findClosingIndex(xmlData, "?>", i+1, "StopNode is not closed.")
+          i=closeIndex;
+        } else if(xmlData.substr(i + 1, 3) === '!--') { 
+          const closeIndex = findClosingIndex(xmlData, "-->", i+3, "StopNode is not closed.")
+          i=closeIndex;
+        } else if(xmlData.substr(i + 1, 2) === '![') { 
+          const closeIndex = findClosingIndex(xmlData, "]]>", i, "StopNode is not closed.") - 2;
+          i=closeIndex;
+        } else {
+          const tagData = readTagExp(xmlData, i, '>')
+
+          if (tagData) {
+            const openTagName = tagData && tagData.tagName;
+            if (openTagName === tagName && tagData.tagExp[tagData.tagExp.length-1] !== "/") {
+              openTagCount++;
+            }
+            i=tagData.closeIndex;
+          }
+        }
+      }
+  }//end for loop
+}
+
+function parseValue(val, shouldParse, options) {
+  if (shouldParse && typeof val === 'string') {
+    //console.log(options)
+    const newval = val.trim();
+    if(newval === 'true' ) return true;
+    else if(newval === 'false' ) return false;
+    else return toNumber(val, options);
+  } else {
+    if (util.isExist(val)) {
+      return val;
+    } else {
+      return '';
+    }
+  }
+}
+
+
+module.exports = OrderedObjParser;
+
+
+/***/ }),
+
+/***/ 844:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { buildOptions} = __webpack_require__(745);
+const OrderedObjParser = __webpack_require__(78);
+const { prettify} = __webpack_require__(997);
+const validator = __webpack_require__(501);
+
+class XMLParser{
+    
+    constructor(options){
+        this.externalEntities = {};
+        this.options = buildOptions(options);
+        
+    }
+    /**
+     * Parse XML dats to JS object 
+     * @param {string|Buffer} xmlData 
+     * @param {boolean|Object} validationOption 
+     */
+    parse(xmlData,validationOption){
+        if(typeof xmlData === "string"){
+        }else if( xmlData.toString){
+            xmlData = xmlData.toString();
+        }else{
+            throw new Error("XML data is accepted in String or Bytes[] form.")
+        }
+        if( validationOption){
+            if(validationOption === true) validationOption = {}; //validate with default options
+            
+            const result = validator.validate(xmlData, validationOption);
+            if (result !== true) {
+              throw Error( `${result.err.msg}:${result.err.line}:${result.err.col}` )
+            }
+          }
+        const orderedObjParser = new OrderedObjParser(this.options);
+        orderedObjParser.addExternalEntities(this.externalEntities);
+        const orderedResult = orderedObjParser.parseXml(xmlData);
+        if(this.options.preserveOrder || orderedResult === undefined) return orderedResult;
+        else return prettify(orderedResult, this.options);
+    }
+
+    /**
+     * Add Entity which is not by default supported by this library
+     * @param {string} key 
+     * @param {string} value 
+     */
+    addEntity(key, value){
+        if(value.indexOf("&") !== -1){
+            throw new Error("Entity value can't have '&'")
+        }else if(key.indexOf("&") !== -1 || key.indexOf(";") !== -1){
+            throw new Error("An entity must be set without '&' and ';'. Eg. use '#xD' for '&#xD;'")
+        }else if(value === "&"){
+            throw new Error("An entity with value '&' is not permitted");
+        }else{
+            this.externalEntities[key] = value;
+        }
+    }
+}
+
+module.exports = XMLParser;
+
+/***/ }),
+
+/***/ 997:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+/**
+ * 
+ * @param {array} node 
+ * @param {any} options 
+ * @returns 
+ */
+function prettify(node, options){
+  return compress( node, options);
+}
+
+/**
+ * 
+ * @param {array} arr 
+ * @param {object} options 
+ * @param {string} jPath 
+ * @returns object
+ */
+function compress(arr, options, jPath){
+  let text;
+  const compressedObj = {};
+  for (let i = 0; i < arr.length; i++) {
+    const tagObj = arr[i];
+    const property = propName(tagObj);
+    let newJpath = "";
+    if(jPath === undefined) newJpath = property;
+    else newJpath = jPath + "." + property;
+
+    if(property === options.textNodeName){
+      if(text === undefined) text = tagObj[property];
+      else text += "" + tagObj[property];
+    }else if(property === undefined){
+      continue;
+    }else if(tagObj[property]){
+      
+      let val = compress(tagObj[property], options, newJpath);
+      const isLeaf = isLeafTag(val, options);
+
+      if(tagObj[":@"]){
+        assignAttributes( val, tagObj[":@"], newJpath, options);
+      }else if(Object.keys(val).length === 1 && val[options.textNodeName] !== undefined && !options.alwaysCreateTextNode){
+        val = val[options.textNodeName];
+      }else if(Object.keys(val).length === 0){
+        if(options.alwaysCreateTextNode) val[options.textNodeName] = "";
+        else val = "";
+      }
+
+      if(compressedObj[property] !== undefined && compressedObj.hasOwnProperty(property)) {
+        if(!Array.isArray(compressedObj[property])) {
+            compressedObj[property] = [ compressedObj[property] ];
+        }
+        compressedObj[property].push(val);
+      }else{
+        //TODO: if a node is not an array, then check if it should be an array
+        //also determine if it is a leaf node
+        if (options.isArray(property, newJpath, isLeaf )) {
+          compressedObj[property] = [val];
+        }else{
+          compressedObj[property] = val;
+        }
+      }
+    }
+    
+  }
+  // if(text && text.length > 0) compressedObj[options.textNodeName] = text;
+  if(typeof text === "string"){
+    if(text.length > 0) compressedObj[options.textNodeName] = text;
+  }else if(text !== undefined) compressedObj[options.textNodeName] = text;
+  return compressedObj;
+}
+
+function propName(obj){
+  const keys = Object.keys(obj);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    if(key !== ":@") return key;
+  }
+}
+
+function assignAttributes(obj, attrMap, jpath, options){
+  if (attrMap) {
+    const keys = Object.keys(attrMap);
+    const len = keys.length; //don't make it inline
+    for (let i = 0; i < len; i++) {
+      const atrrName = keys[i];
+      if (options.isArray(atrrName, jpath + "." + atrrName, true, true)) {
+        obj[atrrName] = [ attrMap[atrrName] ];
+      } else {
+        obj[atrrName] = attrMap[atrrName];
+      }
+    }
+  }
+}
+
+function isLeafTag(obj, options){
+  const { textNodeName } = options;
+  const propCount = Object.keys(obj).length;
+  
+  if (propCount === 0) {
+    return true;
+  }
+
+  if (
+    propCount === 1 &&
+    (obj[textNodeName] || typeof obj[textNodeName] === "boolean" || obj[textNodeName] === 0)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+exports.prettify = prettify;
+
+
+/***/ }),
+
+/***/ 311:
+/***/ ((module) => {
+
+"use strict";
+
+
+class XmlNode{
+  constructor(tagname) {
+    this.tagname = tagname;
+    this.child = []; //nested tags, text, cdata, comments in order
+    this[":@"] = {}; //attributes map
+  }
+  add(key,val){
+    // this.child.push( {name : key, val: val, isCdata: isCdata });
+    if(key === "__proto__") key = "#__proto__";
+    this.child.push( {[key]: val });
+  }
+  addChild(node) {
+    if(node.tagname === "__proto__") node.tagname = "#__proto__";
+    if(node[":@"] && Object.keys(node[":@"]).length > 0){
+      this.child.push( { [node.tagname]: node.child, [":@"]: node[":@"] });
+    }else{
+      this.child.push( { [node.tagname]: node.child });
+    }
+  };
+};
+
+
+module.exports = XmlNode;
+
+/***/ }),
 
 /***/ 693:
 /***/ (function(module) {
@@ -555,947 +2526,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   module.exports = fetchJsonp;
 });
-
-/***/ }),
-
-/***/ 962:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Builder = void 0;
-var byte_buffer_js_1 = __webpack_require__(505);
-var constants_js_1 = __webpack_require__(147);
-var Builder = /** @class */ (function () {
-    /**
-     * Create a FlatBufferBuilder.
-     */
-    function Builder(opt_initial_size) {
-        /** Minimum alignment encountered so far. */
-        this.minalign = 1;
-        /** The vtable for the current table. */
-        this.vtable = null;
-        /** The amount of fields we're actually using. */
-        this.vtable_in_use = 0;
-        /** Whether we are currently serializing a table. */
-        this.isNested = false;
-        /** Starting offset of the current struct/table. */
-        this.object_start = 0;
-        /** List of offsets of all vtables. */
-        this.vtables = [];
-        /** For the current vector being built. */
-        this.vector_num_elems = 0;
-        /** False omits default values from the serialized data */
-        this.force_defaults = false;
-        this.string_maps = null;
-        var initial_size;
-        if (!opt_initial_size) {
-            initial_size = 1024;
-        }
-        else {
-            initial_size = opt_initial_size;
-        }
-        /**
-         * @type {ByteBuffer}
-         * @private
-         */
-        this.bb = byte_buffer_js_1.ByteBuffer.allocate(initial_size);
-        this.space = initial_size;
-    }
-    Builder.prototype.clear = function () {
-        this.bb.clear();
-        this.space = this.bb.capacity();
-        this.minalign = 1;
-        this.vtable = null;
-        this.vtable_in_use = 0;
-        this.isNested = false;
-        this.object_start = 0;
-        this.vtables = [];
-        this.vector_num_elems = 0;
-        this.force_defaults = false;
-        this.string_maps = null;
-    };
-    /**
-     * In order to save space, fields that are set to their default value
-     * don't get serialized into the buffer. Forcing defaults provides a
-     * way to manually disable this optimization.
-     *
-     * @param forceDefaults true always serializes default values
-     */
-    Builder.prototype.forceDefaults = function (forceDefaults) {
-        this.force_defaults = forceDefaults;
-    };
-    /**
-     * Get the ByteBuffer representing the FlatBuffer. Only call this after you've
-     * called finish(). The actual data starts at the ByteBuffer's current position,
-     * not necessarily at 0.
-     */
-    Builder.prototype.dataBuffer = function () {
-        return this.bb;
-    };
-    /**
-     * Get the bytes representing the FlatBuffer. Only call this after you've
-     * called finish().
-     */
-    Builder.prototype.asUint8Array = function () {
-        return this.bb.bytes().subarray(this.bb.position(), this.bb.position() + this.offset());
-    };
-    /**
-     * Prepare to write an element of `size` after `additional_bytes` have been
-     * written, e.g. if you write a string, you need to align such the int length
-     * field is aligned to 4 bytes, and the string data follows it directly. If all
-     * you need to do is alignment, `additional_bytes` will be 0.
-     *
-     * @param size This is the of the new element to write
-     * @param additional_bytes The padding size
-     */
-    Builder.prototype.prep = function (size, additional_bytes) {
-        // Track the biggest thing we've ever aligned to.
-        if (size > this.minalign) {
-            this.minalign = size;
-        }
-        // Find the amount of alignment needed such that `size` is properly
-        // aligned after `additional_bytes`
-        var align_size = ((~(this.bb.capacity() - this.space + additional_bytes)) + 1) & (size - 1);
-        // Reallocate the buffer if needed.
-        while (this.space < align_size + size + additional_bytes) {
-            var old_buf_size = this.bb.capacity();
-            this.bb = Builder.growByteBuffer(this.bb);
-            this.space += this.bb.capacity() - old_buf_size;
-        }
-        this.pad(align_size);
-    };
-    Builder.prototype.pad = function (byte_size) {
-        for (var i = 0; i < byte_size; i++) {
-            this.bb.writeInt8(--this.space, 0);
-        }
-    };
-    Builder.prototype.writeInt8 = function (value) {
-        this.bb.writeInt8(this.space -= 1, value);
-    };
-    Builder.prototype.writeInt16 = function (value) {
-        this.bb.writeInt16(this.space -= 2, value);
-    };
-    Builder.prototype.writeInt32 = function (value) {
-        this.bb.writeInt32(this.space -= 4, value);
-    };
-    Builder.prototype.writeInt64 = function (value) {
-        this.bb.writeInt64(this.space -= 8, value);
-    };
-    Builder.prototype.writeFloat32 = function (value) {
-        this.bb.writeFloat32(this.space -= 4, value);
-    };
-    Builder.prototype.writeFloat64 = function (value) {
-        this.bb.writeFloat64(this.space -= 8, value);
-    };
-    /**
-     * Add an `int8` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int8` to add the the buffer.
-     */
-    Builder.prototype.addInt8 = function (value) {
-        this.prep(1, 0);
-        this.writeInt8(value);
-    };
-    /**
-     * Add an `int16` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int16` to add the the buffer.
-     */
-    Builder.prototype.addInt16 = function (value) {
-        this.prep(2, 0);
-        this.writeInt16(value);
-    };
-    /**
-     * Add an `int32` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int32` to add the the buffer.
-     */
-    Builder.prototype.addInt32 = function (value) {
-        this.prep(4, 0);
-        this.writeInt32(value);
-    };
-    /**
-     * Add an `int64` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `int64` to add the the buffer.
-     */
-    Builder.prototype.addInt64 = function (value) {
-        this.prep(8, 0);
-        this.writeInt64(value);
-    };
-    /**
-     * Add a `float32` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `float32` to add the the buffer.
-     */
-    Builder.prototype.addFloat32 = function (value) {
-        this.prep(4, 0);
-        this.writeFloat32(value);
-    };
-    /**
-     * Add a `float64` to the buffer, properly aligned, and grows the buffer (if necessary).
-     * @param value The `float64` to add the the buffer.
-     */
-    Builder.prototype.addFloat64 = function (value) {
-        this.prep(8, 0);
-        this.writeFloat64(value);
-    };
-    Builder.prototype.addFieldInt8 = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value != defaultValue) {
-            this.addInt8(value);
-            this.slot(voffset);
-        }
-    };
-    Builder.prototype.addFieldInt16 = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value != defaultValue) {
-            this.addInt16(value);
-            this.slot(voffset);
-        }
-    };
-    Builder.prototype.addFieldInt32 = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value != defaultValue) {
-            this.addInt32(value);
-            this.slot(voffset);
-        }
-    };
-    Builder.prototype.addFieldInt64 = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value !== defaultValue) {
-            this.addInt64(value);
-            this.slot(voffset);
-        }
-    };
-    Builder.prototype.addFieldFloat32 = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value != defaultValue) {
-            this.addFloat32(value);
-            this.slot(voffset);
-        }
-    };
-    Builder.prototype.addFieldFloat64 = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value != defaultValue) {
-            this.addFloat64(value);
-            this.slot(voffset);
-        }
-    };
-    Builder.prototype.addFieldOffset = function (voffset, value, defaultValue) {
-        if (this.force_defaults || value != defaultValue) {
-            this.addOffset(value);
-            this.slot(voffset);
-        }
-    };
-    /**
-     * Structs are stored inline, so nothing additional is being added. `d` is always 0.
-     */
-    Builder.prototype.addFieldStruct = function (voffset, value, defaultValue) {
-        if (value != defaultValue) {
-            this.nested(value);
-            this.slot(voffset);
-        }
-    };
-    /**
-     * Structures are always stored inline, they need to be created right
-     * where they're used.  You'll get this assertion failure if you
-     * created it elsewhere.
-     */
-    Builder.prototype.nested = function (obj) {
-        if (obj != this.offset()) {
-            throw new Error('FlatBuffers: struct must be serialized inline.');
-        }
-    };
-    /**
-     * Should not be creating any other object, string or vector
-     * while an object is being constructed
-     */
-    Builder.prototype.notNested = function () {
-        if (this.isNested) {
-            throw new Error('FlatBuffers: object serialization must not be nested.');
-        }
-    };
-    /**
-     * Set the current vtable at `voffset` to the current location in the buffer.
-     */
-    Builder.prototype.slot = function (voffset) {
-        if (this.vtable !== null)
-            this.vtable[voffset] = this.offset();
-    };
-    /**
-     * @returns Offset relative to the end of the buffer.
-     */
-    Builder.prototype.offset = function () {
-        return this.bb.capacity() - this.space;
-    };
-    /**
-     * Doubles the size of the backing ByteBuffer and copies the old data towards
-     * the end of the new buffer (since we build the buffer backwards).
-     *
-     * @param bb The current buffer with the existing data
-     * @returns A new byte buffer with the old data copied
-     * to it. The data is located at the end of the buffer.
-     *
-     * uint8Array.set() formally takes {Array<number>|ArrayBufferView}, so to pass
-     * it a uint8Array we need to suppress the type check:
-     * @suppress {checkTypes}
-     */
-    Builder.growByteBuffer = function (bb) {
-        var old_buf_size = bb.capacity();
-        // Ensure we don't grow beyond what fits in an int.
-        if (old_buf_size & 0xC0000000) {
-            throw new Error('FlatBuffers: cannot grow buffer beyond 2 gigabytes.');
-        }
-        var new_buf_size = old_buf_size << 1;
-        var nbb = byte_buffer_js_1.ByteBuffer.allocate(new_buf_size);
-        nbb.setPosition(new_buf_size - old_buf_size);
-        nbb.bytes().set(bb.bytes(), new_buf_size - old_buf_size);
-        return nbb;
-    };
-    /**
-     * Adds on offset, relative to where it will be written.
-     *
-     * @param offset The offset to add.
-     */
-    Builder.prototype.addOffset = function (offset) {
-        this.prep(constants_js_1.SIZEOF_INT, 0); // Ensure alignment is already done.
-        this.writeInt32(this.offset() - offset + constants_js_1.SIZEOF_INT);
-    };
-    /**
-     * Start encoding a new object in the buffer.  Users will not usually need to
-     * call this directly. The FlatBuffers compiler will generate helper methods
-     * that call this method internally.
-     */
-    Builder.prototype.startObject = function (numfields) {
-        this.notNested();
-        if (this.vtable == null) {
-            this.vtable = [];
-        }
-        this.vtable_in_use = numfields;
-        for (var i = 0; i < numfields; i++) {
-            this.vtable[i] = 0; // This will push additional elements as needed
-        }
-        this.isNested = true;
-        this.object_start = this.offset();
-    };
-    /**
-     * Finish off writing the object that is under construction.
-     *
-     * @returns The offset to the object inside `dataBuffer`
-     */
-    Builder.prototype.endObject = function () {
-        if (this.vtable == null || !this.isNested) {
-            throw new Error('FlatBuffers: endObject called without startObject');
-        }
-        this.addInt32(0);
-        var vtableloc = this.offset();
-        // Trim trailing zeroes.
-        var i = this.vtable_in_use - 1;
-        // eslint-disable-next-line no-empty
-        for (; i >= 0 && this.vtable[i] == 0; i--) { }
-        var trimmed_size = i + 1;
-        // Write out the current vtable.
-        for (; i >= 0; i--) {
-            // Offset relative to the start of the table.
-            this.addInt16(this.vtable[i] != 0 ? vtableloc - this.vtable[i] : 0);
-        }
-        var standard_fields = 2; // The fields below:
-        this.addInt16(vtableloc - this.object_start);
-        var len = (trimmed_size + standard_fields) * constants_js_1.SIZEOF_SHORT;
-        this.addInt16(len);
-        // Search for an existing vtable that matches the current one.
-        var existing_vtable = 0;
-        var vt1 = this.space;
-        outer_loop: for (i = 0; i < this.vtables.length; i++) {
-            var vt2 = this.bb.capacity() - this.vtables[i];
-            if (len == this.bb.readInt16(vt2)) {
-                for (var j = constants_js_1.SIZEOF_SHORT; j < len; j += constants_js_1.SIZEOF_SHORT) {
-                    if (this.bb.readInt16(vt1 + j) != this.bb.readInt16(vt2 + j)) {
-                        continue outer_loop;
-                    }
-                }
-                existing_vtable = this.vtables[i];
-                break;
-            }
-        }
-        if (existing_vtable) {
-            // Found a match:
-            // Remove the current vtable.
-            this.space = this.bb.capacity() - vtableloc;
-            // Point table to existing vtable.
-            this.bb.writeInt32(this.space, existing_vtable - vtableloc);
-        }
-        else {
-            // No match:
-            // Add the location of the current vtable to the list of vtables.
-            this.vtables.push(this.offset());
-            // Point table to current vtable.
-            this.bb.writeInt32(this.bb.capacity() - vtableloc, this.offset() - vtableloc);
-        }
-        this.isNested = false;
-        return vtableloc;
-    };
-    /**
-     * Finalize a buffer, poiting to the given `root_table`.
-     */
-    Builder.prototype.finish = function (root_table, opt_file_identifier, opt_size_prefix) {
-        var size_prefix = opt_size_prefix ? constants_js_1.SIZE_PREFIX_LENGTH : 0;
-        if (opt_file_identifier) {
-            var file_identifier = opt_file_identifier;
-            this.prep(this.minalign, constants_js_1.SIZEOF_INT +
-                constants_js_1.FILE_IDENTIFIER_LENGTH + size_prefix);
-            if (file_identifier.length != constants_js_1.FILE_IDENTIFIER_LENGTH) {
-                throw new Error('FlatBuffers: file identifier must be length ' +
-                    constants_js_1.FILE_IDENTIFIER_LENGTH);
-            }
-            for (var i = constants_js_1.FILE_IDENTIFIER_LENGTH - 1; i >= 0; i--) {
-                this.writeInt8(file_identifier.charCodeAt(i));
-            }
-        }
-        this.prep(this.minalign, constants_js_1.SIZEOF_INT + size_prefix);
-        this.addOffset(root_table);
-        if (size_prefix) {
-            this.addInt32(this.bb.capacity() - this.space);
-        }
-        this.bb.setPosition(this.space);
-    };
-    /**
-     * Finalize a size prefixed buffer, pointing to the given `root_table`.
-     */
-    Builder.prototype.finishSizePrefixed = function (root_table, opt_file_identifier) {
-        this.finish(root_table, opt_file_identifier, true);
-    };
-    /**
-     * This checks a required field has been set in a given table that has
-     * just been constructed.
-     */
-    Builder.prototype.requiredField = function (table, field) {
-        var table_start = this.bb.capacity() - table;
-        var vtable_start = table_start - this.bb.readInt32(table_start);
-        var ok = this.bb.readInt16(vtable_start + field) != 0;
-        // If this fails, the caller will show what field needs to be set.
-        if (!ok) {
-            throw new Error('FlatBuffers: field ' + field + ' must be set');
-        }
-    };
-    /**
-     * Start a new array/vector of objects.  Users usually will not call
-     * this directly. The FlatBuffers compiler will create a start/end
-     * method for vector types in generated code.
-     *
-     * @param elem_size The size of each element in the array
-     * @param num_elems The number of elements in the array
-     * @param alignment The alignment of the array
-     */
-    Builder.prototype.startVector = function (elem_size, num_elems, alignment) {
-        this.notNested();
-        this.vector_num_elems = num_elems;
-        this.prep(constants_js_1.SIZEOF_INT, elem_size * num_elems);
-        this.prep(alignment, elem_size * num_elems); // Just in case alignment > int.
-    };
-    /**
-     * Finish off the creation of an array and all its elements. The array must be
-     * created with `startVector`.
-     *
-     * @returns The offset at which the newly created array
-     * starts.
-     */
-    Builder.prototype.endVector = function () {
-        this.writeInt32(this.vector_num_elems);
-        return this.offset();
-    };
-    /**
-     * Encode the string `s` in the buffer using UTF-8. If the string passed has
-     * already been seen, we return the offset of the already written string
-     *
-     * @param s The string to encode
-     * @return The offset in the buffer where the encoded string starts
-     */
-    Builder.prototype.createSharedString = function (s) {
-        if (!s) {
-            return 0;
-        }
-        if (!this.string_maps) {
-            this.string_maps = new Map();
-        }
-        if (this.string_maps.has(s)) {
-            return this.string_maps.get(s);
-        }
-        var offset = this.createString(s);
-        this.string_maps.set(s, offset);
-        return offset;
-    };
-    /**
-     * Encode the string `s` in the buffer using UTF-8. If a Uint8Array is passed
-     * instead of a string, it is assumed to contain valid UTF-8 encoded data.
-     *
-     * @param s The string to encode
-     * @return The offset in the buffer where the encoded string starts
-     */
-    Builder.prototype.createString = function (s) {
-        if (s === null || s === undefined) {
-            return 0;
-        }
-        var utf8;
-        if (s instanceof Uint8Array) {
-            utf8 = s;
-        }
-        else {
-            utf8 = [];
-            var i = 0;
-            while (i < s.length) {
-                var codePoint = void 0;
-                // Decode UTF-16
-                var a = s.charCodeAt(i++);
-                if (a < 0xD800 || a >= 0xDC00) {
-                    codePoint = a;
-                }
-                else {
-                    var b = s.charCodeAt(i++);
-                    codePoint = (a << 10) + b + (0x10000 - (0xD800 << 10) - 0xDC00);
-                }
-                // Encode UTF-8
-                if (codePoint < 0x80) {
-                    utf8.push(codePoint);
-                }
-                else {
-                    if (codePoint < 0x800) {
-                        utf8.push(((codePoint >> 6) & 0x1F) | 0xC0);
-                    }
-                    else {
-                        if (codePoint < 0x10000) {
-                            utf8.push(((codePoint >> 12) & 0x0F) | 0xE0);
-                        }
-                        else {
-                            utf8.push(((codePoint >> 18) & 0x07) | 0xF0, ((codePoint >> 12) & 0x3F) | 0x80);
-                        }
-                        utf8.push(((codePoint >> 6) & 0x3F) | 0x80);
-                    }
-                    utf8.push((codePoint & 0x3F) | 0x80);
-                }
-            }
-        }
-        this.addInt8(0);
-        this.startVector(1, utf8.length, 1);
-        this.bb.setPosition(this.space -= utf8.length);
-        for (var i = 0, offset = this.space, bytes = this.bb.bytes(); i < utf8.length; i++) {
-            bytes[offset++] = utf8[i];
-        }
-        return this.endVector();
-    };
-    /**
-     * A helper function to pack an object
-     *
-     * @returns offset of obj
-     */
-    Builder.prototype.createObjectOffset = function (obj) {
-        if (obj === null) {
-            return 0;
-        }
-        if (typeof obj === 'string') {
-            return this.createString(obj);
-        }
-        else {
-            return obj.pack(this);
-        }
-    };
-    /**
-     * A helper function to pack a list of object
-     *
-     * @returns list of offsets of each non null object
-     */
-    Builder.prototype.createObjectOffsetList = function (list) {
-        var ret = [];
-        for (var i = 0; i < list.length; ++i) {
-            var val = list[i];
-            if (val !== null) {
-                ret.push(this.createObjectOffset(val));
-            }
-            else {
-                throw new Error('FlatBuffers: Argument for createObjectOffsetList cannot contain null.');
-            }
-        }
-        return ret;
-    };
-    Builder.prototype.createStructOffsetList = function (list, startFunc) {
-        startFunc(this, list.length);
-        this.createObjectOffsetList(list);
-        return this.endVector();
-    };
-    return Builder;
-}());
-exports.Builder = Builder;
-
-
-/***/ }),
-
-/***/ 505:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ByteBuffer = void 0;
-var constants_js_1 = __webpack_require__(147);
-var utils_js_1 = __webpack_require__(766);
-var encoding_js_1 = __webpack_require__(650);
-var ByteBuffer = /** @class */ (function () {
-    /**
-     * Create a new ByteBuffer with a given array of bytes (`Uint8Array`)
-     */
-    function ByteBuffer(bytes_) {
-        this.bytes_ = bytes_;
-        this.position_ = 0;
-    }
-    /**
-     * Create and allocate a new ByteBuffer with a given size.
-     */
-    ByteBuffer.allocate = function (byte_size) {
-        return new ByteBuffer(new Uint8Array(byte_size));
-    };
-    ByteBuffer.prototype.clear = function () {
-        this.position_ = 0;
-    };
-    /**
-     * Get the underlying `Uint8Array`.
-     */
-    ByteBuffer.prototype.bytes = function () {
-        return this.bytes_;
-    };
-    /**
-     * Get the buffer's position.
-     */
-    ByteBuffer.prototype.position = function () {
-        return this.position_;
-    };
-    /**
-     * Set the buffer's position.
-     */
-    ByteBuffer.prototype.setPosition = function (position) {
-        this.position_ = position;
-    };
-    /**
-     * Get the buffer's capacity.
-     */
-    ByteBuffer.prototype.capacity = function () {
-        return this.bytes_.length;
-    };
-    ByteBuffer.prototype.readInt8 = function (offset) {
-        return this.readUint8(offset) << 24 >> 24;
-    };
-    ByteBuffer.prototype.readUint8 = function (offset) {
-        return this.bytes_[offset];
-    };
-    ByteBuffer.prototype.readInt16 = function (offset) {
-        return this.readUint16(offset) << 16 >> 16;
-    };
-    ByteBuffer.prototype.readUint16 = function (offset) {
-        return this.bytes_[offset] | this.bytes_[offset + 1] << 8;
-    };
-    ByteBuffer.prototype.readInt32 = function (offset) {
-        return this.bytes_[offset] | this.bytes_[offset + 1] << 8 | this.bytes_[offset + 2] << 16 | this.bytes_[offset + 3] << 24;
-    };
-    ByteBuffer.prototype.readUint32 = function (offset) {
-        return this.readInt32(offset) >>> 0;
-    };
-    ByteBuffer.prototype.readInt64 = function (offset) {
-        return BigInt.asIntN(64, BigInt(this.readUint32(offset)) + (BigInt(this.readUint32(offset + 4)) << BigInt(32)));
-    };
-    ByteBuffer.prototype.readUint64 = function (offset) {
-        return BigInt.asUintN(64, BigInt(this.readUint32(offset)) + (BigInt(this.readUint32(offset + 4)) << BigInt(32)));
-    };
-    ByteBuffer.prototype.readFloat32 = function (offset) {
-        utils_js_1.int32[0] = this.readInt32(offset);
-        return utils_js_1.float32[0];
-    };
-    ByteBuffer.prototype.readFloat64 = function (offset) {
-        utils_js_1.int32[utils_js_1.isLittleEndian ? 0 : 1] = this.readInt32(offset);
-        utils_js_1.int32[utils_js_1.isLittleEndian ? 1 : 0] = this.readInt32(offset + 4);
-        return utils_js_1.float64[0];
-    };
-    ByteBuffer.prototype.writeInt8 = function (offset, value) {
-        this.bytes_[offset] = value;
-    };
-    ByteBuffer.prototype.writeUint8 = function (offset, value) {
-        this.bytes_[offset] = value;
-    };
-    ByteBuffer.prototype.writeInt16 = function (offset, value) {
-        this.bytes_[offset] = value;
-        this.bytes_[offset + 1] = value >> 8;
-    };
-    ByteBuffer.prototype.writeUint16 = function (offset, value) {
-        this.bytes_[offset] = value;
-        this.bytes_[offset + 1] = value >> 8;
-    };
-    ByteBuffer.prototype.writeInt32 = function (offset, value) {
-        this.bytes_[offset] = value;
-        this.bytes_[offset + 1] = value >> 8;
-        this.bytes_[offset + 2] = value >> 16;
-        this.bytes_[offset + 3] = value >> 24;
-    };
-    ByteBuffer.prototype.writeUint32 = function (offset, value) {
-        this.bytes_[offset] = value;
-        this.bytes_[offset + 1] = value >> 8;
-        this.bytes_[offset + 2] = value >> 16;
-        this.bytes_[offset + 3] = value >> 24;
-    };
-    ByteBuffer.prototype.writeInt64 = function (offset, value) {
-        this.writeInt32(offset, Number(BigInt.asIntN(32, value)));
-        this.writeInt32(offset + 4, Number(BigInt.asIntN(32, value >> BigInt(32))));
-    };
-    ByteBuffer.prototype.writeUint64 = function (offset, value) {
-        this.writeUint32(offset, Number(BigInt.asUintN(32, value)));
-        this.writeUint32(offset + 4, Number(BigInt.asUintN(32, value >> BigInt(32))));
-    };
-    ByteBuffer.prototype.writeFloat32 = function (offset, value) {
-        utils_js_1.float32[0] = value;
-        this.writeInt32(offset, utils_js_1.int32[0]);
-    };
-    ByteBuffer.prototype.writeFloat64 = function (offset, value) {
-        utils_js_1.float64[0] = value;
-        this.writeInt32(offset, utils_js_1.int32[utils_js_1.isLittleEndian ? 0 : 1]);
-        this.writeInt32(offset + 4, utils_js_1.int32[utils_js_1.isLittleEndian ? 1 : 0]);
-    };
-    /**
-     * Return the file identifier.   Behavior is undefined for FlatBuffers whose
-     * schema does not include a file_identifier (likely points at padding or the
-     * start of a the root vtable).
-     */
-    ByteBuffer.prototype.getBufferIdentifier = function () {
-        if (this.bytes_.length < this.position_ + constants_js_1.SIZEOF_INT +
-            constants_js_1.FILE_IDENTIFIER_LENGTH) {
-            throw new Error('FlatBuffers: ByteBuffer is too short to contain an identifier.');
-        }
-        var result = "";
-        for (var i = 0; i < constants_js_1.FILE_IDENTIFIER_LENGTH; i++) {
-            result += String.fromCharCode(this.readInt8(this.position_ + constants_js_1.SIZEOF_INT + i));
-        }
-        return result;
-    };
-    /**
-     * Look up a field in the vtable, return an offset into the object, or 0 if the
-     * field is not present.
-     */
-    ByteBuffer.prototype.__offset = function (bb_pos, vtable_offset) {
-        var vtable = bb_pos - this.readInt32(bb_pos);
-        return vtable_offset < this.readInt16(vtable) ? this.readInt16(vtable + vtable_offset) : 0;
-    };
-    /**
-     * Initialize any Table-derived type to point to the union at the given offset.
-     */
-    ByteBuffer.prototype.__union = function (t, offset) {
-        t.bb_pos = offset + this.readInt32(offset);
-        t.bb = this;
-        return t;
-    };
-    /**
-     * Create a JavaScript string from UTF-8 data stored inside the FlatBuffer.
-     * This allocates a new string and converts to wide chars upon each access.
-     *
-     * To avoid the conversion to UTF-16, pass Encoding.UTF8_BYTES as
-     * the "optionalEncoding" argument. This is useful for avoiding conversion to
-     * and from UTF-16 when the data will just be packaged back up in another
-     * FlatBuffer later on.
-     *
-     * @param offset
-     * @param opt_encoding Defaults to UTF16_STRING
-     */
-    ByteBuffer.prototype.__string = function (offset, opt_encoding) {
-        offset += this.readInt32(offset);
-        var length = this.readInt32(offset);
-        var result = '';
-        var i = 0;
-        offset += constants_js_1.SIZEOF_INT;
-        if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES) {
-            return this.bytes_.subarray(offset, offset + length);
-        }
-        while (i < length) {
-            var codePoint = void 0;
-            // Decode UTF-8
-            var a = this.readUint8(offset + i++);
-            if (a < 0xC0) {
-                codePoint = a;
-            }
-            else {
-                var b = this.readUint8(offset + i++);
-                if (a < 0xE0) {
-                    codePoint =
-                        ((a & 0x1F) << 6) |
-                            (b & 0x3F);
-                }
-                else {
-                    var c = this.readUint8(offset + i++);
-                    if (a < 0xF0) {
-                        codePoint =
-                            ((a & 0x0F) << 12) |
-                                ((b & 0x3F) << 6) |
-                                (c & 0x3F);
-                    }
-                    else {
-                        var d = this.readUint8(offset + i++);
-                        codePoint =
-                            ((a & 0x07) << 18) |
-                                ((b & 0x3F) << 12) |
-                                ((c & 0x3F) << 6) |
-                                (d & 0x3F);
-                    }
-                }
-            }
-            // Encode UTF-16
-            if (codePoint < 0x10000) {
-                result += String.fromCharCode(codePoint);
-            }
-            else {
-                codePoint -= 0x10000;
-                result += String.fromCharCode((codePoint >> 10) + 0xD800, (codePoint & ((1 << 10) - 1)) + 0xDC00);
-            }
-        }
-        return result;
-    };
-    /**
-     * Handle unions that can contain string as its member, if a Table-derived type then initialize it,
-     * if a string then return a new one
-     *
-     * WARNING: strings are immutable in JS so we can't change the string that the user gave us, this
-     * makes the behaviour of __union_with_string different compared to __union
-     */
-    ByteBuffer.prototype.__union_with_string = function (o, offset) {
-        if (typeof o === 'string') {
-            return this.__string(offset);
-        }
-        return this.__union(o, offset);
-    };
-    /**
-     * Retrieve the relative offset stored at "offset"
-     */
-    ByteBuffer.prototype.__indirect = function (offset) {
-        return offset + this.readInt32(offset);
-    };
-    /**
-     * Get the start of data of a vector whose offset is stored at "offset" in this object.
-     */
-    ByteBuffer.prototype.__vector = function (offset) {
-        return offset + this.readInt32(offset) + constants_js_1.SIZEOF_INT; // data starts after the length
-    };
-    /**
-     * Get the length of a vector whose offset is stored at "offset" in this object.
-     */
-    ByteBuffer.prototype.__vector_len = function (offset) {
-        return this.readInt32(offset + this.readInt32(offset));
-    };
-    ByteBuffer.prototype.__has_identifier = function (ident) {
-        if (ident.length != constants_js_1.FILE_IDENTIFIER_LENGTH) {
-            throw new Error('FlatBuffers: file identifier must be length ' +
-                constants_js_1.FILE_IDENTIFIER_LENGTH);
-        }
-        for (var i = 0; i < constants_js_1.FILE_IDENTIFIER_LENGTH; i++) {
-            if (ident.charCodeAt(i) != this.readInt8(this.position() + constants_js_1.SIZEOF_INT + i)) {
-                return false;
-            }
-        }
-        return true;
-    };
-    /**
-     * A helper function for generating list for obj api
-     */
-    ByteBuffer.prototype.createScalarList = function (listAccessor, listLength) {
-        var ret = [];
-        for (var i = 0; i < listLength; ++i) {
-            if (listAccessor(i) !== null) {
-                ret.push(listAccessor(i));
-            }
-        }
-        return ret;
-    };
-    /**
-     * A helper function for generating list for obj api
-     * @param listAccessor function that accepts an index and return data at that index
-     * @param listLength listLength
-     * @param res result list
-     */
-    ByteBuffer.prototype.createObjList = function (listAccessor, listLength) {
-        var ret = [];
-        for (var i = 0; i < listLength; ++i) {
-            var val = listAccessor(i);
-            if (val !== null) {
-                ret.push(val.unpack());
-            }
-        }
-        return ret;
-    };
-    return ByteBuffer;
-}());
-exports.ByteBuffer = ByteBuffer;
-
-
-/***/ }),
-
-/***/ 147:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SIZE_PREFIX_LENGTH = exports.FILE_IDENTIFIER_LENGTH = exports.SIZEOF_INT = exports.SIZEOF_SHORT = void 0;
-exports.SIZEOF_SHORT = 2;
-exports.SIZEOF_INT = 4;
-exports.FILE_IDENTIFIER_LENGTH = 4;
-exports.SIZE_PREFIX_LENGTH = 4;
-
-
-/***/ }),
-
-/***/ 650:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Encoding = void 0;
-var Encoding;
-(function (Encoding) {
-    Encoding[Encoding["UTF8_BYTES"] = 1] = "UTF8_BYTES";
-    Encoding[Encoding["UTF16_STRING"] = 2] = "UTF16_STRING";
-})(Encoding = exports.Encoding || (exports.Encoding = {}));
-
-
-/***/ }),
-
-/***/ 903:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-var __webpack_unused_export__;
-
-__webpack_unused_export__ = ({ value: true });
-exports.cZ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = exports.XU = __webpack_unused_export__ = __webpack_unused_export__ = __webpack_unused_export__ = void 0;
-var constants_js_1 = __webpack_require__(147);
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return constants_js_1.SIZEOF_SHORT; } });
-var constants_js_2 = __webpack_require__(147);
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return constants_js_2.SIZEOF_INT; } });
-var constants_js_3 = __webpack_require__(147);
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return constants_js_3.FILE_IDENTIFIER_LENGTH; } });
-var constants_js_4 = __webpack_require__(147);
-Object.defineProperty(exports, "XU", ({ enumerable: true, get: function () { return constants_js_4.SIZE_PREFIX_LENGTH; } }));
-var utils_js_1 = __webpack_require__(766);
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.int32; } });
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.float32; } });
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.float64; } });
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return utils_js_1.isLittleEndian; } });
-var encoding_js_1 = __webpack_require__(650);
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return encoding_js_1.Encoding; } });
-var builder_js_1 = __webpack_require__(962);
-__webpack_unused_export__ = ({ enumerable: true, get: function () { return builder_js_1.Builder; } });
-var byte_buffer_js_1 = __webpack_require__(505);
-Object.defineProperty(exports, "cZ", ({ enumerable: true, get: function () { return byte_buffer_js_1.ByteBuffer; } }));
-
-
-/***/ }),
-
-/***/ 766:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isLittleEndian = exports.float64 = exports.float32 = exports.int32 = void 0;
-exports.int32 = new Int32Array(2);
-exports.float32 = new Float32Array(exports.int32.buffer);
-exports.float64 = new Float64Array(exports.int32.buffer);
-exports.isLittleEndian = new Uint16Array(new Uint8Array([1, 0]).buffer)[0] === 1;
-
 
 /***/ }),
 
@@ -7463,1028 +8493,133 @@ function multiSelect(arr, left, right, n, compare) {
 
 /***/ }),
 
-/***/ 901:
-/***/ (function(module) {
+/***/ 153:
+/***/ ((module) => {
 
-// https://github.com/mbostock/slice-source Version 0.4.1. Copyright 2016 Mike Bostock.
-(function (global, factory) {
-   true ? module.exports = factory() :
-  0;
-}(this, (function () { 'use strict';
+const hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
+const numRegex = /^([\-\+])?(0*)(\.[0-9]+([eE]\-?[0-9]+)?|[0-9]+(\.[0-9]+([eE]\-?[0-9]+)?)?)$/;
+// const octRegex = /0x[a-z0-9]+/;
+// const binRegex = /0x[a-z0-9]+/;
 
-var empty = new Uint8Array(0);
 
-function slice_cancel() {
-  return this._source.cancel();
+//polyfill
+if (!Number.parseInt && window.parseInt) {
+    Number.parseInt = window.parseInt;
+}
+if (!Number.parseFloat && window.parseFloat) {
+    Number.parseFloat = window.parseFloat;
 }
 
-function concat(a, b) {
-  if (!a.length) return b;
-  if (!b.length) return a;
-  var c = new Uint8Array(a.length + b.length);
-  c.set(a);
-  c.set(b, a.length);
-  return c;
-}
-
-function slice_read() {
-  var that = this, array = that._array.subarray(that._index);
-  return that._source.read().then(function(result) {
-    that._array = empty;
-    that._index = 0;
-    return result.done ? (array.length > 0
-        ? {done: false, value: array}
-        : {done: true, value: undefined})
-        : {done: false, value: concat(array, result.value)};
-  });
-}
-
-function slice_slice(length) {
-  if ((length |= 0) < 0) throw new Error("invalid length");
-  var that = this, index = this._array.length - this._index;
-
-  // If the request fits within the remaining buffer, resolve it immediately.
-  if (this._index + length <= this._array.length) {
-    return Promise.resolve(this._array.subarray(this._index, this._index += length));
-  }
-
-  // Otherwise, read chunks repeatedly until the request is fulfilled.
-  var array = new Uint8Array(length);
-  array.set(this._array.subarray(this._index));
-  return (function read() {
-    return that._source.read().then(function(result) {
-
-      // When done, it’s possible the request wasn’t fully fullfilled!
-      // If so, the pre-allocated array is too big and needs slicing.
-      if (result.done) {
-        that._array = empty;
-        that._index = 0;
-        return index > 0 ? array.subarray(0, index) : null;
-      }
-
-      // If this chunk fulfills the request, return the resulting array.
-      if (index + result.value.length >= length) {
-        that._array = result.value;
-        that._index = length - index;
-        array.set(result.value.subarray(0, length - index), index);
-        return array;
-      }
-
-      // Otherwise copy this chunk into the array, then read the next chunk.
-      array.set(result.value, index);
-      index += result.value.length;
-      return read();
-    });
-  })();
-}
-
-function slice(source) {
-  return typeof source.slice === "function" ? source :
-      new SliceSource(typeof source.read === "function" ? source
-          : source.getReader());
-}
-
-function SliceSource(source) {
-  this._source = source;
-  this._array = empty;
-  this._index = 0;
-}
-
-SliceSource.prototype.read = slice_read;
-SliceSource.prototype.slice = slice_slice;
-SliceSource.prototype.cancel = slice_cancel;
-
-return slice;
-
-})));
-
-/***/ }),
-
-/***/ 982:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-var __webpack_unused_export__;
-
-
-__webpack_unused_export__ = ({ value: true });
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
+  
+const consider = {
+    hex :  true,
+    leadingZeros: true,
+    decimalPoint: "\.",
+    eNotation: true
+    //skipLike: /regex/
 };
 
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
+function toNumber(str, options = {}){
+    // const options = Object.assign({}, consider);
+    // if(opt.leadingZeros === false){
+    //     options.leadingZeros = false;
+    // }else if(opt.hex === false){
+    //     options.hex = false;
+    // }
 
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
+    options = Object.assign({}, consider, options );
+    if(!str || typeof str !== "string" ) return str;
+    
+    let trimmedStr  = str.trim();
+    // if(trimmedStr === "0.0") return 0;
+    // else if(trimmedStr === "+0.0") return 0;
+    // else if(trimmedStr === "-0.0") return -0;
 
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
+    if(options.skipLike !== undefined && options.skipLike.test(trimmedStr)) return str;
+    else if (options.hex && hexRegex.test(trimmedStr)) {
+        return Number.parseInt(trimmedStr, 16);
+    // } else if (options.parseOct && octRegex.test(str)) {
+    //     return Number.parseInt(val, 8);
+    // }else if (options.parseBin && binRegex.test(str)) {
+    //     return Number.parseInt(val, 2);
+    }else{
+        //separate negative sign, leading zeros, and rest number
+        const match = numRegex.exec(trimmedStr);
+        if(match){
+            const sign = match[1];
+            const leadingZeros = match[2];
+            let numTrimmedByZeros = trimZeros(match[3]); //complete num without leading zeros
+            //trim ending zeros for floating number
+            
+            const eNotation = match[4] || match[6];
+            if(!options.leadingZeros && leadingZeros.length > 0 && sign && trimmedStr[2] !== ".") return str; //-0123
+            else if(!options.leadingZeros && leadingZeros.length > 0 && !sign && trimmedStr[1] !== ".") return str; //0123
+            else{//no leading zeros or leading zeros are allowed
+                const num = Number(trimmedStr);
+                const numStr = "" + num;
+                if(numStr.search(/[eE]/) !== -1){ //given number is long and parsed to eNotation
+                    if(options.eNotation) return num;
+                    else return str;
+                }else if(eNotation){ //given number has enotation
+                    if(options.eNotation) return num;
+                    else return str;
+                }else if(trimmedStr.indexOf(".") !== -1){ //floating number
+                    // const decimalPart = match[5].substr(1);
+                    // const intPart = trimmedStr.substr(0,trimmedStr.indexOf("."));
+
+                    
+                    // const p = numStr.indexOf(".");
+                    // const givenIntPart = numStr.substr(0,p);
+                    // const givenDecPart = numStr.substr(p+1);
+                    if(numStr === "0" && (numTrimmedByZeros === "") ) return num; //0.0
+                    else if(numStr === numTrimmedByZeros) return num; //0.456. 0.79000
+                    else if( sign && numStr === "-"+numTrimmedByZeros) return num;
+                    else return str;
+                }
+                
+                if(leadingZeros){
+                    // if(numTrimmedByZeros === numStr){
+                    //     if(options.leadingZeros) return num;
+                    //     else return str;
+                    // }else return str;
+                    if(numTrimmedByZeros === numStr) return num;
+                    else if(sign+numTrimmedByZeros === numStr) return num;
+                    else return str;
+                }
+
+                if(trimmedStr === numStr) return num;
+                else if(trimmedStr === sign+numStr) return num;
+                // else{
+                //     //number with +/- sign
+                //     trimmedStr.test(/[-+][0-9]);
+
+                // }
+                return str;
             }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+            // else if(!eNotation && trimmedStr && trimmedStr !== Number(trimmedStr) ) return str;
+            
+        }else{ //non-numeric string
+            return str;
+        }
     }
 }
 
-function __values(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-/** An error subclass which is thrown when there are too many pending push or next operations on a single repeater. */
-var RepeaterOverflowError = /** @class */ (function (_super) {
-    __extends(RepeaterOverflowError, _super);
-    function RepeaterOverflowError(message) {
-        var _this = _super.call(this, message) || this;
-        Object.defineProperty(_this, "name", {
-            value: "RepeaterOverflowError",
-            enumerable: false,
-        });
-        if (typeof Object.setPrototypeOf === "function") {
-            Object.setPrototypeOf(_this, _this.constructor.prototype);
-        }
-        else {
-            _this.__proto__ = _this.constructor.prototype;
-        }
-        if (typeof Error.captureStackTrace === "function") {
-            Error.captureStackTrace(_this, _this.constructor);
-        }
-        return _this;
-    }
-    return RepeaterOverflowError;
-}(Error));
-/** A buffer which allows you to push a set amount of values to the repeater without pushes waiting or throwing errors. */
-var FixedBuffer = /** @class */ (function () {
-    function FixedBuffer(capacity) {
-        if (capacity < 0) {
-            throw new RangeError("Capacity may not be less than 0");
-        }
-        this._c = capacity;
-        this._q = [];
-    }
-    Object.defineProperty(FixedBuffer.prototype, "empty", {
-        get: function () {
-            return this._q.length === 0;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(FixedBuffer.prototype, "full", {
-        get: function () {
-            return this._q.length >= this._c;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    FixedBuffer.prototype.add = function (value) {
-        if (this.full) {
-            throw new Error("Buffer full");
-        }
-        else {
-            this._q.push(value);
-        }
-    };
-    FixedBuffer.prototype.remove = function () {
-        if (this.empty) {
-            throw new Error("Buffer empty");
-        }
-        return this._q.shift();
-    };
-    return FixedBuffer;
-}());
-// TODO: Use a circular buffer here.
-/** Sliding buffers allow you to push a set amount of values to the repeater without pushes waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the earliest values added. */
-var SlidingBuffer = /** @class */ (function () {
-    function SlidingBuffer(capacity) {
-        if (capacity < 1) {
-            throw new RangeError("Capacity may not be less than 1");
-        }
-        this._c = capacity;
-        this._q = [];
-    }
-    Object.defineProperty(SlidingBuffer.prototype, "empty", {
-        get: function () {
-            return this._q.length === 0;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SlidingBuffer.prototype, "full", {
-        get: function () {
-            return false;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    SlidingBuffer.prototype.add = function (value) {
-        while (this._q.length >= this._c) {
-            this._q.shift();
-        }
-        this._q.push(value);
-    };
-    SlidingBuffer.prototype.remove = function () {
-        if (this.empty) {
-            throw new Error("Buffer empty");
-        }
-        return this._q.shift();
-    };
-    return SlidingBuffer;
-}());
-/** Dropping buffers allow you to push a set amount of values to the repeater without the push function waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the latest values added. */
-var DroppingBuffer = /** @class */ (function () {
-    function DroppingBuffer(capacity) {
-        if (capacity < 1) {
-            throw new RangeError("Capacity may not be less than 1");
-        }
-        this._c = capacity;
-        this._q = [];
-    }
-    Object.defineProperty(DroppingBuffer.prototype, "empty", {
-        get: function () {
-            return this._q.length === 0;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(DroppingBuffer.prototype, "full", {
-        get: function () {
-            return false;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    DroppingBuffer.prototype.add = function (value) {
-        if (this._q.length < this._c) {
-            this._q.push(value);
-        }
-    };
-    DroppingBuffer.prototype.remove = function () {
-        if (this.empty) {
-            throw new Error("Buffer empty");
-        }
-        return this._q.shift();
-    };
-    return DroppingBuffer;
-}());
-/** Makes sure promise-likes don’t cause unhandled rejections. */
-function swallow(value) {
-    if (value != null && typeof value.then === "function") {
-        value.then(NOOP, NOOP);
-    }
-}
-/*** REPEATER STATES ***/
-/** The following is an enumeration of all possible repeater states. These states are ordered, and a repeater may only advance to higher states. */
-/** The initial state of the repeater. */
-var Initial = 0;
-/** Repeaters advance to this state the first time the next method is called on the repeater. */
-var Started = 1;
-/** Repeaters advance to this state when the stop function is called. */
-var Stopped = 2;
-/** Repeaters advance to this state when there are no values left to be pulled from the repeater. */
-var Done = 3;
-/** Repeaters advance to this state if an error is thrown into the repeater. */
-var Rejected = 4;
-/** The maximum number of push or next operations which may exist on a single repeater. */
-var MAX_QUEUE_LENGTH = 1024;
-var NOOP = function () { };
-/** A helper function used to mimic the behavior of async generators where the final iteration is consumed. */
-function consumeExecution(r) {
-    var err = r.err;
-    var execution = Promise.resolve(r.execution).then(function (value) {
-        if (err != null) {
-            throw err;
-        }
-        return value;
-    });
-    r.err = undefined;
-    r.execution = execution.then(function () { return undefined; }, function () { return undefined; });
-    return r.pending === undefined ? execution : r.pending.then(function () { return execution; });
-}
-/** A helper function for building iterations from values. Promises are unwrapped, so that iterations never have their value property set to a promise. */
-function createIteration(r, value) {
-    var done = r.state >= Done;
-    return Promise.resolve(value).then(function (value) {
-        if (!done && r.state >= Rejected) {
-            return consumeExecution(r).then(function (value) { return ({
-                value: value,
-                done: true,
-            }); });
-        }
-        return { value: value, done: done };
-    });
-}
 /**
- * This function is bound and passed to the executor as the stop argument.
- *
- * Advances state to Stopped.
+ * 
+ * @param {string} numStr without leading zeros
+ * @returns 
  */
-function stop(r, err) {
-    var e_1, _a;
-    if (r.state >= Stopped) {
-        return;
+function trimZeros(numStr){
+    if(numStr && numStr.indexOf(".") !== -1){//float
+        numStr = numStr.replace(/0+$/, ""); //remove ending zeros
+        if(numStr === ".")  numStr = "0";
+        else if(numStr[0] === ".")  numStr = "0"+numStr;
+        else if(numStr[numStr.length-1] === ".")  numStr = numStr.substr(0,numStr.length-1);
+        return numStr;
     }
-    r.state = Stopped;
-    r.onnext();
-    r.onstop();
-    if (r.err == null) {
-        r.err = err;
-    }
-    if (r.pushes.length === 0 &&
-        (typeof r.buffer === "undefined" || r.buffer.empty)) {
-        finish(r);
-    }
-    else {
-        try {
-            for (var _b = __values(r.pushes), _d = _b.next(); !_d.done; _d = _b.next()) {
-                var push_1 = _d.value;
-                push_1.resolve();
-            }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
-    }
+    return numStr;
 }
-/**
- * The difference between stopping a repeater vs finishing a repeater is that stopping a repeater allows next to continue to drain values from the push queue and buffer, while finishing a repeater will clear all pending values and end iteration immediately. Once, a repeater is finished, all iterations will have the done property set to true.
- *
- * Advances state to Done.
- */
-function finish(r) {
-    var e_2, _a;
-    if (r.state >= Done) {
-        return;
-    }
-    if (r.state < Stopped) {
-        stop(r);
-    }
-    r.state = Done;
-    r.buffer = undefined;
-    try {
-        for (var _b = __values(r.nexts), _d = _b.next(); !_d.done; _d = _b.next()) {
-            var next = _d.value;
-            var execution = r.pending === undefined
-                ? consumeExecution(r)
-                : r.pending.then(function () { return consumeExecution(r); });
-            next.resolve(createIteration(r, execution));
-        }
-    }
-    catch (e_2_1) { e_2 = { error: e_2_1 }; }
-    finally {
-        try {
-            if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
-        }
-        finally { if (e_2) throw e_2.error; }
-    }
-    r.pushes = [];
-    r.nexts = [];
-}
-/**
- * Called when a promise passed to push rejects, or when a push call is unhandled.
- *
- * Advances state to Rejected.
- */
-function reject(r) {
-    if (r.state >= Rejected) {
-        return;
-    }
-    if (r.state < Done) {
-        finish(r);
-    }
-    r.state = Rejected;
-}
-/** This function is bound and passed to the executor as the push argument. */
-function push(r, value) {
-    swallow(value);
-    if (r.pushes.length >= MAX_QUEUE_LENGTH) {
-        throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to push are allowed on a single repeater.");
-    }
-    else if (r.state >= Stopped) {
-        return Promise.resolve(undefined);
-    }
-    var valueP = r.pending === undefined
-        ? Promise.resolve(value)
-        : r.pending.then(function () { return value; });
-    valueP = valueP.catch(function (err) {
-        if (r.state < Stopped) {
-            r.err = err;
-        }
-        reject(r);
-        return undefined; // void :(
-    });
-    var nextP;
-    if (r.nexts.length) {
-        var next_1 = r.nexts.shift();
-        next_1.resolve(createIteration(r, valueP));
-        if (r.nexts.length) {
-            nextP = Promise.resolve(r.nexts[0].value);
-        }
-        else {
-            nextP = new Promise(function (resolve) { return (r.onnext = resolve); });
-        }
-    }
-    else if (typeof r.buffer !== "undefined" && !r.buffer.full) {
-        r.buffer.add(valueP);
-        nextP = Promise.resolve(undefined);
-    }
-    else {
-        nextP = new Promise(function (resolve) { return r.pushes.push({ resolve: resolve, value: valueP }); });
-    }
-    // If an error is thrown into the repeater via the next or throw methods, we give the repeater a chance to handle this by rejecting the promise returned from push. If the push call is not immediately handled we throw the next iteration of the repeater.
-    // To check that the promise returned from push is floating, we modify the then and catch methods of the returned promise so that they flip the floating flag. The push function actually does not return a promise, because modern engines do not call the then and catch methods on native promises. By making next a plain old javascript object, we ensure that the then and catch methods will be called.
-    var floating = true;
-    var next = {};
-    var unhandled = nextP.catch(function (err) {
-        if (floating) {
-            throw err;
-        }
-        return undefined; // void :(
-    });
-    next.then = function (onfulfilled, onrejected) {
-        floating = false;
-        return Promise.prototype.then.call(nextP, onfulfilled, onrejected);
-    };
-    next.catch = function (onrejected) {
-        floating = false;
-        return Promise.prototype.catch.call(nextP, onrejected);
-    };
-    next.finally = nextP.finally.bind(nextP);
-    r.pending = valueP
-        .then(function () { return unhandled; })
-        .catch(function (err) {
-        r.err = err;
-        reject(r);
-    });
-    return next;
-}
-/**
- * Creates the stop callable promise which is passed to the executor
- */
-function createStop(r) {
-    var stop1 = stop.bind(null, r);
-    var stopP = new Promise(function (resolve) { return (r.onstop = resolve); });
-    stop1.then = stopP.then.bind(stopP);
-    stop1.catch = stopP.catch.bind(stopP);
-    stop1.finally = stopP.finally.bind(stopP);
-    return stop1;
-}
-/**
- * Calls the executor passed into the constructor. This function is called the first time the next method is called on the repeater.
- *
- * Advances state to Started.
- */
-function execute(r) {
-    if (r.state >= Started) {
-        return;
-    }
-    r.state = Started;
-    var push1 = push.bind(null, r);
-    var stop1 = createStop(r);
-    r.execution = new Promise(function (resolve) { return resolve(r.executor(push1, stop1)); });
-    // TODO: We should consider stopping all repeaters when the executor settles.
-    r.execution.catch(function () { return stop(r); });
-}
-var records = new WeakMap();
-// NOTE: While repeaters implement and are assignable to the AsyncGenerator interface, and you can use the types interchangeably, we don’t use typescript’s implements syntax here because this would make supporting earlier versions of typescript trickier. This is because TypeScript version 3.6 changed the iterator types by adding the TReturn and TNext type parameters.
-var Repeater = /** @class */ (function () {
-    function Repeater(executor, buffer) {
-        records.set(this, {
-            executor: executor,
-            buffer: buffer,
-            err: undefined,
-            state: Initial,
-            pushes: [],
-            nexts: [],
-            pending: undefined,
-            execution: undefined,
-            onnext: NOOP,
-            onstop: NOOP,
-        });
-    }
-    Repeater.prototype.next = function (value) {
-        swallow(value);
-        var r = records.get(this);
-        if (r === undefined) {
-            throw new Error("WeakMap error");
-        }
-        if (r.nexts.length >= MAX_QUEUE_LENGTH) {
-            throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to next are allowed on a single repeater.");
-        }
-        if (r.state <= Initial) {
-            execute(r);
-        }
-        r.onnext(value);
-        if (typeof r.buffer !== "undefined" && !r.buffer.empty) {
-            var result = createIteration(r, r.buffer.remove());
-            if (r.pushes.length) {
-                var push_2 = r.pushes.shift();
-                r.buffer.add(push_2.value);
-                r.onnext = push_2.resolve;
-            }
-            return result;
-        }
-        else if (r.pushes.length) {
-            var push_3 = r.pushes.shift();
-            r.onnext = push_3.resolve;
-            return createIteration(r, push_3.value);
-        }
-        else if (r.state >= Stopped) {
-            finish(r);
-            return createIteration(r, consumeExecution(r));
-        }
-        return new Promise(function (resolve) { return r.nexts.push({ resolve: resolve, value: value }); });
-    };
-    Repeater.prototype.return = function (value) {
-        swallow(value);
-        var r = records.get(this);
-        if (r === undefined) {
-            throw new Error("WeakMap error");
-        }
-        finish(r);
-        // We override the execution because return should always return the value passed in.
-        r.execution = Promise.resolve(r.execution).then(function () { return value; });
-        return createIteration(r, consumeExecution(r));
-    };
-    Repeater.prototype.throw = function (err) {
-        var r = records.get(this);
-        if (r === undefined) {
-            throw new Error("WeakMap error");
-        }
-        if (r.state <= Initial ||
-            r.state >= Stopped ||
-            (typeof r.buffer !== "undefined" && !r.buffer.empty)) {
-            finish(r);
-            // If r.err is already set, that mean the repeater has already produced an error, so we throw that error rather than the error passed in, because doing so might be more informative for the caller.
-            if (r.err == null) {
-                r.err = err;
-            }
-            return createIteration(r, consumeExecution(r));
-        }
-        return this.next(Promise.reject(err));
-    };
-    Repeater.prototype[Symbol.asyncIterator] = function () {
-        return this;
-    };
-    // TODO: Remove these static methods from the class.
-    Repeater.race = race;
-    Repeater.merge = merge;
-    Repeater.zip = zip;
-    Repeater.latest = latest;
-    return Repeater;
-}());
-/*** COMBINATOR FUNCTIONS ***/
-// TODO: move these combinators to their own file.
-function getIterators(values, options) {
-    var e_3, _a;
-    var iters = [];
-    var _loop_1 = function (value) {
-        if (value != null && typeof value[Symbol.asyncIterator] === "function") {
-            iters.push(value[Symbol.asyncIterator]());
-        }
-        else if (value != null && typeof value[Symbol.iterator] === "function") {
-            iters.push(value[Symbol.iterator]());
-        }
-        else {
-            iters.push((function valueToAsyncIterator() {
-                return __asyncGenerator(this, arguments, function valueToAsyncIterator_1() {
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                if (!options.yieldValues) return [3 /*break*/, 3];
-                                return [4 /*yield*/, __await(value)];
-                            case 1: return [4 /*yield*/, _a.sent()];
-                            case 2:
-                                _a.sent();
-                                _a.label = 3;
-                            case 3:
-                                if (!options.returnValues) return [3 /*break*/, 5];
-                                return [4 /*yield*/, __await(value)];
-                            case 4: return [2 /*return*/, _a.sent()];
-                            case 5: return [2 /*return*/];
-                        }
-                    });
-                });
-            })());
-        }
-    };
-    try {
-        for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
-            var value = values_1_1.value;
-            _loop_1(value);
-        }
-    }
-    catch (e_3_1) { e_3 = { error: e_3_1 }; }
-    finally {
-        try {
-            if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
-        }
-        finally { if (e_3) throw e_3.error; }
-    }
-    return iters;
-}
-// NOTE: whenever you see any variables called `advance` or `advances`, know that it is a hack to get around the fact that `Promise.race` leaks memory. These variables are intended to be set to the resolve function of a promise which is constructed and awaited as an alternative to Promise.race. For more information, see this comment in the Node.js issue tracker: https://github.com/nodejs/node/issues/17469#issuecomment-685216777.
-function race(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, { returnValues: true });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advance, stopped, finalIteration, iteration, i_1, _loop_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/];
-                    }
-                    stopped = false;
-                    stop.then(function () {
-                        advance();
-                        stopped = true;
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 5, 7]);
-                    iteration = void 0;
-                    i_1 = 0;
-                    _loop_2 = function () {
-                        var j, iters_1, iters_1_1, iter;
-                        var e_4, _a;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    j = i_1;
-                                    try {
-                                        for (iters_1 = (e_4 = void 0, __values(iters)), iters_1_1 = iters_1.next(); !iters_1_1.done; iters_1_1 = iters_1.next()) {
-                                            iter = iters_1_1.value;
-                                            Promise.resolve(iter.next()).then(function (iteration) {
-                                                if (iteration.done) {
-                                                    stop();
-                                                    if (finalIteration === undefined) {
-                                                        finalIteration = iteration;
-                                                    }
-                                                }
-                                                else if (i_1 === j) {
-                                                    // This iterator has won, advance i and resolve the promise.
-                                                    i_1++;
-                                                    advance(iteration);
-                                                }
-                                            }, function (err) { return stop(err); });
-                                        }
-                                    }
-                                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
-                                    finally {
-                                        try {
-                                            if (iters_1_1 && !iters_1_1.done && (_a = iters_1.return)) _a.call(iters_1);
-                                        }
-                                        finally { if (e_4) throw e_4.error; }
-                                    }
-                                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
-                                case 1:
-                                    iteration = _b.sent();
-                                    if (!(iteration !== undefined)) return [3 /*break*/, 3];
-                                    return [4 /*yield*/, push(iteration.value)];
-                                case 2:
-                                    _b.sent();
-                                    _b.label = 3;
-                                case 3: return [2 /*return*/];
-                            }
-                        });
-                    };
-                    _a.label = 2;
-                case 2:
-                    if (!!stopped) return [3 /*break*/, 4];
-                    return [5 /*yield**/, _loop_2()];
-                case 3:
-                    _a.sent();
-                    return [3 /*break*/, 2];
-                case 4: return [2 /*return*/, finalIteration && finalIteration.value];
-                case 5:
-                    stop();
-                    return [4 /*yield*/, Promise.race(iters.map(function (iter) { return iter.return && iter.return(); }))];
-                case 6:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 7: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-function merge(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, { yieldValues: true });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advances, stopped, finalIteration;
-        var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/];
-                    }
-                    advances = [];
-                    stopped = false;
-                    stop.then(function () {
-                        var e_5, _a;
-                        stopped = true;
-                        try {
-                            for (var advances_1 = __values(advances), advances_1_1 = advances_1.next(); !advances_1_1.done; advances_1_1 = advances_1.next()) {
-                                var advance = advances_1_1.value;
-                                advance();
-                            }
-                        }
-                        catch (e_5_1) { e_5 = { error: e_5_1 }; }
-                        finally {
-                            try {
-                                if (advances_1_1 && !advances_1_1.done && (_a = advances_1.return)) _a.call(advances_1);
-                            }
-                            finally { if (e_5) throw e_5.error; }
-                        }
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 3, 4]);
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
-                            var iteration, _a;
-                            return __generator(this, function (_b) {
-                                switch (_b.label) {
-                                    case 0:
-                                        _b.trys.push([0, , 6, 9]);
-                                        _b.label = 1;
-                                    case 1:
-                                        if (!!stopped) return [3 /*break*/, 5];
-                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
-                                        return [4 /*yield*/, new Promise(function (resolve) {
-                                                advances[i] = resolve;
-                                            })];
-                                    case 2:
-                                        iteration = _b.sent();
-                                        if (!(iteration !== undefined)) return [3 /*break*/, 4];
-                                        if (iteration.done) {
-                                            finalIteration = iteration;
-                                            return [2 /*return*/];
-                                        }
-                                        return [4 /*yield*/, push(iteration.value)];
-                                    case 3:
-                                        _b.sent();
-                                        _b.label = 4;
-                                    case 4: return [3 /*break*/, 1];
-                                    case 5: return [3 /*break*/, 9];
-                                    case 6:
-                                        _a = iter.return;
-                                        if (!_a) return [3 /*break*/, 8];
-                                        return [4 /*yield*/, iter.return()];
-                                    case 7:
-                                        _a = (_b.sent());
-                                        _b.label = 8;
-                                    case 8:
-                                        return [7 /*endfinally*/];
-                                    case 9: return [2 /*return*/];
-                                }
-                            });
-                        }); }))];
-                case 2:
-                    _a.sent();
-                    return [2 /*return*/, finalIteration && finalIteration.value];
-                case 3:
-                    stop();
-                    return [7 /*endfinally*/];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-function zip(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, { returnValues: true });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advance, stopped, iterations, values;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/, []];
-                    }
-                    stopped = false;
-                    stop.then(function () {
-                        advance();
-                        stopped = true;
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 6, 8]);
-                    _a.label = 2;
-                case 2:
-                    if (!!stopped) return [3 /*break*/, 5];
-                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
-                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
-                case 3:
-                    iterations = _a.sent();
-                    if (iterations === undefined) {
-                        return [2 /*return*/];
-                    }
-                    values = iterations.map(function (iteration) { return iteration.value; });
-                    if (iterations.some(function (iteration) { return iteration.done; })) {
-                        return [2 /*return*/, values];
-                    }
-                    return [4 /*yield*/, push(values)];
-                case 4:
-                    _a.sent();
-                    return [3 /*break*/, 2];
-                case 5: return [3 /*break*/, 8];
-                case 6:
-                    stop();
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
-                case 7:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 8: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-function latest(contenders) {
-    var _this = this;
-    var iters = getIterators(contenders, {
-        yieldValues: true,
-        returnValues: true,
-    });
-    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
-        var advance, advances, stopped, iterations_1, values_2;
-        var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iters.length) {
-                        stop();
-                        return [2 /*return*/, []];
-                    }
-                    advances = [];
-                    stopped = false;
-                    stop.then(function () {
-                        var e_6, _a;
-                        advance();
-                        try {
-                            for (var advances_2 = __values(advances), advances_2_1 = advances_2.next(); !advances_2_1.done; advances_2_1 = advances_2.next()) {
-                                var advance1 = advances_2_1.value;
-                                advance1();
-                            }
-                        }
-                        catch (e_6_1) { e_6 = { error: e_6_1 }; }
-                        finally {
-                            try {
-                                if (advances_2_1 && !advances_2_1.done && (_a = advances_2.return)) _a.call(advances_2);
-                            }
-                            finally { if (e_6) throw e_6.error; }
-                        }
-                        stopped = true;
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, , 5, 7]);
-                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
-                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
-                case 2:
-                    iterations_1 = _a.sent();
-                    if (iterations_1 === undefined) {
-                        return [2 /*return*/];
-                    }
-                    values_2 = iterations_1.map(function (iteration) { return iteration.value; });
-                    if (iterations_1.every(function (iteration) { return iteration.done; })) {
-                        return [2 /*return*/, values_2];
-                    }
-                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
-                    return [4 /*yield*/, push(values_2.slice())];
-                case 3:
-                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
-                    _a.sent();
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
-                            var iteration;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        if (iterations_1[i].done) {
-                                            return [2 /*return*/, iterations_1[i].value];
-                                        }
-                                        _a.label = 1;
-                                    case 1:
-                                        if (!!stopped) return [3 /*break*/, 4];
-                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
-                                        return [4 /*yield*/, new Promise(function (resolve) { return (advances[i] = resolve); })];
-                                    case 2:
-                                        iteration = _a.sent();
-                                        if (iteration === undefined) {
-                                            return [2 /*return*/, iterations_1[i].value];
-                                        }
-                                        else if (iteration.done) {
-                                            return [2 /*return*/, iteration.value];
-                                        }
-                                        values_2[i] = iteration.value;
-                                        return [4 /*yield*/, push(values_2.slice())];
-                                    case 3:
-                                        _a.sent();
-                                        return [3 /*break*/, 1];
-                                    case 4: return [2 /*return*/];
-                                }
-                            });
-                        }); }))];
-                case 4: return [2 /*return*/, _a.sent()];
-                case 5:
-                    stop();
-                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
-                case 6:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 7: return [2 /*return*/];
-            }
-        });
-    }); });
-}
-
-__webpack_unused_export__ = DroppingBuffer;
-__webpack_unused_export__ = FixedBuffer;
-__webpack_unused_export__ = MAX_QUEUE_LENGTH;
-exports.ZN = Repeater;
-__webpack_unused_export__ = RepeaterOverflowError;
-__webpack_unused_export__ = SlidingBuffer;
-//# sourceMappingURL=repeater.js.map
+module.exports = toNumber
 
 
 /***/ })
@@ -8575,7 +8710,7 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, Bounds, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoFeatureThemeLayer, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, GraphMap, GraphThemeLayer, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LabelThemeLayer, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvDataSet, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RangeTheme3DLayer, RangeThemeLayer, RankSymbol, RankSymbolThemeLayer, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainCurvatureCalculationParameters, TextAlignment, Theme3DLayer, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, UniqueTheme3DLayer, UniqueThemeLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, WebSymbol, conversionDegree, getDefaultVectorTileStyle, getMeterPerMapUnit, getWrapNum, isCORS, setBackground, setCORS, setPaintProperty
+// UNUSED EXPORTS: AddressMatchService, AggregationParameter, AggregationTypes, AlongLineDirection, AnalystAreaUnit, AnalystSizeUnit, AreaSolarRadiationParameters, ArrayStatistic, AttributesPopContainer, Bounds, BoundsType, Browser, BucketAggParameter, BucketAggType, BufferAnalystParameters, BufferDistance, BufferEndType, BufferRadiusUnit, BufferSetting, BuffersAnalystJobsParameter, BurstPipelineAnalystParameters, CartoCSS, CellSizeType, ChartQueryFilterParameter, ChartQueryParameters, ChartService, ChartType, ChartView, ChartViewModel, CityTabsPage, ClientType, ClipAnalystMode, ClipParameter, ColorDictionary, ColorGradientType, ColorSpaceType, ColorsPickerUtil, CommonContainer, CommonServiceBase, CommonTheme, CommonUtil, ComponentsUtil, ComputeWeightMatrixParameters, ConnectedEdgesAnalystParameters, ConvexHullAnalystParameters, CreateDatasetParameters, Credential, DataFlowService, DataFormat, DataItemOrderBy, DataItemType, DataReturnMode, DataReturnOption, DatasetBufferAnalystParameters, DatasetInfo, DatasetMinDistanceAnalystParameters, DatasetOverlayAnalystParameters, DatasetService, DatasetSurfaceAnalystParameters, DatasetThiessenAnalystParameters, DatasourceConnectionInfo, DatasourceService, DeckglLayer, DensityKernelAnalystParameters, DirectionType, DropDownBox, EditFeaturesParameters, EditType, ElasticSearch, EngineType, EntityType, Event, Events, Exponent, FGBLayer, FacilityAnalyst3DParameters, FacilityAnalystSinks3DParameters, FacilityAnalystSources3DParameters, FacilityAnalystStreamParameters, FacilityAnalystTracedown3DParameters, FacilityAnalystTraceup3DParameters, FacilityAnalystUpstream3DParameters, Feature, FeatureService, FeatureShapeFactory, FeatureTheme, FeatureThemeGraph, FeatureThemeRankSymbol, FeatureThemeVector, FeatureVector, FetchRequest, FieldParameters, FieldService, FieldStatisticsParameters, FieldsFilter, FileReaderUtil, FillGradientMode, FilterField, FilterParameter, FindClosestFacilitiesParameters, FindLocationParameters, FindMTSPPathsParameters, FindPathParameters, FindServiceAreasParameters, FindTSPPathsParameters, Format, GenerateSpatialDataParameters, GeoCodingParameter, GeoDecodingParameter, GeoFeature, GeoFeatureThemeLayer, GeoHashGridAggParameter, GeoJSONFormat, GeoRelationAnalystParameters, Geometry, Geometry3D, GeometryBufferAnalystParameters, GeometryCollection, GeometryCurve, GeometryGeoText, GeometryLineString, GeometryLinearRing, GeometryMinDistanceAnalystParameters, GeometryMultiLineString, GeometryMultiPoint, GeometryMultiPolygon, GeometryOverlayAnalystParameters, GeometryPoint, GeometryPolygon, GeometryRectangle, GeometrySurfaceAnalystParameters, GeometryThiessenAnalystParameters, GeometryType, GeoprocessingService, GetFeatureMode, GetFeaturesByBoundsParameters, GetFeaturesByBufferParameters, GetFeaturesByGeometryParameters, GetFeaturesByIDsParameters, GetFeaturesBySQLParameters, GetFeaturesParametersBase, GetFeaturesServiceBase, GetGridCellInfosParameters, GetLayersLegendInfoParameters, GraduatedMode, Graph, GraphAxesTextDisplayMode, GraphMap, GraphThemeLayer, Graphic, GraphicLayer, GraticuleLayer, Grid, GridCellInfosService, GridType, HeatMapLayer, HillshadeParameter, IManager, IManagerCreateNodeParam, IManagerServiceBase, IPortal, IPortalAddDataParam, IPortalAddResourceParam, IPortalDataConnectionInfoParam, IPortalDataMetaInfoParam, IPortalDataStoreInfoParam, IPortalQueryParam, IPortalQueryResult, IPortalRegisterServiceParam, IPortalResource, IPortalServiceBase, IPortalShareEntity, IPortalShareParam, IPortalUser, ImageCollectionService, ImageGFAspect, ImageGFHillShade, ImageGFOrtho, ImageGFSlope, ImageRenderingRule, ImageSearchParameter, ImageService, ImageStretchOption, IndexTabsPageContainer, InterpolationAlgorithmType, InterpolationAnalystParameters, InterpolationDensityAnalystParameters, InterpolationIDWAnalystParameters, InterpolationKrigingAnalystParameters, InterpolationRBFAnalystParameters, JSONFormat, JoinItem, JoinType, KernelDensityJobParameter, KeyServiceParameter, KnowledgeGraph, KnowledgeGraphService, Label, LabelBackShape, LabelImageCell, LabelMatrixCell, LabelMixedTextStyle, LabelOverLengthMode, LabelSymbolCell, LabelThemeCell, LabelThemeLayer, Lang, LayerInfoService, LayerStatus, LayerType, LinkItem, Logo, LonLat, MapExtend, MapService, MappingParameters, MapvDataSet, MapvLayer, MathExpressionAnalysisParameters, MeasureMode, MeasureParameters, MeasureService, MessageBox, MetricsAggParameter, MetricsAggType, NDVIParameter, NavTabsPage, NetworkAnalyst3DService, NetworkAnalystService, NetworkAnalystServiceBase, Online, OnlineData, OnlineQueryDatasParameter, OnlineServiceBase, OrderBy, OrderType, OutputSetting, OutputType, OverlapDisplayedOptions, OverlayAnalystParameters, OverlayGeoJobParameter, OverlayOperationType, PaginationContainer, PermissionType, Pixel, PixelFormat, PointWithMeasure, PopContainer, ProcessingService, ProcessingServiceBase, QueryByBoundsParameters, QueryByDistanceParameters, QueryByGeometryParameters, QueryBySQLParameters, QueryOption, QueryParameters, QueryService, Range, RangeMode, RangeTheme3DLayer, RangeThemeLayer, RankSymbol, RankSymbolThemeLayer, RasterFunctionParameter, RasterFunctionType, ResourceType, Route, RouteCalculateMeasureParameters, RouteLocatorParameters, SearchMode, SearchType, SecurityManager, Select, ServerColor, ServerFeature, ServerGeometry, ServerInfo, ServerStyle, ServerTextStyle, ServerTheme, ServerType, ServiceBase, ServiceStatus, SetDatasourceParameters, SetLayerInfoParameters, SetLayerStatusParameters, SetLayersInfoParameters, ShapeParameters, ShapeParametersCircle, ShapeParametersImage, ShapeParametersLabel, ShapeParametersLine, ShapeParametersPoint, ShapeParametersPolygon, ShapeParametersRectangle, ShapeParametersSector, SideType, SingleObjectQueryJobsParameter, Size, SmoothMethod, Sortby, SpatialAnalystBase, SpatialAnalystService, SpatialQueryMode, SpatialRelationType, StatisticAnalystMode, StatisticMode, StopQueryParameters, SummaryAttributesJobsParameter, SummaryMeshJobParameter, SummaryRegionJobParameter, SummaryType, SuperMap, SupplyCenter, SupplyCenterType, SurfaceAnalystMethod, SurfaceAnalystParameters, SurfaceAnalystParametersSetting, TemplateBase, TerrainAspectCalculationParameters, TerrainCurvatureCalculationParameters, TerrainCutFillCalculationParameters, TerrainSlopeCalculationParameters, TextAlignment, Theme3DLayer, ThemeDotDensity, ThemeFeature, ThemeGraduatedSymbol, ThemeGraduatedSymbolStyle, ThemeGraph, ThemeGraphAxes, ThemeGraphItem, ThemeGraphSize, ThemeGraphText, ThemeGraphTextFormat, ThemeGraphType, ThemeGridRange, ThemeGridRangeItem, ThemeGridUnique, ThemeGridUniqueItem, ThemeLabel, ThemeLabelAlongLine, ThemeLabelBackground, ThemeLabelItem, ThemeLabelText, ThemeLabelUniqueItem, ThemeLayer, ThemeMemoryData, ThemeOffset, ThemeParameters, ThemeRange, ThemeRangeItem, ThemeService, ThemeStyle, ThemeType, ThemeUnique, ThemeUniqueItem, ThiessenAnalystParameters, ThreeLayer, TimeControlBase, TimeFlowControl, TokenServiceParameter, TopologyValidatorJobsParameter, TopologyValidatorRule, TraceAnalystParameters, TrafficTransferAnalystService, TransferLine, TransferPathParameters, TransferPreference, TransferSolutionParameters, TransferTactic, Transform, TransportationAnalystParameter, TransportationAnalystResultSetting, TurnType, UGCLayer, UGCLayerType, UGCMapLayer, UGCSubLayer, Unique, UniqueTheme3DLayer, UniqueThemeLayer, Unit, UpdateDatasetParameters, UpdateEdgeWeightParameters, UpdateTurnNodeWeightParameters, Util, VariogramMode, Vector, VectorClipJobsParameter, WKTFormat, WebExportFormatType, WebMap, WebPrintingJobContent, WebPrintingJobCustomItems, WebPrintingJobExportOptions, WebPrintingJobImage, WebPrintingJobLayers, WebPrintingJobLayoutOptions, WebPrintingJobLegendOptions, WebPrintingJobLittleMapOptions, WebPrintingJobNorthArrowOptions, WebPrintingJobParameters, WebPrintingJobScaleBarOptions, WebPrintingJobService, WebScaleOrientationType, WebScaleType, WebScaleUnit, WebSymbol, conversionDegree, getDefaultVectorTileStyle, getMeterPerMapUnit, getWrapNum, initMap, isCORS, setBackground, setCORS, setPaintProperty, terrainAnalystSetting
 
 ;// CONCATENATED MODULE: external "mapboxgl"
 const external_mapboxgl_namespaceObject = mapboxgl;
@@ -9920,7 +10055,7 @@ const DOTS_PER_INCH = 96;
 const Util_Util = {
 
   /**
-     * @function Util.extend
+     * @memberOf CommonUtil
      * @description 对象拷贝赋值。
      * @param {Object} dest - 目标对象。
      * @param {Object} arguments - 待拷贝的对象。
@@ -12945,7 +13080,7 @@ class Polygon_Polygon extends Collection {
     }
 
     /**
-     * @function GeometryMultiPoint.prototype.getArea
+     * @function GeometryPolygon.prototype.getArea
      * @description 获得区域面积，从区域的外部口径减去计此区域内部口径算所得的面积。
      * @returns {number} 几何对象的面积。
      */
@@ -16762,6 +16897,64 @@ var WebScaleUnit = {
     FOOT: "FOOT",
     /** 度。 */
     DEGREES: "DEGREES"
+}
+
+/**
+ * @enum BoundsType
+ * @description 范围类型。
+ * @category BaseTypes Constant
+ * @version 11.1.1
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.BoundsType.UNION;
+ *
+ * </script>
+ * // ES6 Import
+ * import { BoundsType } from '{npm}';
+ *
+ * const result = BoundsType.UNION;
+ * ```
+ */
+var BoundsType = {
+  /** 自定义范围。 */
+  CUSTOM: "CUSTOM",
+  /** 输入栅格数据集范围的交集。 */
+  INTERSECTION: "INTERSECTION",
+  /** 输入栅格数据集范围的并集。 */
+  UNION: "UNION"
+}
+
+/**
+ * @enum CellSizeType
+ * @description 单元格类型。
+ * @category BaseTypes Constant
+ * @version 11.1.1
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.CellSizeType.MAX;
+ *
+ * </script>
+ * // ES6 Import
+ * import { CellSizeType } from '{npm}';
+ *
+ * const result = CellSizeType.MAX;
+ * ```
+ */
+var CellSizeType = {
+  /** 用户自己输入的单元格值大小作为单元格大小类型。 */
+  CUSTOM: "CUSTOM",
+  /** 输入栅格数据集中单元格最大值作为单元格大小类型。*/
+  MAX : "MAX",
+  /** 输入栅格数据集中单元格最小值作为单元格大小类型。 */
+  MIN : "MIN"
 }
 
 
@@ -25745,10 +25938,94 @@ Events.prototype.BROWSER_EVENTS = [
   "contextmenu"
 ];
 
+;// CONCATENATED MODULE: ./src/common/commontypes/Geometry3D.js
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class Geometry3D
+ * @deprecatedclass SuperMap.Geometry3D
+ * @category BaseTypes Geometry3D
+ * @classdesc 所有三维几何类的基类。
+ * @usage
+ */
+class Geometry3D extends ServerGeometry{
+
+    constructor(options) {
+        super(options);
+
+        this.CLASS_NAME = "SuperMap.Geometry3D";
+        /**
+         * @member {GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>} Geometry3D.prototype.position 
+         * @description  三维几何对象的位置。
+         *
+         */
+        this.position = null;
+
+        /**
+         * @member {number} Geometry3D.prototype.rotationX 
+         * @description 三维几何对象沿 X 轴方向的旋转角度，单位为度。
+         */
+        this.rotationX = null;
+
+        /**
+         * @member {number} Geometry3D.prototype.rotationY
+         * @description 三维几何对象沿 Y 轴方向的旋转角度，单位为度。
+         */
+        this.rotationY = null;
+
+        /**
+         * @member {number} Geometry3D.prototype.rotationZ
+         * @description 三维几何对象沿 Z 轴方向的旋转角度，单位为度。
+         */
+        this.rotationZ = null;
+
+        /**
+         * @member {number} Geometry3D.prototype.scaleX 
+         * @description 三维几何对象沿 X 轴方向的缩放比例。
+         */
+        this.scaleX = null;
+
+        /**
+         * @member {number} Geometry3D.prototype.scaleY
+         * @description 三维几何对象沿 Y 轴方向的缩放比例。
+         */
+        this.scaleY = null;
+
+        /**
+         * @member {number} Geometry3D.prototype.scaleZ
+         * @description 三维几何对象沿 Z 轴方向的缩放比例。
+         */
+        this.scaleZ = null;
+
+        Util_Util.extend(this, options);
+    }
+
+
+    /**
+     * @function Geometry3D.prototype.destroy
+     * @description 释放资源。
+     */
+    destroy() {
+        this.position = null;
+        this.rotationX = null;
+        this.rotationY = null;
+        this.rotationZ = null;
+        this.scaleX = null;
+        this.scaleY = null;
+        this.scaleZ = null;
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/common/commontypes/index.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
 
 
 
@@ -34756,7 +35033,7 @@ class ShapeFactory {
 
 
     /**
-     * @function  FeatureShapeFactory.prototype.destroy
+     * @function FeatureShapeFactory.prototype.destroy
      * @description 销毁图形工厂类对象。
      */
     destroy() {
@@ -34765,7 +35042,7 @@ class ShapeFactory {
 
 
     /**
-     * @function  FeatureShapeFactory.prototype.createShape
+     * @function FeatureShapeFactory.prototype.createShape
      * @description 创建一个图形。具体图形由 shapeParameters 决定。
      * @param {Object} shapeParameters - 图形参数对象，<{@link ShapeParameters}> 子类对象。
      * 此参数可选，如果使用此参数（不为 null），shapeParameters 属性值将被修改为参数的值，然后再使用 shapeParameters 属性值创建图形；
@@ -34959,7 +35236,7 @@ class ShapeFactory {
 
 
     /**
-     * @function  FeatureShapeFactory.prototype.transformStyle
+     * @function FeatureShapeFactory.prototype.transformStyle
      * @description 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
      * @param {Object} style - 用户 style。
      * @returns {Object} 符合 levelRenderer 的 style。
@@ -35072,7 +35349,7 @@ class ShapeFactory {
     }
 
     /**
-     * @function  FeatureShapeFactory.prototype.Background
+     * @function FeatureShapeFactory.prototype.Background
      * @description 创建一个矩形背景框图形对象。
      * @param {FeatureShapeFactory} shapeFactory - 图形工厂对象。
      * @param {Array.<number>} box - 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
@@ -35110,7 +35387,7 @@ class ShapeFactory {
     }
 
     /**
-     * @function  FeatureShapeFactory.prototype.GraphAxis
+     * @function FeatureShapeFactory.prototype.GraphAxis
      * @description 创建一个统计图表坐标轴图形对象组。
      * @param {FeatureShapeFactory} shapeFactory - 图形工厂对象。
      * @param {Array.<number>} dataViewBox - 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]。
@@ -35455,7 +35732,7 @@ class ShapeFactory {
     }
 
     /**
-     * @function  FeatureShapeFactory.prototype.ShapeStyleTool
+     * @function FeatureShapeFactory.prototype.ShapeStyleTool
      * @description 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
      * @param {Object} defaultStyle - 默认style，此样式对象可设属性根据图形类型参考 <{@link ShapeParameters}> 子类对象的 style 属性。
      * @param {Object} style - 图形对象基础 style，此参数控制图形的基础样式，可设属性根据图形类型参考 <{@link ShapeParameters}> 子类对象的 style 属性。优先级低于 styleGroup，styleByCodomain。
@@ -38646,7 +38923,7 @@ class Theme3DLayer {
     }
 
     /**
-     * @function  Theme3DLayer.prototype.getLayerStyleOptions
+     * @function Theme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -38973,7 +39250,7 @@ class RangeTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function  RangeTheme3DLayer.prototype.getLayerStyleOptions
+     * @function RangeTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -39284,7 +39561,7 @@ class UniqueTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function  UniqueTheme3DLayer.prototype.getLayerStyleOptions
+     * @function UniqueTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -43414,7 +43691,7 @@ class GraticuleLayer {
       id: this.id
     });
     this.addGraticuleLayer();
-    this.resizeEvent = this.renderer._resizeCallback;
+    this.resizeEvent = this.renderer._resizeCallback.bind(this.renderer);
     this.zoomendEvent = this.setVisibility.bind(this);
     this._bindEvent()
   }
@@ -44252,8 +44529,877 @@ var geometry_type_GeometryType;
   GeometryType[GeometryType["TIN"] = 16] = "TIN";
   GeometryType[GeometryType["Triangle"] = 17] = "Triangle";
 })(geometry_type_GeometryType || (geometry_type_GeometryType = {}));
-// EXTERNAL MODULE: ./node_modules/flatbuffers/js/flatbuffers.js
-var js_flatbuffers = __webpack_require__(903);
+;// CONCATENATED MODULE: ./node_modules/flatbuffers/mjs/constants.js
+const constants_SIZEOF_SHORT = 2;
+const constants_SIZEOF_INT = 4;
+const constants_FILE_IDENTIFIER_LENGTH = 4;
+const constants_SIZE_PREFIX_LENGTH = 4;
+
+;// CONCATENATED MODULE: ./node_modules/flatbuffers/mjs/utils.js
+const int32 = new Int32Array(2);
+const float32 = new Float32Array(int32.buffer);
+const float64 = new Float64Array(int32.buffer);
+const isLittleEndian = new Uint16Array(new Uint8Array([1, 0]).buffer)[0] === 1;
+
+;// CONCATENATED MODULE: ./node_modules/flatbuffers/mjs/encoding.js
+var Encoding;
+(function (Encoding) {
+    Encoding[Encoding["UTF8_BYTES"] = 1] = "UTF8_BYTES";
+    Encoding[Encoding["UTF16_STRING"] = 2] = "UTF16_STRING";
+})(Encoding || (Encoding = {}));
+
+;// CONCATENATED MODULE: ./node_modules/flatbuffers/mjs/byte-buffer.js
+
+
+
+class byte_buffer_ByteBuffer {
+    /**
+     * Create a new ByteBuffer with a given array of bytes (`Uint8Array`)
+     */
+    constructor(bytes_) {
+        this.bytes_ = bytes_;
+        this.position_ = 0;
+    }
+    /**
+     * Create and allocate a new ByteBuffer with a given size.
+     */
+    static allocate(byte_size) {
+        return new byte_buffer_ByteBuffer(new Uint8Array(byte_size));
+    }
+    clear() {
+        this.position_ = 0;
+    }
+    /**
+     * Get the underlying `Uint8Array`.
+     */
+    bytes() {
+        return this.bytes_;
+    }
+    /**
+     * Get the buffer's position.
+     */
+    position() {
+        return this.position_;
+    }
+    /**
+     * Set the buffer's position.
+     */
+    setPosition(position) {
+        this.position_ = position;
+    }
+    /**
+     * Get the buffer's capacity.
+     */
+    capacity() {
+        return this.bytes_.length;
+    }
+    readInt8(offset) {
+        return this.readUint8(offset) << 24 >> 24;
+    }
+    readUint8(offset) {
+        return this.bytes_[offset];
+    }
+    readInt16(offset) {
+        return this.readUint16(offset) << 16 >> 16;
+    }
+    readUint16(offset) {
+        return this.bytes_[offset] | this.bytes_[offset + 1] << 8;
+    }
+    readInt32(offset) {
+        return this.bytes_[offset] | this.bytes_[offset + 1] << 8 | this.bytes_[offset + 2] << 16 | this.bytes_[offset + 3] << 24;
+    }
+    readUint32(offset) {
+        return this.readInt32(offset) >>> 0;
+    }
+    readInt64(offset) {
+        return BigInt.asIntN(64, BigInt(this.readUint32(offset)) + (BigInt(this.readUint32(offset + 4)) << BigInt(32)));
+    }
+    readUint64(offset) {
+        return BigInt.asUintN(64, BigInt(this.readUint32(offset)) + (BigInt(this.readUint32(offset + 4)) << BigInt(32)));
+    }
+    readFloat32(offset) {
+        int32[0] = this.readInt32(offset);
+        return float32[0];
+    }
+    readFloat64(offset) {
+        int32[isLittleEndian ? 0 : 1] = this.readInt32(offset);
+        int32[isLittleEndian ? 1 : 0] = this.readInt32(offset + 4);
+        return float64[0];
+    }
+    writeInt8(offset, value) {
+        this.bytes_[offset] = value;
+    }
+    writeUint8(offset, value) {
+        this.bytes_[offset] = value;
+    }
+    writeInt16(offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+    }
+    writeUint16(offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+    }
+    writeInt32(offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+        this.bytes_[offset + 2] = value >> 16;
+        this.bytes_[offset + 3] = value >> 24;
+    }
+    writeUint32(offset, value) {
+        this.bytes_[offset] = value;
+        this.bytes_[offset + 1] = value >> 8;
+        this.bytes_[offset + 2] = value >> 16;
+        this.bytes_[offset + 3] = value >> 24;
+    }
+    writeInt64(offset, value) {
+        this.writeInt32(offset, Number(BigInt.asIntN(32, value)));
+        this.writeInt32(offset + 4, Number(BigInt.asIntN(32, value >> BigInt(32))));
+    }
+    writeUint64(offset, value) {
+        this.writeUint32(offset, Number(BigInt.asUintN(32, value)));
+        this.writeUint32(offset + 4, Number(BigInt.asUintN(32, value >> BigInt(32))));
+    }
+    writeFloat32(offset, value) {
+        float32[0] = value;
+        this.writeInt32(offset, int32[0]);
+    }
+    writeFloat64(offset, value) {
+        float64[0] = value;
+        this.writeInt32(offset, int32[isLittleEndian ? 0 : 1]);
+        this.writeInt32(offset + 4, int32[isLittleEndian ? 1 : 0]);
+    }
+    /**
+     * Return the file identifier.   Behavior is undefined for FlatBuffers whose
+     * schema does not include a file_identifier (likely points at padding or the
+     * start of a the root vtable).
+     */
+    getBufferIdentifier() {
+        if (this.bytes_.length < this.position_ + constants_SIZEOF_INT +
+            constants_FILE_IDENTIFIER_LENGTH) {
+            throw new Error('FlatBuffers: ByteBuffer is too short to contain an identifier.');
+        }
+        let result = "";
+        for (let i = 0; i < constants_FILE_IDENTIFIER_LENGTH; i++) {
+            result += String.fromCharCode(this.readInt8(this.position_ + constants_SIZEOF_INT + i));
+        }
+        return result;
+    }
+    /**
+     * Look up a field in the vtable, return an offset into the object, or 0 if the
+     * field is not present.
+     */
+    __offset(bb_pos, vtable_offset) {
+        const vtable = bb_pos - this.readInt32(bb_pos);
+        return vtable_offset < this.readInt16(vtable) ? this.readInt16(vtable + vtable_offset) : 0;
+    }
+    /**
+     * Initialize any Table-derived type to point to the union at the given offset.
+     */
+    __union(t, offset) {
+        t.bb_pos = offset + this.readInt32(offset);
+        t.bb = this;
+        return t;
+    }
+    /**
+     * Create a JavaScript string from UTF-8 data stored inside the FlatBuffer.
+     * This allocates a new string and converts to wide chars upon each access.
+     *
+     * To avoid the conversion to UTF-16, pass Encoding.UTF8_BYTES as
+     * the "optionalEncoding" argument. This is useful for avoiding conversion to
+     * and from UTF-16 when the data will just be packaged back up in another
+     * FlatBuffer later on.
+     *
+     * @param offset
+     * @param opt_encoding Defaults to UTF16_STRING
+     */
+    __string(offset, opt_encoding) {
+        offset += this.readInt32(offset);
+        const length = this.readInt32(offset);
+        let result = '';
+        let i = 0;
+        offset += constants_SIZEOF_INT;
+        if (opt_encoding === Encoding.UTF8_BYTES) {
+            return this.bytes_.subarray(offset, offset + length);
+        }
+        while (i < length) {
+            let codePoint;
+            // Decode UTF-8
+            const a = this.readUint8(offset + i++);
+            if (a < 0xC0) {
+                codePoint = a;
+            }
+            else {
+                const b = this.readUint8(offset + i++);
+                if (a < 0xE0) {
+                    codePoint =
+                        ((a & 0x1F) << 6) |
+                            (b & 0x3F);
+                }
+                else {
+                    const c = this.readUint8(offset + i++);
+                    if (a < 0xF0) {
+                        codePoint =
+                            ((a & 0x0F) << 12) |
+                                ((b & 0x3F) << 6) |
+                                (c & 0x3F);
+                    }
+                    else {
+                        const d = this.readUint8(offset + i++);
+                        codePoint =
+                            ((a & 0x07) << 18) |
+                                ((b & 0x3F) << 12) |
+                                ((c & 0x3F) << 6) |
+                                (d & 0x3F);
+                    }
+                }
+            }
+            // Encode UTF-16
+            if (codePoint < 0x10000) {
+                result += String.fromCharCode(codePoint);
+            }
+            else {
+                codePoint -= 0x10000;
+                result += String.fromCharCode((codePoint >> 10) + 0xD800, (codePoint & ((1 << 10) - 1)) + 0xDC00);
+            }
+        }
+        return result;
+    }
+    /**
+     * Handle unions that can contain string as its member, if a Table-derived type then initialize it,
+     * if a string then return a new one
+     *
+     * WARNING: strings are immutable in JS so we can't change the string that the user gave us, this
+     * makes the behaviour of __union_with_string different compared to __union
+     */
+    __union_with_string(o, offset) {
+        if (typeof o === 'string') {
+            return this.__string(offset);
+        }
+        return this.__union(o, offset);
+    }
+    /**
+     * Retrieve the relative offset stored at "offset"
+     */
+    __indirect(offset) {
+        return offset + this.readInt32(offset);
+    }
+    /**
+     * Get the start of data of a vector whose offset is stored at "offset" in this object.
+     */
+    __vector(offset) {
+        return offset + this.readInt32(offset) + constants_SIZEOF_INT; // data starts after the length
+    }
+    /**
+     * Get the length of a vector whose offset is stored at "offset" in this object.
+     */
+    __vector_len(offset) {
+        return this.readInt32(offset + this.readInt32(offset));
+    }
+    __has_identifier(ident) {
+        if (ident.length != constants_FILE_IDENTIFIER_LENGTH) {
+            throw new Error('FlatBuffers: file identifier must be length ' +
+                constants_FILE_IDENTIFIER_LENGTH);
+        }
+        for (let i = 0; i < constants_FILE_IDENTIFIER_LENGTH; i++) {
+            if (ident.charCodeAt(i) != this.readInt8(this.position() + constants_SIZEOF_INT + i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+     * A helper function for generating list for obj api
+     */
+    createScalarList(listAccessor, listLength) {
+        const ret = [];
+        for (let i = 0; i < listLength; ++i) {
+            if (listAccessor(i) !== null) {
+                ret.push(listAccessor(i));
+            }
+        }
+        return ret;
+    }
+    /**
+     * A helper function for generating list for obj api
+     * @param listAccessor function that accepts an index and return data at that index
+     * @param listLength listLength
+     * @param res result list
+     */
+    createObjList(listAccessor, listLength) {
+        const ret = [];
+        for (let i = 0; i < listLength; ++i) {
+            const val = listAccessor(i);
+            if (val !== null) {
+                ret.push(val.unpack());
+            }
+        }
+        return ret;
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/flatbuffers/mjs/builder.js
+
+
+class Builder {
+    /**
+     * Create a FlatBufferBuilder.
+     */
+    constructor(opt_initial_size) {
+        /** Minimum alignment encountered so far. */
+        this.minalign = 1;
+        /** The vtable for the current table. */
+        this.vtable = null;
+        /** The amount of fields we're actually using. */
+        this.vtable_in_use = 0;
+        /** Whether we are currently serializing a table. */
+        this.isNested = false;
+        /** Starting offset of the current struct/table. */
+        this.object_start = 0;
+        /** List of offsets of all vtables. */
+        this.vtables = [];
+        /** For the current vector being built. */
+        this.vector_num_elems = 0;
+        /** False omits default values from the serialized data */
+        this.force_defaults = false;
+        this.string_maps = null;
+        let initial_size;
+        if (!opt_initial_size) {
+            initial_size = 1024;
+        }
+        else {
+            initial_size = opt_initial_size;
+        }
+        /**
+         * @type {ByteBuffer}
+         * @private
+         */
+        this.bb = ByteBuffer.allocate(initial_size);
+        this.space = initial_size;
+    }
+    clear() {
+        this.bb.clear();
+        this.space = this.bb.capacity();
+        this.minalign = 1;
+        this.vtable = null;
+        this.vtable_in_use = 0;
+        this.isNested = false;
+        this.object_start = 0;
+        this.vtables = [];
+        this.vector_num_elems = 0;
+        this.force_defaults = false;
+        this.string_maps = null;
+    }
+    /**
+     * In order to save space, fields that are set to their default value
+     * don't get serialized into the buffer. Forcing defaults provides a
+     * way to manually disable this optimization.
+     *
+     * @param forceDefaults true always serializes default values
+     */
+    forceDefaults(forceDefaults) {
+        this.force_defaults = forceDefaults;
+    }
+    /**
+     * Get the ByteBuffer representing the FlatBuffer. Only call this after you've
+     * called finish(). The actual data starts at the ByteBuffer's current position,
+     * not necessarily at 0.
+     */
+    dataBuffer() {
+        return this.bb;
+    }
+    /**
+     * Get the bytes representing the FlatBuffer. Only call this after you've
+     * called finish().
+     */
+    asUint8Array() {
+        return this.bb.bytes().subarray(this.bb.position(), this.bb.position() + this.offset());
+    }
+    /**
+     * Prepare to write an element of `size` after `additional_bytes` have been
+     * written, e.g. if you write a string, you need to align such the int length
+     * field is aligned to 4 bytes, and the string data follows it directly. If all
+     * you need to do is alignment, `additional_bytes` will be 0.
+     *
+     * @param size This is the of the new element to write
+     * @param additional_bytes The padding size
+     */
+    prep(size, additional_bytes) {
+        // Track the biggest thing we've ever aligned to.
+        if (size > this.minalign) {
+            this.minalign = size;
+        }
+        // Find the amount of alignment needed such that `size` is properly
+        // aligned after `additional_bytes`
+        const align_size = ((~(this.bb.capacity() - this.space + additional_bytes)) + 1) & (size - 1);
+        // Reallocate the buffer if needed.
+        while (this.space < align_size + size + additional_bytes) {
+            const old_buf_size = this.bb.capacity();
+            this.bb = Builder.growByteBuffer(this.bb);
+            this.space += this.bb.capacity() - old_buf_size;
+        }
+        this.pad(align_size);
+    }
+    pad(byte_size) {
+        for (let i = 0; i < byte_size; i++) {
+            this.bb.writeInt8(--this.space, 0);
+        }
+    }
+    writeInt8(value) {
+        this.bb.writeInt8(this.space -= 1, value);
+    }
+    writeInt16(value) {
+        this.bb.writeInt16(this.space -= 2, value);
+    }
+    writeInt32(value) {
+        this.bb.writeInt32(this.space -= 4, value);
+    }
+    writeInt64(value) {
+        this.bb.writeInt64(this.space -= 8, value);
+    }
+    writeFloat32(value) {
+        this.bb.writeFloat32(this.space -= 4, value);
+    }
+    writeFloat64(value) {
+        this.bb.writeFloat64(this.space -= 8, value);
+    }
+    /**
+     * Add an `int8` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int8` to add the the buffer.
+     */
+    addInt8(value) {
+        this.prep(1, 0);
+        this.writeInt8(value);
+    }
+    /**
+     * Add an `int16` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int16` to add the the buffer.
+     */
+    addInt16(value) {
+        this.prep(2, 0);
+        this.writeInt16(value);
+    }
+    /**
+     * Add an `int32` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int32` to add the the buffer.
+     */
+    addInt32(value) {
+        this.prep(4, 0);
+        this.writeInt32(value);
+    }
+    /**
+     * Add an `int64` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `int64` to add the the buffer.
+     */
+    addInt64(value) {
+        this.prep(8, 0);
+        this.writeInt64(value);
+    }
+    /**
+     * Add a `float32` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `float32` to add the the buffer.
+     */
+    addFloat32(value) {
+        this.prep(4, 0);
+        this.writeFloat32(value);
+    }
+    /**
+     * Add a `float64` to the buffer, properly aligned, and grows the buffer (if necessary).
+     * @param value The `float64` to add the the buffer.
+     */
+    addFloat64(value) {
+        this.prep(8, 0);
+        this.writeFloat64(value);
+    }
+    addFieldInt8(voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addInt8(value);
+            this.slot(voffset);
+        }
+    }
+    addFieldInt16(voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addInt16(value);
+            this.slot(voffset);
+        }
+    }
+    addFieldInt32(voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addInt32(value);
+            this.slot(voffset);
+        }
+    }
+    addFieldInt64(voffset, value, defaultValue) {
+        if (this.force_defaults || value !== defaultValue) {
+            this.addInt64(value);
+            this.slot(voffset);
+        }
+    }
+    addFieldFloat32(voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addFloat32(value);
+            this.slot(voffset);
+        }
+    }
+    addFieldFloat64(voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addFloat64(value);
+            this.slot(voffset);
+        }
+    }
+    addFieldOffset(voffset, value, defaultValue) {
+        if (this.force_defaults || value != defaultValue) {
+            this.addOffset(value);
+            this.slot(voffset);
+        }
+    }
+    /**
+     * Structs are stored inline, so nothing additional is being added. `d` is always 0.
+     */
+    addFieldStruct(voffset, value, defaultValue) {
+        if (value != defaultValue) {
+            this.nested(value);
+            this.slot(voffset);
+        }
+    }
+    /**
+     * Structures are always stored inline, they need to be created right
+     * where they're used.  You'll get this assertion failure if you
+     * created it elsewhere.
+     */
+    nested(obj) {
+        if (obj != this.offset()) {
+            throw new Error('FlatBuffers: struct must be serialized inline.');
+        }
+    }
+    /**
+     * Should not be creating any other object, string or vector
+     * while an object is being constructed
+     */
+    notNested() {
+        if (this.isNested) {
+            throw new Error('FlatBuffers: object serialization must not be nested.');
+        }
+    }
+    /**
+     * Set the current vtable at `voffset` to the current location in the buffer.
+     */
+    slot(voffset) {
+        if (this.vtable !== null)
+            this.vtable[voffset] = this.offset();
+    }
+    /**
+     * @returns Offset relative to the end of the buffer.
+     */
+    offset() {
+        return this.bb.capacity() - this.space;
+    }
+    /**
+     * Doubles the size of the backing ByteBuffer and copies the old data towards
+     * the end of the new buffer (since we build the buffer backwards).
+     *
+     * @param bb The current buffer with the existing data
+     * @returns A new byte buffer with the old data copied
+     * to it. The data is located at the end of the buffer.
+     *
+     * uint8Array.set() formally takes {Array<number>|ArrayBufferView}, so to pass
+     * it a uint8Array we need to suppress the type check:
+     * @suppress {checkTypes}
+     */
+    static growByteBuffer(bb) {
+        const old_buf_size = bb.capacity();
+        // Ensure we don't grow beyond what fits in an int.
+        if (old_buf_size & 0xC0000000) {
+            throw new Error('FlatBuffers: cannot grow buffer beyond 2 gigabytes.');
+        }
+        const new_buf_size = old_buf_size << 1;
+        const nbb = ByteBuffer.allocate(new_buf_size);
+        nbb.setPosition(new_buf_size - old_buf_size);
+        nbb.bytes().set(bb.bytes(), new_buf_size - old_buf_size);
+        return nbb;
+    }
+    /**
+     * Adds on offset, relative to where it will be written.
+     *
+     * @param offset The offset to add.
+     */
+    addOffset(offset) {
+        this.prep(SIZEOF_INT, 0); // Ensure alignment is already done.
+        this.writeInt32(this.offset() - offset + SIZEOF_INT);
+    }
+    /**
+     * Start encoding a new object in the buffer.  Users will not usually need to
+     * call this directly. The FlatBuffers compiler will generate helper methods
+     * that call this method internally.
+     */
+    startObject(numfields) {
+        this.notNested();
+        if (this.vtable == null) {
+            this.vtable = [];
+        }
+        this.vtable_in_use = numfields;
+        for (let i = 0; i < numfields; i++) {
+            this.vtable[i] = 0; // This will push additional elements as needed
+        }
+        this.isNested = true;
+        this.object_start = this.offset();
+    }
+    /**
+     * Finish off writing the object that is under construction.
+     *
+     * @returns The offset to the object inside `dataBuffer`
+     */
+    endObject() {
+        if (this.vtable == null || !this.isNested) {
+            throw new Error('FlatBuffers: endObject called without startObject');
+        }
+        this.addInt32(0);
+        const vtableloc = this.offset();
+        // Trim trailing zeroes.
+        let i = this.vtable_in_use - 1;
+        // eslint-disable-next-line no-empty
+        for (; i >= 0 && this.vtable[i] == 0; i--) { }
+        const trimmed_size = i + 1;
+        // Write out the current vtable.
+        for (; i >= 0; i--) {
+            // Offset relative to the start of the table.
+            this.addInt16(this.vtable[i] != 0 ? vtableloc - this.vtable[i] : 0);
+        }
+        const standard_fields = 2; // The fields below:
+        this.addInt16(vtableloc - this.object_start);
+        const len = (trimmed_size + standard_fields) * SIZEOF_SHORT;
+        this.addInt16(len);
+        // Search for an existing vtable that matches the current one.
+        let existing_vtable = 0;
+        const vt1 = this.space;
+        outer_loop: for (i = 0; i < this.vtables.length; i++) {
+            const vt2 = this.bb.capacity() - this.vtables[i];
+            if (len == this.bb.readInt16(vt2)) {
+                for (let j = SIZEOF_SHORT; j < len; j += SIZEOF_SHORT) {
+                    if (this.bb.readInt16(vt1 + j) != this.bb.readInt16(vt2 + j)) {
+                        continue outer_loop;
+                    }
+                }
+                existing_vtable = this.vtables[i];
+                break;
+            }
+        }
+        if (existing_vtable) {
+            // Found a match:
+            // Remove the current vtable.
+            this.space = this.bb.capacity() - vtableloc;
+            // Point table to existing vtable.
+            this.bb.writeInt32(this.space, existing_vtable - vtableloc);
+        }
+        else {
+            // No match:
+            // Add the location of the current vtable to the list of vtables.
+            this.vtables.push(this.offset());
+            // Point table to current vtable.
+            this.bb.writeInt32(this.bb.capacity() - vtableloc, this.offset() - vtableloc);
+        }
+        this.isNested = false;
+        return vtableloc;
+    }
+    /**
+     * Finalize a buffer, poiting to the given `root_table`.
+     */
+    finish(root_table, opt_file_identifier, opt_size_prefix) {
+        const size_prefix = opt_size_prefix ? SIZE_PREFIX_LENGTH : 0;
+        if (opt_file_identifier) {
+            const file_identifier = opt_file_identifier;
+            this.prep(this.minalign, SIZEOF_INT +
+                FILE_IDENTIFIER_LENGTH + size_prefix);
+            if (file_identifier.length != FILE_IDENTIFIER_LENGTH) {
+                throw new Error('FlatBuffers: file identifier must be length ' +
+                    FILE_IDENTIFIER_LENGTH);
+            }
+            for (let i = FILE_IDENTIFIER_LENGTH - 1; i >= 0; i--) {
+                this.writeInt8(file_identifier.charCodeAt(i));
+            }
+        }
+        this.prep(this.minalign, SIZEOF_INT + size_prefix);
+        this.addOffset(root_table);
+        if (size_prefix) {
+            this.addInt32(this.bb.capacity() - this.space);
+        }
+        this.bb.setPosition(this.space);
+    }
+    /**
+     * Finalize a size prefixed buffer, pointing to the given `root_table`.
+     */
+    finishSizePrefixed(root_table, opt_file_identifier) {
+        this.finish(root_table, opt_file_identifier, true);
+    }
+    /**
+     * This checks a required field has been set in a given table that has
+     * just been constructed.
+     */
+    requiredField(table, field) {
+        const table_start = this.bb.capacity() - table;
+        const vtable_start = table_start - this.bb.readInt32(table_start);
+        const ok = this.bb.readInt16(vtable_start + field) != 0;
+        // If this fails, the caller will show what field needs to be set.
+        if (!ok) {
+            throw new Error('FlatBuffers: field ' + field + ' must be set');
+        }
+    }
+    /**
+     * Start a new array/vector of objects.  Users usually will not call
+     * this directly. The FlatBuffers compiler will create a start/end
+     * method for vector types in generated code.
+     *
+     * @param elem_size The size of each element in the array
+     * @param num_elems The number of elements in the array
+     * @param alignment The alignment of the array
+     */
+    startVector(elem_size, num_elems, alignment) {
+        this.notNested();
+        this.vector_num_elems = num_elems;
+        this.prep(SIZEOF_INT, elem_size * num_elems);
+        this.prep(alignment, elem_size * num_elems); // Just in case alignment > int.
+    }
+    /**
+     * Finish off the creation of an array and all its elements. The array must be
+     * created with `startVector`.
+     *
+     * @returns The offset at which the newly created array
+     * starts.
+     */
+    endVector() {
+        this.writeInt32(this.vector_num_elems);
+        return this.offset();
+    }
+    /**
+     * Encode the string `s` in the buffer using UTF-8. If the string passed has
+     * already been seen, we return the offset of the already written string
+     *
+     * @param s The string to encode
+     * @return The offset in the buffer where the encoded string starts
+     */
+    createSharedString(s) {
+        if (!s) {
+            return 0;
+        }
+        if (!this.string_maps) {
+            this.string_maps = new Map();
+        }
+        if (this.string_maps.has(s)) {
+            return this.string_maps.get(s);
+        }
+        const offset = this.createString(s);
+        this.string_maps.set(s, offset);
+        return offset;
+    }
+    /**
+     * Encode the string `s` in the buffer using UTF-8. If a Uint8Array is passed
+     * instead of a string, it is assumed to contain valid UTF-8 encoded data.
+     *
+     * @param s The string to encode
+     * @return The offset in the buffer where the encoded string starts
+     */
+    createString(s) {
+        if (s === null || s === undefined) {
+            return 0;
+        }
+        let utf8;
+        if (s instanceof Uint8Array) {
+            utf8 = s;
+        }
+        else {
+            utf8 = [];
+            let i = 0;
+            while (i < s.length) {
+                let codePoint;
+                // Decode UTF-16
+                const a = s.charCodeAt(i++);
+                if (a < 0xD800 || a >= 0xDC00) {
+                    codePoint = a;
+                }
+                else {
+                    const b = s.charCodeAt(i++);
+                    codePoint = (a << 10) + b + (0x10000 - (0xD800 << 10) - 0xDC00);
+                }
+                // Encode UTF-8
+                if (codePoint < 0x80) {
+                    utf8.push(codePoint);
+                }
+                else {
+                    if (codePoint < 0x800) {
+                        utf8.push(((codePoint >> 6) & 0x1F) | 0xC0);
+                    }
+                    else {
+                        if (codePoint < 0x10000) {
+                            utf8.push(((codePoint >> 12) & 0x0F) | 0xE0);
+                        }
+                        else {
+                            utf8.push(((codePoint >> 18) & 0x07) | 0xF0, ((codePoint >> 12) & 0x3F) | 0x80);
+                        }
+                        utf8.push(((codePoint >> 6) & 0x3F) | 0x80);
+                    }
+                    utf8.push((codePoint & 0x3F) | 0x80);
+                }
+            }
+        }
+        this.addInt8(0);
+        this.startVector(1, utf8.length, 1);
+        this.bb.setPosition(this.space -= utf8.length);
+        for (let i = 0, offset = this.space, bytes = this.bb.bytes(); i < utf8.length; i++) {
+            bytes[offset++] = utf8[i];
+        }
+        return this.endVector();
+    }
+    /**
+     * A helper function to pack an object
+     *
+     * @returns offset of obj
+     */
+    createObjectOffset(obj) {
+        if (obj === null) {
+            return 0;
+        }
+        if (typeof obj === 'string') {
+            return this.createString(obj);
+        }
+        else {
+            return obj.pack(this);
+        }
+    }
+    /**
+     * A helper function to pack a list of object
+     *
+     * @returns list of offsets of each non null object
+     */
+    createObjectOffsetList(list) {
+        const ret = [];
+        for (let i = 0; i < list.length; ++i) {
+            const val = list[i];
+            if (val !== null) {
+                ret.push(this.createObjectOffset(val));
+            }
+            else {
+                throw new Error('FlatBuffers: Argument for createObjectOffsetList cannot contain null.');
+            }
+        }
+        return ret;
+    }
+    createStructOffsetList(list, startFunc) {
+        startFunc(this, list.length);
+        this.createObjectOffsetList(list);
+        return this.endVector();
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/flatbuffers/mjs/flatbuffers.js
+
+
+
+
+
+
+
+
+
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/geometry.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -44401,7 +45547,7 @@ var geometry_Geometry = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsGeometry",
     value: function getSizePrefixedRootAsGeometry(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + constants_SIZE_PREFIX_LENGTH);
       return (obj || new Geometry()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -44921,7 +46067,7 @@ var column_Column = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsColumn",
     value: function getSizePrefixedRootAsColumn(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + constants_SIZE_PREFIX_LENGTH);
       return (obj || new Column()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -45075,7 +46221,7 @@ var feature_Feature = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsFeature",
     value: function getSizePrefixedRootAsFeature(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + constants_SIZE_PREFIX_LENGTH);
       return (obj || new Feature()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -45387,8 +46533,104 @@ function feature_fromFeature(feature, header) {
   };
   return geoJsonfeature;
 }
-// EXTERNAL MODULE: ./node_modules/slice-source/dist/slice-source.js
-var slice_source = __webpack_require__(901);
+;// CONCATENATED MODULE: ./node_modules/slice-source/empty.js
+/* harmony default export */ const empty = (new Uint8Array(0));
+
+;// CONCATENATED MODULE: ./node_modules/slice-source/cancel.js
+/* harmony default export */ function slice_source_cancel() {
+  return this._source.cancel();
+}
+
+;// CONCATENATED MODULE: ./node_modules/slice-source/concat.js
+function concat(a, b) {
+  if (!a.length) return b;
+  if (!b.length) return a;
+  var c = new Uint8Array(a.length + b.length);
+  c.set(a);
+  c.set(b, a.length);
+  return c;
+}
+
+;// CONCATENATED MODULE: ./node_modules/slice-source/read.js
+
+
+
+/* harmony default export */ function read() {
+  var that = this, array = that._array.subarray(that._index);
+  return that._source.read().then(function(result) {
+    that._array = empty;
+    that._index = 0;
+    return result.done ? (array.length > 0
+        ? {done: false, value: array}
+        : {done: true, value: undefined})
+        : {done: false, value: concat(array, result.value)};
+  });
+}
+
+;// CONCATENATED MODULE: ./node_modules/slice-source/slice.js
+
+
+/* harmony default export */ function slice(length) {
+  if ((length |= 0) < 0) throw new Error("invalid length");
+  var that = this, index = this._array.length - this._index;
+
+  // If the request fits within the remaining buffer, resolve it immediately.
+  if (this._index + length <= this._array.length) {
+    return Promise.resolve(this._array.subarray(this._index, this._index += length));
+  }
+
+  // Otherwise, read chunks repeatedly until the request is fulfilled.
+  var array = new Uint8Array(length);
+  array.set(this._array.subarray(this._index));
+  return (function read() {
+    return that._source.read().then(function(result) {
+
+      // When done, it’s possible the request wasn’t fully fullfilled!
+      // If so, the pre-allocated array is too big and needs slicing.
+      if (result.done) {
+        that._array = empty;
+        that._index = 0;
+        return index > 0 ? array.subarray(0, index) : null;
+      }
+
+      // If this chunk fulfills the request, return the resulting array.
+      if (index + result.value.length >= length) {
+        that._array = result.value;
+        that._index = length - index;
+        array.set(result.value.subarray(0, length - index), index);
+        return array;
+      }
+
+      // Otherwise copy this chunk into the array, then read the next chunk.
+      array.set(result.value, index);
+      index += result.value.length;
+      return read();
+    });
+  })();
+}
+
+;// CONCATENATED MODULE: ./node_modules/slice-source/index.js
+
+
+
+
+
+function slice_source_slice(source) {
+  return typeof source.slice === "function" ? source :
+      new SliceSource(typeof source.read === "function" ? source
+          : source.getReader());
+}
+
+function SliceSource(source) {
+  this._source = source;
+  this._array = empty;
+  this._index = 0;
+}
+
+SliceSource.prototype.read = read;
+SliceSource.prototype.slice = slice;
+SliceSource.prototype.cancel = slice_source_cancel;
+
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/flat-geobuf/crs.js
 function crs_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function crs_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -45451,7 +46693,7 @@ var Crs = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsCrs",
     value: function getSizePrefixedRootAsCrs(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + constants_SIZE_PREFIX_LENGTH);
       return (obj || new Crs()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -45641,7 +46883,7 @@ var header_Header = /*#__PURE__*/function () {
   }, {
     key: "getSizePrefixedRootAsHeader",
     value: function getSizePrefixedRootAsHeader(bb, obj) {
-      bb.setPosition(bb.position() + js_flatbuffers/* SIZE_PREFIX_LENGTH */.XU);
+      bb.setPosition(bb.position() + constants_SIZE_PREFIX_LENGTH);
       return (obj || new Header()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
     }
   }, {
@@ -45812,8 +47054,920 @@ function fromByteBuffer(bb) {
   };
   return headerMeta;
 }
-// EXTERNAL MODULE: ./node_modules/@repeaterjs/repeater/cjs/repeater.js
-var repeater = __webpack_require__(982);
+;// CONCATENATED MODULE: ./node_modules/@repeaterjs/repeater/repeater.js
+/// <reference types="./repeater.d.ts" />
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+/** An error subclass which is thrown when there are too many pending push or next operations on a single repeater. */
+var RepeaterOverflowError = /** @class */ (function (_super) {
+    __extends(RepeaterOverflowError, _super);
+    function RepeaterOverflowError(message) {
+        var _this = _super.call(this, message) || this;
+        Object.defineProperty(_this, "name", {
+            value: "RepeaterOverflowError",
+            enumerable: false,
+        });
+        if (typeof Object.setPrototypeOf === "function") {
+            Object.setPrototypeOf(_this, _this.constructor.prototype);
+        }
+        else {
+            _this.__proto__ = _this.constructor.prototype;
+        }
+        if (typeof Error.captureStackTrace === "function") {
+            Error.captureStackTrace(_this, _this.constructor);
+        }
+        return _this;
+    }
+    return RepeaterOverflowError;
+}(Error));
+/** A buffer which allows you to push a set amount of values to the repeater without pushes waiting or throwing errors. */
+var FixedBuffer = /** @class */ (function () {
+    function FixedBuffer(capacity) {
+        if (capacity < 0) {
+            throw new RangeError("Capacity may not be less than 0");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(FixedBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(FixedBuffer.prototype, "full", {
+        get: function () {
+            return this._q.length >= this._c;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    FixedBuffer.prototype.add = function (value) {
+        if (this.full) {
+            throw new Error("Buffer full");
+        }
+        else {
+            this._q.push(value);
+        }
+    };
+    FixedBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return FixedBuffer;
+}());
+// TODO: Use a circular buffer here.
+/** Sliding buffers allow you to push a set amount of values to the repeater without pushes waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the earliest values added. */
+var SlidingBuffer = /** @class */ (function () {
+    function SlidingBuffer(capacity) {
+        if (capacity < 1) {
+            throw new RangeError("Capacity may not be less than 1");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(SlidingBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SlidingBuffer.prototype, "full", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    SlidingBuffer.prototype.add = function (value) {
+        while (this._q.length >= this._c) {
+            this._q.shift();
+        }
+        this._q.push(value);
+    };
+    SlidingBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return SlidingBuffer;
+}());
+/** Dropping buffers allow you to push a set amount of values to the repeater without the push function waiting or throwing errors. If the number of values exceeds the capacity set in the constructor, the buffer will discard the latest values added. */
+var DroppingBuffer = /** @class */ (function () {
+    function DroppingBuffer(capacity) {
+        if (capacity < 1) {
+            throw new RangeError("Capacity may not be less than 1");
+        }
+        this._c = capacity;
+        this._q = [];
+    }
+    Object.defineProperty(DroppingBuffer.prototype, "empty", {
+        get: function () {
+            return this._q.length === 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(DroppingBuffer.prototype, "full", {
+        get: function () {
+            return false;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    DroppingBuffer.prototype.add = function (value) {
+        if (this._q.length < this._c) {
+            this._q.push(value);
+        }
+    };
+    DroppingBuffer.prototype.remove = function () {
+        if (this.empty) {
+            throw new Error("Buffer empty");
+        }
+        return this._q.shift();
+    };
+    return DroppingBuffer;
+}());
+/** Makes sure promise-likes don’t cause unhandled rejections. */
+function swallow(value) {
+    if (value != null && typeof value.then === "function") {
+        value.then(NOOP, NOOP);
+    }
+}
+/*** REPEATER STATES ***/
+/** The following is an enumeration of all possible repeater states. These states are ordered, and a repeater may only advance to higher states. */
+/** The initial state of the repeater. */
+var Initial = 0;
+/** Repeaters advance to this state the first time the next method is called on the repeater. */
+var Started = 1;
+/** Repeaters advance to this state when the stop function is called. */
+var Stopped = 2;
+/** Repeaters advance to this state when there are no values left to be pulled from the repeater. */
+var Done = 3;
+/** Repeaters advance to this state if an error is thrown into the repeater. */
+var Rejected = 4;
+/** The maximum number of push or next operations which may exist on a single repeater. */
+var MAX_QUEUE_LENGTH = 1024;
+var NOOP = function () { };
+/** A helper function used to mimic the behavior of async generators where the final iteration is consumed. */
+function consumeExecution(r) {
+    var err = r.err;
+    var execution = Promise.resolve(r.execution).then(function (value) {
+        if (err != null) {
+            throw err;
+        }
+        return value;
+    });
+    r.err = undefined;
+    r.execution = execution.then(function () { return undefined; }, function () { return undefined; });
+    return r.pending === undefined ? execution : r.pending.then(function () { return execution; });
+}
+/** A helper function for building iterations from values. Promises are unwrapped, so that iterations never have their value property set to a promise. */
+function createIteration(r, value) {
+    var done = r.state >= Done;
+    return Promise.resolve(value).then(function (value) {
+        if (!done && r.state >= Rejected) {
+            return consumeExecution(r).then(function (value) { return ({
+                value: value,
+                done: true,
+            }); });
+        }
+        return { value: value, done: done };
+    });
+}
+/**
+ * This function is bound and passed to the executor as the stop argument.
+ *
+ * Advances state to Stopped.
+ */
+function stop(r, err) {
+    var e_1, _a;
+    if (r.state >= Stopped) {
+        return;
+    }
+    r.state = Stopped;
+    r.onnext();
+    r.onstop();
+    if (r.err == null) {
+        r.err = err;
+    }
+    if (r.pushes.length === 0 &&
+        (typeof r.buffer === "undefined" || r.buffer.empty)) {
+        finish(r);
+    }
+    else {
+        try {
+            for (var _b = __values(r.pushes), _d = _b.next(); !_d.done; _d = _b.next()) {
+                var push_1 = _d.value;
+                push_1.resolve();
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+    }
+}
+/**
+ * The difference between stopping a repeater vs finishing a repeater is that stopping a repeater allows next to continue to drain values from the push queue and buffer, while finishing a repeater will clear all pending values and end iteration immediately. Once, a repeater is finished, all iterations will have the done property set to true.
+ *
+ * Advances state to Done.
+ */
+function finish(r) {
+    var e_2, _a;
+    if (r.state >= Done) {
+        return;
+    }
+    if (r.state < Stopped) {
+        stop(r);
+    }
+    r.state = Done;
+    r.buffer = undefined;
+    try {
+        for (var _b = __values(r.nexts), _d = _b.next(); !_d.done; _d = _b.next()) {
+            var next = _d.value;
+            var execution = r.pending === undefined
+                ? consumeExecution(r)
+                : r.pending.then(function () { return consumeExecution(r); });
+            next.resolve(createIteration(r, execution));
+        }
+    }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+    finally {
+        try {
+            if (_d && !_d.done && (_a = _b.return)) _a.call(_b);
+        }
+        finally { if (e_2) throw e_2.error; }
+    }
+    r.pushes = [];
+    r.nexts = [];
+}
+/**
+ * Called when a promise passed to push rejects, or when a push call is unhandled.
+ *
+ * Advances state to Rejected.
+ */
+function reject(r) {
+    if (r.state >= Rejected) {
+        return;
+    }
+    if (r.state < Done) {
+        finish(r);
+    }
+    r.state = Rejected;
+}
+/** This function is bound and passed to the executor as the push argument. */
+function push(r, value) {
+    swallow(value);
+    if (r.pushes.length >= MAX_QUEUE_LENGTH) {
+        throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to push are allowed on a single repeater.");
+    }
+    else if (r.state >= Stopped) {
+        return Promise.resolve(undefined);
+    }
+    var valueP = r.pending === undefined
+        ? Promise.resolve(value)
+        : r.pending.then(function () { return value; });
+    valueP = valueP.catch(function (err) {
+        if (r.state < Stopped) {
+            r.err = err;
+        }
+        reject(r);
+        return undefined; // void :(
+    });
+    var nextP;
+    if (r.nexts.length) {
+        var next_1 = r.nexts.shift();
+        next_1.resolve(createIteration(r, valueP));
+        if (r.nexts.length) {
+            nextP = Promise.resolve(r.nexts[0].value);
+        }
+        else {
+            nextP = new Promise(function (resolve) { return (r.onnext = resolve); });
+        }
+    }
+    else if (typeof r.buffer !== "undefined" && !r.buffer.full) {
+        r.buffer.add(valueP);
+        nextP = Promise.resolve(undefined);
+    }
+    else {
+        nextP = new Promise(function (resolve) { return r.pushes.push({ resolve: resolve, value: valueP }); });
+    }
+    // If an error is thrown into the repeater via the next or throw methods, we give the repeater a chance to handle this by rejecting the promise returned from push. If the push call is not immediately handled we throw the next iteration of the repeater.
+    // To check that the promise returned from push is floating, we modify the then and catch methods of the returned promise so that they flip the floating flag. The push function actually does not return a promise, because modern engines do not call the then and catch methods on native promises. By making next a plain old javascript object, we ensure that the then and catch methods will be called.
+    var floating = true;
+    var next = {};
+    var unhandled = nextP.catch(function (err) {
+        if (floating) {
+            throw err;
+        }
+        return undefined; // void :(
+    });
+    next.then = function (onfulfilled, onrejected) {
+        floating = false;
+        return Promise.prototype.then.call(nextP, onfulfilled, onrejected);
+    };
+    next.catch = function (onrejected) {
+        floating = false;
+        return Promise.prototype.catch.call(nextP, onrejected);
+    };
+    next.finally = nextP.finally.bind(nextP);
+    r.pending = valueP
+        .then(function () { return unhandled; })
+        .catch(function (err) {
+        r.err = err;
+        reject(r);
+    });
+    return next;
+}
+/**
+ * Creates the stop callable promise which is passed to the executor
+ */
+function createStop(r) {
+    var stop1 = stop.bind(null, r);
+    var stopP = new Promise(function (resolve) { return (r.onstop = resolve); });
+    stop1.then = stopP.then.bind(stopP);
+    stop1.catch = stopP.catch.bind(stopP);
+    stop1.finally = stopP.finally.bind(stopP);
+    return stop1;
+}
+/**
+ * Calls the executor passed into the constructor. This function is called the first time the next method is called on the repeater.
+ *
+ * Advances state to Started.
+ */
+function execute(r) {
+    if (r.state >= Started) {
+        return;
+    }
+    r.state = Started;
+    var push1 = push.bind(null, r);
+    var stop1 = createStop(r);
+    r.execution = new Promise(function (resolve) { return resolve(r.executor(push1, stop1)); });
+    // TODO: We should consider stopping all repeaters when the executor settles.
+    r.execution.catch(function () { return stop(r); });
+}
+var records = new WeakMap();
+// NOTE: While repeaters implement and are assignable to the AsyncGenerator interface, and you can use the types interchangeably, we don’t use typescript’s implements syntax here because this would make supporting earlier versions of typescript trickier. This is because TypeScript version 3.6 changed the iterator types by adding the TReturn and TNext type parameters.
+var Repeater = /** @class */ (function () {
+    function Repeater(executor, buffer) {
+        records.set(this, {
+            executor: executor,
+            buffer: buffer,
+            err: undefined,
+            state: Initial,
+            pushes: [],
+            nexts: [],
+            pending: undefined,
+            execution: undefined,
+            onnext: NOOP,
+            onstop: NOOP,
+        });
+    }
+    Repeater.prototype.next = function (value) {
+        swallow(value);
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        if (r.nexts.length >= MAX_QUEUE_LENGTH) {
+            throw new RepeaterOverflowError("No more than " + MAX_QUEUE_LENGTH + " pending calls to next are allowed on a single repeater.");
+        }
+        if (r.state <= Initial) {
+            execute(r);
+        }
+        r.onnext(value);
+        if (typeof r.buffer !== "undefined" && !r.buffer.empty) {
+            var result = createIteration(r, r.buffer.remove());
+            if (r.pushes.length) {
+                var push_2 = r.pushes.shift();
+                r.buffer.add(push_2.value);
+                r.onnext = push_2.resolve;
+            }
+            return result;
+        }
+        else if (r.pushes.length) {
+            var push_3 = r.pushes.shift();
+            r.onnext = push_3.resolve;
+            return createIteration(r, push_3.value);
+        }
+        else if (r.state >= Stopped) {
+            finish(r);
+            return createIteration(r, consumeExecution(r));
+        }
+        return new Promise(function (resolve) { return r.nexts.push({ resolve: resolve, value: value }); });
+    };
+    Repeater.prototype.return = function (value) {
+        swallow(value);
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        finish(r);
+        // We override the execution because return should always return the value passed in.
+        r.execution = Promise.resolve(r.execution).then(function () { return value; });
+        return createIteration(r, consumeExecution(r));
+    };
+    Repeater.prototype.throw = function (err) {
+        var r = records.get(this);
+        if (r === undefined) {
+            throw new Error("WeakMap error");
+        }
+        if (r.state <= Initial ||
+            r.state >= Stopped ||
+            (typeof r.buffer !== "undefined" && !r.buffer.empty)) {
+            finish(r);
+            // If r.err is already set, that mean the repeater has already produced an error, so we throw that error rather than the error passed in, because doing so might be more informative for the caller.
+            if (r.err == null) {
+                r.err = err;
+            }
+            return createIteration(r, consumeExecution(r));
+        }
+        return this.next(Promise.reject(err));
+    };
+    Repeater.prototype[Symbol.asyncIterator] = function () {
+        return this;
+    };
+    // TODO: Remove these static methods from the class.
+    Repeater.race = race;
+    Repeater.merge = merge;
+    Repeater.zip = zip;
+    Repeater.latest = latest;
+    return Repeater;
+}());
+/*** COMBINATOR FUNCTIONS ***/
+// TODO: move these combinators to their own file.
+function getIterators(values, options) {
+    var e_3, _a;
+    var iters = [];
+    var _loop_1 = function (value) {
+        if (value != null && typeof value[Symbol.asyncIterator] === "function") {
+            iters.push(value[Symbol.asyncIterator]());
+        }
+        else if (value != null && typeof value[Symbol.iterator] === "function") {
+            iters.push(value[Symbol.iterator]());
+        }
+        else {
+            iters.push((function valueToAsyncIterator() {
+                return __asyncGenerator(this, arguments, function valueToAsyncIterator_1() {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!options.yieldValues) return [3 /*break*/, 3];
+                                return [4 /*yield*/, __await(value)];
+                            case 1: return [4 /*yield*/, _a.sent()];
+                            case 2:
+                                _a.sent();
+                                _a.label = 3;
+                            case 3:
+                                if (!options.returnValues) return [3 /*break*/, 5];
+                                return [4 /*yield*/, __await(value)];
+                            case 4: return [2 /*return*/, _a.sent()];
+                            case 5: return [2 /*return*/];
+                        }
+                    });
+                });
+            })());
+        }
+    };
+    try {
+        for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
+            var value = values_1_1.value;
+            _loop_1(value);
+        }
+    }
+    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    finally {
+        try {
+            if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
+        }
+        finally { if (e_3) throw e_3.error; }
+    }
+    return iters;
+}
+// NOTE: whenever you see any variables called `advance` or `advances`, know that it is a hack to get around the fact that `Promise.race` leaks memory. These variables are intended to be set to the resolve function of a promise which is constructed and awaited as an alternative to Promise.race. For more information, see this comment in the Node.js issue tracker: https://github.com/nodejs/node/issues/17469#issuecomment-685216777.
+function race(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { returnValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, stopped, finalIteration, iteration, i_1, _loop_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/];
+                    }
+                    stopped = false;
+                    stop.then(function () {
+                        advance();
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 5, 7]);
+                    iteration = void 0;
+                    i_1 = 0;
+                    _loop_2 = function () {
+                        var j, iters_1, iters_1_1, iter;
+                        var e_4, _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    j = i_1;
+                                    try {
+                                        for (iters_1 = (e_4 = void 0, __values(iters)), iters_1_1 = iters_1.next(); !iters_1_1.done; iters_1_1 = iters_1.next()) {
+                                            iter = iters_1_1.value;
+                                            Promise.resolve(iter.next()).then(function (iteration) {
+                                                if (iteration.done) {
+                                                    stop();
+                                                    if (finalIteration === undefined) {
+                                                        finalIteration = iteration;
+                                                    }
+                                                }
+                                                else if (i_1 === j) {
+                                                    // This iterator has won, advance i and resolve the promise.
+                                                    i_1++;
+                                                    advance(iteration);
+                                                }
+                                            }, function (err) { return stop(err); });
+                                        }
+                                    }
+                                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
+                                    finally {
+                                        try {
+                                            if (iters_1_1 && !iters_1_1.done && (_a = iters_1.return)) _a.call(iters_1);
+                                        }
+                                        finally { if (e_4) throw e_4.error; }
+                                    }
+                                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                                case 1:
+                                    iteration = _b.sent();
+                                    if (!(iteration !== undefined)) return [3 /*break*/, 3];
+                                    return [4 /*yield*/, push(iteration.value)];
+                                case 2:
+                                    _b.sent();
+                                    _b.label = 3;
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    };
+                    _a.label = 2;
+                case 2:
+                    if (!!stopped) return [3 /*break*/, 4];
+                    return [5 /*yield**/, _loop_2()];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 4: return [2 /*return*/, finalIteration && finalIteration.value];
+                case 5:
+                    stop();
+                    return [4 /*yield*/, Promise.race(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function merge(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { yieldValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advances, stopped, finalIteration;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/];
+                    }
+                    advances = [];
+                    stopped = false;
+                    stop.then(function () {
+                        var e_5, _a;
+                        stopped = true;
+                        try {
+                            for (var advances_1 = __values(advances), advances_1_1 = advances_1.next(); !advances_1_1.done; advances_1_1 = advances_1.next()) {
+                                var advance = advances_1_1.value;
+                                advance();
+                            }
+                        }
+                        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+                        finally {
+                            try {
+                                if (advances_1_1 && !advances_1_1.done && (_a = advances_1.return)) _a.call(advances_1);
+                            }
+                            finally { if (e_5) throw e_5.error; }
+                        }
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 3, 4]);
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var iteration, _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _b.trys.push([0, , 6, 9]);
+                                        _b.label = 1;
+                                    case 1:
+                                        if (!!stopped) return [3 /*break*/, 5];
+                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
+                                        return [4 /*yield*/, new Promise(function (resolve) {
+                                                advances[i] = resolve;
+                                            })];
+                                    case 2:
+                                        iteration = _b.sent();
+                                        if (!(iteration !== undefined)) return [3 /*break*/, 4];
+                                        if (iteration.done) {
+                                            finalIteration = iteration;
+                                            return [2 /*return*/];
+                                        }
+                                        return [4 /*yield*/, push(iteration.value)];
+                                    case 3:
+                                        _b.sent();
+                                        _b.label = 4;
+                                    case 4: return [3 /*break*/, 1];
+                                    case 5: return [3 /*break*/, 9];
+                                    case 6:
+                                        _a = iter.return;
+                                        if (!_a) return [3 /*break*/, 8];
+                                        return [4 /*yield*/, iter.return()];
+                                    case 7:
+                                        _a = (_b.sent());
+                                        _b.label = 8;
+                                    case 8:
+                                        return [7 /*endfinally*/];
+                                    case 9: return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, finalIteration && finalIteration.value];
+                case 3:
+                    stop();
+                    return [7 /*endfinally*/];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function zip(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, { returnValues: true });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, stopped, iterations, values;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/, []];
+                    }
+                    stopped = false;
+                    stop.then(function () {
+                        advance();
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 6, 8]);
+                    _a.label = 2;
+                case 2:
+                    if (!!stopped) return [3 /*break*/, 5];
+                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
+                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                case 3:
+                    iterations = _a.sent();
+                    if (iterations === undefined) {
+                        return [2 /*return*/];
+                    }
+                    values = iterations.map(function (iteration) { return iteration.value; });
+                    if (iterations.some(function (iteration) { return iteration.done; })) {
+                        return [2 /*return*/, values];
+                    }
+                    return [4 /*yield*/, push(values)];
+                case 4:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 5: return [3 /*break*/, 8];
+                case 6:
+                    stop();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 7:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 8: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+function latest(contenders) {
+    var _this = this;
+    var iters = getIterators(contenders, {
+        yieldValues: true,
+        returnValues: true,
+    });
+    return new Repeater(function (push, stop) { return __awaiter(_this, void 0, void 0, function () {
+        var advance, advances, stopped, iterations_1, values_2;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iters.length) {
+                        stop();
+                        return [2 /*return*/, []];
+                    }
+                    advances = [];
+                    stopped = false;
+                    stop.then(function () {
+                        var e_6, _a;
+                        advance();
+                        try {
+                            for (var advances_2 = __values(advances), advances_2_1 = advances_2.next(); !advances_2_1.done; advances_2_1 = advances_2.next()) {
+                                var advance1 = advances_2_1.value;
+                                advance1();
+                            }
+                        }
+                        catch (e_6_1) { e_6 = { error: e_6_1 }; }
+                        finally {
+                            try {
+                                if (advances_2_1 && !advances_2_1.done && (_a = advances_2.return)) _a.call(advances_2);
+                            }
+                            finally { if (e_6) throw e_6.error; }
+                        }
+                        stopped = true;
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, , 5, 7]);
+                    Promise.all(iters.map(function (iter) { return iter.next(); })).then(function (iterations) { return advance(iterations); }, function (err) { return stop(err); });
+                    return [4 /*yield*/, new Promise(function (resolve) { return (advance = resolve); })];
+                case 2:
+                    iterations_1 = _a.sent();
+                    if (iterations_1 === undefined) {
+                        return [2 /*return*/];
+                    }
+                    values_2 = iterations_1.map(function (iteration) { return iteration.value; });
+                    if (iterations_1.every(function (iteration) { return iteration.done; })) {
+                        return [2 /*return*/, values_2];
+                    }
+                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
+                    return [4 /*yield*/, push(values_2.slice())];
+                case 3:
+                    // We continuously yield and mutate the same values array so we shallow copy it each time it is pushed.
+                    _a.sent();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var iteration;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        if (iterations_1[i].done) {
+                                            return [2 /*return*/, iterations_1[i].value];
+                                        }
+                                        _a.label = 1;
+                                    case 1:
+                                        if (!!stopped) return [3 /*break*/, 4];
+                                        Promise.resolve(iter.next()).then(function (iteration) { return advances[i](iteration); }, function (err) { return stop(err); });
+                                        return [4 /*yield*/, new Promise(function (resolve) { return (advances[i] = resolve); })];
+                                    case 2:
+                                        iteration = _a.sent();
+                                        if (iteration === undefined) {
+                                            return [2 /*return*/, iterations_1[i].value];
+                                        }
+                                        else if (iteration.done) {
+                                            return [2 /*return*/, iteration.value];
+                                        }
+                                        values_2[i] = iteration.value;
+                                        return [4 /*yield*/, push(values_2.slice())];
+                                    case 3:
+                                        _a.sent();
+                                        return [3 /*break*/, 1];
+                                    case 4: return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 4: return [2 /*return*/, _a.sent()];
+                case 5:
+                    stop();
+                    return [4 /*yield*/, Promise.all(iters.map(function (iter) { return iter.return && iter.return(); }))];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); });
+}
+
+
+//# sourceMappingURL=repeater.js.map
+
 ;// CONCATENATED MODULE: ./node_modules/flatgeobuf/lib/mjs/config.js
 function config_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function config_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -46041,7 +48195,7 @@ function _streamSearch() {
           queue = [rootNodeRange];
           Logger.debug("starting stream search with queue: ".concat(queue, ", numItems: ").concat(numItems, ", nodeSize: ").concat(nodeSize, ", levelBounds: ").concat(levelBounds));
           _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop() {
-            var nodeRange, nodeIndex, isLeafNode, _levelBounds$nodeRang, levelBound, end, length, buffer, float64Array, uint32Array, _loop2, pos, _ret;
+            var nodeRange, nodeIndex, isLeafNode, _levelBounds$nodeRang, levelBound, end, length, buffer, float64Array, uint32Array, _loop2, _ret, pos;
             return _regeneratorRuntime().wrap(function _loop$(_context2) {
               while (1) switch (_context2.prev = _context2.next) {
                 case 0:
@@ -46068,25 +48222,25 @@ function _streamSearch() {
                             _context.next = 3;
                             break;
                           }
-                          return _context.abrupt("return", "continue");
+                          return _context.abrupt("return", 0);
                         case 3:
                           if (!(maxY < float64Array[nodePos + 1])) {
                             _context.next = 5;
                             break;
                           }
-                          return _context.abrupt("return", "continue");
+                          return _context.abrupt("return", 0);
                         case 5:
                           if (!(minX > float64Array[nodePos + 2])) {
                             _context.next = 7;
                             break;
                           }
-                          return _context.abrupt("return", "continue");
+                          return _context.abrupt("return", 0);
                         case 7:
                           if (!(minY > float64Array[nodePos + 3])) {
                             _context.next = 9;
                             break;
                           }
-                          return _context.abrupt("return", "continue");
+                          return _context.abrupt("return", 0);
                         case 9:
                           low32Offset = uint32Array[(nodePos << 1) + 8];
                           high32Offset = uint32Array[(nodePos << 1) + 9];
@@ -46109,7 +48263,7 @@ function _streamSearch() {
                           _context.next = 16;
                           return [offset, pos - leafNodesOffset, featureLength];
                         case 16:
-                          return _context.abrupt("return", "continue");
+                          return _context.abrupt("return", 0);
                         case 17:
                           extraRequestThresholdNodes = config_Config.global.extraRequestThreshold() / NODE_ITEM_LEN;
                           nearestNodeRange = queue[queue.length - 1];
@@ -46119,7 +48273,7 @@ function _streamSearch() {
                           }
                           Logger.debug("Merging \"nodeRange\" request into existing range: ".concat(nearestNodeRange, ", newOffset: ").concat(nearestNodeRange.endNode(), " -> ").concat(offset));
                           nearestNodeRange.extendEndNodeToNewOffset(offset);
-                          return _context.abrupt("return", "continue");
+                          return _context.abrupt("return", 0);
                         case 23:
                           newNodeRange = function () {
                             var level = nodeRange.level() - 1;
@@ -46147,7 +48301,7 @@ function _streamSearch() {
                   return _context2.delegateYield(_loop2(pos), "t0", 16);
                 case 16:
                   _ret = _context2.t0;
-                  if (!(_ret === "continue")) {
+                  if (!(_ret === 0)) {
                     _context2.next = 19;
                     break;
                   }
@@ -46334,7 +48488,7 @@ var HttpReader = /*#__PURE__*/function () {
               promises = batches.flatMap(function (batch) {
                 return _this.readFeatureBatch(batch);
               });
-              return _context2.delegateYield(_asyncGeneratorDelegate(_asyncIterator(repeater/* Repeater */.ZN.merge(promises)), http_reader_awaitAsyncGenerator), "t1", 46);
+              return _context2.delegateYield(_asyncGeneratorDelegate(_asyncIterator(Repeater.merge(promises)), http_reader_awaitAsyncGenerator), "t1", 46);
             case 46:
             case "end":
               return _context2.stop();
@@ -46430,7 +48584,7 @@ var HttpReader = /*#__PURE__*/function () {
               bytes = new Uint8Array(byteBuffer);
               bytesAligned = new Uint8Array(featureLength + SIZE_PREFIX_LEN);
               bytesAligned.set(bytes, SIZE_PREFIX_LEN);
-              bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
+              bb = new byte_buffer_ByteBuffer(bytesAligned);
               bb.setPosition(SIZE_PREFIX_LEN);
               return _context4.abrupt("return", feature_Feature.getRootAsFeature(bb));
             case 14:
@@ -46500,7 +48654,7 @@ var HttpReader = /*#__PURE__*/function () {
               return headerClient.getRange(12, headerLength, minReqLength, 'header');
             case 24:
               bytes = _context5.sent;
-              bb = new js_flatbuffers/* ByteBuffer */.cZ(new Uint8Array(bytes));
+              bb = new byte_buffer_ByteBuffer(new Uint8Array(bytes));
               header = fromByteBuffer(bb);
               indexLength = calcTreeSize(header.featuresCount, header.indexNodeSize);
               Logger.debug('completed: opening http reader');
@@ -46728,7 +48882,7 @@ function deserialize(bytes, fromFeature, headerMetaFn) {
   if (!bytes.subarray(0, 3).every(function (v, i) {
     return constants_magicbytes[i] === v;
   })) throw new Error('Not a FlatGeobuf file');
-  var bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+  var bb = new byte_buffer_ByteBuffer(bytes);
   var headerLength = bb.readUint32(constants_magicbytes.length);
   bb.setPosition(constants_magicbytes.length + SIZE_PREFIX_LEN);
   var headerMeta = fromByteBuffer(bb);
@@ -46756,7 +48910,7 @@ function _deserializeStream() {
     return featurecollection_regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          reader = slice_source(stream);
+          reader = slice_source_slice(stream);
           read = /*#__PURE__*/function () {
             var _ref = featurecollection_asyncToGenerator( /*#__PURE__*/featurecollection_regeneratorRuntime().mark(function _callee(size) {
               return featurecollection_regeneratorRuntime().wrap(function _callee$(_context) {
@@ -46796,7 +48950,7 @@ function _deserializeStream() {
         case 12:
           _context2.t3 = _context2.sent;
           bytes = new _context2.t2(_context2.t3);
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          bb = new byte_buffer_ByteBuffer(bytes);
           headerLength = bb.readUint32(0);
           _context2.t4 = Uint8Array;
           _context2.next = 19;
@@ -46804,7 +48958,7 @@ function _deserializeStream() {
         case 19:
           _context2.t5 = _context2.sent;
           bytes = new _context2.t4(_context2.t5);
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          bb = new byte_buffer_ByteBuffer(bytes);
           headerMeta = fromByteBuffer(bb);
           if (headerMetaFn) headerMetaFn(headerMeta);
           indexNodeSize = headerMeta.indexNodeSize, featuresCount = headerMeta.featuresCount;
@@ -46927,7 +49081,7 @@ function _readFeature() {
           }
           return _context4.abrupt("return");
         case 7:
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytes);
+          bb = new byte_buffer_ByteBuffer(bytes);
           featureLength = bb.readUint32(0);
           _context4.t2 = Uint8Array;
           _context4.next = 12;
@@ -46937,7 +49091,7 @@ function _readFeature() {
           bytes = new _context4.t2(_context4.t3);
           bytesAligned = new Uint8Array(featureLength + 4);
           bytesAligned.set(bytes, 4);
-          bb = new js_flatbuffers/* ByteBuffer */.cZ(bytesAligned);
+          bb = new byte_buffer_ByteBuffer(bytesAligned);
           bb.setPosition(SIZE_PREFIX_LEN);
           feature = feature_Feature.getRootAsFeature(bb);
           return _context4.abrupt("return", fromFeature(feature, headerMeta));
@@ -47828,7 +49982,7 @@ class SecurityManager {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            withCredentials: true
+            withCredentials: false
         };
         return FetchRequest.post(url, loginInfo, requestOptions).then(function(response) {
             return response.json();
@@ -47870,13 +50024,8 @@ class SecurityManager {
      * @param {boolean} [options.isNewTab=true] - 不同域时是否在新窗口打开登录页面。
      * @returns {Promise} 包含 iManager 登录请求结果的 Promise 对象。
      */
-    static loginManager(url, loginInfoParams, options) {
-        if (!Util_Util.isInTheSameDomain(url)) {
-            var isNewTab = options ? options.isNewTab : true;
-            this._open(url, isNewTab);
-            return;
-        }
-        var requestUrl = Util_Util.urlPathAppend(url, 'icloud/security/tokens');
+    static loginManager(url, loginInfoParams) {
+        var requestUrl = Util_Util.urlPathAppend(url, '/security/tokens');
         var params = loginInfoParams || {};
         var loginInfo = {
             username: params.userName && params.userName.toString(),
@@ -47886,15 +50035,15 @@ class SecurityManager {
         var requestOptions = {
             headers: {
                 Accept: '*/*',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             }
         };
         var me = this;
         return FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function(response) {
-            response.text().then(function(result) {
-                me.imanagerToken = result;
-                return result;
-            });
+          return response.text();
+        }).then(function(result) {
+          me.imanagerToken = result;
+          return result;
         });
     }
 
@@ -48028,7 +50177,6 @@ SecurityManager.ONLINE = 'https://www.supermapol.com';
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -48111,10 +50259,7 @@ class CommonServiceBase {
             me.totalTimes = null;
         }
         me.url = null;
-        me._processSuccess = null;
-        me._processFailed = null;
         me.isInTheSameDomain = null;
-
         me.EVENT_TYPES = null;
         if (me.events) {
             me.events.destroy();
@@ -48126,7 +50271,7 @@ class CommonServiceBase {
     }
 
     /**
-     * @function  CommonServiceBase.prototype.request
+     * @function CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
@@ -48142,7 +50287,15 @@ class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
-        const format = options.scope.format;
+        let format = options.scope.format;
+        // 兼容 callback 未传，dataFormat 传入的情况
+        if (typeof options.success === 'string') {
+          options.scope.format = options.success;
+          format = options.success;
+          options.success = null;
+          options.failure = null;
+        }
+       
         if (format && !this.supportDataFormat(format)) {
           throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
         }
@@ -48163,47 +50316,13 @@ class CommonServiceBase {
 
         me.calculatePollingTimes();
         options.scope = me;
-        var success = options.scope? options.success.bind(options.scope) : options.success;
-        var failure = options.scope? options.failure.bind(options.scope) : options.failure;
-        options.success = me.getUrlCompleted(success, options);
-        options.failure = me.getUrlFailed(failure, options);
-        me._commit(options);
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlCompleted
-     * @description 请求成功后执行此方法。
-     * @param {Object} cb - 成功回调函数。
-     * @param {Object} options - 请求参数对象。
-     * @private
-     */
-    getUrlCompleted(cb, options) {
-      // @param {Object} result - 服务器返回的结果对象。
-      return function(result) {
-        cb && cb(result, options);
-      }
-    }
-
-    /**
-     * @function CommonServiceBase.prototype.getUrlFailed
-     * @description 请求失败后执行此方法。
-
-     * @param {Object} cb - 失败回调函数。
-     * @param {Object} options - 请求参数对象。
-     * @private
-     */
-    getUrlFailed(cb, options) {
-      const me = this;
-      // @param {Object} result - 服务器返回的结果对象。
-      return function(result) {
         if (me.totalTimes > 0) {
           me.totalTimes--;
-          me.ajaxPolling(options);
-        } else {
-          cb && cb(result, options);
+          return me.ajaxPolling(options);
         }
-      }
-  }
+        return me._commit(options);
+    }
+
 
     /**
      *
@@ -48221,7 +50340,7 @@ class CommonServiceBase {
         url = url.replace(re, re.exec(me.url)[0]);
         options.url = url;
         options.isInTheSameDomain = Util_Util.isInTheSameDomain(url);
-        me._commit(options);
+        return me._commit(options);
     }
 
     /**
@@ -48262,14 +50381,41 @@ class CommonServiceBase {
     }
 
     /**
-     * @function CommonServiceBase.prototype.serviceProcessCompleted
-     * @description 状态完成，执行此方法。
+     * @function CommonServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
-     * @param {Object} options - 请求参数对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      * @private
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         result = Util_Util.transformResult(result);
+        return { result, options };
+    }
+
+    /**
+     * @function CommonServiceBase.prototype.transformErrorResult
+     * @description 状态失败时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
+     */
+    transformErrorResult(result, options) {
+        result = Util_Util.transformResult(result);
+        let error = result.error || result;
+        return { error, options };
+    }
+
+    /**
+    * @function CommonServiceBase.prototype.serviceProcessCompleted
+    * @description 状态完成，执行此方法。
+    * @param {Object} result - 服务器返回的结果对象。
+    * @param {Object} options - 请求参数对象。
+    * @private
+    */
+    serviceProcessCompleted(result, options) {
+        result = this.transformResult(result).result;
         this.events.triggerEvent('processCompleted', {
             result: result,
             options: options
@@ -48284,12 +50430,12 @@ class CommonServiceBase {
      * @private
      */
     serviceProcessFailed(result, options) {
-        result = Util_Util.transformResult(result);
-        let error = result.error || result;
-        this.events.triggerEvent('processFailed', {
-            error: error,
-            options: options
-        });
+      result = this.transformErrorResult(result).error;
+      let error = result.error || result;
+      this.events.triggerEvent('processFailed', {
+          error: error,
+          options: options
+      });
     }
 
     _returnContent(options) {
@@ -48325,7 +50471,7 @@ class CommonServiceBase {
                 options.params = options.data;
             }
         }
-        FetchRequest.commit(options.method, options.url, options.params, {
+        return FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
             withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
@@ -48371,14 +50517,33 @@ class CommonServiceBase {
                 return { error: e };
             })
             .then((requestResult) => {
+                let response = {
+                  object: this
+                };
                 if (requestResult.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(requestResult);
+                  const type = 'processFailed';
+                  // 兼容服务在构造函数中使用 eventListeners 的老用法
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var failure = options.failure && (options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure);
+                    failure ? failure(requestResult, options) : this.serviceProcessFailed(requestResult, options);
+                  } else {
+                    response = {...response, ...this.transformErrorResult(requestResult, options)};
+                    response.type = type;
+                    options.failure && options.failure(response);
+                  }
                 } else {
+                  const type = 'processCompleted';
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var success = options.success && (options.scope ? FunctionExt.bind(options.success, options.scope) : options.success);
+                    success ? success(requestResult, options) : this.serviceProcessCompleted(requestResult, options);
+                  } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(requestResult);
+                    response = {...response, ...this.transformResult(requestResult, options)};
+                    response.type = type;
+                    options.success && options.success(response);
+                  }
                 }
+                return response;
             });
     }
 }
@@ -48397,7 +50562,6 @@ class CommonServiceBase {
  * @param {Object} serviceResult.result 服务器返回结果。
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
- * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
  * @param {Object} serviceResult.options 请求参数。
  */
 
@@ -48426,7 +50590,6 @@ class KnowledgeGraphService_KnowledgeGraphService extends CommonServiceBase {
   constructor(url, options) {
     super(url, options);
     this.options = options || {};
-    this.eventCount = 0;
     this.CLASS_NAME = 'SuperMap.KnowledgeGraphService';
   }
 
@@ -48442,11 +50605,11 @@ class KnowledgeGraphService_KnowledgeGraphService extends CommonServiceBase {
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} params - 查询条件。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
   query(params, callback) {
     const paramKey = 'cypherQuery';
-    const url = Util_Util.urlAppend(this.url + '/query.json', `${paramKey}=${params}`);
+    const url = Util_Util.urlAppend(this.url + '/query.json', `${paramKey}=${encodeURI(params)}`);
     this.processAsync({ url, method: 'GET', callback });
   }
 
@@ -48475,7 +50638,7 @@ class KnowledgeGraphService_KnowledgeGraphService extends CommonServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
   getGraphMaps(callback) {
     const url = this.url + '/graphmaps.json';
@@ -48614,47 +50777,22 @@ class KnowledgeGraphService_KnowledgeGraphService extends CommonServiceBase {
    * @description 负责将客户端的动态分段服务参数传递到服务端。
    * @param {string} url - 服务地址
    * @param {Object} params - 参数
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
 
   processAsync({ url, params, method, callback }) {
-    let eventId = ++this.eventCount;
-    let eventListeners = {
-      scope: this,
-      processCompleted: function (result) {
-        if (eventId === result.result.eventId && callback) {
-          delete result.result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      },
-      processFailed: function (result) {
-        if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-          delete result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      }
-    };
-    this.events.on(eventListeners);
     const requestParams = {
       method,
       url,
       scope: this,
-      success(result, options) {
-        result.eventId = eventId;
-        this.serviceProcessCompleted(result, options);
-      },
-      failure(result, options) {
-        result.eventId = eventId;
-        this.serviceProcessFailed(result, options);
-      }
+      success: callback,
+      failure: callback
     };
     if (params) {
       requestParams.params = params;
     }
-    this.request(requestParams);
+    return this.request(requestParams);
   }
   /**
    * @private
@@ -48735,16 +50873,18 @@ class KnowledgeGraphService extends ServiceBase {
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} cypherQuery - 查询条件。
-   * @param {RequestCallback} callback - 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   query(cypherQuery, callback) {
-    this._knowledgeGraphService.query(cypherQuery, callback);
+    return this._knowledgeGraphService.query(cypherQuery, callback);
   }
 
   // /**
   //  * @function KnowledgeGraphService.prototype.getMetaData
   //  * @description 获取元信息（展示所有实体类型和关系类型。）
-  //  * @param {RequestCallback} callback 回调函数。
+  //  * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+  //  * @returns {Promise} Promise 对象。
   //  */
   // getMetaData(callback) {
   //   this._knowledgeGraphService.getMetaData(callback);
@@ -48753,20 +50893,22 @@ class KnowledgeGraphService extends ServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getGraphMaps(callback) {
-    this._knowledgeGraphService.getGraphMaps(callback);
+    return this._knowledgeGraphService.getGraphMaps(callback);
   }
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMap
    * @description 获取图谱图序列化数据。
    * @param {string} params 图谱名称。
-   * @param {RequestCallback} callback 回调函数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getGraphMap(params, callback) {
-    this._knowledgeGraphService.getGraphMap(params, callback);
+    return this._knowledgeGraphService.getGraphMap(params, callback);
   }
 
   /**
@@ -48863,16 +51005,31 @@ function nodeFromGraphMap(entity, style, captionField) {
 function edgeFromGraphMap(entity, style) {
   const { start, end, id, type, properties } = entity;
   const styleData = style ? getEdgeStyle(entity, style) : {};
-  return {
+  const edge = {
     source: start + '',
     target: end + '',
     edgeId: id + '',
     label: type,
-    labelCfg: {
-      style: styleData
-    },
+    style: {},
+    labelCfg: {},
     properties
   };
+  if (styleData.stroke) {
+    edge.style.stroke = styleData.stroke;
+    edge.style.endArrow = {
+      path: 'M 0,0 L 4,2 L 4,-2 Z',
+      fill: styleData.stroke
+    };
+    delete styleData.stroke;
+  }
+  if (styleData.lineWidth) {
+    edge.style.lineWidth = styleData.lineWidth;
+    delete styleData.lineWidth;
+  }
+  edge.labelCfg = {
+    style: styleData
+  };
+  return edge;
 }
 
 function getEdgeStyle(entity, style) {
@@ -48882,15 +51039,16 @@ function getEdgeStyle(entity, style) {
   const { id, type } = entity;
   const data = style.filter((item) => item.type === 'relationShip');
   for (let i = 0; i < data.length; i++) {
-    const { textColor, font, relationTypes, relationIds } = data[i];
+    const { color, width, textColor, font, relationTypes, relationIds } = data[i];
     const ids = JSON.parse(relationIds || '[]');
     const types = JSON.parse(relationTypes || '[]');
     if (ids.includes(id) || types.includes(type)) {
       return {
-        fontSize: compileFontSize(font.fontSize),
-        fontFamily: font.fontName,
+        stroke: color,
+        lineWidth: Number(width) * 1.4,
+        fontSize: font.fontSize,
         fill: textColor,
-
+        ...formatFontName(font.fontName),
         ...formatFontStyle(font.fontStyle)
       };
     }
@@ -48911,11 +51069,10 @@ function getNodeStyle(entity, style) {
     if (ids.includes(id) || types.includes(labels[0])) {
       return {
         fillColor: color,
-        fontSize: compileFontSize(font.fontSize),
-        fontFamily: font.fontName,
+        fontSize: font.fontSize,
         fill: textColor,
         size: size,
-        // stroke: color,
+        ...formatFontName(font.fontName),
         ...formatFontStyle(font.fontStyle)
       };
     }
@@ -48931,7 +51088,8 @@ function getNodeLabel(entity, captionField) {
       const { name, entityTypes, entityIds } = data[i];
       const ids = JSON.parse(entityIds || '[]');
       const types = JSON.parse(entityTypes || '[]');
-      if (ids.includes(id) || types.includes(labels[0])) {
+      const labelStr = labels && labels.join('&');
+      if (ids.includes(id) || types.includes(labelStr)) {
         return properties[name] || '';
       }
     }
@@ -48940,18 +51098,30 @@ function getNodeLabel(entity, captionField) {
 }
 
 function formatFontStyle(fontStyle) {
-  if (fontStyle === 1) {
-    return { fontWeight: 600 };
+  //TODO: fontStyle为0是plain
+  if (fontStyle === 1 || fontStyle === 'bold') {
+    return { fontWeight: 'bold' };
   }
-  if (fontStyle === 2) {
+  if (fontStyle === 2 || fontStyle === 'italic') {
     return { fontStyle: 'italic' };
+  }
+  if (fontStyle === 'bolditalic') {
+    return { fontWeight: 'bold', fontStyle: 'italic' };
   }
   return {};
 }
 
-function compileFontSize(fontSize) {
-  return fontSize * 0.8;
+function formatFontName(fontName) {
+  if (!fontName) {
+    return {};
+  }
+  const arrs = fontName.split('.');
+  return {
+    fontFamily: arrs[0],
+    ...formatFontStyle(arrs[1])
+  };
 }
+
 // 处理graphMap数据的展开 折叠 隐藏的实体数据
 function transformExpandCollapseHiddenData(graphMap) {
   const { expand, collapse, hidden } = graphMap.dataContent;
@@ -49043,12 +51213,10 @@ class G6Render {
             if (this.isCollpased(model.id)) {
               return `<ul>
               <li id='expand'>展开</li>
-              <li id='hide'>隐藏</li>
             </ul>`;
             } else {
               return `<ul>
               <li id='collapse'>折叠</li>
-              <li id='hide'>隐藏</li>
             </ul>`;
             }
           }
@@ -49100,7 +51268,8 @@ class G6Render {
       type: 'line',
       style: {
         endArrow: {
-          path: 'M 0,0 L 2,1 L 2,-1 Z'
+          path: 'M 0,0 L 4,2 L 4,-2 Z',
+          fill: '#e0e0e0'
         },
         lineWidth: 0.5
       },
@@ -49124,9 +51293,10 @@ class G6Render {
     };
     const defaultEdgeHighlightStyle = {
       stroke: hoverColor,
-      lineWidth: 2,
+      shadowColor: hoverColor,
+      shadowBlur: 5,
       endArrow: {
-        path: 'M 0,0 L 2,1 L 2,-1 Z',
+        path: 'M 0,0 L 4,2 L 4,-2 Z',
         fill: hoverColor
       }
     };
@@ -49186,7 +51356,7 @@ class G6Render {
   }
 
   /**
-   * @function KnowledgeGraph.prototype.changeSize
+   * @function G6Render.prototype.changeSize
    * @description 当源数据中现有节点/边 的数据项发生配置的变更时，根据新数据刷新视图。
    * @param {number} width - 宽度。
    * @param {number} height - 高度。
@@ -50585,7 +52755,7 @@ class KnowledgeGraph {
   }
 
   /**
-   * @function KnowledgeGraph.prototype.showItem
+   * @function KnowledgeGraph.prototype.hideItem
    * @description 隐藏指定元素。若 item 为节点，则相关边也会随之隐藏。而 hide() 则将只隐藏自身。
    * @param {string|Object} item - 元素 ID 或元素实例。
    * @param {boolean} [stack] -操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
@@ -51224,13 +53394,11 @@ class SingleSymbolRender {
 
     /**
      * 符号转换成图层
-     * @param {*} layer
-     * @param {*} before
+     * @param {object} layer
+     * @param {object} symbol
+     * @param {string | undefined} before
      */
     addLayer(layer, symbol, before) {
-        if(layer.layout && layer.layout.visibility === 'none') {
-            Object.assign(layer.layout, {visibility: 'visible'});
-        }
         layer.paint && Object.assign(symbol.paint || {}, layer.paint);
         layer.layout && Object.assign(symbol.layout || {}, layer.layout);
         this.map.addLayerBySymbolBak({ ...layer, ...symbol }, before);
@@ -51265,7 +53433,7 @@ class CompositeSymbolRender {
      */
     addLayer(layer, symbol, before) {
         symbol.forEach((style) => {
-            const id = Util_Util.createUniqueID(`${layer.id}_`);
+            const id = Util_Util.createUniqueID(`${layer.id}_compositeLayer_`);
             this.singleSymbol.addLayer({ ...layer, id }, style, before);
             this.addLayerId(layer.id, id);
         })
@@ -51328,6 +53496,7 @@ class SymbolManager {
     }
 
     addSymbol(id, symbol) {
+        symbol.layout && delete symbol.layout.visibility;
         this.symbols[id] = symbol;
     }
 
@@ -51602,7 +53771,7 @@ class SymbolHandler {
         if (typeof layer.symbol === 'string') {
             const id = layer.symbol;
             if (id) {
-                const symbol = this.symbolManager.getSymbol(id);
+                const symbol = this.getSymbol(id);
                 if (!symbol) {
                     return this.map.fire('error', {
                         error: new Error(`Symbol "${id}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
@@ -51651,6 +53820,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(2);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -51664,8 +53834,16 @@ class SymbolHandler {
                         ]
                     ], symbol: r
                 });
+                defaultFilter.push([
+                    "!=",
+                    layer.symbol[1][1],
+                    expression[index - 1]
+                ]);
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
@@ -51682,6 +53860,7 @@ class SymbolHandler {
         if (layer.filter) {
             filter.push(layer.filter);
         }
+        const defaultFilter = [];
         const expression = layer.symbol.slice(1);
         expression.forEach((r, index) => {
             if (index % 2 === 1) {
@@ -51691,8 +53870,12 @@ class SymbolHandler {
                         expression[index - 1]
                     ], symbol: r
                 });
+                defaultFilter.push(['!', expression[index - 1]])
             } else if (index === expression.length - 1) {
-                layers.unshift({ ...layer, symbol: r });
+                layers.unshift({ ...layer, "filter": [
+                    ...filter,
+                    ...defaultFilter
+                ], symbol: r });
             }
         });
         return layers;
@@ -51704,9 +53887,6 @@ class SymbolHandler {
      * @param {string} before
      */
     addExpressionLayer(layer, before) {
-        // symbol支持表达式的话，paint、layout不生效
-        delete layer.paint;
-        delete layer.layout;
         const rules = {
             match: this.getMatchLayers,
             case: this.getCaseLayers
@@ -51719,7 +53899,7 @@ class SymbolHandler {
             });
         }
         layers.forEach((l) => {
-            l.id = Util_Util.createUniqueID(`${layer.id}_`);
+            l.id = Util_Util.createUniqueID(`${layer.id}_compositeLayer_`);
             this.compositeSymbolRender.addLayerId(layer.id, l.id);
             this.addLayer(l, before);
         });
@@ -51756,7 +53936,7 @@ class SymbolHandler {
      * @param {object} symbol
      */
     addSymbol(id, symbol) {
-        if (this.symbolManager.getSymbol(id)) {
+        if (this.getSymbol(id)) {
             return this.map.fire('error', {
                 error: new Error('An symbol with this name already exists.')
             });
@@ -51784,7 +53964,7 @@ class SymbolHandler {
      * @param {string} layerId
      * @return {string | array} symbol
      */
-    getSymbol(layerId) {
+    getLayerSymbol(layerId) {
         return this._layerSymbols[layerId];
     }
 
@@ -51808,7 +53988,7 @@ class SymbolHandler {
      * 通过symbolId获取symbol内容
      * @param {string} symbolId
      */
-    getSymbolInfo(symbolId) {
+    getSymbol(symbolId) {
         return this.symbolManager.getSymbol(symbolId);
     }
 
@@ -51846,7 +54026,7 @@ class SymbolHandler {
      */
     getLayer(layerId) {
         const layer = this.map.getLayerBySymbolBak(layerId);
-        const symbol = this.getSymbol(layerId);
+        const symbol = this.getLayerSymbol(layerId);
         if (layer) {
             return symbol ? { ...layer, symbol } : layer;
         } else {
@@ -51882,9 +54062,9 @@ class SymbolHandler {
             style.layers = style.layers.reduce((pre, layer) => {
                 const compositeId = this.getLayerId(layer.id);
                 if (compositeId) {
-                    !pre.find(l => l.id === compositeId) && pre.push({ ...layer, symbol: this.getSymbol(compositeId), id: compositeId })
-                } else if (this.getSymbol(layer.id)) {
-                    pre.push({ ...layer, symbol: this.getSymbol(layer.id) })
+                    !pre.find(l => l.id === compositeId) && pre.push({ ...layer, symbol: this.getLayerSymbol(compositeId), id: compositeId })
+                } else if (this.getLayerSymbol(layer.id)) {
+                    pre.push({ ...layer, symbol: this.getLayerSymbol(layer.id) })
                 } else {
                     pre.push(layer);
                 }
@@ -51927,12 +54107,12 @@ class SymbolHandler {
      * @param {object} options
      */
     setFilter(layerId, filter, options) {
-        const symbol = this.getSymbol(layerId);
+        const symbol = this.getLayerSymbol(layerId);
         if (isMapboxExpression(symbol)) {
             // 如果 symbol 是数据驱动，filter需要重新计算
             const realLayerId = this.getFirstLayerId(layerId);
             this.map.style.setFilter(realLayerId, filter, options);
-            const symbol = this.getSymbol(layerId);
+            const symbol = this.getLayerSymbol(layerId);
             this.setSymbol(layerId, symbol);
             return;
         }
@@ -52045,7 +54225,7 @@ class SymbolHandler {
      */
     updateSymbol(symbolId, symbol) {
         // symbol不存在
-        if (!this.symbolManager.getSymbol(symbolId)) {
+        if (!this.getSymbol(symbolId)) {
             return this.map.fire('error', {
                 error: new Error(`Symbol "${symbolId}" could not be loaded. Please make sure you have added the symbol with map.addSymbol().`)
             });
@@ -52069,7 +54249,7 @@ class SymbolHandler {
      * @param {any} value
      */
     setSymbolProperty(symbolId, symbolIndex, name, value) {
-        const symbol = this.symbolManager.getSymbol(symbolId);
+        const symbol = this.getSymbol(symbolId);
         // symbol不存在
         if (!symbol) {
             return this.map.fire('error', {
@@ -52113,7 +54293,7 @@ class SymbolHandler {
      * @returns {any}
      */
     getSymbolProperty(symbolId, symbolIndex, name) {
-        const symbol = this.symbolManager.getSymbol(symbolId);
+        const symbol = this.getSymbol(symbolId);
         // symbol不存在
         if (!symbol) {
             this.map.fire('error', {
@@ -52140,6 +54320,7 @@ class SymbolHandler {
 
 
 
+
 /**
  * @function MapExtendSymbol
  * @description  扩展了 mapboxgl.Map 对图层相关的操作。
@@ -52161,8 +54342,15 @@ function MapExtendSymbol(){
   if ((external_mapboxgl_default()).Map.prototype.addLayerBySymbolBak === undefined) {
     (external_mapboxgl_default()).Map.prototype.addLayerBySymbolBak = (external_mapboxgl_default()).Map.prototype.addLayer;
     (external_mapboxgl_default()).Map.prototype.addLayer = function (layer, before) {
+      const symbolHandler = getSymbolHandler(this);
+      if(symbolHandler.getLayerIds(layer.id).length > 0) {
+        this.fire('error', {
+          error: new Error('A layer with this id already exists.')
+        });
+        return;
+      }
       if (layer.symbol) {
-        getSymbolHandler(this).addLayer(layer, before);
+        symbolHandler.addLayer(layer, before);
         return this;
       }
       this.addLayerBySymbolBak(layer, before);
@@ -52234,32 +54422,33 @@ function MapExtendSymbol(){
       });
       return this;
     }
-  }
+  } 
 
   /**
    * 加载Web符号
-   * @param {string} id
+   * @param {string | string[]} id
    * @param {function} callback
    */
   (external_mapboxgl_default()).Map.prototype.loadSymbol = async function (id, callback) {
     if (typeof id === 'string') {
-      let symbolInfo = getSymbolHandler(this).getSymbolInfo(id);
-      if (!symbolInfo) {
-        const symbolResult = await getSymbol(id, this);
-        if (!symbolResult) {
-          callback({
-            message: 'This symbol is not exists.'
-          });
-          return;
-        }
-        const { value, image } = symbolResult;
-        symbolInfo = value;
-        image && getSymbolHandler(this).addSymbolImageToMap(value, image);
+      const symbolInfo = await loadSymbol(id, this);
+      let message = null;
+      if(!symbolInfo) {
+        message = `Symbol ${id} is not exists`;
       }
-      callback(null, symbolInfo);
+      callback(message, symbolInfo);
+    } else if (Util_Util.isArray(id)) {
+      const promises = id.map(i => loadSymbol(i, this));
+      const symbolInfo = await Promise.all(promises);
+      let message = null;
+      const errorIds = id.filter((_i, index) => !symbolInfo[index]);
+      if(errorIds.length > 0){
+        message = `Symbol ${errorIds.join(',')} is not exists`;
+      }
+      callback(message, symbolInfo);
     } else {
       callback({
-        message: 'Symbol id must be a string.'
+        message: 'Symbol id must be a string or string[].'
       });
     }
   };
@@ -52274,6 +54463,14 @@ function MapExtendSymbol(){
   };
 
   /**
+   * 获取符号信息
+   * @param {string} id
+   */
+  (external_mapboxgl_default()).Map.prototype.getSymbol = function (id) {
+    return getSymbolHandler(this).getSymbol(id);
+  };
+
+  /**
    * 判断符号是否存在
    * @param {string} id
    */
@@ -52285,7 +54482,7 @@ function MapExtendSymbol(){
       return false;
     }
 
-    return !!getSymbolHandler(this).getSymbolInfo(id);
+    return !!this.getSymbol(id);
   };
 
   /**
@@ -52380,6 +54577,42 @@ function MapExtendSymbol(){
     }
     return getSymbolHandler(this).getLayoutProperty(layerId, name);
   };
+  
+  if ((external_mapboxgl_default()).Map.prototype.onBak === undefined) {
+    (external_mapboxgl_default()).Map.prototype.onBak = (external_mapboxgl_default()).Map.prototype.on;
+    (external_mapboxgl_default()).Map.prototype.on = function (type, layerId, listener) {
+      if (listener === undefined || this.style.getLayer(layerId)) {
+        return this.onBak(type, layerId, listener);
+      }
+      const layerIds = getSymbolHandler(this).getLayerIds(layerId);
+      layerIds.forEach(id => this.onBak(type, id, listener));
+      return this;
+    };
+  }
+  
+  if ((external_mapboxgl_default()).Map.prototype.onceBak === undefined) {
+    (external_mapboxgl_default()).Map.prototype.onceBak = (external_mapboxgl_default()).Map.prototype.once;
+    (external_mapboxgl_default()).Map.prototype.once = function (type, layerId, listener) {
+      if (listener === undefined || this.style.getLayer(layerId)) {
+        return this.onceBak(type, layerId, listener);
+      }
+      const layerIds = getSymbolHandler(this).getLayerIds(layerId);
+      layerIds.forEach(id => this.onceBak(type, id, listener));
+      return this;
+    };
+  }
+  
+  if ((external_mapboxgl_default()).Map.prototype.offBak === undefined) {
+    (external_mapboxgl_default()).Map.prototype.offBak = (external_mapboxgl_default()).Map.prototype.off;
+    (external_mapboxgl_default()).Map.prototype.off = function (type, layerId, listener) {
+      if (listener === undefined || this.style.getLayer(layerId)) {
+        return this.offBak(type, layerId, listener);
+      }
+      const layerIds = getSymbolHandler(this).getLayerIds(layerId);
+      layerIds.forEach(id => this.offBak(type, id, listener));
+      return this;
+    };
+  }
 
   /**
    * @function WebSymbol.prototype.getSymbol
@@ -52394,7 +54627,7 @@ function MapExtendSymbol(){
 
     const value = await FetchRequest.get(`${url}.json`).then(response => {
       if (!response.ok) {
-        return;
+        return null;
       }
       return response.json();
     })
@@ -52421,6 +54654,22 @@ function MapExtendSymbol(){
     }
   }
 
+  /**
+   * 加载单个Web符号
+   * @param {string} id 
+   * @param {Mapboxgl.Map} map 
+   * @returns {object} symbol对象
+   */
+  function loadSymbol(id, map) {
+    return getSymbol(id, map).then((symbolResult) => {
+      if (!symbolResult) {
+        return null;
+      }
+      const { value, image } = symbolResult;
+      image && getSymbolHandler(map).addSymbolImageToMap(value, image);
+      return value;
+    })
+  }
 }
 /* harmony default export */ const symbol_MapExtendSymbol = (MapExtendSymbol);
 
@@ -52448,15 +54697,28 @@ function MapExtendSymbol(){
 * 
 * 参数名称			     |类型			 |描述  
 * :----				|:---		    |:---	
-* id				    |string		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
+* id				    |string、string[]		    |[Web符号ID](../../../../../examples/mapboxgl/websymbol_gallery.html)
 * callback			    |function		|在符号加载完成后调用，返回符号信息；如果有错误，则返回错误参数。
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
+* // 加载单个Web符号
 * map.loadSymbol('point-1', (error, symbol) => {
 *       if (error) throw error;
 *       // Add the loaded symbol with the ID 'point-1'.
 *       map.addSymbol('point-1', symbol);
+* });
+*
+* // 加载多个Web符号
+* var symbolIds = ['point-1', 'point-2'];
+* map.loadSymbol(symbolIds, (error, symbols) => {
+*      symbols.forEach((symbol, index) => {
+*          symbol && map.addSymbol(symbolIds[index], symbol);
+*      })
 * });
 * ```
 * 
@@ -52469,8 +54731,12 @@ function MapExtendSymbol(){
 * |id				    |string		        |符号ID              |||
 * |symbol			    |object	            |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |                    |                   |参数名称			 |类型			     |描述  |
-* |                    |                   |paint				|object		        |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |                    |                   |layout			    |object	            |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |                    |                   |paint				|object		        |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |                    |                   |layout			    |object	            |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
@@ -52485,6 +54751,10 @@ function MapExtendSymbol(){
 * :----				|:---		    |:---	
 * layerId				|string		    |图层ID
 * symbol			    |string、array		    |已经添加的符号ID（addSymbol中的符号ID), 或者[符号表达式](#expression)
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
@@ -52508,6 +54778,15 @@ function MapExtendSymbol(){
 * :----			    |:---		    |:---	
 * id			    |string		    |符号ID
 * 
+* **Version:**
+* 
+* 11.1.0
+* 
+* **Returns**
+* 类型			   |描述  
+* :---		     |:---	
+* boolean		   |符号是否存在
+*   
 * **Example**
 * ```
 * const pointExists = map.hasSymbol('point-1');
@@ -52521,6 +54800,10 @@ function MapExtendSymbol(){
 * :----				|:---		    |:---	
 * id			      |string		    |已经添加的符号ID
 * 
+* **Version:**
+* 
+* 11.1.0
+* 
 * **Example**
 * ```
 * map.removeSymbol('point-1');
@@ -52530,17 +54813,44 @@ function MapExtendSymbol(){
 * ## mapboxgl.Map.prototype.updateSymbol
 * 更新指定 ID 的符号。
 * 
-* 参数名称			     |类型			 |描述  
-* :----				|:---		    |:---	
-* id			      |string		    |已经添加的符号ID
+* |参数名称			     |类型			     |描述                | ||
+* |----				|---		        |---			    |---|---|
+* id			      |string		    |已经添加的符号ID|||
 * |symbol			  |object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象|||
 * |             |             |参数名称			 |类型			     |描述  |
-* |             |             |paint				|object		      |Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
-* |             |             |layout			  |object	        |Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* |             |             |paint				|object		      |可选，Mapbox Layers [paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)|
+* |             |             |layout			  |object	        |可选，Mapbox Layers [layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）|
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
 * map.updateSymbol('point-1', symbol);
+* ```
+* 
+* 
+* ## mapboxgl.Map.prototype.getSymbol
+* 获取指定 ID 的符号信息。
+* 
+* 参数名称			     |类型			 |描述  
+* :----			    |:---		    |:---	
+* id			    |string		    |符号ID
+* 
+* **Version:**
+* 
+* 11.1.0
+* 
+* **Returns**
+* 类型			   |描述  
+* :---		     |:---	
+* object	      |由Mapbox Layers中的[paint](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property)、[layout](https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property)（visibility 属性除外）组成的符号对象
+* 
+* 
+* **Example**
+* ```
+* const point1 = map.getSymbol('point-1');
 * ```
 * 
 * 
@@ -52550,9 +54860,13 @@ function MapExtendSymbol(){
 * 参数名称			   |类型			  |描述  
 * :----				    |:---		      |:---	
 * id			        |string		    |符号ID
-* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* index			      |number、null	|符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
-* value			      |any		      |属性值
+* value			      |any		      |可选，属性值
+* 
+* **Version:**
+* 
+* 11.1.0
 * 
 * **Example**
 * ```
@@ -52567,8 +54881,17 @@ function MapExtendSymbol(){
 * 参数名称			   |类型			  |描述  
 * :----				    |:---		      |:---	
 * id			        |string		    |符号ID
-* index			      |number		    |符号数组的index， 符号不是数组的设置为null
+* index			      |number、null	|符号数组的index， 符号不是数组的设置为null
 * name			      |string		    |属性名称
+* 
+* **Version:**
+* 
+* 11.1.0
+* 
+* **Returns**
+* 类型			  |描述  
+* :---		        |:---	
+* any		        |属性值 
 * 
 * **Example**
 * ```
@@ -52662,6 +54985,7 @@ class WebSymbol {
   /**
    * @function WebSymbol.prototype.init
    * @description 初始化Web符号配置。
+   * @version 11.1.0
    * @param {object} config - 配置信息
    * @param {string} [config.basePath] - 指定符号资源路径
    */
@@ -52897,7 +55221,6 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         this.options = options || {};
-        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.AddressMatchService';
     }
 
@@ -52913,24 +55236,28 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @function AddressMatchService.prototype.code
      * @param {string} url - 正向地址匹配服务地址。
      * @param {GeoCodingParameter} params - 正向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     code(url, params, callback) {
         if (!(params instanceof GeoCodingParameter)) {
             return;
         }
-        this.processAsync(url, params, callback);
+        return this.processAsync(url, params, callback);
     }
 
     /**
      * @function AddressMatchService.prototype.decode
      * @param {string} url - 反向地址匹配服务地址。
      * @param {GeoDecodingParameter} params - 反向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     decode(url, params, callback) {
         if (!(params instanceof GeoDecodingParameter)) {
             return;
         }
-        this.processAsync(url, params, callback);
+        return this.processAsync(url, params, callback);
     }
 
     /**
@@ -52938,66 +55265,32 @@ class AddressMatchService_AddressMatchService extends CommonServiceBase {
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param {string} url - 服务地址。
      * @param {Object} params - 参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
 
     processAsync(url, params, callback) {
-      let eventId = ++this.eventCount;
-      let eventListeners = {
-        scope: this,
-        processCompleted: function(result) {
-          if (eventId === result.result.eventId && callback) {
-            delete result.result.eventId;
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        },
-        processFailed: function(result) {
-          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        }
-      }
-      this.events.on(eventListeners);
-      this.request({
+      return this.request({
           method: 'GET',
           url,
           params,
           scope: this,
-          success(result, options) {
-            result.eventId = eventId;
-            this.serviceProcessCompleted(result, options);
-          },
-          failure(result, options) {
-            if (result.error) {
-              result.error.eventId = eventId;
-            }
-            result.eventId = eventId;
-            this.serviceProcessFailed(result, options);
-          }
+          success: callback,
+          failure: callback
       });
     }
     /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
+     * @function AddressMatchService.prototype.transformResult
      * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否完成
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @description 状态完成时转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }
-        super.serviceProcessCompleted(result, options);
-    }
-
-    /**
-     * @function AddressMatchService.prototype.serviceProcessCompleted
-     * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否失败
-     */
-    serviceProcessFailed(result, options) {
-        super.serviceProcessFailed(result, options);
+        return { result, options };
     }
 }
 
@@ -53040,20 +55333,22 @@ class AddressMatchService extends ServiceBase {
      * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param {GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
-      this._addressMatchService.code(Util_Util.urlPathAppend(this.url, 'geocoding'), params, callback);
+      return this._addressMatchService.code(Util_Util.urlPathAppend(this.url, 'geocoding'), params, callback);
     }
 
     /**
      * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param {GeoDecodingParameter} params -反向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {
-      this._addressMatchService.decode(Util_Util.urlPathAppend(this.url, 'geodecoding'), params, callback);
+      return this._addressMatchService.decode(Util_Util.urlPathAppend(this.url, 'geodecoding'), params, callback);
     }
 }
 
@@ -53429,7 +55724,6 @@ class ChartQueryParameters {
  * @extends {CommonServiceBase}
  * @param {string} url - 地图查询服务访问地址。如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -53511,8 +55805,10 @@ class ChartQueryService extends CommonServiceBase {
      * @function ChartQueryService.prototype.processAsync
      * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
      * @param {ChartQueryParameters} params - 查询参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         //todo重点需要添加代码的地方
         if (!(params instanceof ChartQueryParameters)) {
             return;
@@ -53523,22 +55819,24 @@ class ChartQueryService extends CommonServiceBase {
         if (me.returnContent) {
             me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
         }
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
 
     /**
-     * @function ChartQueryService.prototype.serviceProcessCompleted
-     * @description 查询完成，执行此方法。
+     * @function ChartQueryService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util_Util.transformResult(result);
         if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
@@ -53550,7 +55848,7 @@ class ChartQueryService extends CommonServiceBase {
             }
 
         }
-        me.events.triggerEvent("processCompleted", {result: result, options});
+        return { result, options };
     }
 
     /**
@@ -53590,7 +55888,6 @@ class ChartQueryService extends CommonServiceBase {
  *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -53619,18 +55916,20 @@ class ChartFeatureInfoSpecsService extends CommonServiceBase {
      *              事件。用可以通过户两种方式获取图层信息:
      *              1. 通过 AsyncResponder 类获取（推荐使用）；
      *              2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this, method = "GET";
         if (!me.isTempLayers) {
             Util_Util.urlPathAppend(me.url,'chartFeatureInfoSpecs');
         }
-        me.request({
+        return me.request({
             method: method,
             params: null,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -53672,8 +55971,9 @@ class ChartFeatureInfoSpecsService extends CommonServiceBase {
       * @function ChartService.prototype.queryChart
       * @description 查询海图服务。
       * @param {ChartQueryParameters} params - 海图查询所需参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} resultFormat - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryChart(params, callback, resultFormat) {
          var me = this,
@@ -53684,22 +55984,17 @@ class ChartFeatureInfoSpecsService extends CommonServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
  
-         chartQueryService.processAsync(param);
+         return chartQueryService.processAsync(param, callback);
      }
  
      /**
       * @function ChartService.prototype.getChartFeatureInfo
       * @description 获取海图物标信息服务。
-      * @param {RequestCallback} callback 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
      getChartFeatureInfo(callback) {
          var me = this;
@@ -53708,15 +56003,9 @@ class ChartFeatureInfoSpecsService extends CommonServiceBase {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         chartFeatureInfoSpecsService.processAsync();
+         return chartFeatureInfoSpecsService.processAsync(callback);
      }
  
      _processFormat(resultFormat) {
@@ -53762,24 +56051,26 @@ class ChartService extends ServiceBase {
      * @function ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param {ChartQueryParameters} params - 海图查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryChart(params, callback, resultFormat) {
-      this._chartService.queryChart(params, callback, resultFormat);
+      return this._chartService.queryChart(params, callback, resultFormat);
     }
 
     /**
      * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getChartFeatureInfo(callback) {
-      this._chartService.getChartFeatureInfo(callback);
+      return this._chartService.getChartFeatureInfo(callback);
     }
 
     _processFormat(resultFormat) {
-        return resultFormat ? resultFormat : DataFormat.GEOJSON;
+      return resultFormat ? resultFormat : DataFormat.GEOJSON;
     }
 }
 
@@ -53883,7 +56174,6 @@ class DataFlowService_DataFlowService extends CommonServiceBase {
         }
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
         this.events.triggerEvent('broadcastSucceeded');
-
     }
 
     /**
@@ -54063,37 +56353,37 @@ class DataFlowService extends ServiceBase {
         super(url, options);
         this.dataFlow = new DataFlowService_DataFlowService(url, options);
         /**
-         * @event DataFlowService#broadcastSocketConnected
-         * @description broadcast Socket 连接成功。
-         */
+        * @event DataFlowService#broadcastSocketConnected
+        * @description broadcast Socket 连接成功。
+        */
         /**
-         * @event DataFlowService#broadcastSocketError
-         * @description broadcast Socket 连接失败。
-         */
+        * @event DataFlowService#broadcastSocketError
+        * @description broadcast Socket 连接失败。
+        */
         /**
-         * @event DataFlowService#broadcastFailed
-         * @description 广播失败。
-         */
+        * @event DataFlowService#broadcastFailed
+        * @description 广播失败。
+        */
         /**
-         * @event DataFlowService#broadcastSucceeded
-         * @description 广播成功。
-         */
+        * @event DataFlowService#broadcastSucceeded
+        * @description 广播成功。
+        */
         /**
-         * @event DataFlowService#subscribeSocketConnected
-         * @description 订阅数据连接成功。
-         */
+        * @event DataFlowService#subscribeSocketConnected
+        * @description 订阅数据连接成功。
+        */
         /**
-         * @event DataFlowService#subscribeSocketError
-         * @description 订阅数据连接失败。
-         */
+        * @event DataFlowService#subscribeSocketError
+        * @description 订阅数据连接失败。
+        */
         /**
-         * @event DataFlowService#messageSucceeded
-         * @description 获取信息成功。
-         */
+        * @event DataFlowService#messageSucceeded
+        * @description 获取信息成功。
+        */
         /**
-         * @event DataFlowService#setFilterParamSucceeded
-         * @description 设置过滤参数成功。
-         */
+        * @event DataFlowService#setFilterParamSucceeded
+        * @description 设置过滤参数成功。
+        */
 
         this.dataFlow.events.on({
             "broadcastSocketConnected": this._defaultEvent,
@@ -54205,7 +56495,6 @@ class DataFlowService extends ServiceBase {
  * @classdesc 数据集查询服务。
  * @param {string} url - 服务的访问地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 数据源名称。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -54230,7 +56519,6 @@ class DatasetService_DatasetService extends CommonServiceBase {
          *  @description 要查询的数据集名称。
          */
         this.dataset = null;
-        this.eventCount = 0;
         if (options) {
             Util_Util.extend(this, options);
         }
@@ -54252,24 +56540,29 @@ class DatasetService_DatasetService extends CommonServiceBase {
     /**
      * @function DatasetService.prototype.getDatasetsService
      * @description 执行服务，查询数据集服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasetsService(params, callback) {
         const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params}/datasets`);
-        this.processAsync(url, 'GET', callback);
+        return this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.getDatasetService
      * @description 执行服务，查询数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasetService(datasourceName, datasetName, callback) {
         const url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-        this.processAsync(url, 'GET', callback);
+        return this.processAsync(url, 'GET', callback);
     }
 
     /**
      * @function DatasetService.prototype.setDatasetService
      * @description 执行服务，更改数据集信息服务。
+     * @returns {Promise} Promise 对象。
      */
     setDatasetService(params, callback) {
         if (!params) {
@@ -54277,58 +56570,31 @@ class DatasetService_DatasetService extends CommonServiceBase {
         }
         const url = Util_Util.urlPathAppend(this.url, `datasources/name/${params.datasourceName}/datasets/name/${params.datasetName}`);
         delete params.datasourceName;
-        this.processAsync(url, 'PUT', callback, params);
+        return this.processAsync(url, 'PUT', callback, params);
     }
 
      /**
      * @function DatasetService.prototype.deleteDatasetService
      * @description 执行服务，删除数据集信息服务。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     deleteDatasetService(datasourceName, datasetName, callback) {
       const url = Util_Util.urlPathAppend(this.url, `datasources/name/${datasourceName}/datasets/name/${datasetName}`);
-       this.processAsync(url, 'DELETE', callback);
+      return this.processAsync(url, 'DELETE', callback);
     }
 
     processAsync(url, method, callback, params) {
-      let eventId = ++this.eventCount;
-      let eventListeners = {
-        scope: this,
-        processCompleted: function(result) {
-          if (eventId === result.result.eventId && callback) {
-            delete result.result.eventId;
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        },
-        processFailed: function(result) {
-          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        }
-      }
-      this.events.on(eventListeners);
        var me = this;
        let requestConfig = {
           url,
           method,
           scope: me,
-          success(result, options) {
-            result.eventId = eventId;
-            me.serviceProcessCompleted(result, options);
-          },
-          failure(result, options) {
-            if (result.error) {
-              result.error.eventId = eventId;
-            }
-            result.eventId = eventId;
-            me.serviceProcessFailed(result, options);
-          }
+          success: callback,
+          failure: callback
         }
         params && (requestConfig.data = Util_Util.toJSON(params));
-        me.request(requestConfig);
+        return me.request(requestConfig);
     }
 }
 
@@ -54537,13 +56803,14 @@ class DatasetService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasets(datasourceName, callback) {
       if (!datasourceName) {
         return;
       }
-      this._datasetService.getDatasetsService(datasourceName, callback);
+      return this._datasetService.getDatasetsService(datasourceName, callback);
     }
 
     /**
@@ -54555,13 +56822,14 @@ class DatasetService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDataset(datasourceName, datasetName, callback) {
       if (!datasourceName || !datasetName) {
         return;
       }
-      this._datasetService.getDatasetService(datasourceName, datasetName, callback);
+      return this._datasetService.getDatasetService(datasourceName, datasetName, callback);
     }
 
     /**
@@ -54572,7 +56840,8 @@ class DatasetService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters|UpdateDatasetParameters} params - 数据集创建参数类或数据集信息更改参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDataset(params, callback) {
       if(!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)){
@@ -54593,7 +56862,7 @@ class DatasetService extends ServiceBase {
                   "charset": params.charset
               }
       }
-      this._datasetService.setDatasetService(datasetParams, callback);
+      return this._datasetService.setDatasetService(datasetParams, callback);
     }
 
     /**
@@ -54605,10 +56874,11 @@ class DatasetService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     deleteDataset(datasourceName, datasetName, callback) {
-      this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
+      return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);
     }
 }
 
@@ -54696,7 +56966,6 @@ class SetDatasourceParameters {
  * @classdesc 数据源查询服务类。
  * @param {string} url - 服务地址。如访问World Data服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string} options.datasource - 要查询的数据集所在的数据源名称。
  * @param {string} options.dataset - 要查询的数据集名称。
@@ -54713,7 +56982,6 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.DatasourceService";
     }
 
@@ -54723,7 +56991,6 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
      * @override
      */
     destroy() {
-        this.eventCount = 0;
         super.destroy();
     }
 
@@ -54731,72 +56998,51 @@ class DatasourceService_DatasourceService extends CommonServiceBase {
     /**
      * @function DatasourceService.prototype.getDatasourceService
      * @description 获取指定数据源信息。
+     * @param {string} datasourceName - 数据源名称。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasourceService(datasourceName, callback) {
         let url = Util_Util.urlPathAppend(this.url,`datasources/name/${datasourceName}`);
-        this.processAsync(url, "GET", callback);
+        return this.processAsync(url, "GET", callback);
     }
 
     /**
      * @function DatasourceService.prototype.getDatasourcesService
      * @description 获取所有数据源信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasourcesService(callback) {
         let url = Util_Util.urlPathAppend(this.url,`datasources`);
-        this.processAsync(url, "GET", callback);
+        return this.processAsync(url, "GET", callback);
     }
     /**
      * @function DatasourceService.prototype.setDatasourceService
      * @description 更新数据源信息。
+     * @param {Object} params 请求参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDatasourceService(params, callback) {
         if (!params) {
             return;
         }
         const url = Util_Util.urlPathAppend(this.url,`datasources/name/${params.datasourceName}`);
-        this.processAsync(url, "PUT", callback, params);
+        return this.processAsync(url, "PUT", callback, params);
     }
 
     processAsync(url, method, callback, params) {
-      let eventId = ++this.eventCount;
-      let eventListeners = {
-        scope: this,
-        processCompleted: function(result) {
-          if (eventId === result.result.eventId && callback) {
-            delete result.result.eventId;
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        },
-        processFailed: function(result) {
-          if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        }
-      }
-      this.events.on(eventListeners);
        var me = this;
        let requestConfig = {
           url,
           method,
           scope: me,
-          success(result, options) {
-            result.eventId = eventId;
-            this.serviceProcessCompleted(result, options);
-          },
-          failure(result, options) {
-            if (result.error) {
-              result.error.eventId = eventId;
-            }
-            result.eventId = eventId;
-            this.serviceProcessFailed(result, options);
-          }
+          success: callback,
+          failure: callback
         }
         params && (requestConfig.data = Util_Util.toJSON(params));
-        me.request(requestConfig);
+        return me.request(requestConfig);
     }
 }
 
@@ -54841,10 +57087,11 @@ class DatasourceService extends ServiceBase {
      *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething
      *   });
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getDatasources(callback) {
-      this._datasourceService.getDatasourcesService(callback);
+      return this._datasourceService.getDatasourcesService(callback);
     }
 
     /**
@@ -54855,13 +57102,14 @@ class DatasourceService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
       if (!datasourceName) {
         return;
       }
-      this._datasourceService.getDatasourceService(datasourceName, callback);
+      return this._datasourceService.getDatasourceService(datasourceName, callback);
     }
 
     /**
@@ -54872,7 +57120,8 @@ class DatasourceService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {SetDatasourceParameters} params - 数据源信息查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {
       if (!(params instanceof SetDatasourceParameters)) {
@@ -54884,7 +57133,7 @@ class DatasourceService extends ServiceBase {
           distanceUnit: params.distanceUnit,
           datasourceName: params.datasourceName
       };
-      this._datasourceService.setDatasourceService(datasourceParams, callback);
+      return this._datasourceService.setDatasourceService(datasourceParams, callback);
     }
 }
 
@@ -55030,20 +57279,14 @@ class EditFeaturesParameters {
  * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。</br>
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [format] -查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new EditFeaturesService(url, {eventListeners: {
- *     "processCompleted": editFeatureCompleted,
- *     "processFailed": editFeatureError
- *       }
- * };
+ * var myService = new EditFeaturesService(url);
  * @usage
  */
 class EditFeaturesService extends CommonServiceBase {
-
 
     constructor(url, options) {
         super(url, options);
@@ -55088,8 +57331,10 @@ class EditFeaturesService extends CommonServiceBase {
      * @function EditFeaturesService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {EditFeaturesParameters} params - 编辑要素参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof EditFeaturesParameters)) {
             return;
         }
@@ -55127,15 +57372,32 @@ class EditFeaturesService extends CommonServiceBase {
             }
         }
 
-        me.request({
+        return me.request({
             method: method,
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
+    /**
+     * @function EditFeaturesService.prototype.getMetaData
+     * @description 获取地理要素元信息。
+     * @version 11.1.1
+     */
+    getMetaData(params, callback){
+      var me = this;
+      var featureId = params.featureId;
+      me.url = Util_Util.urlPathAppend(me.url, featureId +'/metadata');
+      return me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: callback,
+        failure: callback
+      });
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/GetFeaturesServiceBase.js
@@ -55157,17 +57419,11 @@ class EditFeaturesService extends CommonServiceBase {
  * URL应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new GetFeaturesServiceBase(url, {
- *     eventListeners: {
- *         "processCompleted": getFeatureCompleted,
- *         "processFailed": getFeatureError
- *     }
- * });
+ * var myService = new GetFeaturesServiceBase(url);
  * @usage
  */
 class GetFeaturesServiceBase extends CommonServiceBase {
@@ -55240,8 +57496,10 @@ class GetFeaturesServiceBase extends CommonServiceBase {
      * @function GetFeaturesServiceBase.prototype.processAsync
      * @description 将客户端的查询参数传递到服务端。
      * @param {Object} params - 查询参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
@@ -55267,28 +57525,30 @@ class GetFeaturesServiceBase extends CommonServiceBase {
         }
 
         jsonParameters = me.getJsonParameters(params);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
     /**
-     * @function GetFeaturesServiceBase.prototype.getFeatureComplete
-     * @description 查询完成，执行此方法。
+     * @function GetFeaturesServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util_Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON();
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
-        me.events.triggerEvent("processCompleted", {result: result, options});
+       return { result, options };
     }
 
     dataFormat() {
@@ -55670,18 +57930,12 @@ class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
  *                       URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
  * @example
- * var myGetFeaturesByIDsService = new GetFeaturesByIDsService(url, {
- *     eventListeners: {
- *         "processCompleted": getFeatureCompleted,
- *         "processFailed": getFeatureError
- *            }
- *     });
+ * var myGetFeaturesByIDsService = new GetFeaturesByIDsService(url);
  * function getFeatureCompleted(object){//todo};
  * function getFeatureError(object){//todo}
  * @usage
@@ -55826,18 +58080,12 @@ class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
  *                       URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
  * @example
- * var myGetFeaturesBySQLService = new GetFeaturesBySQLService(url, {
-     *     eventListeners: {
-     *         "processCompleted": GetFeaturesCompleted,
-     *         "processFailed": GetFeaturesError
-     *         }
-     * });
+ * var myGetFeaturesBySQLService = new GetFeaturesBySQLService(url);
  * function getFeaturesCompleted(object){//todo};
  * function getFeaturesError(object){//todo};
  * @usage
@@ -56036,19 +58284,11 @@ GetFeaturesByBoundsParameters.getFeatureMode = {
  * @param {string} url - 服务地址。请求数据服务中数据集查询服务，URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myGetFeaturesByBoundsService = new SuperMa.GetFeaturesByBoundsService(url, {
- *     eventListeners: {
- *           "processCompleted": getFeatureCompleted,
- *           "processFailed": getFeatureError
- *           }
- * });
- * function getFeatureCompleted(object){//todo};
- * function getFeatureError(object){//todo}
+ * var myGetFeaturesByBoundsService = new SuperMa.GetFeaturesByBoundsService(url);
  * @usage
  */
 
@@ -56223,18 +58463,12 @@ class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
  * @example
- * var myGetFeaturesByBufferService = new GetFeaturesByBufferService(url, {
- *     eventListeners: {
- *           "processCompleted": GetFeaturesCompleted,
- *           "processFailed": GetFeaturesError
- *           }
- * });
+ * var myGetFeaturesByBufferService = new GetFeaturesByBufferService(url);
  * function GetFeaturesCompleted(object){//todo};
  * function GetFeaturesError(object){//todo};
  * @usage
@@ -56429,18 +58663,12 @@ class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {GetFeaturesServiceBase}
  * @example
- * var myService = new GetFeaturesByGeometryService(url, {
-     *     eventListeners: {
-     *           "processCompleted": getFeatureCompleted,
-     *           "processFailed": getFeatureError
-     *           }
-     * });
+ * var myService = new GetFeaturesByGeometryService(url);
  * function getFeatureCompleted(object){//todo};
  * function getFeatureError(object){//todo}
  * @usage
@@ -56516,8 +58744,9 @@ class FeatureService_FeatureService {
      * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
      * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
@@ -56526,23 +58755,18 @@ class FeatureService_FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: resultFormat
         });
-        getFeaturesByIDsService.processAsync(params);
-
+        return getFeaturesByIDsService.processAsync(params, callback);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesByBounds
      * @description 数据集 Bounds 查询服务。
      * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
@@ -56551,22 +58775,18 @@ class FeatureService_FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        getFeaturesByBoundsService.processAsync(params);
+        return getFeaturesByBoundsService.processAsync(params, callback);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 Buffer 查询服务。
      * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
@@ -56575,22 +58795,18 @@ class FeatureService_FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        getFeatureService.processAsync(params);
+        return getFeatureService.processAsync(params, callback);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
      * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
@@ -56599,23 +58815,18 @@ class FeatureService_FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-
-        getFeatureBySQLService.processAsync(params);
+        return getFeatureBySQLService.processAsync(params, callback);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类。
      * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -56624,21 +58835,17 @@ class FeatureService_FeatureService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        getFeaturesByGeometryService.processAsync(params);
+        return getFeaturesByGeometryService.processAsync(params, callback);
     }
 
     /**
      * @function FeatureService.prototype.editFeatures
      * @description 地物编辑服务。
      * @param {EditFeaturesParameters} params - 数据服务中数据集添加、修改、删除参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     editFeatures(params, callback) {
         if (!params || !params.dataSourceName || !params.dataSetName) {
@@ -56654,14 +58861,31 @@ class FeatureService_FeatureService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        editFeatureService.processAsync(params);
+        return editFeatureService.processAsync(params, callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getMetadata
+     * @description 地理要素元信息服务。
+     * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getMetadata(params, callback) {
+        var me = this,
+            url = me.url,
+            dataSourceName = params.dataSourceName,
+            dataSetName = params.dataSetName;
+        url = Util_Util.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+        var editFeatureService = new EditFeaturesService(url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers
+        });
+        return editFeatureService.getMetaData(params, callback);
     }
     _processFormat(resultFormat) {
       return resultFormat ? resultFormat : DataFormat.GEOJSON;
@@ -56710,67 +58934,73 @@ class FeatureService extends ServiceBase {
      * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
      * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByIDs(params, callback, resultFormat) {
         params = this._processParams(params);
-        this._featureService.getFeaturesByIDs(params, callback, resultFormat);
+        return this._featureService.getFeaturesByIDs(params, callback, resultFormat);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesByBounds
      * @description 数据集 Bounds 查询服务。
      * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBounds(params, callback, resultFormat) {
         params = this._processParams(params);
-        this._featureService.getFeaturesByBounds(params, callback, resultFormat);
+        return this._featureService.getFeaturesByBounds(params, callback, resultFormat);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 Buffer 查询服务。
      * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
         params = this._processParams(params);
-        this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
+        return this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
      * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
-        params = this._processParams(params);
-        this._featureService.getFeaturesBySQL(params, callback, resultFormat);
+      params = this._processParams(params);
+      return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
     }
 
     /**
      * @function FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类。
      * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
-        params = this._processParams(params);
-        this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
+      params = this._processParams(params);
+      return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
     }
 
     /**
      * @function FeatureService.prototype.editFeatures
      * @description 地物编辑服务。
      * @param {EditFeaturesParameters} params - 数据集添加、修改、删除参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     editFeatures(params, callback) {
         if (!params || !params.dataSourceName || !params.dataSetName) {
@@ -56786,14 +59016,21 @@ class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        editFeatureService.processAsync(me._processParams(params));
+        return editFeatureService.processAsync(me._processParams(params), callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getMetadata
+     * @description 地理要素元信息。
+     * @version 11.1.1
+     * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getMetadata(params, callback) {
+        return this._featureService.getMetadata(params, callback);
     }
 
     /**
@@ -56882,7 +59119,6 @@ class FeatureService extends ServiceBase {
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 数据源名称。
  * @param {string}options.dataset - 数据集名称。
@@ -56890,10 +59126,7 @@ class FeatureService extends ServiceBase {
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example
- * var myService = new GetFieldsService(url, {eventListeners: {
- *     "processCompleted": getFieldsCompleted,
- *     "processFailed": getFieldsError
- *     },
+ * var myService = new GetFieldsService(url,
  *     datasource: "World",
  *     dataset: "Countries"
  * };
@@ -56938,16 +59171,17 @@ class GetFieldsService extends CommonServiceBase {
     /**
      * @function GetFieldsService.prototype.processAsync
      * @description 执行服务，查询指定数据集的字段信息。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this;
         me.url = Util_Util.urlPathAppend(me.url,`datasources/${me.datasource}/datasets/${me.dataset}/fields`);
-        me.request({
+        return me.request({
             method: "GET",
             data: null,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -57077,7 +59311,6 @@ class FieldStatisticsParameters extends FieldParameters {
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。如访问 World Map 服务，只需将 url 设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和GeoJSON 两种格式。参数格式为 "ISERVER","GEOJSON"。
  * @param {string} options.datasource - 数据集所在的数据源名称。
  * @param {string} options.dataset - 数据集名称。
@@ -57086,10 +59319,7 @@ class FieldStatisticsParameters extends FieldParameters {
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new FieldStatisticService(url, {eventListeners: {
- *     "processCompleted": fieldStatisticCompleted,
- *     "processFailed": fieldStatisticError
- *     }，
+ * var myService = new FieldStatisticService(url,
  *     datasource: "World",
  *     dataset: "Countries",
  *     field: "SmID",
@@ -57153,18 +59383,20 @@ class FieldStatisticService extends CommonServiceBase {
     /**
      * @function FieldStatisticService.prototype.processAsync
      * @description 执行服务，进行指定字段的查询统计。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this,
             fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
         me.url = Util_Util.urlPathAppend(me.url, fieldStatisticURL);
 
-        me.request({
+        return me.request({
             method: "GET",
             data: null,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -57205,7 +59437,8 @@ class FieldService_FieldService {
      * @function FieldService.prototype.getFields
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getFields(params, callback) {
         var me = this;
@@ -57214,22 +59447,17 @@ class FieldService_FieldService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             datasource: params.datasource,
             dataset: params.dataset
         });
-        getFieldsService.processAsync();
+        return getFieldsService.processAsync(callback);
     }
 
     /**
      * @function FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务。
      * @param {FieldStatisticsParameters} params - 字段统计信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getFieldStatisticsInfo(params, callback) {
       if (!(params instanceof FieldStatisticsParameters)) {
@@ -57253,11 +59481,6 @@ class FieldService_FieldService {
     _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
         var me = this;
         var statisticService = new FieldStatisticService(me.url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: me._processCompleted.bind(me),
-                processFailed: me._statisticsCallback
-            },
             datasource: datasource,
             dataset: dataset,
             field: fieldName,
@@ -57265,11 +59488,15 @@ class FieldService_FieldService {
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers
         });
-        statisticService.processAsync();
+        statisticService.processAsync(me._processCompleted.bind(me));
     }
 
-    _processCompleted(fieldStatisticResult, options) {
+    _processCompleted(fieldStatisticResult) {
         var me = this;
+        if (fieldStatisticResult.error) {
+          me._statisticsCallback(fieldStatisticResult);
+          return;
+        }
         var getAll = true,
             result = fieldStatisticResult.result;
         if (this.currentStatisticResult) {
@@ -57284,7 +59511,7 @@ class FieldService_FieldService {
             }
         }
         if (getAll) {
-            me._statisticsCallback({result: me.currentStatisticResult, options});
+            me._statisticsCallback({result: me.currentStatisticResult});
         }
     }
 }
@@ -57325,10 +59552,11 @@ class FieldService extends ServiceBase {
      * @function FieldService.prototype.getFields
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。 
      */
     getFields(params, callback) {
-        this._fieldService.getFields(params, callback);
+      return this._fieldService.getFields(params, callback);
     }
 
     /**
@@ -57338,7 +59566,7 @@ class FieldService extends ServiceBase {
      * @param {RequestCallback} callback 回调函数。
      */
     getFieldStatisticsInfo(params, callback) {
-      this._fieldService.getFieldStatisticsInfo(params, callback);
+      return this._fieldService.getFieldStatisticsInfo(params, callback);
     }
 }
 
@@ -57424,17 +59652,12 @@ class GetGridCellInfosParameters {
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息。
  * @param {string} url - 服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example
- * var myService = new GetGridCellInfosService(url, {eventListeners: {
- *     "processCompleted": queryCompleted,
- *     "processFailed": queryError
- *     }
- * });
+ * var myService = new GetGridCellInfosService(url);
  * @usage
  */
 class GetGridCellInfosService extends CommonServiceBase {
@@ -57474,7 +59697,6 @@ class GetGridCellInfosService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.GetGridCellInfosService";
     }
 
@@ -57496,6 +59718,8 @@ class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.processAsync
      * @description 执行服务，查询数据集信息。
      * @param {GetGridCellInfosParameters} params - 查询参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
         if (!(params instanceof GetGridCellInfosParameters)) {
@@ -57504,53 +59728,16 @@ class GetGridCellInfosService extends CommonServiceBase {
         Util_Util.extend(this, params);
         var me = this;
         me.url = Util_Util.urlPathAppend(me.url,`datasources/${me.dataSourceName}/datasets/${me.datasetName}`);
-        me.queryRequest(me.getDatasetInfoCompleted.bind(me), me.getDatasetInfoFailed.bind(me), callback);
-    }
-
-    /**
-     * @function GetGridCellInfosService.prototype.queryRequest
-     * @description 执行服务，查询。
-     * @callback {function} successFun - 成功后执行的函数。
-     * @callback {function} failedFunc - 失败后执行的函数。
-     */
-    queryRequest(successFun, failedFunc, callback) {
-      let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
+        return me.request({
+          method: "GET",
+          data: null,
+          scope: me,
+          success({result}) {
+            callback && me.getDatasetInfoCompleted(result, callback);
           },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
-
-        var me = this;
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              successFun(result, options, callback);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              failedFunc(result, options);
-            }
+          failure: callback
+        }).then(({result}) => {
+          return me.getDatasetInfoCompleted(result);
         });
     }
 
@@ -57558,36 +59745,36 @@ class GetGridCellInfosService extends CommonServiceBase {
      * @function GetGridCellInfosService.prototype.getDatasetInfoCompleted
      * @description 数据集查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasetInfoCompleted(result, options, callback) {
+    getDatasetInfoCompleted(result, callback) {
         var me = this;
         result = Util_Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
-        me.queryGridInfos(callback);
+        return me.queryGridInfos(callback);
     }
 
     /**
      * @function GetGridCellInfosService.prototype.queryGridInfos
      * @description 执行服务，查询数据集栅格信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     queryGridInfos(callback) {
         var me = this;
-        me.url = Util_Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
+        var url = Util_Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
         if (me.X != null && me.Y != null) {
-            me.url = Util_Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
+            url = Util_Util.urlAppend(url, `x=${me.X}&y=${me.Y}`);
         }
-        me.queryRequest(me.serviceProcessCompleted.bind(me), me.serviceProcessFailed.bind(me), callback);
-    }
-
-
-    /**
-     * @function GetGridCellInfosService.prototype.getDatasetInfoFailed
-     * @description 数据集查询失败，执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getDatasetInfoFailed(result, options) {
-        var me = this;
-        me.serviceProcessFailed(result, options);
+        return me.request({
+          url,
+          method: "GET",
+          data: null,
+          scope: me,
+          success: callback,
+          failure: callback
+      });
     }
 }
 
@@ -57633,14 +59820,16 @@ class GridCellInfosService extends ServiceBase {
 
     /**
      * @function GridCellInfosService.prototype.getGridCellInfos
+     * @description 获取某一地理位置所对应的栅格单元信息。
      * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} null或者Promise 对象。
      */
     getGridCellInfos(params, callback) {
       if (!params) {
         return null;
       }
-      this._gridCellQueryService.processAsync(params, callback);
+      return this._gridCellQueryService.processAsync(params, callback);
     }
 }
 
@@ -57657,34 +59846,34 @@ class GridCellInfosService extends ServiceBase {
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @usage
  */
 class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     constructor(url, options) {
         options = options || {};
-        options.EVENT_TYPES = ['processCompleted', 'processFailed', 'processRunning'];
         super(url, options);
         this.CLASS_NAME = 'SuperMap.GeoprocessingService';
         this.headers = {};
         this.crossOrigin = true;
-        this.eventCount = 0;
     }
     /**
      * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
-     * @param {string} identifier - 处理自动化工具ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTools(callback) {
-        this._processAsync({ url: `${this.url}/list`, callback });
+      return this._processAsync({ url: `${this.url}/list`, callback });
     }
     /**
      * @function GeoprocessingService.prototype.getTool
      * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTool(identifier, callback) {
-        this._processAsync({ url: `${this.url}/${identifier}`, callback });
+      return this._processAsync({ url: `${this.url}/${identifier}`, callback });
     }
     /**
      * @function GeoprocessingService.prototype.execute
@@ -57692,12 +59881,14 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     execute(identifier, parameter, environment, callback) {
         parameter = parameter ? parameter : null;
         environment = environment ? environment : null;
         const executeParamter = { parameter, environment };
-        this._processAsync({ url: `${this.url}/${identifier}/execute`, executeParamter, callback });
+        return this._processAsync({ url: `${this.url}/${identifier}/execute`, executeParamter, callback });
     }
     /**
      * @function GeoprocessingService.prototype.submitJob
@@ -57705,12 +59896,14 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environments - 处理自动化工具的环境参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     submitJob(identifier, parameter, environments, callback) {
         parameter = parameter ? parameter : null;
         environments = environments ? environments : null;
         const asyncParamter = JSON.stringify({ parameter: parameter, environments: environments });
-        this._processAsync({ url: `${this.url}/${identifier}/jobs`, method: 'POST', callback, params: asyncParamter });
+        return this._processAsync({ url: `${this.url}/${identifier}/jobs`, method: 'POST', callback, params: asyncParamter });
     }
 
     /**
@@ -57725,36 +59918,17 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
     waitForJobCompletion(jobId, identifier, options, callback) {
         const me = this;
         const timer = setInterval(function () {
-            const serviceProcessCompleted = function (serverResult, options) {
-                const state = serverResult.state.runState;
-                if (options.statusCallback) {
-                    options.statusCallback(state);
+            const transformResult = function (serverResult) {
+                const state = serverResult.result.state.runState;
+                if (serverResult.options.statusCallback) {
+                    serverResult.options.statusCallback(state);
                 }
-                switch (state) {
-                    case 'FINISHED':
-                        clearInterval(timer);
-                        me.events.triggerEvent('processCompleted', {
-                            result: serverResult,
-                            options
-                        });
-                        break;
-                    case 'FAILED':
-                        clearInterval(timer);
-                        me.events.triggerEvent('processFailed', {
-                            result: serverResult,
-                            options
-                        });
-                        break;
-                    case 'CANCELED':
-                        clearInterval(timer);
-                        me.events.triggerEvent('processFailed', {
-                            result: serverResult,
-                            options
-                        });
-                        break;
+                if (['FINISHED', 'FAILED', 'CANCELED'].indexOf(state) !== -1) {
+                  clearInterval(timer);
+                  callback(serverResult);
                 }
             };
-            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, serviceProcessCompleted, callback });
+            me._processAsync({ url: `${me.url}/${identifier}/jobs/${jobId}`, callback: transformResult });
         }, options.interval);
     }
 
@@ -57763,9 +59937,10 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
      * @description 获取处理自动化任务的执行信息。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
+     * @returns {Promise} Promise 对象。
      */
     getJobInfo(identifier, jobId, callback) {
-        this._processAsync({ url: `${this.url}/${identifier}/jobs/${jobId}`, callback });
+      return this._processAsync({ url: `${this.url}/${identifier}/jobs/${jobId}`, callback });
     }
 
     /**
@@ -57773,19 +59948,23 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
      * @description 取消处理自动化任务的异步执行。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
+     * @returns {Promise} Promise 对象。
      */
     cancelJob(identifier, jobId, callback) {
-        this._processAsync({ url: `${this.url}/${identifier}/jobs/${jobId}/cancel`, callback });
+      return this._processAsync({ url: `${this.url}/${identifier}/jobs/${jobId}/cancel`, callback });
     }
     /**
      * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
      * @param {string} identifier - 处理自动化工具ID。(传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @returns {Promise} Promise 对象。
      */
     getJobs(identifier, callback) {
         let url = `${this.url}/jobs`;
-        if (identifier) {
+        if (identifier && typeof identifier === 'string') {
             url = `${this.url}/${identifier}/jobs`;
+        } else {
+          callback = identifier;
         }
         this._processAsync({ url, callback });
     }
@@ -57795,55 +59974,29 @@ class GeoprocessingService_GeoprocessingService extends CommonServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
      * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @returns {Promise} Promise 对象。
      */
     getResults(identifier, jobId, filter, callback) {
         let url = `${this.url}/${identifier}/jobs/${jobId}/results`;
         if (filter) {
+          if (typeof filter === 'string') {
             url = `${url}/${filter}`;
-        }
-        this._processAsync({ url, callback });
+          } else {
+            callback = filter;
+          }
+        } 
+        return this._processAsync({ url, callback });
     }
    
-    _processAsync({ url, method, callback, paramter, serviceProcessCompleted, serviceProcessFailed }) {
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
-          this.request({
+    _processAsync({ url, method, callback, paramter }) {
+          return this.request({
               url: url,
               method: method || 'GET',
               params: paramter,
               headers: { 'Content-type': 'application/json' },
               scope: this,
-              success(result, options) {
-                result.eventId = eventId;
-                const callback = serviceProcessCompleted || this.serviceProcessCompleted.bind(this);
-                callback(result, options);
-              },
-              failure(result, options) {
-                if (result.error) {
-                  result.error.eventId = eventId;
-                }
-                result.eventId = eventId;
-                const callback = serviceProcessFailed || this.serviceProcessFailed.bind(this);
-                callback(result, options);
-              }
+              success: callback,
+              failure: callback
           });
       }
 }
@@ -57898,16 +60051,17 @@ class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.getTools
      * @description 获取处理自动化工具列表。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTools(callback) {
-      this._geoprocessingJobsService.getTools(callback);
+      return this._geoprocessingJobsService.getTools(callback);
     }
     /**
      * @function GeoprocessingService.prototype.getTool
      * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
      * @param {string} identifier - 处理自动化工具ID。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getTool(identifier, callback) {
       this._geoprocessingJobsService.getTool(identifier, callback);
@@ -57919,10 +60073,11 @@ class GeoprocessingService extends ServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     execute(identifier, parameter, environment, callback) {
-      this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
+      return this._geoprocessingJobsService.execute(identifier, parameter, environment, callback);
     }
 
     /**
@@ -57931,10 +60086,11 @@ class GeoprocessingService extends ServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     submitJob(identifier, parameter, environment, callback) {
-      this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
+      return this._geoprocessingJobsService.submitJob(identifier, parameter, environment, callback);
     }
 
     /**
@@ -57945,10 +60101,11 @@ class GeoprocessingService extends ServiceBase {
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {function} options.statusCallback - 任务状态的回调函数。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     waitForJobCompletion(jobId, identifier, options, callback) {
-      this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
+      return this._geoprocessingJobsService.waitForJobCompletion(jobId, identifier, options, callback);
     }
 
     /**
@@ -57956,10 +60113,11 @@ class GeoprocessingService extends ServiceBase {
      * @description 获取处理自动化任务的执行信息。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getJobInfo(identifier, jobId, callback) {
-      this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
+      return this._geoprocessingJobsService.getJobInfo(identifier, jobId, callback);
     }
 
     /**
@@ -57967,20 +60125,22 @@ class GeoprocessingService extends ServiceBase {
      * @description 取消处理自动化任务的异步执行。
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     cancelJob(identifier, jobId, callback) {
-      this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
+      return this._geoprocessingJobsService.cancelJob(identifier, jobId, callback);
     }
 
     /**
      * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
      * @param {string} identifier - 处理自动化工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getJobs(identifier, callback) {
-      this._geoprocessingJobsService.getJobs(identifier, callback);
+      return this._geoprocessingJobsService.getJobs(identifier, callback);
     }
 
     /**
@@ -57989,10 +60149,11 @@ class GeoprocessingService extends ServiceBase {
      * @param {string} identifier - 处理自动化工具ID。
      * @param {string} jobId - 处理自动化任务ID。
      * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getResults(identifier, jobId, filter, callback) {
-      this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
+      return this._geoprocessingJobsService.getResults(identifier, jobId, filter, callback);
     }
 }
 
@@ -59921,13 +62082,8 @@ class ThemeGraph extends Theme_Theme {
          *                   datasetNames: ["BaseMap_R"]
          *               }),
          *                   //与服务端交互
-         *               themeService=new ThemeService(url, {
-         *                   eventListeners: {
-         *                       "processCompleted": ThemeCompleted,
-         *                        "processFailed": themeFailed
-         *                  }
-         *              });
-         *       themeService.processAsync(themeParameters);
+         *               themeService=new ThemeService(url);
+         *       themeService.processAsync(themeParameters, ThemeCompleted);
          *   }
          */
         this.memoryKeys = null;
@@ -60979,10 +63135,8 @@ class UGCMapLayer extends UGCLayer {
      *       queryBySQLParams = new QueryBySQLParameters({
      *             queryParams: [queryParam]
      *         }),
-     *       queryBySQLService = new QueryBySQLService(url, {
-     *             eventListeners: { "processCompleted": processCompleted, "processFailed": processFailed}
-     *         });
-     *       queryBySQLService.processAsync(queryBySQLParams);
+     *       queryBySQLService = new QueryBySQLService(url);
+     *       queryBySQLService.processAsync(queryBySQLParams, processCompleted);
      *  }
  *  function processCompleted(queryEventArgs) {//todo}
  *  function processFailed(e) {//todo}
@@ -61888,7 +64042,6 @@ class iServer_Vector_Vector extends UGCSubLayer {
  *        如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：
  *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -61923,36 +64076,38 @@ class GetLayersInfoService extends CommonServiceBase {
     /**
      * @function GetLayersInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this,
             method = "GET";
         if (!me.isTempLayers) {
             me.url = Util_Util.urlPathAppend(me.url, 'layers');
         }
-        me.request({
+        return me.request({
             method: method,
             params: null,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
     /**
-     * @function GetLayersInfoService.prototype.serviceProcessCompleted
-     * @description 编辑完成，执行此方法。
+     * @function GetLayersInfoService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this, existRes, layers, len;
         result = Util_Util.transformResult(result);
-
         existRes = !!result && result.length > 0;
         layers = existRes ? result[0].subLayers.layers : null;
         len = layers ? layers.length : 0;
         me.handleLayers(len, layers);
-        me.events.triggerEvent("processCompleted", {result: result[0], options});
+        return { result: result[0], options };
     }
 
     /**
@@ -61999,7 +64154,67 @@ class GetLayersInfoService extends CommonServiceBase {
             }
         }
     }
+}
 
+;// CONCATENATED MODULE: ./src/common/iServer/GetLayersLegendInfoService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class GetLayersLegendInfoService
+ * @deprecatedclass SuperMap.GetLayersLegendInfoService
+ * @category iServer Map Layer
+ * @classdesc 获取图例信息服务类构造函数。
+ * @version 11.1.1
+ * @extends {CommonServiceBase}
+ * @param {string} url - 服务地址。请求地图服务,URL 应为：
+ *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+ *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。
+ * @param {Object} options - 参数。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @usage
+ */
+class GetLayersLegendInfoService extends CommonServiceBase {
+
+
+    constructor(url, options) {
+        super(url, options);
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+        this.CLASS_NAME = "SuperMap.GetLayersLegendInfoService";
+    }
+
+    /**
+     * @function GetLayersLegendInfoService.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+        Util_Util.reset(this);
+    }
+
+    /**
+     * @function GetLayersLegendInfoService.prototype.processAsync
+     * @description 负责将客户端的更新参数传递到服务端。
+     */
+    processAsync(params, callback) {
+        var me = this,
+          method = "GET";
+        me.url = Util_Util.urlPathAppend(me.url, "/legend");
+        return me.request({
+          method: method,
+          params: params,
+          scope: me,
+          success: callback,
+          failure: callback
+        });
+    }
 
 }
 
@@ -62020,7 +64235,6 @@ class GetLayersInfoService extends CommonServiceBase {
  * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                 http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -62050,19 +64264,21 @@ class SetLayerInfoService extends CommonServiceBase {
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。
      *        该参数可以使用获取图层信息服务<{@link GetLayersInfoService}>返回图层信息，解析结果result.subLayers.layers[i]，然后对其属性进行修改来获取。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
         var me = this;
         var jsonParamsStr = Util_Util.toJSON(params);
-        me.request({
+        return me.request({
             method: "PUT",
             data: jsonParamsStr,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -62088,7 +64304,6 @@ class SetLayerInfoService extends CommonServiceBase {
  * @param {Object} options - 参数。
  * @param {string} options.resourceID - 图层资源ID，临时图层的资源ID标记。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -62130,8 +64345,10 @@ class SetLayersInfoService extends CommonServiceBase {
      * @function SetLayersInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务 <{@link GetLayersInfoService}>返回图层信息，然后对其属性进行修改来获取。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
@@ -62182,12 +64399,12 @@ class SetLayersInfoService extends CommonServiceBase {
         jsonParams.subLayers = {"layers": subLayers};
         jsonParams.object = null;
         var jsonParamsStr = Util_Util.toJSON([jsonParams]);
-        me.request({
+        return me.request({
             method: method,
             data: jsonParamsStr,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -62295,7 +64512,6 @@ class SetLayerStatusParameters {
  * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -62330,8 +64546,10 @@ class SetLayerStatusService extends CommonServiceBase {
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务{@link SetLayerStatusParameters}
      *                          返回图层信息，然后对其属性进行修改来获取。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof SetLayerStatusParameters)) {
             return;
         }
@@ -62343,11 +64561,11 @@ class SetLayerStatusService extends CommonServiceBase {
             me.url = Util_Util.urlPathAppend(me.url, 'tempLayersSet');
             me.lastparams = params;
 
-            me.request({
+            return me.request({
                 method: method,
                 scope: me,
-                success: me.createTempLayerComplete,
-                failure: me.serviceProcessFailed
+                success: me.createTempLayerComplete.bind(me, callback),
+                failure: callback
             });
         } else {
             me.url = Util_Util.urlPathAppend(me.url, "tempLayersSet/" + params.resourceID);
@@ -62364,12 +64582,12 @@ class SetLayerStatusService extends CommonServiceBase {
 
             jsonParameters += '}]';
 
-            me.request({
+            return me.request({
                 method: "PUT",
                 data: jsonParameters,
                 scope: me,
-                success: me.serviceProcessCompleted,
-                failure: me.serviceProcessFailed
+                success: callback,
+                failure: callback
             });
         }
     }
@@ -62377,16 +64595,18 @@ class SetLayerStatusService extends CommonServiceBase {
     /**
      * @function SetLayerStatusService.prototype.createTempLayerComplete
      * @description 设置完成，执行此方法。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {Object} result - 服务器返回的结果对象，记录设置操作是否成功。
+     * @returns {Promise} Promise 对象。
      */
-    createTempLayerComplete(result) {
+    createTempLayerComplete(callback, result) {
         var me = this;
-        result = Util_Util.transformResult(result);
-        if (result.succeed) {
-            me.lastparams.resourceID = result.newResourceID;
+        result.result = Util_Util.transformResult(result.result);
+        if (result.result.succeed) {
+            me.lastparams.resourceID = result.result.newResourceID;
         }
 
-        me.processAsync(me.lastparams);
+        return me.processAsync(me.lastparams, callback);
     }
 
     /**
@@ -62405,17 +64625,19 @@ class SetLayerStatusService extends CommonServiceBase {
     }
 
     /**
-     * @function SetLayerStatusService.prototype.setLayerCompleted
-     * @description 设置完成，执行此方法。
+     * @function SetLayerStatusService.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象，记录设置操作是否成功。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
       var me = this;
       result = Util_Util.transformResult(result);
-      if (result != null && me.lastparams != null) {
+      if (result != null && me.lastparams != null && me.lastparams.resourceID != null) {
           result.newResourceID = me.lastparams.resourceID;
       }
-      me.events.triggerEvent("processCompleted", {result: result, options});
+      return { result, options };
     }
 }
 
@@ -62424,6 +64646,7 @@ class SetLayerStatusService extends CommonServiceBase {
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
 
 
 
@@ -62458,7 +64681,8 @@ class LayerInfoService_LayerInfoService {
     /**
      * @function LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLayersInfo(callback) {
         var me = this;
@@ -62466,20 +64690,35 @@ class LayerInfoService_LayerInfoService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        getLayersInfoService.processAsync();
+        return getLayersInfoService.processAsync(callback);
+    }
+
+    /**
+     * @function LayerInfoService.prototype.getLayersLegendInfo
+     * @version 11.1.1
+     * @description 获取地图的图例信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getLayersLegendInfo(params, callback) {
+      var me = this;
+      var getLayersLegendInfoService = new GetLayersLegendInfoService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+      });
+      return getLayersLegendInfoService.processAsync(params, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
      * @param {SetLayerInfoParameters} params - 设置图层信息参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayerInfo(params, callback) {
         if (!params) {
@@ -62497,20 +64736,17 @@ class LayerInfoService_LayerInfoService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        setLayerInfoService.processAsync(layerInfoParams);
+        return setLayerInfoService.processAsync(layerInfoParams, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以创建新的临时图层和修改现有的临时图层。
      * @param {SetLayersInfoParameters} params - 设置图层信息参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayersInfo(params, callback) {
         if (!params) {
@@ -62528,21 +64764,18 @@ class LayerInfoService_LayerInfoService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
             resourceID: resourceID,
             isTempLayers: isTempLayers
         });
-        setLayersInfoService.processAsync(layersInfo);
+        return setLayersInfoService.processAsync(layersInfo, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SetLayerStatusParameters} params - 子图层显示控制参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayerStatus(params, callback) {
         if (!params) {
@@ -62553,13 +64786,9 @@ class LayerInfoService_LayerInfoService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        setLayerStatusService.processAsync(params);
+        return setLayerStatusService.processAsync(params, callback);
     }
 }
 
@@ -62599,41 +64828,55 @@ class LayerInfoService extends ServiceBase {
     /**
      * @function LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {LayerInfoService} 返回图层信息类。
      */
     getLayersInfo(callback) {
-      this._layerInfoService.getLayersInfo(callback);
+      return this._layerInfoService.getLayersInfo(callback);
+    }
+
+    /**
+     * @function LayerInfoService.prototype.getLayersLegendInfo
+     * @description 获取地图的图例信息。
+     * @version 11.1.1
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getLayersLegendInfo(params, callback) {
+      return this._layerInfoService.getLayersLegendInfo(params, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改。
      * @param {SetLayerInfoParameters} params - 设置图层信息参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayerInfo(params, callback) {
-      this._layerInfoService.setLayerInfo(params, callback);
+      return this._layerInfoService.setLayerInfo(params, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改。
      * @param {SetLayersInfoParameters} params - 设置图层信息参数类,包括临时图层。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayersInfo(params, callback) {
-      this._layerInfoService.setLayersInfo(params, callback);
+      return this._layerInfoService.setLayersInfo(params, callback);
     }
 
     /**
      * @function LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param {SetLayerStatusParameters} params - 子图层显示控制参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     setLayerStatus(params, callback) {
-      this._layerInfoService.setLayerStatus(params, callback);
+      return this._layerInfoService.setLayerStatus(params, callback);
     }
 }
 
@@ -62651,16 +64894,10 @@ class LayerInfoService extends ServiceBase {
  * @classdesc 地图信息服务类。
  * @extends {CommonServiceBase}
  * @example
- * var myMapService = new MapService(url, {
- * eventListeners:{
- *     "processCompleted": MapServiceCompleted,
- *       "processFailed": MapServiceFailed
- *       }
- * });
+ * var myMapService = new MapService(url);
  *
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -62694,85 +64931,48 @@ class MapService_MapService extends CommonServiceBase {
                 }
             }
         }
-        this.eventCount = 0;
     }
 
     /**
-     * @function  destroy
+     * @function MapService.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
         super.destroy();
-        var me = this;
-        if (me.events) {
-            me.events.un(me.eventListeners);
-            me.events.listeners = null;
-            me.events.destroy();
-            me.events = null;
-            me.eventListeners = null;
-        }
     }
 
     /**
-     * @function  MapService.prototype.processAsync
+     * @function MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(callback) {
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
         var me = this;
-        me.request({
+        return me.request({
             method: "GET",
             scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              this.serviceProcessCompleted(result, options);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              this.serviceProcessFailed(result, options);
-            }
+            success: callback,
+            failure: callback
         });
     }
 
-    /*
-     * Method: getMapStatusCompleted
-     * 获取地图状态完成，执行此方法。
-     *
-     * Parameters:
-     * {Object} result - 服务器返回的结果对象。
+    /**
+     * @function MapService.prototype.transformResult
+     * @description 状态完成时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
-        var me = this;
+    transformResult(result, options) {
         result = Util_Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
-            me.events && me.events.triggerEvent("processCompleted", {result: result, options});
+            return {result: result, options};
         } else {
             ////在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
-            me.events.triggerEvent("processFailed", {error: result, options});
+            return {error: result, options};
         }
     }
 }
@@ -62795,7 +64995,6 @@ class MapService_MapService extends CommonServiceBase {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{服务名}/rest/maps/map；
  *                       例如: "http://localhost:8090/iserver/services/test/rest/maps/tianlocal"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -62818,18 +65017,20 @@ class TilesetsService extends CommonServiceBase {
     /**
      * @function TilesetsService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         if (!this.url) {
             return;
         }
         var me = this;
         me.url = Util_Util.urlPathAppend(me.url, 'tilesets');
-        me.request({
+        return me.request({
             method: "GET",
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -62871,8 +65072,8 @@ class MapService extends ServiceBase {
     /**
      * @function MapService.prototype.getMapInfo
      * @description 地图信息查询服务。
-     * @param {RequestCallback} callback 回调函数。
-     * @returns {MapService} 获取服务信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getMapInfo(callback) {
         var me = this;
@@ -62883,14 +65084,33 @@ class MapService extends ServiceBase {
             headers: me.options.headers,
             projection: me.options.projection
         });
-        getMapStatusService.processAsync(callback);
+        return getMapStatusService.processAsync(callback);
+    }
+
+    /**
+     * @function MapService.prototype.getWKT
+     * @description 获取WKT。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getWKT(callback) {
+      var me = this;
+      var getMapStatusService = new MapService_MapService(`${me.url}/prjCoordSys.wkt`, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          withoutFormatSuffix: true,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+          projection: me.options.projection
+      });
+      return getMapStatusService.processAsync(callback);
     }
 
     /**
      * @function MapService.prototype.getTilesets
      * @description 切片列表信息查询服务。
-     * @param {RequestCallback} callback - 回调函数 。
-     * @returns {MapService} 获取服务信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTilesets(callback) {
         var me = this;
@@ -62898,15 +65118,9 @@ class MapService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        tilesetsService.processAsync();
+        return tilesetsService.processAsync(callback);
     }
 }
 
@@ -63002,14 +65216,10 @@ class MeasureParameters {
  * @extends {CommonServiceBase}
  * @example
  * var myMeasuerService = new MeasureService(url, {
- *      measureMode: MeasureMode.DISTANCE,
- *      eventListeners:{
- *          "processCompleted": measureCompleted
- *      }
+ *      measureMode: MeasureMode.DISTANCE
  * });
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -63030,7 +65240,6 @@ class MeasureService_MeasureService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = "SuperMap.MeasureService";
     }
 
@@ -63047,31 +65256,13 @@ class MeasureService_MeasureService extends CommonServiceBase {
      * @function MeasureService.prototype.processAsync
      * @description 负责将客户端的量算参数传递到服务端。
      * @param {MeasureParameters} params - 量算参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
         if (!(params instanceof MeasureParameters)) {
             return;
         }
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
         var me = this,
             geometry = params.geometry,
             pointsCount = 0,
@@ -63105,21 +65296,12 @@ class MeasureService_MeasureService extends CommonServiceBase {
             paramsTemp = {"point2Ds": Util_Util.toJSON(point2ds), "unit": params.unit, "distanceMode": params.distanceMode || 'Geodesic'};
         }
 
-        me.request({
+        return me.request({
             method: "GET",
             params: paramsTemp,
             scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              this.serviceProcessCompleted(result, options);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              this.serviceProcessFailed(result, options);
-            }
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -63159,20 +65341,22 @@ class MeasureService extends ServiceBase {
      * @function MeasureService.prototype.measureDistance
      * @description 距离量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance(params, callback) {
-        this.measure(params, 'DISTANCE', callback);
+        return this.measure(params, 'DISTANCE', callback);
     }
 
     /**
      * @function MeasureService.prototype.measureArea
      * @description 面积量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureArea(params, callback) {
-        this.measure(params, 'AREA', callback);
+        return this.measure(params, 'AREA', callback);
     }
 
     /**
@@ -63180,7 +65364,7 @@ class MeasureService extends ServiceBase {
      * @description 量算。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 量算类型。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {MeasureService} 量算服务。
      */
     measure(params, type, callback) {
@@ -63192,7 +65376,7 @@ class MeasureService extends ServiceBase {
             headers: me.options.headers,
             measureMode: type
         });
-        measureService.processAsync(me._processParam(params), callback);
+        return measureService.processAsync(me._processParam(params), callback);
     }
 
     _processParam(params) {
@@ -63249,11 +65433,13 @@ class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function NetworkAnalystServiceBase.prototype.serviceProcessCompleted
-     * @description 分析完成，执行此方法。
+     * @function NetworkAnalystServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this, analystResult;
         result = Util_Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
@@ -63262,7 +65448,7 @@ class NetworkAnalystServiceBase extends CommonServiceBase {
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, options});
+        return { result: analystResult, options };
     }
 
     /**
@@ -63363,7 +65549,6 @@ class BurstPipelineAnalystParameters {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}，
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -63387,8 +65572,10 @@ class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
      * @function BurstPipelineAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @params {BurstPipelineAnalystParameters} params - 爆管分析参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof BurstPipelineAnalystParameters)) {
             return null;
         }
@@ -63412,16 +65599,14 @@ class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
             jsonObject.nodeID = params.nodeID;
         }
 
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
-
-
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/TransportationAnalystResultSetting.js
@@ -63701,17 +65886,11 @@ class ComputeWeightMatrixParameters {
  *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var mycomputeWeightMatrixService = new ComputeWeightMatrixService(url,{
- *     eventListeners: {
- *	       "processCompleted": computeWeightMatrixCompleted,
- *		   "processFailed": computeWeightMatrixnError
- *	   }
- * });
+ * var mycomputeWeightMatrixService = new ComputeWeightMatrixService(url);
  * @param {string} url - 耗费矩阵分析服务地址。请求服务的URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如："http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -63737,8 +65916,10 @@ class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
      * @function ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof ComputeWeightMatrixParameters)) {
             return;
         }
@@ -63749,12 +65930,12 @@ class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
             parameter: Util_Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -63880,7 +66061,6 @@ class FacilityAnalystStreamParameters {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -63906,8 +66086,10 @@ class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
      * @function FacilityAnalystStreamService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystStreamParameters} params - 上游/下游关键设施查找资源参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystStreamParameters)) {
             return;
         }
@@ -63939,17 +66121,392 @@ class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
             jsonObject.nodeID = params.nodeID;
         }
 
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
 }
 
+;// CONCATENATED MODULE: ./src/common/iServer/TraceAnalystParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+
+ /**
+  * @class TraceAnalystParameters
+  * @deprecatedclass SuperMap.TraceAnalystParameters
+  * @category iServer NetworkAnalyst TraceAnalystService
+  * @classdesc 上游/下游追踪分析参数类。
+  * @version 11.1.1
+  * @param {Object} options - 参数。
+  * @param {number} options.traceType - 分析类型，只能是 0 (上游追踪分析) 或者是 1 (下游追踪分析)。
+  * @param {number} [options.edgeID] - 【与nodeID必填一项】需查找上游设施的弧段 ID 。
+  * @param {number} [options.nodeID] - 【与edgeID必填一项】需查找上游设施的结点 ID 。
+  * @param {string} [options.weightName] - 权重字段。
+  * @param {boolean} [options.returnFeatures=true] - 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
+  * @param {boolean} [options.isUncertainDirectionValid=true] - 指定不确定流向是否有效。true表示不确定流向有效，遇到不确定流向时分析继续进行；false表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
+  * @param {boolean} [options.withIndex=true] - 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+  * @usage
+  */
+ class TraceAnalystParameters {
+ 
+ 
+     constructor(options) {
+         /**
+          * @member {number} [TraceAnalystParameters.prototype.edgeID]
+          * @description 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。
+          */
+         this.edgeID = null;
+ 
+         /**
+          * @member {number} [TraceAnalystParameters.prototype.nodeID]
+          * @description 指定的结点 ID，edgeID 与 nodeID 必须指定一个。
+          */
+         this.nodeID = null;
+ 
+         /**
+          * @member {string} [TraceAnalystParameters.prototype.weightName]
+          * @description 权重字段。
+          */
+         this.weightName = null;
+
+         /**
+          * @member {boolean} [TraceAnalystParameters.prototype.returnFeatures=true]
+          * @description 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
+          */
+         this.returnFeatures = true;
+ 
+         /**
+          * @member {boolean} [TraceAnalystParameters.prototype.isUncertainDirectionValid=false]
+          * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
+          *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
+          */
+         this.isUncertainDirectionValid = true;
+ 
+         /**
+          * @member {number} TraceAnalystParameters.prototype.traceType
+          * @description 分析类型，只能是 0 (上游追踪分析) 或者是 1（下游追踪分析）。
+          */
+         this.traceType = null;
+
+         /**
+          * @member {boolean} TraceAnalystParameters.prototype.withIndex
+          * @description 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+          */
+         this.withIndex = null;
+         Util_Util.extend(this, options);
+         this.CLASS_NAME = "SuperMap.TraceAnalystParameters";
+     }
+ 
+ 
+     /**
+      * @function TraceAnalystParameters.prototype.destroy
+      * @description 释放资源，将引用资源的属性置空。
+      */
+     destroy() {
+         var me = this;
+         me.edgeID = null;
+         me.nodeID = null;
+         me.weightName = null;
+         me.returnFeatures = null;
+         me.isUncertainDirectionValid = null;
+         me.type = null;
+         me.withIndex = null;
+     }
+ 
+ }
+ 
+;// CONCATENATED MODULE: ./src/common/iServer/TraceAnalystService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reservceTypeed.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ 
+ 
+ /**
+  * @class TraceAnalystService
+  * @deprecatedclass SuperMap.TraceAnalystService
+  * @category iServer NetworkAnalyst TraceAnalystService
+  * @classdesc 上游/下游 追踪分析服务类；即查找给定弧段或节点的上游/下游弧段和结点。
+  * @version 11.1.1
+  * @extends NetworkAnalystServiceBase
+  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
+  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
+  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
+  * @param {Object} options - 参数。
+  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+  * @param {Object} [options.headers] - 请求头。
+  * @usage
+  */
+ class TraceAnalystService extends NetworkAnalystServiceBase {
+ 
+     constructor(url, options) {
+         super(url, options);
+         this.CLASS_NAME = "SuperMap.TraceAnalystService";
+     }
+
+ 
+     /**
+      * @function TraceAnalystService.prototype.destroy
+      * @override
+      */
+     destroy() {
+         super.destroy();
+     }
+ 
+ 
+     /**
+      * @function TraceAnalystService.prototype.processAsync
+      * @description 负责将客户端的查询参数传递到服务端。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @param {TraceAnalystParameters} params - 上游/下游追踪分析参数类。
+      */
+     processAsync(params, callback) {
+         if (!(params instanceof TraceAnalystParameters)) {
+             return;
+         }
+         var me = this,
+             jsonObject;
+         //URL 通过参数类型来判断是 上游 还是下游 追踪分析
+         if (params.traceType === 0) {
+             me.url = Util_Util.urlPathAppend(me.url, 'traceup');
+         } else if (params.traceType === 1) {
+             me.url = Util_Util.urlPathAppend(me.url, 'tracedown');
+         } else {
+             return;
+         }
+ 
+         jsonObject = {
+            weightName: params.weightName,
+            isUncertainDirectionValid: params.isUncertainDirectionValid,
+            returnFeatures: params.returnFeatures
+         };
+ 
+         if (params.edgeID !== null && params.nodeID !== null) {
+             return;
+         }
+         if (params.edgeID === null && params.nodeID === null) {
+             return;
+         }
+         if (params.edgeID !== null) {
+             jsonObject.edgeID = params.edgeID;
+         } else {
+             jsonObject.nodeID = params.nodeID;
+         }
+ 
+         return me.request({
+             method: "GET",
+             params: jsonObject,
+             scope: me,
+             success: callback,
+             failure: callback
+         });
+     }
+
+      /**
+     * @function FindClosestFacilitiesService.prototype.toGeoJSONResult
+     * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
+     * @param {Object} result - 服务器返回的结果对象。
+     */
+    toGeoJSONResult(result) {
+      if (!result) {
+        return null;
+      }
+      var geoJSONFormat = new GeoJSON();
+      if (result.edgesFeatures) {
+        result.edgesFeatures = geoJSONFormat.toGeoJSON(result.edgesFeatures);
+      }
+      if (result.nodesFeatures) {
+        result.nodesFeatures = geoJSONFormat.toGeoJSON(result.nodesFeatures);
+      }
+      return result;
+    }
+ 
+ }
+ 
+;// CONCATENATED MODULE: ./src/common/iServer/ConnectedEdgesAnalystParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class ConnectedEdgesAnalystParameters
+ * @deprecatedclass SuperMap.ConnectedEdgesAnalystParameters
+ * @category iServer NetworkAnalyst ConnectedEdges
+ * @classdesc 连通性分析参数类。
+ * @version 11.1.1
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.connected] - 查询是否相连通的弧段。为 true 时，查询相连通的弧段；为 false 时，查询不连通的弧段。
+ * @param {boolean} [options.returnFeatures=true] - 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
+ * @param {Array.<number>} [options.edgeIDs] - 分析结果的连通弧段 ID 的集合。
+ * @param {Array.<number>} [options.nodeIDs] - 分析结果的连通结点 ID 的集合。
+ * @param {boolean} [options.withIndex=true] - 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+ * @usage
+ */
+class ConnectedEdgesAnalystParameters {
+
+    constructor(options) {
+        /**
+         * @member {boolean} [ConnectedEdgesAnalystParameters.prototype.connected]
+         * @description 查询是否相连通的弧段。为 true 时，查询相连通的弧段；为 false 时，查询不连通的弧段。
+         */
+        this.connected = null;
+
+        /**
+         * @member {boolean} [ConnectedEdgesAnalystParameters.prototype.returnFeatures=true]
+         * @description 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
+         */
+        this.returnFeatures = true;
+
+        /**
+         * @member {Array.<number>} [ConnectedEdgesAnalystParameters.prototype.edgeIDs]
+         * @description 分析结果的连通弧段 ID 的集合。
+         */
+        this.edgeIDs = null;
+
+        /**
+         * @member {Array.<number>} [ConnectedEdgesAnalystParameters.prototype.nodeIDs]
+         * @description 分析结果的连通结点 ID 的集合。
+         */
+        this.nodeIDs = null;
+
+        /**
+         * @member {boolean} [ConnectedEdgesAnalystParameters.prototype.withIndex]
+         * @description 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+         */
+        this.withIndex = null;
+
+        Util_Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.ConnectedEdgesAnalystParameters";
+    }
+
+
+    /**
+     * @function ConnectedEdgesAnalystParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.edgeIDs = null;
+        me.nodeIDs = null;
+        me.connected = null;
+        me.returnFeatures = null;
+        me.withIndex = null;
+    }
+
+}
+
+;// CONCATENATED MODULE: ./src/common/iServer/ConnectedEdgesAnalystService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reservceTypeed.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+ 
+ /**
+  * @class ConnectedEdgesAnalystService
+  * @deprecatedclass SuperMap.ConnectedEdgesAnalystService
+  * @category iServer NetworkAnalyst UpstreamCirticalFaclilities
+  * @classdesc 连通性分析服务类，查找与给定结点或者弧段相连通的弧段。
+  * @version 11.1.1
+  * @extends NetworkAnalystServiceBase
+  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
+  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
+  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
+  * @param {Object} options - 参数。
+  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+  * @param {Object} [options.headers] - 请求头。
+  * @usage
+  */
+ class ConnectedEdgesAnalystService extends NetworkAnalystServiceBase {
+ 
+     constructor(url, options) {
+         super(url, options);
+         this.CLASS_NAME = "SuperMap.ConnectedEdgesAnalystService";
+     }
+
+ 
+     /**
+      * @function ConnectedEdgesAnalystService.prototype.destroy
+      * @override
+      */
+     destroy() {
+         super.destroy();
+     }
+ 
+ 
+     /**
+      * @function ConnectedEdgesAnalystService.prototype.processAsync
+      * @description 负责将客户端的查询参数传递到服务端。
+      * @param {ConnectedEdgesAnalystParameters} params - 上游/下游追踪分析参数类。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
+      */
+     processAsync(params, callback) {
+         if (!(params instanceof ConnectedEdgesAnalystParameters)) {
+             return;
+         }
+         var me = this,
+             jsonObject;
+         me.url = Util_Util.urlPathAppend(me.url, 'connectededges');
+ 
+         jsonObject = {
+            connected: params.connected,
+            returnFeatures: params.returnFeatures
+         };
+         if (params.edgeIDs !== null && params.nodeIDs !== null) {
+             return;
+         }
+         if (params.edgeIDs === null && params.nodeIDs === null) {
+             return;
+         }
+         if (params.edgeIDs !== null) {
+             jsonObject.edgeIDs = params.edgeIDs;
+         } else {
+             jsonObject.nodeIDs = params.nodeIDs;
+         }
+ 
+         return me.request({
+             method: "GET",
+             params: jsonObject,
+             scope: me,
+             success: callback,
+             failure: callback
+         });
+     }
+
+    /**
+     * @function FindClosestFacilitiesService.prototype.toGeoJSONResult
+     * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
+     * @param {Object} result - 服务器返回的结果对象。
+     */
+    toGeoJSONResult(result) {
+      if (!result) {
+        return null;
+      }
+      var geoJSONFormat = new GeoJSON();
+      if (result.edgesFeatures) {
+        result.edgesFeatures = geoJSONFormat.toGeoJSON(result.edgesFeatures);
+      }
+      if (result.nodesFeatures) {
+        result.nodesFeatures = geoJSONFormat.toGeoJSON(result.nodesFeatures);
+      }
+      return result;
+    }
+ 
+ }
+ 
 ;// CONCATENATED MODULE: ./src/common/iServer/FindClosestFacilitiesParameters.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -64069,17 +66626,11 @@ class FindClosestFacilitiesParameters {
  *            最近设施分析结果通过该类支持的事件的监听函数参数获取
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var myfindClosestFacilitiesService = new FindClosestFacilitiesService(url, {
- *     eventListeners: {
- *	       "processCompleted": findClosestFacilitiesCompleted,
- *		   "processFailed": findClosestFacilitiesError
- *		   }
- * });
+ * var myfindClosestFacilitiesService = new FindClosestFacilitiesService(url);
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -64103,8 +66654,10 @@ class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
      * @function FindClosestFacilitiesService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FindClosestFacilitiesParameters} params - 最近设施分析服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindClosestFacilitiesParameters)) {
             return;
         }
@@ -64119,12 +66672,12 @@ class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
             event: Util_Util.toJSON(params.event),
             facilities: me.getJson(params.isAnalyzeById, params.facilities)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -64293,17 +66846,11 @@ class FindLocationParameters {
  * @extends {NetworkAnalystServiceBase}
  * @example
  * (start code)
- * var findLocationService = new FindLocationService(url, {
- *     eventListeners: {
- *         "processCompleted": findLocationCompleted,
- *		   "processFailed": findLocationError
- *		   }
- * });
+ * var findLocationService = new FindLocationService(url);
  * (end)
  * @param {string} url - 服务地址。
  *                       如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -64328,8 +66875,10 @@ class FindLocationService extends NetworkAnalystServiceBase {
      * @function FindLocationService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FindLocationParameters} params - 选址分区分析服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindLocationParameters)) {
             return;
         }
@@ -64347,12 +66896,12 @@ class FindLocationService extends NetworkAnalystServiceBase {
             mapParameter: Util_Util.toJSON(params.mapParameter),
             supplyCenters: me.getCentersJson(params.supplyCenters)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -64503,17 +67052,11 @@ class FindMTSPPathsParameters {
  *            多旅行商分析结果通过该类支持的事件的监听函数参数获取。
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var myFindMTSPPathsService = new FindMTSPPathsService(url, {
- *     eventListeners: {
- *         "processCompleted": findMTSPPathsCompleted,
- *		   "processFailed": findMTSPPathsError
- *		   }
- * });
+ * var myFindMTSPPathsService = new FindMTSPPathsService(url);
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -64538,8 +67081,10 @@ class FindMTSPPathsService extends NetworkAnalystServiceBase {
      * @function FindMTSPPathsService..prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindMTSPPathsParameters)) {
             return;
         }
@@ -64555,12 +67100,12 @@ class FindMTSPPathsService extends NetworkAnalystServiceBase {
             parameter: Util_Util.toJSON(params.parameter),
             hasLeastTotalCost: params.hasLeastTotalCost
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -64727,17 +67272,11 @@ class FindPathParameters {
  *            最佳路径分析结果通过该类支持的事件的监听函数参数获取
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var myFindPathService = new FindPathService(url, {
- *     eventListeners: {
- *	       "processCompleted": findPathCompleted,
- *		   "processFailed": findPathError
- *		   }
- * });
+ * var myFindPathService = new FindPathService(url);
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -64762,8 +67301,10 @@ class FindPathService extends NetworkAnalystServiceBase {
      * @function FindPathService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FindPathParameters} params - 最佳路径分析服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindPathParameters)) {
             return;
         }
@@ -64774,12 +67315,12 @@ class FindPathService extends NetworkAnalystServiceBase {
             parameter: Util_Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -64960,17 +67501,11 @@ class FindServiceAreasParameters {
  *            服务区分析结果通过该类支持的事件的监听函数参数获取
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var myFindServiceAreasService = new FindServiceAreasService(url, {
- *          eventListeners: {
- *              "processCompleted": findServiceAreasCompleted,
- *              "processFailed": findServiceAreasError
- *          }
- * });
+ * var myFindServiceAreasService = new FindServiceAreasService(url);
  * @param {string} url - 服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：
- * @param {Object} options.eventListeners - 需要被注册的监听器对象
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -64995,8 +67530,10 @@ class FindServiceAreasService extends NetworkAnalystServiceBase {
      * @function FindServiceAreasService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FindServiceAreasParameters} params - 服务区分析服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindServiceAreasParameters)) {
             return;
         }
@@ -65009,12 +67546,12 @@ class FindServiceAreasService extends NetworkAnalystServiceBase {
             centers: me.getJson(params.isAnalyzeById, params.centers),
             weights: me.getJson(true, params.weights)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -65177,18 +67714,12 @@ class FindTSPPathsParameters {
  * @extends {NetworkAnalystServiceBase}
  * @example
  * (start code)
- * var myFindTSPPathsService = new FindTSPPathsService(url, {
- *     eventListeners: {
- *	      "processCompleted": findTSPPathsCompleted,
- *		  "processFailed": findTSPPathsError
- *		  }
- *  });
+ * var myFindTSPPathsService = new FindTSPPathsService(url);
  * (end)
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -65212,9 +67743,11 @@ class FindTSPPathsService extends NetworkAnalystServiceBase {
     /**
      * @function FindTSPPathsService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FindTSPPathsParameters)) {
             return;
         }
@@ -65225,12 +67758,12 @@ class FindTSPPathsService extends NetworkAnalystServiceBase {
             endNodeAssigned: params.endNodeAssigned,
             nodes: me.getNodesJson(params)
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -65385,16 +67918,10 @@ class UpdateEdgeWeightParameters {
  * @extends {NetworkAnalystServiceBase}
  * @example
  *(start code)
- * var updateEdgeWeightService = new UpdateEdgeWeightService(url, {
- *     eventListeners: {
- *         "processCompleted": UpdateEdgeWeightCompleted,
- *		   "processFailed": UpdateEdgeWeightError
- *		   }
- * });
+ * var updateEdgeWeightService = new UpdateEdgeWeightService(url);
  * (end)
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -65417,6 +67944,8 @@ class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
      * @function UpdateEdgeWeightService.prototype.processAsync
      * @description 开始异步执行边的边的耗费权重的更新
      * @param {UpdateEdgeWeightParameters} params - 边的耗费权重更新服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      * @example
      * (code)
      *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
@@ -65429,7 +67958,7 @@ class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
      *  updateEdgeWeightService.processAsync(updateEdgeWeightParam);
      * (end)
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof UpdateEdgeWeightParameters)) {
             return;
         }
@@ -65438,12 +67967,12 @@ class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
         var paramStr = me.parse(params);
         me.url = Util_Util.urlPathAppend(me.url, paramStr);
         var data = params.edgeWeight ? params.edgeWeight : null;
-        me.request({
+        return me.request({
             method: "PUT",
             scope: me,
             data: data,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -65569,16 +68098,10 @@ class UpdateTurnNodeWeightParameters {
  * @classdesc 转向耗费权重更新服务类
  * @extends {NetworkAnalystServiceBase}
  * @example
- * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url, {
- *     eventListeners: {
- *         "processCompleted": UpdateTurnNodeWeightCompleted,
- *		   "processFailed": UpdateTurnNodeWeightError
- *		   }
- * });
+ * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url);
  * @param {string} url - 服务地址。如:
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -65601,6 +68124,8 @@ class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
      * @function UpdateTurnNodeWeightService.prototype.processAsync
      * @description 开始异步执行转向耗费权重的更新
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      * @example
      * (code)
      *  var updateTurnNodeWeightParam=new UpdateTurnNodeWeightParameters({
@@ -65613,7 +68138,7 @@ class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
      *  updateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
      * (end)
      **/
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof UpdateTurnNodeWeightParameters)) {
             return;
         }
@@ -65621,12 +68146,12 @@ class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
         var paramStr = me.parse(params);
         me.url = Util_Util.urlPathAppend(me.url, paramStr);
         var data = params.turnNodeWeight ? params.turnNodeWeight : null;
-        me.request({
+        return me.request({
             method: "PUT",
             scope: me,
             data: data,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -65682,6 +68207,8 @@ class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
 
 
+
+
 /**
  * @class NetworkAnalystService
  * @category  iServer NetworkAnalyst
@@ -65713,7 +68240,8 @@ class NetworkAnalystService_NetworkAnalystService {
      * @function NetworkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param {BurstPipelineAnalystParameters} params - 爆管分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     burstPipelineAnalyst(params, callback) {
         var me = this;
@@ -65721,22 +68249,17 @@ class NetworkAnalystService_NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        burstPipelineAnalystService.processAsync(params);
+        return burstPipelineAnalystService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.computeWeightMatrix
      * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     computeWeightMatrix(params, callback) {
         var me = this;
@@ -65744,23 +68267,18 @@ class NetworkAnalystService_NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        computeWeightMatrixService.processAsync(params);
+        return computeWeightMatrixService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findClosestFacilities
      * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
      * @param {FindClosestFacilitiesParameters} params - 最近设施分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findClosestFacilities(params, callback, resultFormat) {
         var me = this;
@@ -65769,23 +68287,58 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findClosestFacilitiesService.processAsync(params);
+        return findClosestFacilitiesService.processAsync(params, callback);
     }
+
+    /**
+     * @function NetworkAnalystService.prototype.traceAnalyst
+     * @description 上游/下游 追踪分析服务:查找给定弧段或节点的上游/下游弧段和结点。
+     * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+      traceAnalyst(params, callback, resultFormat) {
+        var me = this;
+        var traceAnalystService = new TraceAnalystService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            format: me._processFormat(resultFormat)
+        });
+        return traceAnalystService.processAsync(params, callback);
+      }
+  
+      /**
+       * @function NetworkAnalystService.prototype.connectedEdgesAnalyst
+       * @description 连通性分析服务。
+       * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
+       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+       * @returns {Promise} Promise 对象。
+       */
+      connectedEdgesAnalyst(params, callback, resultFormat) {
+        var me = this;
+        var connectedEdgesAnalystService = new ConnectedEdgesAnalystService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            format: me._processFormat(resultFormat)
+        });
+        return connectedEdgesAnalystService.processAsync(params, callback);
+      }
 
     /**
      * @function NetworkAnalystService.prototype.streamFacilityAnalyst
      * @description 上游/下游 关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param {FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     streamFacilityAnalyst(params, callback, resultFormat) {
         var me = this;
@@ -65794,23 +68347,18 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        facilityAnalystStreamService.processAsync(params);
+        return facilityAnalystStreamService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findLocation
      * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置。
      * @param {FindLocationParameters} params - 选址分区分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findLocation(params, callback, resultFormat) {
         var me = this;
@@ -65819,23 +68367,18 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findLocationService.processAsync(params);
+        return findLocationService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findPath
      * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
      * @param {FindPathParameters} params - 最佳路径分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findPath(params, callback, resultFormat) {
         var me = this;
@@ -65844,23 +68387,18 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findPathService.processAsync(params);
+        return findPathService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findTSPPaths
      * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -65869,23 +68407,18 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findTSPPathsService.processAsync(params);
+        return findTSPPathsService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findMTSPPaths
      * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
      * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findMTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -65894,23 +68427,18 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findMTSPPathsService.processAsync(params);
+        return findMTSPPathsService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findServiceAreas
      * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
      * @param {FindServiceAreasParameters} params - 服务区分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findServiceAreas(params, callback, resultFormat) {
         var me = this;
@@ -65919,22 +68447,17 @@ class NetworkAnalystService_NetworkAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        findServiceAreasService.processAsync(params);
+        return findServiceAreasService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.updateEdgeWeight
      * @description 更新边的耗费权重服务。
      * @param {UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     updateEdgeWeight(params, callback) {
         var me = this;
@@ -65942,22 +68465,17 @@ class NetworkAnalystService_NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        updateEdgeWeightService.processAsync(params);
+        return updateEdgeWeightService.processAsync(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.updateTurnNodeWeight
      * @description 转向耗费权重更新服务。
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     updateTurnNodeWeight(params, callback) {
         var me = this;
@@ -65965,15 +68483,9 @@ class NetworkAnalystService_NetworkAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        updateTurnNodeWeightService.processAsync(params);
+        return updateTurnNodeWeightService.processAsync(params, callback);
     }
 
     _processFormat(resultFormat) {
@@ -66023,126 +68535,164 @@ class NetworkAnalystService extends ServiceBase {
      * @function NetworkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param {BurstPipelineAnalystParameters} params - 爆管分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     burstPipelineAnalyst(params, callback) {
       params = this._processParams(params);
-      this._networkAnalystService.burstPipelineAnalyst(params, callback);
+      return this._networkAnalystService.burstPipelineAnalyst(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.computeWeightMatrix
      * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     computeWeightMatrix(params, callback) {
         params = this._processParams(params);
-        this._networkAnalystService.computeWeightMatrix(params, callback);
+        return this._networkAnalystService.computeWeightMatrix(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findClosestFacilities
      * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
      * @param {FindClosestFacilitiesParameters} params - 最近设施分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findClosestFacilities(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
+      return this._networkAnalystService.findClosestFacilities(params, callback, resultFormat);
     }
 
+    /**
+     * @function NetworkAnalystService.prototype.traceAnalyst
+     * @description 上游/下游 追踪分析服务:查找给定弧段或节点的上游/下游弧段和结点。
+     * @version 11.1.1
+     * @param {TraceAnalystParameters} params - 上游/下游 追踪分析服务参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+    traceAnalyst(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._networkAnalystService.traceAnalyst(params, callback, resultFormat);
+    }
+
+    /**
+     * @function NetworkAnalystService.prototype.connectedEdgesAnalyst
+     * @description 连通性分析服务。
+     * @version 11.1.1
+     * @param {ConnectedEdgesAnalystParameters} params - 连通性分析服务参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+    connectedEdgesAnalyst(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._networkAnalystService.connectedEdgesAnalyst(params, callback, resultFormat);
+    }
     /**
      * @function NetworkAnalystService.prototype.streamFacilityAnalyst
      * @description 上游/下游 关键设施查找资源服务：查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param {FacilityAnalystStreamParameters} params - 上游/下游 关键设施查找资源服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     streamFacilityAnalyst(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
+      return this._networkAnalystService.streamFacilityAnalyst(params, callback, resultFormat);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findLocation
      * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置。
      * @param {FindLocationParameters} params - 选址分区分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findLocation(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findLocation(params, callback, resultFormat);
+      return this._networkAnalystService.findLocation(params, callback, resultFormat);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findPath
      * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
      * @param {FindPathParameters} params - 最佳路径分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findPath(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findPath(params, callback, resultFormat);
+      return this._networkAnalystService.findPath(params, callback, resultFormat);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findTSPPaths
      * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
      * @param {FindTSPPathsParameters} params - 旅行商分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findTSPPaths(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
+      return this._networkAnalystService.findTSPPaths(params, callback, resultFormat);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findMTSPPaths
      * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
      * @param {FindMTSPPathsParameters} params - 多旅行商分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findMTSPPaths(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
+      return this._networkAnalystService.findMTSPPaths(params, callback, resultFormat);
     }
 
     /**
      * @function NetworkAnalystService.prototype.findServiceAreas
      * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
      * @param {FindServiceAreasParameters} params - 服务区分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     findServiceAreas(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
+      return this._networkAnalystService.findServiceAreas(params, callback, resultFormat);
     }
 
     /**
      * @function NetworkAnalystService.prototype.updateEdgeWeight
      * @description 更新边的耗费权重服务。
      * @param {UpdateEdgeWeightParameters} params - 更新边的耗费权重服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     updateEdgeWeight(params, callback) {
-      this._networkAnalystService.updateEdgeWeight(params, callback);
+      return this._networkAnalystService.updateEdgeWeight(params, callback);
     }
 
     /**
      * @function NetworkAnalystService.prototype.updateTurnNodeWeight
      * @description 转向耗费权重更新服务。
      * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     updateTurnNodeWeight(params, callback) {
-      this._networkAnalystService.updateTurnNodeWeight(params, callback);
+      return this._networkAnalystService.updateTurnNodeWeight(params, callback);
     }
 
     /**
@@ -66349,17 +68899,11 @@ class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameters {
  *             最近设施分析结果通过该类支持的事件的监听函数参数获取
  * @extends {CommonServiceBase}
  * @example
- * var myFacilityAnalystSinks3DService = new FacilityAnalystSinks3DService(url, {
- *     eventListeners: {
- *	       "processCompleted": facilityAnalystSinks3DCompleted,
- *		   "processFailed": facilityAnalystSinks3DError
- *		   }
- * });
+ * var myFacilityAnalystSinks3DService = new FacilityAnalystSinks3DService(url);
  * @param {string} url - 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。<br>
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -66385,8 +68929,10 @@ class FacilityAnalystSinks3DService extends CommonServiceBase {
      * @function FacilityAnalystSinks3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystSinks3DParameters} params - 最近设施分析参数类(汇查找资源)
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystSinks3DParameters)) {
             return;
         }
@@ -66398,12 +68944,12 @@ class FacilityAnalystSinks3DService extends CommonServiceBase {
             weightName: params.weightName,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -66471,7 +69017,6 @@ class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParameters {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -66498,8 +69043,10 @@ class FacilityAnalystSources3DService extends CommonServiceBase {
      * @function FacilityAnalystSources3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找资源）
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystSources3DParameters)) {
             return;
         }
@@ -66511,12 +69058,12 @@ class FacilityAnalystSources3DService extends CommonServiceBase {
             weightName: params.weightName,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -66578,7 +69125,6 @@ class FacilityAnalystTraceup3DParameters extends FacilityAnalyst3DParameters {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -66601,8 +69147,10 @@ class FacilityAnalystTraceup3DService extends CommonServiceBase {
      * @function FacilityAnalystTraceup3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystTraceup3DParameters)) {
             return;
         }
@@ -66614,12 +69162,12 @@ class FacilityAnalystTraceup3DService extends CommonServiceBase {
             weightName: params.weightName,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -66681,7 +69229,6 @@ class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParameters {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -66705,8 +69252,10 @@ class FacilityAnalystTracedown3DService extends CommonServiceBase {
      * @function FacilityAnalystTracedown3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystTracedown3DParameters)) {
             return;
         }
@@ -66719,12 +69268,12 @@ class FacilityAnalystTracedown3DService extends CommonServiceBase {
             weightName: params.weightName,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -66794,7 +69343,6 @@ class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -66818,8 +69366,10 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
      * @function FacilityAnalystUpstream3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找资源参数类
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof FacilityAnalystUpstream3DParameters)) {
             return;
         }
@@ -66831,12 +69381,12 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
             nodeID: params.nodeID,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
-        me.request({
+        return me.request({
             method: "GET",
             params: jsonObject,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -66882,8 +69432,8 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
       * @function NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
       * @description 汇查找服务
       * @param {FacilityAnalystSinks3DParameters} params- 最近设施分析参数类（汇查找资源）。
-      * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
      sinksFacilityAnalyst(params, callback) {
          var me = this;
@@ -66891,23 +69441,17 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystSinks3DService.processAsync(params);
+         return facilityAnalystSinks3DService.processAsync(params, callback);
      }
  
      /**
       * @function NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
       * @description 源查找服务。
       * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
-      * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
      sourcesFacilityAnalyst(params, callback) {
          var me = this;
@@ -66915,23 +69459,17 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystSources3DService.processAsync(params);
+         return facilityAnalystSources3DService.processAsync(params, callback);
      }
  
      /**
       * @function NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
       * @description 上游追踪资源服务。
       * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
-      * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
  
      traceUpFacilityAnalyst(params, callback) {
@@ -66940,23 +69478,17 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystTraceup3DService.processAsync(params);
+         return facilityAnalystTraceup3DService.processAsync(params, callback);
      }
  
      /**
       * @function NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
       * @description 下游追踪资源服务。
       * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类。
-      * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
      traceDownFacilityAnalyst(params, callback) {
          var me = this;
@@ -66964,23 +69496,17 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystTracedown3DService.processAsync(params);
+         return facilityAnalystTracedown3DService.processAsync(params, callback);
      }
  
      /**
       * @function NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
       * @description 上游关键设施查找服务。
       * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类。
-      * @param {RequestCallback} callback - 回调函数。
-      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
       */
      upstreamFacilityAnalyst(params, callback) {
          var me = this;
@@ -66988,15 +69514,9 @@ class FacilityAnalystUpstream3DService extends CommonServiceBase {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
-             headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             }
+             headers: me.options.headers
          });
-         facilityAnalystUpstream3DService.processAsync(params);
+         return facilityAnalystUpstream3DService.processAsync(params, callback);
      }
  }
  
@@ -67039,56 +69559,56 @@ class NetworkAnalyst3DService extends ServiceBase {
      * @function NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务。
      * @param {FacilityAnalystSinks3DParameters} params - 最近设施分析参数类（汇查找资源）。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sinksFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.sinksFacilityAnalyst(params, callback);
     }
 
     /**
      * @function NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务。
      * @param {FacilityAnalystSources3DParameters} params - 最近设施分析参数类（源查找服务）。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     sourcesFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.sourcesFacilityAnalyst(params, callback);
     }
 
     /**
      * @function NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务。
      * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
 
     traceUpFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.traceUpFacilityAnalyst(params, callback);
     }
 
     /**
      * @function NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务。
      * @param {FacilityAnalystTracedown3DParameters} params - 下游追踪资源服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     traceDownFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.traceDownFacilityAnalyst(params, callback);
     }
 
     /**
      * @function NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务。
      * @param {FacilityAnalystUpstream3DParameters} params - 上游关键设施查找服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {NetworkAnalyst3DService} 3D 网络分析服务。
      */
     upstreamFacilityAnalyst(params, callback) {
-      this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
+      return this._networkAnalyst3DService.upstreamFacilityAnalyst(params, callback);
     }
 }
 
@@ -67112,7 +69632,6 @@ class NetworkAnalyst3DService extends ServiceBase {
  * @param {Events} options.events - 处理所有事件的对象。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -67121,15 +69640,6 @@ class ProcessingServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
         options = options || {};
-        /*
-         * Constant: EVENT_TYPES
-         * {Array.<string>}
-         * 此类支持的事件类型
-         * - *processCompleted* 创建成功后触发的事件。
-         * - *processFailed* 创建失败后触发的事件 。
-         * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
-         */
-        options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
         super(url, options);
 
         this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
@@ -67147,21 +69657,23 @@ class ProcessingServiceBase extends CommonServiceBase {
      * @function ProcessingServiceBase.prototype.getJobs
      * @description 获取分布式分析任务。
      * @param {string} url - 资源地址。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getJobs(url) {
+    getJobs(url, callback) {
         var me = this;
-        FetchRequest.get(SecurityManager.appendCredential(url), null, {
+        return FetchRequest.get(SecurityManager.appendCredential(url), null, {
             proxy: me.proxy
         }).then(function (response) {
             return response.json();
         }).then(function (result) {
-            me.events.triggerEvent("processCompleted", {
-                result: result
-            });
+            const res = { result, object: me, type: 'processCompleted' };
+            callback(res);
+            return res;
         }).catch(function (e) {
-            me.eventListeners.processFailed({
-                error: e
-            });
+          const res = { error: e, object: me, type: 'processFailed' };
+          callback(res);
+          return res;
         });
     }
 
@@ -67172,8 +69684,11 @@ class ProcessingServiceBase extends CommonServiceBase {
      * @param {Object} params - 创建一个空间分析的请求参数。
      * @param {string} paramType - 请求参数类型。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addJob(url, params, paramType, seconds) {
+    addJob(url, params, paramType, seconds, callback, processRunningCallback) {
         var me = this,
             parameterObject = null;
         if (params && params instanceof paramType) {
@@ -67190,62 +69705,84 @@ class ProcessingServiceBase extends CommonServiceBase {
             crossOrigin: me.crossOrigin,
             isInTheSameDomain: me.isInTheSameDomain
         };
-        FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
+        return FetchRequest.post(SecurityManager.appendCredential(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
-                me.serviceProcessCompleted(result, seconds);
+                return me.transformResult(result, seconds, callback, processRunningCallback);
             } else {
-                me.serviceProcessFailed(result);
+              result = me.transformErrorResult(result);
+              result.options = me;
+              result.type = 'processFailed';
+              callback(result);
+              return result;
             }
         }).catch(function (e) {
-            me.serviceProcessFailed({
-                error: e
-            });
+            e = me.transformErrorResult({ error: e });
+            e.options = me;
+            e.type = 'processFailed';
+            callback(e);
+            return e;
         });
     }
 
-    serviceProcessCompleted(result, seconds) {
+    transformResult(result, seconds, callback, processRunningCallback) {
         result = Util_Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
-            var id = setInterval(function () {
+           return new Promise((resolve) => {
+              var id = setInterval(function () {
                 FetchRequest.get(SecurityManager.appendCredential(result.newResourceLocation), {
                         _t: new Date().getTime()
                     })
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                        me.events.triggerEvent("processRunning", {
+                        resolve({
+                          object: me,
+                          id: job.id,
+                          state: job.state
+                        });
+                        processRunningCallback({
                             id: job.id,
-                            state: job.state
+                            state: job.state,
+                            object: me
                         });
                         if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
                             clearInterval(id);
-                            me.events.triggerEvent("processFailed", {
-                                error: job.state.errorMsg,
-                                state: job.state.runState
-                            });
+                            const res = {
+                              error: job.state.errorMsg,
+                              state: job.state.runState,
+                              object: me,
+                              type: 'processFailed'
+                            };
+                            resolve(res);
+                            callback(res);
                         }
                         if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
                             clearInterval(id);
-                            me.events.triggerEvent("processCompleted", {
-                                result: job
-                            });
+                            const res = {
+                              result: job,
+                              object: me, 
+                              type: 'processCompleted'
+                            };
+                            resolve(res);
+                            callback(res);
                         }
                     }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {
-                            error: e
-                        });
+                        const res = {
+                          error: e,
+                          object: me,
+                          type: 'processFailed'
+                        };
+                        resolve(res);
+                        callback(res);
                     });
             }, seconds);
+           });
         }
-    }
-
-    serviceProcessFailed(result) {
-        super.serviceProcessFailed(result);
     }
 }
 
@@ -67751,18 +70288,22 @@ class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取核密度分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getKernelDensityJobs() {
-        super.getJobs(this.url);
+    getKernelDensityJobs(callback) {
+      return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取指定id的核密度分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getKernelDensityJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getKernelDensityJob(id, callback) {
+      return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -67770,9 +70311,12 @@ class KernelDensityJobsService extends ProcessingServiceBase {
      * @description 新建核密度分析服务
      * @param {KernelDensityJobParameter} params - 核密度分析服务参数类。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addKernelDensityJob(params, seconds) {
-        super.addJob(this.url, params, KernelDensityJobParameter, seconds);
+    addKernelDensityJob(params, seconds, callback, processRunningCallback) {
+      return super.addJob(this.url, params, KernelDensityJobParameter, seconds, callback, processRunningCallback);
     }
 
 }
@@ -67933,18 +70477,22 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
     /**
      * @function SingleObjectQueryJobsService.protitype.getQueryJobs
      * @description 获取单对象空间查询分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getQueryJobs() {
-        super.getJobs(this.url);
+    getQueryJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getQueryJob
      * @description 获取指定id的单对象空间查询分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getQueryJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getQueryJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -67952,9 +70500,11 @@ class SingleObjectQueryJobsService extends ProcessingServiceBase {
      * @description 新建单对象空间查询分析服务
      * @param {SingleObjectQueryJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addQueryJob(params, seconds) {
-        super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
+    addQueryJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -68149,7 +70699,6 @@ class SummaryMeshJobParameter {
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务地址在数组中的位置。
  * @param {number} options.length - 服务地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -68173,18 +70722,22 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryMeshJobs() {
-        super.getJobs(this.url);
+    getSummaryMeshJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryMeshJobsService.prototype.getSummaryMeshJob
      * @description 获取指定ip的点聚合分析任务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryMeshJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getSummaryMeshJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -68192,9 +70745,11 @@ class SummaryMeshJobsService extends ProcessingServiceBase {
      * @description 新建点聚合分析服务
      * @param {SummaryMeshJobParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryMeshJob(params, seconds) {
-        super.addJob(this.url, params, SummaryMeshJobParameter, seconds);
+    addSummaryMeshJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryMeshJobParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -68354,18 +70909,22 @@ class VectorClipJobsService extends ProcessingServiceBase {
     /**
      * @function VectorClipJobsService.protitype.getVectorClipJobs
      * @description 获取矢量裁剪分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getVectorClipJobs() {
-        super.getJobs(this.url);
+    getVectorClipJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function KernelDensityJobsService.protitype.getVectorClipJob
      * @description 获取指定id的矢量裁剪分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getVectorClipJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getVectorClipJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -68373,9 +70932,12 @@ class VectorClipJobsService extends ProcessingServiceBase {
      * @description 新建矢量裁剪分析服务
      * @param {VectorClipJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addVectorClipJob(params, seconds) {
-        super.addJob(this.url, params, VectorClipJobsParameter, seconds);
+    addVectorClipJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, VectorClipJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -68521,7 +71083,6 @@ class OverlayGeoJobParameter {
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Events} options.events - 处理所有事件的对象。
- * @param {Object} [options.eventListeners] - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {number} options.index - 服务访问地址在数组中的位置。
  * @param {number} options.length - 服务访问地址数组长度。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -68545,18 +71106,22 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getOverlayGeoJobs() {
-        super.getJobs(this.url);
+    getOverlayGeoJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function OverlayGeoJobsService.prototype.getOverlayGeoJob
      * @description 获取指定id的叠加分析任务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getOverlayGeoJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getOverlayGeoJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -68564,9 +71129,11 @@ class OverlayGeoJobsService extends ProcessingServiceBase {
      * @description 新建点叠加析服务
      * @param {OverlayGeoJobParameter} params - 创建一个叠加分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addOverlayGeoJob(params, seconds) {
-        super.addJob(this.url, params, OverlayGeoJobParameter, seconds);
+    addOverlayGeoJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, OverlayGeoJobParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -68822,18 +71389,22 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryRegionJobsService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析任务集合。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryRegionJobs() {
-        super.getJobs(this.url);
+    getSummaryRegionJobs(callback) {
+      return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryRegionJobsService.prototype.getSummaryRegionJob
      * @description 获取指定id的区域汇总分析任务。
      * @param {string} id -要获取区域汇总分析任务的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryRegionJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getSummaryRegionJob(id, callback) {
+       return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -68841,9 +71412,11 @@ class SummaryRegionJobsService extends ProcessingServiceBase {
      * @description 新建区域汇总任务。
      * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryRegionJob(params, seconds) {
-        super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
+    addSummaryRegionJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryRegionJobParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -69016,24 +71589,28 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
      *@override
      */
     destroy() {
-        super.destroy();
+      super.destroy();
     }
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJobs
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @description 获取缓冲区分析所有任务
+     * @returns {Promise} Promise 对象。
      */
-    getBuffersJobs() {
-        super.getJobs(this.url);
+    getBuffersJobs(callback) {
+      return super.getJobs(this.url, callback);
     }
 
     /**
      * @function BuffersAnalystJobsService.prototype.getBufferJob
      * @description 获取指定id的缓冲区分析服务
      * @param {string} id - 指定要获取数据的id。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getBuffersJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getBuffersJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -69041,9 +71618,12 @@ class BuffersAnalystJobsService extends ProcessingServiceBase {
      * @description 新建缓冲区分析服务
      * @param {BuffersAnalystJobsParameter} params - 创建一个空间分析的请求参数。
      * @param {number} seconds - 开始创建后，获取创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {RequestCallback} [processRunningCallback] - 回调函数。
+     * @returns {Promise} Promise 对象。
      */
-    addBuffersJob(params, seconds) {
-        super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds);
+    addBuffersJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds, callback, processRunningCallback);
     }
 }
 
@@ -69203,18 +71783,22 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getTopologyValidatorJobs() {
-        super.getJobs(this.url);
+    getTopologyValidatorJobs(callback) {
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function TopologyValidatorJobsService.protitype.getTopologyValidatorJob
      * @description 获取指定id的拓扑检查分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getTopologyValidatorJob(id) {
-        super.getJobs( Util_Util.urlPathAppend(this.url, id));
+    getTopologyValidatorJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -69222,9 +71806,11 @@ class TopologyValidatorJobsService extends ProcessingServiceBase {
      * @description 新建拓扑检查分析服务
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析任务参数类。
      * @param {number} seconds -创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addTopologyValidatorJob(params, seconds) {
-        super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds);
+    addTopologyValidatorJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds, callback, processRunningCallback);
     }
 
 }
@@ -69379,18 +71965,22 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJobs
      * @description 获取属性汇总分析所有任务
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryAttributesJobs (){
-        super.getJobs(this.url);
+    getSummaryAttributesJobs (callback){
+        return super.getJobs(this.url, callback);
     }
 
     /**
      * @function SummaryAttributesJobsService.protitype.getSummaryAttributesJob
      * @description 获取指定id的属性汇总分析服务
      * @param {string} id - 指定要获取数据的id
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getSummaryAttributesJob(id) {
-        super.getJobs(Util_Util.urlPathAppend(this.url, id));
+    getSummaryAttributesJob(id, callback) {
+        return super.getJobs(Util_Util.urlPathAppend(this.url, id), callback);
     }
 
     /**
@@ -69398,11 +71988,12 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      * @description 新建属性汇总分析服务
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析任务参数类。
      * @param {number} seconds - 创建成功结果的时间间隔。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    addSummaryAttributesJob(params, seconds) {
-        super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);
+    addSummaryAttributesJob(params, seconds, callback, processRunningCallback) {
+        return super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds, callback, processRunningCallback);
     }
-
 }
 
 ;// CONCATENATED MODULE: ./src/common/iServer/ProcessingService.js
@@ -69457,8 +72048,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getKernelDensityJobs
       * @description 获取密度分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getKernelDensityJobs(callback, resultFormat) {
          var me = this,
@@ -69468,23 +72060,18 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         kernelDensityJobsService.getKernelDensityJobs();
+         return kernelDensityJobsService.getKernelDensityJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getKernelDensityJob
       * @description 获取某个密度分析。
       * @param {string} id - 空间分析的ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getKernelDensityJob(id, callback, resultFormat) {
          var me = this,
@@ -69494,15 +72081,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         kernelDensityJobsService.getKernelDensityJob(id);
+         return kernelDensityJobsService.getKernelDensityJob(id, callback);
      }
  
      /**
@@ -69512,6 +72093,7 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
       * @param {RequestCallback} callback 回调函数。 
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addKernelDensityJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -69521,17 +72103,11 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.kernelDensityJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         kernelDensityJobsService.addKernelDensityJob(params, seconds);
+         return kernelDensityJobsService.addKernelDensityJob(params, seconds, callback, function (job) {
+          me.kernelDensityJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -69547,8 +72123,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getSummaryMeshJobs
       * @description 获取点聚合分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryMeshJobs(callback, resultFormat) {
          var me = this,
@@ -69558,23 +72135,18 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryMeshJobsService.getSummaryMeshJobs();
+         return summaryMeshJobsService.getSummaryMeshJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getSummaryMeshJob
       * @description 获取某个点聚合分析。
       * @param {string} id - 空间分析的 ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryMeshJob(id, callback, resultFormat) {
          var me = this,
@@ -69584,24 +72156,19 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryMeshJobsService.getSummaryMeshJob(id);
+         return summaryMeshJobsService.getSummaryMeshJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addSummaryMeshJob
       * @description 点聚合分析。
       * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。 
-      * @param {RequestCallback} callback 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addSummaryMeshJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -69611,17 +72178,11 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.summaryMeshJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         summaryMeshJobsService.addSummaryMeshJob(params, seconds);
+         return summaryMeshJobsService.addSummaryMeshJob(params, seconds, callback, function (job) {
+          me.summaryMeshJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -69637,8 +72198,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getQueryJobs
       * @description 获取单对象查询分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getQueryJobs(callback, resultFormat) {
          var me = this,
@@ -69646,25 +72208,20 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         singleObjectQueryJobsService.getQueryJobs();
+         return singleObjectQueryJobsService.getQueryJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getQueryJob
       * @description 获取某个单对象查询分析。
       * @param {string} id - 空间分析的 ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getQueryJob(id, callback, resultFormat) {
          var me = this,
@@ -69674,24 +72231,19 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         singleObjectQueryJobsService.getQueryJob(id);
+         return singleObjectQueryJobsService.getQueryJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addQueryJob
       * @description 单对象查询分析。
       * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addQueryJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -69701,17 +72253,11 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.queryJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         singleObjectQueryJobsService.addQueryJob(params, seconds);
+         return singleObjectQueryJobsService.addQueryJob(params, seconds, callback, function (job) {
+          me.queryJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -69727,8 +72273,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getSummaryRegionJobs
       * @description 获取区域汇总分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryRegionJobs(callback, resultFormat) {
          var me = this,
@@ -69738,23 +72285,18 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryRegionJobsService.getSummaryRegionJobs();
+         return summaryRegionJobsService.getSummaryRegionJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getSummaryRegionJob
       * @description 获取某个区域汇总分析。
       * @param {string} id - 区域汇总分析的 ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryRegionJob(id, callback, resultFormat) {
          var me = this,
@@ -69764,24 +72306,19 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryRegionJobsService.getSummaryRegionJob(id);
+         return summaryRegionJobsService.getSummaryRegionJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addSummaryRegionJob
       * @description 区域汇总分析。
       * @param {SummaryRegionJobParameter} params - 区域汇总分析参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addSummaryRegionJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -69791,17 +72328,11 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.summaryRegionJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         summaryRegionJobsService.addSummaryRegionJob(params, seconds);
+         return summaryRegionJobsService.addSummaryRegionJob(params, seconds, callback, function (job) {
+          me.summaryRegionJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -69817,8 +72348,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getVectorClipJobs
       * @description 获取矢量裁剪分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getVectorClipJobs(callback, resultFormat) {
          var me = this,
@@ -69828,23 +72360,18 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         vectorClipJobsService.getVectorClipJobs();
+         return vectorClipJobsService.getVectorClipJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getVectorClipJob
       * @description 获取某个矢量裁剪分析。
       * @param {string} id - 空间分析的 ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getVectorClipJob(id, callback, resultFormat) {
          var me = this,
@@ -69852,26 +72379,21 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var vectorClipJobsService = new VectorClipJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         vectorClipJobsService.getVectorClipJob(id);
+         return vectorClipJobsService.getVectorClipJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addVectorClipJob
       * @description 矢量裁剪分析。
       * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addVectorClipJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -69879,20 +72401,13 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var vectorClipJobsService = new VectorClipJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.vectorClipJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         vectorClipJobsService.addVectorClipJob(params, seconds);
+         return vectorClipJobsService.addVectorClipJob(params, seconds, callback, function (job) {
+          me.vectorClipJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -69908,8 +72423,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getOverlayGeoJobs
       * @description 获取叠加分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getOverlayGeoJobs(callback, resultFormat) {
          var me = this,
@@ -69917,25 +72433,20 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         overlayGeoJobsService.getOverlayGeoJobs();
+         return overlayGeoJobsService.getOverlayGeoJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getOverlayGeoJob
       * @description 获取某个叠加分析。
       * @param {string} id - 空间分析的 ID。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getOverlayGeoJob(id, callback, resultFormat) {
          var me = this,
@@ -69943,26 +72454,21 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         overlayGeoJobsService.getOverlayGeoJob(id);
+         return overlayGeoJobsService.getOverlayGeoJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addOverlayGeoJob
       * @description 叠加分析。
       * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addOverlayGeoJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -69970,20 +72476,13 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.overlayGeoJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         overlayGeoJobsService.addOverlayGeoJob(params, seconds);
+         return overlayGeoJobsService.addOverlayGeoJob(params, seconds, callback, function (job) {
+          me.overlayGeoJobs[job.id] = job.state;
+        });
      }
  
      /**
@@ -69999,8 +72498,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getBuffersJobs
       * @description 获取缓冲区分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getBuffersJobs(callback, resultFormat) {
          var me = this,
@@ -70008,25 +72508,20 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         buffersAnalystJobsService.getBuffersJobs();
+         return buffersAnalystJobsService.getBuffersJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getBuffersJob
       * @description 获取某个缓冲区分析。
       * @param {string} id - 空间分析的 ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getBuffersJob(id, callback, resultFormat) {
          var me = this,
@@ -70034,26 +72529,21 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         buffersAnalystJobsService.getBuffersJob(id);
+         return buffersAnalystJobsService.getBuffersJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addBuffersJob
       * @description 缓冲区分析。
       * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} seconds - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addBuffersJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -70061,20 +72551,13 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.buffersJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         buffersAnalystJobsService.addBuffersJob(params, seconds);
+         return buffersAnalystJobsService.addBuffersJob(params, seconds, callback, function (job) {
+          me.buffersJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -70090,8 +72573,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getTopologyValidatorJobs
       * @description 获取拓扑检查分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getTopologyValidatorJobs(callback, resultFormat) {
          var me = this,
@@ -70099,25 +72583,20 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         topologyValidatorJobsService.getTopologyValidatorJobs();
+         return topologyValidatorJobsService.getTopologyValidatorJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getTopologyValidatorJob
       * @description 获取某个拓扑检查分析。
       * @param {string} id - 空间分析的 ID。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getTopologyValidatorJob(id, callback, resultFormat) {
          var me = this,
@@ -70125,26 +72604,21 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         topologyValidatorJobsService.getTopologyValidatorJob(id);
+         return topologyValidatorJobsService.getTopologyValidatorJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addTopologyValidatorJob
       * @description 拓扑检查分析。
       * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addTopologyValidatorJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -70152,20 +72626,13 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.topologyValidatorJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         topologyValidatorJobsService.addTopologyValidatorJob(params, seconds);
+         return topologyValidatorJobsService.addTopologyValidatorJob(params, seconds, callback, function (job) {
+          me.topologyValidatorJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -70181,8 +72648,9 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
      /**
       * @function ProcessingService.prototype.getSummaryAttributesJobs
       * @description 获取属性汇总分析的列表。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryAttributesJobs(callback, resultFormat) {
          var me = this,
@@ -70190,25 +72658,20 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryAttributesJobsService.getSummaryAttributesJobs();
+         return summaryAttributesJobsService.getSummaryAttributesJobs(callback);
      }
  
      /**
       * @function ProcessingService.prototype.getSummaryAttributesJob
       * @description 获取某个属性汇总分析。
       * @param {string} id - 空间分析的 ID。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      getSummaryAttributesJob(id, callback, resultFormat) {
          var me = this,
@@ -70216,26 +72679,21 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: format
          });
-         summaryAttributesJobsService.getSummaryAttributesJob(id);
+         return summaryAttributesJobsService.getSummaryAttributesJob(id, callback);
      }
  
      /**
       * @function ProcessingService.prototype.addSummaryAttributesJob
       * @description 属性汇总分析。
       * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。 
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      addSummaryAttributesJob(params, callback, seconds, resultFormat) {
          var me = this,
@@ -70243,20 +72701,13 @@ class SummaryAttributesJobsService extends ProcessingServiceBase {
          var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
              proxy: me.options.proxy,
              withCredentials: me.options.withCredentials,
- 
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback,
-                 processRunning: function (job) {
-                     me.summaryAttributesJobs[job.id] = job.state;
-                 }
-             },
              format: format
          });
-         summaryAttributesJobsService.addSummaryAttributesJob(params, seconds);
+         return summaryAttributesJobsService.addSummaryAttributesJob(params, seconds, callback, function (job) {
+          me.summaryAttributesJobs[job.id] = job.state;
+      });
      }
  
      /**
@@ -70312,35 +72763,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getKernelDensityJobs
      * @description 获取密度分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getKernelDensityJobs(callback, resultFormat) {
-      this._processingService.getKernelDensityJobs(callback, resultFormat);
+      return this._processingService.getKernelDensityJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getKernelDensityJob
      * @description 获取某个密度分析。
      * @param {string} id - 空间分析的ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getKernelDensityJob(id, callback, resultFormat) {
-      this._processingService.getKernelDensityJob(id, callback, resultFormat);
+      return this._processingService.getKernelDensityJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addKernelDensityJob
      * @description 密度分析。
      * @param {KernelDensityJobParameter} params -密度分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addKernelDensityJob(params, callback, seconds, resultFormat);
+      return this._processingService.addKernelDensityJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70356,35 +72810,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryMeshJobs
      * @description 获取点聚合分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJobs(callback, resultFormat) {
-      this._processingService.getSummaryMeshJobs(callback, resultFormat);
+      return this._processingService.getSummaryMeshJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getSummaryMeshJob
      * @description 获取某个点聚合分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryMeshJob(id, callback, resultFormat) {
-      this._processingService.getSummaryMeshJob(id, callback, resultFormat);
+      return this._processingService.getSummaryMeshJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addSummaryMeshJob
      * @description 点聚合分析。
      * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addSummaryMeshJob(params, callback, seconds, resultFormat);
+      return this._processingService.addSummaryMeshJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70400,35 +72857,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getQueryJobs(callback, resultFormat) {
-      this._processingService.getQueryJobs(callback, resultFormat);
+      return this._processingService.getQueryJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getQueryJob
      * @description 获取某个单对象查询分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getQueryJob(id, callback, resultFormat) {
-      this._processingService.getQueryJob(id, callback, resultFormat);
+      return this._processingService.getQueryJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addQueryJob
      * @description 单对象查询分析。
      * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addQueryJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addQueryJob(params, callback, seconds, resultFormat);
+      return this._processingService.addQueryJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70444,35 +72904,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJobs(callback, resultFormat) {
-      this._processingService.getSummaryRegionJobs(callback, resultFormat);
+      return this._processingService.getSummaryRegionJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getSummaryRegionJob
      * @description 获取某个区域汇总分析。
      * @param {string} id - 区域汇总分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryRegionJob(id, callback, resultFormat) {
-      this._processingService.getSummaryRegionJob(id, callback, resultFormat);
+      return this._processingService.getSummaryRegionJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addSummaryRegionJob
      * @description 区域汇总分析。
      * @param {SummaryRegionJobParameter} params - 区域汇总分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
+      return this._processingService.addSummaryRegionJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70488,35 +72951,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getVectorClipJobs
      * @description 获取矢量裁剪分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getVectorClipJobs(callback, resultFormat) {
-      this._processingService.getVectorClipJobs(callback, resultFormat);
+      return this._processingService.getVectorClipJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getVectorClipJob
      * @description 获取某个矢量裁剪分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getVectorClipJob(id, callback, resultFormat) {
-      this._processingService.getVectorClipJob(id, callback, resultFormat);
+      return this._processingService.getVectorClipJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addVectorClipJob
      * @description 矢量裁剪分析。
      * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addVectorClipJob(params, callback, seconds, resultFormat);
+      return this._processingService.addVectorClipJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70532,35 +72998,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJobs(callback, resultFormat) {
-      this._processingService.getOverlayGeoJobs(callback, resultFormat);
+      return this._processingService.getOverlayGeoJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getOverlayGeoJob
      * @description 获取某个叠加分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getOverlayGeoJob(id, callback, resultFormat) {
-      this._processingService.getOverlayGeoJob(id, callback, resultFormat);
+      return this._processingService.getOverlayGeoJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addOverlayGeoJob
      * @description 叠加分析。
      * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addOverlayGeoJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addOverlayGeoJob(params, callback, seconds, resultFormat);
+      return this._processingService.addOverlayGeoJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70576,35 +73045,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getBuffersJobs
      * @description 获取缓冲区分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getBuffersJobs(callback, resultFormat) {
-      this._processingService.getBuffersJobs(callback, resultFormat);
+      return this._processingService.getBuffersJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getBuffersJob
      * @description 获取某个缓冲区分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getBuffersJob(id, callback, resultFormat) {
-      this._processingService.getBuffersJob(id, callback, resultFormat);
+      return this._processingService.getBuffersJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addBuffersJob
      * @description 缓冲区分析。
      * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} seconds - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addBuffersJob(params, callback, seconds, resultFormat) {
         params = this._processParams(params);
-        this._processingService.addBuffersJob(params, callback, seconds, resultFormat);
+        return this._processingService.addBuffersJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70620,35 +73092,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getTopologyValidatorJobs
      * @description 获取拓扑检查分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJobs(callback, resultFormat) {
-      this._processingService.getTopologyValidatorJobs(callback, resultFormat);
+      return this._processingService.getTopologyValidatorJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getTopologyValidatorJob
      * @description 获取某个拓扑检查分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getTopologyValidatorJob(id, callback, resultFormat) {
-      this._processingService.getTopologyValidatorJob(id, callback, resultFormat);
+      return this._processingService.getTopologyValidatorJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addTopologyValidatorJob
      * @description 拓扑检查分析。
      * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addTopologyValidatorJob(params, callback, seconds, resultFormat) {
       params = this._processParams(params);
-      this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
+      return this._processingService.addTopologyValidatorJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70664,35 +73139,38 @@ class ProcessingService extends ServiceBase {
     /**
      * @function ProcessingService.prototype.getSummaryAttributesJobs
      * @description 获取属性汇总分析的列表。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryAttributesJobs(callback, resultFormat) {
-      this._processingService.getSummaryAttributesJobs(callback, resultFormat);
+      return this._processingService.getSummaryAttributesJobs(callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.getSummaryAttributesJob
      * @description 获取某个属性汇总分析。
      * @param {string} id - 空间分析的 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getSummaryAttributesJob(id, callback, resultFormat) {
-      this._processingService.getSummaryAttributesJob(id, callback, resultFormat);
+      return this._processingService.getSummaryAttributesJob(id, callback, resultFormat);
     }
 
     /**
      * @function ProcessingService.prototype.addSummaryAttributesJob
      * @description 属性汇总分析。
      * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     addSummaryAttributesJob(params, callback, seconds, resultFormat) {
         params = this._processParams(params);
-        this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
+        return this._processingService.addSummaryAttributesJob(params, callback, seconds, resultFormat);
     }
 
     /**
@@ -70748,17 +73226,11 @@ class ProcessingService extends ServiceBase {
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myService = new QueryService(url, {
- *     eventListeners: {
- *	       "processCompleted": queryCompleted,
- *		   "processFailed": queryError
- *		   }
- * };
+ * var myService = new QueryService(url);
  * @usage
  */
 class QueryServiceBase extends CommonServiceBase {
@@ -70794,7 +73266,7 @@ class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.destroy
+     * @function QueryServiceBase.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -70805,11 +73277,13 @@ class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.processAsync
+     * @function QueryServiceBase.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {QueryParameters} params - 查询参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof QueryParameters)) {
             return;
         }
@@ -70828,21 +73302,23 @@ class QueryServiceBase extends CommonServiceBase {
             }
         }
         me.returnFeatureWithFieldCaption = params.returnFeatureWithFieldCaption;
-        me.request({
-            method: "POST",
-            data: jsonParameters,
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+        return me.request({
+          method: "POST",
+          data: jsonParameters,
+          scope: me,
+          success: callback,
+          failure: callback
         });
     }
 
     /**
-     * @function QueryService.prototype.serviceProcessCompleted
-     * @description 查询完成，执行此方法。
+     * @function QueryServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this;
         result = Util_Util.transformResult(result);
         var geoJSONFormat = new GeoJSON();
@@ -70862,10 +73338,7 @@ class QueryServiceBase extends CommonServiceBase {
             }
         }
 
-        me.events.triggerEvent("processCompleted", {
-            result: result,
-            options
-        });
+        return { result, options };
     }
 
     dataFormat() {
@@ -70873,7 +73346,7 @@ class QueryServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function QueryService.prototype.getQueryParameters
+     * @function QueryServiceBase.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
      * @param {Object} params - JSON 字符串表示的查询参数。
      * @returns {QueryParameters} 返回转化后的 QueryParameters 对象。
@@ -70976,18 +73449,12 @@ class QueryByBoundsParameters extends QueryParameters {
  * @augments {QueryService}
  * @example
  * (start end)
- * var myQueryByBoundsService = new QueryByBoundsService(url, {
- *     eventListeners: {
- *         "processCompleted": queryCompleted,
- *		   "processFailed": queryError
- *		   }
- * });
+ * var myQueryByBoundsService = new QueryByBoundsService(url);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
  * (end)
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -71147,17 +73614,11 @@ class QueryByDistanceParameters extends QueryParameters {
  * @classdesc Distance查询服务类。
  * @extends {QueryServiceBase}
  * @example
- * var myQueryByDistService = new QueryByDistanceService(url, {
- *     eventListeners: {
- *         "processCompleted": queryCompleted,
- *		   "processFailed": queryError
- *		   }
- * });
+ * var myQueryByDistService = new QueryByDistanceService(url);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -71280,17 +73741,12 @@ class QueryBySQLParameters extends QueryParameters {
  * var queryBySQLParams = new QueryBySQLParameters({
  *     queryParams: [queryParam]
  * });
- * var myQueryBySQLService = new QueryBySQLService(url, {eventListeners: {
- *     "processCompleted": queryCompleted,
- *     "processFailed": queryError
- *	   }
- * });
+ * var myQueryBySQLService = new QueryBySQLService(url);
  * queryBySQLService.processAsync(queryBySQLParams);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -71431,17 +73887,11 @@ class QueryByGeometryParameters extends QueryParameters {
  * @classdesc Geometry查询服务类。
  * @extends {QueryServiceBase}
  * @example
- * var myQueryByGeometryService = new QueryByGeometryService(url, {
- *     eventListeners: {
- *	      "processCompleted": queryCompleted,
- *		  "processFailed": queryError
- *		  }
- * });
+ * var myQueryByGeometryService = new QueryByGeometryService(url);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
  * @param {string} url - 服务地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -71525,8 +73975,9 @@ class QueryByGeometryService extends QueryServiceBase {
       * @function QueryService.prototype.queryByBounds
       * @description Bounds 查询地图服务。
       * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryByBounds(params, callback, resultFormat) {
          var me = this;
@@ -71535,25 +73986,19 @@ class QueryByGeometryService extends QueryServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
- 
              format: me._processFormat(resultFormat)
          });
- 
-         queryService.processAsync(params);
+
+         return queryService.processAsync(params, callback);
      }
  
      /**
       * @function QueryService.prototype.queryByDistance
       * @description 地图距离查询服务。
       * @param {QueryByDistanceParameters} params - Distance 查询参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型
+      * @returns {Promise} Promise 对象。
       */
      queryByDistance(params, callback, resultFormat) {
          var me = this;
@@ -71562,24 +74007,19 @@ class QueryByGeometryService extends QueryServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: resultFormat
          });
  
-         queryByDistanceService.processAsync(params);
+         return queryByDistanceService.processAsync(params, callback);
      }
  
      /**
       * @function QueryService.prototype.queryBySQL
       * @description 地图 SQL 查询服务。
       * @param {QueryBySQLParameters} params - SQL 查询参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryBySQL(params, callback, resultFormat) {
          var me = this;
@@ -71588,24 +74028,19 @@ class QueryByGeometryService extends QueryServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: resultFormat
          });
  
-         queryBySQLService.processAsync(params);
+         return queryBySQLService.processAsync(params, callback);
      }
  
      /**
       * @function QueryService.prototype.queryByGeometry
       * @description 地图几何查询服务。
       * @param {QueryByGeometryParameters} params - Geometry 查询参数类。
-      * @param {RequestCallback} callback - 回调函数。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+      * @returns {Promise} Promise 对象。
       */
      queryByGeometry(params, callback, resultFormat) {
          var me = this;
@@ -71614,16 +74049,10 @@ class QueryByGeometryService extends QueryServiceBase {
              withCredentials: me.options.withCredentials,
              crossOrigin: me.options.crossOrigin,
              headers: me.options.headers,
- 
-             eventListeners: {
-                 scope: me,
-                 processCompleted: callback,
-                 processFailed: callback
-             },
              format: resultFormat
          });
  
-         queryByGeometryService.processAsync(params);
+         return queryByGeometryService.processAsync(params, callback);
      }
  
      _processFormat(resultFormat) {
@@ -71672,48 +74101,52 @@ class QueryService extends ServiceBase {
      * @function QueryService.prototype.queryByBounds
      * @description Bounds 查询地图服务。
      * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByBounds(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByBounds(params, callback, resultFormat);
+      return this._queryService.queryByBounds(params, callback, resultFormat);
     }
 
     /**
      * @function QueryService.prototype.queryByDistance
      * @description 地图距离查询服务。
      * @param {QueryByDistanceParameters} params - Distance 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型
+     * @returns {Promise} Promise 对象。
      */
     queryByDistance(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByDistance(params, callback, resultFormat);
+      return this._queryService.queryByDistance(params, callback, resultFormat);
     }
 
     /**
      * @function QueryService.prototype.queryBySQL
      * @description 地图 SQL 查询服务。
      * @param {QueryBySQLParameters} params - SQL 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryBySQL(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryBySQL(params, callback, resultFormat);
+      return this._queryService.queryBySQL(params, callback, resultFormat);
     }
 
     /**
      * @function QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务。
      * @param {QueryByGeometryParameters} params - Geometry 查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     queryByGeometry(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._queryService.queryByGeometry(params, callback, resultFormat);
+      return this._queryService.queryByGeometry(params, callback, resultFormat);
     }
 
     _processParams(params) {
@@ -71789,7 +74222,7 @@ class SpatialAnalystBase extends CommonServiceBase {
          * @member {DataFormat} [SpatialAnalystBase.prototype.format=DataFormat.GEOJSON]
          * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
          */
-        this.format = options.format || DataFormat.GEOJSON;
+        this.format = (options && options.format) || DataFormat.GEOJSON;
         this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
@@ -71803,11 +74236,13 @@ class SpatialAnalystBase extends CommonServiceBase {
     }
 
     /**
-     * @function SpatialAnalystBase.prototype.serviceProcessCompleted
-     * @description 分析完成，执行此方法。
+     * @function SpatialAnalystBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result, options) {
+    transformResult(result, options) {
         var me = this, analystResult;
         result = Util_Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
@@ -71825,7 +74260,7 @@ class SpatialAnalystBase extends CommonServiceBase {
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, options});
+        return { result: analystResult, options };
     }
 
     /**
@@ -72053,18 +74488,12 @@ class AreaSolarRadiationParameters {
  * @classdesc 地区太阳辐射服务类。
  * @param {string} url - 服务的访问地址。如：</br>http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst。</br>
  * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var myAreaSolarRadiationService = new AreaSolarRadiationService(url);
- * myAreaSolarRadiationService.on({
-     *     "processCompleted": processCompleted,
-     *     "processFailed": processFailed
-     *     }
- * );
  * (end)
  * @usage
  */
@@ -72087,8 +74516,10 @@ class AreaSolarRadiationService extends SpatialAnalystBase {
      * @function AreaSolarRadiationService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {AreaSolarRadiationParameters} parameter - 地区太阳辐射参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         if (!(parameter instanceof AreaSolarRadiationParameters)) {
             return;
         }
@@ -72102,12 +74533,12 @@ class AreaSolarRadiationService extends SpatialAnalystBase {
         AreaSolarRadiationParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util_Util.toJSON(parameterObject);
 
-        me.request({
+        return me.request({
             method: 'POST',
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -72190,7 +74621,7 @@ class BufferSetting {
     constructor(options) {
         /**
          * @member {BufferEndType} [BufferSetting.prototype.endType = BufferEndType.FLAT]
-         * @description 缓冲区端点枚举值。分为平头和圆头两种。
+         * @description 缓冲区端点枚举值。分为平头和圆头两种。当设置缓冲区端点为平头时，左侧、右侧缓冲距离需为相同数值。
          */
         this.endType = BufferEndType.FLAT;
 
@@ -72584,18 +75015,12 @@ class GeometryBufferAnalystParameters extends BufferAnalystParameters {
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取。
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myBufferAnalystService = new BufferAnalystService(url, {
-     *     eventListeners: {
-     *           "processCompleted": bufferCompleted,
-     *           "processFailed": bufferFailed
-     *           }
-     *    });
+ * var myBufferAnalystService = new BufferAnalystService(url);
  * (end)
  * @usage
  */
@@ -72630,8 +75055,10 @@ class BufferAnalystService extends SpatialAnalystBase {
      * @method BufferAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {BufferAnalystParameters} parameter - 缓冲区分析参数
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
         if (parameter instanceof DatasetBufferAnalystParameters) {
@@ -72646,12 +75073,12 @@ class BufferAnalystService extends SpatialAnalystBase {
 
         var jsonParameters = Util_Util.toJSON(parameterObject);
         this.returnContent = true;
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -72795,7 +75222,6 @@ class DensityKernelAnalystParameters {
  * 密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。目前提供1种密度分析：核密度分析（Kernel）。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -72839,8 +75265,10 @@ class DensityAnalystService extends SpatialAnalystBase {
      * @function DensityAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {DensityKernelAnalystParameters} parameter - 核密度分析参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = new Object();
 
@@ -72853,12 +75281,12 @@ class DensityAnalystService extends SpatialAnalystBase {
         var jsonParameters = Util_Util.toJSON(parameterObject);
         me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -73017,7 +75445,6 @@ class GenerateSpatialDataParameters {
  * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -73047,14 +75474,9 @@ class GenerateSpatialDataParameters {
      *      dataReturnOption: option
      *  }),
      *  //配置动态分段iService
-     *  iService = new GenerateSpatialDataService(Changchun_spatialanalyst, {
-     *      eventListeners: {
-     *          processCompleted: generateCompleted,
-     *          processFailed: generateFailded
-     *      }
-     *  });
+     *  iService = new GenerateSpatialDataService(Changchun_spatialanalyst);
      *  //执行
-     *  iService.processAsync(parameters);
+     *  iService.processAsync(parameters, generateCompleted);
      *  function Completed(generateSpatialDataEventArgs){//todo};
      *  function Error(generateSpatialDataEventArgs){//todo};
      * (end)
@@ -73080,9 +75502,11 @@ class GenerateSpatialDataService extends SpatialAnalystBase {
     /**
      * @function GenerateSpatialDataService.prototype.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof GenerateSpatialDataParameters)) {
             return;
         }
@@ -73091,12 +75515,12 @@ class GenerateSpatialDataService extends SpatialAnalystBase {
 
         jsonParameters = me.getJsonParameters(params);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -73249,7 +75673,6 @@ class GeoRelationAnalystParameters {
  * @classdesc 空间关系分析服务类。该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
@@ -73306,8 +75729,10 @@ class GeoRelationAnalystService extends SpatialAnalystBase {
      * @function GeoRelationAnalystService.prototype.processAsync
      * @description 负责将客户端的空间关系分析参数传递到服务端
      * @param {GeoRelationAnalystParameters} parameter - 空间关系分析所需的参数信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         if (!(parameter instanceof GeoRelationAnalystParameters)) {
             return;
         }
@@ -73317,12 +75742,12 @@ class GeoRelationAnalystService extends SpatialAnalystBase {
 
         me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -73529,7 +75954,7 @@ class InterpolationAnalystParameters {
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
- * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
+ * @param {PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
  * @param {string} [options.dataset] - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时。此为必选参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时。此为必选参数。
  * @example
@@ -73656,7 +76081,7 @@ class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
  * @param {number} [options.zValueScale=1] - 进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
- * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
+ * @param {PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
  * @param {string} [options.dataset] - 用来做插值分析的数据源中数据集的名称，该名称用形如 "数据集名称@数据源别名" 形式来表示。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 dataset 时，此为必选参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 geometry 时，此为必选参数。
  * @extends {InterpolationAnalystParameters}
@@ -73718,7 +76143,7 @@ class InterpolationDensityAnalystParameters extends InterpolationAnalystParamete
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
- * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
+ * @param {PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
  * @param {string} [options.dataset] - 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，此为必选参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，此为必选参数。
  * @extends {InterpolationAnalystParameters}
@@ -73925,7 +76350,7 @@ class ThiessenAnalystParameters {
  * @param {number} [options.zValueScale=1] - 用于进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
  * @param {FilterParameter} [options.filterQueryParameter] - 属性过滤条件。
- * @param {string} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
+ * @param {PixelFormat} [options.pixelFormat] - 指定结果栅格数据集存储的像素格式。
  * @param {string} [options.dataset] - 要用来做插值分析的数据源中数据集的名称。该名称用形如 ”数据集名称@数据源别名” 形式来表示。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 dataset 时。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystParameters.prototype.InterpolationAnalystType）为 geometry 时。
  * @extends {InterpolationAnalystParameters}
@@ -74093,18 +76518,12 @@ class InterpolationKrigingAnalystParameters extends InterpolationAnalystParamete
  * 包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var myTInterpolationAnalystService = new InterpolationAnalystService(url);
- * myTInterpolationAnalystService.events.on({
-     *     "processCompleted": processCompleted,
-     *     "processFailed": processFailed
-     *     }
- * );
  * (end)
  * @usage
  */
@@ -74138,8 +76557,10 @@ class InterpolationAnalystService extends SpatialAnalystBase {
      * @function InterpolationAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} parameter - 插值分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
 
@@ -74176,12 +76597,12 @@ class InterpolationAnalystService extends SpatialAnalystBase {
         var jsonParameters = Util_Util.toJSON(parameterObject);
         me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -74341,18 +76762,12 @@ class MathExpressionAnalysisParameters {
  * @classdesc 栅格代数运算服务类。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
  * var myMathExpressionAnalysisService = new MathExpressionAnalysisService(url);
- * myMathExpressionAnalysisService.on({
-     *     "processCompleted": processCompleted,
-     *     "processFailed": processFailed
-     *     }
- * );
  * (end)
  * @usage
  */
@@ -74375,8 +76790,10 @@ class MathExpressionAnalysisService extends SpatialAnalystBase {
      * @function MathExpressionAnalysisService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {MathExpressionAnalysisParameters} parameter - 栅格代数运算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = {};
 
@@ -74387,12 +76804,12 @@ class MathExpressionAnalysisService extends SpatialAnalystBase {
         MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util_Util.toJSON(parameterObject);
         me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -74732,19 +77149,13 @@ class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
  * @param {string} url - 服务地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myOverlayAnalystService = new OverlayAnalystService(url, {
- *     eventListeners: {
- *	       "processCompleted": OverlayCompleted,
- *		   "processFailed": OverlayFailed
- *		   }
- * });
+ * var myOverlayAnalystService = new OverlayAnalystService(url);
  * (end)
  * @usage
  */
@@ -74778,8 +77189,10 @@ class OverlayAnalystService extends SpatialAnalystBase {
      * @function OverlayAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {OverlayAnalystParameters} parameter - 叠加分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
 
@@ -74800,12 +77213,12 @@ class OverlayAnalystService extends SpatialAnalystBase {
         }
         this.returnContent = true;
         var jsonParameters = Util_Util.toJSON(parameterObject);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -74902,7 +77315,6 @@ class RouteCalculateMeasureParameters {
  * @extends {SpatialAnalystBase}
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
@@ -74942,13 +77354,8 @@ class RouteCalculateMeasureParameters {
      *     "isIgnoreGap":false
      * });
  *
- * var routeCalculateMeasureService = new RouteCalculateMeasureService(spatialAnalystURL, {
-     *     eventListeners:{
-     *         processCompleted:calculateCompleted,
-     *         processFailed:calculateFailded
-     *     }
-     * );
-     * routeCalculateMeasureService.processAsync(parameters);
+ * var routeCalculateMeasureService = new RouteCalculateMeasureService(spatialAnalystURL);
+     * routeCalculateMeasureService.processAsync(parameters, calculateCompleted);
      *
      *  //执行
      * function calculateCompleted(){todo}
@@ -74974,8 +77381,10 @@ class RouteCalculateMeasureService extends SpatialAnalystBase {
      * @function RouteCalculateMeasureService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof RouteCalculateMeasureParameters)) {
             return;
         }
@@ -74983,12 +77392,12 @@ class RouteCalculateMeasureService extends SpatialAnalystBase {
 
         jsonParameters = me.getJsonParameters(params);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -75156,7 +77565,6 @@ class RouteLocatorParameters {
  * @extends {SpatialAnalystBase}
  * @param {string} url -服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example 实例化该类如下例所示：
@@ -75193,12 +77601,7 @@ class RouteLocatorParameters {
      *   "offset":3,
      *   "isIgnoreGap":true
      * });
-     * var routeLocatorService = new RouteLocatorService(spatialAnalystURL, {
-     *     eventListeners:{
-     *         processCompleted:routeLocatorCompleted,
-     *         processFailed:routeLocatorFailded
-     *     }
-     * );
+     * var routeLocatorService = new RouteLocatorService(spatialAnalystURL);
      * routeLocatorService.processAsync(routeLocatorParameters_point);
      *
      *  //执行
@@ -75225,8 +77628,10 @@ class RouteLocatorService extends SpatialAnalystBase {
      * @function RouteLocatorService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点 M 值操作的参数传递到服务端。
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof RouteLocatorParameters)) {
             return;
         }
@@ -75234,12 +77639,12 @@ class RouteLocatorService extends SpatialAnalystBase {
 
         jsonParameters = me.getJsonParameters(params);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -75658,18 +78063,12 @@ class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
  * 表面分析结果通过该类支持的事件的监听函数参数获取
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var mySurfaceAnalystService = new SurfaceAnalystService(url, {
-     *      eventListeners: {
-     *	       "processCompleted": surfaceAnalysCompleted,
-     *		   "processFailed": surfaceAnalysFailed
-     *		   }
-     * });
+ * var mySurfaceAnalystService = new SurfaceAnalystService(url);
  * (end)
  * @usage
  */
@@ -75692,19 +78091,21 @@ class SurfaceAnalystService extends SpatialAnalystBase {
      * @function SurfaceAnalystService.prototype.processAsync
      * @description 负责将客户端的表面分析服务参数传递到服务端。
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof SurfaceAnalystParameters)) {
             return;
         }
         var me = this, jsonParameters;
         jsonParameters = me.getJsonParameters(params);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -75859,7 +78260,6 @@ class TerrainCurvatureCalculationParameters {
  * @classdesc 地形曲率计算服务类。
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -75892,8 +78292,10 @@ class TerrainCurvatureCalculationService extends SpatialAnalystBase {
      * @function TerrainCurvatureCalculationService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {TerrainCurvatureCalculationParameters} parameter - 地形曲率计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = {};
 
@@ -75904,12 +78306,566 @@ class TerrainCurvatureCalculationService extends SpatialAnalystBase {
         TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util_Util.toJSON(parameterObject);
         me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
+        });
+    }
+}
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainCutFillCalculationParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+// import {Geometry3D} from '../commontypes/Geometry3D';
+
+/**
+ * @class TerrainCutFillCalculationParameters
+ * @deprecatedclass SuperMap.TerrainCutFillCalculationParameters
+ * @category  iServer SpatialAnalyst TerrainCalculation
+ * @classdesc 填挖方计算参数类。
+ * @version 11.1.1
+ * @param {Object} options - 参数。
+ * @param {string} options.dataset - 填挖方计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} [options.cutFillType="GRID"] - 填挖方分析的类型，包含： 
+                                                GRID：根据结果栅格进行填挖方分析，也叫栅格填挖方 
+                                                LINE3DANDBUFFERRADIUS：根据指定的三维线及缓冲半径进行进行填挖方分析，也叫斜面填挖方。 
+                                                REGION3D：三维面填挖方计算。 
+                                                REGIONANDALTITUDE：根据指定的面区域及结果高程值进行填挖方分析，也叫选面填挖方计算。 
+* @param {string} [options.afterCutFillDataset] - 填挖方后的栅格数据集，当填挖方分析的类型为 GRID 时有效，此时为必填。
+* @param {string} [options.resultDataset] - 填挖方分析的结果数据集。
+* @param {boolean} [options.buildPyramid] - 是否对结果栅格数据集创建金字塔。 
+* @param {boolean} [options.deleteExistResultDataset] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+* @param {number} [options.bufferRadius] - 填挖方线路的缓冲区半径，当填挖方分析的类型为 LINE3DANDBUFFERRADIUS 时有效。
+* @param {boolean} [options.isRoundHead] - 是否使用圆头缓冲为填挖方路线创建缓冲区，默认为 false，当填挖方分析的类型为 LINE3DANDBUFFERRADIUS 时有效。 
+* @param {Geometry3D} [options.line3D] - 填挖方路线，当填挖方分析的类型为 LINE3DANDBUFFERRADIUS 时有效。
+* @param {Geometry} [options.region] - 填挖方区域，当填挖方分析的类型为 REGIONANDALTITUDE 时有效。
+* @param {Geometry3D} [options.region3D] - 三维面对象，当填挖方分析的类型为 REGION3D 时有效。
+ * @usage
+ */
+class TerrainCutFillCalculationParameters {
+
+    constructor(options) {
+        if (!options) {
+            return;
+        }
+        /**
+         * @member {string} TerrainCutFillCalculationParameters.prototype.dataset
+         * @description 要用来做填挖方计算数据源中数据集的名称。
+         * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+         */
+        this.dataset = null;
+
+        /**
+         * @member {string} TerrainCutFillCalculationParameters.prototype.cutFillType
+         * @description 填挖方分析的类型，包含： 
+                                        GRID：根据结果栅格进行填挖方分析，也叫栅格填挖方 
+                                        LINE3DANDBUFFERRADIUS：根据指定的三维线及缓冲半径进行进行填挖方分析，也叫斜面填挖方。 
+                                        REGION3D：三维面填挖方计算。 
+                                        REGIONANDALTITUDE：根据指定的面区域及结果高程值进行填挖方分析，也叫选面填挖方计算。 
+         */
+        // this.cutFillType = cutFillType.GRID;
+        this.cutFillType = "GRID";
+
+        /**
+         * @member {string} TerrainCutFillCalculationParameters.prototype.afterCutFillDataset
+         * @description 填挖方后的栅格数据集，当填挖方分析的类型为 GRID 时有效，此时为必填。
+         */
+        this.afterCutFillDataset = null;
+
+        /**
+         * @member {string} TerrainCutFillCalculationParameters.prototype.resultDataset
+         * @description 填挖方分析的结果数据集。
+         */
+        this.resultDataset = null;
+
+        /**
+         * @member {boolean} TerrainCutFillCalculationParameters.prototype.buildPyramid
+         * @description 是否对结果栅格数据集创建金字塔。 
+         */
+        this.buildPyramid = null;
+
+        /**
+         * @member {boolean} TerrainCutFillCalculationParameters.prototype.deleteExistResultDataset
+         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+         */
+        this.deleteExistResultDataset = null;
+
+        /**
+         * @member {number} TerrainCutFillCalculationParameters.prototype.bufferRadius
+         * @description 填挖方线路的缓冲区半径，当填挖方分析的类型为 LINE3DANDBUFFERRADIUS 时有效。
+         */
+        this.bufferRadius = null;
+
+        /**
+         * @member {boolean} TerrainCutFillCalculationParameters.prototype.isRoundHead
+         * @description 是否使用圆头缓冲为填挖方路线创建缓冲区，默认为 false，当填挖方分析的类型为 LINE3DANDBUFFERRADIUS 时有效。 
+         */
+        this.isRoundHead = null;
+
+        /**
+         * @member {Geometry3D} TerrainCutFillCalculationParameters.prototype.line3D
+         * @description 填挖方路线，当填挖方分析的类型为 LINE3DANDBUFFERRADIUS 时有效。
+         */
+        this.line3D = null;
+
+        /**
+         * @member {Geometry} TerrainCutFillCalculationParameters.prototype.region
+         * @description 填挖方区域，当填挖方分析的类型为 REGIONANDALTITUDE 时有效。
+         */
+        this.region = null;
+
+        /**
+         * @member {Geometry3D} TerrainCutFillCalculationParameters.prototype.region3D
+         * @description 三维面对象，当填挖方分析的类型为 REGION3D 时有效。
+         */
+        this.region3D = null;
+
+
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.TerrainCutFillCalculationParameters";
+    }
+
+
+    /**
+     * @function TerrainCutFillCalculationParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.cutFillType = null;
+        me.afterCutFillDataset = null;
+        me.resultDataset = null;
+        me.buildPyramid = null;
+        me.deleteExistResultDataset = null;
+        me.bufferRadius = null;
+        me.isRoundHead = null;
+        me.line3D = null;
+        me.region = null;
+        me.region3D = null;
+    }
+
+    /**
+     * @function TerrainCutFillCalculationParameters.toObject
+     * @param {Object} terrainCutFillCalculationParameters - 填挖方计算参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 填挖方计算对象。
+     */
+    static toObject(terrainCutFillCalculationParameters, tempObj) {
+        for (var name in terrainCutFillCalculationParameters) {
+            if (name !== "dataset") {
+                tempObj[name] = terrainCutFillCalculationParameters[name];
+            }
+        }
+    }
+
+}
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainCutFillCalculationService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class TerrainCutFillCalculationService
+ * @deprecatedclass SuperMap.TerrainCutFillCalculationService
+ * @category  iServer SpatialAnalyst TerrainCalculation
+ * @classdesc 填挖方计算服务类。
+ * @version 11.1.1
+ * @extends {SpatialAnalystBase}
+ * @param {Object} options - 参数。
+ * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @example 例如：
+ * (start code)
+ * var myTerrainCutFillCalculationService = new TerrainCutFillCalculationService(url);
+ * myTerrainCutFillCalculationService.on({
+     *     "processCompleted": processCompleted,
+     *     "processFailed": processFailed
+     *     }
+ * );
+ * (end)
+ * @usage
+ */
+class TerrainCutFillCalculationService extends SpatialAnalystBase {
+
+    constructor(url, options) {
+        super(url, options);
+        this.CLASS_NAME = "SuperMap.TerrainCutFillCalculationService";
+    }
+
+    /**
+     *@override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function TerrainCutFillCalculationService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param {TerrainCutFillCalculationParameters} parameter - 填挖方计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     */
+    processAsync(parameter, callback) {
+        var me = this;
+        var parameterObject = {};
+
+        if (parameter instanceof TerrainCutFillCalculationParameters) {
+            me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/terraincalculation/cutfill');
+        }
+
+        TerrainCutFillCalculationParameters.toObject(parameter, parameterObject);
+        var jsonParameters = Util_Util.toJSON(parameterObject);
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
+        return me.request({
+            method: "POST",
+            data: jsonParameters,
+            scope: me,
+            success: callback,
+            failure: callback
+        });
+    }
+}
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainAspectCalculationParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class TerrainAspectCalculationParameters
+ * @deprecatedclass SuperMap.TerrainAspectCalculationParameters
+ * @category  iServer SpatialAnalyst TerrainCalculation
+ * @classdesc 地形坡向计算参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.dataset - 地形坡向计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {terrainAnalystSetting} options.terrainAnalystSetting - 地形分析基本的环境设置。
+ * @param {string} [options.resultDatasetName] - 结果数据集名称。
+ * @param {boolean} [options.deleteExistResultDataset] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+ * @usage
+ */
+class TerrainAspectCalculationParameters {
+
+    constructor(options) {
+        if (!options) {
+            return;
+        }
+        /**
+         * @member {string} TerrainAspectCalculationParameters.prototype.dataset
+         * @description 要用来做地形坡向计算数据源中数据集的名称。
+         * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+         */
+        this.dataset = null;
+
+        /**
+         * @member {terrainAnalystSetting} TerrainAspectCalculationParameters.prototype.terrainAnalystSetting
+         * @description 地形分析基本的环境设置。
+         */
+        this.terrainAnalystSetting = null;
+
+        /**
+         * @member {string} TerrainAspectCalculationParameters.prototype.resultDatasetName
+         * @description 结果数据集名称。
+         */
+        this.resultDatasetName = null;
+
+        /**
+         * @member {boolean} TerrainAspectCalculationParameters.prototype.deleteExistResultDataset
+         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+         */
+        this.deleteExistResultDataset = null;
+
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.TerrainAspectCalculationParameters";
+    }
+
+
+    /**
+     * @function TerrainAspectCalculationParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.terrainAnalystSetting = null;
+        me.resultDatasetName = null;
+        me.deleteExistResultDataset = null;
+    }
+
+    /**
+     * @function TerrainAspectCalculationParameters.toObject
+     * @param {Object} terrainAspectCalculationParameters - 地形坡向计算参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 地形坡向计算对象。
+     */
+    static toObject(terrainAspectCalculationParameters, tempObj) {
+        for (var name in terrainAspectCalculationParameters) {
+            if (name !== "dataset") {
+                tempObj[name] = terrainAspectCalculationParameters[name];
+            }
+        }
+    }
+
+}
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainAspectCalculationService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class TerrainAspectCalculationService
+ * @deprecatedclass SuperMap.TerrainAspectCalculationService
+ * @category  iServer SpatialAnalyst TerrainCalculation
+ * @classdesc 地形坡向计算服务类。
+ * @version 11.1.1
+ * @extends {SpatialAnalystBase}
+ * @param {Object} options - 参数。
+ * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @example 例如：
+ * (start code)
+ * var myTerrainCutFillCalculationService = new TerrainAspectCalculationService(url);
+ * myTerrainCutFillCalculationService.on({
+     *     "processCompleted": processCompleted,
+     *     "processFailed": processFailed
+     *     }
+ * );
+ * (end)
+ * @usage
+ */
+class TerrainAspectCalculationService extends SpatialAnalystBase {
+
+    constructor(url, options) {
+        super(url, options);
+        this.CLASS_NAME = "SuperMap.TerrainAspectCalculationService";
+    }
+
+    /**
+     *@override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function TerrainAspectCalculationService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param {TerrainAspectCalculationParameters} parameter - 地形坡向计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     */
+    processAsync(parameter, callback) {
+        var me = this;
+        var parameterObject = {};
+
+        if (parameter instanceof TerrainAspectCalculationParameters) {
+            me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/terraincalculation/aspect');
+        }
+
+        TerrainAspectCalculationParameters.toObject(parameter, parameterObject);
+        var jsonParameters = Util_Util.toJSON(parameterObject);
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
+        return me.request({
+            method: "POST",
+            data: jsonParameters,
+            scope: me,
+            success: callback,
+            failure: callback
+        });
+    }
+}
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainSlopeCalculationParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class TerrainSlopeCalculationParameters
+ * @deprecatedclass SuperMap.TerrainSlopeCalculationParameters
+ * @category  iServer SpatialAnalyst TerrainCalculation
+ * @classdesc 地形坡度计算参数类。
+ * @param {Object} options - 参数。
+ * @param {string} options.dataset - 地形坡度计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {terrainAnalystSetting} options.terrainAnalystSetting - 地形分析基本的环境设置。
+ * @param {string} [options.resultDatasetName] - 结果数据集名称。
+ * @param {boolean} [options.deleteExistResultDataset] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+ * @param {number} [options.zFactor] - 高程缩放系数
+ * @param {string} options.slopeType - 结果坡度的单位类型，包括： 
+                                            DEGREE：以角度为单位表示坡度 
+                                            PERCENT：以百分数来表示坡度 
+                                            RADIAN：以弧度为单位表示坡度
+ * @usage
+ */
+class TerrainSlopeCalculationParameters {
+
+    constructor(options) {
+        if (!options) {
+            return;
+        }
+        /**
+         * @member {string} TerrainSlopeCalculationParameters.prototype.dataset
+         * @description 要用来做地形坡度计算数据源中数据集的名称。
+         * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+         */
+        this.dataset = null;
+
+        /**
+         * @member {terrainAnalystSetting} TerrainSlopeCalculationParameters.prototype.terrainAnalystSetting
+         * @description 地形分析基本的环境设置。
+         */
+        this.terrainAnalystSetting = null;
+
+        /**
+         * @member {string} TerrainSlopeCalculationParameters.prototype.resultDatasetName
+         * @description 结果数据集名称。
+         */
+        this.resultDatasetName = null;
+
+        /**
+         * @member {boolean} TerrainSlopeCalculationParameters.prototype.deleteExistResultDataset
+         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+         */
+        this.deleteExistResultDataset = null;
+
+        /**
+         * @member {number} TerrainSlopeCalculationParameters.prototype.zFactor
+         * @description 高程缩放系数。
+         */
+        this.zFactor = null;
+
+        /**
+         * @member {string} TerrainSlopeCalculationParameters.prototype.slopeType
+         * @description 结果坡度的单位类型，包括： 
+                            DEGREE：以角度为单位表示坡度 
+                            PERCENT：以百分数来表示坡度 
+                            RADIAN：以弧度为单位表示坡度
+         */
+        this.slopeType = null;
+
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.TerrainSlopeCalculationParameters";
+    }
+
+
+    /**
+     * @function TerrainSlopeCalculationParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.terrainAnalystSetting = null;
+        me.resultDatasetName = null;
+        me.deleteExistResultDataset = null;
+        me.zFactor = null;
+        me.slopeType = null;
+    }
+
+    /**
+     * @function TerrainSlopeCalculationParameters.toObject
+     * @param {Object} terrainSlopeCalculationParameters - 地形坡度计算参数。
+     * @param {Object} tempObj - 目标对象。
+     * @description 地形坡度计算对象。
+     */
+    static toObject(terrainSlopeCalculationParameters, tempObj) {
+        for (var name in terrainSlopeCalculationParameters) {
+            if (name !== "dataset") {
+                tempObj[name] = terrainSlopeCalculationParameters[name];
+            }
+        }
+    }
+
+}
+
+
+;// CONCATENATED MODULE: ./src/common/iServer/TerrainSlopeCalculationService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+/**
+ * @class TerrainSlopeCalculationService
+ * @deprecatedclass SuperMap.TerrainSlopeCalculationService
+ * @category  iServer SpatialAnalyst TerrainCalculation
+ * @classdesc 地形坡度计算服务类。
+ * @extends {SpatialAnalystBase}
+ * @param {Object} options - 参数。
+ * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @example 例如：
+ * (start code)
+ * var myTerrainCutFillCalculationService = new TerrainSlopeCalculationService(url);
+ * myTerrainCutFillCalculationService.on({
+     *     "processCompleted": processCompleted,
+     *     "processFailed": processFailed
+     *     }
+ * );
+ * (end)
+ * @usage
+ */
+class TerrainSlopeCalculationService extends SpatialAnalystBase {
+
+    constructor(url, options) {
+        super(url, options);
+        this.CLASS_NAME = "SuperMap.TerrainSlopeCalculationService";
+    }
+
+    /**
+     *@override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function TerrainSlopeCalculationService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {TerrainSlopeCalculationParameters} parameter - 地形坡度计算参数类。
+     */
+    processAsync(parameter, callback) {
+        var me = this;
+        var parameterObject = {};
+
+        if (parameter instanceof TerrainSlopeCalculationParameters) {
+            me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/terraincalculation/slope');
+        }
+
+        TerrainSlopeCalculationParameters.toObject(parameter, parameterObject);
+        var jsonParameters = Util_Util.toJSON(parameterObject);
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
+        return me.request({
+            method: "POST",
+            data: jsonParameters,
+            scope: me,
+            success: callback,
+            failure: callback
         });
     }
 }
@@ -75929,7 +78885,13 @@ class TerrainCurvatureCalculationService extends SpatialAnalystBase {
  * @category iServer SpatialAnalyst ThiessenAnalyst
  * @classdesc 数据集泰森多边形分析参数类。
  * @param {Object} options - 参数。
+ * @param {(GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject)} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
+ * @param {boolean} [options.createResultDataset] - 是否返回结果数据集。如果为 true，则必须设置属性 resultDatasetName 和 resultDatasourceName。
+ * @param {string} [options.dataset] - 数据集名称待分析的数据集名称，请使用 "datasetName@datasourceName" 格式来表示。
  * @param {FilterParameter} [options.filterQueryParameter] - 过滤参数类，即对数据集中的所有点进行分析。
+ * @param {string} [options.resultDatasetName] - 指定结果数据集名称。
+ * @param {boolean} [options.resultDatasourceName] - 指定结果数据集所在数据源。
+ * @param {boolean} [options.returnResultRegion] - 是否返回分析得到的多边形面数组。
  * @extends {ThiessenAnalystParameters}
  * @usage
  */
@@ -76089,23 +79051,16 @@ class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
  * 执行几何对象泰森多边形分析。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myThiessenAnalystService = new ThiessenAnalystService(url, {
-     *     eventListeners: {
-     *           "processCompleted": bufferCompleted,
-     *           "processFailed": bufferFailed
-     *           }
-     *    });
+ * var myThiessenAnalystService = new ThiessenAnalystService(url);
  * (end)
  * @usage
  */
 class ThiessenAnalystService extends SpatialAnalystBase {
-
 
     constructor(url, options) {
         super(url, options);
@@ -76132,8 +79087,10 @@ class ThiessenAnalystService extends SpatialAnalystBase {
      * @function ThiessenAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} parameter - 泰森多边形分析参数基类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
         if (parameter instanceof DatasetThiessenAnalystParameters) {
@@ -76148,12 +79105,12 @@ class ThiessenAnalystService extends SpatialAnalystBase {
 
         var jsonParameters = Util_Util.toJSON(parameterObject);
         this.returnContent = true;
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -76162,6 +79119,368 @@ class ThiessenAnalystService extends SpatialAnalystBase {
     }
 }
 
+;// CONCATENATED MODULE: ./src/common/iServer/MinDistanceAnalystParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class MinDistanceAnalystParameters
+ * @deprecatedclass SuperMap.MinDistanceAnalystParameters
+ * @category iServer SpatialAnalyst MinDistanceAnalyst
+ * @classdesc 最近距离分析参数基类。
+ * @version 11.1.1
+ * @param {Object} options - 参数。
+ * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
+ * @param {FilterParameter} [options.referenceFilterQueryParameter=null] - 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。
+ * @param {boolean} [options.createResultDataset] - 是否创建结果数据集。
+ * @param {string} [options.resultDatasetName] - 结果数据集名称。
+ * @param {string} [options.resultDatasourceName] - 结果数据集所在数据源的名称。
+ * @param {number} options.minDistance - 指定的查询范围的最小距离。取值范围为大于或等于 0。单位与被计算记录集所属数据集的单位相同。
+ * @param {number} options.maxDistance - 指定的查询范围的最大距离。取值范围为大于 0 的值及 -1。当设置为 -1 时，表示不限制最大距离。单位与被计算记录集所属数据集的单位相同。
+ * @usage
+ */
+class MinDistanceAnalystParameters {
+
+    constructor(options) {
+        /**
+         * @member {string} MinDistanceAnalystParameters.prototype.referenceDatasetName
+         * @description 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
+         */
+        this.referenceDatasetName = null;
+
+        /**
+         * @member {FilterParameter} [MinDistanceAnalystParameters.prototype.referenceFilterQueryParameter=null]
+         * @description 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。
+         */
+        this.referenceFilterQueryParameter = null;
+
+        /**
+         * @member {boolean} [MinDistanceAnalystParameters.prototype.createResultDataset]
+         * @description 是否创建结果数据集。
+         */
+        this.createResultDataset = null;
+
+        /**
+         * @member {string} [MinDistanceAnalystParameters.prototype.resultDatasetName]
+         * @description 结果数据集名称。
+         */
+        this.resultDatasetName = null;
+
+        /**
+         * @member {string} [MinDistanceAnalystParameters.prototype.resultDatasourceName]
+         * @description 结果数据集所在数据源的名称。
+         */
+        this.resultDatasourceName = null;
+
+        /**
+         * @member {number} MinDistanceAnalystParameters.prototype.minDistance
+         * @description 指定的查询范围的最小距离。取值范围为大于或等于 0。单位与被计算记录集所属数据集的单位相同。
+         */
+        this.minDistance = null;
+
+        /**
+         * @member {number} MinDistanceAnalystParameters.prototype.maxDistance
+         * @description 指定的查询范围的最大距离。取值范围为大于 0 的值及 -1。当设置为 -1 时，表示不限制最大距离。单位与被计算记录集所属数据集的单位相同。
+         */
+        this.maxDistance = null;
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.MinDistanceAnalystParameters";
+    }
+
+    /**
+     * @function MinDistanceAnalystParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.referenceDatasetName = null;
+        me.dataset = null;
+        me.referenceFilterQueryParameter = null;
+        me.createResultDataset = null;
+        me.resultDatasetName = null;
+        me.resultDatasourceName = null;
+        me.minDistance = null;
+        me.maxDistance = null;
+    }
+
+}
+
+;// CONCATENATED MODULE: ./src/common/iServer/DatasetMinDistanceAnalystParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+/**
+ * @class DatasetMinDistanceAnalystParameters
+ * @deprecatedclass SuperMap.DatasetMinDistanceAnalystParameters
+ * @category iServer SpatialAnalyst MinDistanceAnalyst
+ * @classdesc 数据集最近距离分析参数类。
+ * @version 11.1.1
+ * @param {Object} options - 参数。
+ * @param {FilterParameter} [options.inputFilterQueryParameter] - 对被计算数据集的要素进行过滤的属性过滤条件。只有满足此条件的要素才参与最近距离计算。
+ * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
+ * @param {FilterParameter} [options.referenceFilterQueryParameter=null] - 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。
+ * @param {boolean} [options.createResultDataset] - 是否创建结果数据集。
+ * @param {string} [options.resultDatasetName] - 结果数据集名称。
+ * @param {string} [options.resultDatasourceName] - 结果数据集所在数据源的名称。
+ * @param {number} options.minDistance - 指定的查询范围的最小距离。取值范围为大于或等于 0。单位与被计算记录集所属数据集的单位相同。
+ * @param {number} options.maxDistance - 指定的查询范围的最大距离。取值范围为大于 0 的值及 -1。当设置为 -1 时，表示不限制最大距离。单位与被计算记录集所属数据集的单位相同。
+ * @extends {MinDistanceAnalystParameters}
+ * @usage
+ */
+class DatasetMinDistanceAnalystParameters extends MinDistanceAnalystParameters{
+
+    constructor(options) {
+        super(options);
+        /**
+         *  @member {string} DatasetMinDistanceAnalystParameters.prototype.dataset
+         *  @description 源数据集名称。
+         */
+            this.dataset = null;
+
+        /**
+         * @member {FilterParameter} [DatasetMinDistanceAnalystParameters.prototype.inputFilterQueryParameter]
+         * @description 对被计算数据集的要素进行过滤的属性过滤条件。只有满足此条件的要素才参与最近距离计算。
+         */
+        this.inputFilterQueryParameter = null;
+
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.DatasetMinDistanceAnalystParameters";
+    }
+
+    /**
+     * @function DatasetMinDistanceAnalystParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        super.destroy();
+        var me = this;
+        this.dataset = null;
+        me.inputFilterQueryParameter = null;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/common/iServer/GeometryMinDistanceAnalystParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class GeometryMinDistanceAnalystParameters
+ * @deprecatedclass SuperMap.GeometryMinDistanceAnalystParameters
+ * @category iServer SpatialAnalyst MinDistanceAnalyst
+ * @classdesc 几何对象最近距离分析参数类。
+ * @version 11.1.1
+ * @param {Object} options - 参数。
+ * @param {Array.<Geometry>} options.inputGeometries - 被计算几何对象集合，目前只支持二维点对象
+ * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
+ * @param {FilterParameter} [options.referenceFilterQueryParameter=null] - 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。
+ * @param {boolean} [options.createResultDataset] - 是否创建结果数据集。
+ * @param {string} [options.resultDatasetName] - 结果数据集名称。
+ * @param {string} [options.resultDatasourceName] - 结果数据集所在数据源的名称。
+ * @param {number} options.minDistance - 指定的查询范围的最小距离。取值范围为大于或等于 0。单位与被计算记录集所属数据集的单位相同。
+ * @param {number} options.maxDistance - 指定的查询范围的最大距离。取值范围为大于 0 的值及 -1。当设置为 -1 时，表示不限制最大距离。单位与被计算记录集所属数据集的单位相同。
+ * @extends {MinDistanceAnalystParameters}
+ * @usage
+ */
+class GeometryMinDistanceAnalystParameters extends MinDistanceAnalystParameters{
+
+    constructor(options) {
+        super(options);
+        /**
+         * @member {Array.<Geometry>} GeometryMinDistanceAnalystParameters.prototype.inputGeometries
+         * @description 被计算几何对象集合，目前只支持二维点对象
+         */
+        this.inputGeometries = null;
+
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+
+        this.CLASS_NAME = "SuperMap.GeometryMinDistanceAnalystParameters";
+    }
+
+    /**
+     * @function GeometryMinDistanceAnalystParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        super.destroy();
+        var me = this;
+        me.inputGeometries = null;
+    }
+    
+    /**
+     * @function GeometryMinDistanceAnalystParameters.toObject
+     * @param {GeometryMinDistanceAnalystParameters} geometryMinDistanceAnalystParameters - 几何对象最近距离分析参数类。
+     * @param {GeometryMinDistanceAnalystParameters} tempObj - 几何对象最近距离分析参数对象。
+     * @description 将几何对象最近距离分析参数对象转换为 JSON 对象。
+     * @returns {Object} JSON 对象。
+     */
+    static toObject(geometryMinDistanceAnalystParameters, tempObj) {
+        for (var name in geometryMinDistanceAnalystParameters) {
+            if (name === "inputGeometries" && geometryMinDistanceAnalystParameters.inputGeometries) {
+                var inputGeometries = [];
+                for (var i = 0; i < geometryMinDistanceAnalystParameters.inputGeometries.length; i++) {
+                    inputGeometries.push(ServerGeometry.fromGeometry(geometryMinDistanceAnalystParameters.inputGeometries[i]));
+                }
+                tempObj.inputGeometries = inputGeometries;
+
+            } else {
+                tempObj[name] = geometryMinDistanceAnalystParameters[name];
+            }
+        }
+    }
+}
+
+;// CONCATENATED MODULE: ./src/common/iServer/MinDistanceAnalystService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+
+
+
+/**
+ * @class MinDistanceAnalystService
+ * @deprecatedclass SuperMap.MinDistanceAnalystService
+ * @category iServer SpatialAnalyst MinDistanceAnalyst
+ * @classdesc 空间关系分析服务类。该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
+ * @version 11.1.1
+ * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+ * @param {Object} options - 参数。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @extends {SpatialAnalystBase}
+ * @usage
+ */
+class MinDistanceAnalystService extends SpatialAnalystBase {
+
+    constructor(url, options) {
+        super(url, options);
+        if (options) {
+            Util_Util.extend(this, options);
+        }
+        this.CLASS_NAME = "SuperMap.MinDistanceAnalystService";
+    }
+
+    /**
+     * @function MinDistanceAnalystService.prototype.destroy
+     * @override
+     */
+    destroy() {
+        super.destroy();
+    }
+
+    /**
+     * @function MinDistanceAnalystService.prototype.processAsync
+     * @description 负责将客户端的参数传递到服务端
+     * @param {MinDistanceAnalystParameters} parameter - 最短距离分析所需的参数信息。
+     */
+    processAsync(parameter, callback) {
+        var me = this;
+        var parameterObject = {};
+        if (parameter instanceof DatasetMinDistanceAnalystParameters) {
+            me.url = Util_Util.urlPathAppend(me.url, 'datasets/' + parameter.dataset + '/mindistance');
+            parameterObject = parameter;
+        } else if (parameter instanceof GeometryMinDistanceAnalystParameters) {
+            me.url = Util_Util.urlPathAppend(me.url, 'geometry/mindistance');
+            GeometryMinDistanceAnalystParameters.toObject(parameter, parameterObject);
+        }
+
+        var jsonParameters = Util_Util.toJSON(parameterObject);
+        me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
+
+        return me.request({
+            method: "POST",
+            data: jsonParameters,
+            scope: me,
+            success: callback,
+            failure: callback
+        });
+    }
+
+
+}
+
+;// CONCATENATED MODULE: ./src/common/iServer/ConvexHullAnalystService.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+//  import {ConvexHullAnalystParameters} from './ConvexHullAnalystParameters';
+ 
+ /**
+  * @class ConvexHullAnalystService
+  * @deprecatedclass SuperMap.ConvexHullAnalystService
+  * @category  iServer SpatialAnalyst ConvexHullAnalyst
+  * @classdesc 凸包运算服务类
+  * @version 11.1.1
+  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+  * @param {Object} options - 参数。
+  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+  * @param {Object} [options.headers] - 请求头。
+  * @extends {SpatialAnalystBase}
+  * @usage
+  */
+ class ConvexHullAnalystService extends SpatialAnalystBase {
+ 
+     constructor(url, options) {
+         super(url, options);
+
+         if (options) {
+             Util_Util.extend(this, options);
+         }
+         this.CLASS_NAME = "SuperMap.ConvexHullAnalystService";
+     }
+ 
+     /**
+      * @override
+      */
+     destroy() {
+         super.destroy();
+         this.mode = null;
+     }
+ 
+     /**
+      * @function ConvexHullAnalystService.prototype.processAsync
+      * @description 负责将客户端的查询参数传递到服务端。
+      * @param {ConvexHullAnalystParameters} parameter - 凸包运算参数基类。
+      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+      * @returns {Promise} Promise 对象。
+      */
+     processAsync(parameter, callback) {
+         var me = this;
+         me.url = Util_Util.urlPathAppend(me.url, 'geometry/3d/convexhull');
+ 
+         var jsonParameters = Util_Util.toJSON(parameter);
+         me.url = Util_Util.urlAppend(me.url, 'returnContent=true');
+         return me.request({
+             method: "POST",
+             data: jsonParameters,
+             scope: me,
+             success: callback,
+             failure: callback
+         });
+     }
+ }
+ 
 ;// CONCATENATED MODULE: ./src/common/iServer/GeometryBatchAnalystService.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -76184,16 +79503,10 @@ class ThiessenAnalystService extends SpatialAnalystBase {
  * @extends {SpatialAnalystBase}
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * var myOverlayAnalystService = new GeometryBatchAnalystService(url, {
- *     eventListeners: {
- *	       "processCompleted": OverlayCompleted,
- *		   "processFailed": OverlayFailed
- *		   }
- * });
+ * var myOverlayAnalystService = new GeometryBatchAnalystService(url);
  * @usage
  */
 class GeometryBatchAnalystService extends SpatialAnalystBase {
@@ -76212,21 +79525,22 @@ class GeometryBatchAnalystService extends SpatialAnalystBase {
      * @function GeometryBatchAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param {GeometryOverlayAnalystParameter} parameter - 批量几何对象叠加分析参数类
-     *
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameters) {
+    processAsync(parameters, callback) {
         var me = this;
         me.url = Util_Util.urlPathAppend(me.url, 'geometry/batchanalyst');
         me.url = Util_Util.urlAppend(me.url, 'returnContent=true&ignoreAnalystParam=true');
         var parameterObjects = me._processParams(parameters);
         var jsonParameters = Util_Util.toJSON(parameterObjects);
 
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -76319,6 +79633,11 @@ class GeometryBatchAnalystService extends SpatialAnalystBase {
 
 
 
+
+
+
+
+
 /**
  * @class SpatialAnalystService
  * @extends {ServiceBase}
@@ -76347,8 +79666,9 @@ class SpatialAnalystService_SpatialAnalystService {
      * @function SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射。
      * @param {AreaSolarRadiationParameters} params - 地区太阳辐射参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getAreaSolarRadiationResult(params, callback, resultFormat) {
         var me = this;
@@ -76357,23 +79677,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        areaSolarRadiationService.processAsync(params);
+        return areaSolarRadiationService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析。
      * @param {DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     bufferAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76382,23 +79697,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        bufferAnalystService.processAsync(params);
+        return bufferAnalystService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析。
      * @param {DensityKernelAnalystParameters} params - 核密度分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     densityAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76407,23 +79717,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        densityAnalystService.processAsync(params);
+        return densityAnalystService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析。
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     generateSpatialData(params, callback, resultFormat) {
         var me = this;
@@ -76432,23 +79737,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        generateSpatialDataService.processAsync(params);
+        return generateSpatialDataService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析。
      * @param {GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geoRelationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76457,23 +79757,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        geoRelationAnalystService.processAsync(params);
+        return geoRelationAnalystService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析。
      * @param {InterpolationRBFAnalystParameters|InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     interpolationAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76482,22 +79777,17 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        interpolationAnalystService.processAsync(params);
+        return interpolationAnalystService.processAsync(params, callback);
     }
     /**
      * @function SpatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算。
      * @param {MathExpressionAnalysisParameters} params - 栅格代数运算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     mathExpressionAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76506,23 +79796,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        mathExpressionAnalysisService.processAsync(params);
+        return mathExpressionAnalysisService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析。
      * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或几何对象叠加分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     overlayAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76531,23 +79816,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        overlayAnalystService.processAsync(params);
+        return overlayAnalystService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算。
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeCalculateMeasure(params, callback, resultFormat) {
         var me = this;
@@ -76556,23 +79836,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        routeCalculateMeasureService.processAsync(params);
+        return routeCalculateMeasureService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.routeLocate
      * @description 路由定位。
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeLocate(params, callback, resultFormat) {
         var me = this;
@@ -76581,23 +79856,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        routeLocatorService.processAsync(params);
+        return routeLocatorService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析。
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     surfaceAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76606,23 +79876,18 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        surfaceAnalystService.processAsync(params);
+        return surfaceAnalystService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算。
      * @param {TerrainCurvatureCalculationParameters} params - 地形曲率计算参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainCurvatureCalculate(params, callback, resultFormat) {
         var me = this;
@@ -76631,23 +79896,75 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        terrainCurvatureCalculationService.processAsync(params);
+        return terrainCurvatureCalculationService.processAsync(params, callback);
+    }
+
+     /**
+     * @function SpatialAnalystService.prototype.terrainCutFillCalculate
+     * @description 填挖方计算。
+     * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+     terrainCutFillCalculate(params, callback, resultFormat) {
+      var me = this;
+      var terrainCutFillCalculationService = new TerrainCutFillCalculationService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+          format: me._processFormat(resultFormat)
+      });
+      return terrainCutFillCalculationService.processAsync(params, callback);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainAspectCalculate
+     * @description 地形坡向分析。
+     * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainAspectCalculate(params, callback, resultFormat) {
+        var me = this;
+        var terrainAspectCalculationService = new TerrainAspectCalculationService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            format: me._processFormat(resultFormat)
+        });
+        return terrainAspectCalculationService.processAsync(params, callback);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainSlopeCalculate
+     * @description 地形坡度分析。
+     * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainSlopeCalculate(params, callback, resultFormat) {
+        var me = this;
+        var terrainSlopeCalculationService = new TerrainSlopeCalculationService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            format: me._processFormat(resultFormat)
+        });
+        return terrainSlopeCalculationService.processAsync(params, callback);
     }
 
     /**
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     thiessenAnalysis(params, callback, resultFormat) {
         var me = this;
@@ -76656,15 +79973,47 @@ class SpatialAnalystService_SpatialAnalystService {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
-        thiessenAnalystService.processAsync(params);
+        return thiessenAnalystService.processAsync(params, callback);
+    }
+
+     /**
+     * @function SpatialAnalystService.prototype.minDistanceAnalysis
+     * @description 最近距离计算。
+     * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+     minDistanceAnalysis(params, callback, resultFormat) {
+      var me = this;
+      var minDistanceAnalystService = new MinDistanceAnalystService(me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers,
+          format: me._processFormat(resultFormat)
+      });
+      return minDistanceAnalystService.processAsync(params, callback);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.convexHullAnalysis
+     * @description 凸包计算。
+     * @param {ConvexHullAnalystParameters} params - 凸包计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    convexHullAnalysis(params, callback, resultFormat) {
+        var me = this;
+        var convexHullAnalystService = new ConvexHullAnalystService(me.url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers,
+            format: me._processFormat(resultFormat)
+        });
+        return convexHullAnalystService.processAsync(params, callback);
     }
 
     /**
@@ -76678,18 +80027,13 @@ class SpatialAnalystService_SpatialAnalystService {
      *                                {@link GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
      *                                {@link InterpolationAnalystParameters} 插值分析参数类。</br>
      *                                {@link SurfaceAnalystParameters} 表面分析参数类。</br>
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geometrybatchAnalysis(params, callback, resultFormat) {
         var me = this;
         var geometryBatchAnalystService = new GeometryBatchAnalystService(me.url, {
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
 
@@ -76703,7 +80047,7 @@ class SpatialAnalystService_SpatialAnalystService {
             })
         }
 
-        geometryBatchAnalystService.processAsync(analystParameters);
+        return geometryBatchAnalystService.processAsync(analystParameters, callback);
     }
 
     _processFormat(resultFormat) {
@@ -76751,153 +80095,233 @@ class SpatialAnalystService extends ServiceBase {
      * @function SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射。
      * @param {AreaSolarRadiationParameters} params -查询相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getAreaSolarRadiationResult(params, callback, resultFormat) {
-      this._spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
+      return this._spatialAnalystService.getAreaSolarRadiationResult(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析。
      * @param {DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     bufferAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.bufferAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析。
      * @param {DensityKernelAnalystParameters} params - 核密度分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     densityAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.densityAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.densityAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析。
      * @param {GenerateSpatialDataParameters} params - 动态分段操作参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     generateSpatialData(params, callback, resultFormat) {
-      this._spatialAnalystService.generateSpatialData(params, callback, resultFormat);
+      return this._spatialAnalystService.generateSpatialData(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析。
      * @param {GeoRelationAnalystParameters} params - 空间关系分析服务参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geoRelationAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.geoRelationAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析。
      * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值（径向基函数插值法）分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     interpolationAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.interpolationAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算。
      * @param {MathExpressionAnalysisParameters} params - 栅格代数运算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     mathExpressionAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.mathExpressionAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析。
      * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类或者几何对象叠加分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     overlayAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.overlayAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算。
      * @param {RouteCalculateMeasureParameters} params - 基于路由对象计算指定点 M 值操作的参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeCalculateMeasure(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
+      return this._spatialAnalystService.routeCalculateMeasure(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.routeLocate
      * @description 路由定位。
      * @param {RouteLocatorParameters} params - 路由对象定位空间对象的参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     routeLocate(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.routeLocate(params, callback, resultFormat);
+      return this._spatialAnalystService.routeLocate(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析。
      * @param {SurfaceAnalystParameters} params - 表面分析提取操作参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     surfaceAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.surfaceAnalysis(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算。
      * @param {TerrainCurvatureCalculationParameters} params - 地形曲率计算参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     terrainCurvatureCalculate(params, callback, resultFormat) {
-      this._spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
+      return this._spatialAnalystService.terrainCurvatureCalculate(params, callback, resultFormat);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainCutFillCalculate
+     * @description 填挖方计算。
+     * @version 11.1.1
+     * @param {TerrainCutFillCalculationParameters} params - 填挖方计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+    terrainCutFillCalculate(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._spatialAnalystService.terrainCutFillCalculate(params, callback, resultFormat);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainAspectCalculate
+     * @description 地形坡向分析。
+     * @version 11.1.1
+     * @param {TerrainAspectCalculationParameters} params - 地形坡向分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     * @returns {Promise} Promise 对象。
+     */
+    terrainAspectCalculate(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._spatialAnalystService.terrainAspectCalculate(params, callback, resultFormat);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.terrainSlopeCalculate
+     * @description 地形坡度分析。
+     * @version 11.1.1
+     * @param {TerrainSlopeCalculationParameters} params - 地形坡度分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    terrainSlopeCalculate(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._spatialAnalystService.terrainSlopeCalculate(params, callback, resultFormat);
     }
 
     /**
      * @function SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析。
      * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     thiessenAnalysis(params, callback, resultFormat) {
       params = this._processParams(params);
-      this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+      return this._spatialAnalystService.thiessenAnalysis(params, callback, resultFormat);
+    } 
+
+    /**
+     * @function SpatialAnalystService.prototype.minDistanceAnalysis
+     * @description 最近距离计算。
+     * @version 11.1.1
+     * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    minDistanceAnalysis(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._spatialAnalystService.minDistanceAnalysis(params, callback, resultFormat);
+    }
+
+    /**
+     * @function SpatialAnalystService.prototype.convexHullAnalysis
+     * @description 凸包计算。
+     * @version 11.1.1
+     * @param {ConvexHullAnalystParameters} params - 凸包计算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
+     */
+    convexHullAnalysis(params, callback, resultFormat) {
+      params = this._processParams(params);
+      return this._spatialAnalystService.convexHullAnalysis(params, callback, resultFormat);
     }
 
     /**
@@ -76911,14 +80335,15 @@ class SpatialAnalystService extends ServiceBase {
      *                                {@link GeometryOverlayAnalystParameters} 叠加分析参数类。</br>
      *                                {@link InterpolationAnalystParameters} 插值分析参数类。</br>
      *                                {@link SurfaceAnalystParameters} 表面分析参数类。</br>
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     geometrybatchAnalysis(params, callback, resultFormat) {
         for (var i = 0; i < params.length; i++) {
             params[i].param = this._processParams(params[i].param)
         }
-        this._spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
+        return this._spatialAnalystService.geometrybatchAnalysis(params, callback, resultFormat);
     }
 
 
@@ -77018,6 +80443,14 @@ class SpatialAnalystService extends ServiceBase {
                 operateGeometries.push(core_Util_Util.toSuperMapGeometry(params.operateGeometries[j]));
             }
             params.operateGeometries = operateGeometries;
+        }
+        // 最近距离
+        if (params.inputGeometries) {
+          var inputGeometries = [];
+          for (var l = 0; l < params.inputGeometries.length; l++) {
+            inputGeometries.push(core_Util_Util.toSuperMapGeometry(params.inputGeometries[l]));
+          }
+          params.inputGeometries = inputGeometries;
         }
         //components 几何对象数组      Route
         if (params.sourceRoute && params.sourceRoute.components && core_Util_Util.isArray(params.sourceRoute.components)) {
@@ -77151,15 +80584,9 @@ class ThemeParameters {
  * @classdesc 专题图服务类。
  * @extends {CommonServiceBase}
  * @example
- * var myThemeService = new ThemeService(url, {
- *     eventListeners: {
- *           "processCompleted": themeCompleted,
- *           "processFailed": themeFailed
- *           }
- * });
+ * var myThemeService = new ThemeService(url);
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -77171,7 +80598,6 @@ class ThemeService_ThemeService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.url = Util_Util.urlPathAppend(this.url, 'tempLayersSet');
         this.CLASS_NAME = 'SuperMap.ThemeService';
     }
@@ -77187,6 +80613,8 @@ class ThemeService_ThemeService extends CommonServiceBase {
      * @function ThemeService.prototype.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
      * @param {ThemeParameters} params - 专题图参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     processAsync(params, callback) {
         if (!(params instanceof ThemeParameters)) {
@@ -77195,41 +80623,12 @@ class ThemeService_ThemeService extends CommonServiceBase {
         var me = this,
             jsonParameters = null;
         jsonParameters = me.getJsonParameters(params);
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success(result, options) {
-              result.eventId = eventId;
-              this.serviceProcessCompleted(result, options);
-            },
-            failure(result, options) {
-              if (result.error) {
-                result.error.eventId = eventId;
-              }
-              result.eventId = eventId;
-              this.serviceProcessFailed(result, options);
-            }
+            success: callback,
+            failure: callback
         });
     }
 
@@ -77344,10 +80743,11 @@ class ThemeService extends ServiceBase {
      * @function ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息。
      * @param {ThemeParameters} params - 专题图参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getThemeInfo(params, callback) {
-      this._themeService.processAsync(params, callback);
+      return this._themeService.processAsync(params, callback);
     }
 }
 
@@ -77416,16 +80816,11 @@ class StopQueryParameters {
  * @param {string} url - 服务地址。
  * 例如：</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example 例如：
  * (start code)
- * var myService = new StopQueryService(url, {eventListeners: {
-     *     "processCompleted": StopQueryCompleted,
-     *     "processFailed": StopQueryError
-     *     }
-     * };
+ * var myService = new StopQueryService(url);
  * (end)
  * @usage
  *
@@ -77453,19 +80848,21 @@ class StopQueryService extends CommonServiceBase {
      * @function StopQueryService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {StopQueryParameters} params - 交通换乘参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof StopQueryParameters)) {
             return;
         }
         var me = this;
         me.url = Util_Util.urlPathAppend(me.url, 'stops/keyword/' + params.keyWord);
-        me.request({
+        return me.request({
             method: "GET",
             params: {returnPosition: params.returnPosition},
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -77549,15 +80946,10 @@ class TransferPathParameters {
  *            返回结果通过该类支持的事件的监听函数参数获取
  * @extends {CommonServiceBase}
  * @example 例如：
- * var myService = new TransferPathService(url, {eventListeners: {
- *     "processCompleted": TrafficTransferCompleted,
- *     "processFailed": TrafficTransferError
- *     }
- * };
+ * var myService = new TransferPathService(url);
  * @param {string} url - 服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -77580,8 +80972,10 @@ class TransferPathService extends CommonServiceBase {
      * @function TransferPathService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {TransferPathParameters} params - 交通换乘参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof TransferPathParameters)) {
             return;
         }
@@ -77595,12 +80989,12 @@ class TransferPathService extends CommonServiceBase {
             transferLines: Util_Util.toJSON(params['transferLines'])
         };
 
-        me.request({
+        return me.request({
             method: method,
             params: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -77755,17 +81149,13 @@ class TransferSolutionParameters {
  * @param {string} url - 服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myService = new TransferSolutionService(url, {eventListeners: {
-     *     "processCompleted": trafficTransferCompleted,
-     *     "processFailed": trafficTransferError
-     *     }
-     * };
+ * var myService = new TransferSolutionService(url)
+ * };
  * (end)
  * @usage
  */
@@ -77787,8 +81177,10 @@ class TransferSolutionService extends CommonServiceBase {
      * @function TransferSolutionService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param {TransferSolutionParameters} params - 交通换乘参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof TransferSolutionParameters)) {
             return;
         }
@@ -77820,12 +81212,12 @@ class TransferSolutionService extends CommonServiceBase {
             jsonParameters["travelTime"] = params.travelTime;
         }
 
-        me.request({
+        return me.request({
             method: method,
             params: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
@@ -77869,7 +81261,8 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService {
      * @function TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
      * @param {StopQueryParameters} params - 查询相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     queryStop(params, callback) {
         var me = this;
@@ -77877,22 +81270,17 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        stopQueryService.processAsync(params);
+        return stopQueryService.processAsync(params, callback);
     }
 
     /**
      * @function TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
      * @param {TransferPathParameters} params - 查询相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferPath(params, callback) {
         var me = this;
@@ -77900,22 +81288,17 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        transferPathService.processAsync(params);
+        return transferPathService.processAsync(params, callback);
     }
 
     /**
      * @function TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
      * @param {TransferSolutionParameters} params - 查询相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferSolution(params, callback) {
         var me = this;
@@ -77923,15 +81306,9 @@ class TrafficTransferAnalystService_TrafficTransferAnalystService {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        transferSolutionService.processAsync(params);
+        return transferSolutionService.processAsync(params, callback);
     }
 }
 
@@ -77974,30 +81351,33 @@ class TrafficTransferAnalystService extends ServiceBase {
      * @function TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务。
      * @param {StopQueryParameters} params - 站点查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     queryStop(params, callback) {
-      this._trafficTransferAnalystService.queryStop(params, callback);
+      return this._trafficTransferAnalystService.queryStop(params, callback);
     }
 
     /**
      * @function TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务。
      * @param {TransferPathParameters} params - 交通换乘线路查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferPath(params, callback) {
-      this._trafficTransferAnalystService.analysisTransferPath(params, callback);
+      return this._trafficTransferAnalystService.analysisTransferPath(params, callback);
     }
 
     /**
      * @function TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务。
      * @param {TransferSolutionParameters} params - 交通换乘方案查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     analysisTransferSolution(params, callback) {
-      this._trafficTransferAnalystService.analysisTransferSolution(params, callback);
+      return this._trafficTransferAnalystService.analysisTransferSolution(params, callback);
     }
 
     _processParams(params) {
@@ -78037,7 +81417,6 @@ class TrafficTransferAnalystService extends ServiceBase {
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @usage
@@ -78049,7 +81428,6 @@ class WebPrintingService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.WebPrintingService';
         if (!this.url) {
             return;
@@ -78068,6 +81446,8 @@ class WebPrintingService extends CommonServiceBase {
      * @function WebPrintingService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印的请求参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
         if (!params) {
@@ -78090,13 +81470,14 @@ class WebPrintingService extends CommonServiceBase {
                 }
             }
         }
-        this.processAsync('jobs', 'POST', callback, params)
+        return this.processAsync('jobs', 'POST', callback, params)
     }
 
     /**
      * @function WebPrintingService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
      * @param {string} jobId - Web 打印任务 ID
+     * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
         var me = this;
@@ -78109,17 +81490,21 @@ class WebPrintingService extends CommonServiceBase {
      * @function WebPrintingService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult(jobId, callback) {
-        this.processAsync(`jobs/${jobId}/result`, 'GET', callback);
+        return this.processAsync(`jobs/${jobId}/result`, 'GET', callback);
     }
 
     /**
      * @function WebPrintingService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates(callback) {
-      this.processAsync('layouts', 'GET', callback);
+      return this.processAsync('layouts', 'GET', callback);
     }
 
     /**
@@ -78132,92 +81517,37 @@ class WebPrintingService extends CommonServiceBase {
         if (!result) {
             return;
         }
-        var id = setInterval(function () {
-          let eventId = ++me.eventCount;
-          let eventListeners = {
-            scope: this,
-            processCompleted: function(result) {
-              if (eventId === result.result.eventId && callback) {
-                delete result.result.eventId;
-                callback(result);
-                me.events.un(eventListeners);
-                return false;
-              }
-            },
-            processFailed: function(result) {
-              if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-                callback(result);
-                me.events.un(eventListeners);
-                return false;
-              }
-            }
-          }
-          me.events.on(eventListeners);
+        this.id && clearInterval(this.id);
+        this.id = setInterval(function () {
           me.request({
             url,
             method: 'GET',
             scope: me,
-            success: function (result, options) {
-                result.eventId = eventId;
-                switch (result.status) {
-                    case 'FINISHED':
-                        clearInterval(id);
-                        me.serviceProcessCompleted(result, options);
-                        break;
-                    case 'ERROR':
-                        clearInterval(id);
-                        me.serviceProcessFailed(result, options);
-                        break;
-                    case 'RUNNING':
-                        me.events.triggerEvent('processRunning', result);
-                        break;
-                }
-            },
-            failure: me.serviceProcessFailed 
+            success: callback,
+            failure: callback
           });
         }, 1000);
     }
 
     processAsync(url, method, callback, params) {
-      let eventId = ++this.eventCount;
-      let eventListeners = {
-        scope: this,
-        processCompleted: function(result) {
-          if (eventId === result.result.eventId && callback) {
-            delete result.result.eventId;
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        },
-        processFailed: function(result) {
-          if (eventId === result.error.eventId || eventId === result.eventId) {
-            callback(result);
-            this.events && this.events.un(eventListeners);
-            return false;
-          }
-        }
-      }
-      this.events.on(eventListeners);
       var me = this;
       let requestConfig = {
         url: me._processUrl(url),
         method,
         scope: me,
-        success(result, options) {
-          result.eventId = eventId;
-          this.serviceProcessCompleted(result, options);
-        },
-        failure(result, options) {
-          if (result.error) {
-            result.error.eventId = eventId;
-          }
-          result.eventId = eventId;
-          this.serviceProcessFailed(result, options);
-        }
+        success: callback,
+        failure: callback
       };
       params && (requestConfig.data = Util_Util.toJSON(params));
-      me.request(requestConfig);
+      return me.request(requestConfig);
+    }
+
+    transformResult(result, options) {
+      result = Util_Util.transformResult(result);
+      if (result.status === 'FINISHED' || result.status === 'ERROR') {
+        clearInterval(this.id);
+      }
+      return { result, options };
     }
 
     _processUrl(appendContent) {
@@ -78270,30 +81600,33 @@ class WebPrintingJobService extends ServiceBase {
      * @function WebPrintingJobService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
      * @param {WebPrintingJobParameters} params - Web 打印参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
       if (!params) {
         return;
       }
-      this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
+      return this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
     }
 
     /**
      * @function WebPrintingJobService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
      * @param {string} jobId - Web 打印输入文档任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJob(jobId, callback) {
-      this._webPrintingService.getPrintingJob(jobId, callback);
+      return this._webPrintingService.getPrintingJob(jobId, callback);
     }
 
     /**
      * @function WebPrintingJobService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
      * @param {string} jobId - Web 打印输入文档任务 ID。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult(jobId, callback) {
       this._webPrintingService.getPrintingJobResult(jobId, callback);
@@ -78302,10 +81635,11 @@ class WebPrintingJobService extends ServiceBase {
     /**
      * @function WebPrintingJobService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。、
+     * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates(callback) {
-      this._webPrintingService.getLayoutTemplates(callback);
+      return this._webPrintingService.getLayoutTemplates(callback);
     }
 
     _processParams(params) {
@@ -78368,7 +81702,6 @@ class ImageService_ImageService extends CommonServiceBase {
     if (options) {
       Util_Util.extend(this, options);
     }
-    this.eventCount = 0;
     this.CLASS_NAME = 'SuperMap.ImageService';
   }
 
@@ -78383,18 +81716,22 @@ class ImageService_ImageService extends CommonServiceBase {
   /**
    * @function ImageService.prototype.getCollections
    * @description 返回当前影像服务中的影像集合列表（Collections）。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getCollections(callback) {
     var me = this;
     var path = Util_Util.convertPath('/collections');
     var url = Util_Util.urlPathAppend(me.url, path);
-    this._processAsync({ url, mehtod: 'GET', callback });
+    return this._processAsync({ url, mehtod: 'GET', callback });
   }
 
   /**
    * @function ImageService.prototype.getCollectionByID
    * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
    * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   getCollectionByID(collectionId, callback) {
     var pathParams = {
@@ -78403,60 +81740,32 @@ class ImageService_ImageService extends CommonServiceBase {
     var me = this;
     var path = Util_Util.convertPath('/collections/{collectionId}', pathParams);
     var url = Util_Util.urlPathAppend(me.url, path);
-    this._processAsync({ url, mehtod: 'GET', callback });
+    return this._processAsync({ url, mehtod: 'GET', callback });
   }
 
   /**
    * @function ImageSearchService.prototype.search
    * @description 查询与过滤条件匹配的影像数据。
    * @param {ImageSearchParameter} [imageSearchParameter] 查询参数。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
    */
   search(imageSearchParameter, callback) {
     var postBody = { ...(imageSearchParameter || {}) };
     var me = this;
     var path = Util_Util.convertPath('/search');
     var url = Util_Util.urlPathAppend(me.url, path);
-    this._processAsync({ url, method: 'POST', data: postBody, callback });
+    return this._processAsync({ url, method: 'POST', data: postBody, callback });
   }
 
   _processAsync({ url, method, callback, data }) {
-    let eventId = ++this.eventCount;
-    let me = this;
-    let eventListeners = {
-      scope: this,
-      processCompleted: function (result) {
-        if (eventId === result.result.eventId && callback) {
-          delete result.result.eventId;
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      },
-      processFailed: function (result) {
-        if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-          callback(result);
-          this.events && this.events.un(eventListeners);
-          return false;
-        }
-      }
-    };
-    this.events.on(eventListeners);
-    this.request({
+    return this.request({
       method: method || 'GET',
       url,
       data,
       scope: this,
-      success(result, options) {
-        result.eventId = eventId;
-        me.serviceProcessCompleted(result, options);
-      },
-      failure(result, options) {
-        if (result.error) {
-          result.error.eventId = eventId;
-        }
-        result.eventId = eventId;
-        me.serviceProcessFailed(result, options);
-      }
+      success: callback,
+      failure: callback
     });
   }
 }
@@ -78504,30 +81813,33 @@ class ImageService extends ServiceBase {
     /**
      * @function ImageService.prototype.getCollections
      * @description 返回当前影像服务中的影像集合列表（Collections）。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getCollections(callback) {
-      this._imageService.getCollections(callback);
+      return this._imageService.getCollections(callback);
     }
 
     /**
      * @function ImageService.prototype.getCollectionByID
      * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
      * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getCollectionByID(collectionId, callback) {
-      this._imageService.getCollectionByID(collectionId, callback);
+      return this._imageService.getCollectionByID(collectionId, callback);
     }
 
     /**
      * @function ImageService.prototype.search
      * @description 查询与过滤条件匹配的影像数据。
      * @param {ImageSearchParameter} [itemSearch] 影像服务查询参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     search(itemSearch, callback) {
-      this._imageService.search(itemSearch, callback);
+      return this._imageService.search(itemSearch, callback);
     }
 }
 
@@ -78561,7 +81873,6 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
         if (options) {
             Util_Util.extend(this, options);
         }
-        this.eventCount = 0;
         this.CLASS_NAME = 'SuperMap.ImageCollectionService';
     }
 
@@ -78578,20 +81889,28 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
      * @description 返回当前影像集合的图例信息。默认为服务发布所配置的风格，支持根据风格参数生成新的图例。
      * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] renderingRule 对象，用来指定影像的渲染风格，从而确定图例内容。影像的渲染风格包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。该参数未设置时，将使用发布服务时所配置的风格。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLegend(queryParams, callback) {
         var me = this;
         var pathParams = {
             collectionId: me.options.collectionId
         };
+        if (typeof queryParams === 'function') {
+          callback = queryParams;
+          queryParams = null;
+        }
         var path = Util_Util.convertPath('/collections/{collectionId}/legend', pathParams);
         var url = Util_Util.urlPathAppend(me.url, path);
-        this._processAsync({ url, method: 'GET', params: queryParams, callback });
+        return this._processAsync({ url, method: 'GET', params: queryParams, callback });
     }
 
     /**
      * @function ImageCollectionService.prototype.getStatistics
      * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getStatistics(callback) {
         var me = this;
@@ -78600,13 +81919,14 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
         };
         var path = Util_Util.convertPath('/collections/{collectionId}/statistics', pathParams);
         var url = Util_Util.urlPathAppend(me.url, path);
-        this._processAsync({ url, method: 'GET', callback });
+        return this._processAsync({ url, method: 'GET', callback });
     }
 
     /**
      * @function ImageCollectionService.prototype.getTileInfo
      * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
-
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTileInfo(callback) {
         var me = this;
@@ -78615,13 +81935,15 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
         };
         var path = Util_Util.convertPath('/collections/{collectionId}/tileInfo', pathParams);
         var url = Util_Util.urlPathAppend(me.url, path);
-        this._processAsync({ url, method: 'GET', callback });
+        return this._processAsync({ url, method: 'GET', callback });
     }
 
     /**
      * @function ImageCollectionService.prototype.deleteItemByID
      * @description 删除影像集合中指定 ID 的 Item，即从影像集合中删除指定的影像。
      * @param {string} featureId Feature 的本地标识符。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     deleteItemByID(featureId, callback) {
         var me = this;
@@ -78631,13 +81953,15 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
         };
         var path = Util_Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
         var url = Util_Util.urlPathAppend(me.url, path);
-        this._processAsync({ url, method: 'DELETE', callback });
+        return this._processAsync({ url, method: 'DELETE', callback });
     }
 
     /**
      * @function ImageCollectionService.prototype.getItemByID
      * @description 返回指定ID（`collectionId`）的影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
      * @param {string} featureId Feature 的本地标识符。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getItemByID(featureId, callback) {
         var me = this;
@@ -78647,46 +81971,17 @@ class ImageCollectionService_ImageCollectionService extends CommonServiceBase {
         };
         var path = Util_Util.convertPath('/collections/{collectionId}/items/{featureId}', pathParams);
         var url = Util_Util.urlPathAppend(me.url, path);
-        this._processAsync({ url, method: 'GET', callback });
+        return this._processAsync({ url, method: 'GET', callback });
     }
 
     _processAsync({ url, method, callback, params}) {
-        let eventId = ++this.eventCount;
-        let eventListeners = {
-          scope: this,
-          processCompleted: function(result) {
-            if (eventId === result.result.eventId && callback) {
-              delete result.result.eventId;
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          },
-          processFailed: function(result) {
-            if ((eventId === result.error.eventId || eventId === result.eventId) && callback) {
-              callback(result);
-              this.events && this.events.un(eventListeners);
-              return false;
-            }
-          }
-        }
-        this.events.on(eventListeners);
-        this.request({
+        return this.request({
           method: method || 'GET',
           url,
           params,
           scope: this,
-          success(result, options) {
-            result.eventId = eventId;
-            this.serviceProcessCompleted(result, options);
-          },
-          failure(result, options) {
-            if (result.error) {
-              result.error.eventId = eventId;
-            }
-            result.eventId = eventId;
-            this.serviceProcessFailed(result, options);
-          }
+          success: callback,
+          failure: callback
         });
     }
 }
@@ -78737,48 +82032,53 @@ class ImageCollectionService extends ServiceBase {
      * @function ImageCollectionService.prototype.getLegend
      * @param {Object} queryParams query参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。不指定时，使用发布服务时所配置的风格。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLegend(queryParams, callback) {
-      this._imageCollectionService.getLegend(queryParams, callback);
+      return this._imageCollectionService.getLegend(queryParams, callback);
     }
 
     /**
      * @function ImageCollectionService.prototype.getStatistics
      * @description 返回当前影像集合的统计信息。包括文件数量，文件大小等信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getStatistics(callback) {
-      this._imageCollectionService.getStatistics(callback);
+      return this._imageCollectionService.getStatistics(callback);
     }
 
     /**
      * @function ImageCollectionService.prototype.getTileInfo
      * @description 返回影像集合所提供的服务瓦片的信息，包括：每层瓦片的分辨率，比例尺等信息，方便前端进行图层叠加。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getTileInfo(callback) {
-      this._imageCollectionService.getTileInfo(callback);
+      return this._imageCollectionService.getTileInfo(callback);
     }
 
     /**
      * @function ImageCollectionService.prototype.deleteItemByID
      * @description 删除影像集合中指定ID （`featureId`） 的Item对象，即从影像集合中删除指定的影像。
      * @param {string} featureId Feature 的本地标识符。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     deleteItemByID(featureId, callback) {
-      this._imageCollectionService.deleteItemByID(featureId, callback);
+      return this._imageCollectionService.deleteItemByID(featureId, callback);
     }
 
     /**
      * @function ImageCollectionService.prototype.getItemByID
      * @description 返回影像集合中的指定ID（`featureId`）的Item对象，即返回影像集合中指定的影像。
      * @param {string} featureId Feature 的本地标识符。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getItemByID(featureId, callback) {
-      this._imageCollectionService.getItemByID(featureId, callback);
+      return this._imageCollectionService.getItemByID(featureId, callback);
     }
 }
 
@@ -79884,15 +83184,12 @@ class IManagerServiceBase {
                 'Content-Type': 'application/json'
             }
         };
-        if (!requestOptions.hasOwnProperty("withCredentials")) {
-            requestOptions['withCredentials'] = true;
-        }
         requestOptions['crossOrigin'] = this.options.crossOrigin;
         requestOptions['headers'] = this.options.headers;
         var token = SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {
-                requestOptions.headers = [];
+                requestOptions.headers = {};
             }
             requestOptions.headers['X-Auth-Token'] = token;
         }
@@ -79978,7 +83275,7 @@ class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     createIServer(createParam) {
-        return this.request("POST", this.serviceUrl + '/icloud/web/nodes/server.json', new IManagerCreateNodeParam(createParam));
+        return this.request("POST", this.serviceUrl + '/cloud/web/nodes/server.json', new IManagerCreateNodeParam(createParam));
     }
 
     /**
@@ -79997,7 +83294,7 @@ class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     iServerList() {
-        return this.request("GET", this.serviceUrl + '/icloud/web/nodes/server.json');
+        return this.request("GET", this.serviceUrl + '/cloud/web/nodes/server.json');
     }
 
     /**
@@ -80016,7 +83313,7 @@ class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     startNodes(ids) {
-        return this.request("POST", this.serviceUrl + '/icloud/web/nodes/started.json', ids);
+        return this.request("POST", this.serviceUrl + '/cloud/web/nodes/started.json', ids);
     }
 
     /**
@@ -80026,7 +83323,7 @@ class IManager extends IManagerServiceBase {
      * @returns {Promise} Promise 对象。
      */
     stopNodes(ids) {
-        return this.request("POST", this.serviceUrl + '/icloud/web/nodes/stopped.json', ids);
+        return this.request("POST", this.serviceUrl + '/cloud/web/nodes/stopped.json', ids);
     }
 }
 
@@ -81692,12 +84989,7 @@ class LayerStatus {
  *      queryBySQLParams = new QueryBySQLParameters({
  *           queryParams: [queryParam]
  *              }),
- *      queryBySQLService = new QueryBySQLService(url, {
-     *          eventListeners: {
-     *              "processCompleted": processCompleted,
-     *              "processFailed": processFailed
-     *              }
-     *      });
+ *      queryBySQLService = new QueryBySQLService(url);
      *      queryBySQLService.processAsync(queryBySQLParams);
      *  }
  *  function processCompleted(queryEventArgs) {//todo}
@@ -81917,6 +85209,150 @@ class OverlapDisplayedOptions {
 
 }
 
+;// CONCATENATED MODULE: ./src/common/iServer/ConvexHullAnalystParameters.js
+/* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ /**
+  * @class ConvexHullAnalystParameters
+  * @deprecatedclass SuperMap.ConvexHullAnalystParameters
+  * @constructs ConvexHullAnalystParameters
+  * @category iServer SpatialAnalyst ConvexHullAnalyst
+  * @classdesc 凸包运算参数类。
+  * @version 11.1.1
+  * @param {Object} options - 参数。
+  * @param {Object} options.model - 源模型对象，即凸包计算中被操作的模型对象
+  * @param {Object} [options.resultSetting] - 凸包计算结果设置，即模型对象凸包结果设置
+  * @usage
+  */
+ 
+ class ConvexHullAnalystParameters {
+ 
+     constructor(options) {
+         /**
+          * @member {Object} ConvexHullAnalystParameters.prototype.model
+          * @description 源模型对象，即凸包计算中被操作的模型对象
+          */
+         this.model = null;
+
+         /**
+          * @member {Object} [ConvexHullAnalystParameters.prototype.resultSetting]
+          * @description 凸包计算结果设置，即模型对象凸包结果设置
+          */
+         this.resultSetting = null;
+         
+         if (options) {
+             Util_Util.extend(this, options);
+         }
+         this.CLASS_NAME = "SuperMap.ConvexHullAnalystParameters";
+     }
+ 
+     /**
+      * @function ConvexHullAnalystParameters.prototype.destroy
+      * @override
+      */
+     destroy() {
+        var me = this;
+        me.model = null;
+        me.resultSetting = null;
+     }
+ 
+ }
+ 
+;// CONCATENATED MODULE: ./src/common/iServer/GetLayersLegendInfoParameters.js
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+
+
+/**
+ * @class GetLayersLegendInfoParameters
+ * @deprecatedclass SuperMap.GetLayersLegendInfoParameters
+ * @category iServer Map Layer
+ * @classdesc 图例参数类。
+ * @version 11.1.1
+ * @param {Object} options - 参数。
+ * @param {string} options.bbox - 查询与此矩形框有交集的图层的图例，当layers参数未设置时，bbox是必填参数。格式：bbox=xmin,ymin,xmax,ymax。
+ * @param {string} options.layers - 图层过滤，当bbox参数未设置时，layers是必填参数。语法：[show|hide]:layerName1,layerName2。show表示只返回指定图层的图例，hide表示指定图层图例不返回，其他查询出来的图层图例都返回。例如：show:country@World@@World，表示只返回country@World@@World图层的图例。
+ * @param {boolean} [options.transparent] - 图例图片是否背景透明。默认为true。
+ * @param {number} [options.mapScale] - 地图比例尺。当returnVisibleOnly为true时，mapScale是必填参数。
+ * @param {boolean} [options.returnVisibleOnly] - 是否只返回当前地图范围内可见要素的图例。默认为false。
+ * @param {number} [options.width] - 返回图例的宽度。默认16像素。
+ * @param {number} [options.height] - 返回图例的高度。默认16像素。
+
+ * @usage
+ */
+class GetLayersLegendInfoParameters {
+
+
+    constructor(options) {
+        /**
+         * @member {string} GetLayersLegendInfoParameters.prototype.bbox
+         * @description 查询与此矩形框有交集的图层的图例，当layers参数未设置时，bbox是必填参数。格式：bbox=xmin,ymin,xmax,ymax。
+         */
+        this.bbox = null;
+
+        /**
+         * @member {string} GetLayersLegendInfoParameters.prototype.layers
+         * @description 图层过滤，当bbox参数未设置时，layers是必填参数。语法：[show|hide]:layerName1,layerName2。show表示只返回指定图层的图例，hide表示指定图层图例不返回，其他查询出来的图层图例都返回。例如：show:country@World@@World，表示只返回country@World@@World图层的图例。
+         */
+        this.layers = null;
+
+        /**
+         * @member {boolean} GetLayersLegendInfoParameters.prototype.transparent
+         * @description 图例图片是否背景透明。默认为true。
+         */
+        this.transparent = null;
+
+        /**
+         * @member {number} GetLayersLegendInfoParameters.prototype.mapScale
+         * @description  地图比例尺。当returnVisibleOnly为true时，mapScale是必填参数。
+         */
+        this.mapScale = null;
+
+        /**
+         * @member {boolean} GetLayersLegendInfoParameters.prototype.returnVisibleOnly
+         * @description  是否只返回当前地图范围内可见要素的图例。默认为false。
+         */
+        this.returnVisibleOnly = null;
+
+        /**
+         * @member {number} GetLayersLegendInfoParameters.prototype.width
+         * @description  返回图例的宽度。默认16像素。
+         */
+        this.width = null;
+
+        /**
+         * @member {number} GetLayersLegendInfoParameters.prototype.height
+         * @description  返回图例的高度。默认16像素。
+         */
+        this.height = null;
+        Util_Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.GetLayersLegendInfoParameters";
+    }
+
+
+    /**
+     * @function GetLayersLegendInfoParameters.prototype.destroy
+     * @description 释放资源，将引用的资源属性置空。
+     */
+    destroy() {
+        var me = this;
+        me.bbox = null;
+        me.layers = null;
+        me.transparent = null;
+        me.mapScale = null;
+        me.returnVisibleOnly = null;
+        me.width = null;
+        me.height = null;
+    }
+
+}
+
+
 ;// CONCATENATED MODULE: ./src/common/iServer/SetLayerInfoParameters.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -82124,6 +85560,70 @@ class SupplyCenter {
 
 
 
+;// CONCATENATED MODULE: ./src/common/iServer/terrainAnalystSetting.js
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+ 
+ 
+ /**
+  * @class terrainAnalystSetting
+  * @deprecatedclass SuperMap.terrainAnalystSetting
+  * @category SpatialAnalyst TerrainCalculation
+  * @classdesc 地形分析基本的环境设置类。
+  * @param {Object} options - 参数。
+  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 结果数据集的地理范围。只有 BoundType 为 Custom 时才有效。
+  * @param {BoundsType} [options.boundsType=BoundsType.MAX] - 分析结果数据集范围类型。
+  * @param {number} [options.cellSize] - 结果数据集的单元格大小。当单元格类型为 Custom 时有效。
+  * @param {CellSizeType} [options.cellSizeType=CellSizeType.UNION] - 结果数据集的单元格类型。
+  * @usage
+  */
+ class terrainAnalystSetting {
+ 
+     constructor(options) {
+ 
+         /**
+          * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [terrainAnalystSetting.prototype.bounds]
+          * @description 结果数据集的地理范围。只有 BoundType 为 Custom 时才有效。
+          */
+         this.bounds = null;
+ 
+         /**
+          * @member {BoundsType} [terrainAnalystSetting.prototype.boundsType]
+          * @description 分析结果数据集范围类型。
+          */
+         this.boundsType = BoundsType.MAX;
+ 
+         /**
+          * @member {DataReturnMode} [terrainAnalystSetting.prototype.cellSize]
+          * @description 结果数据集的单元格大小。当单元格类型为 Custom 时有效。
+          */
+         this.cellSize = null;
+ 
+         /**
+          * @member {boolean} [terrainAnalystSetting.prototype.cellSizeType]
+          * @description 结果数据集的单元格类型。
+          */
+         this.cellSizeType = CellSizeType.UNION;
+ 
+         Util_Util.extend(this, options);
+         this.CLASS_NAME = "SuperMap.terrainAnalystSetting";
+     }
+ 
+     /**
+      * @function terrainAnalystSetting.prototype.destroy
+      * @description 释放资源，将引用资源的属性置空。
+      */
+     destroy() {
+         var me = this;
+         me.bounds = null;
+         me.boundsType = null;
+         me.cellSize = null;
+         me.cellSizeType = null;
+     }
+ }
+ 
 ;// CONCATENATED MODULE: ./src/common/iServer/ThemeFlow.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -85605,6 +89105,42 @@ class KnowledgeGraphEdgeParameter {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;// CONCATENATED MODULE: ./src/common/online/OnlineResources.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
@@ -86299,14 +89835,10 @@ class TokenServiceParameter {
 
 
 
-;// CONCATENATED MODULE: external "function(){try{return elasticsearch}catch(e){return {}}}()"
-const external_function_try_return_elasticsearch_catch_e_return_namespaceObject = function(){try{return elasticsearch}catch(e){return {}}}();
-var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_elasticsearch_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/thirdparty/elasticsearch/ElasticSearch.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -86317,44 +89849,21 @@ var external_function_try_return_elasticsearch_catch_e_return_default = /*#__PUR
  * @category ElasticSearch
  * @modulecategory Services
  * @param {string} url - ElasticSearch服务地址。
+ * @param {Object} es - elasticsearch的全局变量。注意：需要@elastic/elasticsearch@5.6.22或者elasticsearch@16.7.3。
  * @param {Object} options - 参数。
  * @param {function} [options.change] - 服务器返回数据后执行的函数。废弃,不建议使用。使用search或msearch方法。
  * @param {boolean} [options.openGeoFence=false] - 是否开启地理围栏验证，默认为不开启。
  * @param {function} [options.outOfGeoFence] - 数据超出地理围栏后执行的函数。
  * @param {Object} [options.geoFence] - 地理围栏。
- * @description
- * <h3 style="font-size: 20px;margin-top: 20px;margin-bottom: 10px;">11.1.0</h3>
- * 该功能依赖<a href="https://github.com/elastic/elasticsearch">@elastic/elasticsearch</a>, webpack5或其他不包含Node.js Polyfills的打包工具，需要加入相关配置，以webpack为例：<br/>
-  <p style="margin-top:10px;">首先安装相关Polyfills</p><pre><code>npm i stream-http  https-browserify stream-browserify tty-browserify browserify-zlib os-browserify buffer url assert process -D</code></pre>
-  然后配置webpack<pre><code>module.exports: {
-    resolve: {
-      alias: {
-        process: 'process/browser',
-      },
-      mainFields: ['browser', 'main'],
-      fallback: {
-        fs: false,
-        http: require.resolve('stream-http'),
-        https: require.resolve('https-browserify'),
-        os: require.resolve('os-browserify/browser'),
-        stream: require.resolve('stream-browserify'),
-        tty: require.resolve('tty-browserify'),
-        zlib: require.resolve('browserify-zlib')
-      }
-    }
-    plugins: [
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-        Buffer: ['buffer', 'Buffer']
-      }),
-    ]
-}</code></pre>
  * @usage
  */
 
 class ElasticSearch {
 
-    constructor(url, options) {
+    constructor(url, es, options) {
+        if (!es || (typeof es !== 'function' && typeof es !== 'object') || typeof es.Client !== 'function') {
+          throw Error('Please enter the global variable of @elastic/elasticsearch@5.6.22 or elasticsearch@16.7.3 for the second parameter!');
+        }
         options = options || {};
         /**
          *  @member {string} ElasticSearch.prototype.url
@@ -86367,12 +89876,12 @@ class ElasticSearch {
          */
         try {
           // 老版本
-          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+          this.client = new es.Client({
             host: this.url
           });
         } catch (e) {
           // 新版本
-          this.client = new (external_function_try_return_elasticsearch_catch_e_return_default()).Client({
+          this.client = new es.Client({
             node: {
               url: new URL(this.url)
             }
@@ -86433,7 +89942,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.setGeoFence
+     * @function ElasticSearch.prototype.setGeoFence
      * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
      * @param {Geometry} geoFence - 地理围栏。
      */
@@ -86443,7 +89952,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.bulk
+     * @function ElasticSearch.prototype.bulk
      * @description 批量操作API，允许执行多个索引/删除操作。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html}</br>
@@ -86455,7 +89964,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.clearScroll
+     * @function ElasticSearch.prototype.clearScroll
      * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll}</br>
      *更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -86467,7 +89976,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.count
+     * @function ElasticSearch.prototype.count
      * @description 获取集群、索引、类型或查询的文档个数。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html}</br>
@@ -86479,7 +89988,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.create
+     * @function ElasticSearch.prototype.create
      * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且ID已经存在的文档将发生错误。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create}
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}
@@ -86491,7 +90000,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.delete
+     * @function ElasticSearch.prototype.delete
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html}</br>
@@ -86503,7 +90012,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteByQuery
+     * @function ElasticSearch.prototype.deleteByQuery
      * @description 根据其ID从特定索引中删除键入的JSON文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html}</br>
@@ -86515,7 +90024,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteScript
+     * @function ElasticSearch.prototype.deleteScript
      * @description 根据其ID删除脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -86527,7 +90036,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.deleteTemplate
+     * @function ElasticSearch.prototype.deleteTemplate
      * @description 根据其ID删除模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -86539,7 +90048,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.exists
+     * @function ElasticSearch.prototype.exists
      * @description 检查给定文档是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -86551,7 +90060,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.existsSource
+     * @function ElasticSearch.prototype.existsSource
      * @description 检查资源是否存在。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -86564,7 +90073,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.explain
+     * @function ElasticSearch.prototype.explain
      * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html}</br>
@@ -86576,7 +90085,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.fieldCaps
+     * @function ElasticSearch.prototype.fieldCaps
      * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html}</br>
@@ -86589,7 +90098,7 @@ class ElasticSearch {
 
 
     /**
-     * @function  ElasticSearch.prototype.get
+     * @function ElasticSearch.prototype.get
      * @description 从索引获取一个基于其ID的类型的JSON文档。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -86601,7 +90110,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getScript
+     * @function ElasticSearch.prototype.getScript
      * @description 获取脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -86613,7 +90122,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getSource
+     * @function ElasticSearch.prototype.getSource
      * @description 通过索引，类型和ID获取文档的源。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html}</br>
@@ -86625,7 +90134,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.getTemplate
+     * @function ElasticSearch.prototype.getTemplate
      * @description 获取模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -86637,7 +90146,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.index
+     * @function ElasticSearch.prototype.index
      * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html}</br>
@@ -86649,7 +90158,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.info
+     * @function ElasticSearch.prototype.info
      * @description 从当前集群获取基本信息。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -86661,7 +90170,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mget
+     * @function ElasticSearch.prototype.mget
      * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html}</br>
@@ -86673,7 +90182,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearch
+     * @function ElasticSearch.prototype.msearch
      * @description 在同一请求中执行多个搜索请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}</br>
@@ -86697,7 +90206,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.msearchTemplate
+     * @function ElasticSearch.prototype.msearchTemplate
      * @description 在同一请求中执行多个搜索模板请求。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -86709,7 +90218,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.mtermvectors
+     * @function ElasticSearch.prototype.mtermvectors
      * @description 多termvectors API允许一次获得多个termvectors。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html}</br>
@@ -86721,7 +90230,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.ping
+     * @function ElasticSearch.prototype.ping
      * @description 测试连接。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/index.html}</br>
@@ -86733,7 +90242,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putScript
+     * @function ElasticSearch.prototype.putScript
      * @description 添加脚本。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html}</br>
@@ -86745,7 +90254,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.putTemplate
+     * @function ElasticSearch.prototype.putTemplate
      * @description 添加模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -86757,7 +90266,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindex
+     * @function ElasticSearch.prototype.reindex
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -86769,7 +90278,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.reindexRessrottle
+     * @function ElasticSearch.prototype.reindexRessrottle
      * @description 重新索引。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html}</br>
@@ -86781,7 +90290,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.renderSearchTemplate
+     * @function ElasticSearch.prototype.renderSearchTemplate
      * @description 搜索模板。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html}</br>
@@ -86793,7 +90302,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.scroll
+     * @function ElasticSearch.prototype.scroll
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html}</br>
@@ -86805,7 +90314,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.search
+     * @function ElasticSearch.prototype.search
      * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html}</br>
@@ -86828,7 +90337,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchShards
+     * @function ElasticSearch.prototype.searchShards
      * @description  返回要执行搜索请求的索引和分片。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html}</br>
@@ -86840,7 +90349,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.searchTemplate
+     * @function ElasticSearch.prototype.searchTemplate
      * @description  搜索模板。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -86852,7 +90361,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.suggest
+     * @function ElasticSearch.prototype.suggest
      * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html}</br>
@@ -86864,7 +90373,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.termvectors
+     * @function ElasticSearch.prototype.termvectors
      * @description 返回有关特定文档字段中的术语的信息和统计信息。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html}</br>
@@ -86876,7 +90385,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.update
+     * @function ElasticSearch.prototype.update
      * @description 更新文档的部分。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html}</br>
@@ -86888,7 +90397,7 @@ class ElasticSearch {
     }
 
     /**
-     * @function  ElasticSearch.prototype.updateByQuery
+     * @function ElasticSearch.prototype.updateByQuery
      * @description 通过查询API来更新文档。
      * 参数设置参考 {@link https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery}</br>
      * 更多信息参考 {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html}</br>
@@ -87449,13 +90958,6 @@ function toSuperMapPolygon(lnglatBounds) {
     ]);
 }
 
- /**
-* @function Util.extend
-* @description 对象拷贝赋值。
-* @param {Object} dest - 目标对象。
-* @param {Object} arguments - 待拷贝的对象。
-* @returns {Object} 赋值后的目标对象。
-*/
 function extend(dest) {
    for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
        var arg = Object.getOwnPropertyNames(arguments)[index];
@@ -95591,7 +99093,6 @@ class MessageBox {
 
 ;// CONCATENATED MODULE: external "function(){try{return echarts}catch(e){return {}}}()"
 const external_function_try_return_echarts_catch_e_return_namespaceObject = function(){try{return echarts}catch(e){return {}}}();
-var external_function_try_return_echarts_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_echarts_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: ./src/common/lang/locales/en-US.js
 ﻿
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
@@ -96281,13 +99782,8 @@ class ChartModel {
             fromIndex: 0,
             toIndex: 100000
         });
-        getFeatureBySQLService = new GetFeaturesBySQLService(datasetsInfo.dataUrl, {
-            eventListeners: {
-                processCompleted: success,
-                processFailed: function () {}
-            }
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService = new GetFeaturesBySQLService(datasetsInfo.dataUrl);
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams, success);
     }
 
     /**
@@ -96309,13 +99805,8 @@ class ChartModel {
             queryParams: [queryParam],
             expectCount: 100000
         });
-        queryBySQLService = new QueryBySQLService(datasetsInfo.dataUrl, {
-            eventListeners: {
-                processCompleted: success,
-                processFailed: function () {}
-            }
-        });
-        queryBySQLService.processAsync(queryBySQLParams);
+        queryBySQLService = new QueryBySQLService(datasetsInfo.dataUrl);
+        queryBySQLService.processAsync(queryBySQLParams, success);
     }
 
     /**
@@ -96599,18 +100090,14 @@ class ChartModel {
             toIndex: 100000,
             returnContent: true
         });
-        let options = {
-            eventListeners: {
-                processCompleted: (getFeaturesEventArgs) => {
-                    processCompleted && processCompleted(getFeaturesEventArgs);
-                },
-                processFailed: (e) => {
-                    processFaild && processFaild(e);
-                }
-            }
-        };
-        getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService = new GetFeaturesBySQLService(url);
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams, function(getFeaturesEventArgs) {
+          if (getFeaturesEventArgs.type === 'processCompleted') {
+            processCompleted && processCompleted(getFeaturesEventArgs);
+          } else {
+            processFaild && processFaild(getFeaturesEventArgs);
+          }
+        });
     }
 
     /**
@@ -96667,15 +100154,10 @@ class ChartModel {
     _queryBySQL(url, params, callback, resultFormat) {
         var me = this;
         var queryBySQLService = new QueryBySQLService(url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
             format: me._processFormat(resultFormat)
         });
 
-        queryBySQLService.processAsync(params);
+        queryBySQLService.processAsync(params, callback);
     }
     /**
      * @function ChartModel.prototype._processFormat
@@ -97507,7 +100989,7 @@ class ChartView {
      * @param {Object} data - 图表数据。
      */
     _createChart(data) {
-        this.echart = external_function_try_return_echarts_catch_e_return_default().init(
+        this.echart = external_function_try_return_echarts_catch_e_return_namespaceObject.init(
             document.getElementById(this.domID),
             null, {
                 renderer: "canvas"
@@ -99033,6 +102515,7 @@ SuperMap.Credential = Credential;
 SuperMap.Events = Events;
 SuperMap.Feature = Feature_Feature;
 SuperMap.Geometry = Geometry_Geometry;
+SuperMap.Geometry3D = Geometry3D;
 SuperMap.Pixel = Pixel;
 SuperMap.Size = Size;
 SuperMap.Feature.Vector = Vector;
@@ -99239,6 +102722,24 @@ SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;
 SuperMap.QueryByGeometryService = QueryByGeometryService;
 SuperMap.QueryBySQLParameters = QueryBySQLParameters;
 SuperMap.QueryBySQLService = QueryBySQLService;
+SuperMap.DatasetMinDistanceAnalystParameters = DatasetMinDistanceAnalystParameters;
+SuperMap.MinDistanceAnalystService = MinDistanceAnalystService;
+SuperMap.TerrainCutFillCalculationParameters = TerrainCutFillCalculationParameters;
+SuperMap.TerrainCutFillCalculationService = TerrainCutFillCalculationService;
+SuperMap.terrainAnalystSetting = terrainAnalystSetting;
+SuperMap.TerrainAspectCalculationParameters = TerrainAspectCalculationParameters;
+SuperMap.TerrainAspectCalculationService = TerrainAspectCalculationService;
+SuperMap.TerrainSlopeCalculationParameters = TerrainSlopeCalculationParameters;
+SuperMap.TerrainSlopeCalculationService = TerrainSlopeCalculationService;
+SuperMap.GeometryMinDistanceAnalystParameters = GeometryMinDistanceAnalystParameters;
+SuperMap.ConvexHullAnalystParameters = ConvexHullAnalystParameters;
+SuperMap.ConvexHullAnalystService = ConvexHullAnalystService;
+SuperMap.TraceAnalystParameters = TraceAnalystParameters;
+SuperMap.TraceAnalystService = TraceAnalystService;
+SuperMap.ConnectedEdgesAnalystParameters = ConnectedEdgesAnalystParameters;
+SuperMap.ConnectedEdgesAnalystService = ConnectedEdgesAnalystService;
+SuperMap.GetLayersLegendInfoParameters = GetLayersLegendInfoParameters;
+SuperMap.GetLayersLegendInfoService = GetLayersLegendInfoService;
 SuperMap.QueryParameters = QueryParameters;
 SuperMap.QueryService = QueryService_QueryService;
 SuperMap.RasterFunctionParameter = RasterFunctionParameter;
@@ -99466,6 +102967,8 @@ SuperMap.WebScaleOrientationType = WebScaleOrientationType;
 SuperMap.WebScaleType = WebScaleType;
 SuperMap.WebScaleUnit = WebScaleUnit;
 SuperMap.KnowledgeGraph = KnowledgeGraph
+SuperMap.BoundsType = BoundsType
+SuperMap.CellSizeType = CellSizeType
 
 
 
@@ -99530,17 +103033,15 @@ function startsWithNumber(str) {
 
 
 
-;// CONCATENATED MODULE: external "function(){try{return convert}catch(e){return {}}}()"
-const external_function_try_return_convert_catch_e_return_namespaceObject = function(){try{return convert}catch(e){return {}}}();
-var external_function_try_return_convert_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_convert_catch_e_return_namespaceObject);
 ;// CONCATENATED MODULE: external "function(){try{return canvg}catch(e){return {}}}()"
 const external_function_try_return_canvg_catch_e_return_namespaceObject = function(){try{return canvg}catch(e){return {}}}();
 var external_function_try_return_canvg_catch_e_return_default = /*#__PURE__*/__webpack_require__.n(external_function_try_return_canvg_catch_e_return_namespaceObject);
+// EXTERNAL MODULE: ./node_modules/fast-xml-parser/src/fxp.js
+var fxp = __webpack_require__(932);
 ;// CONCATENATED MODULE: ./src/mapboxgl/mapping/WebMap.js
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-
 
 
 
@@ -99995,8 +103496,8 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 				return response.text();
 			})
 			.then(capabilitiesText => {
-				let converts = (external_function_try_return_convert_catch_e_return_default()) ? (external_function_try_return_convert_catch_e_return_default()) : window.convert;
-                let tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, { compact: true, spaces: 4 }))
+        const parser = new fxp.XMLParser({numberParseOptions:{hex : false, leadingZeros: false,eNotation: false},alwaysCreateTextNode: true, textNodeName: "_text"});
+                let tileMatrixSet = parser.parse(capabilitiesText)
                     .Capabilities.Contents.TileMatrixSet;
                 if (!Array.isArray(tileMatrixSet)) {
                     tileMatrixSet = [tileMatrixSet];
@@ -100004,7 +103505,7 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 				for (let i = 0; i < tileMatrixSet.length; i++) {
 					if (
 						tileMatrixSet[i]['ows:Identifier'] &&
-						tileMatrixSet[i]['ows:Identifier']['_text'] === mapInfo.tileMatrixSet
+						(tileMatrixSet[i]['ows:Identifier']['_text'] + '') === mapInfo.tileMatrixSet
 					) {
 						if (DEFAULT_WELLKNOWNSCALESET.indexOf(tileMatrixSet[i]['WellKnownScaleSet']['_text']) > -1) {
 							isMatched = true;
@@ -100023,7 +103524,7 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 								}
 								if (
 									defaultCRSScaleDenominators[j] !==
-									tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']['_text']
+									(tileMatrixSet[i].TileMatrix[j]['ScaleDenominator']['_text'] + '')
 								) {
 									break;
 								}
@@ -101567,18 +105068,14 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 			toIndex: 100000,
 			returnContent: true
 		});
-		let options = {
-			eventListeners: {
-				processCompleted: getFeaturesEventArgs => {
-					processCompleted && processCompleted(getFeaturesEventArgs);
-				},
-				processFailed: e => {
-					processFaild && processFaild(e);
-				}
-			}
-		};
-		getFeatureBySQLService = new GetFeaturesBySQLService(url, options);
-		getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+		getFeatureBySQLService = new GetFeaturesBySQLService(url);
+		getFeatureBySQLService.processAsync(getFeatureBySQLParams, function(result) {
+      if (result.type === 'processCompleted') {
+        processCompleted(result);
+      } else {
+        processFaild(result);
+      }
+    });
 	}
 
 	/**
@@ -101667,7 +105164,8123 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 }
 
 
+;// CONCATENATED MODULE: ./src/common/iServer/InitMapServiceBase.js
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+ * This program are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
+ 
+
+/**
+ * @private
+ * @class InitMapServiceBase
+ * @category iServer Map
+ * @classdesc 初始化地图信息服务类。
+ * @example
+ * var initMapServiceBase = new InitMapServiceBase(url, MapService);
+ *
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {MapService} MapService - 地图信息服务类。
+ * @param {Object} options - 参数。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @usage
+ */
+class InitMapServiceBase {
+  constructor(MapService, url, options) {
+    this.MapService = MapService;
+    this.url = url;
+    this.options = options;
+
+    this.CLASS_NAME = 'SuperMap.InitMapServiceBase';
+  }
+
+  /**
+   * @function createMapService
+   * @description 初始化 MapService。
+   * @returns {MapService}
+   */
+  createMapService() {
+    const MapService = this.MapService;
+    const url = this.url;
+    const options = this.options;
+    return new MapService(url, {
+      proxy: options.proxy,
+      withCredentials: options.withCredentials,
+      crossOrigin: options.crossOrigin,
+      headers: options.headers,
+      projection: options.projection
+    });
+  }
+
+  /**
+   * @function getMapInfo
+   * @description 获取地图信息。
+   * @returns {Promise}
+   */
+  getMapInfo(callback) {
+    return new Promise((resolve, reject) => {
+      const mapService = this.createMapService();
+      mapService.getMapInfo((res) => {
+        callback(res, resolve, reject);
+      });
+    });
+  }
+
+  /**
+   * @function getMapInfo
+   * @description 获取坐标投影 WKT。
+   * @returns {Promise}
+   */
+  getWKT() {
+    return new Promise((resolve, reject) => {
+      const mapService = this.createMapService();
+      mapService.getWKT((res) => {
+        try {
+          const wkt = res.result.data;
+          resolve(wkt);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+  }
+}
+
+/**
+ * @function isPlaneProjection
+ * @description 是否是平面坐标系。
+ * @param {string} type - 投影坐标系类型
+ * @returns {boolean}
+ */
+function isPlaneProjection(type) {
+  return type === 'PCS_NON_EARTH';
+}
+
+/**
+ * @function getEpsgCode
+ * @description 获取 EPSG Code。
+ * @param {Object} prjCoordSys
+ * @returns {string}
+ */
+function getEpsgCode(prjCoordSys) {
+  const { type, epsgCode } = prjCoordSys;
+  if (type == 'PCS_NON_EARTH') {
+    // 平面投影
+    return '';
+  }
+  return 'EPSG:' + epsgCode;
+}
+
+
+/**
+ * @private
+ * @function createMapOptions
+ * @description mapboxgl maplibregl 获取地图resolutions。
+ * @returns {Array} resolutions
+ */
+ function InitMapServiceBase_scalesToResolutions(bounds, maxZoom = 22, tileSize = 512) {
+  var resolutions = [];
+  const maxReolution = Math.abs(bounds.left - bounds.right) / tileSize;
+  for (let i = 0; i < maxZoom; i++) {
+    resolutions.push(maxReolution / Math.pow(2, i));
+  }
+  return resolutions.sort(function (a, b) {
+    return b - a;
+  });
+}
+
+/**
+ * @private
+ * @function getZoom
+ * @description mapboxgl maplibregl 获取地图zoom。
+ * @param {Object} resetServiceInfo - rest 地图服务信息。
+ * @param {string} resetServiceInfo.scale - scale
+ * @param {Object} resetServiceInfo.dpi - dpi
+ * @param {Object} resetServiceInfo.coordUnit- coordUnit。
+ * @param {Object} extent - extent。
+ * @returns {number} zoom
+ */
+ function getZoom({ scale, dpi, coordUnit }, extent) {
+  const resolutions = InitMapServiceBase_scalesToResolutions(extent);
+  return getZoomByResolution(scaleToResolution(scale, dpi, coordUnit), resolutions);
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/global.js
+/* harmony default export */ function global(defs) {
+  defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
+  defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
+  defs('EPSG:3857', "+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
+
+  defs.WGS84 = defs['EPSG:4326'];
+  defs['EPSG:3785'] = defs['EPSG:3857']; // maintain backward compat, official code is 3857
+  defs.GOOGLE = defs['EPSG:3857'];
+  defs['EPSG:900913'] = defs['EPSG:3857'];
+  defs['EPSG:102113'] = defs['EPSG:3857'];
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/values.js
+var PJD_3PARAM = 1;
+var PJD_7PARAM = 2;
+var PJD_GRIDSHIFT = 3;
+var PJD_WGS84 = 4; // WGS84 or equivalent
+var PJD_NODATUM = 5; // WGS84 or equivalent
+var SRS_WGS84_SEMIMAJOR = 6378137.0;  // only used in grid shift transforms
+var SRS_WGS84_SEMIMINOR = 6356752.314;  // only used in grid shift transforms
+var SRS_WGS84_ESQUARED = 0.0066943799901413165; // only used in grid shift transforms
+var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
+var HALF_PI = Math.PI/2;
+// ellipoid pj_set_ell.c
+var SIXTH = 0.1666666666666666667;
+/* 1/6 */
+var RA4 = 0.04722222222222222222;
+/* 17/360 */
+var RA6 = 0.02215608465608465608;
+var EPSLN = 1.0e-10;
+// you'd think you could use Number.EPSILON above but that makes
+// Mollweide get into an infinate loop.
+
+var D2R = 0.01745329251994329577;
+var R2D = 57.29577951308232088;
+var FORTPI = Math.PI/4;
+var TWO_PI = Math.PI * 2;
+// SPI is slightly greater than Math.PI, so values that exceed the -180..180
+// degree range by a tiny amount don't get wrapped. This prevents points that
+// have drifted from their original location along the 180th meridian (due to
+// floating point error) from changing their sign.
+var SPI = 3.14159265359;
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/PrimeMeridian.js
+var PrimeMeridian_exports = {};
+
+
+PrimeMeridian_exports.greenwich = 0.0; //"0dE",
+PrimeMeridian_exports.lisbon = -9.131906111111; //"9d07'54.862\"W",
+PrimeMeridian_exports.paris = 2.337229166667; //"2d20'14.025\"E",
+PrimeMeridian_exports.bogota = -74.080916666667; //"74d04'51.3\"W",
+PrimeMeridian_exports.madrid = -3.687938888889; //"3d41'16.58\"W",
+PrimeMeridian_exports.rome = 12.452333333333; //"12d27'8.4\"E",
+PrimeMeridian_exports.bern = 7.439583333333; //"7d26'22.5\"E",
+PrimeMeridian_exports.jakarta = 106.807719444444; //"106d48'27.79\"E",
+PrimeMeridian_exports.ferro = -17.666666666667; //"17d40'W",
+PrimeMeridian_exports.brussels = 4.367975; //"4d22'4.71\"E",
+PrimeMeridian_exports.stockholm = 18.058277777778; //"18d3'29.8\"E",
+PrimeMeridian_exports.athens = 23.7163375; //"23d42'58.815\"E",
+PrimeMeridian_exports.oslo = 10.722916666667; //"10d43'22.5\"E"
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/units.js
+/* harmony default export */ const units = ({
+  ft: {to_meter: 0.3048},
+  'us-ft': {to_meter: 1200 / 3937}
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/match.js
+var ignoredChar = /[\s_\-\/\(\)]/g;
+function match(obj, key) {
+  if (obj[key]) {
+    return obj[key];
+  }
+  var keys = Object.keys(obj);
+  var lkey = key.toLowerCase().replace(ignoredChar, '');
+  var i = -1;
+  var testkey, processedKey;
+  while (++i < keys.length) {
+    testkey = keys[i];
+    processedKey = testkey.toLowerCase().replace(ignoredChar, '');
+    if (processedKey === lkey) {
+      return obj[testkey];
+    }
+  }
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projString.js
+
+
+
+
+
+/* harmony default export */ function projString(defData) {
+  var self = {};
+  var paramObj = defData.split('+').map(function(v) {
+    return v.trim();
+  }).filter(function(a) {
+    return a;
+  }).reduce(function(p, a) {
+    var split = a.split('=');
+    split.push(true);
+    p[split[0].toLowerCase()] = split[1];
+    return p;
+  }, {});
+  var paramName, paramVal, paramOutname;
+  var params = {
+    proj: 'projName',
+    datum: 'datumCode',
+    rf: function(v) {
+      self.rf = parseFloat(v);
+    },
+    lat_0: function(v) {
+      self.lat0 = v * D2R;
+    },
+    lat_1: function(v) {
+      self.lat1 = v * D2R;
+    },
+    lat_2: function(v) {
+      self.lat2 = v * D2R;
+    },
+    lat_ts: function(v) {
+      self.lat_ts = v * D2R;
+    },
+    lon_0: function(v) {
+      self.long0 = v * D2R;
+    },
+    lon_1: function(v) {
+      self.long1 = v * D2R;
+    },
+    lon_2: function(v) {
+      self.long2 = v * D2R;
+    },
+    alpha: function(v) {
+      self.alpha = parseFloat(v) * D2R;
+    },
+    gamma: function(v) {
+      self.rectified_grid_angle = parseFloat(v);
+    },
+    lonc: function(v) {
+      self.longc = v * D2R;
+    },
+    x_0: function(v) {
+      self.x0 = parseFloat(v);
+    },
+    y_0: function(v) {
+      self.y0 = parseFloat(v);
+    },
+    k_0: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    k: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    a: function(v) {
+      self.a = parseFloat(v);
+    },
+    b: function(v) {
+      self.b = parseFloat(v);
+    },
+    r_a: function() {
+      self.R_A = true;
+    },
+    zone: function(v) {
+      self.zone = parseInt(v, 10);
+    },
+    south: function() {
+      self.utmSouth = true;
+    },
+    towgs84: function(v) {
+      self.datum_params = v.split(",").map(function(a) {
+        return parseFloat(a);
+      });
+    },
+    to_meter: function(v) {
+      self.to_meter = parseFloat(v);
+    },
+    units: function(v) {
+      self.units = v;
+      var unit = match(units, v);
+      if (unit) {
+        self.to_meter = unit.to_meter;
+      }
+    },
+    from_greenwich: function(v) {
+      self.from_greenwich = v * D2R;
+    },
+    pm: function(v) {
+      var pm = match(PrimeMeridian_exports, v);
+      self.from_greenwich = (pm ? pm : parseFloat(v)) * D2R;
+    },
+    nadgrids: function(v) {
+      if (v === '@null') {
+        self.datumCode = 'none';
+      }
+      else {
+        self.nadgrids = v;
+      }
+    },
+    axis: function(v) {
+      var legalAxis = "ewnsud";
+      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
+        self.axis = v;
+      }
+    },
+    approx: function() {
+      self.approx = true;
+    }
+  };
+  for (paramName in paramObj) {
+    paramVal = paramObj[paramName];
+    if (paramName in params) {
+      paramOutname = params[paramName];
+      if (typeof paramOutname === 'function') {
+        paramOutname(paramVal);
+      }
+      else {
+        self[paramOutname] = paramVal;
+      }
+    }
+    else {
+      self[paramName] = paramVal;
+    }
+  }
+  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
+    self.datumCode = self.datumCode.toLowerCase();
+  }
+  return self;
+}
+
+;// CONCATENATED MODULE: ./node_modules/wkt-parser/parser.js
+/* harmony default export */ const parser = (parseString);
+
+var NEUTRAL = 1;
+var KEYWORD = 2;
+var NUMBER = 3;
+var QUOTED = 4;
+var AFTERQUOTE = 5;
+var ENDED = -1;
+var whitespace = /\s/;
+var latin = /[A-Za-z]/;
+var keyword = /[A-Za-z84_]/;
+var endThings = /[,\]]/;
+var digets = /[\d\.E\-\+]/;
+// const ignoredChar = /[\s_\-\/\(\)]/g;
+function Parser(text) {
+  if (typeof text !== 'string') {
+    throw new Error('not a string');
+  }
+  this.text = text.trim();
+  this.level = 0;
+  this.place = 0;
+  this.root = null;
+  this.stack = [];
+  this.currentObject = null;
+  this.state = NEUTRAL;
+}
+Parser.prototype.readCharicter = function() {
+  var char = this.text[this.place++];
+  if (this.state !== QUOTED) {
+    while (whitespace.test(char)) {
+      if (this.place >= this.text.length) {
+        return;
+      }
+      char = this.text[this.place++];
+    }
+  }
+  switch (this.state) {
+    case NEUTRAL:
+      return this.neutral(char);
+    case KEYWORD:
+      return this.keyword(char)
+    case QUOTED:
+      return this.quoted(char);
+    case AFTERQUOTE:
+      return this.afterquote(char);
+    case NUMBER:
+      return this.number(char);
+    case ENDED:
+      return;
+  }
+};
+Parser.prototype.afterquote = function(char) {
+  if (char === '"') {
+    this.word += '"';
+    this.state = QUOTED;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = this.word.trim();
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
+};
+Parser.prototype.afterItem = function(char) {
+  if (char === ',') {
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+    }
+    this.word = null;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (char === ']') {
+    this.level--;
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+      this.word = null;
+    }
+    this.state = NEUTRAL;
+    this.currentObject = this.stack.pop();
+    if (!this.currentObject) {
+      this.state = ENDED;
+    }
+
+    return;
+  }
+};
+Parser.prototype.number = function(char) {
+  if (digets.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = parseFloat(this.word);
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
+};
+Parser.prototype.quoted = function(char) {
+  if (char === '"') {
+    this.state = AFTERQUOTE;
+    return;
+  }
+  this.word += char;
+  return;
+};
+Parser.prototype.keyword = function(char) {
+  if (keyword.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (char === '[') {
+    var newObjects = [];
+    newObjects.push(this.word);
+    this.level++;
+    if (this.root === null) {
+      this.root = newObjects;
+    } else {
+      this.currentObject.push(newObjects);
+    }
+    this.stack.push(this.currentObject);
+    this.currentObject = newObjects;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
+};
+Parser.prototype.neutral = function(char) {
+  if (latin.test(char)) {
+    this.word = char;
+    this.state = KEYWORD;
+    return;
+  }
+  if (char === '"') {
+    this.word = '';
+    this.state = QUOTED;
+    return;
+  }
+  if (digets.test(char)) {
+    this.word = char;
+    this.state = NUMBER;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
+};
+Parser.prototype.output = function() {
+  while (this.place < this.text.length) {
+    this.readCharicter();
+  }
+  if (this.state === ENDED) {
+    return this.root;
+  }
+  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
+};
+
+function parseString(txt) {
+  var parser = new Parser(txt);
+  return parser.output();
+}
+
+;// CONCATENATED MODULE: ./node_modules/wkt-parser/process.js
+
+
+function mapit(obj, key, value) {
+  if (Array.isArray(key)) {
+    value.unshift(key);
+    key = null;
+  }
+  var thing = key ? {} : obj;
+
+  var out = value.reduce(function(newObj, item) {
+    sExpr(item, newObj);
+    return newObj
+  }, thing);
+  if (key) {
+    obj[key] = out;
+  }
+}
+
+function sExpr(v, obj) {
+  if (!Array.isArray(v)) {
+    obj[v] = true;
+    return;
+  }
+  var key = v.shift();
+  if (key === 'PARAMETER') {
+    key = v.shift();
+  }
+  if (v.length === 1) {
+    if (Array.isArray(v[0])) {
+      obj[key] = {};
+      sExpr(v[0], obj[key]);
+      return;
+    }
+    obj[key] = v[0];
+    return;
+  }
+  if (!v.length) {
+    obj[key] = true;
+    return;
+  }
+  if (key === 'TOWGS84') {
+    obj[key] = v;
+    return;
+  }
+  if (key === 'AXIS') {
+    if (!(key in obj)) {
+      obj[key] = [];
+    }
+    obj[key].push(v);
+    return;
+  }
+  if (!Array.isArray(key)) {
+    obj[key] = {};
+  }
+
+  var i;
+  switch (key) {
+    case 'UNIT':
+    case 'PRIMEM':
+    case 'VERT_DATUM':
+      obj[key] = {
+        name: v[0].toLowerCase(),
+        convert: v[1]
+      };
+      if (v.length === 3) {
+        sExpr(v[2], obj[key]);
+      }
+      return;
+    case 'SPHEROID':
+    case 'ELLIPSOID':
+      obj[key] = {
+        name: v[0],
+        a: v[1],
+        rf: v[2]
+      };
+      if (v.length === 4) {
+        sExpr(v[3], obj[key]);
+      }
+      return;
+    case 'PROJECTEDCRS':
+    case 'PROJCRS':
+    case 'GEOGCS':
+    case 'GEOCCS':
+    case 'PROJCS':
+    case 'LOCAL_CS':
+    case 'GEODCRS':
+    case 'GEODETICCRS':
+    case 'GEODETICDATUM':
+    case 'EDATUM':
+    case 'ENGINEERINGDATUM':
+    case 'VERT_CS':
+    case 'VERTCRS':
+    case 'VERTICALCRS':
+    case 'COMPD_CS':
+    case 'COMPOUNDCRS':
+    case 'ENGINEERINGCRS':
+    case 'ENGCRS':
+    case 'FITTED_CS':
+    case 'LOCAL_DATUM':
+    case 'DATUM':
+      v[0] = ['name', v[0]];
+      mapit(obj, key, v);
+      return;
+    default:
+      i = -1;
+      while (++i < v.length) {
+        if (!Array.isArray(v[i])) {
+          return sExpr(v, obj[key]);
+        }
+      }
+      return mapit(obj, key, v);
+  }
+}
+
+;// CONCATENATED MODULE: ./node_modules/wkt-parser/index.js
+var wkt_parser_D2R = 0.01745329251994329577;
+
+
+
+
+
+function rename(obj, params) {
+  var outName = params[0];
+  var inName = params[1];
+  if (!(outName in obj) && (inName in obj)) {
+    obj[outName] = obj[inName];
+    if (params.length === 3) {
+      obj[outName] = params[2](obj[outName]);
+    }
+  }
+}
+
+function d2r(input) {
+  return input * wkt_parser_D2R;
+}
+
+function cleanWKT(wkt) {
+  if (wkt.type === 'GEOGCS') {
+    wkt.projName = 'longlat';
+  } else if (wkt.type === 'LOCAL_CS') {
+    wkt.projName = 'identity';
+    wkt.local = true;
+  } else {
+    if (typeof wkt.PROJECTION === 'object') {
+      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else {
+      wkt.projName = wkt.PROJECTION;
+    }
+  }
+  if (wkt.AXIS) {
+    var axisOrder = '';
+    for (var i = 0, ii = wkt.AXIS.length; i < ii; ++i) {
+      var axis = [wkt.AXIS[i][0].toLowerCase(), wkt.AXIS[i][1].toLowerCase()];
+      if (axis[0].indexOf('north') !== -1 || ((axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'north')) {
+        axisOrder += 'n';
+      } else if (axis[0].indexOf('south') !== -1 || ((axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'south')) {
+        axisOrder += 's';
+      } else if (axis[0].indexOf('east') !== -1 || ((axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'east')) {
+        axisOrder += 'e';
+      } else if (axis[0].indexOf('west') !== -1 || ((axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'west')) {
+        axisOrder += 'w';
+      }
+    }
+    if (axisOrder.length === 2) {
+      axisOrder += 'u';
+    }
+    if (axisOrder.length === 3) {
+      wkt.axis = axisOrder;
+    }
+  }
+  if (wkt.UNIT) {
+    wkt.units = wkt.UNIT.name.toLowerCase();
+    if (wkt.units === 'metre') {
+      wkt.units = 'meter';
+    }
+    if (wkt.UNIT.convert) {
+      if (wkt.type === 'GEOGCS') {
+        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+        }
+      } else {
+        wkt.to_meter = wkt.UNIT.convert;
+      }
+    }
+  }
+  var geogcs = wkt.GEOGCS;
+  if (wkt.type === 'GEOGCS') {
+    geogcs = wkt;
+  }
+  if (geogcs) {
+    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+    //}
+    if (geogcs.DATUM) {
+      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
+    } else {
+      wkt.datumCode = geogcs.name.toLowerCase();
+    }
+    if (wkt.datumCode.slice(0, 2) === 'd_') {
+      wkt.datumCode = wkt.datumCode.slice(2);
+    }
+    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+      wkt.datumCode = 'nzgd49';
+    }
+    if (wkt.datumCode === 'wgs_1984' || wkt.datumCode === 'world_geodetic_system_1984') {
+      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+        wkt.sphere = true;
+      }
+      wkt.datumCode = 'wgs84';
+    }
+    if (wkt.datumCode.slice(-6) === '_ferro') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 6);
+    }
+    if (wkt.datumCode.slice(-8) === '_jakarta') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 8);
+    }
+    if (~wkt.datumCode.indexOf('belge')) {
+      wkt.datumCode = 'rnb72';
+    }
+    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
+      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+        wkt.ellps = 'intl';
+      }
+
+      wkt.a = geogcs.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+    }
+
+    if (geogcs.DATUM && geogcs.DATUM.TOWGS84) {
+      wkt.datum_params = geogcs.DATUM.TOWGS84;
+    }
+    if (~wkt.datumCode.indexOf('osgb_1936')) {
+      wkt.datumCode = 'osgb36';
+    }
+    if (~wkt.datumCode.indexOf('osni_1952')) {
+      wkt.datumCode = 'osni52';
+    }
+    if (~wkt.datumCode.indexOf('tm65')
+      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
+      wkt.datumCode = 'ire65';
+    }
+    if (wkt.datumCode === 'ch1903+') {
+      wkt.datumCode = 'ch1903';
+    }
+    if (~wkt.datumCode.indexOf('israel')) {
+      wkt.datumCode = 'isr93';
+    }
+  }
+  if (wkt.b && !isFinite(wkt.b)) {
+    wkt.b = wkt.a;
+  }
+
+  function toMeter(input) {
+    var ratio = wkt.to_meter || 1;
+    return input * ratio;
+  }
+  var renamer = function(a) {
+    return rename(wkt, a);
+  };
+  var list = [
+    ['standard_parallel_1', 'Standard_Parallel_1'],
+    ['standard_parallel_1', 'Latitude of 1st standard parallel'],
+    ['standard_parallel_2', 'Standard_Parallel_2'],
+    ['standard_parallel_2', 'Latitude of 2nd standard parallel'],
+    ['false_easting', 'False_Easting'],
+    ['false_easting', 'False easting'],
+    ['false-easting', 'Easting at false origin'],
+    ['false_northing', 'False_Northing'],
+    ['false_northing', 'False northing'],
+    ['false_northing', 'Northing at false origin'],
+    ['central_meridian', 'Central_Meridian'],
+    ['central_meridian', 'Longitude of natural origin'],
+    ['central_meridian', 'Longitude of false origin'],
+    ['latitude_of_origin', 'Latitude_Of_Origin'],
+    ['latitude_of_origin', 'Central_Parallel'],
+    ['latitude_of_origin', 'Latitude of natural origin'],
+    ['latitude_of_origin', 'Latitude of false origin'],
+    ['scale_factor', 'Scale_Factor'],
+    ['k0', 'scale_factor'],
+    ['latitude_of_center', 'Latitude_Of_Center'],
+    ['latitude_of_center', 'Latitude_of_center'],
+    ['lat0', 'latitude_of_center', d2r],
+    ['longitude_of_center', 'Longitude_Of_Center'],
+    ['longitude_of_center', 'Longitude_of_center'],
+    ['longc', 'longitude_of_center', d2r],
+    ['x0', 'false_easting', toMeter],
+    ['y0', 'false_northing', toMeter],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
+    ['azimuth', 'Azimuth'],
+    ['alpha', 'azimuth', d2r],
+    ['srsCode', 'name']
+  ];
+  list.forEach(renamer);
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+    wkt.long0 = wkt.longc;
+  }
+  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat_ts = wkt.lat1;
+  } else if (!wkt.lat_ts && wkt.lat0 && wkt.projName === 'Polar_Stereographic') {
+    wkt.lat_ts = wkt.lat0;
+    wkt.lat0 = d2r(wkt.lat0 > 0 ? 90 : -90);
+  }
+}
+/* harmony default export */ function wkt_parser(wkt) {
+  var lisp = parser(wkt);
+  var type = lisp.shift();
+  var name = lisp.shift();
+  lisp.unshift(['name', name]);
+  lisp.unshift(['type', type]);
+  var obj = {};
+  sExpr(lisp, obj);
+  cleanWKT(obj);
+  return obj;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/defs.js
+
+
+
+
+function defs(name) {
+  /*global console*/
+  var that = this;
+  if (arguments.length === 2) {
+    var def = arguments[1];
+    if (typeof def === 'string') {
+      if (def.charAt(0) === '+') {
+        defs[name] = projString(arguments[1]);
+      }
+      else {
+        defs[name] = wkt_parser(arguments[1]);
+      }
+    } else {
+      defs[name] = def;
+    }
+  }
+  else if (arguments.length === 1) {
+    if (Array.isArray(name)) {
+      return name.map(function(v) {
+        if (Array.isArray(v)) {
+          defs.apply(that, v);
+        }
+        else {
+          defs(v);
+        }
+      });
+    }
+    else if (typeof name === 'string') {
+      if (name in defs) {
+        return defs[name];
+      }
+    }
+    else if ('EPSG' in name) {
+      defs['EPSG:' + name.EPSG] = name;
+    }
+    else if ('ESRI' in name) {
+      defs['ESRI:' + name.ESRI] = name;
+    }
+    else if ('IAU2000' in name) {
+      defs['IAU2000:' + name.IAU2000] = name;
+    }
+    else {
+      console.log(name);
+    }
+    return;
+  }
+
+
+}
+global(defs);
+/* harmony default export */ const lib_defs = (defs);
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/parseCode.js
+
+
+
+
+function testObj(code){
+  return typeof code === 'string';
+}
+function testDef(code){
+  return code in lib_defs;
+}
+var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
+function testWKT(code){
+  return codeWords.some(function (word) {
+    return code.indexOf(word) > -1;
+  });
+}
+var codes = ['3857', '900913', '3785', '102113'];
+function checkMercator(item) {
+  var auth = match(item, 'authority');
+  if (!auth) {
+    return;
+  }
+  var code = match(auth, 'epsg');
+  return code && codes.indexOf(code) > -1;
+}
+function checkProjStr(item) {
+  var ext = match(item, 'extension');
+  if (!ext) {
+    return;
+  }
+  return match(ext, 'proj4');
+}
+function testProj(code){
+  return code[0] === '+';
+}
+function parse(code){
+  if (testObj(code)) {
+    //check to see if this is a WKT string
+    if (testDef(code)) {
+      return lib_defs[code];
+    }
+    if (testWKT(code)) {
+      var out = wkt_parser(code);
+      // test of spetial case, due to this being a very common and often malformed
+      if (checkMercator(out)) {
+        return lib_defs['EPSG:3857'];
+      }
+      var maybeProjStr = checkProjStr(out);
+      if (maybeProjStr) {
+        return projString(maybeProjStr);
+      }
+      return out;
+    }
+    if (testProj(code)) {
+      return projString(code);
+    }
+  }else{
+    return code;
+  }
+}
+
+/* harmony default export */ const parseCode = (parse);
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/extend.js
+/* harmony default export */ function lib_extend(destination, source) {
+  destination = destination || {};
+  var value, property;
+  if (!source) {
+    return destination;
+  }
+  for (property in source) {
+    value = source[property];
+    if (value !== undefined) {
+      destination[property] = value;
+    }
+  }
+  return destination;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/msfnz.js
+/* harmony default export */ function msfnz(eccent, sinphi, cosphi) {
+  var con = eccent * sinphi;
+  return cosphi / (Math.sqrt(1 - con * con));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/sign.js
+/* harmony default export */ function sign(x) {
+  return x<0 ? -1 : 1;
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_lon.js
+
+
+
+
+/* harmony default export */ function adjust_lon(x) {
+  return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/tsfnz.js
+
+
+/* harmony default export */ function tsfnz(eccent, phi, sinphi) {
+  var con = eccent * sinphi;
+  var com = 0.5 * eccent;
+  con = Math.pow(((1 - con) / (1 + con)), com);
+  return (Math.tan(0.5 * (HALF_PI - phi)) / con);
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/phi2z.js
+
+
+/* harmony default export */ function phi2z(eccent, ts) {
+  var eccnth = 0.5 * eccent;
+  var con, dphi;
+  var phi = HALF_PI - 2 * Math.atan(ts);
+  for (var i = 0; i <= 15; i++) {
+    con = eccent * Math.sin(phi);
+    dphi = HALF_PI - 2 * Math.atan(ts * (Math.pow(((1 - con) / (1 + con)), eccnth))) - phi;
+    phi += dphi;
+    if (Math.abs(dphi) <= 0.0000000001) {
+      return phi;
+    }
+  }
+  //console.log("phi2z has NoConvergence");
+  return -9999;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/merc.js
+
+
+
+
+
+
+function init() {
+  var con = this.b / this.a;
+  this.es = 1 - con * con;
+  if(!('x0' in this)){
+    this.x0 = 0;
+  }
+  if(!('y0' in this)){
+    this.y0 = 0;
+  }
+  this.e = Math.sqrt(this.es);
+  if (this.lat_ts) {
+    if (this.sphere) {
+      this.k0 = Math.cos(this.lat_ts);
+    }
+    else {
+      this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
+    }
+  }
+  else {
+    if (!this.k0) {
+      if (this.k) {
+        this.k0 = this.k;
+      }
+      else {
+        this.k0 = 1;
+      }
+    }
+  }
+}
+
+/* Mercator forward equations--mapping lat,long to x,y
+  --------------------------------------------------*/
+
+function forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  // convert to radians
+  if (lat * R2D > 90 && lat * R2D < -90 && lon * R2D > 180 && lon * R2D < -180) {
+    return null;
+  }
+
+  var x, y;
+  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
+    return null;
+  }
+  else {
+    if (this.sphere) {
+      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
+      y = this.y0 + this.a * this.k0 * Math.log(Math.tan(FORTPI + 0.5 * lat));
+    }
+    else {
+      var sinphi = Math.sin(lat);
+      var ts = tsfnz(this.e, lat, sinphi);
+      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
+      y = this.y0 - this.a * this.k0 * Math.log(ts);
+    }
+    p.x = x;
+    p.y = y;
+    return p;
+  }
+}
+
+/* Mercator inverse equations--mapping x,y to lat/long
+  --------------------------------------------------*/
+function inverse(p) {
+
+  var x = p.x - this.x0;
+  var y = p.y - this.y0;
+  var lon, lat;
+
+  if (this.sphere) {
+    lat = HALF_PI - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
+  }
+  else {
+    var ts = Math.exp(-y / (this.a * this.k0));
+    lat = phi2z(this.e, ts);
+    if (lat === -9999) {
+      return null;
+    }
+  }
+  lon = adjust_lon(this.long0 + x / (this.a * this.k0));
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
+/* harmony default export */ const merc = ({
+  init: init,
+  forward: forward,
+  inverse: inverse,
+  names: names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/longlat.js
+function longlat_init() {
+  //no-op for longlat
+}
+
+function identity(pt) {
+  return pt;
+}
+
+
+var longlat_names = ["longlat", "identity"];
+/* harmony default export */ const longlat = ({
+  init: longlat_init,
+  forward: identity,
+  inverse: identity,
+  names: longlat_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections.js
+
+
+var projs = [merc, longlat];
+var projections_names = {};
+var projStore = [];
+
+function add(proj, i) {
+  var len = projStore.length;
+  if (!proj.names) {
+    console.log(i);
+    return true;
+  }
+  projStore[len] = proj;
+  proj.names.forEach(function(n) {
+    projections_names[n.toLowerCase()] = len;
+  });
+  return this;
+}
+
+
+
+function get(name) {
+  if (!name) {
+    return false;
+  }
+  var n = name.toLowerCase();
+  if (typeof projections_names[n] !== 'undefined' && projStore[projections_names[n]]) {
+    return projStore[projections_names[n]];
+  }
+}
+
+function start() {
+  projs.forEach(add);
+}
+/* harmony default export */ const projections = ({
+  start: start,
+  add: add,
+  get: get
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Ellipsoid.js
+var Ellipsoid_exports = {};
+
+Ellipsoid_exports.MERIT = {
+  a: 6378137.0,
+  rf: 298.257,
+  ellipseName: "MERIT 1983"
+};
+
+Ellipsoid_exports.SGS85 = {
+  a: 6378136.0,
+  rf: 298.257,
+  ellipseName: "Soviet Geodetic System 85"
+};
+
+Ellipsoid_exports.GRS80 = {
+  a: 6378137.0,
+  rf: 298.257222101,
+  ellipseName: "GRS 1980(IUGG, 1980)"
+};
+
+Ellipsoid_exports.IAU76 = {
+  a: 6378140.0,
+  rf: 298.257,
+  ellipseName: "IAU 1976"
+};
+
+Ellipsoid_exports.airy = {
+  a: 6377563.396,
+  b: 6356256.910,
+  ellipseName: "Airy 1830"
+};
+
+Ellipsoid_exports.APL4 = {
+  a: 6378137,
+  rf: 298.25,
+  ellipseName: "Appl. Physics. 1965"
+};
+
+Ellipsoid_exports.NWL9D = {
+  a: 6378145.0,
+  rf: 298.25,
+  ellipseName: "Naval Weapons Lab., 1965"
+};
+
+Ellipsoid_exports.mod_airy = {
+  a: 6377340.189,
+  b: 6356034.446,
+  ellipseName: "Modified Airy"
+};
+
+Ellipsoid_exports.andrae = {
+  a: 6377104.43,
+  rf: 300.0,
+  ellipseName: "Andrae 1876 (Den., Iclnd.)"
+};
+
+Ellipsoid_exports.aust_SA = {
+  a: 6378160.0,
+  rf: 298.25,
+  ellipseName: "Australian Natl & S. Amer. 1969"
+};
+
+Ellipsoid_exports.GRS67 = {
+  a: 6378160.0,
+  rf: 298.2471674270,
+  ellipseName: "GRS 67(IUGG 1967)"
+};
+
+Ellipsoid_exports.bessel = {
+  a: 6377397.155,
+  rf: 299.1528128,
+  ellipseName: "Bessel 1841"
+};
+
+Ellipsoid_exports.bess_nam = {
+  a: 6377483.865,
+  rf: 299.1528128,
+  ellipseName: "Bessel 1841 (Namibia)"
+};
+
+Ellipsoid_exports.clrk66 = {
+  a: 6378206.4,
+  b: 6356583.8,
+  ellipseName: "Clarke 1866"
+};
+
+Ellipsoid_exports.clrk80 = {
+  a: 6378249.145,
+  rf: 293.4663,
+  ellipseName: "Clarke 1880 mod."
+};
+
+Ellipsoid_exports.clrk80ign = {
+  a: 6378249.2,
+  b: 6356515,
+  rf: 293.4660213,
+  ellipseName: "Clarke 1880 (IGN)"
+};
+
+Ellipsoid_exports.clrk58 = {
+  a: 6378293.645208759,
+  rf: 294.2606763692654,
+  ellipseName: "Clarke 1858"
+};
+
+Ellipsoid_exports.CPM = {
+  a: 6375738.7,
+  rf: 334.29,
+  ellipseName: "Comm. des Poids et Mesures 1799"
+};
+
+Ellipsoid_exports.delmbr = {
+  a: 6376428.0,
+  rf: 311.5,
+  ellipseName: "Delambre 1810 (Belgium)"
+};
+
+Ellipsoid_exports.engelis = {
+  a: 6378136.05,
+  rf: 298.2566,
+  ellipseName: "Engelis 1985"
+};
+
+Ellipsoid_exports.evrst30 = {
+  a: 6377276.345,
+  rf: 300.8017,
+  ellipseName: "Everest 1830"
+};
+
+Ellipsoid_exports.evrst48 = {
+  a: 6377304.063,
+  rf: 300.8017,
+  ellipseName: "Everest 1948"
+};
+
+Ellipsoid_exports.evrst56 = {
+  a: 6377301.243,
+  rf: 300.8017,
+  ellipseName: "Everest 1956"
+};
+
+Ellipsoid_exports.evrst69 = {
+  a: 6377295.664,
+  rf: 300.8017,
+  ellipseName: "Everest 1969"
+};
+
+Ellipsoid_exports.evrstSS = {
+  a: 6377298.556,
+  rf: 300.8017,
+  ellipseName: "Everest (Sabah & Sarawak)"
+};
+
+Ellipsoid_exports.fschr60 = {
+  a: 6378166.0,
+  rf: 298.3,
+  ellipseName: "Fischer (Mercury Datum) 1960"
+};
+
+Ellipsoid_exports.fschr60m = {
+  a: 6378155.0,
+  rf: 298.3,
+  ellipseName: "Fischer 1960"
+};
+
+Ellipsoid_exports.fschr68 = {
+  a: 6378150.0,
+  rf: 298.3,
+  ellipseName: "Fischer 1968"
+};
+
+Ellipsoid_exports.helmert = {
+  a: 6378200.0,
+  rf: 298.3,
+  ellipseName: "Helmert 1906"
+};
+
+Ellipsoid_exports.hough = {
+  a: 6378270.0,
+  rf: 297.0,
+  ellipseName: "Hough"
+};
+
+Ellipsoid_exports.intl = {
+  a: 6378388.0,
+  rf: 297.0,
+  ellipseName: "International 1909 (Hayford)"
+};
+
+Ellipsoid_exports.kaula = {
+  a: 6378163.0,
+  rf: 298.24,
+  ellipseName: "Kaula 1961"
+};
+
+Ellipsoid_exports.lerch = {
+  a: 6378139.0,
+  rf: 298.257,
+  ellipseName: "Lerch 1979"
+};
+
+Ellipsoid_exports.mprts = {
+  a: 6397300.0,
+  rf: 191.0,
+  ellipseName: "Maupertius 1738"
+};
+
+Ellipsoid_exports.new_intl = {
+  a: 6378157.5,
+  b: 6356772.2,
+  ellipseName: "New International 1967"
+};
+
+Ellipsoid_exports.plessis = {
+  a: 6376523.0,
+  rf: 6355863.0,
+  ellipseName: "Plessis 1817 (France)"
+};
+
+Ellipsoid_exports.krass = {
+  a: 6378245.0,
+  rf: 298.3,
+  ellipseName: "Krassovsky, 1942"
+};
+
+Ellipsoid_exports.SEasia = {
+  a: 6378155.0,
+  b: 6356773.3205,
+  ellipseName: "Southeast Asia"
+};
+
+Ellipsoid_exports.walbeck = {
+  a: 6376896.0,
+  b: 6355834.8467,
+  ellipseName: "Walbeck"
+};
+
+Ellipsoid_exports.WGS60 = {
+  a: 6378165.0,
+  rf: 298.3,
+  ellipseName: "WGS 60"
+};
+
+Ellipsoid_exports.WGS66 = {
+  a: 6378145.0,
+  rf: 298.25,
+  ellipseName: "WGS 66"
+};
+
+Ellipsoid_exports.WGS7 = {
+  a: 6378135.0,
+  rf: 298.26,
+  ellipseName: "WGS 72"
+};
+
+var WGS84 = Ellipsoid_exports.WGS84 = {
+  a: 6378137.0,
+  rf: 298.257223563,
+  ellipseName: "WGS 84"
+};
+
+Ellipsoid_exports.sphere = {
+  a: 6370997.0,
+  b: 6370997.0,
+  ellipseName: "Normal Sphere (r=6370997)"
+};
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/deriveConstants.js
+
+
+
+
+function eccentricity(a, b, rf, R_A) {
+  var a2 = a * a; // used in geocentric
+  var b2 = b * b; // used in geocentric
+  var es = (a2 - b2) / a2; // e ^ 2
+  var e = 0;
+  if (R_A) {
+    a *= 1 - es * (SIXTH + es * (RA4 + es * RA6));
+    a2 = a * a;
+    es = 0;
+  } else {
+    e = Math.sqrt(es); // eccentricity
+  }
+  var ep2 = (a2 - b2) / b2; // used in geocentric
+  return {
+    es: es,
+    e: e,
+    ep2: ep2
+  };
+}
+function sphere(a, b, rf, ellps, sphere) {
+  if (!a) { // do we have an ellipsoid?
+    var ellipse = match(Ellipsoid_exports, ellps);
+    if (!ellipse) {
+      ellipse = WGS84;
+    }
+    a = ellipse.a;
+    b = ellipse.b;
+    rf = ellipse.rf;
+  }
+
+  if (rf && !b) {
+    b = (1.0 - 1.0 / rf) * a;
+  }
+  if (rf === 0 || Math.abs(a - b) < EPSLN) {
+    sphere = true;
+    b = a;
+  }
+  return {
+    a: a,
+    b: b,
+    rf: rf,
+    sphere: sphere
+  };
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/constants/Datum.js
+var Datum_exports = {};
+
+Datum_exports.wgs84 = {
+  towgs84: "0,0,0",
+  ellipse: "WGS84",
+  datumName: "WGS84"
+};
+
+Datum_exports.ch1903 = {
+  towgs84: "674.374,15.056,405.346",
+  ellipse: "bessel",
+  datumName: "swiss"
+};
+
+Datum_exports.ggrs87 = {
+  towgs84: "-199.87,74.79,246.62",
+  ellipse: "GRS80",
+  datumName: "Greek_Geodetic_Reference_System_1987"
+};
+
+Datum_exports.nad83 = {
+  towgs84: "0,0,0",
+  ellipse: "GRS80",
+  datumName: "North_American_Datum_1983"
+};
+
+Datum_exports.nad27 = {
+  nadgrids: "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat",
+  ellipse: "clrk66",
+  datumName: "North_American_Datum_1927"
+};
+
+Datum_exports.potsdam = {
+  towgs84: "598.1,73.7,418.2,0.202,0.045,-2.455,6.7",
+  ellipse: "bessel",
+  datumName: "Potsdam Rauenberg 1950 DHDN"
+};
+
+Datum_exports.carthage = {
+  towgs84: "-263.0,6.0,431.0",
+  ellipse: "clark80",
+  datumName: "Carthage 1934 Tunisia"
+};
+
+Datum_exports.hermannskogel = {
+  towgs84: "577.326,90.129,463.919,5.137,1.474,5.297,2.4232",
+  ellipse: "bessel",
+  datumName: "Hermannskogel"
+};
+
+Datum_exports.osni52 = {
+  towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
+  ellipse: "airy",
+  datumName: "Irish National"
+};
+
+Datum_exports.ire65 = {
+  towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
+  ellipse: "mod_airy",
+  datumName: "Ireland 1965"
+};
+
+Datum_exports.rassadiran = {
+  towgs84: "-133.63,-157.5,-158.62",
+  ellipse: "intl",
+  datumName: "Rassadiran"
+};
+
+Datum_exports.nzgd49 = {
+  towgs84: "59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993",
+  ellipse: "intl",
+  datumName: "New Zealand Geodetic Datum 1949"
+};
+
+Datum_exports.osgb36 = {
+  towgs84: "446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894",
+  ellipse: "airy",
+  datumName: "Airy 1830"
+};
+
+Datum_exports.s_jtsk = {
+  towgs84: "589,76,480",
+  ellipse: 'bessel',
+  datumName: 'S-JTSK (Ferro)'
+};
+
+Datum_exports.beduaram = {
+  towgs84: '-106,-87,188',
+  ellipse: 'clrk80',
+  datumName: 'Beduaram'
+};
+
+Datum_exports.gunung_segara = {
+  towgs84: '-403,684,41',
+  ellipse: 'bessel',
+  datumName: 'Gunung Segara Jakarta'
+};
+
+Datum_exports.rnb72 = {
+  towgs84: "106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1",
+  ellipse: "intl",
+  datumName: "Reseau National Belge 1972"
+};
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/datum.js
+
+
+function datum(datumCode, datum_params, a, b, es, ep2, nadgrids) {
+  var out = {};
+
+  if (datumCode === undefined || datumCode === 'none') {
+    out.datum_type = PJD_NODATUM;
+  } else {
+    out.datum_type = PJD_WGS84;
+  }
+
+  if (datum_params) {
+    out.datum_params = datum_params.map(parseFloat);
+    if (out.datum_params[0] !== 0 || out.datum_params[1] !== 0 || out.datum_params[2] !== 0) {
+      out.datum_type = PJD_3PARAM;
+    }
+    if (out.datum_params.length > 3) {
+      if (out.datum_params[3] !== 0 || out.datum_params[4] !== 0 || out.datum_params[5] !== 0 || out.datum_params[6] !== 0) {
+        out.datum_type = PJD_7PARAM;
+        out.datum_params[3] *= SEC_TO_RAD;
+        out.datum_params[4] *= SEC_TO_RAD;
+        out.datum_params[5] *= SEC_TO_RAD;
+        out.datum_params[6] = (out.datum_params[6] / 1000000.0) + 1.0;
+      }
+    }
+  }
+
+  if (nadgrids) {
+    out.datum_type = PJD_GRIDSHIFT;
+    out.grids = nadgrids;
+  }
+  out.a = a; //datum object also uses these values
+  out.b = b;
+  out.es = es;
+  out.ep2 = ep2;
+  return out;
+}
+
+/* harmony default export */ const lib_datum = (datum);
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/nadgrid.js
+/**
+ * Resources for details of NTv2 file formats:
+ * - https://web.archive.org/web/20140127204822if_/http://www.mgs.gov.on.ca:80/stdprodconsume/groups/content/@mgs/@iandit/documents/resourcelist/stel02_047447.pdf
+ * - http://mimaka.com/help/gs/html/004_NTV2%20Data%20Format.htm
+ */
+
+var loadedNadgrids = {};
+
+/**
+ * Load a binary NTv2 file (.gsb) to a key that can be used in a proj string like +nadgrids=<key>. Pass the NTv2 file
+ * as an ArrayBuffer.
+ */
+function nadgrid(key, data) {
+  var view = new DataView(data);
+  var isLittleEndian = detectLittleEndian(view);
+  var header = readHeader(view, isLittleEndian);
+  if (header.nSubgrids > 1) {
+    console.log('Only single NTv2 subgrids are currently supported, subsequent sub grids are ignored');
+  }
+  var subgrids = readSubgrids(view, header, isLittleEndian);
+  var nadgrid = {header: header, subgrids: subgrids};
+  loadedNadgrids[key] = nadgrid;
+  return nadgrid;
+}
+
+/**
+ * Given a proj4 value for nadgrids, return an array of loaded grids
+ */
+function getNadgrids(nadgrids) {
+  // Format details: http://proj.maptools.org/gen_parms.html
+  if (nadgrids === undefined) { return null; }
+  var grids = nadgrids.split(',');
+  return grids.map(parseNadgridString);
+}
+
+function parseNadgridString(value) {
+  if (value.length === 0) {
+    return null;
+  }
+  var optional = value[0] === '@';
+  if (optional) {
+    value = value.slice(1);
+  }
+  if (value === 'null') {
+    return {name: 'null', mandatory: !optional, grid: null, isNull: true};
+  }
+  return {
+    name: value,
+    mandatory: !optional,
+    grid: loadedNadgrids[value] || null,
+    isNull: false
+  };
+}
+
+function secondsToRadians(seconds) {
+  return (seconds / 3600) * Math.PI / 180;
+}
+
+function detectLittleEndian(view) {
+  var nFields = view.getInt32(8, false);
+  if (nFields === 11) {
+    return false;
+  }
+  nFields = view.getInt32(8, true);
+  if (nFields !== 11) {
+    console.warn('Failed to detect nadgrid endian-ness, defaulting to little-endian');
+  }
+  return true;
+}
+
+function readHeader(view, isLittleEndian) {
+  return {
+    nFields: view.getInt32(8, isLittleEndian),
+    nSubgridFields: view.getInt32(24, isLittleEndian),
+    nSubgrids: view.getInt32(40, isLittleEndian),
+    shiftType: decodeString(view, 56, 56 + 8).trim(),
+    fromSemiMajorAxis: view.getFloat64(120, isLittleEndian),
+    fromSemiMinorAxis: view.getFloat64(136, isLittleEndian),
+    toSemiMajorAxis: view.getFloat64(152, isLittleEndian),
+    toSemiMinorAxis: view.getFloat64(168, isLittleEndian),
+  };
+}
+
+function decodeString(view, start, end) {
+  return String.fromCharCode.apply(null, new Uint8Array(view.buffer.slice(start, end)));
+}
+
+function readSubgrids(view, header, isLittleEndian) {
+  var gridOffset = 176;
+  var grids = [];
+  for (var i = 0; i < header.nSubgrids; i++) {
+    var subHeader = readGridHeader(view, gridOffset, isLittleEndian);
+    var nodes = readGridNodes(view, gridOffset, subHeader, isLittleEndian);
+    var lngColumnCount = Math.round(
+      1 + (subHeader.upperLongitude - subHeader.lowerLongitude) / subHeader.longitudeInterval);
+    var latColumnCount = Math.round(
+      1 + (subHeader.upperLatitude - subHeader.lowerLatitude) / subHeader.latitudeInterval);
+    // Proj4 operates on radians whereas the coordinates are in seconds in the grid
+    grids.push({
+      ll: [secondsToRadians(subHeader.lowerLongitude), secondsToRadians(subHeader.lowerLatitude)],
+      del: [secondsToRadians(subHeader.longitudeInterval), secondsToRadians(subHeader.latitudeInterval)],
+      lim: [lngColumnCount, latColumnCount],
+      count: subHeader.gridNodeCount,
+      cvs: mapNodes(nodes)
+    });
+  }
+  return grids;
+}
+
+function mapNodes(nodes) {
+  return nodes.map(function (r) {return [secondsToRadians(r.longitudeShift), secondsToRadians(r.latitudeShift)];});
+}
+
+function readGridHeader(view, offset, isLittleEndian) {
+  return {
+    name: decodeString(view, offset + 8, offset + 16).trim(),
+    parent: decodeString(view, offset + 24, offset + 24 + 8).trim(),
+    lowerLatitude: view.getFloat64(offset + 72, isLittleEndian),
+    upperLatitude: view.getFloat64(offset + 88, isLittleEndian),
+    lowerLongitude: view.getFloat64(offset + 104, isLittleEndian),
+    upperLongitude: view.getFloat64(offset + 120, isLittleEndian),
+    latitudeInterval: view.getFloat64(offset + 136, isLittleEndian),
+    longitudeInterval: view.getFloat64(offset + 152, isLittleEndian),
+    gridNodeCount: view.getInt32(offset + 168, isLittleEndian)
+  };
+}
+
+function readGridNodes(view, offset, gridHeader, isLittleEndian) {
+  var nodesOffset = offset + 176;
+  var gridRecordLength = 16;
+  var gridShiftRecords = [];
+  for (var i = 0; i < gridHeader.gridNodeCount; i++) {
+    var record = {
+      latitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength, isLittleEndian),
+      longitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength + 4, isLittleEndian),
+      latitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 8, isLittleEndian),
+      longitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 12, isLittleEndian),
+    };
+    gridShiftRecords.push(record);
+  }
+  return gridShiftRecords;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/Proj.js
+
+
+
+
+
+
+
+
+
+function Proj_Projection(srsCode,callback) {
+  if (!(this instanceof Proj_Projection)) {
+    return new Proj_Projection(srsCode);
+  }
+  callback = callback || function(error){
+    if(error){
+      throw error;
+    }
+  };
+  var json = parseCode(srsCode);
+  if(typeof json !== 'object'){
+    callback(srsCode);
+    return;
+  }
+  var ourProj = Proj_Projection.projections.get(json.projName);
+  if(!ourProj){
+    callback(srsCode);
+    return;
+  }
+  if (json.datumCode && json.datumCode !== 'none') {
+    var datumDef = match(Datum_exports, json.datumCode);
+    if (datumDef) {
+      json.datum_params = json.datum_params || (datumDef.towgs84 ? datumDef.towgs84.split(',') : null);
+      json.ellps = datumDef.ellipse;
+      json.datumName = datumDef.datumName ? datumDef.datumName : json.datumCode;
+    }
+  }
+  json.k0 = json.k0 || 1.0;
+  json.axis = json.axis || 'enu';
+  json.ellps = json.ellps || 'wgs84';
+  json.lat1 = json.lat1 || json.lat0; // Lambert_Conformal_Conic_1SP, for example, needs this
+
+  var sphere_ = sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
+  var ecc = eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
+  var nadgrids = getNadgrids(json.nadgrids);
+  var datumObj = json.datum || lib_datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2,
+    nadgrids);
+
+  lib_extend(this, json); // transfer everything over from the projection because we don't know what we'll need
+  lib_extend(this, ourProj); // transfer all the methods from the projection
+
+  // copy the 4 things over we calculated in deriveConstants.sphere
+  this.a = sphere_.a;
+  this.b = sphere_.b;
+  this.rf = sphere_.rf;
+  this.sphere = sphere_.sphere;
+
+  // copy the 3 things we calculated in deriveConstants.eccentricity
+  this.es = ecc.es;
+  this.e = ecc.e;
+  this.ep2 = ecc.ep2;
+
+  // add in the datum object
+  this.datum = datumObj;
+
+  // init the projection
+  this.init();
+
+  // legecy callback from back in the day when it went to spatialreference.org
+  callback(null, this);
+
+}
+Proj_Projection.projections = projections;
+Proj_Projection.projections.start();
+/* harmony default export */ const Proj = (Proj_Projection);
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/datumUtils.js
+
+
+function compareDatums(source, dest) {
+  if (source.datum_type !== dest.datum_type) {
+    return false; // false, datums are not equal
+  } else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) {
+    // the tolerance for es is to ensure that GRS80 and WGS84
+    // are considered identical
+    return false;
+  } else if (source.datum_type === PJD_3PARAM) {
+    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2]);
+  } else if (source.datum_type === PJD_7PARAM) {
+    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2] && source.datum_params[3] === dest.datum_params[3] && source.datum_params[4] === dest.datum_params[4] && source.datum_params[5] === dest.datum_params[5] && source.datum_params[6] === dest.datum_params[6]);
+  } else {
+    return true; // datums are equal
+  }
+} // cs_compare_datums()
+
+/*
+ * The function Convert_Geodetic_To_Geocentric converts geodetic coordinates
+ * (latitude, longitude, and height) to geocentric coordinates (X, Y, Z),
+ * according to the current ellipsoid parameters.
+ *
+ *    Latitude  : Geodetic latitude in radians                     (input)
+ *    Longitude : Geodetic longitude in radians                    (input)
+ *    Height    : Geodetic height, in meters                       (input)
+ *    X         : Calculated Geocentric X coordinate, in meters    (output)
+ *    Y         : Calculated Geocentric Y coordinate, in meters    (output)
+ *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
+ *
+ */
+function geodeticToGeocentric(p, es, a) {
+  var Longitude = p.x;
+  var Latitude = p.y;
+  var Height = p.z ? p.z : 0; //Z value not always supplied
+
+  var Rn; /*  Earth radius at location  */
+  var Sin_Lat; /*  Math.sin(Latitude)  */
+  var Sin2_Lat; /*  Square of Math.sin(Latitude)  */
+  var Cos_Lat; /*  Math.cos(Latitude)  */
+
+  /*
+   ** Don't blow up if Latitude is just a little out of the value
+   ** range as it may just be a rounding issue.  Also removed longitude
+   ** test, it should be wrapped by Math.cos() and Math.sin().  NFW for PROJ.4, Sep/2001.
+   */
+  if (Latitude < -HALF_PI && Latitude > -1.001 * HALF_PI) {
+    Latitude = -HALF_PI;
+  } else if (Latitude > HALF_PI && Latitude < 1.001 * HALF_PI) {
+    Latitude = HALF_PI;
+  } else if (Latitude < -HALF_PI) {
+    /* Latitude out of range */
+    //..reportError('geocent:lat out of range:' + Latitude);
+    return { x: -Infinity, y: -Infinity, z: p.z };
+  } else if (Latitude > HALF_PI) {
+    /* Latitude out of range */
+    return { x: Infinity, y: Infinity, z: p.z };
+  }
+
+  if (Longitude > Math.PI) {
+    Longitude -= (2 * Math.PI);
+  }
+  Sin_Lat = Math.sin(Latitude);
+  Cos_Lat = Math.cos(Latitude);
+  Sin2_Lat = Sin_Lat * Sin_Lat;
+  Rn = a / (Math.sqrt(1.0e0 - es * Sin2_Lat));
+  return {
+    x: (Rn + Height) * Cos_Lat * Math.cos(Longitude),
+    y: (Rn + Height) * Cos_Lat * Math.sin(Longitude),
+    z: ((Rn * (1 - es)) + Height) * Sin_Lat
+  };
+} // cs_geodetic_to_geocentric()
+
+function geocentricToGeodetic(p, es, a, b) {
+  /* local defintions and variables */
+  /* end-criterium of loop, accuracy of sin(Latitude) */
+  var genau = 1e-12;
+  var genau2 = (genau * genau);
+  var maxiter = 30;
+
+  var P; /* distance between semi-minor axis and location */
+  var RR; /* distance between center and location */
+  var CT; /* sin of geocentric latitude */
+  var ST; /* cos of geocentric latitude */
+  var RX;
+  var RK;
+  var RN; /* Earth radius at location */
+  var CPHI0; /* cos of start or old geodetic latitude in iterations */
+  var SPHI0; /* sin of start or old geodetic latitude in iterations */
+  var CPHI; /* cos of searched geodetic latitude */
+  var SPHI; /* sin of searched geodetic latitude */
+  var SDPHI; /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
+  var iter; /* # of continous iteration, max. 30 is always enough (s.a.) */
+
+  var X = p.x;
+  var Y = p.y;
+  var Z = p.z ? p.z : 0.0; //Z value not always supplied
+  var Longitude;
+  var Latitude;
+  var Height;
+
+  P = Math.sqrt(X * X + Y * Y);
+  RR = Math.sqrt(X * X + Y * Y + Z * Z);
+
+  /*      special cases for latitude and longitude */
+  if (P / a < genau) {
+
+    /*  special case, if P=0. (X=0., Y=0.) */
+    Longitude = 0.0;
+
+    /*  if (X,Y,Z)=(0.,0.,0.) then Height becomes semi-minor axis
+     *  of ellipsoid (=center of mass), Latitude becomes PI/2 */
+    if (RR / a < genau) {
+      Latitude = HALF_PI;
+      Height = -b;
+      return {
+        x: p.x,
+        y: p.y,
+        z: p.z
+      };
+    }
+  } else {
+    /*  ellipsoidal (geodetic) longitude
+     *  interval: -PI < Longitude <= +PI */
+    Longitude = Math.atan2(Y, X);
+  }
+
+  /* --------------------------------------------------------------
+   * Following iterative algorithm was developped by
+   * "Institut for Erdmessung", University of Hannover, July 1988.
+   * Internet: www.ife.uni-hannover.de
+   * Iterative computation of CPHI,SPHI and Height.
+   * Iteration of CPHI and SPHI to 10**-12 radian resp.
+   * 2*10**-7 arcsec.
+   * --------------------------------------------------------------
+   */
+  CT = Z / RR;
+  ST = P / RR;
+  RX = 1.0 / Math.sqrt(1.0 - es * (2.0 - es) * ST * ST);
+  CPHI0 = ST * (1.0 - es) * RX;
+  SPHI0 = CT * RX;
+  iter = 0;
+
+  /* loop to find sin(Latitude) resp. Latitude
+   * until |sin(Latitude(iter)-Latitude(iter-1))| < genau */
+  do {
+    iter++;
+    RN = a / Math.sqrt(1.0 - es * SPHI0 * SPHI0);
+
+    /*  ellipsoidal (geodetic) height */
+    Height = P * CPHI0 + Z * SPHI0 - RN * (1.0 - es * SPHI0 * SPHI0);
+
+    RK = es * RN / (RN + Height);
+    RX = 1.0 / Math.sqrt(1.0 - RK * (2.0 - RK) * ST * ST);
+    CPHI = ST * (1.0 - RK) * RX;
+    SPHI = CT * RX;
+    SDPHI = SPHI * CPHI0 - CPHI * SPHI0;
+    CPHI0 = CPHI;
+    SPHI0 = SPHI;
+  }
+  while (SDPHI * SDPHI > genau2 && iter < maxiter);
+
+  /*      ellipsoidal (geodetic) latitude */
+  Latitude = Math.atan(SPHI / Math.abs(CPHI));
+  return {
+    x: Longitude,
+    y: Latitude,
+    z: Height
+  };
+} // cs_geocentric_to_geodetic()
+
+/****************************************************************/
+// pj_geocentic_to_wgs84( p )
+//  p = point to transform in geocentric coordinates (x,y,z)
+
+
+/** point object, nothing fancy, just allows values to be
+    passed back and forth by reference rather than by value.
+    Other point classes may be used as long as they have
+    x and y properties, which will get modified in the transform method.
+*/
+function geocentricToWgs84(p, datum_type, datum_params) {
+
+  if (datum_type === PJD_3PARAM) {
+    // if( x[io] === HUGE_VAL )
+    //    continue;
+    return {
+      x: p.x + datum_params[0],
+      y: p.y + datum_params[1],
+      z: p.z + datum_params[2],
+    };
+  } else if (datum_type === PJD_7PARAM) {
+    var Dx_BF = datum_params[0];
+    var Dy_BF = datum_params[1];
+    var Dz_BF = datum_params[2];
+    var Rx_BF = datum_params[3];
+    var Ry_BF = datum_params[4];
+    var Rz_BF = datum_params[5];
+    var M_BF = datum_params[6];
+    // if( x[io] === HUGE_VAL )
+    //    continue;
+    return {
+      x: M_BF * (p.x - Rz_BF * p.y + Ry_BF * p.z) + Dx_BF,
+      y: M_BF * (Rz_BF * p.x + p.y - Rx_BF * p.z) + Dy_BF,
+      z: M_BF * (-Ry_BF * p.x + Rx_BF * p.y + p.z) + Dz_BF
+    };
+  }
+} // cs_geocentric_to_wgs84
+
+/****************************************************************/
+// pj_geocentic_from_wgs84()
+//  coordinate system definition,
+//  point to transform in geocentric coordinates (x,y,z)
+function geocentricFromWgs84(p, datum_type, datum_params) {
+
+  if (datum_type === PJD_3PARAM) {
+    //if( x[io] === HUGE_VAL )
+    //    continue;
+    return {
+      x: p.x - datum_params[0],
+      y: p.y - datum_params[1],
+      z: p.z - datum_params[2],
+    };
+
+  } else if (datum_type === PJD_7PARAM) {
+    var Dx_BF = datum_params[0];
+    var Dy_BF = datum_params[1];
+    var Dz_BF = datum_params[2];
+    var Rx_BF = datum_params[3];
+    var Ry_BF = datum_params[4];
+    var Rz_BF = datum_params[5];
+    var M_BF = datum_params[6];
+    var x_tmp = (p.x - Dx_BF) / M_BF;
+    var y_tmp = (p.y - Dy_BF) / M_BF;
+    var z_tmp = (p.z - Dz_BF) / M_BF;
+    //if( x[io] === HUGE_VAL )
+    //    continue;
+
+    return {
+      x: x_tmp + Rz_BF * y_tmp - Ry_BF * z_tmp,
+      y: -Rz_BF * x_tmp + y_tmp + Rx_BF * z_tmp,
+      z: Ry_BF * x_tmp - Rx_BF * y_tmp + z_tmp
+    };
+  } //cs_geocentric_from_wgs84()
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/datum_transform.js
+
+
+
+
+function checkParams(type) {
+  return (type === PJD_3PARAM || type === PJD_7PARAM);
+}
+
+/* harmony default export */ function datum_transform(source, dest, point) {
+  // Short cut if the datums are identical.
+  if (compareDatums(source, dest)) {
+    return point; // in this case, zero is sucess,
+    // whereas cs_compare_datums returns 1 to indicate TRUE
+    // confusing, should fix this
+  }
+
+  // Explicitly skip datum transform by setting 'datum=none' as parameter for either source or dest
+  if (source.datum_type === PJD_NODATUM || dest.datum_type === PJD_NODATUM) {
+    return point;
+  }
+
+  // If this datum requires grid shifts, then apply it to geodetic coordinates.
+  var source_a = source.a;
+  var source_es = source.es;
+  if (source.datum_type === PJD_GRIDSHIFT) {
+    var gridShiftCode = applyGridShift(source, false, point);
+    if (gridShiftCode !== 0) {
+      return undefined;
+    }
+    source_a = SRS_WGS84_SEMIMAJOR;
+    source_es = SRS_WGS84_ESQUARED;
+  }
+
+  var dest_a = dest.a;
+  var dest_b = dest.b;
+  var dest_es = dest.es;
+  if (dest.datum_type === PJD_GRIDSHIFT) {
+    dest_a = SRS_WGS84_SEMIMAJOR;
+    dest_b = SRS_WGS84_SEMIMINOR;
+    dest_es = SRS_WGS84_ESQUARED;
+  }
+
+  // Do we need to go through geocentric coordinates?
+  if (source_es === dest_es && source_a === dest_a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
+    return point;
+  }
+
+  // Convert to geocentric coordinates.
+  point = geodeticToGeocentric(point, source_es, source_a);
+  // Convert between datums
+  if (checkParams(source.datum_type)) {
+    point = geocentricToWgs84(point, source.datum_type, source.datum_params);
+  }
+  if (checkParams(dest.datum_type)) {
+    point = geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
+  }
+  point = geocentricToGeodetic(point, dest_es, dest_a, dest_b);
+
+  if (dest.datum_type === PJD_GRIDSHIFT) {
+    var destGridShiftResult = applyGridShift(dest, true, point);
+    if (destGridShiftResult !== 0) {
+      return undefined;
+    }
+  }
+
+  return point;
+}
+
+function applyGridShift(source, inverse, point) {
+  if (source.grids === null || source.grids.length === 0) {
+    console.log('Grid shift grids not found');
+    return -1;
+  }
+  var input = {x: -point.x, y: point.y};
+  var output = {x: Number.NaN, y: Number.NaN};
+  var onlyMandatoryGrids = false;
+  var attemptedGrids = [];
+  for (var i = 0; i < source.grids.length; i++) {
+    var grid = source.grids[i];
+    attemptedGrids.push(grid.name);
+    if (grid.isNull) {
+      output = input;
+      break;
+    }
+    onlyMandatoryGrids = grid.mandatory;
+    if (grid.grid === null) {
+      if (grid.mandatory) {
+        console.log("Unable to find mandatory grid '" + grid.name + "'");
+        return -1;
+      }
+      continue;
+    }
+    var subgrid = grid.grid.subgrids[0];
+    // skip tables that don't match our point at all
+    var epsilon = (Math.abs(subgrid.del[1]) + Math.abs(subgrid.del[0])) / 10000.0;
+    var minX = subgrid.ll[0] - epsilon;
+    var minY = subgrid.ll[1] - epsilon;
+    var maxX = subgrid.ll[0] + (subgrid.lim[0] - 1) * subgrid.del[0] + epsilon;
+    var maxY = subgrid.ll[1] + (subgrid.lim[1] - 1) * subgrid.del[1] + epsilon;
+    if (minY > input.y || minX > input.x || maxY < input.y || maxX < input.x ) {
+      continue;
+    }
+    output = applySubgridShift(input, inverse, subgrid);
+    if (!isNaN(output.x)) {
+      break;
+    }
+  }
+  if (isNaN(output.x)) {
+    console.log("Failed to find a grid shift table for location '"+
+      -input.x * R2D + " " + input.y * R2D + " tried: '" + attemptedGrids + "'");
+    return -1;
+  }
+  point.x = -output.x;
+  point.y = output.y;
+  return 0;
+}
+
+function applySubgridShift(pin, inverse, ct) {
+  var val = {x: Number.NaN, y: Number.NaN};
+  if (isNaN(pin.x)) { return val; }
+  var tb = {x: pin.x, y: pin.y};
+  tb.x -= ct.ll[0];
+  tb.y -= ct.ll[1];
+  tb.x = adjust_lon(tb.x - Math.PI) + Math.PI;
+  var t = nadInterpolate(tb, ct);
+  if (inverse) {
+    if (isNaN(t.x)) {
+      return val;
+    }
+    t.x = tb.x - t.x;
+    t.y = tb.y - t.y;
+    var i = 9, tol = 1e-12;
+    var dif, del;
+    do {
+      del = nadInterpolate(t, ct);
+      if (isNaN(del.x)) {
+        console.log("Inverse grid shift iteration failed, presumably at grid edge.  Using first approximation.");
+        break;
+      }
+      dif = {x: tb.x - (del.x + t.x), y: tb.y - (del.y + t.y)};
+      t.x += dif.x;
+      t.y += dif.y;
+    } while (i-- && Math.abs(dif.x) > tol && Math.abs(dif.y) > tol);
+    if (i < 0) {
+      console.log("Inverse grid shift iterator failed to converge.");
+      return val;
+    }
+    val.x = adjust_lon(t.x + ct.ll[0]);
+    val.y = t.y + ct.ll[1];
+  } else {
+    if (!isNaN(t.x)) {
+      val.x = pin.x + t.x;
+      val.y = pin.y + t.y;
+    }
+  }
+  return val;
+}
+
+function nadInterpolate(pin, ct) {
+  var t = {x: pin.x / ct.del[0], y: pin.y / ct.del[1]};
+  var indx = {x: Math.floor(t.x), y: Math.floor(t.y)};
+  var frct = {x: t.x - 1.0 * indx.x, y: t.y - 1.0 * indx.y};
+  var val= {x: Number.NaN, y: Number.NaN};
+  var inx;
+  if (indx.x < 0 || indx.x >= ct.lim[0]) {
+    return val;
+  }
+  if (indx.y < 0 || indx.y >= ct.lim[1]) {
+    return val;
+  }
+  inx = (indx.y * ct.lim[0]) + indx.x;
+  var f00 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  inx++;
+  var f10= {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  inx += ct.lim[0];
+  var f11 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  inx--;
+  var f01 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
+  var m11 = frct.x * frct.y, m10 = frct.x * (1.0 - frct.y),
+    m00 = (1.0 - frct.x) * (1.0 - frct.y), m01 = (1.0 - frct.x) * frct.y;
+  val.x = (m00 * f00.x + m10 * f10.x + m01 * f01.x + m11 * f11.x);
+  val.y = (m00 * f00.y + m10 * f10.y + m01 * f01.y + m11 * f11.y);
+  return val;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/adjust_axis.js
+/* harmony default export */ function adjust_axis(crs, denorm, point) {
+  var xin = point.x,
+    yin = point.y,
+    zin = point.z || 0.0;
+  var v, t, i;
+  var out = {};
+  for (i = 0; i < 3; i++) {
+    if (denorm && i === 2 && point.z === undefined) {
+      continue;
+    }
+    if (i === 0) {
+      v = xin;
+      if ("ew".indexOf(crs.axis[i]) !== -1) {
+        t = 'x';
+      } else {
+        t = 'y';
+      }
+
+    }
+    else if (i === 1) {
+      v = yin;
+      if ("ns".indexOf(crs.axis[i]) !== -1) {
+        t = 'y';
+      } else {
+        t = 'x';
+      }
+    }
+    else {
+      v = zin;
+      t = 'z';
+    }
+    switch (crs.axis[i]) {
+    case 'e':
+      out[t] = v;
+      break;
+    case 'w':
+      out[t] = -v;
+      break;
+    case 'n':
+      out[t] = v;
+      break;
+    case 's':
+      out[t] = -v;
+      break;
+    case 'u':
+      if (point[t] !== undefined) {
+        out.z = v;
+      }
+      break;
+    case 'd':
+      if (point[t] !== undefined) {
+        out.z = -v;
+      }
+      break;
+    default:
+      //console.log("ERROR: unknow axis ("+crs.axis[i]+") - check definition of "+crs.projName);
+      return null;
+    }
+  }
+  return out;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/toPoint.js
+/* harmony default export */ function toPoint(array){
+  var out = {
+    x: array[0],
+    y: array[1]
+  };
+  if (array.length>2) {
+    out.z = array[2];
+  }
+  if (array.length>3) {
+    out.m = array[3];
+  }
+  return out;
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/checkSanity.js
+/* harmony default export */ function checkSanity(point) {
+  checkCoord(point.x);
+  checkCoord(point.y);
+}
+function checkCoord(num) {
+  if (typeof Number.isFinite === 'function') {
+    if (Number.isFinite(num)) {
+      return;
+    }
+    throw new TypeError('coordinates must be finite numbers');
+  }
+  if (typeof num !== 'number' || num !== num || !isFinite(num)) {
+    throw new TypeError('coordinates must be finite numbers');
+  }
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/transform.js
+
+
+
+
+
+
+
+function checkNotWGS(source, dest) {
+  return (
+    (source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM || source.datum.datum_type === PJD_GRIDSHIFT) && dest.datumCode !== 'WGS84') ||
+    ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM || dest.datum.datum_type === PJD_GRIDSHIFT) && source.datumCode !== 'WGS84');
+}
+
+function transform(source, dest, point, enforceAxis) {
+  var wgs84;
+  if (Array.isArray(point)) {
+    point = toPoint(point);
+  } else {
+    // Clone the point object so inputs don't get modified
+    point = {
+      x: point.x,
+      y: point.y,
+      z: point.z,
+      m: point.m
+    };
+  }
+  var hasZ = point.z !== undefined;
+  checkSanity(point);
+  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
+  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
+    wgs84 = new Proj('WGS84');
+    point = transform(source, wgs84, point, enforceAxis);
+    source = wgs84;
+  }
+  // DGR, 2010/11/12
+  if (enforceAxis && source.axis !== 'enu') {
+    point = adjust_axis(source, false, point);
+  }
+  // Transform source points to long/lat, if they aren't already.
+  if (source.projName === 'longlat') {
+    point = {
+      x: point.x * D2R,
+      y: point.y * D2R,
+      z: point.z || 0
+    };
+  } else {
+    if (source.to_meter) {
+      point = {
+        x: point.x * source.to_meter,
+        y: point.y * source.to_meter,
+        z: point.z || 0
+      };
+    }
+    point = source.inverse(point); // Convert Cartesian to longlat
+    if (!point) {
+      return;
+    }
+  }
+  // Adjust for the prime meridian if necessary
+  if (source.from_greenwich) {
+    point.x += source.from_greenwich;
+  }
+
+  // Convert datums if needed, and if possible.
+  point = datum_transform(source.datum, dest.datum, point);
+  if (!point) {
+    return;
+  }
+
+  // Adjust for the prime meridian if necessary
+  if (dest.from_greenwich) {
+    point = {
+      x: point.x - dest.from_greenwich,
+      y: point.y,
+      z: point.z || 0
+    };
+  }
+
+  if (dest.projName === 'longlat') {
+    // convert radians to decimal degrees
+    point = {
+      x: point.x * R2D,
+      y: point.y * R2D,
+      z: point.z || 0
+    };
+  } else { // else project
+    point = dest.forward(point);
+    if (dest.to_meter) {
+      point = {
+        x: point.x / dest.to_meter,
+        y: point.y / dest.to_meter,
+        z: point.z || 0
+      };
+    }
+  }
+
+  // DGR, 2010/11/12
+  if (enforceAxis && dest.axis !== 'enu') {
+    return adjust_axis(dest, true, point);
+  }
+
+  if (!hasZ) {
+    delete point.z;
+  }
+  return point;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/core.js
+
+
+var wgs84 = Proj('WGS84');
+
+function transformer(from, to, coords, enforceAxis) {
+  var transformedArray, out, keys;
+  if (Array.isArray(coords)) {
+    transformedArray = transform(from, to, coords, enforceAxis) || {x: NaN, y: NaN};
+    if (coords.length > 2) {
+      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
+        if (typeof transformedArray.z === 'number') {
+          return [transformedArray.x, transformedArray.y, transformedArray.z].concat(coords.splice(3));
+        } else {
+          return [transformedArray.x, transformedArray.y, coords[2]].concat(coords.splice(3));
+        }
+      } else {
+        return [transformedArray.x, transformedArray.y].concat(coords.splice(2));
+      }
+    } else {
+      return [transformedArray.x, transformedArray.y];
+    }
+  } else {
+    out = transform(from, to, coords, enforceAxis);
+    keys = Object.keys(coords);
+    if (keys.length === 2) {
+      return out;
+    }
+    keys.forEach(function (key) {
+      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
+        if (key === 'x' || key === 'y' || key === 'z') {
+          return;
+        }
+      } else {
+        if (key === 'x' || key === 'y') {
+          return;
+        }
+      }
+      out[key] = coords[key];
+    });
+    return out;
+  }
+}
+
+function checkProj(item) {
+  if (item instanceof Proj) {
+    return item;
+  }
+  if (item.oProj) {
+    return item.oProj;
+  }
+  return Proj(item);
+}
+
+function proj4(fromProj, toProj, coord) {
+  fromProj = checkProj(fromProj);
+  var single = false;
+  var obj;
+  if (typeof toProj === 'undefined') {
+    toProj = fromProj;
+    fromProj = wgs84;
+    single = true;
+  } else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
+    coord = toProj;
+    toProj = fromProj;
+    fromProj = wgs84;
+    single = true;
+  }
+  toProj = checkProj(toProj);
+  if (coord) {
+    return transformer(fromProj, toProj, coord);
+  } else {
+    obj = {
+      forward: function (coords, enforceAxis) {
+        return transformer(fromProj, toProj, coords, enforceAxis);
+      },
+      inverse: function (coords, enforceAxis) {
+        return transformer(toProj, fromProj, coords, enforceAxis);
+      }
+    };
+    if (single) {
+      obj.oProj = toProj;
+    }
+    return obj;
+  }
+}
+/* harmony default export */ const core = (proj4);
+;// CONCATENATED MODULE: ./node_modules/mgrs/mgrs.js
+
+
+
+/**
+ * UTM zones are grouped, and assigned to one of a group of 6
+ * sets.
+ *
+ * {int} @private
+ */
+var NUM_100K_SETS = 6;
+
+/**
+ * The column letters (for easting) of the lower left value, per
+ * set.
+ *
+ * {string} @private
+ */
+var SET_ORIGIN_COLUMN_LETTERS = 'AJSAJS';
+
+/**
+ * The row letters (for northing) of the lower left value, per
+ * set.
+ *
+ * {string} @private
+ */
+var SET_ORIGIN_ROW_LETTERS = 'AFAFAF';
+
+var A = 65; // A
+var I = 73; // I
+var O = 79; // O
+var V = 86; // V
+var Z = 90; // Z
+/* harmony default export */ const mgrs = ({
+  forward: mgrs_forward,
+  inverse: mgrs_inverse,
+  toPoint: mgrs_toPoint
+});
+/**
+ * Conversion of lat/lon to MGRS.
+ *
+ * @param {object} ll Object literal with lat and lon properties on a
+ *     WGS84 ellipsoid.
+ * @param {int} accuracy Accuracy in digits (5 for 1 m, 4 for 10 m, 3 for
+ *      100 m, 2 for 1000 m or 1 for 10000 m). Optional, default is 5.
+ * @return {string} the MGRS string for the given location and accuracy.
+ */
+function mgrs_forward(ll, accuracy) {
+  accuracy = accuracy || 5; // default accuracy 1m
+  return encode(LLtoUTM({
+    lat: ll[1],
+    lon: ll[0]
+  }), accuracy);
+};
+
+/**
+ * Conversion of MGRS to lat/lon.
+ *
+ * @param {string} mgrs MGRS string.
+ * @return {array} An array with left (longitude), bottom (latitude), right
+ *     (longitude) and top (latitude) values in WGS84, representing the
+ *     bounding box for the provided MGRS reference.
+ */
+function mgrs_inverse(mgrs) {
+  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
+  if (bbox.lat && bbox.lon) {
+    return [bbox.lon, bbox.lat, bbox.lon, bbox.lat];
+  }
+  return [bbox.left, bbox.bottom, bbox.right, bbox.top];
+};
+
+function mgrs_toPoint(mgrs) {
+  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
+  if (bbox.lat && bbox.lon) {
+    return [bbox.lon, bbox.lat];
+  }
+  return [(bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2];
+};
+/**
+ * Conversion from degrees to radians.
+ *
+ * @private
+ * @param {number} deg the angle in degrees.
+ * @return {number} the angle in radians.
+ */
+function degToRad(deg) {
+  return (deg * (Math.PI / 180.0));
+}
+
+/**
+ * Conversion from radians to degrees.
+ *
+ * @private
+ * @param {number} rad the angle in radians.
+ * @return {number} the angle in degrees.
+ */
+function radToDeg(rad) {
+  return (180.0 * (rad / Math.PI));
+}
+
+/**
+ * Converts a set of Longitude and Latitude co-ordinates to UTM
+ * using the WGS84 ellipsoid.
+ *
+ * @private
+ * @param {object} ll Object literal with lat and lon properties
+ *     representing the WGS84 coordinate to be converted.
+ * @return {object} Object literal containing the UTM value with easting,
+ *     northing, zoneNumber and zoneLetter properties, and an optional
+ *     accuracy property in digits. Returns null if the conversion failed.
+ */
+function LLtoUTM(ll) {
+  var Lat = ll.lat;
+  var Long = ll.lon;
+  var a = 6378137.0; //ellip.radius;
+  var eccSquared = 0.00669438; //ellip.eccsq;
+  var k0 = 0.9996;
+  var LongOrigin;
+  var eccPrimeSquared;
+  var N, T, C, A, M;
+  var LatRad = degToRad(Lat);
+  var LongRad = degToRad(Long);
+  var LongOriginRad;
+  var ZoneNumber;
+  // (int)
+  ZoneNumber = Math.floor((Long + 180) / 6) + 1;
+
+  //Make sure the longitude 180.00 is in Zone 60
+  if (Long === 180) {
+    ZoneNumber = 60;
+  }
+
+  // Special zone for Norway
+  if (Lat >= 56.0 && Lat < 64.0 && Long >= 3.0 && Long < 12.0) {
+    ZoneNumber = 32;
+  }
+
+  // Special zones for Svalbard
+  if (Lat >= 72.0 && Lat < 84.0) {
+    if (Long >= 0.0 && Long < 9.0) {
+      ZoneNumber = 31;
+    }
+    else if (Long >= 9.0 && Long < 21.0) {
+      ZoneNumber = 33;
+    }
+    else if (Long >= 21.0 && Long < 33.0) {
+      ZoneNumber = 35;
+    }
+    else if (Long >= 33.0 && Long < 42.0) {
+      ZoneNumber = 37;
+    }
+  }
+
+  LongOrigin = (ZoneNumber - 1) * 6 - 180 + 3; //+3 puts origin
+  // in middle of
+  // zone
+  LongOriginRad = degToRad(LongOrigin);
+
+  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
+
+  N = a / Math.sqrt(1 - eccSquared * Math.sin(LatRad) * Math.sin(LatRad));
+  T = Math.tan(LatRad) * Math.tan(LatRad);
+  C = eccPrimeSquared * Math.cos(LatRad) * Math.cos(LatRad);
+  A = Math.cos(LatRad) * (LongRad - LongOriginRad);
+
+  M = a * ((1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256) * LatRad - (3 * eccSquared / 8 + 3 * eccSquared * eccSquared / 32 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(2 * LatRad) + (15 * eccSquared * eccSquared / 256 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(4 * LatRad) - (35 * eccSquared * eccSquared * eccSquared / 3072) * Math.sin(6 * LatRad));
+
+  var UTMEasting = (k0 * N * (A + (1 - T + C) * A * A * A / 6.0 + (5 - 18 * T + T * T + 72 * C - 58 * eccPrimeSquared) * A * A * A * A * A / 120.0) + 500000.0);
+
+  var UTMNorthing = (k0 * (M + N * Math.tan(LatRad) * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * A * A * A * A / 24.0 + (61 - 58 * T + T * T + 600 * C - 330 * eccPrimeSquared) * A * A * A * A * A * A / 720.0)));
+  if (Lat < 0.0) {
+    UTMNorthing += 10000000.0; //10000000 meter offset for
+    // southern hemisphere
+  }
+
+  return {
+    northing: Math.round(UTMNorthing),
+    easting: Math.round(UTMEasting),
+    zoneNumber: ZoneNumber,
+    zoneLetter: getLetterDesignator(Lat)
+  };
+}
+
+/**
+ * Converts UTM coords to lat/long, using the WGS84 ellipsoid. This is a convenience
+ * class where the Zone can be specified as a single string eg."60N" which
+ * is then broken down into the ZoneNumber and ZoneLetter.
+ *
+ * @private
+ * @param {object} utm An object literal with northing, easting, zoneNumber
+ *     and zoneLetter properties. If an optional accuracy property is
+ *     provided (in meters), a bounding box will be returned instead of
+ *     latitude and longitude.
+ * @return {object} An object literal containing either lat and lon values
+ *     (if no accuracy was provided), or top, right, bottom and left values
+ *     for the bounding box calculated according to the provided accuracy.
+ *     Returns null if the conversion failed.
+ */
+function UTMtoLL(utm) {
+
+  var UTMNorthing = utm.northing;
+  var UTMEasting = utm.easting;
+  var zoneLetter = utm.zoneLetter;
+  var zoneNumber = utm.zoneNumber;
+  // check the ZoneNummber is valid
+  if (zoneNumber < 0 || zoneNumber > 60) {
+    return null;
+  }
+
+  var k0 = 0.9996;
+  var a = 6378137.0; //ellip.radius;
+  var eccSquared = 0.00669438; //ellip.eccsq;
+  var eccPrimeSquared;
+  var e1 = (1 - Math.sqrt(1 - eccSquared)) / (1 + Math.sqrt(1 - eccSquared));
+  var N1, T1, C1, R1, D, M;
+  var LongOrigin;
+  var mu, phi1Rad;
+
+  // remove 500,000 meter offset for longitude
+  var x = UTMEasting - 500000.0;
+  var y = UTMNorthing;
+
+  // We must know somehow if we are in the Northern or Southern
+  // hemisphere, this is the only time we use the letter So even
+  // if the Zone letter isn't exactly correct it should indicate
+  // the hemisphere correctly
+  if (zoneLetter < 'N') {
+    y -= 10000000.0; // remove 10,000,000 meter offset used
+    // for southern hemisphere
+  }
+
+  // There are 60 zones with zone 1 being at West -180 to -174
+  LongOrigin = (zoneNumber - 1) * 6 - 180 + 3; // +3 puts origin
+  // in middle of
+  // zone
+
+  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
+
+  M = y / k0;
+  mu = M / (a * (1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256));
+
+  phi1Rad = mu + (3 * e1 / 2 - 27 * e1 * e1 * e1 / 32) * Math.sin(2 * mu) + (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32) * Math.sin(4 * mu) + (151 * e1 * e1 * e1 / 96) * Math.sin(6 * mu);
+  // double phi1 = ProjMath.radToDeg(phi1Rad);
+
+  N1 = a / Math.sqrt(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad));
+  T1 = Math.tan(phi1Rad) * Math.tan(phi1Rad);
+  C1 = eccPrimeSquared * Math.cos(phi1Rad) * Math.cos(phi1Rad);
+  R1 = a * (1 - eccSquared) / Math.pow(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad), 1.5);
+  D = x / (N1 * k0);
+
+  var lat = phi1Rad - (N1 * Math.tan(phi1Rad) / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * eccPrimeSquared) * D * D * D * D / 24 + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * eccPrimeSquared - 3 * C1 * C1) * D * D * D * D * D * D / 720);
+  lat = radToDeg(lat);
+
+  var lon = (D - (1 + 2 * T1 + C1) * D * D * D / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * eccPrimeSquared + 24 * T1 * T1) * D * D * D * D * D / 120) / Math.cos(phi1Rad);
+  lon = LongOrigin + radToDeg(lon);
+
+  var result;
+  if (utm.accuracy) {
+    var topRight = UTMtoLL({
+      northing: utm.northing + utm.accuracy,
+      easting: utm.easting + utm.accuracy,
+      zoneLetter: utm.zoneLetter,
+      zoneNumber: utm.zoneNumber
+    });
+    result = {
+      top: topRight.lat,
+      right: topRight.lon,
+      bottom: lat,
+      left: lon
+    };
+  }
+  else {
+    result = {
+      lat: lat,
+      lon: lon
+    };
+  }
+  return result;
+}
+
+/**
+ * Calculates the MGRS letter designator for the given latitude.
+ *
+ * @private
+ * @param {number} lat The latitude in WGS84 to get the letter designator
+ *     for.
+ * @return {char} The letter designator.
+ */
+function getLetterDesignator(lat) {
+  //This is here as an error flag to show that the Latitude is
+  //outside MGRS limits
+  var LetterDesignator = 'Z';
+
+  if ((84 >= lat) && (lat >= 72)) {
+    LetterDesignator = 'X';
+  }
+  else if ((72 > lat) && (lat >= 64)) {
+    LetterDesignator = 'W';
+  }
+  else if ((64 > lat) && (lat >= 56)) {
+    LetterDesignator = 'V';
+  }
+  else if ((56 > lat) && (lat >= 48)) {
+    LetterDesignator = 'U';
+  }
+  else if ((48 > lat) && (lat >= 40)) {
+    LetterDesignator = 'T';
+  }
+  else if ((40 > lat) && (lat >= 32)) {
+    LetterDesignator = 'S';
+  }
+  else if ((32 > lat) && (lat >= 24)) {
+    LetterDesignator = 'R';
+  }
+  else if ((24 > lat) && (lat >= 16)) {
+    LetterDesignator = 'Q';
+  }
+  else if ((16 > lat) && (lat >= 8)) {
+    LetterDesignator = 'P';
+  }
+  else if ((8 > lat) && (lat >= 0)) {
+    LetterDesignator = 'N';
+  }
+  else if ((0 > lat) && (lat >= -8)) {
+    LetterDesignator = 'M';
+  }
+  else if ((-8 > lat) && (lat >= -16)) {
+    LetterDesignator = 'L';
+  }
+  else if ((-16 > lat) && (lat >= -24)) {
+    LetterDesignator = 'K';
+  }
+  else if ((-24 > lat) && (lat >= -32)) {
+    LetterDesignator = 'J';
+  }
+  else if ((-32 > lat) && (lat >= -40)) {
+    LetterDesignator = 'H';
+  }
+  else if ((-40 > lat) && (lat >= -48)) {
+    LetterDesignator = 'G';
+  }
+  else if ((-48 > lat) && (lat >= -56)) {
+    LetterDesignator = 'F';
+  }
+  else if ((-56 > lat) && (lat >= -64)) {
+    LetterDesignator = 'E';
+  }
+  else if ((-64 > lat) && (lat >= -72)) {
+    LetterDesignator = 'D';
+  }
+  else if ((-72 > lat) && (lat >= -80)) {
+    LetterDesignator = 'C';
+  }
+  return LetterDesignator;
+}
+
+/**
+ * Encodes a UTM location as MGRS string.
+ *
+ * @private
+ * @param {object} utm An object literal with easting, northing,
+ *     zoneLetter, zoneNumber
+ * @param {number} accuracy Accuracy in digits (1-5).
+ * @return {string} MGRS string for the given UTM location.
+ */
+function encode(utm, accuracy) {
+  // prepend with leading zeroes
+  var seasting = "00000" + utm.easting,
+    snorthing = "00000" + utm.northing;
+
+  return utm.zoneNumber + utm.zoneLetter + get100kID(utm.easting, utm.northing, utm.zoneNumber) + seasting.substr(seasting.length - 5, accuracy) + snorthing.substr(snorthing.length - 5, accuracy);
+}
+
+/**
+ * Get the two letter 100k designator for a given UTM easting,
+ * northing and zone number value.
+ *
+ * @private
+ * @param {number} easting
+ * @param {number} northing
+ * @param {number} zoneNumber
+ * @return the two letter 100k designator for the given UTM location.
+ */
+function get100kID(easting, northing, zoneNumber) {
+  var setParm = get100kSetForZone(zoneNumber);
+  var setColumn = Math.floor(easting / 100000);
+  var setRow = Math.floor(northing / 100000) % 20;
+  return getLetter100kID(setColumn, setRow, setParm);
+}
+
+/**
+ * Given a UTM zone number, figure out the MGRS 100K set it is in.
+ *
+ * @private
+ * @param {number} i An UTM zone number.
+ * @return {number} the 100k set the UTM zone is in.
+ */
+function get100kSetForZone(i) {
+  var setParm = i % NUM_100K_SETS;
+  if (setParm === 0) {
+    setParm = NUM_100K_SETS;
+  }
+
+  return setParm;
+}
+
+/**
+ * Get the two-letter MGRS 100k designator given information
+ * translated from the UTM northing, easting and zone number.
+ *
+ * @private
+ * @param {number} column the column index as it relates to the MGRS
+ *        100k set spreadsheet, created from the UTM easting.
+ *        Values are 1-8.
+ * @param {number} row the row index as it relates to the MGRS 100k set
+ *        spreadsheet, created from the UTM northing value. Values
+ *        are from 0-19.
+ * @param {number} parm the set block, as it relates to the MGRS 100k set
+ *        spreadsheet, created from the UTM zone. Values are from
+ *        1-60.
+ * @return two letter MGRS 100k code.
+ */
+function getLetter100kID(column, row, parm) {
+  // colOrigin and rowOrigin are the letters at the origin of the set
+  var index = parm - 1;
+  var colOrigin = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(index);
+  var rowOrigin = SET_ORIGIN_ROW_LETTERS.charCodeAt(index);
+
+  // colInt and rowInt are the letters to build to return
+  var colInt = colOrigin + column - 1;
+  var rowInt = rowOrigin + row;
+  var rollover = false;
+
+  if (colInt > Z) {
+    colInt = colInt - Z + A - 1;
+    rollover = true;
+  }
+
+  if (colInt === I || (colOrigin < I && colInt > I) || ((colInt > I || colOrigin < I) && rollover)) {
+    colInt++;
+  }
+
+  if (colInt === O || (colOrigin < O && colInt > O) || ((colInt > O || colOrigin < O) && rollover)) {
+    colInt++;
+
+    if (colInt === I) {
+      colInt++;
+    }
+  }
+
+  if (colInt > Z) {
+    colInt = colInt - Z + A - 1;
+  }
+
+  if (rowInt > V) {
+    rowInt = rowInt - V + A - 1;
+    rollover = true;
+  }
+  else {
+    rollover = false;
+  }
+
+  if (((rowInt === I) || ((rowOrigin < I) && (rowInt > I))) || (((rowInt > I) || (rowOrigin < I)) && rollover)) {
+    rowInt++;
+  }
+
+  if (((rowInt === O) || ((rowOrigin < O) && (rowInt > O))) || (((rowInt > O) || (rowOrigin < O)) && rollover)) {
+    rowInt++;
+
+    if (rowInt === I) {
+      rowInt++;
+    }
+  }
+
+  if (rowInt > V) {
+    rowInt = rowInt - V + A - 1;
+  }
+
+  var twoLetter = String.fromCharCode(colInt) + String.fromCharCode(rowInt);
+  return twoLetter;
+}
+
+/**
+ * Decode the UTM parameters from a MGRS string.
+ *
+ * @private
+ * @param {string} mgrsString an UPPERCASE coordinate string is expected.
+ * @return {object} An object literal with easting, northing, zoneLetter,
+ *     zoneNumber and accuracy (in meters) properties.
+ */
+function decode(mgrsString) {
+
+  if (mgrsString && mgrsString.length === 0) {
+    throw ("MGRSPoint coverting from nothing");
+  }
+
+  var length = mgrsString.length;
+
+  var hunK = null;
+  var sb = "";
+  var testChar;
+  var i = 0;
+
+  // get Zone number
+  while (!(/[A-Z]/).test(testChar = mgrsString.charAt(i))) {
+    if (i >= 2) {
+      throw ("MGRSPoint bad conversion from: " + mgrsString);
+    }
+    sb += testChar;
+    i++;
+  }
+
+  var zoneNumber = parseInt(sb, 10);
+
+  if (i === 0 || i + 3 > length) {
+    // A good MGRS string has to be 4-5 digits long,
+    // ##AAA/#AAA at least.
+    throw ("MGRSPoint bad conversion from: " + mgrsString);
+  }
+
+  var zoneLetter = mgrsString.charAt(i++);
+
+  // Should we check the zone letter here? Why not.
+  if (zoneLetter <= 'A' || zoneLetter === 'B' || zoneLetter === 'Y' || zoneLetter >= 'Z' || zoneLetter === 'I' || zoneLetter === 'O') {
+    throw ("MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString);
+  }
+
+  hunK = mgrsString.substring(i, i += 2);
+
+  var set = get100kSetForZone(zoneNumber);
+
+  var east100k = getEastingFromChar(hunK.charAt(0), set);
+  var north100k = getNorthingFromChar(hunK.charAt(1), set);
+
+  // We have a bug where the northing may be 2000000 too low.
+  // How
+  // do we know when to roll over?
+
+  while (north100k < getMinNorthing(zoneLetter)) {
+    north100k += 2000000;
+  }
+
+  // calculate the char index for easting/northing separator
+  var remainder = length - i;
+
+  if (remainder % 2 !== 0) {
+    throw ("MGRSPoint has to have an even number \nof digits after the zone letter and two 100km letters - front \nhalf for easting meters, second half for \nnorthing meters" + mgrsString);
+  }
+
+  var sep = remainder / 2;
+
+  var sepEasting = 0.0;
+  var sepNorthing = 0.0;
+  var accuracyBonus, sepEastingString, sepNorthingString, easting, northing;
+  if (sep > 0) {
+    accuracyBonus = 100000.0 / Math.pow(10, sep);
+    sepEastingString = mgrsString.substring(i, i + sep);
+    sepEasting = parseFloat(sepEastingString) * accuracyBonus;
+    sepNorthingString = mgrsString.substring(i + sep);
+    sepNorthing = parseFloat(sepNorthingString) * accuracyBonus;
+  }
+
+  easting = sepEasting + east100k;
+  northing = sepNorthing + north100k;
+
+  return {
+    easting: easting,
+    northing: northing,
+    zoneLetter: zoneLetter,
+    zoneNumber: zoneNumber,
+    accuracy: accuracyBonus
+  };
+}
+
+/**
+ * Given the first letter from a two-letter MGRS 100k zone, and given the
+ * MGRS table set for the zone number, figure out the easting value that
+ * should be added to the other, secondary easting value.
+ *
+ * @private
+ * @param {char} e The first letter from a two-letter MGRS 100´k zone.
+ * @param {number} set The MGRS table set for the zone number.
+ * @return {number} The easting value for the given letter and set.
+ */
+function getEastingFromChar(e, set) {
+  // colOrigin is the letter at the origin of the set for the
+  // column
+  var curCol = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(set - 1);
+  var eastingValue = 100000.0;
+  var rewindMarker = false;
+
+  while (curCol !== e.charCodeAt(0)) {
+    curCol++;
+    if (curCol === I) {
+      curCol++;
+    }
+    if (curCol === O) {
+      curCol++;
+    }
+    if (curCol > Z) {
+      if (rewindMarker) {
+        throw ("Bad character: " + e);
+      }
+      curCol = A;
+      rewindMarker = true;
+    }
+    eastingValue += 100000.0;
+  }
+
+  return eastingValue;
+}
+
+/**
+ * Given the second letter from a two-letter MGRS 100k zone, and given the
+ * MGRS table set for the zone number, figure out the northing value that
+ * should be added to the other, secondary northing value. You have to
+ * remember that Northings are determined from the equator, and the vertical
+ * cycle of letters mean a 2000000 additional northing meters. This happens
+ * approx. every 18 degrees of latitude. This method does *NOT* count any
+ * additional northings. You have to figure out how many 2000000 meters need
+ * to be added for the zone letter of the MGRS coordinate.
+ *
+ * @private
+ * @param {char} n Second letter of the MGRS 100k zone
+ * @param {number} set The MGRS table set number, which is dependent on the
+ *     UTM zone number.
+ * @return {number} The northing value for the given letter and set.
+ */
+function getNorthingFromChar(n, set) {
+
+  if (n > 'V') {
+    throw ("MGRSPoint given invalid Northing " + n);
+  }
+
+  // rowOrigin is the letter at the origin of the set for the
+  // column
+  var curRow = SET_ORIGIN_ROW_LETTERS.charCodeAt(set - 1);
+  var northingValue = 0.0;
+  var rewindMarker = false;
+
+  while (curRow !== n.charCodeAt(0)) {
+    curRow++;
+    if (curRow === I) {
+      curRow++;
+    }
+    if (curRow === O) {
+      curRow++;
+    }
+    // fixing a bug making whole application hang in this loop
+    // when 'n' is a wrong character
+    if (curRow > V) {
+      if (rewindMarker) { // making sure that this loop ends
+        throw ("Bad character: " + n);
+      }
+      curRow = A;
+      rewindMarker = true;
+    }
+    northingValue += 100000.0;
+  }
+
+  return northingValue;
+}
+
+/**
+ * The function getMinNorthing returns the minimum northing value of a MGRS
+ * zone.
+ *
+ * Ported from Geotrans' c Lattitude_Band_Value structure table.
+ *
+ * @private
+ * @param {char} zoneLetter The MGRS zone to get the min northing for.
+ * @return {number}
+ */
+function getMinNorthing(zoneLetter) {
+  var northing;
+  switch (zoneLetter) {
+  case 'C':
+    northing = 1100000.0;
+    break;
+  case 'D':
+    northing = 2000000.0;
+    break;
+  case 'E':
+    northing = 2800000.0;
+    break;
+  case 'F':
+    northing = 3700000.0;
+    break;
+  case 'G':
+    northing = 4600000.0;
+    break;
+  case 'H':
+    northing = 5500000.0;
+    break;
+  case 'J':
+    northing = 6400000.0;
+    break;
+  case 'K':
+    northing = 7300000.0;
+    break;
+  case 'L':
+    northing = 8200000.0;
+    break;
+  case 'M':
+    northing = 9100000.0;
+    break;
+  case 'N':
+    northing = 0.0;
+    break;
+  case 'P':
+    northing = 800000.0;
+    break;
+  case 'Q':
+    northing = 1700000.0;
+    break;
+  case 'R':
+    northing = 2600000.0;
+    break;
+  case 'S':
+    northing = 3500000.0;
+    break;
+  case 'T':
+    northing = 4400000.0;
+    break;
+  case 'U':
+    northing = 5300000.0;
+    break;
+  case 'V':
+    northing = 6200000.0;
+    break;
+  case 'W':
+    northing = 7000000.0;
+    break;
+  case 'X':
+    northing = 7900000.0;
+    break;
+  default:
+    northing = -1.0;
+  }
+  if (northing >= 0.0) {
+    return northing;
+  }
+  else {
+    throw ("Invalid zone letter: " + zoneLetter);
+  }
+
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/Point.js
+
+
+function lib_Point_Point(x, y, z) {
+  if (!(this instanceof lib_Point_Point)) {
+    return new lib_Point_Point(x, y, z);
+  }
+  if (Array.isArray(x)) {
+    this.x = x[0];
+    this.y = x[1];
+    this.z = x[2] || 0.0;
+  } else if(typeof x === 'object') {
+    this.x = x.x;
+    this.y = x.y;
+    this.z = x.z || 0.0;
+  } else if (typeof x === 'string' && typeof y === 'undefined') {
+    var coords = x.split(',');
+    this.x = parseFloat(coords[0], 10);
+    this.y = parseFloat(coords[1], 10);
+    this.z = parseFloat(coords[2], 10) || 0.0;
+  } else {
+    this.x = x;
+    this.y = y;
+    this.z = z || 0.0;
+  }
+  console.warn('proj4.Point will be removed in version 3, use proj4.toPoint');
+}
+
+lib_Point_Point.fromMGRS = function(mgrsStr) {
+  return new lib_Point_Point(mgrs_toPoint(mgrsStr));
+};
+lib_Point_Point.prototype.toMGRS = function(accuracy) {
+  return mgrs_forward([this.x, this.y], accuracy);
+};
+/* harmony default export */ const lib_Point = (lib_Point_Point);
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_enfn.js
+var C00 = 1;
+var C02 = 0.25;
+var C04 = 0.046875;
+var C06 = 0.01953125;
+var C08 = 0.01068115234375;
+var C22 = 0.75;
+var C44 = 0.46875;
+var C46 = 0.01302083333333333333;
+var C48 = 0.00712076822916666666;
+var C66 = 0.36458333333333333333;
+var C68 = 0.00569661458333333333;
+var C88 = 0.3076171875;
+
+/* harmony default export */ function pj_enfn(es) {
+  var en = [];
+  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
+  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
+  var t = es * es;
+  en[2] = t * (C44 - es * (C46 + es * C48));
+  t *= es;
+  en[3] = t * (C66 - es * C68);
+  en[4] = t * es * C88;
+  return en;
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_mlfn.js
+/* harmony default export */ function pj_mlfn(phi, sphi, cphi, en) {
+  cphi *= sphi;
+  sphi *= sphi;
+  return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/pj_inv_mlfn.js
+
+
+
+var MAX_ITER = 20;
+
+/* harmony default export */ function pj_inv_mlfn(arg, es, en) {
+  var k = 1 / (1 - es);
+  var phi = arg;
+  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+    var s = Math.sin(phi);
+    var t = 1 - es * s * s;
+    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
+    //phi -= t * (t * Math.sqrt(t)) * k;
+    t = (pj_mlfn(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
+    phi -= t;
+    if (Math.abs(t) < EPSLN) {
+      return phi;
+    }
+  }
+  //..reportError("cass:pj_inv_mlfn: Convergence error");
+  return phi;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/tmerc.js
+// Heavily based on this tmerc projection implementation
+// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
+
+
+
+
+
+
+
+
+
+function tmerc_init() {
+  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+  if (this.es) {
+    this.en = pj_enfn(this.es);
+    this.ml0 = pj_mlfn(this.lat0, Math.sin(this.lat0), Math.cos(this.lat0), this.en);
+  }
+}
+
+/**
+    Transverse Mercator Forward  - long/lat to x/y
+    long/lat in radians
+  */
+function tmerc_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+
+  var delta_lon = adjust_lon(lon - this.long0);
+  var con;
+  var x, y;
+  var sin_phi = Math.sin(lat);
+  var cos_phi = Math.cos(lat);
+
+  if (!this.es) {
+    var b = cos_phi * Math.sin(delta_lon);
+
+    if ((Math.abs(Math.abs(b) - 1)) < EPSLN) {
+      return (93);
+    }
+    else {
+      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b)) + this.x0;
+      y = cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - Math.pow(b, 2));
+      b = Math.abs(y);
+
+      if (b >= 1) {
+        if ((b - 1) > EPSLN) {
+          return (93);
+        }
+        else {
+          y = 0;
+        }
+      }
+      else {
+        y = Math.acos(y);
+      }
+
+      if (lat < 0) {
+        y = -y;
+      }
+
+      y = this.a * this.k0 * (y - this.lat0) + this.y0;
+    }
+  }
+  else {
+    var al = cos_phi * delta_lon;
+    var als = Math.pow(al, 2);
+    var c = this.ep2 * Math.pow(cos_phi, 2);
+    var cs = Math.pow(c, 2);
+    var tq = Math.abs(cos_phi) > EPSLN ? Math.tan(lat) : 0;
+    var t = Math.pow(tq, 2);
+    var ts = Math.pow(t, 2);
+    con = 1 - this.es * Math.pow(sin_phi, 2);
+    al = al / Math.sqrt(con);
+    var ml = pj_mlfn(lat, sin_phi, cos_phi, this.en);
+
+    x = this.a * (this.k0 * al * (1 +
+      als / 6 * (1 - t + c +
+      als / 20 * (5 - 18 * t + ts + 14 * c - 58 * t * c +
+      als / 42 * (61 + 179 * ts - ts * t - 479 * t))))) +
+      this.x0;
+
+    y = this.a * (this.k0 * (ml - this.ml0 +
+      sin_phi * delta_lon * al / 2 * (1 +
+      als / 12 * (5 - t + 9 * c + 4 * cs +
+      als / 30 * (61 + ts - 58 * t + 270 * c - 330 * t * c +
+      als / 56 * (1385 + 543 * ts - ts * t - 3111 * t)))))) +
+      this.y0;
+  }
+
+  p.x = x;
+  p.y = y;
+
+  return p;
+}
+
+/**
+    Transverse Mercator Inverse  -  x/y to long/lat
+  */
+function tmerc_inverse(p) {
+  var con, phi;
+  var lat, lon;
+  var x = (p.x - this.x0) * (1 / this.a);
+  var y = (p.y - this.y0) * (1 / this.a);
+
+  if (!this.es) {
+    var f = Math.exp(x / this.k0);
+    var g = 0.5 * (f - 1 / f);
+    var temp = this.lat0 + y / this.k0;
+    var h = Math.cos(temp);
+    con = Math.sqrt((1 - Math.pow(h, 2)) / (1 + Math.pow(g, 2)));
+    lat = Math.asin(con);
+
+    if (y < 0) {
+      lat = -lat;
+    }
+
+    if ((g === 0) && (h === 0)) {
+      lon = 0;
+    }
+    else {
+      lon = adjust_lon(Math.atan2(g, h) + this.long0);
+    }
+  }
+  else { // ellipsoidal form
+    con = this.ml0 + y / this.k0;
+    phi = pj_inv_mlfn(con, this.es, this.en);
+
+    if (Math.abs(phi) < HALF_PI) {
+      var sin_phi = Math.sin(phi);
+      var cos_phi = Math.cos(phi);
+      var tan_phi = Math.abs(cos_phi) > EPSLN ? Math.tan(phi) : 0;
+      var c = this.ep2 * Math.pow(cos_phi, 2);
+      var cs = Math.pow(c, 2);
+      var t = Math.pow(tan_phi, 2);
+      var ts = Math.pow(t, 2);
+      con = 1 - this.es * Math.pow(sin_phi, 2);
+      var d = x * Math.sqrt(con) / this.k0;
+      var ds = Math.pow(d, 2);
+      con = con * tan_phi;
+
+      lat = phi - (con * ds / (1 - this.es)) * 0.5 * (1 -
+        ds / 12 * (5 + 3 * t - 9 * c * t + c - 4 * cs -
+        ds / 30 * (61 + 90 * t - 252 * c * t + 45 * ts + 46 * c -
+        ds / 56 * (1385 + 3633 * t + 4095 * ts + 1574 * ts * t))));
+
+      lon = adjust_lon(this.long0 + (d * (1 -
+        ds / 6 * (1 + 2 * t + c -
+        ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c -
+        ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi));
+    }
+    else {
+      lat = HALF_PI * sign(y);
+      lon = 0;
+    }
+  }
+
+  p.x = lon;
+  p.y = lat;
+
+  return p;
+}
+
+var tmerc_names = ["Fast_Transverse_Mercator", "Fast Transverse Mercator"];
+/* harmony default export */ const tmerc = ({
+  init: tmerc_init,
+  forward: tmerc_forward,
+  inverse: tmerc_inverse,
+  names: tmerc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/sinh.js
+/* harmony default export */ function sinh(x) {
+  var r = Math.exp(x);
+  r = (r - 1 / r) / 2;
+  return r;
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/hypot.js
+/* harmony default export */ function hypot(x, y) {
+  x = Math.abs(x);
+  y = Math.abs(y);
+  var a = Math.max(x, y);
+  var b = Math.min(x, y) / (a ? a : 1);
+
+  return a * Math.sqrt(1 + Math.pow(b, 2));
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/log1py.js
+/* harmony default export */ function log1py(x) {
+  var y = 1 + x;
+  var z = y - 1;
+
+  return z === 0 ? x : x * Math.log(y) / z;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinhy.js
+
+
+
+/* harmony default export */ function asinhy(x) {
+  var y = Math.abs(x);
+  y = log1py(y * (1 + y / (hypot(1, y) + 1)));
+
+  return x < 0 ? -y : y;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/gatg.js
+/* harmony default export */ function gatg(pp, B) {
+  var cos_2B = 2 * Math.cos(2 * B);
+  var i = pp.length - 1;
+  var h1 = pp[i];
+  var h2 = 0;
+  var h;
+
+  while (--i >= 0) {
+    h = -h2 + cos_2B * h1 + pp[i];
+    h2 = h1;
+    h1 = h;
+  }
+
+  return (B + h * Math.sin(2 * B));
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/clens.js
+/* harmony default export */ function clens(pp, arg_r) {
+  var r = 2 * Math.cos(arg_r);
+  var i = pp.length - 1;
+  var hr1 = pp[i];
+  var hr2 = 0;
+  var hr;
+
+  while (--i >= 0) {
+    hr = -hr2 + r * hr1 + pp[i];
+    hr2 = hr1;
+    hr1 = hr;
+  }
+
+  return Math.sin(arg_r) * hr;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/cosh.js
+/* harmony default export */ function cosh(x) {
+  var r = Math.exp(x);
+  r = (r + 1 / r) / 2;
+  return r;
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/clens_cmplx.js
+
+
+
+/* harmony default export */ function clens_cmplx(pp, arg_r, arg_i) {
+  var sin_arg_r = Math.sin(arg_r);
+  var cos_arg_r = Math.cos(arg_r);
+  var sinh_arg_i = sinh(arg_i);
+  var cosh_arg_i = cosh(arg_i);
+  var r = 2 * cos_arg_r * cosh_arg_i;
+  var i = -2 * sin_arg_r * sinh_arg_i;
+  var j = pp.length - 1;
+  var hr = pp[j];
+  var hi1 = 0;
+  var hr1 = 0;
+  var hi = 0;
+  var hr2;
+  var hi2;
+
+  while (--j >= 0) {
+    hr2 = hr1;
+    hi2 = hi1;
+    hr1 = hr;
+    hi1 = hi;
+    hr = -hr2 + r * hr1 - i * hi1 + pp[j];
+    hi = -hi2 + i * hr1 + r * hi1;
+  }
+
+  r = sin_arg_r * cosh_arg_i;
+  i = cos_arg_r * sinh_arg_i;
+
+  return [r * hr - i * hi, r * hi + i * hr];
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/etmerc.js
+// Heavily based on this etmerc projection implementation
+// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
+
+
+
+
+
+
+
+
+
+
+function etmerc_init() {
+  if (!this.approx && (isNaN(this.es) || this.es <= 0)) {
+    throw new Error('Incorrect elliptical usage. Try using the +approx option in the proj string, or PROJECTION["Fast_Transverse_Mercator"] in the WKT.');
+  }
+  if (this.approx) {
+    // When '+approx' is set, use tmerc instead
+    tmerc.init.apply(this);
+    this.forward = tmerc.forward;
+    this.inverse = tmerc.inverse;
+  }
+
+  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+  this.cgb = [];
+  this.cbg = [];
+  this.utg = [];
+  this.gtu = [];
+
+  var f = this.es / (1 + Math.sqrt(1 - this.es));
+  var n = f / (2 - f);
+  var np = n;
+
+  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
+  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
+
+  np = np * n;
+  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
+  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
+
+  np = np * n;
+  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
+  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
+
+  np = np * n;
+  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
+  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
+
+  np = np * n;
+  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
+  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
+
+  np = np * n;
+  this.cgb[5] = np * (601676 / 22275);
+  this.cbg[5] = np * (444337 / 155925);
+
+  np = Math.pow(n, 2);
+  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
+
+  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
+  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
+
+  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
+  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
+
+  np = np * n;
+  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
+  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
+
+  np = np * n;
+  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
+  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
+
+  np = np * n;
+  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
+  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
+
+  np = np * n;
+  this.utg[5] = np * (-20648693 / 638668800);
+  this.gtu[5] = np * (212378941 / 319334400);
+
+  var Z = gatg(this.cbg, this.lat0);
+  this.Zb = -this.Qn * (Z + clens(this.gtu, 2 * Z));
+}
+
+function etmerc_forward(p) {
+  var Ce = adjust_lon(p.x - this.long0);
+  var Cn = p.y;
+
+  Cn = gatg(this.cbg, Cn);
+  var sin_Cn = Math.sin(Cn);
+  var cos_Cn = Math.cos(Cn);
+  var sin_Ce = Math.sin(Ce);
+  var cos_Ce = Math.cos(Ce);
+
+  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
+  Ce = Math.atan2(sin_Ce * cos_Cn, hypot(sin_Cn, cos_Cn * cos_Ce));
+  Ce = asinhy(Math.tan(Ce));
+
+  var tmp = clens_cmplx(this.gtu, 2 * Cn, 2 * Ce);
+
+  Cn = Cn + tmp[0];
+  Ce = Ce + tmp[1];
+
+  var x;
+  var y;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    x = this.a * (this.Qn * Ce) + this.x0;
+    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
+  }
+  else {
+    x = Infinity;
+    y = Infinity;
+  }
+
+  p.x = x;
+  p.y = y;
+
+  return p;
+}
+
+function etmerc_inverse(p) {
+  var Ce = (p.x - this.x0) * (1 / this.a);
+  var Cn = (p.y - this.y0) * (1 / this.a);
+
+  Cn = (Cn - this.Zb) / this.Qn;
+  Ce = Ce / this.Qn;
+
+  var lon;
+  var lat;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    var tmp = clens_cmplx(this.utg, 2 * Cn, 2 * Ce);
+
+    Cn = Cn + tmp[0];
+    Ce = Ce + tmp[1];
+    Ce = Math.atan(sinh(Ce));
+
+    var sin_Cn = Math.sin(Cn);
+    var cos_Cn = Math.cos(Cn);
+    var sin_Ce = Math.sin(Ce);
+    var cos_Ce = Math.cos(Ce);
+
+    Cn = Math.atan2(sin_Cn * cos_Ce, hypot(sin_Ce, cos_Ce * cos_Cn));
+    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
+
+    lon = adjust_lon(Ce + this.long0);
+    lat = gatg(this.cgb, Cn);
+  }
+  else {
+    lon = Infinity;
+    lat = Infinity;
+  }
+
+  p.x = lon;
+  p.y = lat;
+
+  return p;
+}
+
+var etmerc_names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc", "Transverse_Mercator", "Transverse Mercator", "tmerc"];
+/* harmony default export */ const etmerc = ({
+  init: etmerc_init,
+  forward: etmerc_forward,
+  inverse: etmerc_inverse,
+  names: etmerc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_zone.js
+
+
+/* harmony default export */ function adjust_zone(zone, lon) {
+  if (zone === undefined) {
+    zone = Math.floor((adjust_lon(lon) + Math.PI) * 30 / Math.PI) + 1;
+
+    if (zone < 0) {
+      return 0;
+    } else if (zone > 60) {
+      return 60;
+    }
+  }
+  return zone;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/utm.js
+
+
+var dependsOn = 'etmerc';
+
+
+
+function utm_init() {
+  var zone = adjust_zone(this.zone, this.long0);
+  if (zone === undefined) {
+    throw new Error('unknown utm zone');
+  }
+  this.lat0 = 0;
+  this.long0 =  ((6 * Math.abs(zone)) - 183) * D2R;
+  this.x0 = 500000;
+  this.y0 = this.utmSouth ? 10000000 : 0;
+  this.k0 = 0.9996;
+
+  etmerc.init.apply(this);
+  this.forward = etmerc.forward;
+  this.inverse = etmerc.inverse;
+}
+
+var utm_names = ["Universal Transverse Mercator System", "utm"];
+/* harmony default export */ const utm = ({
+  init: utm_init,
+  names: utm_names,
+  dependsOn: dependsOn
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/srat.js
+/* harmony default export */ function srat(esinp, exp) {
+  return (Math.pow((1 - esinp) / (1 + esinp), exp));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gauss.js
+
+var gauss_MAX_ITER = 20;
+
+
+function gauss_init() {
+  var sphi = Math.sin(this.lat0);
+  var cphi = Math.cos(this.lat0);
+  cphi *= cphi;
+  this.rc = Math.sqrt(1 - this.es) / (1 - this.es * sphi * sphi);
+  this.C = Math.sqrt(1 + this.es * cphi * cphi / (1 - this.es));
+  this.phic0 = Math.asin(sphi / this.C);
+  this.ratexp = 0.5 * this.C * this.e;
+  this.K = Math.tan(0.5 * this.phic0 + FORTPI) / (Math.pow(Math.tan(0.5 * this.lat0 + FORTPI), this.C) * srat(this.e * sphi, this.ratexp));
+}
+
+function gauss_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+
+  p.y = 2 * Math.atan(this.K * Math.pow(Math.tan(0.5 * lat + FORTPI), this.C) * srat(this.e * Math.sin(lat), this.ratexp)) - HALF_PI;
+  p.x = this.C * lon;
+  return p;
+}
+
+function gauss_inverse(p) {
+  var DEL_TOL = 1e-14;
+  var lon = p.x / this.C;
+  var lat = p.y;
+  var num = Math.pow(Math.tan(0.5 * lat + FORTPI) / this.K, 1 / this.C);
+  for (var i = gauss_MAX_ITER; i > 0; --i) {
+    lat = 2 * Math.atan(num * srat(this.e * Math.sin(p.y), - 0.5 * this.e)) - HALF_PI;
+    if (Math.abs(lat - p.y) < DEL_TOL) {
+      break;
+    }
+    p.y = lat;
+  }
+  /* convergence failed */
+  if (!i) {
+    return null;
+  }
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var gauss_names = ["gauss"];
+/* harmony default export */ const gauss = ({
+  init: gauss_init,
+  forward: gauss_forward,
+  inverse: gauss_inverse,
+  names: gauss_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/sterea.js
+
+
+
+function sterea_init() {
+  gauss.init.apply(this);
+  if (!this.rc) {
+    return;
+  }
+  this.sinc0 = Math.sin(this.phic0);
+  this.cosc0 = Math.cos(this.phic0);
+  this.R2 = 2 * this.rc;
+  if (!this.title) {
+    this.title = "Oblique Stereographic Alternative";
+  }
+}
+
+function sterea_forward(p) {
+  var sinc, cosc, cosl, k;
+  p.x = adjust_lon(p.x - this.long0);
+  gauss.forward.apply(this, [p]);
+  sinc = Math.sin(p.y);
+  cosc = Math.cos(p.y);
+  cosl = Math.cos(p.x);
+  k = this.k0 * this.R2 / (1 + this.sinc0 * sinc + this.cosc0 * cosc * cosl);
+  p.x = k * cosc * Math.sin(p.x);
+  p.y = k * (this.cosc0 * sinc - this.sinc0 * cosc * cosl);
+  p.x = this.a * p.x + this.x0;
+  p.y = this.a * p.y + this.y0;
+  return p;
+}
+
+function sterea_inverse(p) {
+  var sinc, cosc, lon, lat, rho;
+  p.x = (p.x - this.x0) / this.a;
+  p.y = (p.y - this.y0) / this.a;
+
+  p.x /= this.k0;
+  p.y /= this.k0;
+  if ((rho = Math.sqrt(p.x * p.x + p.y * p.y))) {
+    var c = 2 * Math.atan2(rho, this.R2);
+    sinc = Math.sin(c);
+    cosc = Math.cos(c);
+    lat = Math.asin(cosc * this.sinc0 + p.y * sinc * this.cosc0 / rho);
+    lon = Math.atan2(p.x * sinc, rho * this.cosc0 * cosc - p.y * this.sinc0 * sinc);
+  }
+  else {
+    lat = this.phic0;
+    lon = 0;
+  }
+
+  p.x = lon;
+  p.y = lat;
+  gauss.inverse.apply(this, [p]);
+  p.x = adjust_lon(p.x + this.long0);
+  return p;
+}
+
+var sterea_names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative","Double_Stereographic"];
+/* harmony default export */ const sterea = ({
+  init: sterea_init,
+  forward: sterea_forward,
+  inverse: sterea_inverse,
+  names: sterea_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/stere.js
+
+
+
+
+
+
+
+
+function ssfn_(phit, sinphi, eccen) {
+  sinphi *= eccen;
+  return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
+}
+
+function stere_init() {
+  this.coslat0 = Math.cos(this.lat0);
+  this.sinlat0 = Math.sin(this.lat0);
+  if (this.sphere) {
+    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
+      this.k0 = 0.5 * (1 + sign(this.lat0) * Math.sin(this.lat_ts));
+    }
+  }
+  else {
+    if (Math.abs(this.coslat0) <= EPSLN) {
+      if (this.lat0 > 0) {
+        //North pole
+        //trace('stere:north pole');
+        this.con = 1;
+      }
+      else {
+        //South pole
+        //trace('stere:south pole');
+        this.con = -1;
+      }
+    }
+    this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
+    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
+      this.k0 = 0.5 * this.cons * msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / tsfnz(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
+    }
+    this.ms1 = msfnz(this.e, this.sinlat0, this.coslat0);
+    this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - HALF_PI;
+    this.cosX0 = Math.cos(this.X0);
+    this.sinX0 = Math.sin(this.X0);
+  }
+}
+
+// Stereographic forward equations--mapping lat,long to x,y
+function stere_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  var sinlat = Math.sin(lat);
+  var coslat = Math.cos(lat);
+  var A, X, sinX, cosX, ts, rh;
+  var dlon = adjust_lon(lon - this.long0);
+
+  if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= EPSLN && Math.abs(lat + this.lat0) <= EPSLN) {
+    //case of the origine point
+    //trace('stere:this is the origin point');
+    p.x = NaN;
+    p.y = NaN;
+    return p;
+  }
+  if (this.sphere) {
+    //trace('stere:sphere case');
+    A = 2 * this.k0 / (1 + this.sinlat0 * sinlat + this.coslat0 * coslat * Math.cos(dlon));
+    p.x = this.a * A * coslat * Math.sin(dlon) + this.x0;
+    p.y = this.a * A * (this.coslat0 * sinlat - this.sinlat0 * coslat * Math.cos(dlon)) + this.y0;
+    return p;
+  }
+  else {
+    X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - HALF_PI;
+    cosX = Math.cos(X);
+    sinX = Math.sin(X);
+    if (Math.abs(this.coslat0) <= EPSLN) {
+      ts = tsfnz(this.e, lat * this.con, this.con * sinlat);
+      rh = 2 * this.a * this.k0 * ts / this.cons;
+      p.x = this.x0 + rh * Math.sin(lon - this.long0);
+      p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
+      //trace(p.toString());
+      return p;
+    }
+    else if (Math.abs(this.sinlat0) < EPSLN) {
+      //Eq
+      //trace('stere:equateur');
+      A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
+      p.y = A * sinX;
+    }
+    else {
+      //other case
+      //trace('stere:normal case');
+      A = 2 * this.a * this.k0 * this.ms1 / (this.cosX0 * (1 + this.sinX0 * sinX + this.cosX0 * cosX * Math.cos(dlon)));
+      p.y = A * (this.cosX0 * sinX - this.sinX0 * cosX * Math.cos(dlon)) + this.y0;
+    }
+    p.x = A * cosX * Math.sin(dlon) + this.x0;
+  }
+  //trace(p.toString());
+  return p;
+}
+
+//* Stereographic inverse equations--mapping x,y to lat/long
+function stere_inverse(p) {
+  p.x -= this.x0;
+  p.y -= this.y0;
+  var lon, lat, ts, ce, Chi;
+  var rh = Math.sqrt(p.x * p.x + p.y * p.y);
+  if (this.sphere) {
+    var c = 2 * Math.atan(rh / (2 * this.a * this.k0));
+    lon = this.long0;
+    lat = this.lat0;
+    if (rh <= EPSLN) {
+      p.x = lon;
+      p.y = lat;
+      return p;
+    }
+    lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
+    if (Math.abs(this.coslat0) < EPSLN) {
+      if (this.lat0 > 0) {
+        lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
+      }
+      else {
+        lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
+      }
+    }
+    else {
+      lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
+    }
+    p.x = lon;
+    p.y = lat;
+    return p;
+  }
+  else {
+    if (Math.abs(this.coslat0) <= EPSLN) {
+      if (rh <= EPSLN) {
+        lat = this.lat0;
+        lon = this.long0;
+        p.x = lon;
+        p.y = lat;
+        //trace(p.toString());
+        return p;
+      }
+      p.x *= this.con;
+      p.y *= this.con;
+      ts = rh * this.cons / (2 * this.a * this.k0);
+      lat = this.con * phi2z(this.e, ts);
+      lon = this.con * adjust_lon(this.con * this.long0 + Math.atan2(p.x, - 1 * p.y));
+    }
+    else {
+      ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
+      lon = this.long0;
+      if (rh <= EPSLN) {
+        Chi = this.X0;
+      }
+      else {
+        Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
+        lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
+      }
+      lat = -1 * phi2z(this.e, Math.tan(0.5 * (HALF_PI + Chi)));
+    }
+  }
+  p.x = lon;
+  p.y = lat;
+
+  //trace(p.toString());
+  return p;
+
+}
+
+var stere_names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
+/* harmony default export */ const stere = ({
+  init: stere_init,
+  forward: stere_forward,
+  inverse: stere_inverse,
+  names: stere_names,
+  ssfn_: ssfn_
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/somerc.js
+/*
+  references:
+    Formules et constantes pour le Calcul pour la
+    projection cylindrique conforme à axe oblique et pour la transformation entre
+    des systèmes de référence.
+    http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/topics/survey/sys/refsys/switzerland.parsysrelated1.31216.downloadList.77004.DownloadFile.tmp/swissprojectionfr.pdf
+  */
+
+function somerc_init() {
+  var phy0 = this.lat0;
+  this.lambda0 = this.long0;
+  var sinPhy0 = Math.sin(phy0);
+  var semiMajorAxis = this.a;
+  var invF = this.rf;
+  var flattening = 1 / invF;
+  var e2 = 2 * flattening - Math.pow(flattening, 2);
+  var e = this.e = Math.sqrt(e2);
+  this.R = this.k0 * semiMajorAxis * Math.sqrt(1 - e2) / (1 - e2 * Math.pow(sinPhy0, 2));
+  this.alpha = Math.sqrt(1 + e2 / (1 - e2) * Math.pow(Math.cos(phy0), 4));
+  this.b0 = Math.asin(sinPhy0 / this.alpha);
+  var k1 = Math.log(Math.tan(Math.PI / 4 + this.b0 / 2));
+  var k2 = Math.log(Math.tan(Math.PI / 4 + phy0 / 2));
+  var k3 = Math.log((1 + e * sinPhy0) / (1 - e * sinPhy0));
+  this.K = k1 - this.alpha * k2 + this.alpha * e / 2 * k3;
+}
+
+function somerc_forward(p) {
+  var Sa1 = Math.log(Math.tan(Math.PI / 4 - p.y / 2));
+  var Sa2 = this.e / 2 * Math.log((1 + this.e * Math.sin(p.y)) / (1 - this.e * Math.sin(p.y)));
+  var S = -this.alpha * (Sa1 + Sa2) + this.K;
+
+  // spheric latitude
+  var b = 2 * (Math.atan(Math.exp(S)) - Math.PI / 4);
+
+  // spheric longitude
+  var I = this.alpha * (p.x - this.lambda0);
+
+  // psoeudo equatorial rotation
+  var rotI = Math.atan(Math.sin(I) / (Math.sin(this.b0) * Math.tan(b) + Math.cos(this.b0) * Math.cos(I)));
+
+  var rotB = Math.asin(Math.cos(this.b0) * Math.sin(b) - Math.sin(this.b0) * Math.cos(b) * Math.cos(I));
+
+  p.y = this.R / 2 * Math.log((1 + Math.sin(rotB)) / (1 - Math.sin(rotB))) + this.y0;
+  p.x = this.R * rotI + this.x0;
+  return p;
+}
+
+function somerc_inverse(p) {
+  var Y = p.x - this.x0;
+  var X = p.y - this.y0;
+
+  var rotI = Y / this.R;
+  var rotB = 2 * (Math.atan(Math.exp(X / this.R)) - Math.PI / 4);
+
+  var b = Math.asin(Math.cos(this.b0) * Math.sin(rotB) + Math.sin(this.b0) * Math.cos(rotB) * Math.cos(rotI));
+  var I = Math.atan(Math.sin(rotI) / (Math.cos(this.b0) * Math.cos(rotI) - Math.sin(this.b0) * Math.tan(rotB)));
+
+  var lambda = this.lambda0 + I / this.alpha;
+
+  var S = 0;
+  var phy = b;
+  var prevPhy = -1000;
+  var iteration = 0;
+  while (Math.abs(phy - prevPhy) > 0.0000001) {
+    if (++iteration > 20) {
+      //...reportError("omercFwdInfinity");
+      return;
+    }
+    //S = Math.log(Math.tan(Math.PI / 4 + phy / 2));
+    S = 1 / this.alpha * (Math.log(Math.tan(Math.PI / 4 + b / 2)) - this.K) + this.e * Math.log(Math.tan(Math.PI / 4 + Math.asin(this.e * Math.sin(phy)) / 2));
+    prevPhy = phy;
+    phy = 2 * Math.atan(Math.exp(S)) - Math.PI / 2;
+  }
+
+  p.x = lambda;
+  p.y = phy;
+  return p;
+}
+
+var somerc_names = ["somerc"];
+/* harmony default export */ const somerc = ({
+  init: somerc_init,
+  forward: somerc_forward,
+  inverse: somerc_inverse,
+  names: somerc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/omerc.js
+
+
+
+
+
+var TOL = 1e-7;
+
+function isTypeA(P) {
+  var typeAProjections = ['Hotine_Oblique_Mercator','Hotine_Oblique_Mercator_Azimuth_Natural_Origin'];
+  var projectionName = typeof P.PROJECTION === "object" ? Object.keys(P.PROJECTION)[0] : P.PROJECTION;
+  
+  return 'no_uoff' in P || 'no_off' in P || typeAProjections.indexOf(projectionName) !== -1;
+}
+
+
+/* Initialize the Oblique Mercator  projection
+    ------------------------------------------*/
+function omerc_init() {  
+  var con, com, cosph0, D, F, H, L, sinph0, p, J, gamma = 0,
+    gamma0, lamc = 0, lam1 = 0, lam2 = 0, phi1 = 0, phi2 = 0, alpha_c = 0, AB;
+  
+  // only Type A uses the no_off or no_uoff property
+  // https://github.com/OSGeo/proj.4/issues/104
+  this.no_off = isTypeA(this);
+  this.no_rot = 'no_rot' in this;
+  
+  var alp = false;
+  if ("alpha" in this) {
+    alp = true;
+  }
+
+  var gam = false;
+  if ("rectified_grid_angle" in this) {
+    gam = true;
+  }
+
+  if (alp) {
+    alpha_c = this.alpha;
+  }
+  
+  if (gam) {
+    gamma = (this.rectified_grid_angle * D2R);
+  }
+  
+  if (alp || gam) {
+    lamc = this.longc;
+  } else {
+    lam1 = this.long1;
+    phi1 = this.lat1;
+    lam2 = this.long2;
+    phi2 = this.lat2;
+    
+    if (Math.abs(phi1 - phi2) <= TOL || (con = Math.abs(phi1)) <= TOL ||
+        Math.abs(con - HALF_PI) <= TOL || Math.abs(Math.abs(this.lat0) - HALF_PI) <= TOL ||
+        Math.abs(Math.abs(phi2) - HALF_PI) <= TOL) {
+      throw new Error();
+    }
+  }
+  
+  var one_es = 1.0 - this.es;
+  com = Math.sqrt(one_es);
+  
+  if (Math.abs(this.lat0) > EPSLN) {
+    sinph0 = Math.sin(this.lat0);
+    cosph0 = Math.cos(this.lat0);
+    con = 1 - this.es * sinph0 * sinph0;
+    this.B = cosph0 * cosph0;
+    this.B = Math.sqrt(1 + this.es * this.B * this.B / one_es);
+    this.A = this.B * this.k0 * com / con;
+    D = this.B * com / (cosph0 * Math.sqrt(con));
+    F = D * D -1;
+    
+    if (F <= 0) {
+      F = 0;
+    } else {
+      F = Math.sqrt(F);
+      if (this.lat0 < 0) {
+        F = -F;
+      }
+    }
+    
+    this.E = F += D;
+    this.E *= Math.pow(tsfnz(this.e, this.lat0, sinph0), this.B);
+  } else {
+    this.B = 1 / com;
+    this.A = this.k0;
+    this.E = D = F = 1;
+  }
+  
+  if (alp || gam) {
+    if (alp) {
+      gamma0 = Math.asin(Math.sin(alpha_c) / D);
+      if (!gam) {
+        gamma = alpha_c;
+      }
+    } else {
+      gamma0 = gamma;
+      alpha_c = Math.asin(D * Math.sin(gamma0));
+    }
+    this.lam0 = lamc - Math.asin(0.5 * (F - 1 / F) * Math.tan(gamma0)) / this.B;
+  } else {
+    H = Math.pow(tsfnz(this.e, phi1, Math.sin(phi1)), this.B);
+    L = Math.pow(tsfnz(this.e, phi2, Math.sin(phi2)), this.B);
+    F = this.E / H;
+    p = (L - H) / (L + H);
+    J = this.E * this.E;
+    J = (J - L * H) / (J + L * H);
+    con = lam1 - lam2;
+    
+    if (con < -Math.pi) {
+      lam2 -=TWO_PI;
+    } else if (con > Math.pi) {
+      lam2 += TWO_PI;
+    }
+    
+    this.lam0 = adjust_lon(0.5 * (lam1 + lam2) - Math.atan(J * Math.tan(0.5 * this.B * (lam1 - lam2)) / p) / this.B);
+    gamma0 = Math.atan(2 * Math.sin(this.B * adjust_lon(lam1 - this.lam0)) / (F - 1 / F));
+    gamma = alpha_c = Math.asin(D * Math.sin(gamma0));
+  }
+  
+  this.singam = Math.sin(gamma0);
+  this.cosgam = Math.cos(gamma0);
+  this.sinrot = Math.sin(gamma);
+  this.cosrot = Math.cos(gamma);
+  
+  this.rB = 1 / this.B;
+  this.ArB = this.A * this.rB;
+  this.BrA = 1 / this.ArB;
+  AB = this.A * this.B;
+  
+  if (this.no_off) {
+    this.u_0 = 0;
+  } else {
+    this.u_0 = Math.abs(this.ArB * Math.atan(Math.sqrt(D * D - 1) / Math.cos(alpha_c)));
+    
+    if (this.lat0 < 0) {
+      this.u_0 = - this.u_0;
+    }  
+  }
+    
+  F = 0.5 * gamma0;
+  this.v_pole_n = this.ArB * Math.log(Math.tan(FORTPI - F));
+  this.v_pole_s = this.ArB * Math.log(Math.tan(FORTPI + F));
+}
+
+
+/* Oblique Mercator forward equations--mapping lat,long to x,y
+    ----------------------------------------------------------*/
+function omerc_forward(p) {
+  var coords = {};
+  var S, T, U, V, W, temp, u, v;
+  p.x = p.x - this.lam0;
+  
+  if (Math.abs(Math.abs(p.y) - HALF_PI) > EPSLN) {
+    W = this.E / Math.pow(tsfnz(this.e, p.y, Math.sin(p.y)), this.B);
+    
+    temp = 1 / W;
+    S = 0.5 * (W - temp);
+    T = 0.5 * (W + temp);
+    V = Math.sin(this.B * p.x);
+    U = (S * this.singam - V * this.cosgam) / T;
+        
+    if (Math.abs(Math.abs(U) - 1.0) < EPSLN) {
+      throw new Error();
+    }
+    
+    v = 0.5 * this.ArB * Math.log((1 - U)/(1 + U));
+    temp = Math.cos(this.B * p.x);
+    
+    if (Math.abs(temp) < TOL) {
+      u = this.A * p.x;
+    } else {
+      u = this.ArB * Math.atan2((S * this.cosgam + V * this.singam), temp);
+    }    
+  } else {
+    v = p.y > 0 ? this.v_pole_n : this.v_pole_s;
+    u = this.ArB * p.y;
+  }
+     
+  if (this.no_rot) {
+    coords.x = u;
+    coords.y = v;
+  } else {
+    u -= this.u_0;
+    coords.x = v * this.cosrot + u * this.sinrot;
+    coords.y = u * this.cosrot - v * this.sinrot;
+  }
+  
+  coords.x = (this.a * coords.x + this.x0);
+  coords.y = (this.a * coords.y + this.y0);
+  
+  return coords;
+}
+
+function omerc_inverse(p) {
+  var u, v, Qp, Sp, Tp, Vp, Up;
+  var coords = {};
+  
+  p.x = (p.x - this.x0) * (1.0 / this.a);
+  p.y = (p.y - this.y0) * (1.0 / this.a);
+
+  if (this.no_rot) {
+    v = p.y;
+    u = p.x;
+  } else {
+    v = p.x * this.cosrot - p.y * this.sinrot;
+    u = p.y * this.cosrot + p.x * this.sinrot + this.u_0;
+  }
+  
+  Qp = Math.exp(-this.BrA * v);
+  Sp = 0.5 * (Qp - 1 / Qp);
+  Tp = 0.5 * (Qp + 1 / Qp);
+  Vp = Math.sin(this.BrA * u);
+  Up = (Vp * this.cosgam + Sp * this.singam) / Tp;
+  
+  if (Math.abs(Math.abs(Up) - 1) < EPSLN) {
+    coords.x = 0;
+    coords.y = Up < 0 ? -HALF_PI : HALF_PI;
+  } else {
+    coords.y = this.E / Math.sqrt((1 + Up) / (1 - Up));
+    coords.y = phi2z(this.e, Math.pow(coords.y, 1 / this.B));
+    
+    if (coords.y === Infinity) {
+      throw new Error();
+    }
+        
+    coords.x = -this.rB * Math.atan2((Sp * this.cosgam - Vp * this.singam), Math.cos(this.BrA * u));
+  }
+  
+  coords.x += this.lam0;
+  
+  return coords;
+}
+
+var omerc_names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Two_Point_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "Oblique_Mercator", "omerc"];
+/* harmony default export */ const omerc = ({
+  init: omerc_init,
+  forward: omerc_forward,
+  inverse: omerc_inverse,
+  names: omerc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/lcc.js
+
+
+
+
+
+
+function lcc_init() {
+  
+  //double lat0;                    /* the reference latitude               */
+  //double long0;                   /* the reference longitude              */
+  //double lat1;                    /* first standard parallel              */
+  //double lat2;                    /* second standard parallel             */
+  //double r_maj;                   /* major axis                           */
+  //double r_min;                   /* minor axis                           */
+  //double false_east;              /* x offset in meters                   */
+  //double false_north;             /* y offset in meters                   */
+  
+  //the above value can be set with proj4.defs
+  //example: proj4.defs("EPSG:2154","+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+
+  if (!this.lat2) {
+    this.lat2 = this.lat1;
+  } //if lat2 is not defined
+  if (!this.k0) {
+    this.k0 = 1;
+  }
+  this.x0 = this.x0 || 0;
+  this.y0 = this.y0 || 0;
+  // Standard Parallels cannot be equal and on opposite sides of the equator
+  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
+    return;
+  }
+
+  var temp = this.b / this.a;
+  this.e = Math.sqrt(1 - temp * temp);
+
+  var sin1 = Math.sin(this.lat1);
+  var cos1 = Math.cos(this.lat1);
+  var ms1 = msfnz(this.e, sin1, cos1);
+  var ts1 = tsfnz(this.e, this.lat1, sin1);
+
+  var sin2 = Math.sin(this.lat2);
+  var cos2 = Math.cos(this.lat2);
+  var ms2 = msfnz(this.e, sin2, cos2);
+  var ts2 = tsfnz(this.e, this.lat2, sin2);
+
+  var ts0 = tsfnz(this.e, this.lat0, Math.sin(this.lat0));
+
+  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
+    this.ns = Math.log(ms1 / ms2) / Math.log(ts1 / ts2);
+  }
+  else {
+    this.ns = sin1;
+  }
+  if (isNaN(this.ns)) {
+    this.ns = sin1;
+  }
+  this.f0 = ms1 / (this.ns * Math.pow(ts1, this.ns));
+  this.rh = this.a * this.f0 * Math.pow(ts0, this.ns);
+  if (!this.title) {
+    this.title = "Lambert Conformal Conic";
+  }
+}
+
+// Lambert Conformal conic forward equations--mapping lat,long to x,y
+// -----------------------------------------------------------------
+function lcc_forward(p) {
+
+  var lon = p.x;
+  var lat = p.y;
+
+  // singular cases :
+  if (Math.abs(2 * Math.abs(lat) - Math.PI) <= EPSLN) {
+    lat = sign(lat) * (HALF_PI - 2 * EPSLN);
+  }
+
+  var con = Math.abs(Math.abs(lat) - HALF_PI);
+  var ts, rh1;
+  if (con > EPSLN) {
+    ts = tsfnz(this.e, lat, Math.sin(lat));
+    rh1 = this.a * this.f0 * Math.pow(ts, this.ns);
+  }
+  else {
+    con = lat * this.ns;
+    if (con <= 0) {
+      return null;
+    }
+    rh1 = 0;
+  }
+  var theta = this.ns * adjust_lon(lon - this.long0);
+  p.x = this.k0 * (rh1 * Math.sin(theta)) + this.x0;
+  p.y = this.k0 * (this.rh - rh1 * Math.cos(theta)) + this.y0;
+
+  return p;
+}
+
+// Lambert Conformal Conic inverse equations--mapping x,y to lat/long
+// -----------------------------------------------------------------
+function lcc_inverse(p) {
+
+  var rh1, con, ts;
+  var lat, lon;
+  var x = (p.x - this.x0) / this.k0;
+  var y = (this.rh - (p.y - this.y0) / this.k0);
+  if (this.ns > 0) {
+    rh1 = Math.sqrt(x * x + y * y);
+    con = 1;
+  }
+  else {
+    rh1 = -Math.sqrt(x * x + y * y);
+    con = -1;
+  }
+  var theta = 0;
+  if (rh1 !== 0) {
+    theta = Math.atan2((con * x), (con * y));
+  }
+  if ((rh1 !== 0) || (this.ns > 0)) {
+    con = 1 / this.ns;
+    ts = Math.pow((rh1 / (this.a * this.f0)), con);
+    lat = phi2z(this.e, ts);
+    if (lat === -9999) {
+      return null;
+    }
+  }
+  else {
+    lat = -HALF_PI;
+  }
+  lon = adjust_lon(theta / this.ns + this.long0);
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var lcc_names = [
+  "Lambert Tangential Conformal Conic Projection",
+  "Lambert_Conformal_Conic",
+  "Lambert_Conformal_Conic_1SP",
+  "Lambert_Conformal_Conic_2SP",
+  "lcc",
+  "Lambert Conic Conformal (1SP)",
+  "Lambert Conic Conformal (2SP)"
+];
+
+/* harmony default export */ const lcc = ({
+  init: lcc_init,
+  forward: lcc_forward,
+  inverse: lcc_inverse,
+  names: lcc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/krovak.js
+
+
+function krovak_init() {
+  this.a = 6377397.155;
+  this.es = 0.006674372230614;
+  this.e = Math.sqrt(this.es);
+  if (!this.lat0) {
+    this.lat0 = 0.863937979737193;
+  }
+  if (!this.long0) {
+    this.long0 = 0.7417649320975901 - 0.308341501185665;
+  }
+  /* if scale not set default to 0.9999 */
+  if (!this.k0) {
+    this.k0 = 0.9999;
+  }
+  this.s45 = 0.785398163397448; /* 45 */
+  this.s90 = 2 * this.s45;
+  this.fi0 = this.lat0;
+  this.e2 = this.es;
+  this.e = Math.sqrt(this.e2);
+  this.alfa = Math.sqrt(1 + (this.e2 * Math.pow(Math.cos(this.fi0), 4)) / (1 - this.e2));
+  this.uq = 1.04216856380474;
+  this.u0 = Math.asin(Math.sin(this.fi0) / this.alfa);
+  this.g = Math.pow((1 + this.e * Math.sin(this.fi0)) / (1 - this.e * Math.sin(this.fi0)), this.alfa * this.e / 2);
+  this.k = Math.tan(this.u0 / 2 + this.s45) / Math.pow(Math.tan(this.fi0 / 2 + this.s45), this.alfa) * this.g;
+  this.k1 = this.k0;
+  this.n0 = this.a * Math.sqrt(1 - this.e2) / (1 - this.e2 * Math.pow(Math.sin(this.fi0), 2));
+  this.s0 = 1.37008346281555;
+  this.n = Math.sin(this.s0);
+  this.ro0 = this.k1 * this.n0 / Math.tan(this.s0);
+  this.ad = this.s90 - this.uq;
+}
+
+/* ellipsoid */
+/* calculate xy from lat/lon */
+/* Constants, identical to inverse transform function */
+function krovak_forward(p) {
+  var gfi, u, deltav, s, d, eps, ro;
+  var lon = p.x;
+  var lat = p.y;
+  var delta_lon = adjust_lon(lon - this.long0);
+  /* Transformation */
+  gfi = Math.pow(((1 + this.e * Math.sin(lat)) / (1 - this.e * Math.sin(lat))), (this.alfa * this.e / 2));
+  u = 2 * (Math.atan(this.k * Math.pow(Math.tan(lat / 2 + this.s45), this.alfa) / gfi) - this.s45);
+  deltav = -delta_lon * this.alfa;
+  s = Math.asin(Math.cos(this.ad) * Math.sin(u) + Math.sin(this.ad) * Math.cos(u) * Math.cos(deltav));
+  d = Math.asin(Math.cos(u) * Math.sin(deltav) / Math.cos(s));
+  eps = this.n * d;
+  ro = this.ro0 * Math.pow(Math.tan(this.s0 / 2 + this.s45), this.n) / Math.pow(Math.tan(s / 2 + this.s45), this.n);
+  p.y = ro * Math.cos(eps) / 1;
+  p.x = ro * Math.sin(eps) / 1;
+
+  if (!this.czech) {
+    p.y *= -1;
+    p.x *= -1;
+  }
+  return (p);
+}
+
+/* calculate lat/lon from xy */
+function krovak_inverse(p) {
+  var u, deltav, s, d, eps, ro, fi1;
+  var ok;
+
+  /* Transformation */
+  /* revert y, x*/
+  var tmp = p.x;
+  p.x = p.y;
+  p.y = tmp;
+  if (!this.czech) {
+    p.y *= -1;
+    p.x *= -1;
+  }
+  ro = Math.sqrt(p.x * p.x + p.y * p.y);
+  eps = Math.atan2(p.y, p.x);
+  d = eps / Math.sin(this.s0);
+  s = 2 * (Math.atan(Math.pow(this.ro0 / ro, 1 / this.n) * Math.tan(this.s0 / 2 + this.s45)) - this.s45);
+  u = Math.asin(Math.cos(this.ad) * Math.sin(s) - Math.sin(this.ad) * Math.cos(s) * Math.cos(d));
+  deltav = Math.asin(Math.cos(s) * Math.sin(d) / Math.cos(u));
+  p.x = this.long0 - deltav / this.alfa;
+  fi1 = u;
+  ok = 0;
+  var iter = 0;
+  do {
+    p.y = 2 * (Math.atan(Math.pow(this.k, - 1 / this.alfa) * Math.pow(Math.tan(u / 2 + this.s45), 1 / this.alfa) * Math.pow((1 + this.e * Math.sin(fi1)) / (1 - this.e * Math.sin(fi1)), this.e / 2)) - this.s45);
+    if (Math.abs(fi1 - p.y) < 0.0000000001) {
+      ok = 1;
+    }
+    fi1 = p.y;
+    iter += 1;
+  } while (ok === 0 && iter < 15);
+  if (iter >= 15) {
+    return null;
+  }
+
+  return (p);
+}
+
+var krovak_names = ["Krovak", "krovak"];
+/* harmony default export */ const krovak = ({
+  init: krovak_init,
+  forward: krovak_forward,
+  inverse: krovak_inverse,
+  names: krovak_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/mlfn.js
+/* harmony default export */ function mlfn(e0, e1, e2, e3, phi) {
+  return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e0fn.js
+/* harmony default export */ function e0fn(x) {
+  return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e1fn.js
+/* harmony default export */ function e1fn(x) {
+  return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e2fn.js
+/* harmony default export */ function e2fn(x) {
+  return (0.05859375 * x * x * (1 + 0.75 * x));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/e3fn.js
+/* harmony default export */ function e3fn(x) {
+  return (x * x * x * (35 / 3072));
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/gN.js
+/* harmony default export */ function gN(a, e, sinphi) {
+  var temp = e * sinphi;
+  return a / Math.sqrt(1 - temp * temp);
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/adjust_lat.js
+
+
+
+/* harmony default export */ function adjust_lat(x) {
+  return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/imlfn.js
+/* harmony default export */ function imlfn(ml, e0, e1, e2, e3) {
+  var phi;
+  var dphi;
+
+  phi = ml / e0;
+  for (var i = 0; i < 15; i++) {
+    dphi = (ml - (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi))) / (e0 - 2 * e1 * Math.cos(2 * phi) + 4 * e2 * Math.cos(4 * phi) - 6 * e3 * Math.cos(6 * phi));
+    phi += dphi;
+    if (Math.abs(dphi) <= 0.0000000001) {
+      return phi;
+    }
+  }
+
+  //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
+  return NaN;
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/cass.js
+
+
+
+
+
+
+
+
+
+
+
+function cass_init() {
+  if (!this.sphere) {
+    this.e0 = e0fn(this.es);
+    this.e1 = e1fn(this.es);
+    this.e2 = e2fn(this.es);
+    this.e3 = e3fn(this.es);
+    this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
+  }
+}
+
+/* Cassini forward equations--mapping lat,long to x,y
+  -----------------------------------------------------------------------*/
+function cass_forward(p) {
+
+  /* Forward equations
+      -----------------*/
+  var x, y;
+  var lam = p.x;
+  var phi = p.y;
+  lam = adjust_lon(lam - this.long0);
+
+  if (this.sphere) {
+    x = this.a * Math.asin(Math.cos(phi) * Math.sin(lam));
+    y = this.a * (Math.atan2(Math.tan(phi), Math.cos(lam)) - this.lat0);
+  }
+  else {
+    //ellipsoid
+    var sinphi = Math.sin(phi);
+    var cosphi = Math.cos(phi);
+    var nl = gN(this.a, this.e, sinphi);
+    var tl = Math.tan(phi) * Math.tan(phi);
+    var al = lam * Math.cos(phi);
+    var asq = al * al;
+    var cl = this.es * cosphi * cosphi / (1 - this.es);
+    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
+
+    x = nl * al * (1 - asq * tl * (1 / 6 - (8 - tl + 8 * cl) * asq / 120));
+    y = ml - this.ml0 + nl * sinphi / cosphi * asq * (0.5 + (5 - tl + 6 * cl) * asq / 24);
+
+
+  }
+
+  p.x = x + this.x0;
+  p.y = y + this.y0;
+  return p;
+}
+
+/* Inverse equations
+  -----------------*/
+function cass_inverse(p) {
+  p.x -= this.x0;
+  p.y -= this.y0;
+  var x = p.x / this.a;
+  var y = p.y / this.a;
+  var phi, lam;
+
+  if (this.sphere) {
+    var dd = y + this.lat0;
+    phi = Math.asin(Math.sin(dd) * Math.cos(x));
+    lam = Math.atan2(Math.tan(x), Math.cos(dd));
+  }
+  else {
+    /* ellipsoid */
+    var ml1 = this.ml0 / this.a + y;
+    var phi1 = imlfn(ml1, this.e0, this.e1, this.e2, this.e3);
+    if (Math.abs(Math.abs(phi1) - HALF_PI) <= EPSLN) {
+      p.x = this.long0;
+      p.y = HALF_PI;
+      if (y < 0) {
+        p.y *= -1;
+      }
+      return p;
+    }
+    var nl1 = gN(this.a, this.e, Math.sin(phi1));
+
+    var rl1 = nl1 * nl1 * nl1 / this.a / this.a * (1 - this.es);
+    var tl1 = Math.pow(Math.tan(phi1), 2);
+    var dl = x * this.a / nl1;
+    var dsq = dl * dl;
+    phi = phi1 - nl1 * Math.tan(phi1) / rl1 * dl * dl * (0.5 - (1 + 3 * tl1) * dl * dl / 24);
+    lam = dl * (1 - dsq * (tl1 / 3 + (1 + 3 * tl1) * tl1 * dsq / 15)) / Math.cos(phi1);
+
+  }
+
+  p.x = adjust_lon(lam + this.long0);
+  p.y = adjust_lat(phi);
+  return p;
+
+}
+
+var cass_names = ["Cassini", "Cassini_Soldner", "cass"];
+/* harmony default export */ const cass = ({
+  init: cass_init,
+  forward: cass_forward,
+  inverse: cass_inverse,
+  names: cass_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/qsfnz.js
+/* harmony default export */ function qsfnz(eccent, sinphi) {
+  var con;
+  if (eccent > 1.0e-7) {
+    con = eccent * sinphi;
+    return ((1 - eccent * eccent) * (sinphi / (1 - con * con) - (0.5 / eccent) * Math.log((1 - con) / (1 + con))));
+  }
+  else {
+    return (2 * sinphi);
+  }
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/laea.js
+
+
+
+
+
+
+/*
+  reference
+    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
+    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
+  */
+
+var S_POLE = 1;
+
+var N_POLE = 2;
+var EQUIT = 3;
+var OBLIQ = 4;
+
+/* Initialize the Lambert Azimuthal Equal Area projection
+  ------------------------------------------------------*/
+function laea_init() {
+  var t = Math.abs(this.lat0);
+  if (Math.abs(t - HALF_PI) < EPSLN) {
+    this.mode = this.lat0 < 0 ? this.S_POLE : this.N_POLE;
+  }
+  else if (Math.abs(t) < EPSLN) {
+    this.mode = this.EQUIT;
+  }
+  else {
+    this.mode = this.OBLIQ;
+  }
+  if (this.es > 0) {
+    var sinphi;
+
+    this.qp = qsfnz(this.e, 1);
+    this.mmf = 0.5 / (1 - this.es);
+    this.apa = authset(this.es);
+    switch (this.mode) {
+    case this.N_POLE:
+      this.dd = 1;
+      break;
+    case this.S_POLE:
+      this.dd = 1;
+      break;
+    case this.EQUIT:
+      this.rq = Math.sqrt(0.5 * this.qp);
+      this.dd = 1 / this.rq;
+      this.xmf = 1;
+      this.ymf = 0.5 * this.qp;
+      break;
+    case this.OBLIQ:
+      this.rq = Math.sqrt(0.5 * this.qp);
+      sinphi = Math.sin(this.lat0);
+      this.sinb1 = qsfnz(this.e, sinphi) / this.qp;
+      this.cosb1 = Math.sqrt(1 - this.sinb1 * this.sinb1);
+      this.dd = Math.cos(this.lat0) / (Math.sqrt(1 - this.es * sinphi * sinphi) * this.rq * this.cosb1);
+      this.ymf = (this.xmf = this.rq) / this.dd;
+      this.xmf *= this.dd;
+      break;
+    }
+  }
+  else {
+    if (this.mode === this.OBLIQ) {
+      this.sinph0 = Math.sin(this.lat0);
+      this.cosph0 = Math.cos(this.lat0);
+    }
+  }
+}
+
+/* Lambert Azimuthal Equal Area forward equations--mapping lat,long to x,y
+  -----------------------------------------------------------------------*/
+function laea_forward(p) {
+
+  /* Forward equations
+      -----------------*/
+  var x, y, coslam, sinlam, sinphi, q, sinb, cosb, b, cosphi;
+  var lam = p.x;
+  var phi = p.y;
+
+  lam = adjust_lon(lam - this.long0);
+  if (this.sphere) {
+    sinphi = Math.sin(phi);
+    cosphi = Math.cos(phi);
+    coslam = Math.cos(lam);
+    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+      y = (this.mode === this.EQUIT) ? 1 + cosphi * coslam : 1 + this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
+      if (y <= EPSLN) {
+        return null;
+      }
+      y = Math.sqrt(2 / y);
+      x = y * cosphi * Math.sin(lam);
+      y *= (this.mode === this.EQUIT) ? sinphi : this.cosph0 * sinphi - this.sinph0 * cosphi * coslam;
+    }
+    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
+      if (this.mode === this.N_POLE) {
+        coslam = -coslam;
+      }
+      if (Math.abs(phi + this.lat0) < EPSLN) {
+        return null;
+      }
+      y = FORTPI - phi * 0.5;
+      y = 2 * ((this.mode === this.S_POLE) ? Math.cos(y) : Math.sin(y));
+      x = y * Math.sin(lam);
+      y *= coslam;
+    }
+  }
+  else {
+    sinb = 0;
+    cosb = 0;
+    b = 0;
+    coslam = Math.cos(lam);
+    sinlam = Math.sin(lam);
+    sinphi = Math.sin(phi);
+    q = qsfnz(this.e, sinphi);
+    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+      sinb = q / this.qp;
+      cosb = Math.sqrt(1 - sinb * sinb);
+    }
+    switch (this.mode) {
+    case this.OBLIQ:
+      b = 1 + this.sinb1 * sinb + this.cosb1 * cosb * coslam;
+      break;
+    case this.EQUIT:
+      b = 1 + cosb * coslam;
+      break;
+    case this.N_POLE:
+      b = HALF_PI + phi;
+      q = this.qp - q;
+      break;
+    case this.S_POLE:
+      b = phi - HALF_PI;
+      q = this.qp + q;
+      break;
+    }
+    if (Math.abs(b) < EPSLN) {
+      return null;
+    }
+    switch (this.mode) {
+    case this.OBLIQ:
+    case this.EQUIT:
+      b = Math.sqrt(2 / b);
+      if (this.mode === this.OBLIQ) {
+        y = this.ymf * b * (this.cosb1 * sinb - this.sinb1 * cosb * coslam);
+      }
+      else {
+        y = (b = Math.sqrt(2 / (1 + cosb * coslam))) * sinb * this.ymf;
+      }
+      x = this.xmf * b * cosb * sinlam;
+      break;
+    case this.N_POLE:
+    case this.S_POLE:
+      if (q >= 0) {
+        x = (b = Math.sqrt(q)) * sinlam;
+        y = coslam * ((this.mode === this.S_POLE) ? b : -b);
+      }
+      else {
+        x = y = 0;
+      }
+      break;
+    }
+  }
+
+  p.x = this.a * x + this.x0;
+  p.y = this.a * y + this.y0;
+  return p;
+}
+
+/* Inverse equations
+  -----------------*/
+function laea_inverse(p) {
+  p.x -= this.x0;
+  p.y -= this.y0;
+  var x = p.x / this.a;
+  var y = p.y / this.a;
+  var lam, phi, cCe, sCe, q, rho, ab;
+  if (this.sphere) {
+    var cosz = 0,
+      rh, sinz = 0;
+
+    rh = Math.sqrt(x * x + y * y);
+    phi = rh * 0.5;
+    if (phi > 1) {
+      return null;
+    }
+    phi = 2 * Math.asin(phi);
+    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+      sinz = Math.sin(phi);
+      cosz = Math.cos(phi);
+    }
+    switch (this.mode) {
+    case this.EQUIT:
+      phi = (Math.abs(rh) <= EPSLN) ? 0 : Math.asin(y * sinz / rh);
+      x *= sinz;
+      y = cosz * rh;
+      break;
+    case this.OBLIQ:
+      phi = (Math.abs(rh) <= EPSLN) ? this.lat0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
+      x *= sinz * this.cosph0;
+      y = (cosz - Math.sin(phi) * this.sinph0) * rh;
+      break;
+    case this.N_POLE:
+      y = -y;
+      phi = HALF_PI - phi;
+      break;
+    case this.S_POLE:
+      phi -= HALF_PI;
+      break;
+    }
+    lam = (y === 0 && (this.mode === this.EQUIT || this.mode === this.OBLIQ)) ? 0 : Math.atan2(x, y);
+  }
+  else {
+    ab = 0;
+    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+      x /= this.dd;
+      y *= this.dd;
+      rho = Math.sqrt(x * x + y * y);
+      if (rho < EPSLN) {
+        p.x = this.long0;
+        p.y = this.lat0;
+        return p;
+      }
+      sCe = 2 * Math.asin(0.5 * rho / this.rq);
+      cCe = Math.cos(sCe);
+      x *= (sCe = Math.sin(sCe));
+      if (this.mode === this.OBLIQ) {
+        ab = cCe * this.sinb1 + y * sCe * this.cosb1 / rho;
+        q = this.qp * ab;
+        y = rho * this.cosb1 * cCe - y * this.sinb1 * sCe;
+      }
+      else {
+        ab = y * sCe / rho;
+        q = this.qp * ab;
+        y = rho * cCe;
+      }
+    }
+    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
+      if (this.mode === this.N_POLE) {
+        y = -y;
+      }
+      q = (x * x + y * y);
+      if (!q) {
+        p.x = this.long0;
+        p.y = this.lat0;
+        return p;
+      }
+      ab = 1 - q / this.qp;
+      if (this.mode === this.S_POLE) {
+        ab = -ab;
+      }
+    }
+    lam = Math.atan2(x, y);
+    phi = authlat(Math.asin(ab), this.apa);
+  }
+
+  p.x = adjust_lon(this.long0 + lam);
+  p.y = phi;
+  return p;
+}
+
+/* determine latitude from authalic latitude */
+var P00 = 0.33333333333333333333;
+
+var P01 = 0.17222222222222222222;
+var P02 = 0.10257936507936507936;
+var P10 = 0.06388888888888888888;
+var P11 = 0.06640211640211640211;
+var P20 = 0.01641501294219154443;
+
+function authset(es) {
+  var t;
+  var APA = [];
+  APA[0] = es * P00;
+  t = es * es;
+  APA[0] += t * P01;
+  APA[1] = t * P10;
+  t *= es;
+  APA[0] += t * P02;
+  APA[1] += t * P11;
+  APA[2] = t * P20;
+  return APA;
+}
+
+function authlat(beta, APA) {
+  var t = beta + beta;
+  return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
+}
+
+var laea_names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
+/* harmony default export */ const laea = ({
+  init: laea_init,
+  forward: laea_forward,
+  inverse: laea_inverse,
+  names: laea_names,
+  S_POLE: S_POLE,
+  N_POLE: N_POLE,
+  EQUIT: EQUIT,
+  OBLIQ: OBLIQ
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/asinz.js
+/* harmony default export */ function asinz(x) {
+  if (Math.abs(x) > 1) {
+    x = (x > 1) ? 1 : -1;
+  }
+  return Math.asin(x);
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/aea.js
+
+
+
+
+
+
+function aea_init() {
+
+  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
+    return;
+  }
+  this.temp = this.b / this.a;
+  this.es = 1 - Math.pow(this.temp, 2);
+  this.e3 = Math.sqrt(this.es);
+
+  this.sin_po = Math.sin(this.lat1);
+  this.cos_po = Math.cos(this.lat1);
+  this.t1 = this.sin_po;
+  this.con = this.sin_po;
+  this.ms1 = msfnz(this.e3, this.sin_po, this.cos_po);
+  this.qs1 = qsfnz(this.e3, this.sin_po);
+
+  this.sin_po = Math.sin(this.lat2);
+  this.cos_po = Math.cos(this.lat2);
+  this.t2 = this.sin_po;
+  this.ms2 = msfnz(this.e3, this.sin_po, this.cos_po);
+  this.qs2 = qsfnz(this.e3, this.sin_po);
+
+  this.sin_po = Math.sin(this.lat0);
+  this.cos_po = Math.cos(this.lat0);
+  this.t3 = this.sin_po;
+  this.qs0 = qsfnz(this.e3, this.sin_po);
+
+  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
+    this.ns0 = (this.ms1 * this.ms1 - this.ms2 * this.ms2) / (this.qs2 - this.qs1);
+  }
+  else {
+    this.ns0 = this.con;
+  }
+  this.c = this.ms1 * this.ms1 + this.ns0 * this.qs1;
+  this.rh = this.a * Math.sqrt(this.c - this.ns0 * this.qs0) / this.ns0;
+}
+
+/* Albers Conical Equal Area forward equations--mapping lat,long to x,y
+  -------------------------------------------------------------------*/
+function aea_forward(p) {
+
+  var lon = p.x;
+  var lat = p.y;
+
+  this.sin_phi = Math.sin(lat);
+  this.cos_phi = Math.cos(lat);
+
+  var qs = qsfnz(this.e3, this.sin_phi);
+  var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
+  var theta = this.ns0 * adjust_lon(lon - this.long0);
+  var x = rh1 * Math.sin(theta) + this.x0;
+  var y = this.rh - rh1 * Math.cos(theta) + this.y0;
+
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+function aea_inverse(p) {
+  var rh1, qs, con, theta, lon, lat;
+
+  p.x -= this.x0;
+  p.y = this.rh - p.y + this.y0;
+  if (this.ns0 >= 0) {
+    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
+    con = 1;
+  }
+  else {
+    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
+    con = -1;
+  }
+  theta = 0;
+  if (rh1 !== 0) {
+    theta = Math.atan2(con * p.x, con * p.y);
+  }
+  con = rh1 * this.ns0 / this.a;
+  if (this.sphere) {
+    lat = Math.asin((this.c - con * con) / (2 * this.ns0));
+  }
+  else {
+    qs = (this.c - con * con) / this.ns0;
+    lat = this.phi1z(this.e3, qs);
+  }
+
+  lon = adjust_lon(theta / this.ns0 + this.long0);
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+/* Function to compute phi1, the latitude for the inverse of the
+   Albers Conical Equal-Area projection.
+-------------------------------------------*/
+function phi1z(eccent, qs) {
+  var sinphi, cosphi, con, com, dphi;
+  var phi = asinz(0.5 * qs);
+  if (eccent < EPSLN) {
+    return phi;
+  }
+
+  var eccnts = eccent * eccent;
+  for (var i = 1; i <= 25; i++) {
+    sinphi = Math.sin(phi);
+    cosphi = Math.cos(phi);
+    con = eccent * sinphi;
+    com = 1 - con * con;
+    dphi = 0.5 * com * com / cosphi * (qs / (1 - eccnts) - sinphi / com + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
+    phi = phi + dphi;
+    if (Math.abs(dphi) <= 1e-7) {
+      return phi;
+    }
+  }
+  return null;
+}
+
+var aea_names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
+/* harmony default export */ const aea = ({
+  init: aea_init,
+  forward: aea_forward,
+  inverse: aea_inverse,
+  names: aea_names,
+  phi1z: phi1z
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/gnom.js
+
+
+
+
+/*
+  reference:
+    Wolfram Mathworld "Gnomonic Projection"
+    http://mathworld.wolfram.com/GnomonicProjection.html
+    Accessed: 12th November 2009
+  */
+function gnom_init() {
+
+  /* Place parameters in static storage for common use
+      -------------------------------------------------*/
+  this.sin_p14 = Math.sin(this.lat0);
+  this.cos_p14 = Math.cos(this.lat0);
+  // Approximation for projecting points to the horizon (infinity)
+  this.infinity_dist = 1000 * this.a;
+  this.rc = 1;
+}
+
+/* Gnomonic forward equations--mapping lat,long to x,y
+    ---------------------------------------------------*/
+function gnom_forward(p) {
+  var sinphi, cosphi; /* sin and cos value        */
+  var dlon; /* delta longitude value      */
+  var coslon; /* cos of longitude        */
+  var ksp; /* scale factor          */
+  var g;
+  var x, y;
+  var lon = p.x;
+  var lat = p.y;
+  /* Forward equations
+      -----------------*/
+  dlon = adjust_lon(lon - this.long0);
+
+  sinphi = Math.sin(lat);
+  cosphi = Math.cos(lat);
+
+  coslon = Math.cos(dlon);
+  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
+  ksp = 1;
+  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
+    x = this.x0 + this.a * ksp * cosphi * Math.sin(dlon) / g;
+    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon) / g;
+  }
+  else {
+
+    // Point is in the opposing hemisphere and is unprojectable
+    // We still need to return a reasonable point, so we project
+    // to infinity, on a bearing
+    // equivalent to the northern hemisphere equivalent
+    // This is a reasonable approximation for short shapes and lines that
+    // straddle the horizon.
+
+    x = this.x0 + this.infinity_dist * cosphi * Math.sin(dlon);
+    y = this.y0 + this.infinity_dist * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
+
+  }
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+function gnom_inverse(p) {
+  var rh; /* Rho */
+  var sinc, cosc;
+  var c;
+  var lon, lat;
+
+  /* Inverse equations
+      -----------------*/
+  p.x = (p.x - this.x0) / this.a;
+  p.y = (p.y - this.y0) / this.a;
+
+  p.x /= this.k0;
+  p.y /= this.k0;
+
+  if ((rh = Math.sqrt(p.x * p.x + p.y * p.y))) {
+    c = Math.atan2(rh, this.rc);
+    sinc = Math.sin(c);
+    cosc = Math.cos(c);
+
+    lat = asinz(cosc * this.sin_p14 + (p.y * sinc * this.cos_p14) / rh);
+    lon = Math.atan2(p.x * sinc, rh * this.cos_p14 * cosc - p.y * this.sin_p14 * sinc);
+    lon = adjust_lon(this.long0 + lon);
+  }
+  else {
+    lat = this.phic0;
+    lon = 0;
+  }
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var gnom_names = ["gnom"];
+/* harmony default export */ const gnom = ({
+  init: gnom_init,
+  forward: gnom_forward,
+  inverse: gnom_inverse,
+  names: gnom_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/common/iqsfnz.js
+
+
+/* harmony default export */ function iqsfnz(eccent, q) {
+  var temp = 1 - (1 - eccent * eccent) / (2 * eccent) * Math.log((1 - eccent) / (1 + eccent));
+  if (Math.abs(Math.abs(q) - temp) < 1.0E-6) {
+    if (q < 0) {
+      return (-1 * HALF_PI);
+    }
+    else {
+      return HALF_PI;
+    }
+  }
+  //var phi = 0.5* q/(1-eccent*eccent);
+  var phi = Math.asin(0.5 * q);
+  var dphi;
+  var sin_phi;
+  var cos_phi;
+  var con;
+  for (var i = 0; i < 30; i++) {
+    sin_phi = Math.sin(phi);
+    cos_phi = Math.cos(phi);
+    con = eccent * sin_phi;
+    dphi = Math.pow(1 - con * con, 2) / (2 * cos_phi) * (q / (1 - eccent * eccent) - sin_phi / (1 - con * con) + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
+    phi += dphi;
+    if (Math.abs(dphi) <= 0.0000000001) {
+      return phi;
+    }
+  }
+
+  //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
+  return NaN;
+}
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/cea.js
+
+
+
+
+
+/*
+  reference:
+    "Cartographic Projection Procedures for the UNIX Environment-
+    A User's Manual" by Gerald I. Evenden,
+    USGS Open File Report 90-284and Release 4 Interim Reports (2003)
+*/
+function cea_init() {
+  //no-op
+  if (!this.sphere) {
+    this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
+  }
+}
+
+/* Cylindrical Equal Area forward equations--mapping lat,long to x,y
+    ------------------------------------------------------------*/
+function cea_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  var x, y;
+  /* Forward equations
+      -----------------*/
+  var dlon = adjust_lon(lon - this.long0);
+  if (this.sphere) {
+    x = this.x0 + this.a * dlon * Math.cos(this.lat_ts);
+    y = this.y0 + this.a * Math.sin(lat) / Math.cos(this.lat_ts);
+  }
+  else {
+    var qs = qsfnz(this.e, Math.sin(lat));
+    x = this.x0 + this.a * this.k0 * dlon;
+    y = this.y0 + this.a * qs * 0.5 / this.k0;
+  }
+
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+/* Cylindrical Equal Area inverse equations--mapping x,y to lat/long
+    ------------------------------------------------------------*/
+function cea_inverse(p) {
+  p.x -= this.x0;
+  p.y -= this.y0;
+  var lon, lat;
+
+  if (this.sphere) {
+    lon = adjust_lon(this.long0 + (p.x / this.a) / Math.cos(this.lat_ts));
+    lat = Math.asin((p.y / this.a) * Math.cos(this.lat_ts));
+  }
+  else {
+    lat = iqsfnz(this.e, 2 * p.y * this.k0 / this.a);
+    lon = adjust_lon(this.long0 + p.x / (this.a * this.k0));
+  }
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var cea_names = ["cea"];
+/* harmony default export */ const cea = ({
+  init: cea_init,
+  forward: cea_forward,
+  inverse: cea_inverse,
+  names: cea_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/eqc.js
+
+
+
+function eqc_init() {
+
+  this.x0 = this.x0 || 0;
+  this.y0 = this.y0 || 0;
+  this.lat0 = this.lat0 || 0;
+  this.long0 = this.long0 || 0;
+  this.lat_ts = this.lat_ts || 0;
+  this.title = this.title || "Equidistant Cylindrical (Plate Carre)";
+
+  this.rc = Math.cos(this.lat_ts);
+}
+
+// forward equations--mapping lat,long to x,y
+// -----------------------------------------------------------------
+function eqc_forward(p) {
+
+  var lon = p.x;
+  var lat = p.y;
+
+  var dlon = adjust_lon(lon - this.long0);
+  var dlat = adjust_lat(lat - this.lat0);
+  p.x = this.x0 + (this.a * dlon * this.rc);
+  p.y = this.y0 + (this.a * dlat);
+  return p;
+}
+
+// inverse equations--mapping x,y to lat/long
+// -----------------------------------------------------------------
+function eqc_inverse(p) {
+
+  var x = p.x;
+  var y = p.y;
+
+  p.x = adjust_lon(this.long0 + ((x - this.x0) / (this.a * this.rc)));
+  p.y = adjust_lat(this.lat0 + ((y - this.y0) / (this.a)));
+  return p;
+}
+
+var eqc_names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
+/* harmony default export */ const eqc = ({
+  init: eqc_init,
+  forward: eqc_forward,
+  inverse: eqc_inverse,
+  names: eqc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/poly.js
+
+
+
+
+
+
+
+
+
+
+var poly_MAX_ITER = 20;
+
+function poly_init() {
+  /* Place parameters in static storage for common use
+      -------------------------------------------------*/
+  this.temp = this.b / this.a;
+  this.es = 1 - Math.pow(this.temp, 2); // devait etre dans tmerc.js mais n y est pas donc je commente sinon retour de valeurs nulles
+  this.e = Math.sqrt(this.es);
+  this.e0 = e0fn(this.es);
+  this.e1 = e1fn(this.es);
+  this.e2 = e2fn(this.es);
+  this.e3 = e3fn(this.es);
+  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
+}
+
+/* Polyconic forward equations--mapping lat,long to x,y
+    ---------------------------------------------------*/
+function poly_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  var x, y, el;
+  var dlon = adjust_lon(lon - this.long0);
+  el = dlon * Math.sin(lat);
+  if (this.sphere) {
+    if (Math.abs(lat) <= EPSLN) {
+      x = this.a * dlon;
+      y = -1 * this.a * this.lat0;
+    }
+    else {
+      x = this.a * Math.sin(el) / Math.tan(lat);
+      y = this.a * (adjust_lat(lat - this.lat0) + (1 - Math.cos(el)) / Math.tan(lat));
+    }
+  }
+  else {
+    if (Math.abs(lat) <= EPSLN) {
+      x = this.a * dlon;
+      y = -1 * this.ml0;
+    }
+    else {
+      var nl = gN(this.a, this.e, Math.sin(lat)) / Math.tan(lat);
+      x = nl * Math.sin(el);
+      y = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat) - this.ml0 + nl * (1 - Math.cos(el));
+    }
+
+  }
+  p.x = x + this.x0;
+  p.y = y + this.y0;
+  return p;
+}
+
+/* Inverse equations
+  -----------------*/
+function poly_inverse(p) {
+  var lon, lat, x, y, i;
+  var al, bl;
+  var phi, dphi;
+  x = p.x - this.x0;
+  y = p.y - this.y0;
+
+  if (this.sphere) {
+    if (Math.abs(y + this.a * this.lat0) <= EPSLN) {
+      lon = adjust_lon(x / this.a + this.long0);
+      lat = 0;
+    }
+    else {
+      al = this.lat0 + y / this.a;
+      bl = x * x / this.a / this.a + al * al;
+      phi = al;
+      var tanphi;
+      for (i = poly_MAX_ITER; i; --i) {
+        tanphi = Math.tan(phi);
+        dphi = -1 * (al * (phi * tanphi + 1) - phi - 0.5 * (phi * phi + bl) * tanphi) / ((phi - al) / tanphi - 1);
+        phi += dphi;
+        if (Math.abs(dphi) <= EPSLN) {
+          lat = phi;
+          break;
+        }
+      }
+      lon = adjust_lon(this.long0 + (Math.asin(x * Math.tan(phi) / this.a)) / Math.sin(lat));
+    }
+  }
+  else {
+    if (Math.abs(y + this.ml0) <= EPSLN) {
+      lat = 0;
+      lon = adjust_lon(this.long0 + x / this.a);
+    }
+    else {
+
+      al = (this.ml0 + y) / this.a;
+      bl = x * x / this.a / this.a + al * al;
+      phi = al;
+      var cl, mln, mlnp, ma;
+      var con;
+      for (i = poly_MAX_ITER; i; --i) {
+        con = this.e * Math.sin(phi);
+        cl = Math.sqrt(1 - con * con) * Math.tan(phi);
+        mln = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
+        mlnp = this.e0 - 2 * this.e1 * Math.cos(2 * phi) + 4 * this.e2 * Math.cos(4 * phi) - 6 * this.e3 * Math.cos(6 * phi);
+        ma = mln / this.a;
+        dphi = (al * (cl * ma + 1) - ma - 0.5 * cl * (ma * ma + bl)) / (this.es * Math.sin(2 * phi) * (ma * ma + bl - 2 * al * ma) / (4 * cl) + (al - ma) * (cl * mlnp - 2 / Math.sin(2 * phi)) - mlnp);
+        phi -= dphi;
+        if (Math.abs(dphi) <= EPSLN) {
+          lat = phi;
+          break;
+        }
+      }
+
+      //lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
+      cl = Math.sqrt(1 - this.es * Math.pow(Math.sin(lat), 2)) * Math.tan(lat);
+      lon = adjust_lon(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
+    }
+  }
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var poly_names = ["Polyconic", "poly"];
+/* harmony default export */ const poly = ({
+  init: poly_init,
+  forward: poly_forward,
+  inverse: poly_inverse,
+  names: poly_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/nzmg.js
+
+
+/*
+  reference
+    Department of Land and Survey Technical Circular 1973/32
+      http://www.linz.govt.nz/docs/miscellaneous/nz-map-definition.pdf
+    OSG Technical Report 4.1
+      http://www.linz.govt.nz/docs/miscellaneous/nzmg.pdf
+  */
+
+/**
+ * iterations: Number of iterations to refine inverse transform.
+ *     0 -> km accuracy
+ *     1 -> m accuracy -- suitable for most mapping applications
+ *     2 -> mm accuracy
+ */
+var iterations = 1;
+
+function nzmg_init() {
+  this.A = [];
+  this.A[1] = 0.6399175073;
+  this.A[2] = -0.1358797613;
+  this.A[3] = 0.063294409;
+  this.A[4] = -0.02526853;
+  this.A[5] = 0.0117879;
+  this.A[6] = -0.0055161;
+  this.A[7] = 0.0026906;
+  this.A[8] = -0.001333;
+  this.A[9] = 0.00067;
+  this.A[10] = -0.00034;
+
+  this.B_re = [];
+  this.B_im = [];
+  this.B_re[1] = 0.7557853228;
+  this.B_im[1] = 0;
+  this.B_re[2] = 0.249204646;
+  this.B_im[2] = 0.003371507;
+  this.B_re[3] = -0.001541739;
+  this.B_im[3] = 0.041058560;
+  this.B_re[4] = -0.10162907;
+  this.B_im[4] = 0.01727609;
+  this.B_re[5] = -0.26623489;
+  this.B_im[5] = -0.36249218;
+  this.B_re[6] = -0.6870983;
+  this.B_im[6] = -1.1651967;
+
+  this.C_re = [];
+  this.C_im = [];
+  this.C_re[1] = 1.3231270439;
+  this.C_im[1] = 0;
+  this.C_re[2] = -0.577245789;
+  this.C_im[2] = -0.007809598;
+  this.C_re[3] = 0.508307513;
+  this.C_im[3] = -0.112208952;
+  this.C_re[4] = -0.15094762;
+  this.C_im[4] = 0.18200602;
+  this.C_re[5] = 1.01418179;
+  this.C_im[5] = 1.64497696;
+  this.C_re[6] = 1.9660549;
+  this.C_im[6] = 2.5127645;
+
+  this.D = [];
+  this.D[1] = 1.5627014243;
+  this.D[2] = 0.5185406398;
+  this.D[3] = -0.03333098;
+  this.D[4] = -0.1052906;
+  this.D[5] = -0.0368594;
+  this.D[6] = 0.007317;
+  this.D[7] = 0.01220;
+  this.D[8] = 0.00394;
+  this.D[9] = -0.0013;
+}
+
+/**
+    New Zealand Map Grid Forward  - long/lat to x/y
+    long/lat in radians
+  */
+function nzmg_forward(p) {
+  var n;
+  var lon = p.x;
+  var lat = p.y;
+
+  var delta_lat = lat - this.lat0;
+  var delta_lon = lon - this.long0;
+
+  // 1. Calculate d_phi and d_psi    ...                          // and d_lambda
+  // For this algorithm, delta_latitude is in seconds of arc x 10-5, so we need to scale to those units. Longitude is radians.
+  var d_phi = delta_lat / SEC_TO_RAD * 1E-5;
+  var d_lambda = delta_lon;
+  var d_phi_n = 1; // d_phi^0
+
+  var d_psi = 0;
+  for (n = 1; n <= 10; n++) {
+    d_phi_n = d_phi_n * d_phi;
+    d_psi = d_psi + this.A[n] * d_phi_n;
+  }
+
+  // 2. Calculate theta
+  var th_re = d_psi;
+  var th_im = d_lambda;
+
+  // 3. Calculate z
+  var th_n_re = 1;
+  var th_n_im = 0; // theta^0
+  var th_n_re1;
+  var th_n_im1;
+
+  var z_re = 0;
+  var z_im = 0;
+  for (n = 1; n <= 6; n++) {
+    th_n_re1 = th_n_re * th_re - th_n_im * th_im;
+    th_n_im1 = th_n_im * th_re + th_n_re * th_im;
+    th_n_re = th_n_re1;
+    th_n_im = th_n_im1;
+    z_re = z_re + this.B_re[n] * th_n_re - this.B_im[n] * th_n_im;
+    z_im = z_im + this.B_im[n] * th_n_re + this.B_re[n] * th_n_im;
+  }
+
+  // 4. Calculate easting and northing
+  p.x = (z_im * this.a) + this.x0;
+  p.y = (z_re * this.a) + this.y0;
+
+  return p;
+}
+
+/**
+    New Zealand Map Grid Inverse  -  x/y to long/lat
+  */
+function nzmg_inverse(p) {
+  var n;
+  var x = p.x;
+  var y = p.y;
+
+  var delta_x = x - this.x0;
+  var delta_y = y - this.y0;
+
+  // 1. Calculate z
+  var z_re = delta_y / this.a;
+  var z_im = delta_x / this.a;
+
+  // 2a. Calculate theta - first approximation gives km accuracy
+  var z_n_re = 1;
+  var z_n_im = 0; // z^0
+  var z_n_re1;
+  var z_n_im1;
+
+  var th_re = 0;
+  var th_im = 0;
+  for (n = 1; n <= 6; n++) {
+    z_n_re1 = z_n_re * z_re - z_n_im * z_im;
+    z_n_im1 = z_n_im * z_re + z_n_re * z_im;
+    z_n_re = z_n_re1;
+    z_n_im = z_n_im1;
+    th_re = th_re + this.C_re[n] * z_n_re - this.C_im[n] * z_n_im;
+    th_im = th_im + this.C_im[n] * z_n_re + this.C_re[n] * z_n_im;
+  }
+
+  // 2b. Iterate to refine the accuracy of the calculation
+  //        0 iterations gives km accuracy
+  //        1 iteration gives m accuracy -- good enough for most mapping applications
+  //        2 iterations bives mm accuracy
+  for (var i = 0; i < this.iterations; i++) {
+    var th_n_re = th_re;
+    var th_n_im = th_im;
+    var th_n_re1;
+    var th_n_im1;
+
+    var num_re = z_re;
+    var num_im = z_im;
+    for (n = 2; n <= 6; n++) {
+      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
+      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
+      th_n_re = th_n_re1;
+      th_n_im = th_n_im1;
+      num_re = num_re + (n - 1) * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
+      num_im = num_im + (n - 1) * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
+    }
+
+    th_n_re = 1;
+    th_n_im = 0;
+    var den_re = this.B_re[1];
+    var den_im = this.B_im[1];
+    for (n = 2; n <= 6; n++) {
+      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
+      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
+      th_n_re = th_n_re1;
+      th_n_im = th_n_im1;
+      den_re = den_re + n * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
+      den_im = den_im + n * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
+    }
+
+    // Complex division
+    var den2 = den_re * den_re + den_im * den_im;
+    th_re = (num_re * den_re + num_im * den_im) / den2;
+    th_im = (num_im * den_re - num_re * den_im) / den2;
+  }
+
+  // 3. Calculate d_phi              ...                                    // and d_lambda
+  var d_psi = th_re;
+  var d_lambda = th_im;
+  var d_psi_n = 1; // d_psi^0
+
+  var d_phi = 0;
+  for (n = 1; n <= 9; n++) {
+    d_psi_n = d_psi_n * d_psi;
+    d_phi = d_phi + this.D[n] * d_psi_n;
+  }
+
+  // 4. Calculate latitude and longitude
+  // d_phi is calcuated in second of arc * 10^-5, so we need to scale back to radians. d_lambda is in radians.
+  var lat = this.lat0 + (d_phi * SEC_TO_RAD * 1E5);
+  var lon = this.long0 + d_lambda;
+
+  p.x = lon;
+  p.y = lat;
+
+  return p;
+}
+
+var nzmg_names = ["New_Zealand_Map_Grid", "nzmg"];
+/* harmony default export */ const nzmg = ({
+  init: nzmg_init,
+  forward: nzmg_forward,
+  inverse: nzmg_inverse,
+  names: nzmg_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/mill.js
+
+
+/*
+  reference
+    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
+    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
+  */
+
+
+/* Initialize the Miller Cylindrical projection
+  -------------------------------------------*/
+function mill_init() {
+  //no-op
+}
+
+/* Miller Cylindrical forward equations--mapping lat,long to x,y
+    ------------------------------------------------------------*/
+function mill_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  /* Forward equations
+      -----------------*/
+  var dlon = adjust_lon(lon - this.long0);
+  var x = this.x0 + this.a * dlon;
+  var y = this.y0 + this.a * Math.log(Math.tan((Math.PI / 4) + (lat / 2.5))) * 1.25;
+
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+/* Miller Cylindrical inverse equations--mapping x,y to lat/long
+    ------------------------------------------------------------*/
+function mill_inverse(p) {
+  p.x -= this.x0;
+  p.y -= this.y0;
+
+  var lon = adjust_lon(this.long0 + p.x / this.a);
+  var lat = 2.5 * (Math.atan(Math.exp(0.8 * p.y / this.a)) - Math.PI / 4);
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var mill_names = ["Miller_Cylindrical", "mill"];
+/* harmony default export */ const mill = ({
+  init: mill_init,
+  forward: mill_forward,
+  inverse: mill_inverse,
+  names: mill_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/sinu.js
+
+
+
+var sinu_MAX_ITER = 20;
+
+
+
+
+
+
+
+function sinu_init() {
+  /* Place parameters in static storage for common use
+    -------------------------------------------------*/
+
+
+  if (!this.sphere) {
+    this.en = pj_enfn(this.es);
+  }
+  else {
+    this.n = 1;
+    this.m = 0;
+    this.es = 0;
+    this.C_y = Math.sqrt((this.m + 1) / this.n);
+    this.C_x = this.C_y / (this.m + 1);
+  }
+
+}
+
+/* Sinusoidal forward equations--mapping lat,long to x,y
+  -----------------------------------------------------*/
+function sinu_forward(p) {
+  var x, y;
+  var lon = p.x;
+  var lat = p.y;
+  /* Forward equations
+    -----------------*/
+  lon = adjust_lon(lon - this.long0);
+
+  if (this.sphere) {
+    if (!this.m) {
+      lat = this.n !== 1 ? Math.asin(this.n * Math.sin(lat)) : lat;
+    }
+    else {
+      var k = this.n * Math.sin(lat);
+      for (var i = sinu_MAX_ITER; i; --i) {
+        var V = (this.m * lat + Math.sin(lat) - k) / (this.m + Math.cos(lat));
+        lat -= V;
+        if (Math.abs(V) < EPSLN) {
+          break;
+        }
+      }
+    }
+    x = this.a * this.C_x * lon * (this.m + Math.cos(lat));
+    y = this.a * this.C_y * lat;
+
+  }
+  else {
+
+    var s = Math.sin(lat);
+    var c = Math.cos(lat);
+    y = this.a * pj_mlfn(lat, s, c, this.en);
+    x = this.a * lon * c / Math.sqrt(1 - this.es * s * s);
+  }
+
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+function sinu_inverse(p) {
+  var lat, temp, lon, s;
+
+  p.x -= this.x0;
+  lon = p.x / this.a;
+  p.y -= this.y0;
+  lat = p.y / this.a;
+
+  if (this.sphere) {
+    lat /= this.C_y;
+    lon = lon / (this.C_x * (this.m + Math.cos(lat)));
+    if (this.m) {
+      lat = asinz((this.m * lat + Math.sin(lat)) / this.n);
+    }
+    else if (this.n !== 1) {
+      lat = asinz(Math.sin(lat) / this.n);
+    }
+    lon = adjust_lon(lon + this.long0);
+    lat = adjust_lat(lat);
+  }
+  else {
+    lat = pj_inv_mlfn(p.y / this.a, this.es, this.en);
+    s = Math.abs(lat);
+    if (s < HALF_PI) {
+      s = Math.sin(lat);
+      temp = this.long0 + p.x * Math.sqrt(1 - this.es * s * s) / (this.a * Math.cos(lat));
+      //temp = this.long0 + p.x / (this.a * Math.cos(lat));
+      lon = adjust_lon(temp);
+    }
+    else if ((s - EPSLN) < HALF_PI) {
+      lon = this.long0;
+    }
+  }
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var sinu_names = ["Sinusoidal", "sinu"];
+/* harmony default export */ const sinu = ({
+  init: sinu_init,
+  forward: sinu_forward,
+  inverse: sinu_inverse,
+  names: sinu_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/moll.js
+
+function moll_init() {}
+
+/* Mollweide forward equations--mapping lat,long to x,y
+    ----------------------------------------------------*/
+function moll_forward(p) {
+
+  /* Forward equations
+      -----------------*/
+  var lon = p.x;
+  var lat = p.y;
+
+  var delta_lon = adjust_lon(lon - this.long0);
+  var theta = lat;
+  var con = Math.PI * Math.sin(lat);
+
+  /* Iterate using the Newton-Raphson method to find theta
+      -----------------------------------------------------*/
+  while (true) {
+    var delta_theta = -(theta + Math.sin(theta) - con) / (1 + Math.cos(theta));
+    theta += delta_theta;
+    if (Math.abs(delta_theta) < EPSLN) {
+      break;
+    }
+  }
+  theta /= 2;
+
+  /* If the latitude is 90 deg, force the x coordinate to be "0 + false easting"
+       this is done here because of precision problems with "cos(theta)"
+       --------------------------------------------------------------------------*/
+  if (Math.PI / 2 - Math.abs(lat) < EPSLN) {
+    delta_lon = 0;
+  }
+  var x = 0.900316316158 * this.a * delta_lon * Math.cos(theta) + this.x0;
+  var y = 1.4142135623731 * this.a * Math.sin(theta) + this.y0;
+
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+function moll_inverse(p) {
+  var theta;
+  var arg;
+
+  /* Inverse equations
+      -----------------*/
+  p.x -= this.x0;
+  p.y -= this.y0;
+  arg = p.y / (1.4142135623731 * this.a);
+
+  /* Because of division by zero problems, 'arg' can not be 1.  Therefore
+       a number very close to one is used instead.
+       -------------------------------------------------------------------*/
+  if (Math.abs(arg) > 0.999999999999) {
+    arg = 0.999999999999;
+  }
+  theta = Math.asin(arg);
+  var lon = adjust_lon(this.long0 + (p.x / (0.900316316158 * this.a * Math.cos(theta))));
+  if (lon < (-Math.PI)) {
+    lon = -Math.PI;
+  }
+  if (lon > Math.PI) {
+    lon = Math.PI;
+  }
+  arg = (2 * theta + Math.sin(2 * theta)) / Math.PI;
+  if (Math.abs(arg) > 1) {
+    arg = 1;
+  }
+  var lat = Math.asin(arg);
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var moll_names = ["Mollweide", "moll"];
+/* harmony default export */ const moll = ({
+  init: moll_init,
+  forward: moll_forward,
+  inverse: moll_inverse,
+  names: moll_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/eqdc.js
+
+
+
+
+
+
+
+
+
+
+
+function eqdc_init() {
+
+  /* Place parameters in static storage for common use
+      -------------------------------------------------*/
+  // Standard Parallels cannot be equal and on opposite sides of the equator
+  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
+    return;
+  }
+  this.lat2 = this.lat2 || this.lat1;
+  this.temp = this.b / this.a;
+  this.es = 1 - Math.pow(this.temp, 2);
+  this.e = Math.sqrt(this.es);
+  this.e0 = e0fn(this.es);
+  this.e1 = e1fn(this.es);
+  this.e2 = e2fn(this.es);
+  this.e3 = e3fn(this.es);
+
+  this.sinphi = Math.sin(this.lat1);
+  this.cosphi = Math.cos(this.lat1);
+
+  this.ms1 = msfnz(this.e, this.sinphi, this.cosphi);
+  this.ml1 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat1);
+
+  if (Math.abs(this.lat1 - this.lat2) < EPSLN) {
+    this.ns = this.sinphi;
+  }
+  else {
+    this.sinphi = Math.sin(this.lat2);
+    this.cosphi = Math.cos(this.lat2);
+    this.ms2 = msfnz(this.e, this.sinphi, this.cosphi);
+    this.ml2 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat2);
+    this.ns = (this.ms1 - this.ms2) / (this.ml2 - this.ml1);
+  }
+  this.g = this.ml1 + this.ms1 / this.ns;
+  this.ml0 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
+  this.rh = this.a * (this.g - this.ml0);
+}
+
+/* Equidistant Conic forward equations--mapping lat,long to x,y
+  -----------------------------------------------------------*/
+function eqdc_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  var rh1;
+
+  /* Forward equations
+      -----------------*/
+  if (this.sphere) {
+    rh1 = this.a * (this.g - lat);
+  }
+  else {
+    var ml = mlfn(this.e0, this.e1, this.e2, this.e3, lat);
+    rh1 = this.a * (this.g - ml);
+  }
+  var theta = this.ns * adjust_lon(lon - this.long0);
+  var x = this.x0 + rh1 * Math.sin(theta);
+  var y = this.y0 + this.rh - rh1 * Math.cos(theta);
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+/* Inverse equations
+  -----------------*/
+function eqdc_inverse(p) {
+  p.x -= this.x0;
+  p.y = this.rh - p.y + this.y0;
+  var con, rh1, lat, lon;
+  if (this.ns >= 0) {
+    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
+    con = 1;
+  }
+  else {
+    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
+    con = -1;
+  }
+  var theta = 0;
+  if (rh1 !== 0) {
+    theta = Math.atan2(con * p.x, con * p.y);
+  }
+
+  if (this.sphere) {
+    lon = adjust_lon(this.long0 + theta / this.ns);
+    lat = adjust_lat(this.g - rh1 / this.a);
+    p.x = lon;
+    p.y = lat;
+    return p;
+  }
+  else {
+    var ml = this.g - rh1 / this.a;
+    lat = imlfn(ml, this.e0, this.e1, this.e2, this.e3);
+    lon = adjust_lon(this.long0 + theta / this.ns);
+    p.x = lon;
+    p.y = lat;
+    return p;
+  }
+
+}
+
+var eqdc_names = ["Equidistant_Conic", "eqdc"];
+/* harmony default export */ const eqdc = ({
+  init: eqdc_init,
+  forward: eqdc_forward,
+  inverse: eqdc_inverse,
+  names: eqdc_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/vandg.js
+
+
+
+
+
+
+/* Initialize the Van Der Grinten projection
+  ----------------------------------------*/
+function vandg_init() {
+  //this.R = 6370997; //Radius of earth
+  this.R = this.a;
+}
+
+function vandg_forward(p) {
+
+  var lon = p.x;
+  var lat = p.y;
+
+  /* Forward equations
+    -----------------*/
+  var dlon = adjust_lon(lon - this.long0);
+  var x, y;
+
+  if (Math.abs(lat) <= EPSLN) {
+    x = this.x0 + this.R * dlon;
+    y = this.y0;
+  }
+  var theta = asinz(2 * Math.abs(lat / Math.PI));
+  if ((Math.abs(dlon) <= EPSLN) || (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN)) {
+    x = this.x0;
+    if (lat >= 0) {
+      y = this.y0 + Math.PI * this.R * Math.tan(0.5 * theta);
+    }
+    else {
+      y = this.y0 + Math.PI * this.R * -Math.tan(0.5 * theta);
+    }
+    //  return(OK);
+  }
+  var al = 0.5 * Math.abs((Math.PI / dlon) - (dlon / Math.PI));
+  var asq = al * al;
+  var sinth = Math.sin(theta);
+  var costh = Math.cos(theta);
+
+  var g = costh / (sinth + costh - 1);
+  var gsq = g * g;
+  var m = g * (2 / sinth - 1);
+  var msq = m * m;
+  var con = Math.PI * this.R * (al * (g - msq) + Math.sqrt(asq * (g - msq) * (g - msq) - (msq + asq) * (gsq - msq))) / (msq + asq);
+  if (dlon < 0) {
+    con = -con;
+  }
+  x = this.x0 + con;
+  //con = Math.abs(con / (Math.PI * this.R));
+  var q = asq + g;
+  con = Math.PI * this.R * (m * q - al * Math.sqrt((msq + asq) * (asq + 1) - q * q)) / (msq + asq);
+  if (lat >= 0) {
+    //y = this.y0 + Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
+    y = this.y0 + con;
+  }
+  else {
+    //y = this.y0 - Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
+    y = this.y0 - con;
+  }
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+/* Van Der Grinten inverse equations--mapping x,y to lat/long
+  ---------------------------------------------------------*/
+function vandg_inverse(p) {
+  var lon, lat;
+  var xx, yy, xys, c1, c2, c3;
+  var a1;
+  var m1;
+  var con;
+  var th1;
+  var d;
+
+  /* inverse equations
+    -----------------*/
+  p.x -= this.x0;
+  p.y -= this.y0;
+  con = Math.PI * this.R;
+  xx = p.x / con;
+  yy = p.y / con;
+  xys = xx * xx + yy * yy;
+  c1 = -Math.abs(yy) * (1 + xys);
+  c2 = c1 - 2 * yy * yy + xx * xx;
+  c3 = -2 * c1 + 1 + 2 * yy * yy + xys * xys;
+  d = yy * yy / c3 + (2 * c2 * c2 * c2 / c3 / c3 / c3 - 9 * c1 * c2 / c3 / c3) / 27;
+  a1 = (c1 - c2 * c2 / 3 / c3) / c3;
+  m1 = 2 * Math.sqrt(-a1 / 3);
+  con = ((3 * d) / a1) / m1;
+  if (Math.abs(con) > 1) {
+    if (con >= 0) {
+      con = 1;
+    }
+    else {
+      con = -1;
+    }
+  }
+  th1 = Math.acos(con) / 3;
+  if (p.y >= 0) {
+    lat = (-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
+  }
+  else {
+    lat = -(-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
+  }
+
+  if (Math.abs(xx) < EPSLN) {
+    lon = this.long0;
+  }
+  else {
+    lon = adjust_lon(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
+  }
+
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var vandg_names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
+/* harmony default export */ const vandg = ({
+  init: vandg_init,
+  forward: vandg_forward,
+  inverse: vandg_inverse,
+  names: vandg_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/aeqd.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function aeqd_init() {
+  this.sin_p12 = Math.sin(this.lat0);
+  this.cos_p12 = Math.cos(this.lat0);
+}
+
+function aeqd_forward(p) {
+  var lon = p.x;
+  var lat = p.y;
+  var sinphi = Math.sin(p.y);
+  var cosphi = Math.cos(p.y);
+  var dlon = adjust_lon(lon - this.long0);
+  var e0, e1, e2, e3, Mlp, Ml, tanphi, Nl1, Nl, psi, Az, G, H, GH, Hs, c, kp, cos_c, s, s2, s3, s4, s5;
+  if (this.sphere) {
+    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
+      //North Pole case
+      p.x = this.x0 + this.a * (HALF_PI - lat) * Math.sin(dlon);
+      p.y = this.y0 - this.a * (HALF_PI - lat) * Math.cos(dlon);
+      return p;
+    }
+    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
+      //South Pole case
+      p.x = this.x0 + this.a * (HALF_PI + lat) * Math.sin(dlon);
+      p.y = this.y0 + this.a * (HALF_PI + lat) * Math.cos(dlon);
+      return p;
+    }
+    else {
+      //default case
+      cos_c = this.sin_p12 * sinphi + this.cos_p12 * cosphi * Math.cos(dlon);
+      c = Math.acos(cos_c);
+      kp = c ? c / Math.sin(c) : 1;
+      p.x = this.x0 + this.a * kp * cosphi * Math.sin(dlon);
+      p.y = this.y0 + this.a * kp * (this.cos_p12 * sinphi - this.sin_p12 * cosphi * Math.cos(dlon));
+      return p;
+    }
+  }
+  else {
+    e0 = e0fn(this.es);
+    e1 = e1fn(this.es);
+    e2 = e2fn(this.es);
+    e3 = e3fn(this.es);
+    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
+      //North Pole case
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
+      p.x = this.x0 + (Mlp - Ml) * Math.sin(dlon);
+      p.y = this.y0 - (Mlp - Ml) * Math.cos(dlon);
+      return p;
+    }
+    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
+      //South Pole case
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
+      p.x = this.x0 + (Mlp + Ml) * Math.sin(dlon);
+      p.y = this.y0 + (Mlp + Ml) * Math.cos(dlon);
+      return p;
+    }
+    else {
+      //Default case
+      tanphi = sinphi / cosphi;
+      Nl1 = gN(this.a, this.e, this.sin_p12);
+      Nl = gN(this.a, this.e, sinphi);
+      psi = Math.atan((1 - this.es) * tanphi + this.es * Nl1 * this.sin_p12 / (Nl * cosphi));
+      Az = Math.atan2(Math.sin(dlon), this.cos_p12 * Math.tan(psi) - this.sin_p12 * Math.cos(dlon));
+      if (Az === 0) {
+        s = Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
+      }
+      else if (Math.abs(Math.abs(Az) - Math.PI) <= EPSLN) {
+        s = -Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
+      }
+      else {
+        s = Math.asin(Math.sin(dlon) * Math.cos(psi) / Math.sin(Az));
+      }
+      G = this.e * this.sin_p12 / Math.sqrt(1 - this.es);
+      H = this.e * this.cos_p12 * Math.cos(Az) / Math.sqrt(1 - this.es);
+      GH = G * H;
+      Hs = H * H;
+      s2 = s * s;
+      s3 = s2 * s;
+      s4 = s3 * s;
+      s5 = s4 * s;
+      c = Nl1 * s * (1 - s2 * Hs * (1 - Hs) / 6 + s3 / 8 * GH * (1 - 2 * Hs) + s4 / 120 * (Hs * (4 - 7 * Hs) - 3 * G * G * (1 - 7 * Hs)) - s5 / 48 * GH);
+      p.x = this.x0 + c * Math.sin(Az);
+      p.y = this.y0 + c * Math.cos(Az);
+      return p;
+    }
+  }
+
+
+}
+
+function aeqd_inverse(p) {
+  p.x -= this.x0;
+  p.y -= this.y0;
+  var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F, sinpsi;
+  if (this.sphere) {
+    rh = Math.sqrt(p.x * p.x + p.y * p.y);
+    if (rh > (2 * HALF_PI * this.a)) {
+      return;
+    }
+    z = rh / this.a;
+
+    sinz = Math.sin(z);
+    cosz = Math.cos(z);
+
+    lon = this.long0;
+    if (Math.abs(rh) <= EPSLN) {
+      lat = this.lat0;
+    }
+    else {
+      lat = asinz(cosz * this.sin_p12 + (p.y * sinz * this.cos_p12) / rh);
+      con = Math.abs(this.lat0) - HALF_PI;
+      if (Math.abs(con) <= EPSLN) {
+        if (this.lat0 >= 0) {
+          lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
+        }
+        else {
+          lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
+        }
+      }
+      else {
+        /*con = cosz - this.sin_p12 * Math.sin(lat);
+        if ((Math.abs(con) < EPSLN) && (Math.abs(p.x) < EPSLN)) {
+          //no-op, just keep the lon value as is
+        } else {
+          var temp = Math.atan2((p.x * sinz * this.cos_p12), (con * rh));
+          lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz * this.cos_p12), (con * rh)));
+        }*/
+        lon = adjust_lon(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
+      }
+    }
+
+    p.x = lon;
+    p.y = lat;
+    return p;
+  }
+  else {
+    e0 = e0fn(this.es);
+    e1 = e1fn(this.es);
+    e2 = e2fn(this.es);
+    e3 = e3fn(this.es);
+    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
+      //North pole case
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+      rh = Math.sqrt(p.x * p.x + p.y * p.y);
+      M = Mlp - rh;
+      lat = imlfn(M / this.a, e0, e1, e2, e3);
+      lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
+      p.x = lon;
+      p.y = lat;
+      return p;
+    }
+    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
+      //South pole case
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+      rh = Math.sqrt(p.x * p.x + p.y * p.y);
+      M = rh - Mlp;
+
+      lat = imlfn(M / this.a, e0, e1, e2, e3);
+      lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
+      p.x = lon;
+      p.y = lat;
+      return p;
+    }
+    else {
+      //default case
+      rh = Math.sqrt(p.x * p.x + p.y * p.y);
+      Az = Math.atan2(p.x, p.y);
+      N1 = gN(this.a, this.e, this.sin_p12);
+      cosAz = Math.cos(Az);
+      tmp = this.e * this.cos_p12 * cosAz;
+      A = -tmp * tmp / (1 - this.es);
+      B = 3 * this.es * (1 - A) * this.sin_p12 * this.cos_p12 * cosAz / (1 - this.es);
+      D = rh / N1;
+      Ee = D - A * (1 + A) * Math.pow(D, 3) / 6 - B * (1 + 3 * A) * Math.pow(D, 4) / 24;
+      F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
+      psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
+      lon = adjust_lon(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
+      sinpsi = Math.sin(psi);
+      lat = Math.atan2((sinpsi - this.es * F * this.sin_p12) * Math.tan(psi), sinpsi * (1 - this.es));
+      p.x = lon;
+      p.y = lat;
+      return p;
+    }
+  }
+
+}
+
+var aeqd_names = ["Azimuthal_Equidistant", "aeqd"];
+/* harmony default export */ const aeqd = ({
+  init: aeqd_init,
+  forward: aeqd_forward,
+  inverse: aeqd_inverse,
+  names: aeqd_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/ortho.js
+
+
+
+
+function ortho_init() {
+  //double temp;      /* temporary variable    */
+
+  /* Place parameters in static storage for common use
+      -------------------------------------------------*/
+  this.sin_p14 = Math.sin(this.lat0);
+  this.cos_p14 = Math.cos(this.lat0);
+}
+
+/* Orthographic forward equations--mapping lat,long to x,y
+    ---------------------------------------------------*/
+function ortho_forward(p) {
+  var sinphi, cosphi; /* sin and cos value        */
+  var dlon; /* delta longitude value      */
+  var coslon; /* cos of longitude        */
+  var ksp; /* scale factor          */
+  var g, x, y;
+  var lon = p.x;
+  var lat = p.y;
+  /* Forward equations
+      -----------------*/
+  dlon = adjust_lon(lon - this.long0);
+
+  sinphi = Math.sin(lat);
+  cosphi = Math.cos(lat);
+
+  coslon = Math.cos(dlon);
+  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
+  ksp = 1;
+  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
+    x = this.a * ksp * cosphi * Math.sin(dlon);
+    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
+  }
+  p.x = x;
+  p.y = y;
+  return p;
+}
+
+function ortho_inverse(p) {
+  var rh; /* height above ellipsoid      */
+  var z; /* angle          */
+  var sinz, cosz; /* sin of z and cos of z      */
+  var con;
+  var lon, lat;
+  /* Inverse equations
+      -----------------*/
+  p.x -= this.x0;
+  p.y -= this.y0;
+  rh = Math.sqrt(p.x * p.x + p.y * p.y);
+  z = asinz(rh / this.a);
+
+  sinz = Math.sin(z);
+  cosz = Math.cos(z);
+
+  lon = this.long0;
+  if (Math.abs(rh) <= EPSLN) {
+    lat = this.lat0;
+    p.x = lon;
+    p.y = lat;
+    return p;
+  }
+  lat = asinz(cosz * this.sin_p14 + (p.y * sinz * this.cos_p14) / rh);
+  con = Math.abs(this.lat0) - HALF_PI;
+  if (Math.abs(con) <= EPSLN) {
+    if (this.lat0 >= 0) {
+      lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
+    }
+    else {
+      lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
+    }
+    p.x = lon;
+    p.y = lat;
+    return p;
+  }
+  lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz), rh * this.cos_p14 * cosz - p.y * this.sin_p14 * sinz));
+  p.x = lon;
+  p.y = lat;
+  return p;
+}
+
+var ortho_names = ["ortho"];
+/* harmony default export */ const ortho = ({
+  init: ortho_init,
+  forward: ortho_forward,
+  inverse: ortho_inverse,
+  names: ortho_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/qsc.js
+// QSC projection rewritten from the original PROJ4
+// https://github.com/OSGeo/proj.4/blob/master/src/PJ_qsc.c
+
+
+
+/* constants */
+var FACE_ENUM = {
+    FRONT: 1,
+    RIGHT: 2,
+    BACK: 3,
+    LEFT: 4,
+    TOP: 5,
+    BOTTOM: 6
+};
+
+var AREA_ENUM = {
+    AREA_0: 1,
+    AREA_1: 2,
+    AREA_2: 3,
+    AREA_3: 4
+};
+
+function qsc_init() {
+
+  this.x0 = this.x0 || 0;
+  this.y0 = this.y0 || 0;
+  this.lat0 = this.lat0 || 0;
+  this.long0 = this.long0 || 0;
+  this.lat_ts = this.lat_ts || 0;
+  this.title = this.title || "Quadrilateralized Spherical Cube";
+
+  /* Determine the cube face from the center of projection. */
+  if (this.lat0 >= HALF_PI - FORTPI / 2.0) {
+    this.face = FACE_ENUM.TOP;
+  } else if (this.lat0 <= -(HALF_PI - FORTPI / 2.0)) {
+    this.face = FACE_ENUM.BOTTOM;
+  } else if (Math.abs(this.long0) <= FORTPI) {
+    this.face = FACE_ENUM.FRONT;
+  } else if (Math.abs(this.long0) <= HALF_PI + FORTPI) {
+    this.face = this.long0 > 0.0 ? FACE_ENUM.RIGHT : FACE_ENUM.LEFT;
+  } else {
+    this.face = FACE_ENUM.BACK;
+  }
+
+  /* Fill in useful values for the ellipsoid <-> sphere shift
+   * described in [LK12]. */
+  if (this.es !== 0) {
+    this.one_minus_f = 1 - (this.a - this.b) / this.a;
+    this.one_minus_f_squared = this.one_minus_f * this.one_minus_f;
+  }
+}
+
+// QSC forward equations--mapping lat,long to x,y
+// -----------------------------------------------------------------
+function qsc_forward(p) {
+  var xy = {x: 0, y: 0};
+  var lat, lon;
+  var theta, phi;
+  var t, mu;
+  /* nu; */
+  var area = {value: 0};
+
+  // move lon according to projection's lon
+  p.x -= this.long0;
+
+  /* Convert the geodetic latitude to a geocentric latitude.
+   * This corresponds to the shift from the ellipsoid to the sphere
+   * described in [LK12]. */
+  if (this.es !== 0) {//if (P->es != 0) {
+    lat = Math.atan(this.one_minus_f_squared * Math.tan(p.y));
+  } else {
+    lat = p.y;
+  }
+
+  /* Convert the input lat, lon into theta, phi as used by QSC.
+   * This depends on the cube face and the area on it.
+   * For the top and bottom face, we can compute theta and phi
+   * directly from phi, lam. For the other faces, we must use
+   * unit sphere cartesian coordinates as an intermediate step. */
+  lon = p.x; //lon = lp.lam;
+  if (this.face === FACE_ENUM.TOP) {
+    phi = HALF_PI - lat;
+    if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
+      area.value = AREA_ENUM.AREA_0;
+      theta = lon - HALF_PI;
+    } else if (lon > HALF_PI + FORTPI || lon <= -(HALF_PI + FORTPI)) {
+      area.value = AREA_ENUM.AREA_1;
+      theta = (lon > 0.0 ? lon - SPI : lon + SPI);
+    } else if (lon > -(HALF_PI + FORTPI) && lon <= -FORTPI) {
+      area.value = AREA_ENUM.AREA_2;
+      theta = lon + HALF_PI;
+    } else {
+      area.value = AREA_ENUM.AREA_3;
+      theta = lon;
+    }
+  } else if (this.face === FACE_ENUM.BOTTOM) {
+    phi = HALF_PI + lat;
+    if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
+      area.value = AREA_ENUM.AREA_0;
+      theta = -lon + HALF_PI;
+    } else if (lon < FORTPI && lon >= -FORTPI) {
+      area.value = AREA_ENUM.AREA_1;
+      theta = -lon;
+    } else if (lon < -FORTPI && lon >= -(HALF_PI + FORTPI)) {
+      area.value = AREA_ENUM.AREA_2;
+      theta = -lon - HALF_PI;
+    } else {
+      area.value = AREA_ENUM.AREA_3;
+      theta = (lon > 0.0 ? -lon + SPI : -lon - SPI);
+    }
+  } else {
+    var q, r, s;
+    var sinlat, coslat;
+    var sinlon, coslon;
+
+    if (this.face === FACE_ENUM.RIGHT) {
+      lon = qsc_shift_lon_origin(lon, +HALF_PI);
+    } else if (this.face === FACE_ENUM.BACK) {
+      lon = qsc_shift_lon_origin(lon, +SPI);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      lon = qsc_shift_lon_origin(lon, -HALF_PI);
+    }
+    sinlat = Math.sin(lat);
+    coslat = Math.cos(lat);
+    sinlon = Math.sin(lon);
+    coslon = Math.cos(lon);
+    q = coslat * coslon;
+    r = coslat * sinlon;
+    s = sinlat;
+
+    if (this.face === FACE_ENUM.FRONT) {
+      phi = Math.acos(q);
+      theta = qsc_fwd_equat_face_theta(phi, s, r, area);
+    } else if (this.face === FACE_ENUM.RIGHT) {
+      phi = Math.acos(r);
+      theta = qsc_fwd_equat_face_theta(phi, s, -q, area);
+    } else if (this.face === FACE_ENUM.BACK) {
+      phi = Math.acos(-q);
+      theta = qsc_fwd_equat_face_theta(phi, s, -r, area);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      phi = Math.acos(-r);
+      theta = qsc_fwd_equat_face_theta(phi, s, q, area);
+    } else {
+      /* Impossible */
+      phi = theta = 0;
+      area.value = AREA_ENUM.AREA_0;
+    }
+  }
+
+  /* Compute mu and nu for the area of definition.
+   * For mu, see Eq. (3-21) in [OL76], but note the typos:
+   * compare with Eq. (3-14). For nu, see Eq. (3-38). */
+  mu = Math.atan((12 / SPI) * (theta + Math.acos(Math.sin(theta) * Math.cos(FORTPI)) - HALF_PI));
+  t = Math.sqrt((1 - Math.cos(phi)) / (Math.cos(mu) * Math.cos(mu)) / (1 - Math.cos(Math.atan(1 / Math.cos(theta)))));
+
+  /* Apply the result to the real area. */
+  if (area.value === AREA_ENUM.AREA_1) {
+    mu += HALF_PI;
+  } else if (area.value === AREA_ENUM.AREA_2) {
+    mu += SPI;
+  } else if (area.value === AREA_ENUM.AREA_3) {
+    mu += 1.5 * SPI;
+  }
+
+  /* Now compute x, y from mu and nu */
+  xy.x = t * Math.cos(mu);
+  xy.y = t * Math.sin(mu);
+  xy.x = xy.x * this.a + this.x0;
+  xy.y = xy.y * this.a + this.y0;
+
+  p.x = xy.x;
+  p.y = xy.y;
+  return p;
+}
+
+// QSC inverse equations--mapping x,y to lat/long
+// -----------------------------------------------------------------
+function qsc_inverse(p) {
+  var lp = {lam: 0, phi: 0};
+  var mu, nu, cosmu, tannu;
+  var tantheta, theta, cosphi, phi;
+  var t;
+  var area = {value: 0};
+
+  /* de-offset */
+  p.x = (p.x - this.x0) / this.a;
+  p.y = (p.y - this.y0) / this.a;
+
+  /* Convert the input x, y to the mu and nu angles as used by QSC.
+   * This depends on the area of the cube face. */
+  nu = Math.atan(Math.sqrt(p.x * p.x + p.y * p.y));
+  mu = Math.atan2(p.y, p.x);
+  if (p.x >= 0.0 && p.x >= Math.abs(p.y)) {
+    area.value = AREA_ENUM.AREA_0;
+  } else if (p.y >= 0.0 && p.y >= Math.abs(p.x)) {
+    area.value = AREA_ENUM.AREA_1;
+    mu -= HALF_PI;
+  } else if (p.x < 0.0 && -p.x >= Math.abs(p.y)) {
+    area.value = AREA_ENUM.AREA_2;
+    mu = (mu < 0.0 ? mu + SPI : mu - SPI);
+  } else {
+    area.value = AREA_ENUM.AREA_3;
+    mu += HALF_PI;
+  }
+
+  /* Compute phi and theta for the area of definition.
+   * The inverse projection is not described in the original paper, but some
+   * good hints can be found here (as of 2011-12-14):
+   * http://fits.gsfc.nasa.gov/fitsbits/saf.93/saf.9302
+   * (search for "Message-Id: <9302181759.AA25477 at fits.cv.nrao.edu>") */
+  t = (SPI / 12) * Math.tan(mu);
+  tantheta = Math.sin(t) / (Math.cos(t) - (1 / Math.sqrt(2)));
+  theta = Math.atan(tantheta);
+  cosmu = Math.cos(mu);
+  tannu = Math.tan(nu);
+  cosphi = 1 - cosmu * cosmu * tannu * tannu * (1 - Math.cos(Math.atan(1 / Math.cos(theta))));
+  if (cosphi < -1) {
+    cosphi = -1;
+  } else if (cosphi > +1) {
+    cosphi = +1;
+  }
+
+  /* Apply the result to the real area on the cube face.
+   * For the top and bottom face, we can compute phi and lam directly.
+   * For the other faces, we must use unit sphere cartesian coordinates
+   * as an intermediate step. */
+  if (this.face === FACE_ENUM.TOP) {
+    phi = Math.acos(cosphi);
+    lp.phi = HALF_PI - phi;
+    if (area.value === AREA_ENUM.AREA_0) {
+      lp.lam = theta + HALF_PI;
+    } else if (area.value === AREA_ENUM.AREA_1) {
+      lp.lam = (theta < 0.0 ? theta + SPI : theta - SPI);
+    } else if (area.value === AREA_ENUM.AREA_2) {
+      lp.lam = theta - HALF_PI;
+    } else /* area.value == AREA_ENUM.AREA_3 */ {
+      lp.lam = theta;
+    }
+  } else if (this.face === FACE_ENUM.BOTTOM) {
+    phi = Math.acos(cosphi);
+    lp.phi = phi - HALF_PI;
+    if (area.value === AREA_ENUM.AREA_0) {
+      lp.lam = -theta + HALF_PI;
+    } else if (area.value === AREA_ENUM.AREA_1) {
+      lp.lam = -theta;
+    } else if (area.value === AREA_ENUM.AREA_2) {
+      lp.lam = -theta - HALF_PI;
+    } else /* area.value == AREA_ENUM.AREA_3 */ {
+      lp.lam = (theta < 0.0 ? -theta - SPI : -theta + SPI);
+    }
+  } else {
+    /* Compute phi and lam via cartesian unit sphere coordinates. */
+    var q, r, s;
+    q = cosphi;
+    t = q * q;
+    if (t >= 1) {
+      s = 0;
+    } else {
+      s = Math.sqrt(1 - t) * Math.sin(theta);
+    }
+    t += s * s;
+    if (t >= 1) {
+      r = 0;
+    } else {
+      r = Math.sqrt(1 - t);
+    }
+    /* Rotate q,r,s into the correct area. */
+    if (area.value === AREA_ENUM.AREA_1) {
+      t = r;
+      r = -s;
+      s = t;
+    } else if (area.value === AREA_ENUM.AREA_2) {
+      r = -r;
+      s = -s;
+    } else if (area.value === AREA_ENUM.AREA_3) {
+      t = r;
+      r = s;
+      s = -t;
+    }
+    /* Rotate q,r,s into the correct cube face. */
+    if (this.face === FACE_ENUM.RIGHT) {
+      t = q;
+      q = -r;
+      r = t;
+    } else if (this.face === FACE_ENUM.BACK) {
+      q = -q;
+      r = -r;
+    } else if (this.face === FACE_ENUM.LEFT) {
+      t = q;
+      q = r;
+      r = -t;
+    }
+    /* Now compute phi and lam from the unit sphere coordinates. */
+    lp.phi = Math.acos(-s) - HALF_PI;
+    lp.lam = Math.atan2(r, q);
+    if (this.face === FACE_ENUM.RIGHT) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, -HALF_PI);
+    } else if (this.face === FACE_ENUM.BACK) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, -SPI);
+    } else if (this.face === FACE_ENUM.LEFT) {
+      lp.lam = qsc_shift_lon_origin(lp.lam, +HALF_PI);
+    }
+  }
+
+  /* Apply the shift from the sphere to the ellipsoid as described
+   * in [LK12]. */
+  if (this.es !== 0) {
+    var invert_sign;
+    var tanphi, xa;
+    invert_sign = (lp.phi < 0 ? 1 : 0);
+    tanphi = Math.tan(lp.phi);
+    xa = this.b / Math.sqrt(tanphi * tanphi + this.one_minus_f_squared);
+    lp.phi = Math.atan(Math.sqrt(this.a * this.a - xa * xa) / (this.one_minus_f * xa));
+    if (invert_sign) {
+      lp.phi = -lp.phi;
+    }
+  }
+
+  lp.lam += this.long0;
+  p.x = lp.lam;
+  p.y = lp.phi;
+  return p;
+}
+
+/* Helper function for forward projection: compute the theta angle
+ * and determine the area number. */
+function qsc_fwd_equat_face_theta(phi, y, x, area) {
+  var theta;
+  if (phi < EPSLN) {
+    area.value = AREA_ENUM.AREA_0;
+    theta = 0.0;
+  } else {
+    theta = Math.atan2(y, x);
+    if (Math.abs(theta) <= FORTPI) {
+      area.value = AREA_ENUM.AREA_0;
+    } else if (theta > FORTPI && theta <= HALF_PI + FORTPI) {
+      area.value = AREA_ENUM.AREA_1;
+      theta -= HALF_PI;
+    } else if (theta > HALF_PI + FORTPI || theta <= -(HALF_PI + FORTPI)) {
+      area.value = AREA_ENUM.AREA_2;
+      theta = (theta >= 0.0 ? theta - SPI : theta + SPI);
+    } else {
+      area.value = AREA_ENUM.AREA_3;
+      theta += HALF_PI;
+    }
+  }
+  return theta;
+}
+
+/* Helper function: shift the longitude. */
+function qsc_shift_lon_origin(lon, offset) {
+  var slon = lon + offset;
+  if (slon < -SPI) {
+    slon += TWO_PI;
+  } else if (slon > +SPI) {
+    slon -= TWO_PI;
+  }
+  return slon;
+}
+
+var qsc_names = ["Quadrilateralized Spherical Cube", "Quadrilateralized_Spherical_Cube", "qsc"];
+/* harmony default export */ const qsc = ({
+  init: qsc_init,
+  forward: qsc_forward,
+  inverse: qsc_inverse,
+  names: qsc_names
+});
+
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/robin.js
+// Robinson projection
+// Based on https://github.com/OSGeo/proj.4/blob/master/src/PJ_robin.c
+// Polynomial coeficients from http://article.gmane.org/gmane.comp.gis.proj-4.devel/6039
+
+
+
+
+var COEFS_X = [
+    [1.0000, 2.2199e-17, -7.15515e-05, 3.1103e-06],
+    [0.9986, -0.000482243, -2.4897e-05, -1.3309e-06],
+    [0.9954, -0.00083103, -4.48605e-05, -9.86701e-07],
+    [0.9900, -0.00135364, -5.9661e-05, 3.6777e-06],
+    [0.9822, -0.00167442, -4.49547e-06, -5.72411e-06],
+    [0.9730, -0.00214868, -9.03571e-05, 1.8736e-08],
+    [0.9600, -0.00305085, -9.00761e-05, 1.64917e-06],
+    [0.9427, -0.00382792, -6.53386e-05, -2.6154e-06],
+    [0.9216, -0.00467746, -0.00010457, 4.81243e-06],
+    [0.8962, -0.00536223, -3.23831e-05, -5.43432e-06],
+    [0.8679, -0.00609363, -0.000113898, 3.32484e-06],
+    [0.8350, -0.00698325, -6.40253e-05, 9.34959e-07],
+    [0.7986, -0.00755338, -5.00009e-05, 9.35324e-07],
+    [0.7597, -0.00798324, -3.5971e-05, -2.27626e-06],
+    [0.7186, -0.00851367, -7.01149e-05, -8.6303e-06],
+    [0.6732, -0.00986209, -0.000199569, 1.91974e-05],
+    [0.6213, -0.010418, 8.83923e-05, 6.24051e-06],
+    [0.5722, -0.00906601, 0.000182, 6.24051e-06],
+    [0.5322, -0.00677797, 0.000275608, 6.24051e-06]
+];
+
+var COEFS_Y = [
+    [-5.20417e-18, 0.0124, 1.21431e-18, -8.45284e-11],
+    [0.0620, 0.0124, -1.26793e-09, 4.22642e-10],
+    [0.1240, 0.0124, 5.07171e-09, -1.60604e-09],
+    [0.1860, 0.0123999, -1.90189e-08, 6.00152e-09],
+    [0.2480, 0.0124002, 7.10039e-08, -2.24e-08],
+    [0.3100, 0.0123992, -2.64997e-07, 8.35986e-08],
+    [0.3720, 0.0124029, 9.88983e-07, -3.11994e-07],
+    [0.4340, 0.0123893, -3.69093e-06, -4.35621e-07],
+    [0.4958, 0.0123198, -1.02252e-05, -3.45523e-07],
+    [0.5571, 0.0121916, -1.54081e-05, -5.82288e-07],
+    [0.6176, 0.0119938, -2.41424e-05, -5.25327e-07],
+    [0.6769, 0.011713, -3.20223e-05, -5.16405e-07],
+    [0.7346, 0.0113541, -3.97684e-05, -6.09052e-07],
+    [0.7903, 0.0109107, -4.89042e-05, -1.04739e-06],
+    [0.8435, 0.0103431, -6.4615e-05, -1.40374e-09],
+    [0.8936, 0.00969686, -6.4636e-05, -8.547e-06],
+    [0.9394, 0.00840947, -0.000192841, -4.2106e-06],
+    [0.9761, 0.00616527, -0.000256, -4.2106e-06],
+    [1.0000, 0.00328947, -0.000319159, -4.2106e-06]
+];
+
+var FXC = 0.8487;
+var FYC = 1.3523;
+var C1 = R2D/5; // rad to 5-degree interval
+var RC1 = 1/C1;
+var NODES = 18;
+
+var poly3_val = function(coefs, x) {
+    return coefs[0] + x * (coefs[1] + x * (coefs[2] + x * coefs[3]));
+};
+
+var poly3_der = function(coefs, x) {
+    return coefs[1] + x * (2 * coefs[2] + x * 3 * coefs[3]);
+};
+
+function newton_rapshon(f_df, start, max_err, iters) {
+    var x = start;
+    for (; iters; --iters) {
+        var upd = f_df(x);
+        x -= upd;
+        if (Math.abs(upd) < max_err) {
+            break;
+        }
+    }
+    return x;
+}
+
+function robin_init() {
+    this.x0 = this.x0 || 0;
+    this.y0 = this.y0 || 0;
+    this.long0 = this.long0 || 0;
+    this.es = 0;
+    this.title = this.title || "Robinson";
+}
+
+function robin_forward(ll) {
+    var lon = adjust_lon(ll.x - this.long0);
+
+    var dphi = Math.abs(ll.y);
+    var i = Math.floor(dphi * C1);
+    if (i < 0) {
+        i = 0;
+    } else if (i >= NODES) {
+        i = NODES - 1;
+    }
+    dphi = R2D * (dphi - RC1 * i);
+    var xy = {
+        x: poly3_val(COEFS_X[i], dphi) * lon,
+        y: poly3_val(COEFS_Y[i], dphi)
+    };
+    if (ll.y < 0) {
+        xy.y = -xy.y;
+    }
+
+    xy.x = xy.x * this.a * FXC + this.x0;
+    xy.y = xy.y * this.a * FYC + this.y0;
+    return xy;
+}
+
+function robin_inverse(xy) {
+    var ll = {
+        x: (xy.x - this.x0) / (this.a * FXC),
+        y: Math.abs(xy.y - this.y0) / (this.a * FYC)
+    };
+
+    if (ll.y >= 1) { // pathologic case
+        ll.x /= COEFS_X[NODES][0];
+        ll.y = xy.y < 0 ? -HALF_PI : HALF_PI;
+    } else {
+        // find table interval
+        var i = Math.floor(ll.y * NODES);
+        if (i < 0) {
+            i = 0;
+        } else if (i >= NODES) {
+            i = NODES - 1;
+        }
+        for (;;) {
+            if (COEFS_Y[i][0] > ll.y) {
+                --i;
+            } else if (COEFS_Y[i+1][0] <= ll.y) {
+                ++i;
+            } else {
+                break;
+            }
+        }
+        // linear interpolation in 5 degree interval
+        var coefs = COEFS_Y[i];
+        var t = 5 * (ll.y - coefs[0]) / (COEFS_Y[i+1][0] - coefs[0]);
+        // find t so that poly3_val(coefs, t) = ll.y
+        t = newton_rapshon(function(x) {
+            return (poly3_val(coefs, x) - ll.y) / poly3_der(coefs, x);
+        }, t, EPSLN, 100);
+
+        ll.x /= poly3_val(COEFS_X[i], t);
+        ll.y = (5 * i + t) * D2R;
+        if (xy.y < 0) {
+            ll.y = -ll.y;
+        }
+    }
+
+    ll.x = adjust_lon(ll.x + this.long0);
+    return ll;
+}
+
+var robin_names = ["Robinson", "robin"];
+/* harmony default export */ const robin = ({
+  init: robin_init,
+  forward: robin_forward,
+  inverse: robin_inverse,
+  names: robin_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geocent.js
+
+
+function geocent_init() {
+    this.name = 'geocent';
+
+}
+
+function geocent_forward(p) {
+    var point = geodeticToGeocentric(p, this.es, this.a);
+    return point;
+}
+
+function geocent_inverse(p) {
+    var point = geocentricToGeodetic(p, this.es, this.a, this.b);
+    return point;
+}
+
+var geocent_names = ["Geocentric", 'geocentric', "geocent", "Geocent"];
+/* harmony default export */ const geocent = ({
+    init: geocent_init,
+    forward: geocent_forward,
+    inverse: geocent_inverse,
+    names: geocent_names
+});
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/tpers.js
+
+var mode = {
+  N_POLE: 0,
+  S_POLE: 1,
+  EQUIT: 2,
+  OBLIQ: 3
+};
+
+
+
+
+var params = {
+  h:     { def: 100000, num: true },           // default is Karman line, no default in PROJ.7
+  azi:   { def: 0, num: true, degrees: true }, // default is North
+  tilt:  { def: 0, num: true, degrees: true }, // default is Nadir
+  long0: { def: 0, num: true },                // default is Greenwich, conversion to rad is automatic
+  lat0:  { def: 0, num: true }                 // default is Equator, conversion to rad is automatic
+};
+
+function tpers_init() {
+  Object.keys(params).forEach(function (p) {
+    if (typeof this[p] === "undefined") {
+      this[p] = params[p].def;
+    } else if (params[p].num && isNaN(this[p])) {
+      throw new Error("Invalid parameter value, must be numeric " + p + " = " + this[p]);
+    } else if (params[p].num) {
+      this[p] = parseFloat(this[p]);
+    }
+    if (params[p].degrees) {
+      this[p] = this[p] * D2R;
+    }
+  }.bind(this));
+
+  if (Math.abs((Math.abs(this.lat0) - HALF_PI)) < EPSLN) {
+    this.mode = this.lat0 < 0 ? mode.S_POLE : mode.N_POLE;
+  } else if (Math.abs(this.lat0) < EPSLN) {
+    this.mode = mode.EQUIT;
+  } else {
+    this.mode = mode.OBLIQ;
+    this.sinph0 = Math.sin(this.lat0);
+    this.cosph0 = Math.cos(this.lat0);
+  }
+
+  this.pn1 = this.h / this.a;  // Normalize relative to the Earth's radius
+
+  if (this.pn1 <= 0 || this.pn1 > 1e10) {
+    throw new Error("Invalid height");
+  }
+  
+  this.p = 1 + this.pn1;
+  this.rp = 1 / this.p;
+  this.h1 = 1 / this.pn1;
+  this.pfact = (this.p + 1) * this.h1;
+  this.es = 0;
+
+  var omega = this.tilt;
+  var gamma = this.azi;
+  this.cg = Math.cos(gamma);
+  this.sg = Math.sin(gamma);
+  this.cw = Math.cos(omega);
+  this.sw = Math.sin(omega);
+}
+
+function tpers_forward(p) {
+  p.x -= this.long0;
+  var sinphi = Math.sin(p.y);
+  var cosphi = Math.cos(p.y);
+  var coslam = Math.cos(p.x);
+  var x, y;
+  switch (this.mode) {
+    case mode.OBLIQ:
+      y = this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
+      break;
+    case mode.EQUIT:
+      y = cosphi * coslam;
+      break;
+    case mode.S_POLE:
+      y = -sinphi;
+      break;
+    case mode.N_POLE:
+      y = sinphi;
+      break;
+  }
+  y = this.pn1 / (this.p - y);
+  x = y * cosphi * Math.sin(p.x);
+
+  switch (this.mode) {
+    case mode.OBLIQ:
+      y *= this.cosph0 * sinphi - this.sinph0 * cosphi * coslam;
+      break;
+    case mode.EQUIT:
+      y *= sinphi;
+      break;
+    case mode.N_POLE:
+      y *= -(cosphi * coslam);
+      break;
+    case mode.S_POLE:
+      y *= cosphi * coslam;
+      break;
+  }
+
+  // Tilt 
+  var yt, ba;
+  yt = y * this.cg + x * this.sg;
+  ba = 1 / (yt * this.sw * this.h1 + this.cw);
+  x = (x * this.cg - y * this.sg) * this.cw * ba;
+  y = yt * ba;
+
+  p.x = x * this.a;
+  p.y = y * this.a;
+  return p;
+}
+
+function tpers_inverse(p) {
+  p.x /= this.a;
+  p.y /= this.a;
+  var r = { x: p.x, y: p.y };
+
+  // Un-Tilt
+  var bm, bq, yt;
+  yt = 1 / (this.pn1 - p.y * this.sw);
+  bm = this.pn1 * p.x * yt;
+  bq = this.pn1 * p.y * this.cw * yt;
+  p.x = bm * this.cg + bq * this.sg;
+  p.y = bq * this.cg - bm * this.sg;
+
+  var rh = hypot(p.x, p.y);
+  if (Math.abs(rh) < EPSLN) {
+    r.x = 0;
+    r.y = p.y;
+  } else {
+    var cosz, sinz;
+    sinz = 1 - rh * rh * this.pfact;
+    sinz = (this.p - Math.sqrt(sinz)) / (this.pn1 / rh + rh / this.pn1);
+    cosz = Math.sqrt(1 - sinz * sinz);
+    switch (this.mode) {
+      case mode.OBLIQ:
+        r.y = Math.asin(cosz * this.sinph0 + p.y * sinz * this.cosph0 / rh);
+        p.y = (cosz - this.sinph0 * Math.sin(r.y)) * rh;
+        p.x *= sinz * this.cosph0;
+        break;
+      case mode.EQUIT:
+        r.y = Math.asin(p.y * sinz / rh);
+        p.y = cosz * rh;
+        p.x *= sinz;
+        break;
+      case mode.N_POLE:
+        r.y = Math.asin(cosz);
+        p.y = -p.y;
+        break;
+      case mode.S_POLE:
+        r.y = -Math.asin(cosz);
+        break;
+    }
+    r.x = Math.atan2(p.x, p.y);
+  }
+
+  p.x = r.x + this.long0;
+  p.y = r.y;
+  return p;
+}
+
+var tpers_names = ["Tilted_Perspective", "tpers"];
+/* harmony default export */ const tpers = ({
+  init: tpers_init,
+  forward: tpers_forward,
+  inverse: tpers_inverse,
+  names: tpers_names
+});
+
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/projections/geos.js
+
+
+function geos_init() {
+    this.flip_axis = (this.sweep === 'x' ? 1 : 0);
+    this.h = Number(this.h);
+    this.radius_g_1 = this.h / this.a;
+
+    if (this.radius_g_1 <= 0 || this.radius_g_1 > 1e10) {
+        throw new Error();
+    }
+
+    this.radius_g = 1.0 + this.radius_g_1;
+    this.C = this.radius_g * this.radius_g - 1.0;
+
+    if (this.es !== 0.0) {
+        var one_es = 1.0 - this.es;
+        var rone_es = 1 / one_es;
+
+        this.radius_p = Math.sqrt(one_es);
+        this.radius_p2 = one_es;
+        this.radius_p_inv2 = rone_es;
+
+        this.shape = 'ellipse'; // Use as a condition in the forward and inverse functions.
+    } else {
+        this.radius_p = 1.0;
+        this.radius_p2 = 1.0;
+        this.radius_p_inv2 = 1.0;
+
+        this.shape = 'sphere';  // Use as a condition in the forward and inverse functions.
+    }
+
+    if (!this.title) {
+        this.title = "Geostationary Satellite View";
+    }
+}
+
+function geos_forward(p) {
+    var lon = p.x;
+    var lat = p.y;
+    var tmp, v_x, v_y, v_z;
+    lon = lon - this.long0;
+
+    if (this.shape === 'ellipse') {
+        lat = Math.atan(this.radius_p2 * Math.tan(lat));
+        var r = this.radius_p / hypot(this.radius_p * Math.cos(lat), Math.sin(lat));
+
+        v_x = r * Math.cos(lon) * Math.cos(lat);
+        v_y = r * Math.sin(lon) * Math.cos(lat);
+        v_z = r * Math.sin(lat);
+
+        if (((this.radius_g - v_x) * v_x - v_y * v_y - v_z * v_z * this.radius_p_inv2) < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        tmp = this.radius_g - v_x;
+        if (this.flip_axis) {
+            p.x = this.radius_g_1 * Math.atan(v_y / hypot(v_z, tmp));
+            p.y = this.radius_g_1 * Math.atan(v_z / tmp);
+        } else {
+            p.x = this.radius_g_1 * Math.atan(v_y / tmp);
+            p.y = this.radius_g_1 * Math.atan(v_z / hypot(v_y, tmp));
+        }
+    } else if (this.shape === 'sphere') {
+        tmp = Math.cos(lat);
+        v_x = Math.cos(lon) * tmp;
+        v_y = Math.sin(lon) * tmp;
+        v_z = Math.sin(lat);
+        tmp = this.radius_g - v_x;
+
+        if (this.flip_axis) {
+            p.x = this.radius_g_1 * Math.atan(v_y / hypot(v_z, tmp));
+            p.y = this.radius_g_1 * Math.atan(v_z / tmp);
+        } else {
+            p.x = this.radius_g_1 * Math.atan(v_y / tmp);
+            p.y = this.radius_g_1 * Math.atan(v_z / hypot(v_y, tmp));
+        }
+    }
+    p.x = p.x * this.a;
+    p.y = p.y * this.a;
+    return p;
+}
+
+function geos_inverse(p) {
+    var v_x = -1.0;
+    var v_y = 0.0;
+    var v_z = 0.0;
+    var a, b, det, k;
+
+    p.x = p.x / this.a;
+    p.y = p.y / this.a;
+
+    if (this.shape === 'ellipse') {
+        if (this.flip_axis) {
+            v_z = Math.tan(p.y / this.radius_g_1);
+            v_y = Math.tan(p.x / this.radius_g_1) * hypot(1.0, v_z);
+        } else {
+            v_y = Math.tan(p.x / this.radius_g_1);
+            v_z = Math.tan(p.y / this.radius_g_1) * hypot(1.0, v_y);
+        }
+
+        var v_zp = v_z / this.radius_p;
+        a = v_y * v_y + v_zp * v_zp + v_x * v_x;
+        b = 2 * this.radius_g * v_x;
+        det = (b * b) - 4 * a * this.C;
+
+        if (det < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        k = (-b - Math.sqrt(det)) / (2.0 * a);
+        v_x = this.radius_g + k * v_x;
+        v_y *= k;
+        v_z *= k;
+
+        p.x = Math.atan2(v_y, v_x);
+        p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
+        p.y = Math.atan(this.radius_p_inv2 * Math.tan(p.y));
+    } else if (this.shape === 'sphere') {
+        if (this.flip_axis) {
+            v_z = Math.tan(p.y / this.radius_g_1);
+            v_y = Math.tan(p.x / this.radius_g_1) * Math.sqrt(1.0 + v_z * v_z);
+        } else {
+            v_y = Math.tan(p.x / this.radius_g_1);
+            v_z = Math.tan(p.y / this.radius_g_1) * Math.sqrt(1.0 + v_y * v_y);
+        }
+
+        a = v_y * v_y + v_z * v_z + v_x * v_x;
+        b = 2 * this.radius_g * v_x;
+        det = (b * b) - 4 * a * this.C;
+        if (det < 0.0) {
+            p.x = Number.NaN;
+            p.y = Number.NaN;
+            return p;
+        }
+
+        k = (-b - Math.sqrt(det)) / (2.0 * a);
+        v_x = this.radius_g + k * v_x;
+        v_y *= k;
+        v_z *= k;
+
+        p.x = Math.atan2(v_y, v_x);
+        p.y = Math.atan(v_z * Math.cos(p.x) / v_x);
+    }
+    p.x = p.x + this.long0;
+    return p;
+}
+
+var geos_names = ["Geostationary Satellite View", "Geostationary_Satellite", "geos"];
+/* harmony default export */ const geos = ({
+    init: geos_init,
+    forward: geos_forward,
+    inverse: geos_inverse,
+    names: geos_names,
+});
+
+
+;// CONCATENATED MODULE: ./node_modules/proj4/projs.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ function proj4_projs(proj4){
+  proj4.Proj.projections.add(tmerc);
+  proj4.Proj.projections.add(etmerc);
+  proj4.Proj.projections.add(utm);
+  proj4.Proj.projections.add(sterea);
+  proj4.Proj.projections.add(stere);
+  proj4.Proj.projections.add(somerc);
+  proj4.Proj.projections.add(omerc);
+  proj4.Proj.projections.add(lcc);
+  proj4.Proj.projections.add(krovak);
+  proj4.Proj.projections.add(cass);
+  proj4.Proj.projections.add(laea);
+  proj4.Proj.projections.add(aea);
+  proj4.Proj.projections.add(gnom);
+  proj4.Proj.projections.add(cea);
+  proj4.Proj.projections.add(eqc);
+  proj4.Proj.projections.add(poly);
+  proj4.Proj.projections.add(nzmg);
+  proj4.Proj.projections.add(mill);
+  proj4.Proj.projections.add(sinu);
+  proj4.Proj.projections.add(moll);
+  proj4.Proj.projections.add(eqdc);
+  proj4.Proj.projections.add(vandg);
+  proj4.Proj.projections.add(aeqd);
+  proj4.Proj.projections.add(ortho);
+  proj4.Proj.projections.add(qsc);
+  proj4.Proj.projections.add(robin);
+  proj4.Proj.projections.add(geocent);
+  proj4.Proj.projections.add(tpers);
+  proj4.Proj.projections.add(geos);
+}
+;// CONCATENATED MODULE: ./node_modules/proj4/lib/index.js
+
+
+
+
+
+
+
+
+
+
+core.defaultDatum = 'WGS84'; //default datum
+core.Proj = Proj;
+core.WGS84 = new core.Proj('WGS84');
+core.Point = lib_Point;
+core.toPoint = toPoint;
+core.defs = lib_defs;
+core.nadgrid = nadgrid;
+core.transform = transform;
+core.mgrs = mgrs;
+core.version = '__VERSION__';
+proj4_projs(core);
+/* harmony default export */ const lib = (core);
+
+;// CONCATENATED MODULE: ./src/mapboxgl/mapping/InitMap.js
+
+
+
+
+
+
+/**
+ * @function initMap
+ * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务。
+ * @category BaseTypes Util
+ * @version 11.1.1
+ * @param {number} url - rest 地图服务地址。例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {Object} options - 参数。
+ * @param {Object} [options.type] - 地图类型。可选值 'raster' | 'vector-tile'。默认 'raster'。
+ * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://docs.mapbox.com/mapbox-gl-js/api/map/}。
+ * @param {string} [options.proxy] - 服务代理地址。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {Object} [options.headers] - 请求头。
+ * @returns {Object} 实例对象。对象包括地图实例。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const initMap = {namespace}.initMap(url, { mapOptions });
+ *
+ * </script>
+ * // ES6 Import
+ * import { initMap } from '{npm}';
+ *
+ * initMap(url, { mapOptions })
+ * ```
+ * */
+function initMap(url, options = {}) {
+  const initMapService = new InitMapServiceBase(MapService, url, options);
+  return initMapService.getMapInfo(async (res, resolve, reject) => {
+    try {
+      if (res.type === 'processCompleted') {
+        const {
+          dynamicProjection,
+          prjCoordSys: { epsgCode, type }
+        } = res.result;
+        if (isPlaneProjection(type)) {
+          reject(new Error('mapbox-gl cannot support plane coordinate system.'));
+          return;
+        }
+        if (epsgCode !== 3857 && !dynamicProjection && !(external_mapboxgl_default()).CRS) {
+          reject(
+            new Error(
+              `The EPSG code ${epsgCode} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`
+            )
+          );
+          return;
+        }
+        const mapOptions = await createMapOptions(url, res.result, { ...options, initMapService });
+        const map = new (external_mapboxgl_default()).Map(mapOptions);
+        if (mapOptions.style && mapOptions.style.layers && mapOptions.style.layers.length > 0) {
+          map.on('load', () => {
+            resolve({ map });
+          });
+        } else {
+          resolve({ map });
+        }
+        return;
+      }
+      reject(new Error('Fetch mapService is failed.'));
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * @private
+ * @function getCrsExtent
+ * @description 获取当前坐标系范围，[左，下，右，上]。
+ * @param {Object|Array} extent -坐标系范围。
+ * @returns {Array}
+ */
+function getCRSExtent(extent) {
+  if (extent instanceof Array) {
+    return extent;
+  }
+  if (extent.leftBottom && extent.rightTop) {
+    return [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
+  }
+  return [extent.left, extent.bottom, extent.right, extent.top];
+}
+
+/**
+ * @private
+ * @function defineCRSByWKT
+ * @description 定义crs。
+ * @param {string} crsName - 投影名称。
+ * @param {string} wkt - wkt。
+ * @param {Object} extent - 坐标系范围。
+ * @returns {string}
+ */
+function defineCRSByWKT(crsName, wkt, extent) {
+  const crsExtent = getCRSExtent(extent);
+  const defineCRS = new (external_mapboxgl_default()).CRS(crsName, wkt, crsExtent);
+  return defineCRS;
+}
+
+/**
+ * @private
+ * @function transformMapCenter
+ * @description 转换center。
+ * @param {Object} mapInfoCenter - 中心点。
+ * @param {string} baseProjection - 坐标投影。
+ * @returns {Array}
+ */
+function transformMapCenter(mapInfoCenter, sourceProjection) {
+  let center = mapInfoCenter;
+  if (sourceProjection === 'EPSG:3857') {
+    return lib(sourceProjection, 'EPSG:4326', mapInfoCenter);
+  }
+  if (sourceProjection !== 'EPSG:4326') {
+    return external_mapboxgl_default().proj4(sourceProjection, 'EPSG:4326', mapInfoCenter);
+  }
+  return center;
+}
+
+/**
+ * @private
+ * @function getVectorTileCRSExtent
+ * @description 获取矢量瓦片坐标系范围。
+ * @param {string} vectorStyleUrl - 矢量瓦片 style json 服务地址。
+ * @param {string} restMapUrl - 矢量瓦片 rest 地图服务地址。
+ * @returns {Object}
+ */
+async function getVectorTileCRSExtent(vectorStyleUrl, restMapUrl) {
+  try {
+    const vectorStyleDataRes = await FetchRequest.get(vectorStyleUrl);
+    const vectorStyleData = await vectorStyleDataRes.json();
+    if (vectorStyleData.metadata && vectorStyleData.metadata.indexbounds) {
+      return { extent: vectorStyleData.metadata.indexbounds };
+    }
+    const vectorExtentDataRes = await FetchRequest.get(`${restMapUrl}/prjCoordSys/projection/extent.json`);
+    const vectorExtentData = await vectorExtentDataRes.json();
+    return { extent: vectorExtentData, center: vectorStyleData.center };
+  } catch (error) {
+    return { extent: [] };
+  }
+}
+
+/**
+ * @private
+ * @function createMapOptions
+ * @description 获取地图参数。
+ * @param {string} url - rest 地图服务地址。
+ * @param {Object} resetServiceInfo - rest 地图服务信息。
+ * @param {Object} [options] - 参数。
+ * @param {string} [options.type] - 服务代理地址。
+ * @param {Object} [options.mapOptions] - 地图配置。
+ * @param {Object} [options.initMapService] - InitMapServiceBase 实例。
+ * @returns {Object} mapParams。
+ */
+async function createMapOptions(url, resetServiceInfo, options) {
+  if (options.type && !['raster', 'vector-tile'].includes(options.type)) {
+    return Promise.reject(new Error('type must be "raster" or "vector-tile".'));
+  }
+  const sourceType = options.type || 'raster';
+  const mapOptions = options.mapOptions || {};
+  const {
+    prjCoordSys: { epsgCode },
+    bounds,
+    center,
+    dpi,
+    coordUnit,
+    scale
+  } = resetServiceInfo;
+  let mapCenter = center ? [center.x, center.y] : [0, 0];
+  let crs = `EPSG:${epsgCode}`;
+  let extent = bounds;
+  let tileUrl =
+    sourceType === 'vector-tile'
+      ? url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
+      : url;
+  let nonEnhanceExtraInfo = {};
+  let enhanceExtraInfo = {};
+  if ((external_mapboxgl_default()).CRS) {
+    const baseProjection = crs;
+    const wkt = await options.initMapService.getWKT();
+    let vectorTileInfo;
+    if (sourceType === 'vector-tile') {
+      vectorTileInfo = await getVectorTileCRSExtent(tileUrl, url);
+      extent = vectorTileInfo.extent;
+    }
+    crs = defineCRSByWKT(baseProjection, wkt, extent);
+    if (sourceType === 'raster') {
+      enhanceExtraInfo.rasterSource = 'iserver';
+    }
+    if (vectorTileInfo && vectorTileInfo.center) {
+      mapCenter = vectorTileInfo.center;
+    } else {
+      mapCenter = transformMapCenter(mapCenter, baseProjection);
+    }
+  } else {
+    crs = 'EPSG:3857';
+    mapCenter = transformMapCenter(mapCenter, crs);
+    if (sourceType === 'raster') {
+      const tileSize = 256;
+      nonEnhanceExtraInfo.tileSize = tileSize;
+      const transparent = mapOptions.transparent !== false;
+      tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
+    }
+  }
+  const zoom = getZoom({ scale, dpi, coordUnit }, extent);
+  return {
+    container: 'map',
+    crs,
+    center: mapCenter,
+    zoom,
+    style:
+      sourceType === 'raster'
+        ? {
+            version: 8,
+            sources: {
+              'smaples-source': {
+                type: 'raster',
+                tiles: [tileUrl],
+                ...nonEnhanceExtraInfo,
+                ...enhanceExtraInfo
+              }
+            },
+            layers: [
+              {
+                id: 'sample-layer',
+                type: 'raster',
+                source: 'smaples-source',
+                minzoom: 0,
+                maxzoom: 22
+              }
+            ]
+          }
+        : tileUrl,
+    ...mapOptions
+  };
+}
+
+
+
 ;// CONCATENATED MODULE: ./src/mapboxgl/mapping/index.js
+
 
 
 ;// CONCATENATED MODULE: ./src/mapboxgl/index.js
@@ -101702,6 +113315,7 @@ class WebMap extends (external_mapboxgl_default()).Evented {
 (external_mapboxgl_default()).supermap.Logo = Logo;
 (external_mapboxgl_default()).supermap.Util = core_Util_Util;
 (external_mapboxgl_default()).supermap.WebMap = WebMap;
+(external_mapboxgl_default()).supermap.initMap = initMap;
 (external_mapboxgl_default()).supermap.Graphic = Graphic;
 (external_mapboxgl_default()).supermap.map.getDefaultVectorTileStyle = getDefaultVectorTileStyle;
 (external_mapboxgl_default()).supermap.map.setBackground = setBackground;
