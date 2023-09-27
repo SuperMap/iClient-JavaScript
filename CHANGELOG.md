@@ -1,3 +1,69 @@
+# 11.1.1 #
+
+## 新特性
+
+### iClient for MapLibreGL 新增支持 Web符号化制图能力
+
+  - 提供Web符号库列表，方便用户检索，同时提供在线制图示例
+  - 改造地图库API支持直接传入Web符号库ID进行快速制图
+  - 支持mapbox样式规范表达式，可以对符号进行数据驱动制图
+
+### Service 相关 API 编程模式支持 ECMAScript 6 Promise，简化异步编程，使代码更优雅更易维护
+
+## API changes
+
+
+### for Leaflet
+ - `L.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `L.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `L.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `L.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `L.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `L.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+
+### for OpenLayers
+ - `ol.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `ol.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `ol.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `ol.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `ol.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `ol.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+### for MapboxGL
+ - 新增 `mapboxgl.supermap.initMap` 支持调用SuperMap iServer REST Map 服务快速创建地图，无需再设置相关参数
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `mapboxgl.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `mapboxgl.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `mapboxgl.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `mapboxgl.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+### for MaplibreGL
+ - 新增 `maplibregl.supermap.initMap` 支持调用SuperMap iServer REST Map 服务快速创建地图，无需再设置相关参数
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `maplibregl.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `maplibregl.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `maplibregl.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `maplibregl.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
 # 11.1.0 #
 
 ## 新特性
