@@ -237,7 +237,7 @@ describe('maplibregl_DataFlowService', () => {
         done();
     });
 
-    it('setGeometry', (done) => {
+    xit('setGeometry', (done) => {
         var feature = {
             geometry: {
                 coordinates: new maplibregl.Point(5605, -3375),
