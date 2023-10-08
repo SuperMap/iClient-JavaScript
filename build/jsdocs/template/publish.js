@@ -250,8 +250,15 @@ function buildNav(members, view, templatePath) {
   for (const key in view.navMap ) {
     if (Object.hasOwnProperty.call(view.navMap , key)) {
       const element = view.navMap[key];
-      const m = element.methods.map(e => {
-        return e.name;
+      if(element.scope === 'global'){
+        element.methods = [element];
+      }
+      const m = element.methods.filter((e)=>{
+return !e.inherited
+      }).map(e => {
+        var commentLength = e.comment && !e.meta.range?e.comment.split('\n').length:0;
+        var funLineNo = e.meta.lineno + commentLength;
+        return {name:e.name,lineNo:funLineNo,version:e.version || element.version};
       });
       if(!element.fileName && m.length>0){
         console.log("没有文件名的类：", element.longname,element.type,m)
@@ -432,7 +439,8 @@ function buildNavMap(members,linkto) {
         events: find({
           kind: 'event',
           memberof: v.longname
-        })
+        }),
+        ...v
       };
     }
     navMap[v.longname] = nav;

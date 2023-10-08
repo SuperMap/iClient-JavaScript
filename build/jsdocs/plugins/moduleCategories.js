@@ -25,7 +25,7 @@ exports.handlers = {
       e.doclet.modulecategory.className = modulecategory.name;
       if (!modulecategory.name.startsWith('SuperMap')) {
         const matchTag = e.doclet.tags.find(tag => tag.title === 'browsernamespace') || {};
-        const prefix = matchTag.value || globalParams.namespace;
+        const prefix = matchTag.value || (globalParams && globalParams.namespace);
         e.doclet.modulecategory.name = `${prefix}.${modulecategory.name}`;
       }
       e.doclet.modulecategory.des = (e.doclet.classdesc || '').split('。')[0].replace('<p>', '').replace('类', '');

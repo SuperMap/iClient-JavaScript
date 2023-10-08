@@ -73,7 +73,7 @@ export class FGBLayer {
   }
 
   /**
-   * @function DeckglLayer.prototype.onAdd
+   * @function FGBLayer.prototype.onAdd
    * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
    */
   onAdd(map) {
@@ -102,13 +102,13 @@ export class FGBLayer {
     this._handleFeatures(extent);
   }
   /**
-   * @function DeckglLayer.prototype.onRemove
+   * @function FGBLayer.prototype.onRemove
    */
   onRemove() {
     this.map.off('moveend', this._updateFeaturesFn);
   }
 /**
-   * @function DeckglLayer.prototype.moveLayer
+   * @function FGBLayer.prototype.moveLayer
    */
   moveLayer(beforeId) {
     this.map.moveLayer(this.layerId, beforeId);
