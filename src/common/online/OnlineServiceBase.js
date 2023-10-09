@@ -29,7 +29,7 @@ export class OnlineServiceBase {
      * @param {string} [method='GET'] - 请求方式, 'GET', 'PUT', 'POST', 'DELETE'。
      * @param {string} url - 服务地址。
      * @param {Object} param - URL 查询参数。
-     * @param {Object} [requestOptions] - http 请求参数, 比如请求头，超时时间等。
+     * @param {Object} [requestOptions] - http 请求参数，比如请求头，超时时间等。
      * @returns {Promise}  包含请求结果的 Promise 对象。
      */
     request(method, url, param, requestOptions = {}) {

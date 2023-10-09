@@ -6,12 +6,12 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobImage
  * @deprecatedclass SuperMap.WebPrintingJobImage
- * @classdesc 表达小地图的静态图片参数类。
+ * @classdesc 表达小地图的静态图片参数类。此类用于设置小地图使用的静态图片的 URL 或 Base64 位图片信息等参数。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} option.picAsUrl - 小地图的图片 URL 地址。
- * @param {string} [option.picAsBase64] - 小地图的base64位图片信息。如果已填了 URL 参数，此参数可不传。
+ * @param {string} [option.picAsBase64] - 小地图的 Base64 位图片信息。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 export class WebPrintingJobImage {
@@ -23,7 +23,7 @@ export class WebPrintingJobImage {
         this.picAsUrl = null;
         /**
          * @member {string} [WebPrintingJobImage.prototype.picAsBase64]
-         * @description 小地图的base64位图片信息。
+         * @description 小地图的 Base64 位图片信息。
          */
         this.picAsBase64 = null;
 

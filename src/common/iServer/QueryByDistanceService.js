@@ -41,7 +41,7 @@ export class QueryByDistanceService extends QueryServiceBase {
      * @function QueryByDistanceService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
      *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
-     * @param {QueryByDistanceParameters} params - Distance 查询参数类。
+     * @param {QueryByDistanceParameters} params - 距离查询参数类。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {

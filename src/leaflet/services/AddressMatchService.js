@@ -9,7 +9,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @class AddressMatchService
  * @deprecatedclassinstance L.supermap.addressMatchService
  * @constructs AddressMatchService
- * @classdesc 地址匹配服务类。
+ * @classdesc 地址匹配服务类。此类提供了地址的正向匹配和反向匹配功能，正向匹配即通过地点名称关键词查找地址位置，反向匹配即根据位置坐标查询地点。
  * @category  iServer AddressMatch
  * @modulecategory Services
  * @extends {ServiceBase}

@@ -21,7 +21,7 @@ import {
  * @class QueryService
  * @deprecatedclass SuperMap.QueryService
  * @category  iServer Map QueryResults
- * @classdesc 查询服务基类。
+ * @classdesc 查询服务基类。提供方法：SQL 查询、距离查询、空间查询、最近地物查询、范围查询以及海图查询等。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
@@ -38,13 +38,13 @@ export class QueryServiceBase extends CommonServiceBase {
 
         /**
          * @member {boolean} QueryService.prototype.returnContent
-         * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
          */
         this.returnContent = false;
 
         /**
          * @member {string} QueryService.prototype.format
-         * @description 查询结果返回格式，目前支持iServerJSON、GeoJSON、FGB三种格式。参数格式为"ISERVER","GEOJSON","FGB"。
+         * @description 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER","GEOJSON","FGB"。
          */
         this.format = DataFormat.GEOJSON;
 

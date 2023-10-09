@@ -8,7 +8,7 @@ import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iSe
 /**
  * @class ThemeService
  * @deprecatedclassinstance L.supermap.themeService
- * @classdesc 专题图服务类。
+ * @classdesc 专题图服务类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。该类可用于获取专题图的信息。
  * @category  iServer Map Theme
  * @modulecategory Services
  * @extends {ServiceBase}

@@ -12,7 +12,10 @@ import {
 /**
  * @class GraphThemeLayer
  * @category  Visualization Theme
- * @classdesc 统计专题图层类。
+ * @classdesc 统计专题图图层类。统计专题图是通过为每个要素或记录绘制统计图来反映其对应的专题值的大小。
+ * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题值绘制在一个统计图上，并且每个区域都会有一幅表示该区域各专题值的统计图。
+ * 通过统计专题图可以在区域本身与各区域之间形成横向和纵向的对比。多用于具有相关数量特征的地图上，
+ * 比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {string} chartsType - 图表类别。

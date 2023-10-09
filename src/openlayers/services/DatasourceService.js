@@ -8,7 +8,7 @@ import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDat
 /**
  * @class DatasourceService
  * @category  iServer Data Datasource
- * @classdesc 数据源服务类。
+ * @classdesc 数据源服务类。提供方法：查询数据源集合、查询指定数据源信息、设置指定数据源信息。可以获取的数据源信息包括数据源名称、数据源描述、引擎类型、距离单位、坐标单位、投影信息等。
  * @modulecategory Services
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -33,8 +33,8 @@ export class DatasourceService extends ServiceBase {
 
     /**
      * @function DatasourceService.prototype.getDatasources
-     * @description 数据源集查询服务。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @description 数据源集合查询服务。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getDatasources(callback) {
       return this._datasourceService.getDatasourcesService(callback);
@@ -44,7 +44,7 @@ export class DatasourceService extends ServiceBase {
      * @function DatasourceService.prototype.getDatasource
      * @description 数据源信息查询服务。
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {
@@ -58,7 +58,7 @@ export class DatasourceService extends ServiceBase {
      * @function DatasourceService.prototype.setDatasource
      * @description 数据源信息设置服务。可实现更改当前数据源信息。
      * @param {SetDatasourceParameters} params - 数据源信息设置参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     setDatasource(params, callback) {

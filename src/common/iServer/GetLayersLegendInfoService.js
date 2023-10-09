@@ -11,7 +11,7 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @classdesc 获取图例信息服务类构造函数。
  * @version 11.1.1
  * @extends {CommonServiceBase}
- * @param {string} url - 服务地址。请求地图服务,URL 应为：
+ * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。
  * @param {Object} options - 参数。

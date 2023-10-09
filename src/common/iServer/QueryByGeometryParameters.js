@@ -10,15 +10,15 @@ import {SpatialQueryMode} from '../REST';
  * @class QueryByGeometryParameters
  * @deprecatedclass SuperMap.QueryByGeometryParameters
  * @category  iServer Map QueryResults
- * @classdesc Geometry 查询参数类。
- *            该类用于设置 Geometry查询的相关参数。
+ * @classdesc 几何查询参数类。
+ *            此类除了能够设置地图查询中通用的查询参数以外，还可以指定几何对象等参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。
  * @param {GeoJSONObject} options.geometry - 查询的几何对象。
  * @param {string} [options.customParams] - 自定义参数，供扩展使用。
  * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
- * @param {Object} [options.prjCoordSys] -自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
+ * @param {Object} [options.prjCoordSys] -自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
  * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
  * @param {boolean} [options.returnCustomResult=false] -仅供三维使用。

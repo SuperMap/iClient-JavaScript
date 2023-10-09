@@ -14,7 +14,7 @@ import { DataFormat } from '../REST';
  * @class FeatureService
  * @constructs FeatureService
  * @category  iServer Data Feature
- * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，bounds 查询，缓冲区查询，地物编辑。
+ * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑等方法。
  * @example
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
  *          //doSomething
@@ -38,7 +38,7 @@ export class FeatureService {
     /**
      * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
-     * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
+     * @param {GetFeaturesByIDsParameters} params - ID 查询参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
      * @returns {Promise} Promise 对象。
@@ -57,7 +57,7 @@ export class FeatureService {
 
     /**
      * @function FeatureService.prototype.getFeaturesByBounds
-     * @description 数据集 Bounds 查询服务。
+     * @description 数据集范围查询服务。
      * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
@@ -77,7 +77,7 @@ export class FeatureService {
 
     /**
      * @function FeatureService.prototype.getFeaturesByBuffer
-     * @description 数据集 Buffer 查询服务。
+     * @description 数据集缓冲区查询服务。
      * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
@@ -164,7 +164,7 @@ export class FeatureService {
     /**
      * @function FeatureService.prototype.getMetadata
      * @description 地理要素元信息服务。
-     * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
+     * @param {Object} params - 包括数据源名称、数据集名称、要素 ID。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */

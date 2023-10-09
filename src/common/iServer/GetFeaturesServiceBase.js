@@ -13,7 +13,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @classdesc 数据服务中数据集查询服务基类。获取结果数据类型为 Object。包含 result 属性，result 的数据格式根据 format 参数决定为 GeoJSON 或者 iServerJSON。
  * @extends CommonServiceBase
  * @param {string} url - 服务地址。请求数据服务中数据集查询服务，
- * URL应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
+ * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param {Object} options - 参数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
@@ -52,7 +52,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
 
          /**
          * @member {number} [GetFeaturesServiceBase.prototype.hasGeometry=true]
-         * @description 返回结果是否包含Geometry。
+         * @description 返回结果是否包含 Geometry。
          */
         this.hasGeometry = true;
 

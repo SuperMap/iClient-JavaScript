@@ -31,7 +31,8 @@ const DEFAULT_ZOOM_OFFSET = {
 /**
  * @class GraphicLayer
  * @deprecatedclassinstance L.supermap.graphicLayer
- * @classdesc 高效率点图层类。
+ * @classdesc 高效率点图层类。能够支持前端百万点数据的渲染，并支持 GeoJSON，TopoJSON，二维表等多种数据格式，支持修改样式，
+ * 支持属性筛选、鼠标事件等交互操作。
  * @category Visualization Graphic
  * @modulecategory Overlay
  * @extends {L.Path}
@@ -139,7 +140,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 指定属性名和属性值，获取第一个匹配的要素数组。
      * @param {string} property - 属性名称。
      * @param {string} value - 属性值。
-     * @returns {Graphic} 返回匹配的 graphic 。
+     * @returns {Graphic} 返回匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;

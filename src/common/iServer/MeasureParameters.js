@@ -8,7 +8,7 @@ import {Unit} from '../REST';
  * @class MeasureParameters
  * @deprecatedclass SuperMap.MeasureParameters
  * @category iServer Map Measure
- * @classdesc 量算参数类。
+ * @classdesc 量算参数类。该类用于设置量算单位、投影类型、量算方式等参数，量算方式包括：球面长度、平面长度。
  * @param {GeoJSONObject} geometry - 要量算的几何对象。
  * @param {Object} options - 可选参数。
  * @param {Unit} [options.unit=Unit.METER] - 量算单位。

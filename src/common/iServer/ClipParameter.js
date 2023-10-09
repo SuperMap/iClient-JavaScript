@@ -10,8 +10,8 @@ import {ServerGeometry} from './ServerGeometry';
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param {Object} options - 可选参数。
- * @param {string} [options.clipDatasetName] - 裁剪的数据集名。
- * @param {string} [options.clipDatasourceName] - 裁剪的数据集所在数据源的名字。
+ * @param {string} [options.clipDatasetName] - 裁剪的数据集名称。
+ * @param {string} [options.clipDatasourceName] - 裁剪的数据集所在数据源的名称。
  * @param {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject} [options.clipRegion] - 用户指定的裁剪区域。
  * @param {boolean} [options.isClipInRegion=true] - 是否对裁剪区内的数据集进行裁剪。
  * @param {boolean} [options.isExactClip=true] - 是否使用精确裁剪。
@@ -23,13 +23,13 @@ export class ClipParameter {
     constructor(options) {
         /**
          * @member {string} ClipParameter.prototype.clipDatasetName
-         * @description 用于裁剪的数据集名，clipDatasetName 与 clipRegion 必须设置一个。
+         * @description 用于裁剪的数据集名称，clipDatasetName 与 clipRegion 必须设置一个。
          */
         this.clipDatasetName = null;
 
         /**
          * @member {string} ClipParameter.prototype.clipDatasourceName
-         * @description 用于裁剪的数据集所在数据源的名字。当 clipRegion 不设置时起作用。
+         * @description 用于裁剪的数据集所在数据源的名称。当 clipRegion 不设置时起作用。
          */
         this.clipDatasourceName = null;
 

@@ -9,7 +9,7 @@ import { UpdateTurnNodeWeightParameters } from './UpdateTurnNodeWeightParameters
  * @class UpdateTurnNodeWeightService
  * @deprecatedclass SuperMap.UpdateTurnNodeWeightService
  * @category  iServer NetworkAnalyst TurnNodeWeight
- * @classdesc 转向耗费权重更新服务类
+ * @classdesc 更新转向耗费权重服务类。转向耗费权重又称转向结点权值。
  * @extends {NetworkAnalystServiceBase}
  * @example
  * var UpdateTurnNodeWeightService = new UpdateTurnNodeWeightService(url);
@@ -36,8 +36,8 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
     /**
      * @function UpdateTurnNodeWeightService.prototype.processAsync
-     * @description 开始异步执行转向耗费权重的更新
-     * @param {UpdateTurnNodeWeightParameters} params - 转向耗费权重更新服务参数类
+     * @description 开始异步执行转向耗费权重的更新。
+     * @param {UpdateTurnNodeWeightParameters} params - 更新转向耗费权重服务参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      * @example

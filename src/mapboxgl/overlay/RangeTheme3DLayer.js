@@ -7,7 +7,9 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 /**
  * @class RangeTheme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维分段专题图类。
+ * @classdesc 三维分段专题图图层类。分段专题图是指按照某种分段方式被分成多个范围段，要素根据各自的专题值被分配到其中一个范围段中，
+ * 在同一个范围段中的要素使用相同的颜色，填充，符号等风格进行显示。 分段专题图所基于的专题变量必须为数值型，
+ * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @modulecategory Overlay
  * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。

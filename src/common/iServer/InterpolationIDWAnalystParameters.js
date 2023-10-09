@@ -8,7 +8,8 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @class InterpolationIDWAnalystParameters
  * @deprecatedclass SuperMap.InterpolationIDWAnalystParameters
  * @category  iServer SpatialAnalyst InterpolationAnalyst
- * @classdesc 反距离加权插值（IDW）分析参数类。
+ * @classdesc 此类除了能够设置插值分析的一系列通用参数，还可以设置反距离加权插值分析中的查找参与运算点的方式、距离权重计算的幂次等参数。<br>
+ * 当插值分析类型为 dataset 时，插值分析的数据集名称和插值字段名称为必设参数。当插值分析类型为 geometry 时，插值分析的离散点集合为必设参数。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.searchMode - 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。
@@ -51,7 +52,7 @@ export class InterpolationIDWAnalystParameters extends InterpolationAnalystParam
          * @member {number} [InterpolationIDWAnalystParameters.prototype.power=2]
          * @description 距离权重计算的幂次。
          * 该值决定了权值下降的速度，幂次越大，随距离的增大权值下降越快，距离预测点越远的点的权值也越小。
-         * 理论上，参数值必须大于0，但是0.5到3之间时运算结果更合理，因此推荐值为0.5~3。
+         * 理论上，参数值必须大于0，但是0.5到3之间时运算结果更合理，因此推荐值为 0.5 ~ 3。
          */
         this.power = 2;
 

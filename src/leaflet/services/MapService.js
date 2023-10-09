@@ -11,7 +11,7 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
 /**
  * @class  MapService
  * @deprecatedclassinstance L.supermap.mapService
- * @classdesc 地图信息服务类。
+ * @classdesc 地图信息服务类。通过该类可以获得地图的基本信息、投影信息、切片列表信息等等。
  * @category  iServer Map
  * @modulecategory Services
  * @extends {ServiceBase}

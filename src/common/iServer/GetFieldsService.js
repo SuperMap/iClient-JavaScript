@@ -9,7 +9,7 @@ import {CommonServiceBase} from './CommonServiceBase';
  * @deprecatedclass SuperMap.GetFieldsService
  * @category iServer Data Field
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
- * @param {string} url - 服务地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
+ * @param {string} url - 服务地址。如访问 World Map 服务，只需将 URL 设为：http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param {Object} options - 参数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {string}options.datasource - 数据源名称。

@@ -9,9 +9,9 @@ import {FacilityAnalystTracedown3DParameters} from './FacilityAnalystTracedown3D
  * @class FacilityAnalystTracedown3DService
  * @deprecatedclass SuperMap.FacilityAnalystTracedown3DService
  * @category iServer FacilityAnalyst3D TraceDownResult
- * @classdesc 下游追踪资源服务类
+ * @classdesc 下游追踪资源服务类。下游追踪分析是指根据给定的弧段 ID 或结点 ID 进行下游追踪，即查找给定弧段的下游，返回下游包含的弧段、结点及总耗费。
  * @extends {CommonServiceBase}
- * @param {string} url - 服务地址。请求网络分析服务，URL应为：
+ * @param {string} url - 服务地址。请求网络分析服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。

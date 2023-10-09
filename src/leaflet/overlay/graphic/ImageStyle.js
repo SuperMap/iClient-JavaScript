@@ -7,7 +7,7 @@ import '../../core/Base';
 /**
  * @class ImageStyle
  * @deprecatedclassinstance L.supermap.imageStyle
- * @classdesc 自定义图形要素风格类。
+ * @classdesc 自定义图形要素风格类。用于设置自定义图形要素的中心点、偏移量、大小，自定义图形要素的类型为 HTMLImageElement。
  * @category Visualization Graphic
  * @modulecategory Overlay
  * @extends {L.Class}

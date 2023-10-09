@@ -8,7 +8,7 @@ import {QueryParameters} from './QueryParameters';
  * @class QueryByBoundsParameters
  * @deprecatedclass SuperMap.QueryByBoundsParameters
  * @category  iServer Map QueryResults
- * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
+ * @classdesc 范围查询参数类。此类除了能够设置地图查询中通用的查询参数以外，还可以指定查询范围等参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 指定的查询范围。

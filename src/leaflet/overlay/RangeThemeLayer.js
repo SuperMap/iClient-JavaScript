@@ -9,7 +9,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @class RangeThemeLayer
  * @deprecatedclassinstance L.supermap.rangeThemeLayer
  * @category Visualization Theme
- * @classdesc 范围分段专题图类。范围分段专题图对数据（{@link FeatureVector}）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
+ * @classdesc 范围分段专题图图层类。范围分段专题图对数据（{@link FeatureVector}）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
  * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @modulecategory Overlay
  * @extends GeoFeatureThemeLayer

@@ -6,7 +6,8 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobContent
  * @deprecatedclass SuperMap.WebPrintingJobContent
- * @classdesc Web 打印内容参数类。
+ * @classdesc Web 打印内容参数类。此类用于设置Web打印内容的类型、待打印Web地图的URL地址、JSON表达等参数。<br>
+ * 目前支持打印的 Web 内容为 WebMap，即：在线创建的地图。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。

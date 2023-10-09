@@ -8,8 +8,7 @@ import {QueryParameters} from './QueryParameters';
  * @class QueryByDistanceParameters
  * @deprecatedclass SuperMap.QueryByDistanceParameters
  * @category  iServer Map QueryResults
- * @classdesc Distance 查询参数类。
- *            该类用于设置 Distance 查询的相关参数。
+ * @classdesc 距离查询参数类。此类除了能够设置通用的查询参数以外，还可以指定查询距离等参数，查询距离的单位与所查询图层对应的数据集单位相同。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} options.geometry - 用于查询的几何对象。

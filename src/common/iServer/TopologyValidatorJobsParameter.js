@@ -10,9 +10,9 @@ import { MappingParameters } from './MappingParameters';
  * @class TopologyValidatorJobsParameter
  * @deprecatedclass SuperMap.TopologyValidatorJobsParameter
  * @category  iServer ProcessingService TopologyValidator
- * @classdesc 拓扑检查分析任务参数类。
+ * @classdesc 拓扑检查分析任务参数类。此类用于设置拓扑检查分析的数据集、拓扑检查规则、容限等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.datasetTopology -检查对象所在的数据集名称。
  * @param {TopologyValidatorRule} [options.rule=TopologyValidatorRule.REGIONNOOVERLAP] - 拓扑检查规则。
  * @param {string} [options.tolerance] - 容限。
@@ -28,7 +28,7 @@ export class TopologyValidatorJobsParameter {
         }
         /**
          * @member {string} TopologyValidatorJobsParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 

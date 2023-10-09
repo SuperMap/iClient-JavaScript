@@ -12,17 +12,20 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @browsernamespace ol.source
  * @category Visualization FGB
  * @classdesc FGB 图层源，该图层源把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * FlatGeobuf（FGB）是一种用于存储地理要素的坐标、类型的二进制编码格式。
+ * FGB 格式与传统的 Shapefile、GeoJSON 等文件格式类似，支持地理空间矢量数据的存储，但 FGB 格式具有更高的存储效率和更快的读写速度，
+ * 适用于大量静态数据的编码与传输。
  * @modulecategory Overlay
  * @version 11.1.0
  * @param {Object} opt_options - 参数。
  * @param {string} opt_options.url - FGB 地址，例如：http://localhost:8090/iserver/services/xxx/rest/data/featureResults/newResourceId.fgb。
- * @param {ol.loadingstrategy} [opt_options.strategy= ol.loadingstrategy.bbox] - ol.loadingstrategy.all为全量加载，要素会以流的方式渲染到地图。 ol.loadingstrategy.bbox为当前可见范围加载，当地图范围改变时会重新加载要素，此时可以通过idField 参数来标识已被加载过的要素，被标识的要素无需再次加载。idField 参数无效时会清空要素，重新加载。
- * @param {Array} [opt_options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
- * @param {function} [opt_options.featureLoader] - 要素加载回调函数
- * @param {boolean} [opt_options.overlaps] - 是否优化重叠要素的填充与描边操作
- * @param {boolean} [opt_options.useSpatialIndex] - 是否启用要素空间索引
- * @param {boolean} [opt_options.wrapX] - 是否平铺地图
- * @param {boolean} [opt_options.idField='SmID'] - 要素属性中表示唯一标识的字段，当 strategy 为 ol.loadingstrategy.bbox时生效。
+ * @param {ol.loadingstrategy} [opt_options.strategy= ol.loadingstrategy.bbox] - ol.loadingstrategy.all 为全量加载，要素会以流的方式渲染到地图。ol.loadingstrategy.bbox 为当前可见范围加载，当地图范围改变时会重新加载要素，此时可以通过 idField 参数来标识已被加载过的要素，被标识的要素无需再次加载。idField 参数无效时会清空要素，重新加载。
+ * @param {Array} [opt_options.extent] - 加载范围，参数规范为: [minX, minY, maxX, maxY]，传递此参数后，图层将使用局部加载。
+ * @param {function} [opt_options.featureLoader] - 要素加载回调函数。
+ * @param {boolean} [opt_options.overlaps] - 是否优化重叠要素的填充与描边操作。
+ * @param {boolean} [opt_options.useSpatialIndex] - 是否启用要素空间索引。
+ * @param {boolean} [opt_options.wrapX] - 是否平铺地图。
+ * @param {boolean} [opt_options.idField='SmID'] - 要素属性中表示唯一标识的字段，当 strategy 为 ol.loadingstrategy.bbox 时生效。
  * @extends {ol.source.Vector}
  * @usage
  */

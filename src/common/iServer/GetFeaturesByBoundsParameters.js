@@ -10,7 +10,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @class GetFeaturesByBoundsParameters
  * @deprecatedclass SuperMap.GetFeaturesByBoundsParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据集范围查询参数类，该类用于设置数据集范围查询的相关参数。
+ * @classdesc 数据集范围查询参数类。此类用于指定进行范围查询的数据集列表，设置空间查询范围、查询模式以及一些通用的查询参数。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 查询的范围对象。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
@@ -22,7 +22,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
  * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
- * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
+ * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
  */

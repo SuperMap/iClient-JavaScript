@@ -9,7 +9,8 @@ import {
  * @class HitCloverShape
  * @browsernamespace ol.style
  * @category  Visualization Graphic
- * @classdesc 三叶草要素高亮风格。
+ * @classdesc 三叶草要素高亮风格。除了基本的线颜色、线宽、填充色、填充透明度、填充形状等参数，
+ * 还可以设置三叶草要素扇叶的圆心角、间隔角度、数量、半径等。
  * @modulecategory Overlay
  * @extends {CloverShape}
  * @param {Object} options - 三叶草形要素风格参数。

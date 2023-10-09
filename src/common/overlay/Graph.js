@@ -88,14 +88,14 @@ export class Graph extends Theme {
         /**
          * @readonly
          * @member {number} FeatureThemeGraph.prototype.width
-         * @description 专题要素（图表）宽度 。
+         * @description 专题要素（图表）宽度。
          */
         this.width = null;
 
         /**
          * @readonly
          * @member {number} FeatureThemeGraph.prototype.height
-         * @description 专题要素（图表）高度 。
+         * @description 专题要素（图表）高度。
          */
         this.height = null;
 

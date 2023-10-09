@@ -15,7 +15,9 @@
  /**
   * @class ProcessingService
   * @category  iServer ProcessingService
-  * @classdesc 分布式分析相关服务类。
+  * @classdesc 分布式分析相关服务类。分布式分析服务采用了分布式计算技术，可对超大体量空间数据集进行分布式空间分析和数据处理。
+  * 提供方法：缓冲区分析任务、核密度分析任务、叠加分析任务、单对象空间查询任务、点聚合分析任务、区域汇总分析任务、
+  * 拓扑检查分析任务、矢量裁剪分析任务等。
   * @extends {ServiceBase}
   * @example
   * new ProcessingService(url,options)
@@ -25,7 +27,7 @@
   * @param {string} url - 服务地址。 
   * @param {Object} options - 参数。
   * @param {string} [options.proxy] - 服务代理地址。
-  * @param {boolean} [options.withCredentials=false] - 请求是否携带cookie。
+  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
   * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
   * @param {Object} [options.headers] - 请求头。
   * @usage
@@ -68,8 +70,8 @@
  
      /**
       * @function ProcessingService.prototype.getKernelDensityJob
-      * @description 获取某个密度分析。
-      * @param {string} id - 空间分析的ID。 
+      * @description 获取指定 ID 的密度分析。
+      * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -89,7 +91,12 @@
  
      /**
       * @function ProcessingService.prototype.addKernelDensityJob
-      * @description 密度分析。
+      * @description 新建密度分析。目前提供 1 种密度分析方法：核密度分析。<br>
+     * 核密度分析是指使用核函数来计算点或线邻域范围内的每单位面积量值。
+     * 其结果是中间值大周边值小的光滑曲面，在邻域边界处降为0。
+     * 对于点对象，其核密度曲面与下方的平面所围成的空间的体积近似于此点的测量值；
+     * 对于线对象，其核密度曲面与下方的平面所围成的空间的体积近似于此线的测量值与线长度的乘积。
+     * 点或线的邻域叠加处，其密度值也相加。每个输出栅格的密度均为叠加在栅格上的所有核曲面值之和。 
       * @param {KernelDensityJobParameter} params -密度分析参数类。 
       * @param {RequestCallback} callback 回调函数。 
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
@@ -114,7 +121,7 @@
      /**
       * @function ProcessingService.prototype.getKernelDensityJobState
       * @description 获取密度分析的状态。
-      * @param {string} id - 密度分析的id。
+      * @param {string} id - 密度分析的 ID。
       * @returns {Object} 密度分析的状态。
       */
      getKernelDensityJobState(id) {
@@ -143,7 +150,7 @@
  
      /**
       * @function ProcessingService.prototype.getSummaryMeshJob
-      * @description 获取某个点聚合分析。
+      * @description 获取指定 ID 的点聚合分析。
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -164,7 +171,11 @@
  
      /**
       * @function ProcessingService.prototype.addSummaryMeshJob
-      * @description 点聚合分析。
+      * @description 新建点聚合分析。<br>
+     * 点聚合分析是指针对点数据集制作聚合图的一种空间分析作业。通过网格面或多边形对地图点要素进行划分，
+     * 然后，计算每个面对象内点要素的数量，并作为面对象的统计值，也可以引入点的权重信息，
+     * 考虑面对象内点的加权值作为面对象的统计值；最后基于面对象的统计值，按照统计值大小排序的结果，
+     * 通过色带对面对象进行色彩填充。
       * @param {SummaryMeshJobParameter} params - 点聚合分析任务参数类。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
@@ -198,7 +209,7 @@
  
      /**
       * @function ProcessingService.prototype.getQueryJobs
-      * @description 获取单对象查询分析的列表。
+      * @description 获取单对象空间查询分析的列表。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -218,7 +229,7 @@
  
      /**
       * @function ProcessingService.prototype.getQueryJob
-      * @description 获取某个单对象查询分析。
+      * @description 获取指定 ID 的单对象空间查询分析。
       * @param {string} id - 空间分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -239,8 +250,10 @@
  
      /**
       * @function ProcessingService.prototype.addQueryJob
-      * @description 单对象查询分析。
-      * @param {SingleObjectQueryJobsParameter} params - 单对象查询分析的请求参数。 
+      * @description 新建单对象空间查询分析。<br>
+     * 单对象空间查询，指的是只支持查询对象数据集中有一个对象对被查询数据集做空间查询。
+     * 如果查询对象数据集中有多个对象，则默认用 SmID 最小的对象对被查询数据集做空间查询。
+      * @param {SingleObjectQueryJobsParameter} params - 单对象空间查询分析的请求参数。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -263,9 +276,9 @@
  
      /**
       * @function ProcessingService.prototype.getQueryJobState
-      * @description 获取单对象查询分析的状态。
-      * @param {string} id - 单对象查询分析的 ID。
-      * @returns {Object} 单对象查询分析的状态。
+      * @description 获取单对象空间查询分析的状态。
+      * @param {string} id - 单对象空间查询分析的 ID。
+      * @returns {Object} 单对象空间查询分析的状态。
       */
      getQueryJobState(id) {
          return this.queryJobs[id];
@@ -293,7 +306,7 @@
  
      /**
       * @function ProcessingService.prototype.getSummaryRegionJob
-      * @description 获取某个区域汇总分析。
+      * @description 获取指定 ID 的区域汇总分析。
       * @param {string} id - 区域汇总分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -314,8 +327,11 @@
  
      /**
       * @function ProcessingService.prototype.addSummaryRegionJob
-      * @description 区域汇总分析。
-      * @param {SummaryRegionJobParameter} params - 区域汇总分析参数类。
+      * @description 新建区域汇总分析。<br>
+     * 区域汇总分析是指针对线数据集和面数据集制作聚合图的一种空间分析作业。
+     * 通过网格面或多边形对地图线或面要素进行划分，然后，以标准属性字段或权重字段对每个网格单元内线或面要素进行统计，
+     * 将统计结果作为该网格单元的统计值。最后按照网格单元统计值的大小进行排序，通过色带对网格单元进行色彩填充。
+      * @param {SummaryRegionJobParameter} params - 区域汇总分析任务参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -368,8 +384,8 @@
  
      /**
       * @function ProcessingService.prototype.getVectorClipJob
-      * @description 获取某个矢量裁剪分析。
-      * @param {string} id - 空间分析的 ID。 
+      * @description 获取指定 ID 的矢量裁剪分析。
+      * @param {string} id - 矢量裁剪分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -389,7 +405,10 @@
  
      /**
       * @function ProcessingService.prototype.addVectorClipJob
-      * @description 矢量裁剪分析。
+      * @description 新建矢量裁剪分析。<br>
+     * 矢量裁剪是指对矢量数据集进行裁剪，包括内部裁剪和外部裁剪。
+     * 内部裁剪，则被裁剪的矢量数据集在裁剪区范围内的部分被保留到结果数据集中；
+     * 外部裁剪，则保留不在裁剪区范围内的那部分数据到结果数据集中。
       * @param {VectorClipJobsParameter} params - 矢量裁剪分析请求参数类。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
@@ -414,7 +433,7 @@
      /**
       * @function ProcessingService.prototype.getVectorClipJobState
       * @description 获取矢量裁剪分析的状态。
-      * @param {number} id - 矢量裁剪分析的ID。
+      * @param {number} id - 矢量裁剪分析的 ID。
       * @returns {Object} 矢量裁剪分析的状态。
       */
      getVectorClipJobState(id) {
@@ -443,8 +462,8 @@
  
      /**
       * @function ProcessingService.prototype.getOverlayGeoJob
-      * @description 获取某个叠加分析。
-      * @param {string} id - 空间分析的 ID。
+      * @description 获取指定 ID 的叠加分析。
+      * @param {string} id - 叠加分析的 ID。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -464,7 +483,10 @@
  
      /**
       * @function ProcessingService.prototype.addOverlayGeoJob
-      * @description 叠加分析。
+      * @description 新建叠加分析。<br>
+     * 叠加分析是在统一空间参考系统下，通过对两个数据集进行的一系列集合运算，产生新数据集的过程。
+     * 在叠加分析中至少涉及到三个数据集，其中一个数据集的类型可以是点、线、面等，被称作源数据集；
+     * 另一个数据集是面数据集，被称作叠加对象数据集；还有一个数据集就是叠加结果数据集，包含叠加后数据的几何信息和属性信息。
       * @param {OverlayGeoJobParameter} params - 叠加分析请求参数类。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
@@ -518,8 +540,8 @@
  
      /**
       * @function ProcessingService.prototype.getBuffersJob
-      * @description 获取某个缓冲区分析。
-      * @param {string} id - 空间分析的 ID。 
+      * @description 获取指定 ID 的缓冲区分析。
+      * @param {string} id - 缓冲区分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -539,7 +561,9 @@
  
      /**
       * @function ProcessingService.prototype.addBuffersJob
-      * @description 缓冲区分析。
+      * @description 新建缓冲区分析。<br>
+     * 缓冲区分析是围绕空间对象，使用与空间对象的距离值（称为缓冲半径）作为半径，生成该对象的缓冲区域的过程，
+     * 其中缓冲半径可以是固定数值也可以是空间对象各自的属性值。缓冲区也可以理解为空间对象的影响或服务范围。
       * @param {BuffersAnalystJobsParameter} params - 缓冲区分析请求参数类。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} seconds - 获取创建成功结果的时间间隔。 
@@ -593,8 +617,8 @@
  
      /**
       * @function ProcessingService.prototype.getTopologyValidatorJob
-      * @description 获取某个拓扑检查分析。
-      * @param {string} id - 空间分析的 ID。 
+      * @description 获取指定 ID 的拓扑检查分析。
+      * @param {string} id - 拓扑检查分析的 ID。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -614,7 +638,10 @@
  
      /**
       * @function ProcessingService.prototype.addTopologyValidatorJob
-      * @description 拓扑检查分析。
+      * @description 新建拓扑检查分析。<br>
+     * 拓扑检查是指根据相应的拓扑规则对点、线和面数据进行检查，返回不符合规则的对象的一种操作作业。
+     * 支持以下种拓扑规则:面数据集内部无交叠、面数据集和面数据集无交叠、面数据集被面数据集包含、
+     * 面数据集被面数据集覆盖、线数据集内部无交叠、线数据集与线数据集无交叠、点数据集内部无重复点。
       * @param {TopologyValidatorJobsParameter} params - 拓扑检查分析请求参数类。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。 
@@ -668,8 +695,8 @@
  
      /**
       * @function ProcessingService.prototype.getSummaryAttributesJob
-      * @description 获取某个属性汇总分析。
-      * @param {string} id - 空间分析的 ID。
+      * @description 获取指定 ID 的属性汇总分析。
+      * @param {string} id - 属性汇总分析的 ID。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat}  [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -689,7 +716,9 @@
  
      /**
       * @function ProcessingService.prototype.addSummaryAttributesJob
-      * @description 属性汇总分析。
+      * @description 新建属性汇总分析。<br>
+     * 属性汇总分析是指对输入的数据集中所选择的属性进行汇总统计。
+     * 通过对输入的数据集设定分组字段、属性字段以及对属性字段需进行的统计模式，从而得到汇总统计的结果。
       * @param {SummaryAttributesJobsParameter} params - 属性汇总分析参数类。 
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {number} [seconds=1000] - 获取创建成功结果的时间间隔。

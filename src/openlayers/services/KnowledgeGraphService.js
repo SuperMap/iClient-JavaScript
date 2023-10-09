@@ -6,7 +6,9 @@ import { KnowledgeGraphService as CommonKnowledgeGraphService } from '@supermap/
 /**
  * @class KnowledgeGraphService
  * @category  iServer KnowledgeGraph
- * @classdesc 知识图谱服务类。
+ * @classdesc 知识图谱服务类。知识图谱是知识表示的一种形式，是由具有属性的实体通过关系链接而成的网状知识库。
+ * 图谱数据和常规结构化表格数据相比，具有强大的数据描述能力，可以实现更快更高效的查询，更快更精准的数据关联性推理运算和隐藏关系的挖掘。
+ * 提供方法：获取图谱图序列化数据、获取图谱列表、查询知识图谱数据、将 SuperMap iServer GraphMap 服务的数据格式转换为 KnowledgeGraph 的数据格式。
  * @version 11.1.0
  * @example
  * new KnowledgeGraphService(url)
@@ -32,7 +34,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} cypherQuery - 查询条件。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   query(cypherQuery, callback) {
@@ -51,7 +53,7 @@ export class KnowledgeGraphService extends ServiceBase {
   /**
    * @function KnowledgeGraphService.prototype.getGraphMaps
    * @description 获取图谱列表。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getGraphMaps(callback) {
@@ -62,7 +64,7 @@ export class KnowledgeGraphService extends ServiceBase {
    * @function KnowledgeGraphService.prototype.getGraphMap
    * @description 获取图谱图序列化数据。
    * @param {string} params 图谱名称。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getGraphMap(params, callback) {
@@ -71,7 +73,7 @@ export class KnowledgeGraphService extends ServiceBase {
 
   /**
    * @function KnowledgeGraphService.prototype.getGraphMapData
-   * @description 将iServer GraphMap服务的数据格式转换为KnowledgeGraph的数据格式。
+   * @description 将 SuperMap iServer GraphMap 服务的数据格式转换为 KnowledgeGraph 的数据格式。
    * @param {string} graphMapName - 图谱名称。
    * @returns {Promise} Promise 对象。
    */

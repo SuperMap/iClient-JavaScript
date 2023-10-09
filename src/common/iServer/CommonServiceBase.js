@@ -265,7 +265,7 @@ export class CommonServiceBase {
      * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
-     * @param {Object} options - 请求参数对象。对象
+     * @param {Object} options - 请求参数对象。
      * @private
      */
     serviceProcessFailed(result, options) {

@@ -13,7 +13,10 @@ import {
  * @class Graph
  * @browsernamespace ol.source
  * @category  Visualization Theme
- * @classdesc 统计专题图图层基类。
+ * @classdesc 统计专题图图层基类。统计专题图是通过为每个要素或记录绘制统计图来反映其对应的专题值的大小。
+ * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题值绘制在一个统计图上，并且每个区域都会有一幅表示该区域各专题值的统计图。
+ * 通过统计专题图可以在区域本身与各区域之间形成横向和纵向的对比。多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，
+ * 不同时段客运量、地铁流量等。
  * @modulecategory Overlay
  * @param {string} chartsType - 图表类别。
  * @param {string} name - 图层名称。
@@ -33,7 +36,7 @@ import {
  * @param {number} [opt_options.opacity = 1] - 图层透明度。
  * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - {@link ol.proj.Projection} 投影信息。
- * @param {number} [opt_options.ratio=1.5] - 视图比, 1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {ol.source.State} [opt_options.state] - 资源状态。

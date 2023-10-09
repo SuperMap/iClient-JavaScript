@@ -9,7 +9,9 @@ import {TerrainSlopeCalculationParameters} from './TerrainSlopeCalculationParame
  * @class TerrainSlopeCalculationService
  * @deprecatedclass SuperMap.TerrainSlopeCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 地形坡度计算服务类。
+ * @classdesc 地形坡度计算服务类。该类用于计算栅格数据集（通常使用 DEM 数据）中各个像元的坡度值。
+ * 坡度值越大，地势越陡峭；坡度值越小，地势越平坦。DEM 数据中的像元值即该点的高程值，通过高程值计算该点的坡度。
+ * 由于计算点的坡度没有实际意义，在 SuperMap 中，坡度计算的是各像元平面的平均值，并且提供了三种坡度表现形式：度数、弧度、百分比。
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。

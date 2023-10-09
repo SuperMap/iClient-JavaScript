@@ -8,7 +8,8 @@ import { CommonServiceBase } from './CommonServiceBase';
 /**
  * @class ImageService
  * @deprecatedclass SuperMap.ImageService
- * @classdesc 影像服务类。
+ * @classdesc 影像服务类。可实现大规模影像或栅格数据的管理，提供方法：
+ * 获取影像集合列表、获取影像集合中指定 ID 的影像、根据过滤条件查询匹配的影像数据。
  * @version 10.2.0
  * @category iServer Image
  * @param {string} url - 服务地址。例如: http://{ip}:{port}/iserver/{imageservice-imageserviceName}/restjsr/
@@ -51,8 +52,8 @@ export default class ImageService extends CommonServiceBase {
 
   /**
    * @function ImageService.prototype.getCollectionByID
-   * @description ID值等于`collectionId`参数值的影像集合（Collection）。ID值用于在服务中唯一标识该影像集合。
-   * @param {string} collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+   * @description ID 值等于`collectionId`参数值的影像集合（Collection）。ID 值用于在服务中唯一标识该影像集合。
+   * @param {string} collectionId 影像集合（Collection）的 ID，在一个影像服务中唯一标识影像集合。
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */

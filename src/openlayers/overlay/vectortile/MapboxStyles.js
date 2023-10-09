@@ -135,7 +135,7 @@ export class MapboxStyles extends Observable {
     /**
      * @function MapboxStyles.prototype.setSelectedId
      * @description 设置选中要素，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`,才能生效。
-     * @param {number} selectedId - 要素ID。
+     * @param {number} selectedId - 要素 ID。
      * @param {string} sourceLayer - 要素所在图层名称。
      */
     setSelectedId(selectedId, sourceLayer) {
@@ -148,7 +148,7 @@ export class MapboxStyles extends Observable {
     /**
      * @typedef {Object} MapboxStyles.selectedObject
      * @description 要选择的要素对象。
-     * @property {number} selectedId - 要素ID。
+     * @property {number} selectedId - 要素 ID。
      * @property {string} sourceLayer - 要素所在图层名称。
      */
 

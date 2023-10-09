@@ -8,11 +8,11 @@ import {MinDistanceAnalystParameters} from './MinDistanceAnalystParameters';
  * @class DatasetMinDistanceAnalystParameters
  * @deprecatedclass SuperMap.DatasetMinDistanceAnalystParameters
  * @category iServer SpatialAnalyst MinDistanceAnalyst
- * @classdesc 数据集最近距离分析参数类。
+ * @classdesc 数据集最近距离分析参数类。该类用于设置要进行最近距离分析的数据集、属性过滤条件、查询范围的最大/最小距离等参数。
  * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {FilterParameter} [options.inputFilterQueryParameter] - 对被计算数据集的要素进行过滤的属性过滤条件。只有满足此条件的要素才参与最近距离计算。
- * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
+ * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集。
  * @param {FilterParameter} [options.referenceFilterQueryParameter=null] - 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。
  * @param {boolean} [options.createResultDataset] - 是否创建结果数据集。
  * @param {string} [options.resultDatasetName] - 结果数据集名称。

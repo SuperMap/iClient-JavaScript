@@ -10,7 +10,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
 /**
  * @class SuperMap.REST.DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集信息服务。
+ * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
@@ -33,7 +33,7 @@ export class DatasetService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDatasets
-     * @description 数据集查询服务。
+     * @description 数据集集合查询服务。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDatasets(datasourceName,function(result){
      *     //doSomething
@@ -51,7 +51,7 @@ export class DatasetService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.DatasetService.prototype.getDataset
-     * @description 数据集查询服务。
+     * @description 数据集信息查询服务。
      * @example
      *   new SuperMap.REST.DatasetService(url).getDataset(datasourceName, datasetName, function(result){
      *     //doSomething

@@ -8,7 +8,7 @@ import {LabelMatrixCell} from './LabelMatrixCell';
  * @class LabelImageCell
  * @deprecatedclass SuperMap.LabelImageCell
  * @category iServer Map Theme
- * @classdesc 图片类型的矩阵标签元素类。该类继承自 {@link LabelMatrixCell}类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
+ * @classdesc 图片类型的矩阵标签元素类。主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
  * 矩阵标签专题图是标签专题图（ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（{@link LabelImageCell}）、
  * 符号类型（{@link LabelSymbolCell}）、专题图类型（{@link LabelThemeCell}）三种，该类是这三种类型的矩阵标签元素其中的一种，
  * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应）、大小等。
@@ -35,7 +35,7 @@ export class LabelImageCell extends LabelMatrixCell {
 
         /**
          * @member {string} LabelImageCell.prototype.pathField
-         * @description 设置矩阵标签元素所使用的图片路径对应的字段名。
+         * @description 设置矩阵标签元素所使用的图片路径对应的字段名称。
          */
         this.pathField = null;
 

@@ -6,7 +6,7 @@ import '../../core/Base';
 /**
  * @class Theme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维专题图基类。不能直接实例化。
+ * @classdesc 三维专题图基类。不能直接实例化。目前提供的三维专题图有：三维单值专题图、三维分段专题图。
  * @modulecategory Overlay
  * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions -专题图图层配置项。

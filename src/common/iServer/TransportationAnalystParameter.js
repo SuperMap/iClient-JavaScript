@@ -8,8 +8,7 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  * @class TransportationAnalystParameter
  * @deprecatedclass SuperMap.TransportationAnalystParameter
  * @category  iServer NetworkAnalyst
- * @classdesc 交通网络分析通用参数类。该类主要用来提供交通网络分析所需的通用参数。
- * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。
+ * @classdesc 交通网络分析通用参数类。此类提供了交通网络分析中所需的障碍边、障碍点、权值字段信息的名称标识、转向权值字段，以及有关分析结果的一系列参数。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。
  * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。

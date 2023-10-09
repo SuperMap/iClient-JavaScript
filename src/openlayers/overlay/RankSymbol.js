@@ -8,7 +8,7 @@ import {Graph} from './Graph';
  * @class RankSymbol
  * @browsernamespace ol.source
  * @category  Visualization Theme
- * @classdesc 等级符号专题图图层源。
+ * @classdesc 等级符号专题图图层源。等级符号专题图根据各要素的某个数量特征，按照一定的分类方法用一组等级符号表示在地图上，以呈现要素间该数量特征的相对关系。
  * @modulecategory Overlay
  * @param {string} name - 专题图层名。
  * @param {string} symbolType - 标志类型。

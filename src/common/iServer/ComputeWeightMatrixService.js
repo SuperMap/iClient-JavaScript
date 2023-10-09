@@ -12,11 +12,11 @@ import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
  * @classdesc 耗费矩阵分析服务类。
  *            耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  *            用来存储指定的任意两点间的资源消耗。
- *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
+ *            耗费矩阵分析结果通过该类支持的事件的监听函数参数获取。
  * @extends {NetworkAnalystServiceBase}
  * @example
  * var mycomputeWeightMatrixService = new ComputeWeightMatrixService(url);
- * @param {string} url - 耗费矩阵分析服务地址。请求服务的URL应为：
+ * @param {string} url - 耗费矩阵分析服务地址。请求服务的 URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如："http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
@@ -44,7 +44,7 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
     /**
      * @function ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类
+     * @param {ComputeWeightMatrixParameters} params - 耗费矩阵分析参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
@@ -70,10 +70,10 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
     /**
      * @function ComputeWeightMatrixService.prototype.getJson
-     * @description 将对象转化为JSON字符串。
-     * @param {boolean} isAnalyzeById - 是否通过id分析
-     * @param {Array.<ComputeWeightMatrixParameters>} params - 分析参数数组
-     * @returns {string} 转化后的JSON字符串。
+     * @description 将对象转化为 JSON 字符串。
+     * @param {boolean} isAnalyzeById - 是否通过 ID 分析。
+     * @param {Array.<ComputeWeightMatrixParameters>} params - 分析参数数组。
+     * @returns {string} 转化后的 JSON 字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",

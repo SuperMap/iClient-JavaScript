@@ -35,7 +35,8 @@ const Renderer = ['canvas', 'webgl'];
  * @class Graphic
  * @browsernamespace ol.source
  * @category  Visualization Graphic
- * @classdesc 高效率点图层源。
+ * @classdesc 高效率点图层源。能够支持前端百万点数据的渲染，并支持 GeoJSON、TopoJSON、二维表等多种数据格式，支持修改样式，
+ * 支持属性筛选、鼠标事件等交互操作。
  * @param {Object} options - 参数。
  * @param {ol.Map} options.map - openlayers 地图对象。
  * @param {OverlayGraphic} options.graphics - 高效率点图层点要素。

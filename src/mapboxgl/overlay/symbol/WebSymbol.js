@@ -5,12 +5,12 @@ import mapboxgl from "mapbox-gl";
 import MapExtendSymbol from './MapExtendSymbol';
 /**
 * @class WebSymbol
-* @classdesc SuperMap iClient for MapboxGL 支持 Web 符号库，扩展了 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API。
+* @classdesc Web 符号库。SuperMap iClient for MapboxGL 通过扩展 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API，实现了对 Web 符号库的支持，提供了前后端一致的 Web 符号化制图能力和自定义 Web 符号的能力。
 * @category Visualization WebSymbol
 * @description 
 * 
 * ## 初始化
-* 使用Web符号资源时, 通过接口指定符号资源路径。
+* 使用Web符号资源时，通过接口指定符号资源路径。
 * ```
 * new mapboxgl.supermap.WebSymbol().init({basePath: "./resources/symbols"});
 * ```
@@ -308,10 +308,10 @@ export class WebSymbol {
 
   /**
    * @function WebSymbol.prototype.init
-   * @description 初始化Web符号配置。
+   * @description 初始化 Web 符号配置。
    * @version 11.1.0
-   * @param {object} config - 配置信息
-   * @param {string} [config.basePath] - 指定符号资源路径
+   * @param {object} config - 配置信息。
+   * @param {string} [config.basePath] - 指定符号资源路径。
    */
   init(config) {
     mapboxgl.Map.prototype.basePath = config && config.basePath || this.defaultBasePath;

@@ -9,7 +9,7 @@ import {QueryByBoundsParameters} from './QueryByBoundsParameters';
  * @class QueryByBoundsService
  * @deprecatedclass SuperMap.QueryByBoundsService
  * @category  iServer Map QueryResults
- * @classdesc Bounds 查询服务类。
+ * @classdesc 范围查询服务类。
  * @augments {QueryService}
  * @example
  * (start end)
@@ -42,7 +42,7 @@ export class QueryByBoundsService extends QueryServiceBase {
      * @function QueryByBoundsService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
      *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
-     * @param {QueryByBoundsParameters} params - Bounds 查询参数。
+     * @param {QueryByBoundsParameters} params - 范围查询参数。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {

@@ -8,7 +8,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 /**
  * @class AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务类。
+ * @classdesc 地址匹配服务类。此类提供了地址的正向匹配和反向匹配功能，正向匹配即通过地点名称关键词查找地址位置，反向匹配即根据位置坐标查询地点。
  * @version 11.1.0
  * @modulecategory Services
  * @example
@@ -35,7 +35,7 @@ export class AddressMatchService extends ServiceBase {
      * @function AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
      * @param {GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
@@ -46,7 +46,7 @@ export class AddressMatchService extends ServiceBase {
      * @function AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
      * @param {GeoDecodingParameter} params -反向匹配参数。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {

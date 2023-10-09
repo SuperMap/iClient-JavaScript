@@ -10,10 +10,10 @@ import {ServerGeometry} from './ServerGeometry';
  * @deprecatedclass SuperMap.GeometryBufferAnalystParameters
  * @category  iServer SpatialAnalyst BufferAnalyst
  * @classdesc 几何对象缓冲区分析参数类。
- * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
+ * 通过该类可以指定要做缓冲区分析的几何对象、缓冲区通用设置、几何对象投影坐标等参数。
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} options.sourceGeometry - 要做缓冲区分析的几何对象。
- * @param {number} options.sourceGeometrySRID - 缓冲区几何对象投影坐标参数, 如 4326，3857。
+ * @param {number} options.sourceGeometrySRID - 缓冲区几何对象投影坐标参数，如 4326，3857。
  * @param {BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
  * @extends {BufferAnalystParameters}
  * @usage
@@ -34,7 +34,7 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
         /**
          * @member {number} GeometryBufferAnalystParameters.prototype.sourceGeometrySRID
-         * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
+         * @description 缓冲区几何对象投影坐标参数，如 4326，3857。
          */
         this.sourceGeometrySRID = null;
 

@@ -15,17 +15,20 @@ import { FGBLayerRenderer } from '@supermap/iclient-common/overlay/fgb/FGBLayerR
 /**
  * @class FGBLayer
  * @category Visualization FGB
- * @classdesc FGB 图层类。
+ * @classdesc FGB 图层类。该图层把 {@link FlatGeobuf} 格式解析为点线面要素。
+ * FlatGeobuf（FGB）是一种用于存储地理要素的坐标、类型的二进制编码格式。
+ * FGB 格式与传统的 Shapefile、GeoJSON 等文件格式类似，支持地理空间矢量数据的存储，但 FGB 格式具有更高的存储效率和更快的读写速度，
+ * 适用于大量静态数据的编码与传输。
  * @version 11.1.0
  * @modulecategory Overlay
  * @param {Object} options - 参数。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("FGBlayer_") 创建图层 ID。
- * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。 all为全量加载， bbox为当前可见范围加载。
- * @param {Array} [options.extent] - 加载范围, 参数规范为: [minX, minY, maxX, maxY], 传递此参数后, 图层将使用局部加载。
+ * @param {boolean} [options.strategy='bbox'] - 指定加载策略，可选值为 all，bbox。all 为全量加载，bbox 为当前可见范围加载。
+ * @param {Array} [options.extent] - 加载范围，参数规范为: [minX, minY, maxX, maxY]，传递此参数后，图层将使用局部加载。
  * @param {function} [options.featureLoader] - 要素自定义方法，接收要素作为参数，需返回要素。
- * @param {Object} [options.paint] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property}
- * @param {Object} [options.layout] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property}
- * @param {Object} [options.sourceOptions] - 参数内容详见: {@link mapboxgl.source}
+ * @param {Object} [options.paint] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#paint-property}。
+ * @param {Object} [options.layout] - 参数内容详见: {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#layout-property}。
+ * @param {Object} [options.sourceOptions] - 参数内容详见: {@link mapboxgl.source}。
  * @usage
  */
 

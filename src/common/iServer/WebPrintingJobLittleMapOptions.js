@@ -8,13 +8,14 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
 /**
  * @class WebPrintingJobLittleMapOptions
  * @deprecatedclass SuperMap.WebPrintingJobLittleMapOptions
- * @classdesc Web 打印小地图参数类。
+ * @classdesc Web 打印小地图参数类。输出的地图文档中除了包含一个主地图，还可以添加一个小地图，例如中国地图中南海区域的小地图。
+ * 此类用于设置小地图的比例尺、中心点等参数，小地图可以是静态图片或 WebMap 中的图层。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} option.center - 小地图的中心点。
  * @param {number} [option.scale] - 小地图的比例尺。
- * @param {Array.<string>} [option.layerNames] - 指定 WebMap中图层名称的列表，用于渲染小地图。
+ * @param {Array.<string>} [option.layerNames] - 指定 WebMap 中图层名称的列表，用于渲染小地图。
  * @param {WebPrintingJobImage} [option.image] - 表达小地图的静态图类。
  * @param {WebPrintingJobLayers} [option.layers] - 指定 WebMap 中的 layers 图层类。
  * @usage
@@ -34,7 +35,7 @@ export class WebPrintingJobLittleMapOptions {
         this.scale = null;
         /**
          * @member {Array.<string>} WebPrintingJobLittleMapOptions.prototype.layerNames
-         * @description 指定 WebMap中图层名称的列表，用于渲染小地图。
+         * @description 指定 WebMap 中图层名称的列表，用于渲染小地图。
          */
         this.layerNames = null;
         /**

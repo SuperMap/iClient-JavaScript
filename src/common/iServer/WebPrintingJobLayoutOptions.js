@@ -10,7 +10,7 @@ import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
 /**
  * @class WebPrintingJobLayoutOptions
  * @deprecatedclass SuperMap.WebPrintingJobLayoutOptions
- * @classdesc Web 打印的布局参数类。
+ * @classdesc Web 打印的布局参数类。此类用于设置 Web 地图打印的布局模板信息，包括地图的标题、作者、版权信息、小地图、图例、比例尺、指北针等参数。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。

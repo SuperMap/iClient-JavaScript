@@ -15,7 +15,8 @@ import {LabelOverLengthMode} from '../REST';
  * @class ThemeLabel
  * @deprecatedclass SuperMap.ThemeLabel
  * @category  iServer Map Theme
- * @classdesc 标签专题图类。
+ * @classdesc 标签专题图类。标签专题图是用文本形式在图层上直接显示属性表中的数据。
+ * 标签专题图不仅可以帮助用户更好地区分地物要素，同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
  * @extends CommonTheme
  * @param {Object} options - 参数。
  * @param {Array.<ThemeLabelItem>} options.items - 子项数组。
@@ -62,7 +63,7 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {Array.<ThemeLabelUniqueItem>} ThemeLabel.prototype.uniqueItems
-         * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression单值标签专题图子项集合。
+         * @description 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression 单值标签专题图子项集合。
          */
         this.uniqueItems = null;
 
@@ -115,7 +116,7 @@ export class ThemeLabel extends Theme {
         /**
          * @member {string} ThemeLabel.prototype.rangeExpression
          * @description 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
-         *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
+         *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end) 来源于 rangeExpression 字段值。
          *              最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
          */
         this.rangeExpression = null;
@@ -123,7 +124,7 @@ export class ThemeLabel extends Theme {
         /**
          * @member {string} ThemeLabel.prototype.uniqueExpression
          * @description 用于制作单值专题图的字段或字段表达式。
-         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必须与labelExpression一起使用。
+         *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必须与 labelExpression 一起使用。
          */
         this.uniqueExpression = null;
 
@@ -202,7 +203,7 @@ export class ThemeLabel extends Theme {
 
     /**
      * @function ThemeLabel.prototype.toJSON
-     * @description 将themeLabel对象转化为 JSON 字符串。
+     * @description 将 themeLabel 对象转化为 JSON 字符串。
      * @returns {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {

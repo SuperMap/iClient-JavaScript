@@ -10,9 +10,10 @@ import { MappingParameters } from './MappingParameters';
  * @class SummaryRegionJobParameter
  * @deprecatedclass SuperMap.SummaryRegionJobParameter
  * @category  iServer ProcessingService SummaryRegion
- * @classdesc 区域汇总分析任务参数类。
+ * @classdesc 区域汇总分析任务参数类。此类用于设置区域汇总分析的数据集、分析范围、标准属性字段、
+ * 权重字段、统计方式、汇总类型、网格类型和大小等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} [options.regionDataset] - 汇总数据源（多边形汇总时用到的参数）。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
@@ -39,7 +40,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {string} SummaryRegionJobParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
@@ -63,7 +64,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.standardSummaryFields=false]
-         * @description 是否以标准属字段统计。
+         * @description 是否以标准属性字段统计。
          */
         this.standardSummaryFields = false;
 
@@ -169,7 +170,7 @@ export class SummaryRegionJobParameter {
 
     /**
      * @function SummaryRegionJobParameter.toObject
-     * @param {Object} summaryRegionJobParameter - 矢量裁剪分析任务参数。
+     * @param {Object} summaryRegionJobParameter - 区域汇总分析任务参数。
      * @param {Object} tempObj - 目标对象。
      * @description 生成区域汇总分析服务对象。
      */

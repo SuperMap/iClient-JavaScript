@@ -8,10 +8,11 @@ import mapboxgl from 'mapbox-gl';
 
 /**
  * @class GraphMap
- * @classdesc 对接 iServer GraphMap。
+ * @classdesc 对接 SuperMap iServer GraphMap，即 SuperMap iServer 中的知识图谱图文档，此类提供了知识图谱的服务地址、配置项等参数。
+ * 配置项包括：知识图谱的尺寸、中心点、缩放比例、布局、节点配置、边配置、高亮样式、拖拽设置等参数。
  * @category iServer KnowledgeGraph
  * @version 11.1.0
- * @param {string} serverUrl - GraphMap服务地址， 例如：http://{iserver}/services/{knowledgeGraph-provider}/restjsr/graph/graphmaps/{graphmap}。
+ * @param {string} serverUrl - GraphMap 服务地址， 例如：http://{iserver}/services/{knowledgeGraph-provider}/restjsr/graph/graphmaps/{graphmap}。
  * @param {Object} [options] - 参数。
  * @param {KnowledgeGraph.Config} [options.config] - KnowledgeGraph的配置项。
  * @param {string} [options.proxy] - 服务代理地址。
@@ -27,7 +28,7 @@ export class GraphMap extends mapboxgl.Evented {
     super(serverUrl, options);
     /**
      * @member GraphMap.prototype.graph
-     * @description KnowledgeGraph的实例.
+     * @description KnowledgeGraph 的实例。
      *
      */
     this.graph = null;
@@ -48,13 +49,13 @@ export class GraphMap extends mapboxgl.Evented {
    * @private
    * @function GraphMap.prototype.createGraphMap
    * @description 创建图谱。
-   * @param {string} graphMapName - 图谱名称
-   * @param {Object} options - 参数。
+   * @param {string} graphMapName - 图谱名称。
+   * @param {Object} options - 配置项。
    * @param {string} [options.proxy] - 服务代理地址。
    * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
    * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
    * @param {Object} [options.headers] - 请求头。
-   * @param {KnowledgeGraph.Config} [options.config] - knowledgegrah配置项。
+   * @param {KnowledgeGraph.Config} [options.config] - knowledgegraph 配置项。
    */
   async createGraphMap(graphMapName, options) {
     this.knowledgeGraphService = this.createKnowledgeGraphService(this.url, options);
@@ -75,8 +76,8 @@ export class GraphMap extends mapboxgl.Evented {
   /**
    * @private
    * @function GraphMap.prototype.createKnowledgeGraphService
-   * @description 创建KnowledgeGraphService实例。
-   * @param {string} serverUrl - GraphMap服务地址， 例如：http://{iserver}/services/knowledgeGraph-test/restjsr/graph
+   * @description 创建 KnowledgeGraphService 实例。
+   * @param {string} serverUrl - GraphMap 服务地址，例如：http://{iserver}/services/knowledgeGraph-test/restjsr/graph
    * @param {Object} options - 参数。
    * @param {string} [options.proxy] - 服务代理地址。
    * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。

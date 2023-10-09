@@ -7,7 +7,13 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
 
 /**
  * @class HeatMapLayer
- * @classdesc 热力图层类。
+ * @classdesc 热力图层类。热力图是通过颜色分布，描述诸如人群分布、密度和变化趋势等的一种地图表现手法。
+ * 热点图的衰减是像素级别的，视觉效果极佳，但不能与具体数据进行一一对应，只能表示权重之间的差别，
+ * 因此可以用于一些对精度要求不高而需要重点突出权重渐变的行业，如制作气象温度对比动态效果图、地震区域的震点强弱图等。<br>
+ * 在客户端直接渲染栅格图的三要素：<br>
+ * 1.热点数据，热点数据需要点数据，每一个热点数据需要有地理位置以及权重值 （能够明显地表现某位置某事件发生频率或事物分布密度等，如可以为温度的高低、人口密集度等等)；<br>
+ * 2.热点衰减渐变填充色集合， 用于渲染每一个热点从中心向外衰减时的渐变色；<br>
+ * 3.热点半径，也就是衰减半径。每一个热点需要从中心点外四周根据半径计算衰减度，对在热点衰减区内的每一个像素计算需要渲染的颜色值。
  * @category  Visualization HeatMap
  * @version 11.1.0
  * @modulecategory Overlay
@@ -15,11 +21,11 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @param {Object} options - 构造参数。
  * @param {maplibregl.Map} options.map - MapLibreGL Map 对象。
  * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
- * @param {string} [options.id] - 专题图层ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
- * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为 false)。
  * @param {number} [options.opacity=1] - 图层不透明度。
- * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组,颜色值必须为canvas所支。
+ * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，即默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {maplibregl.Evented}
  * @fires HeatMapLayer#featuresadded

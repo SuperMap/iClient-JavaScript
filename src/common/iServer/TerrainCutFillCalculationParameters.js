@@ -8,15 +8,16 @@ import {Util} from '../commontypes/Util';
  * @class TerrainCutFillCalculationParameters
  * @deprecatedclass SuperMap.TerrainCutFillCalculationParameters
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 填挖方计算参数类。
+ * @classdesc 填挖方计算参数类。该类用于设置填挖方计算的数据集、填挖方分析类型以及不同分析类型相对应的参数等，还可对结果数据集进行一系列设置。
+ * 支持的填挖方类型：栅格填挖方（GRID）、斜面填挖方（LINE3DANDBUFFERRADIUS）、三维面填挖方（REGION3D）、选面填挖方（REGIONANDALTITUDE）。
  * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 填挖方计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
- * @param {string} [options.cutFillType="GRID"] - 填挖方分析的类型，包含： 
-                                                GRID：根据结果栅格进行填挖方分析，也叫栅格填挖方 
-                                                LINE3DANDBUFFERRADIUS：根据指定的三维线及缓冲半径进行进行填挖方分析，也叫斜面填挖方。 
-                                                REGION3D：三维面填挖方计算。 
-                                                REGIONANDALTITUDE：根据指定的面区域及结果高程值进行填挖方分析，也叫选面填挖方计算。 
+ * @param {string} [options.cutFillType="GRID"] - 填挖方分析的类型，包含：<br>
+                                                栅格填挖方（GRID）：根据结果栅格进行填挖方分析； <br>
+                                                斜面填挖方（LINE3DANDBUFFERRADIUS）：根据指定的三维线及缓冲半径进行进行填挖方分析；<br>
+                                                三维面填挖方计算（REGION3D）；<br>
+                                                选面填挖方（REGIONANDALTITUDE）：根据指定的面区域及结果高程值进行填挖方分析。 
 * @param {string} [options.afterCutFillDataset] - 填挖方后的栅格数据集，当填挖方分析的类型为 GRID 时有效，此时为必填。
 * @param {string} [options.resultDataset] - 填挖方分析的结果数据集。
 * @param {boolean} [options.buildPyramid] - 是否对结果栅格数据集创建金字塔。 
@@ -43,11 +44,11 @@ export class TerrainCutFillCalculationParameters {
 
         /**
          * @member {string} TerrainCutFillCalculationParameters.prototype.cutFillType
-         * @description 填挖方分析的类型，包含： 
-                                        GRID：根据结果栅格进行填挖方分析，也叫栅格填挖方 
-                                        LINE3DANDBUFFERRADIUS：根据指定的三维线及缓冲半径进行进行填挖方分析，也叫斜面填挖方。 
-                                        REGION3D：三维面填挖方计算。 
-                                        REGIONANDALTITUDE：根据指定的面区域及结果高程值进行填挖方分析，也叫选面填挖方计算。 
+         * @description 填挖方分析的类型，包含：<br>
+                                        栅格填挖方（GRID）：根据结果栅格进行填挖方分析； <br>
+                                        斜面填挖方（LINE3DANDBUFFERRADIUS）：根据指定的三维线及缓冲半径进行进行填挖方分析；<br>
+                                        三维面填挖方计算（REGION3D）；<br>
+                                        选面填挖方（REGIONANDALTITUDE）：根据指定的面区域及结果高程值进行填挖方分析。 
          */
         // this.cutFillType = cutFillType.GRID;
         this.cutFillType = "GRID";

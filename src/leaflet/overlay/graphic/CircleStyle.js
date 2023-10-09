@@ -7,7 +7,7 @@ import '../../core/Base';
 /**
  * @class CircleStyle
  * @deprecatedclassinstance L.supermap.circleStyle
- * @classdesc 圆形要素风格类。
+ * @classdesc 圆形要素风格类。支持设置圆形要素的半径、线颜色、线宽、线帽形状、线条交汇边角形状、填充色、填充透明度、填充形状等参数。
  * @category Visualization Graphic
  * @modulecategory Overlay
  * @extends {L.Class}

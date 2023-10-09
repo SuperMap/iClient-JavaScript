@@ -10,9 +10,10 @@ import {MappingParameters} from './MappingParameters';
  * @class SingleObjectQueryJobsParameter
  * @deprecatedclass SuperMap.SingleObjectQueryJobsParameter
  * @category  iServer ProcessingService Query
- * @classdesc 单对象空间查询分析任务参数类。
+ * @classdesc 单对象空间查询分析任务参数类。此类用于设置叠加分析的数据集、分析模式、保留字段等参数，
+ * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.datasetQuery - 查询对象所在的数据集名称。
  * @param {SpatialQueryMode} [options.mode=SpatialQueryMode.CONTAIN] - 空间查询模式。
  * @param {OutputSetting} [options.output] - 输出参数设置。
@@ -27,7 +28,7 @@ export class SingleObjectQueryJobsParameter {
         }
         /**
          * @member {string} SingleObjectQueryJobsParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
@@ -45,7 +46,7 @@ export class SingleObjectQueryJobsParameter {
 
         /**
          * @member {SpatialQueryMode} [SingleObjectQueryJobsParameter.prototype.mode=SpatialQueryMode.CONTAIN]
-         * @description 空间查询模式 。
+         * @description 空间查询模式。
          */
         this.mode = SpatialQueryMode.CONTAIN;
 

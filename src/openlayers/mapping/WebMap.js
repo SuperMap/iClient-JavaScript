@@ -78,28 +78,28 @@ const dpiConfig = {
  * @category  iPortal/Online Resources Map
  * @classdesc 对接 iPortal/Online 地图类
  * @modulecategory Mapping
- * @param {Object} options - 参数
- * @param {string} [options.target='map'] - 地图容器id
- * @param {Object | string} [options.webMap] - webMap对象，或者是获取webMap的url地址。存在webMap，优先使用webMap, id的选项则会被忽略
- * @param {number} [options.id] - 地图的id
- * @param {string} [options.server] - 地图的地址，如果使用传入id，server则会和id拼接成webMap请求地址
- * @param {function} [options.successCallback] - 成功加载地图后调用的函数
- * @param {function} [options.errorCallback] - 加载地图失败调用的函数
- * @param {string} [options.credentialKey] - 凭证密钥。例如为"key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填
- * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey和credentialValue必须一起使用
- * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie
- * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的url是否带有代理
- * @param {Object} [options.serviceProxy] - iportal内置代理信息, 仅矢量瓦片图层上图才会使用
- * @param {string} [options.tiandituKey] - 天地图的key
- * @param {string} [options.googleMapsAPIKey] - 谷歌底图需要的key
- * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域
- * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp
- * @param {Object} [options.mapSetting] - 地图可选参数
- * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数
- * @param {function} [options.mapSetting.overlays] - 地图的overlays
- * @param {function} [options.mapSetting.controls] - 地图的控件
- * @param {function} [options.mapSetting.interactions] - 地图控制的参数
- * @param {number} [options.restDataSingleRequestCount=1000] - 自定义restData分批请求，单次请求数量
+ * @param {Object} options - 参数。
+ * @param {string} [options.target='map'] - 地图容器 ID。
+ * @param {Object | string} [options.webMap] - webMap对象，或者是获取 webMap 的 URL 地址。存在 webMap，优先使用 webMap, ID 的选项则会被忽略。
+ * @param {number} [options.id] - 地图的 ID。
+ * @param {string} [options.server] - 地图的地址，如果使用传入 ID，server 则会和 ID 拼接成 webMap 请求地址。
+ * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
+ * @param {function} [options.errorCallback] - 加载地图失败调用的函数。
+ * @param {string} [options.credentialKey] - 凭证密钥。例如为 "key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填。
+ * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey 和 credentialValue 必须一起使用。
+ * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
+ * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的 URL 是否带有代理。
+ * @param {Object} [options.serviceProxy] - iportal 内置代理信息, 仅矢量瓦片图层上图才会使用。
+ * @param {string} [options.tiandituKey] - 天地图的 key。
+ * @param {string} [options.googleMapsAPIKey] - 谷歌底图需要的 key。
+ * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域。
+ * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp。
+ * @param {Object} [options.mapSetting] - 地图可选参数。
+ * @param {function} [options.mapSetting.mapClickCallback] - 地图被点击的回调函数。
+ * @param {function} [options.mapSetting.overlays] - 地图的 overlays。
+ * @param {function} [options.mapSetting.controls] - 地图的控件。
+ * @param {function} [options.mapSetting.interactions] - 地图控制的参数。
+ * @param {number} [options.restDataSingleRequestCount=1000] - 自定义 restData 分批请求，单次请求数量。
  * @extends {ol.Observable}
  * @usage
  */
@@ -208,7 +208,7 @@ export class WebMap extends Observable {
     /**
      * @function WebMap.prototype.refresh
      * @version 10.1.0
-     * @description 重新渲染地图
+     * @description 重新渲染地图。
      */
     refresh() {
         this._clear();
@@ -3213,10 +3213,10 @@ export class WebMap extends Observable {
     }
 
     /**
-     * @description 获取单值专题图自定义样式对象
-     * @param {Object} style - 图层上的样式
-     * @param {string} color - 单值对应的颜色
-     * @param {string} featureType - 要素类型
+     * @description 获取单值专题图自定义样式对象。
+     * @param {Object} style - 图层上的样式。
+     * @param {string} color - 单值对应的颜色。
+     * @param {string} featureType - 要素类型。
      */
     getCustomSetting(style, color, featureType) {
         let newProps = {};
@@ -3914,9 +3914,9 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.checkUploadToRelationship
-     * @description 检查是否上传到关系型
-     * @param {string} fileId - 文件的id
-     * @returns {Promise<T | never>} 关系型文件一些参数
+     * @description 检查是否上传到关系型。
+     * @param {string} fileId - 文件的 ID。
+     * @returns {Promise<T | never>} 关系型文件一些参数。
      */
     checkUploadToRelationship(fileId) {
         let url = this.getRequestUrl(`${this.server}web/datas/${fileId}/datasets.json`);
@@ -3971,10 +3971,10 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.getRootUrl
-     * @description 获取请求地址
-     * @param {string} url 请求的地址
-     * @param {boolean} 请求是否带上Credential.
-     * @returns {Promise<T | never>} 请求地址
+     * @description 获取请求地址。
+     * @param {string} url 请求的地址。
+     * @param {boolean} 请求是否带上Credential。
+     * @returns {Promise<T | never>} 请求地址。
      */
     getRequestUrl(url, excludeCreditial) {
         url = excludeCreditial ? url : this.formatUrlWithCredential(url);
@@ -3986,8 +3986,8 @@ export class WebMap extends Observable {
     }
 
     /**
-     * @description 给url带上凭证密钥
-     * @param {string} url - 地址
+     * @description 给 URL 带上凭证密钥。
+     * @param {string} url - 地址。
      */
     formatUrlWithCredential(url) {
         if (this.credentialValue) {
@@ -4048,12 +4048,12 @@ export class WebMap extends Observable {
     }
 
     /**
-     * 通过wkt参数扩展支持多坐标系
+     * 通过 WKT 参数扩展支持多坐标系。
      *
-     * @param {string} wkt 字符串
-     * @param {string} crsCode epsg信息，如： "EPSG:4490"
+     * @param {string} wkt 字符串。
+     * @param {string} crsCode EPSG 信息，如： "EPSG:4490"。
      *
-     * @returns {boolean} 坐标系是否添加成功
+     * @returns {boolean} 坐标系是否添加成功。
      */
     addProjctionFromWKT(wkt, crsCode) {
         if (typeof (wkt) !== 'string') {
@@ -4082,10 +4082,10 @@ export class WebMap extends Observable {
     }
 
     /**
-     * 通过wkt参数获取坐标信息
+     * 通过 WKT 参数获取坐标信息。
      *
-     * @param {string} wkt 字符串
-     * @returns {string} epsg 如："EPSG:4326"
+     * @param {string} wkt 字符串。
+     * @returns {string} EPSG，如："EPSG:4326"。
      */
     getEpsgInfoFromWKT(wkt) {
         if (typeof (wkt) !== 'string') {
@@ -4644,9 +4644,9 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.renameLayerId
-     * @description  mapboxstyle图层 id重复的layer添加后缀编码 (n)[参考mapstudio]
-     * @param {mapboxgl.Layer[]} layers 已添加到地图的图层组
-     * @param {mapboxgl.Layer} curLayer 当前图层
+     * @description  mapboxstyle图层 ID 重复的 layer 添加后缀编码 (n)[参考mapstudio]。
+     * @param {mapboxgl.Layer[]} layers 已添加到地图的图层组。
+     * @param {mapboxgl.Layer} curLayer 当前图层。
      */
     renameLayerId(layers, curLayer) {
         if (layers.find((l) => l.id === curLayer.id)) {
@@ -4681,7 +4681,7 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.renameLayerId
-     * @description 判断url是否是iportal的代理地址
+     * @description 判断 ur l是否是 iportal 的代理地址。
      * @param {*} serviceUrl
      */
     isIportalProxyServiceUrl(serviceUrl) {
@@ -4707,9 +4707,9 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.getStyleResolutions
-     * @description 创建图层分辨率
-     * @param {Object} bounds  图层上下左右范围
-     * @returns {Array} styleResolutions 样式分辨率
+     * @description 创建图层分辨率。
+     * @param {Object} bounds  图层上下左右范围。
+     * @returns {Array} styleResolutions 样式分辨率。
      */
     getStyleResolutions(bounds, minZoom = 0, maxZoom = 22) {
         let styleResolutions = [];

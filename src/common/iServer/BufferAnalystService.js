@@ -12,8 +12,8 @@ import { DataFormat } from '../REST';
  * @deprecatedclass SuperMap.BufferAnalystService
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析服务类。
- * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
- * 缓冲区分析结果通过该类支持的事件的监听函数参数获取。
+ * 缓冲区分析是围绕空间对象，使用与空间对象的距离值（称为缓冲半径）作为半径，生成该对象的缓冲区域的过程，
+ * 其中缓冲半径可以是固定数值也可以是空间对象各自的属性值。缓冲区也可以理解为空间对象的影响或服务范围。
  * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

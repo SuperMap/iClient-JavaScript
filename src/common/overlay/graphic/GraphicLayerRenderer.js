@@ -19,9 +19,9 @@
   * @class GraphicLayerRenderer
   * @category  Visualization Graphic
   * @classdesc 高效率点图层。
-  * @param {string} [id] - 图层id。
+  * @param {string} [id] - 图层 ID。
   * @param {Object} options - 参数。
-  * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
+  * @param {Array.<Graphic>} options.graphics - 点要素对象数组。
   * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
   * @param {number} [options.radius=10] - 半径。
   * @param {number} [options.opacity=0.8] - 不透明度。

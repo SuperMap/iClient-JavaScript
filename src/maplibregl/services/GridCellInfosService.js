@@ -7,7 +7,7 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
 /**
  * @class GridCellInfosService
  * @category  iServer Data Grid
- * @classdesc 数据栅格查询服务类。
+ * @classdesc 数据栅格查询服务类。此类用于设置查询某一地理位置所对应栅格单元信息的相关参数，包括：栅格值、栅格行、栅格列等。
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -41,7 +41,7 @@ export class GridCellInfosService extends ServiceBase {
      * @function GridCellInfosService.prototype.getGridCellInfos
      * @description 获取某一地理位置所对应的栅格单元信息。
      * @param {GetGridCellInfosParameters} params - 数据服务栅格查询参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getGridCellInfos(params, callback) {

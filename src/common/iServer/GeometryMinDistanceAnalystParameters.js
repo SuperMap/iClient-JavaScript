@@ -10,11 +10,11 @@ import {ServerGeometry} from './ServerGeometry';
  * @class GeometryMinDistanceAnalystParameters
  * @deprecatedclass SuperMap.GeometryMinDistanceAnalystParameters
  * @category iServer SpatialAnalyst MinDistanceAnalyst
- * @classdesc 几何对象最近距离分析参数类。
+ * @classdesc 几何对象最近距离分析参数类。该类用于设置要进行最近距离分析的数据集、属性过滤条件、查询范围的最大/最小距离等参数。
  * @version 11.1.1
  * @param {Object} options - 参数。
- * @param {Array.<Geometry>} options.inputGeometries - 被计算几何对象集合，目前只支持二维点对象
- * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集
+ * @param {Array.<Geometry>} options.inputGeometries - 被计算几何对象集合，目前只支持二维点对象。
+ * @param {string} options.referenceDatasetName - 参考数据集的名称。可以是二维点、线、面数据集或二维网络数据集。
  * @param {FilterParameter} [options.referenceFilterQueryParameter=null] - 对参考数据集中的要素进行过滤的属性过滤条件。不设置时默认为 null，即以参考数据集中的所有要素为参考要素进行计算。
  * @param {boolean} [options.createResultDataset] - 是否创建结果数据集。
  * @param {string} [options.resultDatasetName] - 结果数据集名称。

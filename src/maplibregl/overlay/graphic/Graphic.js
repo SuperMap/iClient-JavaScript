@@ -6,9 +6,9 @@ import {Util} from "../../core/Util";
 
 /**
  * @class Graphic
- * @classdesc 高效率点图层点要素类。
+ * @classdesc 高效率点图层点要素类。高效率点图层中的点要素，支持获取或修改点要素的属性、样式、几何信息。
  * @category  Visualization Graphic
- * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含{lng,lat}格式对象。
+ * @param {(Object|Array.<number>)} lngLat - 坐标。格式：经纬度数组或包含 {lng,lat} 格式对象。
  * @param {Object} style - 图形参数。
  * @param {Array.<number>} [style.color] - 点颜色。目前只支持 rgba 数组。
  * @param {Object} [style.radius] - 点半径。
@@ -54,7 +54,7 @@ export class Graphic {
     /**
      * @function Graphic.prototype.getLngLat
      * @description 获取经纬度坐标。
-     * @returns {Object} 经纬度坐标，数据格式{lng,lat}。
+     * @returns {Object} 经纬度坐标，数据格式 {lng,lat}。
      */
     getLngLat() {
         return this.lngLat;
@@ -63,7 +63,7 @@ export class Graphic {
     /**
      * @function Graphic.prototype.setLngLat
      * @description 设置经纬度坐标。
-     * @param {Object} lngLat - 经纬度坐标，数据格式{lng,lat}。
+     * @param {Object} lngLat - 经纬度坐标，数据格式 {lng,lat}。
      */
     setLngLat(lngLat) {
         this.lngLat = Util.isArray(lngLat) ? {lng: lngLat[0], lat: lngLat[1]} : lngLat;

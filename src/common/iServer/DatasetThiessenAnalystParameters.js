@@ -9,7 +9,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @class DatasetThiessenAnalystParameters
  * @deprecatedclass SuperMap.DatasetThiessenAnalystParameters
  * @category iServer SpatialAnalyst ThiessenAnalyst
- * @classdesc 数据集泰森多边形分析参数类。
+ * @classdesc 数据集泰森多边形分析参数类。该类可以指定泰森多边形分析的数据集、返回数据集等参数。
  * @param {Object} options - 参数。
  * @param {(GeometryPolygon|L.Polygon|ol.geom.Polygon|GeoJSONObject)} [options.clipRegion] - 结果数据裁剪区域，可以为 null，表示不对结果进行裁剪。
  * @param {boolean} [options.createResultDataset] - 是否返回结果数据集。如果为 true，则必须设置属性 resultDatasetName 和 resultDatasourceName。

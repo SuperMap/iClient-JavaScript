@@ -7,7 +7,7 @@ import { FieldService as CommonFieldService } from '@supermap/iclient-common/iSe
 /**
  * @class FieldService
  * @category  iServer Data Field
- * @classdesc 字段服务类。
+ * @classdesc 字段服务类。提供方法：查询字段信息、查询字段统计信息等。
  * @example
  *      new FieldService(url).getFields(function(result){
  *           //doSomething
@@ -33,7 +33,7 @@ export class FieldService extends ServiceBase {
      * @function FieldService.prototype.getFields
      * @description 字段查询服务。
      * @param {FieldParameters} params - 字段信息查询参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getFields(params, callback) {

@@ -11,8 +11,8 @@ import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrinting
  * @class WebPrintingJobService
  * @category  iServer WebPrintingJob
  * @version 10.1.0
- * @classdesc Web 打印服务类。
- *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
+ * @classdesc Web 打印服务类。Web 打印是指将 Web 应用中制作的 Web 内容输出为可打印的地图文档。<br>
+ *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。

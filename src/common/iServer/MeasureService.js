@@ -11,7 +11,7 @@ import { MeasureMode } from '../REST';
  * @class MeasureService
  * @deprecatedclass SuperMap.MeasureService
  * @category iServer Map Measure
- * @classdesc 量算服务类。
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  *            该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  * @extends {CommonServiceBase}
  * @example

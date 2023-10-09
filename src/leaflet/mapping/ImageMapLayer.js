@@ -12,6 +12,7 @@ import { toSuperMapGeometry } from '../core/Util';
  * @class ImageMapLayer
  * @deprecatedclassinstance L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层类(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 Image 资源出图。
+ * 此类提供了与地图显示、地图裁剪、图层设置、栅格分析等有关的参数。
  * @category iServer Map Tile
  * @modulecategory Mapping
  * @extends {L.Layer}
@@ -35,7 +36,7 @@ import { toSuperMapGeometry } from '../core/Util';
  * @param {boolean} [options.crossOrigin=false] - 是否设置跨域属性。
  * @param {string} [options.errorOverlayUrl] - 图层未能加载时显示的瓦片地址。
  * @param {number} [options.zIndex=1] - 设置图层的层级。
- * @param {string} [options.className] - 自定义 dom 元素的 className。
+ * @param {string} [options.className] - 自定义 DOM 元素的 className。
  * @param {number} [options.updateInterval=150] - 平移时图层延迟刷新间隔时间。
  * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format='png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片格式。

@@ -18,7 +18,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @extends {NetworkAnalystServiceBase}
  * @example
  * var myFindServiceAreasService = new FindServiceAreasService(url);
- * @param {string} url - 服务地址。请求网络分析服务，URL应为：
+ * @param {string} url - 服务地址。请求网络分析服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 互服务时所需可选参数。如：

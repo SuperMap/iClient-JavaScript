@@ -16,15 +16,15 @@ import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglL
  *
  * @param {Object} options -  图层配置项，包括以下参数：
  * @param {Object} [options.layerId] - DeckglLayer 图层 Dom 元素 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_" + this.layerTypeID + "_") 创建专题图层 ID。
- * @param {Array.<GeoJSONObject>} options.data - 图层数据,支持 GeoJSON 规范数据类型。
+ * @param {Array.<GeoJSONObject>} options.data - 图层数据，支持 GeoJSON 规范数据类型。
  * @param {Object} options.callback - deckgl 图层回调函数配置项。
- * @param {Object} options.props - deckgl 图层配置项, 在该参数下配置图层配置项：
+ * @param {Object} options.props - deckgl 图层配置项，在该参数下配置图层配置项：
  * @param {boolean} options.props.coverage - "hexagon-layer" 配置项：六边形半径乘数，介于0 - 1之间。六边形的最终半径通过覆盖半径计算。注意：覆盖范围不会影响分数的分配方式。分配方式的半径仅由半径属性确定；
  * @param {boolean} options.props.hexagonAggregator  - "hexagon-layer" 配置项：* @param {boolean}
  * @param {Object} options.props.lightSettings - 光照配置项。
- * @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`, 在一个平面阵列。长度应该是 `3 x numberOfLights`。
- * @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为“[x，y]`的灯的强度。长度应该是`2 x numberOfLights`。
- * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值,最大值为 `5`。
+ * @param {Array} options.props.lightSettings.lightsPosition - 光照配置项：指定为`[x，y，z]`的光在平面阵列中的位置`，在一个平面阵列。长度应该是 `3 x numberOfLights`。
+ * @param {Array} options.props.lightSettings.lightsStrength - 光照配置项：平面阵列中指定为`[x，y]`的灯的强度。长度应该是`2 x numberOfLights`。
+ * @param {number} [options.props.lightSettings.numberOfLights=1]  - 光照配置项：光照值，最大值为 5。
  * @param {number} [options.props.lightSettings.coordinateSystem=COORDINATE_SYSTEM.LNGLAT]  - 光照配置项：指定灯位置的坐标系。
  * @param {number} [options.props.lightSettings.coordinateOrigin=[0, 0, 0]] - 光照配置项：指定灯位置的坐标原点。
  * @param {number} [options.props.lightSettings.modelMatrix] - 光照配置项：光位置的变换矩阵。
@@ -47,7 +47,7 @@ import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglL
  * @param {number} [options.props.widthMinPixels=0] - "path-layer" 配置项：线宽最小像素值。
  * @param {number} [options.props.widthMaxPixels=Number.MAX_SAFE_INTEGER] - "path-layer" 配置项：线宽最大像素值。
  * @param {boolean} [options.props.rounded=false] - "path-layer" 配置项：节点是否绘制为弧形。
- * @param {number} [options.props.miterLimit=4] - "path-layer" 配置项：节点相对于线宽的最大范围,仅在 rounded 为 false 时有效；
+ * @param {number} [options.props.miterLimit=4] - "path-layer" 配置项：节点相对于线宽的最大范围，仅在 rounded 为 false 时有效；
  * @param {boolean} [options.props.fp64=false] - "path-layer" 配置项：否应以高精度64位模式呈现图层。
  * @param {boolean} [options.props.dashJustified=false] - "path-layer" 配置项：是否虚线形式显示，仅在 getDashArray() 回调函数被指定时有效。
  * @param {boolean} [options.props.filled=true] - "polygon-layer" 配置项：是否填充面。
@@ -66,8 +66,8 @@ import { DeckglLayerBase } from '@supermap/iclient-common/overlay/deckgl/DeckglL
  * @param {boolean} [options.props.strokeWidth=1] - "arc-layer" 配置项：线宽。
  * @param {boolean} [options.props.radius=1000] - "hexagon-layer" 配置项：六边形半径值。
  * @param {boolean} [options.props.extruded=false] - "hexagon-layer" 配置项：是否拉伸要素。
- * @param {boolean} [options.props.upperPercentile=100] - "hexagon-layer" 配置项：筛选箱并通过upperPercentile重新计算颜色。颜色值大于upperPercentile的六边形将被隐藏。
- * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。 elevationScale是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
+ * @param {boolean} [options.props.upperPercentile=100] - "hexagon-layer" 配置项：筛选箱并通过 upperPercentile 重新计算颜色。颜色值大于 upperPercentile 的六边形将被隐藏。
+ * @param {boolean} [options.props.elevationScale=1] - "hexagon-layer" 配置项：高程乘数，实际海拔高度由 elevationScale * getElevation（d）计算。elevationScale 是一个方便的属性，可以在不更新数据的情况下缩放所有六边形。
  * @param {boolean} [options.props.colorDomain=false]  - "hexagon-layer" 配置项：色阶。
  * @param {boolean} [options.props.colorRange=[[255,255,178,255],[254,217,118,255],[254,178,76,255],[253,141,60,255],[240,59,32,255],[189,0,38,255]]]   - "hexagon-layer" 配置项：色带。
  * @usage

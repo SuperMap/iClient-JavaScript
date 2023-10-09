@@ -10,8 +10,8 @@
 /**
  * @class WebPrintingJobService
  * @deprecatedclassinstance L.supermap.webPrintingJobService
- * @classdesc Web 打印服务类。
- *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
+ * @classdesc Web 打印服务类。Web 打印是指将 Web 应用中制作的 Web 内容输出为可打印的地图文档。<br>
+ *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
  * @category  iServer WebPrintingJob
  * @modulecategory Services
  * @example

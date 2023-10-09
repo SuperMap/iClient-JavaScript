@@ -11,7 +11,7 @@ import { ServerGeometry } from './ServerGeometry';
  * @class GetFeaturesByGeometryParameters
  * @deprecatedclass SuperMap.GetFeaturesByGeometryParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
+ * @classdesc 数据集几何查询参数类。此类用于指定进行几何查询的数据集列表，设置查询的几何对象、属性过滤条件、空间查询模式以及一些通用的查询参数。
  * @param {Object} options - 参数。
  * @param {GeoJSONObject} options.geometry - 查询的几何对象。
  * @param {Array.<string>} options.datasetNames - 数据集集合中的数据集名称列表。
@@ -23,7 +23,7 @@ import { ServerGeometry } from './ServerGeometry';
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。
  * @param {Object} [options.targetPrj] - 动态投影的目标坐标系。使用此参数时，returnContent 参数需为 true。如：prjCoordSys={"epsgCode":3857}。当同时设置 targetEpsgCode 参数时，此参数不生效。
- * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
+ * @param {MetricsAggParameter|GeoHashGridAggParameter} [options.aggregations] - 聚合查询参数。该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @extends {GetFeaturesParametersBase}
  * @usage
  */

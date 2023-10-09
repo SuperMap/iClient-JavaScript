@@ -9,7 +9,8 @@ import {TerrainAspectCalculationParameters} from './TerrainAspectCalculationPara
  * @class TerrainAspectCalculationService
  * @deprecatedclass SuperMap.TerrainAspectCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 地形坡向计算服务类。
+ * @classdesc 地形坡向计算服务类。此类用于计算栅格数据集（通常使用 DEM 数据）中各个像元的坡度面的朝向。
+ * 坡向计算的范围是 0 到 360 度，以正北方 0 度为开始，按顺时针移动，回到正北方以 360 度结束。平坦的坡面没有方向，赋值为：-1。
  * @version 11.1.1
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。

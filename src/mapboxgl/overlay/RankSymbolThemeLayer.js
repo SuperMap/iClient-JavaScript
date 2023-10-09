@@ -8,7 +8,7 @@ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/
 /**
  * @class RankSymbolThemeLayer
  * @category  Visualization Theme
- * @classdesc 等级符号专题图层类。
+ * @classdesc 等级符号专题图层类。等级符号专题图根据各要素的某个数量特征，按照一定的分类方法用一组等级符号表示在地图上，以呈现要素间该数量特征的相对关系。
  * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {string} symbolType - 符号类型。
@@ -20,7 +20,7 @@ import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/
  * @param {number} [opt_options.opacity=1] - 图层不透明度。
  * @param {boolean} [opt_options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
  * @param {string} [opt_options.chartsType] - 图表类型。目前可用："Bar", "Line", "Pie"。
- * @param {Object} [opt_options.symbolSetting] - 各类型图表的 symbolSetting 对象可设属性请参考具体图表模型类的注释中对 symbolSetting 对象可设属性的描述。symbolSetting 对象通常都具有以下 5 个基础可设属性:
+ * @param {Object} [opt_options.symbolSetting] - 各类型图表的 symbolSetting 对象可设属性请参考具体图表模型类的注释中对 symbolSetting 对象可设属性的描述。symbolSetting 对象通常都具有具有以下可设的基础属性:
  * @param {number} [opt_options.symbolSetting.width] - 专题要素（图表）宽度。
  * @param {number} [opt_options.symbolSetting.height] - 专题要素（图表）高度。
  * @param {Array.<number>} opt_options.symbolSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。

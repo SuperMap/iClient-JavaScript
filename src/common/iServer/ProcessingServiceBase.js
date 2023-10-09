@@ -18,7 +18,9 @@ import {
  * @class ProcessingServiceBase
  * @deprecatedclass SuperMap.ProcessingServiceBase
  * @category  iServer Core
- * @classdesc 分布式分析服务基类
+ * @classdesc 分布式分析服务基类。分布式分析服务采用了分布式计算技术，可对超大体量空间数据集进行分布式空间分析和数据处理。
+ * 提供方法：缓冲区分析任务、核密度分析任务、叠加分析任务、单对象空间查询任务、点聚合分析任务、区域汇总分析任务、
+ * 拓扑检查分析任务、矢量裁剪分析任务等。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

@@ -7,14 +7,15 @@ import {Util} from '../commontypes/Util';
  * @class ConnectedEdgesAnalystParameters
  * @deprecatedclass SuperMap.ConnectedEdgesAnalystParameters
  * @category iServer NetworkAnalyst ConnectedEdges
- * @classdesc 连通性分析参数类。
+ * @classdesc 连通性分析参数类。此类用于设置连通性分析是查询相连通的弧段还是不连通的弧段，并且可以对分析结果和是否返回详细描述信息进行设置。<br>
+ * 连通性分析是指根据给定的弧段 ID 数组或结点 ID 数组，查找与这些弧段或结点相连通或不连通的弧段，返回弧段 ID 数组或结点 ID 数组。
  * @version 11.1.1
  * @param {Object} options - 参数。
  * @param {boolean} [options.connected] - 查询是否相连通的弧段。为 true 时，查询相连通的弧段；为 false 时，查询不连通的弧段。
  * @param {boolean} [options.returnFeatures=true] - 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
  * @param {Array.<number>} [options.edgeIDs] - 分析结果的连通弧段 ID 的集合。
  * @param {Array.<number>} [options.nodeIDs] - 分析结果的连通结点 ID 的集合。
- * @param {boolean} [options.withIndex=true] - 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+ * @param {boolean} [options.withIndex=true] - 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为 true。
  * @usage
  */
 export class ConnectedEdgesAnalystParameters {
@@ -46,7 +47,7 @@ export class ConnectedEdgesAnalystParameters {
 
         /**
          * @member {boolean} [ConnectedEdgesAnalystParameters.prototype.withIndex]
-         * @description 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+         * @description 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为 true。
          */
         this.withIndex = null;
 

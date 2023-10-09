@@ -8,7 +8,8 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class FindTSPPathsParameters
  * @deprecatedclass SuperMap.FindTSPPathsParameters
  * @category iServer NetworkAnalyst TSPPath
- * @classdesc 旅行商分析参数类。
+ * @classdesc 旅行商分析参数类。此类除了能够设置交通网络分析中的通用参数，还可以设置旅行商分析中的配送目标集合、
+ * 是否通过节点 ID 号来指定配送中心点和配送目的点、是否指定终止点等参数。<br>
  * 旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  * 旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
  * 旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同。

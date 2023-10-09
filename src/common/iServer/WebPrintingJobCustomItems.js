@@ -6,13 +6,13 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobCustomItems
  * @deprecatedclass SuperMap.WebPrintingJobCustomItems
- * @classdesc Web 打印图例元素参数类。
+ * @classdesc Web 打印图例元素参数类。此类用于设置图例元素的名称、URL 地址或 Base64 位图片信息等参数，从而实现自定义图例元素。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} option.name - 图例元素的名称。
- * @param {string} option.picAsUrl - 图例元素 Base64 格式图片。
- * @param {string} [option.picAsBase64] - 图例元素图片的获取地址。如果已填了 URL 参数，此参数可不传。
+ * @param {string} option.picAsUrl - 图例元素图片的 URL 地址。
+ * @param {string} [option.picAsBase64] - 图例元素 Base64 格式图片。如果已填了 URL 参数，此参数可不传。
  * @usage
  */
 export class WebPrintingJobCustomItems {
@@ -24,12 +24,12 @@ export class WebPrintingJobCustomItems {
         this.name = null;
         /**
          * @member {string} [WebPrintingJobCustomItems.prototype.picAsUrl]
-         * @description  图例元素 Base64 格式图片。
+         * @description   图例元素图片的获取地址。
          */
         this.picAsUrl = null;
         /**
          * @member {string} [WebPrintingJobCustomItems.prototype.picAsBase64]
-         * @description  图例元素图片的获取地址。
+         * @description 图例元素 Base64 格式图片。
          */
         this.picAsBase64 = null;
 

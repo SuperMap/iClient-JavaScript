@@ -7,7 +7,7 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
 /**
  * @class MapService
  * @category  iServer Map
- * @classdesc 地图信息服务类。
+ * @classdesc 地图信息服务类。通过该类可以获得地图的基本信息、投影信息、切片列表信息等等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。
@@ -30,7 +30,7 @@ export class MapService extends ServiceBase {
   /**
    * @function MapService.prototype.getMapInfo
    * @description 地图信息查询服务。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getMapInfo(callback) {
@@ -48,7 +48,7 @@ export class MapService extends ServiceBase {
   /**
    * @function MapService.prototype.getWKT
    * @description 获取WKT。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getWKT(callback) {
@@ -67,7 +67,7 @@ export class MapService extends ServiceBase {
   /**
    * @function MapService.prototype.getTilesets
    * @description 切片列表信息查询服务。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {MapService} 获取服务信息。
    * @returns {Promise} Promise 对象。
    */

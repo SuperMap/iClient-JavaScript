@@ -14,11 +14,11 @@ import {VectorFeatureType} from './VectorFeatureType';
 
 /**
  * @class VectorGrid
- * @classdesc 矢量瓦片图层基类。
+ * @classdesc 矢量瓦片图层基类。此类存储了矢量瓦片图层风格、矢量瓦片格式、渲染器类型、是否可交互、最大缩放级别等参数。
  * @category Visualization VectorTile
  * @extends {L.GridLayer}
  * @param {Object} options - 参数。
- * @param {Object} [options.vectorTileLayerStyles] - 矢量网片图层风格。
+ * @param {Object} [options.vectorTileLayerStyles] - 矢量瓦片图层风格。
  * @param {string} [options.renderer='SVG'] -  渲染器类型。
  * @param {VectorTileFormat} [options.format=VectorTileFormat.JSON] - 矢量瓦片格式。
  * @param {boolean} [options.interactive=true] - 是否可交互。

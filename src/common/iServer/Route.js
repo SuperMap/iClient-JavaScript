@@ -11,7 +11,8 @@ import {Collection} from '../commontypes/geometry/Collection';
  * @class Route
  * @deprecatedclass SuperMap.Route
  * @category iServer SpatialAnalyst RouteCalculateMeasure
- * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
+ * @classdesc 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值代表该节点到路由起点的度量值，
+ * 该值可以是距离、时间或其他任何值。路由对象可以用来模拟现实世界中的公路、铁路、河流和管线等线性地物。
  * @param {Array.<Geometry>} points - 形成路由对象的线数组。
  * @param {Object} options - 参数。
  * @param {number} options.id - 路由对象在数据库中的 ID。

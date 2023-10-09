@@ -10,7 +10,7 @@ import {TransferPathParameters} from './TransferPathParameters';
  * @deprecatedclass SuperMap.TransferPathService
  * @category  iServer TrafficTransferAnalyst TransferPath
  * @classdesc 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
- *            返回结果通过该类支持的事件的监听函数参数获取
+ *            返回结果通过该类支持的事件的监听函数参数获取。
  * @extends {CommonServiceBase}
  * @example 例如：
  * var myService = new TransferPathService(url);

@@ -10,7 +10,8 @@ import { Util } from '../core/Util';
  * @class Turf
  * @browsernamespace ol.source
  * @category  Visualization Turf
- * @classdesc Turf.js 图层源。
+ * @classdesc Turf.js 图层源。Turf.js 是一个用于空间分析的 JavaScript 库。它包括传统的空间操作，用于创建 GeoJSON数据的帮助函数，
+ * 以及数据分类和统计工具。此类提供了执行 Turf.js 中相关空间分析方法的功能。
  * @modulecategory Overlay
  * @param {Object} opt_options - 参数。
  * @extends {ol.source.Vector}

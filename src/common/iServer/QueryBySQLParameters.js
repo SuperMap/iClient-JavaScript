@@ -8,8 +8,7 @@ import {QueryParameters} from './QueryParameters';
  * @class QueryBySQLParameters
  * @deprecatedclass SuperMap.QueryBySQLParameters
  * @category  iServer Map QueryResults
- * @classdesc SQL 查询参数类。
- *            该类用于设置 SQL 查询的相关参数。
+ * @classdesc SQL 查询参数类。此类除了能够设置地图查询中通用的查询参数以外，还可以指定查询过滤条件等参数。
  * @extends {QueryParameters}
  * @param {Object} options - 参数。
  * @param {Array.<FilterParameter>} options.queryParams - 查询过滤条件参数数组。

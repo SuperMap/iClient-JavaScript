@@ -7,16 +7,18 @@
   * @class TraceAnalystParameters
   * @deprecatedclass SuperMap.TraceAnalystParameters
   * @category iServer NetworkAnalyst TraceAnalystService
-  * @classdesc 上游/下游追踪分析参数类。
+  * @classdesc 上游/下游追踪分析参数类。此类用于设置追踪分析的分析类型、需查找上游设施的弧段或结点 ID、不确定流向是否有效等参数，
+  * 还可对分析结果以及是否返回结果要素的详细描述信息进行设置。<br>
+  * 上游/下游追踪分析指追踪给定的分析结点/弧段到上游或者下游所流经的所有弧段。
   * @version 11.1.1
   * @param {Object} options - 参数。
   * @param {number} options.traceType - 分析类型，只能是 0 (上游追踪分析) 或者是 1 (下游追踪分析)。
-  * @param {number} [options.edgeID] - 【与nodeID必填一项】需查找上游设施的弧段 ID 。
-  * @param {number} [options.nodeID] - 【与edgeID必填一项】需查找上游设施的结点 ID 。
+  * @param {number} [options.edgeID] - 【与 nodeID 必填一项】需查找上游设施的弧段 ID。
+  * @param {number} [options.nodeID] - 【与 edgeID 必填一项】需查找上游设施的结点 ID。
   * @param {string} [options.weightName] - 权重字段。
   * @param {boolean} [options.returnFeatures=true] - 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
-  * @param {boolean} [options.isUncertainDirectionValid=true] - 指定不确定流向是否有效。true表示不确定流向有效，遇到不确定流向时分析继续进行；false表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
-  * @param {boolean} [options.withIndex=true] - 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+  * @param {boolean} [options.isUncertainDirectionValid=true] - 指定不确定流向是否有效。true 表示不确定流向有效，遇到不确定流向时分析继续进行；false 表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
+  * @param {boolean} [options.withIndex=true] - 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为 true。
   * @usage
   */
  export class TraceAnalystParameters {
@@ -62,7 +64,7 @@
 
          /**
           * @member {boolean} TraceAnalystParameters.prototype.withIndex
-          * @description 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为true。
+          * @description 当使用 FlatGeobuf 表述时该参数可选。表示返回的表述为 FlatGeobuf 的结果是否包含空间索引，默认为 true。
           */
          this.withIndex = null;
          Util.extend(this, options);

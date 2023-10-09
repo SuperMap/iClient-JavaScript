@@ -8,10 +8,11 @@ import { BucketAggParameter } from './BucketAggParameter';
 /**
  * @class GeoHashGridAggParameter
  * @deprecatedclass SuperMap.GeoHashGridAggParameter
- * @classdesc 格网聚合查询参数类，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
+ * @classdesc 格网聚合查询参数类，此类可设置格网聚合的名称和聚合字段、格网聚合类型等参数。<br>
+ * 注意：该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @category iServer Data FeatureResults
  * @param {Object} options - 可选参数。
- * @param {number} [options.precision=5] - 精度。
+ * @param {number} [options.precision=5] - 网格中数字的精度。
  * @extends {BucketAggParameter}
  * @usage
  */

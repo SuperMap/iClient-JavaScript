@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class CreateDatasetParameters
  * @deprecatedclass SuperMap.CreateDatasetParameters
  * @category iServer Data Dataset
- * @classdesc 数据集创建参数类。
+ * @classdesc 数据集创建参数类。此类用于设置创建的数据集的名称、类型以及数据集所在的数据源等参数，
+ * 可创建的数据集类型包括：点、线、面、文本、复合（CAD）和纯属性数据集。
  * @param {Object} options - 参数。
  * @param {string} options.datasourceName - 数据源名称，此为必选参数。
  * @param {string} options.datasetName - 数据集名称，此为必选参数。

@@ -14,16 +14,16 @@ import {Vector} from './Vector';
  * @category iServer Map Layer
  * @classdesc 获取图层信息服务类构造函数。
  * @extends {CommonServiceBase}
- * @param {string} url - 服务地址。请求地图服务,URL 应为：
+ * @param {string} url - 服务地址。请求地图服务，URL 应为：
  *        http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
- *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。
+ *        如 http://localhost:8090/iserver/services/map-world/rest/maps/World。
  *        如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：
- *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
+ *        http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID。
  * @param {Object} options - 参数。
  * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
+ * @param {boolean} options.isTempLayers - 当前 URL 对应的图层是否是临时图层。
  * @usage
  */
 export class GetLayersInfoService extends CommonServiceBase {

@@ -8,7 +8,7 @@ import { LayerInfoService as CommonLayerInfoService } from '@supermap/iclient-co
 /**
  * @class LayerInfoService
  * @deprecatedclassinstance L.supermap.layerInfoService
- * @classdesc 图层信息类。
+ * @classdesc 图层信息类。支持获取图层信息、创建新的临时图层、修改现有的临时图层、传递子图层显示控制参数等。
  * @category  iServer Map Layer
  * @modulecategory Services
  * @extends {ServiceBase}

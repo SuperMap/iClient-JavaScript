@@ -19,7 +19,7 @@ class SymbolHandler {
         this.symbolManager = new SymbolManager();
         this.singleSymbolRender = new SingleSymbolRender(map);
         this.compositeSymbolRender = new CompositeSymbolRender(map);
-        this._layerSymbols = {};// 图层与symbol的映射关系
+        this._layerSymbols = {};// 图层与 symbol 的映射关系
     }
 
     _update(map) {
@@ -28,7 +28,7 @@ class SymbolHandler {
     }
 
     /**
-     * 添加符号图层
+     * 添加符号图层。
      * @param {Object} layer
      * @param {string} before
      */
@@ -52,7 +52,7 @@ class SymbolHandler {
     }
 
     /**
-     * 更新图层上的symbol
+     * 更新图层上的 symbol。
      * @param {string} layerId
      * @param {string | array} symbol
      */
@@ -75,7 +75,7 @@ class SymbolHandler {
     }
 
     /**
-     * 处理match表达式为多个图层
+     * 处理 match 表达式为多个图层。
      * @param {object} layer
      * @returns {array}
      */
@@ -115,7 +115,7 @@ class SymbolHandler {
     }
 
     /**
-     * 处理match表达式为多个图层
+     * 处理 match 表达式为多个图层。
      * @param {object} layer
      * @returns {array}
      */
@@ -147,7 +147,7 @@ class SymbolHandler {
     }
 
     /**
-     * 将symbol表达式拆成filter
+     * 将 symbol 表达式拆成 filter。
      * @param {object} layer
      * @param {string} before
      */
@@ -171,7 +171,7 @@ class SymbolHandler {
     }
 
     /**
-     * 通过symbol判断使用管理器
+     * 通过 symbol 判断使用管理器。
      * @param {object | array} symbol
      * @returns {SingleSymbolRender | CompositeSymbolRender}
      */
@@ -180,7 +180,7 @@ class SymbolHandler {
     }
 
     /**
-     * 将Web符号中的image添加到地图上
+     * 将 Web 符号中的 image 添加到地图上。
      * @param {object} symbol
      * @param {object} image
      */
@@ -188,15 +188,15 @@ class SymbolHandler {
         const { type, name } = getImageKey(symbol);
         const id = symbol[type] && symbol[type][name];
         if (id && !this.map.hasImage(id)) {
-            // 如果需要使用到image 的需要addImage
+            // 如果需要使用到 image 的需要 addImage
             this.map.addImage(id, image);
-            // 为了解决sdf问题，需要把load后的image信息存下
+            // 为了解决 sdf 问题，需要把 load 后的 image 信息存下
             this.symbolManager.addImageInfo(id, image);
         }
     }
 
     /**
-     * 给指定图层添加symbol
+     * 给指定图层添加 symbol。
      * @param {string} id
      * @param {object} symbol
      */
@@ -216,7 +216,7 @@ class SymbolHandler {
     }
 
     /**
-     * 设置layer 对应的 symbol属性值
+     * 设置 layer 对应的 symbol 属性值。
      * @param {string} layerId
      * @param {string | array} symbol
      */
@@ -225,7 +225,7 @@ class SymbolHandler {
     }
 
     /**
-     * 通过layerID获取symbol属性值
+     * 通过 layerID 获取 symbol 属性值。
      * @param {string} layerId
      * @return {string | array} symbol
      */
@@ -234,7 +234,7 @@ class SymbolHandler {
     }
 
     /**
-     * 判断是否有symbol
+     * 判断是否有 symbol。
      * @return {boolean}
      */
     hasSymbol() {
@@ -242,7 +242,7 @@ class SymbolHandler {
     }
 
     /**
-     * 删除symbol
+     * 删除 symbol。
      * @param {string} id
      */
     removeSymbol(id) {
@@ -250,7 +250,7 @@ class SymbolHandler {
     }
 
     /**
-     * 通过symbolId获取symbol内容
+     * 通过 symbolId 获取 symbol 内容。
      * @param {string} symbolId
      */
     getSymbol(symbolId) {
@@ -258,7 +258,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取组合图层的子图层IDs
+     * 获取组合图层的子图层 IDs。
      * @param {string} layerId
      * @returns {array}
      */
@@ -267,7 +267,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取子图层ID对应的组合图层
+     * 获取子图层 ID 对应的组合图层。
      * @param {string} layerId
      * @returns {string}
      */
@@ -276,7 +276,7 @@ class SymbolHandler {
     }
 
     /**
-     * 删除图层ID
+     * 删除图层 ID。
      * @param {string} layerId
      * @returns {string}
      */
@@ -285,7 +285,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取指定ID的layer
+     * 获取指定 ID 的layer。
      * @param {string} layerId
      * @returns {object}
      */
@@ -304,7 +304,7 @@ class SymbolHandler {
     }
 
     /**
-     * 删除指定图层
+     * 删除指定图层。
      * @param {string} layerId
      */
     removeLayer(layerId) {
@@ -318,7 +318,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取style
+     * 获取 style。
      * @returns {object}
      */
     getStyle() {
@@ -340,7 +340,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取组合图层的子图层0 id
+     * 获取组合图层的子图层 ID。
      * @param {string} layerId
      * @returns {string | undefined}
      */
@@ -350,7 +350,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的moveLayer
+     * 扩展 map 的 moveLayer。
      * @param {string} layerId
      * @param {string | undefined} beforeId
      */
@@ -366,7 +366,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setFilter
+     * 扩展 map 的 setFilter。
      * @param {string} layerId
      * @param {Array} filter
      * @param {object} options
@@ -374,7 +374,7 @@ class SymbolHandler {
     setFilter(layerId, filter, options) {
         const symbol = this.getLayerSymbol(layerId);
         if (isMapboxExpression(symbol)) {
-            // 如果 symbol 是数据驱动，filter需要重新计算
+            // 如果 symbol 是数据驱动，filter 需要重新计算
             const realLayerId = this.getFirstLayerId(layerId);
             this.map.style.setFilter(realLayerId, filter, options);
             const symbol = this.getLayerSymbol(layerId);
@@ -390,7 +390,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的getFilter
+     * 扩展 map 的 getFilter。
      * @param {string} layerId
      * @returns {object}
      */
@@ -402,7 +402,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setLayerZoomRange
+     * 扩展 map 的 setLayerZoomRange。
      * @param {string} layerId
      * @param {number} minzoom
      * @param {number} maxzoom
@@ -417,7 +417,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setPaintProperty
+     * 扩展 map 的 setPaintProperty。
      * @param {string} layerId
      * @param {string} name
      * @param {*} value
@@ -433,7 +433,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的getPaintProperty
+     * 扩展 map 的 getPaintProperty。
      * @param {string} layerId
      * @param {string} name
      * @returns {object}
@@ -444,7 +444,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的setLayoutProperty
+     * 扩展 map 的 setLayoutProperty。
      * @param {string} layerId
      * @param {string} name
      * @param {*} value
@@ -460,7 +460,7 @@ class SymbolHandler {
     }
 
     /**
-     * 扩展map的getLayoutProperty
+     * 扩展 map 的 getLayoutProperty。
      * @param {string} layerId
      * @param {string} name
      * @returns {object}
@@ -471,7 +471,7 @@ class SymbolHandler {
     }
 
     /**
-     * 遍历this._layerSymbols， 更新使用到symbolId的图层
+     * 遍历 this._layerSymbols，更新使用到 symbolId 的图层。
      * @param {string} symbolId 
      */
     updateLayerSymbol(symbolId) {
@@ -484,7 +484,7 @@ class SymbolHandler {
     }
 
     /**
-     * 更新符号
+     * 更新符号。
      * @param {string} symbolId 
      * @param {object | array} symbol 
      */
@@ -507,7 +507,7 @@ class SymbolHandler {
     }
 
     /**
-     * 设置symbol属性值
+     * 设置 symbol 属性值。
      * @param {string} symbolId 
      * @param {number} symbolIndex 
      * @param {string} name 
@@ -551,7 +551,7 @@ class SymbolHandler {
     }
 
     /**
-     * 获取symbol的属性值
+     * 获取 symbol 的属性值。
      * @param {string} symbolId 
      * @param {number} symbolIndex 
      * @param {string} name 

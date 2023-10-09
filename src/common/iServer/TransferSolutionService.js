@@ -10,7 +10,7 @@ import {TransferSolutionParameters} from './TransferSolutionParameters';
  * @deprecatedclass SuperMap.TransferSolutionService
  * @category  iServer TrafficTransferAnalyst TransferSolutions
  * @classdesc 交通换乘方案查询服务类。
- * 返回结果通过该类支持的事件的监听函数参数获取。
+ * 交通换乘方案查询是指根据换乘策略、乘车偏好、避让站点、出行时间等参数查询交通换乘方案，根据换乘方案中的介绍信息可以获取具体的乘车路线。
  * @param {string} url - 服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param {Object} options - 参数。</br>

@@ -7,11 +7,12 @@ import {Util} from '../commontypes/Util';
  * @class UpdateTurnNodeWeightParameters
  * @deprecatedclass SuperMap.UpdateTurnNodeWeightParameters
  * @category  iServer NetworkAnalyst TurnNodeWeight
- * @classdesc 转向耗费权重更新服务参数类。
+ * @classdesc 更新转向耗费权重服务参数类。转向耗费权重又称转向结点权值，此类用于设置需要更新的转向结点、
+ * 起始边、终止边以及更新后的耗费字段、耗费权重等参数。
  * @param {Object} options - 参数。
- * @param {string} options.nodeId - 转向结点的  ID。
- * @param {string} options.fromEdgeId - 起始边的  ID。
- * @param {string} options.toEdgeId - 终止边的  ID。
+ * @param {string} options.nodeId - 转向结点的 ID。
+ * @param {string} options.fromEdgeId - 起始边的 ID。
+ * @param {string} options.toEdgeId - 终止边的 ID。
  * @param {string} options.weightField - 转向结点的耗费字段。
  * @param {string} options.turnNodeWeight - 耗费权重。
  * @usage

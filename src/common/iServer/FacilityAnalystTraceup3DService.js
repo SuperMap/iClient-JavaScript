@@ -9,9 +9,9 @@ import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DPara
  * @class FacilityAnalystTraceup3DService
  * @deprecatedclass SuperMap.FacilityAnalystTraceup3DService
  * @category iServer FacilityAnalyst3D TraceUpResult
- * @classdesc 上游追踪资源服务类
+ * @classdesc 上游追踪资源服务类。上游追踪分析是指根据给定的弧段 ID 或结点 ID 进行上游追踪，即查找给定弧段的上游，返回上游包含的弧段、结点及总耗费。
  * @extends {CommonServiceBase}
- * @param {string} url - 服务地址。请求网络分析服务，URL应为：
+ * @param {string} url - 服务地址。请求网络分析服务，URL 应为：
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param {Object} options - 参数。
@@ -36,7 +36,7 @@ export class FacilityAnalystTraceup3DService extends CommonServiceBase {
     /**
      * @function FacilityAnalystTraceup3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类
+     * @param {FacilityAnalystTraceup3DParameters} params - 上游追踪资源参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */

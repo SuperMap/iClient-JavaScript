@@ -29,7 +29,7 @@
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [options.opacity=1] - 图层透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。专题要素事件临时存储。
- * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下 5 个基础可设属性:</br>
+ * @param {Object} options.chartsSetting - 各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。chartsSetting 对象通常都具有以下可设的基础属性:</br>
  * @param {number} options.chartsSetting.width - 专题要素（图表）宽度。
  * @param {number} options.chartsSetting.height - 专题要素（图表）高度。
  * @param {Array.<number>} options.chartsSetting.codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
@@ -44,7 +44,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
 
     options: {
-        //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
+        //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表，默认值：true。
         isOverLay: true
     },
 

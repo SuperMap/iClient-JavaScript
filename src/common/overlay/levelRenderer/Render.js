@@ -399,7 +399,7 @@ export class Render {
      * @param {string} type - 类型。
      * @param {string} backgroundColor - 背景色，默认值："#FFFFFF"。
      * @param {string} args - 参数。
-     * @return {string} 图片的 Base64 url。
+     * @return {string} 图片的 Base64 URL。
      */
     toDataURL(type, backgroundColor, args) {
         return this.painter.toDataURL(type, backgroundColor, args);
@@ -450,7 +450,7 @@ export class Render {
      * @description  事件触发。
      *
      * @param {string} eventName - 事件名称，resize，hover，drag，etc。
-     * @param {event} event - event dom事件对象。
+     * @param {event} event - event dom 事件对象。
      * @return {LevelRenderer.Render} this。
      */
     trigger(eventName, event) {

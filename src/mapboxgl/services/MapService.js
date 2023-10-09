@@ -9,7 +9,7 @@ import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsServic
 /**
  * @class MapService
  * @category  iServer Map
- * @classdesc 地图信息服务类。
+ * @classdesc 地图信息服务类。通过该类可以获得地图的基本信息、投影信息、切片列表信息等等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。

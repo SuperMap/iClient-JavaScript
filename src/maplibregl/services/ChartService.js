@@ -8,7 +8,8 @@ import { ChartService as CommonChartService } from '@supermap/iclient-common/iSe
 /**
  * @class ChartService
  * @category  iServer Map Chart
- * @classdesc 海图服务类。
+ * @classdesc 海图服务类。海图是一种以海洋水域及沿岸地物为主要绘制对象的地图，为航海的安全性提供必备的数据基础。<br>
+  * 此类提供方法：获取海图物标信息、查询海图服务。海图物标信息指的是描述各产品规范的物标的基本信息，包括物标的名称、类型及与该物标相关的属性等。
  * @version 11.1.0
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -35,7 +36,7 @@ export class ChartService extends ServiceBase {
      * @function ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param {ChartQueryParameters} params - 海图查询参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
      */
@@ -46,7 +47,7 @@ export class ChartService extends ServiceBase {
     /**
      * @function ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getChartFeatureInfo(callback) {

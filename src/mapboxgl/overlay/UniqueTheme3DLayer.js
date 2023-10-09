@@ -7,11 +7,13 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 /**
  * @class UniqueTheme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维单值专题图类。
+ * @classdesc 三维单值专题图将字段或表达式的值相同的要素采用相同的风格来显示， 从而用来区分不同的类别。
+ * 单值专题图着重表示现象质的差别，一般不表示数量的特征。
+ * 尤其是有交叉或重叠现象时，不推荐使用三维单值专题图，例如：民族分布区等。
  * @modulecategory Overlay
  * @param {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
- * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height )没有可以表示高度的字段，可以为所有数据统一设置一个高度。
+ * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
  * @usage
  */

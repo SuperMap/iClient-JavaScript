@@ -9,7 +9,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @deprecatedclass SuperMap.DatasetInfo
  * @category  iServer Data Dataset
  * @classdesc 数据集信息类。
- * 数据集一般为存储在一起的相关数据的集合；根据数据类型的不同，分为矢量数据集、栅格数据集（griddataset）和
+ * 数据集一般为存储在一起的相关数据的集合；根据数据类型的不同，分为矢量数据集、栅格数据集（grid dataset）和
  * 影像数据集（image dataset），以及为了处理特定问题而设计的数据集，如拓扑数据集，网络数据集等。
  * 数据集是 GIS 数据组织的最小单位。其中矢量数据集是由同种类型空间要素组成的集合，
  * 所以也可以称为要素集。根据要素的空间特征的不同，矢量数据集又分为点数据集，

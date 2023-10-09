@@ -15,7 +15,7 @@ import mapboxgl from 'mapbox-gl';
 /**
  * @class GraticuleLayer
  * @category Visualization GraticuleLayer
- * @classdesc 经纬网类。
+ * @classdesc 经纬网类。经纬网是由间隔均匀的经度线和纬度线组成的网络，用于在地图上识别各个位置的地理坐标。
  * @modulecategory Overlay
  * @version 10.1.1
  * @param {Object} options - 参数。

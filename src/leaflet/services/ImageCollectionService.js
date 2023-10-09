@@ -10,7 +10,7 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
  * @deprecatedclassinstance L.supermap.imageCollectionService
  * @version 10.2.0
  * @constructs ImageCollectionService
- * @classdesc 影像集合服务类。
+ * @classdesc 影像集合服务类。提供方法：获取影像集合的统计信息、图例信息、服务瓦片信息，获取、删除影像集合中的指定影像等。
  * @category  iServer Image
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -21,7 +21,7 @@ import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/
  *      })
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {string} options.collectionId 影像集合（Collection）的ID，在一个影像服务中唯一标识影像集合。
+ * @param {string} options.collectionId 影像集合（Collection）的 ID，在一个影像服务中唯一标识影像集合。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -42,6 +42,7 @@ export var ImageCollectionService = ServiceBase.extend({
 
     /**
      * @function ImageCollectionService.prototype.getLegend
+     * @description 返回当前影像集合的图例信息。
      * @param {Object} queryParams query 参数。
      * @param {ImageRenderingRule} [queryParams.renderingRule] 指定影像显示的风格，包含拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。默认使用发布服务时所配置的风格。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -73,7 +74,7 @@ export var ImageCollectionService = ServiceBase.extend({
 
     /**
      * @function ImageCollectionService.prototype.deleteItemByID
-     * @description 删除影像集合中指定ID （`featureId`）的Item对象，即从影像集合中删除指定的影像。
+     * @description 删除影像集合中指定 ID（`featureId`）的 Item 对象，即从影像集合中删除指定的影像。
      * @param {string} featureId Feature 的本地标识符。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
@@ -84,7 +85,7 @@ export var ImageCollectionService = ServiceBase.extend({
 
     /**
      * @function ImageCollectionService.prototype.getItemByID
-     * @description 返回影像集合中指定ID （`featureId`）的Item对象，即返回影像集合中指定的影像。
+     * @description 返回影像集合中指定 ID（`featureId`）的 Item 对象，即返回影像集合中指定的影像。
      * @param {string} featureId Feature 的本地标识符。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。

@@ -8,12 +8,13 @@
  /**
   * @class GraphicLayer
   * @category  Visualization Graphic
-  * @classdesc 高效率点图层类。
+  * @classdesc 高效率点图层类。能够支持前端百万点数据的渲染，并支持 GeoJSON，TopoJSON，二维表等多种数据格式，支持修改样式，
+  * 支持属性筛选、鼠标事件等交互操作。
   * @modulecategory Overlay
   * @version 11.1.0
-  * @param {string} [id] - 图层id。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
+  * @param {string} [id] - 图层 ID。默认使用 CommonUtil.createUniqueID("graphicLayer_") 创建专题图层 ID。
   * @param {Object} options - 参数。
-  * @param {Array.<Graphic>} options.graphics - 点要素对象数组 。
+  * @param {Array.<Graphic>} options.graphics - 点要素对象数组。
   * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色,目前只支持 rgba 数组。
   * @param {number} [options.radius=10] - 半径。
   * @param {number} [options.opacity=0.8] - 不透明度。

@@ -10,7 +10,8 @@ import {StopQueryParameters} from './StopQueryParameters'
  * @deprecatedclass SuperMap.StopQueryService
  * @category  iServer TrafficTransferAnalyst TransferStops
  * @classdesc 站点查询服务类。
- * 返回结果通过该类支持的事件的监听函数参数获取
+ * 根据传入的关键词进行公交站点查询，返回名称与关键词相关的公交站点。
+ * 返回结果通过该类支持的事件的监听函数参数获取。
  * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * 例如：</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。

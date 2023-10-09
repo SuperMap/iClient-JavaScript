@@ -12,6 +12,8 @@ import {ServerGeometry} from './ServerGeometry';
  * @deprecatedclass SuperMap.DatasetOverlayAnalystParameters
  * @category  iServer SpatialAnalyst OverlayAnalyst
  * @classdesc 数据集叠加分析参数类。
+ * 该类用于设置要进行叠加分析的数据集和叠加操作类型、容限、空间对象过滤条件、保留在结果数据集中的字段等参数。
+ * 在叠加分析中至少涉及到三个数据集，其中一个数据集的类型可以是点、线、面等，被称作源数据集；另一个数据集是面数据集，被称作叠加对象数据集；还有一个数据集就是叠加结果数据集，包含叠加后数据的几何信息和属性信息。
  * @param {Object} options - 参数。
  * @param {string} options.operateDataset -数据集名称。
  * @param {string} options.sourceDataset - 源数据集名称。

@@ -6,7 +6,7 @@
  * @class ServerColor
  * @deprecatedclass SuperMap.ServerColor
  * @category iServer Map Theme
- * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
+ * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色，R：红色，G：绿色，B：蓝色。
  * @param {Object} options - 可选参数。
  * @param {number} [options.red=255] - 获取或设置红色值。
  * @param {number} [options.green=0] - 获取或设置绿色值。

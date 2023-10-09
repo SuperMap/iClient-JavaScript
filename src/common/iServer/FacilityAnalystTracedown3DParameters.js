@@ -7,7 +7,7 @@ import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
  * @class FacilityAnalystTracedown3DParameters
  * @deprecatedclass SuperMap.FacilityAnalystTracedown3DParameters
  * @category iServer FacilityAnalyst3D TraceDownResult
- * @classdesc 下游追踪资源参数类。
+ * @classdesc 下游追踪资源参数类。此类用于设置下游追踪中的权值字段信息、弧段或结点等参数，还可以对不确定流向是否有效进行设置。
  * @extends {FacilityAnalyst3DParameters}
  * @param {Object} options - 参数。
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。

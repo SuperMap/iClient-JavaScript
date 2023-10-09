@@ -9,7 +9,7 @@ import {ServerTextStyle} from './ServerTextStyle';
  * @class ThemeGraphAxes
  * @deprecatedclass SuperMap.ThemeGraphAxes
  * @category  iServer Map Theme
- * @classdesc 统计专题图坐标轴样式类。
+ * @classdesc 统计专题图坐标轴样式类。该类用于设置统计专题图坐标轴的颜色、网格、文本标注、统计符号最大最小尺寸等样式。
  * @param {Object} options - 参数。
  * @param {ServerColor} [options.axesColor=(0, 0, 0)] - 坐标轴颜色。
  * @param {boolean} [options.axesDisplayed=false] - 是否显示坐标轴。

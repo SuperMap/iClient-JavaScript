@@ -8,7 +8,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @class UGCLayer
  * @deprecatedclass SuperMap.UGCLayer
  * @category  iServer Map Layer
- * @classdesc SuperMap 图层类。
+ * @classdesc SuperMap 图层类。图层（Layer）是数据集的可视化显示，一个图层是对一个数据集的引用或参考，但其不包含地理数据。
  * @param {Object} options - 参数。
  * @param {Bounds} options.bounds - 图层范围。
  * @param {string} options.name - 图层的名称。

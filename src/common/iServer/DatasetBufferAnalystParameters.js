@@ -10,7 +10,7 @@ import {FilterParameter} from './FilterParameter';
  * @class DatasetBufferAnalystParameters
  * @deprecatedclass SuperMap.DatasetBufferAnalystParameters
  * @category iServer SpatialAnalyst BufferAnalyst
- * @classdesc 数据集缓冲区分析参数类。
+ * @classdesc 数据集缓冲区分析参数类。通过该类可以指定要做缓冲区分析的数据集、数据集中几何对象的过滤条件、缓冲区通用设置等参数。
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如“数据集名称@数据源别名”形式来表示。
  * @param {FilterParameter} [options.filterQueryParameter] - 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。

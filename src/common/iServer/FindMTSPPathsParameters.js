@@ -8,7 +8,12 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @class FindMTSPPathsParameters
  * @deprecatedclass SuperMap.FindMTSPPathsParameters
  * @category iServer NetworkAnalyst MTSPPath
- * @classdesc 多旅行商分析参数类。
+ * @classdesc 多旅行商分析参数类。此类除了能够设置交通网络分析中的通用参数，还可以设置多旅行商分析中的配送中心集合、配送目标集合、配送模式、
+ * 是否通过节点 ID 号来指定配送中心点和配送目的点、配送模式是否为总花费最小方案等参数。<br>
+ * 多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数），
+ * 查找经济有效的配送路径，并给出相应的行走路线。多旅行商分析的结果将给出每个配送中心所负责的配送目的地，
+ * 和每个配送中心向其负责的配送目的地配送货物时，经过各个配送目的地的顺序和相应的行走路线。
+ * 从而使各个配送中心的配送花费相对平均，或者使所有的配送中心的总花费最小。
  * @param {Object} options - 参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.centers - 配送中心集合。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.nodes - 配送目标集合。

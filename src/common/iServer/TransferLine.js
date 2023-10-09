@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class TransferLine
  * @deprecatedclass SuperMap.TransferLine
  * @category  iServer TrafficTransferAnalyst TransferPath
- * @classdesc 换乘路线信息类。
+ * @classdesc 换乘路线信息类。本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到。
  * @param {Object} options - 参数。
  * @param {number} options.lineID - 乘车路线 ID。
  * @param {string} options.lineName - 乘车路线名称。

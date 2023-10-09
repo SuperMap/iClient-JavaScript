@@ -8,7 +8,7 @@ import {ServerColor} from './ServerColor';
  * @class ServerStyle
  * @deprecatedclass SuperMap.ServerStyle
  * @category  iServer Map Theme
- * @classdesc 服务端矢量要素风格类。该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
+ * @classdesc 服务端矢量要素风格类。该类用于定义点状符号、线状符号、填充符号的风格及其相关属性。
  * @param {Object} options - 参数。
  * @param {FillGradientMode} options.fillGradientMode - 渐变填充风格的渐变类型。
  * @param {ServerColor} [options.fillBackColor=[255,255,255]] - 填充背景颜色。

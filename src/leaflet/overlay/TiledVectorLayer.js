@@ -17,7 +17,9 @@
 /**
  * @class TiledVectorLayer
  * @deprecatedclassinstance L.supermap.tiledVectorLayer
- * @classdesc SuperMap iServer 的矢量瓦片图层。
+ * @classdesc SuperMap iServer 的矢量瓦片图层。矢量瓦片是将矢量数据通过不同的描述文件来组织和定义，在客户端实时解析数据并完成绘制。
+ * 矢量瓦片体积小，可高度压缩，数据传输体量小，地图更新的代价小，常用于存储用于查询、变更频繁的矢量图层，
+ * 适合于地图中对时效性要求较高的地物要素的表达，如 POI 信息、路线信息等。
  * @category Visualization VectorTile
  * @extends VectorGrid
  * @example

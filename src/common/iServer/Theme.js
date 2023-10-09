@@ -8,7 +8,8 @@ import {Util} from '../commontypes/Util';
  * @aliasclass Theme
  * @deprecatedclass SuperMap.Theme
  * @category  iServer Map Theme
- * @classdesc 专题图基类。
+ * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
  * @param {string} type - 专题图类型。
  * @param {Object} options - 可选参数。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。

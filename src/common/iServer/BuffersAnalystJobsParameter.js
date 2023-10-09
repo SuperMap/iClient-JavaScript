@@ -10,9 +10,10 @@ import { MappingParameters } from './MappingParameters';
  * @class BuffersAnalystJobsParameter
  * @deprecatedclass SuperMap.BuffersAnalystJobsParameter
  * @category iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析任务参数类。
+ * @classdesc 缓冲区分析任务参数类。此类用于设置缓冲区分析的数据集、分析范围、缓冲字段、缓冲距离、距离单位等参数，
+ * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 分析范围（默认为全图范围）。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
@@ -25,7 +26,7 @@ export class BuffersAnalystJobsParameter {
     constructor(options) {
         /**
          * @member {string} BuffersAnalystJobsParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = '';
 

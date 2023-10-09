@@ -10,10 +10,12 @@ import {GeoFeature} from './theme/GeoFeature';
  * @class Range
  * @browsernamespace ol.source
  * @category  Visualization Theme
- * @classdesc 分段专题图图层源。
+ * @classdesc 分段专题图图层源。分段专题图是指按照某种分段方式被分成多个范围段，要素根据各自的专题值被分配到其中一个范围段中，
+ * 在同一个范围段中的要素使用相同的颜色，填充，符号等风格进行显示。 分段专题图所基于的专题变量必须为数值型，
+ * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @param {string} name - 名称
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前map对象。
+ * @param {ol.Map} opt_options.map - 当前 Map 对象。
  * @param {string} opt_options.themeField - 指定创建专题图字段。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {number} [opt_options.opacity = 1] - 图层透明度。

@@ -9,7 +9,8 @@ import {MathExpressionAnalysisParameters} from './MathExpressionAnalysisParamete
  * @class MathExpressionAnalysisService
  * @deprecatedclass SuperMap.MathExpressionAnalysisService
  * @category  iServer SpatialAnalyst GridMathAnalyst
- * @classdesc 栅格代数运算服务类。
+ * @classdesc 栅格代数运算服务类。栅格代数运算的思想是运用代数学的观点对地理特征和现象进行空间分析，实质上是对多个栅格数据集进行数学运算以及函数运算。
+ * 运算结果栅格的像元值是由输入的一个或多个栅格同一位置的像元的值通过代数规则运算得到的。
  * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

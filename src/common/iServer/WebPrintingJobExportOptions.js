@@ -6,7 +6,7 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobExportOptions
  * @deprecatedclass SuperMap.WebPrintingJobExportOptions
- * @classdesc Web 打印的输出参数类。
+ * @classdesc Web 打印的输出参数类。此类用于设置 Web 打印输出的格式、分辨率、地图比例尺、地图角度和地图中心点等参数。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。

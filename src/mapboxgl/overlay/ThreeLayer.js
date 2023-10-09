@@ -15,10 +15,10 @@ import { ThreeLayerRenderer } from "@supermap/iclient-common/overlay/threejs/Thr
 /**
  * @class ThreeLayer
  * @category  Visualization Three
- * @classdesc Three 图层类。
+ * @classdesc Three 图层类。Three.js 是一款开源的主流 3D 绘图 JS 引擎。 此类主要提供了 threejs 模型绘制、渲染3D场景的功能。
  * @modulecategory Overlay
  * @param {string} id - 图层 ID。
- * @param {string} [renderer="gl"] - 图层渲染器，仅支持"gl"。'canvas'在v11.1.0后被弃用。
+ * @param {string} [renderer="gl"] - 图层渲染器，仅支持"gl"。'canvas'在 v11.1.0 后被弃用。
  * @param {Object} options - 初始化参数。
  * @param {Object} options.threeOptions - threejs 渲染器初始化参数对象。参数内容详见:
  *          {@link THREE.WebGLRenderer}

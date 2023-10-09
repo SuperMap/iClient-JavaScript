@@ -11,7 +11,8 @@
 /**
  * @class LabelThemeLayer
  * @deprecatedclassinstance L.supermap.labelThemeLayer
- * @classdesc 标签专题图类。
+ * @classdesc 标签专题图类。标签专题图是用文本形式在图层上直接显示属性表中的数据，实质上是对图层的标注。不仅帮助用户更好地区分地物要素，
+ * 同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
  * @category Visualization Theme
  * @modulecategory Overlay
  * @extends GeoFeatureThemeLayer
@@ -108,7 +109,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
             _isGeoTextStrategyStyle: true
         };
 
-        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
+        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用 SVG 渲染）。默认值为 0。
         this.getPxBoundsMode = 0;
 
         this.labelFeatures = [];
@@ -732,10 +733,10 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @description 旋转 bounds。
      *
      * @param {Bounds} bounds - 要旋转的 bounds。
-     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param {Object} rotationCenterPoi - 旋转中心点对象，此对象含有属性 x (横坐标)，属性 y (纵坐标)。
      * @param {number}  angle - 旋转角度（顺时针）。
      *
-     * @returns {Array.<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @returns {Array.<Object>}  bounds 旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     rotationBounds: function (bounds, rotationCenterPoi, angle) {
         var ltPoi = L.point(bounds.left, bounds.top);

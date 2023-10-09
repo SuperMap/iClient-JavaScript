@@ -11,7 +11,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @class ThemeFeature
  * @category Visualization Theme
- * @classdesc 专题图要素类。
+ * @classdesc 专题图要素类。支持的 geometry 参数类型为 ol.geom.Geometry 和 GeometryGeoText 标签数组类型。
  * @modulecategory Overlay
  * @param {Object} geometry - 要量算的几何对象，支持 {@link ol.geom.Geometry} 和 GeometryGeoText 标签数组类型 geometry = [x,y,text]。
  * @param {Object} [attributes] - 属性。

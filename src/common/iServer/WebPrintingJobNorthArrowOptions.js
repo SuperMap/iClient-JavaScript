@@ -6,12 +6,12 @@ import { Util } from '../commontypes/Util';
 /**
  * @class WebPrintingJobNorthArrowOptions
  * @deprecatedclass SuperMap.WebPrintingJobNorthArrowOptions
- * @classdesc Web 打印地图指北针参数类。
+ * @classdesc Web 打印地图指北针参数类。此类用于设置 Web 打印地图指北针的图片元素，可传入 Base64 位图片信息，也可传入图片 URL 地址。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} option.picAsUrl - 指北针的图片 URL 地址。
- * @param {string} [option.picAsBase64] - 指北针的base64位图片信息。
+ * @param {string} [option.picAsBase64] - 指北针的 Base64 位图片信息。
  * @usage
  */
 export class WebPrintingJobNorthArrowOptions {
@@ -23,7 +23,7 @@ export class WebPrintingJobNorthArrowOptions {
         this.picAsUrl = null;
         /**
          * @member {string} [WebPrintingJobNorthArrowOptions.prototype.picAsBase64]
-         * @description 指北针的base64位图片信息。
+         * @description 指北针的 Base64 位图片信息。
          */
         this.picAsBase64 = null;
 

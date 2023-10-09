@@ -15,7 +15,7 @@
  * @class HeatMapFeature
  * @deprecatedclassinstance L.supermap.heatMapFeature
  * @category Visualization HeatMap
- * @classdesc 客户端专题图要素类。
+ * @classdesc 客户端热力图要素类。
  *            支持的 geometry 参数类型为 {@link L.Point}、{@link L.LatLng}、{@link L.CircleMarker}。
  * @modulecategory Overlay
  * @extends {L.Class}
@@ -62,7 +62,13 @@ export var heatMapFeature = function (geometry, attributes) {
 
 /**
  * @class HeatMapLayer
- * @classdesc 热力图层类。
+ * @classdesc 热力图层类。热力图是通过颜色分布，描述诸如人群分布、密度和变化趋势等的一种地图表现手法。
+ * 热点图的衰减是像素级别的，视觉效果极佳，但不能与具体数据进行一一对应，只能表示权重之间的差别，
+ * 因此可以用于一些对精度要求不高而需要重点突出权重渐变的行业，如制作气象温度对比动态效果图、地震区域的震点强弱图等。<br>
+ * 在客户端直接渲染栅格图的三要素：<br>
+ * 1.热点数据，热点数据需要点数据，每一个热点数据需要有地理位置以及权重值 （能够明显地表现某位置某事件发生频率或事物分布密度等，如可以为温度的高低、人口密集度等等)；<br>
+ * 2.热点衰减渐变填充色集合， 用于渲染每一个热点从中心向外衰减时的渐变色；<br>
+ * 3.热点半径，也就是衰减半径。每一个热点需要从中心点外四周根据半径计算衰减度，对在热点衰减区内的每一个像素计算需要渲染的颜色值。
  * @category Visualization HeatMap
  * @param {string} name - 图层名称。
  * @param {boolean} [loadWhileAnimating=true] - 是否实时重绘。（当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为 false）。

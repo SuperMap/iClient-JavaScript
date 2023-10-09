@@ -11,7 +11,7 @@ import { WebPrintingJobExportOptions } from './WebPrintingJobExportOptions';
  * @deprecatedclass SuperMap.WebPrintingJobParameters
  * @category iServer WebPrintingJob
  * @version 10.1.0
- * @classdesc Web 打印参数类。
+ * @classdesc Web 打印参数类。此类用于设置 Web 地图打印的打印内容、布局信息、输出信息等参数。 
  * @param {Object} options - 参数。
  * @param {WebPrintingJobContent} options.content - Web 打印的内容类。
  * @param {WebPrintingJobLayoutOptions} options.layoutOptions - Web 打印的布局类，包含各种布局元素的设置。

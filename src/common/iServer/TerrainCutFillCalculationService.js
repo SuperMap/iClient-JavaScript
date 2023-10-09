@@ -9,7 +9,7 @@ import {TerrainCutFillCalculationParameters} from './TerrainCutFillCalculationPa
  * @class TerrainCutFillCalculationService
  * @deprecatedclass SuperMap.TerrainCutFillCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 填挖方计算服务类。
+ * @classdesc 填挖方计算服务类。填挖方计算用于计算填挖操作过程中填方、挖方的面积和体积，包含四种类型：栅格填挖方、选面填挖方、斜面填挖方和三维面填挖方。
  * @version 11.1.1
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。

@@ -617,7 +617,7 @@ export class Painter {
      * @param {string} type - 图片类型。
      * @param {string} backgroundColor - 背景色。默认值：'#fff'。
      * @param {Object} args
-     * @return {string} 图片的Base64 url。
+     * @return {string} 图片的 Base64 URL。
      */
     toDataURL(type, backgroundColor, args) {
         //var imageDom = Painter.createDom('image', 'canvas', this);

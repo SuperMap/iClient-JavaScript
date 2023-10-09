@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class DensityKernelAnalystParameters
  * @deprecatedclass SuperMap.DensityKernelAnalystParameters
  * @category  iServer SpatialAnalyst DensityAnalyst
- * @classdesc 核密度分析参数类。
+ * @classdesc 核密度分析参数类。此类可用于设置核密度分析的数据集、字段、分析范围、查找半径等，还可对分析结果的分辨率等参数进行设置。
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 要用来做核密度分析数据源中数据集的名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_P@Jingjin。
  * @param {string} options.fieldName - 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段。

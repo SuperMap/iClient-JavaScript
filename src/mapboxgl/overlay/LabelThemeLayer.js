@@ -14,7 +14,8 @@ import { GeoFeature } from './theme/GeoFeatureThemeLayer';
 /**
  * @class LabelThemeLayer
  * @category  Visualization Theme
- * @classdesc  标签专题图层类。
+ * @classdesc  标签专题图图层类。标签专题图是用文本形式在图层上直接显示属性表中的数据，实质上是对图层的标注。
+ * 不仅帮助用户更好地区分地物要素，同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
  * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
@@ -99,7 +100,7 @@ export class Label extends GeoFeature {
             //用  _isGeoTextStrategyStyle 标记此style，携带此类style的要素特指GeoText策略中的标签要素
             _isGeoTextStrategyStyle: true
         };
-        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
+        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用 SVG 渲染）。默认值为 0。
         this.getPxBoundsMode = 0;
 
         this.labelFeatures = [];

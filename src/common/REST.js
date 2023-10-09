@@ -60,7 +60,7 @@ var ServerType = {
 
 /**
  * @enum GeometryType
- * @description 几何对象枚举,定义了一系列几何对象类型。
+ * @description 几何对象枚举，定义了一系列几何对象类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1537,7 +1537,7 @@ var Exponent = {
 
 /**
  * @enum ClientType
- * @description token申请的客户端标识类型。
+ * @description token 申请的客户端标识类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1607,7 +1607,7 @@ var ChartType = {
 
 /**
  * @enum ClipAnalystMode
- * @description  裁剪分析模式
+ * @description  裁剪分析模式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1799,7 +1799,7 @@ var TopologyValidatorRule = {
 
 /**
  * @enum BucketAggType
- * @description  格网聚合查询枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量
+ * @description  格网聚合查询枚举类，该类定义了 Elasticsearch 数据服务中聚合查询模式常量。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1911,7 +1911,7 @@ var RasterFunctionType = {
 
 /**
  * @enum ResourceType
- * @description iportal资源类型。
+ * @description iportal 资源类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}

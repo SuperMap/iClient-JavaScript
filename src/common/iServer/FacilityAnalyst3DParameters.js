@@ -7,9 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class FacilityAnalyst3DParameters
  * @deprecatedclass SuperMap.FacilityAnalyst3DParameters
  * @category  iServer FacilityAnalyst3D
- * @classdesc 最近设施分析参数基类。最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点（或从设施点到事件点）以最小耗费能到达的最佳路径。
- * 设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。例如事件发生点是一起交通事故，要求查找在 10 分钟内能到达的最近医院，
- * 超过 10 分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
+ * @classdesc 三维设施网络分析参数基类。此类存储了三维设施网络分析中的权值字段信息、弧段或结点信息、不确定流向是否有效等参数。<br>
+ * 三维设施网络分析是基于创建了流向的三维网络数据集的分析。相对于传统的二维设施网络分析，三维设施网络分析由于其真实的三维展现，从而能够更好地为设施网络的设计、施工、突发事故处理等提供指导和决策支持。
  * @param {Object} options - 参数。
  * @param {string} options.weightName - 指定的权值字段信息对象的名称。
  * @param {number} [options.edgeID] - 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。

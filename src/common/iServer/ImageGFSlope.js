@@ -8,7 +8,8 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFSlope
  * @deprecatedclass SuperMap.ImageGFSlope
- * @classdesc 栅格函数对象：对DEM数据生成坡度图。
+ * @classdesc 栅格函数对象：对 DEM 数据生成坡度渲图。坡度是地表面上某一点的切面和水平面所成的夹角，坡度值越大，表示地势越陡峭。
+ * 此类用于设置栅格函数名称、光源高度角和高程缩放系数等参数。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。

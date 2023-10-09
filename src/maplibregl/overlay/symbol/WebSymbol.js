@@ -5,12 +5,12 @@ import maplibregl from 'maplibre-gl';
 import MapExtendSymbol from './MapExtendSymbol';
 /**
 * @class WebSymbol
-* @classdesc SuperMap iClient for MaplibreGL 支持 Web 符号库，扩展了 [MaplibreGL](https://maplibre.org/maplibre-gl-js/docs/API/classes/maplibregl.Map/) 的 API。
+* @classdesc Web 符号库。SuperMap iClient for MapboxGL 通过扩展 [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/) 的 API，实现了对 Web 符号库的支持，提供了前后端一致的 Web 符号化制图能力和自定义 Web 符号的能力。
 * @category Visualization WebSymbol
 * @description 
 * 
 * ## 初始化
-* 使用Web符号资源时, 通过接口指定符号资源路径。
+* 使用Web符号资源时，通过接口指定符号资源路径。
 * ```
 * new maplibregl.supermap.WebSymbol().init({basePath: "./resources/symbols"});
 * ```

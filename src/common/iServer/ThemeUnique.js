@@ -30,7 +30,7 @@ export class ThemeUnique extends Theme {
         /**
          * @member {ServerStyle} ThemeUnique.prototype.defaultStyle
          * @description 未参与单值专题图制作的对象的显示风格。
-         *              通过单值专题图子项数组 （items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
+         *              通过单值专题图子项数组（items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
          */
         this.defaultStyle = new ServerStyle();
 

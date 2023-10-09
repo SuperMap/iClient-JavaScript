@@ -7,7 +7,7 @@ import '../core/Base';
 /**
  * @class UnicodeMarker
  * @deprecatedclassinstance L.supermap.unicodeMarker
- * @classdesc Unicode 字符图标类。
+ * @classdesc Unicode 字符图标类。Unicode 是由 Unicode 联盟维护的文本编码标准，它定义了许多常见字符，包括数字、标点符号和其他符号。
  * @category Visualization Marker
  * @modulecategory Overlay
  * @extends {L.Path}

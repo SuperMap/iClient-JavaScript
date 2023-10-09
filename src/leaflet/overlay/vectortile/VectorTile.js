@@ -13,7 +13,7 @@ import {VectorTileFormat} from '../VectorTileFormat';
 
 /**
  * @class VectorTile
- * @classdesc 矢量瓦片图层基类。
+ * @classdesc 矢量瓦片图层基类。此类存储了矢量瓦片图层名称、瓦片大小、返回值类型等、坐标系统、渲染器等参数。
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}

@@ -16,7 +16,9 @@ import Attributions from '../../core/Attributions'
 
 /**
  * @class ThemeLayer
- * @classdesc 专题图层基类，调用建议使用其子类实现类。
+ * @classdesc 专题图层基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
+ * 调用建议：使用其子类实现该类。
  * @category Visualization Theme
  * @extends {L.Layer}
  * @param {string} name - 专题图图层名称。
@@ -261,8 +263,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
-     * @param {string} property - 要的某个属性名。
-     * @param {string} value - 对应属性名得值。
+     * @param {string} property - 要素的某个属性名称。
+     * @param {string} value - 对应属性名称的值。
      * @returns {Array.<FeatureVector>} 返回图层中的要素。
      */
     getFeatureBy: function (property, value) {

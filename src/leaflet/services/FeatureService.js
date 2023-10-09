@@ -14,7 +14,7 @@
 /**
  * @class FeatureService
  * @deprecatedclassinstance L.supermap.featureService
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，bounds 查询，缓冲区查询，地物编辑。
+ * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，缓冲区查询，地物编辑等方法。
  * @category  iServer Data Feature
  * @modulecategory Services
  * @example
@@ -53,7 +53,7 @@ export var FeatureService = ServiceBase.extend({
 
     /**
      * @function FeatureService.prototype.getFeaturesByBounds
-     * @description 数据集 bounds 查询服务。
+     * @description 数据集范围查询服务。
      * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
@@ -134,7 +134,7 @@ export var FeatureService = ServiceBase.extend({
      * @function FeatureService.prototype.getMetadata
      * @description 地理要素元信息。
      * @version 11.1.1
-     * @param {Object} params - 包括数据源名称、数据集名称、要素ID。
+     * @param {Object} params - 包括数据源名称、数据集名称、要素 ID。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */

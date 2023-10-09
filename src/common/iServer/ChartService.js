@@ -9,7 +9,8 @@
  /**
   * @class ChartService
   * @category  iServer Map Chart
-  * @classdesc 海图服务。
+  * @classdesc 海图服务类。海图是一种以海洋水域及沿岸地物为主要绘制对象的地图，为航海的安全性提供必备的数据基础。<br>
+  * 此类提供方法：获取海图物标信息、查询海图服务。海图物标信息指的是描述各产品规范的物标的基本信息，包括物标的名称、类型及与该物标相关的属性等。
   * @extends {ServiceBase}
   * @example
   *      new ChartService(url).queryChart(param,function(result){

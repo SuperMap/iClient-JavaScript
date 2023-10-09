@@ -19,7 +19,7 @@ import {UGCLayer} from './UGCLayer';
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
  * @param {number} [options.symbolScale] - 图层的符号缩放基准比例尺。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
- * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 地图的压盖过滤显示选项，当overlapDisplayed 为 false 时有效。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
  * @usage
  */
 export class UGCMapLayer extends UGCLayer {

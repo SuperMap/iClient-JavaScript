@@ -9,9 +9,9 @@ import { MappingParameters } from './MappingParameters';
  * @class SummaryAttributesJobsParameter
  * @deprecatedclass SuperMap.SummaryAttributesJobsParameter
  * @category  iServer ProcessingService SummaryAttributes
- * @classdesc 属性汇总分析任务参数类。
+ * @classdesc 属性汇总分析任务参数类。此类用于设置属性汇总分析的数据集、分组字段、属性字段、统计模式等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.groupField - 分组字段。
  * @param {string} options.attributeField - 属性字段。
  * @param {string} options.statisticModes - 统计模式。

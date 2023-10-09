@@ -11,7 +11,8 @@ import {ColorDictionary} from './ColorDictionary';
  * @class Grid
  * @deprecatedclass SuperMap.Grid
  * @category iServer Map Layer
- * @classdesc SuperMap 栅格图层类。
+ * @classdesc SuperMap 栅格图层类。栅格数据结构是将一个平面空间进行行和列的规则划分，形成有规律的网格的一种数据结构，
+ * 即像元矩阵。像元是栅格数据最基本的信息存储单元，每个像元都有给定的属性值来表示地理实体或现实世界的某种现象。
  * @extends {UGCSubLayer}
  * @param {Object} options - 可选参数。
  * @param {Array.<Object>} [options.colorDictionary] - 颜色对照表对象。

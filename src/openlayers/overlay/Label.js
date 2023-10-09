@@ -16,7 +16,9 @@ import Point from 'ol/geom/Point';
  * @class Label
  * @browsernamespace ol.source
  * @category  Visualization Theme
- * @classdesc 标签专题图图层源。
+ * @classdesc 标签专题图图层源。标签专题图是用文本形式在图层上直接显示属性表中的数据，实质上是对图层的标注。
+ * 不仅帮助用户更好地区分地物要素，同时也显示了要素的某些重要属性，如行政区划、河流、机关、旅游景点的名称、等高线的高程等。
+ * 在 SuperMap 中，通过制作标签专题图，用户可以轻松实现地图标注。
  * @modulecategory Overlay
  * @param {string} name - 名称。
  * @param {Object} opt_options - 参数。
@@ -79,7 +81,7 @@ export class Label extends GeoFeature {
             _isGeoTextStrategyStyle: true
         };
 
-        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
+        //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用 SVG 渲染）。默认值为 0。
         this.getPxBoundsMode = 0;
 
         this.labelFeatures = [];

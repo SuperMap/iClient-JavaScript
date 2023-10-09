@@ -40,7 +40,7 @@ export class QueryByGeometryService extends QueryServiceBase {
      * @function QueryByGeometryService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
      *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
-     * @param {QueryByGeometryParameters} params - Geometry 查询参数类。
+     * @param {QueryByGeometryParameters} params - 几何查询参数类。
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {

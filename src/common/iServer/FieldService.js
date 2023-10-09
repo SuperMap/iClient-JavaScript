@@ -8,7 +8,7 @@ import { FieldStatisticsParameters } from './FieldStatisticsParameters';
 /**
  * @class FieldService
  * @category  iServer Data Field
- * @classdesc 字段服务类。
+ * @classdesc 字段服务类。提供方法：查询字段信息、查询字段统计信息等。
  * @example
  * new FieldService(url).getFields(function(result){
  *     //doSomething

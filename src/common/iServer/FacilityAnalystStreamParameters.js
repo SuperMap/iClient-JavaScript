@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class FacilityAnalystStreamParameters
  * @deprecatedclass SuperMap.FacilityAnalystStreamParameters
  * @category iServer NetworkAnalyst UpstreamCirticalFaclilities
- * @classdesc 上游/下游关键设施查找资源参数类。
+ * @classdesc 上游/下游关键设施查找资源参数类。上游/下游关键设施查找是指查找给定弧段或节点的上游/下游中的关键设施结点。
+ * 此类用于设置上游/下游关键设施查找中的设施点、分析类型、弧段或结点等参数，还可以对不确定流向是否有效进行设置。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。
  * @param {number} options.queryType - 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。

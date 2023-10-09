@@ -4,7 +4,8 @@ import { ServiceBase } from './ServiceBase';
 
 /**
  * @class GeoprocessingService
- * @classdesc 处理自动化服务接口类。
+ * @classdesc 处理自动化服务接口类。通过处理自动化工具构建处理自动化模型并运行，实现空间数据处理与分析过程的自动化。<br>
+ * 提供方法：获取处理自动化服务任务列表、某一任务的执行信息、异步执行状态信息；获取处理自动化工具的工具列表、某一工具的信息、异步执行的结果；异步、同步执行处理自动化工具；取消处理自动化任务的异步执行等。
  * @version 10.1.0
  * @category  iServer ProcessingAutomationService
  * @modulecategory Services
@@ -55,8 +56,8 @@ export class GeoprocessingService extends ServiceBase {
     }
     /**
      * @function GeoprocessingService.prototype.getTool
-     * @description 获取处理自动化工具的ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
-     * @param {string} identifier - 处理自动化工具ID。
+     * @description 获取处理自动化工具的 ID、名称、描述、输入参数、环境参数和输出结果等相关参数。
+     * @param {string} identifier - 处理自动化工具 ID。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getTool(identifier, callback) {
@@ -66,7 +67,7 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.execute
      * @description 同步执行处理自动化工具。
-     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} identifier - 处理自动化工具 ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -79,7 +80,7 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.submitJob
      * @description 异步执行处理自动化工具。
-     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} identifier - 处理自动化工具 ID。
      * @param {Object} parameter - 处理自动化工具的输入参数。
      * @param {Object} environment - 处理自动化工具的环境参数。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -92,8 +93,8 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.waitForJobCompletion
      * @description 获取处理自动化异步执行状态信息。
-     * @param {string} jobId - 处理自动化任务ID。
-     * @param {string} identifier - 处理自动化工具ID。
+     * @param {string} jobId - 处理自动化任务 ID。
+     * @param {string} identifier - 处理自动化工具 ID。
      * @param {Object} options - 状态信息参数。
      * @param {number} options.interval - 定时器时间间隔。
      * @param {function} options.statusCallback - 任务状态的回调函数。
@@ -107,8 +108,8 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.getJobInfo
      * @description 获取处理自动化任务的执行信息。
-     * @param {string} identifier - 处理自动化工具ID。
-     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具 ID。
+     * @param {string} jobId - 处理自动化任务 ID。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
@@ -119,8 +120,8 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.cancelJob
      * @description 取消处理自动化任务的异步执行。
-     * @param {string} identifier - 处理自动化工具ID。
-     * @param {string} jobId - 处理自动化任务ID。
+     * @param {string} identifier - 处理自动化工具 ID。
+     * @param {string} jobId - 处理自动化任务 ID。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
@@ -131,7 +132,7 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
-     * @param {string} identifier - 处理自动化工具ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @param {string} identifier - 处理自动化工具 ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
@@ -142,9 +143,9 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.getResults
      * @description 处理自动化工具异步执行的结果,支持结果过滤。
-     * @param {string} identifier - 处理自动化工具ID。
-     * @param {string} jobId - 处理自动化任务ID。
-     * @param {string} filter - 输出异步结果的ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {string} identifier - 处理自动化工具 ID。
+     * @param {string} jobId - 处理自动化任务 ID。
+     * @param {string} filter - 输出异步结果的 ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */

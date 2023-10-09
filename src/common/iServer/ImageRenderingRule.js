@@ -11,32 +11,32 @@ import ImageStretchOption from './ImageStretchOption';
  * @classdesc 定义请求的影像如何进行渲染或者处理，如：影像的拉伸显示方式、颜色表、波段组合以及应用栅格函数进行快速处理等。
  * @category iServer Image
  * @param {Object} options - 可选参数。
- * @param {ImageRenderingRule.DisplayMode} [options.displayMode] 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
- * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为STRETCHED，该属性指定一个波段的索引号(波段索引号从0开始计数)；若影像的显示模式为COMPOSITE，该属性为组合的波段索引号，例如：属性值3,2,1表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
+ * @param {ImageRenderingRule.DisplayMode} [options.displayMode] 影像显示模式，其中：Composite 表示多波段组合显示；Stretched 表示单波段拉伸显示。
+ * @param {string} [options.displayBands] 影像显示的波段或者波段组合。若影像的显示模式为 Stretched，该属性指定一个波段的索引号(波段索引号从 0 开始计数)；若影像的显示模式为 Composite，该属性为组合的波段索引号，例如：属性值 3,2,1 表示采用 4 波段、3 波段、2 波段分别对应 R、G、B 颜色通道进行组合显示。
  * @param {ImageStretchOption} [options.stretchOption] 影像的拉伸参数。
  * @param {ImageRenderingRule.InterpolationMode} [options.interpolationMode] 影像显示时使用的插值算法。
- * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
- * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"。
- * @param {number} [options.brightness] 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
- * @param {number} [options.contrast] 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
+ * @param {Array.<string>} [options.colorScheme] 影像拉伸显示的颜色方案。颜色方案为 RGBA 颜色数组。RGBA 是代表 Red（红色）Green（绿色）Blue（蓝色）和 Alpha 的色彩空间。Alpha 值可以省略不写，表示完全不透明。Alpha 通道表示不透明度参数，若该值为 0 表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+ * @param {Array.<string>} [options.colorTable] 影像的颜色表。颜色表为栅格值与 RGBA 颜色值的对照表。RGBA 是代表 Red（红色）Green（绿色）Blue（蓝色）和 Alpha 的色彩空间。Alpha 值可以省略不写，表示完全不透明。Alpha 通道表示不透明度参数，若该值为 0 表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为 500，对应的颜色为红色；第二组高程值为 700，对应的颜色为绿色；第三组高程值为 700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"。
+ * @param {number} [options.brightness] 影像显示的亮度。数值范围为 -100 到 100，增加亮度为正，降低亮度为负。
+ * @param {number} [options.contrast] 影像显示的对比度。数值范围为 -100 到 100，增加对比度为正，降低对比度为负。
  * @param {string} [options.noData] 影像的无值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的无值。
- * @param {string} [options.noDataColor] 影像的无值的显示颜色，支持RGB颜色，例如：255,0,0（红色），那么无值将以指定的红色显示。
- * @param {boolean} [options.noDataTransparent] 无值是否透明显示，true表示透明显示无值；否则为false。
+ * @param {string} [options.noDataColor] 影像的无值的显示颜色，支持 RGB 颜色，例如：255,0,0（红色），那么无值将以指定的红色显示。
+ * @param {boolean} [options.noDataTransparent] 无值是否透明显示，true 表示透明显示无值；否则为 false。
  * @param {string} [options.backgroundValue] 影像的背景值。影像为多波段时，通过逗号分隔 R,G,B 颜色通道对应波段的背景值。
- * @param {string} [options.backgroundColor] 指定背景值的颜色。支持指定RGB颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
- * @param {boolean} [options.backgroundTransparent] 背景值是否透明显示，true表示透明显示背景值；否则为false。
- * @param {Array.<ImageGFHillShade|ImageGFSlope|ImageGFAspect|ImageGFOrtho>} [options.gridFunctions] 栅格函数链。
+ * @param {string} [options.backgroundColor] 指定背景值的颜色。支持指定 RGB 颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
+ * @param {boolean} [options.backgroundTransparent] 背景值是否透明显示，true 表示透明显示背景值；否则为 false。
+ * @param {Array.<ImageGFHillShade|ImageGFSlope|ImageGFAspect|ImageGFOrtho>} [options.gridFunctions] 栅格函数选项，通过应用栅格函数，可以对影像进行快速显示处理。
  * @usage
  */
 export default class ImageRenderingRule {
   constructor(options) {
     /**
-     * @description 影像显示模式，其中：Composite表示多波段组合显示；Stretched表示单波段拉伸显示。
+     * @description 影像显示模式，其中：Composite 表示多波段组合显示；Stretched 表示单波段拉伸显示。
      * @member {ImageRenderingRule.DisplayMode} ImageRenderingRule.prototype.displayMode
      */
     this.displayMode = undefined;
     /**
-     * @description 影像显示的波段或者波段组合。该参数为一个数组，数组元素为波段索引号。若影像的显示模式为Stretched，该属性指定一个显示的波段；若影像的显示模式为Composite，该属性为组合的波段索引号，例如：属性值4,3,2表示采用4波段、3波段、2波段分别对应 R、G、B颜色通道进行组合显示。
+     * @description 影像显示的波段或者波段组合。该参数为一个数组，数组元素为波段索引号。若影像的显示模式为 Stretched，该属性指定一个显示的波段；若影像的显示模式为 Composite，该属性为组合的波段索引号，例如：属性值 4,3,2 表示采用 4 波段、3 波段、2 波段分别对应 R、G、B 颜色通道进行组合显示。
      * @member {string} ImageRenderingRule.prototype.displayBands
      */
     this.displayBands = undefined;
@@ -51,22 +51,22 @@ export default class ImageRenderingRule {
      */
     this.interpolationMode = undefined;
     /**
-     * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
+     * @description 影像拉伸显示的颜色方案。颜色方案为RGBA颜色数组。RGBA 是代表 Red（红色）Green（绿色）Blue（蓝色）和 Alpha 的色彩空间。Alpha 值可以省略不写，表示完全不透明。Alpha 通道表示不透明度参数，若该值为 0 表示完全透明。例如："255,0,0","0,255,0","0,0,255" 表示由红色、绿色、蓝色三种颜色构成的色带。
      * @member {Array.<string>} ImageRenderingRule.prototype.colorScheme
      */
     this.colorScheme = undefined;
     /**
-     * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA是代表Red（红色）Green（绿色）Blue（蓝色）和Alpha的色彩空间。Alpha值可以省略不写，表示完全不透明。Alpha通道表示不透明度参数，若该值为0表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为500，对应的颜色为红色；第二组高程值为700，对应的颜色为绿色；第三组高程值为700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"
+     * @description 影像的颜色表。颜色表为栅格值与RGBA颜色值的对照表。RGBA 是代表 Red（红色）Green（绿色）Blue（蓝色）和 Alpha 的色彩空间。Alpha 值可以省略不写，表示完全不透明。Alpha 通道表示不透明度参数，若该值为 0 表示完全透明。以下示例表示该颜色对照表由三组构成，第一组高程值为 500，对应的颜色为红色；第二组高程值为 700，对应的颜色为绿色；第三组高程值为 700，对应的颜色为蓝色。示例："500: 255,0,0", "700: 0,255,0" , "900: 0,0,255"。
      * @member {Array.<string>} ImageRenderingRule.prototype.colorTable
      */
     this.colorTable = undefined;
     /**
-     * @description 影像显示的亮度。数值范围为-100到100，增加亮度为正，降低亮度为负。
+     * @description 影像显示的亮度。数值范围为 -100 到 100，增加亮度为正，降低亮度为负。
      * @member {number} ImageRenderingRule.prototype.brightness
      */
     this.brightness = undefined;
     /**
-     * @description 影像显示的对比度。数值范围为-100到100，增加对比度为正，降低对比度为负。
+     * @description 影像显示的对比度。数值范围为 -100 到 100，增加对比度为正，降低对比度为负。
      * @member {number} ImageRenderingRule.prototype.contrast
      */
     this.contrast = undefined;
@@ -81,7 +81,7 @@ export default class ImageRenderingRule {
      */
     this.noDataColor = undefined;
     /**
-     * @description 无值是否透明显示，true表示透明显示无值；否则为false。
+     * @description 无值是否透明显示，true 表示透明显示无值；否则为 false。
      * @member {boolean} ImageRenderingRule.prototype.noDataTransparent
      */
     this.noDataTransparent = undefined;
@@ -92,12 +92,12 @@ export default class ImageRenderingRule {
      */
     this.backgroundValue = undefined;
     /**
-     * @description 指定背景值的颜色。支持指定RGB颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
+     * @description 指定背景值的颜色。支持指定 RGB 颜色，例如：255,0,0（红色），那么背景值将以指定的红色显示。
      * @member {string} ImageRenderingRule.prototype.backgroundColor
      */
     this.backgroundColor = undefined;
     /**
-     * @description 背景值是否透明显示，true表示透明显示背景值；否则为false。
+     * @description 背景值是否透明显示，true 表示透明显示背景值；否则为 false。
      * @member {boolean} ImageRenderingRule.prototype.backgroundTransparent
      */
     this.backgroundTransparent = undefined;

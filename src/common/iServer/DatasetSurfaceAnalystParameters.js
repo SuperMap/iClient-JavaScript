@@ -11,7 +11,7 @@ import {Geometry} from '../commontypes/Geometry';
  * @class DatasetSurfaceAnalystParameters
  * @deprecatedclass SuperMap.DatasetSurfaceAnalystParameters
  * @category iServer SpatialAnalyst SurfaceAnalyst
- * @classdesc 数据集表面分析参数类。该类对数据集表面分析所用到的参数进行设置。
+ * @classdesc 数据集表面分析参数类。可用于设置进行表面分析的数据集和字段、查询过滤条件、返回结果、提取方法、中间结果分辨率等参数。
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 数据集名称。
  * @param {string} options.zValueFieldName - 字段名称。

@@ -9,7 +9,10 @@ import {TerrainCurvatureCalculationParameters} from './TerrainCurvatureCalculati
  * @class TerrainCurvatureCalculationService
  * @deprecatedclass SuperMap.TerrainCurvatureCalculationService
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 地形曲率计算服务类。
+ * @classdesc 地形曲率计算服务类。地形曲率是表达地形曲面结构的主要参数之一。
+ * DEM 栅格数据每个像元的表面曲率，是通过将目标像元与八个相邻像元拟合为二次曲面，再对此拟合曲面求（0,0）位置处的曲率而得。
+ * 支持计算平均曲率数据集、剖面曲率（即沿最大斜率方向的曲率）数据集、平面曲率（即垂直于最大斜率方向的曲率）数据集。
+ * 输出的三种曲率数据集都是和原数据集等大且分辨率相同的数据集。
  * @extends {SpatialAnalystBase}
  * @param {Object} options - 参数。
  * @param {string} options.url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。

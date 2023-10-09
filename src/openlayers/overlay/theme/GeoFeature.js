@@ -11,7 +11,7 @@ import {Theme} from './Theme';
  * @class GeoFeature
  * @browsernamespace ol.source
  * @category Visualization Theme
- * @classdesc 地理几何专题要素型专题图层基类。
+ * @classdesc 地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。不建议直接实例化调用此类。
  * @param {string} name - 图层名称。
  * @param {Object} opt_options - 参数。
  * @param {ol.Map} opt_options.map - 当前 OpenLayers Map 对象。

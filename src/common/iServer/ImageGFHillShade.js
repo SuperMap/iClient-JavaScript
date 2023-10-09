@@ -8,7 +8,8 @@ import { Util } from '../commontypes/Util';
 /**
  * @class ImageGFHillShade
  * @deprecatedclass SuperMap.ImageGFHillShade
- * @classdesc 栅格函数对象：对DEM数据生成三维晕渲图。
+ * @classdesc 栅格函数对象：对 DEM 数据生成三维晕渲图。三维晕渲图是指通过模拟实际地表的本影与落影的方式反映地形起伏状况的栅格图。通过采用假想的光源照射地表，
+ * 结合栅格数据得到的坡度坡向信息，得到各像元的灰度值，面向光源的斜坡的灰度值较高，背向光源的灰度值较低，即为阴影区，从而形象表现出实际地表的地貌和地势。
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFHillShade'] 栅格函数名称，参数值为：GFHillShade。

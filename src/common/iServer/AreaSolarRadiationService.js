@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @class AreaSolarRadiationService
  * @deprecatedclass SuperMap.AreaSolarRadiationService
  * @category iServer SpatialAnalyst SolarRadiationAnalyst
- * @classdesc 地区太阳辐射服务类。
+ * @classdesc 地区太阳辐射服务类。地区太阳辐射计算指的是计算整个 DEM 范围内每个栅格的太阳辐射情况，计算可得到太阳辐射的总辐射量、直射辐射量、散射辐射量、直射持续时间。
  * @param {string} url - 服务的访问地址。如：</br>http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst。</br>
  * @param {Object} options - 参数。</br>
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

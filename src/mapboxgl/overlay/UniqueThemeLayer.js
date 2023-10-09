@@ -10,7 +10,9 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 /**
  * @class UniqueThemeLayer
  * @category  Visualization Theme
- * @classdesc  单值专题图层类。
+ * @classdesc 客户端单值专题图图层类。单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，
+ * 属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上， 比如土壤类型分布图、土地利用图、行政区划图等。
+ * 单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
  * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} opt_options - 参数。

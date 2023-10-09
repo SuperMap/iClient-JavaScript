@@ -15,6 +15,7 @@
  * @class TiledMapLayer
  * @deprecatedclassinstance L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用 TileImage 资源出图。
+ * 此类提供了与地图显示、地图裁剪、瓦片类型与大小、栅格分析等相关参数。
  * @category iServer Map Tile
  * @extends {L.TileLayer}
  * @modulecategory Mapping

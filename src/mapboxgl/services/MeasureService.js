@@ -10,7 +10,7 @@ import { MeasureService as CommonMeasureService } from '@supermap/iclient-common
 /**
  * @class MeasureService
  * @category  iServer Map Measure
- * @classdesc 量算服务类。
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。

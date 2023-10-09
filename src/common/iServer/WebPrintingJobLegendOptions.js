@@ -8,13 +8,14 @@ import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
 /**
  * @class WebPrintingJobLegendOptions
  * @deprecatedclass SuperMap.WebPrintingJobLegendOptions
- * @classdesc Web 打印图例参数类。
+ * @classdesc Web 打印图例参数类。此类用于设置图例名称、图例元素等参数，图例元素可以是图例的URL地址、Base64 位图片信息、布局业务图层参数以及自定义图例元素参数等，
+ * 优先级：picAsBase64 > picAsUrl > customItems > layers，四者必选其一。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} [option.title] - 图例名称。
  * @param {string} [option.picAsUrl] - 图例的图片 URL 地址。
- * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
+ * @param {string} [option.picAsBase64] - 图例的 Base64 位图片信息。
  * @param {WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
  * @param {WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
  * @usage
@@ -33,7 +34,7 @@ export class WebPrintingJobLegendOptions {
         this.picAsUrl = null;
         /**
          * @member {string} [WebPrintingJobLegendOptions.prototype.picAsBase64]
-         * @description  图例的 base64 位图片信息。
+         * @description  图例的 Base64 位图片信息。
          */
         this.picAsBase64 = null;
         /**

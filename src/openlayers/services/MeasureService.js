@@ -9,7 +9,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @class MeasureService
  * @category  iServer Map Measure
- * @classdesc 量算服务。
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url -  服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
@@ -28,9 +28,9 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function MeasureService.prototype.measureDistance
-     * @description 测距。
+     * @description 距离量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     measureDistance(params, callback) {
@@ -39,9 +39,9 @@ export class MeasureService extends ServiceBase {
 
     /**
      * @function MeasureService.prototype.measureArea
-     * @description 测面积。
+     * @description 面积量算。
      * @param {MeasureParameters} params - 量算参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     measureArea(params, callback) {
@@ -53,7 +53,7 @@ export class MeasureService extends ServiceBase {
      * @description 测量。
      * @param {MeasureParameters} params - 量算参数类。
      * @param {string} type - 类型。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     measure(params, type, callback) {

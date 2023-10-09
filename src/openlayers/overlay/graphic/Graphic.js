@@ -11,7 +11,7 @@ import Style from 'ol/style/Style';
  * @browsernamespace ol
  * @aliasclass Graphic
  * @category  Visualization Graphic
- * @classdesc 高效率点图层点要素类。
+ * @classdesc 高效率点图层点要素类。高效率点图层中的点要素，类型为ol.geom.Point。支持获取或修改点要素的属性、样式、几何信息。
  * @modulecategory Overlay
  * @param {ol.geom.Point} geometry - 几何对象。
  * @param {Object} [attributes] - 要素属性。

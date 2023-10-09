@@ -4,25 +4,26 @@ import clonedeep from 'lodash.clonedeep';
 
 /**
  * @class KnowledgeGraph
- * @category iServer KnowledgeGraph
- * @classdesc KnowledgeGraph知识图谱
+ * @category SuperMap iServer KnowledgeGraph
+ * @classdesc KnowledgeGraph 知识图谱。此类提供了创建知识图谱实例的配置项，
+ * 包括知识图谱的尺寸、中心点、缩放比例、布局、节点配置、边配置、高亮样式、拖拽设置等参数。
  * @version 11.1.0
- * @param { KnowledgeGraph.Config } config - 创建graph实例的配置项。
+ * @param { KnowledgeGraph.Config } config - 创建 graph 实例的配置项。
  * @usage
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.Data - 创建graph实例的数据项。
- * @property {Array.<KnowledgeGraph.Node>} data.nodes - 创建graph节点。
- * @property {Array.<KnowledgeGraph.Edge>} data.edges - 创建graph边。
+ * @typedef {Object} KnowledgeGraph.Data - 创建 graph 实例的数据项。
+ * @property {Array.<KnowledgeGraph.Node>} data.nodes - 创建 graph 节点。
+ * @property {Array.<KnowledgeGraph.Edge>} data.edges - 创建 graph 边。
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.Config - 创建graph实例的配置项。
- * @property {string | HTMLElement} container - 创建的容器 id 或容器本身, 默认是'knowledgeGraph'。
- * @property {number} width - 图的宽度, 默认是container的width。
- * @property {number} height - 图的高度,默认是container的height。
- * @property {Array.<number>} [center] - 中心点的渲染坐标。可以通过KnowledgeGraph.prototype.getViewPortCenterPoint获取。
+ * @typedef {Object} KnowledgeGraph.Config - 创建 graph 实例的配置项。
+ * @property {string | HTMLElement} container - 创建的容器 ID 或容器本身，默认是 'knowledgeGraph'。
+ * @property {number} width - 图的宽度，默认是 container 的 width。
+ * @property {number} height - 图的高度，默认是 container 的 height。
+ * @property {Array.<number>} [center] - 中心点的渲染坐标。可以通过 KnowledgeGraph.prototype.getViewPortCenterPoint 获取。
  * @property {number} [zoom] - 缩放比例。
  * @property {number} [minZoom] - 最小缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例小于该值，则将使用该值进行缩放，并返回 false。
  * @property {number} [maxZoom] - 最大缩放比例。若 fitView、zoom、zoomTo 等操作导致图的缩放比例大于该值，则将使用该值进行缩放，并返回 false。
@@ -35,12 +36,12 @@ import clonedeep from 'lodash.clonedeep';
  * @property {KnowledgeGraph.EdgeStyle} [edgeHighlightStyle] - 鼠标移入边高亮样式。默认样式：{strokeColor: 'blue',stroke: 10, opacity: 0.8}。
  * @property {boolean} [highlightNode = true] - 鼠标移入是否高亮节点。
  * @property {boolean} [highlightEdge = true] - 鼠标移入是否高亮边。
- * @property {boolean} [showToolBar = true] - 是否打开工具条， 包含放大，缩小，切换到实际大小功能。
- * @property {boolean} [showContextMenu = true] - 是否打开节点的右键菜单， 包含展开\折叠、隐藏功能。
- * @property {boolean} [dragCanvas = true] - 是否可以拖拽canvas。
- * @property {boolean} [zoomCanvas = true] - 是否可以缩放canvas。
- * @property {boolean} [dragNode = true] - 是否可以拖拽node节点。
- * @property {number} [nodeLabelMaxWidth] - node节点的标签开启省略号配置项，大于该宽度使用省略号。
+ * @property {boolean} [showToolBar = true] - 是否打开工具条，包含放大，缩小，切换到实际大小功能。
+ * @property {boolean} [showContextMenu = true] - 是否打开节点的右键菜单，包含展开\折叠、隐藏功能。
+ * @property {boolean} [dragCanvas = true] - 是否可以拖拽 canvas。
+ * @property {boolean} [zoomCanvas = true] - 是否可以缩放 canvas。
+ * @property {boolean} [dragNode = true] - 是否可以拖拽 node 节点。
+ * @property {number} [nodeLabelMaxWidth] - node 节点的标签开启省略号配置项，大于该宽度使用省略号。
  */
 
 /**
@@ -49,33 +50,33 @@ import clonedeep from 'lodash.clonedeep';
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.Node - node节点配置项。
- * @property {string} id - 元素的标识 ID，必须是唯一的 string
+ * @typedef {Object} KnowledgeGraph.Node - node 节点配置项。
+ * @property {string} id - 元素的标识 ID，必须是唯一的 string。
  * @property {string} [category] - 分类。
- * @property {number} [x] - x坐标。
- * @property {number} [y] - y坐标。
+ * @property {number} [x] - x 坐标。
+ * @property {number} [y] - y 坐标。
  * @property {number} [size=20] - 节点的大小。
- * @property {Array.<number>|number} [anchorPoints=20] - 指定边连入节点的连接点的位置（相对于该节点而言），可以为空。例如: [0, 0]，代表节点左上角的锚点，[1, 1],代表节点右下角的锚点。
+ * @property {Array.<number>|number} [anchorPoints=20] - 指定边连入节点的连接点的位置（相对于该节点而言），可以为空。例如: [0, 0]，代表节点左上角的锚点，[1, 1]，代表节点右下角的锚点。
  * @property {string} [type] - 元素的类型，不传则使用默认值，节点默认类型为 'circle'。可选值['circle','rect','ellipse','diamond', 'image']
- * @property {string} [label] - 元素的文本标签，有该字段时默认会渲染 label 。
+ * @property {string} [label] - 元素的文本标签，有该字段时默认会渲染 label。
  * @property {KnowledgeGraph.NodeLabelCfg} [labelCfg] - 元素文本标签的配置项，详见各子模块内容。
  * @property {KnowledgeGraph.NodeStyle} [style] - 样式属性。
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.Edge - edge边配置项。
- * @property {string} [source] -起始点 id 。
- * @property {string} [target] - 结束点 id 。
+ * @typedef {Object} KnowledgeGraph.Edge - edge 边配置项。
+ * @property {string} [source] -起始点 ID。
+ * @property {string} [target] - 结束点 ID。
  * @property {number} [sourceAnchor] - 边的起始节点上的锚点的索引值。
  * @property {number} [targetAnchor] - 边的终止节点上的锚点的索引值。
- * @property {string} [type='line'] - 指定边的类型，可以是内置边的类型名称，也可以是自定义边的名称。默认为 'line'。可选值['line','arc','polyline','quadratic']。
+ * @property {string} [type='line'] - 指定边的类型，可以是内置边的类型名称，也可以是自定义边的名称。默认为 'line'。可选值 ['line','arc','polyline','quadratic']。
  * @property {string} [label] - 文本文字，如果没有则不会显示。
  * @property {KnowledgeGraph.EdgeLabelCfg} [labelCfg] - 配置标签文本。
  * @property {KnowledgeGraph.EdgeStyle} [style] - 通过 style 配置来修改边的填充色、边框颜色、阴影等属性，具体配置属性见：图形样式属性。
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.NodeLabelCfg - node节点配置项。
+ * @typedef {Object} KnowledgeGraph.NodeLabelCfg - node 节点配置项。
  * @property {string} [position] - 文本相对于节点的位置，目前支持的位置有：'center'，'top'，'left'，'right'，'bottom'。默认为 'center'。modelRect 节点不支持该属性。
  * @property {KnowledgeGraph.TextStyle} [style] - 标签的样式属性。
  * @property {number} [offset] - 文本的偏移，position 为 'bottom' 时，文本的上方偏移量；position 为 'left' 时，文本的右方偏移量；以此类推在其他 position 时的情况。modelRect 节点的 offset 为左边距。
@@ -102,18 +103,18 @@ import clonedeep from 'lodash.clonedeep';
  * @property {string} [fontStyle] - 字体样式。对应 font-style。
  * @property {string} [fontVariant] - 设置为小型大写字母字体。对应 font-variant。
  * @property {number} [fontWeight] - 字体粗细。对应 font-weight。
- * @property {number} [fontSize] - 字体大小。对应 font-size， 边标签文本默认大小是7。
+ * @property {number} [fontSize] - 字体大小。对应 font-size，边标签文本默认大小是 7。
  * @property {string} [fontFamily] - 字体系列。对应 font-family。
  * @property {number} [lineHeight] - 行高。对应 line-height。
  */
 
 /**
- * @typedef {Object} KnowledgeGraph.EdgeLabelCfg - node节点配置项。
+ * @typedef {Object} KnowledgeGraph.EdgeLabelCfg - node 节点配置项。
  * @property {string} [position] - 文本相对于边的位置，目前支持的位置有：'start'，'middle'，'end'。默认为'middle'。
  * @property {number} [refX] - 标签在 x 方向的偏移量。
  * @property {number} [refY] -标签在 y 方向的偏移量。
- * @property {boolean} [autoRotate=true] - 标签文字是否跟随边旋转，默认： true。
- * @property { KnowledgeGraph.TextStyle} [style] - 标签的样式属性，默认： {fontSize: 3,fill: '#333'}。
+ * @property {boolean} [autoRotate=true] - 标签文字是否跟随边旋转，默认：true。
+ * @property { KnowledgeGraph.TextStyle} [style] - 标签的样式属性，默认：{fontSize: 3,fill: '#333'}。
  */
 
 /**
@@ -121,7 +122,7 @@ import clonedeep from 'lodash.clonedeep';
  * @property {string} [stroke] - 边的颜色。
  * @property {number} [lineWidth] - 边宽度。
  * @property {number} [lineAppendWidth] -边响应鼠标事件时的检测宽度，当 lineWidth 太小而不易选中时，可以通过该参数提升击中范围。
- * @property {boolean|Object} [endArrow=true] - 为 true 时在边的结束端绘制默认箭头，为 false 时不绘制结束端箭头, 默认值{path: 'M 0,0 L 2,1 L 2,-1 Z'}
+ * @property {boolean|Object} [endArrow=true] - 为 true 时在边的结束端绘制默认箭头，为 false 时不绘制结束端箭头，默认值 {path: 'M 0,0 L 2,1 L 2,-1 Z'}。
  * @property {boolean|Object} [startArrow] - 为 true 时在边的开始端绘制默认箭头，为 false 时不绘制结束端箭头。
  * @property {number} [strokeOpacity] - 边透明度。
  * @property {string} [shadowColor] - 阴影颜色。
@@ -144,7 +145,7 @@ export class KnowledgeGraph {
   constructor(config, type = 'G6') {
     /**
      * @member {string} KnowledgeGraph.prototype.graph
-     * @description graph实例。
+     * @description graph 实例。
      */
     this.graph = null;
     this.config = clonedeep(config);
@@ -158,9 +159,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.dataFromGraphMap
-   * @description 将iServer GraphMap数据转换成KnowledgeGraph数据。
-   * @param {Object} queryResult - iServer知识图谱服务query数据。
-   * @param {Object} graphMap - iServer知识图谱服务GraphMap数据(data.graphMap)。
+   * @description 将 SuperMap iServer GraphMap 数据转换成 KnowledgeGraph 数据。
+   * @param {Object} queryResult - SuperMap iServer 知识图谱服务 query 数据。
+   * @param {Object} graphMap - SuperMap iServer 知识图谱服务 GraphMap 数据 (data.graphMap)。
    * @return {KnowledgeGraph.Data} 返回数据。
    */
   static dataFromGraphMap(queryResult, graphMap) {
@@ -169,8 +170,8 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.dataFromKnowledgeGraphQuery
-   * @description 将iServer KnowledgeGraphService query数据转换成KnowledgeGraph数据。
-   * @param {Object} queryResult - iServer知识图谱服务query数据。
+   * @description 将 SuperMap iServer KnowledgeGraphService query 数据转换成 KnowledgeGraph 数据。
+   * @param {Object} queryResult - SuperMap iServer 知识图谱服务 query 数据。
    * @return {KnowledgeGraph.Data} 返回数据。
    */
   static dataFromKnowledgeGraphQuery(queryResult) {
@@ -179,16 +180,16 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.handleNodeStatus
-   * @description 展开、折叠、隐藏节点
-   * @param {Object} data - 展开 折叠 隐藏的对象, eg: {expand:['id1'], collapse:['id2'], hidden:['id3']}
+   * @description 展开、折叠、隐藏节点。
+   * @param {Object} data - 展开、折叠、隐藏的对象，eg: {expand:['id1'], collapse:['id2'], hidden:['id3']}。
    */
   handleNodeStatus(data) {
     const { expand, collapse, hidden } = data;
-    // 解析expand参数,里面的节点再执行一次查询显示出来
+    // 解析 expand 参数，里面的节点再执行一次查询显示出来
     this.expandNodes(expand);
-    // 解析collapse参数,折叠这个里面的节点
+    // 解析 collapse 参数，折叠这个里面的节点
     this.collapseNodes(collapse);
-    // 解析hidden，隐藏这个里面额的节点
+    // 解析 hidden 参数，隐藏这个里面额的节点
     this.hideNodes(hidden);
   }
 
@@ -236,8 +237,8 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.createGraphRender
-   * @description 创建KnowledgeGraphRender
-   * @param {string} type -类型， 默认是G6。
+   * @description 创建 KnowledgeGraphRender。
+   * @param {string} type -类型， 默认是 G6。
    * @private
    */
   createGraphRender(type) {
@@ -248,9 +249,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.createGraph
-   * @description 创建KnowledgeGraph的guaph实例。
-   * @param {Object} config - graph配置项。
-   * @returns {Object} graph实例。
+   * @description 创建 KnowledgeGraph 的 graph 实例。
+   * @param {Object} config - graph 配置项。
+   * @returns {Object} graph 实例。
    */
   createGraph(config) {
     const graph = this.initGraph(config);
@@ -261,8 +262,8 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.getGraph
-   * @description 获取KnowledgeGraph的guaph实例。
-   * @returns {Object} graph实例。
+   * @description 获取 KnowledgeGraph 的 graph 实例。
+   * @returns {Object} graph 实例。
    */
   getGraph() {
     return this.graph;
@@ -270,7 +271,7 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.autoResize
-   * @description 浏览器窗口大小发生改变时，重新设置canvas画布的大小，重新渲染。
+   * @description 浏览器窗口大小发生改变时，重新设置 canvas 画布的大小，重新渲染。
    */
   autoResize() {
     if (this.config && this.config.autoResize !== false) {
@@ -345,7 +346,7 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.getZoom
    * @description 获取当前视口的缩放比例。
-   * @return {number} 返回值表示当前视口的缩放比例， 默认值为 1。
+   * @return {number} 返回值表示当前视口的缩放比例，默认值为 1。
    */
   getZoom() {
     return this.graphRender.getZoom();
@@ -407,9 +408,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.initGraph
-   * @description 创建KnowledgeGraph实例
-   * @param {Object} config - graph配置项。
-   * @returns {Object} graph实例。
+   * @description 创建 KnowledgeGraph 实例。
+   * @param {Object} config - graph 配置项。
+   * @returns {Object} graph 实例。
    */
   initGraph(config) {
     const graph = this.graphRender.initGraph(config);
@@ -428,9 +429,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.setData
-   * @description 设置默认数据
-   * @param {KnowledgeGraph.Data} data - graph数据。
-   * @param {Object} [graph = this.graph] - graph实例。
+   * @description 设置默认数据。
+   * @param {KnowledgeGraph.Data} data - graph 数据。
+   * @param {Object} [graph = this.graph] - graph 实例。
    */
   setData(data, graph = this.graph) {
     data = data || { nodes: [], edges: [] };
@@ -445,7 +446,7 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.render
    * @description 根据提供的数据渲染视图。
-   * @param {Object} [graph = this.graph] - graph实例。
+   * @param {Object} [graph = this.graph] - graph 实例。
    */
   render(graph = this.graph) {
     graph && this.graphRender.render(graph);
@@ -453,9 +454,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.updateGraph
-   * @description 更新数据
-   * @param {KnowledgeGraph.Data} data - graph数据。
-   * @param {Object} [graph = this.graph] - graph实例。
+   * @description 更新数据。
+   * @param {KnowledgeGraph.Data} data - graph 数据。
+   * @param {Object} [graph = this.graph] - graph 实例。
    */
   updateGraph(data, graph = this.graph) {
     graph && this.graphRender.updateGraph(data, graph);
@@ -501,7 +502,7 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.getCanvas
-   * @description 获取canvas。
+   * @description 获取 canvas。
    * @return {HTMLElement} canvas。
    */
   getCanvas() {
@@ -541,7 +542,7 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.prototype.findById
    * @description 根据 ID，查询对应的元素实例。
    * @param {string} id -	元素 ID。
-   * @return {Object} 如果有符合规则的元素实例，则返回第一个匹配的元素实例，否则返回 undefined 。
+   * @return {Object} 如果有符合规则的元素实例，则返回第一个匹配的元素实例，否则返回 undefined。
    */
   findById(id) {
     return this.graphRender.findById(id);
@@ -550,9 +551,9 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.find
    * @description 获取邻居节点数组。
-   * @param {string} type - 元素类型，可选值为 'node'、'edge'
+   * @param {string} type - 元素类型，可选值为 'node'、'edge'。
    * @param {Function} fn -	查找的规则。
-   * @return {Object} 如果有符合规则的元素实例，则返回第一个匹配的元素实例，否则返回 undefined 。
+   * @return {Object} 如果有符合规则的元素实例，则返回第一个匹配的元素实例，否则返回 undefined。
    */
   find(type, fn) {
     return this.graphRender.find(type, fn);
@@ -571,8 +572,8 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.getEdgesByNode
    * @description 获取与当前节点有关联的所有边。
-   * @param {Object} node - node实例。
-   * @return {Array} edge实例数组。
+   * @param {Object} node - node 实例。
+   * @return {Array} edge 实例数组。
    */
   getEdgesByNode(node) {
     return this.graphRender.getEdgesByNode(node);
@@ -581,8 +582,8 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.getInEdges
    * @description 获取与当前节点关联的所有入边。
-   * @param {Object} node - node实例。
-   * @return {Array} edge实例数组。
+   * @param {Object} node - node 实例。
+   * @return {Array} edge 实例数组。
    */
   getInEdges(node) {
     return this.graphRender.getInEdges(node);
@@ -591,8 +592,8 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.getOutEdges
    * @description 获取与当前节点关联的所有出边。
-   * @param {Object} node - node实例。
-   * @return {Array} edge实例数组。
+   * @param {Object} node - node 实例。
+   * @return {Array} edge 实例数组。
    */
   getOutEdges(node) {
     return this.graphRender.getOutEdges(node);
@@ -601,7 +602,7 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.getSourceByEdge
    * @description 获取当前边的起始节点
-   * @param {Object} edge - node实例。
+   * @param {Object} edge - node 实例。
    * @return {Object} 返回值为起始节点的实例。
    */
   getSourceByEdge(edge) {
@@ -611,7 +612,7 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.getTargetByEdge
    * @description 获取当前边的终止节点。
-   * @param {Object} edge - node实例。
+   * @param {Object} edge - node 实例。
    * @return {Object} 终止节点的实例。
    */
   getTargetByEdge(edge) {
@@ -640,9 +641,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.showItem
-   * @description 显示指定的元素。若 item 为节点，则相关边也会随之显示。而show() 则将只显示自身。
+   * @description 显示指定的元素。若 item 为节点，则相关边也会随之显示。而 show() 则将只显示自身。
    * @param {string|Object} item - 元素 ID 或元素实例。
-   * @param {boolean} [stack] - 	操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
+   * @param {boolean} [stack] - 操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
    */
   showItem(item, stack) {
     this.graphRender.showItem(item, stack);
@@ -652,7 +653,7 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.prototype.hideItem
    * @description 隐藏指定元素。若 item 为节点，则相关边也会随之隐藏。而 hide() 则将只隐藏自身。
    * @param {string|Object} item - 元素 ID 或元素实例。
-   * @param {boolean} [stack] -操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
+   * @param {boolean} [stack] - 操作是否入 undo & redo 栈，当实例化 Graph 时设置 enableStack 为 true 时，默认情况下会自动入栈，入栈以后，就支持 undo & redo 操作，如果不需要，则设置该参数为 false 即可。
    */
   hideItem(item, stack) {
     this.graphRender.hideItem(item, stack);
@@ -660,7 +661,7 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.show
-   * @description 显示元素。只显示 item 自身，若需要在显示节点的同时显示相关边，应调用showItem(item)。
+   * @description 显示元素。只显示 item 自身，若需要在显示节点的同时显示相关边，应调用 showItem(item)。
    * @param {Object} item - 元素实例。
    */
   show(item) {
@@ -754,27 +755,27 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.on
-   * @description graph监听事件
-   * @param {string} eventName - 事件名，可选事件名参见： Node交互事件名、Edge交互事件名、Canvas交互事件名 时机事件
-   * 通用事件名： click  dbclick mouseenter mousemove mouseout mouseover mouseleave mousedown mouseup contextmenu dragstart drag dragend dragenter dragleave drop keydown keyup wheel touchstart touchmove touchend
-   * Node交互事件名： node:通用事件名， 例如 node:click
-   * Edge交互事件名： edge:通用事件名， 例如 edge:click
-   * Canvas交互事件名： canvas:通用事件名，例如 canvas:click
-   * 时机事件：用于监听图的某方法调用前后的时机。
-   * beforerender 调用 render 方法之前触发
-   * afterrender 调用 render 方法之后触发
-   * beforeadditem 	调用 addItem 方法之前触发
-   * afteradditem 调用 addItem 方法之后触发
-   * beforeremoveitem 调用 removeItem 方法之前触发
-   * afterremoveitem 调用 removeItem 方法之后触发
-   * beforeupdateitem 调用 updateItem  方法之前触发
-   * afterupdateitem 调用 updateItem 方法之后触发
-   * beforegraphrefresh 调用 refresh  方法之前触发
-   * aftergraphrefresh 调用 refresh  方法之后触发
-   * beforelayout	布局前触发。调用 graph.render 时会进行布局，因此 render 时会触发。或用户主动调用图的 graph.layout 时触发
-   * afterlayout	布局完成后触发。调用 graph.render 时会进行布局，因此 render 时布局完成后会触发。或用户主动调用图的 graph.layout 时布局完成后触发
+   * @description graph 监听事件。
+   * @param {string} eventName - 事件名，可选事件名参见：Node交互事件名、Edge 交互事件名、Canvas 交互事件名、时机事件.
+   * 通用事件名：click dbclick mouseenter mousemove mouseout mouseover mouseleave mousedown mouseup contextmenu dragstart drag dragend dragenter dragleave drop keydown keyup wheel touchstart touchmove touchend <br>
+   * Node交互事件名：node:通用事件名，例如 node:click<br>
+   * Edge交互事件名：edge:通用事件名，例如 edge:click<br>
+   * Canvas交互事件名：canvas:通用事件名，例如 canvas:click<br>
+   * 时机事件：用于监听图的某方法调用前后的时机。<br>
+   * beforerender 调用 render 方法之前触发<br>
+   * afterrender 调用 render 方法之后触发<br>
+   * beforeadditem 	调用 addItem 方法之前触发<br>
+   * afteradditem 调用 addItem 方法之后触发<br>
+   * beforeremoveitem 调用 removeItem 方法之前触发<br>
+   * afterremoveitem 调用 removeItem 方法之后触发<br>
+   * beforeupdateitem 调用 updateItem 方法之前触发<br>
+   * afterupdateitem 调用 updateItem 方法之后触发<br>
+   * beforegraphrefresh 调用 refresh 方法之前触发<br>
+   * aftergraphrefresh 调用 refresh 方法之后触发<br>
+   * beforelayout	布局前触发。调用 graph.render 时会进行布局，因此 render 时会触发。或用户主动调用图的 graph.layout 时触发<br>
+   * afterlayout 布局完成后触发。调用 graph.render 时会进行布局，因此 render 时布局完成后会触发。或用户主动调用图的 graph.layout 时布局完成后触发<br>
    * viewportchange 调用 graph.moveTo 或 graph.zoom 均会触发该事件
-   * @param {Function} handler -	监听函数。
+   * @param {Function} handler - 监听函数。
    */
   on(eventName, handler) {
     this.graphRender.on(eventName, handler);
@@ -782,8 +783,8 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.off
-   * @description graph关闭事件。
-   * @param {string} eventName - 事件名，参考on方法的事件名。
+   * @description graph 关闭事件。
+   * @param {string} eventName - 事件名，参考 on 方法的事件名。
    * @param {Function} handler -	监听函数。
    */
   off(eventName, handler) {
@@ -803,9 +804,9 @@ export class KnowledgeGraph {
 
   /**
    * @function KnowledgeGraph.prototype.nodeLabelOpenEllipsis
-   * @description 转换label的省略号。
-   * @param {Object} nodeLabelMaxWidth - node节点标签是否开启省略号
-   * @param {Object} nodes - graph的nodes数据。
+   * @description 转换 label 的省略号。
+   * @param {Object} nodeLabelMaxWidth - node 节点标签是否开启省略号。
+   * @param {Object} nodes - graph 的 nodes 数据。
    * @return {Array} nodes
    */
   nodeLabelOpenEllipsis(nodeLabelMaxWidth, nodes) {
@@ -828,7 +829,7 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.clear
    * @description 清除画布元素。
-   * @param {Object} [graph = this.graph] - graph实例。
+   * @param {Object} [graph = this.graph] - graph 实例。
    */
   clear(graph = this.graph) {
     graph && graph.clear();
@@ -837,7 +838,7 @@ export class KnowledgeGraph {
   /**
    * @function KnowledgeGraph.prototype.destroy
    * @description 销毁画布。
-   * @param {Object} [graph = this.graph] - graph实例。
+   * @param {Object} [graph = this.graph] - graph 实例。
    */
   destroy(graph = this.graph) {
     graph && graph.destroy();
@@ -864,7 +865,7 @@ function fittingStr(label, maxWidth, fontSize) {
     }
     return len;
   };
-  const fontWidth = fontSize * 1; //字号+边距
+  const fontWidth = fontSize * 1; // 字号+边距
   maxWidth = maxWidth * 1.6; // 需要根据自己项目调整
   const width = calcLabelLength(label) * fontWidth;
   const ellipsis = '…';

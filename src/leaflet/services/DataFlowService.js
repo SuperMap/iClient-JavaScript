@@ -9,7 +9,8 @@ import {DataFlowService as DataFlow} from '@supermap/iclient-common/iServer/Data
 /**
  * @class DataFlowService
  * @deprecatedclassinstance L.supermap.dataFlowService
- * @classdesc 数据流服务类。
+ * @classdesc 数据流服务类。用于实现客户端与服务器之间实现低延迟和实时数据传输。数据流服务采用 WebSocket 协议，支持全双工、双向式通信。
+ * 服务器可将流数据服务的分析处理结果作为数据来源向客户端广播，客户端与数据流服务建立连接后，即可自动接收服务器广播的数据。
  * @category  iServer DataFlow
  * @modulecategory Services
  * @extends {ServiceBase}

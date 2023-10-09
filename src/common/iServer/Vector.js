@@ -9,7 +9,7 @@ import {ServerStyle} from './ServerStyle';
  * @class Vector
  * @deprecatedclass SuperMap.Vector
  * @category  iServer Map Layer
- * @classdesc SuperMap 矢量图层类。
+ * @classdesc SuperMap 矢量图层类。矢量数据结构是通过记录空间对象的坐标及空间关系，尽可能精确地表现点、线、多边形等地理实体空间位置的一种数据结构。
  * @extends {UGCSubLayer}
  * @param {Object} options - 可选参数。
  * @param {ServerStyle} [options.style] - 矢量图层的风格。

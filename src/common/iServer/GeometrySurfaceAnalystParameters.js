@@ -8,7 +8,7 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
  * @class GeometrySurfaceAnalystParameters
  * @deprecatedclass SuperMap.GeometrySurfaceAnalystParameters
  * @category  iServer SpatialAnalyst SurfaceAnalyst
- * @classdesc 几何对象表面分析参数类。该类对几何对象表面分析所用到的参数进行设置。
+ * @classdesc 几何对象表面分析参数类。可用于设置进行表面分析的坐标点数组、提取方法、返回结果、中间结果分辨率等参数。
  * @param {Object} options - 参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} options.points - 表面分析的坐标点数组。
  * @param {Array.<number>} options.zValues - 表面分析的坐标点的 Z 值数组。

@@ -10,8 +10,8 @@ import Point from 'ol/geom/Point';
  * @class WebPrintingJobService
  * @category  iServer WebPrintingJob
  * @version 10.1.0
- * @classdesc Web 打印服务类。
- *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
+ * @classdesc Web 打印服务类。Web 打印是指将 Web 应用中制作的 Web 内容输出为可打印的地图文档。<br>
+ *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
  * @modulecategory Services
  * @extends {ServiceBase}
  * @param {string} url - 服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
@@ -41,7 +41,7 @@ export class WebPrintingJobService extends ServiceBase {
    * @function WebPrintingJobService.prototype.createWebPrintingJob
    * @description 创建 Web 打印任务。
    * @param {WebPrintingJobParameters} params - Web 打印参数类。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   createWebPrintingJob(params, callback) {
@@ -55,7 +55,7 @@ export class WebPrintingJobService extends ServiceBase {
    * @function WebPrintingJobService.prototype.getPrintingJob
    * @description 获取 Web 打印输出文档任务。
    * @param {string} jobId - Web 打印输入文档任务 ID。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getPrintingJob(jobId, callback) {
@@ -66,7 +66,7 @@ export class WebPrintingJobService extends ServiceBase {
    * @function WebPrintingJobService.prototype.getPrintingJobResult
    * @description 获取 Web 打印任务的输出文档。
    * @param {string} jobId - Web 打印输入文档任务 ID。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getPrintingJobResult(jobId, callback) {
@@ -76,7 +76,7 @@ export class WebPrintingJobService extends ServiceBase {
   /**
    * @function WebPrintingJobService.prototype.getLayoutTemplates
    * @description 查询 Web 打印服务所有可用的模板信息。
-   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
   getLayoutTemplates(callback) {

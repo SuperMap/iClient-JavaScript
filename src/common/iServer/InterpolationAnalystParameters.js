@@ -9,7 +9,10 @@ import {
  * @class InterpolationAnalystParameters
  * @deprecatedclass SuperMap.InterpolationAnalystParameters
  * @category iServer SpatialAnalyst InterpolationAnalyst
- * @classdesc 插值分析参数类。
+ * @classdesc 插值分析参数类。此类存储了进行插值分析的数据集或离散点集合、插值分析类型、插值范围、查找半径、缩放比率等参数，
+ * 还提供了有关插值分析结果的一系列参数设置。<br>
+ * 当插值分析类型为 dataset 时，插值分析的数据集名称和插值字段名称为必设参数。
+ * 当插值分析类型为 geometry 时，插值分析的离散点集合为必设参数。
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
@@ -105,7 +108,7 @@ export class InterpolationAnalystParameters {
          * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [InterpolationAnalystParameters.prototype.inputPoints]
          * @description 用于做插值分析的离散点（离散点包括Z值）集合。
          * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
-         * 通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
+         * 通过离散点直接进行插值分析不需要指定输入数据集 inputDatasourceName，inputDatasetName 以及 zValueFieldName。
          */
         this.inputPoints = null;
 

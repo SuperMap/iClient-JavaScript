@@ -9,7 +9,8 @@
   * @class ConvexHullAnalystService
   * @deprecatedclass SuperMap.ConvexHullAnalystService
   * @category  iServer SpatialAnalyst ConvexHullAnalyst
-  * @classdesc 凸包运算服务类
+  * @classdesc 凸包计算服务类。三维模型对象可以看作三维空间中由无数个三维点构成的点集，该模型对象的凸包即是一个能够包含选中模型的所有三维点的最小闭合几何体。
+  * 基于模型对象进行凸包运算，可以得到该模型对象的凸包。
   * @version 11.1.1
   * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
   * @param {Object} options - 参数。

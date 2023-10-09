@@ -8,7 +8,8 @@
 /**
  * @class  DatasourceService
  * @deprecatedclassinstance L.supermap.datasourceService
- * @classdesc 数据源服务类。
+ * @classdesc 数据源服务类。提供方法：查询数据源集合、查询指定数据源信息、设置指定数据源信息。
+ * 可以获取的数据源信息包括数据源名称、数据源描述、引擎类型、距离单位、坐标单位、投影信息等。
  * @category iServer Data Datasource
  * @modulecategory Services
  * @extends {ServiceBase}
@@ -34,7 +35,7 @@ export var DatasourceService = ServiceBase.extend({
 
     /**
      * @function DatasourceService.prototype.getDatasources
-     * @description 数据源集查询服务。
+     * @description 数据源集合查询服务。
      * @example
      *   new DatasourceService(url).getDatasources(function(result){
      *     //doSomething

@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class GeoDecodingParameter
  * @deprecatedclass SuperMap.GeoDecodingParameter
  * @category iServer AddressMatch
- * @classdesc 地理反向匹配参数类。
+ * @classdesc 地理反向匹配参数类。地理反向匹配是指通过位置坐标信息查询相关地点。
+ * 此类用于设置地理反向匹配中的查询位置坐标、过滤字段、查询半径等参数，还可以对返回结果进行一系列参数设置。
  * @param {Object} options - 参数。
  * @param {number} options.x - 查询位置的横坐标。
  * @param {number} options.y - 查询位置的纵坐标。

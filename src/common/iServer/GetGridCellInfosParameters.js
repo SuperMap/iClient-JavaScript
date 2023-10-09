@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class GetGridCellInfosParameters
  * @deprecatedclass SuperMap.GetGridCellInfosParameters
  * @category iServer Data Grid
- * @classdesc 数据服务栅格查询参数类。
+ * @classdesc 数据服务栅格查询参数类。此类用于设置进行栅格查询的数据源、数据集和栅格所在的地理位置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.dataSourceName - 数据源名称。

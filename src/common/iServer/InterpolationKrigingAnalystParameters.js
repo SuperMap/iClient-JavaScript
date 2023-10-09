@@ -16,7 +16,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * 一般而言，许多地质参数，如地形面，本身即具有连续性，故在一段距离内的任两点必有空间上的关系。反之，在一不规则面上的两点若相距甚远，
  * 则在统计意义上可视为互为独立 (stastically indepedent)。这种随距离而改变的空间上连续性，可用半变异图 (semivariogram) 来表现。
  * 因此，若想由已知的散乱点来推求某一未知点的值，则可利用半变异图推求各已知点与未知点的空间关系，即以下四个参数：<br>
- * 1.块金值（nugget）：当采样点间距为0时，理论上半变异函数值为0，但时间上两采样点非常接近时半变异函数值并不为0，即产生了块金效应，
+ * 1.块金值（nugget）：当采样点间距为0时，理论上半变异函数值为 0，但时间上两采样点非常接近时半变异函数值并不为 0，即产生了块金效应，
  * 对应的半变异函数值为块金值。块金值可能由于测量误差或者空间变异产生。<br>
  * 2.基台值（sill）：随着采样点间距的不断增大，半变异函数的值趋向一个稳定的常数，该常数成为基台值。到达基台值后，半变异函数的值不再随采样点间距而改变，
  *   即大于此间距的采样点不再具有空间相关性。<br>
@@ -158,8 +158,8 @@ export class InterpolationKrigingAnalystParameters extends InterpolationAnalystP
 
         /**
          * @member {number} [InterpolationKrigingAnalystParameters.prototype.expectedCount=12]
-         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数，默认值为12。
-         * 【定长查找】方式下，设置查找的最小点数，默认值为12。
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与插值运算的点数，默认值为 12。
+         * 【定长查找】方式下，设置查找的最小点数，默认值为 12。
          */
         this.expectedCount = 12;
 

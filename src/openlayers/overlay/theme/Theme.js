@@ -19,7 +19,9 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @class Theme
  * @browsernamespace ol.source
  * @category Visualization Theme
- * @classdesc 专题图基类。
+ * @classdesc 专题图基类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。
+ * 调用建议：使用其子类实现该类。
  * @modulecategory Overlay
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。

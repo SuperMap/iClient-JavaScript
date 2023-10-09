@@ -10,9 +10,9 @@ import { ServerGeometry } from './ServerGeometry';
  * @class GetFeaturesByBufferParameters
  * @deprecatedclass SuperMap.GetFeaturesByBufferParameters
  * @category iServer Data FeatureResults
- * @classdesc 数据集缓冲区查询参数类。
+ * @classdesc 数据集缓冲区查询参数类。此类用于指定进行缓冲区查询的数据集列表，设置缓冲距离、空间查询条件、属性查询条件以及一些通用的查询参数。
  * @param {Object} options - 参数。
- * @param {number} options.bufferDistance - buffer 距离，单位与所查询图层对应的数据集单位相同。
+ * @param {number} options.bufferDistance - 缓冲距离，单位与所查询图层对应的数据集单位相同。
  * @param {GeoJSONObject} options.geometry - 空间查询条件。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。
@@ -30,7 +30,7 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         super(options);
         /**
          * @member {number} GetFeaturesByBufferParameters.prototype.bufferDistance
-         * @description buffer 距离，单位与所查询图层对应的数据集单位相同。
+         * @description 缓冲距离，单位与所查询图层对应的数据集单位相同。
          */
         this.bufferDistance = null;
 

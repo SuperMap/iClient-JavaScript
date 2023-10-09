@@ -8,7 +8,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
 /**
  * @class DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集信息服务类。
+ * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @version 11.1.0
  * @modulecategory Services
  * @param {string} url - 服务地址。
@@ -41,7 +41,7 @@ export class DatasetService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getDatasets(datasourceName, callback) {
       if (!datasourceName) {
@@ -59,7 +59,7 @@ export class DatasetService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     getDataset(datasourceName, datasetName, callback) {
       if (!datasourceName || !datasetName) {
@@ -76,7 +76,7 @@ export class DatasetService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {CreateDatasetParameters|UpdateDatasetParameters} params - 数据集创建参数类或数据集信息更改参数类。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     setDataset(params, callback) {
       if(!(params instanceof CreateDatasetParameters) && !(params instanceof UpdateDatasetParameters)){
@@ -109,7 +109,7 @@ export class DatasetService extends ServiceBase {
      *   });
      * @param {string} datasourceName - 数据源名称。
      * @param {string} datasetName - 数据集名称。
-     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      */
     deleteDataset(datasourceName, datasetName, callback) {
       return this._datasetService.deleteDatasetService(datasourceName, datasetName, callback);

@@ -20,9 +20,10 @@ import {
  * @class KernelDensityJobParameter
  * @deprecatedclass SuperMap.KernelDensityJobParameter
  * @category iServer ProcessingService DensityAnalyst
- * @classdesc 核密度分析服务参数类。
+ * @classdesc 此类用于设置核密度分析的数据集、分析范围、分析方法、权重、影响半径、分辨率、分析单位等参数，
+ * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
+ * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.fields - 权重索引。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
  * @param {number} [options.resolution=80] - 分辨率。
@@ -44,7 +45,7 @@ export class KernelDensityJobParameter {
         }
         /**
          * @member {string} KernelDensityJobParameter.prototype.datasetName
-         * @description 数据集名。
+         * @description 数据集名称。
          */
         this.datasetName = "";
 
@@ -146,9 +147,9 @@ export class KernelDensityJobParameter {
 
     /**
      * @function KernelDensityJobParameter.toObject
-     * @param {KernelDensityJobParameter} kernelDensityJobParameter - 核密度分析服务参数类。
-     * @param {KernelDensityJobParameter} tempObj - 核密度分析服务参数对象。
-     * @description 将核密度分析服务参数对象转换为 JSON 对象。
+     * @param {KernelDensityJobParameter} kernelDensityJobParameter - 核密度分析任务参数类。
+     * @param {KernelDensityJobParameter} tempObj - 核密度分析任务参数对象。
+     * @description 将核密度分析任务参数对象转换为 JSON 对象。
      * @returns JSON 对象。
      */
     static toObject(kernelDensityJobParameter, tempObj) {

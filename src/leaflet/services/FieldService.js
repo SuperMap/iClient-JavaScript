@@ -8,7 +8,7 @@ import { FieldService as CommonFieldService } from '@supermap/iclient-common/iSe
 /**
  * @class  FieldService
  * @deprecatedclassinstance L.supermap.fieldService
- * @classdesc 字段服务类。
+ * @classdesc 字段服务类。提供方法：查询字段信息、查询字段统计信息等。
  * @category iServer Data Field
  * @modulecategory Services
  * @extends {ServiceBase}

@@ -8,7 +8,8 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @class InterpolationRBFAnalystParameters
  * @deprecatedclass SuperMap.InterpolationRBFAnalystParameters
  * @category iServer SpatialAnalyst InterpolationAnalyst
- * @classdesc 样条插值（径向基函数插值法）分析参数类。
+ * @classdesc 样条插值（径向基函数插值法）分析参数类。此类除了能够设置插值分析的一系列通用参数，还可以设置样条插值分析中的查找参与运算点的方式、光滑系数、张力系数等参数。<br>
+ * 当插值分析类型为 dataset 时，插值分析的数据集名称为必设参数。当插值分析类型为 geometry 时，插值分析的离散点集合为必设参数。
  * @extends {InterpolationAnalystParameters}
  * @param {Object} options - 参数。
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 插值分析的范围，用于确定结果栅格数据集的范围。

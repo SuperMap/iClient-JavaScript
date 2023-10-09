@@ -8,7 +8,7 @@ import { GetGridCellInfosService } from '@supermap/iclient-common/iServer/GetGri
 /**
  * @class GridCellInfosService
  * @deprecatedclassinstance L.supermap.gridCellInfosService
- * @classdesc 数据栅格查询服务类。
+ * @classdesc 数据栅格查询服务类。此类用于设置查询某一地理位置所对应栅格单元信息的相关参数，包括：栅格值、栅格行、栅格列等。
  * @category  iServer Data Grid
  * @modulecategory Services
  * @extends {ServiceBase}

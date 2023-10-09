@@ -8,7 +8,7 @@ import {AlongLineDirection} from '../REST';
  * @class ThemeLabelAlongLine
  * @deprecatedclass SuperMap.ThemeLabelAlongLine
  * @category  iServer Map Theme
- * @classdesc 标签沿线标注样式类。
+ * @classdesc 标签沿线标注样式类。该类用于设置标签专题图中沿线标注的方向、文本角度是否固定、循环标注间隔、循环标注是否避免标签重复标注。
  * @param {Object} options - 可选参数。
  * @param {boolean} [options.isAlongLine=true] - 是否沿线显示文本。
  * @param {AlongLineDirection} [options.alongLineDirection=AlongLineDirection.LB_TO_RT] - 标签沿线标注方向。

@@ -9,7 +9,7 @@ import {OutputType} from "../REST";
  * @class OutputSetting
  * @deprecatedclass SuperMap.OutputSetting
  * @category  iServer ProcessingService
- * @classdesc 分布式分析输出类型设置类。
+ * @classdesc 分布式分析输出类型设置类。此类用于设置分布式分析结果可视化得到的专题图的子项数组、精度、分段模式、分段个数和颜色渐变模式等参数。
  * @param {Object} options - 参数。
  * @param {DatasourceConnectionInfo} options.datasourceInfo - 数据源连接信息。
  * @param {string} [options.datasetName='analystResult'] - 结果数据集名称。

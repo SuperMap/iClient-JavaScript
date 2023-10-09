@@ -9,7 +9,7 @@ import { UpdateDatasetParameters } from '@supermap/iclient-common/iServer/Update
 /**
  * @class DatasetService
  * @category  iServer Data Dataset
- * @classdesc 数据集信息服务类。
+ * @classdesc 数据集信息服务类。提供方法：查询数据集集合、查询指定数据集信息，在指定数据源下新增、修改、删除数据集等。
  * @modulecategory Services
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。

@@ -12,7 +12,7 @@ import {Theme} from './ThemeLayer';
  * @class GeoFeatureThemeLayer
  * @category Visualization Theme
  * @modulecategory Overlay
- * @classdesc 地理几何专题要素型专题图层类。
+ * @classdesc 地理几何专题要素型专题图层类。此类型专题图的专题要素形状由 feature.geometry 决定，不建议直接实例化调用此类。
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
@@ -22,9 +22,9 @@ import {Theme} from './ThemeLayer';
  * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
  * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
  * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
- * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style）中的有效属性应用到专题图层。
  *                                        禁止对专题要素使用数据（feature）的 style。
- *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+ *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature）对应专题要素赋予独立 style。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @extends {ThemeLayer}
  * @fires GeoFeatureThemeLayer#beforefeaturesadded

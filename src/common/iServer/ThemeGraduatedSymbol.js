@@ -11,7 +11,9 @@ import {GraduatedMode} from '../REST';
  * @class ThemeGraduatedSymbol
  * @deprecatedclass SuperMap.ThemeGraduatedSymbol
  * @category  iServer Map Theme
- * @classdesc 等级符号专题图。
+ * @classdesc 等级符号专题图。等级符号专题图是采用不同的形状、颜色和大小的符号，表示各自独立的、以整体概念显示的各个物体的数量与质量特征。
+ * 通常，以符号的形状、颜色和大小反映物体的特定属性；符号的形状与颜色表示质量特征，符号的大小表示数量特征。
+ * 等级符号专题图多用于具有数量特征的地图上，比如表示不同地区的粮食产量、GDP、人口等的分级，也就是说，用于制作等级符号专题图的字段或字段表达式应为数值型。
  * @extends {CommonTheme}
  * @param {Object} options - 参数。
  * @param {ThemeGraduatedSymbolStyle} options.style - 等级符号专题图正负零值显示风格类。
@@ -31,7 +33,7 @@ export class ThemeGraduatedSymbol extends Theme {
          * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
          *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于
          *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，
-         *              其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为0，建议通过多次尝试设置该值才能达到较好的显示效果。
+         *              其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为 0，建议通过多次尝试设置该值才能达到较好的显示效果。
          */
         this.baseValue = 0;
 

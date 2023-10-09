@@ -7,7 +7,8 @@ import {Util} from '../commontypes/Util';
  * @class AreaSolarRadiationParameters
  * @deprecatedclass SuperMap.AreaSolarRadiationParameters
  * @category iServer SpatialAnalyst SolarRadiationAnalyst
- * @classdesc 地区太阳辐射参数类。
+ * @classdesc 地区太阳辐射参数类。此类用于指定太阳辐射计算的数据集（必须为栅格数据集）、地区纬度、时间模式、起始/结束日期和时间、
+ * 大气透射率、计算小时/天数的间隔等，还可以对计算结果进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {string} options.targetDatasourceName - 指定的存储结果数据集的数据源名称, 例如："Jingjin"。
@@ -110,13 +111,13 @@ export class AreaSolarRadiationParameters {
 
         /**
          *  @member {number} [AreaSolarRadiationParameters.prototype.hourInterval=0.5]
-         *  @description 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 如果修改此参数，必须使用整数）
+         *  @description 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 如果修改此参数，必须使用整数）。
          */
         this.hourInterval = null;
 
         /**
          * @member {number} [AreaSolarRadiationParameters.prototype.dayInterval=5]
-         * @description 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 必须使用整数）
+         * @description 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 必须使用整数）。
          */
         this.dayInterval = null;
 

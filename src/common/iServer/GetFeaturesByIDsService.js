@@ -8,7 +8,7 @@ import {GetFeaturesByIDsParameters} from './GetFeaturesByIDsParameters';
  * @class GetFeaturesByIDsService
  * @deprecatedclass SuperMap.GetFeaturesByIDsService
  * @category iServer Data FeatureResults
- * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
+ * @classdesc 数据集 ID 查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
  * @param {string} url - 服务地址。请求数据服务中数据集查询服务。
  *                       URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  *                       例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
@@ -43,8 +43,8 @@ export class GetFeaturesByIDsService extends GetFeaturesServiceBase {
     /**
      * @function GetFeaturesByIDsService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
-     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
-     * @param {GetFeaturesByIDsParameters} params - ID查询参数类。
+     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry 等）。
+     * @param {GetFeaturesByIDsParameters} params - ID 查询参数类。
      * @returns {string} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {

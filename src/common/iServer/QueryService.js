@@ -33,8 +33,8 @@
  
      /**
       * @function QueryService.prototype.queryByBounds
-      * @description Bounds 查询地图服务。
-      * @param {QueryByBoundsParameters} params - Bounds 查询参数类。
+      * @description 范围查询地图服务。
+      * @param {QueryByBoundsParameters} params - 范围查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
@@ -55,9 +55,9 @@
      /**
       * @function QueryService.prototype.queryByDistance
       * @description 地图距离查询服务。
-      * @param {QueryByDistanceParameters} params - Distance 查询参数类。
+      * @param {QueryByDistanceParameters} params - 距离查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
-      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型
+      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。
       */
      queryByDistance(params, callback, resultFormat) {
@@ -97,7 +97,7 @@
      /**
       * @function QueryService.prototype.queryByGeometry
       * @description 地图几何查询服务。
-      * @param {QueryByGeometryParameters} params - Geometry 查询参数类。
+      * @param {QueryByGeometryParameters} params - 几何查询参数类。
       * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
       * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
       * @returns {Promise} Promise 对象。

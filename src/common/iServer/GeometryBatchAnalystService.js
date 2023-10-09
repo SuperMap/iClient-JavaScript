@@ -12,7 +12,7 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  * @class GeometryBatchAnalystService
  * @deprecatedclass SuperMap.GeometryBatchAnalystService
  * @category iServer SpatialAnalyst BatchAnalyst
- * @classdesc 批量空间分析服务类
+ * @classdesc 批量空间分析服务类。支持的批量空间分析方法包括：缓冲区分析、插值分析、叠加分析、表面分析等。
  * @description 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  *              获取的结果数据包括 originResult 、result 两种，
  *              其中，originResult 为服务端返回的用 JSON 对象表示的量算结果数据，result 为服务端返回的量算结果数据。

@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class TerrainAspectCalculationParameters
  * @deprecatedclass SuperMap.TerrainAspectCalculationParameters
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 地形坡向计算参数类。
+ * @classdesc 地形坡向计算参数类。此类用于指定地形坡向计算的数据集、地形分析环境等参数，还可以对结果数据集进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.dataset - 地形坡向计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {terrainAnalystSetting} options.terrainAnalystSetting - 地形分析基本的环境设置。
