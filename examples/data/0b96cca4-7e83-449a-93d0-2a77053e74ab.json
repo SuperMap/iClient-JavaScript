@@ -1,0 +1,459 @@
+{
+  "nodes": [
+    {
+      "gdp": {
+        "Agriculture": 208995,
+        "Industry": 3326504,
+        "Service": 13880754
+      },
+      "name": "United States of America",
+      "coordinates": [
+        -99.06024062067767,
+        39.50155412627149
+      ],
+      "id": "United States of America"
+    },
+    {
+      "gdp": {
+        "Agriculture": 942859,
+        "Industry": 4413825,
+        "Service": 5004407
+      },
+      "name": "China",
+      "coordinates": [
+        103.86536517143006,
+        36.60943236225276
+      ],
+      "id": "China"
+    },
+    {
+      "gdp": {
+        "Agriculture": 57238,
+        "Industry": 1311696,
+        "Service": 3405640
+      },
+      "name": "Japan",
+      "coordinates": [
+        136.8819471500021,
+        36.019075302950796
+      ],
+      "id": "Japan"
+    },
+    {
+      "gdp": {
+        "Agriculture": 30564,
+        "Industry": 1073550,
+        "Service": 2716350
+      },
+      "name": "Germany",
+      "coordinates": [
+        10.28848506404657,
+        51.133722711258784
+      ],
+      "id": "Germany"
+    },
+    {
+      "gdp": {
+        "Agriculture": 55144,
+        "Industry": 531126,
+        "Service": 2316059
+      },
+      "name": "France",
+      "coordinates": [
+        2.3390887346463747,
+        46.60646331103217
+      ],
+      "id": "France"
+    },
+    {
+      "gdp": {
+        "Agriculture": 19933,
+        "Industry": 597997,
+        "Service": 2229674
+      },
+      "name": "United Kingdom",
+      "coordinates": [
+        -2.6579931115256543,
+        53.88335877899396
+      ],
+      "id": "United Kingdom"
+    },
+    {
+      "gdp": {
+        "Agriculture": 121183,
+        "Industry": 614892,
+        "Service": 1508056
+      },
+      "name": "Brazil",
+      "coordinates": [
+        -53.054339956839804,
+        -10.806773681852466
+      ],
+      "id": "Brazil"
+    },
+    {
+      "gdp": {
+        "Agriculture": 80235,
+        "Industry": 740628,
+        "Service": 1236438
+      },
+      "name": "Russia",
+      "coordinates": [
+        99.21652676048653,
+        61.69256469352855
+      ],
+      "id": "Russia"
+    },
+    {
+      "gdp": {
+        "Agriculture": 42586,
+        "Industry": 515285,
+        "Service": 1571406
+      },
+      "name": "Italy",
+      "coordinates": [
+        12.219476444106418,
+        43.47247599725516
+      ],
+      "id": "Italy"
+    },
+    {
+      "gdp": {
+        "Agriculture": 356319,
+        "Industry": 528335,
+        "Service": 1165204
+      },
+      "name": "India",
+      "coordinates": [
+        79.59370366438492,
+        22.92500630007023
+      ],
+      "id": "India"
+    },
+    {
+      "gdp": {
+        "Agriculture": 32288,
+        "Industry": 513026,
+        "Service": 1248483
+      },
+      "name": "Canada",
+      "coordinates": [
+        -101.5698221315834,
+        57.74876881312867
+      ],
+      "id": "Canada"
+    },
+    {
+      "gdp": {
+        "Agriculture": 59302,
+        "Industry": 394355,
+        "Service": 1028882
+      },
+      "name": "Australia",
+      "coordinates": [
+        134.37607854962764,
+        -25.56076401553387
+      ],
+      "id": "Australia"
+    },
+    {
+      "gdp": {
+        "Agriculture": 39136,
+        "Industry": 576899,
+        "Service": 833459
+      },
+      "name": "South Korea",
+      "coordinates": [
+        127.82131716621139,
+        36.42759872225762
+      ],
+      "id": "South Korea"
+    },
+    {
+      "gdp": {
+        "Agriculture": 46216,
+        "Industry": 338917,
+        "Service": 1016751
+      },
+      "name": "Spain",
+      "coordinates": [
+        -3.6170206759564443,
+        40.348656154214396
+      ],
+      "id": "Spain"
+    },
+    {
+      "gdp": {
+        "Agriculture": 47947,
+        "Industry": 443184,
+        "Service": 804729
+      },
+      "name": "Mexico",
+      "coordinates": [
+        -102.57634951262834,
+        23.935371917330777
+      ],
+      "id": "Mexico"
+    },
+    {
+      "gdp": {
+        "Agriculture": 24651,
+        "Industry": 212175,
+        "Service": 644448
+      },
+      "name": "Netherlands",
+      "coordinates": [
+        5.512217257118115,
+        52.298700259566715
+      ],
+      "id": "Netherlands"
+    },
+    {
+      "gdp": {
+        "Agriculture": 122417,
+        "Industry": 401495,
+        "Service": 332154
+      },
+      "name": "Indonesia",
+      "coordinates": [
+        114.02268357685442,
+        -0.25430151202627704
+      ],
+      "id": "Indonesia"
+    },
+    {
+      "gdp": {
+        "Agriculture": 72385,
+        "Industry": 228542,
+        "Service": 512389
+      },
+      "name": "Turkey",
+      "coordinates": [
+        35.39210233844099,
+        38.990729732518275
+      ],
+      "id": "Turkey"
+    },
+    {
+      "gdp": {
+        "Agriculture": 15557,
+        "Industry": 520395,
+        "Service": 241918
+      },
+      "name": "Saudi Arabia",
+      "coordinates": [
+        44.51636382661864,
+        24.12328979558363
+      ],
+      "id": "Saudi Arabia"
+    },
+    {
+      "gdp": {
+        "Agriculture": 8827,
+        "Industry": 188091,
+        "Service": 482110
+      },
+      "name": "Switzerland",
+      "coordinates": [
+        8.118300753356504,
+        46.79173778186657
+      ],
+      "id": "Switzerland"
+    },
+    {
+      "gdp": {
+        "Agriculture": 10064,
+        "Industry": 150401,
+        "Service": 398648
+      },
+      "name": "Sweden",
+      "coordinates": [
+        16.59626587831342,
+        62.81148502345843
+      ],
+      "id": "Sweden"
+    },
+    {
+      "gdp": {
+        "Agriculture": 18776,
+        "Industry": 185549,
+        "Service": 347905
+      },
+      "name": "Poland",
+      "coordinates": [
+        19.31101431086576,
+        52.148260305574276
+      ],
+      "id": "Poland"
+    },
+    {
+      "gdp": {
+        "Agriculture": 3695,
+        "Industry": 114007,
+        "Service": 410108
+      },
+      "name": "Belgium",
+      "coordinates": [
+        4.580831170355562,
+        50.652442788532795
+      ],
+      "id": "Belgium"
+    },
+    {
+      "gdp": {
+        "Agriculture": 13813,
+        "Industry": 195944,
+        "Service": 301845
+      },
+      "name": "Norway",
+      "coordinates": [
+        14.244779722394098,
+        64.53653011587959
+      ],
+      "id": "Norway"
+    },
+    {
+      "gdp": {
+        "Agriculture": 6571,
+        "Industry": 161745,
+        "Service": 338147
+      },
+      "name": "Taiwan",
+      "coordinates": [
+        120.97480073551196,
+        23.740964945370994
+      ],
+      "id": "Taiwan"
+    },
+    {
+      "gdp": {
+        "Agriculture": 44764,
+        "Industry": 137427,
+        "Service": 265005
+      },
+      "name": "Argentina",
+      "coordinates": [
+        -65.14954327970175,
+        -35.22017190066764
+      ],
+      "id": "Argentina"
+    },
+    {
+      "gdp": {
+        "Agriculture": 6541,
+        "Industry": 128640,
+        "Service": 300888
+      },
+      "name": "Austria",
+      "coordinates": [
+        14.076158737088802,
+        47.61394873674083
+      ],
+      "id": "Austria"
+    },
+    {
+      "gdp": {
+        "Agriculture": 2915,
+        "Industry": 247368,
+        "Service": 165745
+      },
+      "name": "United Arab Emirates",
+      "coordinates": [
+        54.20671462253352,
+        23.868633515147298
+      ],
+      "id": "United Arab Emirates"
+    },
+    {
+      "gdp": {
+        "Agriculture": 45102,
+        "Industry": 163496,
+        "Service": 194101
+      },
+      "name": "Iran",
+      "coordinates": [
+        54.28545149299196,
+        32.518917306489946
+      ],
+      "id": "Iran"
+    },
+    {
+      "gdp": {
+        "Agriculture": 35610,
+        "Industry": 152044,
+        "Service": 212462
+      },
+      "name": "Colombia",
+      "coordinates": [
+        -73.07773203253659,
+        3.927213847920398
+      ],
+      "id": "Colombia"
+    },
+    {
+      "gdp": {
+        "Agriculture": 50605,
+        "Industry": 129367,
+        "Service": 200519
+      },
+      "name": "Thailand",
+      "coordinates": [
+        101.0061336130775,
+        15.016975159492564
+      ],
+      "id": "Thailand"
+    },
+    {
+      "gdp": {
+        "Agriculture": 15624,
+        "Industry": 66314,
+        "Service": 265258
+      },
+      "name": "Denmark",
+      "coordinates": [
+        9.31077804638221,
+        56.219626257808855
+      ],
+      "id": "Denmark"
+    },
+    {
+      "gdp": {
+        "Agriculture": 8530,
+        "Industry": 107824,
+        "Service": 224861
+      },
+      "name": "South Africa",
+      "coordinates": [
+        25.117396260325854,
+        -28.96210620692334
+      ],
+      "id": "South Africa"
+    },
+    {
+      "gdp": {
+        "Agriculture": 8131,
+        "Industry": 44105,
+        "Service": 194407
+      },
+      "name": "Greece",
+      "coordinates": [
+        22.563888190617075,
+        39.34174662237825
+      ],
+      "id": "Greece"
+    },
+    {
+      "gdp": {
+        "Agriculture": 9834,
+        "Industry": 73020,
+        "Service": 126373
+      },
+      "name": "Venezuela",
+      "coordinates": [
+        -66.16382729479615,
+        7.162132242283123
+      ],
+      "id": "Venezuela"
+    }
+  ]
+}

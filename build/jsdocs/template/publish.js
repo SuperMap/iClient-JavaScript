@@ -620,7 +620,8 @@ var whiteLists = {
     'TimeFlowControl',
     'WebMachineLearning',
     'WebMap',
-    'WKTFormat'
+    'WKTFormat',
+    'L7Layer'
   ],
   maplibregl:[
     'KnowledgeGraphService',
@@ -654,7 +655,8 @@ var whiteLists = {
     'GraticuleLayer',
     'HeatMapLayer',
     'MapvLayer',
-    'ThreeLayer'
+    'ThreeLayer',
+    'L7Layer'
   ],
   openlayers: [
     'KnowledgeGraphService',
@@ -965,7 +967,7 @@ exports.publish = function (taffyData, opts, tutorials) {
   }
   function delBaseType(name) {
     const linkNames = getDeledLinkName(name);
-    return linkNames && !Boolean(baseTypes.find((item) => linkNames === item));
+    return linkNames && !baseTypes.find((item) => linkNames === item);
   }
   function setMap(type) {
     if (!linkToMap.has(type)) {

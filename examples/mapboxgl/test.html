@@ -1,0 +1,93 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_knowledgeGraphMap"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            tianditu_vec_3857: {
+              type: 'raster',
+              tiles: [
+                'https://t0.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t1.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t2.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t3.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t4.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t5.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t6.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t7.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}'
+              ],
+              tileSize: 256
+            },
+            video: {
+              type: 'video',
+              urls: [
+                // 'https://live.yihtc.com/hls/stream_15/stream_15_live.m3u8'
+                'https://static-assets.mapbox.com/mapbox-gl-js/drone.mp4'
+                // 'https://static-assets.mapbox.com/mapbox-gl-js/drone.webm'
+              ],
+              coordinates: [
+                [-122.51596391201019, 37.56238816766053],
+                [-122.51467645168304, 37.56410183312965],
+                [-122.51309394836426, 37.563391708549425],
+                [-122.51423120498657, 37.56161849366671]
+              ]
+            }
+          },
+          layers: [
+            { id: 'tianditu_vec_3857', type: 'raster', source: 'tianditu_vec_3857' },
+            {
+              id: 'video',
+              type: 'raster',
+              source: 'video'
+            }
+          ]
+        },
+        minZoom: 14,
+        zoom: 17,
+        center: [-122.514426, 37.562984],
+        bearing: -96
+      });
+
+      map.on('load', function () {
+        window.map = map;
+      });
+      map.on('click', (e) => {
+        console.log(e);
+      });
+    </script>
+  </body>
+</html>

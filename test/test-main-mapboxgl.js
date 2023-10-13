@@ -1,3 +1,4 @@
+import './mapboxgl/core/MapExtendSpec.js';
 /*mapboxgl -- control*/
 import './mapboxgl/control/LogoSpec.js';
 
@@ -24,6 +25,7 @@ import './mapboxgl/overlay/symbol/WebSymbolSpec';
 import './mapboxgl/overlay/symbol/SymbolHandlerSpec';
 import './mapboxgl/overlay/symbol/SymbolUtilSpec';
 import './mapboxgl/overlay/symbol/MapExtendSymbolSpec.js';
+import './mapboxgl/overlay/L7LayerSpec.js';
 
 /*mapboxgl -- services*/
 import './mapboxgl/services/KnowledgeGraphServiceSpec.js';

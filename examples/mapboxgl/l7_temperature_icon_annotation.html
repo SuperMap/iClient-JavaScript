@@ -1,0 +1,166 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_temperature_icon_annotation"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        pitch: 40,
+        center: [118.8, 32.056],
+        zoom: 12.5
+      });
+      map.on('load', function () {
+        map.getL7Scene().then((scene) => {
+          const fontFamily = 'iconfont';
+          const fontPath = '../fonts/iconfont.woff2';
+          scene.addFontFace(fontFamily, fontPath);
+          scene.addIconFont('icon', '&#xe79d;');
+
+          const colors = [
+            '#87CEFA',
+            '#00BFFF',
+
+            '#7FFFAA',
+            '#00FF7F',
+            '#32CD32',
+
+            '#F0E68C',
+            '#FFD700',
+
+            '#FF7F50',
+            '#FF6347',
+            '#FF0000'
+          ];
+
+          scene.addFontFace(fontFamily, fontPath);
+          fetch('../data/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
+            .then((res) => res.json())
+            .then((data) => {
+              var layer = new mapboxgl.supermap.L7Layer({
+                type: 'PolygonLayer',
+                options: { name: 'fill' }
+              });
+              var l7Layer = layer.getL7Layer();
+              l7Layer
+                .source(data)
+                .shape('fill')
+                .color('count', ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#756bb1', '#54278f'])
+                .style({
+                  opacity: 0.6,
+                  opacityLinear: {
+                    enable: true,
+                    dir: 'out' // in - out
+                  }
+                });
+              map.addLayer(layer);
+
+              const linelayer = new mapboxgl.supermap.L7Layer({
+                type: 'LineLayer',
+                options: { name: 'line2' }
+              });
+              linelayer.getL7Layer().source(data).shape('line').size(1).color('#fff').style({
+                opacity: 0.3
+              });
+              map.addLayer(linelayer);
+
+              const pointLayer = new mapboxgl.supermap.L7Layer({
+                type: 'PointLayer'
+              });
+              pointLayer
+                .getL7Layer()
+                .source(data)
+                .shape('icon', 'text')
+                .size(25)
+                .color('count', (t) => {
+                  const c = Number(t.replace('℃', ''));
+                  return colors[Math.floor(((c - 18) / 16) * 10)];
+                })
+                .style({
+                  textAnchor: 'center',
+                  textOffset: [-25, 15],
+                  padding: [2, 2],
+                  fontFamily,
+                  iconfont: true,
+                  textAllowOverlap: true
+                });
+              map.addLayer(pointLayer);
+
+              const tempertureLayer = new mapboxgl.supermap.L7Layer({
+                type: 'PointLayer'
+              });
+              tempertureLayer
+                .getL7Layer()
+                .source(data)
+                .shape('count', 'text')
+                .size(12)
+                .color('count', (t) => {
+                  const c = Number(t.replace('℃', ''));
+                  return colors[Math.floor(((c - 18) / 16) * 10)];
+                })
+                .style({
+                  textAnchor: 'center',
+                  textOffset: [35, 30],
+                  padding: [1, 1]
+                });
+              map.addLayer(tempertureLayer);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

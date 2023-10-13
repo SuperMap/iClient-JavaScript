@@ -42,7 +42,8 @@ import {
   GraticuleLayer,
   FGBLayer,
   GraphMap,
-  WebSymbol
+  WebSymbol,
+  L7Layer
 } from './overlay';
 
 import { initMap } from './mapping';
@@ -94,5 +95,6 @@ maplibregl.supermap.HeatMapLayer = HeatMapLayer;
 maplibregl.supermap.GraphicLayer = GraphicLayer;
 maplibregl.supermap.GraticuleLayer = GraticuleLayer;
 maplibregl.supermap.FGBLayer = FGBLayer;
+maplibregl.supermap.L7Layer = L7Layer;
 maplibregl.supermap.initMap = initMap;
 maplibregl.supermap.WebSymbol = WebSymbol;

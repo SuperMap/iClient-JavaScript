@@ -17,6 +17,7 @@ export { DeckglLayer } from './DeckglLayer';
 export { GraticuleLayer } from './GraticuleLayer';
 export { FGBLayer } from './FGBLayer';
 export { GraphMap } from './GraphMap';
+export { L7Layer } from './L7Layer';
 
 export * from './graphic';
 export * from './mapv';

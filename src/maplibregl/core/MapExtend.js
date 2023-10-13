@@ -1,11 +1,14 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import maplibregl from 'maplibre-gl';
+import maplibregl from 'maplibre-gl';
+import { getL7Scene } from '@supermap/iclient-common/overlay/l7/L7Extend';
 
- /**
+ 
+ 
+/**
   * @function MapExtend
-  * @description  扩展了 maplibregl.Map 对图层相关的操作。
+  * @description 扩展 maplibregl.Map。
   * @private
   */
  export var MapExtend = (function () {
@@ -13,6 +16,9 @@
    if (maplibregl.Map.prototype.addLayerBak === undefined) {
      maplibregl.Map.prototype.addLayerBak = maplibregl.Map.prototype.addLayer;
      maplibregl.Map.prototype.addLayer = function (layer, before) {
+       if (!maplibregl.Map.prototype.$l7scene && layer.hasOwnProperty('l7layer')) {
+         maplibregl.Map.prototype.$l7scene = getL7Scene(this);
+       }
        if (layer.source || layer.type === 'custom' || layer.type === 'background') {
          this.addLayerBak(layer, before);
          if (layer.overlay && !this.overlayLayersManager[layer.id]) {
@@ -31,6 +37,27 @@
        return this;
      };
    }
+
+   /**
+   * @function getL7Scene
+   * @category BaseTypes MapExtend
+   * @description 扩展maplibregl.Map， 获取@antv/L7的scene实例。使用方法： map.getL7Scene().then(scene => { console.log(scene) });
+   * @returns {Promise} @antv/L7的scene实例。
+   */
+   maplibregl.Map.prototype.getL7Scene = function () {
+     return new Promise((resolve) => {
+       if (maplibregl.Map.prototype.$l7scene) {
+         resolve(maplibregl.Map.prototype.$l7scene);
+         return maplibregl.Map.prototype.$l7scene;
+       }
+       const scene = getL7Scene(this);
+       scene.on('loaded', () => {
+         maplibregl.Map.prototype.$l7scene = scene;
+         resolve(scene);
+         return maplibregl.Map.prototype.$l7scene;
+       });
+     });
+   };
  
    maplibregl.Map.prototype.getLayer = function (id) {
      if (this.overlayLayersManager[id]) {
@@ -155,4 +182,3 @@
      }
    }
  })();
- 

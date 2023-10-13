@@ -2,10 +2,11 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
+import { getL7Scene } from '@supermap/iclient-common/overlay/l7/L7Extend';
 
 /**
  * @function MapExtend
- * @description  扩展了 mapboxgl.Map 对图层相关的操作。
+ * @description 扩展 mapboxgl.Map。
  * @private
  */
 export var MapExtend = (function () {
@@ -13,6 +14,9 @@ export var MapExtend = (function () {
   if (mapboxgl.Map.prototype.addLayerBak === undefined) {
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
+      if (!mapboxgl.Map.prototype.$l7scene && layer.hasOwnProperty('l7layer')) {
+        mapboxgl.Map.prototype.$l7scene = getL7Scene(this, 'Mapbox');
+      }
       if (layer.source || layer.type === 'custom' || layer.type === 'background') {
         this.addLayerBak(layer, before);
         if (layer.overlay && !this.overlayLayersManager[layer.id]) {
@@ -31,6 +35,26 @@ export var MapExtend = (function () {
       return this;
     };
   }
+  /**
+   * @function getL7Scene
+   * @category BaseTypes MapExtend
+   * @description 扩展mapboxgl.Map， 获取@antv/L7的scene实例。使用方法： map.getL7Scene().then(scene => { console.log(scene) });
+   * @returns {Promise} @antv/L7的scene实例。
+   */
+  mapboxgl.Map.prototype.getL7Scene = function () {
+    return new Promise((resolve) => {
+      if (mapboxgl.Map.prototype.$l7scene) {
+        resolve(mapboxgl.Map.prototype.$l7scene);
+        return mapboxgl.Map.prototype.$l7scene;
+      }
+      const scene = getL7Scene(this, 'Mapbox');
+      scene.on('loaded', () => {
+        mapboxgl.Map.prototype.$l7scene = scene;
+        resolve(scene);
+        return scene;
+      });
+    });
+  };
 
   mapboxgl.Map.prototype.getLayer = function (id) {
     if (this.overlayLayersManager[id]) {

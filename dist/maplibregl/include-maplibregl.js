@@ -50,12 +50,26 @@
 
   //加载类库资源文件
   function load(config) {
-    var libsurl = config.libsurl;
+    var libsurl = '../../web/libs';
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     if (!inArray(excludes, 'maplibregl')) {
-      inputCSS(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.css');
-      inputScript(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.js');
+      // inputCSS(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.css');
+      // inputScript(libsurl + '/maplibre-gl-js/3.1.0/maplibre-gl.js');
+      inputCSS('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css');
+      inputScript('https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js');
+    }
+    if (inArray(includes, 'L7')) {
+      inputScript('../../dist/maplibregl/l7-dev.js');
+    }
+    if (inArray(includes, 'g2')) {
+      inputScript('https://cdnjs.cloudflare.com/ajax/libs/antv-g2/4.2.8/g2.min.js');
+    }
+    if (inArray(includes, 'L7Three')) {
+      // inputScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r115/three.min.js');
+      inputScript(libsurl + '/three/0.115.0/three.min.js');
+      inputScript(libsurl + '/three/0.115.0/examples/js/loaders/GLTFLoader.js');
+      inputScript('../../dist/maplibregl/l7-three.min.js');
     }
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
@@ -86,7 +100,7 @@
       inputScript(libsurl + '/maplibre-echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'three')) {
-      inputScript(libsurl+ '/three/0.150.1/three.min.js');
+      inputScript(libsurl + '/three/0.150.1/three.min.js');
     }
     if (inArray(includes, 'three@0.121.1')) {
       inputScript(libsurl + '/three/0.121.1/build/three.js');
@@ -190,5 +204,5 @@
   window.server = document.location.toString().match(/file:\/\//)
     ? 'http://localhost:8090'
     : document.location.protocol + '//' + document.location.host;
-  window.exampleWebSymbolBasePath =  "../../dist/maplibregl/resources/symbols";
+  window.exampleWebSymbolBasePath = '../../dist/maplibregl/resources/symbols';
 })();

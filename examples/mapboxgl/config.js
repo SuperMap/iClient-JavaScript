@@ -1245,6 +1245,409 @@ var exampleConfig = {
                   fileName: 'websymbol_2019ChinaGDP'
                 }
               ]
+            },
+            L7: {
+              name: 'L7',
+              name_en: 'L7',
+              version: '11.1.1',
+              content: [
+                {
+                  name: '网格地图',
+                  name_en: 'Grid Map',
+                  thumbnail: 'l7_grid_map.png',
+                  fileName: 'l7_grid_map'
+                },
+                {
+                  name: '圆形扫光城市',
+                  name_en: 'Circular Sweeping City',
+                  thumbnail: 'l7_circular_sweeping_city.png',
+                  fileName: 'l7_circular_sweeping_city'
+                },
+                {
+                  name: '风场图层',
+                  name_en: 'Park Layer',
+                  thumbnail: 'l7_wind.png',
+                  fileName: 'l7_wind'
+                },
+                {
+                  name: '路径贴图',
+                  name_en: 'Path Map',
+                  thumbnail: 'l7_path_map.png',
+                  fileName: 'l7_path_map'
+                },
+                {
+                  name: '都灵道路图',
+                  name_en: 'Turin Road Map',
+                  thumbnail: 'l7_turin_road_map.png',
+                  fileName: 'l7_turin_road_map'
+                },
+                {
+                  name: '3D柱图深色',
+                  name_en: '3D Column Chart Dark',
+                  thumbnail: 'l7_3d_column.png',
+                  fileName: 'l7_3d_column'
+                },
+                {
+                  name: '弧线地图',
+                  name_en: 'Arc map',
+                  thumbnail: 'l7_line_arc.png',
+                  fileName: 'l7_line_arc'
+                },
+                {
+                  name: '公交线路深色',
+                  name_en: 'Dark bus routes',
+                  thumbnail: 'l7_dark_bus_routes.png',
+                  fileName: 'l7_dark_bus_routes'
+                },
+                {
+                  name: '蜂窝图3D',
+                  name_en: 'Honeycomb 3D',
+                  thumbnail: 'l7_3d_honeycomb.png',
+                  fileName: 'l7_3d_honeycomb'
+                },
+                {
+                  name: '海量点',
+                  name_en: 'Massive points',
+                  thumbnail: 'l7_massive_points.png',
+                  fileName: 'l7_massive_points'
+                },
+                {
+                  name: '城市亮度图',
+                  name_en: 'City Brightness map',
+                  thumbnail: 'l7_brightness_map.png',
+                  fileName: 'l7_brightness_map'
+                },
+                {
+                  name: '形状映射',
+                  name_en: 'point shape',
+                  thumbnail: 'l7_point_shape.png',
+                  fileName: 'l7_point_shape'
+                },
+                {
+                  name: '气泡图',
+                  name_en: 'pop',
+                  thumbnail: 'l7_pop.png',
+                  fileName: 'l7_pop'
+                },
+                {
+                  name: '气泡图动画',
+                  name_en: 'point animate',
+                  thumbnail: 'l7_point_animate.png',
+                  fileName: 'l7_point_animate'
+                },
+                {
+                  name: '充电桩分布聚合图',
+                  name_en: 'cluster',
+                  thumbnail: 'l7_cluster.png',
+                  fileName: 'l7_cluster'
+                },
+                {
+                  name: '点数据标注',
+                  name_en: 'Point data annotation',
+                  thumbnail: 'l7_point_annotation.png',
+                  fileName: 'l7_point_annotation'
+                },
+                {
+                  name: '面数据标注',
+                  name_en: 'Polygon data annotation',
+                  thumbnail: 'l7_polygon_annotation.png',
+                  fileName: 'l7_polygon_annotation'
+                },
+                {
+                  name: '图标标注',
+                  name_en: 'icon annotation',
+                  thumbnail: 'l7_icon_annotation.png',
+                  fileName: 'l7_icon_annotation'
+                },
+                {
+                  name: '天气图标标注',
+                  name_en: 'Weather icon annotation',
+                  thumbnail: 'l7_weather_icon_annotation.png',
+                  fileName: 'l7_weather_icon_annotation'
+                },
+                {
+                  name: '文本动态偏移',
+                  name_en: 'Text dynamic offset',
+                  thumbnail: 'l7_text_dynamic_offset.png',
+                  fileName: 'l7_text_dynamic_offset'
+                },
+                {
+                  name: '气温图标标注',
+                  name_en: 'Temperature icon annotation',
+                  thumbnail: 'l7_temperature_icon_annotation.png',
+                  fileName: 'l7_temperature_icon_annotation'
+                },
+                {
+                  name: '季风分布',
+                  name_en: 'Monsoon distribution',
+                  thumbnail: 'l7_monsoon_distribution.png',
+                  fileName: 'l7_monsoon_distribution'
+                },
+                {
+                  name: '自定义水位图',
+                  name_en: 'Custom water level chart',
+                  thumbnail: 'l7_custom_water_level_chart.png',
+                  fileName: 'l7_custom_water_level_chart'
+                },
+                {
+                  name: '自定义气泡图',
+                  name_en: 'Custom Bubble Chart',
+                  thumbnail: 'l7_custom_bubble_chart.png',
+                  fileName: 'l7_custom_bubble_chart'
+                },
+                {
+                  name: '柱图',
+                  name_en: 'Bar Chart',
+                  thumbnail: 'l7_bar_chart.png',
+                  fileName: 'l7_bar_chart'
+                },
+                {
+                  name: '环图',
+                  name_en: 'Bar Chart',
+                  thumbnail: 'l7_pie_chart.png',
+                  fileName: 'l7_pie_chart'
+                },
+                {
+                  name: '上海公交',
+                  name_en: 'line bus',
+                  thumbnail: 'l7_line_bus.png',
+                  fileName: 'l7_line_bus'
+                },
+                {
+                  name: '公交线路-亮',
+                  name_en: 'Light bus routes',
+                  thumbnail: 'l7_light_bus_routes.png',
+                  fileName: 'l7_light_bus_routes'
+                },
+                {
+                  name: '路径边框',
+                  name_en: 'Path border',
+                  thumbnail: 'l7_path_border.png',
+                  fileName: 'l7_path_border'
+                },
+                {
+                  name: '路径虚线',
+                  name_en: 'Path dash',
+                  thumbnail: 'l7_path_dash.png',
+                  fileName: 'l7_path_dash'
+                },
+                {
+                  name: '箭头路径',
+                  name_en: 'Arrow Path',
+                  thumbnail: 'l7_path_arrow.png',
+                  fileName: 'l7_path_arrow'
+                },
+                {
+                  name: '风场动画',
+                  name_en: 'Wind animation',
+                  thumbnail: 'l7_wind_animation.png',
+                  fileName: 'l7_wind_animation'
+                },
+                {
+                  name: '直线动画',
+                  name_en: 'Line animation',
+                  thumbnail: 'l7_line_animation.png',
+                  fileName: 'l7_line_animation'
+                },
+                {
+                  name: '航向图',
+                  name_en: 'Heading chart',
+                  thumbnail: 'l7_heading_chart.png',
+                  fileName: 'l7_heading_chart'
+                },
+                {
+                  name: '3D 弧线动画',
+                  name_en: 'Line arc3d animation',
+                  thumbnail: 'l7_line_arc3d_animation.png',
+                  fileName: 'l7_line_arc3d_animation'
+                },
+                {
+                  name: '轨迹动画',
+                  name_en: 'Trajectory animation',
+                  thumbnail: 'l7_trajectory_animation.png',
+                  fileName: 'l7_trajectory_animation'
+                },
+                {
+                  name: '大圆弧线',
+                  name_en: 'Large circular arc',
+                  thumbnail: 'l7_large_circular_arc.png',
+                  fileName: 'l7_large_circular_arc'
+                },
+                {
+                  name: '3D 弧线',
+                  name_en: 'Line arc3d',
+                  thumbnail: 'l7_line_arc3d1.png',
+                  fileName: 'l7_line_arc3d1'
+                },
+                {
+                  name: '3D 弧线（渐变）',
+                  name_en: 'Line arc3d',
+                  thumbnail: 'l7_line_arc3d.png',
+                  fileName: 'l7_line_arc3d'
+                },
+                {
+                  name: '3D 弧线',
+                  name_en: 'line arc3d',
+                  thumbnail: 'l7_line_arc3d2.png',
+                  fileName: 'l7_line_arc3d2'
+                },
+                {
+                  name: '等高线',
+                  name_en: 'Contour',
+                  thumbnail: 'l7_contour.png',
+                  fileName: 'l7_contour'
+                },
+                {
+                  name: '等高线',
+                  name_en: 'Contour',
+                  thumbnail: 'l7_contour1.png',
+                  fileName: 'l7_contour1'
+                },
+                {
+                  name: '等高线',
+                  name_en: 'Contour',
+                  thumbnail: 'l7_contour2.png',
+                  fileName: 'l7_contour2'
+                },
+                {
+                  name: '海拔线',
+                  name_en: 'Altitude line',
+                  thumbnail: 'l7_line_altitude.png',
+                  fileName: 'l7_line_altitude'
+                },
+                {
+                  name: '杭州区县围墙',
+                  name_en: 'Line wall',
+                  thumbnail: 'l7_line_wall.png',
+                  fileName: 'l7_line_wall'
+                },
+                {
+                  name: '3D 建筑面',
+                  name_en: '3D building extrude',
+                  thumbnail: 'l7_extrude.png',
+                  fileName: 'l7_extrude'
+                },
+                {
+                  name: '3D 几何体样式映射',
+                  name_en: '3D Geometry Style Mapping',
+                  thumbnail: 'l7_3d_geometry.png',
+                  fileName: 'l7_3d_geometry'
+                },
+                {
+                  name: '漂浮地图板块',
+                  name_en: 'Floating Map Plate',
+                  thumbnail: 'l7_floating_map.png',
+                  fileName: 'l7_floating_map'
+                },
+                {
+                  name: '地图交互',
+                  name_en: 'Map interaction',
+                  thumbnail: 'l7_map_interaction.png',
+                  fileName: 'l7_map_interaction'
+                },
+                {
+                  name: '连续填充图',
+                  name_en: 'Continuous Fill Graph',
+                  thumbnail: 'l7_continuous_fill.png',
+                  fileName: 'l7_continuous_fill'
+                },
+                {
+                  name: '简单水面',
+                  name_en: 'Simple water surface',
+                  thumbnail: 'l7_simple_water_surface.png',
+                  fileName: 'l7_simple_water_surface'
+                },
+                {
+                  name: '拟真水面',
+                  name_en: 'Simple water surface',
+                  thumbnail: 'l7_water_surface.png',
+                  fileName: 'l7_water_surface'
+                },
+                {
+                  name: '经典热力图2D',
+                  name_en: 'Heatmap2D',
+                  thumbnail: 'l7_heatmap2D.png',
+                  fileName: 'l7_heatmap2D'
+                },
+                {
+                  name: '经典热力图3D',
+                  name_en: 'Heatmap3D',
+                  thumbnail: 'l7_heatmap3D.png',
+                  fileName: 'l7_heatmap3D'
+                },
+                {
+                  name: '网格世界地图',
+                  name_en: 'Grid World Map',
+                  thumbnail: 'l7_grid_world_map.png',
+                  fileName: 'l7_grid_world_map'
+                },
+                {
+                  name: '网格热力图',
+                  name_en: 'Heatmap Grid',
+                  thumbnail: 'l7_heatmap_grid1.png',
+                  fileName: 'l7_heatmap_grid1'
+                },
+                {
+                  name: '网格布局 圆形',
+                  name_en: 'Grid circle',
+                  thumbnail: 'l7_heatmap_grid.png',
+                  fileName: 'l7_heatmap_grid'
+                },
+                {
+                  name: '网格热力图',
+                  name_en: 'Heatmap',
+                  thumbnail: 'l7_heatmap_grid2.png',
+                  fileName: 'l7_heatmap_grid2'
+                },
+                {
+                  name: '蜂窝热力图',
+                  name_en: 'Heatmap hexagon',
+                  thumbnail: 'l7_heatmap_hexagon.png',
+                  fileName: 'l7_heatmap_hexagon'
+                },
+                {
+                  name: '蜂窝热力图',
+                  name_en: 'Heatmap hexagon',
+                  thumbnail: 'l7_heatmap_hexagon1.png',
+                  fileName: 'l7_heatmap_hexagon1'
+                },
+                {
+                  name: '蜂窝热力图',
+                  name_en: 'Heatmap hexagon',
+                  thumbnail: 'l7_heatmap_hexagon2.png',
+                  fileName: 'l7_heatmap_hexagon2'
+                },
+                {
+                  name: '蜂窝热力图',
+                  name_en: 'Heatmap hexagon',
+                  thumbnail: 'l7_heatmap_hexagon3.png',
+                  fileName: 'l7_heatmap_hexagon3'
+                },
+                {
+                  name: '平面图层',
+                  name_en: 'Flat layer',
+                  thumbnail: 'l7_flat_layer.png',
+                  fileName: 'l7_flat_layer'
+                },
+                // {
+                //   name: '自定义3D地形（LOD）',
+                //   name_en: 'Customize 3D Terrain (LOD)',
+                //   thumbnail: 'l7_3d_terrain.png',
+                //   fileName: 'l7_3d_terrain'
+                // },
+                {
+                  name: '雪花粒子',
+                  name_en: 'Snowflake particle',
+                  thumbnail: 'l7_snow_particle.png',
+                  fileName: 'l7_snow_particle'
+                },
+                {
+                  name: '雨滴粒子',
+                  name_en: 'Raindrop particle',
+                  thumbnail: 'l7_rain_particle.png',
+                  fileName: 'l7_rain_particle'
+                }
+              ]
             }
         }
     },

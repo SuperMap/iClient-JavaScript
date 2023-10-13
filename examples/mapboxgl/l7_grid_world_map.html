@@ -1,0 +1,71 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_grid_world_map"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7,g2" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var map = new mapboxgl.Map({
+        container: 'map',
+        center: [110.097892, 33.853662],
+        zoom: 4.056
+      });
+
+      fetch('../data/3dadb1f5-8f54-4449-8206-72db6e142c40.json')
+        .then((res) => res.json())
+        .then((data) => {
+          var linelayer = new mapboxgl.supermap.L7Layer({ type: 'HeatmapLayer', options: { autoFit: true } });
+          linelayer
+            .getL7Layer()
+            .source(data, {
+              transforms: [
+                {
+                  type: 'hexagon',
+                  size: 5 * 100000
+                }
+              ]
+            })
+            .shape('circle')
+            .active(false)
+            .color('#aaa')
+            .style({
+              coverage: 0.7,
+              angle: 0
+            });
+          map.addLayer(linelayer);
+        });
+    </script>
+  </body>
+</html>

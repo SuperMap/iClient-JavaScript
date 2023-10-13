@@ -1,0 +1,118 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_water_surface"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            tianditu_vec_3857: {
+              type: 'raster',
+              tiles: [
+                'https://t0.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t1.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t2.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t3.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t4.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t5.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t6.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t7.tianditu.gov.cn/vec_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}'
+              ],
+              tileSize: 256
+            },
+            tianditu_vec_3857_label: {
+              type: 'raster',
+              tiles: [
+                'https://t0.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t1.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t2.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t3.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t4.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t5.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t6.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}',
+                'https://t7.tianditu.gov.cn/cva_w/wmts?tk=1d109683f4d84198e37a38c442d68311&service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=cva&tilematrix={z}&tilerow={y}&tilecol={x}'
+              ],
+              tileSize: 256
+            }
+          },
+          layers: [
+            { id: 'tianditu_vec_3857', type: 'raster', source: 'tianditu_vec_3857' },
+            { id: 'tianditu_vec_3857_label', type: 'raster', source: 'tianditu_vec_3857_label' }
+          ]
+        },
+        center: [120.14332250000007, 30.243958343714425],
+        zoom: 14.086735361935444
+      });
+
+      map.on('load', function () {
+        fetch('../data/67130c6c-7f49-4680-915c-54e69730861d.json')
+          .then((data) => data.json())
+          .then((data) => {
+            const lakeData = getLakeData(data.lakeData);
+            var layer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+            var l7Layer = layer.getL7Layer();
+            l7Layer
+              .source(lakeData)
+              .shape('ocean')
+              .color('#1E90FF')
+              .style({
+                watercolor: '#6D99A8'
+                // watercolor: '#0f0',
+              })
+              .animate(true);
+            map.addLayer(layer);
+          });
+        window.map = map;
+      });
+      function getLakeData(data) {
+        data.features[0].geometry.coordinates = data.features[0].geometry.coordinates.map((item) => {
+          return item.map((item1) => {
+            return item1.map((item2) => {
+              item2[0] = item2[0] - 0.004623264167607886;
+              item2[1] = item2[1] + 0.002180084768386664;
+              return item2;
+            });
+          });
+        });
+        return data;
+      }
+    </script>
+  </body>
+</html>

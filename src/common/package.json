@@ -14,6 +14,8 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
+    "@antv/l7": "2.17.7",
+    "@antv/l7-three": "2.17.7",
     "@antv/g6": "^4.8.14",
     "echarts": "5.4.3",
     "fetch-ie8": "1.5.0",

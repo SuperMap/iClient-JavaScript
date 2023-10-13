@@ -28,7 +28,8 @@ import {
   ThemeFeature,
   ThemeLayer,
   GraphMap,
-  WebSymbol
+  WebSymbol,
+  L7Layer
 } from './overlay';
 import {
   AddressMatchService,
@@ -101,6 +102,7 @@ mapboxgl.supermap.ThreeLayer = ThreeLayer;
 mapboxgl.supermap.UniqueTheme3DLayer = UniqueTheme3DLayer;
 mapboxgl.supermap.UniqueThemeLayer = UniqueThemeLayer;
 mapboxgl.supermap.GraphMap = GraphMap;
+mapboxgl.supermap.L7Layer = L7Layer;
 
 mapboxgl.supermap.AddressMatchService = AddressMatchService;
 mapboxgl.supermap.ChartService = ChartService;

@@ -1,0 +1,112 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_heatmap_hexagon"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [96, 29],
+        zoom: 2,
+        pitch: 0
+      });
+
+      map.on('load', function () {
+        fetch('../data/337ddbb7-aa3f-4679-ab60-d64359241955.json')
+          .then((res) => res.json())
+          .then((data) => {
+            var layer = new maplibregl.supermap.L7Layer({ type: 'HeatmapLayer' });
+            var l7Layer = layer.getL7Layer();
+            l7Layer
+              .source(data, {
+                transforms: [
+                  {
+                    type: 'hexagon',
+                    size: 90000,
+                    field: 'capacity',
+                    method: 'sum'
+                  }
+                ]
+              })
+              .shape('hexagon')
+              .style({
+                coverage: 0.9,
+                angle: 0
+              })
+              .color(
+                'sum',
+                [
+                  '#3F4BBA',
+                  '#3F4BBA',
+                  '#3F4BBA',
+                  '#3F4BBA',
+                  '#3C73DA',
+                  '#3C73DA',
+                  '#3C73DA',
+                  '#0F62FF',
+                  '#0F62FF',
+                  '#30B2E9',
+                  '#30B2E9',
+                  '#40C4CE'
+                ].reverse()
+              );
+            map.addLayer(layer);
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,165 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_circular_sweeping_city"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [120.145, 30.238915],
+        pitch: 60,
+        zoom: 13,
+        antialias: true
+      });
+
+      map.on('load', function () {
+        fetch('../data/ggFwDClGjjvpSMBIrcEx.json').then(async (res) => {
+          var pointLayer = new mapboxgl.supermap.L7Layer({ type: 'CityBuildingLayer' });
+          pointLayer
+            .getL7Layer()
+            .source(await res.json())
+            .size('floor', [0, 500])
+            .color('rgba(242,246,250,1.0)')
+            .animate({
+              enable: true
+            })
+            .active({
+              color: '#0ff',
+              mix: 0.5
+            })
+            .style({
+              opacity: 0.7,
+              baseColor: 'rgb(16, 16, 16)',
+              windowColor: 'rgb(30, 60, 89)',
+              brightColor: 'rgb(255, 176, 38)',
+              sweep: {
+                enable: true,
+                sweepRadius: 2,
+                sweepColor: '#1990FF',
+                sweepSpeed: 0.5,
+                sweepCenter: [120.145319, 30.238915]
+              }
+            });
+          map.addLayer(pointLayer);
+        });
+        fetch('../data/67130c6c-7f49-4680-915c-54e69730861d.json')
+          .then((res) => res.json())
+          .then(({ lakeBorderData, lakeData, landData }) => {
+            var lakeLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+            lakeLayer
+              .getL7Layer()
+              .source(lakeData)
+              .shape('fill')
+              .color('#1E90FF')
+              .style({
+                opacity: 0.4,
+                opacityLinear: {
+                  enable: true,
+                  dir: 'out' // in - out
+                }
+              });
+            var landLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+            landLayer
+              .getL7Layer()
+              .source(landData)
+              .shape('fill')
+              .color('#3CB371')
+              .style({
+                opacity: 0.4,
+                opacityLinear: {
+                  enable: true,
+                  dir: 'in' // in - out
+                }
+              });
+            var lakeBorderLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+            lakeBorderLayer
+              .getL7Layer()
+              .source(lakeBorderData)
+              .shape('fill')
+              .color('#ccc')
+              .style({
+                opacity: 0.5,
+                opacityLinear: {
+                  enable: true,
+                  dir: 'in' // in - out
+                }
+              });
+
+            map.addLayer(lakeLayer);
+            map.addLayer(lakeBorderLayer);
+            map.addLayer(landLayer);
+          });
+        fetch('../data/40ef2173-df66-4154-a8c0-785e93a5f18e.json')
+          .then((res) => res.json())
+          .then((data) => {
+            var layer = new mapboxgl.supermap.L7Layer(
+              { type: 'LineLayer' },
+              {
+                depth: true
+              }
+            );
+            layer.getL7Layer().source(data).size(1).shape('line').color('#1990FF').animate({
+              interval: 1, // 间隔
+              duration: 2, // 持续时间，延时
+              trailLength: 2 // 流线长度
+            });
+            map.addLayer(layer);
+          });
+      });
+    </script>
+  </body>
+</html>

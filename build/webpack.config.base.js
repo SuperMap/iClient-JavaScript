@@ -65,6 +65,8 @@ module.exports = {
         echarts: 'function(){try{return echarts}catch(e){return {}}}()',
         mapv: 'function(){try{return mapv}catch(e){return {}}}()',
         '@antv/g6': 'function(){try{return G6}catch(e){return {}}}()',
+        '@antv/l7': 'function(){try{return L7}catch(e){return {}}}()',
+        '@antv/l7-three': 'function(){try{return window}catch(e){return {}}}()',
         '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()'
     },
 
