@@ -31,7 +31,7 @@ describe('openlayers_InitMap', () => {
   });
 
   it('viewOptionsFromMapJSON', () => {
-    let mapObj = JSON.parse(mapInfo);
+    let mapObj = JSON.parse(mapInfo_1);
     const res = viewOptionsFromMapJSON(mapObj);
     expect(res.center).toEqual([mapObj.center.x, mapObj.center.y]);
     expect(res.zoom).not.toBeNull();

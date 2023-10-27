@@ -247,7 +247,9 @@ export class MapboxStyles extends Observable {
     _loadStyle(style) {
         if (Object.prototype.toString.call(style) == '[object Object]') {
             this._mbStyle = style;
-            this._resolve();
+            setTimeout(() => {
+                this._resolve();
+            }, 0);
         } else {
             var url = SecurityManager.appendCredential(style);
             FetchRequest.get(url, null, { withCredentials: this.withCredentials })

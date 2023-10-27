@@ -4,6 +4,7 @@ import {
 import {
     FetchRequest
 } from '../../../src/common/util/FetchRequest';
+import { Util as CommonUtil } from '../../../src/common/commontypes/Util';
 import '../../resources/WebMapV5.js';
 import {
     ArrayStatistic
@@ -21,8 +22,9 @@ import * as olControl from 'ol/control';
 import Feature from 'ol/Feature';
 import * as olProj from 'ol/proj';
 import proj4 from 'proj4';
+import * as olLayer from 'ol/layer';
 
-window.jsonsql = { query: () => {} };
+window.jsonsql = { query: () => { } };
 
 describe('openlayers_WebMap', () => {
     var originalTimeout, testDiv, webMap;
@@ -53,17 +55,17 @@ describe('openlayers_WebMap', () => {
             return Promise.resolve();
         });
         const successCallback = () => {
-          expect(datavizWebmap.server).toBe(server);
-          expect(datavizWebmap.callBack).toBeUndefined();
-          expect(datavizWebmap.errorCallback).toBeUndefined();
-          expect(datavizWebmap.credentialKey).toBeUndefined();
-          expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.callBack).toBeUndefined();
+            expect(datavizWebmap.errorCallback).toBeUndefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
 
-          var view = datavizWebmap.map.getView();
-          expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
-          expect(datavizWebmap.mapParams.title).toBe('tianditu');
-          expect(datavizWebmap.mapParams.description).toBe('');
-          done();
+            var view = datavizWebmap.map.getView();
+            expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
+            expect(datavizWebmap.mapParams.title).toBe('tianditu');
+            expect(datavizWebmap.mapParams.description).toBe('');
+            done();
         }
         var datavizWebmap = new WebMap(id, {
             server: server,
@@ -84,23 +86,23 @@ describe('openlayers_WebMap', () => {
         window.document.body.appendChild(overlayDiv);
 
         const successCallback = () => {
-          expect(datavizWebmap.server).toBe(server);
-          expect(datavizWebmap.errorCallback).toBeDefined();
-          expect(datavizWebmap.credentialKey).toBeUndefined();
-          expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
 
-          var view = datavizWebmap.map.getView();
-          expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
-          expect(datavizWebmap.mapParams.description).toBe('This is a image');
-          /*spyOn(options.mapSetting, 'mapClickCallback');
-          datavizWebmap.map.trigger('click');
-          expect(options.mapSetting.mapClickCallback).toHaveBeenCalled();*/
-          done();
+            var view = datavizWebmap.map.getView();
+            expect(datavizWebmap.mapParams.title).toBe('image_tianditu');
+            expect(datavizWebmap.mapParams.description).toBe('This is a image');
+            /*spyOn(options.mapSetting, 'mapClickCallback');
+            datavizWebmap.map.trigger('click');
+            expect(options.mapSetting.mapClickCallback).toHaveBeenCalled();*/
+            done();
         }
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {},
+            errorCallback: function () { },
             mapSetting: {
                 overlays: [
                     new Overlay({
@@ -115,7 +117,7 @@ describe('openlayers_WebMap', () => {
                     zoom: true,
                     attribution: false
                 }),
-                mapClickCallback: function (evt) {}
+                mapClickCallback: function (evt) { }
             }
         };
 
@@ -124,21 +126,21 @@ describe('openlayers_WebMap', () => {
     });
 
     it('initialize_TIANDITU_TER', (done) => {
-      const successCallback = () => {
-        expect(datavizWebmap.server).toBe(server);
-        expect(datavizWebmap.errorCallback).toBeDefined();
-        expect(datavizWebmap.credentialKey).toBe('key');
-        expect(datavizWebmap.credentialValue).toBe('keyValue');
+        const successCallback = () => {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBe('key');
+            expect(datavizWebmap.credentialValue).toBe('keyValue');
 
-        var view = datavizWebmap.map.getView();
-        expect(datavizWebmap.mapParams.title).toBe('ter');
-        expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
-        done();
-      };
+            var view = datavizWebmap.map.getView();
+            expect(datavizWebmap.mapParams.title).toBe('ter');
+            expect(datavizWebmap.mapParams.description).toBe('tianditu_ter');
+            done();
+        };
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {},
+            errorCallback: function () { },
             credentialKey: 'key',
             credentialValue: 'keyValue'
         };
@@ -156,7 +158,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
@@ -182,172 +184,172 @@ describe('openlayers_WebMap', () => {
     });
 
     it('jsonsql', (done) => {
-      let options = {
-          server: server,
-          successCallback,
-          errorCallback: function () {}
-      };
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_BAIDU;
-              return Promise.resolve(new Response(mapJson));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, options);
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_BAIDU;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
 
-      function successCallback() {
-        datavizWebmap.getFiterFeatures('2020年人口数> 20', [{ get: () => ({ '2020年人口数': 30 }) }]);
-        datavizWebmap.getFiterFeatures('观测场海拔高度（米）>150', [{ get: () => ({ '观测场海拔高度（米）': 30 }) }]);
-        // datavizWebmap.createDataflowLayer({filterCondition:'2020年人口数> 20', pointStyle:{}, wsUrl: 'ws://test/iserver/services/dataflow/dataflow/subscribe'}, [{ get: () => ({ '2020年人口数': 30 }) }]);
-        done();
-      }
+        function successCallback() {
+            datavizWebmap.getFiterFeatures('2020年人口数> 20', [{ get: () => ({ '2020年人口数': 30 }) }]);
+            datavizWebmap.getFiterFeatures('观测场海拔高度（米）>150', [{ get: () => ({ '观测场海拔高度（米）': 30 }) }]);
+            // datavizWebmap.createDataflowLayer({filterCondition:'2020年人口数> 20', pointStyle:{}, wsUrl: 'ws://test/iserver/services/dataflow/dataflow/subscribe'}, [{ get: () => ({ '2020年人口数': 30 }) }]);
+            done();
+        }
     });
     it('isvj-5215', (done) => {
-      let options = {
-          server: server,
-          successCallback,
-          errorCallback: function () {}
-      };
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_BAIDU;
-              return Promise.resolve(new Response(mapJson));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, options);
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_BAIDU;
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
 
-      async function successCallback() {
-        const parameters = {
-          "layerType": "UNIQUE",
-          "visible": true,
-          "themeSetting": {
-              "themeField": "UserID",
-              "customSettings": {
-                  "0": {
-                      "fillColor": "#D53E4F",
-                      "strokeWidth": 1,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "fillOpacity": 0.9,
-                      "type": "BASIC_POINT",
-                      "radius": 15,
-                      "strokeColor": "#ffffff",
-                      "strokeOpacity": 1
-                  },
-                  "1": {
-                      "fillColor": "#3288BD",
-                      "strokeWidth": 1,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "fillOpacity": 0.9,
-                      "type": "BASIC_POINT",
-                      "radius": 15,
-                      "strokeColor": "#ffffff",
-                      "strokeOpacity": 1
-                  },
-                  "2": {
-                      "fillColor": "#FC8D59",
-                      "strokeWidth": 1,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "fillOpacity": 0.9,
-                      "type": "BASIC_POINT",
-                      "radius": 15,
-                      "strokeColor": "#ffffff",
-                      "strokeOpacity": 1
-                  },
-                  "3": {
-                      "fillColor": "#99D594",
-                      "strokeWidth": 1,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "fillOpacity": 0.9,
-                      "type": "BASIC_POINT",
-                      "radius": 15,
-                      "strokeColor": "#ffffff",
-                      "strokeOpacity": 1
-                  },
-                  "5": {
-                      "fillColor": "#FEE08B",
-                      "strokeWidth": 1,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "fillOpacity": 0.9,
-                      "type": "BASIC_POINT",
-                      "radius": 15,
-                      "strokeColor": "#ffffff",
-                      "strokeOpacity": 1
-                  },
-                  "8": {
-                      "fillColor": "#E6F598",
-                      "strokeWidth": 1,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "fillOpacity": 0.9,
-                      "type": "BASIC_POINT",
-                      "radius": 15,
-                      "strokeColor": "#ffffff",
-                      "strokeOpacity": 1
-                  }
-              },
-              "colors": [
-                  "#D53E4F",
-                  "#FC8D59",
-                  "#FEE08B",
-                  "#FFFFBF",
-                  "#E6F598",
-                  "#99D594",
-                  "#3288BD"
-              ]
-          },
-          "name": "isvj-5215",
-          "featureType": "POINT",
-          "labelStyle": {
-              "offsetX": 0,
-              "textBaseline": "bottom",
-              "fontFamily": "黑体",
-              "offsetY": -19,
-              "outlineWidth": 0,
-              "textAlign": "center",
-              "outlineColor": "#000000",
-              "fontSize": "14px",
-              "fill": "#333",
-              "backgroundFill": [
-                  255,
-                  255,
-                  255,
-                  0.8
-              ],
-              "labelField": "UserID"
-          },
-          "style": {
-              "strokeWidth": 1,
-              "offsetX": 0,
-              "fillColor": "#E6F598",
-              "offsetY": 0,
-              "fillOpacity": 0.9,
-              "radius": 15,
-              "strokeColor": "#ffffff",
-              "type": "BASIC_POINT",
-              "strokeOpacity": 1
-          },
-          "projection": "EPSG:4326",
-          "enableFields": [
-              "UserID"
-          ]
+        async function successCallback() {
+            const parameters = {
+                "layerType": "UNIQUE",
+                "visible": true,
+                "themeSetting": {
+                    "themeField": "UserID",
+                    "customSettings": {
+                        "0": {
+                            "fillColor": "#D53E4F",
+                            "strokeWidth": 1,
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "fillOpacity": 0.9,
+                            "type": "BASIC_POINT",
+                            "radius": 15,
+                            "strokeColor": "#ffffff",
+                            "strokeOpacity": 1
+                        },
+                        "1": {
+                            "fillColor": "#3288BD",
+                            "strokeWidth": 1,
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "fillOpacity": 0.9,
+                            "type": "BASIC_POINT",
+                            "radius": 15,
+                            "strokeColor": "#ffffff",
+                            "strokeOpacity": 1
+                        },
+                        "2": {
+                            "fillColor": "#FC8D59",
+                            "strokeWidth": 1,
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "fillOpacity": 0.9,
+                            "type": "BASIC_POINT",
+                            "radius": 15,
+                            "strokeColor": "#ffffff",
+                            "strokeOpacity": 1
+                        },
+                        "3": {
+                            "fillColor": "#99D594",
+                            "strokeWidth": 1,
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "fillOpacity": 0.9,
+                            "type": "BASIC_POINT",
+                            "radius": 15,
+                            "strokeColor": "#ffffff",
+                            "strokeOpacity": 1
+                        },
+                        "5": {
+                            "fillColor": "#FEE08B",
+                            "strokeWidth": 1,
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "fillOpacity": 0.9,
+                            "type": "BASIC_POINT",
+                            "radius": 15,
+                            "strokeColor": "#ffffff",
+                            "strokeOpacity": 1
+                        },
+                        "8": {
+                            "fillColor": "#E6F598",
+                            "strokeWidth": 1,
+                            "offsetX": 0,
+                            "offsetY": 0,
+                            "fillOpacity": 0.9,
+                            "type": "BASIC_POINT",
+                            "radius": 15,
+                            "strokeColor": "#ffffff",
+                            "strokeOpacity": 1
+                        }
+                    },
+                    "colors": [
+                        "#D53E4F",
+                        "#FC8D59",
+                        "#FEE08B",
+                        "#FFFFBF",
+                        "#E6F598",
+                        "#99D594",
+                        "#3288BD"
+                    ]
+                },
+                "name": "isvj-5215",
+                "featureType": "POINT",
+                "labelStyle": {
+                    "offsetX": 0,
+                    "textBaseline": "bottom",
+                    "fontFamily": "黑体",
+                    "offsetY": -19,
+                    "outlineWidth": 0,
+                    "textAlign": "center",
+                    "outlineColor": "#000000",
+                    "fontSize": "14px",
+                    "fill": "#333",
+                    "backgroundFill": [
+                        255,
+                        255,
+                        255,
+                        0.8
+                    ],
+                    "labelField": "UserID"
+                },
+                "style": {
+                    "strokeWidth": 1,
+                    "offsetX": 0,
+                    "fillColor": "#E6F598",
+                    "offsetY": 0,
+                    "fillOpacity": 0.9,
+                    "radius": 15,
+                    "strokeColor": "#ffffff",
+                    "type": "BASIC_POINT",
+                    "strokeOpacity": 1
+                },
+                "projection": "EPSG:4326",
+                "enableFields": [
+                    "UserID"
+                ]
+            }
+            const res = await datavizWebmap.getUniqueStyleGroup(parameters, [{ get: () => ({ 'UserID': 30, 'UserID': 0 }) }]);
+            expect(res.length).toBe(1);
+            done();
         }
-        const res = await datavizWebmap.getUniqueStyleGroup(parameters, [{ get: () => ({ 'UserID': 30, 'UserID': 0 }) }]);
-        expect(res.length).toBe(1);
-        done();
-      }
     });
     it('initialize_OPENSTREET', (done) => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
@@ -394,7 +396,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
@@ -424,7 +426,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
@@ -452,7 +454,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -489,7 +491,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/374284777/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -526,7 +528,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -560,7 +562,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1782454383/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -595,7 +597,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/658963918/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -633,7 +635,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/1236941499/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -672,7 +674,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/675746998/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -705,7 +707,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let requestUrl = `${proxy}${encodeURIComponent(`${server}web/datas/579431262/content.json?pageSize=9999999&currentPage=1`)}`;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -742,7 +744,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
@@ -778,13 +780,13 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_RestData;
                 return Promise.resolve(new Response(mapJson));
-            } else if(ur === 'https://www.supermapol.com/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图.json') {
+            } else if (ur === 'https://www.supermapol.com/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图.json') {
                 return Promise.resolve(new Response(jingjinData));
             }
             return Promise.resolve();
@@ -821,7 +823,7 @@ describe('openlayers_WebMap', () => {
         let options = {
             server: server,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
         // let requestUrl = `${proxy}${encodeURIComponent('http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
@@ -865,7 +867,7 @@ describe('openlayers_WebMap', () => {
                 callback: function () {}
             };
             let wmtsData ='<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
-
+  
             spyOn(FetchRequest, 'get').and.callFake((url) => {
                 if (url.indexOf('map.json')>-1) {
                     var mapJson = datavizWebMap_WMTS;
@@ -877,13 +879,13 @@ describe('openlayers_WebMap', () => {
             });
             spyOn(options, 'callback');
             var datavizWebmap = new WebMap(id, options);
-
+  
             function successCallback() {
                 expect(datavizWebmap.server).toBe(server);
                 expect(datavizWebmap.errorCallback).toBeDefined();
                 expect(datavizWebmap.credentialKey).toBeUndefined();
                 expect(datavizWebmap.credentialValue).toBeUndefined();
-
+  
                 var view = datavizWebmap.map.getView();
                 expect(view.getZoom()).toBe(1);
                 expect(view.getCenter()).toEqual([0, 0]);
@@ -904,7 +906,7 @@ describe('openlayers_WebMap', () => {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             } else if (url.includes("/iserver/services/maps/wmts100?")) {
-              return Promise.resolve(new Response(wmtsInfo2));
+                return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
@@ -913,9 +915,9 @@ describe('openlayers_WebMap', () => {
         datavizWebmap.baseProjection = "EPSG:4326";
         datavizWebmap.createWMTSSource(layerInfo);
 
-        setTimeout(()=>{
-          expect(datavizWebmap.server).toBe(defaultServer);
-          done();
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(defaultServer);
+            done();
         }, 0);
     });
 
@@ -926,7 +928,7 @@ describe('openlayers_WebMap', () => {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             } else if (url.includes("/iserver/services/maps/wmts100?")) {
-              return Promise.resolve(new Response(wmtsInfo2));
+                return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
@@ -935,7 +937,7 @@ describe('openlayers_WebMap', () => {
         datavizWebmap.baseProjection = "EPSG:4326";
         datavizWebmap.createWMTSSource(layerInfo);
 
-        setTimeout(()=>{
+        setTimeout(() => {
             expect(datavizWebmap.server).toBe(defaultServer);
             done();
         }, 0);
@@ -994,7 +996,7 @@ describe('openlayers_WebMap', () => {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
             } else if (url.includes("/iserver/services/maps/wmts100?")) {
-              return Promise.resolve(new Response(wmtsInfo2));
+                return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
@@ -1005,7 +1007,7 @@ describe('openlayers_WebMap', () => {
             field: '10'
         });
         features.push(feature);
-        setTimeout(()=>{
+        setTimeout(() => {
             datavizWebmap.fieldMaxValue = {
                 field: 10
             };
@@ -1025,9 +1027,9 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
-        function successCallback(){}
-        setTimeout(()=>{
+        var datavizWebmap = new WebMap(id, { successCallback, errorCallback, server: defaultServer });
+        function successCallback() { }
+        setTimeout(() => {
             var layerInfo = {
                 layerType: 'WMTS',
                 zIndex: 1,
@@ -1039,9 +1041,9 @@ describe('openlayers_WebMap', () => {
             datavizWebmap.createBaseLayer(layerInfo);
             expect(datavizWebmap.createWMTSSource).toHaveBeenCalled();
             done();
-          }, 0);
+        }, 0);
         function errorCallback(error) {
-          console.log(error);
+            console.log(error);
         }
     });
 
@@ -1063,18 +1065,18 @@ describe('openlayers_WebMap', () => {
             return true;
         });
         setTimeout(() => {
-          var layerInfo = {
-            url: 'http://localhost:9876/iserver/services/maps/wmts100'
-          };
-          const successCallback = function () {};
-          datavizWebmap.getWmtsInfo(layerInfo, successCallback);
-          expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
-          done();
+            var layerInfo = {
+                url: 'http://localhost:9876/iserver/services/maps/wmts100'
+            };
+            const successCallback = function () { };
+            datavizWebmap.getWmtsInfo(layerInfo, successCallback);
+            expect(datavizWebmap.isValidResponse).toHaveBeenCalled();
+            done();
         }, 1000);
     });
 
     it('isValidResponse', (done) => {
-        var datavizWebmap = new WebMap(id, {webMap: JSON.parse(datavizWebMap_BAIDU), successCallback});
+        var datavizWebmap = new WebMap(id, { webMap: JSON.parse(datavizWebMap_BAIDU), successCallback });
         function successCallback() {
             var response = {};
             expect(datavizWebmap.isValidResponse(response)).toBe(false);
@@ -1083,7 +1085,7 @@ describe('openlayers_WebMap', () => {
     });
 
     it('getReslutionsFromScales', (done) => {
-        var datavizWebmap = new WebMap({webMap: JSON.parse(datavizWebMap_BAIDU), successCallback});
+        var datavizWebmap = new WebMap({ webMap: JSON.parse(datavizWebMap_BAIDU), successCallback });
         function successCallback() {
             var scales = {
                 TileMatrix: [{
@@ -1097,7 +1099,7 @@ describe('openlayers_WebMap', () => {
 
     it('getRangeStyleGroup', (done) => {
         let webMapObj = JSON.parse(datavizWebMap_BAIDU);
-        var datavizWebmap = new WebMap({webMap: webMapObj, successCallback});
+        var datavizWebmap = new WebMap({ webMap: webMapObj, successCallback });
         function successCallback() {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
@@ -1120,7 +1122,7 @@ describe('openlayers_WebMap', () => {
             return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
         });
         let webMapObj = JSON.parse(datavizWebMap_BAIDU);
-        var datavizWebmap = new WebMap({webMap: webMapObj, successCallback});
+        var datavizWebmap = new WebMap({ webMap: webMapObj, successCallback });
         function successCallback() {
             var params = '{"layerType":"RANGE","visible":true,"themeSetting":{"themeField":"field","customSettings":{"0":{"color":"#bd10e0","segment":{"start":1, "end": 10}}},"segmentMethod":"square","segmentCount":6,"colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"]},"name":"上海市可校外学习中心","featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"style":{"strokeWidth":1,"fillColor":"#99D594","fillOpacity":0.9,"radius":5,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"1132407305"}}';
             var features = [];
@@ -1148,14 +1150,14 @@ describe('openlayers_WebMap', () => {
         });
 
         function callback() {
-          if (!refresh) {
-            expect(datavizWebmap.baseLayer.name).toEqual('天地图');
-            refresh = true;
-            datavizWebmap.refresh();
-          } else {
-            expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
-            done();
-          }
+            if (!refresh) {
+                expect(datavizWebmap.baseLayer.name).toEqual('天地图');
+                refresh = true;
+                datavizWebmap.refresh();
+            } else {
+                expect(datavizWebmap.baseLayer.name).toEqual('百度地图');
+                done();
+            }
         }
     })
     it('webMapUrl', (done) => {
@@ -1163,7 +1165,7 @@ describe('openlayers_WebMap', () => {
             server: server,
             webMap: defaultServeRequest,
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
@@ -1192,7 +1194,7 @@ describe('openlayers_WebMap', () => {
             server: server,
             webMap: JSON.parse(datavizWebMap_BAIDU),
             successCallback,
-            errorCallback: function () {}
+            errorCallback: function () { }
         };
 
         var datavizWebmap = new WebMap(options);
@@ -1208,218 +1210,309 @@ describe('openlayers_WebMap', () => {
     })
 
     it('getScales EPSG:1', (done) => {
-      //第二次请求wmts参数值太大
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-        if (url.indexOf('map.json') > -1) {
-          var mapJson = datavizWebMap_WMTS;
-          return Promise.resolve(new Response(mapJson));
-        } else if (url.includes("/iserver/services/maps/wmts100?")) {
-            return Promise.resolve(new Response(wmtsInfo2));
-        }
-        return Promise.resolve();
-      });
-      let proj = new olProj.Projection({
-        units: '',
-        code: 'EPSG:1'
-      });
-      olProj.addProjection(proj);
-      var datavizWebmap = new WebMap(id, { server: defaultServer });
-      var layerInfo = JSON.parse(wmtsInfo);
-      datavizWebmap.baseProjection = 'EPSG:1';
-      datavizWebmap.getScales({...layerInfo, projection:'EPSG:1'});
+        //第二次请求wmts参数值太大
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+                return Promise.resolve(new Response(wmtsInfo2));
+            }
+            return Promise.resolve();
+        });
+        let proj = new olProj.Projection({
+            units: '',
+            code: 'EPSG:1'
+        });
+        olProj.addProjection(proj);
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
+        var layerInfo = JSON.parse(wmtsInfo);
+        datavizWebmap.baseProjection = 'EPSG:1';
+        datavizWebmap.getScales({ ...layerInfo, projection: 'EPSG:1' });
 
-      setTimeout(() => {
-        expect(datavizWebmap.scales[0]).toBe('1:65789415978977.37');
-        done();
-      }, 0);
+        setTimeout(() => {
+            expect(datavizWebmap.scales[0]).toBe('1:65789415978977.37');
+            done();
+        }, 0);
     });
     it('getScales EPSG:3857', (done) => {
-      //第二次请求wmts参数值太大
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-        if (url.indexOf('map.json') > -1) {
-          var mapJson = datavizWebMap_WMTS;
-          return Promise.resolve(new Response(mapJson));
-        } else if (url.includes("/iserver/services/maps/wmts100?")) {
-            return Promise.resolve(new Response(wmtsInfo2));
-        }
-        return Promise.resolve();
-      });
-      let proj = new olProj.Projection({
-        units: '',
-        code: 'EPSG:1'
-      });
-      olProj.addProjection(proj);
-      var datavizWebmap = new WebMap(id, { server: defaultServer });
-      var layerInfo = JSON.parse(wmtsInfo);
-      datavizWebmap.baseProjection = 'EPSG:3857';
-      datavizWebmap.getScales({...layerInfo, projection:'EPSG:1'});
+        //第二次请求wmts参数值太大
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+                return Promise.resolve(new Response(wmtsInfo2));
+            }
+            return Promise.resolve();
+        });
+        let proj = new olProj.Projection({
+            units: '',
+            code: 'EPSG:1'
+        });
+        olProj.addProjection(proj);
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
+        var layerInfo = JSON.parse(wmtsInfo);
+        datavizWebmap.baseProjection = 'EPSG:3857';
+        datavizWebmap.getScales({ ...layerInfo, projection: 'EPSG:1' });
 
-      setTimeout(() => {
-        expect(datavizWebmap.scales[0]).toBe('1:591658710.9091312');
-        done();
-      }, 0);
+        setTimeout(() => {
+            expect(datavizWebmap.scales[0]).toBe('1:591658710.9091312');
+            done();
+        }, 0);
     });
     it('svg canvg', (done) => {
-      let options = {
-        server: server,
-        successCallback,
-        errorCallback: function () {}
-      };
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_SVG;
-              return Promise.resolve(new Response(mapJson));
-          } else if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(markerData));
-          }
-          return Promise.resolve();
-      });
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_SVG;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(markerData));
+            }
+            return Promise.resolve();
+        });
 
-      var datavizWebmap = new WebMap(id, options);
-      function successCallback() {
-          expect(datavizWebmap.server).toBe(server);
-          datavizWebmap.stop
-          done();
-      }
+        var datavizWebmap = new WebMap(id, options);
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            datavizWebmap.stop
+            done();
+        }
     });
 
     it('vector_svg', (done) => {
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_SVG1;
-              return Promise.resolve(new Response(mapJson));
-          } else if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(geojsonData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, { server, successCallback });
-      function successCallback() {
-        expect(datavizWebmap.credentialKey).toBeUndefined();
-        expect(datavizWebmap.credentialValue).toBeUndefined();
-        done();
-      }
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_SVG1;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { server, successCallback });
+        function successCallback() {
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            done();
+        }
     });
 
     it('vector_svg refresh', (done) => {
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_SVG1;
-              return Promise.resolve(new Response(mapJson));
-          } else if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(geojsonData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, { server, successCallback });
-      let count = 1;
-      function successCallback() {
-        expect(datavizWebmap.credentialKey).toBeUndefined();
-        expect(datavizWebmap.credentialValue).toBeUndefined();
-        if (count === 1) {
-          datavizWebmap.refresh();
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_SVG1;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { server, successCallback });
+        let count = 1;
+        function successCallback() {
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            if (count === 1) {
+                datavizWebmap.refresh();
+            }
+            count === 2 && done();
+            count += 1;
         }
-        count === 2 && done();
-        count += 1;
-      }
     });
 
     it('server is end of iportal', (done) => {
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_SVG1;
-              return Promise.resolve(new Response(mapJson));
-          } else if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(geojsonData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, { server: server.slice(0, -1), successCallback });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_SVG1;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { server: server.slice(0, -1), successCallback });
 
-      function successCallback() {
-        expect(datavizWebmap.credentialKey).toBeUndefined();
-        expect(datavizWebmap.credentialValue).toBeUndefined();
-        done();
-      }
+        function successCallback() {
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            done();
+        }
     });
 
     it('specify webmap url', (done) => {
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = datavizWebMap_SVG1;
-              return Promise.resolve(new Response(mapJson));
-          } else if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(geojsonData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, { webMap: `${server}web/maps/${id}/map`, successCallback });
-      function successCallback() {
-        expect(datavizWebmap.credentialKey).toBeUndefined();
-        expect(datavizWebmap.credentialValue).toBeUndefined();
-        done();
-      }
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_SVG1;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { webMap: `${server}web/maps/${id}/map`, successCallback });
+        function successCallback() {
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            done();
+        }
     })
 
     it('get mapInfo error', (done) => {
-      var mapJsonData = JSON.parse(datavizWebMap_SVG1);
-      mapJsonData.succeed = false;
-      mapJsonData.error = 'sorry';
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(geojsonData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, { webMap: mapJsonData, errorCallback });
-      function errorCallback(error, type) {
-        expect(error).toBe(mapJsonData.error);
-        expect(type).toBe('getMapFaild');
-        done();
-      }
+        var mapJsonData = JSON.parse(datavizWebMap_SVG1);
+        mapJsonData.succeed = false;
+        mapJsonData.error = 'sorry';
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { webMap: mapJsonData, errorCallback });
+        function errorCallback(error, type) {
+            expect(error).toBe(mapJsonData.error);
+            expect(type).toBe('getMapFaild');
+            done();
+        }
     })
 
     it('center empty', (done) => {
-      var mapJsonData = JSON.parse(datavizWebMap_SVG1);
-      mapJsonData.center = [];
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('content.json') > -1) {
-              return Promise.resolve(new Response(geojsonData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, { webMap: mapJsonData, successCallback });
-      function successCallback() {
-        expect(datavizWebmap.credentialKey).toBeUndefined();
-        expect(datavizWebmap.credentialValue).toBeUndefined();
-        done();
-      }
+        var mapJsonData = JSON.parse(datavizWebMap_SVG1);
+        mapJsonData.center = [];
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { webMap: mapJsonData, successCallback });
+        function successCallback() {
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            done();
+        }
     })
 
     it('layer auto refrsh', (done) => {
-      let options = {
-        server: server,
-        successCallback,
-        errorCallback: function () {}
-      };
-      let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
-      // let requestUrl = `${proxy}${encodeURIComponent('http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
-      spyOn(FetchRequest, 'get').and.callFake((url) => {
-          if (url.indexOf('map.json') > -1) {
-              var mapJson = wmsAutoUpdate;
-              return Promise.resolve(new Response(mapJson));
-          } else if (url.indexOf('GetCapabilities')) {
-              return Promise.resolve(new Response(wmtsData));
-          }
-          return Promise.resolve();
-      });
-      var datavizWebmap = new WebMap(id, options);
-      function successCallback() {
-          expect(datavizWebmap.server).toBe(server);
-          expect(datavizWebmap.errorCallback).toBeDefined();
-          expect(datavizWebmap.credentialKey).toBeUndefined();
-          expect(datavizWebmap.credentialValue).toBeUndefined();
-          done();
-      }
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+        // let requestUrl = `${proxy}${encodeURIComponent('http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = wmsAutoUpdate;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('GetCapabilities')) {
+                return Promise.resolve(new Response(wmtsData));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            done();
+        }
     })
+
+    it('getMapInfoSuccess -1000', (done) => {
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_RestMap_1000;
+                return Promise.resolve(new Response(JSON.stringify(mapJson)));
+            }
+            if (url.indexOf('prjCoordSys.wkt') > -1) {
+                return Promise.resolve(new Response('PROJCS["Xian 1980 / 3-degree Gauss-Kruger zone 38",GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",114],PARAMETER["scale_factor",1],PARAMETER["false_easting",38500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2362"]]'));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.mapParams.projection).toBe('EPSG:-1000');
+            done();
+        }
+    });
+    it('getMapInfoSuccess BrowseMap', (done) => {
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        CommonUtil
+        spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+            return true;
+        });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_RestMap_100;
+                return Promise.resolve(new Response(JSON.stringify(mapJson)));
+            }
+            if (url.indexOf('prjCoordSys.wkt') > -1) {
+                return Promise.resolve(new Response('PROJCS["Xian 1980 / 3-degree Gauss-Kruger zone 38",GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",114],PARAMETER["scale_factor",1],PARAMETER["false_easting",38500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2362"]]'));
+            }
+            if (url.indexOf('https://fake/iserver/services/map-100/rest/maps/map-100') > -1) {
+                return Promise.resolve(new Response(mapInfo_1));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.baseProjection.getCode()).toBe('EPSG:0');
+            done();
+        }
+    });
+
+    it('initialize_MVT', (done) => {
+        window.olms = { applyBackground: function () { }, stylefunction: function () { return function () { } } }
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        CommonUtil
+        spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+            return true;
+        });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(datavizWebMap_MVT)));
+            }
+            if (url.indexOf('vectorstyles.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(vectorTile_style)));
+            }
+            if (url.indexOf('http://fake/iserver/services/map-China100/rest/maps/China.json') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(mapInfo2)));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.map.getLayers().getArray()[0] instanceof olLayer.VectorTile).toBeTrue();
+            done();
+        }
+    });
 });
