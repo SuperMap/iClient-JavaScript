@@ -172,6 +172,7 @@ import './common/overlay/levelRenderer/StorageSpec.js';
 import './common/overlay/levelRenderer/TransformableSpec.js';
 import './common/overlay/levelRenderer/UtilSpec.js';
 import './common/overlay/levelRenderer/VectorSpec.js';
+import './common/overlay/levelRenderer/HandlerSpec.js';
 import './common/overlay/GraphSpec';
 import './common/overlay/KnowledgeGraphSpec.js'
 
