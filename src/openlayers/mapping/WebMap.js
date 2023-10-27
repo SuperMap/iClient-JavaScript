@@ -357,10 +357,6 @@ export class WebMap extends Observable {
                 }
                 that.addGraticule(mapInfo);
             }
-        } else {
-            // 不支持的坐标系
-            that.errorCallback && that.errorCallback({type: "Not support CS", errorMsg: `Not support CS: ${mapInfo.projection}`}, 'getMapFaild', that.map);
-            return;
         }
     }
 

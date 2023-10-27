@@ -1376,6 +1376,23 @@ describe('openlayers_WebMap', () => {
       }
     })
 
+    it('center empty', (done) => {
+      var mapJsonData = JSON.parse(datavizWebMap_SVG1);
+      mapJsonData.center = [];
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { webMap: mapJsonData, successCallback });
+      function successCallback() {
+        expect(datavizWebmap.credentialKey).toBeUndefined();
+        expect(datavizWebmap.credentialValue).toBeUndefined();
+        done();
+      }
+    })
+
     it('layer auto refrsh', () => {
       let options = {
         server: server,
