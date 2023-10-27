@@ -20,6 +20,7 @@ import Overlay from 'ol/Overlay';
 import * as olControl from 'ol/control';
 import Feature from 'ol/Feature';
 import * as olProj from 'ol/proj';
+import proj4 from 'proj4';
 
 window.jsonsql = { query: () => {} };
 
@@ -81,7 +82,7 @@ describe('openlayers_WebMap', () => {
         var overlayDiv = window.document.createElement("div");
         overlayDiv.setAttribute("id", "marker-pop");
         window.document.body.appendChild(overlayDiv);
-        
+
         const successCallback = () => {
           expect(datavizWebmap.server).toBe(server);
           expect(datavizWebmap.errorCallback).toBeDefined();
@@ -117,7 +118,7 @@ describe('openlayers_WebMap', () => {
                 mapClickCallback: function (evt) {}
             }
         };
-        
+
         var datavizWebmap = new WebMap(id, options);
 
     });
@@ -175,7 +176,7 @@ describe('openlayers_WebMap', () => {
             var view = datavizWebmap.map.getView();
             expect(datavizWebmap.mapParams.title).toBe('百度');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             done();
         }
     });
@@ -355,7 +356,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -365,7 +366,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(datavizWebmap.mapParams.title).toBe('openstreet');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             done();
         }
     });
@@ -379,7 +380,7 @@ describe('openlayers_WebMap', () => {
             return Promise.reject();
         });
         var datavizWebmap = new WebMap(id, options);
-        
+
         function errorCallback() {
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.credentialKey).toBeUndefined();
@@ -402,7 +403,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -414,7 +415,7 @@ describe('openlayers_WebMap', () => {
             var view = datavizWebmap.map.getView();
             expect(datavizWebmap.mapParams.title).toBe('GAOD');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             done();
         }
     });
@@ -432,7 +433,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -442,7 +443,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.credentialValue).toBeUndefined();
             expect(datavizWebmap.mapParams.title).toBe('undefinedMap');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             done();
         }
     });
@@ -463,7 +464,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -477,7 +478,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([13428717.554131005, 3553719.2183414707]);
             expect(datavizWebmap.mapParams.title).toBe('theme_base');
             expect(datavizWebmap.mapParams.description).toBe('base style');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
@@ -500,7 +501,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -514,7 +515,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([12957099.912590493, 4857107.635483593]);
             expect(datavizWebmap.mapParams.title).toBe('Line_basis');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路');
             done();
@@ -537,7 +538,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -548,7 +549,7 @@ describe('openlayers_WebMap', () => {
 
             expect(datavizWebmap.mapParams.title).toBe('Image');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('浙江省高等院校(3)');
             done();
@@ -571,7 +572,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
         spyOn(datavizWebmap, 'createGraphicLayer');
 
@@ -584,7 +585,7 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.mapParams.title).toBe("无标题");
             expect(datavizWebmap.mapParams.description).toBe('');
             expect(datavizWebmap.createGraphicLayer).toHaveBeenCalled();
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             done();
         }
@@ -606,7 +607,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
 
         var datavizWebmap = new WebMap(id, options);
 
@@ -621,7 +622,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([12949175.717869252, 4864340.473197712]);
             expect(datavizWebmap.mapParams.title).toBe('Unique');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('住宅_Lite(10)');
             done();
@@ -644,7 +645,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -658,7 +659,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([12957697.597143793, 4851476.112683487]);
             expect(datavizWebmap.mapParams.title).toBe('RANGE_LABEL');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道交通线路(2)');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(3);
@@ -716,7 +717,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -729,7 +730,7 @@ describe('openlayers_WebMap', () => {
             expect(Math.floor(view.getZoom())).toBe(2);
             expect(datavizWebmap.mapParams.title).toBe('标注图层');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('未命名标注图层1');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
@@ -751,7 +752,7 @@ describe('openlayers_WebMap', () => {
                 return Promise.resolve(new Response(jinJingMap))
             }
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -765,7 +766,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([13010199.082679197, 4882852.518868368]);
             expect(datavizWebmap.mapParams.title).toBe('RestMap');
             expect(datavizWebmap.mapParams.description).toBe('restMap from jingjin');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('京津地区土地利用现状图');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
@@ -785,13 +786,13 @@ describe('openlayers_WebMap', () => {
                 return Promise.resolve(new Response(mapJson));
             } else if(ur === 'https://www.supermapol.com/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图.json') {
                 return Promise.resolve(new Response(jingjinData));
-            } 
+            }
             return Promise.resolve();
         });
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             return Promise.resolve(new Response(supermapData));
         });
-        
+
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -805,7 +806,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([13013201.402643811, 4822518.728777889]);
             expect(datavizWebmap.mapParams.title).toBe('RestData');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('Jingjin:BaseMap_P');
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
@@ -833,7 +834,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        // 
+        //
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
@@ -846,7 +847,7 @@ describe('openlayers_WebMap', () => {
             expect(view.getCenter()).toEqual([0, -7.081154551613622e-10]);
             expect(datavizWebmap.mapParams.title).toBe('wms');
             expect(datavizWebmap.mapParams.description).toBe('');
-            // 
+            //
 
             // expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
             // expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('World');
@@ -1171,7 +1172,7 @@ describe('openlayers_WebMap', () => {
             }
             return Promise.resolve();
         });
-        
+
         var datavizWebmap = new WebMap(options);
 
         function successCallback() {
@@ -1182,7 +1183,7 @@ describe('openlayers_WebMap', () => {
 
             expect(datavizWebmap.mapParams.title).toBe('百度');
             expect(datavizWebmap.mapParams.description).toBe('');
-            
+
             done();
         }
     })
@@ -1193,7 +1194,7 @@ describe('openlayers_WebMap', () => {
             successCallback,
             errorCallback: function () {}
         };
-        
+
         var datavizWebmap = new WebMap(options);
 
         function successCallback() {
@@ -1201,11 +1202,11 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
-            
+
             done();
         }
     })
-    
+
     it('getScales EPSG:1', (done) => {
       //第二次请求wmts参数值太大
       spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -1273,7 +1274,7 @@ describe('openlayers_WebMap', () => {
           }
           return Promise.resolve();
       });
-      
+
       var datavizWebmap = new WebMap(id, options);
       function successCallback() {
           expect(datavizWebmap.server).toBe(server);
@@ -1298,5 +1299,107 @@ describe('openlayers_WebMap', () => {
         expect(datavizWebmap.credentialValue).toBeUndefined();
         done();
       }
-  });
+    });
+
+    it('vector_svg refresh', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG1;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { server, successCallback });
+
+      function successCallback() {
+        expect(datavizWebmap.credentialKey).toBeUndefined();
+        expect(datavizWebmap.credentialValue).toBeUndefined();
+        datavizWebmap.refresh();
+        done();
+      }
+    });
+
+    it('server is end of iportal', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG1;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { server: server.slice(0, -1), successCallback });
+
+      function successCallback() {
+        expect(datavizWebmap.credentialKey).toBeUndefined();
+        expect(datavizWebmap.credentialValue).toBeUndefined();
+        done();
+      }
+    });
+
+    it('specify webmap url', (done) => {
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = datavizWebMap_SVG1;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { webMap: `${server}web/maps/${id}/map`, successCallback });
+      function successCallback() {
+        expect(datavizWebmap.credentialKey).toBeUndefined();
+        expect(datavizWebmap.credentialValue).toBeUndefined();
+        done();
+      }
+    })
+
+    it('get mapInfo error', (done) => {
+      var mapJsonData = JSON.parse(datavizWebMap_SVG1);
+      mapJsonData.succeed = false;
+      mapJsonData.error = 'sorry';
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('content.json') > -1) {
+              return Promise.resolve(new Response(geojsonData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, { webMap: mapJsonData, errorCallback });
+      function errorCallback(error, type) {
+        expect(error).toBe(mapJsonData.error);
+        expect(type).toBe('getMapFaild');
+        done();
+      }
+    })
+
+    it('layer auto refrsh', () => {
+      let options = {
+        server: server,
+        successCallback,
+        errorCallback: function () {}
+      };
+      let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
+      // let requestUrl = `${proxy}${encodeURIComponent('http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          if (url.indexOf('map.json') > -1) {
+              var mapJson = wmsAutoUpdate;
+              return Promise.resolve(new Response(mapJson));
+          } else if (url.indexOf('GetCapabilities')) {
+              return Promise.resolve(new Response(wmtsData));
+          }
+          return Promise.resolve();
+      });
+      var datavizWebmap = new WebMap(id, options);
+      function successCallback() {
+          expect(datavizWebmap.server).toBe(server);
+          expect(datavizWebmap.errorCallback).toBeDefined();
+          expect(datavizWebmap.credentialKey).toBeUndefined();
+          expect(datavizWebmap.credentialValue).toBeUndefined();
+          done();
+      }
+    })
 });
