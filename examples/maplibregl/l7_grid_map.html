@@ -31,13 +31,6 @@
     <div id="map"></div>
     <script type="text/javascript" include="L7" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script type="text/javascript">
-      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var attribution =
-        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
-        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-
-      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
       var map = new maplibregl.Map({
         container: 'map',
         center: [113, 29],

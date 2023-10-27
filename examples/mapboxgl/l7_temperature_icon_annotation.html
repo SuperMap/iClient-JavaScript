@@ -88,77 +88,79 @@
           ];
 
           scene.addFontFace(fontFamily, fontPath);
-          fetch('../data/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
-            .then((res) => res.json())
-            .then((data) => {
-              var layer = new mapboxgl.supermap.L7Layer({
-                type: 'PolygonLayer',
-                options: { name: 'fill' }
-              });
-              var l7Layer = layer.getL7Layer();
-              l7Layer
-                .source(data)
-                .shape('fill')
-                .color('count', ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#756bb1', '#54278f'])
-                .style({
-                  opacity: 0.6,
-                  opacityLinear: {
-                    enable: true,
-                    dir: 'out' // in - out
-                  }
+          scene.once('fontloaded', () => {
+            fetch('../data/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
+              .then((res) => res.json())
+              .then((data) => {
+                var layer = new mapboxgl.supermap.L7Layer({
+                  type: 'PolygonLayer',
+                  options: { name: 'fill' }
                 });
-              map.addLayer(layer);
+                var l7Layer = layer.getL7Layer();
+                l7Layer
+                  .source(data)
+                  .shape('fill')
+                  .color('count', ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#756bb1', '#54278f'])
+                  .style({
+                    opacity: 0.6,
+                    opacityLinear: {
+                      enable: true,
+                      dir: 'out' // in - out
+                    }
+                  });
+                map.addLayer(layer);
 
-              const linelayer = new mapboxgl.supermap.L7Layer({
-                type: 'LineLayer',
-                options: { name: 'line2' }
-              });
-              linelayer.getL7Layer().source(data).shape('line').size(1).color('#fff').style({
-                opacity: 0.3
-              });
-              map.addLayer(linelayer);
-
-              const pointLayer = new mapboxgl.supermap.L7Layer({
-                type: 'PointLayer'
-              });
-              pointLayer
-                .getL7Layer()
-                .source(data)
-                .shape('icon', 'text')
-                .size(25)
-                .color('count', (t) => {
-                  const c = Number(t.replace('℃', ''));
-                  return colors[Math.floor(((c - 18) / 16) * 10)];
-                })
-                .style({
-                  textAnchor: 'center',
-                  textOffset: [-25, 15],
-                  padding: [2, 2],
-                  fontFamily,
-                  iconfont: true,
-                  textAllowOverlap: true
+                const linelayer = new mapboxgl.supermap.L7Layer({
+                  type: 'LineLayer',
+                  options: { name: 'line2' }
                 });
-              map.addLayer(pointLayer);
-
-              const tempertureLayer = new mapboxgl.supermap.L7Layer({
-                type: 'PointLayer'
-              });
-              tempertureLayer
-                .getL7Layer()
-                .source(data)
-                .shape('count', 'text')
-                .size(12)
-                .color('count', (t) => {
-                  const c = Number(t.replace('℃', ''));
-                  return colors[Math.floor(((c - 18) / 16) * 10)];
-                })
-                .style({
-                  textAnchor: 'center',
-                  textOffset: [35, 30],
-                  padding: [1, 1]
+                linelayer.getL7Layer().source(data).shape('line').size(1).color('#fff').style({
+                  opacity: 0.3
                 });
-              map.addLayer(tempertureLayer);
-            });
+                map.addLayer(linelayer);
+
+                const pointLayer = new mapboxgl.supermap.L7Layer({
+                  type: 'PointLayer'
+                });
+                pointLayer
+                  .getL7Layer()
+                  .source(data)
+                  .shape('icon', 'text')
+                  .size(25)
+                  .color('count', (t) => {
+                    const c = Number(t.replace('℃', ''));
+                    return colors[Math.floor(((c - 18) / 16) * 10)];
+                  })
+                  .style({
+                    textAnchor: 'center',
+                    textOffset: [-25, 15],
+                    padding: [2, 2],
+                    fontFamily,
+                    iconfont: true,
+                    textAllowOverlap: true
+                  });
+                map.addLayer(pointLayer);
+
+                const tempertureLayer = new mapboxgl.supermap.L7Layer({
+                  type: 'PointLayer'
+                });
+                tempertureLayer
+                  .getL7Layer()
+                  .source(data)
+                  .shape('count', 'text')
+                  .size(12)
+                  .color('count', (t) => {
+                    const c = Number(t.replace('℃', ''));
+                    return colors[Math.floor(((c - 18) / 16) * 10)];
+                  })
+                  .style({
+                    textAnchor: 'center',
+                    textOffset: [35, 30],
+                    padding: [1, 1]
+                  });
+                map.addLayer(tempertureLayer);
+              });
+          });
         });
       });
     </script>
