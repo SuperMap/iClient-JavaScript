@@ -21,7 +21,7 @@ describe('openlayers_InitMap', () => {
   it('initialize', () => {
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('World') > -1) {
-        return Promise.resolve(new Response(mapInfo));
+        return Promise.resolve(new Response(mapInfo_1));
       }
       return Promise.resolve();
     });
