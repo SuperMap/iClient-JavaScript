@@ -1396,7 +1396,7 @@ describe('openlayers_WebMap', () => {
       }
     })
 
-    it('layer auto refrsh', () => {
+    it('layer auto refrsh', (done) => {
       let options = {
         server: server,
         successCallback,
