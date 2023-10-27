@@ -1484,13 +1484,13 @@ describe('openlayers_WebMap', () => {
     });
 
     it('initialize_MVT', (done) => {
+        window.olmsbak =  window.olms;
         window.olms = { applyBackground: function () { }, stylefunction: function () { return function () { } } }
         let options = {
             server: server,
             successCallback,
             errorCallback: function () { }
         };
-        CommonUtil
         spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
             return true;
         });
@@ -1509,6 +1509,7 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
 
         function successCallback() {
+            window.olms =  window.olmsbak;
             expect(datavizWebmap.server).toBe(server);
             expect(datavizWebmap.errorCallback).toBeDefined();
             expect(datavizWebmap.map.getLayers().getArray()[0] instanceof olLayer.VectorTile).toBeTrue();
