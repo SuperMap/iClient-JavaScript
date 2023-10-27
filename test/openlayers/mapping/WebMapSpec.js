@@ -1312,12 +1312,15 @@ describe('openlayers_WebMap', () => {
           return Promise.resolve();
       });
       var datavizWebmap = new WebMap(id, { server, successCallback });
-
+      let count = 1;
       function successCallback() {
         expect(datavizWebmap.credentialKey).toBeUndefined();
         expect(datavizWebmap.credentialValue).toBeUndefined();
-        datavizWebmap.refresh();
-        done();
+        if (count === 1) {
+          datavizWebmap.refresh();
+        }
+        count === 2 && done();
+        count += 1;
       }
     });
 

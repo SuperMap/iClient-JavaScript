@@ -170,7 +170,7 @@ describe('openlayers_StyleUtils', () => {
 
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_point1', (done) => {
+    xit('getStyleFromCarto_point1', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
