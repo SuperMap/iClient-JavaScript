@@ -928,6 +928,28 @@ describe('openlayers_WebMap', () => {
         var datavizWebmap = new WebMap(id, options);
     });
 
+    it('createWMTSSource1', (done) => {
+        //第二次请求wmts参数值太大
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_WMTS;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+                return Promise.resolve(new Response(wmtsInfo2));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, { server: defaultServer });
+        var layerInfo = JSON.parse(wmtsInfo1);
+        datavizWebmap.baseProjection = "EPSG:4326";
+        datavizWebmap.createWMTSSource(layerInfo);
+ 
+        setTimeout(() => {
+            expect(datavizWebmap.server).toBe(defaultServer);
+            done();
+        }, 0);
+    });
+
     it('changeWeight', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
