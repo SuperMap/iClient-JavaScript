@@ -33,8 +33,153 @@ var datavizWebMap_symbol = '{ "extent": { "leftBottom": { "x": -2.00375083427892
 var datavizWebMap_Unique = '{"version":"6.0","title":"Unique","description":"","projection":"EPSG:3857","center":{"x":12949175.717869252,"y":4864340.473197712},"level":12,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"UNIQUE","name":"住宅_Lite(10)","visible":true,"featureType":"POINT","xyField":{"xField":"SmX","yField":"SmY"},"projection":"EPSG:4326","style":{"radius":12,"lineDash":"solid","strokeWidth":1,"strokeColor":"#ffffff","strokeOpacity":1,"fillOpacity":0.9,"fillColor":"#3288bd"},"themeSetting":{"themeField":"区站号","colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"],"customSettings":{"50136": "#D53E4F"}},"dataSource":{"type":"PORTAL_DATA","serverId":658963918}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 
 var datavizWebMap_Range = '{"version":"6.0","title":"RANGE_LABEL","description":"","projection":"EPSG:3857","center":{"x":12957697.597143793,"y":4851476.112683487},"level":10,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"RANGE","name":"北京市轨道交通线路(2)","visible":true,"featureType":"LINE","xyField":{"xField":null,"yField":null},"projection":"EPSG:4326","style":{"radius":5,"lineDash":"solid","strokeWidth":11,"strokeColor":"#99D594","strokeOpacity":1,"fillOpacity":0.9,"fillColor":"#FFFFFF"},"themeSetting":{"segmentCount":6,"segmentMethod":"square","colors":["#D53E4F","#FC8D59","#FEE08B","#FFFFBF","#E6F598","#99D594","#3288BD"],"customSettings":{},"themeField":"SmID"},"labelStyle":{"fill":"#333","fontFamily":"仿宋","labelField":"标准名称"},"dataSource":{"type":"PORTAL_DATA","serverId":1236941499}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
+var datavizWebMap_RANK_SYMBOL = `{
+    "extent": {
+        "leftBottom": {
+            "x": -20037508.3427892,
+            "y": -20037508.3427892
+        },
+        "rightTop": {
+            "x": 20037508.3427892,
+            "y": 20037508.3427892
+        }
+    },
+    "maxScale": "1:144447.92746805",
+    "level": 4,
+    "center": {
+        "x": 11927291.942384934,
+        "y": 4007122.7743706107
+    },
+    "baseLayer": {
+         "layerType": "CLOUD",
+        "name": "高德地图"
+    },
+    "layers": [
+        {
+            "layerType": "RANK_SYMBOL",
+            "visible": true,
+            "themeSetting": {
+                "maxRadius": 12,
+                "themeField": "X",
+                "customSettings": {},
+                "minRadius": 6,
+                "segmentMethod": "offset",
+                "segmentCount": 6
+            },
+            "name": "省级政府",
+            "featureType": "POINT",
+            "xyField": {
+                "xField": "X",
+                "yField": "Y"
+            },
+            "style": {
+                "strokeWidth": 1,
+                "fillColor": "#24B391",
+                "offsetX": 0,
+                "offsetY": 0,
+                "fillOpacity": 0.9,
+                "radius": 6,
+                "strokeColor": "#ffffff",
+                "type": "BASIC_POINT",
+                "strokeOpacity": 1
+            },
+            "projection": "EPSG:4326",
+            "enableFields": [
+                "UserID",
+                "NAME",
+                "NAME_PY",
+                "TYPE",
+                "CODE",
+                "ADDRESS",
+                "TELEPHONE",
+                "PROVINCE",
+                "CITY",
+                "X",
+                "Y"
+            ],
+            "dataSource": {
+                "type": "PORTAL_DATA",
+                "serverId": 1236941499
+            }
+        }
+    ],
+    "description": "",
+    "projection": "EPSG:3857",
+    "minScale": "1:591658710.909131",
+    "title": "range_symbol",
+    "version": "2.3.0",
+    "rootUrl": "http://fake/iportal/services/../"
+}`;
 
 var datavizWebMap_Heat = '{"version":"6.0","title":"Heat","description":"","projection":"EPSG:3857","center":{"x":13428717.554131005,"y":3553719.2183414707},"level":7,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"HEAT","name":"浙江省高等院校(3)","visible":true,"featureType":"POINT","xyField":{"xField":"经度","yField":"纬度"},"projection":"EPSG:4326","themeSetting":{"colors":["#9766bf","#c9adad","#b5addd","#93a9dd","#74a9e1"],"weight":"纬度","radius":10,"customSettings":{"0":{"hsl":{"h":55.36363636363636,"s":0.9401709401709404,"l":0.5411764705882353,"a":1},"hex":"#f8e71c","rgb":{"r":248,"g":231,"b":28,"a":1},"hsv":{"h":55.36363636363636,"s":0.8870967741935485,"v":0.9725490196078431,"a":1},"oldHue":240,"source":"hex"}}},"dataSource":{"type":"PORTAL_DATA","serverId":675746998}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
+var datavizWebMap_geojson = `{
+    "version": "6.0",
+    "title": "RANGE_LABEL",
+    "description": "",
+    "projection": "EPSG:3857",
+    "center": {
+        "x": 12957697.5971438,
+        "y": 4851476.11268349
+    },
+    "level": 10,
+    "extent": {
+        "leftBottom": {
+            "x": -20037508.3427892,
+            "y": -20037508.3427892
+        },
+        "rightTop": {
+            "x": 20037508.3427892,
+            "y": 20037508.3427892
+        }
+    },
+    "baseLayer": {
+        "layerType": "CLOUD",
+        "name": "高德地图"
+    },
+    "layers": [
+        {
+            "layerType": "RANGE",
+            "name": "北京市轨道",
+            "visible": true,
+            "featureType": "LINE",
+            "xyField": {
+                "xField": null,
+                "yField": null
+            },
+            "projection": "EPSG:4326",
+            "style": {
+                "radius": 5,
+                "lineDash": "solid",
+                "strokeWidth": 11,
+                "strokeColor": "#99D594",
+                "strokeOpacity": 1,
+                "fillOpacity": 0.9,
+                "fillColor": "#FFFFFF"
+            },
+            "themeSetting": {
+                "segmentCount": 6,
+                "segmentMethod": "square",
+                "colors": [
+                    "#D53E4F",
+                    "#FC8D59",
+                    "#FEE08B",
+                    "#FFFFBF",
+                    "#E6F598",
+                    "#99D594",
+                    "#3288BD"
+                ],
+                "customSettings": {},
+                "themeField": "SmID"
+            },
+            "dataSource": {
+                "type": "USER_DATA",
+                "url": "http://fake/marker.geojson"
+            }
+        }
+    ],
+    "sourceType": "DataViz",
+    "thumbnail": "http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"
+}`;
 
 var datavizWebMap_Marker = '{"version":"6.0","title":"标注图层","description":"","projection":"EPSG:3857","center":{"x":939258.2035682459,"y":-860986.6866042276},"level":2,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"MARKER","name":"未命名标注图层1","visible":true,"projection":"EPSG:4326","dataSource":{"type":"PORTAL_DATA","serverId":"579431262"}}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 
@@ -46,7 +191,7 @@ var datavizWebMap_RestData = '{"version":"6.0","title":"RestData","description":
 
 var datavizWebMap_WMS = '{"version":"6.0","title":"wms","description":"","projection":"EPSG:3857","center":{"x":0,"y":-7.081154551613622e-10},"level":1,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"WMS","name":"World","visible":true,"url":"http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&","projection":"EPSG:3857"}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 
-var datavizWebMap_WMTS = '{"version":"6.0","title":"wmts","description":"","projection":"EPSG:3857","center":{"x":0,"y":0},"level":1,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"WMTS","name":"World_AirLine_Part","visible":true,"url":"http://localhost:9876/iserver/services/maps/wmts100?","projection":"EPSG:3857","tileMatrixSet":"GoogleMapsCompatible_World_AirLine_Part"}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
+var datavizWebMap_WMTS = '{"version":"6.0","title":"wmts","description":"","projection":"EPSG:3857","center":{"x":0,"y":0},"level":1,"extent":{"leftBottom":{"x":-20037508.3427892,"y":-20037508.3427892},"rightTop":{"x":20037508.3427892,"y":20037508.3427892}},"baseLayer":{"layerType":"CLOUD","name":"高德地图"},"layers":[{"layerType":"WMTS","name":"World_AirLine_Part","visible":true,"url":"http://localhost:9876/iserver/services/maps/wmts100?","projection":"EPSG:3857","tileMatrixSet":"Custom_China"}],"sourceType":"DataViz","thumbnail":"http://127.0.0.1:8090/iportal/static/dataviz/static/imgs/thumbnail_default.png"}';
 var datavizWebMap_WMTS1 = '{ "extent": { "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 }, "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 } }, "level": 1, "center": { "x": 8548489.791091159, "y": -2939180.84386342 }, "baseLayer": { "layerType": "TIANDITU_VEC_3857", "visible": true, "labelLayerVisible": true, "name": "天地图" }, "layers": [ { "layerType": "WMTS", "tileMatrixSet": "GoogleMapsCompatible_China_4326", "name": "China_4326", "url": "http://localhost:9876/iserver/services/map-china400/wmts100?", "layer": "China_4326" } ], "description": "", "projection": "EPSG:3857", "title": "3857", "version": "1.0" }'
 var datavizWebMap_WMTS2 = '{ "extent": { "leftBottom": { "x": -20037508.3427892, "y": -20037508.3427892 }, "rightTop": { "x": 20037508.3427892, "y": 20037508.3427892 } }, "level": 1, "center": { "x": 8548489.791091159, "y": -2939180.84386342 }, "baseLayer": { "layerType": "TIANDITU_VEC_3857", "visible": true, "labelLayerVisible": false, "name": "天地图" }, "layers": [ { "layerType": "WMTS", "tileMatrixSet": "Custom_China_4326", "name": "China_4326", "url": "http://localhost:9876/iserver/services/map-china400/wmts100?", "layer": "China_4326" } ], "description": "", "projection": "EPSG:3857", "title": "3857", "version": "1.0" }'
 var datavizWebMap_fiter = '{ "extent": { "leftBottom": { "x": -2.00375083427892E7, "y": -2.00375083427892E7 }, "rightTop": { "x": 2.00375083427892E7, "y": 2.00375083427892E7 } }, "level": 11, "center": { "x": 1.2980839382783111E7, "y": 4850526.359611664 }, "baseLayer": { "layerType": "TIANDITU_VEC_3857", "visible": true, "labelLayerVisible": true, "name": "天地图" }, "layers": [ { "layerType": "VECTOR", "visible": true, "filterCondition": "SmID>20", "name": "北京市轨道交通站点", "featureType": "LINE", "style": { "fillColor": "#ff0000", "strokeWidth": 1, "fillOpacity": 0.9, "type": "BASIC_POINT", "radius": 6, "strokeColor": "#ffffff", "strokeOpacity": 1 }, "projection": "EPSG:4326", "dataSource": { "type": "PORTAL_DATA", "serverId": "1276193546" } } ], "description": "", "projection": "EPSG:3857", "title": "filter", "version": "1.0" }'

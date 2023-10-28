@@ -1476,4 +1476,73 @@ describe('openlayers_WebMap', () => {
             done();
         }
     });
+
+    it('createThemeLayer_RANK_SYMBOL', (done) => {
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+            return true;
+        });
+        spyOn(ArrayStatistic, "getArraySegments").and.callFake(() => {
+            return [4133010335, 4133011647, 4133013294, 4133014535, 4133016408, 4233051885, 9233063036];
+        });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_RANK_SYMBOL;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('web/datas/1236941499/content.json') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+
+        var datavizWebmap = new WebMap(id, options);
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('省级政府');
+            expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+        }
+    });
+    it('createLayer_geojson', (done) => {
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+            return true;
+        });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_geojson;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('marker.geojson') > -1) {
+                return Promise.resolve(new Response(geojsonData));
+            }
+            return Promise.resolve();
+        });
+
+        var datavizWebmap = new WebMap(id, options);
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('高德地图');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getSource().getFeatures().length).toBe(1);
+            expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+        }
+    });
 });
