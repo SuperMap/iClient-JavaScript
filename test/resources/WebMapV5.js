@@ -64,7 +64,172 @@ var wmtsInfo1 = '{"extent":[-20037508.342789244, -20037508.342789244, 20037508.3
 
 var wmsAutoUpdate = '{"extent":{"leftBottom":{"x":-180,"y":-90},"rightTop":{"x":180,"y":90}},"maxScale":"1:70.45225847627215","level":4.806374567849455,"center":{"x":116.62923399039252,"y":38.73426968062019},"baseLayer":{"layerType":"WMS","visible":true,"name":"世界地图_Day","layers":["0"],"url":"http://localhost:9876/iserver/services/map-world/wmts100"},"layers":[{"layerType":"VECTOR","visible":true,"visibleScale":{"maxScale":"1:9234318.423001943","minScale":"1:295498189.5360622"},"autoUpdateTime":180000,"name":"北京市轨道交通站点","featureType":"POINT","style":{"fillColor":"#EE4D5A","strokeWidth":1,"offsetX":0,"offsetY":0,"fillOpacity":0.9,"radius":8,"strokeColor":"#ffffff","type":"BASIC_POINT","strokeOpacity":1},"projection":"EPSG:4326","enableFields":["SmID","SmX","SmY","SmLibTileID","1111SmUserID","SmGeometrySize","SmGeoPosition","1111标准名称"],"dataSource":{"accessType":"DIRECT","type":"PORTAL_DATA","serverId":"263759920"}}],"description":"","projection":"EPSG:4326","minScale":"1:295498189.5360622","title":"无标题","version":"2.3.0"}'
 
-var wmtsInfo2 = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://192.168.12.230:8090/iserver/services/map-China1003/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"> <Contents> <TileMatrixSet> <ows:Identifier>GoogleMapsCompatible_China_4326</ows:Identifier> <ows:SupportedCRS>urn:ogc:def:crs:EPSG::3857</ows:SupportedCRS> <WellKnownScaleSet>GoogleMapsCompatible</WellKnownScaleSet> <!--The dpi of current tile matrix set assumes 0.28mm as the physical distance of a pixel,which defined by OGC specification.-->    <TileMatrix> <ows:Identifier>0</ows:Identifier> <ScaleDenominator>5.590822640287178E8</ScaleDenominator> <!--<Resolution>156543.033928041</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>1</MatrixWidth> <MatrixHeight>1</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>1</ows:Identifier> <ScaleDenominator>2.795411320143589E8</ScaleDenominator> <!--<Resolution>78271.5169640205</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>2</MatrixWidth> <MatrixHeight>2</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>2</ows:Identifier> <ScaleDenominator>1.3977056600717944E8</ScaleDenominator> <!--<Resolution>39135.75848201025</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4</MatrixWidth> <MatrixHeight>4</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>3</ows:Identifier> <ScaleDenominator>6.988528300358972E7</ScaleDenominator> <!--<Resolution>19567.879241005125</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>8</MatrixWidth> <MatrixHeight>8</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>4</ows:Identifier> <ScaleDenominator>3.494264150179486E7</ScaleDenominator> <!--<Resolution>9783.939620502562</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>16</MatrixWidth> <MatrixHeight>16</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>5</ows:Identifier> <ScaleDenominator>1.747132075089743E7</ScaleDenominator> <!--<Resolution>4891.969810251281</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>32</MatrixWidth> <MatrixHeight>32</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>6</ows:Identifier> <ScaleDenominator>8735660.375448715</ScaleDenominator> <!--<Resolution>2445.9849051256406</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>64</MatrixWidth> <MatrixHeight>64</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>7</ows:Identifier> <ScaleDenominator>4367830.1877243575</ScaleDenominator> <!--<Resolution>1222.9924525628203</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>128</MatrixWidth> <MatrixHeight>128</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>8</ows:Identifier> <ScaleDenominator>2183915.0938621787</ScaleDenominator> <!--<Resolution>611.4962262814101</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>256</MatrixWidth> <MatrixHeight>256</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>9</ows:Identifier> <ScaleDenominator>1091957.5469310894</ScaleDenominator> <!--<Resolution>305.7481131407051</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>512</MatrixWidth> <MatrixHeight>512</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>10</ows:Identifier> <ScaleDenominator>545978.7734655447</ScaleDenominator> <!--<Resolution>152.87405657035254</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>1024</MatrixWidth> <MatrixHeight>1024</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>11</ows:Identifier> <ScaleDenominator>272989.38673277234</ScaleDenominator> <!--<Resolution>76.43702828517627</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>2048</MatrixWidth> <MatrixHeight>2048</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>12</ows:Identifier> <ScaleDenominator>136494.69336638617</ScaleDenominator> <!--<Resolution>38.218514142588134</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4096</MatrixWidth> <MatrixHeight>4096</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>13</ows:Identifier> <ScaleDenominator>68247.34668319309</ScaleDenominator> <!--<Resolution>19.109257071294067</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>8192</MatrixWidth> <MatrixHeight>8192</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>14</ows:Identifier> <ScaleDenominator>34123.67334159654</ScaleDenominator> <!--<Resolution>9.554628535647034</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>16384</MatrixWidth> <MatrixHeight>16384</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>15</ows:Identifier> <ScaleDenominator>17061.83667079827</ScaleDenominator> <!--<Resolution>4.777314267823517</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>32768</MatrixWidth> <MatrixHeight>32768</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>16</ows:Identifier> <ScaleDenominator>8530.918335399136</ScaleDenominator> <!--<Resolution>2.3886571339117584</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>65536</MatrixWidth> <MatrixHeight>65536</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>17</ows:Identifier> <ScaleDenominator>4265.459167699568</ScaleDenominator> <!--<Resolution>1.1943285669558792</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>131072</MatrixWidth> <MatrixHeight>131072</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>18</ows:Identifier> <ScaleDenominator>2132.729583849784</ScaleDenominator> <!--<Resolution>0.5971642834779396</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>262144</MatrixWidth> <MatrixHeight>262144</MatrixHeight> </TileMatrix> </TileMatrixSet><TileMatrixSet> <ows:Identifier>GoogleMapsCompatible_China_4326</ows:Identifier> <ows:SupportedCRS>urn:ogc:def:crs:EPSG::3857</ows:SupportedCRS> <WellKnownScaleSet>GoogleMapsCompatible</WellKnownScaleSet> <!--The dpi of current tile matrix set assumes 0.28mm as the physical distance of a pixel,which defined by OGC specification.-->    <TileMatrix> <ows:Identifier>0</ows:Identifier> <ScaleDenominator>5.590822640287178E8</ScaleDenominator> <!--<Resolution>156543.033928041</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>1</MatrixWidth> <MatrixHeight>1</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>1</ows:Identifier> <ScaleDenominator>2.795411320143589E8</ScaleDenominator> <!--<Resolution>78271.5169640205</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>2</MatrixWidth> <MatrixHeight>2</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>2</ows:Identifier> <ScaleDenominator>1.3977056600717944E8</ScaleDenominator> <!--<Resolution>39135.75848201025</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4</MatrixWidth> <MatrixHeight>4</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>3</ows:Identifier> <ScaleDenominator>6.988528300358972E7</ScaleDenominator> <!--<Resolution>19567.879241005125</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>8</MatrixWidth> <MatrixHeight>8</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>4</ows:Identifier> <ScaleDenominator>3.494264150179486E7</ScaleDenominator> <!--<Resolution>9783.939620502562</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>16</MatrixWidth> <MatrixHeight>16</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>5</ows:Identifier> <ScaleDenominator>1.747132075089743E7</ScaleDenominator> <!--<Resolution>4891.969810251281</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>32</MatrixWidth> <MatrixHeight>32</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>6</ows:Identifier> <ScaleDenominator>8735660.375448715</ScaleDenominator> <!--<Resolution>2445.9849051256406</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>64</MatrixWidth> <MatrixHeight>64</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>7</ows:Identifier> <ScaleDenominator>4367830.1877243575</ScaleDenominator> <!--<Resolution>1222.9924525628203</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>128</MatrixWidth> <MatrixHeight>128</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>8</ows:Identifier> <ScaleDenominator>2183915.0938621787</ScaleDenominator> <!--<Resolution>611.4962262814101</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>256</MatrixWidth> <MatrixHeight>256</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>9</ows:Identifier> <ScaleDenominator>1091957.5469310894</ScaleDenominator> <!--<Resolution>305.7481131407051</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>512</MatrixWidth> <MatrixHeight>512</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>10</ows:Identifier> <ScaleDenominator>545978.7734655447</ScaleDenominator> <!--<Resolution>152.87405657035254</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>1024</MatrixWidth> <MatrixHeight>1024</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>11</ows:Identifier> <ScaleDenominator>272989.38673277234</ScaleDenominator> <!--<Resolution>76.43702828517627</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>2048</MatrixWidth> <MatrixHeight>2048</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>12</ows:Identifier> <ScaleDenominator>136494.69336638617</ScaleDenominator> <!--<Resolution>38.218514142588134</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4096</MatrixWidth> <MatrixHeight>4096</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>13</ows:Identifier> <ScaleDenominator>68247.34668319309</ScaleDenominator> <!--<Resolution>19.109257071294067</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>8192</MatrixWidth> <MatrixHeight>8192</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>14</ows:Identifier> <ScaleDenominator>34123.67334159654</ScaleDenominator> <!--<Resolution>9.554628535647034</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>16384</MatrixWidth> <MatrixHeight>16384</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>15</ows:Identifier> <ScaleDenominator>17061.83667079827</ScaleDenominator> <!--<Resolution>4.777314267823517</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>32768</MatrixWidth> <MatrixHeight>32768</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>16</ows:Identifier> <ScaleDenominator>8530.918335399136</ScaleDenominator> <!--<Resolution>2.3886571339117584</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>65536</MatrixWidth> <MatrixHeight>65536</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>17</ows:Identifier> <ScaleDenominator>4265.459167699568</ScaleDenominator> <!--<Resolution>1.1943285669558792</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>131072</MatrixWidth> <MatrixHeight>131072</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>18</ows:Identifier> <ScaleDenominator>2132.729583849784</ScaleDenominator> <!--<Resolution>0.5971642834779396</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>262144</MatrixWidth> <MatrixHeight>262144</MatrixHeight> </TileMatrix> </TileMatrixSet> </Contents> <ServiceMetadataURL xlink:href="http://192.168.12.230:8090/iserver/services/map-China1003/wmts100/1.0.0/WMTSCapabilities.xml"/> </Capabilities>';
+var wmtsInfo2 = `<Capabilities
+xmlns="http://www.opengis.net/wmts/1.0"
+xmlns:gml="http://www.opengis.net/gml"
+xmlns:ows="http://www.opengis.net/ows/1.1"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+version="1.0.0" >
+<ows:OperationsMetadata>
+  <ows:Operation name="GetCapabilities">
+    <ows:DCP>
+      <ows:HTTP>
+        <ows:Get xlink:href="https://fake/iserver/services/map-china400/wmts100?">
+          <ows:Constraint name="GetEncoding">
+            <ows:AllowedValues>
+              <ows:Value>RESTFUL</ows:Value>
+            </ows:AllowedValues>
+          </ows:Constraint>
+        </ows:Get>
+        <ows:Get xlink:href="https://fake/iserver/services/map-china400/wmts100?">
+          <ows:Constraint name="GetEncoding">
+            <ows:AllowedValues>
+              <ows:Value>KVP</ows:Value>
+            </ows:AllowedValues>
+          </ows:Constraint>
+        </ows:Get>
+      </ows:HTTP>
+    </ows:DCP>
+    <ows:Parameter name="AcceptFormats">
+      <ows:AllowedValues>
+        <ows:Value>application/xml</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+  </ows:Operation>
+  <ows:Operation name="GetTile">
+    <ows:DCP>
+      <ows:HTTP>
+        <ows:Get xlink:href="https://fake/iserver/services/map-china400/wmts100?">
+          <ows:Constraint name="GetEncoding">
+            <ows:AllowedValues>
+              <ows:Value>RESTFUL</ows:Value>
+            </ows:AllowedValues>
+          </ows:Constraint>
+        </ows:Get>
+        <ows:Get xlink:href="https://fake/iserver/services/map-china400/wmts100?">
+          <ows:Constraint name="GetEncoding">
+            <ows:AllowedValues>
+              <ows:Value>KVP</ows:Value>
+            </ows:AllowedValues>
+          </ows:Constraint>
+        </ows:Get>
+      </ows:HTTP>
+    </ows:DCP>
+  </ows:Operation>
+</ows:OperationsMetadata>
+<Contents>
+  <Layer>
+    <ows:Title>China</ows:Title>
+    <ows:Identifier>China</ows:Identifier>
+    <ows:BoundingBox crs="urn:ogc:def:crs:EPSG::3857">
+      <ows:LowerCorner>-2.0037508342789248E7 -2.003750834278914E7</ows:LowerCorner>
+      <ows:UpperCorner>2.0037508342789244E7 2.0037508342789087E7</ows:UpperCorner>
+    </ows:BoundingBox>
+    <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
+      <ows:LowerCorner>-180.0 -85.05112877980652</ows:LowerCorner>
+      <ows:UpperCorner>180.0 85.05112877980648</ows:UpperCorner>
+    </ows:WGS84BoundingBox>
+    <Style isDefault="true">
+      <ows:Identifier>default</ows:Identifier>
+    </Style>
+    <Format>image/png</Format>
+    <InfoFormat>application/xml</InfoFormat>
+    <TileMatrixSetLink>
+      <TileMatrixSet>Custom_China</TileMatrixSet>
+    </TileMatrixSetLink>
+    <ResourceURL format="image/png" resourceType="tile" template="https://fake/iserver/services/map-china400/wmts100/China/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+    <ResourceURL format="application/xml" resourceType="FeatureInfo" template="https://fake/iserver/services/map-china400/wmts100/China/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}/{J}/{I}.xml"/>
+  </Layer>
+  <TileMatrixSet>
+    <ows:Identifier>Custom_China</ows:Identifier>
+    <ows:SupportedCRS>urn:ogc:def:crs:EPSG::3857</ows:SupportedCRS>
+    <WellKnownScaleSet>Custom</WellKnownScaleSet>
+    <!-- The dpi of current tile matrix set is 90.7142857142857,the following scales has calculated based on it. -->
+    <TileMatrix>
+      <ows:Identifier>0</ows:Identifier>
+      <ScaleDenominator>5.590822640287174E8</ScaleDenominator>
+      <!-- <Resolution>156543.0339280409</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>1</MatrixWidth>
+      <MatrixHeight>1</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>1</ows:Identifier>
+      <ScaleDenominator>2.795411320143592E8</ScaleDenominator>
+      <!-- <Resolution>78271.51696402059</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>2</MatrixWidth>
+      <MatrixHeight>2</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>2</ows:Identifier>
+      <ScaleDenominator>1.397705660071796E8</ScaleDenominator>
+      <!-- <Resolution>39135.75848201029</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>4</MatrixWidth>
+      <MatrixHeight>4</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>3</ows:Identifier>
+      <ScaleDenominator>6.988528300358969E7</ScaleDenominator>
+      <!-- <Resolution>19567.879241005117</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>8</MatrixWidth>
+      <MatrixHeight>8</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>4</ows:Identifier>
+      <ScaleDenominator>3.4942641501794845E7</ScaleDenominator>
+      <!-- <Resolution>9783.939620502559</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>16</MatrixWidth>
+      <MatrixHeight>16</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>5</ows:Identifier>
+      <ScaleDenominator>1.7471320750897378E7</ScaleDenominator>
+      <!-- <Resolution>4891.969810251267</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>32</MatrixWidth>
+      <MatrixHeight>32</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>6</ows:Identifier>
+      <ScaleDenominator>8735660.375448707</ScaleDenominator>
+      <!-- <Resolution>2445.9849051256388</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>64</MatrixWidth>
+      <MatrixHeight>64</MatrixHeight>
+    </TileMatrix>
+    <TileMatrix>
+      <ows:Identifier>7</ows:Identifier>
+      <ScaleDenominator>4367830.187724358</ScaleDenominator>
+      <!-- <Resolution>1222.9924525628205</Resolution> -->
+      <TopLeftCorner>-2.0037508342789248E7 2.0037508342789087E7</TopLeftCorner>
+      <TileWidth>256</TileWidth>
+      <TileHeight>256</TileHeight>
+      <MatrixWidth>128</MatrixWidth>
+      <MatrixHeight>128</MatrixHeight>
+    </TileMatrix>
+  </TileMatrixSet>
+</Contents>
+<ServiceMetadataURL xlink:href="https://fake/iserver/services/map-china400/wmts100/1.0.0/WMTSCapabilities.xml"/>
+</Capabilities>`;
 
 var wmtsInfoCustom = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://192.168.12.230:8090/iserver/services/map-China1003/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"> <Contents> <TileMatrixSet> <ows:Identifier>Custom_China_4326</ows:Identifier> <ows:SupportedCRS>urn:ogc:def:crs:EPSG::3857</ows:SupportedCRS> <WellKnownScaleSet>Custom</WellKnownScaleSet> <!--The dpi of current tile matrix set assumes 0.28mm as the physical distance of a pixel,which defined by OGC specification.--><TileMatrix> <ows:Identifier>2</ows:Identifier> <ScaleDenominator>5.590822640287176E8</ScaleDenominator> <!--<Resolution>39135.75848201025</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4</MatrixWidth> <MatrixHeight>4</MatrixHeight> </TileMatrix><TileMatrix> <ows:Identifier>2</ows:Identifier> <ScaleDenominator>2.795411320143588E8</ScaleDenominator> <!--<Resolution>39135.75848201025</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4</MatrixWidth> <MatrixHeight>4</MatrixHeight> </TileMatrix><TileMatrix> <ows:Identifier>2</ows:Identifier> <ScaleDenominator>1.397705660071794E8</ScaleDenominator> <!--<Resolution>39135.75848201025</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>4</MatrixWidth> <MatrixHeight>4</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>3</ows:Identifier> <ScaleDenominator>6.98852830035897E7</ScaleDenominator> <!--<Resolution>19567.879241005125</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>8</MatrixWidth> <MatrixHeight>8</MatrixHeight> </TileMatrix> <TileMatrix> <ows:Identifier>4</ows:Identifier> <ScaleDenominator>3.494264150179485E7</ScaleDenominator> <!--<Resolution>9783.939620502562</Resolution>-->  <TopLeftCorner>-2.0037508342787E7 2.0037508342787E7</TopLeftCorner> <TileWidth>256</TileWidth> <TileHeight>256</TileHeight> <MatrixWidth>16</MatrixWidth> <MatrixHeight>16</MatrixHeight> </TileMatrix> </TileMatrixSet> </Contents> <ServiceMetadataURL xlink:href="http://192.168.12.230:8090/iserver/services/map-China1003/wmts100/1.0.0/WMTSCapabilities.xml"/> </Capabilities>';
 

@@ -900,95 +900,33 @@ describe('openlayers_WebMap', () => {
         });*/
 
     it('createWMTSSource', (done) => {
-        //第二次请求wmts参数值太大
+        let options = {
+            server: defaultServer,
+            successCallback,
+            errorCallback: function () { }
+        };
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(defaultServer);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.mapParams.projection).toBe('EPSG:3857');
+            expect(datavizWebmap.map.getLayers().getArray()[1].getSource().getUrls()[0] ).toBe('https://fake/iserver/services/map-china400/wmts100?');
+            done();
+        }
+        spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+            return true;
+        });
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMTS;
                 return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("/iserver/services/maps/wmts100?")) {
+            } else if (url.indexOf("iserver/services/maps/wmts100?&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetCapabilities")>-1) {
                 return Promise.resolve(new Response(wmtsInfo2));
             }
             return Promise.resolve();
         });
-        var datavizWebmap = new WebMap(id, { server: defaultServer });
-        var layerInfo = JSON.parse(wmtsInfo);
-        datavizWebmap.baseProjection = "EPSG:4326";
-        datavizWebmap.createWMTSSource(layerInfo);
-
-        setTimeout(() => {
-            expect(datavizWebmap.server).toBe(defaultServer);
-            done();
-        }, 0);
+        var datavizWebmap = new WebMap(id, options);
     });
-
-    it('createWMTSSource1', (done) => {
-        //第二次请求wmts参数值太大
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
-            if (url.indexOf('map.json') > -1) {
-                var mapJson = datavizWebMap_WMTS;
-                return Promise.resolve(new Response(mapJson));
-            } else if (url.includes("/iserver/services/maps/wmts100?")) {
-                return Promise.resolve(new Response(wmtsInfo2));
-            }
-            return Promise.resolve();
-        });
-        var datavizWebmap = new WebMap(id, { server: defaultServer });
-        var layerInfo = JSON.parse(wmtsInfo1);
-        datavizWebmap.baseProjection = "EPSG:4326";
-        datavizWebmap.createWMTSSource(layerInfo);
-
-        setTimeout(() => {
-            expect(datavizWebmap.server).toBe(defaultServer);
-            done();
-        }, 0);
-    });
-
-    // 被写在styleUtils
-    // it('setColorToCanvas', (done) => {
-    //     spyOn(FetchRequest, 'get').and.callFake((url) => {
-    //         if (url.indexOf('map.json')>-1) {
-    //             var mapJson = datavizWebMap_WMTS;
-    //             return Promise.resolve(new Response(mapJson));
-    //         }
-    //         return Promise.resolve();
-    //     });
-    //     var datavizWebmap = new WebMap(id, { successCallback });
-    //     var canvas = document.createElement('canvas');
-    //     var params = {
-    //         fillColor: '#0083cb',
-    //         fillOpacity: '1',
-    //         strokeColor: '#56b781',
-    //         strokeOpacity: '0.2',
-    //         strokeWidth: '6'
-    //     };
-    //     function successCallback() {
-    //         expect(datavizWebmap.setColorToCanvas(canvas, params)).toBeDefined();
-    //         done();
-    //     }
-    // });
-
-    // it('getSymbolStyle', (done) => {
-    //     spyOn(FetchRequest, 'get').and.callFake((url) => {
-    //         if (url.indexOf('map.json')>-1) {
-    //             var mapJson = datavizWebMap_WMTS;
-    //             return Promise.resolve(new Response(mapJson));
-    //         }
-    //         return Promise.resolve();
-    //     });
-    //     var datavizWebmap = new WebMap(id, { successCallback });
-    //     var params = {
-    //         unicode: "&#xe694",
-    //         fillColor: '#ffffff',
-    //         fillOpacity: '1',
-    //         strokeColor: '#56b781',
-    //         strokeOpacity: '0.2',
-    //         strokeWidth: '6'
-    //     };
-    //     function successCallback() {
-    //         expect(datavizWebmap.getSymbolStyle(params)).toBeDefined();
-    //         done();
-    //     }
-    // });
 
     it('changeWeight', (done) => {
         spyOn(FetchRequest, 'get').and.callFake((url) => {
