@@ -16,7 +16,7 @@ import {
     StyleUtils
 } from "../../../src/openlayers/core/StyleUtils";
 
-
+import { Object as obj } from 'ol';
 import Overlay from 'ol/Overlay';
 import * as olControl from 'ol/control';
 import Feature from 'ol/Feature';
@@ -825,14 +825,12 @@ describe('openlayers_WebMap', () => {
             successCallback,
             errorCallback: function () { }
         };
-        let wmtsData = '<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://localhost:9876/iserver/services/map-world/wmts100/wmts,1.0,wmtsGetCapabilities_response.xsd"><<ows:OperationsMetadata><<ows:Operation name="GetCapabilities"></ows:Operation></ows:OperationsMetadata></Capabilities>';
-        // let requestUrl = `${proxy}${encodeURIComponent('http://localhost:9876/iserver/services/map-world/wms130/World?MAP=World&&SERVICE=WMS&REQUEST=GetCapabilities')}`
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url.indexOf('map.json') > -1) {
                 var mapJson = datavizWebMap_WMS;
                 return Promise.resolve(new Response(mapJson));
             } else if (url.indexOf('GetCapabilities')) {
-                return Promise.resolve(new Response(wmtsData));
+                return Promise.resolve(new Response(wms_capabilities));
             }
             return Promise.resolve();
         });
@@ -1542,6 +1540,42 @@ describe('openlayers_WebMap', () => {
             expect(datavizWebmap.map.getLayers().getArray()[1].getProperties().name).toBe('北京市轨道');
             expect(datavizWebmap.map.getLayers().getArray()[1].getSource().getFeatures().length).toBe(1);
             expect(datavizWebmap.map.getLayers().getArray().length).toBe(2);
+            done();
+        }
+    });
+    it('createLayer_migration', (done) => {
+        let add = false;
+        class ol3Echarts extends obj{
+            appendTo(){add = true;return true }
+        }
+        window.ol3Echarts = ol3Echarts;
+        let options = {
+            server: server,
+            successCallback,
+            errorCallback: function () { }
+        };
+        spyOn(CommonUtil, 'isInTheSameDomain').and.callFake((url) => {
+            return true;
+        });
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = migrationLayer;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('1184572358') > -1) {
+                return Promise.resolve(new Response(csvData_migration));
+            }
+            return Promise.resolve();
+        });
+
+        var datavizWebmap = new WebMap(id, options);
+
+        function successCallback() {
+            expect(datavizWebmap.server).toBe(server);
+            expect(datavizWebmap.errorCallback).toBeDefined();
+            expect(datavizWebmap.credentialKey).toBeUndefined();
+            expect(datavizWebmap.credentialValue).toBeUndefined();
+            expect(datavizWebmap.map.getLayers().getArray()[0].getProperties().name).toBe('中国暗色地图');
+            expect(add).toBeTrue()
             done();
         }
     });
