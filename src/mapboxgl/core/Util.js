@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import "../core/Base";
+import mapboxgl from 'mapbox-gl';
 import { Bounds } from "@supermap/iclient-common/commontypes/Bounds";
 import { Point as GeometryPoint } from "@supermap/iclient-common/commontypes/geometry/Point";
 import { Polygon } from "@supermap/iclient-common/commontypes/geometry/Polygon";
@@ -54,7 +55,10 @@ export const Util = {
             //左下右上
             return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
-        return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+        if (bounds instanceof mapboxgl.LngLatBounds) {
+          return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+        }
+        return bounds;
     },
 
     toSuperMapPoint(lnglat) {
