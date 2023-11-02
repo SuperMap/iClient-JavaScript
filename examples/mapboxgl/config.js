@@ -83,6 +83,13 @@ var exampleConfig = {
                       version: '11.1.1',
                       thumbnail: "layersLegend.png",
                       fileName: "01_layersLegend"
+                    },
+                    {
+                      name: "海图",
+                      name_en: "Chart",
+                      version: '11.2.0',
+                      thumbnail: "chart.png",
+                      fileName: "01_chartService"
                     }
                 ]
             },

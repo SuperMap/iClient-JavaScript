@@ -1,11 +1,11 @@
-import { ChartService } from '../../../src/maplibregl/services/ChartService';
+import { ChartService } from '../../../src/openlayers/services/ChartService';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermap/iclient-common';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 
 var url = GlobeParameter.chartServiceURL;
 const options = {};
-describe('maplibregl_ChartService', () => {
+describe('openlayers_ChartService', () => {
     var serviceResult;
     var originalTimeout;
     beforeEach(() => {

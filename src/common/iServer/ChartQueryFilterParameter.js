@@ -78,7 +78,7 @@ export class ChartQueryFilterParameter {
         json += "\"isQueryLine\":" + this.isQueryLine + ",";
         json += "\"isQueryRegion\":" + this.isQueryRegion + ",";
         if (this.attributeFilter) {
-            json += "\"attributeFilter\": \"" + this.attributeFilter + "\",";
+            json += "\"attributeFilter\": \"" + this.attributeFilter.replace(/"/g, "'") + "\",";
         }
         json += "\"chartFeatureInfoSpecCode\":" + this.chartFeatureInfoSpecCode;
         json = "{" + json + "}";

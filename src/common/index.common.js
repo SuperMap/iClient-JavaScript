@@ -74,7 +74,9 @@ import {
     WebScaleUnit,
     DataItemType,
     BoundsType,
-    CellSizeType
+    CellSizeType,
+    ColourModeChart,
+    DisplayModeChart
 } from './REST';
 import {
     GeometryCollection,
@@ -134,6 +136,7 @@ import {
     BurstPipelineAnalystParameters,
     ChartQueryFilterParameter,
     ChartQueryParameters,
+    ChartSetting,
     ClipParameter,
     ColorDictionary,
     CommonServiceBase,
@@ -457,7 +460,9 @@ export {
     WebScaleUnit,
     DataItemType,
     BoundsType,
-    CellSizeType
+    CellSizeType,
+    ColourModeChart,
+    DisplayModeChart
 };
 export {
     GeometryCollection,
@@ -526,6 +531,7 @@ export {
     BurstPipelineAnalystParameters,
     ChartQueryFilterParameter,
     ChartQueryParameters,
+    ChartSetting,
     ClipParameter,
     ColorDictionary,
     CommonServiceBase,

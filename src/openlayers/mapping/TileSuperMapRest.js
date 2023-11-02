@@ -35,6 +35,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {string} [options.tileProxy] - 服务代理地址。
  * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
  * @extends {ol.source.TileImage}
  * @usage
  */
@@ -130,6 +131,9 @@ export class TileSuperMapRest extends TileImage {
             }
             if (options.rasterfunction) {
                 params['rasterfunction'] = JSON.stringify(options.rasterfunction);
+            }
+            if (options.chartSetting) {
+                params["chartSetting"] = JSON.stringify(options.chartSetting);
             }
 
             return params;
@@ -354,5 +358,16 @@ export class TileSuperMapRest extends TileImage {
             resolutions: tilegrid.getResolutions(),
             tileSize: tilegrid.getTileSize()
         });
+    }
+
+    /**
+     * @function  TileSuperMapRest.updateParams
+     * @description 更新参数。
+     * @param {Object} params - 参数对象。
+     */
+    updateParams(params) {
+      Object.assign(this.requestParams, params);
+      this._paramsChanged = true;
+      this.refresh();
     }
 }

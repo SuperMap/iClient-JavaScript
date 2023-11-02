@@ -11,6 +11,8 @@ import './common/iServer/BufferSettingSpec.js';
 import './common/iServer/BurstPipelineAnalystServiceSpec.js';
 import './common/iServer/ChartQueryFilterParameterSpec.js';
 import './common/iServer/ChartQueryParametersSpec.js';
+import './common/iServer/ChartAcronymClassifyServiceSpec.js';
+import './common/iServer/ChartSettingSpec.js';
 import './common/iServer/ClipParameterSpec.js';
 import './common/iServer/ComputeWeightMatrixServiceSpec.js';
 import './common/iServer/DensityAnalystServiceSpec.js';

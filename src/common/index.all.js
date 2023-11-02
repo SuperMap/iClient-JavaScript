@@ -9,6 +9,7 @@ export {
   BuffersAnalystJobsService,
   BurstPipelineAnalystService,
   ChartFeatureInfoSpecsService,
+  ChartAcronymClassifyService,
   ChartQueryService,
   ComputeWeightMatrixService,
   DatasetService,

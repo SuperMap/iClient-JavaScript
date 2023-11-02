@@ -1,6 +1,7 @@
 import { TileSuperMapRest } from '../../../src/openlayers/mapping/TileSuperMapRest';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
+import {ChartSetting} from '../../../src/common/iServer/ChartSetting';
 import {getQueryValue} from '../../tool/utils';
 
 import Point from 'ol/geom/Point';
@@ -103,4 +104,47 @@ describe('openlayers_TileSuperMapRest', () => {
         expect(hillshadeParameter.azimuth).toBe(200);
         expect(hillshadeParameter.zFactor).toBe(1);
     });
+    it('tileUrlFunction_chartSetting', () => {
+      var tileOptions = {
+          url: url,
+          prjCoordSys: {
+              epsgCode: 4326
+          },
+          chartSetting: new ChartSetting({
+            colourModeChart: ol.supermap.ColourModeChart.DUSK
+          })
+      };
+      var tileSource = new TileSuperMapRest(tileOptions);
+      var pixelRatio = '245';
+      var coords = new Point(120.14, 30.24);
+      var tileUrl = tileSource.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
+      expect(tileUrl).not.toBeNull();
+      const chartSetting = getQueryValue(tileUrl,'chartSetting');
+      expect(chartSetting).not.toBeNull;
+      const chartSettingParameter = JSON.parse(decodeURIComponent(chartSetting));
+      expect(chartSettingParameter.colourModeChart).toBe('DUSK');
+  });
+    it('updateParams', () => {
+      var tileOptions = {
+          url: url,
+          prjCoordSys: {
+              epsgCode: 4326
+          },
+          chartSetting: new ChartSetting({
+            colourModeChart: ol.supermap.ColourModeChart.DUSK
+          })
+      };
+      var tileSource = new TileSuperMapRest(tileOptions);
+      var pixelRatio = '245';
+      var coords = new Point(120.14, 30.24);
+      var tileUrl = tileSource.tileUrlFunction(coords, pixelRatio, olProj.get('EPSG:4326'));
+      expect(tileUrl).not.toBeNull();
+      const chartSetting = getQueryValue(tileUrl,'chartSetting');
+      expect(chartSetting).not.toBeNull;
+      const newChartSetting = new ChartSetting({
+        colourModeChart: ol.supermap.ColourModeChart.NIGHT
+      });
+      tileSource.updateParams({chartSetting: newChartSetting})
+      expect(tileSource.requestParams.chartSetting.colourModeChart).toBe('NIGHT');
+  });
 });

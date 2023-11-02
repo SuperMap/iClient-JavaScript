@@ -2378,6 +2378,65 @@ var CellSizeType = {
   /** 输入栅格数据集中单元格最小值作为单元格大小类型。 */
   MIN : "MIN"
 }
+
+/**
+ * @enum ColourModeChart
+ * @description 颜色模式的类型。
+ * @category BaseTypes Constant
+ * @version 11.2.0
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ColourModeChart.DAY_BRIGHT;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ColourModeChart } from '{npm}';
+ *
+ * const result = ColourModeChart.DAY_BRIGHT;
+ * ```
+ */
+var ColourModeChart = {
+  /** 白昼模式。 */
+  DAY_BRIGHT: "DAY_BRIGHT",
+  /** 晨昏模式。*/
+  DUSK : "DUSK",
+  /** 夜晚模式。 */
+  NIGHT : "NIGHT"
+}
+
+/**
+ * @enum DisplayModeChart
+ * @description 海图显示模式的类型。
+ * @category BaseTypes Constant
+ * @version 11.2.0
+ * @type {string}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DisplayModeChart.STANDARD;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DisplayModeChart } from '{npm}';
+ *
+ * const result = DisplayModeChart.STANDARD;
+ * ```
+ */
+var DisplayModeChart = {
+  /** 基本显示模式 */
+  BASIC: "BASIC",
+  /** 标准显示模式*/
+  STANDARD : "STANDARD",
+  /** 其他显示模式。 */
+  OTHER : "OTHER"
+}
+
 export {
     DataFormat,
     ServerType,
@@ -2450,5 +2509,7 @@ export {
     WebScaleType,
     WebScaleUnit,
     BoundsType,
-    CellSizeType
+    CellSizeType,
+    ColourModeChart,
+    DisplayModeChart
 }

@@ -140,6 +140,7 @@ import {
   BurstPipelineAnalystParameters,
   ChartQueryFilterParameter,
   ChartQueryParameters,
+  ChartSetting,
   ClipParameter,
   ColorDictionary,
   CommonServiceBase,
@@ -375,6 +376,7 @@ import {
   BuffersAnalystJobsService,
   BurstPipelineAnalystService,
   ChartFeatureInfoSpecsService,
+  ChartAcronymClassifyService,
   ChartQueryService,
   ComputeWeightMatrixService,
   DatasetService,
@@ -453,7 +455,9 @@ import {
   ImageService,
   KnowledgeGraph,
   BoundsType,
-  CellSizeType
+  CellSizeType,
+  ColourModeChart,
+  DisplayModeChart
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -573,9 +577,11 @@ SuperMap.BufferSetting = BufferSetting;
 SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;
 SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;
 SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
+SuperMap.ChartAcronymClassifyService = ChartAcronymClassifyService;
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;
 SuperMap.ChartQueryParameters = ChartQueryParameters;
 SuperMap.ChartQueryService = ChartQueryService;
+SuperMap.ChartSetting = ChartSetting;
 SuperMap.ClipParameter = ClipParameter;
 SuperMap.ColorDictionary = ColorDictionary;
 SuperMap.CommonServiceBase = CommonServiceBase;
@@ -955,5 +961,7 @@ SuperMap.WebScaleUnit = WebScaleUnit;
 SuperMap.KnowledgeGraph = KnowledgeGraph
 SuperMap.BoundsType = BoundsType
 SuperMap.CellSizeType = CellSizeType
+SuperMap.ColourModeChart = ColourModeChart;
+SuperMap.DisplayModeChart = DisplayModeChart;
 
 export * from './index.all';

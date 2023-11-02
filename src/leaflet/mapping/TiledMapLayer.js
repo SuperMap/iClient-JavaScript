@@ -1,7 +1,7 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import L, { Util as LUtil } from 'leaflet';
+ import L from 'leaflet';
  import '../core/Base';
  import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
  import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
@@ -40,6 +40,7 @@
  * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权信息。
  * @param {Array.<number>} [options.subdomains] - 子域名数组。
+ * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
  * @fires TiledMapLayer#tilesetsinfoloaded
  * @fires TiledMapLayer#tileversionschanged
  * @usage
@@ -282,6 +283,17 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         return false;
     },
+    /**
+     * @function  TileSuperMapRest.updateParams
+     * @description 更新参数。
+     * @param {Object} params - 参数对象。
+     */
+    updateParams: function(params) {
+      Object.assign(this.requestParams, params);
+      this._paramsChanged = true;
+      this.redraw();
+      this._paramsChanged = false;
+    },
 
     _getLayerUrl: function () {
         if (this._paramsChanged) {
@@ -293,7 +305,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     _createLayerUrl: function () {
         let layerUrl = CommonUtil.urlPathAppend(this._url, `tileImage.${this.options.format}`);
         this.requestParams = this.requestParams || this._getAllRequestParams();
-        layerUrl = CommonUtil.urlAppend(layerUrl, LUtil.getParamString(this.requestParams));
+        layerUrl = CommonUtil.urlAppend(layerUrl, CommonUtil.getParameterString(this.requestParams));
         layerUrl = SecurityManager.appendCredential(layerUrl);
         this._layerUrl = layerUrl;
         return layerUrl;
@@ -359,6 +371,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         if (options.rasterfunction) {
             params["rasterfunction"] = JSON.stringify(options.rasterfunction);
+        }
+        if (options.chartSetting) {
+            params["chartSetting"] = JSON.stringify(options.chartSetting);
         }
 
         return params;

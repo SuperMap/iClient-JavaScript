@@ -1,11 +1,11 @@
-import { ChartService } from '../../../src/maplibregl/services/ChartService';
+import { chartService } from '../../../src/leaflet/services/ChartService';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermap/iclient-common';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 
 var url = GlobeParameter.chartServiceURL;
 const options = {};
-describe('maplibregl_ChartService', () => {
+describe('leaflet_ChartService', () => {
     var serviceResult;
     var originalTimeout;
     beforeEach(() => {
@@ -22,7 +22,7 @@ describe('maplibregl_ChartService', () => {
             queryMode: "ChartAttributeQuery",
             bounds: new Bounds(-180, -90, 180, 90),
         });
-        var service = new ChartService(url, options);
+        var service = chartService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
             expect(testUrl).toBe(url + "/queryResults?returnContent=true");
@@ -46,7 +46,8 @@ describe('maplibregl_ChartService', () => {
         });
     });
     it('getChartFeatureInfo', (done) => {
-        var service = new ChartService(url, options);
+        var service = chartService(url, options);
+
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url + "/chartFeatureInfoSpecs");
@@ -70,7 +71,7 @@ describe('maplibregl_ChartService', () => {
         });
     });
     it('getChartAcronymClassify', (done) => {
-        var service = new ChartService(url, options);
+        var service = chartService(url, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("GET");
             expect(testUrl).toBe(url + "/chartAcronymClassify");
@@ -94,7 +95,7 @@ describe('maplibregl_ChartService', () => {
         });
     });
     it('_processFormat', (done) => {
-        var service = new ChartService(url, {});
+        var service = chartService(url, {});
         expect(service._processFormat()).not.toBeFalsy();
         expect(service._processFormat('json')).toBeTruthy();
         done();

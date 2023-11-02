@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
+import {Util} from '../core/Util';
 import { DataFormat } from '@supermap/iclient-common/REST';
 import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
 
@@ -14,8 +15,11 @@ import { ChartService as CommonChartService } from '@supermap/iclient-common/iSe
  * @modulecategory Services
  * @extends {ServiceBase}
  * @example
- * new ChartService(url)
- *  .queryChart(param,function(result){
+ * new ChartService(url,{
+ *    fieldNameFormatter: function(fieldName){
+ *      return fieldName + 'test'
+ *    }
+ * }).queryChart(param,function(result){
  *     //doSomething
  * })
  * @param {string} url - 服务地址。
@@ -24,6 +28,7 @@ import { ChartService as CommonChartService } from '@supermap/iclient-common/iSe
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {function} [options.fieldNameFormatter] - 对查询返回结果的字段名进行自定义。
  * @usage
  */
 export class ChartService extends ServiceBase {
@@ -41,6 +46,7 @@ export class ChartService extends ServiceBase {
      * @returns {Promise} Promise 对象。
      */
     queryChart(params, callback, resultFormat) {
+      params = this._processParams(params);
       return this._chartService.queryChart(params, callback, resultFormat);
     }
 
@@ -52,6 +58,32 @@ export class ChartService extends ServiceBase {
      */
     getChartFeatureInfo(callback) {
       return this._chartService.getChartFeatureInfo(callback);
+    }
+
+    /**
+     * @function ChartService.prototype.getChartAcronymClassify
+     * @version 11.2.0
+     * @description 获取海图产品规范物标分组信息服务。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getChartAcronymClassify(callback) {
+      return this._chartService.getChartAcronymClassify(callback);
+    }
+
+    _processParams(params) {
+      if (!params) {
+          return {};
+      }
+      params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+      if (params.chartQueryFilterParameters && !Util.isArray(params.chartQueryFilterParameters)) {
+          params.chartQueryFilterParameters = [params.chartQueryFilterParameters];
+      }
+
+      if (params.bounds) {
+          params.bounds = Util.toSuperMapBounds(params.bounds);
+      }
+      return params;
     }
 
     _processFormat(resultFormat) {

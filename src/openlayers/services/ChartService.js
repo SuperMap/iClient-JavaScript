@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+import { DataFormat } from '@supermap/iclient-common/REST';
 import {ServiceBase} from './ServiceBase';
 import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
 
@@ -14,15 +15,20 @@ import { ChartService as CommonChartService } from '@supermap/iclient-common/iSe
  * @modulecategory Services
  * @extends {ServiceBase}
  * @example
- *      new ChartService(url).queryChart(param,function(result){
- *          //doSomething
- *      })
+ * new ChartService(url,{
+ *    fieldNameFormatter: function(fieldName){
+ *      return fieldName + 'test'
+ *    }
+ * }).queryChart(param,function(result){
+ *     //doSomething
+ * })
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {function} [options.fieldNameFormatter] - 对查询返回结果的字段名进行自定义。
  * @usage
  */
 export class ChartService extends ServiceBase {
@@ -55,6 +61,21 @@ export class ChartService extends ServiceBase {
       return this._chartService.getChartFeatureInfo(callback);
     }
 
+    /**
+     * @function ChartService.prototype.getChartAcronymClassify
+     * @version 11.2.0
+     * @description 获取海图产品规范物标分组信息服务。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getChartAcronymClassify(callback) {
+      return this._chartService.getChartAcronymClassify(callback);
+    }
+
+    _processFormat(resultFormat) {
+      return resultFormat ? resultFormat : DataFormat.GEOJSON;
+    }
+
     _processParams(params) {
         if (!params) {
             return {};
@@ -71,5 +92,6 @@ export class ChartService extends ServiceBase {
                 params.bounds[3]
             );
         }
+        return params;
     }
 }

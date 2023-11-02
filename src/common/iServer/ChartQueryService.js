@@ -7,6 +7,7 @@ import {CommonServiceBase} from './CommonServiceBase';
 import {QueryParameters} from './QueryParameters';
 import {ChartQueryParameters} from './ChartQueryParameters';
 import {GeoJSON} from '../format/GeoJSON';
+import fieldNames from './types'
 
 /**
  * @class ChartQueryService
@@ -22,6 +23,7 @@ import {GeoJSON} from '../format/GeoJSON';
  * @param {DataFormat} [options.format] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为"ISERVER","GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @param {function} [options.fieldNameFormatter] - 对查询返回结果的字段名进行自定义。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -124,6 +126,22 @@ export class ChartQueryService extends CommonServiceBase {
     }
 
 
+    // 将features的字段名用内置中文或传递的fieldNamesKeys参数值替换
+    _tranformFeatureField(features, fieldNameFormatter) {
+      features.forEach(feature => {
+        feature.fieldNames.forEach((fieldName, i) => {
+          feature.fieldNames[i] = typeof fieldNameFormatter === 'function' && fieldNameFormatter(fieldName) || fieldNames[fieldName] || fieldName;
+        });
+      });
+    }
+
+    _transformFeatures(featuresParent, fieldNameFormatter, format) {
+      this._tranformFeatureField(featuresParent.features, fieldNameFormatter);
+      if(format === DataFormat.GEOJSON) {
+        featuresParent.features = new GeoJSON().toGeoJSON(featuresParent.features);
+      }
+    }
+
     /**
      * @function ChartQueryService.prototype.transformResult
      * @description 状态完成时转换结果。
@@ -134,15 +152,22 @@ export class ChartQueryService extends CommonServiceBase {
     transformResult(result, options) {
         var me = this;
         result = Util.transformResult(result);
-        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
+        var fieldNameFormatter = me.fieldNameFormatter;
+        if (result && result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+                // 属性查询和范围查询的返回结果
                 if (recordsets[i].features) {
-                    var geoJSONFormat = new GeoJSON();
-                    recordsets[i].features = geoJSONFormat.toGeoJSON(recordsets[i].features);
+                    this._transformFeatures(recordsets[i], fieldNameFormatter, me.format)
+                }
+                // 点选查询的返回结果
+                if(recordsets[i].chartFeatureRecordsets) {
+                    recordsets[i].chartFeatureRecordsets.forEach(chartFeatureRecordset => {
+                      this._transformFeatures(chartFeatureRecordset, fieldNameFormatter, me.format)
+                    });
                 }
             }
-
         }
+
         return { result, options };
     }
 

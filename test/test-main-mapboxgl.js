@@ -70,6 +70,7 @@ import './mapboxgl/services/DatasetServiceSpec.js';
 import './mapboxgl/services/DatasourceServiceSpec.js';
 import './mapboxgl/services/ImageServiceSpec';
 import './mapboxgl/services/ImageCollectionServiceSpec';
+import './mapboxgl/services/ChartServiceSpec';
 
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';
