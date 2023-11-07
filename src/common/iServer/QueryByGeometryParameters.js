@@ -26,7 +26,7 @@ import {SpatialQueryMode} from '../REST';
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnContent=true] - 是否立即返回新创建资源的表述还是返回新资源的 URI。
  * @param {boolean} [options.returnFeatureWithFieldCaption = false] - 返回的查询结果要素字段标识是否为字段别名。为 false 时，返回的是字段名；为 true 时，返回的是字段别名。
- * @param {SpatialQueryMode} [spatialQueryMode=SpatialQueryMode.INTERSECT] - 空间查询模式。
+ * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.INTERSECT] - 空间查询模式。
  * @usage
  */
 export class QueryByGeometryParameters extends QueryParameters {
