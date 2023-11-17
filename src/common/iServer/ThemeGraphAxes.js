@@ -9,13 +9,13 @@ import {ServerTextStyle} from './ServerTextStyle';
  * @class ThemeGraphAxes
  * @deprecatedclass SuperMap.ThemeGraphAxes
  * @category  iServer Map Theme
- * @classdesc 统计专题图坐标轴样式类。该类用于设置统计专题图坐标轴的颜色、网格、文本标注、统计符号最大最小尺寸等样式。
+ * @classdesc 统计专题图坐标轴样式类。该类用于设置统计专题图坐标轴的颜色、网格、文本标注风格等样式。
  * @param {Object} options - 参数。
  * @param {ServerColor} [options.axesColor=(0, 0, 0)] - 坐标轴颜色。
  * @param {boolean} [options.axesDisplayed=false] - 是否显示坐标轴。
  * @param {boolean} [options.axesGridDisplayed=false] - 是否在统计图坐标轴上显示网格。
  * @param {boolean} [options.axesTextDisplayed=false] - 是否显示坐标轴的文本标注。
- * @param {ServerTextStyle} [options.axesTextStyle] - 统计符号的最大最小尺寸。
+ * @param {ServerTextStyle} [options.axesTextStyle] - 坐标轴文本标注的风格。当 axesTextDisplayed = true 时有效。
  * @usage
  */
 export class ThemeGraphAxes {
@@ -49,7 +49,7 @@ export class ThemeGraphAxes {
 
         /**
          * @member {ServerTextStyle} ThemeGraphAxes.prototype.axesTextStyle
-         * @description 坐标轴文本风格。当 axesTextDisplayed = true 时有效。
+         * @description 坐标轴文本标注风格。当 axesTextDisplayed = true 时有效。
          */
         this.axesTextStyle =  new ServerTextStyle();
 

@@ -15,7 +15,7 @@ import '../core/Base';
  * @param {Object} options - 参数。
  * @param {string} options.label - 符号 Unicode 值。
  * @param {string} [options.labelRotation='0'] - 符号旋转角度。
- * @param {string} [options.globalAlpha='1'] - 符号的透明值。
+ * @param {string} [options.globalAlpha='1'] - 符号的不透明度。
  * @param {string} [options.fontStyle='normal'] - 符号的风格。
  * @param {string} [options.fontWeight='normal'] - 符号的粗细。
  * @param {string} [options.fontSize='1em'] - 符号的尺寸。

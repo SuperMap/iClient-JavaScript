@@ -184,7 +184,7 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.setOpacity
-     * @description 设置图层的不透明度。
+     * @description 设置图层的不透明度，取值范围：[0-1]。
      * @param {number} [opacity] - 不透明度，取值[0-1]之间。
      */
     setOpacity(opacity) {
@@ -217,10 +217,10 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.removeFeatures
-     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除 feature 的数组或用来过滤的回调函数。 
-     * @description 删除专题图中的features。
-     *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     *              如果要删除的 features 数组中的元素过多，推荐使用 removeAllFeatures删除所有 feature后，再重新添加。这样效率会更高。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除要素的数组或用来过滤的回调函数。 
+     * @description 删除专题图中的要素。
+     *              参数中的要素数组中的每一项，必须是已经添加到当前图层中的要素，
+     *              如果要删除的要素数组中的元素过多，推荐使用 removeAllFeatures删除所有要素后，再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
       var me = this;
@@ -325,9 +325,9 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.getFeatureById
-     * @description 获取指定featureId的矢量要素。
+     * @description 获取指定 featureId 的矢量要素。
      * @param {string} featureId - 矢量要素的属性 ID。
-     * @returns {FeatureVector} 对应featureId的矢量要素，不存在则返回 null。
+     * @returns {FeatureVector} 对应 featureId 的矢量要素，不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -335,9 +335,9 @@ export class Theme {
 
     /**
      * @function ThemeLayer.prototype.getFeaturesByAttribute
-     * @description 通过属性的 key 值和 value 值，获取匹配的要素数组。
-     * @param {string} attrName - 属性的 key。
-     * @param {string} attrValue - 属性的 value。
+     * @description 通过给定一个属性的 key 值和 value 值，获取匹配的要素数组。
+     * @param {string} attrName - 属性的 key 值。
+     * @param {string} attrValue - 属性的 value 值。
      * @returns {Array.<FeatureVector>} 要素数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
@@ -413,7 +413,7 @@ export class Theme {
      * @function ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {Object} [coordinate] - 坐标位置。
-     * @returns {Array} 像素坐标数组。
+     * @returns {Array} 长度为 2 的像素坐标数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;

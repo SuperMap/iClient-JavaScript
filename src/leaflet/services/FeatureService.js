@@ -66,7 +66,7 @@ export var FeatureService = ServiceBase.extend({
 
     /**
      * @function FeatureService.prototype.getFeaturesByBuffer
-     * @description 数据集 buffer 查询服务。
+     * @description 数据集缓冲区查询服务。
      * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。

@@ -15,7 +15,7 @@ import '../../core/Base';
  * @param {HTMLImageElement} options.img - image 对象。
  * @param {Array.<number>} [options.origin=[0.0]] - 中心点。
  * @param {Array} [options.anchor] - 偏移量。
- * @param {Array} [options.size] - 图形大小，即高度和宽度[width,height]。
+ * @param {Array} [options.size] - 图形大小，即高度和宽度 [width,height]。
  * @param {Array} [options.radius] - 半径。
  * @param {Array} [options.weight] - 宽度。
  * @usage

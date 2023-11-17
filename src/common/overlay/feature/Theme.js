@@ -89,7 +89,7 @@ export class Theme {
      * @function FeatureTheme.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param {GeometryPoint|GeometryGeoText|LonLat} coordinate - 地理坐标点。
-     * @returns {Array.<number>} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @returns {Array.<number>} 长度为 2 的像素坐标数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getLocalXY(coordinate) {
         var resolution = this.layer.map.getResolution();

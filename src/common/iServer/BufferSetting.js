@@ -13,7 +13,7 @@ import {BufferDistance} from './BufferDistance';
  * @param {Object} options - 可选参数。
  * @param {BufferEndType} [options.endType=BufferEndType.FLAT] - 缓冲区端点枚举值。
  * @param {BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。
- * @param {BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。
+ * @param {BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。左/右缓冲距离的设置仅对线对象/数据集有效，如果是点/面对象/数据集，则只需要设置左缓冲距离，即使设置了右缓冲距离，在缓冲分析时也不起作用。
  * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。
  * @param {BufferRadiusUnit} [options.radiusUnit=BufferRadiusUnit.METER] - 缓冲半径单位。
  * @usage
@@ -31,7 +31,7 @@ export class BufferSetting {
         /**
          * @member {BufferDistance} [BufferSetting.prototype.leftDistance=100]
          * @description 左侧缓冲距离。
-         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
+         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如 EPSG:3857 为米，EPSG:4326 为度），
          * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
          */
         this.leftDistance = new BufferDistance();
@@ -39,8 +39,9 @@ export class BufferSetting {
         /**
          * @member {BufferDistance} [BufferSetting.prototype.rightDistance=100]
          * @description 右侧缓冲距离。
-         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting#radiusUnit}设置（默认全部为米）。
+         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如 EPSG:3857 为米，EPSG:4326 为度），
+         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting#radiusUnit}设置（默认全部为米）。<br>
+         * 左/右缓冲距离的设置仅对线对象/数据集有效，如果是点/面对象/数据集，则只需要设置左缓冲距离，即使设置了右缓冲距离，在缓冲分析时也不起作用。
          */
         this.rightDistance = new BufferDistance();
 
@@ -55,7 +56,7 @@ export class BufferSetting {
          * @description 缓冲半径单位，可以是{@link BufferRadiusUnit.METER}、{@link BufferRadiusUnit.MILLIMETER}、
          * {@link BufferRadiusUnit.CENTIMETER}、{@link BufferRadiusUnit.DECIMETER}、{@link BufferRadiusUnit.KILOMETER}、
          * {@link BufferRadiusUnit.FOOT}、{@link BufferRadiusUnit.INCH}、{@link BufferRadiusUnit.MILE}、{@link BufferRadiusUnit.YARD}。
-         * 仅对BufferAnalyst有效。
+         * 仅对 BufferAnalyst 有效。
          */
         this.radiusUnit = BufferRadiusUnit.METER;
 

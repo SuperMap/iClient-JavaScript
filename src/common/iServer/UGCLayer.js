@@ -16,7 +16,7 @@ import {Bounds} from '../commontypes/Bounds';
  * @param {string} [options.caption] - 图层的标题。
  * @param {string} [options.description] - 图层的描述信息。
  * @param {boolean} [options.queryable] - 图层中的对象是否可以查询。
- * @param {boolean} [options.subUGCLayers] - 是否允许图层的符号大小随图缩放。
+ * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
  * @param {boolean} [options.visible=false] - 地图对象在同一范围内时，是否重叠显示。
  * @usage
  */

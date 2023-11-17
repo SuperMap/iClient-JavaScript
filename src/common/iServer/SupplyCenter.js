@@ -13,7 +13,7 @@ import {Util} from '../commontypes/Util';
  * @param {number} options.maxWeight - 最大耗费值。
  * @param {number} options.nodeID - 结点 ID 号。资源供给中心必须是结点。
  * @param {number} options.resourceValue - 能提供的最大服务量或商品数量。
- * @param {SupplyCenterType} [options.type] - 资源供给中心点的类型常量。
+ * @param {SupplyCenterType} [options.type] - 资源供给中心点的类型。
  * @usage
  */
 export class SupplyCenter {

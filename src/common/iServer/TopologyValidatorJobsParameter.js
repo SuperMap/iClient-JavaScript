@@ -40,13 +40,13 @@ export class TopologyValidatorJobsParameter {
 
         /**
          * @member {string} [TopologyValidatorJobsParameter.prototype.tolerance]
-         * @description 容限，指定的拓扑错误检查时使用的容限。
+         * @description 容限，指定的拓扑错误检查时使用的容限。单位与进行拓扑错误检查的数据集单位相同。取值范围为大于等于 0，小于 0 将抛出异常。（默认值：0.000001）
          */
         this.tolerance = "";
 
         /**
          * @member {TopologyValidatorRule} [TopologyValidatorJobsParameter.prototype.rule=TopologyValidatorRule.REGIONNOOVERLAP]
-         * @description 拓扑检查模式。
+         * @description 拓扑检查规则。
          */
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 

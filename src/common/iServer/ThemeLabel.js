@@ -26,13 +26,13 @@ import {LabelOverLengthMode} from '../REST';
  * @param {ThemeLabelBackground} [options.background] - 标签的背景风格类。
  * @param {LabelOverLengthMode} [options.labelOverLengthMode=LabelOverLengthMode.NONE] - 超长标签的处理模式枚举类。
  * @param {number} [options.maxLabelLength=256] - 标签在每一行显示的最大长度。
- * @param {number} [options.numericPrecision=0] - 通过该字段设置其显示的精度。
+ * @param {number} [options.numericPrecision=0] - 数字显示精度。如果显示的标签内容为数字，通过该字段设置其显示的精度。
  * @param {ThemeOffset} [options.offset] - 指定标签专题图中标记文本相对于要素内点的偏移量对象。
  * @param {boolean} [options.overlapAvoided=true] - 是否允许以文本避让方式显示文本。
  * @param {string} [options.rangeExpression] - 制作分段标签专题的分段字段或字段表达式。
  * @param {boolean} [options.smallGeometryLabeled=false] - 是否显示长度大于被标注对象本身长度的标签。
  * @param {ThemeLabelText} options.text - 标签中文本风格。
- * @param {number} [options.textSpace=0] - 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。
+ * @param {number} [options.textSpace=0] - 沿线标注，相邻两个文字之间的间距，单位：当前设置的字高。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
  * @usage
  */
@@ -95,8 +95,8 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {number} [ThemeLabel.prototype.numericPrecision=0]
-         * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
-         *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
+         * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是 8071.64529347，
+         *              如果该属性为 0 时，显示 8071；为 1 时，显示 8071.6；为 3 时，则是 8071.645。
          */
         this.numericPrecision = 0;
 
@@ -144,7 +144,7 @@ export class ThemeLabel extends Theme {
 
         /**
          * @member {number} [ThemeLabel.prototype.textSpace=0]
-         * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。
+         * @description 沿线标注，相邻两个文字之间的间距，单位：当前设置的字高。
          */
         this.textSpace = 0;
 

@@ -26,7 +26,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @param {ThemeGraphAxes} [options.graphAxes] - 统计图中坐标轴样式相关信息。
  * @param {ThemeGraphSize} [options.graphSize=0] - 统计符号的最大最小尺寸。
  * @param {boolean} [options.graphSizeFixed=false] - 缩放地图时统计图符号是否固定大小。
- * @param {ThemeGraphText} [options.graphText] - 统计图上的文字是否可见以及文字标注风格。
+ * @param {ThemeGraphText} [options.graphText] - 统计图上的文字标注是否可见以及文字标注风格。
  * @param {GraphAxesTextDisplayMode} [options.graphAxesTextDisplayMode=GraphAxesTextDisplayMode.NONE] - 统计专题图坐标轴文本显示模式。
  * @param {ThemeGraphType} [options.graphType=ThemeGraphType.AREA] - 统计专题图类型。
  * @param {Array.<number>} [options.memoryKeys] - 以内存数组方式制作专题图时的键数组。
@@ -76,7 +76,7 @@ export class ThemeGraph extends Theme {
 
         /**
          * @member {ThemeGraphText} ThemeGraph.prototype.graphText
-         * @description 统计图上的文字是否可见以及文字标注风格。
+         * @description 统计图上的文字标注是否可见以及文字标注风格。
          */
         this.graphText =  new ThemeGraphText();
 

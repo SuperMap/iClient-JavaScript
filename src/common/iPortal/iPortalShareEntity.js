@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class IPortalShareEntity
  * @aliasclass iPortalShareEntity
  * @deprecatedclass SuperMap.iPortalShareEntity
- * @classdesc iPortal 资源共享实体参数。
+ * @classdesc SuperMap iPortal 资源共享实体参数。
  * @version 10.0.1
  * @category iPortal/Online Resources ResourcesShare
  * @param {Object} shareEntity - 可选参数。

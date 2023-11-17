@@ -13,10 +13,10 @@ window.proj4 = proj4;
 
 /**
  * @function initMap
- * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务，创建的图层为 ol.Tile。
+ * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持 SuperMap iServer 地图服务，创建的图层为 ol.Tile。
  * @category BaseTypes Util
  * @version 11.0.1
- * @param {number} url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {number} url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
  * @param {Object} options - 参数。
  * @param {Object} [options.mapOptions] - 地图配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_Map-Map.html}。
  * @param {Object} [options.viewOptions] - 视图配置，参数设置参考 {@link https://openlayers.org/en/v6.15.1/apidoc/module-ol_View-View.html} ，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。

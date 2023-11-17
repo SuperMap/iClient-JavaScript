@@ -43,7 +43,7 @@ export class HeatMapLayerRenderer {
     this.visibility = true;
     /**
      * @member {number} [HeatMapLayerRenderer.prototype.opacity=1]
-     * @description 图层不透明度，取值范围[0,1]。
+     * @description 图层不透明度，取值范围：[0,1]。
      */
     this.opacity = options.opacity ? options.opacity : 1;
 
@@ -158,7 +158,7 @@ export class HeatMapLayerRenderer {
 
   /**
    * @function HeatMapLayerRenderer.prototype.setOpacity
-   * @description 设置图层的不透明度，取值[0-1]之间。
+   * @description 设置图层的不透明度，取值范围：[0-1]。
    * @param {number} [opacity] - 不透明度。
    */
   setOpacity(opacity) {

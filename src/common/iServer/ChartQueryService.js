@@ -61,13 +61,15 @@ export class ChartQueryService extends CommonServiceBase {
         /**
          * @member {boolean} ChartQueryService.prototype.returnContent
          * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。
+         * 如果为 true，则直接返回新创建资源，即查询结果的表述。
+         * 如果为 false，则返回的是查询结果资源的 URI。
          */
         this.returnContent = null;
 
         /**
          * @member {DataFormat} ChartQueryService.prototype.format
-         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式
-         *              参数格式为 "ISERVER","GEOJSON",GEOJSON
+         * @description 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式，
+         *              参数格式为 "ISERVER","GEOJSON"
          */
         this.format = DataFormat.GEOJSON;
 

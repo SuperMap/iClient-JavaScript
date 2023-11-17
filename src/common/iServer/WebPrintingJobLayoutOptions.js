@@ -10,15 +10,15 @@ import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
 /**
  * @class WebPrintingJobLayoutOptions
  * @deprecatedclass SuperMap.WebPrintingJobLayoutOptions
- * @classdesc Web 打印的布局参数类。此类用于设置 Web 地图打印的布局模板信息，包括地图的标题、作者、版权信息、小地图、图例、比例尺、指北针等参数。
+ * @classdesc Web 打印的布局参数类。此类用于设置 Web 地图打印的布局模板信息，包括地图的标题、作者、版权描述信息、小地图、图例、比例尺、指北针等参数。
  * @version 10.1.0
  * @category iServer WebPrintingJob
  * @param {Object} option - 参数。
  * @param {string} option.templateName - 布局模板的名称。
  * @param {string} option.title - 地图主标题名称。
  * @param {string} option.subTitle - 地图副标题名称。
- * @param {string} option.author - 作者名称。
- * @param {string} option.copyright - 版权信息。
+ * @param {string} option.author - 地图作者名称。
+ * @param {string} option.copyright - 版权描述信息。
  * @param {WebPrintingJobLittleMapOptions} option.littleMapOptions - 小地图参数类。
  * @param {WebPrintingJobLegendOptions} option.legendOptions - 图例参数类。
  * @param {WebPrintingJobScaleBarOptions} [option.scaleBarOptions] - 地图比例尺参数类。
@@ -49,7 +49,7 @@ export class WebPrintingJobLayoutOptions {
         this.author = null;
         /**
          * @member {string} WebPrintingJobLayoutOptions.prototype.copyright
-         * @description 地图版权信息。
+         * @description 地图版权描述信息。
          */
         this.copyright = null;
         /**

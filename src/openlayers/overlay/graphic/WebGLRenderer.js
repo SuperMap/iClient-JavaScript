@@ -39,12 +39,12 @@ const CSS_TRANSFORM = (function () {
  * @param {number} options.height - 地图高度。
  * @param {HTMLElement} options.container - 放置渲染器的父元素。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 颜色，目前只支持 rgba 数组。 
- * @param {number} [options.radius=10] - 半径。
+ * @param {number} [options.radius=10] - 半径，单位为像素。
  * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
  * @param {number} [options.radiusScale = 1] - 点放大倍数。
- * @param {number} [options.radiusMinPixels = 0] - 半径最小值（像素）。
- * @param {number} [options.radiusMaxPixels = Number.MAX_SAFE_INTEGER] - 半径最大值（像素）。
+ * @param {number} [options.radiusMinPixels = 0] - 半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels = Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
  * @param {number} [options.strokeWidth = 1] - 边框大小。
  * @param {boolean} [options.outline = false] - 是否显示边框。
  * @param {function} [options.onClick] - 点击事件。

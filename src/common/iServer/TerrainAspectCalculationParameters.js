@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @category  iServer SpatialAnalyst TerrainCalculation
  * @classdesc 地形坡向计算参数类。此类用于指定地形坡向计算的数据集、地形分析环境等参数，还可以对结果数据集进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 地形坡向计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} options.dataset - 用于做地形坡向计算的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {terrainAnalystSetting} options.terrainAnalystSetting - 地形分析基本的环境设置。
  * @param {string} [options.resultDatasetName] - 结果数据集名称。
  * @param {boolean} [options.deleteExistResultDataset] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
@@ -23,7 +23,7 @@ export class TerrainAspectCalculationParameters {
         }
         /**
          * @member {string} TerrainAspectCalculationParameters.prototype.dataset
-         * @description 要用来做地形坡向计算数据源中数据集的名称。
+         * @description 用于做地形坡向计算的数据源中数据集的名称。
          * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
          */
         this.dataset = null;

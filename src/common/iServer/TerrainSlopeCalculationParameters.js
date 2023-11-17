@@ -10,7 +10,7 @@ import {Util} from '../commontypes/Util';
  * @classdesc 地形坡度计算参数类。该类用于设置地形坡向计算的数据集、地形分析基本环境设置、高程缩放系数等参数，还可对结果数据集进行一系列设置。
  * @version 11.1.1
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 地形坡度计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} options.dataset - 用于做地形坡度计算的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {terrainAnalystSetting} options.terrainAnalystSetting - 地形分析基本的环境设置。
  * @param {string} [options.resultDatasetName] - 结果数据集名称。
  * @param {boolean} [options.deleteExistResultDataset] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
@@ -29,7 +29,7 @@ export class TerrainSlopeCalculationParameters {
         }
         /**
          * @member {string} TerrainSlopeCalculationParameters.prototype.dataset
-         * @description 要用来做地形坡度计算数据源中数据集的名称。
+         * @description 用于做地形坡度计算的数据源中数据集的名称。
          * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
          */
         this.dataset = null;

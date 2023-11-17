@@ -21,7 +21,7 @@ import {
  * @param {Object} [options.prjCoordSys] - 自定义参数，供 SuperMap Online 提供的动态投影查询扩展使用。如 {"epsgCode":3857}。
  * @param {number} [options.expectCount=100000] - 期望返回结果记录个数。
  * @param {GeometryType} [options.networkType=GeometryType.LINE] - 网络数据集对应的查询类型。
- * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型枚举类。
+ * @param {QueryOption} [options.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY] - 查询结果类型。
  * @param {number} [options.startRecord=0] - 查询起始记录号。
  * @param {number} [options.holdTime=10] - 资源在服务端保存的时间，单位为分钟。
  * @param {boolean} [options.returnCustomResult=false] - 仅供三维使用。
@@ -49,8 +49,8 @@ export class QueryParameters {
 
         /**
          * @member {number} [QueryParameters.prototype.expectCount=100000]
-         * @description 期望返回结果记录个数，默认返回100000条查询记录，
-         *              如果实际不足100000条则返回实际记录条数。
+         * @description 期望返回结果记录个数，默认返回 100000 条查询记录，
+         *              如果实际不足 100000 条则返回实际记录条数。
          */
         this.expectCount = 100000;
 
@@ -62,7 +62,7 @@ export class QueryParameters {
 
         /**
          * @member {QueryOption} [QueryParameters.prototype.queryOption=QueryOption.ATTRIBUTEANDGEOMETRY]
-         * @description 查询结果类型枚举类。
+         * @description 查询结果类型。
          *              该类描述查询结果返回类型，包括只返回属性、
          *              只返回几何实体以及返回属性和几何实体。
          */

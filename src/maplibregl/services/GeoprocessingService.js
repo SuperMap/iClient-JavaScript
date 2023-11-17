@@ -142,7 +142,7 @@ export class GeoprocessingService extends ServiceBase {
 
     /**
      * @function GeoprocessingService.prototype.getResults
-     * @description 处理自动化工具异步执行的结果,支持结果过滤。
+     * @description 处理自动化工具异步执行的结果，支持结果过滤。
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
      * @param {string} filter - 输出异步结果的 ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)

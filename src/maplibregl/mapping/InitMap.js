@@ -4,7 +4,7 @@ import { InitMapServiceBase, isPlaneProjection, getZoom } from '@supermap/iclien
 import proj4 from 'proj4';
 /**
  * @function initMap
- * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务。
+ * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持 SuperMap iServer 地图服务。
  * @category BaseTypes Util
  * @version 11.1.1
  * @param {number} url - rest 地图服务地址。例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。

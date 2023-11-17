@@ -115,7 +115,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
      * @param {(Array|function)} layerStyle - 图层样式。
-     * @returns {VectorGrid} VectorGrid的实例对象。
+     * @returns {VectorGrid} VectorGrid 的实例对象。
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -138,7 +138,7 @@ export var VectorGrid = L.GridLayer.extend({
      * @description 指定要素 ID 和图层名称重绘要素风格。
      * @param {number} id - 要素 ID。
      * @param {string} layerName - 图层名称。
-     * @returns {VectorGrid} VectorGrid的实例对象。
+     * @returns {VectorGrid} VectorGrid 的实例对象。
      */
     resetFeatureStyle: function (id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);

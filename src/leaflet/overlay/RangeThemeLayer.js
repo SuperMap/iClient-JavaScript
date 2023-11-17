@@ -16,7 +16,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>'] - 版权描述信息。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
@@ -65,9 +65,9 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function RangeThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（ feature ）设置专题要素的 Style。
+     * @description 根据用户数据（ feature ）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData: function (feat) {
         var me = this,

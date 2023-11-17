@@ -76,7 +76,7 @@ import Attributions from '../core/Attributions'
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权描述信息。
  * @fires WebMap#maploaded
  * @fires WebMap#coordconvertsuccess
  * @fires WebMap#coordconvertfailed

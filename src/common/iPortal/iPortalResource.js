@@ -7,14 +7,14 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  * @class IPortalResource
  * @aliasclass iPortalResource
  * @deprecatedclass SuperMap.iPortalResource
- * @classdesc iPortal 资源详情类。
+ * @classdesc SuperMap iPortal 资源详情类。
  * @version 10.0.1
  * @category iPortal/Online Resources
  * @param {string} portalUrl - 服务地址。
  * @param {Object} resourceInfo - 可选参数。
  * @param {Array} [resourceInfo.authorizeSetting] - 资源的授权信息。
  * @param {string} [resourceInfo.bounds] - 资源的坐标范围。
- * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为 EPSG 4326 坐标系统后的地理范围。
+ * @param {string} [resourceInfo.bounds4326] - 资源的坐标范围，转换为 EPSG:4326 坐标系统后的地理范围。
  * @param {string} [resourceInfo.checkStatus] - 资源的审核状态，可以是：空,SUCCESSFUL,UNCHECKED,FAILED。
  * @param {Date} [resourceInfo.createTime] - 资源的创建时间。
  * @param {string} [resourceInfo.description] - 资源描述。

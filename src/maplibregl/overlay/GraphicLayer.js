@@ -76,12 +76,12 @@
       * @description 设置图层整体样式。
       * @param {Object} styleOptions - 样式对象。
       * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-      * @param {number} [styleOptions.radius=10] - 点半径。
+      * @param {number} [styleOptions.radius=10] - 点半径，单位为像素。
       * @param {number} [styleOptions.opacity=0.8] - 不透明度。
       * @param {Array.<number>}  [styleOptions.highlightColor=[0, 0, 128, 128]] - 高亮颜色，目前只支持 rgba 数组。
       * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+      * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+      * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
       * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
       * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
       */
@@ -131,8 +131,8 @@
      /**
       * @function GraphicLayer.prototype.getGraphicsByAttribute
       * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-      * @param {string} attrName - graphic 的某个属性名称。
-      * @param {string} attrValue - property 所对应的值。
+      * @param {string} attrName - 属性的 key 值。
+      * @param {string} attrValue - 属性的 value 值。
       * @returns {Array.<Graphic>} 一个匹配的 graphic 数组。
       */
      getGraphicsByAttribute(attrName, attrValue) {
@@ -197,7 +197,7 @@
      /**
       * @function GraphicLayer.prototype.getState
       * @description 获取当前地图及图层状态。
-      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+      * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态信息。
       */
      getState() {
         return this.renderer.getState();

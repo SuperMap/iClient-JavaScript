@@ -234,7 +234,7 @@ export class Turf extends VectorSource {
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
      * @param {function} callback - 空间分析完成执行的回调函数，返回执行的结果。
-     * @param {boolean} addFeaturesToMap - 是否添加到 Map。
+     * @param {boolean} addFeaturesToMap - 是否添加要素到地图。
      */
     process(type, args, callback, addFeaturesToMap) {
         var result;

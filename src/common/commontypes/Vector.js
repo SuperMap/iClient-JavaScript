@@ -261,9 +261,9 @@ export class Vector extends Feature {
  * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
  * @property {number} [graphicWidth] - 外部图表的像素宽度。
  * @property {number} [graphicHeight] - 外部图表的像素高度。
- * @property {number} [graphicOpacity] - 外部图表的不透明度(0-1)。
- * @property {number} [graphicXOffset] - 外部图表沿着x方向的偏移量。
- * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量。
+ * @property {number} [graphicOpacity] - 外部图表的不透明度，取值范围：[0，1]。
+ * @property {number} [graphicXOffset] - 外部图表沿着 x 方向的偏移量。
+ * @property {number} [graphicYOffset] - 外部图表沿着 y 方向的偏移量。
  * @property {number} [rotation] - 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
  * @property {number} [graphicZIndex] - 渲染时使用的索引值。
  * @property {string} [graphicName='circle'] - 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"。
@@ -285,8 +285,8 @@ export class Vector extends Feature {
  * @property {number} [labelXOffset] - 标签在 x 轴方向的偏移量。
  * @property {number} [labelYOffset] - 标签在 y 轴方向的偏移量。
  * @property {boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
- * @property {string} [fontColor='#000000'] - 标签字体颜色。
- * @property {number} [fontOpacity] - 标签透明度 (0-1)。
+ * @property {string} [fontColor='#000000'] - 十六进制标签字体颜色。
+ * @property {number} [fontOpacity] - 标签不透明度，取值范围：[0，1]。
  * @property {string} [fontFamily] - 标签的字体类型。
  * @property {string} [fontSize] - 标签的字体大小。
  * @property {string} [fontStyle] - 标签的字体样式。

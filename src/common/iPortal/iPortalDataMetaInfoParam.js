@@ -7,7 +7,7 @@
   * @class IPortalDataMetaInfoParam
   * @aliasclass iPortalDataMetaInfoParam
   * @deprecatedclass SuperMap.iPortalDataMetaInfoParam
-  * @classdesc iPortal 上传数据/注册数据元信息所需的参数。
+  * @classdesc SuperMap iPortal 上传数据/注册数据元信息所需的参数。
   * @version 10.0.1
   * @category iPortal/Online Resources Data
   * @param {Object} params - 参数。

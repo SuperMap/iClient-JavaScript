@@ -17,7 +17,7 @@ import {DatasetInfo} from './DatasetInfo';
  * @param {string} [options.displayFilter] - 图层显示过滤条件。
  * @param {JoinItem} [options.joinItems] - 连接信息类。
  * @param {string} [options.representationField] - 存储制图表达信息的字段。
- * @param {LayerType} [options.ugcLayerType] - 图层类型。
+ * @param {ugcLayerType} [options.ugcLayerType] - SuperMap 图层类型。
  * @usage
  */
 export class UGCSubLayer extends UGCMapLayer {
@@ -51,8 +51,8 @@ export class UGCSubLayer extends UGCMapLayer {
         this.representationField = null;
 
         /**
-         * @member {LayerType} UGCSubLayer.prototype.ugcLayerType
-         * @description 图层类型。
+         * @member {ugcLayerType} UGCSubLayer.prototype.ugcLayerType
+         * @description SuperMap 图层类型。
          */
         this.ugcLayerType = null;
 

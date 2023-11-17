@@ -13,7 +13,7 @@ import '../../core/Base';
  * @extends {L.Class}
  * @param {Object} options - 参数。
  * @param {boolean} [options.stroke=true] - 是否描边。
- * @param {string} [options.color='#3388ff'] - 颜色。
+ * @param {string} [options.color='#3388ff'] - 十六进制描边颜色。
  * @param {number} [options.weight=1] - 线宽。
  * @param {number} [options.opacity=1] - 透明度。
  * @param {string} [options.lineCap='round'] - 线帽形状。

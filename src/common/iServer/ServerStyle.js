@@ -16,7 +16,7 @@ import {ServerColor} from './ServerColor';
  * @param {ServerColor} [options.fillForeColor=[255,0,0]] - 填充颜色。
  * @param {number} [options.fillGradientAngle=0] - 渐变填充的旋转角度。
  * @param {number} [options.fillGradientOffsetRatioX=0] - 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。
- * @param {number} [options.fillGradientOffsetRatioY=0] - 填充中心点相对于填充区域范围中心点的垂直偏移百分比。
+ * @param {number} [options.fillGradientOffsetRatioY=0] - 渐变填充中心点相对于填充区域范围中心点的垂直偏移百分比。
  * @param {number} [options.fillOpaqueRate=100] - 填充不透明度。
  * @param {number} [options.fillSymbolID=0] - 填充符号的编码。
  * @param {ServerColor} [options.lineColor] - 矢量要素的边线颜色。默认 lineColor = new ServerColor(0, 0, 0)。
@@ -69,7 +69,7 @@ export class ServerStyle {
 
         /**
          * @member {number} ServerStyle.prototype.fillGradientOffsetRatioY
-         * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
+         * @description 渐变填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
          *              设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
          */
         this.fillGradientOffsetRatioY = 0;

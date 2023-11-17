@@ -456,7 +456,7 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getStyleFromiPortalMarker
-   * @description 从 iPortal 标记获取样式。
+   * @description 从 SuperMap iPortal 标记获取样式。
    * @param {Object} icon - 图标参数。
    */
   static getStyleFromiPortalMarker(icon) {
@@ -479,8 +479,8 @@ export class StyleUtils {
 
   /**
    * @function StyleUtils.getStyleFromiPortalStyle
-   * @description 从 iPortal 标记获取样式。
-   * @param {Object} iPortalStyle - iportal 样式。
+   * @description 从 SuperMap iPortal 标记获取样式。
+   * @param {Object} iPortalStyle - SuperMap iPortal 样式。
    * @param {string} type - 样式类型。
    * @param {Object} fStyle - 要素样式。
    */

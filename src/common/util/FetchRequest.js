@@ -230,7 +230,7 @@ export var isCORS = function () {
  * @function setRequestTimeout
  * @category BaseTypes Util
  * @description 设置请求超时时间。
- * @param {number} [timeout=45] - 请求超时时间，单位秒。
+ * @param {number} [timeout=45] - 请求超时时间，单位为秒。
  * @usage
  * ```
  * // 浏览器
@@ -255,7 +255,7 @@ export var setRequestTimeout = function (timeout) {
 /**
  * @function getRequestTimeout
  * @category BaseTypes Util
- * @description 获取请求超时时间。
+ * @description 获取请求超时的时间。
  * @returns {number} 请求超时时间。
  * @usage
  * ```

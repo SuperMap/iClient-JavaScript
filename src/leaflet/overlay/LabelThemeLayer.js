@@ -23,7 +23,7 @@
  * @param {boolean} [options.isAvoid=true] - 是否进行地图边缘的避让处理。
  * @param {boolean} [options.alwaysMapCRS=false] - 要素坐标是否和地图坐标系一致，要素默认是经纬度坐标。
  * @param {boolean} [options.isOverLay=true] - 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array} [options.TFEvents] - 专题要素事件临时存储。
  * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
  * @param {boolean} [options.isHoverAble=false] -  图形是否在 hover 时高亮。
@@ -144,7 +144,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
      /**
      * @function LabelThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。参数中的要素数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素或用于条件删除的回调函数。
      */
     removeFeatures: function (features) { // eslint-disable-line no-unused-vars
@@ -322,9 +322,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData: function (feat) {
         var feature = feat;
@@ -371,9 +371,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.setLabelsStyle
-     * @description 设置标签要素的 Style。
-     * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @returns {Array.<FeatureVector>}  赋予 Style 后的标签要素数组。
+     * @description 设置标签要素的风格。
+     * @param {Array.<FeatureVector>} labelFeatures - 需要设置风格的标签要素数组。
+     * @returns {Array.<FeatureVector>}  赋予风格后的标签要素数组。
      */
     setLabelsStyle: function (labelFeatures) {
         var fea, labelFeas = [];
@@ -399,8 +399,8 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.setStyle
-     * @description 设置标签要素的 Style。
-     * @param {FeatureVector} feat - 需要赋予 style 的要素。
+     * @description 设置标签要素的风格。
+     * @param {FeatureVector} feat - 需要赋予风格的要素。
      */
     setStyle: function (feat) {
         var feature = feat;
@@ -478,7 +478,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {L.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -535,9 +535,9 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
 
     /**
      * @function LabelThemeLayer.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算范围的效率。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {L.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

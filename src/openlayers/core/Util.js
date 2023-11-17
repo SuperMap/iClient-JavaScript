@@ -53,7 +53,7 @@
    /**
     * @function Util.toGeoJSON
     * @description 将传入对象转为 GeoJSON 格式。
-    * @param {Object} smObj - 待转参数。
+    * @param {Object} smObj - 待转换参数。
     */
    toGeoJSON(smObj) {
      if (!smObj) {

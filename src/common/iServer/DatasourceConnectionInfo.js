@@ -52,9 +52,9 @@ export class DatasourceConnectionInfo {
         /**
          * @member {string} [DatasourceConnectionInfo.prototype.driver]
          * @description 使用 ODBC(Open Database Connectivity，开放数据库互连) 的数据库的驱动程序名。
-         * 其中，对于 SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
+         * 其中，对于 SQL Server 数据库与 SuperMap iServer 发布的 WMTS 服务，此为必设参数。
          * 对于 SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
-         * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
+         * 对于 SuperMap iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
          */
         this.driver = null;
 

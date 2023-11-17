@@ -15,8 +15,8 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 查询的范围对象。
  * @param {Array.<string>} options.datasetNames - 数据集名称列表。
  * @param {string} [options.attributeFilter] - 范围查询属性过滤条件。
- * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。
- * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式常量。
+ * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
+ * @param {SpatialQueryMode} [options.spatialQueryMode=SpatialQueryMode.CONTAIN] - 空间查询模式。
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
@@ -45,7 +45,7 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {Array.<string>} GetFeaturesByBoundsParameters.prototype.fields
-         * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         * @description 查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
 
@@ -57,7 +57,7 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {SpatialQueryMode} [GetFeaturesByBoundsParameters.prototype.spatialQueryMode=SpatialQueryMode.CONTAIN]
-         * @description 空间查询模式常量。
+         * @description 空间查询模式。
          */
         this.spatialQueryMode = SpatialQueryMode.CONTAIN;
 

@@ -72,25 +72,37 @@ export class TransferSolutionParameters {
 
         /**
          * @member {Array.<number>} [TransferSolutionParameters.prototype.evadeLinesnull]
-         * @description 避让路线 ID。
+         * @description 避让路线 ID 集合。<br>
+         * 如果设置某些线路避让线路，则进行换乘分析时不会使用这些线路，例如，设置123路为避让线路，进行公交换乘分析，
+         * 即使乘坐该线路可以到达目的地，换乘方案中也不会包含乘坐该线路的方案。<br>
+         * 注意：如果将某线路同时设置为优先或者避让的线路，系统将以避让线路来处理。
          * */
         this.evadeLines = null;
 
         /**
          * @member {Array.<number>} [TransferSolutionParameters.prototype.evadeStops=TransferLine]
-         * @description 避让站点 ID。
+         * @description 避让站点 ID 集合。<br>
+         * 如果设置某些线路避让站点，则进行换乘分析方案中不会包含这些站点，例如，设置天安门西站为避让站点，
+         * 那么公交换乘方案中就不会包含该站点，也就是不会在该站点换乘或下车。<br>
+         * 注意：如果将某站点同时设置为优先或者避让的站点，系统将以避让站点来处理。另外，避让的站点必须是线路上的站点，
+         * 例如，某站点在位置上位于某条线路上，但在关系表中不存在二者的对应关系，那么设置该站点为避让站点是无效的，
+         * 换乘分析的结果中仍有可能包含该站点。
          * */
         this.evadeStops = null;
 
         /**
          * @member {Array.<number>} [TransferSolutionParameters.prototype.priorLines]
-         * @description 优先路线 ID。
+         * @description 优先路线 ID 集合。<br>
+         * 如果设置某些线路为优先线路，则进行换乘分析时会优先考虑这些线路，但最优换乘方案是由多个参数共同决定的，因此并不一定会包含这些线路。
          * */
         this.priorLines = null;
 
         /**
          * @member {Array.<number>} [TransferSolutionParameters.prototype.priorStops]
-         * @description 优先站点 ID。
+         * @description 优先站点 ID 集合。<br>
+         * 如果设置某些线路为优先站点，则进行换乘分析时会优先考虑这些站点，但最优换乘方案是由多个参数共同决定的，
+         * 因此并不一定会包含这些站点。另外，优先的站点必须是线路上的站点，例如，某站点在位置上位于某条线路上，
+         * 但在关系表中不存在二者的对应关系，那么设置该站点为优先站点是无效的，换乘分析时可能不会包含通过该站点的线路。
          * */
         this.priorStops = null;
 

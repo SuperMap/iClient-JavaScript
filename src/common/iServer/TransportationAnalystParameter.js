@@ -13,7 +13,7 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  * @param {Array.<number>} options.barrierEdgeIDs - 网络分析中障碍弧段的 ID 数组。
  * @param {Array.<number>} options.barrierNodeIDs - 网络分析中障碍点的 ID 数组。
  * @param {string} options.turnWeightField - 转向权重字段的名称。
- * @param {TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容。
+ * @param {TransportationAnalystResultSetting} options.resultSetting - 分析结果返回内容设置。
  * @param {Array.<GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} [options.barrierPoints] - 网络分析中 Point2D 类型的障碍点数组。
  * @param {string} [options.weightFieldName] - 阻力字段的名称。
  * @usage
@@ -59,7 +59,7 @@ export class TransportationAnalystParameter {
 
         /**
          *  @member {TransportationAnalystResultSetting} TransportationAnalystParameter.prototype.resultSetting
-         *  @description 分析结果返回内容。
+         *  @description 分析结果返回内容设置。该设置不影响结果，但设置后将增加分析所耗时间。
          */
         this.resultSetting = new TransportationAnalystResultSetting();
 

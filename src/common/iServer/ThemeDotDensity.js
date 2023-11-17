@@ -29,7 +29,7 @@ export class ThemeDotDensity extends Theme {
         super("DOTDENSITY", options);
         /**
          * @member {string} ThemeDotDensity.prototype.dotExpression
-         * @description 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
+         * @description 创建点密度专题图的字段或字段表达式。同时也是点的数目或密集程度的来源。
          */
         this.dotExpression = null;
 

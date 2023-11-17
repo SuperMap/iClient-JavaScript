@@ -2,9 +2,9 @@ import { Unit } from '../REST';
 
 /**
  * @function getMeterPerMapUnit
- * @description 单位换算，把米|度|千米|英寸|英尺换成米。
+ * @description 单位换算，把米|度|千米|英寸|英尺换算成米。
  * @category BaseTypes Util
- * @param {string} mapUnit 地图单位。
+ * @param {string} mapUnit 需要换算的地图单位。
  * @returns {number} 返回地图的距离单位。
  * @usage
  * ```
@@ -221,9 +221,9 @@ export function scaleToResolution(scale, dpi, mapUnit) {
 }
 
 /**
- * 范围是否相交
- * @param {Array} extent1 范围1
- * @param {Array} extent2 范围2
+ * 范围是否相交。
+ * @param {Array} extent1 范围 1。
+ * @param {Array} extent2 范围 2。
  * @return {boolean} 范围是否相交。
  */
  export function intersects(extent1, extent2) {
@@ -236,10 +236,10 @@ export function scaleToResolution(scale, dpi, mapUnit) {
 }
 
 /**
- * 获取两个范围的交集
- * @param {Array} extent1 Extent 1
- * @param {Array} extent2 Extent 2
- * @return {Array} 相交范围数组.
+ * 获取两个范围的交集。
+ * @param {Array} extent1 范围 1。
+ * @param {Array} extent2 范围 2。
+ * @return {Array} 相交范围数组。
  * @api
  */
  export function getIntersection(extent1, extent2) {

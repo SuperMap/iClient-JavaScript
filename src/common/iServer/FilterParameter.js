@@ -29,7 +29,7 @@ export class FilterParameter {
          * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，
          * attributeFilter 就是其中的“条件表达式”。
          * 该字段的用法为 attributeFilter = "过滤条件"。
-         * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；
+         * 例如，要查询字段 fieldValue 小于 100 的记录，设置 attributeFilter = "fieldValue < 100"；
          * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。
          */
         this.attributeFilter = null;
@@ -66,13 +66,13 @@ export class FilterParameter {
 
         /**
          * @member {string} [FilterParameter.prototype.orderBy]
-         * @description 查询排序的字段，orderBy的字段须为数值型的。
+         * @description 查询排序的字段，orderBy 的字段须为数值型的。
          * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，
          * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。
          * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；
          * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。
          * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，
-         * 分别表示国家的面积和1994年的各国人口数量。
+         * 分别表示国家的面积和 1994 年的各国人口数量。
          * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；
          * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。
          */

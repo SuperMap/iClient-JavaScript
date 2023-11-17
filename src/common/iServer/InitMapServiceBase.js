@@ -31,7 +31,7 @@ export class InitMapServiceBase {
 
   /**
    * @function createMapService
-   * @description 初始化 MapService。
+   * @description 初始化地图服务。
    * @returns {MapService}
    */
   createMapService() {
@@ -63,7 +63,7 @@ export class InitMapServiceBase {
 
   /**
    * @function getMapInfo
-   * @description 获取坐标投影 WKT。
+   * @description 获取坐标投影的 WKT。
    * @returns {Promise}
    */
   getWKT() {
@@ -84,7 +84,7 @@ export class InitMapServiceBase {
 /**
  * @function isPlaneProjection
  * @description 是否是平面坐标系。
- * @param {string} type - 投影坐标系类型
+ * @param {string} type - 投影坐标系类型。
  * @returns {boolean}
  */
 export function isPlaneProjection(type) {

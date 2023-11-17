@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class IPortalRegisterServiceParam
  * @aliasclass iPortalRegisterServiceParam
  * @deprecatedclass SuperMap.iPortalRegisterServiceParam
- * @classdesc iPortal 注册服务参数。
+ * @classdesc SuperMap iPortal 注册服务参数。
  * @version 10.0.1
  * @category iPortal/Online Resources Data
  * @param {Object} params - 可选参数。

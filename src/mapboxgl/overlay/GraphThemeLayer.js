@@ -66,7 +66,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.addFeatures
-     * @description 向专题图图层中添加数据，支持的 feature 类型为：iServer 返回的 feature JSON 对象。
+     * @description 向专题图图层中添加数据，支持的要素类型为：SuperMap iServer 返回的 feature JSON 对象。
      * @param {ServerFeature} features - 待添加的要素。
      */
     addFeatures(features) {
@@ -133,7 +133,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.createThematicFeature
-     * @description  向专题图图层中添加数据, 支持的 feature 类型为:iServer 返回的 feature json 对象。
+     * @description  向专题图图层中添加数据，支持的要素类型为：SuperMap iServer 返回的 feature JSON 对象。
      * @param {Object} feature - 待添加的要素。
      *
      */
@@ -261,7 +261,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.getShapesByFeatureID
-     * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description  通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param {number} featureID - 要素 ID。
      */
     getShapesByFeatureID(featureID) {
@@ -368,7 +368,7 @@ export class Graph extends Theme {
 
     /**
      * @function GraphThemeLayer.prototype.removeFeatures
-     * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature。
+     * @description  从专题图中删除要素。这个函数删除所有传递进来的矢量要素。参数中的要素数组中的每一项，必须是已经添加到当前图层中的 feature。
      * @param {Array.<FeatureVector>|FeatureVector|Function} features - 要删除的要素。
      */
     removeFeatures(features) {

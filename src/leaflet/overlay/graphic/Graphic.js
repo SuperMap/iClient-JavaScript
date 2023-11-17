@@ -108,7 +108,7 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function Graphic.prototype.setStyle
-     * @description 设置样式。
+     * @description 设置要素样式。
      * @param {(CircleStyle|ImageStyle|CloverStyle)} style - 样式。
      */
     setStyle: function (style) {
@@ -117,7 +117,7 @@ export var Graphic = L.Class.extend({
 
     /**
      * @function Graphic.prototype.getStyle
-     * @description 获取样式。
+     * @description 获取要素样式。
      * @returns {(CircleStyle|ImageStyle|CloverStyle)} 样式。
      */
     getStyle: function () {

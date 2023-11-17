@@ -7,7 +7,7 @@
   * @class IPortalDataConnectionInfoParam
   * @aliasclass iPortalDataConnectionInfoParam
   * @deprecatedclass SuperMap.iPortalDataConnectionInfoParam
-  * @classdesc iPortal HBASE数据源连接信息类。
+  * @classdesc SuperMap iPortal HBASE 数据源连接信息类。
   * @version 10.0.1
   * @category iPortal/Online Resources Data
   * @param {Object} params - 参数。

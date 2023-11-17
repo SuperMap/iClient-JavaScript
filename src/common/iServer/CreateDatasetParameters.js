@@ -10,8 +10,8 @@ import {Util} from '../commontypes/Util';
  * @classdesc 数据集创建参数类。此类用于设置创建的数据集的名称、类型以及数据集所在的数据源等参数，
  * 可创建的数据集类型包括：点、线、面、文本、复合（CAD）和纯属性数据集。
  * @param {Object} options - 参数。
- * @param {string} options.datasourceName - 数据源名称，此为必选参数。
- * @param {string} options.datasetName - 数据集名称，此为必选参数。
+ * @param {string} options.datasourceName - 数据源名称，此为必设参数。
+ * @param {string} options.datasetName - 数据集名称，此为必设参数。
  * @param {string} options.datasetType - 数据集类型。目前支持创建的数据集类型有：点、线、面、文本、复合（CAD）和属性数据集。
  * @usage
  */
@@ -24,13 +24,13 @@ export class CreateDatasetParameters {
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasourceName
-         * @description 数据源名称，此为必选参数。
+         * @description 数据源名称，此为必设参数。
          */
          this.datasourceName = null;
 
         /**
          * @member {string} CreateDatasetParameters.prototype.datasetName
-         * @description 数据集名称，此为必选参数。
+         * @description 数据集名称，此为必设参数。
          */
          this.datasetName = null;
 

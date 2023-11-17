@@ -13,8 +13,8 @@ import { Util } from '../commontypes/Util';
  * @category iServer Image
  * @param {Object} options - 可选参数。
  * @param {string} [options.girdFuncName='GFSlope'] 栅格函数名称，参数值为：GFSlope。
- * @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
- * @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
+ * @param {number} [options.Altitude = 45] 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。
+ * @param {number} [options.ZFactor = 1] 高程缩放系数。如果设置为 1.0，表示不缩放。
  * @usage
 */
 export default class ImageGFSlope {
@@ -26,13 +26,13 @@ export default class ImageGFSlope {
     */
     this.girdFuncName = 'GFSlope';
     /**
-    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。默认值为：45。
-    * @member {number} ImageGFSlope.prototype.Altitude
+    * @description 光源高度角。用于确定光源照射的倾斜角度，是光源与目标的方向线与水平面间的夹角，范围为 0-90 度。当光源高度角为 90 度时，光源正射地表。
+    * @member {number} [ImageGFSlope.prototype.Altitude=45]
     */
     this.Altitude = 45;
     /**
-    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。默认值为：1。
-    * @member {number} ImageGFSlope.prototype.ZFactor
+    * @description 高程缩放系数。如果设置为 1.0，表示不缩放。
+    * @member {number} [ImageGFSlope.prototype.ZFactor=1]
     */
     this.ZFactor = 1;
 

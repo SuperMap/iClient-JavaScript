@@ -45,7 +45,7 @@ export class Format {
 
     /**
      * @function Format.prototype.read
-     * @description 来从字符串中读取数据。
+     * @description 从字符串中读取数据。
      * @param {string} data - 读取的数据。
      */
     read(data) { // eslint-disable-line no-unused-vars

@@ -5,12 +5,12 @@ import { StringExt } from './BaseTypes';
 import { Geometry } from './Geometry';
 
 /**
- * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：
- *     * "opera" -- Opera
- *     * "msie"  -- Internet Explorer
- *     * "safari" -- Safari
- *     * "firefox" -- Firefox
- *     * "mozilla" -- Mozilla
+ * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：<br>
+ *      "opera" -- Opera<br>
+ *      "msie"  -- Internet Explorer<br>
+ *      "safari" -- Safari<br>
+ *      "firefox" -- Firefox<br>
+ *      "mozilla" -- Mozilla
  * @category BaseTypes Constant
  * @constant {Object}
  * @usage
@@ -334,7 +334,7 @@ const Util = {
    * @param {string} [position] - DOM 元素的 position 属性。
    * @param {string} [border] - DOM 元素的 style 属性的 border 属性。
    * @param {string} [overflow] - DOM 元素的 style 属性的 overflow 属性。
-   * @param {number} [opacity] - 不透明度值。取值范围为(0.0 - 1.0)。
+   * @param {number} [opacity] - 不透明度值。取值范围：(0.0 - 1.0)。
    */
   modifyDOMElement: function (element, id, px, sz, position, border, overflow, opacity) {
     if (id) {
@@ -711,7 +711,7 @@ const Util = {
 
   /**
    * @memberOf CommonUtil
-   * @description 计算 iServer 服务的 REST 图层的显示分辨率，需要从 iServer 的 REST 图层表述中获取 viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
+   * @description 计算 SuperMap iServer 服务的 REST 图层的显示分辨率，需要从 SuperMap iServer 的 REST 图层表述中获取 viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
    * @param {Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
    * @param {Size} viewer - 地图初始化时默认的地图图片的尺寸。
    * @param {number} scale - 地图初始化时默认的显示比例尺。
@@ -720,7 +720,7 @@ const Util = {
    * @returns {number} 图层显示分辨率。
    */
   calculateDpi: function (viewBounds, viewer, scale, coordUnit, datumAxis) {
-    //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
+    //10000 是 0.1 毫米与米的转换。DPI 的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
     if (!viewBounds || !viewer || !scale) {
       return;
     }
@@ -1098,10 +1098,10 @@ const Util = {
   },
   /**
    * @memberOf CommonUtil
-   * @description 获取转换后的path路径。
-   * @param {string} path - 待转换的path，包含`{param}`。
-   * @param {Object} pathParams - path中待替换的参数。
-   * @returns {string} 转换后的path路径。
+   * @description 获取转换后的 path 路径。
+   * @param {string} path - 待转换的 path，包含`{param}`。
+   * @param {Object} pathParams - path 中待替换的参数。
+   * @returns {string} 转换后的 path 路径。
    */
   convertPath: function (path, pathParams) {
     if (!pathParams) {

@@ -18,7 +18,7 @@ import Attributions from '../core/Attributions'
  * @param {number} [options.minZoom=3] - 最小缩放级别。
  * @param {number} [options.maxZoom=18] - 最大缩放级别。
  * @param {string} [options.mapName='quanguo'] - 地图名称。
- * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权信息。
+ * @param {string} [options.attribution='Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo'] - 版权描述信息。
  * @usage
  */
 export var CloudTileLayer = L.TileLayer.extend({

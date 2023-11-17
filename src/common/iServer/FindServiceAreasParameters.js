@@ -11,12 +11,12 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @classdesc 服务区分析参数类。此类除了能够设置交通网络分析中的通用参数，还可以设置服务区分析中的服务站点数组、
  *            服务站点阻力半径、是否通过节点 ID 指定路径分析的结点、是否中心点互斥、是否从中心点开始分析等参数。<br>
  *            服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
- *            例如：计算某快餐店能够在30分钟内送达快餐的区域。
+ *            例如：计算某快餐店能够在 30 分钟内送达快餐的区域。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.weights - 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>>} options.centers - 服务站点数组。
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。
- * @param {boolean} [options.isCenterMutuallyExclusive=false] - 是否中心点互斥。
+ * @param {boolean} [options.isCenterMutuallyExclusive=false] - 按照中心点的距离进行判断是否要进行互斥处理。
  * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分析。
  * @param {TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  * @usage

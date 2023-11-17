@@ -91,9 +91,9 @@ export class GetLayersInfoService extends CommonServiceBase {
     /**
      * TODO 专题图时候可能会用到
      * @function GetLayersInfoService.prototype.handleLayers
-     * @description 处理 iServer 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
-     * @param {number} len - subLayers.layers的长度
-     * @param {Array.<number>} layers - subLayers.layers的长度数组
+     * @description 处理 SuperMap iServer 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
+     * @param {number} len - subLayers.layers 的长度
+     * @param {Array.<number>} layers - subLayers.layers 的长度数组
      */
     handleLayers(len, layers) {
         var me = this, tempLayer;

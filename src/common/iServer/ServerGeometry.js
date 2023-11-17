@@ -38,7 +38,7 @@ export class ServerGeometry {
 
         /**
          * @member {ServerStyle} [ServerGeometry.prototype.style]
-         * @description 服务端几何对象的风格（ServerStyle）。
+         * @description 服务端几何对象的风格。
          */
         this.style = null;
 
@@ -72,7 +72,7 @@ export class ServerGeometry {
 
         /**
          * @member {GeometryType} ServerGeometry.prototype.type
-         * @description 几何对象的类型（GeometryType）。
+         * @description 几何对象的类型。
          */
         this.type = null;
 
@@ -505,9 +505,9 @@ export class ServerGeometry {
 
     /**
      * @function ServerGeometry.prototype.fromGeometry
-     * @description 将客户端 Geometry 转换成服务端 ServerGeometry。
-     * @param {Geometry} geometry - 要转换的客户端 Geometry 对象。
-     * @returns {ServerGeometry} 转换后的 ServerGeometry 对象。
+     * @description 将客户端几何对象转换成服务端几何对象。
+     * @param {Geometry} geometry - 要转换的客户端几何对象。
+     * @returns {ServerGeometry} 转换后的服务端几何对象。
      */
     static fromGeometry(geometry) {
         if (!geometry) {

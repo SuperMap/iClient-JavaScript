@@ -4,7 +4,7 @@
 
  /**
  * @enum DataFormat
- * @description 服务请求返回结果数据类型
+ * @description 服务请求返回结果数据类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -22,7 +22,7 @@
  * ```
  */
 var DataFormat = {
-    /** GEOJSON */
+    /** GeoJSON */
     GEOJSON: "GEOJSON",
     /** ISERVER */
     ISERVER: "ISERVER",
@@ -32,7 +32,7 @@ var DataFormat = {
 
 /**
  * @enum ServerType
- * @description 服务器类型
+ * @description 服务器类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -78,37 +78,37 @@ var ServerType = {
  * ```
  */
 var GeometryType = {
-    /** 线几何对象类型。 */
+    /** 线几何对象。 */
     LINE: "LINE",
     /** 路由对象。 */
     LINEM: "LINEM",
-    /** 点几何对象类型。 */
+    /** 点几何对象。 */
     POINT: "POINT",
-    /** 面几何对象类型。 */
+    /** 面几何对象。 */
     REGION: "REGION",
-    /** EPS点几何对象。 */
+    /** EPS 点几何对象。 */
     POINTEPS: "POINTEPS",
-    /** EPS线几何对象。 */
+    /** EPS 线几何对象。 */
     LINEEPS: "LINEEPS",
-    /** EPS面几何对象。 */
+    /** EPS 面几何对象。 */
     REGIONEPS: "REGIONEPS",
-    /** 椭圆。 */
+    /** 椭圆几何对象。 */
     ELLIPSE: "ELLIPSE",
-    /** 圆。 */
+    /** 圆形几何对象。 */
     CIRCLE: "CIRCLE",
-    /** 文本几何对象类型。 */
+    /** 文本几何对象。 */
     TEXT: "TEXT",
-    /** 矩形。 */
+    /** 矩形几何对象。 */
     RECTANGLE: "RECTANGLE",
     /** 未定义。 */
     UNKNOWN: "UNKNOWN",
-    /** 复合几何对象类型。 */
+    /** 复合几何对象。 */
     GEOCOMPOUND:"GEOCOMPOUND"
 };
 
 /**
  * @enum QueryOption
- * @description 查询结果类型枚举，描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @description 查询结果类型，描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -163,7 +163,10 @@ var JoinType = {
 
 /**
  * @enum SpatialQueryMode
- * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
+ * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。空间查询是通过几何对象之间的空间位置关系来构建过滤条件的一种查询方式。
+ * 例如：通过空间查询可以找到被包含在面中的空间对象，相离或者相邻的空间对象等。<br>
+ * 注意：当前版本提供对点、线、面、网络和文本类型数据的空间查询，其中文本类型仅支持 Intersect 和 Contain 两种空间查询模式，
+ * 而且只能作为被搜索对象不能作为搜索对象。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -348,7 +351,8 @@ var BufferRadiusUnit = {
 
 /**
  * @enum EngineType
- * @description  数据源引擎类型枚举。
+ * @description  数据源引擎类型枚举。SuperMap SDX+ 是 SuperMap 的空间引擎技术，
+ * 它提供了一种通用的访问机制（或模式）来访问存储在不同引擎里的数据。引擎类型包括数据库引擎、文件引擎和 Web 引擎。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -483,15 +487,18 @@ var ThemeGraphType = {
 var GraphAxesTextDisplayMode = {
     /**  显示全部文本。 */
     ALL: "ALL",
-    /**  不显示。 */
+    /**  不显示文本。 */
     NONE: "NONE",
-    /**  显示Y轴的文本。 */
+    /**  显示 Y 轴的文本。 */
     YAXES: "YAXES"
 };
 
 /**
  * @enum GraduatedMode
- * @description  专题图分级模式枚举。
+ * @description  主要用在统计专题图和等级符号专题图中。<br>
+ * 分级主要是为了减少制作专题图时数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，
+ * 减少数据之间绝对大小的差异，使得专题图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
+ * 有三种分级模式：常数、对数和平方根，对于有值为负数的字段，不可以采用对数和平方根的分级方式。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -519,7 +526,10 @@ var GraduatedMode = {
 
 /**
  * @enum RangeMode
- * @description  范围分段专题图分段方式枚举。
+ * @description  范围分段专题图分段方式枚举。在分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段，
+ * 要素或记录根据其所对应的字段值或表达式值被分配到其中一个分段中，在同一个范围段中要素或记录使用相同的风格进行显示。
+ * 分段专题图一般用来表现连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等，
+ * 从而反映现象在各区域的集中程度或发展水平的分布差异。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -587,7 +597,9 @@ var ThemeType = {
 
 /**
  * @enum ColorGradientType
- * @description  渐变颜色枚举。
+ * @description  渐变颜色枚举。颜色渐变是多种颜色间的逐渐混合，可以是从起始色到终止色两种颜色的渐变，
+ * 或者在起始色到终止色之间具有多种中间颜色进行渐变。该颜色渐变类型可应用于专题图对象的颜色方案设置中如：
+ * 单值专题图、 分段专题图、栅格分段专题图。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -663,7 +675,7 @@ var ColorGradientType = {
 
 /**
  * @enum TextAlignment
- * @description  文本对齐枚举。
+ * @description  文本对齐方式枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -709,7 +721,8 @@ var TextAlignment = {
 
 /**
  * @enum FillGradientMode
- * @description  渐变填充风格的渐变类型枚举。
+ * @description  渐变填充风格的渐变类型枚举。所有渐变类型都是两种颜色之间的渐变，即从渐变起始色到渐变终止色之间的渐变。
+ * 渐变风格的计算都是以填充区域的边界矩形，即最小外接矩形作为基础的，因而以下提到的填充区域范围即为填充区域的最小外接矩形。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -741,7 +754,7 @@ var FillGradientMode = {
 
 /**
  * @enum AlongLineDirection
- * @description  标签沿线标注方向枚举。
+ * @description  标签沿线标注方向枚举。路线与水平方向的锐角夹角在 60 度以上表示上下方向，60 度以下表示左右方向。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -773,7 +786,8 @@ var AlongLineDirection = {
 
 /**
  * @enum LabelBackShape
- * @description  标签专题图中标签背景的形状枚举。
+ * @description  标签专题图中标签背景的形状枚举。标签背景是 SuperMap iServer 支持的一种标签的显示风格，
+ * 使用一定颜色的各种形状作为各标签背景，从而可以突出显示标签或者使标签专题图更美观。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -797,7 +811,7 @@ var LabelBackShape = {
     ELLIPSE: "ELLIPSE",
     /** 符号背景，即标签背景的形状为设定的符号。 */
     MARKER: "MARKER",
-    /** 空背景，即不使用任何形状作为标签的背景。 */
+    /** 空背景，即不使用任何形状作为标签背景。 */
     NONE: "NONE",
     /** 矩形背景，即标签背景的形状为矩形。 */
     RECT: "RECT",
@@ -809,7 +823,9 @@ var LabelBackShape = {
 
 /**
  * @enum LabelOverLengthMode
- * @description  标签专题图中超长标签的处理模式枚举。
+ * @description  标签专题图中超长标签的处理模式枚举。对于标签的长度超过设置的标签最大长度的标签称为超长标签，
+ * 标签的最大长度可以通过 ThemeLabel.maxLabelLength 来设置。
+ * SuperMap 提供三种超长标签的处理方式来控制超长标签的显示行为，即换行显示、对超长标签不进行处理、省略超出部分。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -827,11 +843,11 @@ var LabelBackShape = {
  * ```
  */
 var LabelOverLengthMode = {
-    /** 换行显示。 */
+    /** 对超长标签换行显示。 */
     NEWLINE: "NEWLINE",
     /** 对超长标签不进行处理。 */
     NONE: "NONE",
-    /** 省略超出部分。 */
+    /** 省略标签超出的部分。 */
     OMIT: "OMIT"
 };
 
@@ -921,11 +937,11 @@ var SideType = {
  * ```
  */
 var SupplyCenterType = {
-    /** 固定中心点。 */
+    /** 固定中心点，用于资源分配和选址分区。 */
     FIXEDCENTER: "FIXEDCENTER",
-    /** 非中心点。 */
+    /** 非中心点，在资源分配和选址分区时都不予考虑。 */
     NULL: "NULL",
-    /** 可选中心点。 */
+    /** 可选中心点，用于选址分区。 */
     OPTIONALCENTER: "OPTIONALCENTER"
 };
 
@@ -954,7 +970,7 @@ var TurnType = {
     AHEAD: "AHEAD",
     /** 掉头。 */
     BACK: "BACK",
-    /** 终点，不拐弯。 */
+    /** 终点，不转弯。 */
     END: "END",
     /** 左转弯。 */
     LEFT: "LEFT",
@@ -966,7 +982,7 @@ var TurnType = {
 
 /**
  * @enum BufferEndType
- * @description  缓冲区分析BufferEnd类型。
+ * @description  缓冲区分析的缓冲端点类型。用以区分线对象缓冲区分析时的端点是圆头缓冲还是平头缓冲。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1045,20 +1061,20 @@ var BufferEndType = {
  * ```
  */
 var OutputType =  {
-    /** INDEXEDHDFS */
+    /** HDFS 的索引文件。 */
     INDEXEDHDFS: "INDEXEDHDFS",
-    /** UDB */
+    /** 本地 UDB 文件。 */
     UDB: "UDB",
-    /** MONGODB */
+    /** MongoDB 数据库。 */
     MONGODB: "MONGODB",
-    /** PG */
+    /** PostgreSQL 数据库。 */
     PG: "PG"
 };
 
 /**
  * @enum SmoothMethod
- * @description  光滑方法枚举。
- * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
+ * @description  平滑方法枚举。
+ * 用于从 Grid 或 DEM 数据生成等值线或等值面时，对等值线或者等值面的边界线进行平滑处理的方法。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1170,7 +1186,7 @@ var EditType = {
 /**
  * @enum TransferTactic
  * @description  公交换乘策略枚举。
- * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * 该枚举用于指定公交服务中的公交换乘策略，包含时间最短、换乘最少、步行最少、距离最短等设置。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1188,11 +1204,11 @@ var EditType = {
  * ```
  */
 var TransferTactic = {
-    /** 时间短。 */
+    /** 时间最短。 */
     LESS_TIME: "LESS_TIME",
-    /** 少换乘。 */
+    /** 换乘最少。 */
     LESS_TRANSFER: "LESS_TRANSFER",
-    /** 少步行。 */
+    /** 步行最少。 */
     LESS_WALK: "LESS_WALK",
     /** 距离最短。 */
     MIN_DISTANCE: "MIN_DISTANCE"
@@ -1200,8 +1216,8 @@ var TransferTactic = {
 
 /**
  * @enum TransferPreference
- * @description  公交换乘策略枚举。
- * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
+ * @description  交通换乘偏好枚举。
+ * 该枚举用于指定交通换乘服务中的地铁优先、公交优先、不乘坐地铁、无乘车偏好等交通换乘偏好设置。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1281,9 +1297,9 @@ var GridType =  {
  * ```
  */
 var ColorSpaceType = {
-    /** 该类型主要在印刷系统使用。 */
+    /** CMYK色彩模式，该类型主要在印刷系统使用。 */
     CMYK: "CMYK",
-    /** 该类型主要在显示系统中使用。 */
+    /** RGB色彩模式，该类型主要在显示系统中使用。 */
     RGB: "RGB"
 };
 
@@ -1373,7 +1389,7 @@ var StatisticMode = {
     MAX: "MAX",
     /** 统计所选字段的最小值。 */
     MIN: "MIN",
-    /** 统计所选字段的标准差 */
+    /** 统计所选字段的标准差。 */
     STDDEVIATION: "STDDEVIATION",
     /** 统计所选字段的总和。 */
     SUM: "SUM",
@@ -1383,7 +1399,11 @@ var StatisticMode = {
 
 /**
  * @enum PixelFormat
- * @description  栅格与影像数据存储的像素格式枚举。
+ * @description  定义栅格与影像数据存储的像素格式枚举。光栅数据结构实际上就是像元的阵列，
+ * 像元（或像素）是光栅数据的最基本信息存储单位，本枚举类包含了表示一个像元（或像素）的字节长度。
+ * 在 SuperMap 中有两种类型的光栅数据：栅格数据集和影像数据集（参见 DatasetGridInfo和DatasetImageInfo）。 
+ * 栅格数据集多用来进行栅格分析，因而其像元值为地物的属性值，如高程，降水量等；
+ * 而影像数据集一般用来进行显示或作为底图，因而其像元值为颜色值或颜色的索引值。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1425,7 +1445,7 @@ var PixelFormat = {
 
 /**
  * @enum SearchMode
- * @description  内插时使用的样本点的查找方式枚举。
+ * @description  插值分析时使用的样本点的查找方式枚举。对于同一种插值方法，样本点的选择方法不同，得到的插值结果也会不同。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1455,7 +1475,7 @@ var SearchMode = {
 
 /**
  * @enum InterpolationAlgorithmType
- * @description  插值分析的算法的类型。
+ * @description  插值分析所采用算法的类型。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1483,7 +1503,10 @@ var InterpolationAlgorithmType = {
 
 /**
  * @enum VariogramMode
- * @description  克吕金（Kriging）插值时的半变函数类型枚举。
+ * @description  克吕金（Kriging）插值时的半变异函数类型枚举。<br>
+ * 指数函数：适用于空间相关关系随样本间距的增加呈指数递减的情况，其空间自相关关系在样本间距的无穷远处完全消失。<br>
+ * 高斯函数：适用于空间自相关关系随样本间距的增加而逐渐减少，直到超出一定的距离时空间自相关关系消失的情况。<br>
+ * 球形函数：适用于半变异函数值渐进地逼近基台值的情况。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1563,9 +1586,9 @@ var ClientType = {
     REQUESTIP: "RequestIP",
     /** 不做任何验证。 */
     NONE: "NONE",
-    /** SERVER。 */
+    /** 服务端。 */
     SERVER: "SERVER",
-    /** WEB。 */
+    /** 浏览器端。 */
     WEB: "WEB"
 };
 
@@ -1625,15 +1648,15 @@ var ChartType = {
  * ```
  */
 var ClipAnalystMode = {
-    /** CLIP。 */
+    /** 裁剪分析操作。 */
     CLIP: "clip",
-    /** INTERSECT。 */
+    /** 求交分析操作。 */
     INTERSECT: "intersect"
 };
 
 /**
  * @enum AnalystAreaUnit
- * @description 分布式分析面积单位。
+ * @description 分布式分析的面积单位。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1737,7 +1760,10 @@ var StatisticAnalystMode = {
 
 /**
  * @enum SummaryType
- * @description 分布式分析聚合类型。
+ * @description 分布式分析聚合类型。该枚举定义了点聚合分析中点要素的划分和聚合方式。
+ * 点聚合分析是指针对点数据集制作聚合图的一种空间分析作业。通过格网面或多边形对地图点要素进行划分，
+ * 然后，计算每个面对象内点要素的数量，并作为面对象的统计值，也可以引入点的权重信息，
+ * 考虑面对象内点的加权值作为面对象的统计值；最后基于面对象的统计值，按照统计值大小排序的结果，通过色带对面对象进行色彩填充。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1763,7 +1789,8 @@ var SummaryType = {
 
 /**
  * @enum TopologyValidatorRule
- * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
+ * @description  拓扑检查模规则枚举。该类定义了拓扑检查操作模式常量。
+ * 拓扑检查是指根据相应的拓扑规则对点、线和面数据进行检查，返回不符合规则的对象的一种操作作业。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1823,7 +1850,7 @@ var BucketAggType = {
 
 /**
  * @enum MetricsAggType
- * @description  指标聚合类型枚举类，该类定义了Elasticsearch数据服务中聚合查询模式常量。
+ * @description  指标聚合类型枚举类，该类定义了 Elasticsearch 数据服务中聚合查询模式常量。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1853,7 +1880,7 @@ var MetricsAggType = {
 
 /**
  * @enum GetFeatureMode
- * @description feature 查询方式。
+ * @description 数据查询的模式（获取要素的方式）枚举。
  * @category BaseTypes Constant
  * @type {string}
  * @usage
@@ -1911,7 +1938,7 @@ var RasterFunctionType = {
 
 /**
  * @enum ResourceType
- * @description iportal 资源类型。
+ * @description SuperMap iPortal 资源类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -1930,23 +1957,23 @@ var RasterFunctionType = {
  * ```
  */
 var ResourceType = {
-    /** 地图。 */
+    /** 地图资源。 */
     MAP: "MAP",
-    /** 服务。 */
+    /** 服务资源。 */
     SERVICE: "SERVICE",
-    /** 场景。 */
+    /** 三维场景资源。 */
     SCENE: "SCENE",
-    /** 数据。 */
+    /** 数据资源。 */
     DATA: "DATA",
-    /** 洞察。 */
+    /** 数据洞察资源。 */
     INSIGHTS_WORKSPACE: "INSIGHTS_WORKSPACE",
-    /** 大屏。 */
+    /** 地图大屏资源。 */
     MAP_DASHBOARD: "MAP_DASHBOARD"
 }
 
 /**
  * @enum OrderBy
- * @description iportal资源排序字段。
+ * @description SuperMap iPortal 资源排序字段。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -1975,7 +2002,7 @@ var OrderBy = {
 
 /**
  * @enum OrderType
- * @description iportal资源升序还是降序过滤。
+ * @description SuperMap iPortal 资源升序还是降序过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -1994,15 +2021,15 @@ var OrderBy = {
  * ```
  */
 var OrderType = {
-    /** 升序。 */
+    /** 升序过滤。 */
     ASC: "ASC",
-    /** 降序。 */
+    /** 降序过滤。 */
     DESC: "DESC"
 }
 
 /**
  * @enum SearchType
- * @description iportal资源查询的范围进行过滤。
+ * @description 对 SuperMap iPortal 资源查询的范围进行过滤。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2035,7 +2062,7 @@ var SearchType = {
 
 /**
  * @enum AggregationTypes
- * @description iportal资源聚合查询的类型。
+ * @description SuperMap iPortal 资源支持的聚合查询类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2054,15 +2081,15 @@ var SearchType = {
  * ```
  */
 var AggregationTypes = {
-    /** 标签。 */
+    /** 标签聚合。 */
     TAG: "TAG",
-    /** 资源类型。 */
+    /** 资源类型聚合。 */
     TYPE: "TYPE"
 }
 
 /**
  * @enum PermissionType
- * @description iportal资源权限类型。
+ * @description SuperMap iPortal 资源权限类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2089,13 +2116,13 @@ var PermissionType = {
     READWRITE: "READWRITE",
     /** 可删除。 */
     DELETE: "DELETE",
-    /** 可下载，包括可读、可检索。 */
+    /** 可下载，包括可查看、可检索。 */
     DOWNLOAD:"DOWNLOAD"
 }
 
 /**
  * @enum EntityType
- * @description iportal资源实体类型。
+ * @description SuperMap iPortal 资源实体类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2128,7 +2155,7 @@ var EntityType = {
 
 /**
  * @enum DataItemType
- * @description iportal数据类型。
+ * @description SuperMap iPortal 数据类型。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2147,11 +2174,11 @@ var EntityType = {
  * ```
  */
 var DataItemType = {
-    /** geojson 数据。 */
+    /** GeoJSON 数据。 */
     GEOJSON: "GEOJSON",
-    /** UGCV5_MVT。  */
+    /** UGCV5_MVT 矢量瓦片。 */
     UGCV5_MVT: "UGCV5_MVT",
-    /** json数据。  */
+    /** JSON 数据。  */
     JSON: "JSON",
     /** 音频文件。 */
     AUDIO: "AUDIO",
@@ -2177,23 +2204,23 @@ var DataItemType = {
     MAPTEMPLATE: "MAPTEMPLATE",
     /** MarkerSymbol 点符号库。 */
     MARKERSYMBOL: "MARKERSYMBOL",
-    /** MBTILES。 */
+    /** MBTiles 地图瓦片。 */
     MBTILES: "MBTILES",
     /** 照片。 */
     PHOTOS: "PHOTOS",
     /** SHP 空间数据。 */
     SHP: "SHP",
-    /** SMTILES。 */
+    /** SMTiles 地图瓦片。 */
     SMTILES: "SMTILES",
-    /** SVTILES。 */
+    /** SVTiles 地图瓦片。 */
     SVTILES: "SVTILES",
     /** ThemeTemplate 专题图模板。 */
     THEMETEMPLATE: "THEMETEMPLATE",
-    /** TPK。 */
+    /** ArcGIS TPK 瓦片。 */
     TPK: "TPK",
     /** UDB 数据源。 */
     UDB: "UDB",
-    /** UGCV5。 */
+    /** UGCV5 矢量瓦片。 */
     UGCV5: "UGCV5",
     /** 其他类型（普通文件）。 */
     UNKNOWN: "UNKNOWN",
@@ -2253,13 +2280,13 @@ var WebExportFormatType = {
  * ```
  */
 var WebScaleOrientationType = {
-    /** horizontal labels below. */
+    /** 位于地图上侧的水平方向标签。 */
     HORIZONTALLABELSBELOW: "HORIZONTALLABELSBELOW",
-    /** horizontal labels above. */
+    /** 位于地图下侧的水平方向标签。 */
     HORIZONTALLABELSABOVE: "HORIZONTALLABELSABOVE",
-    /** vertical labels left. */
+    /** 位于地图左侧的垂直方向标签。 */
     VERTICALLABELSLEFT: "VERTICALLABELSLEFT",
-    /** vertical labels right. */
+    /** 位于地图右侧的垂直方向标签。 */
     VERTICALLABELSRIGHT: "VERTICALLABELSRIGHT"
 }
 
@@ -2294,7 +2321,7 @@ var WebScaleType = {
 
 /**
  * @enum WebScaleUnit
- * @description Web 比例尺的单位制。
+ * @description Web 打印中地图比例尺的单位制。
  * @category BaseTypes Constant
  * @version 10.0.1
  * @type {string}
@@ -2352,7 +2379,7 @@ var BoundsType = {
 
 /**
  * @enum CellSizeType
- * @description 单元格类型。
+ * @description 单元格大小类型。
  * @category BaseTypes Constant
  * @version 11.1.1
  * @type {string}
@@ -2371,7 +2398,7 @@ var BoundsType = {
  * ```
  */
 var CellSizeType = {
-  /** 用户自己输入的单元格值大小作为单元格大小类型。 */
+  /** 将用户自己输入的单元格值大小作为单元格大小类型。 */
   CUSTOM: "CUSTOM",
   /** 输入栅格数据集中单元格最大值作为单元格大小类型。*/
   MAX : "MAX",

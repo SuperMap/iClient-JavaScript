@@ -27,11 +27,11 @@ import Point from 'ol/geom/Point';
  * @category Visualization HeatMap
  * @param {string} name - 图层名称。
  * @param {Object} options - 参数。
- * @param {ol.Map} options.map - openlayers 的 map 对象。
+ * @param {ol.Map} options.map - OpenLayers 的地图对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
  * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
  * @extends {ol.source.ImageCanvas}
@@ -136,7 +136,7 @@ export class HeatMap extends ImageCanvasSource {
 
     /**
      * @function HeatMap.prototype.setOpacity
-     * @description 设置图层的不透明度，取值 [0-1] 之间。
+     * @description 设置图层的不透明度，取值范围：[0-1]。
      * @param {number} opacity - 不透明度。
      */
     setOpacity(opacity) {
@@ -319,7 +319,7 @@ export class HeatMap extends ImageCanvasSource {
 
     /**
      * @function HeatMap.prototype.getLocalXY
-     * @description 获取坐标系统。
+     * @description 地理坐标转为像素坐标。
      * @param {Object} coordinate - 坐标位置。
      */
     getLocalXY(coordinate) {

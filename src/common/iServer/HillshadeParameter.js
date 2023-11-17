@@ -9,10 +9,11 @@ import { RasterFunctionType } from '../REST';
  * @class HillshadeParameter
  * @deprecatedclass SuperMap.HillshadeParameter
  * @category iServer Map Tile
- * @classdesc 阴影面分析参数类。此类可用于设置阴影面分析中的光源高度角、光源方位角、z 因子等参数。
+ * @classdesc 阴影面分析参数类。此类可用于设置阴影面分析中的光源高度角、光源方位角、z 因子等参数。<br>
+ * HILLSHADE 即山体阴影，通过考虑照明源的角度和阴影，根据表面栅格创建地貌晕渲。
  * @param {Object} options - 可选参数。
  * @param {number} [options.altitude=45] - 高于地平线的光源高度角。高度角由正度数表示，0 度代表地平线，而 90 度代表头顶正上方。
- * @param {number} [options.azimuth=315] - 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+ * @param {number} [options.azimuth=315] - 光源的方位角。方位角由 0 到 360 度之间的正度数表示，以北为基准方向按顺时针进行测量。
  * @param {number} [options.zFactor=1] - 一个表面 z 单位中地面 x,y 单位的数量。z 单位与输入表面的 x,y 单位不同时，可使用 z 因子调整 z 单位的测量单位。
  *                                      计算最终输出表面时，将用 z 因子乘以输入表面的 z 值。<br>
  *                                      1.如果 x,y 单位和 z 单位采用相同的测量单位，则 z 因子为 1。这是默认设置。<br>
@@ -42,7 +43,7 @@ export class HillshadeParameter extends RasterFunctionParameter {
 
         /**
          * @member {number} [HillshadeParameter.prototype.azimuth = 315]
-         * @description 光源的方位角。方位角由0到360度之间的正度数表示，以北为基准方向按顺时针进行测量。
+         * @description 光源的方位角。方位角由 0 到 360 度之间的正度数表示，以北为基准方向按顺时针进行测量。
          */
         this.azimuth = 315;
 

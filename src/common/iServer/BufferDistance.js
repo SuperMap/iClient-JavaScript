@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * @category iServer SpatialAnalyst BufferAnalyst
  * @classdesc 缓冲区分析的缓冲距离类。通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
  * @param {Object} options - 可选参数。
- * @param {string} [options.exp] - 以数值型的字段表达式作为缓冲区分析的距离值。
+ * @param {string} [options.exp] - 以数值型的字段表达式作为缓冲区分析的距离值。表达式的结果需大于 0。
  * @param {number} [options.value=100] - 以数值作为缓冲区分析的距离值。单位：米。
  * @usage
  */
@@ -19,7 +19,7 @@ export class BufferDistance {
     constructor(options) {
         /**
          * @member {string} [BufferDistance.prototype.exp]
-         * @description 以数值型的字段表达式作为缓冲区分析的距离值。
+         * @description 以数值型的字段表达式作为缓冲区分析的距离值。表达式的结果需大于 0。
          */
         this.exp = null;
 

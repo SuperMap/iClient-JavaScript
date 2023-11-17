@@ -8,7 +8,7 @@ import { FetchRequest } from '../util/FetchRequest';
  * @class IPortalServiceBase
  * @aliasclass iPortalServiceBase
  * @deprecatedclass SuperMap.iPortalServiceBase
- * @classdesc iPortal 服务基类（有权限限制的类需要实现此类）。
+ * @classdesc SuperMap iPortal 服务基类（有权限限制的类需要实现此类）。
  * @category iPortal/Online Core
  * @param {string} url - 服务地址。
  * @param {Object} options - 可选参数。

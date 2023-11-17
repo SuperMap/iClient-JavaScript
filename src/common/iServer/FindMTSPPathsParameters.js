@@ -60,7 +60,7 @@ export class FindMTSPPathsParameters {
          * @member {TransportationAnalystParameter} [FindMTSPPathsParameters.prototype.parameter]
          * @description 交通网络分析通用参数。
          *              通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
-         *              TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
+         *              它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
          */
         this.parameter = new TransportationAnalystParameter();
         Util.extend(this, options);

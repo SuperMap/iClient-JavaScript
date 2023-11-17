@@ -10,8 +10,8 @@ import {Util} from '../commontypes/Util';
  * @classdesc 地区太阳辐射参数类。此类用于指定太阳辐射计算的数据集（必须为栅格数据集）、地区纬度、时间模式、起始/结束日期和时间、
  * 大气透射率、计算小时/天数的间隔等，还可以对计算结果进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。
- * @param {string} options.targetDatasourceName - 指定的存储结果数据集的数据源名称, 例如："Jingjin"。
+ * @param {string} options.dataset - 用于做地区太阳辐射的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"的形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} options.targetDatasourceName - 指定存储结果数据集所在数据源的名称，例如："Jingjin"。
  * @param {string} options.totalGridName - 指定地区太阳辐射总辐射量数据集的名称。
  * @param {string} options.diffuseDatasetGridName - 指定地区太阳辐射散射辐射量数据集的名称。
  * @param {string} options.durationDatasetGridName - 指定地区太阳辐射太阳直射持续时间数据集的名称。
@@ -33,13 +33,13 @@ export class AreaSolarRadiationParameters {
     constructor(options) {
         /**
          *  @member {string} AreaSolarRadiationParameters.prototype.dataset
-         *  @description 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如“数据集名称@数据源别名”形式来表示，例如：JingjinTerrain@Jingjin。注：地区太阳辐射数据必须为栅格数据集。
+         *  @description 用于做地区太阳辐射的数据源中数据集的名称。该名称用形如“数据集名称@数据源别名”形式来表示，例如：JingjinTerrain@Jingjin。注：地区太阳辐射数据必须为栅格数据集。
          */
         this.dataset = null;
 
         /**
          * @member {string} AreaSolarRadiationParameters.prototype.targetDatasourceName
-         * @description 指定的存储结果数据集的数据源名称，例如："Jingjin"。
+         * @description 指定存储结果数据集所在数据源的名称，例如："Jingjin"。
          */
         this.targetDatasourceName = null;
 

@@ -10,11 +10,11 @@ import {ServerGeometry} from './ServerGeometry';
  * @category iServer SpatialAnalyst InterpolationAnalyst
  * @classdesc 用于裁剪的参数。优先使用用户指定的裁剪区域多边形进行裁剪，也可以通过指定数据源和数据集名，从而使用指定数据集的边界多边形进行裁剪。
  * @param {Object} options - 可选参数。
- * @param {string} [options.clipDatasetName] - 裁剪的数据集名称。
+ * @param {string} [options.clipDatasetName] - 裁剪的数据集名称。当不设置 clipRegion 时起作用。
  * @param {string} [options.clipDatasourceName] - 裁剪的数据集所在数据源的名称。
  * @param {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject} [options.clipRegion] - 用户指定的裁剪区域。
- * @param {boolean} [options.isClipInRegion=true] - 是否对裁剪区内的数据集进行裁剪。
- * @param {boolean} [options.isExactClip=true] - 是否使用精确裁剪。
+ * @param {boolean} [options.isClipInRegion=true] - 是否对裁剪区内的数据集进行裁剪。若为 true，则对裁剪区域内的结果进行裁剪，若为 false，则对裁剪区域外的结果进行裁剪。 
+ * @param {boolean} [options.isExactClip=true] - 是否使用精确裁剪。若为 true，表示使用精确裁剪对栅格或影像数据集进行裁剪，false 表示使用显示裁剪。
  * @usage
  */
 export class ClipParameter {
@@ -35,7 +35,7 @@ export class ClipParameter {
 
         /**
          * @member {GeometryPolygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON|GeoJSONObject} ClipParameter.prototype.clipRegion
-         * @description 用户指定的裁剪区域，优先使用，clipDatasetName 与 clipRegion 必须设置一个。
+         * @description 用户指定的裁剪区域，当与 clipDatasetName 同时设置时，优先使用 clipRegion。不设置时则使用指定数据集的边界多边形进行裁剪。clipDatasetName 与 clipRegion 必须设置一个。
          */
         this.clipRegion = null;
 

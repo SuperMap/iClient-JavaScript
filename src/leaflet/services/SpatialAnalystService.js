@@ -54,7 +54,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @description 缓冲区分析。<br>
      * 缓冲区分析是围绕空间对象，使用与空间对象的距离值（称为缓冲半径）作为半径，生成该对象的缓冲区域的过程，
      * 其中缓冲半径可以是固定数值也可以是空间对象各自的属性值。缓冲区也可以理解为空间对象的影响或服务范围。
-     * @param {DatasetBufferAnalystParameters} params - 数据集缓冲区分析参数类。
+     * @param {DatasetBufferAnalystParameters|GeometryBufferAnalystParameters} params - 数据集缓冲区分析参数类 || 几何对象缓冲区分析参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -66,9 +66,9 @@ export var SpatialAnalystService = ServiceBase.extend({
 
     /**
      * @function SpatialAnalystService.prototype.densityAnalysis
-     * @description 点密度分析。目前提供1种点密度分析方式：核密度分析。<br>
+     * @description 点密度分析。目前提供 1 种点密度分析方式：核密度分析。<br>
      * 核密度分析用于计算点、线要素测量值在指定邻域范围内的单位密度,能直观地反映出离散测量值在连续区域内的分布情况。
-     * 其结果是中间值大周边值小的光滑曲面，栅格值即为单位密度，在邻域边界处降为0。
+     * 其结果是中间值大周边值小的光滑曲面，栅格值即为单位密度，在邻域边界处降为 0。
      * 核密度分析可用于计算人口密度、建筑密度、获取犯罪情况报告、旅游区人口密度监测、连锁店经营情况分析等等。
      * @param {DensityKernelAnalystParameters} params - 核密度分析参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
@@ -113,7 +113,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @description 插值分析。<br>
      * 插值分析可以将有限的采样点数据，通过插值对采样点周围的数值情况进行预测，
      * 从而掌握研究区域内数据的总体分布状况，使采样的离散点不仅仅反映其所在位置的数值情况，而且可以反映区域的数值分布。
-     * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} params - 样条插值（径向基函数插值法）分析参数类。
+     * @param {InterpolationDensityAnalystParameters|InterpolationIDWAnalystParameters|InterpolationRBFAnalystParameters|InterpolationKrigingAnalystParameters} params - 插值分析参数类，包括：点密度插值分析参数类、反距离加权插值分析参数类、样条插值（径向基函数插值法）分析参数类、克吕金插值分析参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -142,7 +142,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @function SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析。<br>
      * 叠加分析是指在统一空间参考系统下，通过对两个数据集进行的一系列集合运算，产生新数据集的过程。
-     * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类。|| 几何对象叠加分析参数类。
+     * @param {DatasetOverlayAnalystParameters|GeometryOverlayAnalystParameters} params - 数据集叠加分析参数类 || 几何对象叠加分析参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -269,7 +269,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * 2.可用离散点的数据来计算泰森多边形区域的数据；<br>
      * 3.判断一个离散点与其它哪些离散点相邻时，可根据泰森多边形直接得出，且若泰森多边形是 n 边形，则就与 n 个离散点相邻；<br>
      * 4.当某一数据点落入某一泰森多边形中时，它与相应的离散点最邻近，无需计算距离。
-     * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类。
+     * @param {DatasetThiessenAnalystParameters|GeometryThiessenAnalystParameters} params - 数据集泰森多边形分析参数类 || 几何对象泰森多边形分析参数类。
      * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
      * @returns {Promise} Promise 对象。
@@ -284,7 +284,7 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @description 最近距离计算。<br>
      * 最近距离计算即在指定地图上，查找距离指定几何对象一定容限内最近的几何对象。
      * @version 11.1.1
-     * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 最近距离计算参数类。
+     * @param {DatasetMinDistanceAnalystParameters|GeometryMinDistanceAnalystParameters} params - 数据集最近距离计算参数类 || 几何对象最近距离计算参数类。
      * @param {RequestCallback} callback 回调函数。
      * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的结果类型。
      */
@@ -312,8 +312,8 @@ export var SpatialAnalystService = ServiceBase.extend({
      * @function SpatialAnalystService.prototype.geometrybatchAnalysis
      * @description 批量空间分析。<br>
      * 支持的批量空间分析方法包括：缓冲区分析、插值分析、叠加分析、表面分析等。
-     * @param {Array.<Object>} params -批量分析参数对象数组；包括：</br>
-     * @param {string} params.analystName -  空间分析方法的名称。包括：</br>
+     * @param {Array.<Object>} params -批量分析参数对象数组，包括：</br>
+     * @param {string} params.analystName -  批量空间分析方法的名称。包括：</br>
      * "buffer","overlay","interpolationDensity","interpolationidw","interpolationRBF","interpolationKriging","isoregion","isoline"
      * @param {Object} param - 空间分析类型对应的请求参数，包括：</br>
      * {@link GeometryBufferAnalystParameters} 缓冲区分析参数类。</br>

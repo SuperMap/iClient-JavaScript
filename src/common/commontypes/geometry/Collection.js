@@ -202,9 +202,9 @@ export class Collection extends Geometry {
 
     /**
      * @function GeometryCollection.prototype.equals
-     * @description 判断两个几何图形是否相等。如果所有的 components 具有相同的坐标，则认为是相等的。
-     * @param {Geometry} geometry - 需要判断的几何图形。
-     * @returns {boolean} 输入的几何图形与当前几何图形是否相等。
+     * @description 判断两个几何对象是否相等。如果所有的 components 具有相同的坐标，则认为是相等的。
+     * @param {Geometry} geometry - 需要判断的几何对象。
+     * @returns {boolean} 输入的几何对象与当前几何对象是否相等。
      */
     equals(geometry) {
         var equivalent = true;

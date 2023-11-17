@@ -38,7 +38,7 @@ export class ThemeUnique extends Theme {
          * @member {Array.<ThemeUniqueItem>} ThemeUnique.prototype.items
          * @description 单值专题图子项类数组。
          *              单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
-         *              Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有 5 个专题图子项。
+         *              Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有 5 种不同值，则该行政区划图有 5 个专题图子项。
          */
         this.items = null;
 
@@ -54,7 +54,7 @@ export class ThemeUnique extends Theme {
          * @description 渐变颜色枚举类。
          *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
          *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。
-         *              但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
+         *              但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中 Style 属性），
          *              该配色方案对于这几个子项将不起作用。
          */
         this.colorGradientType = ColorGradientType.YELLOW_RED;

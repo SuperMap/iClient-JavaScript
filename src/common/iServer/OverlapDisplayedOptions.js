@@ -67,14 +67,14 @@ export class OverlapDisplayedOptions {
 
         /**
          * @member {number} [OverlapDisplayedOptions.prototype.horizontalOverlappedSpaceSize=0]
-         * @description 两个对象之间的横向压盖间距，单位为0.1毫米，跟 verticalOverlappedSpaceSize 结合使用，
+         * @description 两个对象之间的横向压盖间距，单位为 0.1 毫米，跟 verticalOverlappedSpaceSize 结合使用，
          * 当两个对象的横向间距小于该值，且纵向间距小于 verticalOverlappedSpaceSize 时认为压盖。
          */
         this.horizontalOverlappedSpaceSize = 0;
 
         /**
          * @member {number} [OverlapDisplayedOptions.prototype.verticalOverlappedSpaceSize=0]
-         * @description 两个对象之间的纵向压盖间距，单位为0.1毫米，跟 horizontalOverlappedSpaceSize 结合使用，
+         * @description 两个对象之间的纵向压盖间距，单位为 0.1 毫米，跟 horizontalOverlappedSpaceSize 结合使用，
          * 当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。
          */
         this.verticalOverlappedSpaceSize = 0;

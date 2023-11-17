@@ -36,12 +36,12 @@ const DEFAULT_ZOOM_OFFSET = {
  * @category Visualization Graphic
  * @modulecategory Overlay
  * @extends {L.Path}
- * @param {Array.<Graphic>} graphics - 要素对象。
+ * @param {Array.<Graphic>} graphics -  要素对象。
  * @param {Object} options - 参数。
  * @param {string}   [options.render='canvas'] - 指定使用的渲染器。可选值：'webgl'，'canvas'（ webgl 渲染目前只支持散点）。
  * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度。当 {@link Graphic} 的 style 参数传入设置了 fillOpacity 或 opacity 的 {@link CircleStyle} 或 {@link CloverStyle}，此参数无效。{@link Graphic} 的 style 传入 {@link ImageStyle} 后不支持此参数。
+ * @param {number} [options.opacity=0.8] - 要素不透明度。当 {@link Graphic} 的 style 参数传入设置了 fillOpacity 或 opacity 的 {@link CircleStyle} 或 {@link CloverStyle}，此参数无效。{@link Graphic} 的 style 传入 {@link ImageStyle} 后不支持此参数。
  * @param {number} [options.radius=10] - 要素半径，单位为像素。当 {@link Graphic} 的 style 参数传入了 radius，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
  * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值，单位为像素。
@@ -137,7 +137,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getGraphicBy
-     * @description 指定属性名和属性值，获取第一个匹配的要素数组。
+     * @description 指定属性名称和属性值，获取第一个匹配的要素数组。
      * @param {string} property - 属性名称。
      * @param {string} value - 属性值。
      * @returns {Graphic} 返回匹配的 graphic。
@@ -165,7 +165,7 @@ export var GraphicLayer = L.Path.extend({
 
     /**
      * @function GraphicLayer.prototype.getGraphicsByAttribute
-     * @description 指定属性名和属性值，获取所有匹配的要素数组。
+     * @description 指定属性名称和属性值，获取所有匹配的要素数组。
      * @param {string} attrName - 属性名称。
      * @param {string} attrValue - 属性值。
      * @returns {Array.<Graphic>} 返回匹配的 graphic 数组。
@@ -222,7 +222,7 @@ export var GraphicLayer = L.Path.extend({
      * @description 设置图层要素整体样式。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.radius=10] - 点半径，单位为像素。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
      * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
@@ -277,7 +277,7 @@ export var GraphicLayer = L.Path.extend({
     /**
      * @function GraphicLayer.prototype.getState
      * @description 获取当前地图和图层状态。
-     * @returns {Object} 地图和图层状态，包含地图状态信息和本图层相关状态。
+     * @returns {Object} 地图和图层状态，包含地图状态信息和本图层相关状态信息。
      */
     getState: function () {
         let map = this._map;

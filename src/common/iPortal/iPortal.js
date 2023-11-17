@@ -32,7 +32,7 @@ export class IPortal extends IPortalServiceBase {
     /**
      * @function IPortal.prototype.load
      * @description 加载页面。
-     * @returns {Promise} 包含 iportal web 资源信息的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iPortal Web 资源信息的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.iportalUrl + "/web");

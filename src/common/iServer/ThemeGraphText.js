@@ -22,7 +22,7 @@ export class ThemeGraphText {
 
         /**
          * @member {boolean} [ThemeGraphText.prototype.graphTextDisplayed=false]
-         * @description 是否显示统计图上的文字标注。
+         * @description 是否显示统计专题图上的文字标注。
          */
         this.graphTextDisplayed = false;
 
@@ -35,7 +35,7 @@ export class ThemeGraphText {
 
         /**
          * @member {ServerTextStyle} ThemeGraphText.prototype.graphTextStyle
-         * @description 统计图上的文字标注风格。
+         * @description 统计专题图上的文字标注风格。
          */
         this.graphTextStyle =  new ServerTextStyle();
 
@@ -62,7 +62,7 @@ export class ThemeGraphText {
 
     /**
      * @function ThemeGraphText.fromObj
-     * @description 从传入对象获取统计图文字标注风格类。
+     * @description 从传入对象获取统计专题图文字标注风格类。
      * @param {Object} obj - 传入对象。
      * @returns {ThemeGraphText} ThemeGraphText 对象。
      */

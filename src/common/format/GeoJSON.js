@@ -50,8 +50,8 @@ import {
  * @param {Object} [options] - 可选参数。
  * @param {string} [options.indent="    "] - 用于格式化输出，indent 字符串会在每次缩进的时候使用一次。
  * @param {string} [options.space=" "] - 用于格式化输出，space 字符串会在名值对的 ":" 后边添加。
- * @param {string} [options.newline="\n"] - 用于格式化输出, newline 字符串会用在每一个名值对或数组项末尾。
- * @param {number} [options.level=0] - 用于格式化输出, 表示的是缩进级别。
+ * @param {string} [options.newline="\n"] - 用于格式化输出，newline 字符串会用在每一个名值对或数组项末尾。
+ * @param {number} [options.level=0] - 用于格式化输出，表示的是缩进级别。
  * @param {boolean} [options.pretty=false] - 是否在序列化的时候使用额外的空格控制结构。在 write 方法中使用。
  * @param {boolean} [options.nativeJSON] - 需要被注册的监听器对象。
  * @param {boolean} [options.ignoreExtraDims=true] - 忽略维度超过 2 的几何要素。
@@ -215,13 +215,13 @@ export class GeoJSON extends JSONFormat {
         /**
          * @member {Object} GeoJSONFormat.prototype.extract
          * @private
-         * @description 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
+         * @description 一个属性名对应着 GeoJSON 类型的对象。其值为相应的实际的解析方法。
          */
         this.extract = {
             /**
              * @function GeoJSONFormat.extract.feature
              * @description 返回一个表示单个要素对象的 GeoJSON 的一部分。
-             * @param {SuperMap.ServerFeature} feature - iServer 要素对象。
+             * @param {SuperMap.ServerFeature} feature - SuperMap iServer 要素对象。
              * @returns {Object} 一个表示点的对象。
              */
             'feature': function (feature) {
@@ -249,7 +249,7 @@ export class GeoJSON extends JSONFormat {
             /**
              * @function GeoJSONFormat.extract.geometry
              * @description 返回一个表示单个几何对象的 GeoJSON 的一部分。
-             * @param {Object} geometry - iServer 几何对象。
+             * @param {Object} geometry - SuperMap iServer 几何对象。
              * @returns {Object} 一个表示几何体的对象。
              */
             'geometry': function (geometry) {
@@ -404,13 +404,13 @@ export class GeoJSON extends JSONFormat {
 
     /**
      * @function GeoJSONFormat.prototype.read
-     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为 SuperMap Feature 对象。
+     * @description 将 GeoJSON 对象或者 GeoJSON 对象字符串转换为 SuperMap Feature 对象。
      * @param {GeoJSONObject} json - GeoJSON 对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
      * @param {function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
-     * @returns {Object}  返回值依赖于 type 参数的值。
-     *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link FeatureVector} 数组。
-     *     -如果 type 为 "Geometry",输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link Geometry}。
+     * @returns {Object}  返回值依赖于 type 参数的值。<br>
+     *     -如果 type 等于 "FeatureCollection"，返回值将会是 {@link FeatureVector} 数组。<br>
+     *     -如果 type 为 "Geometry"，输入的 JSON 对象必须表示一个唯一的几何体，然后返回值就会是 {@link Geometry}。<br>
      *     -如果 type 为 "Feature"，输入的 JSON 对象也必须表示的一个要素，这样返回值才会是 {@link FeatureVector}。
      */
 
@@ -485,8 +485,8 @@ export class GeoJSON extends JSONFormat {
 
     /**
      * @function GeoJSONFormat.prototype.write
-     * @description iServer Geometry JSON 对象 转 GeoJSON对象字符串。
-     * @param {Object} obj - iServer Geometry JSON 对象。
+     * @description SuperMap iServer Geometry JSON 对象 转 GeoJSON 对象字符串。
+     * @param {Object} obj - SuperMap iServer Geometry JSON 对象。
      * @param {boolean} [pretty=false] - 是否使用换行和缩进来控制输出。
      * @returns {GeoJSONObject} 一个 GeoJSON 字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
      */
@@ -496,11 +496,11 @@ export class GeoJSON extends JSONFormat {
     /**
      * @function GeoJSONFormat.prototype.fromGeoJSON
      * @version 9.1.1
-     * @description 将 GeoJSON 对象或者GeoJSON 对象字符串转换为iServer Feature JSON。
+     * @description 将 GeoJSON 对象或者 GeoJSON 对象字符串转换为 SuperMap iServer Feature JSON。
      * @param {GeoJSONObject} json - GeoJSON 对象。
      * @param {string} [type='FeaureCollection'] - 可选的字符串，它决定了输出的格式。支持的值有："Geometry","Feature"，和 "FeatureCollection"，如果此值为null。
      * @param {function} filter - 对象中每个层次每个键值对都会调用此函数得出一个结果。每个值都会被 filter 函数的结果所替换掉。这个函数可被用来将某些对象转化成某个类相应的对象，或者将日期字符串转化成Date对象。
-     * @returns {Object}  iServer Feature JSON。
+     * @returns {Object}  SuperMap iServer Feature JSON。
      */
     fromGeoJSON(json, type, filter) {
         let feature = this.read(json, type, filter);
@@ -515,8 +515,8 @@ export class GeoJSON extends JSONFormat {
     /**
      * @function GeoJSONFormat.prototype.toGeoJSON
      * @version 9.1.1
-     * @description 将 iServer Feature JSON 对象转换为 GeoJSON 对象。
-     * @param {Object} obj - iServer Feature JSON。
+     * @description 将 SuperMap iServer Feature JSON 对象转换为 GeoJSON 对象。
+     * @param {Object} obj - SuperMap iServer Feature JSON。
      * @returns {GeoJSONObject}  GeoJSON 对象。
      */
     toGeoJSON(obj) {

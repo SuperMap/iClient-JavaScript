@@ -12,7 +12,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @classdesc 数据集 ID 查询参数类。此类用于指定进行 ID 查询的数据集列表，设置查询元素 ID 以及一些通用的查询参数。
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.IDs - 指定查询的元素 ID 信息。
- * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。
+ * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
@@ -40,7 +40,7 @@ export class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
 
         /**
          *  @member {Array.<string>} GetFeaturesByIDsParameters.prototype.fields
-         *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         *  @description 查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
         Util.extend(this, options);

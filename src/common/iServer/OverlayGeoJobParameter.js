@@ -15,7 +15,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {string} options.datasetOverlay - 叠加对象所在的数据集名称。
  * @param {string} options.srcFields - 输入数据需要保留的字段。
  * @param {string} [options.overlayFields] - 叠加数据需要保留的字段。当分析模式为 clip、update、erase 时，此参数无效。
- * @param {string} [options.mode] - 叠加分析模式。
+ * @param {OverlayOperationType} [options.mode] - 叠加分析模式。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage

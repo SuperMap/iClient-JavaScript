@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class IPortalQueryResult
  * @aliasclass iPortalQueryResult
  * @deprecatedclass SuperMap.iPortalQueryResult
- * @classdesc iPortal 资源结果集封装类。
+ * @classdesc SuperMap iPortal 资源结果集封装类。
  * @version 10.0.1
  * @category iPortal/Online Resources ResourcesQuery
  * @param {Object} queryResult - 可选参数。

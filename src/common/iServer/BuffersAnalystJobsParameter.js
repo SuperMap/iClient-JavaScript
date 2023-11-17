@@ -14,10 +14,10 @@ import { MappingParameters } from './MappingParameters';
  * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 分析范围（默认为全图范围）。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
- * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位单位。
+ * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
  * @param {OutputSetting} [options.output] - 输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -44,7 +44,7 @@ export class BuffersAnalystJobsParameter {
 
         /**
          * @member {string} [BuffersAnalystJobsParameter.prototype.distanceField='pickup_latitude']
-         * @description 缓冲距离字段。
+         * @description 缓冲距离字段。启用此参数时，将使用每个对象中该字段对应的值作为缓冲距离，此时 distance 无效。仅支持系统字段以外的数值型的字段。
          */
         this.distanceField = '';
 

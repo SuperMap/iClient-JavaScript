@@ -134,7 +134,7 @@ export class GeoprocessingService extends ServiceBase {
     /**
      * @function GeoprocessingService.prototype.getJobs
      * @description 获取处理自动化服务任务列表。
-     * @param {string} identifier - 处理自动化工具 ID。(可选，传参代表identifier算子的任务列表，不传参代表所有任务的列表)
+     * @param {string} identifier - 处理自动化工具 ID。(可选，传参代表 identifier 算子的任务列表，不传参代表所有任务的列表)
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
@@ -144,10 +144,10 @@ export class GeoprocessingService extends ServiceBase {
 
     /**
      * @function GeoprocessingService.prototype.getResults
-     * @description 处理自动化工具异步执行的结果,支持结果过滤。
+     * @description 处理自动化工具异步执行的结果，支持结果过滤。
      * @param {string} identifier - 处理自动化工具 ID。
      * @param {string} jobId - 处理自动化任务 ID。
-     * @param {string} filter - 输出异步结果的 ID。(可选，传入filter参数时对该处理自动化工具执行的结果进行过滤获取，不填参时显示所有的执行结果)
+     * @param {string} filter - 输出异步结果的 ID。(可选，传入 filter 参数时对该处理自动化工具执行的结果进行过滤获取，不传参时显示所有的执行结果)
      * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */

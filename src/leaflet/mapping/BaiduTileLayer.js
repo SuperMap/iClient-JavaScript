@@ -18,7 +18,7 @@ import Attributions from '../core/Attributions'
  * @param {L.LatLngBounds} [options.bounds=L.latLngBounds([-85.0511287798, -180],[85.0511287798, 180])] - 显示范围。
  * @param {L.Browser} [options.retina=L.Browser.retina] - 浏览器显示分辨率。
  * @param {string} [options.tileProxy] - 服务代理地址。
- * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权信息。
+ * @param {string} [options.attribution='Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方'] - 版权描述信息。
  * @usage
  */
 export var BaiduTileLayer = L.TileLayer.extend({

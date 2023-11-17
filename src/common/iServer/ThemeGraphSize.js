@@ -9,8 +9,8 @@ import {Util} from '../commontypes/Util';
  * @category  iServer Map Theme
  * @classdesc 统计专题图符号尺寸类。该类用于设置统计专题图中显示的最大图表和最小图表的尺寸基准值。
  * @param {Object} options - 参数。
- * @param {number} [options.maxGraphSize=0] - 统计图中显示的最大图表尺寸基准值。
- * @param {number} [options.minGraphSize=0] - 统计图中显示的最小图表尺寸基准值。
+ * @param {number} [options.maxGraphSize=0] - 统计专题图中显示的最大图表尺寸基准值。
+ * @param {number} [options.minGraphSize=0] - 统计专题图中显示的最小图表尺寸基准值。
  * @usage
  */
 export class ThemeGraphSize {
@@ -18,13 +18,13 @@ export class ThemeGraphSize {
     constructor(options) {
         /**
          * @member {number} [ThemeGraphSize.prototype.maxGraphSize=0]
-         * @description 获取或设置统计图中显示的最大图表尺寸基准值，单位为像素。
+         * @description 获取或设置统计专题图中显示的最大图表尺寸基准值，单位为像素。
          */
         this.maxGraphSize = 0;
 
         /**
          * @member {number} [ThemeGraphSize.prototype.minGraphSize=0]
-         * @description 获取或设置统计图中显示的最小图表尺寸基准值，单位为像素。
+         * @description 获取或设置统计专题图中显示的最小图表尺寸基准值，单位为像素。
          */
         this.minGraphSize = 0;
 

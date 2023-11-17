@@ -14,7 +14,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.groupField - 分组字段。
  * @param {string} options.attributeField - 属性字段。
- * @param {string} options.statisticModes - 统计模式。
+ * @param {StatisticAnalystMode} options.statisticModes - 属性汇总统计模式。可设置多个字段，使用逗号“，”分离。该长度必须和属性字段保持一致。
  * @param {OutputSetting} [options.output] -输出参数设置。
  * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
  * @usage
@@ -32,17 +32,21 @@ export class SummaryAttributesJobsParameter {
         this.datasetName = "";
         /**
          * @member {string} SummaryAttributesJobsParameter.prototype.groupField
-         * @description 分组字段。
+         * @description 分组字段。根据属性字段里的属性值进行分组，相同属性值的对象分为一组，
+         * 将分好的组根据属性字段进行统计。可设置多个字段，使用逗号“，”分离。若不设置该参数，
+         * 将对所有对象进行属性统计。仅支持系统字段以外的字段。
          */
         this.groupField = "";
         /**
          * @member {string} SummaryAttributesJobsParameter.prototype.attributeField
-         * @description 属性字段。
+         * @description 属性字段。将分组后的对象根据该字段进行统计。可设置多个字段，使用逗号“，”分离。
+         * 若不设置该参数，不进行任何统计。若分组字段为空，则把属性表中所有对象视为一组，进行属性字段统计。
+         * 该长度必须和统计模式保持一致。仅支持系统字段以外的数值型的字段。
          */
         this.attributeField = "";
         /**
-         * @member {string} SummaryAttributesJobsParameter.prototype.statisticModes
-         * @description 属性汇总统计模式。
+         * @member {StatisticAnalystMode} SummaryAttributesJobsParameter.prototype.statisticModes
+         * @description 属性汇总统计模式。可设置多个字段，使用逗号“，”分离。该长度必须和属性字段保持一致。
          */
         this.statisticModes = "";
         /**

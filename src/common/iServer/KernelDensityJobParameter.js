@@ -25,10 +25,10 @@ import {
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.fields - 权重索引。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 缓冲区分析范围（默认为全图范围）。
  * @param {number} [options.resolution=80] - 分辨率。
- * @param {number} [options.method=0] - 分析方法。
- * @param {number} [options.meshType=0] - 分析类型。
+ * @param {number} [options.method=0] - 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
+ * @param {number} [options.meshType=0] - 密度分析类型。0 表示四边形网格，1 表示六边形网格。
  * @param {number} [options.radius=300] - 分析的影响半径。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
  * @param {AnalystSizeUnit} [options.radiusUnit=AnalystSizeUnit.METER] - 搜索半径单位。
@@ -63,19 +63,19 @@ export class KernelDensityJobParameter {
 
         /**
          * @member {number} [KernelDensityJobParameter.prototype.method=0]
-         * @description 分析方法。
+         * @description 密度分析方法。0 表示简单密度分析，1 表示核密度分析。
          */
         this.method = 0;
 
         /**
          * @member {number} [KernelDensityJobParameter.prototype.meshType=0]
-         * @description 分析类型。
+         * @description 密度分析类型。0 表示四边形网格，1 表示六边形网格。
          */
         this.meshType = 0;
 
         /**
          * @member {string} KernelDensityJobParameter.prototype.fields
-         * @description 权重索引。
+         * @description 权重索引。仅支持系统字段以外的整形、长整形、浮点型的字段的名称。
          */
         this.fields = "";
 

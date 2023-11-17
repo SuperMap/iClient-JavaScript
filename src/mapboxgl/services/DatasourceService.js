@@ -54,7 +54,7 @@ export class DatasourceService extends ServiceBase {
      *     //doSomething
      *   });
      * @param {string} datasourceName - 数据源名称。
-     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
      * @returns {Promise} Promise 对象。
      */
     getDatasource(datasourceName, callback) {

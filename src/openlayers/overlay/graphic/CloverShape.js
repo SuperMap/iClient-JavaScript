@@ -16,11 +16,11 @@ import StrokeStyle from 'ol/style/Stroke';
  * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {number} [options.count=3] - 扇叶数量。
  * @param {ol.style.Fill} [options.fill] - 填充样式。
- * @param {number} [options.strokeOpacity] - 透明度。
- * @param {number} [options.fillOpacity] - 填充透明度。
- * @param {number} [options.radius] - 半径。
+ * @param {number} [options.strokeOpacity] - 边框不透明度。
+ * @param {number} [options.fillOpacity] - 填充不透明度。
+ * @param {number} [options.radius] - 扇叶的半径，单位为像素。
  * @param {ol.style.Stroke} [options.stroke] - 边框样式。
- * @param {string} [options.stroke.color='#3388ff'] - 边框颜色。
+ * @param {string} [options.stroke.color='#3388ff'] - 十六进制边框颜色。
  * @param {number} [options.stroke.width=1] - 边框宽度。
  * @usage
  */
@@ -85,9 +85,9 @@ export class CloverShape extends RegularShape {
      * @function CloverShape.prototype.drawSector
      * @description 绘制扇形。
      * @param {CanvasRenderingContext2D} ctx - context 对象。
-     * @param {number} x - 中心点 x。
-     * @param {number} y - 中心点 y。
-     * @param {number} r - 中心点 r。
+     * @param {number} x - 中心点 x 坐标。
+     * @param {number} y - 中心点 y 坐标。
+     * @param {number} r - 扇叶半径 r。
      * @param {number} sAngle - 扇叶起始角度。
      * @param {number} eAngle - 扇叶终止角度。
      */

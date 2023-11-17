@@ -14,8 +14,8 @@ import { MappingParameters } from './MappingParameters';
  * 权重字段、统计方式、汇总类型、网格类型和大小等参数，还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
- * @param {string} [options.regionDataset] - 汇总数据源（多边形汇总时用到的参数）。
- * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 分析范围（默认为全图范围）。
+ * @param {string} [options.regionDataset] - 汇总数据集（多边形汇总时用到的参数）。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.query] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.standardFields] - 标准属性字段名称。
  * @param {string} [options.weightedFields] - 权重字段名称。
  * @param {StatisticAnalystMode} [options.standardStatisticModes] - 标准属性字段的统计模式。standardSummaryFields 为 true 时必填。
@@ -24,7 +24,7 @@ import { MappingParameters } from './MappingParameters';
  * @param {boolean} [options.standardSummaryFields=false] - 是否以标准属性字段统计。
  * @param {boolean} [options.weightedSummaryFields=false] - 是否以权重字段统计。
  * @param {number} [options.resolution=100] - 网格大小。
- * @param {number} [options.meshType=0] - 网格面汇总类型。
+ * @param {number} [options.meshType=0] - 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
  * @param {AnalystSizeUnit} [options.meshSizeUnit=AnalystSizeUnit.METER] - 网格大小单位。
  * @param {SummaryType} [options.type=SummaryType.SUMMARYMESH] - 汇总类型。
  * @param {OutputSetting} [options.output] - 输出参数设置。
@@ -46,13 +46,13 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {string} SummaryRegionJobParameter.prototype.regionDataset
-         * @description 汇总数据源（多边形汇总时用到的参数）。
+         * @description 汇总数据集（多边形汇总时用到的参数）。
          */
         this.regionDataset = "";
 
         /**
          * @member {boolean} [SummaryRegionJobParameter.prototype.sumShape=true]
-         * @description 是否统计长度或面积。
+         * @description 是否统计被汇总对象的面积或者长度。
          */
         this.sumShape = true;
 
@@ -100,7 +100,7 @@ export class SummaryRegionJobParameter {
 
         /**
          * @member {number} [SummaryRegionJobParameter.prototype.meshType=0]
-         * @description 网格面汇总类型。
+         * @description 网格面汇总类型。0 表示四边形网格，1 表示六边形网格。
          */
         this.meshType = 0;
 

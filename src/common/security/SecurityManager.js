@@ -126,13 +126,13 @@ export class SecurityManager {
     }
 
     /**
-     * @description iServer 登录验证。
+     * @description SuperMap iServer 登录验证。
      * @function SecurityManager.loginiServer
-     * @param {string} url - iServer 首页地址，如：http://localhost:8090/iserver。
+     * @param {string} url - SuperMap iServer 首页地址，如：http://localhost:8090/iserver。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
      * @param {boolean} [rememberme=false] - 是否记住。
-     * @returns {Promise} 包含 iServer 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iServer 登录请求结果的 Promise 对象。
      */
     static loginiServer(url, username, password, rememberme) {
         url = Util.urlPathAppend(url, 'services/security/login');
@@ -153,9 +153,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description iServer登出。
+     * @description SuperMap iServer 登出。
      * @function SecurityManager.logoutiServer
-     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
+     * @param {string} url - SuperMap iServer 首页地址，如：http://localhost:8090/iserver。
      * @returns {Promise} 是否登出成功。
      */
     static logoutiServer(url) {
@@ -187,12 +187,12 @@ export class SecurityManager {
     }
 
     /**
-     * @description iPortal登录验证。
+     * @description SuperMap iPortal 登录验证。
      * @function SecurityManager.loginiPortal
-     * @param {string} url - iportal 首页地址,如：http://localhost:8092/iportal。
+     * @param {string} url - SuperMap iPortal 首页地址，如：http://localhost:8092/iportal。
      * @param {string} username - 用户名。
      * @param {string} password - 密码。
-     * @returns {Promise} 包含 iPortal 登录请求结果的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iPortal 登录请求结果的 Promise 对象。
      */
     static loginiPortal(url, username, password) {
         url = Util.urlPathAppend(url, 'web/login');
@@ -213,9 +213,9 @@ export class SecurityManager {
     }
 
     /**
-     * @description iPortal 登出。
+     * @description SuperMap iPortal 登出。
      * @function SecurityManager.logoutiPortal
-     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
+     * @param {string} url - SuperMap iPortal 首页地址，如：http://localhost:8092/iportal。
      * @returns {Promise} 如果登出成功，返回 true;否则返回 false。
      */
     static logoutiPortal(url) {
@@ -283,7 +283,7 @@ export class SecurityManager {
     /**
      * @description 清空令牌信息。
      * @function SecurityManager.destroyToken
-     * @param {string} url - iportal 首页地址，如：http://localhost:8092/iportal。
+     * @param {string} url - SuperMap iPortal 首页地址，如：http://localhost:8092/iportal。
      */
     static destroyToken(url) {
         if (!url) {
@@ -299,7 +299,7 @@ export class SecurityManager {
     /**
      * @description 清空服务授权码。
      * @function SecurityManager.destroyKey
-     * @param {string} url - iServer 首页地址,如：http://localhost:8090/iserver。
+     * @param {string} url - SuperMap iServer 首页地址，如：http://localhost:8090/iserver。
      */
     static destroyKey(url) {
         if (!url) {

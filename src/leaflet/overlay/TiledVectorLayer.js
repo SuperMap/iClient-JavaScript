@@ -33,12 +33,12 @@
  * @param {boolean} [options.processCharacters=false] - 设置客户端 CartoCSS 样式时是否进行特定字符转换。
  * @param {CRS} [options.crs] - 坐标系统类。
  * @param {boolean} [options.returnAttributes=false] - 是否返回 attributes。
- * @param {string} [options.expands] - expands。
+ * @param {string} [options.expands] - 图层扩展的像素值。
  * @param {boolean} [options.cacheEnabled=true] - 是否启用缓存。
  * @param {Object} [options.tileTemplate] - 瓦片模板，如果设置了此参数，则按此模板出图。默认出图方式为 URL 对接的第三方瓦片。
  * @param {string} [options.subdomains] - 子域名。
  * @param {number} [options.timeout=10000] - 延时。
- * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权信息。
+ * @param {string} [options.attribution='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' title='SuperMap iServer' target='_blank'>SuperMap iServer</a></span>`] - 版权描述信息。
  * @usage
  */
 export var TiledVectorLayer = VectorGrid.extend({

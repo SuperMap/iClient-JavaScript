@@ -16,7 +16,7 @@ import { WebPrintingJobLayers } from './WebPrintingJobLayers';
  * @param {GeometryPoint|L.Point|L.LatLng|ol.geom.Point|mapboxgl.LngLat|mapboxgl.Point|Array.<number>} option.center - 小地图的中心点。
  * @param {number} [option.scale] - 小地图的比例尺。
  * @param {Array.<string>} [option.layerNames] - 指定 WebMap 中图层名称的列表，用于渲染小地图。
- * @param {WebPrintingJobImage} [option.image] - 表达小地图的静态图类。
+ * @param {WebPrintingJobImage} [option.image] - 表达小地图的静态图类。用于设置小地图使用的静态图片信息。
  * @param {WebPrintingJobLayers} [option.layers] - 指定 WebMap 中的 layers 图层类。
  * @usage
  */

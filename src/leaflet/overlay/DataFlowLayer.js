@@ -16,14 +16,14 @@ import {
 /**
  * @class DataFlowLayer
  * @deprecatedclassinstance L.supermap.dataFlowLayer
- * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务并上图。订阅得到的数据会根据 `options.idField` 自动更新。
+ * @classdesc 数据流图层源。订阅 SuperMap iServer 数据流服务并上图。订阅得到的数据会根据 `options.idField` 自动更新。
  * @category  iServer DataFlow
  * @extends {L.LayerGroup}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {Object} [options.render='normal'] - 绘制方式。可选值为 'normal'，'mapv'。
  'normal' 表示以 {( {@link L.LatLng}|{@link L.Polyline}|{@link L.Polygon}|{@link L.Marker} )} 方式绘制数据流。'mapv' 表示以 {@link MapVLayer} 方式绘制实时数据。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。

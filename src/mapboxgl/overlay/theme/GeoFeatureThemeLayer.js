@@ -114,7 +114,7 @@ export class GeoFeature extends Theme {
 
     /**
      * @function GeoFeatureThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
      * @param {(FeatureVector|Function)} features - 要删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) {
@@ -274,7 +274,7 @@ export class GeoFeature extends Theme {
     /**
      * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @param {number} [featureID=si.refDataID] - 要素 ID。
-     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description 通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @returns {Array} 返回图形数组。
      */
     getShapesByFeatureID(featureID) {

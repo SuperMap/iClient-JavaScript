@@ -99,7 +99,7 @@ export class Graphic extends BaseObject {
 
     /**
      * @function OverlayGraphic.prototype.getStyle
-     * @description 获取样式。
+     * @description 获取要素样式。
      * @returns {ol.style.Image} ol.style.Image 子类样式对象。
      */
     getStyle() {
@@ -108,8 +108,8 @@ export class Graphic extends BaseObject {
 
     /**
      * @function OverlayGraphic.prototype.setStyle
-     * @description 设置样式。
-     * @param {ol.style.Image} style - 样式，ol/style/Image 子类样式对象。
+     * @description 设置要素样式。
+     * @param {ol.style.Image} style - 样式，ol.style.Image 子类样式对象。
      */
     setStyle(style) {
         if (!this.style && !style) {

@@ -25,15 +25,15 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @modulecategory Overlay
  * @param {string} name - 专题图图层名称。
  * @param {Object} opt_option - 参数。
- * @param {ol.Map} opt_option.map - 当前 openlayers 的 Map 对象。
+ * @param {ol.Map} opt_option.map - 当前 OpenLayers 的地图对象。
  * @param {string} [opt_option.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [opt_option.opacity=1] - 图层透明度。
- * @param {string} [opt_option.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {number} [opt_option.opacity=1] - 图层不透明度。
+ * @param {string} [opt_option.logo] - Logo（OpenLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_option.projection] - 投影信息。
  * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array} [opt_option.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_option.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_option.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @extends {ol.source.ImageCanvas}
  * @usage
  */
@@ -172,7 +172,7 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function Theme.prototype.setOpacity
-     * @description 设置图层的不透明度，取值[0-1]之间。
+     * @description 设置图层的不透明度，取值范围：[0-1]。
      * @param {number} opacity - 不透明度。
      */
     setOpacity(opacity) {
@@ -201,12 +201,12 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function Theme.prototype.removeFeatures
-     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除 feature 的数组或用来过滤的回调函数。
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有 feature。
-     *              如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
-     *              删除所有 feature 后再重新添加。这样效率会更高。
+     * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除要素的数组或用来过滤的回调函数。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
+     *              参数中的要素数组中的每一项，必须是已经添加到当前图层中的要素，
+     *              如果无法确定要素数组，则可以调用 removeAllFeatures 来删除所有要素。
+     *              如果要删除的要素数组中的元素特别多，推荐使用 removeAllFeatures，
+     *              删除所有要素后再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
       var me = this;
@@ -288,7 +288,7 @@ export class Theme extends ImageCanvasSource {
      * @function Theme.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
-     * @param {string} property - feature 的某个属性名称。
+     * @param {string} property - 要素的某个属性名称。
      * @param {string} value - property 所对应的值。
      * @returns {FeatureVector} 第一个匹配属性和值的矢量要素。
      */
@@ -308,7 +308,7 @@ export class Theme extends ImageCanvasSource {
      * @function Theme.prototype.getFeatureById
      * @description 通过给定一个 ID，返回对应的矢量要素。
      * @param {string} featureId - 矢量要素的属性 ID。
-     * @returns {FeatureVector} 对应 ID 的 feature，如果不存在则返回 null。
+     * @returns {FeatureVector} 对应 ID 的要素，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -317,9 +317,9 @@ export class Theme extends ImageCanvasSource {
     /**
      * @function Theme.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - 属性的 key。
-     * @param {string} attrValue - 矢量要素的属性 ID。
-     * @returns {Array.<FeatureVector>} 一个匹配的 feature 数组。
+     * @param {string} attrName - 属性的 key 值。
+     * @param {string} attrValue - 属性的 value 值。
+     * @returns {Array.<FeatureVector>} 一个匹配的要素数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -470,9 +470,9 @@ export class Theme extends ImageCanvasSource {
 
     /**
      * @function Theme.prototype.getLocalXY
-     * @description 获取坐标系统。
+     * @description 地理坐标转为像素坐标。
      * @param {Object} coordinate - 坐标位置。
-     * @returns {Array.<number>} 像素坐标数组。
+     * @returns {Array.<number>} 长度为 2 的像素坐标数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;

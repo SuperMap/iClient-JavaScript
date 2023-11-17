@@ -10,7 +10,7 @@ import {KernelDensityJobParameter} from './KernelDensityJobParameter';
  * @deprecatedclass SuperMap.KernelDensityJobsService
  * @category  iServer ProcessingService DensityAnalyst
  * @classdesc 核密度分析服务类。核密度分析是指使用核函数来计算点或线邻域范围内的每单位面积量值。
- * 其结果是中间值大周边值小的光滑曲面，在邻域边界处降为0。<br>
+ * 其结果是中间值大周边值小的光滑曲面，在邻域边界处降为 0。<br>
  * 对于点对象，其核密度曲面与下方的平面所围成的空间的体积近似于此点的测量值；<br>
  * 对于线对象，其核密度曲面与下方的平面所围成的空间的体积近似于此线的测量值与线长度的乘积。<br>
  * 点或线的邻域叠加处，其密度值也相加。每个输出栅格的密度均为叠加在栅格上的所有核曲面值之和。    

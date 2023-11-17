@@ -12,10 +12,10 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
  * @param {Object} options - 参数。
  * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} options.points - 表面分析的坐标点数组。
  * @param {Array.<number>} options.zValues - 表面分析的坐标点的 Z 值数组。
- * @param {number} [options.resolution] - 获取或设置指定中间结果（栅格数据集）的分辨率。
+ * @param {number} [options.resolution] - 获取或设置中间结果（栅格数据集）的分辨率。
  * @param {DataReturnOption} [options.resultSetting] - 结果返回设置类。
  * @param {SurfaceAnalystParametersSetting} options.extractParameter - 获取或设置表面分析参数。
- * @param {SurfaceAnalystMethod} [options.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，提取等值线和提取等值面。
+ * @param {SurfaceAnalystMethod} [options.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，包括提取等值线和提取等值面。
  * @extends {SurfaceAnalystParameters}
  * @usage
  */

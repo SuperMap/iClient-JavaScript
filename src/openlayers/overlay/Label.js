@@ -22,13 +22,13 @@ import Point from 'ol/geom/Point';
  * @modulecategory Overlay
  * @param {string} name - 名称。
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 OpenLayers 地图对象。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
- * @param {string|Object} [opt_options.attributions] - 版权信息。
- * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {number} [opt_options.opacity=1] - 图层不透明度。
+ * @param {string|Object} [opt_options.attributions] - 版权描述信息。
+ * @param {string} [opt_options.logo] - Logo（OpenLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
- * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是1或更高。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array.<number>} [opt_options.resolutions] - 分辨率数组。
  * @param {ol.source.State} [opt_options.state] - 资源状态。
  * @param {string} [opt_options.themeField] - 指定创建专题图字段。
@@ -144,7 +144,7 @@ export class Label extends GeoFeature {
     }
     /**
      * @function Label.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 待删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) { // eslint-disable-line no-unused-vars
@@ -320,9 +320,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function Label.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData(feat) {
         var feature = feat;
@@ -369,9 +369,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function Label.prototype.setLabelsStyle
-     * @description 设置标签要素的 Style。
-     * @param {Array.<FeatureVector>} labelFeatures - 需要设置 Style 的标签要素数组。
-     * @returns {Array.<FeatureVector>} 赋予 Style 后的标签要素数组。
+     * @description 设置标签要素的风格。
+     * @param {Array.<FeatureVector>} labelFeatures - 需要设置风格的标签要素数组。
+     * @returns {Array.<FeatureVector>} 赋予风格后的标签要素数组。
      */
     setLabelsStyle(labelFeatures) {
         var fea, labelFeas = [];
@@ -397,8 +397,8 @@ export class Label extends GeoFeature {
 
     /**
      * @function Label.prototype.setStyle
-     * @description 设置标签要素的 Style。
-     * @param {FeatureVector} feat - 需要赋予 style 的要素。
+     * @description 设置标签要素的风格。
+     * @param {FeatureVector} feat - 需要赋予风格的要素。
      */
     setStyle(feat) {
         var feature = feat;
@@ -475,7 +475,7 @@ export class Label extends GeoFeature {
     /**
      * @function Label.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
-     * @param {FeatureVector} feature - 需要计算bounds的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}。
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
@@ -531,8 +531,8 @@ export class Label extends GeoFeature {
 
     /**
      * @function Label.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算范围的效率。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {Object} loc - 标签位置，例如：{"x":1,"y":1}。
      * @returns {Array.<Object>} 四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
@@ -765,7 +765,7 @@ export class Label extends GeoFeature {
      * @param {number} y - 旋转点纵坐标。
      * @param {number} rx - 旋转中心点横坐标。
      * @param {number} ry - 旋转中心点纵坐标。
-     * @param {number} angle - 旋转角度
+     * @param {number} angle - 旋转角度。
      * @returns {Object} 旋转后的坐标位置对象，该对象含有属性 x（横坐标），属性 y（纵坐标）。
      */
     getRotatedLocation(x, y, rx, ry, angle) {

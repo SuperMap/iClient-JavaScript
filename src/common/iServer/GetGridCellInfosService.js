@@ -45,13 +45,13 @@ export class GetGridCellInfosService extends CommonServiceBase {
 
         /**
          * @member {number} GetGridCellInfosService.prototype.X
-         * @description 要查询的地理位置X轴
+         * @description 要查询的地理位置 X 坐标。
          */
         this.X = null;
 
         /**
          * @member {number} GetGridCellInfosService.prototype.Y
-         * @description 要查询的地理位置Y轴
+         * @description 要查询的地理位置 Y 坐标。
          */
         this.Y = null;
         if (options) {

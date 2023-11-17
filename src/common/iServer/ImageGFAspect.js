@@ -10,7 +10,7 @@ import { Util } from '../commontypes/Util';
  * @category iServer Image
  * @param {Object} options -可选参数。
  * @param {string} [options.girdFuncName='GFAspect'] 栅格函数名称，参数值为：GFAspect。
- * @param {number} [options.Azimuth] 光源方位角，固定为360度。
+ * @param {number} [options.Azimuth] 光源方位角，固定为 360 度。
  * @usage
 */
 export default class ImageGFAspect {
@@ -22,7 +22,7 @@ export default class ImageGFAspect {
     */
     this.girdFuncName = 'GFAspect';
     /**
-    * @description 光源方位角，固定为360度。
+    * @description 光源方位角，固定为 360 度。
     * @member {number} ImageGFAspect.prototype.Azimuth
     */
     this.Azimuth = undefined;

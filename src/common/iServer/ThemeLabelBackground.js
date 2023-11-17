@@ -20,14 +20,14 @@ export class ThemeLabelBackground {
     constructor(options) {
         /**
          * @member {LabelBackShape} [ThemeLabelBackground.prototype.labelBackShape=LabelBackShape.NONE]
-         * @description 标签专题图中标签背景风格。当背景形状
-         *              labelBackShape 属性设为 NONE（即无背景形状）时，backStyle 属性无效。
+         * @description 标签专题图中标签背景的形状枚举类。背景类型可以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
          */
         this.labelBackShape = LabelBackShape.NONE;
 
         /**
          * @member {ServerStyle} [ThemeLabelBackground.prototype.backStyle]
-         * @description 标签专题图中标签背景的形状枚举类。背景类型可以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，即不使用任何的形状作为标签的背景。
+         * @description 标签专题图中标签背景风格。当背景形状
+         *              labelBackShape 属性设为 NONE（即无背景形状）时，backStyle 属性无效。
          */
         this.backStyle = new ServerStyle();
 

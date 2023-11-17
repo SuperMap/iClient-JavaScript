@@ -12,7 +12,7 @@ import {ServerGeometry} from './ServerGeometry';
  * @classdesc 几何对象缓冲区分析参数类。
  * 通过该类可以指定要做缓冲区分析的几何对象、缓冲区通用设置、几何对象投影坐标等参数。
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} options.sourceGeometry - 要做缓冲区分析的几何对象。
+ * @param {GeoJSONObject} options.sourceGeometry - 用于做缓冲区分析的几何对象。
  * @param {number} options.sourceGeometrySRID - 缓冲区几何对象投影坐标参数，如 4326，3857。
  * @param {BufferSetting} [options.bufferSetting] - 设置缓冲区通用参数。
  * @extends {BufferAnalystParameters}
@@ -25,7 +25,7 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
         super(options);
         /**
          * @member {GeoJSONObject} GeometryBufferAnalystParameters.prototype.sourceGeometry
-         * @description 要做缓冲区分析的几何对象。<br>
+         * @description 用于做缓冲区分析的几何对象。<br>
          * 点类型可以是：{@link GeometryPoint}|{@link L.Marker}|{@link L.CircleMarker}|{@link L.Circle}|{@link L.GeoJSON}|{@link ol.geom.Point}|{@link ol.format.GeoJSON}。</br>
          * 线类型可以是：{@link GeometryLineString}|{@link GeometryLinearRing}|{@link L.Polyline}|{@link L.GeoJSON}|{@link ol.geom.LineString}|{@link ol.format.GeoJSON}。</br>
          * 面类型可以是：{@link GeometryPolygon}|{@link L.Polygon}|{@link L.GeoJSON}|{@link ol.geom.Polygon}|{@link ol.format.GeoJSON}。

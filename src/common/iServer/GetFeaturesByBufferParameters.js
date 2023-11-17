@@ -15,7 +15,7 @@ import { ServerGeometry } from './ServerGeometry';
  * @param {number} options.bufferDistance - 缓冲距离，单位与所查询图层对应的数据集单位相同。
  * @param {GeoJSONObject} options.geometry - 空间查询条件。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
- * @param {Array.<string>} [options.fields] - 设置查询结果返回字段。默认返回所有字段。
+ * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {string} [options.attributeFilter] - 属性查询条件。
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
@@ -51,7 +51,7 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
         /**
          * @member {Array.<string>} GetFeaturesByBufferParameters.prototype.fields
-         * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         * @description 查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
          */
         this.fields = null;
         Util.extend(this, options);

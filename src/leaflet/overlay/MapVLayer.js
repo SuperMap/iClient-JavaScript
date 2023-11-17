@@ -20,7 +20,7 @@ import Attributions from '../core/Attributions'
  * @param {Object} mapVOptions - MapV 图层参数。
  * @param {Object} options - 参数。
  * @param {string} [options.attributionPrefix] - 版权信息前缀。
- * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权信息。
+ * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权描述信息。
  * @fires MapVLayer#loaded
  * @usage
  */

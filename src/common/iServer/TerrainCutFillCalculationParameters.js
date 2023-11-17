@@ -12,7 +12,7 @@ import {Util} from '../commontypes/Util';
  * 支持的填挖方类型：栅格填挖方（GRID）、斜面填挖方（LINE3DANDBUFFERRADIUS）、三维面填挖方（REGION3D）、选面填挖方（REGIONANDALTITUDE）。
  * @version 11.1.1
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 填挖方计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} options.dataset - 用于做填挖方计算的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {string} [options.cutFillType="GRID"] - 填挖方分析的类型，包含：<br>
                                                 栅格填挖方（GRID）：根据结果栅格进行填挖方分析； <br>
                                                 斜面填挖方（LINE3DANDBUFFERRADIUS）：根据指定的三维线及缓冲半径进行进行填挖方分析；<br>
@@ -37,7 +37,7 @@ export class TerrainCutFillCalculationParameters {
         }
         /**
          * @member {string} TerrainCutFillCalculationParameters.prototype.dataset
-         * @description 要用来做填挖方计算数据源中数据集的名称。
+         * @description 用于做填挖方计算的数据源中数据集的名称。
          * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
          */
         this.dataset = null;

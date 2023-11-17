@@ -15,8 +15,8 @@ import {SecurityManager} from '../security/SecurityManager';
  * @param {string} url - 数据流服务地址。
  * @param {Object} options - 参数。
  * @param {function} options.style - 设置数据加载样式。
- * @param {function} [options.onEachFeature] - 设置每个数据加载popup等。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {function} [options.onEachFeature] - 设置每个数据加载 popup 等。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -37,7 +37,7 @@ export class DataFlowService extends CommonServiceBase {
 
         /**
          * @member {GeoJSONObject} DataFlowService.prototype.geometry
-         * @description 指定几何范围，该范围内的要素才能被订阅。
+         * @description 指定几何范围，只有在该范围内的要素才能被订阅。
          */
         this.geometry = null;
 
@@ -61,7 +61,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {DataFlowService}
+     * @returns {DataFlowService} - 数据流服务。
      */
     initBroadcast() {
         var me = this;
@@ -102,7 +102,7 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据。
-     * @returns {DataFlowService} DataFlowService的实例对象。
+     * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     initSubscribe() {
         var me = this;
@@ -131,7 +131,7 @@ export class DataFlowService extends CommonServiceBase {
      * @function DataFlowService.prototype.setExcludeField
      * @description 设置排除字段。
      * @param {Object} excludeField - 排除字段。
-     * @returns {DataFlowService} DataFlowService的实例对象。
+     * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
@@ -142,8 +142,8 @@ export class DataFlowService extends CommonServiceBase {
     /**
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
-     * @returns {DataFlowService} DataFlowService的实例对象。
+     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
+     * @returns {DataFlowService} DataFlowService 的实例对象。
      */
     setGeometry(geometry) {
         this.geometry = geometry;

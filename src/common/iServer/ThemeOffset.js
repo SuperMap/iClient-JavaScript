@@ -27,14 +27,14 @@ export class ThemeOffset {
         /**
          * @member {string} [ThemeOffset.prototype.offsetX=0.0]
          * @description 专题图中文本或符号相对于要素内点的水平偏移量。偏移量的单位为地图单位。
-         *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么水平偏移量为2。
+         *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么水平偏移量为 2。
          */
         this.offsetX = "0.0";
 
         /**
          * @member {string} [ThemeOffset.prototype.offsetY=0.0]
          * @description 专题图中文本或符号相对于要素内点的垂直偏移量。偏移量的单位为地图单位。
-         *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么垂直偏移量为2。
+         *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么垂直偏移量为 2。
          */
         this.offsetY = "0.0";
 

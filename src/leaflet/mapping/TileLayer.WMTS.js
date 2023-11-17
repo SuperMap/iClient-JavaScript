@@ -24,7 +24,7 @@ import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
  * @param {string} [options.tilematrixSet] - 瓦片矩阵集。
  * @param {Array.<WMTSLayer.matrix>} [options.matrixIds] - 瓦片矩阵对象。不设置时，默认为获取当前级别为 tilematrix 参数。
  * @param {string} [options.version='1.0.0'] - 版本。
- * @param {string} [options.attribution] - 版权信息。
+ * @param {string} [options.attribution] - 版权描述信息。
  * @param {string} [options.noWrap=true] - 图层是否 X 方向平铺。
  * @usage
  */

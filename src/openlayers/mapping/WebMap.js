@@ -80,7 +80,7 @@ const dpiConfig = {
  * @modulecategory Mapping
  * @param {Object} options - 参数。
  * @param {string} [options.target='map'] - 地图容器 ID。
- * @param {Object | string} [options.webMap] - webMap对象，或者是获取 webMap 的 URL 地址。存在 webMap，优先使用 webMap, ID 的选项则会被忽略。
+ * @param {Object | string} [options.webMap] - webMap 对象，或者是获取 webMap 的 URL 地址。存在 webMap，优先使用 webMap，ID 的选项则会被忽略。
  * @param {number} [options.id] - 地图的 ID。
  * @param {string} [options.server] - 地图的地址，如果使用传入 ID，server 则会和 ID 拼接成 webMap 请求地址。
  * @param {function} [options.successCallback] - 成功加载地图后调用的函数。
@@ -88,8 +88,8 @@ const dpiConfig = {
  * @param {string} [options.credentialKey] - 凭证密钥。例如为 "key"、"token"，或者用户自定义的密钥。用户申请了密钥，此参数必填。
  * @param {string} [options.credentialValue] - 凭证密钥对应的值，credentialKey 和 credentialValue 必须一起使用。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
- * @param {boolean} [options.excludePortalProxyUrl] - server传递过来的 URL 是否带有代理。
- * @param {Object} [options.serviceProxy] - iportal 内置代理信息, 仅矢量瓦片图层上图才会使用。
+ * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
+ * @param {Object} [options.serviceProxy] - SuperMap iPortal 内置代理信息，仅矢量瓦片图层上图才会使用。
  * @param {string} [options.tiandituKey] - 天地图的 key。
  * @param {string} [options.googleMapsAPIKey] - 谷歌底图需要的 key。
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域。
@@ -4677,7 +4677,7 @@ export class WebMap extends Observable {
     /**
      * @private
      * @function WebMap.prototype.renameLayerId
-     * @description 判断 ur l是否是 iportal 的代理地址。
+     * @description 判断 URL 是否是 SuperMap iPortal 的代理地址。
      * @param {*} serviceUrl
      */
     isIportalProxyServiceUrl(serviceUrl) {

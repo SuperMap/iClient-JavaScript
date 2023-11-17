@@ -7,7 +7,7 @@ import {Util} from '../commontypes/Util';
  * @class IPortalShareParam
  * @aliasclass iPortalShareParam
  * @deprecatedclass SuperMap.iPortalShareParam
- * @classdesc iPortal 资源共享参数。
+ * @classdesc SuperMap iPortal 资源共享参数。
  * @version 10.0.1
  * @category iPortal/Online Resources ResourcesShare
  * @param {Object} params - 可选参数。

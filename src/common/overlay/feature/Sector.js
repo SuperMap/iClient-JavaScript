@@ -10,12 +10,12 @@ import {ShapeParameters} from './ShapeParameters';
  * @category Visualization Theme
  * @classdesc 扇形参数对象。
  * @extends {ShapeParameters}
- * @param {number} x - 圆心 x 坐标。
- * @param {number} y - 圆心 y 坐标。
+ * @param {number} x - 圆心 X 坐标。
+ * @param {number} y - 圆心 Y 坐标。
  * @param {number} r - 外圆半径。
- * @param {number} startAngle - 起始角度。取值范围[0, 360)。
- * @param {number} endAngle - 结束角度。取值范围(0, 360]。
- * @param {number} [r0=0] - 内圆半径，指定后将出现内弧，同时扇边长度为'r - r0'。取值范围[0, r)。
+ * @param {number} startAngle - 起始角度。取值范围：[0, 360)。
+ * @param {number} endAngle - 结束角度。取值范围：(0, 360]。
+ * @param {number} [r0=0] - 内圆半径，指定后将出现内弧，同时扇边长度为'r - r0'。取值范围：[0, r)。
  * @usage
  */
 
@@ -24,7 +24,7 @@ export class Sector extends ShapeParameters {
         super(x, y, r, startAngle, endAngle, r0, clockWise);
         /**
          * @member {number} ShapeParametersSector.prototype.x
-         * @description  圆心 x 坐标。
+         * @description  圆心 X 坐标。
          */
         this.x = !isNaN(x) ? x : 0;
 
@@ -42,19 +42,19 @@ export class Sector extends ShapeParameters {
 
         /**
          * @member {number} ShapeParametersSector.prototype.startAngle
-         * @description  起始角度。取值范围[0, 360)，默认值：null。
+         * @description  起始角度。取值范围：[0, 360)，默认值：null。
          */
         this.startAngle = !isNaN(startAngle) ? startAngle : 0;
 
         /**
          * @member {number} ShapeParametersSector.prototype.endAngle
-         * @description  结束角度。取值范围(0, 360]，默认值：null。
+         * @description  结束角度。取值范围：(0, 360]，默认值：null。
          */
         this.endAngle =  !isNaN(endAngle) ? endAngle : 0;
 
         /**
          * @member {number} [ShapeParametersSector.prototype.r0=0]
-         * @description 内圆半径，指定后将出现内弧，同时扇边长度为 r 减 r0。取值范围[0, r)。
+         * @description 内圆半径，指定后将出现内弧，同时扇边长度为 r 减 r0。取值范围：[0, r)。
          */
         this.r0 = !isNaN(r0) ? r0 : 0;
 

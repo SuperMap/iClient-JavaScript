@@ -18,7 +18,7 @@ import { DataFlowService as DataFlow } from '@supermap/iclient-common/iServer/Da
  * })
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {GeoJSONObject} [options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
+ * @param {GeoJSONObject} [options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
  * @param {Object} [options.excludeField] - 排除字段。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
@@ -101,7 +101,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.initBroadcast
      * @description 初始化广播。
-     * @returns {DataFlowService}
+     * @returns {DataFlowService} - 数据流服务。
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -141,7 +141,7 @@ export class DataFlowService extends ServiceBase {
     /**
      * @function DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据。
-     * @param {GeoJSONObject} geometry - 指定几何范围，该范围内的要素才能被订阅。
+     * @param {GeoJSONObject} geometry - 指定几何范围，只有在该范围内的要素才能被订阅。
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

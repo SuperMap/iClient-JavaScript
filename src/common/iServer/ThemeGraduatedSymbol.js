@@ -18,7 +18,7 @@ import {GraduatedMode} from '../REST';
  * @param {Object} options - 参数。
  * @param {ThemeGraduatedSymbolStyle} options.style - 等级符号专题图正负零值显示风格类。
  * @param {string} options.expression - 等级符号专题图的字段或字段表达式。
- * @param {number} [options.baseValue=0] - 等级符号专题图的基准值，单位同专题变量的单位。
+ * @param {number} [options.baseValue=0] - 等级符号专题图的基准值，单位与专题变量的单位相同。
  * @param {GraduatedMode} [options.graduatedMode=GraduatedMode.CONSTANT] - 等级符号专题图分级模式。
  * @param {ThemeOffset} [options.offset] - 指定等级符号专题图中标记文本相对于要素内点的偏移量对象。
  * @param {ThemeMemoryData} [options.memoryData] - 专题图内存数据。
@@ -30,7 +30,7 @@ export class ThemeGraduatedSymbol extends Theme {
         super("GRADUATEDSYMBOL", options);
         /**
          * @member {number} [ThemeGraduatedSymbol.prototype.baseValue=0]
-         * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
+         * @description 等级符号专题图的基准值，单位与专题变量的单位相同。<br>
          *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于
          *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，
          *              其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为 0，建议通过多次尝试设置该值才能达到较好的显示效果。
@@ -56,13 +56,13 @@ export class ThemeGraduatedSymbol extends Theme {
 
         /**
          * @member {ThemeOffset} [ThemeGraduatedSymbol.prototype.offset]
-         * @description 用于设置等级符号图相对于要素内点的偏移量。
+         * @description 用于设置等级符号专题图相对于要素内点的偏移量。
          */
         this.offset =  new ThemeOffset();
 
         /**
          * @member {ThemeGraduatedSymbolStyle} ThemeGraduatedSymbol.prototype.style
-         * @description 用于设置等级符号图正负和零值显示风格。
+         * @description 用于设置等级符号专题图正负和零值显示风格。
          */
         this.style =  new ThemeGraduatedSymbolStyle();
 

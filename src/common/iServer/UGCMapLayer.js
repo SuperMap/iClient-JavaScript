@@ -14,10 +14,10 @@ import {UGCLayer} from './UGCLayer';
  * @param {boolean} [options.completeLineSymbolDisplayed] - 是否显示完整线型。
  * @param {number} [options.maxScale] - 地图最大比例尺。
  * @param {number} [options.minScale] - 地图最小比例尺。
- * @param {number} [options.minVisibleGeometrySize] - 几何对象的最小可见大小，以像素为单位。
+ * @param {number} [options.minVisibleGeometrySize] - 几何对象的最小可见大小，单位为像素。
  * @param {number} [options.opaqueRate] - 图层的不透明度。
  * @param {boolean} [options.symbolScalable] - 是否允许图层的符号大小随图缩放。
- * @param {number} [options.symbolScale] - 图层的符号缩放基准比例尺。
+ * @param {number} [options.symbolScale] - 图层符号缩放的基准比例尺。
  * @param {boolean} [options.overlapDisplayed=false] - 地图对象在同一范围内时，是否重叠显示。
  * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
  * @usage
@@ -47,7 +47,7 @@ export class UGCMapLayer extends UGCLayer {
 
         /**
          * @member {number} UGCMapLayer.prototype.minVisibleGeometrySize
-         * @description 几何对象的最小可见大小，以像素为单位。
+         * @description 几何对象的最小可见大小，单位为像素。
          */
         this.minVisibleGeometrySize = null;
 
@@ -64,7 +64,7 @@ export class UGCMapLayer extends UGCLayer {
 
         /**
          * @member {number} UGCMapLayer.prototype.symbolScale
-         * @description 图层的符号缩放基准比例尺。
+         * @description 图层符号缩放的基准比例尺。
          */
         this.symbolScale = null;
 

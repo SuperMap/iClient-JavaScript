@@ -47,7 +47,7 @@ export class Size {
 
     /**
      * @function Size.prototype.clone
-     * @description 克隆当前size对象。
+     * @description 克隆当前 size 对象。
      * @example
      * var size = new Size(31,46);
      * var size2 = size.clone();

@@ -15,7 +15,7 @@ import {SurfaceAnalystParametersSetting} from './SurfaceAnalystParametersSetting
  * @param {SurfaceAnalystParametersSetting} options.extractParameter - 表面分析参数设置类。
  * @param {number} options.resolution - 指定中间结果（栅格数据集）的分辨率。
  * @param {DataReturnOption} options.resultSetting - 结果返回设置类。
- * @param {SurfaceAnalystMethod} [options.surfaceAnalystMethod=SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，提取等值线和提取等值面。
+ * @param {SurfaceAnalystMethod} [options.surfaceAnalystMethod=SurfaceAnalystMethod.ISOLINE] - 获取或设置表面分析的提取方法，包括提取等值线和提取等值面。
  * @usage
  */
 export class SurfaceAnalystParameters {
@@ -23,7 +23,7 @@ export class SurfaceAnalystParameters {
     constructor(options) {
         /**
          * @member {number} SurfaceAnalystParameters.prototype.resolution
-         * @description 获取或设置指定中间结果（栅格数据集）的分辨率。
+         * @description 获取或设置中间结果（栅格数据集）的分辨率。
          */
         this.resolution = 0;
 
@@ -42,7 +42,7 @@ export class SurfaceAnalystParameters {
 
         /**
          * @member {SurfaceAnalystMethod} [SurfaceAnalystParameters.prototype.surfaceAnalystMethod=SurfaceAnalystMethod.ISOLINE]
-         * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面。
+         * @description 获取或设置表面分析的提取方法，包括提取等值线和提取等值面。
          */
         this.surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE;
 

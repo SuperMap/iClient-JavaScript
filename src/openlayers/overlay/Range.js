@@ -15,11 +15,11 @@ import {GeoFeature} from './theme/GeoFeature';
  * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @param {string} name - 名称
  * @param {Object} opt_options - 参数。
- * @param {ol.Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 OpenLayers 地图对象。
  * @param {string} opt_options.themeField - 指定创建专题图字段。
  * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {number} [opt_options.opacity = 1] - 图层透明度。
- * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {number} [opt_options.opacity = 1] - 图层不透明度。
+ * @param {string} [opt_options.logo] - Logo（OpenLayers 5.0.0 及更高版本不再支持此参数）。
  * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
  * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
  * @param {Array} [opt_options.resolutions] - 分辨率数组。
@@ -28,7 +28,7 @@ import {GeoFeature} from './theme/GeoFeature';
  * @param {Object} [opt_options.styleGroups] - 各专题类型样式组。
  * @param {boolean} [opt_options.isHoverAble = false] - 是否开启 hover 事件。
  * @param {Object} [opt_options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
+ * @param {(string|Object)} [opt_options.attributions='Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @extends {GeoFeature}
  * @usage
  */

@@ -126,7 +126,7 @@ export class Label extends GeoFeature {
     }
     /**
      * @function LabelThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
      * @param {(Array.<FeatureVector>|FeatureVector|Function)} features - 要删除的要素对象或用于过滤的回调函数。
      */
     removeFeatures(features) {
@@ -337,9 +337,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function LabelThemeLayer.prototype.getStyleByData
-     * @description 根据用户数据（feature）设置专题要素的 Style。
+     * @description 根据用户数据（feature）设置专题要素的风格。
      * @param {FeatureVector} feat - 矢量要素对象。
-     * @returns {Array.<ThemeStyle>} 专题要素的 Style。
+     * @returns {Array.<ThemeStyle>} 专题要素的风格。
      */
     getStyleByData(feat) {
         var feature = feat;
@@ -493,7 +493,7 @@ export class Label extends GeoFeature {
      * @function LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -550,9 +550,9 @@ export class Label extends GeoFeature {
 
     /**
      * @function LabelThemeLayer.prototype.calculateLabelBounds2
-     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算 bounds 的效率。
+     * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算范围的效率。
      *
-     * @param {FeatureVector} feature - 需要计算 bounds 的标签要素数。
+     * @param {FeatureVector} feature - 需要计算范围的标签要素数。
      * @param {mapboxgl.Point} loc - 标签位置。
      *
      * @returns {Array.<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

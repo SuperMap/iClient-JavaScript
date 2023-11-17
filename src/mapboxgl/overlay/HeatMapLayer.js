@@ -21,7 +21,7 @@ import { HeatMapLayerRenderer } from '@supermap/iclient-common/overlay/heatmap/H
  * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
  * @param {string} options.featureWeight - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("HeatMapLayer_") 创建专题图层 ID。
- * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px,当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
+ * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为 false)。
  * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
@@ -68,10 +68,10 @@ export class HeatMapLayer extends mapboxgl.Evented {
          * @description 监听一个自定义事件可用如下方式:
          *              热点图自定义事件信息，事件调用时的属性与具体事件类型相对应。
          *
-         * 支持的事件如下 (另外包含 <Layer 中定义的其他事件>):
+         * 支持的事件如下 (另外包含 <Layer 中定义的其他事件>):<br>
          * featuresadded - 热点添加完成时触发。回调参数为添加的热点信息数组和操作成功与否信息。
          * 参数类型：{features: features, succeed: succeed}
-         * featuresremoved - 热点被删除时触发。回调参数为删除的热点信息数组和操作成功与否信息。
+         * featuresremoved - 热点被删除时触发。回调参数为删除的热点信息数组和操作成功与否信息。<br>
          * 参数类型：{features: features, succeed: succeed}
          * featuresdrawcompleted - 热点图渲染完成时触发。
          */
@@ -165,7 +165,7 @@ export class HeatMapLayer extends mapboxgl.Evented {
 
     /**
      * @function HeatMapLayer.prototype.setOpacity
-     * @description 设置图层的不透明度，取值[0-1]之间。
+     * @description 设置图层的不透明度，取值范围：[0-1]。
      * @param {number} [opacity] - 不透明度。
      */
     setOpacity(opacity) {

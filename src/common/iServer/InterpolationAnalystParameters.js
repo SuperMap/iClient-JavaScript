@@ -18,8 +18,8 @@ import {
  * @param {string} options.outputDatasetName - 插值分析结果数据集的名称。
  * @param {string} options.outputDatasourceName - 插值分析结果数据源的名称。
  * @param {string} [options.zValueFieldName] - 进行插值分析的字段名称，插值分析不支持文本类型的字段。
- * @param {string} [options.dataset] - 待分析的数据集名称。当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必选参数。
- * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
+ * @param {string} [options.dataset] - 待分析的数据集名称。当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必设参数。
+ * @param {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [options.inputPoints] - 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，此为必设参数。
  * @param {number} [options.searchRadius=0] - 查找半径，即参与运算点的查找范围，与点数据集单位相同。
  * @param {number} [options.zValueScale=1] - 进行插值分析值的缩放比率。
  * @param {number} [options.resolution] - 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
@@ -54,7 +54,7 @@ export class InterpolationAnalystParameters {
          * @member {string} InterpolationAnalystParameters.prototype.zValueFieldName
          * @description 数据集插值分析中，用于指定进行插值分析的目标字段名，插值分析不支持文本类型的字段。
          * 含义为每个插值点在插值过程中的权重，可以将所有点此字段值设置为 1，即所有点在整体插值中权重相同。
-         * 当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必选参数。
+         * 当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必设参数。
          */
         this.zValueFieldName = null;
 
@@ -100,14 +100,14 @@ export class InterpolationAnalystParameters {
         /**
          * @member {string} [InterpolationAnalystParameters.prototype.dataset]
          * @description 用来做插值分析的数据源中数据集的名称，该名称用形如 "数据集名称@数据源别名" 形式来表示。
-         * 当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必选参数。
+         * 当插值分析类型（InterpolationAnalystType）为 dataset 时，此为必设参数。
          */
         this.dataset = null;
 
         /**
          * @member {Array.<GeometryPoint|L.LatLng|L.Point|ol.geom.Point|mapboxgl.LngLat|Array.<number>>} [InterpolationAnalystParameters.prototype.inputPoints]
-         * @description 用于做插值分析的离散点（离散点包括Z值）集合。
-         * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
+         * @description 用于做插值分析的离散点（离散点包括 Z 值）集合。
+         * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此为必设参数。
          * 通过离散点直接进行插值分析不需要指定输入数据集 inputDatasourceName，inputDatasetName 以及 zValueFieldName。
          */
         this.inputPoints = null;

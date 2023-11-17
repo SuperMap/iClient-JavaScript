@@ -130,7 +130,7 @@ export class CartoCSSToLeaflet {
     /**
      * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从 iPortalMarker 中获取样式。
-     * @param {string} icon - iPortal 图标。
+     * @param {string} icon - SuperMap iPortal 图标。
      */
     getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
@@ -150,8 +150,8 @@ export class CartoCSSToLeaflet {
 
     /**
      * @function CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
-     * @description 从 iPortal 的风格中获取样式。
-     * @param {Object} iPortalStyle - iPortal 的样式对象。
+     * @description 从 SuperMap iPortal 的风格中获取样式。
+     * @param {Object} iPortalStyle - SuperMap iPortal 的样式对象。
      * @param {string} type - 样式类型。
      * @param {Object} [fStyle] - 图标参数。
      */

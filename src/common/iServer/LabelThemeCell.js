@@ -34,7 +34,7 @@ export class LabelThemeCell extends LabelMatrixCell {
 
         /**
          * @member {string} LabelThemeCell.prototype.type
-         * @description 制作矩阵专题图时是必须的。
+         * @description 设置矩阵标签元素的类型，在制作矩阵标签元素时必须指定元素类型。
          */
         this.type = "THEME";
 

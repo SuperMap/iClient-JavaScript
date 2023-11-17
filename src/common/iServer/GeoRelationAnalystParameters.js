@@ -26,7 +26,7 @@ export class GeoRelationAnalystParameters {
     constructor(options) {
         /**
          *  @member {string} GeoRelationAnalystParameters.prototype.dataset
-         *  @description 源数据集名称。
+         *  @description 源数据集名称。该名称用形如 "数据集名称@数据源别名" 形式来表示，例如：BaseMap_R@Jingjin。
          */
         this.dataset = null;
 

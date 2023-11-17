@@ -108,13 +108,13 @@ L.Proj.Projection = L.Class.extend({
  * @extends {L.Class}
  * @param {string} srsCode - proj srsCode。
  * @param {Object} options - 参数。
- * @param {string} options.def - 投影的proj4定义。[详细]{@link https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
+ * @param {string} options.def - 投影的 proj4 定义。[详细]{@link https://iclient.supermap.io/web/introduction/leafletDevelop.html#multiProjection}
  * @param {(Array.<number>|L.Point)} [options.origin] - 原点。
  * @param {Array.<number>} [options.scales] - 比例尺数组。
  * @param {Array.<number>} [options.scaleDenominators] - 比例尺分母数组。
  * @param {Array.<number>} [options.resolutions] - 分辨率数组。
  * @param {(Array.<number>|L.Bounds)} [options.bounds] - 范围。
- * @param {number} [options.dpi=96] - DPI。
+ * @param {number} [options.dpi=96] - 图像分辨率，表示每英寸内的像素个数。
  * @param {Array.<number>} [options.wrapLng] - 定义经度（水平）坐标轴是否在给定范围内环绕。大多数情况下默认为[-180，180]。
  * @example
  *    var crs =new CRS("EPSG:4326",{

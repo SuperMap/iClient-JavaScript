@@ -7,7 +7,7 @@ import { Util } from '../commontypes/Util';
  * @class RasterFunctionParameter
  * @deprecatedclass SuperMap.RasterFunctionParameter
  * @category iServer Map Tile
- * @classdesc iServer 地图服务栅格分析参数基类。此类存储了各种栅格分析的参数，栅格分析类型包括：归一化植被指数分析、阴影面分析等。<br>
+ * @classdesc SuperMap iServer 地图服务栅格分析参数基类。此类存储了各种栅格分析的参数，栅格分析类型包括：归一化植被指数分析、阴影面分析等。<br>
  * 归一化植被指数分析：归一化植被指数是一种标准化的指数，被用于影像的植被提取，在农业、林业、城市规划等行业得到了广泛应用。
  * 该指数利用了来自多光谱栅格数据的两个波段特征的对比：红色波段（R）的叶绿素色素吸收和近红外波段（NIR）的植物物质的高反射率。红色和红外波段的差异反射可以监测绿色植被生长的密度和强度。绿叶在近红外波段的反射通常比在可见光波段的反射更好。
  * 当叶片受到水分胁迫、患病或死亡时，它们会变得更黄，近红外范围内的反射也会明显减弱。云、水和雪在可见范围内的反射比在近红外范围内的反射要好，而岩石和裸地的反射差几乎为零。<br>
@@ -23,7 +23,7 @@ export class RasterFunctionParameter {
 
         /**
          * @member {RasterFunctionType} [RasterFunctionParameter.prototype.type]
-         * @description 栅格分析方法。
+         * @description 栅格分析方法。包括：归一化植被指数分析、阴影面分析等。
          */
         this.type = null;
 

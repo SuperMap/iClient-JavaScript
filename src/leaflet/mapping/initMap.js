@@ -12,7 +12,7 @@
 
  /**
   * @function initMap
-  * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持SuperMap iServer 地图服务，创建的图层为 TiledMapLayer。
+  * @description 根据 SuperMap iServer 服务参数，创建地图与图层。目前仅支持 SuperMap iServer 地图服务，创建的图层为 TiledMapLayer。
   * @category BaseTypes Util
   * @version 11.0.1
   * @example
@@ -20,12 +20,12 @@
   * @param {string} url - 服务地址，例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
   * @param {Object} [options] - 参数。
   * @param {L.MapOptions} [options.mapOptions] - 地图参数，未设置的情况下，默认使用 SuperMap iServer 服务参数进行设置。
-  * @param {Object} [options.layerOptions] - 图层参数，参考<a href="TiledMapLayer.html">TiledMapLayer</a>的参数。
+  * @param {Object} [options.layerOptions] - 图层参数，参考 <a href="TiledMapLayer.html">TiledMapLayer</a> 的参数。
   * @param {string} [options.proxy] - 服务代理地址。
   * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
   * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
   * @param {Object} [options.headers] - 请求头。
-  * @returns {Promise} Promise 对象，返回{ map, layer }。
+  * @returns {Promise} Promise 对象，返回 { map, layer }。
   * @usage
   * ```
   * // 浏览器
@@ -67,13 +67,13 @@
 
  /**
   * @function crsFromMapJSON
-  * @description 通过iServer REST地图的配置信息，构建地图的CRS（非平面投影、EPSG:3857、EPSG:4326需要先注册投影）。
+  * @description 通过 SuperMap iServer REST 地图的配置信息，构建地图的 CRS（非平面投影、EPSG:3857、EPSG:4326 需要先注册投影）。
   * @category BaseTypes Util
   * @version 11.0.1
   * @param {Object} mapJSONObj - 地图参数。
   * @param {Object} mapJSONObj.prjCoordSys - 投影配置。
   * @param {Object} mapJSONObj.bounds - 范围。
-  * @param {number} mapJSONObj.dpi - DPI。
+  * @param {number} mapJSONObj.dpi - 图像分辨率，表示每英寸内的像素个数。
   * @param {Array}  mapJSONObj.visibleScales - 自定义比例尺。
   * @param {Array}  mapJSONObj.coordUnit - 地图单位。
  * @param {Object} [mapOptions] - 地图参数。

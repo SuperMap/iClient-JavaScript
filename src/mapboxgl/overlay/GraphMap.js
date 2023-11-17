@@ -14,7 +14,7 @@ import mapboxgl from 'mapbox-gl';
  * @version 11.1.0
  * @param {string} serverUrl - GraphMap 服务地址， 例如：http://{iserver}/services/{knowledgeGraph-provider}/restjsr/graph/graphmaps/{graphmap}。
  * @param {Object} [options] - 参数。
- * @param {KnowledgeGraph.Config} [options.config] - KnowledgeGraph的配置项。
+ * @param {KnowledgeGraph.Config} [options.config] - KnowledgeGraph 的配置项。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。

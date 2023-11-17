@@ -50,11 +50,11 @@ export class Graph extends Theme {
         /**
          * @member {Object} FeatureThemeGraph.prototype.setting
          * @description 图表配置对象，该对象控制着图表的可视化显示。
-         * @param {number} width - 专题要素（图表）宽度。
-         * @param {number} height - 专题要素（图表）高度。
+         * @param {number} width - 专题要素（图表）宽度，单位为像素。
+         * @param {number} height - 专题要素（图表）高度，单位为像素。
          * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
-         * @param {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
-         * @param {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+         * @param {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
+         * @param {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
          * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox
          *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
          * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
@@ -88,28 +88,28 @@ export class Graph extends Theme {
         /**
          * @readonly
          * @member {number} FeatureThemeGraph.prototype.width
-         * @description 专题要素（图表）宽度。
+         * @description 专题要素（图表）宽度，单位为像素。
          */
         this.width = null;
 
         /**
          * @readonly
          * @member {number} FeatureThemeGraph.prototype.height
-         * @description 专题要素（图表）高度。
+         * @description 专题要素（图表）高度，单位为像素。
          */
         this.height = null;
 
         /**
          * @readonly
          * @member {number} FeatureThemeGraph.prototype.XOffset
-         * @description 专题要素（图表）在 X 方向上的偏移值，单位像素。
+         * @description 专题要素（图表）在 X 方向上的偏移值，单位为像素。
          */
         this.XOffset = 0;
 
         /**
          * @readonly
          * @member {number} FeatureThemeGraph.prototype.YOffset
-         * @description 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+         * @description 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
          */
         this.YOffset = 0;
 
@@ -244,11 +244,11 @@ export class Graph extends Theme {
      * @function FeatureThemeGraph.prototype.initBaseParameter
      * @description 初始化专题要素（图表）基础参数。在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
      *              调用此函数关系到 setting 对象的以下属性。
-     * @param {number} width - 专题要素（图表）宽度。
-     * @param {number} height - 专题要素（图表）高度。
+     * @param {number} width - 专题要素（图表）宽度，单位为像素。
+     * @param {number} height - 专题要素（图表）高度，单位为像素。
      * @param {Array.<number>} codomain - 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
-     * @param {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
-     * @param {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+     * @param {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位为像素。
+     * @param {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位为像素。
      * @param {Array.<number>} [dataViewBoxParameter] - 数据视图框 dataViewBox 参数，它是指图表框 chartBox。
      *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
      * @param {number} [decimalNumber] - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。

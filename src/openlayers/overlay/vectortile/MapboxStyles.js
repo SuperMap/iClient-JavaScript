@@ -18,12 +18,12 @@ import Text from 'ol/style/Text';
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2-1/dist/olms.js"></script>`
+ *      <script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2-1/dist/olms.js"></script>
  * </div>
  * @modulecategory Overlay
  * @category  Visualization VectorTile
  * @param {Object} options - 参数。
- * @param {(string|undefined)} [options.url] - SuperMap iServer 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
+ * @param {(string|undefined)} [options.url] - SuperMap iServer 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与 options.style 互斥，优先级低于 options.style。
  * @param {(Object|string|undefined)} [options.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
  * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为：[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
@@ -32,7 +32,7 @@ import Text from 'ol/style/Text';
  * 当配置为 'layer' 的 ID 数组时，指定的 layer 会被加载，注意被指定的 layer 需要有相同的 source。
  * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
  * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
- * @param {ol.StyleFunction} [options.selectedStyle] -选中样式Function。
+ * @param {ol.StyleFunction} [options.selectedStyle] -选中样式 Function。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @example
  *  var mbStyle = new MapboxStyles({
@@ -107,7 +107,7 @@ export class MapboxStyles extends Observable {
     /**
      * @function MapboxStyles.prototype.getStyleFunction
      * @description 获取 ol.StyleFunction。
-     * @returns {ol.StyleFunction} 返回 ol.StyleFunction
+     * @returns {ol.StyleFunction} 返回 ol.StyleFunction。
      */
     getStyleFunction() {
         return this.featureStyleFuntion;
@@ -134,7 +134,7 @@ export class MapboxStyles extends Observable {
     }
     /**
      * @function MapboxStyles.prototype.setSelectedId
-     * @description 设置选中要素，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`,才能生效。
+     * @description 设置选中要素，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`，才能生效。
      * @param {number} selectedId - 要素 ID。
      * @param {string} sourceLayer - 要素所在图层名称。
      */
@@ -155,7 +155,7 @@ export class MapboxStyles extends Observable {
     /**
      * @function MapboxStyles.prototype.setSelectedObjects
      * @version 10.0.0
-     * @description 设置选中要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`,才能生效。
+     * @description 设置选中要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`，才能生效。
      * @param {MapboxStyles.selectedObject|Array.<MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
     setSelectedObjects(selectedObjects) {
@@ -168,7 +168,7 @@ export class MapboxStyles extends Observable {
     /**
      * @function MapboxStyles.prototype.addSelectedObjects
      * @version 10.0.0
-     * @description 增加选中的要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed` 才能生效。
+     * @description 增加选中的要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed` ，才能生效。
      * @param {MapboxStyles.selectedObject|Array.<MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
     addSelectedObjects(selectedObjects) {
@@ -180,7 +180,7 @@ export class MapboxStyles extends Observable {
     /**
      * @function MapboxStyles.prototype.removeSelectedObjects
      * @version 10.0.0
-     * @description 清空选中状态。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed` 才能生效。
+     * @description 清空选中状态。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed` ，才能生效。
      */
     removeSelectedObjects(selectedObjects) {
         if (!Array.isArray(selectedObjects)) {
@@ -195,7 +195,7 @@ export class MapboxStyles extends Observable {
     /**
      * @function MapboxStyles.prototype.clearSelectedObjects
      * @version 10.0.0
-     * @description 清空选中状态。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`,才能生效。
+     * @description 清空选中状态。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`，才能生效。
      */
     clearSelectedObjects() {
         this.selectedObjects = [];

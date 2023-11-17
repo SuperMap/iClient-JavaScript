@@ -13,7 +13,7 @@
  * @function toGeoJSON
  * @category BaseTypes Util
  * @description 将传入对象转为 GeoJSON 格式。
- * @param {Object} feature - 待转参数。
+ * @param {Object} feature - 待转换参数。
  * @usage
  * ```
  * // 浏览器

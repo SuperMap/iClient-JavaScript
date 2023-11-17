@@ -15,7 +15,7 @@ import Attributions from '../core/Attributions'
  * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Object} options - 参数。
- * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权信息。
+ * @param {string} [options.attribution='<span>© <a href='https://turfjs.org/' title='turfjs' target='_blank'>turfjs</a></span>'] - 版权描述信息。
  * @usage
  */
 export var TurfLayer = L.GeoJSON.extend({
