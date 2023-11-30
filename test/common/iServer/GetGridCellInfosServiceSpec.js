@@ -178,7 +178,7 @@ describe('GetGridCellInfosService', () => {
         myService.bounds = bounds;
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe('GET');
-            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValues?bounds=%7B%22leftBottom%22:%7B%22x%22:112,%22y%22:34%7D,%22rightTop%22:%7B%22x%22:113,%22y%22:35%7D%7D');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValues?bounds=%7B%22leftBottom%22%3A%7B%22x%22%3A112%2C%22y%22%3A34%7D%2C%22rightTop%22%3A%7B%22x%22%3A113%2C%22y%22%3A35%7D%7D');
             expect(options).not.toBeNull();
             return Promise.resolve(
                 new Response(
