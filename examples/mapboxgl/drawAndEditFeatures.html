@@ -1,0 +1,930 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_editFeatures"></title>
+    <script type="text/javascript" include="draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script src="https://unpkg.com/mapbox-gl-draw-snap-mode"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      .key-input,
+      .value-input {
+        display: inline-block;
+        width: 100px;
+        margin-right: 5px;
+      }
+      .edit-panel {
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        width: 300px;
+      }
+      .btn-primary {
+        padding: 4px 6px !important;
+        background-color: #0081e2 !important;
+         border-color: #0081e2 !important;
+      }
+
+      .btm-gray {
+        padding: 4px 6px !important;
+        background-color: #aaa !important;
+         border-color: #aaa !important;
+      }
+
+      .button-group {
+        background-color: #fff;
+        /* height: 60px; */
+        overflow: hidden;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+      }
+
+      .dataset-info {
+        padding-left: 8px;
+        font-size: 13px;
+        font-weight: 100;
+        color: #a09595;
+      }
+
+      .add-feature-info {
+        padding: 10px;
+        max-height: 820px;
+        overflow-y: scroll;
+      }
+      .delete-feature-info {
+        padding: 10px;
+        max-height: 820px;
+        overflow-y: scroll;
+      }
+      .edit-feature-info {
+        padding: 10px;
+        max-height: 820px;
+        overflow-y: scroll;
+      }
+      .btn-group-xs {
+        margin-right: 6px;
+      }
+
+      .into-title {
+        font-weight: 800;
+        font-size: 16px;
+      }
+
+      .edit-attribute-info {
+        margin-bottom: 50px;
+      }
+
+      .info-panel {
+        margin-top: -14px
+      }
+
+      .info-panel > div {
+        margin-top: 25px;
+        width: 300px;
+        min-height: 300px;
+        background: #fff;
+        display: none;
+      }
+
+      .select-element {
+        width: 100%;
+        height: 26px;
+        border: 1px solid #a39a9a;
+      }
+      .line-element {
+        width: 4px;
+        display: inline-block;
+        height: 16px;
+        background: #0081e2;
+        vertical-align: bottom;
+        margin-right: 6px;
+      }
+
+      .video-element {
+        width: 100%;
+      }
+
+      .video-modal {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: none;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        left: 0;
+        top: 0;
+        background: #0000008a;
+      }
+
+      .desc-element {
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      .input-element {
+        width: 100%;
+        height: 26px;
+        border: 1px solid #a39a9a;
+      }
+
+      #drawList {
+        margin-bottom: 10px;
+      }
+      .info-bottom {
+        position: absolute;
+        right: 20px;
+        margin-top: 40px;
+        bottom: 10px;
+      }
+      .edit-tips {
+        width: 300px;
+        height: 25px;
+        background: #fff;
+        margin-top: 25px;
+        padding: 3px 10px;
+        display: none;
+      }
+      .img-element {
+        margin-top: 10px;
+        width: 90%;
+      }
+
+      dialog {
+        width: 100%;
+        max-width: 720px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <div id="popup" class="ol-popup">
+      <p>按Tab键开始输入坐标值，回车键确定</p>
+      <div id="popup-content">
+        <h5>X</h5>
+        <input class="input-element coordX" type="number">
+        <h5>Y</h5>
+        <input class="input-element coordY" type="number">
+      </div>
+    </div>
+    <div class="video-modal">
+      <button class="video-modal-close">Close</button>
+      <video controls width="720">
+        <source src="https://www.runoob.com/try/demo_source/mov_bbb.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="edit-panel">
+      <div class="button-group">
+        <button
+          id="addFeature"
+          value="Point"
+          type="button"
+          class="btn btn-primary btn-group-xs"
+        >
+          <span class="glyphicon glyphicon-plus" aria-hidden="true">新增要素</span>
+        </button>
+        <button
+          id="editFeature"
+          value="LineString"
+          type="button"
+          class="btn btn-primary btn-group-xs"
+        >
+          <span class="glyphicon glyphicon-edit" aria-hidden="true">编辑要素</span>
+        </button>
+        <button
+          id="deleteFeature"
+          value="Polygon"
+          type="button"
+          class="btn btn-primary btn-group-xs"
+        >
+          <span class="glyphicon glyphicon-trash" aria-hidden="true">删除要素</span>
+        </button>
+      </div>
+      <div class="info-panel">
+        <div class="add-feature-info">
+          <h4 class="into-title">新增要素</h4>
+          <div>
+            <h5>目标数据集</h5>
+            <select class="select-element addDatasetNameList" name="capital">
+            </select>
+          </div>
+          <h6><span class="line-element"></span>空间信息</h6>
+          <div class="space-info">
+            <input class="input-element" type="text">
+            <p class="desc-element">鼠标移动至地图绘制要素。</p>
+          </div>
+          <h6><span class="line-element"></span>属性信息</h6>
+          <div class="add-attribute-info">
+          </div>
+          <div class="info-bottom">
+            <button class="btn btn-default btn-group-xs cancel-add">取消</button>
+            <button class="btn btn-primary btn-group-xs addSave">保存</button>
+          </div>
+        </div>
+        <div class="edit-feature-info">
+          <h4 class="into-title">编辑要素<span class="dataset-info">数据集：<span class="edit-dataset"></span></span></h4>
+          <h6>空间信息</h6>
+          <div class="space-info">
+            <input class="input-element" type="text">
+          </div>
+          <h6>属性信息</h6>
+          <div class="edit-attribute-info">
+          </div>
+          <div class="info-bottom">
+            <button class="btn btn-default btn-group-xs cancel-edit">取消</button>
+            <button disabled class="btn btn-primary btn-group-xs editSave">保存</button>
+          </div>
+        </div>
+        <div class="delete-feature-info">
+          <h4 class="into-title">删除要素</h4>
+          <p class="desc-element">在地图上选择待删除的要素。</p>
+          <div style="border-top: 1px solid #baafaf">
+            <h5>待删除要素:</h5>
+            <div class="delete-feature-list">
+
+            </div>
+          </div>
+          <div class="info-bottom">
+            <button class="btn btn-default btn-group-xs cancel-delete">取消</button>
+            <button class="btn btn-danger btn-group-xs delete">删除</button>
+          </div>
+        </div>
+      </div>
+      <div class="edit-tips">在地图上点击要素进行选择。</div>
+    </div>
+    </div>
+    <script type="text/javascript" include="jquery,bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+      var status = 'ADD';
+      var type = '';
+      var uniqueId = 0;
+      var currentDataset = 'Line_t';
+      var map,
+        draw,
+        url =
+          (window.isLocal ? window.server : 'https://iserver.supermap.io') +
+          '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var isUpdate = false;
+      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-World/rest/data';
+      var dataSourceName = 'World';
+      var editFeaturesService = new mapboxgl.supermap.FeatureService(dataUrl);
+      var currentShowPanel = '';
+      var datasetNameList = [];
+      var datasetTypeClassify = {
+        Fill: [],
+        Line: [],
+        Point: []
+      }
+      var deleteList = {};
+      var currentFeature = {};
+      var updateChanged = false;
+      var addFeatureId = null;
+      var curEditOriginFeatures = [];
+      const typeMap = {
+                REGION: 'Fill',
+                LINE: 'Line',
+                POINT: 'Point'
+              };
+      var domainRules = {
+        
+      };
+      var datasetInfoList = {
+
+      }
+      const container = document.getElementById('popup');
+      const content = document.getElementById('popup-content');
+
+      map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": [url],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+      bindEvents();
+      init(dataUrl, dataSourceName);
+
+      function addVectorLayer(type, features, datasetName) {
+        const typeMap = {
+          Point: 'circle',
+          LineString: 'line',
+          MultiLineString: 'line',
+          MultiPolygon: 'fill',
+          Polygon: 'fill'
+        }
+        type = typeMap[type];
+        const styleOptions = {
+          circle: {
+            'circle-color': '#e55561',
+            'circle-radius': 8
+          },
+          line: {
+            'line-color': '#61b79e',
+            'line-width': 4
+          },
+          fill: {
+            'fill-color': '#b5b5b5',
+            'fill-opacity': 0.5
+          }
+        }
+          map.addLayer({
+            id: datasetName,
+            type: type,
+            source: {
+              type: 'geojson',
+              data: features
+            }, 
+            paint: styleOptions[type]
+          });
+      }
+      var fieldList = [];
+      var filterFields = {
+      };
+
+      function getDomains(datasetName) {
+        fetch(
+                `${dataUrl}/datasources/${dataSourceName}/datasets/${datasetName}/domain.json`
+              )
+                .then((res) => {
+                  return res.json();
+                })
+                .then((res) => {
+                  console.log('domain', res);
+                  domainRules = {};
+                  res && Array.isArray(res) && res.forEach((domain) => {
+                    domainRules[domain.fieldName.toUpperCase()] = domain;
+                  });
+                });
+      }
+
+      function checkInput(e) {
+        if (!updateChanged && status === 'EDIT') {
+          updateChanged = true;
+          document.querySelector('.editSave').disabled = false;
+        }
+        var rule = domainRules[e.target.label];
+        if (rule && rule.type === 'RANGE') {
+          let value = +e.target.value;
+          if (value < rule.rangeInfos[0].min || value > rule.rangeInfos[0].max) {
+            // 提升错误
+            e.target.style.borderColor = 'red';
+            var parent = e.target.parentNode;
+            // 
+            let error = document.createElement('span');
+            error.style.color = 'red';
+            error.className = 'error-tips';
+            error.innerText = `输入值超出值域范围：[${rule.rangeInfos[0].min}, ${rule.rangeInfos[0].max})`;
+            parent.insertBefore(error, e.target.nextSibling);
+            document.querySelector('.editSave').disabled = true;
+            // 保存按钮 disabled
+          } else {
+            let error = document.querySelector('.error-tips');
+            error && error.parentNode.removeChild(error);
+            e.target.style.borderColor = '#000';
+            document.querySelector('.editSave').disabled = false;
+          }
+        }
+
+         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.img') && !e.target.value.includes('.mp4')) {
+          let ele = document.querySelector(`img.${e.target.label}`) || document.querySelector(`video.${e.target.label}`);
+          if (ele) {
+            ele.parentNode.removeChild(ele);
+          }
+         }
+
+         if (e.target.value.includes('.mp4')) {
+            const video = document.createElement('video');
+            video.src = e.target.value;
+            video.className = `video-element ${e.target.label}`;
+            var parent = e.target.parentNode;
+            parent.insertBefore(video,e.target.nextSibling);
+            const modal = document.querySelector('.video-modal');
+            const video1 = document.querySelector('.video-modal video');
+            
+            video.addEventListener('click', function onOpen() {
+              modal.style.display = 'flex';
+              video1.src = video.src;
+              video1.play();
+            });
+            
+            modal.addEventListener('click', function onClose() {
+              modal.style.display = 'none';
+              video1.pause();
+            });
+          } else if (e.target.value.includes('.png')) {
+            const img = document.createElement('img');
+            img.src = e.target.value;
+            img.className = `img-element ${e.target.label}`;
+            new Viewer(img);
+            var parent = e.target.parentNode;
+            parent.insertBefore(img,e.target.nextSibling);
+          }
+      }
+
+      getDomains(currentDataset);
+
+      function init(dataUrl, datasourceName) {
+        let styles = mapboxGlDrawSnapMode.SnapModeDrawStyles;
+        // styles.forEach((style) => {
+        //   if (['gl-draw-line-static', 'gl-draw-line-inactive', 'gl-draw-line-active'].includes(style.id)) {
+        //     style.paint['line-color'] = '#61b79e';
+        //     style.paint['line-width'] = 3;
+        //   }
+        //   if (['gl-draw-point-static', 'gl-draw-point-inactive', 'gl-draw-point-active'].includes(style.id)) {
+        //     style.paint['circle-color'] = '#e55561';
+        //     style.paint['circle-radius'] = 8;
+        //   }
+        //   if (['gl-draw-polygon-fill-static', 'gl-draw-polygon-fill-inactive', 'gl-draw-polygon-fill-active'].includes(style.id)) {
+        //     style.paint['fill-color'] = '#5a5a5a';
+        //   }
+        // });
+        draw = new MapboxDraw({
+          modes: {
+            ...MapboxDraw.modes,
+            draw_point: mapboxGlDrawSnapMode.SnapPointMode,
+            draw_polygon: mapboxGlDrawSnapMode.SnapPolygonMode,
+            draw_line_string: mapboxGlDrawSnapMode.SnapLineMode,
+            direct_select: mapboxGlDrawSnapMode.SnapDirectSelect,
+          },
+          styles: styles,
+          userProperties: true,
+          snap: true,
+          displayControlsDefault: false,
+          snapOptions: {
+            snapPx: 15, // defaults to 15
+            snapToMidPoints: true, // defaults to false
+            snapVertexPriorityDistance: 0.0025, // defaults to 1.25
+          },
+          guides: false,
+          defaultMode: 'simple_select'
+        });
+        map.addControl(draw, 'top-left');
+        map.on('draw.create', function (e) {
+          if (e.features) {
+            let feature = e.features[0];
+            addFeatureId = feature.id;
+            datasetInfoList[currentDataset].id++;
+            feature.id = datasetInfoList[currentDataset].id;
+            currentFeature.data = feature;
+            document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+          }
+        });
+        let datasetService = new mapboxgl.supermap.DatasetService(dataUrl)
+        datasetService.getDatasets(datasourceName, function(e) {
+          datasetNameList = e.result.datasetNames;
+          currentFeature.dataset = datasetNameList[0];
+          currentDataset = datasetNameList[0];
+          // 获取所有数据集的类型
+          datasetNameList.forEach((datasetName, index) => {
+            filterFields[datasetName] = {};
+            datasetService.getDataset(dataSourceName, datasetName, function(e) {
+            datasetInfoList[datasetName] = {
+              type: e.result.datasetInfo.type,
+              id: 0
+            }
+            typeMap[e.result.datasetInfo.type] && datasetTypeClassify[typeMap[e.result.datasetInfo.type]].push(datasetName);
+            if (index === 0) {
+              let editType = e.result.datasetInfo.type;
+              createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), editType, datasetNameList[0]);
+            }
+            if (index === datasetNameList.length - 1) {
+              initFeature();
+            }
+          });
+          });
+        });
+      }
+
+      function createOptions(list, selectElement, selectType, selectDataset) {
+        selectElement.innerHTML = '';
+        list.forEach((item, index) => {
+          const option = document.createElement('option');
+          option.value = item;
+          option.innerText = item;
+          getField(item);
+          if (item === selectDataset) {
+            option.selected = true;
+            setTimeout(() => {
+              renderAttribute(item);
+            }, 1000);
+          }
+          selectElement.appendChild(option);
+        });
+      }
+
+      function getField(datasetName) {
+        new mapboxgl.supermap.FieldService(dataUrl).getFields(
+          new mapboxgl.supermap.FieldParameters({
+            datasource: dataSourceName,
+            dataset: datasetName
+          }),
+          function (result) {
+            if (!result.result) {
+              return;
+            }
+            fieldList = result.result.fieldNames;
+            fieldList.forEach((fieldName) => {
+              fetch(
+                `${dataUrl}/datasources/${dataSourceName}/datasets/${datasetName}/fields/${fieldName}.json`
+              )
+                .then((res) => {
+                  return res.json();
+                })
+                .then((res) => {
+                  filterFields[datasetName][res.fieldInfo.name.toUpperCase()] = res.fieldInfo.isSystemField;
+                });
+            });
+          }
+        );
+      }
+
+      function renderAttribute(datasetName, status = 'add') {
+        const attributeElement = document.querySelector(`.${status}-attribute-info`);
+        attributeElement.innerHTML = '';
+        Object.keys(filterFields[datasetName]).forEach((key) => {
+          if (!filterFields[datasetName][key]) {
+            const title = document.createElement('h6');
+            title.innerText = key;
+            attributeElement.appendChild(title);
+            if (domainRules[key] && domainRules[key].type === 'CODE') {
+                var selectValues = domainRules[key].codeInfos.map((item) => {
+                  return item.value;
+                });
+                var select = createSelect(selectValues);
+                attributeElement.appendChild(select);
+              return;
+            }
+            
+            const inputEle = document.createElement('input');
+            inputEle.className = 'input-element';
+            inputEle.label = key;
+            inputEle.value = '';
+            attributeElement.appendChild(inputEle);
+          }
+        });
+      }
+
+      function createSelect(list) {
+        const select = document.createElement('select');
+        select.className = 'select-element';
+        list.forEach((item) => {
+          const option = document.createElement('option');
+          option.value = item;
+          option.innerText = item;
+          select.appendChild(option);
+        });
+        return select;
+      }
+
+      function renderEditAttribute(status = 'edit', properties) {
+        const attributeElement = document.querySelector(`.${status}-attribute-info`);
+        attributeElement.innerHTML = '';
+        Object.keys(properties).forEach((key) => {
+          if (key === 'datasetName') {
+            return;
+          }
+          const title = document.createElement('h6');
+          title.innerText = key;
+          attributeElement.appendChild(title);
+          if (domainRules[key] && domainRules[key].type === 'CODE') {
+                var selectValues = domainRules[key].codeInfos.map((item) => {
+                  return item.value;
+                });
+                var select = createSelect(selectValues);
+                attributeElement.appendChild(select);
+              return;
+            }
+          const inputEle = document.createElement('input');
+          inputEle.className = 'input-element';
+          inputEle.disabled = filterFields[currentFeature.dataset][key];
+          inputEle.value = properties[key];
+          inputEle.label = key;
+          attributeElement.appendChild(inputEle);
+          if (properties[key].includes('.mp4')) {
+            const video = document.createElement('video');
+            video.src = properties[key];
+            video.className = "video-element";
+            attributeElement.appendChild(video);
+          } else if (properties[key].includes('.png')) {
+            const img = document.createElement('img');
+            img.src = properties[key];
+            img.className = "img-element";
+            attributeElement.appendChild(img);
+          }
+        });
+      }
+
+      function bindEvents() {
+        document.querySelector('.addDatasetNameList').addEventListener('change', function(e) {
+          let value = e.target.value;
+          currentFeature.dataset = value;
+          currentDataset = value;
+          let { type, source } = datasetInfoList[currentDataset];
+          currentFeature.type = type;
+          createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), type, value);
+          startDraw(type, source);
+        });
+
+         // 切换状态
+        document.querySelector('.button-group').addEventListener('click', function(e) {
+          let className = e.target.className;
+          switchPanel(className);
+        });
+
+        document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
+        document.querySelector('.edit-attribute-info').addEventListener('change', checkInput);
+
+        content.addEventListener('change', function(e) {
+          let x;
+          let y;
+          if (e.target.className.includes('coordX')) {
+            x = e.target.value;
+            y = document.querySelector('.coordY').value;
+          } else if (e.target.className.includes('coordY')) {
+            y = e.target.value;
+            x = document.querySelector('.coordX').value;
+          }
+          draw.appendCoordinates([[x, y]]);
+          overlayPopup.setPosition([x, y]);
+        });
+
+        document.querySelector('.cancel-add').addEventListener('click', function() {
+          if (addFeatureId) {
+            draw.delete(addFeatureId);
+            currentFeature.data = null;
+            if (currentShowPanel) {
+              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            }
+          }
+        });
+
+        document.querySelector('.cancel-edit').addEventListener('click', function() {
+          if (curEditOriginFeatures.length) {
+            curEditOriginFeatures.forEach((feature) => {
+              draw.delete(feature.id);
+            });
+            curEditOriginFeatures = [];
+            if (currentShowPanel) {
+              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            }
+          }
+        });
+
+        document.querySelector('.cancel-delete').addEventListener('click', function() {
+          let deleteEle = document.querySelector('.delete-feature-list');
+          deleteEle.innerHTML = '';
+          deleteList = [];
+          if (currentShowPanel) {
+            document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+          }
+        });
+      }
+
+      function switchPanel(className, fromAdd) {
+        if (currentShowPanel) {
+          document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+        }
+        let { type, source } = datasetInfoList[currentDataset];
+        if (className.includes('plus')) {
+          document.querySelector('.edit-tips').style.display = 'none';
+          startDraw(type, source);
+          document.querySelector('.add-feature-info').style.display = 'block';
+          currentShowPanel = 'add-feature-info';
+          status = 'ADD';
+        } else if (className.includes('edit')) {
+          draw.changeMode('simple_select');
+          if (fromAdd) {
+            fillContent();
+            document.querySelector('.edit-feature-info').style.display = 'block';
+          } else {
+            document.querySelector('.edit-tips').style.display = 'block';
+          }
+          currentShowPanel = 'edit-feature-info';
+          status = 'EDIT';
+          startSelect(source);
+        } else if (className.includes('trash')) {
+          document.querySelector('.edit-tips').style.display = 'none';
+          endDraw();
+          document.querySelector('.delete-feature-info').style.display = 'block';
+          currentShowPanel = 'delete-feature-info';
+          status = 'DELETE';
+          startSelect(source);
+        }
+      }
+
+      function fillContent() {
+        if (currentFeature) {
+          document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
+          document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+          renderEditAttribute('edit', currentFeature.data.properties);
+        }
+      }
+
+      let saveBtn = document.querySelector('.addSave');
+      let editBtn = document.querySelector('.editSave');
+      saveBtn.addEventListener('click', function () {
+        save('add');
+      });
+      editBtn.addEventListener('click', function () {
+        save('edit');
+      });
+      let deleteBtn = document.querySelector('.delete');
+      deleteBtn.addEventListener('click', function () {
+        deleteFeature();
+      });
+      function save(type) {
+        var properties = {};
+        const attributeElement = document.querySelector(`.${type}-attribute-info`);
+        var listArr = [...attributeElement.children];
+        listArr.forEach((item, index) => {
+          if (index % 2 === 0 && !listArr[index + 1].disabled && listArr[index + 1].value) {
+            properties[item.textContent] = listArr[index + 1].value;
+          }
+        });
+        currentFeature.data.properties = properties;
+        if (!currentFeature.data.id) {
+          datasetInfoList[currentDataset].uniqueId++;
+          currentFeature.data.id = datasetInfoList[currentDataset].uniqueId;
+          isUpdate = false;
+        } else {
+          isUpdate = true;
+        }
+        commit(isUpdate);
+        // 切换到编辑
+        switchPanel('edit', true);
+      }
+      
+
+      function initFeature() {
+        // 按照面 线 点的顺序渲染
+        var featureService = new mapboxgl.supermap.FeatureService(dataUrl);
+        let datasetOrder = [].concat(datasetTypeClassify['Fill'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
+        // let datasetOrder = [].concat(datasetTypeClassify['Point'])
+        // let datasetOrder = ['China_island', 'demo_line', 'Capitals'];
+        datasetOrder.forEach(async (datasetName) => {
+          var getFeatureParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: {
+              name: `${datasetName}@${dataSourceName}`,
+              attributeFilter: 'SMID > 0'
+            },
+            fromIndex: 5,
+            toIndex: 30,
+            datasetNames: [`${dataSourceName}:${datasetName}`]
+          });
+
+          await featureService.getFeaturesBySQL(getFeatureParams).then(function (serviceResult) {
+            var geojsonFeatures = serviceResult.result.features;
+            // 删除的时候需要
+            geojsonFeatures.features.forEach((feature) => {
+              feature.properties.datasetName = datasetName;
+            });
+            console.log('geojsonFeatures', geojsonFeatures, serviceResult, getFeatureParams);
+              geojsonFeatures.features.forEach((feature) => {
+                if (feature.id > datasetInfoList[datasetName].id) {
+                  datasetInfoList[datasetName].id = feature.id;
+                }
+              });
+              if (geojsonFeatures.features[0]) {
+               addVectorLayer(geojsonFeatures.features[0].geometry.type, geojsonFeatures, datasetName);
+              }
+              return;
+            });
+        });
+      }
+
+      function commit(isUpdate) {
+        if (currentFeature.data) {
+          var addFeatureParams = new mapboxgl.supermap.EditFeaturesParameters({
+            features: currentFeature.data,
+            dataSourceName: dataSourceName,
+            dataSetName: currentDataset,
+            editType: status === 'EDIT' ? 'update' : 'add',
+            returnContent: true
+          });
+          editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
+            if (serviceResult.result.succeed) {
+              widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
+            }
+          });
+        }
+      }
+
+      function deleteFeature() {
+        Object.keys(deleteList).forEach((dataset) => {
+          var addFeatureParams = new mapboxgl.supermap.EditFeaturesParameters({
+            dataSourceName,
+            dataSetName: dataset,
+            IDs: deleteList[dataset],
+            editType: 'delete'
+          });
+          editFeaturesService.editFeatures(addFeatureParams).then(function (serviceResult) {
+            if (serviceResult.result.succeed) {
+              widgets.alert.showAlert(resources.text_deleteSuccess, true);
+            }
+          });
+        });
+      }
+      function startSelect(source) {
+        clearInteraction();
+        map.on('click', function (e) {
+          let res = map.queryRenderedFeatures(e.point);
+          if (status === 'EDIT') {
+            if (res[0]) {
+              let { type, geometry, id, properties } = res[0];
+              let editFeature = {
+                type,
+                geometry,
+                id,
+                properties
+              };
+              draw.add(editFeature);
+              draw.changeMode('direct_select', { featureId: id });
+
+              document.querySelector('.edit-tips').style.display = 'none';
+              currentFeature.dataset = editFeature.properties.datasetName;
+              document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
+              currentDataset = currentFeature.dataset;
+              currentFeature.data = editFeature;
+              curEditOriginFeatures.push(editFeature);
+              document.querySelector('.edit-feature-info').style.display = 'block';
+              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry });
+              renderEditAttribute('edit', currentFeature.data.properties);
+            }
+          } else if (status == 'DELETE') {
+            let feature = res[0];
+            if (feature) {
+            if (!deleteList[feature.properties.datasetName]) {
+              deleteList[feature.properties.datasetName] = []
+            }
+            if (deleteList[feature.properties.datasetName].includes(feature.id)) {
+              return;
+            }
+            deleteList[feature.properties.datasetName].push(feature.id);
+            const deleteItem = document.createElement('div');
+            deleteItem.innerText = `SMID: ${feature.id} (${feature.properties.datasetName})`;
+            let deleteEle = document.querySelector('.delete-feature-list');
+            deleteEle.appendChild(deleteItem);
+            }
+          }
+        });
+        map.on('draw.update', function (e) {
+          let feature = e.features[0];
+          if (status === 'EDIT') {
+              document.querySelector('.edit-tips').style.display = 'none';
+              currentFeature.dataset = feature.properties.datasetName;
+              currentFeature.data = feature;
+              document.querySelector('.edit-feature-info').style.display = 'block';
+              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+              renderEditAttribute('edit', currentFeature.data.properties);
+          }
+        });
+      }
+
+      function startDraw(type, source) {
+        endDraw();
+        const popup = new mapboxgl.Popup({ className: 'popup' })
+        .setDOMContent(container)
+        .setMaxWidth("300px")
+        .addTo(map);
+        map.on('mousemove', function (evt) {
+          const coordinate = evt.lngLat;
+          popup.setLngLat(coordinate);
+          content.querySelector('.coordX').value = coordinate.lng;
+          content.querySelector('.coordY').value = coordinate.lat;
+        });
+        var drawTypeMap = {
+          REGION: 'draw_polygon',
+          LINE: 'draw_line_string',
+          POINT: 'draw_point'
+        }
+        draw.changeMode(drawTypeMap[type]);
+      }
+
+      function endDraw() {
+      }
+
+      function clearInteraction() {
+      }
+
+    </script>
+  </body>
+</html>

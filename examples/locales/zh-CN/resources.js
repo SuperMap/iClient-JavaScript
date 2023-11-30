@@ -682,6 +682,7 @@ window.examplesResources = {
         "title_websymbol_landuseOfJingjin": "京津地区土地利用现状图",
         "title_websymbol_landuse": "土地利用",
         "title_websymbol_customWebSymbol":"自定义Web符号",
+        "title_editFeatures": "编辑要素",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
@@ -873,6 +874,9 @@ window.examplesResources = {
         "text_color_rgba": "颜色值(RGBA)",
         "text_input_value_drawLine": "绘线",
         "text_input_value_drawPolygon": "绘面",
+        'start_edit_feature': '开启编辑',
+        'end_edit_feature': '取消编辑',
+        'save_edit_feature': '保存编辑',
         "text_input_value_select": "选择",
         "text_input_value_modify": "编辑",
         "text_featureSnap": "要素编辑",
