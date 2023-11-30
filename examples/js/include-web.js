@@ -95,15 +95,15 @@
 
         if (inArray(includes, 'bootstrap')) {
             inputScript(libsurl + '/jquery/jquery.min.js');
-            inputCSS(libsurl + '/bootstrap/css/bootstrap.min.css');
-            inputScript(libsurl + '/bootstrap/js/bootstrap.min.js');
+            inputCSS(libsurl + '/bootstrap/3.4.1/css/bootstrap.min.css');
+            inputScript(libsurl + '/bootstrap/3.4.1/js/bootstrap.min.js');
         }
         if (inArray(includes, 'bootstrap-css')) {
-            inputCSS(libsurl + '/bootstrap/css/bootstrap.min.css')
+            inputCSS(libsurl + '/bootstrap/3.4.1/css/bootstrap.min.css')
         }
 
         if (inArray(includes, 'bootstrap-js')) {
-            inputScript(libsurl + '/bootstrap/js/bootstrap.min.js');
+            inputScript(libsurl + '/bootstrap/3.4.1/js/bootstrap.min.js');
         }
 
         if (inArray(includes, 'jquery-ui')) {
