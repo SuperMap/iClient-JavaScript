@@ -129,8 +129,8 @@
             inputScript(libsurl + '/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js');
         }
         if (inArray(includes, 'bootstrap-select')) {
-            inputCSS(libsurl + '/bootstrap-select/bootstrap-select.min.css');
-            inputScript(libsurl + '/bootstrap-select/bootstrap-select.min.js');
+            inputCSS(libsurl + '/bootstrap-select/1.13.18/bootstrap-select.min.css');
+            inputScript(libsurl + '/bootstrap-select/1.13.18/bootstrap-select.min.js');
         }
         if (inArray(includes, 'geohash')) {
             inputScript(libsurl + '/geohash/geohash.js');
