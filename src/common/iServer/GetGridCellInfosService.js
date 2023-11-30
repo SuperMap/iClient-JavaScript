@@ -123,17 +123,28 @@ export class GetGridCellInfosService extends CommonServiceBase {
      */
     queryGridInfos(callback) {
         var me = this;
-        var url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
-        if (me.X != null && me.Y != null) {
-            url = Util.urlAppend(url, `x=${me.X}&y=${me.Y}`);
+        var datasetType = me.datasetType === 'GRID' ? 'gridValue' : 'imageValue';
+        var queryMode = me.bounds ? datasetType + 's' : datasetType;
+        var url = Util.urlPathAppend(me.url, queryMode);
+        var method = 'GET';
+        var data = null;
+        if (Array.isArray(me.bounds)) {
+            method = 'POST';
+            data = me.bounds;
+        } else {
+            if (me.bounds) {
+                url = Util.urlAppend(url, `bounds=${encodeURIComponent(JSON.stringify(me.bounds))}`);
+            } else if (me.X != null && me.Y != null) {
+                url = Util.urlAppend(url, `x=${me.X}&y=${me.Y}`);
+            }
         }
         return me.request({
-          url,
-          method: "GET",
-          data: null,
-          scope: me,
-          success: callback,
-          failure: callback
-      });
+            url,
+            method: method,
+            data: data,
+            scope: me,
+            success: callback,
+            failure: callback
+        });
     }
 }

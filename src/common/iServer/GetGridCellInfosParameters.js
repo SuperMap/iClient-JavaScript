@@ -11,8 +11,10 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {string} options.datasetName - 数据集名称。
  * @param {string} options.dataSourceName - 数据源名称。
- * @param {number} options.X - 要查询的地理位置 X 坐标。
- * @param {number} options.Y - 要查询的地理位置 Y 坐标。
+ * @param {number} options.X - 地理位置 X 轴。
+ * @param {number} options.Y - 地理位置 Y 轴。
+ * @param {Array | Object} options.bounds - 查询范围。单对象栅格查询、多对象栅格查询、单对象影像查询、多对象影像查询时有效。
+ * 单对象查询时，bounds为对象。多对象查询时，bounds为数组。
  * @usage
  */
 export class GetGridCellInfosParameters {
@@ -42,6 +44,21 @@ export class GetGridCellInfosParameters {
          * @description 要查询的地理位置 Y 坐标。
          */
         this.Y = null;
+
+        /**
+          * @member {Array | Object} GetGridCellInfosParameters.prototype.bounds
+          * @example
+          * 矩形范围范例：{
+          * "leftBottom":{"x":112.351881,"y":34.663401},
+          * "rightTop":{"x":113.361881,"y":35.673401}
+          * }
+          * 多点范例多点范例：[
+          * {"point":{"x": 112.361881,"y": 34.673401}},
+          * {"point":{"x": 107.669629,"y": 32.888868}}
+          * ]
+          * @description 要查询的地理范围。
+          */
+        this.bounds = null;
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";

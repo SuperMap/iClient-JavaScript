@@ -162,6 +162,62 @@ describe('GetGridCellInfosService', () => {
             dataServiceURL + '/datasources/World/datasets/LandCover'
         );
     });
+    it('queryGridInfos Bounds exist and it is an object', () => {
+        var url = dataServiceURL + '/datasources/World/datasets/WorldEarth';
+        var myService = initGetGridCellInfosService(url);
+        var bounds = {
+            leftBottom: {
+                x: 112,
+                y: 34
+            },
+            rightTop: {
+                x: 113,
+                y: 35
+            }
+        };
+        myService.bounds = bounds;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValues?bounds=%7B%22leftBottom%22:%7B%22x%22:112,%22y%22:34%7D,%22rightTop%22:%7B%22x%22:113,%22y%22:35%7D%7D');
+            expect(options).not.toBeNull();
+            return Promise.resolve(
+                new Response(
+                    `{"color":{"red":138,"green":118,"blue":91,"alpha":255},"column":1218,"bounds":null,"row":388,"value":9074267,"centerPoint":{"x":34.23738956451416,"y":21.64506733417511}}`
+                )
+            );
+        });
+        myService.queryGridInfos();
+    })
+    it('queryGridInfos Bounds exist and it is an Arrary', () => {
+        var url = dataServiceURL + '/datasources/World/datasets/WorldEarth';
+        var myService = initGetGridCellInfosService(url);
+        var bounds = [
+            {
+                point: {
+                    x: 112.361881,
+                    y: 34.673401
+                }
+            },
+            {
+                point: { 
+                    x: 107.669629,
+                    y: 32.888868
+                }
+            }
+        ];
+        myService.bounds = bounds;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValues');
+            expect(options).not.toBeNull();
+            return Promise.resolve(
+                new Response(
+                    `[{"color":{"red":74, "green":84, "blue":50, "alpha":255}, "column":1663, "bounds":null, "row":314, "value":4871218, "centerPoint":{"x":112.361881, "y":34.673401}}, {"color":{"red":38, "green":48, "blue":21, "alpha":255}, "column":1636, "bounds":null, "row":324, "value":2502677, "centerPoint":{"x":107.669629, "y":32.888868}}]`
+                )
+            );
+        });
+        myService.queryGridInfos();
+    })
     it('queryGridInfos_customQueryParam', () => {
         var url = dataServiceURL + '/datasources/World/datasets/LandCover?key=123';
         var myService = initGetGridCellInfosService(url);
