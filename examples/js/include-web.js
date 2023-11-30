@@ -195,7 +195,7 @@
             inputScript(libsurl + '/babel/6.26.0/babel.min.js');
         }
         if (inArray(includes, 'vue')) {
-            inputScript(libsurl + '/vue/2.5.17/vue.min.js');
+            inputScript(libsurl + '/vue/2.6.14/vue.min.js');
         }
         if (inArray(includes, 'ionRangeSlider')) {
             inputCSS(libsurl + '/ionRangeSlider/2.2.0/css/ion.rangeSlider.css');
