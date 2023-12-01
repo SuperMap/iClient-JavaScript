@@ -204,7 +204,7 @@ export const EchartsLayer = L.Layer.extend({
         _div.style.position = 'absolute';
         _div.style.height = size.y + 'px';
         _div.style.width = size.x + 'px';
-        _div.style.zIndex = 10;
+        _div.style.zIndex = 200;
         this._echartsContainer = _div;
         this.getPane().appendChild(this._echartsContainer);
         const me = this;
