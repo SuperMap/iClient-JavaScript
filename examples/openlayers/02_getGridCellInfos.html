@@ -29,7 +29,7 @@
             top: 0;
             right: 0;
             height: 100vh;
-            width: 500px;
+            width: 400px;
             padding: 20px;
             background: #fff;
             font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -221,7 +221,8 @@
     </div>
     <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript">
-        var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
+        var map,
+            baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
             url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
             draw,
             querylist = [],
@@ -230,8 +231,8 @@
             target: 'map',
             controls: ol.control.defaults({ attributionOptions: { collapsed: false } }).extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
-                center: [30, 0],
-                zoom: 3,
+                center: [120, 28],
+                zoom: 6,
                 projection: 'EPSG:4326',
                 multiWorld: true,
             })
@@ -274,9 +275,30 @@
                 appendTable(res);
             })
         }
+        function getValuesCount(res) {
+            var count = 0;
+            if (!res.object.bounds) {
+                count += 1;
+            } else if (res.object.bounds && !Array.isArray(res.object.bounds)) {
+                count += res.result.valuesCount;
+            } else {
+                var customResult = res.result.customResult;
+                for (var i = 0; i < customResult.length; i++) {
+                    if (customResult[i].values) {
+                        count += customResult[i].valuesCount;
+                    } else {
+                        count += 1;
+                    }
+                }
+            }
+            return count;
+        }
         function appendTable(res) {
-            if (!res || res.error) {
+            if (!res) {
                 return;
+            }
+            if ((res.error && res.error.code === 400) || getValuesCount(res) > 5000) {
+                return widgets.alert.showAlert(resources.msg_outOfQueryRange, false);
             }
             // 展开table
             collapseTable();
@@ -347,7 +369,7 @@
             table.appendChild(thead);
             table.appendChild(tbody);
 
-            var theadInfo = '<tr><th>'+ resources.text_index +'</th><th>'+ resources.text_row_index +'</th><th>'+ resources.text_column_index +'</th><th>'+ resources.text_color_number +'</th><th>'+ resources.text_color_rgba +'</th></tr>';
+            var theadInfo = '<tr><th>' + resources.text_index + '</th><th>' + resources.text_row_index + '</th><th>' + resources.text_column_index + '</th><th>' + resources.text_color_number + '</th><th>' + resources.text_color_rgba + '</th></tr>';
             thead.append(theadInfo);
             thead.innerHTML = theadInfo;
             tbody.innerHTML = tbodyHtml;

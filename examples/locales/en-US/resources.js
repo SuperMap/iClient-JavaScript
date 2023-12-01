@@ -1877,6 +1877,7 @@ window.examplesResources = {
         "msg_deleteFeatureFailed": 'Delete feature failed',
         "msg_geographicPosition": "geographical position error! ",
         "msg_gridQueryNote": "Note: Click the map at any position, the instance will start to grid query at this location, and the bottom left corner of the map will show the query results after the query is completed.",
+        "msg_outOfQueryRange": "Please narrow down the search scope。",
         "msg_drawQueryBounds": "Please draw the query range!",
         "msg_drawClipBounds": "Please draw the clip range!",
         "msg_chooseColor": "Please choose color value",

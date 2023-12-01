@@ -1829,6 +1829,7 @@ window.examplesResources = {
         "msg_deleteFeatureFailed": '删除地物失败',
         "msg_geographicPosition": "地理位置错误！",
         "msg_gridQueryNote": "注：点击地图任意位置，案例以该位置进行栅格查询，查询完成后地图左下角会显示查询结果。",
+        "msg_outOfQueryRange": "请缩小查询范围。",
         "msg_drawQueryBounds": "请绘制查询范围!",
         "msg_drawClipBounds": "请绘制裁剪范围!",
         "msg_chooseColor": "请选颜色值",
