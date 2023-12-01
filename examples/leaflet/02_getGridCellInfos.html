@@ -206,7 +206,7 @@
         </div>
     </div>
     <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="leaflet.draw" src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
         var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
             url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
@@ -378,13 +378,15 @@
             var feature = event.feature;
             if (type === "circle") {
                 var center = layer.getLatLng();
+                var meterRadius = layer.getRadius();
+                var lonLatRadius = turf.lengthToDegrees(meterRadius, 'metres');
                 querylist.push({
                     'circle': {
                         'centerPoint': {
                             'x': center.lng,
                             'y': center.lat
                         },
-                        'radius': layer._radius
+                        'radius': lonLatRadius
                     }
                 });
             } else if (type === "marker") {
