@@ -19,6 +19,7 @@ import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServe
  * @version 9.1.1
  * @category Components DataServiceQuery
  * @param {string} dataserviceUrl - 数据服务地址。
+ * @param {function} onEachFeature - 给该元素绑定事件和弹窗。
  * @fires DataServiceQueryViewModel#getfeaturessucceeded
  * @fires DataServiceQueryViewModel#getfeaturesfailed
  * @extends {L.Evented}
@@ -26,9 +27,10 @@ import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServe
  */
 export class DataServiceQueryViewModel extends L.Evented {
 
-    initialize(dataserviceUrl) {
+    initialize(dataserviceUrl, onEachFeature) {
         this.dataserviceUrl = dataserviceUrl;
         this.resultLayers = [];
+        this.onEachFeature = onEachFeature;
     }
 
     /**
@@ -82,9 +84,7 @@ export class DataServiceQueryViewModel extends L.Evented {
             return;
         }
         let resultLayer = L.geoJSON(serviceResult.result.features, {
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup("ID: " + feature.properties.SMID);
-            },
+            onEachFeature: this.onEachFeature,
             pointToLayer: function (geoJsonPoint, latLng) {
                 return L.circleMarker(latLng, { radius: 6})
             }
