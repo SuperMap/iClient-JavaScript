@@ -98,7 +98,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
      */
     setDataServiceUrl(dataServiceUrl) {
         this.dataServiceUrl = dataServiceUrl;
-        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
+        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl, this.options.onEachFeature);
 
     },
     /**
@@ -127,7 +127,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
      */
     _initView: function () {
         // 初始化 ViewModel:
-        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
+        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl, this.options.onEachFeature);
         this.messageBox = new MessageBox();
 
         // 组件 container
