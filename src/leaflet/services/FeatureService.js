@@ -1,20 +1,20 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import L from 'leaflet';
- import '../core/Base';
- import { ServiceBase } from './ServiceBase';
- import * as Util from '../core/Util';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
- import { DataFormat } from '@supermap/iclient-common/REST';
- import { CommontypesConversion } from '../core/CommontypesConversion';
- import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
- import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
+import L from 'leaflet';
+import '../core/Base';
+import { ServiceBase } from './ServiceBase';
+import * as Util from '../core/Util';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { CommontypesConversion } from '../core/CommontypesConversion';
+import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
+import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
 
 /**
  * @class FeatureService
  * @deprecatedclassinstance L.supermap.featureService
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，缓冲区查询，地物编辑等方法。
+ * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，缓冲区查询，地物编辑，要素附件查询、编辑等方法。
  * @category  iServer Data Feature
  * @modulecategory Services
  * @example
@@ -47,8 +47,8 @@ export var FeatureService = ServiceBase.extend({
      * @returns {Promise} Promise 对象。
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesByIDs(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByIDs(params, callback, resultFormat);
     },
 
     /**
@@ -60,8 +60,8 @@ export var FeatureService = ServiceBase.extend({
      * @returns {Promise} Promise 对象。
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesByBounds(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByBounds(params, callback, resultFormat);
     },
 
     /**
@@ -73,8 +73,8 @@ export var FeatureService = ServiceBase.extend({
      * @returns {Promise} Promise 对象。
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
     },
 
     /**
@@ -86,8 +86,8 @@ export var FeatureService = ServiceBase.extend({
      * @returns {Promise} Promise 对象。
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
     },
 
     /**
@@ -99,8 +99,8 @@ export var FeatureService = ServiceBase.extend({
      * @returns {Promise} Promise 对象。
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
     },
 
     /**
@@ -124,8 +124,8 @@ export var FeatureService = ServiceBase.extend({
         var editFeatureService = new EditFeaturesService(url, {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
-            crossOrigin:me.options.crossOrigin,
-            headers:me.options.headers
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers
         });
         return editFeatureService.processAsync(me._processParams(params), callback);
     },
@@ -140,6 +140,30 @@ export var FeatureService = ServiceBase.extend({
      */
     getMetadata(params, callback) {
         return this._featureService.getMetadata(params, callback);
+    },
+
+    /**
+     * @function FeatureService.prototype.getFeatureAttachments
+     * @description 要素附件查询服务。
+     * @version 11.2.0
+     * @param {AttachmentsParameters} params - 要素附件服务中附件查询参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeatureAttachments: function (params, callback) {
+        return this._featureService.getFeatureAttachments(params, callback);
+    },
+
+    /**
+     * @function FeatureService.prototype.editFeatureAttachments
+     * @description 要素附件编辑服务。
+     * @version 11.2.0
+     * @param {EditAttachmentsParameters} params - 要素附件服务中附件添加、删除参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    editFeatureAttachments: function (params, callback) {
+        return this._featureService.editFeatureAttachments(params, callback);
     },
 
     _processParams: function (params) {

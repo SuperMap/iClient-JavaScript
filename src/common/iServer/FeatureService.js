@@ -1,12 +1,13 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '../commontypes/Util';
+import { Util as CommonUtil } from '../commontypes/Util';
 import { GetFeaturesByIDsService } from './GetFeaturesByIDsService';
 import { GetFeaturesBySQLService } from './GetFeaturesBySQLService';
 import { GetFeaturesByBoundsService } from './GetFeaturesByBoundsService';
 import { GetFeaturesByBufferService } from './GetFeaturesByBufferService';
 import { GetFeaturesByGeometryService } from './GetFeaturesByGeometryService';
+import { FeatureAttachmentsService } from './FeatureAttachmentsService';
 import { EditFeaturesService } from './EditFeaturesService';
 import { DataFormat } from '../REST';
 
@@ -14,7 +15,7 @@ import { DataFormat } from '../REST';
  * @class FeatureService
  * @constructs FeatureService
  * @category  iServer Data Feature
- * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑等方法。
+ * @classdesc 数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑，要素附件查询、添加、删除等方法。
  * @example
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
  *          //doSomething
@@ -31,8 +32,8 @@ import { DataFormat } from '../REST';
 export class FeatureService {
 
     constructor(url, options) {
-      this.url = url;
-      this.options = options || {};
+        this.url = url;
+        this.options = options || {};
     }
 
     /**
@@ -182,7 +183,59 @@ export class FeatureService {
         });
         return editFeatureService.getMetaData(params, callback);
     }
+    /**
+     * @function FeatureService.prototype.getFeatureAttachments
+     * @description 要素附件查询服务。
+     * @version 11.2.0
+     * @param {AttachmentsParameters} params - 要素附件服务中附件查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeatureAttachments(params, callback) {
+        if (!params || !params.dataSourceName || !params.dataSetName || !params.featureId == null) {
+            return;
+        }
+        var me = this,
+            url = me.url,
+            dataSourceName = params.dataSourceName,
+            dataSetName = params.dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+        var featureAttachmentsService = new FeatureAttachmentsService(url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers
+        });
+        return featureAttachmentsService.getAttachments(params, callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.editFeatureAttachments
+     * @description 要素附件编辑服务。
+     * @version 11.2.0
+     * @param {EditAttachmentsParameters} params - 要素附件服务中附件添加、删除参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    editFeatureAttachments(params, callback) {
+        if (!params || !params.dataSourceName || !params.dataSetName || !params.featureId == null || !params.editType) {
+            return;
+        }
+        var me = this,
+            url = me.url,
+            dataSourceName = params.dataSourceName,
+            dataSetName = params.dataSetName;
+        url = CommonUtil.urlPathAppend(url, "datasources/" + dataSourceName + "/datasets/" + dataSetName);
+        var featureAttachmentsService = new FeatureAttachmentsService(url, {
+            proxy: me.options.proxy,
+            withCredentials: me.options.withCredentials,
+            crossOrigin: me.options.crossOrigin,
+            headers: me.options.headers
+        });
+        return featureAttachmentsService.processAsync(params, callback);
+    }
+
     _processFormat(resultFormat) {
-      return resultFormat ? resultFormat : DataFormat.GEOJSON;
-  }
+        return resultFormat ? resultFormat : DataFormat.GEOJSON;
+    }
 }

@@ -63,7 +63,7 @@ var exampleConfig = {
             name_en: 'SQL query (FGB)',
             thumbnail: 'query_fgb_features.png',
             fileName: '01_mapQueryBySQL_FGB'
-          }, 
+          },
           {
             name: "图例",
             name_en: "Legend",
@@ -136,6 +136,12 @@ var exampleConfig = {
             name_en: 'data editing',
             thumbnail: 'mb_editFeatures.png',
             fileName: '02_editFeatures'
+          },
+          {
+            name: "要素关联附件",
+            name_en: "feature attachment",
+            thumbnail: "mb_featureAttachments.png",
+            fileName: "02_FeatureAttachment"
           },
           {
             name: '数据源信息查询',
@@ -222,10 +228,10 @@ var exampleConfig = {
             fileName: '04_bufferAnalystService_FGB'
           },
           {
-              name: '几何对象缓冲区分析',
-              name_en: 'buffer-geometry',
-              thumbnail: 'mb_bufferAnalystService_geometry.png',
-              fileName: '04_bufferAnalystService_geometry'
+            name: '几何对象缓冲区分析',
+            name_en: 'buffer-geometry',
+            thumbnail: 'mb_bufferAnalystService_geometry.png',
+            fileName: '04_bufferAnalystService_geometry'
           },
           {
             name: '几何对象缓冲区分析 (FGB)',
@@ -234,10 +240,10 @@ var exampleConfig = {
             fileName: '04_bufferAnalystService_geometry_FGB'
           },
           {
-              name: '数据集泰森多边形',
-              name_en: 'thiessen-dataset',
-              thumbnail: 'mb_thiessenAnalystService-datasets.png',
-              fileName: '04_thiessenAnalystService_datasets'
+            name: '数据集泰森多边形',
+            name_en: 'thiessen-dataset',
+            thumbnail: 'mb_thiessenAnalystService-datasets.png',
+            fileName: '04_thiessenAnalystService_datasets'
           },
           {
             name: '数据集泰森多边形 (FGB)',
@@ -258,10 +264,10 @@ var exampleConfig = {
             fileName: '04_thiessenAnalystService_geometry_FGB'
           },
           {
-              name: '叠加分析',
-              name_en: 'overlay',
-              thumbnail: 'mb_overlayAnalystService.png',
-              fileName: '04_overlayAnalystService'
+            name: '叠加分析',
+            name_en: 'overlay',
+            thumbnail: 'mb_overlayAnalystService.png',
+            fileName: '04_overlayAnalystService'
           },
           {
             name: '叠加分析 (FGB)',
@@ -281,21 +287,21 @@ var exampleConfig = {
             version: '11.1.1',
             thumbnail: "terrainSlopeCalculationService.png",
             fileName: "04_terrainSlopeCalculationService"
-          }, 
+          },
           {
             name: "地形坡向计算",
             name_en: "terrain aspect calculation",
             version: '11.1.1',
             thumbnail: "terrainAspectCalculationService.png",
             fileName: "04_terrainAspectCalculationService"
-          }, 
+          },
           {
             name: "填挖方计算",
             name_en: "terrain cutfill calculation",
             version: '11.1.1',
             thumbnail: "terrainCutFillCalculationService.png",
             fileName: "04_terrainCutFillCalculationService"
-          }, 
+          },
           {
             name: "最近距离计算",
             name_en: "min distance analysis",
@@ -454,27 +460,27 @@ var exampleConfig = {
         name: '知识图谱',
         name_en: 'KnowledgeGraph',
         content: [
-            {
-                name: '不动产图谱',
-                name_en: 'Real Estate GraphMap',
-                thumbnail: 'knowledgeGraphMap.png',
-                fileName: 'knowledgeGraphMap'
-            },
-            {
-              name: '不动产图谱-样式',
-              name_en: 'Real Estate GraphMap',
-              version: '11.1.0',
-              thumbnail: 'knowledgeGraphMap2.png',
-              fileName: 'knowledgeGraphMap2'
-            },
-            {
-              name: '河流流经省份图谱',
-              name_en: 'Rivers flowing through provinces GraphMap',
-              thumbnail: 'knowledgeGraphMap1.png',
-              fileName: 'knowledgeGraphMap1'
+          {
+            name: '不动产图谱',
+            name_en: 'Real Estate GraphMap',
+            thumbnail: 'knowledgeGraphMap.png',
+            fileName: 'knowledgeGraphMap'
+          },
+          {
+            name: '不动产图谱-样式',
+            name_en: 'Real Estate GraphMap',
+            version: '11.1.0',
+            thumbnail: 'knowledgeGraphMap2.png',
+            fileName: 'knowledgeGraphMap2'
+          },
+          {
+            name: '河流流经省份图谱',
+            name_en: 'Rivers flowing through provinces GraphMap',
+            thumbnail: 'knowledgeGraphMap1.png',
+            fileName: 'knowledgeGraphMap1'
           }
         ]
-      },
+      }
     }
   },
   viz: {
@@ -929,58 +935,58 @@ var exampleConfig = {
         name_en: 'WebSymbol',
         version: '11.1.0',
         content: [{
-            name: 'Web符号库',
-            name_en: 'WebSymbol Gallery',
-            version: '11.1.0',
-            showCode: false,
-            thumbnail: 'websymbol_gallery.png',
-            fileName: 'websymbol_gallery'
-          }, {
-            name: 'Web符号编辑器',
-            name_en: 'WebSymbol Editor',
-            version: '11.1.0',
-            showCode: false,
-            thumbnail: 'websymbol_editor.png',
-            fileName: 'websymbol_editor'
-          }, {
-            name: '长江三角洲',
-            name_en: 'Yangtze River Delta',
-            version: '11.1.0',
-            thumbnail: 'websymbol_YangtzeRiverdelta.png',
-            fileName: 'websymbol_YangtzeRiverdelta'
-          },{
-            name: '土地利用',
-            name_en: 'Land Use',
-            version: '11.1.0',
-            thumbnail: 'websymbol_landuse.png',
-            fileName: 'websymbol_landuse'
-          }
-          ,{
-            name: '数字线划地图',
-            name_en: 'DLG_I49',
-            version: '11.1.0',
-            thumbnail: 'websymbol_DLG_I49.png',
-            fileName: 'websymbol_DLG_I49'
-          }
-          ,{
-            name: '新疆土地利用',
-            name_en: 'Land Use of Xinjiang',
-            version: '11.1.0',
-            thumbnail: 'websymbol_landuseOfXinjiang.png',
-            fileName: 'websymbol_landuseOfXinjiang'
-          },{
-            name: '自定义Web符号',
-            name_en: 'Custom WebSymbol',
-            version: '11.1.0',
-            thumbnail: 'websymbol_customWebSymbol.png',
-            fileName: 'websymbol_customWebSymbol'
-          },{
-            name: '2019年中国各省GDP',
-            name_en: "2019 China's GDP by Province",
-            version: '11.1.0',
-            thumbnail: 'websymbol_2019ChinaGDP.png',
-            fileName: 'websymbol_2019ChinaGDP'
-          }
+          name: 'Web符号库',
+          name_en: 'WebSymbol Gallery',
+          version: '11.1.0',
+          showCode: false,
+          thumbnail: 'websymbol_gallery.png',
+          fileName: 'websymbol_gallery'
+        }, {
+          name: 'Web符号编辑器',
+          name_en: 'WebSymbol Editor',
+          version: '11.1.0',
+          showCode: false,
+          thumbnail: 'websymbol_editor.png',
+          fileName: 'websymbol_editor'
+        }, {
+          name: '长江三角洲',
+          name_en: 'Yangtze River Delta',
+          version: '11.1.0',
+          thumbnail: 'websymbol_YangtzeRiverdelta.png',
+          fileName: 'websymbol_YangtzeRiverdelta'
+        }, {
+          name: '土地利用',
+          name_en: 'Land Use',
+          version: '11.1.0',
+          thumbnail: 'websymbol_landuse.png',
+          fileName: 'websymbol_landuse'
+        }
+          , {
+          name: '数字线划地图',
+          name_en: 'DLG_I49',
+          version: '11.1.0',
+          thumbnail: 'websymbol_DLG_I49.png',
+          fileName: 'websymbol_DLG_I49'
+        }
+          , {
+          name: '新疆土地利用',
+          name_en: 'Land Use of Xinjiang',
+          version: '11.1.0',
+          thumbnail: 'websymbol_landuseOfXinjiang.png',
+          fileName: 'websymbol_landuseOfXinjiang'
+        }, {
+          name: '自定义Web符号',
+          name_en: 'Custom WebSymbol',
+          version: '11.1.0',
+          thumbnail: 'websymbol_customWebSymbol.png',
+          fileName: 'websymbol_customWebSymbol'
+        }, {
+          name: '2019年中国各省GDP',
+          name_en: "2019 China's GDP by Province",
+          version: '11.1.0',
+          thumbnail: 'websymbol_2019ChinaGDP.png',
+          fileName: 'websymbol_2019ChinaGDP'
+        }
         ]
       }
     }

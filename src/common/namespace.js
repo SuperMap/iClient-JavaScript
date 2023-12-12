@@ -130,6 +130,7 @@ import {
   IPortalDataStoreInfoParam,
   IPortalDataConnectionInfoParam,
   AggregationParameter,
+  AttachmentsParameters,
   BucketAggParameter,
   MetricsAggParameter,
   AreaSolarRadiationParameters,
@@ -153,6 +154,7 @@ import {
   DatasetThiessenAnalystParameters,
   DatasourceConnectionInfo,
   DensityKernelAnalystParameters,
+  EditAttachmentsParameters,
   EditFeaturesParameters,
   FacilityAnalyst3DParameters,
   FacilityAnalystSinks3DParameters,
@@ -383,6 +385,7 @@ import {
   DatasourceService,
   DataFlowService,
   DensityAnalystService,
+  FeatureAttachmentsService,
   EditFeaturesService,
   FacilityAnalystSinks3DService,
   FacilityAnalystSources3DService,
@@ -567,6 +570,7 @@ SuperMap.AddressMatchService = AddressMatchService;
 SuperMap.AggregationParameter = AggregationParameter;
 SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters;
 SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
+SuperMap.AttachmentsParameters = AttachmentsParameters;
 SuperMap.BucketAggParameter = BucketAggParameter;
 SuperMap.BufferAnalystParameters = BufferAnalystParameters;
 SuperMap.BufferAnalystService = BufferAnalystService;
@@ -600,6 +604,8 @@ SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 SuperMap.DatasourceService = DatasourceService;
 SuperMap.DensityAnalystService = DensityAnalystService;
 SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
+SuperMap.EditAttachmentsParameters = EditAttachmentsParameters;
+SuperMap.FeatureAttachmentsService = FeatureAttachmentsService;
 SuperMap.EditFeaturesParameters = EditFeaturesParameters;
 SuperMap.EditFeaturesService = EditFeaturesService;
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;

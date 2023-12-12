@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { AddressMatchService } from './AddressMatchService';
 import { AggregationParameter } from './AggregationParameter';
+import { AttachmentsParameters } from './AttachmentsParameters';
 import { BucketAggParameter } from './BucketAggParameter';
 import { MetricsAggParameter } from './MetricsAggParameter';
 import { AreaSolarRadiationParameters } from './AreaSolarRadiationParameters';
@@ -39,6 +40,7 @@ import { DensityAnalystService } from './DensityAnalystService';
 import { DensityKernelAnalystParameters } from './DensityKernelAnalystParameters';
 import { EditFeaturesParameters } from './EditFeaturesParameters';
 import { EditFeaturesService } from './EditFeaturesService';
+import { EditAttachmentsParameters } from './EditAttachmentsParameters';
 import { FacilityAnalyst3DParameters } from './FacilityAnalyst3DParameters';
 import { FacilityAnalystSinks3DParameters } from './FacilityAnalystSinks3DParameters';
 import { FacilityAnalystSinks3DService } from './FacilityAnalystSinks3DService';
@@ -52,6 +54,7 @@ import { FacilityAnalystTraceup3DParameters } from './FacilityAnalystTraceup3DPa
 import { FacilityAnalystTraceup3DService } from './FacilityAnalystTraceup3DService';
 import { FacilityAnalystUpstream3DParameters } from './FacilityAnalystUpstream3DParameters';
 import { FacilityAnalystUpstream3DService } from './FacilityAnalystUpstream3DService';
+import { FeatureAttachmentsService } from './FeatureAttachmentsService';
 import { FieldParameters } from './FieldParameters';
 import { FieldStatisticService } from './FieldStatisticService';
 import { FieldStatisticsParameters } from './FieldStatisticsParameters';
@@ -293,6 +296,7 @@ export { ImageService };
 
 export { AddressMatchService };
 export { AggregationParameter };
+export { AttachmentsParameters };
 export { BucketAggParameter };
 export { MetricsAggParameter };
 export { AreaSolarRadiationParameters };
@@ -327,6 +331,7 @@ export { DatasourceConnectionInfo };
 export { DatasourceService };
 export { DensityAnalystService };
 export { DensityKernelAnalystParameters };
+export { EditAttachmentsParameters };
 export { EditFeaturesParameters };
 export { EditFeaturesService };
 export { FacilityAnalyst3DParameters };
@@ -342,6 +347,7 @@ export { FacilityAnalystTraceup3DParameters };
 export { FacilityAnalystTraceup3DService };
 export { FacilityAnalystUpstream3DParameters };
 export { FacilityAnalystUpstream3DService };
+export { FeatureAttachmentsService };
 export { FieldParameters };
 export { FieldStatisticService };
 export { FieldStatisticsParameters };

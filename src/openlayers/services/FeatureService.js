@@ -13,7 +13,7 @@ import GeoJSON from 'ol/format/GeoJSON';
  * @class FeatureService
  * @constructs FeatureService
  * @category  iServer Data Feature
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑等方法。
+ * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL查询，几何查询，缓冲区查询，地物编辑，要素附件查询、编辑等方法。
  * @modulecategory Services
  * @example
  *      new FeatureService(url).getFeaturesByIDs(param,function(result){
@@ -135,6 +135,30 @@ export class FeatureService extends ServiceBase {
    */
   getMetadata(params, callback) {
     return this._featureService.getMetadata(params, callback);
+  }
+
+  /**
+   * @function FeatureService.prototype.getFeatureAttachments
+   * @description 要素附件查询服务。
+   * @version 11.2.0
+   * @param {AttachmentsParameters} params - 要素附件服务中附件查询参数类。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
+   */
+  getFeatureAttachments(params, callback) {
+    return this._featureService.getFeatureAttachments(params, callback);
+  }
+
+  /**
+   * @function FeatureService.prototype.editFeatureAttachments
+   * @description 要素附件编辑服务。
+   * @version 11.2.0
+   * @param {EditAttachmentsParameters} params - 要素附件服务中附件添加、删除参数类。
+   * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
+   */
+  editFeatureAttachments(params, callback) {
+    return this._featureService.editFeatureAttachments(params, callback);
   }
 
   _processParams(params) {

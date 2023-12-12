@@ -300,7 +300,7 @@ export class CommonServiceBase {
             if (options.params) {
                 options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
-            if (typeof options.data === 'object') {
+            if (typeof options.data === 'object' && !(options.data instanceof FormData)) {
                 try {
                     options.params = Util.toJSON(options.data);
                 } catch (e) {

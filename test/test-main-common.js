@@ -17,6 +17,7 @@ import './common/iServer/ClipParameterSpec.js';
 import './common/iServer/ComputeWeightMatrixServiceSpec.js';
 import './common/iServer/DensityAnalystServiceSpec.js';
 import './common/iServer/EditFeaturesServiceSpec.js';
+import './common/iServer/FeatureAttachmentsServiceSpec.js';
 import './common/iServer/FacilityAnalystStreamParametersSpec.js';
 import './common/iServer/FacilityAnalystUpstream3DParametersSpec.js';
 import './common/iServer/FieldStatisticServiceSpec.js';

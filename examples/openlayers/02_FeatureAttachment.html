@@ -1,0 +1,286 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_editFeatureAttachments"></title>
+    <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 65px;
+            top: 8px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+            border-radius: 4px;
+        }
+
+        .attachmentFile {
+            width: 225px;
+        }
+
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            width: 250px;
+        }
+
+        .ol-popup:after,
+        .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        #popup-content {
+            min-height: 100px;
+            max-height: 200px;
+            overflow: auto;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+    <div class="panel panel-primary editPane" id="editPane">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center' data-i18n="resources.text_editSingle"></h5>
+        </div>
+        <div class='panel-body content file' style="padding-bottom: 0;">
+            <input type='file' id="attachmentFile" class='btn btn-default attachmentFile'
+                data-i18n="[value]resources.btn_addMarker" />&nbsp;
+        </div>
+        <div class='panel-body content'>
+            <input id="getAttachmentsInput" type='button' class='btn btn-default'
+                data-i18n="[value]resources.text_getAttachments" onclick='getAttachments()' />
+            <input id="resetFileInput" type='button' class='btn btn-default' data-i18n="[value]resources.btn_undoAdd"
+                onclick='resetFile()' />
+            <input id="commitInput" type='button' class='btn btn-default'
+                data-i18n="[value]resources.text_input_value_submit" onclick='commit()' />&nbsp;
+        </div>
+    </div>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        var map, featureId, vectorSource, resultLayer,
+            host = window.isLocal ? window.server : "https://iserver.supermap.io",
+            baseUrl = host + "/iserver/services/map-world/rest/maps/World",
+            url = host + "/iserver/services/data-world/rest/data",
+            fileDom = document.getElementById('attachmentFile'),
+            getAttachmentsInputDom = document.getElementById('getAttachmentsInput'),
+            resetFileInputDom = document.getElementById('resetFileInput'),
+            commitInputDom = document.getElementById('commitInput'),
+            file,
+            showPosition;
+        let container = document.getElementById('popup');
+        let content = document.getElementById('popup-content');
+        let closer = document.getElementById('popup-closer');
+        let overlay = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({ attributionOptions: { collapsed: false } })
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 3,
+                projection: 'EPSG:4326',
+                multiWorld: true
+            }),
+            overlays: [overlay]
+        });
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: baseUrl,
+                wrapX: true
+            }),
+            projection: 'EPSG:4326'
+        });
+        map.addLayer(layer);
+
+        function setDisabledAndTips(disabled, tooltip) {
+            fileDom.disabled = disabled;
+            getAttachmentsInputDom.disabled = disabled;
+            resetFileInputDom.disabled = disabled;
+            commitInputDom.disabled = disabled;
+
+            fileDom.setAttribute("title", tooltip);
+            getAttachmentsInputDom.setAttribute("title", tooltip);
+            resetFileInputDom.setAttribute("title", tooltip);
+            commitInputDom.setAttribute("title", tooltip);
+        }
+        function loadLayer() {
+            //添加查询结果图层
+            vectorSource = new ol.source.Vector({
+                wrapX: false
+            });
+            resultLayer = new ol.layer.Vector({
+                source: vectorSource,
+            });
+            map.addLayer(resultLayer);
+        }
+        function initFeature() {
+            setDisabledAndTips(true, resources.msg_noFeature);
+            var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
+                queryParameter: {
+                    name: "Countries@World",
+                    attributeFilter: "SMID > 0"
+                },
+                datasetNames: ["World:Countries"]
+            });
+            new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
+                    wrapX: false
+                });
+                resultLayer = new ol.layer.Vector({
+                    source: vectorSource
+                });
+                map.addLayer(resultLayer);
+                let select = new ol.interaction.Select({
+                    wrapX: false
+                })
+                map.addInteraction(select);
+                select.on('select', function (event) {
+                    if (event.selected && event.selected[0]) {
+                        featureId = event.selected[0].getProperties().SMID;
+                        setDisabledAndTips(false, '')
+                        var getCoordinates = event.selected[0].getGeometry().getCoordinates();
+                        showPosition = getCoordinates[0][0][0];
+                    } else {
+                        featureId = null;
+                        setDisabledAndTips(true, resources.msg_noFeature);
+                    }
+                })
+            });
+        }
+        initFeature();
+        loadLayer();
+        function getAttachments() {
+            new ol.supermap.DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
+                if (!serviceResult.result.supportAttachments) {
+                    return widgets.alert.showAlert(resources.msg_notSupportAttachments, false);
+                }
+                var params = new ol.supermap.AttachmentsParameters({
+                    dataSourceName: "World",
+                    dataSetName: "Countries",
+                    featureId: featureId,
+                });
+                new ol.supermap.FeatureService(url).getFeatureAttachments(params).then(res => {
+                    results = res.result;
+                    let innerHTML = '';
+                    if (results.length > 0) {
+                        results.forEach(function (result) {
+                            var link = `${url}/datasources/${params.dataSourceName}/datasets/${params.dataSetName}/features/${params.featureId}/attachments/${result.id}`;
+                            innerHTML += resources.text_attachmentFileName + ": " + "<a href=" + link + ">" + result.name + "</a>" + "<br>";
+                            innerHTML += resources.text_attachmentFileType + ": " + result.contentType + "<br>";
+                            innerHTML += resources.text_attachmentFileSize + ": " + result.size / 1024 + " KB";
+                            innerHTML += "<hr>";
+                        })
+                    }
+                    content.innerHTML = innerHTML || resources.text_noData;
+                    overlay.setPosition(showPosition);
+                })
+            })
+        }
+
+        function resetFile() {
+            fileDom.value = '';
+            file = null;
+        }
+        function commit() {
+            new ol.supermap.DatasetService(url).getDataset("World", "Countries", function (serviceResult) {
+                if (!serviceResult.result.supportAttachments) {
+                    return widgets.alert.showAlert(resources.msg_notSupportAttachments, false);
+                }
+                file = fileDom.files[0];
+                if (file) {
+                    var params = new ol.supermap.EditAttachmentsParameters({
+                        dataSourceName: "World",
+                        dataSetName: "Countries",
+                        featureId: featureId,
+                        file: file,
+                    });
+                    new ol.supermap.FeatureService(url).editFeatureAttachments(params).then(res => {
+                        if (res.result && res.result.succeed) {
+                            widgets.alert.showAlert(resources.msg_submitSuccess, true);
+                            resetFile();
+                            return;
+                        }
+                        return widgets.alert.showAlert(resources.msg_submitFailed, false);
+                    })
+                } else {
+                    return widgets.alert.showAlert(resources.msg_noAttachment, false);
+                }
+            })
+        }
+
+        //关闭弹窗
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+
+    </script>
+</body>
+
+</html>

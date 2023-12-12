@@ -126,6 +126,7 @@ import {
 } from './iPortal';
 import {
     AggregationParameter,
+    AttachmentsParameters,
     BucketAggParameter,
     MetricsAggParameter,
     AreaSolarRadiationParameters,
@@ -149,6 +150,7 @@ import {
     DatasetThiessenAnalystParameters,
     DatasourceConnectionInfo,
     DensityKernelAnalystParameters,
+    EditAttachmentsParameters,
     EditFeaturesParameters,
     FacilityAnalyst3DParameters,
     FacilityAnalystSinks3DParameters,
@@ -521,6 +523,7 @@ export {
 };
 export {
     AggregationParameter,
+    AttachmentsParameters,
     BucketAggParameter,
     MetricsAggParameter,
     AreaSolarRadiationParameters,
@@ -544,6 +547,7 @@ export {
     DatasetThiessenAnalystParameters,
     DatasourceConnectionInfo,
     DensityKernelAnalystParameters,
+    EditAttachmentsParameters,
     EditFeaturesParameters,
     FacilityAnalyst3DParameters,
     FacilityAnalystSinks3DParameters,

@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
 import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
 import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
@@ -13,7 +13,7 @@ import { FeatureService as CommonFeatureService } from '@supermap/iclient-common
 /**
  * @class FeatureService
  * @category  iServer Data Feature
- * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、几何查询、缓冲区查询、地物编辑等方法。
+ * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、几何查询、缓冲区查询、地物编辑，要素附件查询、编辑等方法。
  * @modulecategory Services
  * @example
  * new FeatureService(url)
@@ -83,8 +83,8 @@ export class FeatureService extends ServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
     }
 
     /**
@@ -96,8 +96,8 @@ export class FeatureService extends ServiceBase {
      * @returns {Promise} Promise 对象。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
-      params = this._processParams(params);
-      return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
     }
 
     /**
@@ -138,6 +138,29 @@ export class FeatureService extends ServiceBase {
         return this._featureService.getMetadata(params, callback);
     }
 
+    /**
+     * @function FeatureService.prototype.getFeatureAttachments
+     * @description 要素附件查询服务。
+     * @version 11.2.0
+     * @param {AttachmentsParameters} params - 要素附件服务中附件查询除参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeatureAttachments(params, callback) {
+        return this._featureService.getFeatureAttachments(params, callback);
+    }
+    
+    /**
+       * @function FeatureService.prototype.editFeatureAttachments
+       * @description 要素附件编辑服务。
+       * @version 11.2.0
+       * @param {EditAttachmentsParameters} params - 要素附件服务中附件添加、删除参数类。
+       * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+       * @returns {Promise} Promise 对象。
+       */
+    editFeatureAttachments(params, callback) {
+        return this._featureService.editFeatureAttachments(params, callback);
+    }
     /**
      * @private
      * @description 参数类型转换。
