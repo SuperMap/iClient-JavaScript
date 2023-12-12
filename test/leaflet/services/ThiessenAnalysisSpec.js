@@ -48,8 +48,16 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', () => {
 
     it('thiessenAnalysis', (done) => {
         var dsThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
-            dataset: "Factory@Changchun"
+            dataset: "Factory@Changchun",
+            clipRegion: polygon
         });
+        var polygon = L.polygon([
+          [-1000, 5000],
+          [-1000, 7000],
+          [-3000, 7000],
+          [-3000, 5000],
+          [-1000, 5000]
+        ]);
         var thiessenAnalystService = spatialAnalystService(spatialAnalystURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");

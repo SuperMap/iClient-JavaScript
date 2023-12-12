@@ -12,6 +12,7 @@ import {
 } from '../../../src/common/util/FetchRequest';
 
 import Point from 'ol/geom/Point';
+import Polygon from 'ol/geom/Polygon';
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -28,8 +29,18 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', () => {
     //数据集泰森多边形
     it('thiessenAnalysis_datasets', (done) => {
         var dThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
-            dataset: "Factory@Changchun"
+            dataset: "Factory@Changchun",
+            clipRegion: polygon
         });
+        var polygon = new Polygon([
+          [
+            [5000, -1000],
+            [7000, -1000],
+            [7000, -3000],
+            [5000, -3000],
+            [5000, -1000]
+          ]
+        ])
         var spatialAnalystService = new SpatialAnalystService(changchunServiceUrl);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");

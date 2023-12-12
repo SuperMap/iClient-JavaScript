@@ -332,6 +332,9 @@ export class SpatialAnalystService extends ServiceBase {
         if (params.clipParam && params.clipParam.clipRegion) {
             params.clipParam.clipRegion = Util.toSuperMapGeometry(params.clipParam.clipRegion);
         }
+        if (params.clipRegion) {
+            params.clipRegion = Util.toSuperMapGeometry(params.clipRegion);
+        }
         //sourceRoute 路由对象。用于里程分析，该对象可以是用户自己生 成或在数据源中查询得到的符合标准的路由对象；geojson格式
         if (params.sourceRoute) {
             if (params.sourceRoute) {
