@@ -377,6 +377,9 @@ export var SpatialAnalystService = ServiceBase.extend({
         if (params.clipParam && params.clipParam.clipRegion) {
             params.clipParam.clipRegion = Util.toSuperMapGeometry(params.clipParam.clipRegion);
         }
+        if (params.clipRegion) {
+            params.clipRegion = Util.toSuperMapGeometry(params.clipRegion);
+        }
         //支持格式：Vector Layers; GeoJson
         if (params.sourceGeometry) {
             var SRID = null;
