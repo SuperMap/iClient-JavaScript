@@ -9,7 +9,7 @@
   * @class ChartSetting
   * @deprecatedclass SuperMap.ChartSetting
   * @category iServer Map Chart
-  * @classdesc 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
+  * @classdesc 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。更多内容介绍请参考[海图显示]{@link https://help.supermap.com/iDesktop/zh/tutorial/Chart/Visualization/ChartDisplaySetting}。
   * @version 11.2.0
   * @param {Object} options - 参数。
   * @param {DisplayModeChart} [options.displayModeChart=DisplayModeChart.STANDARD] - 海图显示模式。
