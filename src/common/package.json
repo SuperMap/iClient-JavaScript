@@ -25,6 +25,7 @@
     "mapv": "2.0.62",
     "flatgeobuf": "3.23.1",
     "rbush": "^2.0.2",
+    "urijs": "^1.19.11",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   }
 }

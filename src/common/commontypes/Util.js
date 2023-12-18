@@ -3,6 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { StringExt } from './BaseTypes';
 import { Geometry } from './Geometry';
+import URI from 'urijs';
 
 /**
  * @description 浏览器名称，依赖于 userAgent 属性，BROWSER_NAME 可以是空，或者以下浏览器：<br>
@@ -129,28 +130,28 @@ const DOTS_PER_INCH = 96;
 const Util = {
 
   /**
-     * @memberOf CommonUtil
-     * @description 对象拷贝赋值。
-     * @param {Object} dest - 目标对象。
-     * @param {Object} arguments - 待拷贝的对象。
-     * @returns {Object} 赋值后的目标对象。
-     */
+   * @memberOf CommonUtil
+   * @description 对象拷贝赋值。
+   * @param {Object} dest - 目标对象。
+   * @param {Object} arguments - 待拷贝的对象。
+   * @returns {Object} 赋值后的目标对象。
+   */
   assign(dest) {
     for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
-        var arg = Object.getOwnPropertyNames(arguments)[index];
+      var arg = Object.getOwnPropertyNames(arguments)[index];
         if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
-            continue;
-        }
-        var obj = arguments[arg];
-        if (obj) {
-            for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
-                var key = Object.getOwnPropertyNames(obj)[j];
+        continue;
+      }
+      var obj = arguments[arg];
+      if (obj) {
+        for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+          var key = Object.getOwnPropertyNames(obj)[j];
                 if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
-                    continue;
-                }
-                dest[key] = obj[key];
-            }
+            continue;
+          }
+          dest[key] = obj[key];
         }
+      }
     }
     return dest;
   },
@@ -667,51 +668,20 @@ const Util = {
     if (!url) {
       return true;
     }
-    var index = url.indexOf('//');
-    var documentUrl = document.location.toString();
-    var documentIndex = documentUrl.indexOf('//');
+    const index = url.indexOf('//');
     if (index === -1) {
       return true;
-    } else {
-      var protocol;
-      var substring = (protocol = url.substring(0, index));
-      var documentSubString = documentUrl.substring(documentIndex + 2);
-      documentIndex = documentSubString.indexOf('/');
-      var documentPortIndex = documentSubString.indexOf(':');
-      var documentDomainWithPort = documentSubString.substring(0, documentIndex);
-      //var documentPort;
-
-      var documentprotocol = document.location.protocol;
-      if (documentPortIndex !== -1) {
-        // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
-      } else {
-        documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
-      }
-      if (documentprotocol.toLowerCase() !== substring.toLowerCase()) {
-        return false;
-      }
-      substring = url.substring(index + 2);
-      var portIndex = substring.indexOf(':');
-      index = substring.indexOf('/');
-      var domainWithPort = substring.substring(0, index);
-      var domain;
-      if (portIndex !== -1) {
-        domain = substring.substring(0, portIndex);
-      } else {
-        domain = substring.substring(0, index);
-        domainWithPort += ':' + (protocol.toLowerCase() === 'http:' ? 80 : 443);
-      }
-      var documentDomain = document.domain;
-      if (domain === documentDomain && domainWithPort === documentDomainWithPort) {
-        return true;
-      }
     }
-    return false;
+    return Util.isSameDomain(url, document.location.toString());
+  },
+
+  isSameDomain(url, otherUrl) {
+    return new URI(url).normalize().origin() === new URI(otherUrl).normalize().origin();
   },
 
   /**
    * @memberOf CommonUtil
-   * @description 计算 SuperMap iServer 服务的 REST 图层的显示分辨率，需要从 SuperMap iServer 的 REST 图层表述中获取 viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
+   * @description 计算 iServer 服务的 REST 图层的显示分辨率，需要从 iServer 的 REST 图层表述中获取 viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
    * @param {Bounds} viewBounds - 地图的参照可视范围，即地图初始化时默认的地图显示范围。
    * @param {Size} viewer - 地图初始化时默认的地图图片的尺寸。
    * @param {number} scale - 地图初始化时默认的显示比例尺。
@@ -720,7 +690,7 @@ const Util = {
    * @returns {number} 图层显示分辨率。
    */
   calculateDpi: function (viewBounds, viewer, scale, coordUnit, datumAxis) {
-    //10000 是 0.1 毫米与米的转换。DPI 的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
+    //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
     if (!viewBounds || !viewer || !scale) {
       return;
     }
@@ -1098,10 +1068,10 @@ const Util = {
   },
   /**
    * @memberOf CommonUtil
-   * @description 获取转换后的 path 路径。
-   * @param {string} path - 待转换的 path，包含`{param}`。
-   * @param {Object} pathParams - path 中待替换的参数。
-   * @returns {string} 转换后的 path 路径。
+   * @description 获取转换后的path路径。
+   * @param {string} path - 待转换的path，包含`{param}`。
+   * @param {Object} pathParams - path中待替换的参数。
+   * @returns {string} 转换后的path路径。
    */
   convertPath: function (path, pathParams) {
     if (!pathParams) {
