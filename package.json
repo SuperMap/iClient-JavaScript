@@ -160,6 +160,7 @@
     "promise-polyfill": "8.2.3",
     "rbush": "^2.0.2",
     "three": "0.150.1",
+    "urijs": "^1.19.11",
     "util": "^0.12.4",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
