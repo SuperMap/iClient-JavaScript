@@ -53,12 +53,20 @@ export class InitMapServiceBase {
    * @returns {Promise}
    */
   getMapInfo(callback) {
-    return new Promise((resolve, reject) => {
-      const mapService = this.createMapService();
-      mapService.getMapInfo((res) => {
-        callback(res, resolve, reject);
+    const mapService = this.createMapService();
+    if(callback){
+      return new Promise((resolve, reject) => {
+        mapService.getMapInfo((res) => {
+          callback(res, resolve, reject);
+        });
       });
-    });
+    }
+    return mapService.getMapInfo();
+    
+  }
+
+  getTilesets() {
+    return this.createMapService().getTilesets();
   }
 
   /**

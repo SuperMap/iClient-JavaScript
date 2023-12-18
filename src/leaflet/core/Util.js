@@ -6,7 +6,8 @@
  import {
   getMeterPerMapUnit as MeterPerMapUnit,
   getZoomByResolution,
-  scalesToResolutions
+  scalesToResolutions,
+  getDpi
 } from '@supermap/iclient-common/util/MapCalculateUtil';
 
  /**
@@ -230,5 +231,6 @@ export var getResolutionFromScaleDpi = function(scale, dpi, coordUnit, datumAxis
 };
 export {
   getZoomByResolution,
-  scalesToResolutions
+  scalesToResolutions,
+  getDpi
 }

@@ -137,11 +137,25 @@ export function conversionDegree(degrees) {
   * const result = scalesToResolutions(scales, bounds, dpi, mapUnit);
   * ```
  */
- export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22) {
+ export function scalesToResolutions(scales, bounds, dpi, mapUnit, level = 22, baseScale) {
   var resolutions = [];
   if (scales && scales.length > 0) {
     for (let i = 0; i < scales.length; i++) {
       resolutions.push(scaleToResolution(scales[i], dpi, mapUnit));
+    }
+  } else if (baseScale){
+    const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
+    const baseRes = scaleToResolution(baseScale, dpi, mapUnit);
+    let topRes = baseRes;
+    for (let i = 0; i < level; i++) {
+      const temp = baseRes * Math.pow(2, i);
+      if(Math.abs(temp,maxReolution)<= 1E-6 || temp>maxReolution){
+        topRes = temp;
+        break;
+      }
+    }
+    for (let i = 0; i < level; i++) {
+      resolutions.push(topRes / Math.pow(2, i));
     }
   } else {
     const maxReolution = Math.abs(bounds.left - bounds.right) / 256;
@@ -218,6 +232,13 @@ export function scaleToResolution(scale, dpi, mapUnit) {
   const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
   const resolution = 1 / (scale * dpi * inchPerMeter * meterPerMapUnitValue);
   return resolution;
+}
+
+export function getDpi(scale, resolution, mapUnit) {
+  const inchPerMeter = 1 / 0.0254;
+  const meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+  const dpi = 1.0/resolution/(scale * inchPerMeter * meterPerMapUnitValue);
+  return dpi;
 }
 
 /**
