@@ -6,8 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
-    <script type="text/javascript" include="draw" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script src="https://unpkg.com/mapbox-gl-draw-snap-mode"></script>
+    <script type="text/javascript" include="leaflet-geoman" src="../../dist/leaflet/include-leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -22,6 +21,7 @@
         top: 30px;
         right: 20px;
         width: 300px;
+        z-index: 999;
       }
       .btn-primary {
         padding: 4px 6px !important;
@@ -145,17 +145,29 @@
         padding: 3px 10px;
         display: none;
       }
+      .delete-feature {
+        display: none;
+      }
       .img-element {
         margin-top: 10px;
         width: 90%;
       }
 
-      dialog {
-        width: 100%;
-        max-width: 720px;
+      .delete-modal {
+        position: absolute;
+        top: -80px;
+        right: 0px;
+        width: 260px;
+        background: #fff;
         display: none;
+        padding: 5px 3px;
+        box-shadow: 0px 0px 5px 0 rgba(0,0,0,0.3);
       }
-      
+
+      .leaflet-popup-content{
+        font-size: 14px;
+      }
+
       .palyIcon{
         position: absolute;
         transform: translate(-50%, -50%);
@@ -177,10 +189,18 @@
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="map" style="width: 100%; height: 100%"></div>
     <div class="video-modal">
-      <button class="video-modal-close">Close</button>
-      <video controls width="720">
+      <video controls width="960">
         <source src="https://www.runoob.com/try/demo_source/mov_bbb.mp4" type="video/mp4">
       </video>
+    </div>
+    <div id="popup">
+      <p>按Tab键开始输入坐标值，回车键确定</p>
+      <div id="popup-content">
+        <h5>X</h5>
+        <input class="input-element coordX" type="number" tabindex="1">
+        <h5>Y</h5>
+        <input class="input-element coordY" type="number" tabindex="2">
+      </div>
     </div>
     <div class="edit-panel">
       <div class="button-group">
@@ -226,7 +246,7 @@
           <div class="add-attribute-info">
           </div>
           <div class="info-bottom">
-            <button class="btn btn-default btn-group-xs cancel">取消</button>
+            <button class="btn btn-default btn-group-xs cancel-add">取消</button>
             <button class="btn btn-primary btn-group-xs addSave">保存</button>
           </div>
         </div>
@@ -240,7 +260,7 @@
           <div class="edit-attribute-info">
           </div>
           <div class="info-bottom">
-            <button class="btn btn-default btn-group-xs cancel">取消</button>
+            <button class="btn btn-default btn-group-xs cancel-edit">取消</button>
             <button disabled class="btn btn-primary btn-group-xs editSave">保存</button>
           </div>
         </div>
@@ -254,7 +274,14 @@
             </div>
           </div>
           <div class="info-bottom">
-            <button class="btn btn-default btn-group-xs cancel">取消</button>
+            <button class="btn btn-default btn-group-xs cancel-delete">取消</button>
+            <div class="delete-modal">
+              <p>删除后要素将无法恢复，是否确认删除？</p>
+              <div style="float: right;">
+                <button class="final-cancel-delete btn btn-default btn-group-xs">取消</button>
+                <button class="final-delete btn btn-danger btn-group-xs">删除</button>
+              </div>
+            </div>
             <button class="btn btn-danger btn-group-xs delete">删除</button>
           </div>
         </div>
@@ -264,34 +291,46 @@
     </div>
     <script type="text/javascript" include="jquery,bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript">
-      console.log('window', window);
       var status = 'ADD';
       var type = '';
       var uniqueId = 0;
       var currentDataset = 'buildings_R';
       var map,
         draw,
-        // url = (window.isLocal ? window.server : "https://iserver.supermap.io") + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
-        url = "http://172.16.14.44:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}";
-        var isUpdate = false;
+        // url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326";
+        url = "http://172.16.14.44:8090/iserver/services/map-china400/rest/maps/China_4326";
+      var isUpdate = false;
       var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-Buildings/rest/data';
       var dataSourceName = 'NewBuildings';
-      var editFeaturesService = new maplibregl.supermap.FeatureService(dataUrl);
+      var editFeaturesService = new L.supermap.FeatureService(dataUrl);
       var currentShowPanel = '';
       var datasetNameList = [];
       var datasetTypeClassify = {
-        Fill: [],
+        Polygon: [],
         Line: [],
         Point: []
       }
       var deleteList = {};
+      var deleteLayerList = [];
+      var deleteFeatureList = [];
+      var select = '';
       var currentFeature = {};
+      var snap;
+      var currentSource = null;
       var updateChanged = false;
+      var translate = null;
+      var modify = null;
+      var source = null;
+      var vecLayer = null;
+      var currentAddFeature = null;
+      var curEditOriginLayers = [];
+      var curEditOriginFeatures = [];
+      var currentEditingLayer = null;
       const typeMap = {
-                REGION: 'Fill',
-                LINE: 'Line',
-                POINT: 'Point'
-              };
+        REGION: 'Polygon',
+        LINE: 'Line',
+        POINT: 'Point'
+      };
       var domainRules = {
         
       };
@@ -300,105 +339,22 @@
       }
       const container = document.getElementById('popup');
       const content = document.getElementById('popup-content');
+      getDomains(currentDataset);
 
-      map = new maplibregl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "type": "raster",
-                    "tiles": [url],
-                    "tileSize": 256
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-            }]
-        },
-        center: [116.435, 39.92],
+      map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [39.92, 116.435],
         zoom: 16,
-    });
+      });
+      var overlayPopup = L.popup().setContent(container);
+
       bindEvents();
       init(dataUrl, dataSourceName);
 
-      function addVectorLayer(type, features, datasetName) {
-        const styleMap = {
-          Polygon: {
-            type: 'fill',
-            paint: {
-              'fill-opacity': 0.8,
-      'fill-color': '#3fb1e3',
-      'fill-translate': [0, 0],
-      'fill-antialias': true,
-      'fill-outline-color': '#3fb1e3',
-      'fill-translate-anchor': 'map'
-            }
-          },
-          MultiPolygon: {
-            type: 'fill',
-            paint: {
-              'fill-opacity': 0.8,
-      'fill-color': '#3fb1e3',
-      'fill-translate': [0, 0],
-      'fill-antialias': true,
-      'fill-outline-color': '#3fb1e3',
-      'fill-translate-anchor': 'map'
-            }
-          },
-          MultiLineString: {
-            type: 'line',
-            paint: {
-              'line-opacity': 1,
-      'line-color': '#3fb1e3',
-      'line-width': 3,
-      'line-blur': 1
-            }
-          },
-          LineString: {
-            type: 'line',
-            paint: {
-              'line-opacity': 1,
-      'line-color': '#3fb1e3',
-      'line-width': 3,
-      'line-blur': 1
-            }
-          },
-        Point: {
-          type: 'circle',
-          paint: {
-            'circle-radius': 6,
-            'circle-color': '#3fb1e3',
-            'circle-opacity': 1,
-            'circle-blur': 0,
-            'circle-translate': [0, 0],
-            'circle-translate-anchor': 'map',
-            'circle-pitch-scale': 'map',
-            'circle-pitch-alignment': 'viewport',
-            'circle-stroke-width': 0,
-            'circle-stroke-color': '#000',
-            'circle-stroke-opacity': 1
-          }
-        }
-        };
-        console.log('type', type);
-        // map.addLayer({
-        //     id: datasetName,
-        //     type: styleMap[type].type,
-        //     paint: styleMap[type].paint,
-        //     source: {
-        //       type: 'geojson',
-        //       data: features
-        //     }
-        //   });
-          features.features = features.features.map((feature) => {
-            feature.id = `${datasetName}_${feature.id}`;
-            return feature;
-          });
-          draw.add(features);
-         console.log(' draw.getall',  draw.getAll());
+      new L.supermap.TiledMapLayer(url).addTo(map);
+
+      function addVectorLayer(features) {
+        L.geoJSON(features).addTo(map);
       }
       var fieldList = [];
       var filterFields = {
@@ -415,27 +371,40 @@
                   console.log('domain', res);
                   domainRules = {};
                   res && Array.isArray(res) && res.forEach((domain) => {
-                    domainRules[domain.name] = domain;
+                    let key = domain.fieldName.toUpperCase();
+                    domainRules[key] = domain;
                   });
                 });
       }
 
       function checkInput(e) {
-        console.log('e add-attribute-info', e);
         if (!updateChanged && status === 'EDIT') {
           updateChanged = true;
           document.querySelector('.editSave').disabled = false;
         }
         var rule = domainRules[e.target.label];
         if (rule && rule.type === 'RANGE') {
-          let value = e.target.value;
+          let value = +e.target.value;
           if (value < rule.rangeInfos[0].min || value > rule.rangeInfos[0].max) {
-            // 提升错误
+            e.target.style.borderColor = 'red';
+            var parent = e.target.parentNode;
+            // 
+            let error = document.createElement('span');
+            error.style.color = 'red';
+            error.className = 'error-tips';
+            error.innerText = `输入值超出值域范围：[${rule.rangeInfos[0].min}, ${rule.rangeInfos[0].max})`;
+            parent.insertBefore(error, e.target.nextSibling);
+            document.querySelector('.editSave').disabled = true;
             // 保存按钮 disabled
+          } else {
+            let error = document.querySelector('.error-tips');
+            error && error.parentNode.removeChild(error);
+            e.target.style.borderColor = '#000';
+            document.querySelector('.editSave').disabled = false;
           }
-         }
+        }
 
-         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.png') && !e.target.value.includes('.mp4')) {
+         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.img') && !e.target.value.includes('.mp4')) {
             deleteVideoAndImg(e)
          }
 
@@ -450,6 +419,19 @@
             parent.insertBefore(video,e.target.nextSibling);
             parent.insertBefore(videoPlayIcon,video);
             previewVideo(video);
+            const modal = document.querySelector('.video-modal');
+            const video1 = document.querySelector('.video-modal video');
+            
+            video.addEventListener('click', function onOpen() {
+              modal.style.display = 'flex';
+              video1.src = video.src;
+              video1.play();
+            });
+            
+            modal.addEventListener('click', function onClose() {
+              modal.style.display = 'none';
+              video1.pause();
+            });
           } else if (e.target.value.includes('.png')) {
             deleteVideoAndImg(e);
             const img = document.createElement('img');
@@ -472,31 +454,8 @@
         }
       }
 
-      getDomains(currentDataset);
-
       function init(dataUrl, datasourceName) {
-        draw = new MapboxDraw({
-          modes: {
-            ...MapboxDraw.modes,
-            draw_point: mapboxGlDrawSnapMode.SnapPointMode,
-            draw_polygon: mapboxGlDrawSnapMode.SnapPolygonMode,
-            draw_line_string: mapboxGlDrawSnapMode.SnapLineMode,
-            direct_select: mapboxGlDrawSnapMode.SnapDirectSelect,
-          },
-          styles: mapboxGlDrawSnapMode.SnapModeDrawStyles,
-          userProperties: true,
-          snap: true,
-          displayControlsDefault: false,
-          snapOptions: {
-            snapPx: 15, // defaults to 15
-            snapToMidPoints: true, // defaults to false
-            snapVertexPriorityDistance: 0.0025, // defaults to 1.25
-          },
-          guides: false,
-          defaultMode: 'simple_select'
-        });
-        map.addControl(draw, 'top-left');
-        let datasetService = new maplibregl.supermap.DatasetService(dataUrl)
+        let datasetService = new L.supermap.DatasetService(dataUrl)
         datasetService.getDatasets(datasourceName, function(e) {
           datasetNameList = e.result.datasetNames;
           currentFeature.dataset = datasetNameList[0];
@@ -528,21 +487,27 @@
           const option = document.createElement('option');
           option.value = item;
           option.innerText = item;
+          getField(item);
           if (item === selectDataset) {
             option.selected = true;
-            getField(item, selectType);
+            setTimeout(() => {
+              renderAttribute(item);
+            }, 1000);
           }
           selectElement.appendChild(option);
         });
       }
 
-      function getField(datasetName, type) {
-        new maplibregl.supermap.FieldService(dataUrl).getFields(
-          new maplibregl.supermap.FieldParameters({
+      function getField(datasetName) {
+        new L.supermap.FieldService(dataUrl).getFields(
+          new L.supermap.FieldParameters({
             datasource: dataSourceName,
             dataset: datasetName
           }),
           function (result) {
+            if (!result.result) {
+              return;
+            }
             fieldList = result.result.fieldNames;
             fieldList.forEach((fieldName) => {
               fetch(
@@ -555,9 +520,6 @@
                   filterFields[datasetName][res.fieldInfo.name.toUpperCase()] = res.fieldInfo.isSystemField;
                 });
             });
-            setTimeout(() => {
-              renderAttribute(datasetName);
-            }, 1000);
           }
         );
       }
@@ -565,6 +527,7 @@
       function renderAttribute(datasetName, status = 'add') {
         const attributeElement = document.querySelector(`.${status}-attribute-info`);
         attributeElement.innerHTML = '';
+        console.log('filterFields', filterFields);
         Object.keys(filterFields[datasetName]).forEach((key) => {
           if (!filterFields[datasetName][key]) {
             const item = document.createElement('div');
@@ -573,14 +536,12 @@
             const title = document.createElement('h6');
             title.innerText = key;
             item.appendChild(title);
-            if (domainRules[key]) {
-              if (domainRules[key].type === 'CODE') {
+            if (domainRules[key] && domainRules[key].type === 'CODE') {
                 var selectValues = domainRules[key].codeInfos.map((item) => {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
                 item.appendChild(select);
-              }
               return;
             }
             
@@ -594,12 +555,13 @@
         });
       }
 
-      function createSelect(list) {
+      function createSelect(list, selected) {
         const select = document.createElement('select');
         select.className = 'select-element';
         list.forEach((item) => {
           const option = document.createElement('option');
           option.value = item;
+          option.selected = item === selected;
           option.innerText = item;
           select.appendChild(option);
         });
@@ -609,8 +571,9 @@
       function renderEditAttribute(status = 'edit', properties) {
         const attributeElement = document.querySelector(`.${status}-attribute-info`);
         attributeElement.innerHTML = '';
+        document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
         Object.keys(properties).forEach((key) => {
-          if (key === 'datasetName') {
+          if (key === 'dataset') {
             return;
           }
           const item = document.createElement('div');
@@ -619,19 +582,21 @@
           const title = document.createElement('h6');
           title.innerText = key;
           item.appendChild(title);
+          // 处理值域！
           if (domainRules[key] && domainRules[key].type === 'CODE') {
                 var selectValues = domainRules[key].codeInfos.map((item) => {
                   return item.value;
                 });
-                var select = createSelect(selectValues);
+                var select = createSelect(selectValues, properties[key]);
                 item.appendChild(select);
               return;
             }
           const inputEle = document.createElement('input');
           inputEle.className = 'input-element';
-          inputEle.disabled = filterFields[currentFeature.dataset][key];
           inputEle.value = properties[key];
           inputEle.label = key;
+          // 系统字段
+          inputEle.disabled = filterFields[currentFeature.dataset][key];
           item.appendChild(inputEle);
           if (properties[key].includes('.mp4')) {
             const videoPlayIcon = document.createElement('div');
@@ -668,7 +633,6 @@
         });
       }
 
-
       function bindEvents() {
         document.querySelector('.addDatasetNameList').addEventListener('change', function(e) {
           let value = e.target.value;
@@ -687,9 +651,59 @@
         });
 
         document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
-        document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
+        document.querySelector('.edit-attribute-info').addEventListener('change', checkInput);
+        content.addEventListener('change', function(e) {
+          let x;
+          let y;
+          if (e.target.className.includes('coordX')) {
+            x = e.target.value;
+            y = document.querySelector('.coordY').value;
+          } else if (e.target.className.includes('coordY')) {
+            y = e.target.value;
+            x = document.querySelector('.coordX').value;
+          }
+          overlayPopup.setLatLng([x, y]);
+        });
 
-        map.on('pointermove', function (evt) {
+        document.querySelector('.cancel-add').addEventListener('click', function() {
+          map.closePopup();
+          if (currentAddFeature) {
+            map.pm.disableDraw();
+            currentAddFeature.pm.remove();
+            currentFeature.data = null;
+            if (currentShowPanel) {
+              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            }
+          }
+        });
+
+        document.querySelector('.cancel-edit').addEventListener('click', function() {
+          map.pm.disableGlobalEditMode();
+          if (curEditOriginFeatures.length) {
+            curEditOriginLayers.forEach(layer => {
+              layer.pm.remove();
+            })
+            curEditOriginFeatures.forEach(fea => {
+              L.geoJSON(fea).addTo(map);
+            })
+            curEditOriginLayers = [];
+            curEditOriginFeatures = [];
+            if (currentShowPanel) {
+              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            }
+          }
+        });
+
+        document.querySelector('.cancel-delete').addEventListener('click', function() {
+          let deleteEle = document.querySelector('.delete-feature-list');
+          deleteEle.innerHTML = '';
+          deleteList = {};
+          if (currentShowPanel) {
+            document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+          }
+        });
+        document.querySelector('.final-cancel-delete').addEventListener('click', function() {
+          document.querySelector('.delete-modal').style.display = 'none';
         });
       }
 
@@ -697,16 +711,20 @@
         if (currentShowPanel) {
           document.querySelector(`.${currentShowPanel}`).style.display = 'none';
         }
-        let { type, source } = datasetInfoList[currentDataset];
+        map.pm.disableGlobalEditMode();
+        currentEditingLayer = null;
         if (className.includes('plus')) {
+          curEditOriginLayers = [];
+          curEditOriginFeatures = [];
+          let { type } = datasetInfoList[currentDataset];
           document.querySelector('.edit-tips').style.display = 'none';
-          startDraw(type, source);
+          startDraw(type);
           document.querySelector('.add-feature-info').style.display = 'block';
           currentShowPanel = 'add-feature-info';
           status = 'ADD';
         } else if (className.includes('edit')) {
-          // changeMode();
-          draw.changeMode('simple_select');
+          getDomains(currentDataset);
+          endDraw();
           if (fromAdd) {
             fillContent();
             document.querySelector('.edit-feature-info').style.display = 'block';
@@ -715,14 +733,16 @@
           }
           currentShowPanel = 'edit-feature-info';
           status = 'EDIT';
-          startSelect(source);
+          startSelect();
         } else if (className.includes('trash')) {
+          curEditOriginLayers = [];
+          curEditOriginFeatures = [];
           document.querySelector('.edit-tips').style.display = 'none';
           endDraw();
           document.querySelector('.delete-feature-info').style.display = 'block';
           currentShowPanel = 'delete-feature-info';
           status = 'DELETE';
-          startSelect(source);
+          startSelect();
         }
       }
 
@@ -737,40 +757,39 @@
       let saveBtn = document.querySelector('.addSave');
       let editBtn = document.querySelector('.editSave');
       saveBtn.addEventListener('click', function () {
-        save();
+        save('add');
       });
       editBtn.addEventListener('click', function () {
-        save();
+        save('edit');
       });
       let deleteBtn = document.querySelector('.delete');
+      let finalDeleteBtn = document.querySelector('.final-delete');
+      let deleteModal = document.querySelector('.delete-modal');
       deleteBtn.addEventListener('click', function () {
-        deleteFeature();
+        deleteModal.style.display = 'block'
       });
-      function save() {
+      finalDeleteBtn.addEventListener('click', function () {
+        deleteFeature();
+        document.querySelector('.delete-modal').style.display = 'none';
+      });
+
+      function save(type) {
         var properties = {};
-        const attributeElement = document.querySelector('.add-attribute-info');
-        console.log(' attributeElement.children',  attributeElement.children);
+        const attributeElement = document.querySelector(`.${type}-attribute-info`);
         var listArr = [...attributeElement.children];
         listArr.forEach((item, index) => {
           var itemArr = [...item.children];
           properties[itemArr[0].textContent] = itemArr[1].value;
         });
         currentFeature.data.properties = properties;
-        // var olFeature = new ol.format.GeoJSON().readFeature(currentFeature.data);
-        // if (!olFeature.getId()) {
-        //   uniqueId++;
-        //   olFeature.setId(uniqueId);
-        //   isUpdate = false;
-        // } else {
-        //   isUpdate = true;
-        // }
-        // var features = sourceMap[type].getFeatures();
-        // let index = features.indexOf(currentFeature.origin);
-        // features[index] = olFeature;
-        // currentFeature.origin = olFeature;
-        // sourceMap[type].clear();
-        // sourceMap[type].addFeatures(features);
-        commit(type, isUpdate);
+        if (!currentFeature.data.id) {
+          datasetInfoList[currentDataset].id++;
+          currentFeature.data.id = datasetInfoList[currentDataset].id;
+          isUpdate = false;
+        } else {
+          isUpdate = true;
+        }
+        commit(isUpdate);
         // 切换到编辑
         switchPanel('edit', true);
       }
@@ -778,11 +797,10 @@
 
       function initFeature() {
         // 按照面 线 点的顺序渲染
-        var featureService = new maplibregl.supermap.FeatureService(dataUrl);
-        let datasetOrder = [].concat(datasetTypeClassify['Fill'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
-        // let datasetOrder = [].concat(datasetTypeClassify['Point'])
+        var featureService = new L.supermap.FeatureService(dataUrl);
+        let datasetOrder = [].concat(datasetTypeClassify['Polygon'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
         datasetOrder.forEach(async (datasetName) => {
-          var getFeatureParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
+          var getFeatureParams = new L.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
               name: `${datasetName}@${dataSourceName}`,
               attributeFilter: 'SMID < 1000'
@@ -798,28 +816,30 @@
               feature.properties.datasetName = datasetName;
             });
             console.log('geojsonFeatures', geojsonFeatures, serviceResult, getFeatureParams);
-              // var features = new ol.format.GeoJSON().readFeatures(geojsonFeatures);
-              geojsonFeatures.features.forEach((feature) => {
-                if (feature.id > datasetInfoList[datasetName].id) {
-                  datasetInfoList[datasetName].id = feature.id;
-                }
-              });
-              // features.forEach((feature) => {
-              //   if (feature.getId() > uniqueId) {
-              //     uniqueId = feature.getId();
-              //   }
-              // });
-              if (geojsonFeatures.features[0]) {
-               addVectorLayer(geojsonFeatures.features[0].geometry.type, geojsonFeatures, datasetName);
+            geojsonFeatures.features.forEach((feature) => {
+              if (feature.id > datasetInfoList[datasetName].id) {
+                datasetInfoList[datasetName].id = feature.id;
               }
-              return;
             });
+            if (geojsonFeatures.features[0]) {
+              addVectorLayer(geojsonFeatures);
+            }
+            return;
+          });
         });
+        
       }
 
-      function commit(type, isUpdate) {
+      function commit(isUpdate) {
         if (currentFeature.data) {
-          var addFeatureParams = new maplibregl.supermap.EditFeaturesParameters({
+          if(currentAddFeature) {
+            currentAddFeature.pm.remove();
+            var geojsonFeatures = Object.assign({}, currentFeature.data);
+            geojsonFeatures.properties.datasetName = currentDataset;
+            L.geoJSON(geojsonFeatures).addTo(map);
+          }
+
+          var addFeatureParams = new L.supermap.EditFeaturesParameters({
             features: currentFeature.data,
             dataSourceName: dataSourceName,
             dataSetName: currentDataset,
@@ -829,14 +849,18 @@
           editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
               widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
+              currentAddFeature = null;
             }
           });
         }
       }
 
       function deleteFeature() {
+        deleteLayerList.forEach(layer => {
+          layer.pm.remove();
+        })
         Object.keys(deleteList).forEach((dataset) => {
-          var addFeatureParams = new maplibregl.supermap.EditFeaturesParameters({
+          var addFeatureParams = new L.supermap.EditFeaturesParameters({
             dataSourceName,
             dataSetName: dataset,
             IDs: deleteList[dataset],
@@ -845,80 +869,129 @@
           editFeaturesService.editFeatures(addFeatureParams).then(function (serviceResult) {
             if (serviceResult.result.succeed) {
               widgets.alert.showAlert(resources.text_deleteSuccess, true);
+              deleteList = {};
+              deleteLayerList = [];
+              let deleteEle = document.querySelector('.delete-feature-list');
+              deleteEle.innerHTML = '';
             }
           });
         });
       }
-      function startSelect(source) {
-        clearInteraction();
-        map.on('draw.update', function (e) {
-        console.log('update', e.features);
-          let feature = e.features[0];
-         if (status === 'EDIT') {
-            document.querySelector('.edit-tips').style.display = 'none';
-            currentFeature.dataset = props.properties.datasetName;
-            currentFeature.data = feature;
-            document.querySelector('.edit-feature-info').style.display = 'block';
-            document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
-            renderEditAttribute('edit', currentFeature.data.properties);
+      function startSelect() {
+        const allAvailableLayers = L.PM.Utils.findLayers(map);
+        map.on('click', function(e) {
+          if (currentEditingLayer) {
+            map.pm.disableGlobalEditMode();
+            currentEditingLayer = null;
           }
         });
-        map.on('draw.selectionchange', function (e) {
-        console.log('update', e.features);
-          let feature = e.features[0];
-          if (status == 'DELETE') {
-            if (feature) {
-            if (!deleteList[feature.properties.datasetName]) {
-              deleteList[feature.properties.datasetName] = []
+        allAvailableLayers.forEach(layer => {
+          layer.on('pm:edit', function (e) {
+            // currentAddFeature = e.layer;
+            console.log('change--e', e);
+            console.log('change', e.target.feature);
+            // currentAddFeature.pm.remove();
+          })
+          layer.off('click');
+          layer.on('click', function(e) {
+            map.pm.disableGlobalEditMode();
+            console.log('e.target.feature', e.target.feature);
+            console.log('layer.toGeoJSON()', layer.toGeoJSON());
+            // const feature = e.target.feature || layer.toGeoJSON();
+            const feature = e.target.feature;
+            if (status === 'EDIT') {
+              if (feature) {
+                let { type, geometry, id, properties } = feature;
+                let editFeature = {
+                  type,
+                  geometry,
+                  id,
+                  properties
+                };
+                // 开启图层节点编辑和拖拽模式
+                layer.pm.enableLayerDrag();
+                layer.pm.enable({
+                  allowSelfIntersection: false,
+                  hideMiddleMarkers: true
+                });
+                layer.on('pm:dragstart', function(e) {
+                  layer.pm._dragging = false;
+                  layer.pm.disable()
+                  layer.pm._dragging = true;
+                });
+                layer.on('pm:dragend', function(e) {
+                  layer.pm.enable();
+                });
+
+                document.querySelector('.edit-tips').style.display = 'none';
+                currentFeature.dataset = editFeature.properties.datasetName;
+                document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
+                currentDataset = currentFeature.dataset;
+                currentFeature.data = editFeature;
+                curEditOriginFeatures.push(editFeature);
+                curEditOriginLayers.push(layer);
+                document.querySelector('.edit-feature-info').style.display = 'block';
+                document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry });
+                renderEditAttribute('edit', currentFeature.data.properties);
+                currentEditingLayer = layer;
+                L.DomEvent.stopPropagation(e);
+              }
+            } else if (status == 'DELETE') {
+              if (feature) {
+              if (!deleteList[feature.properties.datasetName]) {
+                deleteList[feature.properties.datasetName] = []
+              }
+              if (deleteList[feature.properties.datasetName].includes(feature.id)) {
+                return;
+              }
+              deleteList[feature.properties.datasetName].push(feature.id);
+              deleteLayerList.push(layer);
+              const deleteItem = document.createElement('div');
+              deleteItem.innerText = `SMID: ${feature.id} (${feature.properties.datasetName})`;
+              let deleteEle = document.querySelector('.delete-feature-list');
+              deleteEle.appendChild(deleteItem);
+              }
             }
-            if (deleteList[feature.properties.datasetName].includes(feature.properties.SMID)) {
-              return;
-            }
-            deleteList[feature.properties.datasetName].push(feature.properties.SMID);
-            const deleteItem = document.createElement('div');
-            deleteItem.innerText = `SMID: ${feature.properties.SMID} (${feature.properties.datasetName})`;
-            let deleteEle = document.querySelector('.delete-feature-list');
-            deleteEle.appendChild(deleteItem);
-            }
-          } else if (status === 'EDIT') {
-            document.querySelector('.edit-tips').style.display = 'none';
-            currentFeature.dataset = feature.properties.datasetName;
-            currentFeature.data = feature;
-            document.querySelector('.edit-feature-info').style.display = 'block';
-            document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
-            renderEditAttribute('edit', currentFeature.data.properties);
-          }
+          });
         });
       }
 
-      function startDraw(type, source) {
-        endDraw();
-        var drawTypeMap = {
-          REGION: 'draw_polygon',
-          LINE: 'draw_line_string',
-          POINT: 'draw_point'
+      function startDraw(type) {
+        let drawTypeMap = {
+          REGION: 'Polygon',
+          LINE: 'Line',
+          POINT: 'Marker'
         }
-        draw.changeMode(drawTypeMap[type]);
-        map.on('draw.create', function (e) {
-          if (e.features) {
-            let feature = e.features[0];
-            datasetInfoList[currentDataset].id++;
-            feature.id = datasetInfoList[currentDataset].id;
+        type = drawTypeMap[type];
+        endDraw();
+        overlayPopup.setLatLng(map.getCenter()).openOn(map);
+
+        map.on('mousemove', function (evt) {
+          const coordinate = evt.latlng;
+          content.querySelector('.coordX').value = coordinate.lat;
+          content.querySelector('.coordY').value = coordinate.lng;
+          overlayPopup.setLatLng(coordinate);
+        });
+        map.pm.enableDraw(type, {
+          tooltips: false
+        });
+        map.on('pm:create', function (e) {
+          if (e.layer) {
+            map.closePopup();
+            let feature = e.layer.toGeoJSON();
+            // feature.properties.datasetName = currentDataset;
+            currentAddFeature = e.layer;
+            // e.layer.pm.remove();
             currentFeature.data = feature;
-            // 填充空间信息 !!
+            // currentFeature.dataset = currentDataset;
             document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
           }
         });
       }
 
       function endDraw() {
-        // if (draw) {
-        //   map.removeControl(draw);
-        //   draw = null;
-        // }
-      }
-
-      function clearInteraction() {
+        map.pm.disableDraw();
+        map.closePopup();
       }
 
     </script>

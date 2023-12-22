@@ -74,7 +74,7 @@
         font-weight: 800;
         font-size: 16px;
       }
-
+      .add-attribute-info,
       .edit-attribute-info {
         margin-bottom: 50px;
       }
@@ -110,6 +110,7 @@
       }
 
       .video-modal {
+        z-index: 9999;
         width: 100%;
         height: 100%;
         margin: 0 auto;
@@ -159,6 +160,23 @@
         width: 100%;
         max-width: 720px;
         display: none;
+      }
+
+      .palyIcon{
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 58%;
+        width: 36px;
+        height: 36px;
+        background: url('../img/play1.png') no-repeat;
+        background-size: contain;
+      }
+      .video-element, .img-element, .palyIcon{
+        cursor: pointer;
+      }
+      .button-group, .info-panel, .edit-tips {
+        box-shadow: 0px 0px 5px 0 rgba(0,0,0,0.3);
       }
     </style>
   </head>
@@ -264,15 +282,14 @@
       var status = 'ADD';
       var type = '';
       var uniqueId = 0;
-      var currentDataset = 'Line_t';
+      var currentDataset = 'buildings_R';
       var map,
         draw,
-        url =
-          (window.isLocal ? window.server : 'https://iserver.supermap.io') +
-          '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
-      var isUpdate = false;
-      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-World/rest/data';
-      var dataSourceName = 'World';
+        // url = (window.isLocal ? window.server : "https://iserver.supermap.io") + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
+        url = "http://172.16.14.44:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}";
+        var isUpdate = false;
+      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-Buildings/rest/data';
+      var dataSourceName = 'NewBuildings';
       var editFeaturesService = new mapboxgl.supermap.FeatureService(dataUrl);
       var currentShowPanel = '';
       var datasetNameList = [];
@@ -317,8 +334,8 @@
                 "source": "raster-tiles",
             }]
         },
-        center: [0, 0],
-        zoom: 2
+        center: [116.435, 39.92],
+        zoom: 16,
     });
       bindEvents();
       init(dataUrl, dataSourceName);
@@ -404,33 +421,23 @@
           }
         }
 
-         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.img') && !e.target.value.includes('.mp4')) {
-          let ele = document.querySelector(`img.${e.target.label}`) || document.querySelector(`video.${e.target.label}`);
-          if (ele) {
-            ele.parentNode.removeChild(ele);
-          }
+         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.png') && !e.target.value.includes('.mp4')) {
+            deleteVideoAndImg(e)
          }
 
          if (e.target.value.includes('.mp4')) {
+            deleteVideoAndImg(e);
+            const videoPlayIcon = document.createElement('div');
+            videoPlayIcon.className = 'palyIcon';
             const video = document.createElement('video');
             video.src = e.target.value;
             video.className = `video-element ${e.target.label}`;
             var parent = e.target.parentNode;
             parent.insertBefore(video,e.target.nextSibling);
-            const modal = document.querySelector('.video-modal');
-            const video1 = document.querySelector('.video-modal video');
-            
-            video.addEventListener('click', function onOpen() {
-              modal.style.display = 'flex';
-              video1.src = video.src;
-              video1.play();
-            });
-            
-            modal.addEventListener('click', function onClose() {
-              modal.style.display = 'none';
-              video1.pause();
-            });
+            parent.insertBefore(videoPlayIcon,video);
+            previewVideo(video);
           } else if (e.target.value.includes('.png')) {
+            deleteVideoAndImg(e);
             const img = document.createElement('img');
             img.src = e.target.value;
             img.className = `img-element ${e.target.label}`;
@@ -438,6 +445,17 @@
             var parent = e.target.parentNode;
             parent.insertBefore(img,e.target.nextSibling);
           }
+      }
+
+      function deleteVideoAndImg(e) { 
+        let ele = document.querySelector(`.${e.target.label} img`) || document.querySelector(`.${e.target.label} video`);
+        let videoPlayIcon = document.querySelector(`.${e.target.label} .palyIcon`)
+        if (ele) {
+          ele.parentNode.removeChild(ele);
+        }
+        if (videoPlayIcon) {
+          videoPlayIcon.parentNode.removeChild(videoPlayIcon);
+        }
       }
 
       getDomains(currentDataset);
@@ -562,15 +580,18 @@
         attributeElement.innerHTML = '';
         Object.keys(filterFields[datasetName]).forEach((key) => {
           if (!filterFields[datasetName][key]) {
+            const item = document.createElement('div');
+            item.style.position = 'relative';
+            item.className = key;
             const title = document.createElement('h6');
             title.innerText = key;
-            attributeElement.appendChild(title);
+            item.appendChild(title);
             if (domainRules[key] && domainRules[key].type === 'CODE') {
                 var selectValues = domainRules[key].codeInfos.map((item) => {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
-                attributeElement.appendChild(select);
+                item.appendChild(select);
               return;
             }
             
@@ -578,7 +599,8 @@
             inputEle.className = 'input-element';
             inputEle.label = key;
             inputEle.value = '';
-            attributeElement.appendChild(inputEle);
+            item.appendChild(inputEle);
+            attributeElement.appendChild(item);
           }
         });
       }
@@ -602,15 +624,18 @@
           if (key === 'datasetName') {
             return;
           }
+          const item = document.createElement('div');
+          item.style.position = 'relative';
+          item.className = key;
           const title = document.createElement('h6');
           title.innerText = key;
-          attributeElement.appendChild(title);
+          item.appendChild(title);
           if (domainRules[key] && domainRules[key].type === 'CODE') {
                 var selectValues = domainRules[key].codeInfos.map((item) => {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
-                attributeElement.appendChild(select);
+                item.appendChild(select);
               return;
             }
           const inputEle = document.createElement('input');
@@ -618,18 +643,39 @@
           inputEle.disabled = filterFields[currentFeature.dataset][key];
           inputEle.value = properties[key];
           inputEle.label = key;
-          attributeElement.appendChild(inputEle);
+          item.appendChild(inputEle);
           if (properties[key].includes('.mp4')) {
+            const videoPlayIcon = document.createElement('div');
+            videoPlayIcon.className = 'palyIcon';
             const video = document.createElement('video');
             video.src = properties[key];
             video.className = "video-element";
-            attributeElement.appendChild(video);
+            item.appendChild(videoPlayIcon);
+            item.appendChild(video);
+            previewVideo(video);
           } else if (properties[key].includes('.png')) {
             const img = document.createElement('img');
             img.src = properties[key];
             img.className = "img-element";
-            attributeElement.appendChild(img);
+            new Viewer(img);
+            item.appendChild(img);
           }
+          attributeElement.appendChild(item);
+        });
+      }
+
+      function previewVideo(ele) { 
+        const modal = document.querySelector('.video-modal');
+        const video1 = document.querySelector('.video-modal video');
+        ele.addEventListener('click', function onOpen() {
+          modal.style.display = 'flex';
+          video1.src = ele.src;
+          video1.play();
+        });
+        
+        modal.addEventListener('click', function onClose() {
+          modal.style.display = 'none';
+          video1.pause();
         });
       }
 
@@ -756,9 +802,8 @@
         const attributeElement = document.querySelector(`.${type}-attribute-info`);
         var listArr = [...attributeElement.children];
         listArr.forEach((item, index) => {
-          if (index % 2 === 0 && !listArr[index + 1].disabled && listArr[index + 1].value) {
-            properties[item.textContent] = listArr[index + 1].value;
-          }
+          var itemArr = [...item.children];
+          properties[itemArr[0].textContent] = itemArr[1].value;
         });
         currentFeature.data.properties = properties;
         if (!currentFeature.data.id) {
@@ -784,10 +829,9 @@
           var getFeatureParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
               name: `${datasetName}@${dataSourceName}`,
-              attributeFilter: 'SMID > 0'
+              attributeFilter: 'SMID < 1000'
             },
-            fromIndex: 5,
-            toIndex: 30,
+            toIndex: -1,
             datasetNames: [`${dataSourceName}:${datasetName}`]
           });
 
