@@ -10,7 +10,9 @@ import { MapService } from '../services/MapService';
 import {
     InitMapServiceBase,
     isPlaneProjection,
-    getEpsgCode
+    getEpsgCode,
+    getTileFormat,
+    getTileset
 } from '@supermap/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 
@@ -73,8 +75,9 @@ export async function initMap(url, options) {
         const origin = [tileset.originalPoint.x, tileset.originalPoint.y]
         const resolutions = tileset.resolutions;
         const scaleDenominators = tileset.scaleDenominators
+        const coordUnit = mapObject.coordUnit;
         maxZoom = resolutions.length - 1;
-        crs = crsFromMapJSON({ prjCoordSys, bounds, resolutions, origin, dpi: getDpi(1.0 / scaleDenominators[0], resolutions[0]) }, { maxZoom });
+        crs = crsFromMapJSON({ prjCoordSys, bounds, resolutions, origin, dpi: getDpi(1.0 / scaleDenominators[0], resolutions[0], coordUnit) }, { maxZoom });
         zoom = getZoomByResolution(1.0 / scale, scaleDenominators);
     } else {
         tileFormat = 'webp';
@@ -82,10 +85,10 @@ export async function initMap(url, options) {
         transparent = true;
         const { scale, dpi, coordUnit } = mapObject;
         const origin = [bounds.left, bounds.top];
-        const resolutions = scalesToResolutions(mapObject.visibleScales, bounds, dpi, coordUnit, scale);
+        const resolutions = scalesToResolutions(mapObject.visibleScales, bounds, dpi, coordUnit, mapOptions.maxZoom, scale);
         maxZoom = resolutions.length - 1;
         crs = crsFromMapJSON({ prjCoordSys, bounds, resolutions, origin, dpi }, { maxZoom });
-        zoom = getZoomByScale({ scale, dpi, coordUnit }, resolutions)
+        zoom = getZoomByScale({ scale, dpi, coordUnit }, resolutions);
     }
 
     const mapInfoOptions = {   
@@ -240,12 +243,6 @@ function getNonEarthCRS(bounds, origin, resolutions) {
     };
     return new NonEarthCRS(options);
 }
-function getTileset(tilesets = [], targets) {
-    const imageTilesets = tilesets.filter((i) => {
-        return i.metaData.tileType === targets.tileType || 'Image' && getEpsgCode(i.metaData.prjCoordSys) === getEpsgCode(targets.prjCoordSys);
-    });
-    return imageTilesets[0] ? imageTilesets[0].metaData : {};
-}
 
 function getCRS(epsgCodeStr, { bounds, origin, dpi, resolutions }) {
     const wrapLngLeft = proj4(epsgCodeStr, 'EPSG:4326').forward([bounds.left, 0], true);
@@ -261,14 +258,4 @@ function getCRS(epsgCodeStr, { bounds, origin, dpi, resolutions }) {
         options.resolutions = resolutions;
     }
     return new CRS(epsgCodeStr, options);
-}
-function getTileFormat(tileset) {
-    if (tileset.tileFormat) {
-        const format = tileset.tileFormat.toLowerCase();
-        if (['jpg_png', 'default', 'png8'].includes(format)) {
-            return 'png';
-        }
-        return format;
-    }
-    return 'png';
 }

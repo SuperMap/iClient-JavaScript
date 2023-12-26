@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
  import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
- import { getMeterPerMapUnit, scalesToResolutions, getZoomByResolution } from '@supermap/iclient-common/util/MapCalculateUtil';
+ import { getMeterPerMapUnit, scalesToResolutions, getZoomByResolution, getDpi } from '@supermap/iclient-common/util/MapCalculateUtil';
  import * as olUtil from 'ol/util';
  import Geometry from 'ol/geom/Geometry';
  import { getVectorContext } from 'ol/render';
@@ -426,6 +426,7 @@
    scalesToResolutions(scales, bounds, dpi, unit, mapobj, level) {
     return scalesToResolutions(scales, bounds, dpi, unit, mapobj, level);
    },
+   getDpi,
    getProjection(prjCoordSys, extent) {
     let projection = get(`EPSG:${prjCoordSys.epsgCode}`);
     if (prjCoordSys.type == 'PCS_NON_EARTH') {

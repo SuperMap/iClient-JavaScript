@@ -114,6 +114,38 @@ export function getEpsgCode(prjCoordSys) {
   return 'EPSG:' + epsgCode;
 }
 
+/**
+ * @private
+ * @function getTileFormat
+ * @description 获取瓦片格式。
+ * @returns {string} 瓦片格式
+ */
+
+export function getTileFormat(tileset) {
+  if (tileset.tileFormat) {
+    const format = tileset.tileFormat.toLowerCase();
+    if (['jpg_png', 'default', 'png8'].includes(format)) {
+      return 'png';
+    }
+    return format;
+  }
+  return 'png';
+}
+
+/**
+ * @private
+ * @function getTileset
+ * @description 获取 tilseset
+ * @returns {Object}
+ */
+
+export function getTileset(tilesets = [], targets) {
+  const imageTilesets = tilesets.filter((i) => {
+    return i.metaData.tileType === targets.tileType || 'Image' && getEpsgCode(i.metaData.prjCoordSys) === getEpsgCode(targets.prjCoordSys);
+  });
+  return imageTilesets[0] && imageTilesets[0].metaData;
+}
+
 
 /**
  * @private

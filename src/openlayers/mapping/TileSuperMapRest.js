@@ -322,7 +322,14 @@ export class TileSuperMapRest extends TileImage {
      * @param {Object} mapJSONObj - 地图 JSON 对象。
      */
     static optionsFromMapJSON(url, mapJSONObj) {
-        var options = {};
+        var options = {
+        };
+        if (mapJSONObj.tileFormat) {
+          options.format = mapJSONObj.tileFormat;
+        }
+        if (mapJSONObj.origin) {
+          options.origin = mapJSONObj.origin;
+        }
         options.url = url;
         options.crossOrigin = 'anonymous';
         var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
@@ -330,7 +337,8 @@ export class TileSuperMapRest extends TileImage {
         var resolutions = Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit);
         options.tileGrid = new TileGrid({
             extent: extent,
-            resolutions: resolutions
+            resolutions: resolutions,
+            tileSize: mapJSONObj.tileSize || 256
         });
         return options;
     }

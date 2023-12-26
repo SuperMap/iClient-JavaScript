@@ -566,6 +566,241 @@ const mapInfo_1 = `{
   }
 }`;
 
+const mapInfo_2 = `{
+  "viewBounds": {
+      "top": 41.25563007837713,
+      "left": 115.8344539060727,
+      "bottom": 38.82179453526931,
+      "leftBottom": {
+          "x": 115.8344539060727,
+          "y": 38.82179453526931
+      },
+      "right": 118.26828944918051,
+      "rightTop": {
+          "x": 118.26828944918051,
+          "y": 41.25563007837713
+      }
+  },
+  "viewer": {
+      "leftTop": {
+          "x": 0,
+          "y": 0
+      },
+      "top": 0,
+      "left": 0,
+      "bottom": 256,
+      "rightBottom": {
+          "x": 256,
+          "y": 256
+      },
+      "width": 256,
+      "right": 256,
+      "height": 256
+  },
+  "distanceUnit": null,
+  "minVisibleTextSize": 0,
+  "coordUnit": "DEGREE",
+  "scale": 2.5E-7,
+  "description": null,
+  "paintBackground": false,
+  "maxVisibleTextSize": 0,
+  "maxVisibleVertex": 0,
+  "clipRegionEnabled": false,
+  "antialias": false,
+  "textOrientationFixed": false,
+  "angle": 0,
+  "prjCoordSys": {
+      "distanceUnit": "METER",
+      "projectionParam": null,
+      "epsgCode": 4326,
+      "coordUnit": "DEGREE",
+      "name": "经纬坐标系---GCS_WGS_1984",
+      "projection": null,
+      "type": "PCS_EARTH_LONGITUDE_LATITUDE",
+      "coordSystem": {
+          "datum": {
+              "name": "D_WGS_1984",
+              "type": "DATUM_WGS_1984",
+              "spheroid": {
+                  "flatten": 0.0033528107000003215,
+                  "name": "WGS_1984",
+                  "axis": 6378137,
+                  "type": "SPHEROID_WGS_1984"
+              }
+          },
+          "unit": "DEGREE",
+          "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+          "name": "GCS_WGS_1984",
+          "type": "GCS_WGS_1984",
+          "primeMeridian": {
+              "longitudeValue": 0,
+              "name": "Greenwich",
+              "type": "PRIMEMERIDIAN_GREENWICH"
+          }
+      }
+  },
+  "minScale": 0,
+  "markerAngleFixed": false,
+  "overlapDisplayedOptions": null,
+  "visibleScales": [
+      2.5E-7,
+      5.0E-7,
+      1.0E-6,
+      2.0E-6,
+      4.0E-6
+  ],
+  "dpi": 96,
+  "visibleScalesEnabled": true,
+  "customEntireBoundsEnabled": false,
+  "clipRegion": null,
+  "maxScale": 0,
+  "customParams": "",
+  "center": {
+      "x": 117.0513716776266,
+      "y": 40.03871230682322
+  },
+  "dynamicPrjCoordSyses": [
+      {
+          "distanceUnit": "METER",
+          "projectionParam": null,
+          "epsgCode": 4326,
+          "coordUnit": "DEGREE",
+          "name": "经纬坐标系---GCS_WGS_1984",
+          "projection": null,
+          "type": "PCS_EARTH_LONGITUDE_LATITUDE",
+          "coordSystem": {
+              "datum": {
+                  "name": "D_WGS_1984",
+                  "type": "DATUM_WGS_1984",
+                  "spheroid": {
+                      "flatten": 0.0033528107000003215,
+                      "name": "WGS_1984",
+                      "axis": 6378137,
+                      "type": "SPHEROID_WGS_1984"
+                  }
+              },
+              "unit": "DEGREE",
+              "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+              "name": "GCS_WGS_1984",
+              "type": "GCS_WGS_1984",
+              "primeMeridian": {
+                  "longitudeValue": 0,
+                  "name": "Greenwich",
+                  "type": "PRIMEMERIDIAN_GREENWICH"
+              }
+          }
+      }
+  ],
+  "colorMode": null,
+  "textAngleFixed": false,
+  "overlapDisplayed": false,
+  "userToken": {
+      "userID": ""
+  },
+  "cacheEnabled": false,
+  "dynamicProjection": false,
+  "autoAvoidEffectEnabled": true,
+  "customEntireBounds": null,
+  "name": "京津地区地图1",
+  "bounds": {
+      "top": 42.31307532235788,
+      "left": 114.58902605452259,
+      "bottom": 37.76434929128856,
+      "leftBottom": {
+          "x": 114.58902605452259,
+          "y": 37.76434929128856
+      },
+      "right": 119.51371730073062,
+      "rightTop": {
+          "x": 119.51371730073062,
+          "y": 42.31307532235788
+      }
+  },
+  "backgroundStyle": null
+}`;
+
+const tilesetInfo_1 = `[
+  {
+      "metaData": {
+          "scaleDenominators": [
+              4000000,
+              2000000,
+              1000000,
+              500000,
+              250000
+          ],
+          "originalPoint": {
+              "x": -180,
+              "y": 90
+          },
+          "resolutions": [
+              0.009507170090264935,
+              0.0047535850451324675,
+              0.0023767925225662337,
+              0.0011883962612831169,
+              5.941981306415584E-4
+          ],
+          "tileWidth": 256,
+          "mapStatusHashCode": "3B365026FIX",
+          "transparent": true,
+          "mapParameter": null,
+          "tileType": "Image",
+          "tileFormat": "WEBP",
+          "bounds": {
+              "top": 42.31307532235788,
+              "left": 114.58902605452259,
+              "bottom": 37.76434929128856,
+              "leftBottom": {
+                  "x": 114.58902605452259,
+                  "y": 37.76434929128856
+              },
+              "right": 119.51371730073062,
+              "rightTop": {
+                  "x": 119.51371730073062,
+                  "y": 42.31307532235788
+              }
+          },
+          "tileRuleVersion": null,
+          "storageType": "Original",
+          "prjCoordSys": {
+              "distanceUnit": "METER",
+              "projectionParam": null,
+              "epsgCode": 4326,
+              "coordUnit": "DEGREE",
+              "name": "经纬坐标系---GCS_WGS_1984",
+              "projection": null,
+              "type": "PCS_EARTH_LONGITUDE_LATITUDE",
+              "coordSystem": {
+                  "datum": {
+                      "name": "D_WGS_1984",
+                      "type": "DATUM_WGS_1984",
+                      "spheroid": {
+                          "flatten": 0.0033528107000003215,
+                          "name": "WGS_1984",
+                          "axis": 6378137,
+                          "type": "SPHEROID_WGS_1984"
+                      }
+                  },
+                  "unit": "DEGREE",
+                  "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+                  "name": "GCS_WGS_1984",
+                  "type": "GCS_WGS_1984",
+                  "primeMeridian": {
+                      "longitudeValue": 0,
+                      "name": "Greenwich",
+                      "type": "PRIMEMERIDIAN_GREENWICH"
+                  }
+              }
+          },
+          "mapName": "京津地区地图1",
+          "tilesetName": "京津地区地图1",
+          "tileHeight": 256
+      },
+      "name": "UGCV5_tileset_京津地区地图1",
+      "tileVersions": null
+  }
+]`;
+
 var datavizWebMap_RestMap_1000 = {
     "title": "RestMap",
     "description": "restMap -1000",

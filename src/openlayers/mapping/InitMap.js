@@ -1,5 +1,5 @@
 import { MapService } from '../services/MapService';
-import { InitMapServiceBase, isPlaneProjection } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection, getTileFormat, getTileset } from '@supermap/iclient-common/iServer/InitMapServiceBase';
 import olMap from 'ol/Map';
 import View from 'ol/View';
 import Tile from 'ol/layer/Tile';
@@ -41,29 +41,53 @@ window.proj4 = proj4;
  * initMap(url, { mapOptions, viewOptions, layerOptions, sourceOptions })
  * ```
  * */
-export function initMap(url, options = {}) {
+export async function initMap(url, options = {}) {
   const { mapOptions, viewOptions, layerOptions, sourceOptions } = options;
   const initMapService = new InitMapServiceBase(MapService, url, options);
-  return initMapService.getMapInfo(async function (serviceResult, resolve, reject) {
-    if (!serviceResult || !serviceResult.result) {
-      reject('service is not work!');
-      return;
-    }
-    let { prjCoordSys, bounds } = serviceResult.result;
-    if (!get(`EPSG:${prjCoordSys.epsgCode}`) && !isPlaneProjection(prjCoordSys.type)) {
-      const wkt = await initMapService.getWKT();
-      registerProj(prjCoordSys.epsgCode, wkt, bounds);
-    }
+  const tilesets = await initMapService.getTilesets();
+  const result = await initMapService.getMapInfo();
+  if (!result || !result.result) {
+    return 'service is not work!';
+  }
+  const mapObject = result.result;
+  const { prjCoordSys, bounds, center, visibleScales, coordUnit, scale, dpi } = mapObject;
+  // tileset和地图不同投影，优先使用地图
+  const tileset = getTileset(tilesets.result, { prjCoordSys, tileType: 'Image' });
 
-    let map = createMap(serviceResult.result, mapOptions, viewOptions);
-    let { layer, source } = createLayer(url, serviceResult.result, sourceOptions, layerOptions);
-    map.addLayer(layer);
-    resolve({
-      map,
-      source,
-      layer
-    });
-  });
+  const config = {
+    center,
+    bounds,
+    dpi,
+    visibleScales,
+    scale,
+    prjCoordSys,
+    coordUnit,
+    tileFormat: 'webp',
+    tileSize: 256
+  };
+  if (tileset) {
+    config.tileFormat = getTileFormat(tileset);
+    config.tileSize = tileset.tileWidth || 256;
+    config.transparent = tileset.transparent || true;
+    config.origin = [tileset.originalPoint.x, tileset.originalPoint.y];
+    config.resolutions = tileset.resolutions;
+    config.scaleDenominators = tileset.scaleDenominators;
+    config.dpi = Util.getDpi(1.0 / tileset.scaleDenominators[0], tileset.resolutions[0], coordUnit);
+  }
+
+  if (!get(`EPSG:${prjCoordSys.epsgCode}`) && !isPlaneProjection(prjCoordSys.type)) {
+    const wkt = await initMapService.getWKT();
+    registerProj(prjCoordSys.epsgCode, wkt, bounds);
+  }
+
+  let map = createMap(config, mapOptions, viewOptions);
+  let { layer, source } = createLayer(url, config, sourceOptions, layerOptions);
+  map.addLayer(layer);
+  return {
+    map,
+    source,
+    layer
+  };
 }
 
 /**
@@ -77,13 +101,14 @@ export function initMap(url, options = {}) {
  */
 
 export function viewOptionsFromMapJSON(mapJSONObj, level = 22) {
-  let { bounds, dpi, center, visibleScales, scale, coordUnit, prjCoordSys } = mapJSONObj;
+  let { bounds, dpi, center, visibleScales, scale, coordUnit, prjCoordSys, scaleDenominators, resolutions } = mapJSONObj;
   const mapCenter =
     center.x && center.y ? [center.x, center.y] : [(bounds.left + bounds.right) / 2, (bounds.bottom + bounds.top) / 2];
   const extent = [bounds.left, bounds.bottom, bounds.right, bounds.top];
   let projection = Util.getProjection(prjCoordSys, extent);
-  var resolutions = Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit, level);
-  const zoom = Util.getZoomByResolution(Util.scaleToResolution(scale, dpi, coordUnit), resolutions);
+  resolutions = resolutions || Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit, level);
+  const resolution = scaleDenominators ? (1.0 / scale) : Util.scaleToResolution(scale, dpi, coordUnit);
+  const zoom = Util.getZoomByResolution(resolution, resolutions);
   return {
     center: mapCenter,
     projection,

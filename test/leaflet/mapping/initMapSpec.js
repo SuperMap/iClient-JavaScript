@@ -28,7 +28,7 @@ describe('initMap', () => {
   });
   afterAll(() => {});
 
-  it('initMap 3857', async () => {
+  it('initMap 3857', (done) => {
     var url = 'http:/fake:8090/iserver/services/map-Population/rest/maps/PopulationDistribution';
     var mapInfo = {
       prjCoordSys: {
@@ -66,19 +66,25 @@ describe('initMap', () => {
       coordUnit: 'METER'
     };
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url);
-    map = res.map;
-    expect(map.options.crs.code).toBe('EPSG:3857');
-    expect(map.options.crs.resolutions.length).toEqual(22);
-    expect(map.options.zoom).toBe(1);
-    expect(map.options.maxZoom).toBe(21);
-    expect(res.layer).not.toBeNull();
+    initMap(url).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe('EPSG:3857');
+      expect(map.options.crs.resolutions.length).toEqual(22);
+      expect(map.options.zoom).toBe(2);
+      expect(map.options.maxZoom).toBe(21);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
+   
   });
 
-  it('initMap 4326', async () => {
+  it('initMap 4326', (done) => {
     var url = 'http://fake:8090/iserver/services/map-jinjing/rest/maps/jinjing';
     var mapInfo = {
       prjCoordSys: {
@@ -112,19 +118,24 @@ describe('initMap', () => {
       coordUnit: 'DEGREE'
     };
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url);
-    map = res.map;
-    expect(map.options.crs.code).toBe('EPSG:4326');
-    expect(map.options.crs.resolutions.length).toEqual(22);
-    expect(map.options.zoom).toBe(2);
-    expect(map.options.maxZoom).toBe(21);
-    expect(res.layer).not.toBeNull();
+    initMap(url).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe('EPSG:4326');
+      expect(map.options.crs.resolutions.length).toEqual(22);
+      expect(map.options.zoom).toBe(3);
+      expect(map.options.maxZoom).toBe(21);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
   });
 
-  it('initMap -1000', async () => {
+  it('initMap -1000', (done) => {
     var url = 'http:/fake:8090/iserver/services/map-changchun/rest/maps/changchun';
     var mapInfo = {
       prjCoordSys: {
@@ -159,19 +170,24 @@ describe('initMap', () => {
       coordUnit: 'METER'
     };
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url);
-    map = res.map;
-    expect(map.options.crs.code).toBe(undefined);
-    expect(map.options.crs.resolutions).toEqual(undefined);
-    expect(map.options.zoom).toBe(1);
-    expect(map.options.maxZoom).toBe(21);
-    expect(res.layer).not.toBeNull();
+    initMap(url).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe(undefined);
+      expect(map.options.crs.resolutions.length).toBe(22);
+      expect(map.options.zoom).toBe(2);
+      expect(map.options.maxZoom).toBe(21);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
   });
 
-  it('initMap 3857 visibleScales', async () => {
+  it('initMap 3857 visibleScales', (done) => {
     var url = 'http:/fake:8090/iserver/services/map-china/rest/maps/china3857';
     var mapInfo = {
       prjCoordSys: {
@@ -209,19 +225,24 @@ describe('initMap', () => {
       coordUnit: 'METER'
     };
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url);
-    map = res.map;
-    expect(map.options.crs.code).toBe('EPSG:3857');
-    expect(map.options.crs.resolutions.length).toEqual(3);
-    expect(map.options.zoom).toBe(0);
-    expect(map.options.maxZoom).toBe(2);
-    expect(res.layer).not.toBeNull();
+    initMap(url).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe('EPSG:3857');
+      expect(map.options.crs.resolutions.length).toEqual(3);
+      expect(map.options.zoom).toBe(0);
+      expect(map.options.maxZoom).toBe(2);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
   });
 
-  it('initMap 4326 visibleScales', async () => {
+  it('initMap 4326 visibleScales', (done) => {
     var url = 'http:/fake:8090/iserver/services/map-china/rest/maps/china4326';
     var mapInfo = {
       prjCoordSys: {
@@ -256,19 +277,24 @@ describe('initMap', () => {
       coordUnit: 'DEGREE'
     };
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url);
-    map = res.map;
-    expect(map.options.crs.code).toBe('EPSG:4326');
-    expect(map.options.crs.resolutions.length).toEqual(3);
-    expect(map.options.zoom).toBe(0);
-    expect(map.options.maxZoom).toBe(2);
-    expect(res.layer).not.toBeNull();
+    initMap(url).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe('EPSG:4326');
+      expect(map.options.crs.resolutions.length).toEqual(3);
+      expect(map.options.zoom).toBe(0);
+      expect(map.options.maxZoom).toBe(2);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
   });
 
-  it('initMap 4490', async () => {
+  it('initMap 4490', (done) => {
     var url = 'http://fake:8090/iserver/services/map-china/rest/maps/chian4490';
     var mapInfo = {
       prjCoordSys: {
@@ -310,19 +336,24 @@ describe('initMap', () => {
       if (testUrl.includes('prjCoordSys.wkt')) {
         return Promise.resolve(new Response(def4490));
       }
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url);
-    map = res.map;
-    expect(map.options.crs.code).toBe('EPSG:4490');
-    expect(map.options.crs.resolutions.length).toEqual(13);
-    expect(map.options.zoom).toBe(2);
-    expect(map.options.maxZoom).toBe(12);
-    expect(res.layer).not.toBeNull();
+    initMap(url).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe('EPSG:4490');
+      expect(map.options.crs.resolutions.length).toEqual(13);
+      expect(map.options.zoom).toBe(2);
+      expect(map.options.maxZoom).toBe(12);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
   });
 
-  it('initMap mapOptions', async () => {
+  it('initMap mapOptions', (done) => {
     var url = 'http:/fake:8090/iserver/services/map-Population/rest/maps/PopulationDistribution';
     var mapInfo = {
       prjCoordSys: {
@@ -361,19 +392,24 @@ describe('initMap', () => {
       overlapDisplayedOptions: false
     };
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
 
-    var res = await initMap(url, { mapOptions: { center: [0, 0], zoom: 1, maxZoom: 10 } });
-    map = res.map;
-    expect(map.options.crs.code).toBe('EPSG:3857');
-    expect(map.options.crs.resolutions.length).toEqual(10);
-    expect(map.options.zoom).toBe(1);
-    expect(map.options.maxZoom).toBe(10);
-    expect(res.layer).not.toBeNull();
+    initMap(url, { mapOptions: { center: [0, 0], zoom: 1, maxZoom: 10 } }).then((res) => {
+      map = res.map;
+      expect(map.options.crs.code).toBe('EPSG:3857');
+      expect(map.options.crs.resolutions.length).toEqual(10);
+      expect(map.options.zoom).toBe(1);
+      expect(map.options.maxZoom).toBe(10);
+      expect(res.layer).not.toBeNull();
+      done();
+    });
   });
 
-  it('crsFromMapJSON ', async () => {
+  it('crsFromMapJSON ', (done) => {
     var mapInfo = {
       prjCoordSys: {
         distanceUnit: 'METER',
@@ -410,12 +446,13 @@ describe('initMap', () => {
       coordUnit: 'METER',
       overlapDisplayedOptions: false
     };
-    var crs = await crsFromMapJSON(mapInfo);
+    var crs = crsFromMapJSON(mapInfo);
     expect(crs.code).toBe('EPSG:3857');
     expect(crs.resolutions.length).toEqual(22);
+    done();
   });
 
-  xit('crsFromMapJSON 4490 noProjDef', async () => {
+  xit('crsFromMapJSON 4490 noProjDef', () => {
     var mapInfo = {
       prjCoordSys: {
         distanceUnit: 'METER',
@@ -456,13 +493,16 @@ describe('initMap', () => {
       if (testUrl.includes('prjCoordSys.wkt')) {
         return Promise.resolve(new Response(''));
       }
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
-    var res = await crsFromMapJSON(mapInfo);
+    var res = crsFromMapJSON(mapInfo);
     expect(res).toBe(undefined);
   });
 
-  it('crsFromMapJSON 4490', async () => {
+  it('crsFromMapJSON 4490', (done) => {
     var mapInfo = {
       prjCoordSys: {
         distanceUnit: 'METER',
@@ -501,14 +541,18 @@ describe('initMap', () => {
     };
     proj4.defs('EPSG:4490', def4490);
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
-      return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      if(testUrl.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(JSON.stringify(mapInfo)));
+      }
+      return Promise.resolve();
     });
-    var crs = await crsFromMapJSON(mapInfo);
+    var crs = crsFromMapJSON(mapInfo);
     expect(crs.code).toBe('EPSG:4490');
     expect(crs.resolutions.length).toEqual(13);
+    done();
   });
 
-  it('crsFromMapJSON maxZoom', async () => {
+  it('crsFromMapJSON maxZoom', (done) => {
     var url = 'http:/fake:8090/iserver/services/map-Population/rest/maps/PopulationDistribution';
     var mapInfo = {
       prjCoordSys: {
@@ -546,8 +590,29 @@ describe('initMap', () => {
       coordUnit: 'METER',
       overlapDisplayedOptions: false
     };
-    var crs = await crsFromMapJSON(mapInfo, { maxZoom: 10 });
+    var crs = crsFromMapJSON(mapInfo, { maxZoom: 10 });
     expect(crs.code).toBe('EPSG:3857');
     expect(crs.resolutions.length).toEqual(10);
+    done();
+  });
+
+  it('with tilesets', (done) => {
+    var tilesetServeRequest = 'http://supermapiserver:8090/iserver/services/map-world/rest/maps/Jinjing111';
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('Jinjing111') > -1 && url.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(mapInfo_2));
+      }
+      if (url.indexOf('Jinjing111/tilesets') > -1) {
+        return Promise.resolve(new Response(tilesetInfo_1));
+      }
+      return Promise.resolve();
+    });
+    initMap(tilesetServeRequest).then(({ map, layer }) => {
+      expect(map.options.crs.code).toBe('EPSG:4326');
+      expect(map.options.maxZoom).toBe(4);
+      expect(map.options.crs.resolutions.length).toBe(5);
+      expect(map).not.toBeNull();
+      done();
+    });
   });
 });
