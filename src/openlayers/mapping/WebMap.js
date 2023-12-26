@@ -1115,9 +1115,12 @@ export class WebMap extends Observable {
      */
     createDynamicTiledSource(layerInfo, isBaseLayer) {
         let serverType = "IPORTAL",
-            credential = layerInfo.credential ? layerInfo.credential.token : undefined,
+            credential = layerInfo.credential,
             keyfix = 'Token',
             keyParams = layerInfo.url;
+        if (credential && credential.token) {
+            credential = credential.token
+        }
 
         if (layerInfo.url.indexOf("www.supermapol.com") > -1 || layerInfo.url.indexOf("itest.supermapol.com") > -1) {
             keyfix = 'Key';
