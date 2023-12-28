@@ -1394,12 +1394,12 @@ export class WebMap extends Observable {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
+        let tempUrl = layerInfo.url;
         if (layerInfo.url.indexOf("?token=") > -1) {
-            that.credentialKey = 'token';
-            that.credentialValue = layerInfo.credential = layerInfo.url.split("?token=")[1];
+            layerInfo.credential = { token: layerInfo.url.split("?token=")[1] };
             layerInfo.url = layerInfo.url.split("?token=")[0];
         }
-        let url = this.handleJSONSuffix(layerInfo.url);
+        let url = this.handleJSONSuffix(tempUrl);
         return FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return response.json();
         }).then(async function (result) {
