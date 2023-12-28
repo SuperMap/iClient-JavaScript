@@ -1299,4 +1299,27 @@ describe('openlayers_WebMap', () => {
         done();
       }
   });
+  
+  it('createBaseLayer-SUPERMAP_REST-token', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url, params, options) => {
+      if (url.indexOf('map.json') > -1) {
+          var mapJson = datavizWebMap_RestMap_token;
+          return Promise.resolve(new Response(mapJson));
+      } else if (url.indexOf('content.json') > -1) {
+          expect(url.indexOf('testtoken')).toBe(-1);
+          return Promise.resolve(new Response(geojsonData));
+      } else {
+          expect(url.indexOf('testtoken')).not.toBe(-1);
+          return Promise.resolve()
+      }
+    });
+    var datavizWebmap = new WebMap(id, {successCallback, errorCallback, server: defaultServer });
+    function successCallback(map, mapInfo, layers, baseLayer){
+      expect(baseLayer.credential).toEqual({token: 'testtoken'});
+      done();
+    }
+    function errorCallback(error) {
+      console.log(error);
+    }
+  });
 });
