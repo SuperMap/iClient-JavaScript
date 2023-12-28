@@ -1392,12 +1392,13 @@ export class WebMap extends Observable {
             withCredentials: this.withCredentials,
             withoutFormatSuffix: true
         };
+        let tempUrl = layerInfo.url;
         if (layerInfo.url.indexOf("?token=") > -1) {
-            that.credentialKey = 'token';
-            that.credentialValue = layerInfo.credential = layerInfo.url.split("?token=")[1];
+            layerInfo.credential = { token: layerInfo.url.split("?token=")[1] };
             layerInfo.url = layerInfo.url.split("?token=")[0];
         }
-        return FetchRequest.get(that.getRequestUrl(`${layerInfo.url}.json`), null, options).then(function (response) {
+        let url = this.handleJSONSuffix(tempUrl);
+        return FetchRequest.get(that.getRequestUrl(url), null, options).then(function (response) {
             return response.json();
         }).then(async function (result) {
             // layerInfo.projection = mapInfo.projection;
@@ -5162,5 +5163,17 @@ export class WebMap extends Observable {
             return [-1000,-1].includes(+projection)
         }
         return ['EPSG:-1000','EPSG:-1'].includes(projection);
+    }
+    handleJSONSuffix(url) {
+      if(!url.includes('.json')) {
+        if (url.includes('?')) {
+          let urlArr = url.split('?');
+          urlArr[0] = urlArr[0] + ".json";
+          url = urlArr.join('?');
+        } else {
+          url = url + ".json"
+        }
+      }
+      return url;
     }
 }
