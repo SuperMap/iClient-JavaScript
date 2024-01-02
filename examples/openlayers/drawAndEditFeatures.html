@@ -8,6 +8,7 @@
     <title data-i18n="resources.title_editFeatures"></title>
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
       .key-input,
@@ -334,6 +335,8 @@
       var datasetInfoList = {
 
       }
+      var cacheFeatures = [];
+      var editedFeatures = [];
       const container = document.getElementById('popup');
       const content = document.getElementById('popup-content');
       getDomains(currentDataset);
@@ -699,8 +702,15 @@
         });
 
         document.querySelector('.cancel-edit').addEventListener('click', function() {
-          if (currentFeature) {
-            currentSource.removeFeature(currentFeature.origin);
+          if (cacheFeatures.length) {
+            editedFeatures.forEach((feature) => {
+              currentSource.removeFeature(feature);
+            });
+            cacheFeatures.forEach((feature) => {
+              currentSource.addFeature(feature);
+            });
+            editedFeatures = [];
+            cacheFeatures = [];
             currentFeature = {};
             if (currentShowPanel) {
               document.querySelector(`.${currentShowPanel}`).style.display = 'none';
@@ -724,6 +734,7 @@
         }
         let { type } = datasetInfoList[currentDataset];
         if (className.includes('plus')) {
+          cacheFeatures = [];
           document.querySelector('.edit-tips').style.display = 'none';
           startDraw(type);
           document.querySelector('.add-feature-info').style.display = 'block';
@@ -742,6 +753,7 @@
           status = 'EDIT';
           startSelect();
         } else if (className.includes('trash')) {
+          cacheFeatures = [];
           document.querySelector('.edit-tips').style.display = 'none';
           endDraw();
           document.querySelector('.delete-feature-info').style.display = 'block';
@@ -920,6 +932,8 @@
             let deleteEle = document.querySelector('.delete-feature-list');
             deleteEle.appendChild(deleteItem);
           } else if (status === 'EDIT') {
+            cacheFeatures.push(_.cloneDeep(feature));
+            editedFeatures.push(feature);
             document.querySelector('.edit-tips').style.display = 'none';
             let props = new ol.format.GeoJSON().writeFeature(feature);
             props = JSON.parse(props);

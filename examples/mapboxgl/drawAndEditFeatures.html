@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
     <script type="text/javascript" include="draw" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
-    <script src="https://unpkg.com/mapbox-gl-draw-snap-mode"></script>
+    <script src="../../dist/mapboxgl/mapbox-gl-draw-snap-mode.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -355,12 +355,12 @@
             'circle-radius': 8
           },
           line: {
-            'line-color': '#61b79e',
+            'line-color': '#3388ff',
             'line-width': 4
           },
           fill: {
-            'fill-color': '#b5b5b5',
-            'fill-opacity': 0.5
+            'fill-color': '#3388ff',
+            'fill-opacity': 0.3
           }
         }
           map.addLayer({
@@ -385,7 +385,6 @@
                   return res.json();
                 })
                 .then((res) => {
-                  console.log('domain', res);
                   domainRules = {};
                   res && Array.isArray(res) && res.forEach((domain) => {
                     domainRules[domain.fieldName.toUpperCase()] = domain;
@@ -402,10 +401,8 @@
         if (rule && rule.type === 'RANGE') {
           let value = +e.target.value;
           if (value < rule.rangeInfos[0].min || value > rule.rangeInfos[0].max) {
-            // 提升错误
             e.target.style.borderColor = 'red';
             var parent = e.target.parentNode;
-            // 
             let error = document.createElement('span');
             error.style.color = 'red';
             error.className = 'error-tips';
@@ -462,19 +459,25 @@
 
       function init(dataUrl, datasourceName) {
         let styles = mapboxGlDrawSnapMode.SnapModeDrawStyles;
-        // styles.forEach((style) => {
-        //   if (['gl-draw-line-static', 'gl-draw-line-inactive', 'gl-draw-line-active'].includes(style.id)) {
-        //     style.paint['line-color'] = '#61b79e';
-        //     style.paint['line-width'] = 3;
-        //   }
-        //   if (['gl-draw-point-static', 'gl-draw-point-inactive', 'gl-draw-point-active'].includes(style.id)) {
-        //     style.paint['circle-color'] = '#e55561';
-        //     style.paint['circle-radius'] = 8;
-        //   }
-        //   if (['gl-draw-polygon-fill-static', 'gl-draw-polygon-fill-inactive', 'gl-draw-polygon-fill-active'].includes(style.id)) {
-        //     style.paint['fill-color'] = '#5a5a5a';
-        //   }
-        // });
+        styles.forEach((style) => {
+          if (['gl-draw-line-static', 'gl-draw-line-inactive', 'gl-draw-line-active'].includes(style.id)) {
+            style.paint['line-color'] = '#3388ff';
+            style.paint['line-width'] = 3;
+          }
+          if (['gl-draw-point-static', 'gl-draw-point-inactive', 'gl-draw-point-active'].includes(style.id)) {
+            style.paint['circle-color'] = '#e55561';
+            style.paint['circle-radius'] = 8;
+          }
+        if (['gl-draw-polygon-stroke-inactive', 'gl-draw-polygon-stroke-static', 'gl-draw-polygon-stroke-active'].includes(style.id)) {
+          style.paint['line-color'] = '#3388ff';
+          style.paint['line-opacity'] = 0.3;
+        }
+          if (['gl-draw-polygon-fill-static', 'gl-draw-polygon-fill-inactive', 'gl-draw-polygon-fill-active'].includes(style.id)) {
+            style.paint['fill-color'] = '#3388ff';
+            style.paint['fill-outline-color'] = '#3388ff';
+            style.paint['fill-opacity'] = 0.3;
+          }
+        });
         draw = new MapboxDraw({
           modes: {
             ...MapboxDraw.modes,
@@ -726,6 +729,7 @@
         document.querySelector('.cancel-edit').addEventListener('click', function() {
           if (curEditOriginFeatures.length) {
             curEditOriginFeatures.forEach((feature) => {
+              map.setFilter(feature.properties.datasetName, null);
               draw.delete(feature.id);
             });
             curEditOriginFeatures = [];
@@ -813,7 +817,20 @@
         } else {
           isUpdate = true;
         }
+        if (type === 'edit') {
+          const allFeature = draw.getAll();
+          const datas = map.getSource(currentDataset)._data;
+          datas.features.forEach((feature) => {
+            allFeature.features.forEach((editFeature) => {
+              if (feature.id === editFeature.id) {
+                feature = editFeature;
+              };
+            });
+          });
+        };
+        
         commit(isUpdate);
+
         // 切换到编辑
         switchPanel('edit', true);
       }
@@ -837,7 +854,6 @@
 
           await featureService.getFeaturesBySQL(getFeatureParams).then(function (serviceResult) {
             var geojsonFeatures = serviceResult.result.features;
-            // 删除的时候需要
             geojsonFeatures.features.forEach((feature) => {
               feature.properties.datasetName = datasetName;
             });
@@ -892,7 +908,7 @@
         map.on('click', function (e) {
           let res = map.queryRenderedFeatures(e.point);
           if (status === 'EDIT') {
-            if (res[0]) {
+            if (res[0] && !['mapbox-gl-draw-cold', 'mapbox-gl-draw-hot'].includes(res[0].source)) {
               let { type, geometry, id, properties } = res[0];
               let editFeature = {
                 type,
@@ -900,9 +916,26 @@
                 id,
                 properties
               };
+              let source = map.getSource(properties.datasetName);
+              let layer = map.getLayer(properties.datasetName);
+              let allIds = source._data.features.map((feature) => {
+                return feature.id;
+              });
+              allIds = allIds.filter((id) => {
+                if (id !== +properties.SMID && !curEditOriginFeatures.find((feature) => {
+                  return feature.id === id;
+                })) {
+                  return true;
+                }
+                return false;
+              });
+              allIds = allIds.map((id) => {
+                return id + '';
+              });
               draw.add(editFeature);
-              draw.changeMode('direct_select', { featureId: id });
-
+              const filters = ['match', ['get', 'SMID'], allIds, true, false];
+              map.setFilter(properties.datasetName, filters);
+              draw.changeMode(geometry.type === 'Point' ? 'simple_select' : 'direct_select', { featureId: id });
               document.querySelector('.edit-tips').style.display = 'none';
               currentFeature.dataset = editFeature.properties.datasetName;
               document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
@@ -940,6 +973,21 @@
               document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
               renderEditAttribute('edit', currentFeature.data.properties);
           }
+        });
+        map.on('draw.update', function (e) {
+          let feature = e.features[0];
+          if (status === 'EDIT') {
+              document.querySelector('.edit-tips').style.display = 'none';
+              currentFeature.dataset = feature.properties.datasetName;
+              currentFeature.data = feature;
+              document.querySelector('.edit-feature-info').style.display = 'block';
+              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+              renderEditAttribute('edit', currentFeature.data.properties);
+          }
+        });
+        map.on('draw.selectionchange', function() {
+          updateChanged = true;
+          document.querySelector('.editSave').disabled = false;
         });
       }
 

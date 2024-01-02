@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
     <script type="text/javascript" include="draw" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script src="https://unpkg.com/mapbox-gl-draw-snap-mode"></script>
+    <script src="../../dist/mapboxgl/mapbox-gl-draw-snap-mode.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -28,6 +28,13 @@
         background-color: #0081e2 !important;
          border-color: #0081e2 !important;
       }
+
+      .btm-gray {
+        padding: 4px 6px !important;
+        background-color: #aaa !important;
+         border-color: #aaa !important;
+      }
+
       .button-group {
         background-color: #fff;
         /* height: 60px; */
@@ -46,17 +53,17 @@
 
       .add-feature-info {
         padding: 10px;
-        max-height: 820px;
+        max-height: 620px;
         overflow-y: scroll;
       }
       .delete-feature-info {
         padding: 10px;
-        max-height: 820px;
+        max-height: 620px;
         overflow-y: scroll;
       }
       .edit-feature-info {
         padding: 10px;
-        max-height: 820px;
+        max-height: 620px;
         overflow-y: scroll;
       }
       .btn-group-xs {
@@ -67,7 +74,6 @@
         font-weight: 800;
         font-size: 16px;
       }
-
       .add-attribute-info,
       .edit-attribute-info {
         margin-bottom: 50px;
@@ -155,7 +161,7 @@
         max-width: 720px;
         display: none;
       }
-      
+
       .palyIcon{
         position: absolute;
         transform: translate(-50%, -50%);
@@ -176,6 +182,15 @@
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="map" style="width: 100%; height: 100%"></div>
+    <div id="popup" class="ol-popup">
+      <p>按Tab键开始输入坐标值，回车键确定</p>
+      <div id="popup-content">
+        <h5>X</h5>
+        <input class="input-element coordX" type="number">
+        <h5>Y</h5>
+        <input class="input-element coordY" type="number">
+      </div>
+    </div>
     <div class="video-modal">
       <button class="video-modal-close">Close</button>
       <video controls width="720">
@@ -226,7 +241,7 @@
           <div class="add-attribute-info">
           </div>
           <div class="info-bottom">
-            <button class="btn btn-default btn-group-xs cancel">取消</button>
+            <button class="btn btn-default btn-group-xs cancel-add">取消</button>
             <button class="btn btn-primary btn-group-xs addSave">保存</button>
           </div>
         </div>
@@ -240,7 +255,7 @@
           <div class="edit-attribute-info">
           </div>
           <div class="info-bottom">
-            <button class="btn btn-default btn-group-xs cancel">取消</button>
+            <button class="btn btn-default btn-group-xs cancel-edit">取消</button>
             <button disabled class="btn btn-primary btn-group-xs editSave">保存</button>
           </div>
         </div>
@@ -254,7 +269,7 @@
             </div>
           </div>
           <div class="info-bottom">
-            <button class="btn btn-default btn-group-xs cancel">取消</button>
+            <button class="btn btn-default btn-group-xs cancel-delete">取消</button>
             <button class="btn btn-danger btn-group-xs delete">删除</button>
           </div>
         </div>
@@ -264,7 +279,6 @@
     </div>
     <script type="text/javascript" include="jquery,bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript">
-      console.log('window', window);
       var status = 'ADD';
       var type = '';
       var uniqueId = 0;
@@ -287,6 +301,8 @@
       var deleteList = {};
       var currentFeature = {};
       var updateChanged = false;
+      var addFeatureId = null;
+      var curEditOriginFeatures = [];
       const typeMap = {
                 REGION: 'Fill',
                 LINE: 'Line',
@@ -325,80 +341,37 @@
       init(dataUrl, dataSourceName);
 
       function addVectorLayer(type, features, datasetName) {
-        const styleMap = {
-          Polygon: {
-            type: 'fill',
-            paint: {
-              'fill-opacity': 0.8,
-      'fill-color': '#3fb1e3',
-      'fill-translate': [0, 0],
-      'fill-antialias': true,
-      'fill-outline-color': '#3fb1e3',
-      'fill-translate-anchor': 'map'
-            }
+        const typeMap = {
+          Point: 'circle',
+          LineString: 'line',
+          MultiLineString: 'line',
+          MultiPolygon: 'fill',
+          Polygon: 'fill'
+        }
+        type = typeMap[type];
+        const styleOptions = {
+          circle: {
+            'circle-color': '#e55561',
+            'circle-radius': 8
           },
-          MultiPolygon: {
-            type: 'fill',
-            paint: {
-              'fill-opacity': 0.8,
-      'fill-color': '#3fb1e3',
-      'fill-translate': [0, 0],
-      'fill-antialias': true,
-      'fill-outline-color': '#3fb1e3',
-      'fill-translate-anchor': 'map'
-            }
+          line: {
+            'line-color': '#3388ff',
+            'line-width': 4
           },
-          MultiLineString: {
-            type: 'line',
-            paint: {
-              'line-opacity': 1,
-      'line-color': '#3fb1e3',
-      'line-width': 3,
-      'line-blur': 1
-            }
-          },
-          LineString: {
-            type: 'line',
-            paint: {
-              'line-opacity': 1,
-      'line-color': '#3fb1e3',
-      'line-width': 3,
-      'line-blur': 1
-            }
-          },
-        Point: {
-          type: 'circle',
-          paint: {
-            'circle-radius': 6,
-            'circle-color': '#3fb1e3',
-            'circle-opacity': 1,
-            'circle-blur': 0,
-            'circle-translate': [0, 0],
-            'circle-translate-anchor': 'map',
-            'circle-pitch-scale': 'map',
-            'circle-pitch-alignment': 'viewport',
-            'circle-stroke-width': 0,
-            'circle-stroke-color': '#000',
-            'circle-stroke-opacity': 1
+          fill: {
+            'fill-color': '#3388ff',
+            'fill-opacity': 0.3
           }
         }
-        };
-        console.log('type', type);
-        // map.addLayer({
-        //     id: datasetName,
-        //     type: styleMap[type].type,
-        //     paint: styleMap[type].paint,
-        //     source: {
-        //       type: 'geojson',
-        //       data: features
-        //     }
-        //   });
-          features.features = features.features.map((feature) => {
-            feature.id = `${datasetName}_${feature.id}`;
-            return feature;
+          map.addLayer({
+            id: datasetName,
+            type: type,
+            source: {
+              type: 'geojson',
+              data: features
+            }, 
+            paint: styleOptions[type]
           });
-          draw.add(features);
-         console.log(' draw.getall',  draw.getAll());
       }
       var fieldList = [];
       var filterFields = {
@@ -412,28 +385,38 @@
                   return res.json();
                 })
                 .then((res) => {
-                  console.log('domain', res);
                   domainRules = {};
                   res && Array.isArray(res) && res.forEach((domain) => {
-                    domainRules[domain.name] = domain;
+                    domainRules[domain.fieldName.toUpperCase()] = domain;
                   });
                 });
       }
 
       function checkInput(e) {
-        console.log('e add-attribute-info', e);
         if (!updateChanged && status === 'EDIT') {
           updateChanged = true;
           document.querySelector('.editSave').disabled = false;
         }
         var rule = domainRules[e.target.label];
         if (rule && rule.type === 'RANGE') {
-          let value = e.target.value;
+          let value = +e.target.value;
           if (value < rule.rangeInfos[0].min || value > rule.rangeInfos[0].max) {
-            // 提升错误
+            e.target.style.borderColor = 'red';
+            var parent = e.target.parentNode;
+            let error = document.createElement('span');
+            error.style.color = 'red';
+            error.className = 'error-tips';
+            error.innerText = `输入值超出值域范围：[${rule.rangeInfos[0].min}, ${rule.rangeInfos[0].max})`;
+            parent.insertBefore(error, e.target.nextSibling);
+            document.querySelector('.editSave').disabled = true;
             // 保存按钮 disabled
+          } else {
+            let error = document.querySelector('.error-tips');
+            error && error.parentNode.removeChild(error);
+            e.target.style.borderColor = '#000';
+            document.querySelector('.editSave').disabled = false;
           }
-         }
+        }
 
          if (e.target.tagName === 'INPUT' && !e.target.value.includes('.png') && !e.target.value.includes('.mp4')) {
             deleteVideoAndImg(e)
@@ -475,6 +458,26 @@
       getDomains(currentDataset);
 
       function init(dataUrl, datasourceName) {
+        let styles = mapboxGlDrawSnapMode.SnapModeDrawStyles;
+        styles.forEach((style) => {
+          if (['gl-draw-line-static', 'gl-draw-line-inactive', 'gl-draw-line-active'].includes(style.id)) {
+            style.paint['line-color'] = '#3388ff';
+            style.paint['line-width'] = 3;
+          }
+          if (['gl-draw-point-static', 'gl-draw-point-inactive', 'gl-draw-point-active'].includes(style.id)) {
+            style.paint['circle-color'] = '#e55561';
+            style.paint['circle-radius'] = 8;
+          }
+        if (['gl-draw-polygon-stroke-inactive', 'gl-draw-polygon-stroke-static', 'gl-draw-polygon-stroke-active'].includes(style.id)) {
+          style.paint['line-color'] = '#3388ff';
+          style.paint['line-opacity'] = 0.3;
+        }
+          if (['gl-draw-polygon-fill-static', 'gl-draw-polygon-fill-inactive', 'gl-draw-polygon-fill-active'].includes(style.id)) {
+            style.paint['fill-color'] = '#3388ff';
+            style.paint['fill-outline-color'] = '#3388ff';
+            style.paint['fill-opacity'] = 0.3;
+          }
+        });
         draw = new MapboxDraw({
           modes: {
             ...MapboxDraw.modes,
@@ -483,7 +486,7 @@
             draw_line_string: mapboxGlDrawSnapMode.SnapLineMode,
             direct_select: mapboxGlDrawSnapMode.SnapDirectSelect,
           },
-          styles: mapboxGlDrawSnapMode.SnapModeDrawStyles,
+          styles: styles,
           userProperties: true,
           snap: true,
           displayControlsDefault: false,
@@ -496,6 +499,16 @@
           defaultMode: 'simple_select'
         });
         map.addControl(draw, 'top-left');
+        map.on('draw.create', function (e) {
+          if (e.features) {
+            let feature = e.features[0];
+            addFeatureId = feature.id;
+            datasetInfoList[currentDataset].id++;
+            feature.id = datasetInfoList[currentDataset].id;
+            currentFeature.data = feature;
+            document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+          }
+        });
         let datasetService = new maplibregl.supermap.DatasetService(dataUrl)
         datasetService.getDatasets(datasourceName, function(e) {
           datasetNameList = e.result.datasetNames;
@@ -528,21 +541,27 @@
           const option = document.createElement('option');
           option.value = item;
           option.innerText = item;
+          getField(item);
           if (item === selectDataset) {
             option.selected = true;
-            getField(item, selectType);
+            setTimeout(() => {
+              renderAttribute(item);
+            }, 1000);
           }
           selectElement.appendChild(option);
         });
       }
 
-      function getField(datasetName, type) {
+      function getField(datasetName) {
         new maplibregl.supermap.FieldService(dataUrl).getFields(
           new maplibregl.supermap.FieldParameters({
             datasource: dataSourceName,
             dataset: datasetName
           }),
           function (result) {
+            if (!result.result) {
+              return;
+            }
             fieldList = result.result.fieldNames;
             fieldList.forEach((fieldName) => {
               fetch(
@@ -555,9 +574,6 @@
                   filterFields[datasetName][res.fieldInfo.name.toUpperCase()] = res.fieldInfo.isSystemField;
                 });
             });
-            setTimeout(() => {
-              renderAttribute(datasetName);
-            }, 1000);
           }
         );
       }
@@ -573,14 +589,12 @@
             const title = document.createElement('h6');
             title.innerText = key;
             item.appendChild(title);
-            if (domainRules[key]) {
-              if (domainRules[key].type === 'CODE') {
+            if (domainRules[key] && domainRules[key].type === 'CODE') {
                 var selectValues = domainRules[key].codeInfos.map((item) => {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
                 item.appendChild(select);
-              }
               return;
             }
             
@@ -668,7 +682,6 @@
         });
       }
 
-
       function bindEvents() {
         document.querySelector('.addDatasetNameList').addEventListener('change', function(e) {
           let value = e.target.value;
@@ -687,9 +700,52 @@
         });
 
         document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
-        document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
+        document.querySelector('.edit-attribute-info').addEventListener('change', checkInput);
 
-        map.on('pointermove', function (evt) {
+        content.addEventListener('change', function(e) {
+          let x;
+          let y;
+          if (e.target.className.includes('coordX')) {
+            x = e.target.value;
+            y = document.querySelector('.coordY').value;
+          } else if (e.target.className.includes('coordY')) {
+            y = e.target.value;
+            x = document.querySelector('.coordX').value;
+          }
+          draw.appendCoordinates([[x, y]]);
+          overlayPopup.setPosition([x, y]);
+        });
+
+        document.querySelector('.cancel-add').addEventListener('click', function() {
+          if (addFeatureId) {
+            draw.delete(addFeatureId);
+            currentFeature.data = null;
+            if (currentShowPanel) {
+              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            }
+          }
+        });
+
+        document.querySelector('.cancel-edit').addEventListener('click', function() {
+          if (curEditOriginFeatures.length) {
+            curEditOriginFeatures.forEach((feature) => {
+              map.setFilter(feature.properties.datasetName, null);
+              draw.delete(feature.id);
+            });
+            curEditOriginFeatures = [];
+            if (currentShowPanel) {
+              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            }
+          }
+        });
+
+        document.querySelector('.cancel-delete').addEventListener('click', function() {
+          let deleteEle = document.querySelector('.delete-feature-list');
+          deleteEle.innerHTML = '';
+          deleteList = [];
+          if (currentShowPanel) {
+            document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+          }
         });
       }
 
@@ -705,7 +761,6 @@
           currentShowPanel = 'add-feature-info';
           status = 'ADD';
         } else if (className.includes('edit')) {
-          // changeMode();
           draw.changeMode('simple_select');
           if (fromAdd) {
             fillContent();
@@ -737,40 +792,45 @@
       let saveBtn = document.querySelector('.addSave');
       let editBtn = document.querySelector('.editSave');
       saveBtn.addEventListener('click', function () {
-        save();
+        save('add');
       });
       editBtn.addEventListener('click', function () {
-        save();
+        save('edit');
       });
       let deleteBtn = document.querySelector('.delete');
       deleteBtn.addEventListener('click', function () {
         deleteFeature();
       });
-      function save() {
+      function save(type) {
         var properties = {};
-        const attributeElement = document.querySelector('.add-attribute-info');
-        console.log(' attributeElement.children',  attributeElement.children);
+        const attributeElement = document.querySelector(`.${type}-attribute-info`);
         var listArr = [...attributeElement.children];
         listArr.forEach((item, index) => {
           var itemArr = [...item.children];
           properties[itemArr[0].textContent] = itemArr[1].value;
         });
         currentFeature.data.properties = properties;
-        // var olFeature = new ol.format.GeoJSON().readFeature(currentFeature.data);
-        // if (!olFeature.getId()) {
-        //   uniqueId++;
-        //   olFeature.setId(uniqueId);
-        //   isUpdate = false;
-        // } else {
-        //   isUpdate = true;
-        // }
-        // var features = sourceMap[type].getFeatures();
-        // let index = features.indexOf(currentFeature.origin);
-        // features[index] = olFeature;
-        // currentFeature.origin = olFeature;
-        // sourceMap[type].clear();
-        // sourceMap[type].addFeatures(features);
-        commit(type, isUpdate);
+        if (!currentFeature.data.id) {
+          datasetInfoList[currentDataset].uniqueId++;
+          currentFeature.data.id = datasetInfoList[currentDataset].uniqueId;
+          isUpdate = false;
+        } else {
+          isUpdate = true;
+        }
+        if (type === 'edit') {
+          const allFeature = draw.getAll();
+          const datas = map.getSource(currentDataset)._data;
+          datas.features.forEach((feature) => {
+            allFeature.features.forEach((editFeature) => {
+              if (feature.id === editFeature.id) {
+                feature = editFeature;
+              };
+            });
+          });
+        };
+        
+        commit(isUpdate);
+
         // 切换到编辑
         switchPanel('edit', true);
       }
@@ -781,6 +841,7 @@
         var featureService = new maplibregl.supermap.FeatureService(dataUrl);
         let datasetOrder = [].concat(datasetTypeClassify['Fill'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
         // let datasetOrder = [].concat(datasetTypeClassify['Point'])
+        // let datasetOrder = ['China_island', 'demo_line', 'Capitals'];
         datasetOrder.forEach(async (datasetName) => {
           var getFeatureParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
@@ -793,22 +854,15 @@
 
           await featureService.getFeaturesBySQL(getFeatureParams).then(function (serviceResult) {
             var geojsonFeatures = serviceResult.result.features;
-            // 删除的时候需要
             geojsonFeatures.features.forEach((feature) => {
               feature.properties.datasetName = datasetName;
             });
             console.log('geojsonFeatures', geojsonFeatures, serviceResult, getFeatureParams);
-              // var features = new ol.format.GeoJSON().readFeatures(geojsonFeatures);
               geojsonFeatures.features.forEach((feature) => {
                 if (feature.id > datasetInfoList[datasetName].id) {
                   datasetInfoList[datasetName].id = feature.id;
                 }
               });
-              // features.forEach((feature) => {
-              //   if (feature.getId() > uniqueId) {
-              //     uniqueId = feature.getId();
-              //   }
-              // });
               if (geojsonFeatures.features[0]) {
                addVectorLayer(geojsonFeatures.features[0].geometry.type, geojsonFeatures, datasetName);
               }
@@ -817,7 +871,7 @@
         });
       }
 
-      function commit(type, isUpdate) {
+      function commit(isUpdate) {
         if (currentFeature.data) {
           var addFeatureParams = new maplibregl.supermap.EditFeaturesParameters({
             features: currentFeature.data,
@@ -851,71 +905,113 @@
       }
       function startSelect(source) {
         clearInteraction();
-        map.on('draw.update', function (e) {
-        console.log('update', e.features);
-          let feature = e.features[0];
-         if (status === 'EDIT') {
-            document.querySelector('.edit-tips').style.display = 'none';
-            currentFeature.dataset = props.properties.datasetName;
-            currentFeature.data = feature;
-            document.querySelector('.edit-feature-info').style.display = 'block';
-            document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
-            renderEditAttribute('edit', currentFeature.data.properties);
-          }
-        });
-        map.on('draw.selectionchange', function (e) {
-        console.log('update', e.features);
-          let feature = e.features[0];
-          if (status == 'DELETE') {
+        map.on('click', function (e) {
+          let res = map.queryRenderedFeatures(e.point);
+          if (status === 'EDIT') {
+            if (res[0] && !['mapbox-gl-draw-cold', 'mapbox-gl-draw-hot'].includes(res[0].source)) {
+              let { type, geometry, id, properties } = res[0];
+              let editFeature = {
+                type,
+                geometry,
+                id,
+                properties
+              };
+              let source = map.getSource(properties.datasetName);
+              let layer = map.getLayer(properties.datasetName);
+              let allIds = source._data.features.map((feature) => {
+                return feature.id;
+              });
+              allIds = allIds.filter((id) => {
+                if (id !== +properties.SMID && !curEditOriginFeatures.find((feature) => {
+                  return feature.id === id;
+                })) {
+                  return true;
+                }
+                return false;
+              });
+              allIds = allIds.map((id) => {
+                return id + '';
+              });
+              draw.add(editFeature);
+              const filters = ['match', ['get', 'SMID'], allIds, true, false];
+              map.setFilter(properties.datasetName, filters);
+              draw.changeMode(geometry.type === 'Point' ? 'simple_select' : 'direct_select', { featureId: id });
+              document.querySelector('.edit-tips').style.display = 'none';
+              currentFeature.dataset = editFeature.properties.datasetName;
+              document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
+              currentDataset = currentFeature.dataset;
+              currentFeature.data = editFeature;
+              curEditOriginFeatures.push(editFeature);
+              document.querySelector('.edit-feature-info').style.display = 'block';
+              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry });
+              renderEditAttribute('edit', currentFeature.data.properties);
+            }
+          } else if (status == 'DELETE') {
+            let feature = res[0];
             if (feature) {
             if (!deleteList[feature.properties.datasetName]) {
               deleteList[feature.properties.datasetName] = []
             }
-            if (deleteList[feature.properties.datasetName].includes(feature.properties.SMID)) {
+            if (deleteList[feature.properties.datasetName].includes(feature.id)) {
               return;
             }
-            deleteList[feature.properties.datasetName].push(feature.properties.SMID);
+            deleteList[feature.properties.datasetName].push(feature.id);
             const deleteItem = document.createElement('div');
-            deleteItem.innerText = `SMID: ${feature.properties.SMID} (${feature.properties.datasetName})`;
+            deleteItem.innerText = `SMID: ${feature.id} (${feature.properties.datasetName})`;
             let deleteEle = document.querySelector('.delete-feature-list');
             deleteEle.appendChild(deleteItem);
             }
-          } else if (status === 'EDIT') {
-            document.querySelector('.edit-tips').style.display = 'none';
-            currentFeature.dataset = feature.properties.datasetName;
-            currentFeature.data = feature;
-            document.querySelector('.edit-feature-info').style.display = 'block';
-            document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
-            renderEditAttribute('edit', currentFeature.data.properties);
           }
+        });
+        map.on('draw.update', function (e) {
+          let feature = e.features[0];
+          if (status === 'EDIT') {
+              document.querySelector('.edit-tips').style.display = 'none';
+              currentFeature.dataset = feature.properties.datasetName;
+              currentFeature.data = feature;
+              document.querySelector('.edit-feature-info').style.display = 'block';
+              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+              renderEditAttribute('edit', currentFeature.data.properties);
+          }
+        });
+        map.on('draw.update', function (e) {
+          let feature = e.features[0];
+          if (status === 'EDIT') {
+              document.querySelector('.edit-tips').style.display = 'none';
+              currentFeature.dataset = feature.properties.datasetName;
+              currentFeature.data = feature;
+              document.querySelector('.edit-feature-info').style.display = 'block';
+              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+              renderEditAttribute('edit', currentFeature.data.properties);
+          }
+        });
+        map.on('draw.selectionchange', function() {
+          updateChanged = true;
+          document.querySelector('.editSave').disabled = false;
         });
       }
 
       function startDraw(type, source) {
         endDraw();
+        const popup = new maplibregl.Popup({ className: 'popup' })
+        .setDOMContent(container)
+        .setMaxWidth("300px")
+        .addTo(map);
+        map.on('mousemove', function (evt) {
+          const coordinate = evt.lngLat;
+          popup.setLngLat(coordinate);
+          content.querySelector('.coordX').value = coordinate.lng;
+          content.querySelector('.coordY').value = coordinate.lat;
+        });
         var drawTypeMap = {
           REGION: 'draw_polygon',
           LINE: 'draw_line_string',
           POINT: 'draw_point'
         }
         draw.changeMode(drawTypeMap[type]);
-        map.on('draw.create', function (e) {
-          if (e.features) {
-            let feature = e.features[0];
-            datasetInfoList[currentDataset].id++;
-            feature.id = datasetInfoList[currentDataset].id;
-            currentFeature.data = feature;
-            // 填充空间信息 !!
-            document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
-          }
-        });
       }
 
       function endDraw() {
-        // if (draw) {
-        //   map.removeControl(draw);
-        //   draw = null;
-        // }
       }
 
       function clearInteraction() {
