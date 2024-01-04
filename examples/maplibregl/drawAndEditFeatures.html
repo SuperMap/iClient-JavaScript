@@ -162,7 +162,7 @@
         display: none;
       }
 
-      .palyIcon{
+      .playIcon{
         position: absolute;
         transform: translate(-50%, -50%);
         left: 50%;
@@ -172,7 +172,7 @@
         background: url('../img/play1.png') no-repeat;
         background-size: contain;
       }
-      .video-element, .img-element, .palyIcon{
+      .video-element, .img-element, .playIcon{
         cursor: pointer;
       }
       .button-group, .info-panel, .edit-tips {
@@ -303,7 +303,7 @@
       var updateChanged = false;
       var addFeatureId = null;
       var curEditOriginFeatures = [];
-      const typeMap = {
+      var typeMap = {
                 REGION: 'Fill',
                 LINE: 'Line',
                 POINT: 'Point'
@@ -314,8 +314,8 @@
       var datasetInfoList = {
 
       }
-      const container = document.getElementById('popup');
-      const content = document.getElementById('popup-content');
+      var container = document.getElementById('popup');
+      var content = document.getElementById('popup-content');
 
       map = new maplibregl.Map({
         container: 'map',
@@ -341,7 +341,7 @@
       init(dataUrl, dataSourceName);
 
       function addVectorLayer(type, features, datasetName) {
-        const typeMap = {
+        var typeMap = {
           Point: 'circle',
           LineString: 'line',
           MultiLineString: 'line',
@@ -349,7 +349,7 @@
           Polygon: 'fill'
         }
         type = typeMap[type];
-        const styleOptions = {
+        var styleOptions = {
           circle: {
             'circle-color': '#e55561',
             'circle-radius': 8
@@ -378,18 +378,19 @@
       };
 
       function getDomains(datasetName) {
-        fetch(
-                `${dataUrl}/datasources/${dataSourceName}/datasets/${datasetName}/domain.json`
-              )
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res) => {
-                  domainRules = {};
-                  res && Array.isArray(res) && res.forEach((domain) => {
-                    domainRules[domain.fieldName.toUpperCase()] = domain;
-                  });
-                });
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', dataUrl + "/datasources/" + dataSourceName + "/datasets/" + datasetName + "/domain.json", true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var res = JSON.parse(xhr.responseText);
+            domainRules = {};
+            res && Array.isArray(res) && res.forEach(function(domain) {
+              var key = domain.fieldName.toUpperCase();
+              domainRules[key] = domain;
+            });
+          }
+        };
+        xhr.send();
       }
 
       function checkInput(e) {
@@ -399,54 +400,54 @@
         }
         var rule = domainRules[e.target.label];
         if (rule && rule.type === 'RANGE') {
-          let value = +e.target.value;
+          var value = +e.target.value;
           if (value < rule.rangeInfos[0].min || value > rule.rangeInfos[0].max) {
             e.target.style.borderColor = 'red';
             var parent = e.target.parentNode;
-            let error = document.createElement('span');
+            var error = document.createElement('span');
             error.style.color = 'red';
             error.className = 'error-tips';
-            error.innerText = `输入值超出值域范围：[${rule.rangeInfos[0].min}, ${rule.rangeInfos[0].max})`;
+            error.innerText = '输入值超出值域范围：[' + rule.rangeInfos[0].min + ', ' + rule.rangeInfos[0].max + ')';
             parent.insertBefore(error, e.target.nextSibling);
             document.querySelector('.editSave').disabled = true;
             // 保存按钮 disabled
           } else {
-            let error = document.querySelector('.error-tips');
+            var error = document.querySelector('.error-tips');
             error && error.parentNode.removeChild(error);
             e.target.style.borderColor = '#000';
             document.querySelector('.editSave').disabled = false;
           }
         }
 
-         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.png') && !e.target.value.includes('.mp4')) {
-            deleteVideoAndImg(e)
-         }
-
-         if (e.target.value.includes('.mp4')) {
+        if (e.target.parentNode.className === 'VIDEO') {
             deleteVideoAndImg(e);
-            const videoPlayIcon = document.createElement('div');
-            videoPlayIcon.className = 'palyIcon';
-            const video = document.createElement('video');
-            video.src = e.target.value;
-            video.className = `video-element ${e.target.label}`;
-            var parent = e.target.parentNode;
-            parent.insertBefore(video,e.target.nextSibling);
-            parent.insertBefore(videoPlayIcon,video);
-            previewVideo(video);
-          } else if (e.target.value.includes('.png')) {
+            if(e.target.value) {
+              var videoPlayIcon = document.createElement('div');
+              videoPlayIcon.className = 'playIcon';
+              var video = document.createElement('video');
+              video.src = e.target.value;
+              video.className = 'video-element ' + e.target.label;
+              var parent = e.target.parentNode;
+              parent.insertBefore(video,e.target.nextSibling);
+              parent.insertBefore(videoPlayIcon,video);
+              previewVideo(video);
+            }
+          } else if (e.target.parentNode.className === 'IMG') {
             deleteVideoAndImg(e);
-            const img = document.createElement('img');
-            img.src = e.target.value;
-            img.className = `img-element ${e.target.label}`;
-            new Viewer(img);
-            var parent = e.target.parentNode;
-            parent.insertBefore(img,e.target.nextSibling);
+            if(e.target.value) {
+              var img = document.createElement('img');
+              img.src = e.target.value;
+              img.className = 'img-element ' + e.target.label;
+              new Viewer(img);
+              var parent = e.target.parentNode;
+              parent.insertBefore(img,e.target.nextSibling);
+            }
           }
       }
 
       function deleteVideoAndImg(e) { 
-        let ele = document.querySelector(`.${e.target.label} img`) || document.querySelector(`.${e.target.label} video`);
-        let videoPlayIcon = document.querySelector(`.${e.target.label} .palyIcon`)
+        var ele = document.querySelector('.' + e.target.label + ' img') || document.querySelector('.' + e.target.label + ' video');
+        var videoPlayIcon = document.querySelector('.' + e.target.label + ' .playIcon');
         if (ele) {
           ele.parentNode.removeChild(ele);
         }
@@ -458,34 +459,38 @@
       getDomains(currentDataset);
 
       function init(dataUrl, datasourceName) {
-        let styles = mapboxGlDrawSnapMode.SnapModeDrawStyles;
-        styles.forEach((style) => {
-          if (['gl-draw-line-static', 'gl-draw-line-inactive', 'gl-draw-line-active'].includes(style.id)) {
+        var styles = mapboxGlDrawSnapMode.SnapModeDrawStyles;
+        styles.forEach(function(style) {
+          if (['gl-draw-line-static', 'gl-draw-line-inactive', 'gl-draw-line-active'].indexOf(style.id) > -1) {
             style.paint['line-color'] = '#3388ff';
             style.paint['line-width'] = 3;
           }
-          if (['gl-draw-point-static', 'gl-draw-point-inactive', 'gl-draw-point-active'].includes(style.id)) {
+          if (['gl-draw-point-static', 'gl-draw-point-inactive', 'gl-draw-point-active'].indexOf(style.id) > -1) {
             style.paint['circle-color'] = '#e55561';
             style.paint['circle-radius'] = 8;
           }
-        if (['gl-draw-polygon-stroke-inactive', 'gl-draw-polygon-stroke-static', 'gl-draw-polygon-stroke-active'].includes(style.id)) {
+        if (['gl-draw-polygon-stroke-inactive', 'gl-draw-polygon-stroke-static', 'gl-draw-polygon-stroke-active'].indexOf(style.id) > -1) {
           style.paint['line-color'] = '#3388ff';
           style.paint['line-opacity'] = 0.3;
         }
-          if (['gl-draw-polygon-fill-static', 'gl-draw-polygon-fill-inactive', 'gl-draw-polygon-fill-active'].includes(style.id)) {
+          if (['gl-draw-polygon-fill-static', 'gl-draw-polygon-fill-inactive', 'gl-draw-polygon-fill-active'].indexOf(style.id) > -1) {
             style.paint['fill-color'] = '#3388ff';
             style.paint['fill-outline-color'] = '#3388ff';
             style.paint['fill-opacity'] = 0.3;
           }
         });
+        var modes = {};
+        for (var key in MapboxDraw.modes) {
+          if (MapboxDraw.modes.hasOwnProperty(key)) {
+            modes[key] = MapboxDraw.modes[key];
+          }
+        }
+        modes.draw_point = mapboxGlDrawSnapMode.SnapPointMode;
+        modes.draw_polygon = mapboxGlDrawSnapMode.SnapPolygonMode;
+        modes.draw_line_string = mapboxGlDrawSnapMode.SnapLineMode;
+        modes.direct_select = mapboxGlDrawSnapMode.SnapDirectSelect;
         draw = new MapboxDraw({
-          modes: {
-            ...MapboxDraw.modes,
-            draw_point: mapboxGlDrawSnapMode.SnapPointMode,
-            draw_polygon: mapboxGlDrawSnapMode.SnapPolygonMode,
-            draw_line_string: mapboxGlDrawSnapMode.SnapLineMode,
-            direct_select: mapboxGlDrawSnapMode.SnapDirectSelect,
-          },
+          modes: modes,
           styles: styles,
           userProperties: true,
           snap: true,
@@ -501,7 +506,7 @@
         map.addControl(draw, 'top-left');
         map.on('draw.create', function (e) {
           if (e.features) {
-            let feature = e.features[0];
+            var feature = e.features[0];
             addFeatureId = feature.id;
             datasetInfoList[currentDataset].id++;
             feature.id = datasetInfoList[currentDataset].id;
@@ -509,13 +514,13 @@
             document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
           }
         });
-        let datasetService = new maplibregl.supermap.DatasetService(dataUrl)
+        var datasetService = new maplibregl.supermap.DatasetService(dataUrl)
         datasetService.getDatasets(datasourceName, function(e) {
           datasetNameList = e.result.datasetNames;
           currentFeature.dataset = datasetNameList[0];
           currentDataset = datasetNameList[0];
           // 获取所有数据集的类型
-          datasetNameList.forEach((datasetName, index) => {
+          datasetNameList.forEach(function(datasetName, index) {
             filterFields[datasetName] = {};
             datasetService.getDataset(dataSourceName, datasetName, function(e) {
             datasetInfoList[datasetName] = {
@@ -524,7 +529,7 @@
             }
             typeMap[e.result.datasetInfo.type] && datasetTypeClassify[typeMap[e.result.datasetInfo.type]].push(datasetName);
             if (index === 0) {
-              let editType = e.result.datasetInfo.type;
+              var editType = e.result.datasetInfo.type;
               createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), editType, datasetNameList[0]);
             }
             if (index === datasetNameList.length - 1) {
@@ -537,14 +542,14 @@
 
       function createOptions(list, selectElement, selectType, selectDataset) {
         selectElement.innerHTML = '';
-        list.forEach((item, index) => {
-          const option = document.createElement('option');
+        list.forEach(function(item, index) {
+          var option = document.createElement('option');
           option.value = item;
           option.innerText = item;
           getField(item);
           if (item === selectDataset) {
             option.selected = true;
-            setTimeout(() => {
+            setTimeout(function() {
               renderAttribute(item);
             }, 1000);
           }
@@ -563,34 +568,34 @@
               return;
             }
             fieldList = result.result.fieldNames;
-            fieldList.forEach((fieldName) => {
-              fetch(
-                `${dataUrl}/datasources/${dataSourceName}/datasets/${datasetName}/fields/${fieldName}.json`
-              )
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res) => {
+            fieldList.forEach(function(fieldName) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', dataUrl + '/datasources/' + dataSourceName + '/datasets/' + datasetName + '/fields/' + fieldName + '.json', true);
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  var res = JSON.parse(xhr.responseText);
                   filterFields[datasetName][res.fieldInfo.name.toUpperCase()] = res.fieldInfo.isSystemField;
-                });
+                }
+              };
+              xhr.send();
             });
           }
         );
       }
 
-      function renderAttribute(datasetName, status = 'add') {
-        const attributeElement = document.querySelector(`.${status}-attribute-info`);
+      function renderAttribute(datasetName, status) {
+        var attributeElement = document.querySelector('.' + (status || 'add') + '-attribute-info');
         attributeElement.innerHTML = '';
-        Object.keys(filterFields[datasetName]).forEach((key) => {
+        Object.keys(filterFields[datasetName]).forEach(function(key) {
           if (!filterFields[datasetName][key]) {
-            const item = document.createElement('div');
+            var item = document.createElement('div');
             item.style.position = 'relative';
             item.className = key;
-            const title = document.createElement('h6');
+            var title = document.createElement('h6');
             title.innerText = key;
             item.appendChild(title);
             if (domainRules[key] && domainRules[key].type === 'CODE') {
-                var selectValues = domainRules[key].codeInfos.map((item) => {
+                var selectValues = domainRules[key].codeInfos.map(function(item) {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
@@ -598,7 +603,7 @@
               return;
             }
             
-            const inputEle = document.createElement('input');
+            var inputEle = document.createElement('input');
             inputEle.className = 'input-element';
             inputEle.label = key;
             inputEle.value = '';
@@ -609,10 +614,10 @@
       }
 
       function createSelect(list) {
-        const select = document.createElement('select');
+        var select = document.createElement('select');
         select.className = 'select-element';
-        list.forEach((item) => {
-          const option = document.createElement('option');
+        list.forEach(function(item) {
+          var option = document.createElement('option');
           option.value = item;
           option.innerText = item;
           select.appendChild(option);
@@ -620,44 +625,44 @@
         return select;
       }
 
-      function renderEditAttribute(status = 'edit', properties) {
-        const attributeElement = document.querySelector(`.${status}-attribute-info`);
+      function renderEditAttribute(status, properties) {
+        var attributeElement = document.querySelector('.' + (status || 'edit') + '-attribute-info');
         attributeElement.innerHTML = '';
-        Object.keys(properties).forEach((key) => {
+        Object.keys(properties).forEach(function(key) {
           if (key === 'datasetName') {
             return;
           }
-          const item = document.createElement('div');
+          var item = document.createElement('div');
           item.style.position = 'relative';
           item.className = key;
-          const title = document.createElement('h6');
+          var title = document.createElement('h6');
           title.innerText = key;
           item.appendChild(title);
           if (domainRules[key] && domainRules[key].type === 'CODE') {
-                var selectValues = domainRules[key].codeInfos.map((item) => {
+                var selectValues = domainRules[key].codeInfos.map(function(item) {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
                 item.appendChild(select);
               return;
             }
-          const inputEle = document.createElement('input');
+          var inputEle = document.createElement('input');
           inputEle.className = 'input-element';
           inputEle.disabled = filterFields[currentFeature.dataset][key];
           inputEle.value = properties[key];
           inputEle.label = key;
           item.appendChild(inputEle);
-          if (properties[key].includes('.mp4')) {
-            const videoPlayIcon = document.createElement('div');
-            videoPlayIcon.className = 'palyIcon';
-            const video = document.createElement('video');
+          if (key === 'VIDEO') {
+            var videoPlayIcon = document.createElement('div');
+            videoPlayIcon.className = 'playIcon';
+            var video = document.createElement('video');
             video.src = properties[key];
             video.className = "video-element";
             item.appendChild(videoPlayIcon);
             item.appendChild(video);
             previewVideo(video);
-          } else if (properties[key].includes('.png')) {
-            const img = document.createElement('img');
+          } else if (key === 'IMG') {
+            var img = document.createElement('img');
             img.src = properties[key];
             img.className = "img-element";
             new Viewer(img);
@@ -668,8 +673,8 @@
       }
 
       function previewVideo(ele) { 
-        const modal = document.querySelector('.video-modal');
-        const video1 = document.querySelector('.video-modal video');
+        var modal = document.querySelector('.video-modal');
+        var video1 = document.querySelector('.video-modal video');
         ele.addEventListener('click', function onOpen() {
           modal.style.display = 'flex';
           video1.src = ele.src;
@@ -684,10 +689,11 @@
 
       function bindEvents() {
         document.querySelector('.addDatasetNameList').addEventListener('change', function(e) {
-          let value = e.target.value;
+          var value = e.target.value;
           currentFeature.dataset = value;
           currentDataset = value;
-          let { type, source } = datasetInfoList[currentDataset];
+          var type = datasetInfoList[currentDataset].type;
+          var source = datasetInfoList[currentDataset].source;
           currentFeature.type = type;
           createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), type, value);
           startDraw(type, source);
@@ -695,7 +701,7 @@
 
          // 切换状态
         document.querySelector('.button-group').addEventListener('click', function(e) {
-          let className = e.target.className;
+          var className = e.target.className;
           switchPanel(className);
         });
 
@@ -703,12 +709,12 @@
         document.querySelector('.edit-attribute-info').addEventListener('change', checkInput);
 
         content.addEventListener('change', function(e) {
-          let x;
-          let y;
-          if (e.target.className.includes('coordX')) {
+          var x;
+          var y;
+          if (e.target.className.indexOf('coordX') > -1) {
             x = e.target.value;
             y = document.querySelector('.coordY').value;
-          } else if (e.target.className.includes('coordY')) {
+          } else if (e.target.className.indexOf('coordY') > -1) {
             y = e.target.value;
             x = document.querySelector('.coordX').value;
           }
@@ -721,46 +727,47 @@
             draw.delete(addFeatureId);
             currentFeature.data = null;
             if (currentShowPanel) {
-              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+              document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
           }
         });
 
         document.querySelector('.cancel-edit').addEventListener('click', function() {
           if (curEditOriginFeatures.length) {
-            curEditOriginFeatures.forEach((feature) => {
+            curEditOriginFeatures.forEach(function(feature) {
               map.setFilter(feature.properties.datasetName, null);
               draw.delete(feature.id);
             });
             curEditOriginFeatures = [];
             if (currentShowPanel) {
-              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+              document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
           }
         });
 
         document.querySelector('.cancel-delete').addEventListener('click', function() {
-          let deleteEle = document.querySelector('.delete-feature-list');
+          var deleteEle = document.querySelector('.delete-feature-list');
           deleteEle.innerHTML = '';
           deleteList = [];
           if (currentShowPanel) {
-            document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            document.querySelector('.' + currentShowPanel).style.display = 'none';
           }
         });
       }
 
       function switchPanel(className, fromAdd) {
         if (currentShowPanel) {
-          document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+          document.querySelector('.' + currentShowPanel).style.display = 'none';
         }
-        let { type, source } = datasetInfoList[currentDataset];
-        if (className.includes('plus')) {
+        var type = datasetInfoList[currentDataset].type;
+        var source = datasetInfoList[currentDataset].source;
+        if (className.indexOf('plus') > -1) {
           document.querySelector('.edit-tips').style.display = 'none';
           startDraw(type, source);
           document.querySelector('.add-feature-info').style.display = 'block';
           currentShowPanel = 'add-feature-info';
           status = 'ADD';
-        } else if (className.includes('edit')) {
+        } else if (className.indexOf('edit') > -1) {
           draw.changeMode('simple_select');
           if (fromAdd) {
             fillContent();
@@ -771,7 +778,7 @@
           currentShowPanel = 'edit-feature-info';
           status = 'EDIT';
           startSelect(source);
-        } else if (className.includes('trash')) {
+        } else if (className.indexOf('trash') > -1) {
           document.querySelector('.edit-tips').style.display = 'none';
           endDraw();
           document.querySelector('.delete-feature-info').style.display = 'block';
@@ -789,24 +796,24 @@
         }
       }
 
-      let saveBtn = document.querySelector('.addSave');
-      let editBtn = document.querySelector('.editSave');
+      var saveBtn = document.querySelector('.addSave');
+      var editBtn = document.querySelector('.editSave');
       saveBtn.addEventListener('click', function () {
         save('add');
       });
       editBtn.addEventListener('click', function () {
         save('edit');
       });
-      let deleteBtn = document.querySelector('.delete');
+      var deleteBtn = document.querySelector('.delete');
       deleteBtn.addEventListener('click', function () {
         deleteFeature();
       });
       function save(type) {
         var properties = {};
-        const attributeElement = document.querySelector(`.${type}-attribute-info`);
-        var listArr = [...attributeElement.children];
-        listArr.forEach((item, index) => {
-          var itemArr = [...item.children];
+        var attributeElement = document.querySelector('.' + type + '-attribute-info');
+        var listArr = Array.prototype.slice.call(attributeElement.children);
+        listArr.forEach(function(item, index) {
+          var itemArr = Array.prototype.slice.call(item.children);
           properties[itemArr[0].textContent] = itemArr[1].value;
         });
         currentFeature.data.properties = properties;
@@ -818,10 +825,10 @@
           isUpdate = true;
         }
         if (type === 'edit') {
-          const allFeature = draw.getAll();
-          const datas = map.getSource(currentDataset)._data;
-          datas.features.forEach((feature) => {
-            allFeature.features.forEach((editFeature) => {
+          var allFeature = draw.getAll();
+          var datas = map.getSource(currentDataset)._data;
+          datas.features.forEach(function(feature) {
+            allFeature.features.forEach(function(editFeature) {
               if (feature.id === editFeature.id) {
                 feature = editFeature;
               };
@@ -839,26 +846,26 @@
       function initFeature() {
         // 按照面 线 点的顺序渲染
         var featureService = new maplibregl.supermap.FeatureService(dataUrl);
-        let datasetOrder = [].concat(datasetTypeClassify['Fill'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
-        // let datasetOrder = [].concat(datasetTypeClassify['Point'])
-        // let datasetOrder = ['China_island', 'demo_line', 'Capitals'];
-        datasetOrder.forEach(async (datasetName) => {
-          var getFeatureParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
+        var datasetOrder = [].concat(datasetTypeClassify['Fill'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
+        // var datasetOrder = [].concat(datasetTypeClassify['Point'])
+        // var datasetOrder = ['China_island', 'demo_line', 'Capitals'];
+        datasetOrder.forEach(function(datasetName) {
+          var getFeatureParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
-              name: `${datasetName}@${dataSourceName}`,
+              name: datasetName + "@" + dataSourceName,
               attributeFilter: 'SMID < 1000'
             },
             toIndex: -1,
-            datasetNames: [`${dataSourceName}:${datasetName}`]
+            datasetNames: [dataSourceName + ":" + datasetName]
           });
 
-          await featureService.getFeaturesBySQL(getFeatureParams).then(function (serviceResult) {
+          featureService.getFeaturesBySQL(getFeatureParams, function (serviceResult) {
             var geojsonFeatures = serviceResult.result.features;
-            geojsonFeatures.features.forEach((feature) => {
+            geojsonFeatures.features.forEach(function(feature) {
               feature.properties.datasetName = datasetName;
             });
             console.log('geojsonFeatures', geojsonFeatures, serviceResult, getFeatureParams);
-              geojsonFeatures.features.forEach((feature) => {
+              geojsonFeatures.features.forEach(function(feature) {
                 if (feature.id > datasetInfoList[datasetName].id) {
                   datasetInfoList[datasetName].id = feature.id;
                 }
@@ -889,14 +896,14 @@
       }
 
       function deleteFeature() {
-        Object.keys(deleteList).forEach((dataset) => {
+        Object.keys(deleteList).forEach(function(dataset) {
           var addFeatureParams = new maplibregl.supermap.EditFeaturesParameters({
-            dataSourceName,
+            dataSourceName: dataSourceName,
             dataSetName: dataset,
             IDs: deleteList[dataset],
             editType: 'delete'
           });
-          editFeaturesService.editFeatures(addFeatureParams).then(function (serviceResult) {
+          editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
               widgets.alert.showAlert(resources.text_deleteSuccess, true);
             }
@@ -906,34 +913,37 @@
       function startSelect(source) {
         clearInteraction();
         map.on('click', function (e) {
-          let res = map.queryRenderedFeatures(e.point);
+          var res = map.queryRenderedFeatures(e.point);
           if (status === 'EDIT') {
-            if (res[0] && !['mapbox-gl-draw-cold', 'mapbox-gl-draw-hot'].includes(res[0].source)) {
-              let { type, geometry, id, properties } = res[0];
-              let editFeature = {
-                type,
-                geometry,
-                id,
-                properties
+            if (res[0] && !['mapbox-gl-draw-cold', 'mapbox-gl-draw-hot'].indexOf(res[0].source) > -1) {
+              var type = res[0].type;
+              var geometry = res[0].geometry;
+              var id = res[0].id;
+              var properties = res[0].properties;
+              var editFeature = {
+                type: type,
+                geometry: geometry,
+                id: id,
+                properties: properties
               };
-              let source = map.getSource(properties.datasetName);
-              let layer = map.getLayer(properties.datasetName);
-              let allIds = source._data.features.map((feature) => {
+              var source = map.getSource(properties.datasetName);
+              var layer = map.getLayer(properties.datasetName);
+              var allIds = source._data.features.map(function(feature) {
                 return feature.id;
               });
-              allIds = allIds.filter((id) => {
-                if (id !== +properties.SMID && !curEditOriginFeatures.find((feature) => {
+              allIds = allIds.filter(function(id) {
+                if (id !== +properties.SMID && !curEditOriginFeatures.find(function(feature) {
                   return feature.id === id;
                 })) {
                   return true;
                 }
                 return false;
               });
-              allIds = allIds.map((id) => {
+              allIds = allIds.map(function(id) {
                 return id + '';
               });
               draw.add(editFeature);
-              const filters = ['match', ['get', 'SMID'], allIds, true, false];
+              var filters = ['match', ['get', 'SMID'], allIds, true, false];
               map.setFilter(properties.datasetName, filters);
               draw.changeMode(geometry.type === 'Point' ? 'simple_select' : 'direct_select', { featureId: id });
               document.querySelector('.edit-tips').style.display = 'none';
@@ -947,24 +957,24 @@
               renderEditAttribute('edit', currentFeature.data.properties);
             }
           } else if (status == 'DELETE') {
-            let feature = res[0];
+            var feature = res[0];
             if (feature) {
             if (!deleteList[feature.properties.datasetName]) {
               deleteList[feature.properties.datasetName] = []
             }
-            if (deleteList[feature.properties.datasetName].includes(feature.id)) {
+            if (deleteList[feature.properties.datasetName].indexOf(feature.id) > -1) {
               return;
             }
             deleteList[feature.properties.datasetName].push(feature.id);
-            const deleteItem = document.createElement('div');
-            deleteItem.innerText = `SMID: ${feature.id} (${feature.properties.datasetName})`;
-            let deleteEle = document.querySelector('.delete-feature-list');
+            var deleteItem = document.createElement('div');
+            deleteItem.innerText = 'SMID: ' + feature.id + ' (' + feature.properties.datasetName + ')';
+            var deleteEle = document.querySelector('.delete-feature-list');
             deleteEle.appendChild(deleteItem);
             }
           }
         });
         map.on('draw.update', function (e) {
-          let feature = e.features[0];
+          var feature = e.features[0];
           if (status === 'EDIT') {
               document.querySelector('.edit-tips').style.display = 'none';
               currentFeature.dataset = feature.properties.datasetName;
@@ -975,7 +985,7 @@
           }
         });
         map.on('draw.update', function (e) {
-          let feature = e.features[0];
+          var feature = e.features[0];
           if (status === 'EDIT') {
               document.querySelector('.edit-tips').style.display = 'none';
               currentFeature.dataset = feature.properties.datasetName;
@@ -993,12 +1003,12 @@
 
       function startDraw(type, source) {
         endDraw();
-        const popup = new maplibregl.Popup({ className: 'popup' })
+        var popup = new maplibregl.Popup({ className: 'popup' })
         .setDOMContent(container)
         .setMaxWidth("300px")
         .addTo(map);
         map.on('mousemove', function (evt) {
-          const coordinate = evt.lngLat;
+          var coordinate = evt.lngLat;
           popup.setLngLat(coordinate);
           content.querySelector('.coordX').value = coordinate.lng;
           content.querySelector('.coordY').value = coordinate.lat;
