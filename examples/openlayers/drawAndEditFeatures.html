@@ -172,7 +172,7 @@
         left: -50px;
         min-width: 280px;
       }
-      .palyIcon{
+      .playIcon{
         position: absolute;
         transform: translate(-50%, -50%);
         left: 50%;
@@ -182,7 +182,7 @@
         background: url('../img/play1.png') no-repeat;
         background-size: contain;
       }
-      .video-element, .img-element, .palyIcon{
+      .video-element, .img-element, .playIcon{
         cursor: pointer;
       }
       .button-group, .info-panel, .edit-tips {
@@ -324,7 +324,7 @@
       var translate = null;
       var modify = null;
       var source = null;
-      const typeMap = {
+      var typeMap = {
                 REGION: 'Polygon',
                 LINE: 'Line',
                 POINT: 'Point'
@@ -337,8 +337,8 @@
       }
       var cacheFeatures = [];
       var editedFeatures = [];
-      const container = document.getElementById('popup');
-      const content = document.getElementById('popup-content');
+      var container = document.getElementById('popup');
+      var content = document.getElementById('popup-content');
       getDomains(currentDataset);
       var overlayPopup = new ol.Overlay({
         element: container,
@@ -371,7 +371,7 @@
         }),
       });
       function addVectorLayer() {
-        const style = new ol.style.Style({
+        var style = new ol.style.Style({
             fill: new ol.style.Fill({
               color: [90, 90, 90, 0.3]
             }),
@@ -389,31 +389,30 @@
         source = new ol.source.Vector({ wrapX: false });
         currentSource = source;
         var layer = new ol.layer.Vector({
-          source,
-          style
+          source: source,
+          style: style
         });
         map.addLayer(layer);
-        return { source, layer };
+        return { source: source, layer: layer };
       }
       var fieldList = [];
       var filterFields = {
       };
 
       function getDomains(datasetName) {
-        fetch(
-                `${dataUrl}/datasources/${dataSourceName}/datasets/${datasetName}/domain.json`
-              )
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res) => {
-                  console.log('domain', res);
-                  domainRules = {};
-                  res && Array.isArray(res) && res.forEach((domain) => {
-                    let key = domain.fieldName.toUpperCase();
-                    domainRules[key] = domain;
-                  });
-                });
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', dataUrl + "/datasources/" + dataSourceName + "/datasets/" + datasetName + "/domain.json", true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var res = JSON.parse(xhr.responseText);
+            domainRules = {};
+            res && Array.isArray(res) && res.forEach(function(domain) {
+              var key = domain.fieldName.toUpperCase();
+              domainRules[key] = domain;
+            });
+          }
+        };
+        xhr.send();
       }
 
       function checkInput(e) {
@@ -423,55 +422,55 @@
         }
         var rule = domainRules[e.target.label];
         if (rule && rule.type === 'RANGE') {
-          let value = +e.target.value;
+          var value = +e.target.value;
           if (value < rule.rangeInfos[0].min || value > rule.rangeInfos[0].max) {
             e.target.style.borderColor = 'red';
             var parent = e.target.parentNode;
             // 
-            let error = document.createElement('span');
+            var error = document.createElement('span');
             error.style.color = 'red';
             error.className = 'error-tips';
-            error.innerText = `输入值超出值域范围：[${rule.rangeInfos[0].min}, ${rule.rangeInfos[0].max})`;
+            error.innerText = '输入值超出值域范围：[' + rule.rangeInfos[0].min + ', ' + rule.rangeInfos[0].max + ')';
             parent.insertBefore(error, e.target.nextSibling);
             document.querySelector('.editSave').disabled = true;
             // 保存按钮 disabled
           } else {
-            let error = document.querySelector('.error-tips');
+            var error = document.querySelector('.error-tips');
             error && error.parentNode.removeChild(error);
             e.target.style.borderColor = '#000';
             document.querySelector('.editSave').disabled = false;
           }
         }
 
-         if (e.target.tagName === 'INPUT' && !e.target.value.includes('.png') && !e.target.value.includes('.mp4')) {
-            deleteVideoAndImg(e)
-         }
-
-         if (e.target.value.includes('.mp4')) {
+        if (e.target.parentNode.className === 'VIDEO') {
             deleteVideoAndImg(e);
-            const videoPlayIcon = document.createElement('div');
-            videoPlayIcon.className = 'palyIcon';
-            const video = document.createElement('video');
-            video.src = e.target.value;
-            video.className = `video-element ${e.target.label}`;
-            var parent = e.target.parentNode;
-            parent.insertBefore(video,e.target.nextSibling);
-            parent.insertBefore(videoPlayIcon,video);
-            previewVideo(video);
-          } else if (e.target.value.includes('.png')) {
+            if(e.target.value) {
+              var videoPlayIcon = document.createElement('div');
+              videoPlayIcon.className = 'playIcon';
+              var video = document.createElement('video');
+              video.src = e.target.value;
+              video.className = 'video-element ' + e.target.label;
+              var parent = e.target.parentNode;
+              parent.insertBefore(video,e.target.nextSibling);
+              parent.insertBefore(videoPlayIcon,video);
+              previewVideo(video);
+            }
+          } else if (e.target.parentNode.className === 'IMG') {
             deleteVideoAndImg(e);
-            const img = document.createElement('img');
-            img.src = e.target.value;
-            img.className = `img-element ${e.target.label}`;
-            new Viewer(img);
-            var parent = e.target.parentNode;
-            parent.insertBefore(img,e.target.nextSibling);
+            if(e.target.value) {
+              var img = document.createElement('img');
+              img.src = e.target.value;
+              img.className = 'img-element ' + e.target.label;
+              new Viewer(img);
+              var parent = e.target.parentNode;
+              parent.insertBefore(img,e.target.nextSibling);
+            }
           }
       }
 
       function deleteVideoAndImg(e) { 
-        let ele = document.querySelector(`.${e.target.label} img`) || document.querySelector(`.${e.target.label} video`);
-        let videoPlayIcon = document.querySelector(`.${e.target.label} .palyIcon`)
+        var ele = document.querySelector('.' + e.target.label + ' img') || document.querySelector('.' + e.target.label + ' video');
+        var videoPlayIcon = document.querySelector('.' + e.target.label + ' .playIcon');
         if (ele) {
           ele.parentNode.removeChild(ele);
         }
@@ -481,13 +480,13 @@
       }
 
       function init(dataUrl, datasourceName) {
-        let datasetService = new ol.supermap.DatasetService(dataUrl)
+        var datasetService = new ol.supermap.DatasetService(dataUrl)
         datasetService.getDatasets(datasourceName, function(e) {
           datasetNameList = e.result.datasetNames;
           currentFeature.dataset = datasetNameList[0];
           currentDataset = datasetNameList[0];
           // 获取所有数据集的类型
-          datasetNameList.forEach((datasetName, index) => {
+          datasetNameList.forEach(function(datasetName, index) {
             filterFields[datasetName] = {};
             datasetService.getDataset(dataSourceName, datasetName, function(e) {
             datasetInfoList[datasetName] = {
@@ -495,7 +494,7 @@
             }
             typeMap[e.result.datasetInfo.type] && datasetTypeClassify[typeMap[e.result.datasetInfo.type]].push(datasetName);
             if (index === 0) {
-              let editType = e.result.datasetInfo.type;
+              var editType = e.result.datasetInfo.type;
               createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), editType, datasetNameList[0]);
             }
             if (index === datasetNameList.length - 1) {
@@ -508,14 +507,14 @@
 
       function createOptions(list, selectElement, selectType, selectDataset) {
         selectElement.innerHTML = '';
-        list.forEach((item, index) => {
-          const option = document.createElement('option');
+        list.forEach(function(item, index) {
+          var option = document.createElement('option');
           option.value = item;
           option.innerText = item;
           getField(item);
           if (item === selectDataset) {
             option.selected = true;
-            setTimeout(() => {
+            setTimeout(function() {
               renderAttribute(item);
             }, 1000);
           }
@@ -534,35 +533,35 @@
               return;
             }
             fieldList = result.result.fieldNames;
-            fieldList.forEach((fieldName) => {
-              fetch(
-                `${dataUrl}/datasources/${dataSourceName}/datasets/${datasetName}/fields/${fieldName}.json`
-              )
-                .then((res) => {
-                  return res.json();
-                })
-                .then((res) => {
+            fieldList.forEach(function(fieldName) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', dataUrl + '/datasources/' + dataSourceName + '/datasets/' + datasetName + '/fields/' + fieldName + '.json', true);
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                  var res = JSON.parse(xhr.responseText);
                   filterFields[datasetName][res.fieldInfo.name.toUpperCase()] = res.fieldInfo.isSystemField;
-                });
+                }
+              };
+              xhr.send();
             });
           }
         );
       }
 
-      function renderAttribute(datasetName, status = 'add') {
-        const attributeElement = document.querySelector(`.${status}-attribute-info`);
+      function renderAttribute(datasetName, status) {
+        var attributeElement = document.querySelector('.' + (status || 'add') + '-attribute-info');
         attributeElement.innerHTML = '';
         console.log('filterFields', filterFields);
-        Object.keys(filterFields[datasetName]).forEach((key) => {
+        Object.keys(filterFields[datasetName]).forEach(function(key) {
           if (!filterFields[datasetName][key]) {
-            const item = document.createElement('div');
+            var item = document.createElement('div');
             item.style.position = 'relative';
             item.className = key;
-            const title = document.createElement('h6');
+            var title = document.createElement('h6');
             title.innerText = key;
             item.appendChild(title);
             if (domainRules[key] && domainRules[key].type === 'CODE') {
-                var selectValues = domainRules[key].codeInfos.map((item) => {
+                var selectValues = domainRules[key].codeInfos.map(function(item) {
                   return item.value;
                 });
                 var select = createSelect(selectValues);
@@ -570,7 +569,7 @@
               return;
             }
             
-            const inputEle = document.createElement('input');
+            var inputEle = document.createElement('input');
             inputEle.className = 'input-element';
             inputEle.label = key;
             inputEle.value = '';
@@ -581,10 +580,10 @@
       }
 
       function createSelect(list, selected) {
-        const select = document.createElement('select');
+        var select = document.createElement('select');
         select.className = 'select-element';
-        list.forEach((item) => {
-          const option = document.createElement('option');
+        list.forEach(function(item) {
+          var option = document.createElement('option');
           option.value = item;
           option.selected = item === selected;
           option.innerText = item;
@@ -593,47 +592,47 @@
         return select;
       }
 
-      function renderEditAttribute(status = 'edit', properties) {
-        const attributeElement = document.querySelector(`.${status}-attribute-info`);
+      function renderEditAttribute(status, properties) {
+        var attributeElement = document.querySelector('.' + (status || 'edit') + '-attribute-info');
         attributeElement.innerHTML = '';
         document.querySelector('.edit-dataset').innerText = currentFeature.dataset;
-        Object.keys(properties).forEach((key) => {
+        Object.keys(properties).forEach(function(key) {
           if (key === 'dataset') {
             return;
           }
-          const item = document.createElement('div');
+          var item = document.createElement('div');
           item.style.position = 'relative';
           item.className = key;
-          const title = document.createElement('h6');
+          var title = document.createElement('h6');
           title.innerText = key;
           item.appendChild(title);
           // 处理值域！
           if (domainRules[key] && domainRules[key].type === 'CODE') {
-                var selectValues = domainRules[key].codeInfos.map((item) => {
+                var selectValues = domainRules[key].codeInfos.map(function(item) {
                   return item.value;
                 });
                 var select = createSelect(selectValues, properties[key]);
                 item.appendChild(select);
               return;
             }
-          const inputEle = document.createElement('input');
+          var inputEle = document.createElement('input');
           inputEle.className = 'input-element';
           inputEle.value = properties[key];
           inputEle.label = key;
           // 系统字段
           inputEle.disabled = filterFields[currentFeature.dataset][key];
           item.appendChild(inputEle);
-          if (properties[key].includes('.mp4')) {
-            const videoPlayIcon = document.createElement('div');
-            videoPlayIcon.className = 'palyIcon';
-            const video = document.createElement('video');
+          if (key === 'VIDEO') {
+            var videoPlayIcon = document.createElement('div');
+            videoPlayIcon.className = 'playIcon';
+            var video = document.createElement('video');
             video.src = properties[key];
             video.className = "video-element";
             item.appendChild(videoPlayIcon);
             item.appendChild(video);
             previewVideo(video);
-          } else if (properties[key].includes('.png')) {
-            const img = document.createElement('img');
+          } else if (key === 'IMG') {
+            var img = document.createElement('img');
             img.src = properties[key];
             img.className = "img-element";
             new Viewer(img);
@@ -644,8 +643,8 @@
       }
 
       function previewVideo(ele) { 
-        const modal = document.querySelector('.video-modal');
-        const video1 = document.querySelector('.video-modal video');
+        var modal = document.querySelector('.video-modal');
+        var video1 = document.querySelector('.video-modal video');
         ele.addEventListener('click', function onOpen() {
           modal.style.display = 'flex';
           video1.src = ele.src;
@@ -660,10 +659,11 @@
 
       function bindEvents() {
         document.querySelector('.addDatasetNameList').addEventListener('change', function(e) {
-          let value = e.target.value;
+          var value = e.target.value;
           currentFeature.dataset = value;
           currentDataset = value;
-          let { type, source } = datasetInfoList[currentDataset];
+          var type = datasetInfoList[currentDataset].type;
+          var source = datasetInfoList[currentDataset].source;
           currentFeature.type = type;
           createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), type, value);
           startDraw(type, source);
@@ -671,19 +671,19 @@
 
          // 切换状态
         document.querySelector('.button-group').addEventListener('click', function(e) {
-          let className = e.target.className;
+          var className = e.target.className;
           switchPanel(className);
         });
 
         document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
         document.querySelector('.edit-attribute-info').addEventListener('change', checkInput);
         content.addEventListener('change', function(e) {
-          let x;
-          let y;
-          if (e.target.className.includes('coordX')) {
+          var x;
+          var y;
+          if (e.target.className.indexOf('coordX') > -1) {
             x = e.target.value;
             y = document.querySelector('.coordY').value;
-          } else if (e.target.className.includes('coordY')) {
+          } else if (e.target.className.indexOf('coordY') > -1) {
             y = e.target.value;
             x = document.querySelector('.coordX').value;
           }
@@ -696,51 +696,51 @@
             currentSource.removeFeature(currentFeature.origin);
             currentFeature = {};
             if (currentShowPanel) {
-              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+              document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
           }
         });
 
         document.querySelector('.cancel-edit').addEventListener('click', function() {
           if (cacheFeatures.length) {
-            editedFeatures.forEach((feature) => {
+            editedFeatures.forEach(function(feature) {
               currentSource.removeFeature(feature);
             });
-            cacheFeatures.forEach((feature) => {
+            cacheFeatures.forEach(function(feature) {
               currentSource.addFeature(feature);
             });
             editedFeatures = [];
             cacheFeatures = [];
             currentFeature = {};
             if (currentShowPanel) {
-              document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+              document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
           }
         });
 
         document.querySelector('.cancel-delete').addEventListener('click', function() {
-          let deleteEle = document.querySelector('.delete-feature-list');
+          var deleteEle = document.querySelector('.delete-feature-list');
           deleteEle.innerHTML = '';
           deleteList = {};
           if (currentShowPanel) {
-            document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+            document.querySelector('.' + currentShowPanel).style.display = 'none';
           }
         });
       }
 
       function switchPanel(className, fromAdd) {
         if (currentShowPanel) {
-          document.querySelector(`.${currentShowPanel}`).style.display = 'none';
+          document.querySelector('.' + currentShowPanel).style.display = 'none';
         }
-        let { type } = datasetInfoList[currentDataset];
-        if (className.includes('plus')) {
+        var type = datasetInfoList[currentDataset].type;
+        if (className.indexOf('plus') > -1) {
           cacheFeatures = [];
           document.querySelector('.edit-tips').style.display = 'none';
           startDraw(type);
           document.querySelector('.add-feature-info').style.display = 'block';
           currentShowPanel = 'add-feature-info';
           status = 'ADD';
-        } else if (className.includes('edit')) {
+        } else if (className.indexOf('edit') > -1) {
           getDomains(currentDataset);
           endDraw();
           if (fromAdd) {
@@ -752,7 +752,7 @@
           currentShowPanel = 'edit-feature-info';
           status = 'EDIT';
           startSelect();
-        } else if (className.includes('trash')) {
+        } else if (className.indexOf('trash') > -1) {
           cacheFeatures = [];
           document.querySelector('.edit-tips').style.display = 'none';
           endDraw();
@@ -772,24 +772,24 @@
       }
       map.addLayer(layer);
 
-      let saveBtn = document.querySelector('.addSave');
-      let editBtn = document.querySelector('.editSave');
+      var saveBtn = document.querySelector('.addSave');
+      var editBtn = document.querySelector('.editSave');
       saveBtn.addEventListener('click', function () {
         save('add');
       });
       editBtn.addEventListener('click', function () {
         save('edit');
       });
-      let deleteBtn = document.querySelector('.delete');
+      var deleteBtn = document.querySelector('.delete');
       deleteBtn.addEventListener('click', function () {
         deleteFeature();
       });
       function save(type) {
         var properties = {};
-        const attributeElement = document.querySelector(`.${type}-attribute-info`);
-        var listArr = [...attributeElement.children];
-        listArr.forEach((item, index) => {
-          var itemArr = [...item.children];
+        var attributeElement = document.querySelector('.' + type + '-attribute-info');
+        var listArr = Array.prototype.slice.call(attributeElement.children);
+        listArr.forEach(function(item, index) {
+          var itemArr = Array.prototype.slice.call(item.children);
           properties[itemArr[0].textContent] = itemArr[1].value;
         });
         currentFeature.data.properties = properties;
@@ -799,12 +799,12 @@
           olFeature.setId(datasetInfoList[currentDataset].uniqueId);
           isUpdate = false;
         } else {
-          let arr = olFeature.getId().split('_');
+          var arr = olFeature.getId().split('_');
           olFeature.setId(arr[arr.length-1]);
           isUpdate = true;
         }
         // var features = sourceMap[type].getFeatures();
-        // let index = features.indexOf(currentFeature.origin);
+        // var index = features.indexOf(currentFeature.origin);
         // features[index] = olFeature;
         currentFeature.origin = olFeature;
         // sourceMap[type].clear();
@@ -817,27 +817,28 @@
       function initFeature() {
         // 按照面 线 点的顺序渲染
         var featureService = new ol.supermap.FeatureService(dataUrl);
-        let datasetOrder = [].concat(datasetTypeClassify['Polygon'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
-        // let datasetOrder = [].concat(datasetTypeClassify['Line'], datasetTypeClassify['Point']);
-        let { layer, source } = addVectorLayer();
-        datasetOrder.forEach(async (datasetName) => {
+        var datasetOrder = [].concat(datasetTypeClassify['Polygon'], datasetTypeClassify['Line'], datasetTypeClassify['Point'])
+        // var datasetOrder = [].concat(datasetTypeClassify['Line'], datasetTypeClassify['Point']);
+        var layer = addVectorLayer().layer;
+        var source = addVectorLayer().source;
+        datasetOrder.forEach(function(datasetName) {
           var getFeatureParams = new ol.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
-              name: `${datasetName}@${dataSourceName}`,
+              name: datasetName + "@" + dataSourceName,
               attributeFilter: 'SMID < 1000'
             },
             toIndex: -1,
-            datasetNames: [`${dataSourceName}:${datasetName}`]
+            datasetNames: [dataSourceName + ":" + datasetName]
           });
 
-          await featureService.getFeaturesBySQL(getFeatureParams).then(function (serviceResult) {
+          featureService.getFeaturesBySQL(getFeatureParams, function (serviceResult) {
             var geojsonFeatures = serviceResult.result.features;
               var features = new ol.format.GeoJSON().readFeatures(geojsonFeatures);
-              features.forEach((feature) => {
+              features.forEach(function(feature) {
                 feature.set('dataset', datasetName);
                 if (feature.getId()) {
                   uniqueId = feature.getId();
-                  feature.setId(`${feature.getId()}`);
+                  feature.setId(feature.getId() + '');
                 }
               });
               if (geojsonFeatures.features[0]) {
@@ -868,26 +869,26 @@
       }
 
       function deleteFeature() {
-        Object.keys(deleteList).forEach((dataset) => {
+        Object.keys(deleteList).forEach(function(dataset) {
           var addFeatureParams = new ol.supermap.EditFeaturesParameters({
-            dataSourceName,
+            dataSourceName: dataSourceName,
             dataSetName: dataset,
             IDs: deleteList[dataset],
             editType: 'delete'
           });
-          editFeaturesService.editFeatures(addFeatureParams).then(function (serviceResult) {
+          editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
               widgets.alert.showAlert(resources.text_deleteSuccess, true);
               // 清空
-              let features = currentSource.getFeatures();
-              features.forEach((feature) => {
-                let id = feature.getId();
-                let split = id.split('_');
-                if (id.includes(dataset) && deleteList[dataset].includes(split[split.length -1])) {
+              var features = currentSource.getFeatures();
+              features.forEach(function(feature) {
+                var id = feature.getId();
+                var split = id.split('_');
+                if (id.indexOf(dataset) > -1 && deleteList[dataset].indexOf(split[split.length -1]) > -1) {
                   currentSource.removeFeature(feature);
                 }
               });
-              let deleteEle = document.querySelector('.delete-feature-list');
+              var deleteEle = document.querySelector('.delete-feature-list');
               deleteEle.innerHTML = '';
             }
           });
@@ -914,28 +915,28 @@
           })
         });
         select.on('select', function (e) {
-          let feature = e.selected[0];
+          var feature = e.selected[0];
           if (feature) {
             if (status == 'DELETE') {
-            let props = new ol.format.GeoJSON().writeFeature(feature);
+            var props = new ol.format.GeoJSON().writeFeature(feature);
             props = JSON.parse(props);
-            let dataset = feature.get('dataset');
+            var dataset = feature.get('dataset');
             if (!deleteList[dataset]) {
               deleteList[dataset] = []
             }
-            if (deleteList[dataset].includes(props.id)) {
+            if (deleteList[dataset].indexOf(props.id) > -1) {
               return;
             }
             deleteList[dataset].push(props.id);
-            const deleteItem = document.createElement('div');
-            deleteItem.innerText = `SMID: ${props.id} (${dataset})`;
-            let deleteEle = document.querySelector('.delete-feature-list');
+            var deleteItem = document.createElement('div');
+            deleteItem.innerText = 'SMID: ' + props.id + ' (' + dataset + ')';
+            var deleteEle = document.querySelector('.delete-feature-list');
             deleteEle.appendChild(deleteItem);
           } else if (status === 'EDIT') {
             cacheFeatures.push(_.cloneDeep(feature));
             editedFeatures.push(feature);
             document.querySelector('.edit-tips').style.display = 'none';
-            let props = new ol.format.GeoJSON().writeFeature(feature);
+            var props = new ol.format.GeoJSON().writeFeature(feature);
             props = JSON.parse(props);
             currentFeature.dataset = feature.get('dataset');
             currentDataset = feature.get('dataset');
@@ -956,7 +957,7 @@
           features: select.getFeatures()
         });
         snap = new ol.interaction.Snap({
-          source
+          source: source
         });
         map.addInteraction(select);
         map.addInteraction(translate);
@@ -965,7 +966,7 @@
       }
 
       function startDraw(type) {
-        let drawTypeMap = {
+        var drawTypeMap = {
           REGION: 'Polygon',
           LINE: 'LineString',
           POINT: 'Point'
@@ -974,23 +975,23 @@
         endDraw();
         map.addOverlay(overlayPopup);
         map.on('pointermove', function (evt) {
-          const coordinate = evt.coordinate;
+          var coordinate = evt.coordinate;
           content.querySelector('.coordX').value = coordinate[0];
           content.querySelector('.coordY').value = coordinate[1];
           overlayPopup.setPosition(coordinate);
         });
           draw = new ol.interaction.Draw({
             source: source,
-            type,
+            type: type,
             snapTolerance: 20
           });
           snap = new ol.interaction.Snap({
-              source
+            source: source
           });
           draw.on('drawend', function(e) {
             if (e.feature) {
               map.removeOverlay(overlayPopup);
-              let props = new ol.format.GeoJSON().writeFeature(e.feature);
+              var props = new ol.format.GeoJSON().writeFeature(e.feature);
               props = JSON.parse(props);
               currentFeature.data = props;
               currentFeature.origin = e.feature;

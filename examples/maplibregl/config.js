@@ -154,6 +154,12 @@ var exampleConfig = {
             name_en: 'dataset information service',
             thumbnail: '02_datasetService.png',
             fileName: '02_datasetService'
+          },
+          {
+            name: "要素编辑",
+            name_en: "draw and edit features",
+            thumbnail: "drawAndEditFeatures.png",
+            fileName: "drawAndEditFeatures"
           }
         ]
       },
