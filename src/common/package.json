@@ -28,6 +28,9 @@
     "node-forge": "^1.3.1",
     "rbush": "^2.0.2",
     "urijs": "^1.19.11",
+    "flv.js": "^1.6.2",
+    "video.js": "^7.10.2",
+    "videojs-flvjs-es6": "^1.0.1",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   }
 }
