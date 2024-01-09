@@ -25,7 +25,6 @@
     "mapv": "2.0.62",
     "flatgeobuf": "3.23.1",
     "rbush": "^2.0.2",
-    "urijs": "^1.19.11",
     "flv.js": "^1.6.2",
     "video.js": "^7.10.2",
     "videojs-flvjs-es6": "^1.0.1",
