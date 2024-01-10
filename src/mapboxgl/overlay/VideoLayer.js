@@ -9,7 +9,6 @@ import { VideoLayerRenderer } from '@supermap/iclient-common/overlay/video/Video
  * @class VideoLayer
  * @category  Visualization Video
  * @modulecategory Overlay
- * @param {string} name - 图层名称。
  * @param {Object} options - 构造参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
  * @param {string} [options.url] - 视频 或 流链接。支持 flv, m3u8 流格式。
@@ -19,11 +18,10 @@ import { VideoLayerRenderer } from '@supermap/iclient-common/overlay/video/Video
  */
 export class VideoLayer extends mapboxgl.Evented {
 
-  constructor(name, options) {
+  constructor(options) {
     super();
     var _options = options ? options : {};
     this.options = _options;
-    this.name = name;
     this.url = this.options.url;
     this.extent = this.options.extent;
     this.id = _options.id ? _options.id : CommonUtil.createUniqueID("VideoLayer_");
