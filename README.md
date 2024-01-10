@@ -16,9 +16,6 @@ SuperMap iClient JavaScript 是一套开源开放的 WebGIS 客户端应用开�
 
 基于Vue 2.x的iClient UI组件库，[快速上手文档](https://iclient.supermap.io/web/apis/vue/zh/api/guide/quick-start.html)
 
-## 示例
- [![](https://www.supermap.com/pic/anlipic/201792216859921.gif)](https://iclient.supermap.io/examples/mapboxgl/editor.html#mapvPolylineTime)
-
 
 ## Contributors
 
