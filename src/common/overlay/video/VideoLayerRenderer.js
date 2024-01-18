@@ -29,7 +29,7 @@ export class VideoLayerRenderer {
     video.id = this.layerId;
     video.className = 'video-js';
     video.style.position = 'fixed';
-    video.style.left = '-200%';
+    video.style.left = '-300%';
     video.setAttribute('crossorigin', 'anonymous');
     document.body.appendChild(video);
   }
