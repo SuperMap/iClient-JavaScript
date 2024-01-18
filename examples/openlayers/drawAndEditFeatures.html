@@ -158,9 +158,11 @@
         right: 0px;
         width: 260px;
         background: #fff;
+        border-radius: 10px;
+        padding: 10px;
         display: none;
+        border: 1px solid #a39a9a;
       }
-
 
       .ol-popup {
         position: absolute;
@@ -188,14 +190,35 @@
       .button-group, .info-panel, .edit-tips {
         box-shadow: 0px 0px 5px 0 rgba(0,0,0,0.3);
       }
+      .add-tips {
+        display: none;
+        color: red;
+        margin-right: 16px;
+      }
+      .message {
+        width: 300px;
+        height: 50px;
+        position: absolute;
+        top: 15px;
+        font-size: 16px;
+        left: 50%;
+        padding-top: 15px;
+        display: none;
+        margin-left: -150px;
+        background: #fff;
+      }
     </style>
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="map" style="width: 100%; height: 100%"></div>
     <div class="video-modal">
       <video controls width="960">
-        <source src="https://www.runoob.com/try/demo_source/mov_bbb.mp4" type="video/mp4">
+        <source src="" type="video/mp4">
       </video>
+    </div>
+    <div class="message">
+      <span class="glyphicon glyphicon-exclamation-sign" style="color: #ec5812;"></span>
+      <span>有未完成的更改，请先保存或取消更改</span>
     </div>
     <div id="popup" class="ol-popup">
       <p>按Tab键开始输入坐标值，回车键确定</p>
@@ -250,6 +273,7 @@
           <div class="add-attribute-info">
           </div>
           <div class="info-bottom">
+            <p class="add-tips">请先保存或取消更改</p>
             <button class="btn btn-default btn-group-xs cancel-add">取消</button>
             <button class="btn btn-primary btn-group-xs addSave">保存</button>
           </div>
@@ -264,6 +288,7 @@
           <div class="edit-attribute-info">
           </div>
           <div class="info-bottom">
+            <p class="add-tips">请先保存或取消更改</p>
             <button class="btn btn-default btn-group-xs cancel-edit">取消</button>
             <button disabled class="btn btn-primary btn-group-xs editSave">保存</button>
           </div>
@@ -281,8 +306,8 @@
             <button class="btn btn-default btn-group-xs cancel-delete">取消</button>
             <div class="delete-modal">
               <p>删除后要素将无法恢复，是否确认删除？</p>
-              <div>
-                <button class="cancel btn btn-default btn-group-xs">取消</button>
+              <div class="btns">
+                <button class="final-delete-cancel btn btn-default btn-group-xs">取消</button>
                 <button class="final-delete btn btn-danger btn-group-xs">删除</button>
               </div>
             </div>
@@ -339,6 +364,7 @@
       var editedFeatures = [];
       var container = document.getElementById('popup');
       var content = document.getElementById('popup-content');
+      var isChanged = false;
       getDomains(currentDataset);
       var overlayPopup = new ol.Overlay({
         element: container,
@@ -551,7 +577,6 @@
       function renderAttribute(datasetName, status) {
         var attributeElement = document.querySelector('.' + (status || 'add') + '-attribute-info');
         attributeElement.innerHTML = '';
-        console.log('filterFields', filterFields);
         Object.keys(filterFields[datasetName]).forEach(function(key) {
           if (!filterFields[datasetName][key]) {
             var item = document.createElement('div');
@@ -672,6 +697,11 @@
          // 切换状态
         document.querySelector('.button-group').addEventListener('click', function(e) {
           var className = e.target.className;
+          if (isChanged) {
+            document.querySelector('.message').style.display = 'block';
+            document.querySelector('.add-tips').style.display = 'inline-block';
+            return;
+          }
           switchPanel(className);
         });
 
@@ -698,6 +728,9 @@
             if (currentShowPanel) {
               document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
+            document.querySelector('.message').style.display = 'none';
+            document.querySelector('.add-tips').style.display = 'none';
+            isChanged = false;
           }
         });
 
@@ -715,6 +748,9 @@
             if (currentShowPanel) {
               document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
+            document.querySelector('.message').style.display = 'none';
+            document.querySelector('.add-tips').style.display = 'none';
+            isChanged = false;
           }
         });
 
@@ -759,7 +795,7 @@
           document.querySelector('.delete-feature-info').style.display = 'block';
           currentShowPanel = 'delete-feature-info';
           status = 'DELETE';
-          startSelect();
+          startSelect(true);
         }
       }
 
@@ -775,15 +811,31 @@
       var saveBtn = document.querySelector('.addSave');
       var editBtn = document.querySelector('.editSave');
       saveBtn.addEventListener('click', function () {
+        document.querySelector('.message').style.display = 'none';
+        document.querySelector('.add-tips').style.display = 'none';
+        isChanged = false;
         save('add');
       });
       editBtn.addEventListener('click', function () {
+        document.querySelector('.message').style.display = 'none';
+        document.querySelector('.add-tips').style.display = 'none';
+        isChanged = false;
         save('edit');
       });
       var deleteBtn = document.querySelector('.delete');
       deleteBtn.addEventListener('click', function () {
+        document.querySelector('.delete-modal').style.display = 'block';
+      });
+      var deleteModalBtn = document.querySelector('.final-delete');
+      deleteModalBtn.addEventListener('click', function () {
+        document.querySelector('.delete-modal').style.display = 'none';
         deleteFeature();
       });
+      var deleteBtnCancel = document.querySelector('.final-delete-cancel');
+      deleteBtnCancel.addEventListener('click', function () {
+        document.querySelector('.delete-modal').style.display = 'none';
+      });
+
       function save(type) {
         var properties = {};
         var attributeElement = document.querySelector('.' + type + '-attribute-info');
@@ -803,12 +855,7 @@
           olFeature.setId(arr[arr.length-1]);
           isUpdate = true;
         }
-        // var features = sourceMap[type].getFeatures();
-        // var index = features.indexOf(currentFeature.origin);
-        // features[index] = olFeature;
         currentFeature.origin = olFeature;
-        // sourceMap[type].clear();
-        // sourceMap[type].addFeatures(features);
         commit(isUpdate);
         switchPanel('edit', true);
       }
@@ -894,10 +941,11 @@
           });
         });
       }
-      function startSelect() {
+      function startSelect(multi = false) {
         clearInteraction();
         select = new ol.interaction.Select({
           wrapX: false,
+          multi: true,
           style: new ol.style.Style({
             fill: new ol.style.Fill({
               color: [90, 90, 90, 0.9]
@@ -915,6 +963,7 @@
           })
         });
         select.on('select', function (e) {
+          isChanged = true;
           var feature = e.selected[0];
           if (feature) {
             if (status == 'DELETE') {
@@ -933,7 +982,9 @@
             var deleteEle = document.querySelector('.delete-feature-list');
             deleteEle.appendChild(deleteItem);
           } else if (status === 'EDIT') {
-            cacheFeatures.push(_.cloneDeep(feature));
+            var cloneFeature = _.cloneDeep(feature);
+            cloneFeature.setStyle(currentSource.getFeatures()[0].getStyle());
+            cacheFeatures.push(cloneFeature);
             editedFeatures.push(feature);
             document.querySelector('.edit-tips').style.display = 'none';
             var props = new ol.format.GeoJSON().writeFeature(feature);
@@ -948,8 +999,6 @@
           }
           }
         });
-        // modify
-        
         modify = new ol.interaction.Modify({
           features: select.getFeatures()
         });
@@ -996,6 +1045,7 @@
               currentFeature.data = props;
               currentFeature.origin = e.feature;
               document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+              isChanged = true;
               endDraw();
             }
           });

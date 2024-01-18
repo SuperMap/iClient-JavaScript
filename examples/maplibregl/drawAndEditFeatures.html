@@ -91,6 +91,18 @@
         display: none;
       }
 
+      .delete-modal {
+        position: absolute;
+        top: -70px;
+        right: 0px;
+        width: 260px;
+        background: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        display: none;
+        border: 1px solid #a39a9a;
+      }
+
       .select-element {
         width: 100%;
         height: 26px;
@@ -178,6 +190,24 @@
       .button-group, .info-panel, .edit-tips {
         box-shadow: 0px 0px 5px 0 rgba(0,0,0,0.3);
       }
+
+      .add-tips {
+        display: none;
+        color: red;
+        margin-right: 16px;
+      }
+      .message {
+        width: 300px;
+        height: 50px;
+        position: absolute;
+        top: 15px;
+        font-size: 16px;
+        left: 50%;
+        padding-top: 15px;
+        display: none;
+        margin-left: -150px;
+        background: #fff;
+      }
     </style>
   </head>
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
@@ -194,8 +224,12 @@
     <div class="video-modal">
       <button class="video-modal-close">Close</button>
       <video controls width="720">
-        <source src="https://www.runoob.com/try/demo_source/mov_bbb.mp4" type="video/mp4">
+        <source src="" type="video/mp4">
       </video>
+    </div>
+    <div class="message">
+      <span class="glyphicon glyphicon-exclamation-sign" style="color: #ec5812;"></span>
+      <span>有未完成的更改，请先保存或取消更改</span>
     </div>
     <div class="edit-panel">
       <div class="button-group">
@@ -241,6 +275,7 @@
           <div class="add-attribute-info">
           </div>
           <div class="info-bottom">
+            <p class="add-tips">请先保存或取消更改</p>
             <button class="btn btn-default btn-group-xs cancel-add">取消</button>
             <button class="btn btn-primary btn-group-xs addSave">保存</button>
           </div>
@@ -255,6 +290,7 @@
           <div class="edit-attribute-info">
           </div>
           <div class="info-bottom">
+            <p class="add-tips">请先保存或取消更改</p>
             <button class="btn btn-default btn-group-xs cancel-edit">取消</button>
             <button disabled class="btn btn-primary btn-group-xs editSave">保存</button>
           </div>
@@ -269,6 +305,13 @@
             </div>
           </div>
           <div class="info-bottom">
+            <div class="delete-modal">
+              <p>删除后要素将无法恢复，是否确认删除？</p>
+              <div class="btns">
+                <button class="final-delete-cancel btn btn-default btn-group-xs">取消</button>
+                <button class="final-delete btn btn-danger btn-group-xs">删除</button>
+              </div>
+            </div>
             <button class="btn btn-default btn-group-xs cancel-delete">取消</button>
             <button class="btn btn-danger btn-group-xs delete">删除</button>
           </div>
@@ -316,7 +359,7 @@
       }
       var container = document.getElementById('popup');
       var content = document.getElementById('popup-content');
-
+      var isChanged = false;
       map = new maplibregl.Map({
         container: 'map',
         style: {
@@ -512,6 +555,7 @@
             feature.id = datasetInfoList[currentDataset].id;
             currentFeature.data = feature;
             document.querySelector('.add-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
+            isChanged = true;
           }
         });
         var datasetService = new maplibregl.supermap.DatasetService(dataUrl)
@@ -702,6 +746,11 @@
          // 切换状态
         document.querySelector('.button-group').addEventListener('click', function(e) {
           var className = e.target.className;
+          if (isChanged) {
+            document.querySelector('.message').style.display = 'block';
+            document.querySelector('.add-tips').style.display = 'inline-block';
+            return;
+          }
           switchPanel(className);
         });
 
@@ -729,6 +778,9 @@
             if (currentShowPanel) {
               document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
+            document.querySelector('.message').style.display = 'none';
+            document.querySelector('.add-tips').style.display = 'none';
+            isChanged = false;
           }
         });
 
@@ -742,6 +794,9 @@
             if (currentShowPanel) {
               document.querySelector('.' + currentShowPanel).style.display = 'none';
             }
+            document.querySelector('.message').style.display = 'none';
+            document.querySelector('.add-tips').style.display = 'none';
+            isChanged = false;
           }
         });
 
@@ -799,14 +854,29 @@
       var saveBtn = document.querySelector('.addSave');
       var editBtn = document.querySelector('.editSave');
       saveBtn.addEventListener('click', function () {
+        document.querySelector('.message').style.display = 'none';
+        document.querySelector('.add-tips').style.display = 'none';
+        isChanged = false;
         save('add');
       });
       editBtn.addEventListener('click', function () {
+        document.querySelector('.message').style.display = 'none';
+        document.querySelector('.add-tips').style.display = 'none';
+        isChanged = false;
         save('edit');
       });
       var deleteBtn = document.querySelector('.delete');
       deleteBtn.addEventListener('click', function () {
+        document.querySelector('.delete-modal').style.display = 'block';
+      });
+      var deleteModalBtn = document.querySelector('.final-delete');
+      deleteModalBtn.addEventListener('click', function () {
+        document.querySelector('.delete-modal').style.display = 'none';
         deleteFeature();
+      });
+      var deleteBtnCancel = document.querySelector('.final-delete-cancel');
+      deleteBtnCancel.addEventListener('click', function () {
+        document.querySelector('.delete-modal').style.display = 'none';
       });
       function save(type) {
         var properties = {};
@@ -915,6 +985,7 @@
         map.on('click', function (e) {
           var res = map.queryRenderedFeatures(e.point);
           if (status === 'EDIT') {
+            isChanged = true;
             if (res[0] && !['mapbox-gl-draw-cold', 'mapbox-gl-draw-hot'].indexOf(res[0].source) > -1) {
               var type = res[0].type;
               var geometry = res[0].geometry;
@@ -971,17 +1042,6 @@
             var deleteEle = document.querySelector('.delete-feature-list');
             deleteEle.appendChild(deleteItem);
             }
-          }
-        });
-        map.on('draw.update', function (e) {
-          var feature = e.features[0];
-          if (status === 'EDIT') {
-              document.querySelector('.edit-tips').style.display = 'none';
-              currentFeature.dataset = feature.properties.datasetName;
-              currentFeature.data = feature;
-              document.querySelector('.edit-feature-info').style.display = 'block';
-              document.querySelector('.edit-feature-info>.space-info>.input-element').value = JSON.stringify({ geometry: currentFeature.data.geometry});
-              renderEditAttribute('edit', currentFeature.data.properties);
           }
         });
         map.on('draw.update', function (e) {
