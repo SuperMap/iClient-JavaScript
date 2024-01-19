@@ -58,7 +58,7 @@ export class VideoLayer extends mapboxgl.Evented {
     this.video.one('canplay', () => {
       setTimeout(() => {
         map.getSource(this.layerId).play();
-      }, 1000);
+      }, 1500);
     });
   }
 
