@@ -333,7 +333,8 @@ import {
     ArrayStatistic,
     getMeterPerMapUnit,
     getWrapNum,
-    conversionDegree
+    conversionDegree,
+    GeometryUtil
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -502,7 +503,8 @@ export {
     ArrayStatistic,
     getMeterPerMapUnit,
     getWrapNum,
-    conversionDegree
+    conversionDegree,
+    GeometryUtil
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {

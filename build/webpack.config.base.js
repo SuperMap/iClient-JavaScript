@@ -58,7 +58,13 @@ module.exports = {
 
     //其它解决方案配置
     resolve: {
-        extensions: ['.js', '.json', '.css']
+        extensions: ['.js', '.json', '.css'],
+        fallback: {
+          fs: false,
+          path: require.resolve("path-browserify"),
+          crypto: require.resolve("crypto-browserify"),
+          stream: require.resolve("stream-browserify")
+        }
     },
 
     externals: {

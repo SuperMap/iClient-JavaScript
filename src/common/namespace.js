@@ -337,6 +337,7 @@ import {
   isCORS,
   setCORS,
   FetchRequest,
+  GeometryUtil,
   ColorsPickerUtil,
   ArrayStatistic,
   CartoCSS,
@@ -493,6 +494,7 @@ SuperMap.isCORS = isCORS;
 SuperMap.setRequestTimeout = setRequestTimeout;
 SuperMap.getRequestTimeout = getRequestTimeout;
 SuperMap.FetchRequest = FetchRequest;
+SuperMap.GeometryUtil = GeometryUtil;
 
 // commontypes
 SuperMap.inherit = inheritExt;

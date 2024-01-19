@@ -18,6 +18,7 @@ import { Point as GeometryPoint } from "../commontypes/geometry/Point";
 import { Polygon } from "../commontypes/geometry/Polygon";
 import { LinearRing } from "../commontypes/geometry/LinearRing";
 import { GeoJSON as GeoJSONFormat } from "../format/GeoJSON";
+import { GeometryUtil } from './Geometry';
 
 function toSuperMapGeometry(geoJSON) {
     if (geoJSON && geoJSON.type) {
@@ -75,5 +76,6 @@ export {
   getMeterPerMapUnit,
   getWrapNum,
   conversionDegree,
-  extend
+  extend,
+  GeometryUtil
 };

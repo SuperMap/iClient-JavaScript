@@ -1,0 +1,390 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>turf ugc buffer 对比示例</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+
+      .item {
+        display: inline-block;
+        margin-right: 50px;
+      }
+
+      .rect-blue {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-color: blue;
+      }
+
+      .rect-red {
+        width: 20px;
+        display: inline-block;
+        height: 20px;
+        background-color: red;
+      }
+
+      span {
+        margin-right: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="control-box">
+      <div class="item">
+        <h3>点数量设置:</h3>
+        <input class="point-number" type="number" value="200" />
+        <!-- <input
+          class="point-number"
+          type="range"
+          value="200"
+          step="1"
+          min="1"
+          max="1000"
+        /> -->
+      </div>
+      <div class="item">
+        <h3>缓冲区半径(米):</h3>
+        <input class="radius" type="number" value="300" />
+        <!-- <input class="turf-radius" type="range" value="300" min="1" max="1000" /> -->
+      </div>
+      <div class="item">
+        <div><span class="rect-red"></span><span>UGC</span>计算时间为: <span class="ugc-time"></span></div>
+        <div><span class="rect-blue"></span><span>Turf.js</span>计算时间为: <span class="turf-time"></span></div>
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <!-- <link rel="stylesheet" href="./mapbox.css" />
+  <script src="./mapbox.js"></script>
+  <script src="./UGCWasmAll.js"></script> -->
+    <script>
+      // import ugGeometry2Geojson from '../src/UGGeometry2GeoJson.js'
+
+      handleBar();
+      var map;
+      var markerList = [];
+      var pointNum = 400;
+      var radius = 30000;
+      document.querySelector('.point-number').value = pointNum;
+      document.querySelector('.radius').value = radius;
+      var pointExtent = [120, 30, 125, 35];
+      var url =
+        'https://iserver.supermap.io/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+      function initMap(url) {
+        return new Promise((resolve) => {
+          map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+              version: 8,
+              sources: {
+                'raster-tiles': {
+                  type: 'raster',
+                  tiles: [url],
+                  tileSize: 256
+                }
+              },
+              layers: [
+                {
+                  id: 'simple-tiles',
+                  type: 'raster',
+                  source: 'raster-tiles'
+                }
+              ]
+            },
+            center: [pointExtent[0] + 2, pointExtent[1] + 2],
+            zoom: 6
+          });
+          map.on('load', function () {
+            resolve(map);
+          });
+        });
+      }
+
+      function handleBar() {
+        document.querySelector('.control-box').addEventListener('change', function (e) {
+          if (e.target.className === 'point-number') {
+            pointNum = e.target.value;
+          } else if (e.target.className === 'radius') {
+            radius = e.target.value;
+          }
+          update();
+          let nodeList = [...document.querySelectorAll(`.${e.target.className}`)];
+          nodeList.forEach((node) => {
+            node.value = +e.target.value;
+          });
+        });
+      }
+
+      function createPoints(pointNum, pointExtent) {
+        const points = [];
+        for (let i = 0; i < pointNum; i++) {
+          let x = Math.random() * (pointExtent[2] - pointExtent[0]) + pointExtent[0];
+          let y = Math.random() * (pointExtent[3] - pointExtent[1]) + pointExtent[1];
+          points.push([x, y]);
+        }
+        return points;
+      }
+
+      function createTurfBuffer(radius) {
+        let count1 = performance.now();
+        let result = turf.distance(
+          {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              coordinates: [93, 67],
+              type: 'Point'
+            }
+          },
+          {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              coordinates: [93, 70],
+              type: 'Point'
+            }
+          },
+          { units: 'degrees' }
+        );
+        let count2 = performance.now() - count1;
+        document.querySelector('.turf-time').innerText = count2 + 'ms';
+        console.log('turf:', count2, result);
+        return result;
+      }
+
+      function createUGCBuffer(points, radius) {
+        /*********************此处进行 ugc 逻辑替换！！！！！！！！！！！！！！！！********************/
+        let count1 = performance.now();
+        const result = mapboxgl.supermap.GeometryUtil.smooth(
+          {
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [116.29375794150174, 40.13472014338595],
+                [116.2937384459, 40.1350417526],
+                [116.2937205469, 40.1353914866],
+                [116.2936961073, 40.1357691248],
+                [116.2936959914, 40.1359171585],
+                [116.2936389424, 40.1362305353],
+                [116.2935760593, 40.1367398294],
+                [116.2935076424, 40.1370618931],
+                [116.2934334022, 40.137562457],
+                [116.2934105104, 40.137780112],
+                [116.2933590769, 40.1381718708],
+                [116.2932620659, 40.1387333502],
+                [116.293210541, 40.1392383121],
+                [116.2931020493, 40.1399521575],
+                [116.2930505948, 40.1403656871],
+                [116.2929820893, 40.1407922478],
+                [116.2929391831, 40.1411736824],
+                [116.2928991984, 40.1414500833],
+                [116.2928563741, 40.1417264803],
+                [116.2928192625, 40.1419615244],
+                [116.2927964431, 40.142083393],
+                [116.2927390519, 40.1423644849],
+                [116.292619728, 40.1427350832],
+                [116.2925600132, 40.1429406859],
+                [116.2924802967, 40.143173477],
+                [116.2921843903, 40.1438129649],
+                [116.2918174201, 40.1445198122],
+                [116.2917007657, 40.1447677748],
+                [116.2913536965, 40.1454463612],
+                [116.2911631358, 40.1457660309],
+                [116.290890134, 40.1461726323],
+                [116.2906882556, 40.1464400369],
+                [116.2905034713, 40.1466421648],
+                [116.2903073162, 40.1468573341],
+                [116.2900600142, 40.1471007124],
+                [116.2898155657, 40.1473288585],
+                [116.2892954144, 40.1478025168],
+                [116.2888463531, 40.1481783409],
+                [116.2882608381, 40.1487084976],
+                [116.2879254545, 40.1490061586],
+                [116.2876071024, 40.1493147381],
+                [116.2873313428, 40.1496320995],
+                [116.2870640659, 40.1499951929],
+                [116.2869817327, 40.150133482],
+                [116.2866575193, 40.1507387917],
+                [116.2865269636, 40.1510072856],
+                [116.2864651998, 40.1511343057],
+                [116.2862517277, 40.1515665722],
+                [116.2860382657, 40.15198706],
+                [116.2858344221, 40.152404641],
+                [116.2857401876, 40.1525840177],
+                [116.2853344009, 40.1534015066],
+                [116.2851940198, 40.1536764494],
+                [116.2847959335, 40.1544704119],
+                [116.2846401714, 40.1547835967],
+                [116.2844324536, 40.1552055636],
+                [116.2842840136, 40.1555003867],
+                [116.2842651476, 40.1555378563],
+                [116.2841939841, 40.155670186],
+                [116.2838343513, 40.1563965271],
+                [116.2836324097, 40.1568141226],
+                [116.2834169594, 40.1572846517],
+                [116.283290006, 40.1575640431],
+                [116.28315917, 40.1578860978],
+                [116.2829706251, 40.1583419516],
+                [116.2827166629, 40.1589551879],
+                [116.2826031381, 40.1592404678],
+                [116.2823356594, 40.1599361015],
+                [116.2821855837, 40.1603096212],
+                [116.2820258789, 40.1606978492],
+                [116.2817449522, 40.1613787261],
+                [116.2815737181, 40.1617904831],
+                [116.2812947382, 40.1624551821],
+                [116.2811063041, 40.1627859764],
+                [116.2809177979, 40.1631903471],
+                [116.2806696207, 40.1637565167],
+                [116.2805464929, 40.1640447283],
+                [116.2802333914, 40.1648036157],
+                [116.2800404458, 40.1652712234],
+                [116.2796797025, 40.1661249001],
+                [116.2793497211, 40.1669126625],
+                [116.279159254, 40.1673626673],
+                [116.2789091378, 40.1679244094],
+                [116.2787263588, 40.1683464627],
+                [116.2785859226, 40.1686596974],
+                [116.2782818929, 40.1694141433],
+                [116.2782221659, 40.1696259592],
+                [116.2779623064, 40.1703539881],
+                [116.2777679052, 40.1708657899],
+                [116.277571636, 40.1713349206],
+                [116.2773869006, 40.1717952288],
+                [116.277213696, 40.1722276075],
+                [116.2770193258, 40.1727261883],
+                [116.2767248058, 40.1735483569],
+                [116.2766034756, 40.1739322621],
+                [116.2764609779, 40.1743631933],
+                [116.2763396636, 40.1747515203],
+                [116.2762028692, 40.1752281073],
+                [116.2760872892, 40.1756311307],
+                [116.2759369886, 40.1761959983],
+                [116.2757654264, 40.1768741408],
+                [116.2756054739, 40.177469885],
+                [116.2754031613, 40.1782024207],
+                [116.275270192, 40.1787084612],
+                [116.2750197061, 40.1796131092],
+                [116.2747672557, 40.1805457193],
+                [116.2745321269, 40.1814327472],
+                [116.2742931774, 40.1822962076],
+                [116.2740446636, 40.183225917],
+                [116.2737806177, 40.1842100143],
+                [116.2736534384, 40.1846881053],
+                [116.273329471, 40.1860525894],
+                [116.273273137, 40.1866632117],
+                [116.2732338566, 40.1874784054],
+                [116.2732335051, 40.1878021581],
+                [116.273615944, 40.1888081111],
+                [116.2746320507, 40.1899320415],
+                [116.2763577762, 40.1906789124],
+                [116.2799996668, 40.1915228552],
+                [116.281182409, 40.1917969717],
+                [116.2860853564, 40.192927534],
+                [116.2871184119, 40.1932719549],
+                [116.2879970873, 40.1938524572],
+                [116.2890606331, 40.1947641382],
+                [116.289908335, 40.195616395],
+                [116.2899850415, 40.1961127971],
+                [116.2898138917, 40.1978376159],
+                [116.2894446057, 40.201158542],
+                [116.2885312334, 40.2048553161],
+                [116.2878263738, 40.2069334991]
+              ]
+            },
+            properties: {
+              SmID: 0,
+              SmLength: 0,
+              SmSdriW: 0,
+              SmSdriN: 0,
+              SmSdriE: 0,
+              SmSdriS: 0,
+              SmUserID: 0,
+              SmTopoError: 0,
+              SmGeometrySize: 0,
+              SmGeoPosition: 0,
+              标准名称: ''
+            },
+            type: 'Feature'
+          },
+          2
+        );
+        let count2 = performance.now() - count1;
+        document.querySelector('.ugc-time').innerText = count2 + 'ms';
+        console.log('ugc:', count2, result);
+        return result;
+      }
+
+      function clearMarker() {
+        markerList.forEach((marker) => {
+          marker.remove();
+        });
+      }
+      function clearLayer(name) {
+        if (!map) {
+          return;
+        }
+        if (map.getLayer(name + 'outline')) {
+          map.removeLayer(name + 'outline');
+          map.removeSource(name);
+        }
+      }
+      initMap(url).then((map) => {
+        let points = createPoints(pointNum, pointExtent);
+        update();
+      });
+
+      function addResultLayer(map, name, data, fillStyle, lineStyle) {
+        if (map.getLayer(name + 'outline')) {
+          map.removeLayer(name + 'outline');
+          map.removeSource(name);
+        }
+        map.addSource(name, {
+          type: 'geojson',
+          data: data
+        });
+        map.addLayer({
+          id: name + 'outline',
+          type: 'fill',
+          source: name,
+          paint: lineStyle || {
+            'fill-color': 'rgba(255,0,0,0.5)'
+          }
+        });
+      }
+
+      function update() {
+        document.querySelector('.turf-time').innerText = '';
+        document.querySelector('.ugc-time').innerText = '';
+        clearMarker();
+        clearLayer('turfBuffer');
+        clearLayer('ugcBuffer');
+        let points = createPoints(pointNum, pointExtent);
+
+        let turfRes = createTurfBuffer(points, radius);
+        let ugcRes = createUGCBuffer(points, radius);
+        // addResultLayer(map, 'turfBuffer', turfRes, null, {
+        //   'fill-color': 'rgba(0,0,255,0.5)'
+        // });
+        // addResultLayer(map, 'ugcBuffer', ugcRes, null, {
+        //   'fill-color': 'rgba(255,0,0,0.5)'
+        // });
+      }
+    </script>
+  </body>
+</html>

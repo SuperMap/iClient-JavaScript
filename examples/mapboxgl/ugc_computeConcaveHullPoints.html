@@ -1,0 +1,225 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>turf ugc buffer 对比示例</title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+
+      .item {
+        display: inline-block;
+        margin-right: 50px;
+      }
+
+      .rect-blue {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background-color: blue;
+      }
+
+      .rect-red {
+        width: 20px;
+        display: inline-block;
+        height: 20px;
+        background-color: red;
+      }
+
+      span {
+        margin-right: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="control-box">
+      <div class="item">
+        <h3>点数量设置:</h3>
+        <input class="point-number" type="number" value="200" />
+        <!-- <input
+          class="point-number"
+          type="range"
+          value="200"
+          step="1"
+          min="1"
+          max="1000"
+        /> -->
+      </div>
+      <div class="item">
+        <h3>缓冲区半径(米):</h3>
+        <input class="radius" type="number" value="300" />
+        <!-- <input class="turf-radius" type="range" value="300" min="1" max="1000" /> -->
+      </div>
+      <div class="item">
+        <div><span class="rect-red"></span><span>UGC</span>计算时间为: <span class="ugc-time"></span></div>
+        <div><span class="rect-blue"></span><span>Turf.js</span>计算时间为: <span class="turf-time"></span></div>
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <!-- <link rel="stylesheet" href="./mapbox.css" />
+  <script src="./mapbox.js"></script>
+  <script src="./UGCWasmAll.js"></script> -->
+    <script>
+      // import ugGeometry2Geojson from '../src/UGGeometry2GeoJson.js'
+
+      handleBar();
+      var map;
+      var markerList = [];
+      var pointNum = 400;
+      var radius = 30000;
+      document.querySelector('.point-number').value = pointNum;
+      document.querySelector('.radius').value = radius;
+      var pointExtent = [120, 30, 125, 35];
+      var url =
+        'https://iserver.supermap.io/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+      function initMap(url) {
+        return new Promise((resolve) => {
+          map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+              version: 8,
+              sources: {
+                'raster-tiles': {
+                  type: 'raster',
+                  tiles: [url],
+                  tileSize: 256
+                }
+              },
+              layers: [
+                {
+                  id: 'simple-tiles',
+                  type: 'raster',
+                  source: 'raster-tiles'
+                }
+              ]
+            },
+            center: [pointExtent[0] + 2, pointExtent[1] + 2],
+            zoom: 6
+          });
+          map.on('load', function () {
+            resolve(map);
+          });
+        });
+      }
+
+      function handleBar() {
+        document.querySelector('.control-box').addEventListener('change', function (e) {
+          if (e.target.className === 'point-number') {
+            pointNum = e.target.value;
+          } else if (e.target.className === 'radius') {
+            radius = e.target.value;
+          }
+          update();
+          let nodeList = [...document.querySelectorAll(`.${e.target.className}`)];
+          nodeList.forEach((node) => {
+            node.value = +e.target.value;
+          });
+        });
+      }
+
+      function createPoints(pointNum, pointExtent) {
+        const points = [];
+        for (let i = 0; i < pointNum; i++) {
+          let x = Math.random() * (pointExtent[2] - pointExtent[0]) + pointExtent[0];
+          let y = Math.random() * (pointExtent[3] - pointExtent[1]) + pointExtent[1];
+          points.push([x, y]);
+        }
+        return points;
+      }
+
+      function booleanPointOnLine(radius) {
+        let count1 = performance.now();
+        var pt = turf.point([0, 0]);
+        var line = turf.lineString([
+          [-1, -1],
+          [1, 1],
+          [1.5, 2.2]
+        ]);
+        let result = turf.booleanPointOnLine(pt, line);
+        let count2 = performance.now() - count1;
+        document.querySelector('.turf-time').innerText = count2 + 'ms';
+        console.log('turf:', count2, result);
+        return result;
+      }
+
+      function createUGCBuffer(points, radius) {
+        /*********************此处进行 ugc 逻辑替换！！！！！！！！！！！！！！！！********************/
+        let count1 = performance.now();
+        const result = mapboxgl.supermap.GeometryUtil.computeConcaveHullPoints([111, 118, 118], [35, 41, 27]);
+        let count2 = performance.now() - count1;
+        document.querySelector('.ugc-time').innerText = count2 + 'ms';
+        console.log('ugc:', count2, result);
+        return result;
+      }
+
+      function clearMarker() {
+        markerList.forEach((marker) => {
+          marker.remove();
+        });
+      }
+      function clearLayer(name) {
+        if (!map) {
+          return;
+        }
+        if (map.getLayer(name + 'outline')) {
+          map.removeLayer(name + 'outline');
+          map.removeSource(name);
+        }
+      }
+      initMap(url).then((map) => {
+        let points = createPoints(pointNum, pointExtent);
+        update();
+      });
+
+      function addResultLayer(map, name, data, fillStyle, lineStyle) {
+        if (map.getLayer(name + 'outline')) {
+          map.removeLayer(name + 'outline');
+          map.removeSource(name);
+        }
+        map.addSource(name, {
+          type: 'geojson',
+          data: data
+        });
+        map.addLayer({
+          id: name + 'outline',
+          type: 'fill',
+          source: name,
+          paint: lineStyle || {
+            'fill-color': 'rgba(255,0,0,0.5)'
+          }
+        });
+      }
+
+      function update() {
+        document.querySelector('.turf-time').innerText = '';
+        document.querySelector('.ugc-time').innerText = '';
+        clearMarker();
+        clearLayer('turfBuffer');
+        clearLayer('ugcBuffer');
+        let points = createPoints(pointNum, pointExtent);
+
+        let turfRes = booleanPointOnLine();
+        let ugcRes = createUGCBuffer();
+        // addResultLayer(map, 'turfBuffer', turfRes, null, {
+        //   'fill-color': 'rgba(0,0,255,0.5)'
+        // });
+        // addResultLayer(map, 'ugcBuffer', ugcRes, null, {
+        //   'fill-color': 'rgba(255,0,0,0.5)'
+        // });
+      }
+    </script>
+  </body>
+</html>
