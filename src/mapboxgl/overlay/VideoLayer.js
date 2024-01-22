@@ -13,6 +13,7 @@ import { bbox, polygon } from '@turf/turf';
  * @param {Object} options - 构造参数。
  * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8 流格式。
  * @param {Array} options.extent - 视频范围。
+ * @param {Object} [options.opencv] - opencv.js 实例。
  * @param {string} [options.id] - 视频图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
  * @extends {mapboxgl.Evented}
  * @usage
