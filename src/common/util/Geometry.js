@@ -38,22 +38,31 @@ export const GeometryUtil = {
     const result = Module._UGCWasm_Geometrist_IsIdentical(ugFeature1, ugFeature2, tolerance);
     return result === 1;
   },
-  union(geojson1, geojson2, tolerance) {
+  union(geojson1, geojson2) {
     const ugFeature1 = geojson2UGGeometry(geojson1);
     const ugFeature2 = geojson2UGGeometry(geojson2);
-    const result = Module._UGCWasm_Geometrist_Union(ugFeature1, ugFeature2, tolerance);
+    const result = Module._UGCWasm_Geometrist_Union(ugFeature1, ugFeature2);
     return {
       type: "Feature",
       geometry: ugGeometry2Geojson(result)
     };
   },
-  isDisjointed(geojson1, geojson2, tolerance) {
+  union2(geojson1, geojson2, tolerance) {
+    const ugFeature1 = geojson2UGGeometry(geojson1);
+    const ugFeature2 = geojson2UGGeometry(geojson2);
+    const result = Module._UGCWasm_Geometrist_Union2(ugFeature1, ugFeature2, tolerance);
+    return {
+      type: "Feature",
+      geometry: ugGeometry2Geojson(result)
+    };
+  },
+  isDisjointed(geojson1, geojson2, tolerance = 1e-6) {
     const ugFeature1 = geojson2UGGeometry(geojson1);
     const ugFeature2 = geojson2UGGeometry(geojson2);
     const result = Module._UGCWasm_Geometrist_IsDisjointed(ugFeature1, ugFeature2, tolerance);
     return result === 1;
   },
-  hasIntersection(geojson1, geojson2, tolerance) {
+  hasIntersection(geojson1, geojson2, tolerance = 1e-6) {
     const ugFeature1 = geojson2UGGeometry(geojson1);
     const ugFeature2 = geojson2UGGeometry(geojson2);
     const result = Module._UGCWasm_Geometrist_HasIntersection(ugFeature1, ugFeature2, tolerance);
@@ -237,6 +246,11 @@ export const GeometryUtil = {
     const result = Module._UGCWasm_Geometrist_IsLeft(px, py, spx, spy, epx, epy);
     return result === 1;
   },
+  // computeGeodesicArea(geojson, epsgCode) {
+  //   const ugFeature = geojson2UGGeometry(geojson);
+  //   const prjCoordSys = Module._UGCWasm_Geometry_NewUGPrjCoordSys(epsgCode);
+  //   return Module._UGCWasm_Geometrist_ComputeGeodesicArea(ugFeature, prjCoordSys);
+  // },
   computeGeodesicArea(geojson, prjCoordSys) {
     const ugFeature = geojson2UGGeometry(geojson);
     return Module._UGCWasm_Geometrist_ComputeGeodesicArea(ugFeature, prjCoordSys);
