@@ -3240,7 +3240,7 @@ export class WebMap extends Observable {
         }
         if (featureType === "LINE") {
           colors.push(customSettings[key].strokeColor);
-        } else {
+        } else if(customSettings[key].fillColor) {
           colors.push(customSettings[key].fillColor);
         }
       });

@@ -71,15 +71,13 @@ export class WebPrintingService extends CommonServiceBase {
 
     /**
      * @function WebPrintingService.prototype.getPrintingJob
-     * @description 获取 Web 打印输出文档任务。
+     * @description 获取 Web 打印输出文档任务, 轮询获取打印状态，只有当状态为完成或失败才返回结果。
      * @param {string} jobId - Web 打印任务 ID
      * @param {RequestCallback} callback - 回调函数。
      */
     getPrintingJob(jobId, callback) {
         var me = this;
-        me.processAsync(`jobs/${jobId}`, 'GET', function(result) {
-          me.rollingProcess(result, me._processUrl(`jobs/${jobId}`), callback);
-        });
+        me.rollingProcess(me._processUrl(`jobs/${jobId}`), callback);
     }
 
     /**
@@ -108,11 +106,8 @@ export class WebPrintingService extends CommonServiceBase {
      * @description 轮询查询 Web 打印任务。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    rollingProcess(result, url, callback) {
+    rollingProcess(url, callback) {
         var me = this;
-        if (!result) {
-            return;
-        }
         this.id && clearInterval(this.id);
         this.id = setInterval(function () {
           me.request({
@@ -142,6 +137,8 @@ export class WebPrintingService extends CommonServiceBase {
       result = Util.transformResult(result);
       if (result.status === 'FINISHED' || result.status === 'ERROR') {
         clearInterval(this.id);
+      } else if (result.status === 'RUNNING') {
+        options.success = false;
       }
       return { result, options };
     }
