@@ -8,7 +8,6 @@ import {
   LabelThemeLayer,
   MapvLayer,
   FGBLayer,
-  VideoLayer,
   RangeTheme3DLayer,
   RangeThemeLayer,
   RankSymbolThemeLayer,
@@ -95,7 +94,6 @@ mapboxgl.supermap.HeatMapLayer = HeatMapLayer;
 mapboxgl.supermap.LabelThemeLayer = LabelThemeLayer;
 mapboxgl.supermap.MapvLayer = MapvLayer;
 mapboxgl.supermap.FGBLayer = FGBLayer;
-mapboxgl.supermap.VideoLayer = VideoLayer;
 mapboxgl.supermap.RangeTheme3DLayer = RangeTheme3DLayer;
 mapboxgl.supermap.RangeThemeLayer = RangeThemeLayer;
 mapboxgl.supermap.RankSymbolThemeLayer = RankSymbolThemeLayer;

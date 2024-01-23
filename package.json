@@ -161,9 +161,6 @@
     "rbush": "^2.0.2",
     "three": "0.150.1",
     "util": "^0.12.4",
-    "flv.js": "^1.6.2",
-    "video.js": "^7.10.2",
-    "videojs-flvjs-es6": "^1.0.1",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "pre-commit": [
