@@ -174,6 +174,9 @@
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
+    if (inArray(includes, 'snap')) {
+      inputScript(libsurl + '/mapboxglDrawSnap/0.2.0/mapboxglDrawSnap.js');
+    }
     if (!inArray(excludes, 'iclient-maplibregl')) {
       if (supportES6()) {
         inputScript('../../dist/maplibregl/iclient-maplibregl-es6.min.js');

@@ -201,6 +201,9 @@
     if (inArray(includes, 'vue-cesium')) {
       inputScript(libsurl + '/vue-cesium/2.1.4/index.umd.min.js');
     }
+    if (inArray(includes, 'snap')) {
+      inputScript(libsurl + '/mapboxglDrawSnap/0.2.0/mapboxglDrawSnap.js');
+    }
   }
 
   load({

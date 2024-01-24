@@ -211,6 +211,10 @@
             inputScript(libsurl + '/iclient8c/examples/js/plottingPanel/colorpicker/js/colorpicker.js');
             inputCSS(libsurl + '/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css');
         }
+        if (inArray(includes, 'viewer')) {
+          inputScript(libsurl + '/viewerjs/viewer.js');
+          inputCSS(libsurl + '/viewerjs/css/viewer.css');
+        }
     }
 
     function datGuiI18N() {
