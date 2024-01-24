@@ -5,6 +5,7 @@ import './leaflet/control/ChangeTileVersionSpec.js';
 import './leaflet/core/NonEarthCRSSpec.js';
 import './leaflet/core/TransformUtilSpec.js';
 import './leaflet/core/Proj4LeafletSpec.js';
+import './leaflet/core/BaseSpec.js';
 
 /*leaflet -- mapping*/
 import './leaflet/mapping/ImageMapLayerSpec.js';

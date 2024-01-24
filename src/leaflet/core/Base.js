@@ -30,7 +30,7 @@ function wrapToGeoJSON(objClassArray) {
         objClass.defaultFunction = objClass.prototype.toGeoJSON;
         objClass.include({
             toGeoJSON: function (precision) {
-                return objClass.defaultFunction.call(this, precision || 10);
+                return objClass.defaultFunction.call(this, precision || L.toGeoJSONPrecision || 15);
             }
         })
         return objClass;
