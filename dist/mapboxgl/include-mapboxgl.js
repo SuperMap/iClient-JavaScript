@@ -202,7 +202,7 @@
       inputScript(libsurl + '/vue-cesium/2.1.4/index.umd.min.js');
     }
     if (inArray(includes, 'snap')) {
-      inputScript(libsurl + '/mapboxglDrawSnap/0.2.0/mapboxglDrawSnap.js');
+      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.0/mapbox-gl-draw-snap-mode.js');
     }
   }
 

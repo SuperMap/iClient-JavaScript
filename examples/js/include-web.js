@@ -212,8 +212,8 @@
             inputCSS(libsurl + '/iclient8c/examples/js/plottingPanel/colorpicker/css/colorpicker.css');
         }
         if (inArray(includes, 'viewer')) {
-          inputScript(libsurl + '/viewerjs/viewer.js');
-          inputCSS(libsurl + '/viewerjs/css/viewer.css');
+          inputScript(libsurl + '/viewer-js/viewer.min.js');
+          inputCSS(libsurl + '/viewer-js/css/viewer.css');
         }
     }
 
