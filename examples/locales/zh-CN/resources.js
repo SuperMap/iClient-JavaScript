@@ -1909,7 +1909,21 @@ window.examplesResources = {
         "option_meterUnit": "米",
         "option_mileUnit": "英里",
         "option_degreeUnit": "度",
-        "text_print": "打印"
+        "text_print": "打印",
+        "text_addFeature": "新增要素",
+        "text_editFeature": "编辑要素",
+        "text_deleteFeature": "删除要素",
+        "text_targetDataset": "目标数据集",
+        "text_spacialInfo": "空间信息",
+        "msg_pleaseSaveFirst": "有未完成的更改，请先保存或取消更改",
+        "msg_inputCoordinates": "按Tab键开始输入坐标值，回车键确定",
+        "msg_moveToMapDraw": "鼠标移动至地图绘制要素",
+        "text_attributeInfo": "属性信息",
+        "msg_pleaseSave": "请先保存或取消更改",
+        "msg_selectDeleteFeature": "在地图上选择待删除的要素",
+        "msg_confirmDelete": "删除后要素将无法恢复，是否确认删除？",
+        "msg_clickToSelect": "在地图上点击要素进行选择",
+        "text_featureToDelete": "待删除要素"
     }
 };
 window.resources = window.examplesResources.resources;

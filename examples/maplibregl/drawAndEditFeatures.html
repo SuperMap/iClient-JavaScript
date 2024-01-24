@@ -6,10 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
-    <script type="text/javascript" include="draw" src="../../dist/maplibregl/include-maplibregl.js"></script>
-    <script src="../../dist/mapboxgl/mapbox-gl-draw-snap-mode.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="text/javascript" include="draw,snap" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
       .key-input,
       .value-input {
@@ -213,7 +210,7 @@
   <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
     <div id="map" style="width: 100%; height: 100%"></div>
     <div id="popup" class="ol-popup">
-      <p>按Tab键开始输入坐标值，回车键确定</p>
+      <p><span data-i18n="resources.msg_inputCoordinates"></span></p>
       <div id="popup-content">
         <h5>X</h5>
         <input class="input-element coordX" type="number">
@@ -229,7 +226,7 @@
     </div>
     <div class="message">
       <span class="glyphicon glyphicon-exclamation-sign" style="color: #ec5812;"></span>
-      <span>有未完成的更改，请先保存或取消更改</span>
+      <span data-i18n="resources.msg_pleaseSaveFirst"></span>
     </div>
     <div class="edit-panel">
       <div class="button-group">
@@ -239,7 +236,7 @@
           type="button"
           class="btn btn-primary btn-group-xs"
         >
-          <span class="glyphicon glyphicon-plus" aria-hidden="true">新增要素</span>
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"><span data-i18n="resources.text_addFeature"></span></span>
         </button>
         <button
           id="editFeature"
@@ -247,7 +244,7 @@
           type="button"
           class="btn btn-primary btn-group-xs"
         >
-          <span class="glyphicon glyphicon-edit" aria-hidden="true">编辑要素</span>
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"><span data-i18n="resources.text_editFeature"></span></span>
         </button>
         <button
           id="deleteFeature"
@@ -255,72 +252,72 @@
           type="button"
           class="btn btn-primary btn-group-xs"
         >
-          <span class="glyphicon glyphicon-trash" aria-hidden="true">删除要素</span>
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"><span data-i18n="resources.text_deleteFeature"></span></span>
         </button>
       </div>
       <div class="info-panel">
         <div class="add-feature-info">
-          <h4 class="into-title">新增要素</h4>
+          <h4 class="into-title"><span data-i18n="resources.text_addFeature"></span></h4>
           <div>
-            <h5>目标数据集</h5>
+            <h5><span data-i18n="resources.text_targetDataset"></span></h5>
             <select class="select-element addDatasetNameList" name="capital">
             </select>
           </div>
-          <h6><span class="line-element"></span>空间信息</h6>
+          <h6><span class="line-element"></span><span data-i18n="resources.text_spacialInfo"></span></h6>
           <div class="space-info">
             <input class="input-element" type="text">
-            <p class="desc-element">鼠标移动至地图绘制要素。</p>
+            <p class="desc-element"><span data-i18n="resources.msg_moveToMapDraw"></span></p>
           </div>
-          <h6><span class="line-element"></span>属性信息</h6>
+          <h6><span class="line-element"></span><span data-i18n="resources.text_attributeInfo"></span></h6>
           <div class="add-attribute-info">
           </div>
           <div class="info-bottom">
-            <p class="add-tips">请先保存或取消更改</p>
-            <button class="btn btn-default btn-group-xs cancel-add">取消</button>
-            <button class="btn btn-primary btn-group-xs addSave">保存</button>
+            <p class="add-tips"><span data-i18n="resources.msg_pleaseSave"></span></p>
+            <button class="btn btn-default btn-group-xs cancel-add" data-i18n="resources.btn_cancel"></button>
+            <button class="btn btn-primary btn-group-xs addSave" data-i18n="resources.btn_save"></button>
           </div>
         </div>
         <div class="edit-feature-info">
-          <h4 class="into-title">编辑要素<span class="dataset-info">数据集：<span class="edit-dataset"></span></span></h4>
-          <h6>空间信息</h6>
+          <h4 class="into-title"><span data-i18n="resources.text_editFeature"></span><span class="dataset-info"><span data-i18n="resources.text_dataset"></span>：<span class="edit-dataset"></span></span></h4>
+          <h6><span data-i18n="resources.text_spacialInfo"></span></h6>
           <div class="space-info">
             <input class="input-element" type="text">
           </div>
-          <h6>属性信息</h6>
+          <h6><span data-i18n="resources.text_attributeInfo"></span></h6>
           <div class="edit-attribute-info">
           </div>
           <div class="info-bottom">
-            <p class="add-tips">请先保存或取消更改</p>
-            <button class="btn btn-default btn-group-xs cancel-edit">取消</button>
-            <button disabled class="btn btn-primary btn-group-xs editSave">保存</button>
+            <p class="add-tips"><span data-i18n="resources.msg_pleaseSave"></span></p>
+            <button class="btn btn-default btn-group-xs cancel-edit" data-i18n="resources.btn_cancel"></button>
+            <button disabled class="btn btn-primary btn-group-xs editSave" data-i18n="resources.btn_save"></button>
           </div>
         </div>
         <div class="delete-feature-info">
-          <h4 class="into-title">删除要素</h4>
-          <p class="desc-element">在地图上选择待删除的要素。</p>
+          <h4 class="into-title"><span data-i18n="resources.text_deleteFeature"></span></h4>
+          <p class="desc-element"><span data-i18n="resources.msg_selectDeleteFeature"></span></p>
           <div style="border-top: 1px solid #baafaf">
-            <h5>待删除要素:</h5>
+            <h5><span data-i18n="resources.text_featureToDelete"></span>:</h5>
             <div class="delete-feature-list">
 
             </div>
           </div>
           <div class="info-bottom">
             <div class="delete-modal">
-              <p>删除后要素将无法恢复，是否确认删除？</p>
+              <p><span data-i18n="resources.msg_confirmDelete"></span></p>
               <div class="btns">
-                <button class="final-delete-cancel btn btn-default btn-group-xs">取消</button>
-                <button class="final-delete btn btn-danger btn-group-xs">删除</button>
+                <button class="final-delete-cancel btn btn-default btn-group-xs" data-i18n="resources.btn_cancel"></button>
+                <button class="final-delete btn btn-danger btn-group-xs"><span data-i18n="resources.text_input_value_delete"></span></button>
               </div>
             </div>
-            <button class="btn btn-default btn-group-xs cancel-delete">取消</button>
-            <button class="btn btn-danger btn-group-xs delete">删除</button>
+            <button class="btn btn-default btn-group-xs cancel-delete" data-i18n="resources.btn_cancel"></button>
+            <button class="btn btn-danger btn-group-xs delete"><span data-i18n="resources.text_input_value_delete"></span></button>
           </div>
         </div>
       </div>
-      <div class="edit-tips">在地图上点击要素进行选择。</div>
+      <div class="edit-tips"><span data-i18n="resources.msg_clickToSelect"></span></div>
     </div>
     </div>
-    <script type="text/javascript" include="jquery,bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap,widgets.alert,viewer" src="../js/include-web.js"></script>
     <script type="text/javascript">
       var status = 'ADD';
       var type = '';
@@ -328,11 +325,10 @@
       var currentDataset = 'buildings_R';
       var map,
         draw,
-        // url = (window.isLocal ? window.server : "https://iserver.supermap.io") + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
-        url = "http://172.16.14.44:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}";
-        var isUpdate = false;
-      var dataUrl = 'http://172.16.14.44:8090/iserver/services/data-Buildings/rest/data';
-      var dataSourceName = 'NewBuildings';
+        url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326";
+      var isUpdate = false;
+      var dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-building/rest/data";
+      var dataSourceName = 'building';
       var editFeaturesService = new maplibregl.supermap.FeatureService(dataUrl);
       var currentShowPanel = '';
       var datasetNameList = [];
@@ -563,7 +559,7 @@
           datasetNameList = e.result.datasetNames;
           currentFeature.dataset = datasetNameList[0];
           currentDataset = datasetNameList[0];
-          // 获取所有数据集的类型
+          var count = 0;
           datasetNameList.forEach(function(datasetName, index) {
             filterFields[datasetName] = {};
             datasetService.getDataset(dataSourceName, datasetName, function(e) {
@@ -572,11 +568,12 @@
               id: 0
             }
             typeMap[e.result.datasetInfo.type] && datasetTypeClassify[typeMap[e.result.datasetInfo.type]].push(datasetName);
+            count++;
             if (index === 0) {
               var editType = e.result.datasetInfo.type;
               createOptions(datasetNameList, document.querySelector('.addDatasetNameList'), editType, datasetNameList[0]);
             }
-            if (index === datasetNameList.length - 1) {
+            if (count === datasetNameList.length) {
               initFeature();
             }
           });
@@ -696,7 +693,7 @@
           inputEle.value = properties[key];
           inputEle.label = key;
           item.appendChild(inputEle);
-          if (key === 'VIDEO') {
+          if (key === 'VIDEO' && properties[key]) {
             var videoPlayIcon = document.createElement('div');
             videoPlayIcon.className = 'playIcon';
             var video = document.createElement('video');
@@ -744,14 +741,29 @@
         });
 
          // 切换状态
-        document.querySelector('.button-group').addEventListener('click', function(e) {
-          var className = e.target.className;
+         document.querySelector('#addFeature').addEventListener('click', function() {
           if (isChanged) {
             document.querySelector('.message').style.display = 'block';
             document.querySelector('.add-tips').style.display = 'inline-block';
             return;
           }
-          switchPanel(className);
+          switchPanel('add');
+        });
+        document.querySelector('#editFeature').addEventListener('click', function() {
+          if (isChanged) {
+            document.querySelector('.message').style.display = 'block';
+            document.querySelector('.add-tips').style.display = 'inline-block';
+            return;
+          }
+          switchPanel('edit');
+        });
+        document.querySelector('#deleteFeature').addEventListener('click', function() {
+          if (isChanged) {
+            document.querySelector('.message').style.display = 'block';
+            document.querySelector('.add-tips').style.display = 'inline-block';
+            return;
+          }
+          switchPanel('delete');
         });
 
         document.querySelector('.add-attribute-info').addEventListener('change', checkInput);
@@ -785,18 +797,19 @@
         });
 
         document.querySelector('.cancel-edit').addEventListener('click', function() {
+          if (currentShowPanel) {
+              document.querySelector('.' + currentShowPanel).style.display = 'none';
+          }
           if (curEditOriginFeatures.length) {
             curEditOriginFeatures.forEach(function(feature) {
               map.setFilter(feature.properties.datasetName, null);
               draw.delete(feature.id);
             });
             curEditOriginFeatures = [];
-            if (currentShowPanel) {
-              document.querySelector('.' + currentShowPanel).style.display = 'none';
-            }
             document.querySelector('.message').style.display = 'none';
             document.querySelector('.add-tips').style.display = 'none';
             isChanged = false;
+            status = '';
           }
         });
 
@@ -816,13 +829,13 @@
         }
         var type = datasetInfoList[currentDataset].type;
         var source = datasetInfoList[currentDataset].source;
-        if (className.indexOf('plus') > -1) {
+        if (className === 'add') {
           document.querySelector('.edit-tips').style.display = 'none';
           startDraw(type, source);
           document.querySelector('.add-feature-info').style.display = 'block';
           currentShowPanel = 'add-feature-info';
           status = 'ADD';
-        } else if (className.indexOf('edit') > -1) {
+        } else if (className === 'edit') {
           draw.changeMode('simple_select');
           if (fromAdd) {
             fillContent();
@@ -833,7 +846,7 @@
           currentShowPanel = 'edit-feature-info';
           status = 'EDIT';
           startSelect(source);
-        } else if (className.indexOf('trash') > -1) {
+        } else if (className === 'delete') {
           document.querySelector('.edit-tips').style.display = 'none';
           endDraw();
           document.querySelector('.delete-feature-info').style.display = 'block';
@@ -975,6 +988,15 @@
           });
           editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
+              var source = map.getSource(dataset);
+              var data = source._data;
+              deleteList[dataset].forEach((deleteId) => {
+                var idx = data.features.findIndex((feature) => {
+                  return feature.id === deleteId;
+                });
+                data.features.splice(idx, 1);
+              });
+              source.setData(data);
               widgets.alert.showAlert(resources.text_deleteSuccess, true);
             }
           });
@@ -987,8 +1009,12 @@
           if (status === 'EDIT') {
             isChanged = true;
             if (res[0] && !['mapbox-gl-draw-cold', 'mapbox-gl-draw-hot'].indexOf(res[0].source) > -1) {
+              var source = map.getSource(res[0].source);
               var type = res[0].type;
-              var geometry = res[0].geometry;
+              var targetFeature = source._data.features.find(function(feature) {
+                return feature.id === res[0].id;
+              });
+              var geometry = targetFeature.geometry;
               var id = res[0].id;
               var properties = res[0].properties;
               var editFeature = {
@@ -997,8 +1023,10 @@
                 id: id,
                 properties: properties
               };
-              var source = map.getSource(properties.datasetName);
               var layer = map.getLayer(properties.datasetName);
+              if (!layer) {
+                return;
+              }
               var allIds = source._data.features.map(function(feature) {
                 return feature.id;
               });
