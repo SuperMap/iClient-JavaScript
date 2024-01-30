@@ -15,6 +15,7 @@ import { GetFeaturesParametersBase } from './GetFeaturesParametersBase';
  * @param {Array.<string>} [options.fields] - 查询结果返回字段。默认返回所有字段。
  * @param {Array.<string>} options.dataSetNames - 数据集集合中的数据集名称列表。
  * @param {boolean} [options.returnContent=true] - 是否直接返回查询结果。
+ * @param {boolean} [options.returnFeaturesOnly=false] - 是否仅返回要素信息。当 returnContent 为 true 时设置有效。
  * @param {number} [options.fromIndex=0] - 查询结果的最小索引号。
  * @param {number} [options.toIndex=19] - 查询结果的最大索引号。
  * @param {string|number} [options.targetEpsgCode] - 动态投影的目标坐标系对应的 EPSG Code，使用此参数时，returnContent 参数需为 true。

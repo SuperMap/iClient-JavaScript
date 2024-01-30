@@ -352,4 +352,37 @@ describe('GetFeaturesByBufferService', () => {
     });
     getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters, serviceCompleted);
   })
+  it('GetFeaturesByBufferParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      try {
+        getFeaturesByBufferService.destroy();
+        getFeaturesByBufferParameters.destroy();
+        expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByBufferService_' + exception.name + ':' + exception.message);
+        getFeaturesByBufferService.destroy();
+        getFeaturesByBufferParameters.destroy();
+        done();
+      }
+    };
+    var getFeaturesByBufferService = initGetFeaturesByBufferService();
+    var geometry = new Point(7.25, 18.75);
+    var getFeaturesByBufferParameters = new GetFeaturesByBufferParameters({
+      datasetNames: ['World:Capitalss'],
+      bufferDistance: 30,
+      attributeFilter: 'SMID>0',
+      geometry: geometry,
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters, serviceCompleted);
+  })
 });

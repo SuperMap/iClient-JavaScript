@@ -280,4 +280,38 @@ describe('GetFeaturesBySQLService', () => {
       done();
     });
   })
+  it('GetFeaturesBySQLParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesBySQLService.destroy();
+        sqlParams.destroy();
+        expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesBySQLService_' + exception.name + ':' + exception.message);
+        getFeaturesBySQLService.destroy();
+        sqlParams.destroy();
+        done();
+      }
+    };
+    var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL);
+    var sqlParams = new GetFeaturesBySQLParameters({
+      datasetNames: ['World:Countries'],
+      queryParameter: new FilterParameter({
+        attributeFilter: 'SmID>0',
+        name: 'Countries@World'
+      }),
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesBySQLService.processAsync(sqlParams, serviceCompleted);
+  })
 });

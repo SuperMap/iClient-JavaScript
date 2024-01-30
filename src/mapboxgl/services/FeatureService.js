@@ -161,6 +161,33 @@ export class FeatureService extends ServiceBase {
     editFeatureAttachments(params, callback) {
         return this._featureService.editFeatureAttachments(params, callback);
     }
+
+    /**
+     * @function FeatureService.prototype.getFeaturesCount
+     * @description 获取要素数量。
+     * @version 11.2.0
+     * @param {GetFeaturesByIDsParameters|GetFeaturesByBoundsParameters|GetFeaturesByBufferParameters|GetFeaturesByGeometryParameters|GetFeaturesBySQLParameters} params - 查询参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeaturesCount(params, callback) {
+      params = this._processParams(params);
+      return this._featureService.getFeaturesCount(params, callback);
+    }
+    
+     /**
+     * @function FeatureService.prototype.getFeaturesDatasetInfo
+     * @description 获取要素数据集信息。
+     * @version 11.2.0
+     * @param {GetFeaturesByIDsParameters|GetFeaturesByBoundsParameters|GetFeaturesByBufferParameters|GetFeaturesByGeometryParameters|GetFeaturesBySQLParameters} params - 查询参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeaturesDatasetInfo(params, callback) {
+      params = this._processParams(params);
+      return this._featureService.getFeaturesDatasetInfo(params, callback);
+    }
+
     /**
      * @private
      * @description 参数类型转换。

@@ -11,6 +11,14 @@ import { FeatureAttachmentsService } from './FeatureAttachmentsService';
 import { EditFeaturesService } from './EditFeaturesService';
 import { DataFormat } from '../REST';
 
+const FEATURE_SERVICE_MAP = {
+  id: GetFeaturesByIDsService,
+  sql: GetFeaturesBySQLService ,
+  bounds: GetFeaturesByBoundsService, 
+  buffer: GetFeaturesByBufferService, 
+  geometry: GetFeaturesByGeometryService
+}
+
 /**
  * @class FeatureService
  * @constructs FeatureService
@@ -233,6 +241,52 @@ export class FeatureService {
             headers: me.options.headers
         });
         return featureAttachmentsService.processAsync(params, callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getFeaturesCount
+     * @description 获取要素数量。
+     * @version 11.2.0
+     * @param {GetFeaturesByIDsParameters|GetFeaturesByBoundsParameters|GetFeaturesByBufferParameters|GetFeaturesByGeometryParameters|GetFeaturesBySQLParameters} params - 查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeaturesCount(params, callback) {
+      var me = this;
+      var newParams = { ...params, returnCountOnly: true, returnContent: true, returnFeaturesOnly: false };
+      let queryType = Object.keys(FEATURE_SERVICE_MAP).find((type) => {
+        return newParams.CLASS_NAME.toLowerCase().includes(type);
+      });
+      var getFeaturesServiceBase = new FEATURE_SERVICE_MAP[queryType](me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+      });
+      return getFeaturesServiceBase.processAsync(newParams, callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getFeaturesDatasetInfo
+     * @description 获取要素数据集信息。
+     * @version 11.2.0
+     * @param {GetFeaturesByIDsParameters|GetFeaturesByBoundsParameters|GetFeaturesByBufferParameters|GetFeaturesByGeometryParameters|GetFeaturesBySQLParameters} params - 查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeaturesDatasetInfo(params, callback) {
+      var me = this;
+      var newParams = { ...params, returnDatasetInfoOnly: true, returnContent: true, returnFeaturesOnly: false };
+      let queryType = Object.keys(FEATURE_SERVICE_MAP).find((type) => {
+        return newParams.CLASS_NAME.toLowerCase().includes(type);
+      });
+      var getFeaturesServiceBase = new FEATURE_SERVICE_MAP[queryType](me.url, {
+          proxy: me.options.proxy,
+          withCredentials: me.options.withCredentials,
+          crossOrigin: me.options.crossOrigin,
+          headers: me.options.headers
+      });
+      return getFeaturesServiceBase.processAsync(newParams, callback);
     }
 
     _processFormat(resultFormat) {

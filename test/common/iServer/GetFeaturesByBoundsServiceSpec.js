@@ -206,4 +206,35 @@ describe('GetFeaturesByBoundsService', () => {
     });
     getFeaturesByBoundsService.processAsync(boundsParams, serviceCompleted);
   });
+  it('GetFeaturesByBoundsParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesByBoundsService.destroy();
+        boundsParams.destroy();
+        expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByBoundsService_' + exception.name + ':' + exception.message);
+        getFeaturesByBoundsService.destroy();
+        boundsParams.destroy();
+        done();
+      }
+    };
+    var getFeaturesByBoundsService = initGetFeaturesByBoundsService_RegisterListener();
+    var boundsParams = new GetFeaturesByBoundsParameters({
+      datasetNames: ['World:Countries'],
+      bounds: new Bounds(0, 0, 90, 90),
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesByBoundsService.processAsync(boundsParams, serviceCompleted);
+  })
 });

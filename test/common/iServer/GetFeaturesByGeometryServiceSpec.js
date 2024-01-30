@@ -348,4 +348,36 @@ describe('GetFeaturesByGeometryService', () => {
       done();
     });
   })
+  it('GetFeaturesByGeometryParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByGeometryService_' + exception.name + ':' + exception.message);
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        done();
+      }
+    };
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL);
+    var point = new Point(112, 36);
+    var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
+      datasetNames: ['World:Countries'],
+      geometry: point,
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, serviceCompleted);
+  })
 });

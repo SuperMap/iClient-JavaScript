@@ -305,4 +305,35 @@ describe('GetFeaturesByIDsService', () => {
       done();
     });
   })
+  it('GetFeaturesByIDsParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesByIDsService.destroy();
+        idParams.destroy();
+        expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByIDsService_' + exception.name + ':' + exception.message);
+        getFeaturesByIDsService.destroy();
+        idParams.destroy();
+        done();
+      }
+    };
+    var getFeaturesByIDsService = new GetFeaturesByIDsService(dataServiceURL);
+    var idParams = new GetFeaturesByIDsParameters({
+      datasetNames: ['World:Capitals'],
+      IDs: [1, 2, 3],
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesByIDsService.processAsync(idParams, serviceCompleted);
+  })
 });

@@ -38,6 +38,12 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         this.returnContent = true;
 
         /**
+         * @member {boolean} [GetFeaturesServiceBase.prototype.returnFeaturesOnly=false]
+         * @description 是否仅返回要素信息。
+         */
+        this.returnFeaturesOnly = false;
+
+        /**
          * @member {number} [GetFeaturesServiceBase.prototype.fromIndex=0]
          * @description 查询结果的最小索引号。如果该值大于查询结果的最大索引号，则查询结果为空。
          */
@@ -105,6 +111,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
             firstPara = true;
 
         me.returnContent = params.returnContent;
+        me.returnFeaturesOnly = params.returnFeaturesOnly;
         me.fromIndex = params.fromIndex;
         me.toIndex = params.toIndex;
         me.maxFeatures = params.maxFeatures;
@@ -117,9 +124,19 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
             me.url = Util.urlAppend(me.url, `fromIndex=${me.fromIndex}&toIndex=${me.toIndex}`);
         }
 
-        if (params.returnCountOnly) {
-            me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnContent)
-        }
+       if (me.returnContent) {
+          if (params.returnCountOnly) {
+            me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnCountOnly)
+         }
+
+          if (params.returnDatasetInfoOnly) {
+            me.url = Util.urlAppend(me.url, "&returnDatasetInfoOnly=" + params.returnDatasetInfoOnly)
+          }
+          
+          if (params.returnFeaturesOnly) {
+            me.url = Util.urlAppend(me.url, "&returnFeaturesOnly=" + params.returnFeaturesOnly)
+          }
+       }
 
         jsonParameters = me.getJsonParameters(params);
         return me.request({
@@ -141,9 +158,12 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
     transformResult(result, options) {
         var me = this;
         result = Util.transformResult(result);
-        if (me.format === DataFormat.GEOJSON && result.features) {
-            var geoJSONFormat = new GeoJSON();
+        var geoJSONFormat = new GeoJSON();
+        if (me.format === DataFormat.GEOJSON && result.features) { 
             result.features = geoJSONFormat.toGeoJSON(result.features);
+        }
+        if (me.returnFeaturesOnly && Array.isArray(result)) {
+          result = geoJSONFormat.toGeoJSON(result);
         }
        return { result, options };
     }
