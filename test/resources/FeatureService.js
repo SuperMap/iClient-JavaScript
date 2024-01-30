@@ -340,3 +340,222 @@ var getFeaturesResultJson = {
     "totalCount": 1,
     "featureCount": 1
 };
+
+var getReturnFeaturesOnlyResultJson = [
+    {
+        "stringID": null,
+        "fieldNames": [
+            "SMID",
+            "SMX",
+            "SMY",
+            "SMLIBTILEID",
+            "SMUSERID",
+            "SMGEOMETRYSIZE",
+            "SMGEOPOSITION",
+            "GB",
+            "RN",
+            "NAME",
+            "PERIOD",
+            "BRGLEV",
+            "ANGLE"
+        ],
+        "geometry": {
+            "center": {
+                "x": 12296152.115263747,
+                "y": 2265690.969792616
+            },
+            "parts": [
+                1
+            ],
+            "style": null,
+            "prjCoordSys": null,
+            "id": 1,
+            "type": "POINT",
+            "partTopo": null,
+            "points": [
+                {
+                    "x": 12296152.115263747,
+                    "y": 2265690.969792616
+                }
+            ]
+        },
+        "fieldValues": [
+            "1",
+            "1.2296152115263747E7",
+            "2265690.969792616",
+            "1",
+            "0",
+            "20",
+            "12156928",
+            "480100.0",
+            "",
+            "海口美兰国际机场",
+            "",
+            "0.0",
+            "0.0"
+        ],
+        "ID": 1
+    },
+    {
+        "stringID": null,
+        "fieldNames": [
+            "SMID",
+            "SMX",
+            "SMY",
+            "SMLIBTILEID",
+            "SMUSERID",
+            "SMGEOMETRYSIZE",
+            "SMGEOPOSITION",
+            "GB",
+            "RN",
+            "NAME",
+            "PERIOD",
+            "BRGLEV",
+            "ANGLE"
+        ],
+        "geometry": {
+            "center": {
+                "x": 12612273.73538996,
+                "y": 2679000.70399857
+            },
+            "parts": [
+                1
+            ],
+            "style": null,
+            "prjCoordSys": null,
+            "id": 2,
+            "type": "POINT",
+            "partTopo": null,
+            "points": [
+                {
+                    "x": 12612273.73538996,
+                    "y": 2679000.70399857
+                }
+            ]
+        },
+        "fieldValues": [
+            "2",
+            "1.261227373538996E7",
+            "2679000.70399857",
+            "1",
+            "0",
+            "20",
+            "12156948",
+            "480100.0",
+            "",
+            "广州白云国际机场",
+            "",
+            "0.0",
+            "0.0"
+        ],
+        "ID": 2
+    },
+    {
+        "stringID": null,
+        "fieldNames": [
+            "SMID",
+            "SMX",
+            "SMY",
+            "SMLIBTILEID",
+            "SMUSERID",
+            "SMGEOMETRYSIZE",
+            "SMGEOPOSITION",
+            "GB",
+            "RN",
+            "NAME",
+            "PERIOD",
+            "BRGLEV",
+            "ANGLE"
+        ],
+        "geometry": {
+            "center": {
+                "x": 12669685.574431028,
+                "y": 2588940.5222278074
+            },
+            "parts": [
+                1
+            ],
+            "style": null,
+            "prjCoordSys": null,
+            "id": 3,
+            "type": "POINT",
+            "partTopo": null,
+            "points": [
+                {
+                    "x": 12669685.574431028,
+                    "y": 2588940.5222278074
+                }
+            ]
+        },
+        "fieldValues": [
+            "3",
+            "1.2669685574431028E7",
+            "2588940.5222278074",
+            "1",
+            "0",
+            "20",
+            "12156968",
+            "480100.0",
+            "",
+            "深圳宝安国际机场",
+            "",
+            "0.0",
+            "0.0"
+        ],
+        "ID": 3
+    },
+    {
+        "stringID": null,
+        "fieldNames": [
+            "SMID",
+            "SMX",
+            "SMY",
+            "SMLIBTILEID",
+            "SMUSERID",
+            "SMGEOMETRYSIZE",
+            "SMGEOPOSITION",
+            "GB",
+            "RN",
+            "NAME",
+            "PERIOD",
+            "BRGLEV",
+            "ANGLE"
+        ],
+        "geometry": {
+            "center": {
+                "x": 12681899.53281954,
+                "y": 2549435.726518385
+            },
+            "parts": [
+                1
+            ],
+            "style": null,
+            "prjCoordSys": null,
+            "id": 4,
+            "type": "POINT",
+            "partTopo": null,
+            "points": [
+                {
+                    "x": 12681899.53281954,
+                    "y": 2549435.726518385
+                }
+            ]
+        },
+        "fieldValues": [
+            "4",
+            "1.268189953281954E7",
+            "2549435.726518385",
+            "1",
+            "0",
+            "20",
+            "12156988",
+            "480100.0",
+            "",
+            "香港国际机场",
+            "",
+            "0.0",
+            "0.0"
+        ],
+        "ID": 4
+    }
+]
