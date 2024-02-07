@@ -125,6 +125,9 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         }
 
        if (me.returnContent) {
+          if (!params.returnCountOnly && !params.returnDatasetInfoOnly && !params.returnFeaturesOnly) {
+            console.warn('recommend set returnFeaturesOnly config to true to imporve performance. if need get Total amount and Dataset information. FeatureService provide getFeaturesCount and getFeaturesDatasetInfo method');
+          }
           if (params.returnCountOnly) {
             me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnCountOnly)
          }
@@ -163,7 +166,12 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
             result.features = geoJSONFormat.toGeoJSON(result.features);
         }
         if (me.returnFeaturesOnly && Array.isArray(result)) {
-          result = geoJSONFormat.toGeoJSON(result);
+          let succeed = result.succeed;
+          let features = geoJSONFormat.toGeoJSON(result);
+          result = {
+            succeed,
+            features
+          };
         }
        return { result, options };
     }

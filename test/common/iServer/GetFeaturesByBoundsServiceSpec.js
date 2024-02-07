@@ -213,7 +213,7 @@ describe('GetFeaturesByBoundsService', () => {
         getFeaturesByBoundsService.destroy();
         boundsParams.destroy();
         expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
-        expect(serviceSucceedEventArgsSystem.result.features.length).toBe(4);
+        expect(serviceSucceedEventArgsSystem.result.features.features.length).toBe(4);
         done();
       } catch (exception) {
         expect(false).toBeTruthy();

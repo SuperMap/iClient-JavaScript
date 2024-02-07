@@ -309,7 +309,6 @@
       </div>
       <div class="edit-tips"><span data-i18n="resources.msg_clickToSelect"></span></div>
     </div>
-    </div>
     <script type="text/javascript" include="jquery,bootstrap,widgets.alert,viewer" src="../js/include-web.js"></script>
     <script type="text/javascript">
       var status = 'ADD';
@@ -736,7 +735,11 @@
          // 切换状态
          document.querySelector('#addFeature').addEventListener('click', function() {
           if (isChanged) {
-            document.querySelector('.message').style.display = 'block';
+            var message = document.querySelector('.message');
+            message.style.display = 'block';
+            setTimeout(() => {
+              message.style.display = 'none';
+            }, 3000);
             document.querySelector('.add-tips').style.display = 'inline-block';
             return;
           }
@@ -744,7 +747,11 @@
         });
         document.querySelector('#editFeature').addEventListener('click', function() {
           if (isChanged) {
-            document.querySelector('.message').style.display = 'block';
+            var message = document.querySelector('.message');
+            message.style.display = 'block';
+            setTimeout(() => {
+              message.style.display = 'none';
+            }, 3000);
             document.querySelector('.add-tips').style.display = 'inline-block';
             return;
           }
@@ -752,7 +759,11 @@
         });
         document.querySelector('#deleteFeature').addEventListener('click', function() {
           if (isChanged) {
-            document.querySelector('.message').style.display = 'block';
+            var message = document.querySelector('.message');
+            message.style.display = 'block';
+            setTimeout(() => {
+              message.style.display = 'none';
+            }, 3000);
             document.querySelector('.add-tips').style.display = 'inline-block';
             return;
           }
@@ -926,7 +937,7 @@
         // var datasetOrder = [].concat(datasetTypeClassify['Point'])
         // var datasetOrder = ['China_island', 'demo_line', 'Capitals'];
         datasetOrder.forEach(function(datasetName) {
-          var getFeatureParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          var getFeatureParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
               name: datasetName + "@" + dataSourceName,
               attributeFilter: 'SMID < 1000'
