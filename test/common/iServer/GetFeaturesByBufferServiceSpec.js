@@ -357,7 +357,7 @@ describe('GetFeaturesByBufferService', () => {
       try {
         getFeaturesByBufferService.destroy();
         getFeaturesByBufferParameters.destroy();
-        expect(serviceSucceedEventArgsSystem.result.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.type).toBe('FeatureCollection');
         expect(serviceSucceedEventArgsSystem.result.features.features.length).toBe(4);
         done();
       } catch (exception) {
