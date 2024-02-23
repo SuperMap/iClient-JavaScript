@@ -179,8 +179,16 @@ var exampleConfig = {
                     {
                         name: "要素编辑",
                         name_en: "draw and edit features",
+                        version: '11.2.0',
                         thumbnail: "drawAndEditFeatures.png",
                         fileName: "drawAndEditFeatures"
+                    },
+                    {
+                      name: "属性表",
+                      name_en: "attributes",
+                      version: '11.2.0',
+                      thumbnail: "attributes.png",
+                      fileName: "02_attributes"
                     }
                 ]
             },

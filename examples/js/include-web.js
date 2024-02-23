@@ -215,6 +215,9 @@
           inputScript(libsurl + '/viewer-js/viewer.min.js');
           inputCSS(libsurl + '/viewer-js/css/viewer.css');
         }
+        if (inArray(includes, 'jquery-twbsPagination')) {
+          inputScript(libsurl + '/jquery.twbsPagination/1.4.2/jquery.twbsPagination.min.js');
+        }
     }
 
     function datGuiI18N() {

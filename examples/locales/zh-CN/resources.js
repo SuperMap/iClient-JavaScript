@@ -683,6 +683,7 @@ window.examplesResources = {
         "title_websymbol_landuse": "土地利用",
         "title_websymbol_customWebSymbol":"自定义Web符号",
         "title_editFeatures": "编辑要素",
+        "title_dataAttributes": "属性表",
 
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
@@ -1546,6 +1547,10 @@ window.examplesResources = {
         "text_attributes": "物标属性",
         "text_isQuerying": "查询中...",
         "text_queryEmpty": "查询为空",
+        "text_firstPage": "首页",
+        "text_prevPage": "上一页",
+        "text_nextPage": "下一页",
+        "text_lastPage": "尾页",
         
 
 

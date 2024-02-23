@@ -728,6 +728,7 @@ window.examplesResources = {
         "title_websymbol_landuseOfJingjin": "Land Use of Jingjin",
         "title_websymbol_landuse": "Land Use",
         "title_websymbol_customWebSymbol": "Custom WebSymbol",
+        "title_dataAttributes": "Attributes",
 
         "text_district_search": "Administrative region search",
         "text_rectangle_search": "Rectangle retrieval",
@@ -1593,6 +1594,10 @@ window.examplesResources = {
         "text_attributes": "Attributes",
         "text_isQuerying": "Querying...",
         "text_queryEmpty": "Query Empty",
+        "text_firstPage": "First",
+        "text_prevPage": "Prev",
+        "text_nextPage": "Next",
+        "text_lastPage": "Last",
 
         "btn_previous":"Previous",
         "btn_next":"Next",
