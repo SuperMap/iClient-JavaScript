@@ -236,5 +236,5 @@
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : document.location.protocol + "//" + document.location.host;
     window.version = "11.2.0";
-    window.preRelease = "";
+    window.preRelease = "alpha";
 })();
