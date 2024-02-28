@@ -38,7 +38,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
         var getFeaturesByBuffeService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(featureServiceURL + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            expect(testUrl).toBe(featureServiceURL + '/featureResults?fromIndex=1&toIndex=3&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
             expect(paramsObj.bufferDistance).toEqual(10);
@@ -160,7 +160,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', () => {
             expect(callback).toBeTrue();
             expect(errorCalled).toBeFalse();
             done();
-        },8000)
+        },0)
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, testResult => {
             callback= true;
             serviceResult = testResult;

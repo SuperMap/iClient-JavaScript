@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -96,7 +96,7 @@
         var map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [12957388, 4853991],
                 zoom: 11,

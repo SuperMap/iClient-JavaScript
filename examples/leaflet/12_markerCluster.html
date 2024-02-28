@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* leaflet.markercluster (https://github.com/visgl/deck.gl)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,14 +26,14 @@
         maxZoom: 18,
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     resultLayer = L.markerClusterGroup({
         spiderfyOnMaxZoom: false,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: false
     });
-    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-        queryParameter: new SuperMap.FilterParameter({
+    getFeatureBySQLParams = new L.supermap.GetFeaturesBySQLParameters({
+        queryParameter: new L.supermap.FilterParameter({
             name: "Train@DynamicData",
             attributeFilter: "SmID>100 and SmID < 800"
         }),
@@ -39,9 +43,9 @@
     loadMarkerCluster();
 
     function loadMarkerCluster() {
-        L.supermap
-            .featureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, function (serviceResult) {
+        new L.supermap
+            .FeatureService(dataUrl)
+            .getFeaturesBySQL(getFeatureBySQLParams).then(function (serviceResult) {
                 createLayers(serviceResult.result.features);
             });
     }

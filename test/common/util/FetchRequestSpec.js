@@ -1,38 +1,38 @@
-import { FetchRequest, isCORS, setCORS, setFetch } from '../../../src/common//util/FetchRequest';
+import { FetchRequest, isCORS, setCORS, setFetch, RequestJSONPPromise } from '../../../src/common//util/FetchRequest';
 
 describe('FetchRequest', () => {
-    const defaultval = SuperMap.Util.RequestJSONPPromise.limitLength;
+    const defaultval = RequestJSONPPromise.limitLength;
     const defaltCors = isCORS();
     let fetch;
     beforeAll(() => {
         fetch = jasmine.createSpy('fetch').and.resolveTo({ success: 'ok' });
         setFetch(fetch);
     });
-    xit('RequestJSONPPromise', () => {
+    it('RequestJSONPPromise', () => {
         var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
         var params;
         var options;
-        spyOn(SuperMap.Util.RequestJSONPPromise, 'issue').and.callFake(() => {});
+        spyOn(RequestJSONPPromise, 'issue').and.callFake(() => {});
         setCORS(false);
         FetchRequest.get(url, params, options);
-        expect(SuperMap.Util.RequestJSONPPromise.issue).toHaveBeenCalled();
+        expect(RequestJSONPPromise.issue).toHaveBeenCalled();
         var paramsde = {
             completeLineSymbolDisplayed: false,
             visible: true
         };
-        SuperMap.Util.RequestJSONPPromise.limitLength = 5;
+        RequestJSONPPromise.limitLength = 5;
         var deleteUri =
             'http://test/GUID=PCdd8b1ab00896b3a7a&app=ydrive&cl=desktop?leftBottom%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D,%22rightTo';
         FetchRequest.delete(deleteUri, paramsde, options);
-        expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(2);
+        expect(RequestJSONPPromise.issue.calls.count()).toBe(2);
 
         FetchRequest.post(deleteUri, paramsde, options);
-        expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(3);
+        expect(RequestJSONPPromise.issue.calls.count()).toBe(3);
 
-        SuperMap.Util.RequestJSONPPromise.limitLength = 180;
-        
+        RequestJSONPPromise.limitLength = 180;
+
         FetchRequest.put(deleteUri, paramsde, options);
-        expect(SuperMap.Util.RequestJSONPPromise.issue.calls.count()).toBe(4);
+        expect(RequestJSONPPromise.issue.calls.count()).toBe(4);
         setCORS(defaltCors);
     });
 
@@ -115,8 +115,40 @@ describe('FetchRequest', () => {
             timeout: 45000
         });
     });
+    it('delete_urllong', () => {
+        var ids = []
+        for(var i = 0;i <500; i++){
+            ids.push(i)
+        }
+        var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
+        var params = {
+            ids: ids
+        };
+        setCORS(true);
+        spyOn(FetchRequest, '_fetch').and.callFake((url) => {
+            expect(url).not.toContain('499');
+        });
+        FetchRequest.delete(url, params);
+        expect(FetchRequest._fetch.calls.count()).toBe(1);
+    });
+    it('Get_urllong', () => {
+        var ids = []
+        for(var i = 0;i <500; i++){
+            ids.push(i)
+        }
+        var url = 'http://test.supermap.io/examples/leaflet/editor.html#addressMatchService';
+        var params = {
+            ids: ids
+        };
+        setCORS(true);
+        spyOn(FetchRequest, '_fetch').and.callFake((url) => {
+            expect(url).not.toContain('499');
+        });
+        FetchRequest.get(url, params);
+        expect(FetchRequest._fetch.calls.count()).toBe(1);
+    });
     afterAll(() => {
-        SuperMap.Util.RequestJSONPPromise.limitLength = defaultval;
+        RequestJSONPPromise.limitLength = defaultval;
         setCORS(defaltCors);
         setFetch(window.fetch);
     });

@@ -1,4 +1,4 @@
-import { openFile } from '../../../../src/leaflet/components/openfile/OpenFileView'
+import { OpenFileView } from '../../../../src/leaflet/components/openfile/OpenFileView'
 var map, url = GlobeParameter.WorldURL, testDiv;
 var dataServiceURL = GlobeParameter.wokerURL;
 describe('leaflet_openfile_OpenFileView', () => {
@@ -146,7 +146,7 @@ describe('leaflet_openfile_OpenFileView', () => {
             ]
         };
 
-        var openFile = L.supermap.components.openFile().addTo(map).setPosition('bottomleft');
+        var openFile = new OpenFileView().addTo(map).setPosition('bottomleft');
 
         openFile.viewModel.on('openfilesucceeded', function (e) {
             try {

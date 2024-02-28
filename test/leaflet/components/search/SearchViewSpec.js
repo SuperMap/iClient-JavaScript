@@ -1,9 +1,9 @@
-import { search } from '../../../../src/leaflet/components/search/SearchView'
+import { SearchView } from '../../../../src/leaflet/components/search/SearchView';
+import { GeoJSONLayerWithName } from '../../../../src/leaflet/components/commonmodels/GeoJSONLayerWithName';
 import { FetchRequest } from '../../../../src/common/util/FetchRequest';
 import { QueryBySQLService } from '../../../../src/common/iServer/QueryBySQLService';
 import { QueryBySQLParameters } from '../../../../src/common/iServer/QueryBySQLParameters';
-import { QueryOption } from '../../../../src/common/REST';
-import { FilterParameter } from '../../../../src/common/iServer/FilterParameter';
+
 
 var map, url = GlobeParameter.WorldURL, testDiv;
 var poiSearch;
@@ -53,7 +53,7 @@ describe('leaflet_search_SearchView', () => {
                 zoom: 2
             });
 
-            poiSearch = L.supermap.components.search({
+            poiSearch = new SearchView({
                 cityGeoCodingConfig: {
                     addressUrl: "http://test:8090/iserver/services/localsearch/rest/searchdatas/China/poiinfos"
                 },
@@ -90,7 +90,7 @@ describe('leaflet_search_SearchView', () => {
                             });
                         },
                     }).addTo(map);
-                    poiSearch.addSearchLayer([L.supermap.components.geoJSONLayerWithName("首都", resultLayer)]);
+                    poiSearch.addSearchLayer([new GeoJSONLayerWithName("首都", resultLayer)]);
                     done();
                 } catch (exception) {
                     expect(false).toBeTruthy();
@@ -102,20 +102,13 @@ describe('leaflet_search_SearchView', () => {
                     done();
                 }
             };
-            var options = {
-                eventListeners: {
-                    'processFailed': QueryBySQLFailed,
-                    'processCompleted': QueryBySQLCompleted
-                }
-            };
             var polygon = L.polygon([[90, 180], [90, -180], [-90, -180], [-90, 180], [90, 180]]);
             var params = new QueryBySQLParameters({
                 queryParams: { name: "Capitals@World.1" },
                 bounds: polygon.getBounds()
             });
-            queryBySQLService = new QueryBySQLService(queryUrl, options);
-            queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
-            queryBySQLService.processAsync(params);
+            queryBySQLService = new QueryBySQLService(queryUrl);
+            queryBySQLService.processAsync(params, QueryBySQLCompleted);
         // }, 4000);
     });
 
@@ -185,9 +178,7 @@ describe('leaflet_search_SearchView', () => {
             return Promise.resolve();
         });
         spyOn(poiSearch.viewModel.map, 'setView').and.callThrough();
-        document.getElementsByClassName('component-search__settings__name')[0].click()
-        document.getElementsByClassName('component-citytabpag__content')[0].childNodes[0].click();
-        setTimeout(() => {
+        poiSearch.viewModel.map.on('zoomend',()=>{
             try {
                 expect(poiSearch.viewModel.map.setView).toHaveBeenCalled();
                 done();
@@ -196,7 +187,9 @@ describe('leaflet_search_SearchView', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        })
+        document.getElementsByClassName('component-search__settings__name')[0].click()
+        document.getElementsByClassName('component-citytabpag__content')[0].childNodes[0].click();
 
     })
 })

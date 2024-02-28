@@ -1,160 +1,168 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title data-i18n="resources.title_geometryOverlayBatchAnalystService"></title>
-    <script type="text/javascript" src="../js/include-web.js"></script>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_geometryOverlayBatchAnalystService"></title>
+  <script type="text/javascript" src="../js/include-web.js"></script>
+  <style>
+    .mapboxgl-popup-close-button {
+      outline: none;
+    }
+  </style>
 </head>
+
 <body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
-<script type="text/javascript">
+  <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+  <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var map,
-        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ",
-        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
-        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+      attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ",
+      baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+      serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     map = new mapboxgl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [baseUrl],
-                    "tileSize": 256
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-            }]
+      container: 'map',
+      style: {
+        "version": 8,
+        "sources": {
+          "raster-tiles": {
+            "attribution": attribution,
+            "type": "raster",
+            "tiles": [baseUrl],
+            "tileSize": 256
+          }
         },
-        center: [117, 40],
-        zoom: 8
+        "layers": [{
+          "id": "simple-tiles",
+          "type": "raster",
+          "source": "raster-tiles",
+        }]
+      },
+      center: [117, 40],
+      zoom: 8
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on("load", function () {
-        overlayerBatchAnalystFromGeometry();
+      overlayerBatchAnalystFromGeometry();
     });
 
     function overlayerBatchAnalystFromGeometry() {
-        //叠加分析数据：
-        var sourceGeometry1 = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[116.25, 40.25],
-                    [116.25, 39.75],
-                    [117.25, 39.75],
-                    [117.25, 40.25],
-                    [116.25, 40.25]]]
-            }
-        };
-        var sourceGeometry2 = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[116.75, 40.25],
-                    [116.75, 39.75],
-                    [117.75, 39.75],
-                    [117.75, 40.25],
-                    [116.75, 40.25]]]
-            }
-        };
-        var operateGeometry1 = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[116.75, 39.75],
-                    [117.25, 39.75],
-                    [117.25, 40.75],
-                    [116.75, 40.75],
-                    [116.75, 39.75]]]
-            }
-        };
+      //叠加分析数据：
+      var sourceGeometry1 = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[116.25, 40.25],
+          [116.25, 39.75],
+          [117.25, 39.75],
+          [117.25, 40.25],
+          [116.25, 40.25]]]
+        }
+      };
+      var sourceGeometry2 = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[116.75, 40.25],
+          [116.75, 39.75],
+          [117.75, 39.75],
+          [117.75, 40.25],
+          [116.75, 40.25]]]
+        }
+      };
+      var operateGeometry1 = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[116.75, 39.75],
+          [117.25, 39.75],
+          [117.25, 40.75],
+          [116.75, 40.75],
+          [116.75, 39.75]]]
+        }
+      };
 
-        var operateGeometry2 = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[[116.75, 40.25],
-                    [116.75, 39.25],
-                    [117.25, 39.25],
-                    [117.25, 40.25],
-                    [116.75, 40.25]]]
-            }
-        };
+      var operateGeometry2 = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[[116.75, 40.25],
+          [116.75, 39.25],
+          [117.25, 39.25],
+          [117.25, 40.25],
+          [116.75, 40.25]]]
+        }
+      };
 
-        //数据加载到地图：
-        map.addSource("analystSource", {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": [sourceGeometry1, sourceGeometry2, operateGeometry1, operateGeometry2]
-            }
+      //数据加载到地图：
+      map.addSource("analystSource", {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [sourceGeometry1, sourceGeometry2, operateGeometry1, operateGeometry2]
+        }
+      });
+      //绘制叠加分析面：
+      map.addLayer({
+        "id": "overlayPolygon",
+        "type": "fill",
+        "source": "analystSource",
+        'paint': {
+          'fill-outline-color': 'blue',
+          'fill-color': 'rgba(0, 0, 255, 0.1)'
+        },
+      });
+
+      var OverlayBatchAnalystParameters = new mapboxgl.supermap.GeometryOverlayAnalystParameters({
+        sourceGeometries: [sourceGeometry1, sourceGeometry2],
+        operateGeometries: [operateGeometry1, operateGeometry2],
+        operation: mapboxgl.supermap.OverlayOperationType.INTERSECT
+      });
+
+      new mapboxgl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters).then(function (serviceResult) {
+        map.addSource("queryDatas", {
+          "type": "geojson",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [
+              serviceResult.result[0].resultGeometry,
+            ]
+          }
         });
-        //绘制叠加分析面：
         map.addLayer({
-            "id": "overlayPolygon",
-            "type": "fill",
-            "source": "analystSource",
-            'paint': {
-                'fill-outline-color': 'blue',
-                'fill-color': 'rgba(0, 0, 255, 0.1)'
-            },
+          "id": "bufferResultLayer",
+          "type": "fill",
+          "source": "queryDatas",
+          "paint": {
+            "fill-color": "red", /* 填充的颜色 */
+            "fill-opacity": 0.4  /* 透明度 */
+          },
         });
 
-        var OverlayBatchAnalystParameters = new SuperMap.GeometryOverlayAnalystParameters({
-            sourceGeometries: [sourceGeometry1, sourceGeometry2],
-            operateGeometries: [operateGeometry1, operateGeometry2],
-            operation: SuperMap.OverlayOperationType.INTERSECT
+        var overlayPop = new mapboxgl.Popup()
+          .setLngLat([117, 40])
+          .setHTML("<h4>" + resources.text_overlayBatchAnalystResult + "</h4>");
+
+        map.on('mouseenter', 'bufferResultLayer', function (e) {
+          map.getCanvas().style.cursor = 'pointer';
+
+          overlayPop.addTo(map);
         });
-
-        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
-            map.addSource("queryDatas", {
-                "type": "geojson",
-                "data": {
-                    "type": "FeatureCollection",
-                    "features": [
-                        serviceResult.result[0].resultGeometry,
-                    ]
-                }
-            });
-            map.addLayer({
-                "id": "bufferResultLayer",
-                "type": "fill",
-                "source": "queryDatas",
-                "paint": {
-                    "fill-color": "red", /* 填充的颜色 */
-                    "fill-opacity": 0.4  /* 透明度 */
-                },
-            });
-
-            var overlayPop = new mapboxgl.Popup()
-                .setLngLat([117, 40])
-                .setHTML("<h4>" + resources.text_overlayBatchAnalystResult + "</h4>");
-
-            map.on('mouseenter', 'bufferResultLayer', function (e) {
-                map.getCanvas().style.cursor = 'pointer';
-
-                overlayPop.addTo(map);
-            });
-            map.on('mouseleave', 'bufferResultLayer', function () {
-                map.getCanvas().style.cursor = '';
-                overlayPop.remove();
-            });
+        map.on('mouseleave', 'bufferResultLayer', function () {
+          map.getCanvas().style.cursor = '';
+          overlayPop.remove();
         });
+      });
     }
-</script>
+  </script>
 </body>
+
 </html>

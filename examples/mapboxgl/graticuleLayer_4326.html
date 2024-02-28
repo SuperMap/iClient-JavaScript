@@ -1,3 +1,7 @@
+<!--********************************************************************
+* 该示例需要引入 
+* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/1.12.1/mapbox-gl-enhance.js)
+*********************************************************************-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -57,12 +61,12 @@
             });
             map.on('load', function() {
                 //从 iServer 查询
-                var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+                var idsParam = new mapboxgl.supermap.GetFeaturesByIDsParameters({
                     IDs: [234],
                     datasetNames: ['World:Countries']
                 });
                 var service = new mapboxgl.supermap.FeatureService(host + '/iserver/services/data-world/rest/data');
-                service.getFeaturesByIDs(idsParam, function(serviceResult) {
+                service.getFeaturesByIDs(idsParam).then(function(serviceResult) {
                     map.addSource('queryDatas', {
                         type: 'geojson',
                         data: serviceResult.result.features

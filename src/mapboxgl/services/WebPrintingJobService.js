@@ -1,132 +1,83 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { WebPrintingService, SuperMap } from '@supermap/iclient-common';
-
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
 /**
- * @class mapboxgl.supermap.WebPrintingJobService
+ * @class WebPrintingJobService
  * @category  iServer WebPrintingJob
  * @version 10.1.0
- * @classdesc Web 打印服务类。
- *            提供：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息。
- * @extends {mapboxgl.supermap.ServiceBase}
+ * @classdesc Web 打印服务类。Web 打印是指将 Web 应用中制作的 Web 内容输出为可打印的地图文档。<br>
+ *            提供方法：创建 Web 打印任务，获取 Web 打印任务内容，获取 Web 打印输出文档流，获取 Web 打印服务的布局模板信息等。
+ * @modulecategory Services
+ * @extends {ServiceBase}
  * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
- * @param {Object} options - 服务交互时所需的可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @example
- * new mapboxgl.supermap.WebPrintingJobService(url)
+ * new WebPrintingJobService(url)
  * .createWebPrintingJob(param,function(result){
  *     //doSomething
  * })
+ * @usage
  */
 export class WebPrintingJobService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
+        this._webPrintingService = new WebPrintingService(url, options);
     }
 
     /**
-     * @function mapboxgl.supermap.WebPrintingJobService.prototype.createWebPrintingJob
+     * @function WebPrintingJobService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
-     * @param {SuperMap.WebPrintingJobParameters} params - 打印的请求参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {WebPrintingJobParameters} params - Web 打印参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     createWebPrintingJob(params, callback) {
-        if (!params) {
-            return;
-        }
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.createWebPrintingJob(me._processParams(params));
+      if (!params) {
+        return;
+      }
+      return this._webPrintingService.createWebPrintingJob(this._processParams(params), callback);
     }
 
     /**
-     * @function mapboxgl.supermap.WebPrintingJobService.prototype.getPrintingJob
+     * @function WebPrintingJobService.prototype.getPrintingJob
      * @description 获取 Web 打印输出文档任务。
-     * @param {String} jobId - Web 打印输入文档任务 Id。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJob(jobId, callback) {
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.getPrintingJob(jobId);
+      return this._webPrintingService.getPrintingJob(jobId, callback);
     }
 
     /**
-     * @function mapboxgl.supermap.WebPrintingJobService.prototype.getPrintingJobResult
+     * @function WebPrintingJobService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
-     * @param {String} jobId - Web 打印输入文档任务 Id。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {string} jobId - Web 打印输入文档任务 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getPrintingJobResult(jobId, callback) {
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.getPrintingJobResult(jobId);
+      this._webPrintingService.getPrintingJobResult(jobId, callback);
     }
 
     /**
-     * @function mapboxgl.supermap.WebPrintingJobService.prototype.getLayoutTemplates
+     * @function WebPrintingJobService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
-     * @param {RequestCallback} callback - 回调函数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     getLayoutTemplates(callback) {
-        var me = this;
-        var webPrintingService = new WebPrintingService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
-        });
-
-        webPrintingService.getLayoutTemplates();
+      return this._webPrintingService.getLayoutTemplates(callback);
     }
 
     _processParams(params) {
@@ -145,7 +96,7 @@ export class WebPrintingJobService extends ServiceBase {
                 x: point[0],
                 y: point[1]
             };
-        } else if (point instanceof SuperMap.Geometry.Point || point instanceof mapboxgl.Point) {
+        } else if (point instanceof GeometryPoint || point instanceof mapboxgl.Point) {
             return {
                 x: point.x,
                 y: point.y
@@ -160,4 +111,3 @@ export class WebPrintingJobService extends ServiceBase {
     }
 }
 
-mapboxgl.supermap.WebPrintingJobService = WebPrintingJobService;

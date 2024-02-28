@@ -1,0 +1,146 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_minDistanceCalculation"></title>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 280px;
+        text-align: center;
+        z-index: 999;
+        border-radius: 4px;
+      }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_minDistanceCalculation"></h5></div>
+  <div class='panel-body content'>
+      <div class='panel'>
+          <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_minDis"></span>
+              <input type='number' class='form-control' id='minDistance' value='0'/>
+          </div>
+      </div>
+      <div class='panel'>
+          <div class='input-group'>
+              <span class='input-group-addon' data-i18n="resources.text_maxDis"></span>
+              <input type='number' class='form-control' id='maxDistance' value='-1'/>
+          </div>
+      </div>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_minDistanceCalculation"
+              onclick="geometryMinDistanceAnalystProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+              onclick="removeLayer()"/>
+  </div>
+</div>
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var map, options, pointGeometryData, lineVectorSource,lineResultLayer,
+    baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-changchun/rest/maps/长春市区图",
+    serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+    map = L.map('map', {
+      crs: new L.supermap.CRS.NonEarthCRS({
+        bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+        origin: L.point(48.4, -55.58)
+      }),
+      center: [-3861.91, 4503.62],
+      maxZoom: 18,
+      zoom: 2
+    });
+    var popup = L.popup({
+      offset: [0, -20]
+    })
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    // 添加被计算的点
+    var marker1 = L.marker([-3500, 2000]).addTo(map);
+    addReference();
+
+    function geometryMinDistanceAnalystProcess() {
+      removeLayer();
+      var minDistance = parseFloat(document.getElementById("minDistance").value);
+      var maxDistance = parseFloat(document.getElementById("maxDistance").value);
+      // 进行分析，查找距离参考数据集的最近距离
+      var minDistanceAnalystParameters = new L.supermap.GeometryMinDistanceAnalystParameters({
+          inputGeometries: [L.marker([-3500, 2000])],
+          referenceDatasetName: "Park@Changchun",
+          createResultDataset: false,
+          minDistance: minDistance,
+          maxDistance: maxDistance
+      });
+      new L.supermap.SpatialAnalystService(serviceUrl).minDistanceAnalysis(minDistanceAnalystParameters).then(function (serviceResult) {
+          // 检查参数，给予错误信息提示
+          if(serviceResult.error){
+            return widgets.alert.showAlert(serviceResult.error.errorMsg,false);
+          }
+          var minDistanceAnalystResult = serviceResult.result.distanceResults
+          var resultMsg = serviceResult.result.message;
+          if(!minDistanceAnalystResult) {
+            return widgets.alert.showAlert(resultMsg || resources.msg_minDistance,false);
+          }
+          var innerHTML = resources.text_minDistanceIs + minDistanceAnalystResult[0].distance;
+          popup.setLatLng([-3500, 2000])
+              .setContent(innerHTML)
+              .openOn(map);
+
+          var referenceIds = minDistanceAnalystResult[0].referenceGeometryIDs
+          addPathLine(referenceIds)
+      });
+    }
+    // 添加参考数据集的要素
+    function addReference() { 
+      var sqlParam = new L.supermap.QueryBySQLParameters({
+          toIndex: -1,
+          queryParams: {
+              name: "Park@Changchun",
+              attributeFilter: "SMID >= 0 "
+          }
+      });
+      new L.supermap.QueryService(baseUrl).queryBySQL(sqlParam, function (serviceResult) {
+        var resultFeatures = serviceResult.result.recordsets[0].features;
+        var myIcon = L.icon({
+            iconUrl: '../img/marker.png',
+            iconSize: [44, 30]
+        });
+        resultLayer = L.geoJSON(resultFeatures, {
+          pointToLayer: function (geoPoints, latlng) {
+              L.marker(latlng, { icon: myIcon }).addTo(map);
+          },}).addTo(map);
+      });
+    }
+    // 创建被计算对象与参考对象之间的连线
+    function addPathLine(referenceIds) { 
+      var referenceIdsStr = '(' + referenceIds.join(', ') + ')';
+      var sqlParam = new L.supermap.QueryBySQLParameters({
+          toIndex: -1,
+          queryParams: {
+              name: "Park@Changchun",
+              attributeFilter: "SMID IN " + referenceIdsStr
+          }
+      });
+      new L.supermap.QueryService(baseUrl).queryBySQL(sqlParam).then(function (serviceResult) {
+        var resFrature = serviceResult.result.recordsets[0].features;
+        var resFratureCoor = [resFrature.features[0].geometry.coordinates[1], resFrature.features[0].geometry.coordinates[0]]
+        lineResultLayer = L.polyline([resFratureCoor, marker1.getLatLng()], {color: '#304DBE'}).addTo(map);
+      });
+    }
+    //移除结果图层
+    function removeLayer() {
+      widgets.alert.clearAlert();
+      if (lineResultLayer && map.hasLayer(lineResultLayer)) {
+        map.removeLayer(lineResultLayer);
+        map.closePopup();
+      }
+    }
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -101,7 +101,7 @@
                 })],
             projection: "EPSG:3857"
         });
-        layer = new SuperMap.Layer.CloudLayer();
+        layer = new SuperMap.Layer.OSM("OSM");
         //初始化动画矢量图层
         animatorVector = new SuperMap.Layer.AnimatorVector("Train", {}, {
             //设置速度为每帧播放0.01小时的数据

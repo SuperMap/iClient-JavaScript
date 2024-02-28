@@ -210,6 +210,118 @@ describe('mapboxgl_GraphThemeLayer', () => {
         graphThemeLayer.clear();
     });
 
+    it('removeFeatures use callback', () => {
+      var graphThemeLayer;
+      var features = [];
+      for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+          // 省居民消费水平（单位：元）信息
+          var provinceInfo = chinaConsumptionLevel[i];
+          var geo = new mapboxgl.LngLat(provinceInfo[1], provinceInfo[2]);
+          var attrs = {};
+          attrs.NAME = provinceInfo[0];
+          attrs.CON2009 = provinceInfo[3];
+          attrs.CON2010 = provinceInfo[4];
+          attrs.CON2011 = provinceInfo[5];
+          attrs.CON2012 = provinceInfo[6];
+          attrs.CON2013 = provinceInfo[7];
+          var fea = new ThemeFeature(geo, attrs);
+          features.push(fea);
+      }
+      graphThemeLayer = new Graph("GraphThemeLayer", "Bar",
+          {
+              map: map,
+              attributions: " ",
+              themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
+              opacity: 0.9,
+              chartsSetting: {
+                  width: 240,
+                  height: 100,
+                  codomain: [0, 40000],
+                  barStyle: { fillOpacity: 0.7 },
+                  barHoverStyle: { fillOpacity: 1 },
+                  xShapeBlank: [10, 10, 10],
+                  axisYTick: 4,
+                  axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+                  axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+                  backgroundStyle: { fillColor: "#CCE8CF" },
+                  backgroundRadius: [5, 5, 5, 5],
+                  showShadow: true,
+                  barShadowStyle: {
+                      shadowBlur: 8,
+                      shadowOffsetX: 2,
+                      shadowOffsetY: 2,
+                      shadowColor: "rgba(100,100,100,0.8)"
+                  },
+                  barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+              }
+          });
+      graphThemeLayer.addFeatures(features);
+      graphThemeLayer.removeFeatures(function(feature) {
+        return feature.attributes['NAME'] === '北京市';
+      });
+      expect(graphThemeLayer.features.length).toBeGreaterThan(0);
+      expect(graphThemeLayer.features.length).toBe(30);
+      graphThemeLayer.removeAllFeatures();
+      expect(graphThemeLayer.features.length).toEqual(0);
+      graphThemeLayer.clear();
+  });
+
+  it('getFeatures use filter callback', () => {
+    var graphThemeLayer;
+    var features = [];
+    for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+        // 省居民消费水平（单位：元）信息
+        var provinceInfo = chinaConsumptionLevel[i];
+        var geo = new mapboxgl.LngLat(provinceInfo[1], provinceInfo[2]);
+        var attrs = {};
+        attrs.NAME = provinceInfo[0];
+        attrs.CON2009 = provinceInfo[3];
+        attrs.CON2010 = provinceInfo[4];
+        attrs.CON2011 = provinceInfo[5];
+        attrs.CON2012 = provinceInfo[6];
+        attrs.CON2013 = provinceInfo[7];
+        var fea = new ThemeFeature(geo, attrs);
+        features.push(fea);
+    }
+    graphThemeLayer = new Graph("GraphThemeLayer", "Bar",
+        {
+            map: map,
+            attributions: " ",
+            themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
+            opacity: 0.9,
+            chartsSetting: {
+                width: 240,
+                height: 100,
+                codomain: [0, 40000],
+                barStyle: { fillOpacity: 0.7 },
+                barHoverStyle: { fillOpacity: 1 },
+                xShapeBlank: [10, 10, 10],
+                axisYTick: 4,
+                axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+                axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+                backgroundStyle: { fillColor: "#CCE8CF" },
+                backgroundRadius: [5, 5, 5, 5],
+                showShadow: true,
+                barShadowStyle: {
+                    shadowBlur: 8,
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2,
+                    shadowColor: "rgba(100,100,100,0.8)"
+                },
+                barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+            }
+        });
+    graphThemeLayer.addFeatures(features);
+    var filterFeatures = graphThemeLayer.getFeatures(function(feature) {
+      return feature.attributes['NAME'] === '北京市';
+    });
+    expect(filterFeatures.length).toBeGreaterThan(0);
+    expect(filterFeatures.length).toBe(1);
+    graphThemeLayer.destroyFeatures(filterFeatures[0]);
+    expect(graphThemeLayer.features.length).toEqual(30);
+    graphThemeLayer.clear();
+});
+
     // 此方法为iclient8的私有方法,不支持mapboxgl对象,此处测试传入iclient对象的情况
     it('isQuadrilateralOverLap, isPointInPoly', () => {
         var graphThemeLayer = new Graph("GraphThemeLayer", "Bar",

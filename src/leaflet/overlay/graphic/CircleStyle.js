@@ -1,17 +1,19 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.circleStyle
- * @classdesc 圆形要素风格。
+ * @class CircleStyle
+ * @deprecatedclassinstance L.supermap.circleStyle
+ * @classdesc 圆形要素风格类。支持设置圆形要素的半径、线颜色、线宽、线帽形状、线条交汇边角形状、填充色、填充透明度、填充形状等参数。
  * @category Visualization Graphic
+ * @modulecategory Overlay
  * @extends {L.Class}
- * @param {Object} options - 圆形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.stroke=true] - 是否描边。
- * @param {string} [options.color='#3388ff'] - 颜色。
+ * @param {string} [options.color='#3388ff'] - 十六进制描边颜色。
  * @param {number} [options.weight=1] - 线宽。
  * @param {number} [options.opacity=1] - 透明度。
  * @param {string} [options.lineCap='round'] - 线帽形状。
@@ -21,6 +23,7 @@ import '../../core/Base';
  * @param {number} [options.fillOpacity=0.2] - 填充透明度。
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
  * @param {number} [options.radius=3] - 半径。
+ * @usage
  */
 export var CircleStyle = L.Class.extend({
 
@@ -50,7 +53,7 @@ export var CircleStyle = L.Class.extend({
 
     /**
      * @deprecated
-     * @function L.supermap.circleStyle.prototype.getCanvas
+     * @function CircleStyle.prototype.getCanvas
      * @description 获取画布，已弃用该设置，请使用 getStyle 接口。
      */
     getCanvas: function () {
@@ -58,7 +61,7 @@ export var CircleStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.circleStyle.prototype.getStyle
+     * @function CircleStyle.prototype.getStyle
      * @description 获取画布。
      */
     getStyle: function () {
@@ -93,5 +96,3 @@ export var CircleStyle = L.Class.extend({
 export var circleStyle = function (options) {
     return new CircleStyle(options);
 };
-
-L.supermap.circleStyle = circleStyle;

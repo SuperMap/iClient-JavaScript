@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -28,7 +28,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [4503.62, -3861.91],
                 zoom: 2,
@@ -47,9 +47,9 @@
     function routeLocatorProcess_line() {
         //通过SQL查询的方法建立路由,并添加到地图上
         queryBySQLService = new ol.supermap.QueryService(baseUrl);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryBySQLParams = new ol.supermap.QueryBySQLParameters({
             queryParams: [
-                new SuperMap.FilterParameter({
+                new ol.supermap.FilterParameter({
                     name: "RouteDT_road@Changchun",
                     attributeFilter: "RouteID=1690"
                 })
@@ -81,14 +81,14 @@
 
             //里程定线服务
             routeLocatorService = new ol.supermap.SpatialAnalystService(serviceUrl);
-            routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
+            routeLocatorParameters_line = new ol.supermap.RouteLocatorParameters({
                 "sourceRoute": routeLine,
                 "type": "LINE",
                 "startMeasure": 200,
                 "endMeasure": 1000,
                 "isIgnoreGap": true
             });
-            routeLocatorService.routeLocate(routeLocatorParameters_line, function (routeLocateServiceResult) {
+            routeLocatorService.routeLocate(routeLocatorParameters_line).then(function (routeLocateServiceResult) {
                 var vectorSource = new ol.source.Vector({
                     features: [(new ol.format.GeoJSON()).readFeature(routeLocateServiceResult.result.resultGeometry)],
                     wrapX: false

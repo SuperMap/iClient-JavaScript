@@ -81,9 +81,9 @@ describe('openlayers_ThemeService', () => {
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.newResourceID).not.toBeNull();
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'Countries'");
-                expect(serviceResult.object.options.data).toContain("'dataSourceName': 'World'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'Countries'");
+                expect(serviceResult.options.data).toContain("'dataSourceName': 'World'");
                 done();
             } catch (e) {
                 console.log("'getThemeInfo_dotDensity'案例失败" + e.name + ":" + e.message);
@@ -130,8 +130,8 @@ describe('openlayers_ThemeService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();
@@ -209,8 +209,8 @@ describe('openlayers_ThemeService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();
@@ -264,15 +264,13 @@ describe('openlayers_ThemeService', () => {
             return Promise.resolve(new Response(`{"postResultType":"CreateChild","newResourceID":"c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496","succeed":true,"newResourceLocation":"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/tempLayersSet/c01d29d8d41743adb673cd1cecda6ed0_fff5ed237346469c81d2e9be21f42496.json"}`));
         });
         service.getThemeInfo(themeParameters, (result) => {
-            serviceResult = result
-        });
-        setTimeout(() => {
+            serviceResult = result;
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'JingjinTerrain','dataSourceName': 'Jingjin'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'JingjinTerrain','dataSourceName': 'Jingjin'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();
@@ -283,7 +281,7 @@ describe('openlayers_ThemeService', () => {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        });
     });
 
     it('getThemeInfo_GridUnique', (done) => {
@@ -339,8 +337,8 @@ describe('openlayers_ThemeService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'JingjinTerrain','dataSourceName': 'Jingjin'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'JingjinTerrain','dataSourceName': 'Jingjin'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();
@@ -416,8 +414,8 @@ describe('openlayers_ThemeService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();
@@ -488,8 +486,8 @@ describe('openlayers_ThemeService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();
@@ -561,9 +559,9 @@ describe('openlayers_ThemeService', () => {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.object.options.method).toEqual("POST");
-                expect(serviceResult.object.options.data).toContain("UNIQUE");
-                expect(serviceResult.object.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
+                expect(serviceResult.options.method).toEqual("POST");
+                expect(serviceResult.options.data).toContain("UNIQUE");
+                expect(serviceResult.options.data).toContain("'name': 'China_Province_pg','dataSourceName': 'China'");
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result.postResultType).toEqual("CreateChild");
                 expect(serviceResult.result.newResourceID).not.toBeNull();

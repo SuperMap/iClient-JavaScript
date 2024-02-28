@@ -1,7 +1,8 @@
 // Karma configuration
 // Generated on Fri Feb 17 2017 15:57:25 GMT+0800 (中国标准时间)
 const fileUtil = require('karma-sonarqube-unit-reporter/src/file-util.js');
-const program = require('commander');
+const { Command } = require('commander');
+const program = new Command();
 const testPath = ['./test'];
 const testFilePattern = 'Spec.js';
 const filesForDescriptions = fileUtil.getFilesForDescriptions(testPath, testFilePattern);
@@ -37,6 +38,7 @@ module.exports = function (config) {
               '../src/classic/libs/**',
               '../test/libs/**',
               '../node_modules/mapbox-gl/**',
+              '../node_modules/maplibre-gl/**',
               '../node_modules/three/**',
               '../node_modules/xlsx/**',
               '../node_modules/@turf/**',
@@ -55,40 +57,45 @@ module.exports = function (config) {
       /***测试文件***/
       './tool/**.js',
       './resources/**.js',
-      './resources/img/**.png',
       /***classic的源码***/
       /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
-      { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', include: false },
-      { pattern: '../src/classic/libs/Lang/*.js', include: false },
-      { pattern: '../src/classic/theme/default/*.css', include: false },
+      { pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-17729.js', included: true },
+      { pattern: '../src/classic/libs/Lang/*.js', included: true },
+      { pattern: '../src/classic/theme/default/*.css', included: true },
+      { pattern: './resources/data/**.fgb', included: false },
+      { pattern: './resources/img/**.svg', included: false },
+      { pattern: './resources/img/baiduTileTest.png', included: false },
       /**测试文件**/
       './test-main-classic.js',
 
       /***common的源码***/
-      '../src/common/**/*.js',
+      '../src/common/!(ai)/*.js',
       /**测试文件**/
       './test-main-common.js',
 
       /***leaflet的源码***/
-      { pattern: './libs/workers/TurfWorkerForTest.js', include: false },
-      { pattern: '../node_modules/leaflet/dist/leaflet.css', include: false },
-      { pattern: '../src/leaflet/**/**/*.css', include: false },
+      { pattern: './libs/workers/TurfWorkerForTest.js', included: false },
+      { pattern: '../node_modules/leaflet/dist/leaflet.css', included: true },
+      { pattern: '../src/leaflet/**/**/*.css', included: true },
       '../src/leaflet/**/!(index).js',
       /**测试文件**/
       './test-main-leaflet.js',
 
       /***openlayers的源码***/
-      { pattern: '../node_modules/ol/ol.css', include: false },
-      { pattern: '../src/openlayers/**/**/*.css', include: false },
+      { pattern: '../node_modules/ol/ol.css', included: true },
+      { pattern: '../src/openlayers/**/**/*.css', included: true },
       '../src/openlayers/**/!(index).js',
       /**测试文件**/
       './test-main-openlayers.js',
-
       /***mapboxgl***/
-      { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false },
+      { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: true },
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
-      './test-main-mapboxgl.js'
+      './test-main-mapboxgl.js',
+      { pattern: '../node_modules/maplibre-gl/dist/maplibre-gl.css', included: false },
+      '../src/maplibregl/**/!(index).js',
+      /**测试文件**/
+      './test-main-maplibregl.js'
     ],
 
     // list of files to exclude 测试时排除的文件
@@ -122,7 +129,10 @@ module.exports = function (config) {
       '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
       '../src/mapboxgl/**/!(index).js': ['browserify'],
       // './mapboxgl/**/*Spec.js': ['browserify'],
-      './test-main-mapboxgl.js': ['browserify']
+      './test-main-mapboxgl.js': ['browserify'],
+      '../node_modules/maplibre-gl/dist/maplibre-gl-dev.js': ['browserify'],
+      '../src/maplibregl/**/!(index).js': ['browserify'],
+      './test-main-maplibregl.js': ['browserify']
     },
 
     // test results reporter to use
@@ -137,7 +147,7 @@ module.exports = function (config) {
 
     coverageReporter: {
       dir: 'testcoverage/',
-      reporters: [{ type: 'lcov', subdir: '.' }]
+      reporters: [{ type: 'lcov', subdir: '.' },{ type: 'json', subdir: '.' }]
     },
     sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST',

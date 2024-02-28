@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* leaflet-side-by-side (https://github.com/digidem/leaflet-side-by-side)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -19,8 +23,8 @@
         maxZoom: 18,
         zoom: 2
     });
-    var osmLayer = L.supermap.tiledMapLayer(host + '/iserver/services/map-world/rest/maps/世界地图_Night', {noWrap: true}).addTo(map);
-    var stamenLayer = L.supermap.tiledMapLayer(host + '/iserver/services/map-world/rest/maps/World', {noWrap: true}).addTo(map);
+    var osmLayer = new L.supermap.TiledMapLayer(host + '/iserver/services/map-world/rest/maps/世界地图_Night', {noWrap: true}).addTo(map);
+    var stamenLayer = new L.supermap.TiledMapLayer(host + '/iserver/services/map-world/rest/maps/World', {noWrap: true}).addTo(map);
     L.control.sideBySide(stamenLayer, osmLayer).addTo(map);
 </script>
 </body>

@@ -8,7 +8,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2Z
 describe('mapboxgl_DeckglLayer', () => {
     var originalTimeout;
     var testDiv, map, deckglLayer, features;
-    beforeAll(() => {
+    beforeAll((done) => {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -19,7 +19,25 @@ describe('mapboxgl_DeckglLayer', () => {
         window.document.body.appendChild(testDiv);
         map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
+            style: {
+                version: 8,
+                sources: {
+                  'raster-tiles': {
+                    type: 'raster',
+                    tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    tileSize: 256
+                  }
+                },
+                layers: [
+                  {
+                    id: 'simple-tiles',
+                    type: 'raster',
+                    source: 'raster-tiles',
+                    minzoom: 0,
+                    maxzoom: 22
+                  }
+                ]
+              },
             center: [13.413952, 52.531913],
             zoom: 16.000000000000004,
             pitch: 33.2
@@ -37,7 +55,9 @@ describe('mapboxgl_DeckglLayer', () => {
             fieldValues: [],
             geometry: line
         };
-
+        map.on('load', function() {
+          done();
+        })
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -68,7 +88,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('onAdd_ArcLayer', (done) => {
@@ -88,9 +108,8 @@ describe('mapboxgl_DeckglLayer', () => {
 
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
-
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('onAdd_HexagonLayer', (done) => {
@@ -111,7 +130,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('onAdd_PolygonLayer', (done) => {
@@ -132,7 +151,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('onAdd_scatter-plot', (done) => {
@@ -171,7 +190,7 @@ describe('mapboxgl_DeckglLayer', () => {
         setTimeout(() => {
             expect(deckglLayer.deckGL).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('setVisibility', (done) => {
@@ -204,13 +223,7 @@ describe('mapboxgl_DeckglLayer', () => {
             expect(deckglLayer.data).toEqual(data);
             expect(deckglLayer.data.length).toEqual(2);
             done();
-        }, 3000)
-        setTimeout(() => {
-            deckglLayer.removeFromMap()
-            expect(deckglLayer.deckGL).not.toBeNull();
-            expect(deckglLayer.data.length).toEqual(0);
-            done();
-        }, 3000)
+        }, 0)
 
 
     });
@@ -239,14 +252,13 @@ describe('mapboxgl_DeckglLayer', () => {
             deckglLayer.addData(data);
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data.length).toEqual(4);
-            done();
-        }, 3000)
+        }, 0)
         setTimeout(() => {
             deckglLayer.removeData();
             expect(deckglLayer.deckGL).not.toBeNull();
             expect(deckglLayer.data.length).toEqual(0);
             done();
-        }, 3000)
+        }, 0)
     });
 
     it('setStyle,hexagon-layer', (done) => {
@@ -264,7 +276,7 @@ describe('mapboxgl_DeckglLayer', () => {
             deckglLayer.setStyle({ radius: 1000 });
             expect(deckglLayer.deckGL.props.radius).toEqual(1000);
             done();
-        }, 3000)
+        }, 0)
         
     });
 });

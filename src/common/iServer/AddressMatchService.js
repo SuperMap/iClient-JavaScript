@@ -1,19 +1,20 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { CommonServiceBase } from './CommonServiceBase';
 import { GeoCodingParameter } from './GeoCodingParameter';
 import { GeoDecodingParameter } from './GeoDecodingParameter';
 
 /**
- * @class SuperMap.AddressMatchService
+ * @class AddressMatchService
+ * @deprecatedclass SuperMap.AddressMatchService
  * @category iServer AddressMatch
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @param {string} url - 地址匹配服务地址。
- * @param {Object} options - 参数。
+ * @classdesc 地址匹配服务类。此类提供了地址的正向匹配和反向匹配功能，正向匹配即通过地点名称关键词查找地址位置，反向匹配即根据位置坐标查询地点。
+ * @param {string} url - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class AddressMatchService extends CommonServiceBase {
     constructor(url, options) {
@@ -23,7 +24,7 @@ export class AddressMatchService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.AddressMatchService.prototype.destroy
+     * @function AddressMatchService.prototype.destroy
      * @override
      */
     destroy() {
@@ -31,67 +32,64 @@ export class AddressMatchService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.AddressMatchService.prototype.code
+     * @function AddressMatchService.prototype.code
      * @param {string} url - 正向地址匹配服务地址。
-     * @param {SuperMap.GeoCodingParameter} params - 正向地址匹配服务参数。
+     * @param {GeoCodingParameter} params - 正向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    code(url, params) {
+    code(url, params, callback) {
         if (!(params instanceof GeoCodingParameter)) {
             return;
         }
-        this.processAsync(url, params);
+        return this.processAsync(url, params, callback);
     }
 
     /**
-     * @function SuperMap.AddressMatchService.prototype.decode
+     * @function AddressMatchService.prototype.decode
      * @param {string} url - 反向地址匹配服务地址。
-     * @param {SuperMap.GeoDecodingParameter} params - 反向地址匹配服务参数。
+     * @param {GeoDecodingParameter} params - 反向地址匹配服务参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    decode(url, params) {
+    decode(url, params, callback) {
         if (!(params instanceof GeoDecodingParameter)) {
             return;
         }
-        this.processAsync(url, params);
+        return this.processAsync(url, params, callback);
     }
 
     /**
-     * @function SuperMap.AddressMatchService.prototype.processAsync
+     * @function AddressMatchService.prototype.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param {string} url - 服务地址。
      * @param {Object} params - 参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
 
-    processAsync(url, params) {
-        this.request({
-            method: 'GET',
-            url,
-            params,
-            scope: this,
-            success: this.serviceProcessCompleted,
-            failure: this.serviceProcessFailed
-        });
+    processAsync(url, params, callback) {
+      return this.request({
+          method: 'GET',
+          url,
+          params,
+          scope: this,
+          success: callback,
+          failure: callback
+      });
     }
-
     /**
-     * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
+     * @function AddressMatchService.prototype.transformResult
      * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否完成
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @description 状态完成时转换结果。
      */
-    serviceProcessCompleted(result) {
+    transformResult(result, options) {
         if (result.succeed) {
             delete result.succeed;
         }
-        super.serviceProcessCompleted(result);
-    }
-
-    /**
-     * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
-     * @param {Object} result - 服务器返回的结果对象。
-     * @description 服务流程是否失败
-     */
-    serviceProcessFailed(result) {
-        super.serviceProcessFailed(result);
+        return { result, options };
     }
 }
 
-SuperMap.AddressMatchService = AddressMatchService;

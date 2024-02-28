@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,59 +22,59 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(mapUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(mapUrl, {noWrap: true}).addTo(map);
     createTheme();
 
     function createTheme() {
-        themeService = L.supermap.themeService(url);
-        themeGraph = new SuperMap.ThemeGraph({
+        themeService = new L.supermap.ThemeService(url);
+        themeGraph = new L.supermap.ThemeGraph({
             items: [
-                new SuperMap.ThemeGraphItem({
+                new L.supermap.ThemeGraphItem({
                     caption: "1992-1995人口增长率",
                     graphExpression: "Pop_Rate95",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(92, 73, 234),
+                    uniformStyle: new L.supermap.ServerStyle({
+                        fillForeColor: new L.supermap.ServerColor(92, 73, 234),
                         lineWidth: 0.1
                     })
                 }),
-                new SuperMap.ThemeGraphItem({
+                new L.supermap.ThemeGraphItem({
                     caption: "1995-1999人口增长率",
                     graphExpression: "Pop_Rate99",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(211, 111, 240),
+                    uniformStyle: new L.supermap.ServerStyle({
+                        fillForeColor: new L.supermap.ServerColor(211, 111, 240),
                         lineWidth: 0.1
                     })
                 })
             ],
             barWidth: 0.03,
-            graduatedMode: SuperMap.GraduatedMode.SQUAREROOT,
-            graphAxes: new SuperMap.ThemeGraphAxes({
+            graduatedMode: L.supermap.GraduatedMode.SQUAREROOT,
+            graphAxes: new L.supermap.ThemeGraphAxes({
                 axesDisplayed: true
             }),
-            graphSize: new SuperMap.ThemeGraphSize({
+            graphSize: new L.supermap.ThemeGraphSize({
                 maxGraphSize: 1,
                 minGraphSize: 0.35
             }),
-            graphText: new SuperMap.ThemeGraphText({
+            graphText: new L.supermap.ThemeGraphText({
                 graphTextDisplayed: true,
-                graphTextFormat: SuperMap.ThemeGraphTextFormat.VALUE,
-                graphTextStyle: new SuperMap.ServerTextStyle({
+                graphTextFormat: L.supermap.ThemeGraphTextFormat.VALUE,
+                graphTextStyle: new L.supermap.ServerTextStyle({
                     sizeFixed: true,
                     fontHeight: 9,
                     fontWidth: 5
                 })
             }),
-            graphType: SuperMap.ThemeGraphType.BAR3D
+            graphType: L.supermap.ThemeGraphType.BAR3D
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             themes: [themeGraph],
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(url, {
+                themeLayer = new L.supermap.TiledMapLayer(url, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

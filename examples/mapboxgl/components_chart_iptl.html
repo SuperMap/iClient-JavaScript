@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -8,7 +12,7 @@
     <meta charset="UTF-8">
     <title data-i18n='resources.title_chart_iPortal'></title>
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="iclient-mapboxgl-css,echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="echarts" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
 
     <style>
         .chart-setting {
@@ -141,7 +145,7 @@
                 }
             }]
         }
-        var barChart = new SuperMap.Components.Chart("chart", options);
+        var barChart = new mapboxgl.supermap.Components.Chart("chart", options);
         //加载图表之后，将要素添加到地图上
         barChart.onAdd(addDataToMap);
 

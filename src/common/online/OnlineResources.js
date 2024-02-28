@@ -1,17 +1,26 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {
-    SuperMap
-} from '../SuperMap';
 
 /**
  * @enum ServiceStatus
- * @memberOf SuperMap
- * @category iPortal/Online
+ * @category BaseTypes Constant
  * @description 服务发布状态。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ServiceStatus.DOES_NOT_INVOLVE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { ServiceStatus } from '{npm}';
+ *
+ * const result = ServiceStatus.DOES_NOT_INVOLVE;
+ * ```
  */
-var ServiceStatus = SuperMap.ServiceStatus = {
+var ServiceStatus = {
     /** 不涉及，不可发布。 */
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     /** 发布失败。 */
@@ -25,120 +34,81 @@ var ServiceStatus = SuperMap.ServiceStatus = {
     /** 取消服务失败。 */
     UNPUBLISHED_FAILED: "UNPUBLISHED_FAILED"
 };
-export {
-    ServiceStatus
-}
 
-/**
- * 
- * @enum DataItemType
- * @memberOf SuperMap
- * @category iPortal/Online
- * @description 数据项类型。
- */
-var DataItemType = SuperMap.DataItemType = {
-    /** AUDIO */
-    AUDIO: "AUDIO",
-    /** COLOR */
-    COLOR: "COLOR",
-    /** COLORSCHEME */
-    COLORSCHEME: "COLORSCHEME",
-    /** CSV */
-    CSV: "CSV",
-    /** EXCEL */
-    EXCEL: "EXCEL",
-    /** FILLSYMBOL */
-    FILLSYMBOL: "FILLSYMBOL",
-    /** IMAGE */
-    IMAGE: "IMAGE",
-    /** LAYERTEMPLATE */
-    LAYERTEMPLATE: "LAYERTEMPLATE",
-    /** LAYOUTTEMPLATE */
-    LAYOUTTEMPLATE: "LAYOUTTEMPLATE",
-    /** LINESYMBOL */
-    LINESYMBOL: "LINESYMBOL",
-    /** MAPTEMPLATE */
-    MAPTEMPLATE: "MAPTEMPLATE",
-    /** MARKERSYMBOL */
-    MARKERSYMBOL: "MARKERSYMBOL",
-    /** MBTILES */
-    MBTILES: "MBTILES",
-    /** PHOTOS */
-    PHOTOS: "PHOTOS",
-    /** SHP */
-    SHP: "SHP",
-    /** SMTILES */
-    SMTILES: "SMTILES",
-    /** SVTILES */
-    SVTILES: "SVTILES",
-    /** THEMETEMPLATE */
-    THEMETEMPLATE: "THEMETEMPLATE",
-    /** TPK */
-    TPK: "TPK",
-    /** UDB */
-    UDB: "UDB",
-    /** UGCV5 */
-    UGCV5: "UGCV5",
-    /** UNKNOWN */
-    UNKNOWN: "UNKNOWN",
-    /** VIDEO */
-    VIDEO: "VIDEO",
-    /** WORKENVIRONMENT */
-    WORKENVIRONMENT: "WORKENVIRONMENT",
-    /** WORKSPACE */
-    WORKSPACE: "WORKSPACE"
-};
-export {DataItemType}
+
 /**
  * @enum DataItemOrderBy
- * @memberOf SuperMap
- * @category iPortal/Online
+ * @category BaseTypes Constant
  * @description 数据排序字段。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.DataItemOrderBy.FILENAME;
+ *
+ * </script>
+ * // ES6 Import
+ * import { DataItemOrderBy } from '{npm}';
+ *
+ * const result = DataItemOrderBy.FILENAME;
+ * ```
  */
-var DataItemOrderBy = SuperMap.DataItemOrderBy = {
-    /** FILENAME */
+var DataItemOrderBy = {
+    /** 文件名称。 */
     FILENAME: "FILENAME",
-    /** ID */
+    /** ID。 */
     ID: "ID",
-    /** LASTMODIFIEDTIME */
+    /** 最后修改时间。 */
     LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
-    /** NICKNAME */
+    /** 作者昵称。 */
     NICKNAME: "NICKNAME",
-    /** SERVICESTATUS */
+    /** 服务状态。 */
     SERVICESTATUS: "SERVICESTATUS",
-    /** SIZE */
+    /** 大小。 */
     SIZE: "SIZE",
-    /** STATUS */
+    /** 状态。 */
     STATUS: "STATUS",
-    /** TYPE */
+    /** 类型。 */
     TYPE: "TYPE",
-    /** UPDATETIME */
+    /** 更新时间。 */
     UPDATETIME: "UPDATETIME",
-    /** USERNAME */
+    /** 作者名称。 */
     USERNAME: "USERNAME"
 };
-export {
-    DataItemOrderBy
-}
 
 /**
- * @enum FilterField
- * @memberOf SuperMap
- * @category iPortal/Online
+ * @enum FilterField {number}
+ * @category BaseTypes Constant
  * @description 关键字查询时的过滤字段。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FilterField.LINKPAGE;
+ *
+ * </script>
+ * // ES6 Import
+ * import { FilterField } from '{npm}';
+ *
+ * const result = FilterField.LINKPAGE;
+ * ```
  */
-var FilterField = SuperMap.FilterField = {
-    /** LINKPAGE */
+var FilterField = {
+    /** 服务地址。 */
     LINKPAGE: "LINKPAGE",
-    /** LINKPAGE */
+    /** 服务中包含的地图的名称。 */
     MAPTITLE: "MAPTITLE",
-    /** LINKPAGE */
+    /** 服务创建者昵称。 */
     NICKNAME: "NICKNAME",
-    /** LINKPAGE */
+    /** 服务名称。 */
     RESTITLE: "RESTITLE",
-    /** LINKPAGE */
+    /** 服务创建者用户名。 */
     USERNAME: "USERNAME"
 };
 export {
+    ServiceStatus,
+    DataItemOrderBy,
     FilterField
 }

@@ -7,13 +7,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeatureEventArgsSystem = null;
-var initGetFeaturesByGeometryService = (getFeaturesByGeometryCompleted, getFeaturesByGeometryFailed) => {
-  return new GetFeaturesByGeometryService(dataServiceURL, {
-    eventListeners: {
-      processCompleted: getFeaturesByGeometryCompleted,
-      processFailed: getFeaturesByGeometryFailed
-    }
-  });
+var initGetFeaturesByGeometryService = () => {
+  return new GetFeaturesByGeometryService(dataServiceURL);
 };
 
 describe('GetFeaturesByGeometryService', () => {
@@ -65,9 +60,6 @@ describe('GetFeaturesByGeometryService', () => {
         expect(getFeaturesResult.newResourceID).not.toBeNull();
         expect(getFeaturesResult.newResourceLocation).not.toBeNull();
         getFeaturesByGeometryService.destroy();
-        expect(getFeaturesByGeometryService.EVENT_TYPES).toBeNull();
-        expect(getFeaturesByGeometryService.events).toBeNull();
-        expect(getFeaturesByGeometryService.eventListeners).toBeNull();
         expect(getFeaturesByGeometryService.returnContent).toBeNull();
         expect(getFeaturesByGeometryService.hasGeometry).toBeNull();
         getFeaturesByGeometryParameters.destroy();
@@ -80,10 +72,7 @@ describe('GetFeaturesByGeometryService', () => {
         done();
       }
     };
-    var getFeaturesByGeometryService = initGetFeaturesByGeometryService(
-      getFeaturesByGeometryCompleted,
-      getFeaturesByGeometryFailed
-    );
+    var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
       expect(testUrl).toBe(dataServiceURL + '/featureResults');
@@ -98,14 +87,11 @@ describe('GetFeaturesByGeometryService', () => {
         )
       );
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, getFeaturesByGeometryCompleted);
   });
 
   //直接返回结果情况
   it('processAsync_returnContent:true', done => {
-    var getFeaturesByGeometryFailed = serviceFailedEventArgs => {
-      serviceFailedEventArgsSystem = serviceFailedEventArgs;
-    };
     var getFeaturesByGeometryCompleted = getFeatureEventArgsSystem => {
       try {
         var getFeaturesResult = getFeatureEventArgsSystem.result.features;
@@ -126,10 +112,7 @@ describe('GetFeaturesByGeometryService', () => {
       }
     };
 
-    var getFeaturesByGeometryService = initGetFeaturesByGeometryService(
-      getFeaturesByGeometryCompleted,
-      getFeaturesByGeometryFailed
-    );
+    var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
     var point = new Point(112, 36);
     var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
       datasetNames: ['World:Countries'],
@@ -146,14 +129,11 @@ describe('GetFeaturesByGeometryService', () => {
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, getFeaturesByGeometryCompleted);
   });
 
   //具有attributeFilter直接返回结果情况
   it('processAsync_returnContent_withAttributeFilter', done => {
-    var getFeaturesByGeometryFailed = serviceFailedEventArgs => {
-      serviceFailedEventArgsSystem = serviceFailedEventArgs;
-    };
     var getFeaturesByGeometryCompleted = getFeaturesEventArgs => {
       getFeatureEventArgsSystem = getFeaturesEventArgs;
       try {
@@ -174,10 +154,7 @@ describe('GetFeaturesByGeometryService', () => {
       }
     };
 
-    var getFeaturesByGeometryService = initGetFeaturesByGeometryService(
-      getFeaturesByGeometryCompleted,
-      getFeaturesByGeometryFailed
-    );
+    var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
     var point = new Point(112, 36);
     var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
       datasetNames: ['World:Countries'],
@@ -195,7 +172,49 @@ describe('GetFeaturesByGeometryService', () => {
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(`{"features":[],"featureUriList":[],"totalCount":0,"featureCount":0}`));
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, getFeaturesByGeometryCompleted);
+  });
+
+  it('processAsync_returnContent_withAttributeFilter promise', done => {
+    var getFeaturesByGeometryCompleted = getFeaturesEventArgs => {
+      getFeatureEventArgsSystem = getFeaturesEventArgs;
+      try {
+        var getFeaturesResult = getFeatureEventArgsSystem.result.features;
+        expect(getFeaturesByGeometryService).not.toBeNull();
+        expect(getFeaturesResult).not.toBeNull();
+        expect(getFeaturesResult.type).toBe('FeatureCollection');
+        expect(getFeaturesResult.features.length).toEqual(0);
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByGeometryService_' + exception.name + ':' + exception.message);
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        done();
+      }
+    };
+
+    var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
+    var point = new Point(112, 36);
+    var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
+      datasetNames: ['World:Countries'],
+      toIndex: -1,
+      attributeFilter: 'SMID<100',
+      spatialQueryMode: SpatialQueryMode.INTERSECT,
+      geometry: point
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      expect(method).toBe('POST');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true');
+      var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+      expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+      expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(`{"features":[],"featureUriList":[],"totalCount":0,"featureCount":0}`));
+    });
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters).then(getFeaturesByGeometryCompleted);
   });
 
   //测试没有传入参数时的情况
@@ -224,14 +243,8 @@ describe('GetFeaturesByGeometryService', () => {
         done();
       }
     };
-    var getFeaturesByGeometryCompleted = getFeaturesEventArgs => {
-      getFeatureEventArgsSystem = getFeaturesEventArgs;
-    };
 
-    var getFeaturesByGeometryService = initGetFeaturesByGeometryService(
-      getFeaturesByGeometryCompleted,
-      getFeaturesByGeometryFailed
-    );
+    var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
       expect(testUrl).toBe(dataServiceURL + '/featureResults');
@@ -247,7 +260,7 @@ describe('GetFeaturesByGeometryService', () => {
         )
       );
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, getFeaturesByGeometryFailed);
   });
 
   //查询目标图层不存在情况
@@ -278,14 +291,8 @@ describe('GetFeaturesByGeometryService', () => {
         done();
       }
     };
-    var getFeaturesByGeometryCompleted = getFeaturesEventArgs => {
-      getFeatureEventArgsSystem = getFeaturesEventArgs;
-    };
 
-    var getFeaturesByGeometryService = initGetFeaturesByGeometryService(
-      getFeaturesByGeometryCompleted,
-      getFeaturesByGeometryFailed
-    );
+    var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
       expect(testUrl).toBe(dataServiceURL + '/featureResults');
@@ -301,19 +308,10 @@ describe('GetFeaturesByGeometryService', () => {
         )
       );
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, getFeaturesByGeometryFailed);
   });
   it('getFeaturesByGeometryParameters:targetEpsgCode', done => {
-    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL, {
-      eventListeners: {
-        processFailed: () => { },
-        processCompleted: () => {
-          getFeaturesByGeometryService.destroy();
-          getFeaturesByGeometryParameters.destroy();
-          done();
-        }
-      }
-    });
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL);
     var point = new Point(112, 36);
     var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
       datasetNames: ['World:Countries'],
@@ -325,19 +323,14 @@ describe('GetFeaturesByGeometryService', () => {
       expect(paramsObj.targetEpsgCode).toEqual(4326);
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, function() {
+      getFeaturesByGeometryService.destroy();
+      getFeaturesByGeometryParameters.destroy();
+      done();
+    });
   })
   it('getFeaturesByGeometryParameters:targetPrj', done => {
-    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL, {
-      eventListeners: {
-        processFailed: () => { },
-        processCompleted: () => { 
-          getFeaturesByGeometryService.destroy();
-          getFeaturesByGeometryParameters.destroy();
-          done();
-        }
-      }
-    });
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL);
     var point = new Point(112, 36);
     var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
       datasetNames: ['World:Countries'],
@@ -349,6 +342,42 @@ describe('GetFeaturesByGeometryService', () => {
       expect(paramsObj.targetPrj.epsgCode).toEqual(4326);
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, function() {
+      getFeaturesByGeometryService.destroy();
+      getFeaturesByGeometryParameters.destroy();
+      done();
+    });
+  })
+  it('GetFeaturesByGeometryParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        expect(serviceSucceedEventArgsSystem.result.features.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesByGeometryService_' + exception.name + ':' + exception.message);
+        getFeaturesByGeometryService.destroy();
+        getFeaturesByGeometryParameters.destroy();
+        done();
+      }
+    };
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(dataServiceURL);
+    var point = new Point(112, 36);
+    var getFeaturesByGeometryParameters = new GetFeaturesByGeometryParameters({
+      datasetNames: ['World:Countries'],
+      geometry: point,
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters, serviceCompleted);
   })
 });

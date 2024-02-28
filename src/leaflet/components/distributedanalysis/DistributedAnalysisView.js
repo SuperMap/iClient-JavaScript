@@ -1,25 +1,34 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {ComponentsViewBase} from '../ComponentsViewBase';
-import {DistributedAnalysisViewModel} from "./DistributedAnalysisViewModel";
-import { CommonContainer, DropDownBox, Select, MessageBox, Lang, KernelDensityJobParameter, MappingParameters } from '@supermap/iclient-common';
-
+ import L from 'leaflet';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { DistributedAnalysisViewModel } from './DistributedAnalysisViewModel';
+ import { KernelDensityJobParameter } from '@supermap/iclient-common/iServer/KernelDensityJobParameter';
+ import { MappingParameters } from '@supermap/iclient-common/iServer/MappingParameters';
+ import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermap/iclient-common/components/templates/Select';
+ import { DropDownBox } from '@supermap/iclient-common/components/templates/DropDownBox';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
 /**
- * @class L.supermap.components.distributedAnalysis
- * @classdesc 分布式分析组件。
+ * @class DistributedAnalysisView
+ * @aliasclass Components.DistributedAnalysisView
+ * @deprecatedclassinstance L.supermap.components.distributedAnalysis
+ * @classdesc 分布式分析组件类。
  * @version 9.1.1
+ * @modulecategory Components
  * @param {string} processingUrl - 分布式分析服务地址。
- * @param {Object} options - 可选参数。
- * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
- * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
- * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.distributedAnalysis#analysissucceeded
- * @fires L.supermap.components.distributedAnalysis#analysisfailed
- * @fires L.supermap.components.distributedAnalysis#layersremoved
- * @extends {L.supermap.components.componentsViewBase}
+ * @param {Object} options - 参数。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
+ * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。
+ * @param {function} [options.onEachFeature] - 给该元素绑定事件和弹窗。
+ * @fires DistributedAnalysisView#analysissucceeded
+ * @fires DistributedAnalysisView#analysisfailed
+ * @fires DistributedAnalysisView#layersremoved
+ * @extends {ComponentsViewBase}
  * @category Components DistributedAnalysis
+ * @usage
  */
 export var DistributedAnalysisView = ComponentsViewBase.extend({
 
@@ -29,7 +38,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         this.viewModel = new DistributedAnalysisViewModel(processingUrl);
     },
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype.onAdd
+     * @function DistributedAnalysisView.prototype.onAdd
      * @description 添加控件。
      * @private
      * @override
@@ -40,12 +49,12 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._fillDataToView
-     * @description 填充数据到 view。
+     * @function DistributedAnalysisView.prototype._fillDataToView
+     * @description 添加数据。
      * @private
      */
     _fillDataToView: function () {
-        
+
         // 获取数据集
         this.viewModel.on('datasetsloaded', (e) => {
             let datasetOptionsArr = e.result.dataset.datasetNames;
@@ -58,7 +67,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._initView
+     * @function DistributedAnalysisView.prototype._initView
      * @description 创建分布式分析组件。
      * @returns {HTMLElement}
      * @private
@@ -182,7 +191,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         gridSizeInput.value = '1000';
         let gridSizeUnitSelectName = gridSizeContainer.children[1].children[1].children[0].children[0].children[0];
 
-        // 搜索半径 
+        // 搜索半径
         let searchRadiusUnitSelectOptions = {
             'optionsArr': ['Meter', 'Kilometer', 'Yard', 'Foot', 'Mile']
         };
@@ -331,20 +340,20 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
                     /**
-                     * @event L.supermap.components.distributedAnalysis#analysissucceeded
+                     * @event DistributedAnalysisView#analysissucceeded
                      * @description 分析完成后触发。
                      * @property {L.GeoJSON} layer - 结果图层。
                      * @property {string} name - 结果图层名称。
                      */
                     this._event.fire('analysissucceeded', {'layer': e.layer, 'name': e.name})
                 });
-                
+
                 this.viewModel.on('analysisfailed', (e) => {
                     this.messageBox.showView(Lang.i18n('msg_theFieldNotSupportAnalysis'), "failure");
                     analysingContainer.style.display = 'none';
                     analysisBtn.style.display = 'block';
                     /**
-                     * @event L.supermap.components.distributedAnalysis#analysisfailed
+                     * @event DistributedAnalysisView#analysisfailed
                      * @description 分析失败后触发。
                      * @property {string} error - 服务器返回的错误。
                      */
@@ -358,7 +367,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
         // 删除按钮点击事件
         deleteLayersBtn.onclick = () => {
             /**
-             * @event L.supermap.components.distributedAnalysis#layersremoved
+             * @event DistributedAnalysisView#layersremoved
              * @description 结果图层删除后触发。
              * @property {Array.<L.GeoJSON>} layers - 被删除的结果图层。
              */
@@ -425,8 +434,8 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._createOptions
-     * @description 创建下拉框 options。
+     * @function DistributedAnalysisView.prototype._createOptions
+     * @description 创建下拉框。
      * @private
      */
     _createOptions(container, optionsArr) {
@@ -441,8 +450,8 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._creatInputBox
-     * @description 创建含有 span 的 input 框。
+     * @function DistributedAnalysisView.prototype._creatInputBox
+     * @description 创建输入框。
      * @private
      */
     _creatInputBox(inputOptions, parentEle) {
@@ -456,8 +465,8 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._creatUnitSelectBox
-     * @description 创建含有 span 的 input 框。
+     * @function DistributedAnalysisView.prototype._creatUnitSelectBox
+     * @description 创建选择框。
      * @private
      */
     _creatUnitSelectBox(options, parentEle) {
@@ -476,7 +485,7 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.distributedAnalysis.prototype._setEleAtribute
+     * @function DistributedAnalysisView.prototype._setEleAtribute
      * @description 设置元素的属性名和属性值。
      * @private
      */
@@ -490,5 +499,3 @@ export var DistributedAnalysisView = ComponentsViewBase.extend({
 export var distributedAnalysisView = function (options) {
     return new DistributedAnalysisView(options);
 };
-
-L.supermap.components.distributedAnalysis = distributedAnalysisView;

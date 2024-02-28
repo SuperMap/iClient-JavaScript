@@ -241,6 +241,87 @@ describe('ImageCollectionService', () => {
         });
     });
 
+    it('should call getTileInfo getStatistics getLegend', function (done) {
+      var queryParams = {
+        renderingRule: new ImageRenderingRule({ displayMode: 'Composite' })
+      };
+      service = new ImageCollectionService(requestUrl, { collectionId: 'collectionId' });
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+        if(url.includes('tileInfo')) {
+          expect(url).toEqual(requestUrl + '/collections/collectionId/tileInfo');
+          return Promise.resolve(new Response(JSON.stringify(getCollectionTileInfoJson)));
+        }
+        if(url.includes('statistics')) {
+          expect(url).toEqual(requestUrl + '/collections/collectionId/statistics');
+          return Promise.resolve(new Response(JSON.stringify(getCollectionStatisticsJson)));
+        }
+        if(url.includes('legend')) {
+          expect(url).toEqual(requestUrl + '/collections/collectionId/legend');
+          return Promise.resolve(new Response(JSON.stringify(getCollectionLegendJson)));
+        }
+        if(url.includes('items')) {
+          expect(url).toEqual(requestUrl + '/collections/collectionId/items/wrongId');
+          return Promise.resolve(
+            new Response(`{"succeed":false,"error":{"code":400,"description":"not found in resources."}}`)
+          );
+        }
+      });
+      service.getTileInfo((res) => {
+          try {
+            var result = res.result;
+            expect(result).not.toBeNull();
+            expect(result.origin).not.toBeNull();
+            expect(result.levels[0]).not.toBeNull();
+            expect(result.format).toEqual('string');
+            expect(result.crs).toEqual('string');
+            expect(result.width).toEqual(0);
+            expect(result.height).toEqual(0);
+            expect(result.dpi).toEqual(0);
+          } catch (exception) {
+            expect(false).toBeTruthy();
+            console.log('ImageCollectionService' + exception.name + ':' + exception.message);
+          }
+      });
+      service.getStatistics((res) => {
+        try {
+          var result = res.result;
+          expect(result).not.toBeNull();
+          expect(result.extent).not.toBeNull();
+          expect(result.storageType[0]).toEqual('Local');
+          expect(result.collectionId).toEqual('string');
+          expect(result.pixelType).toEqual('UNKNOWN');
+          expect(result.bandCount).toEqual(0);
+        } catch (exception) {
+          expect(false).toBeTruthy();
+          console.log('ImageCollectionService' + exception.name + ':' + exception.message);
+        }
+      });
+      service.getLegend(queryParams, (res) => {
+        try {
+          var result = res.result;
+          expect(result).not.toBeNull();
+          expect(result.layerId).toEqual(0);
+          expect(result.layerName).toEqual('DLTB');
+          expect(result.legendType).toEqual('Unique Values');
+          expect(result.legendCells.length).toEqual(1);
+        } catch (exception) {
+          expect(false).toBeTruthy();
+          console.log('ImageCollectionService' + exception.name + ':' + exception.message);
+        }
+      });
+      service.getItemByID('wrongId', (res) => {
+        try {
+          expect(res.error.description).not.toBeNull();
+          expect(res.error.code).toEqual(400);
+        } catch (exception) {
+          expect(false).toBeTruthy();
+          console.log('ImageCollectionService' + exception.name + ':' + exception.message);
+        } finally {
+          done();
+        }
+      });
+    });
+
     xit('should call patchFeature successfully', function (done) {
         // var bodyParam = new PartialItem({
         //     assets: {

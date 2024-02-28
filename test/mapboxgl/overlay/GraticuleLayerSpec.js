@@ -64,13 +64,13 @@ describe('mapboxgl_GraticuleLayer', () => {
     it('_initialize', done => {
         setTimeout(() => {
             expect(graticuleLayer).not.toBeNull();
-            expect(graticuleLayer.canvas).not.toBeNull();
+            expect(graticuleLayer.renderer.canvas).not.toBeNull();
             expect(graticuleLayer.map).not.toBeNull();
             expect(graticuleLayer.mapContainer).not.toBeNull();
             expect(graticuleLayer.features).not.toBeNull();
             expect(graticuleLayer.options).not.toBeNull();
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('setVisibility', () => {
@@ -123,7 +123,7 @@ describe('mapboxgl_GraticuleLayer', () => {
 
     it('setIntervals', () => {
         graticuleLayer.setIntervals(5);
-        expect(graticuleLayer.options.interval).toEqual(5);
+        expect(graticuleLayer.renderer.options.interval).toEqual(5);
     });
 
     it('_calcInterval', () => {
@@ -131,8 +131,8 @@ describe('mapboxgl_GraticuleLayer', () => {
         const calcInterval = map => {
             return map.getZoom();
         };
-        graticuleLayer._calcInterval(calcInterval);
-        expect(graticuleLayer._currLngInterval).toBe(interval);
+        graticuleLayer.renderer._calcInterval(calcInterval);
+        expect(graticuleLayer.renderer._currLngInterval).toBe(interval);
     });
 
     it('_getLatPoints', () => {
@@ -153,8 +153,8 @@ describe('mapboxgl_GraticuleLayer', () => {
         expect(points[0][1]).toEqual(80);
     });
 
-    it('removeFromMap', () => {
-        graticuleLayer.removeFromMap();
-        expect(graticuleLayer.canvas).toBeNull();
+    it('onRemove', () => {
+        graticuleLayer.onRemove();
+        expect(graticuleLayer.renderer.canvas).toBeNull();
     });
 });

@@ -1,0 +1,143 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title data-i18n="resources.title_rangeTheme3DLayer"></title>
+    <meta name="viewport" content="width=device-width,initial-scale=0.5,maximum-scale=1,user-scalable=no"/>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <style>
+        .maplibregl-popup {
+            cursor: auto;
+        }
+
+        .maplibregl-popup-tip {
+            border-top-color: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        .maplibregl-popup-content {
+            color: whitesmoke;
+            background-color: rgba(0, 0, 0, 0.8) !important;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+<script>
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var dataUrl = host + "/iserver/services/data-jingjin/rest/data";
+
+    var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+    var center = [116.640545, 40.531714], themeField = "POP_DENSITY99",
+        themeLayer, popup;
+
+    var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: center,
+        zoom: 7
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+    buildThemeLayer();
+
+    function buildThemeLayer() {
+        var getFeatureBySQLParams = new maplibregl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: new maplibregl.supermap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            }),
+            toIndex: 500,
+            datasetNames: ["Jingjin:BaseMap_R"]
+        });
+
+        new maplibregl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+            getFeatureBySQLParams,
+            maplibregl.supermap.DataFormat.GEOJSON
+            ).then(processCompleted);
+    }
+
+    function processCompleted(serviceResult) {
+        if (serviceResult.error) {
+            alert("error:" + JSON.stringify(serviceResult.error));
+            return;
+        }
+        var result = serviceResult.result;
+        if (result.features) {
+            createThemeLayer(result.features);
+        }
+    }
+    //创建专题图图层
+    function createThemeLayer(data) {
+        popup = new maplibregl.Popup({closeButton: false}).addTo(map);
+        themeLayer = new maplibregl.supermap.RangeTheme3DLayer("range3DThemeLayer", {
+            heightField: themeField,
+            themeField: themeField,
+            parseNumber: true,
+            enableHighlight: true,
+
+            heightStops: [
+                [0.01, 1000], [0.1, 5000], [0.2, 6000]
+            ],
+            colorStops: [
+                [0.01, "#FDE2CA"], [0.02, "#FACE9C"], [0.04, "#F09C42"], [0.06, "#D0770B"], [0.1, "#945305"], [0.2, "#714902"]
+            ],
+
+            // 显示图例
+            showLegend: true,
+            legendTitle: resources.text_densityOfPopulation,
+            legendOrientation: 'vertical'
+        });
+        themeLayer.setHighlightStyleOptions({
+            color: "#058e94", callback: highlightCallback
+        }).setData(data).addTo(map);
+        map.easeTo({
+            pitch: 60,
+            bearing: 0
+        })
+    }
+
+    //设置高亮图层提示
+    function highlightCallback(features, evt) {
+        var ft = features && features[0];
+        if (!ft) {
+            popup.remove();
+        }
+        if (ft && ft.properties) {
+            var content = "<span style='font-weight:bold;font-size: 16px;'>" + ft.properties["NAME"] + "</span><br>";
+            content += "<span>" + resources.text_densityOfPopulation + ": " + ft.properties[themeField] + "</span><br>";
+            popup.addTo(map);
+            popup.setLngLat(evt.lngLat);
+            popup.setHTML(content);
+        }
+        map.on('mouseout', function () {
+            popup.remove();
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -11,7 +11,7 @@ const app = (module.exports = express());
 if (product) {
     const config = require(`./webpack.config.${product}.js`);
     const configBase = require(`./webpack.config.base.js`);
-    const entry = [`./src/${product}/${product === 'openlayers' ? 'namespace.js' : 'index.js'}`];
+    const entry = [`./src/${product}/${product === 'classic'? 'index': 'namespace'}.js`];
     const filename = `iclient-${dirname}`;
     config.output.filename = `${filename}-es6.min.js`;
     config.output.path = path.resolve(`${__dirname}/../dist/${dirname}`);
@@ -43,6 +43,8 @@ const server = app.listen(8082, () => {
 });
 
 app.use(express.static('web'));
+app.use('/examples/css/common.css', express.static('web/css/common.css'));
+app.use('/examples/css/header.css', express.static('web/css/header.css'));
 app.use('/examples/template/header.html', express.static('web/template/header.html'));
 app.use('/examples', express.static('examples'), serveIndex('examples'));
 app.use('/examples-bug', express.static('examples-bug'), serveIndex('examples-bug'));
@@ -51,6 +53,8 @@ app.use('/build', express.static('build'), serveIndex('build'));
 app.use('/docs', express.static('docs'), serveIndex('docs'));
 app.use('/web', express.static('web'), serveIndex('web'));
 
+app.use('/en/examples/css/common.css', express.static('web/en/web/css/common.css'));
+app.use('/en/examples/css/header.css', express.static('web/en/web/css/header.css'));
 app.use('/en/examples/template/header.html', express.static('web/en/web/template/header.html'));
 app.use('/en/examples', express.static('examples'), serveIndex('examples'));
 app.use('/en/docs', express.static('docs'), serveIndex('docs'));

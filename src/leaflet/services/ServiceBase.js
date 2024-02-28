@@ -1,21 +1,22 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 
 /**
- * @class L.supermap.ServiceBase
+ * @class ServiceBase
  * @classdesc L.supermap 服务基类。
- * @category  iServer
- * @param {string} url - 与客户端交互的服务地址。
+ * @category  iServer Core
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @fires L.supermap.ServiceBase#initialized
- * @fires L.supermap.ServiceBase#destroy
+ * @fires ServiceBase#initialized
+ * @fires ServiceBase#destroy
  * @extends {L.Evented}
+ * @usage
  */
 export var ServiceBase = L.Evented.extend({
 
@@ -36,25 +37,24 @@ export var ServiceBase = L.Evented.extend({
         this.url = url;
         L.setOptions(this, options);
         /**
-         * @event L.supermap.ServiceBase#initialized
+         * @event ServiceBase#initialized
          * @description 构造函数构造成功后触发。
-         * @property {L.supermap.ServiceBase} this - this 对象。
+         * @property {ServiceBase} this - this 对象。
          */
         this.fire("initialized", this);
     },
 
     /**
-     * @function L.supermap.ServiceBase.prototype.destroy
+     * @function ServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
         /**
-         * @event L.supermap.ServiceBase#destroy
+         * @event ServiceBase#destroy
          * @description 资源释放成功后触发。
-         * @property {L.supermap.ServiceBase} this - this 对象。
+         * @property {ServiceBase} this - this 对象。
          */
         this.fire("destroy", this);
     }
 
 });
-L.supermap.ServiceBase = ServiceBase;

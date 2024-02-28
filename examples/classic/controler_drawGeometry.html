@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -72,7 +72,7 @@
             new SuperMap.Control.LayerSwitcher()
             , drawPoint, drawLine, drawPolygon, selectCtrl, modifyCtrl]
     });
-    layer = new SuperMap.Layer.CloudLayer();
+    layer = new SuperMap.Layer.OSM("OSM");
     addLayer();
     //layer.events.on({"layerInitialized":addLayer});
     vecotrLayer.style = {

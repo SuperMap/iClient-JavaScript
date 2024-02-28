@@ -3,14 +3,8 @@ import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
 
-var initTilesetsService_Register = (url,analyzeCompleted,analyzeFailed) => {
-    return new TilesetsService(url,
-        {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        });
+var initTilesetsService_Register = (url) => {
+    return new TilesetsService(url);
 };
 describe('TilesetsService', () => {
     var originalTimeout;
@@ -39,28 +33,15 @@ describe('TilesetsService', () => {
 
     it('constructor, destroy', () => {
         var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
-        var analyzeFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var analyzeCompleted = (analyseCompletedEventArgs) => {
-            serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
-        };
-        var tilesetsService = initTilesetsService_Register(tileSetsURL,analyzeCompleted,analyzeFailed);
-        tilesetsService.events.on({"processCompleted": analyzeCompleted});
+        var tilesetsService = initTilesetsService_Register(tileSetsURL);
         expect(tilesetsService.url).toEqual(tileSetsURL);
         expect(tilesetsService.CLASS_NAME).toBe("SuperMap.TilesetsService");
         tilesetsService.destroy();
-        expect(tilesetsService.eventListeners).toBeNull();
-        expect(tilesetsService.EVENT_TYPES).toBeNull();
-        expect(tilesetsService.events).toBeNull();
     });
 
     //成功事件
     it('processAsync_success', (done) => {
         var tileSetsURL = "http://supermap:8090/iserver/services/map-changchun/rest/maps/长春市区图";
-        var analyzeFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var analyzeCompleted = (analyseCompletedEventArgs) => {
             serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
             expect(serviceCompletedEventArgsSystem.type).toBe("processCompleted");
@@ -81,12 +62,12 @@ describe('TilesetsService', () => {
             tilesetsService.destroy();
             done();
         };
-        var tilesetsService = initTilesetsService_Register(tileSetsURL,analyzeCompleted,analyzeFailed);
+        var tilesetsService = initTilesetsService_Register(tileSetsURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params) => {
             expect(method).toBe('GET');
             expect(testUrl).toBe(tileSetsURL + "/tilesets");
             return Promise.resolve(new Response(JSON.stringify(tilesetsEscapedJson)));
         });
-        tilesetsService.processAsync();
+        tilesetsService.processAsync(analyzeCompleted);
     });
 });

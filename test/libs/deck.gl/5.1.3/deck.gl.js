@@ -42023,7 +42023,6 @@ function calculateViewportUniforms(_ref3) {
       coordinateOrigin = _ref3.coordinateOrigin;
 
   var coordinateZoom = viewport.zoom;
-  (0, _assert2.default)(coordinateZoom >= 0);
 
   var _calculateMatrixAndOf = calculateMatrixAndOffset({
     coordinateSystem: coordinateSystem,

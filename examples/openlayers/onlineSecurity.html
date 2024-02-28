@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -124,17 +124,17 @@
     //若示例与SuperMap Online不在同一域下，欲查看示例效果请打开该句注释
     //SuperMap.Support.cors = false;
     $(document).ready(function () {
-        $("#serviceUrl_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
-        $('#key_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
-        $("#serviceUrlMap_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
-        $('#mapKey_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+        $("#serviceUrl_online").val("https://www.supermapol.com/proxy/u8ln9hj3/iserver/services/map-world/rest/maps/World");
+        $('#key_online').val("6hAJDddxt9Xv4s3j8bauH61K");
+        $("#serviceUrlMap_online").val("https://www.supermapol.com/proxy/u8ln9hj3/iserver/services/map-world/rest/maps/World");
+        $('#mapKey_online').val("6hAJDddxt9Xv4s3j8bauH61K");
 
     });
 
     /*登录*/
     function loginOnline() {
         var href = window.location.href;
-        SuperMap.SecurityManager.loginOnline(href, true);
+        ol.supermap.SecurityManager.loginOnline(href, true);
     }
 
     /*登录 end*/
@@ -147,12 +147,12 @@
             return;
         }
         new ol.supermap.MapService(serviceUrl, {
-            serverType: SuperMap.ServerType.ONLINE
+            serverType: ol.supermap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
-                widgets.alert.showAlert(JSON.stringify(json.error), false);
+                widgets.alert.showAlert(JSON.stringify(json.error), false, 700);
             } else {
-                widgets.alert.showAlert(JSON.stringify(json.result), true);
+                widgets.alert.showAlert(JSON.stringify(json.result), true, 700);
             }
         });
     }
@@ -163,8 +163,8 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        SuperMap.SecurityManager.destroyKey(serviceUrl);
-        SuperMap.SecurityManager.registerKey(serviceUrl, key);
+        ol.supermap.SecurityManager.destroyKey(serviceUrl);
+        ol.supermap.SecurityManager.registerKey(serviceUrl, key);
         requestOnlineKeyService();
     }
 
@@ -181,12 +181,12 @@
         if (!checkUrl(mapUrl)) {
             return;
         }
-        SuperMap.SecurityManager.registerKey(mapUrl, key);
+        ol.supermap.SecurityManager.registerKey(mapUrl, key);
 
         var map = new ol.Map({
             target: 'online_map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [0, 0],
                 maxZoom: 18,
@@ -196,7 +196,7 @@
         });
         var layer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
-                serverType: SuperMap.ServerType.ONLINE,
+                serverType: ol.supermap.ServerType.ONLINE,
                 url: mapUrl
             }),
             projection: 'EPSG:4326'

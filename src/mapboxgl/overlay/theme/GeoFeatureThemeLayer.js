@@ -1,101 +1,103 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import {CommonUtil as Util, ThemeVector as Vector, ShapeFactory} from '@supermap/iclient-common';
+import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVector';
 import {Theme} from './ThemeLayer';
 
 /**
- * @class mapboxgl.supermap.GeoFeatureThemeLayer
+ * @class GeoFeatureThemeLayer
  * @category Visualization Theme
- * @classdesc 地理几何专题要素型专题图层。
+ * @modulecategory Overlay
+ * @classdesc 地理几何专题要素型专题图层类。此类型专题图的专题要素形状由 feature.geometry 决定，不建议直接实例化调用此类。
  * @param {string} name - 图层名。
- * @param {Object} opt_options - 参数。
- * @param {mapboxgl.Map} opt_options.map - 当前 mapboxgl map 对象。
- * @param {string} [opt_options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
- * @param {boolean} [opt_options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {number} [opt_options.nodesClipPixel=2] - 节点抽稀像素距离。
- * @param {boolean} [opt_options.isHoverAble=false] - 图形是否在 hover 时高亮。
- * @param {boolean} [opt_options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
- * @param {boolean} [opt_options.isClickAble=true] - 图形是否可点击。
- * @param {boolean} [opt_options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ * @param {Object} options - 参数。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
+ * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
+ * @param {number} [options.nodesClipPixel=2] - 节点抽稀像素距离。
+ * @param {boolean} [options.isHoverAble=false] - 图形是否在 hover 时高亮。
+ * @param {boolean} [options.isMultiHover=false] - 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
+ * @param {boolean} [options.isClickAble=true] - 图形是否可点击。
+ * @param {boolean} [options.isAllowFeatureStyle=false] -  是否允许 feature 样式（style）中的有效属性应用到专题图层。
  *                                        禁止对专题要素使用数据（feature）的 style。
- *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
- *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
- * @param {number} [opt_options.opacity=1] - 图层透明度。
- * @extends {mapboxgl.supermap.ThemeLayer}
- * @fires mapboxgl.supermap.GeoFeatureThemeLayer#beforefeaturesadded
+ *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature）对应专题要素赋予独立 style。
+ * @param {number} [options.opacity=1] - 图层不透明度。
+ * @extends {ThemeLayer}
+ * @fires GeoFeatureThemeLayer#beforefeaturesadded
+ * @usage
  */
 
 export class GeoFeature extends Theme {
 
-    constructor(name, opt_options) {
-        super(name, opt_options);
+    constructor(name, options) {
+        super(name, options);
         /**
-         * @member {string} mapboxgl.supermap.GeoFeatureThemeLayer.prototype.name 
+         * @member {string} GeoFeatureThemeLayer.prototype.name
          * @description 专题图图层名称。
          */
         this.name = null;
         /**
-         * @member {SuperMap.ThemeStyle} mapboxgl.supermap.GeoFeatureThemeLayer.prototype.style 
+         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.style
          * @description 专题图图层全局样式。
          */
         this.style = null;
 
         /**
-         * @member {SuperMap.ThemeStyle} mapboxgl.supermap.GeoFeatureThemeLayer.prototype.highlightStyle 
+         * @member {ThemeStyle} GeoFeatureThemeLayer.prototype.highlightStyle
          * @description 专题图图层高亮样式。
          */
         this.highlightStyle = null;
 
         /**
-         * @member {number} [mapboxgl.supermap.GeoFeatureThemeLayer.prototype.nodesClipPixel=2]
+         * @member {number} [GeoFeatureThemeLayer.prototype.nodesClipPixel=2]
          * @description 节点抽稀像素距离。
          */
         this.nodesClipPixel = 2;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isHoverAble=false]
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isHoverAble=false]
          * @description 图形是否在 hover 时高亮。
          */
         this.isHoverAble = false;
         /**
-         * @member {boolean} [mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isMultiHover=false]
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isMultiHover=false]
          * @description 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面）。
          */
         this.isMultiHover = false;
         /**
-         * @member {boolean} [mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isClickAble=true] 
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isClickAble=true]
          * @description  图形是否可点击。
          */
         this.isClickAble = true;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isAllowFeatureStyle=false]
+         * @member {boolean} [GeoFeatureThemeLayer.prototype.isAllowFeatureStyle=false]
          * @description  是否允许 feature 样式（style） 中的有效属性应用到专题图层。</br>
-         *               禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
-         *               的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+         *               禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
          */
         this.isAllowFeatureStyle = false;
-        Util.extend(this, opt_options);
-        this.cache = opt_options.cache || {};
-        this.cacheFields = opt_options.cacheFields || [];
-        this.maxCacheCount = opt_options.maxCacheCount || 0;
-        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
+        Util.extend(this, options);
+        this.cache = options.cache || {};
+        this.cacheFields = options.cacheFields || [];
+        this.maxCacheCount = options.maxCacheCount || 0;
+        this.isCustomSetMaxCacheCount = options.isCustomSetMaxCacheCount === undefined ? false : options.isCustomSetMaxCacheCount;
 
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
+     * @function GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加要素。
-     * @param {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} features - 要素对象。
+     * @param {ThemeFeature|ServerFeature} features - 要素对象。
      */
     addFeatures(features) {
         /**
-         * @event mapboxgl.supermap.GeoFeatureThemeLayer#beforefeaturesadded
+         * @event GeoFeatureThemeLayer#beforefeaturesadded
          * @description 要素添加之前触发。
-         * @property {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} features - 被添加的要素。
+         * @property {ThemeFeature|ServerFeature} features - 被添加的要素。
          */
         mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
         //转换 features 形式
@@ -111,17 +113,17 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.removeFeatures
-     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * @param {SuperMap.Feature.Vector} features - 要删除的要素对象。
+     * @function GeoFeatureThemeLayer.prototype.removeFeatures
+     * @description 从专题图中删除要素。这个函数删除所有传递进来的矢量要素。
+     * @param {(FeatureVector|Function)} features - 要删除的要素对象或用于过滤的回调函数。
      */
-    removeFeatures(features) { // eslint-disable-line no-unused-vars
+    removeFeatures(features) {
         this.clearCache();
-        Theme.prototype.removeFeatures.apply(this, arguments);
+        Theme.prototype.removeFeatures.call(this, features);
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.removeAllFeatures
+     * @function GeoFeatureThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -130,7 +132,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.redrawThematicFeatures
+     * @function GeoFeatureThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      * @param {mapboxgl.LngLatBounds} extent - 重绘的范围。
      */
@@ -158,7 +160,7 @@ export class GeoFeature extends Theme {
             //
             // //剔除当前视图（地理）范围以外的数据
             // if (extent) {
-            //     var bounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+            //     var bounds = new Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
             //     // if (!bounds.intersectsBounds(feaBounds)) continue;
             // }
 
@@ -202,9 +204,10 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.createThematicFeature
+     * @function GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
-     * @param {SuperMap.Feature.Vector} feature - 要素对象。
+     * @param {FeatureVector} feature - 要素对象。
+     * @returns {Array.<FeatureVector>} 返回矢量要素。
      */
     createThematicFeature(feature) {
         var style = Util.copyAttributesWithClip(this.style);
@@ -228,7 +231,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.clearCache
+     * @function GeoFeatureThemeLayer.prototype.clearCache
      * @description 清除缓存。
      */
     clearCache() {
@@ -237,7 +240,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.clear
+     * @function GeoFeatureThemeLayer.prototype.clear
      * @description  清除的内容包括数据（features）、专题要素和缓存。
      */
     clear() {
@@ -248,7 +251,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.getCacheCount
+     * @function GeoFeatureThemeLayer.prototype.getCacheCount
      * @description 获取当前缓存数量。
      * @returns {number} 当前缓存数量。
      */
@@ -257,7 +260,7 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
+     * @function GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @param {number} [cacheCount] - 缓存总数。
      * @description 设置最大缓存条数。
      */
@@ -269,9 +272,10 @@ export class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
+     * @function GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @param {number} [featureID=si.refDataID] - 要素 ID。
-     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @description 通过要素 ID 获取要素关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @returns {Array} 返回图形数组。
      */
     getShapesByFeatureID(featureID) {
         var list = [];
@@ -289,5 +293,3 @@ export class GeoFeature extends Theme {
     }
 
 }
-
-mapboxgl.supermap.GeoFeatureThemeLayer = GeoFeature;

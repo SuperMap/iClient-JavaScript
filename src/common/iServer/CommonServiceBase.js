@@ -1,25 +1,26 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { FetchRequest } from '../util/FetchRequest';
 import { Events } from '../commontypes/Events';
 import { SecurityManager } from '../security/SecurityManager';
 import { Util } from '../commontypes/Util';
 import { JSONFormat } from '../format/JSON';
+import {DataFormat} from '../REST';
 import { FunctionExt } from '../commontypes/BaseTypes';
 
 /**
- * @class SuperMap.CommonServiceBase
- * @category  iServer
+ * @class CommonServiceBase
+ * @deprecatedclass SuperMap.CommonServiceBase
+ * @category  iServer Core
  * @classdesc 对接 iServer 各种服务的 Service 的基类。
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class CommonServiceBase {
     constructor(url, options) {
@@ -41,15 +42,9 @@ export class CommonServiceBase {
 
         this.length = null;
 
-        this.options = null;
-
         this.totalTimes = null;
 
         this.POLLING_TIMES = 3;
-
-        this._processSuccess = null;
-
-        this._processFailed = null;
 
         this.isInTheSameDomain = null;
 
@@ -91,7 +86,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.destroy
+     * @function CommonServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
@@ -103,11 +98,7 @@ export class CommonServiceBase {
             me.totalTimes = null;
         }
         me.url = null;
-        me.options = null;
-        me._processSuccess = null;
-        me._processFailed = null;
         me.isInTheSameDomain = null;
-
         me.EVENT_TYPES = null;
         if (me.events) {
             me.events.destroy();
@@ -119,7 +110,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function  SuperMap.CommonServiceBase.prototype.request
+     * @function CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param {Object} options - 参数。
      * @param {string} [options.method='GET'] - 请求方式，包括 "GET"，"POST"，"PUT"，"DELETE"。
@@ -135,70 +126,64 @@ export class CommonServiceBase {
      * @param {Object} [options.headers] - 请求头。
      */
     request(options) {
+        let format = options.scope.format;
+        // 兼容 callback 未传，dataFormat 传入的情况
+        if (typeof options.success === 'string') {
+          options.scope.format = options.success;
+          format = options.success;
+          options.success = null;
+          options.failure = null;
+        }
+       
+        if (format && !this.supportDataFormat(format)) {
+          throw new Error(`${this.CLASS_NAME} is not surport ${format} format!`);
+        }
+       
         let me = this;
         options.url = options.url || me.url;
+        if (this._returnContent(options) && !options.url.includes('returnContent=true')) {
+          options.url = Util.urlAppend(options.url, 'returnContent=true');
+        }
         options.proxy = options.proxy || me.proxy;
         options.withCredentials = options.withCredentials != undefined ? options.withCredentials : me.withCredentials;
         options.crossOrigin = options.crossOrigin != undefined ? options.crossOrigin : me.crossOrigin;
         options.headers = options.headers || me.headers;
         options.isInTheSameDomain = me.isInTheSameDomain;
+        options.withoutFormatSuffix = options.scope.withoutFormatSuffix || false;
         //为url添加安全认证信息片段
         options.url = SecurityManager.appendCredential(options.url);
 
         me.calculatePollingTimes();
-        me._processSuccess = options.success;
-        me._processFailed = options.failure;
         options.scope = me;
-        options.success = me.getUrlCompleted;
-        options.failure = me.getUrlFailed;
-        me.options = options;
-        me._commit(me.options);
-    }
-
-    /**
-     * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
-     * @description 请求成功后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getUrlCompleted(result) {
-        let me = this;
-        me._processSuccess(result);
-    }
-
-    /**
-     * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
-     * @description 请求失败后执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getUrlFailed(result) {
-        let me = this;
         if (me.totalTimes > 0) {
-            me.totalTimes--;
-            me.ajaxPolling();
-        } else {
-            me._processFailed(result);
+          me.totalTimes--;
+          return me.ajaxPolling(options);
         }
+        return me._commit(options);
     }
+
 
     /**
      *
-     * @function SuperMap.CommonServiceBase.prototype.ajaxPolling
-     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求
+     * @function CommonServiceBase.prototype.ajaxPolling
+     * @description 请求失败后，如果剩余请求失败次数不为 0，重新获取 URL 发送请求。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    ajaxPolling() {
+    ajaxPolling(options) {
         let me = this,
-            url = me.options.url,
+            url = options.url,
             re = /^http:\/\/([a-z]{9}|(\d+\.){3}\d+):\d{0,4}/;
         me.index = parseInt(Math.random() * me.length);
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
-        me.options.url = url;
-        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
-        me._commit(me.options);
+        options.url = url;
+        options.isInTheSameDomain = Util.isInTheSameDomain(url);
+        return me._commit(options);
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.calculatePollingTimes
+     * @function CommonServiceBase.prototype.calculatePollingTimes
      * @description 计算剩余请求失败执行次数。
      */
     calculatePollingTimes() {
@@ -224,7 +209,7 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.isServiceSupportPolling
+     * @function CommonServiceBase.prototype.isServiceSupportPolling
      * @description 判断服务是否支持轮询。
      */
     isServiceSupportPolling() {
@@ -235,28 +220,79 @@ export class CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
-     * @description 状态完成，执行此方法。
+     * @function CommonServiceBase.prototype.transformResult
+     * @description 状态完成时转换结果。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
      */
-    serviceProcessCompleted(result) {
+    transformResult(result, options) {
         result = Util.transformResult(result);
+        return { result, options };
+    }
+
+    /**
+     * @function CommonServiceBase.prototype.transformErrorResult
+     * @description 状态失败时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
+     * @private
+     */
+    transformErrorResult(result, options) {
+        result = Util.transformResult(result);
+        let error = result.error || result;
+        return { error, options };
+    }
+
+    /**
+    * @function CommonServiceBase.prototype.serviceProcessCompleted
+    * @description 状态完成，执行此方法。
+    * @param {Object} result - 服务器返回的结果对象。
+    * @param {Object} options - 请求参数对象。
+    * @private
+    */
+    serviceProcessCompleted(result, options) {
+        result = this.transformResult(result).result;
         this.events.triggerEvent('processCompleted', {
-            result: result
+            result: result,
+            options: options
         });
     }
 
     /**
-     * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
+     * @function CommonServiceBase.prototype.serviceProcessFailed
      * @description 状态失败，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数对象。
+     * @private
      */
-    serviceProcessFailed(result) {
-        result = Util.transformResult(result);
-        let error = result.error || result;
-        this.events.triggerEvent('processFailed', {
-            error: error
-        });
+    serviceProcessFailed(result, options) {
+      result = this.transformErrorResult(result).error;
+      let error = result.error || result;
+      this.events.triggerEvent('processFailed', {
+          error: error,
+          options: options
+      });
+    }
+
+    _returnContent(options) {
+      if (options.scope.format === DataFormat.FGB) {
+        return false;
+      }
+      if (options.scope.returnContent) {
+        return true;
+      }
+      return false;
+    }
+
+    supportDataFormat(foramt) {
+      return this.dataFormat().includes(foramt);
+    }
+
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER];
     }
 
     _commit(options) {
@@ -264,7 +300,7 @@ export class CommonServiceBase {
             if (options.params) {
                 options.url = Util.urlAppend(options.url, Util.getParameterString(options.params || {}));
             }
-            if (typeof options.data === 'object') {
+            if (typeof options.data === 'object' && !(options.data instanceof FormData)) {
                 try {
                     options.params = Util.toJSON(options.data);
                 } catch (e) {
@@ -274,8 +310,9 @@ export class CommonServiceBase {
                 options.params = options.data;
             }
         }
-        FetchRequest.commit(options.method, options.url, options.params, {
+        return FetchRequest.commit(options.method, options.url, options.params, {
             headers: options.headers,
+            withoutFormatSuffix: options.withoutFormatSuffix,
             withCredentials: options.withCredentials,
             crossOrigin: options.crossOrigin,
             timeout: options.async ? 0 : null,
@@ -310,30 +347,51 @@ export class CommonServiceBase {
                         };
                     }
                 }
+                if (requestResult && options.scope.format === DataFormat.FGB) {
+                  requestResult.newResourceLocation = requestResult.newResourceLocation.replace('.json', '') + '.fgb';
+                }
                 return requestResult;
             })
             .catch(function (e) {
-                var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                failure(e);
+                return { error: e };
             })
             .then((requestResult) => {
+                let response = {
+                  object: this
+                };
                 if (requestResult.error) {
-                    var failure = options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure;
-                    failure(requestResult);
+                  const type = 'processFailed';
+                  // 兼容服务在构造函数中使用 eventListeners 的老用法
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var failure = options.failure && (options.scope ? FunctionExt.bind(options.failure, options.scope) : options.failure);
+                    failure ? failure(requestResult, options) : this.serviceProcessFailed(requestResult, options);
+                  } else {
+                    response = {...response, ...this.transformErrorResult(requestResult, options)};
+                    response.type = type;
+                    options.failure && options.failure(response);
+                  }
                 } else {
+                  const type = 'processCompleted';
+                  if (this.events && this.events.listeners[type] && this.events.listeners[type].length) {
+                    var success = options.success && (options.scope ? FunctionExt.bind(options.success, options.scope) : options.success);
+                    success ? success(requestResult, options) : this.serviceProcessCompleted(requestResult, options);
+                  } else {
                     requestResult.succeed = requestResult.succeed == undefined ? true : requestResult.succeed;
-                    var success = options.scope ? FunctionExt.bind(options.success, options.scope) : options.success;
-                    success(requestResult);
+                    response = {...response, ...this.transformResult(requestResult, options)};
+                    response.type = type;
+                    options.success && options.success(response);
+                  }
                 }
+                return response;
             });
     }
 }
 
-SuperMap.CommonServiceBase = CommonServiceBase;
 
 /**
- * 服务器请求回调函数
+ * 服务器请求回调函数。
  * @callback RequestCallback
+ * @category BaseTypes Util
  * @example
  * var requestCallback = function (serviceResult){
  *      console.log(serviceResult.result);
@@ -343,5 +401,5 @@ SuperMap.CommonServiceBase = CommonServiceBase;
  * @param {Object} serviceResult.result 服务器返回结果。
  * @param {Object} serviceResult.object 发布应用程序事件的对象。
  * @param {Object} serviceResult.type 事件类型。
- * @param {Object} serviceResult.element 接受浏览器事件的 DOM 节点。
+ * @param {Object} serviceResult.options 请求参数。
  */

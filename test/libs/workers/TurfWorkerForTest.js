@@ -1,9 +1,9 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
 if( 'undefined' === typeof window){
-    importScripts('https://cdn.bootcdn.net/ajax/libs/Turf.js/5.1.6/turf.js')
+    importScripts('https://iclient.supermap.io/web/libs/turf/5.1.6/turf.js')
 
 /**
  * 空间分析所需工具类
@@ -190,7 +190,7 @@ function squareGrid(bbox, cellSide, options, gridType) {
 function processBuffer(buffer, saveAttrs) {
     var featureCollection = [];
     //var maxBounds = [-180, -90, 180, 90];
-    //获取缓冲区异常feature， 并从原featureCollection中删除
+    //获取缓冲区异常feature，并从原featureCollection中删除
     for (var i = 0, len = buffer.features.length; i < len; i++) {
         var feature = buffer.features[i];
         //不保留原有的属性值

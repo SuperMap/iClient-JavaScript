@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -44,45 +44,45 @@
         zoom: 3
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
 
     function createTheme() {
         var themeRangeItem1, themeRangeItem2,
             themeRangeItem3, themeRange;
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
+        themeRangeItem1 = new mapboxgl.supermap.ThemeRangeItem({
             start: 0,
             end: 500000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(211, 255, 250),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new mapboxgl.supermap.ServerStyle({
+                fillForeColor: new mapboxgl.supermap.ServerColor(211, 255, 250),
+                lineColor: new mapboxgl.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        themeRangeItem2 = new mapboxgl.supermap.ThemeRangeItem({
             start: 500000000000,
             end: 1000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(178, 218, 199),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new mapboxgl.supermap.ServerStyle({
+                fillForeColor: new mapboxgl.supermap.ServerColor(178, 218, 199),
+                lineColor: new mapboxgl.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem3 = new SuperMap.ThemeRangeItem({
+        themeRangeItem3 = new mapboxgl.supermap.ThemeRangeItem({
             start: 1000000000000,
             end: 3000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(58, 178, 166),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new mapboxgl.supermap.ServerStyle({
+                fillForeColor: new mapboxgl.supermap.ServerColor(58, 178, 166),
+                lineColor: new mapboxgl.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRange = new SuperMap.ThemeRange({
+        themeRange = new mapboxgl.supermap.ThemeRange({
             rangeExpression: "SMAREA",
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: mapboxgl.supermap.RangeMode.EQUALINTERVAL,
             items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new mapboxgl.supermap.ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             joinItems: null,
@@ -90,7 +90,7 @@
         });
 
 
-        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

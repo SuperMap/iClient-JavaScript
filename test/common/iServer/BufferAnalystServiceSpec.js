@@ -7,22 +7,12 @@ import {DataReturnOption} from '../../../src/common/iServer/DataReturnOption';
 import {Geometry} from '../../../src/common/commontypes/Geometry';
 import {BufferEndType} from '../../../src/common/REST';
 import {DataReturnMode} from '../../../src/common/REST';
-import request from 'request';
 
 var url = GlobeParameter.spatialAnalystURL;
 var serviceFailedEventArgsSystem = null, analystEventArgsSystem = null;
-var initBufferAnalystService = (analyzeCompleted,analyzeFailed,newUrl) => {
-    return new BufferAnalystService(newUrl || url,  {
-            eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
-        });
+var initBufferAnalystService = (newUrl) => {
+    return new BufferAnalystService(newUrl || url);
 };
-var analyzeFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-};
-var analyzeCompleted1 = (analyseEventArgs) => {
-    analystEventArgsSystem = analyseEventArgs;
-};
-
 describe('BufferAnalystService', () => {
     var originalTimeout;
     beforeEach(() => {
@@ -49,8 +39,6 @@ describe('BufferAnalystService', () => {
                 expect(analystResult.recordset).toBeNull();
                 expect(analystResult.succeed).toBeTruthy();
                 bfServiceByDatasets.destroy();
-                expect(bfServiceByDatasets.events).toBeNull();
-                expect(bfServiceByDatasets.eventListeners).toBeNull();
                 expect(bfServiceByDatasets.mode).toBeNull();
                 dsBufferAnalystParameters.destroy();
                 done();
@@ -62,7 +50,7 @@ describe('BufferAnalystService', () => {
                 done();
             }
         };
-        var bfServiceByDatasets = initBufferAnalystService(analyzeCompleted,analyzeFailed);
+        var bfServiceByDatasets = initBufferAnalystService();
         var resultSetting = new DataReturnOption({
             expectCount: 2000,
             dataset: resultDataset,
@@ -88,9 +76,62 @@ describe('BufferAnalystService', () => {
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
         });
 
-        bfServiceByDatasets.processAsync(dsBufferAnalystParameters);
+        bfServiceByDatasets.processAsync(dsBufferAnalystParameters, analyzeCompleted);
 
     });
+
+    it('success:BufferAnalystService_byDatasets promise', (done) => {
+      var analyzeCompleted = (analyseEventArgs) => {
+          analystEventArgsSystem = analyseEventArgs;
+          try {
+              expect(bfServiceByDatasets.mode).toEqual("datasets");
+              expect(analystEventArgsSystem).not.toBeNull();
+              var analystResult = analystEventArgsSystem.result;
+              expect(analystResult).not.toBeNull();
+              expect(analystResult.message).toBeNull();
+              expect(analystResult.recordset).toBeNull();
+              expect(analystResult.succeed).toBeTruthy();
+              bfServiceByDatasets.destroy();
+              expect(bfServiceByDatasets.mode).toBeNull();
+              dsBufferAnalystParameters.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("BufferAnalystService_byDatasets" + exception.name + ":" + exception.message);
+              bfServiceByDatasets.destroy();
+              dsBufferAnalystParameters.destroy();
+              done();
+          }
+      };
+      var bfServiceByDatasets = initBufferAnalystService();
+      var resultSetting = new DataReturnOption({
+          expectCount: 2000,
+          dataset: resultDataset,
+          dataReturnMode: DataReturnMode.DATASET_ONLY,
+          deleteExistResultDataset: true
+      });
+      var dsBufferAnalystParameters = new DatasetBufferAnalystParameters();
+      dsBufferAnalystParameters.dataset = "Landuse_R@Jingjin";
+      dsBufferAnalystParameters.filterQueryParameter.attributeFilter = "smid like 48";
+      dsBufferAnalystParameters.bufferSetting.endType = BufferEndType.ROUND;
+      dsBufferAnalystParameters.bufferSetting.semicircleLineSegment = 5;
+      dsBufferAnalystParameters.bufferSetting.leftDistance.value = 100;
+      dsBufferAnalystParameters.resultSetting = resultSetting;
+
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe("POST");
+          expect(testUrl).toBe(url + "/datasets/Landuse_R@Jingjin/buffer?returnContent=true");
+          expect(params).not.toBeNull();
+          // expect(params).toContain("'dataReturnMode':\"DATASET_ONLY\"");
+          var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+          expect(paramsObj.dataReturnOption.dataReturnMode).toBe("DATASET_ONLY");
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
+      });
+
+      bfServiceByDatasets.processAsync(dsBufferAnalystParameters).then(analyzeCompleted);
+
+  });
 
     it('success:BufferAnalystService_byGeometry', (done) => {
         var analyzeCompleted = (analyseEventArgs) => {
@@ -110,8 +151,6 @@ describe('BufferAnalystService', () => {
                 expect(resultGeometry.type).toBe("Feature");
                 expect(resultGeometry.geometry.type).toBe("MultiPolygon");
                 expect(resultGeometry.geometry.coordinates.length).toEqual(1);
-                expect(bfServiceByGeometry.events).toBeNull();
-                expect(bfServiceByGeometry.eventListeners).toBeNull();
                 expect(bfServiceByGeometry.mode).toBeNull();
                 geometryBufferAnalystParameters.destroy();
                 done();
@@ -123,7 +162,7 @@ describe('BufferAnalystService', () => {
                 done();
             }
         }
-        var bfServiceByGeometry = initBufferAnalystService(analyzeCompleted,analyzeFailed);
+        var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
         var sourceGeometry = new Geometry.Point(7884.79277012316, 5072.18865322196);
@@ -144,7 +183,7 @@ describe('BufferAnalystService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
         });
-        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
+        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters, analyzeCompleted);
     });
 
     //测试失败事件
@@ -158,8 +197,6 @@ describe('BufferAnalystService', () => {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("左缓冲距离不能小于等于0");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 bfServiceByGeometry.destroy();
-                expect(bfServiceByGeometry.events).toBeNull();
-                expect(bfServiceByGeometry.eventListeners).toBeNull();
                 expect(bfServiceByGeometry.mode).toBeNull();
                 geometryBufferAnalystParameters.destroy();
                 done();
@@ -172,7 +209,7 @@ describe('BufferAnalystService', () => {
             }
         };
 
-        var bfServiceByGeometry = initBufferAnalystService(analyzeCompleted1,analyzeFailed1);
+        var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
         var sourceGeometry = new Geometry.Point(7884.79277012316, 5072.18865322196);
@@ -192,7 +229,7 @@ describe('BufferAnalystService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"左缓冲距离不能小于等于0。"}}`));
         });
-        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
+        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters, analyzeFailed1);
     });
 
     it('success:BufferAnalystService_byDatasets_customQueryParam', (done) => {
@@ -210,7 +247,7 @@ describe('BufferAnalystService', () => {
                 done();
             }
         };
-        var bfServiceByDatasets = initBufferAnalystService(analyzeCompleted,analyzeFailed,url + '?key=123');
+        var bfServiceByDatasets = initBufferAnalystService(url + '?key=123');
         var resultSetting = new DataReturnOption({
             expectCount: 2000,
             dataset: resultDataset,
@@ -230,7 +267,7 @@ describe('BufferAnalystService', () => {
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
         });
 
-        bfServiceByDatasets.processAsync(dsBufferAnalystParameters);
+        bfServiceByDatasets.processAsync(dsBufferAnalystParameters, analyzeCompleted);
 
     });
 
@@ -249,7 +286,7 @@ describe('BufferAnalystService', () => {
                 done();
             }
         }
-        var bfServiceByGeometry = initBufferAnalystService(analyzeCompleted,analyzeFailed,url + '?key=123');
+        var bfServiceByGeometry = initBufferAnalystService(url + '?key=123');
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url + '?key=123');
         var sourceGeometry = new Geometry.Point(7884.79277012316, 5072.18865322196);
@@ -264,7 +301,7 @@ describe('BufferAnalystService', () => {
             expect(testUrl).toBe(url + "/geometry/buffer?key=123&returnContent=true");
             return Promise.resolve(new Response(JSON.stringify(bufferAnalysis_byGeometryResultJson)));
         });
-        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
+        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters, analyzeCompleted);
     });
 });
 

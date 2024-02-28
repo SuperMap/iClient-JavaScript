@@ -1,134 +1,54 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {Bar} from "./Bar";
-import {Bar3D} from "./Bar3D";
-import {Circle} from "./Circle";
-import {Graph} from "./Graph";
-import {Line} from "./Line";
-import {Pie} from "./Pie";
-import {Point as OverlayPoint} from "./Point";
-import {RankSymbol} from "./RankSymbol";
-import {Ring} from "./Ring";
-import {ThemeVector} from "./ThemeVector";
+import {Bar as FeatureThemeBar } from './Bar';
+import {Bar3D as FeatureThemeBar3D } from './Bar3D';
+import {Circle as FeatureThemeCircle } from './Circle';
+import {Graph as FeatureThemeGraph } from './Graph';
+import {Line as FeatureThemeLine } from './Line';
+import {Pie as FeatureThemePie } from './Pie';
+import {Point as FeatureThemePoint } from './Point';
+import {RankSymbol as FeatureThemeRankSymbol } from './RankSymbol';
+import {Ring as FeatureThemeRing } from './Ring';
+import {ThemeVector as FeatureThemeVector } from './ThemeVector';
 import {
-    ShapeFactory,
-    ShapeParameters,
-    FeatureCircle,
-    Image,
-    Label,
-    FeatureLine,
-    Point,
-    FeaturePolygon,
-    FeatureRectangle,
-    Sector,
-    FeatureTheme
+  FeatureShapeFactory,
+  ShapeParameters,
+  ShapeParametersCircle,
+  ShapeParametersImage,
+  ShapeParametersLabel,
+  ShapeParametersLine,
+  ShapeParametersPoint,
+  ShapeParametersPolygon,
+  ShapeParametersRectangle,
+  ShapeParametersSector,
+  FeatureTheme
 } from './feature';
-import {
-    LevelRenderer,
-    Render,
-    Animation,
-    Animator,
-    Area,
-    Clip,
-    Color,
-    ComputeBoundingBox,
-    Config,
-    LevelRendererCurve,
-    Easing,
-    Env,
-    LevelRendererEvent,
-    Eventful,
-    Group,
-    Handler,
-    Http,
-    Log,
-    MathTool,
-    Matrix,
-    Painter,
-    PaintLayer,
-    Shape,
-    SmicBrokenLine,
-    SmicCircle,
-    SmicEllipse,
-    SmicImage,
-    SmicIsogon,
-    SmicPoint,
-    SmicPolygon,
-    SmicRectangle,
-    SmicRing,
-    SmicSector,
-    SmicStar,
-    SmicText,
-    Storage,
-    Transformable,
-    Util,
-    LevelRendererVector,
-    SUtil
-} from './levelRenderer';
+import {LevelRenderer} from './levelRenderer';
+import { Transform } from './threejs/Transform'
 
-export {Bar} ;
-export {Bar3D} ;
-export {Circle} ;
-export {Graph} ;
-export {Line} ;
-export {Pie};
-export {OverlayPoint};
-export {RankSymbol};
-export {Ring} ;
-export {ThemeVector};
+export { FeatureThemeBar };
+export { FeatureThemeBar3D };
+export { FeatureThemeCircle };
+export { FeatureThemeGraph };
+export { FeatureThemeLine };
+export { FeatureThemePie };
+export { FeatureThemePoint };
+export { FeatureThemeRankSymbol };
+export { FeatureThemeRing };
+export { FeatureThemeVector };
 export {
-    ShapeFactory,
-    ShapeParameters,
-    FeatureCircle,
-    Image,
-    Label,
-    FeatureLine,
-    Point,
-    FeaturePolygon,
-    FeatureRectangle,
-    Sector,
-    FeatureTheme
+  FeatureShapeFactory,
+  ShapeParameters,
+  ShapeParametersCircle,
+  ShapeParametersImage,
+  ShapeParametersLabel,
+  ShapeParametersLine,
+  ShapeParametersPoint,
+  ShapeParametersPolygon,
+  ShapeParametersRectangle,
+  ShapeParametersSector,
+  FeatureTheme
 };
-export {
-    LevelRenderer,
-    Render,
-    Animation,
-    Animator,
-    Area,
-    Clip,
-    Color,
-    ComputeBoundingBox,
-    Config,
-    LevelRendererCurve,
-    Easing,
-    Env,
-    LevelRendererEvent,
-    Eventful,
-    Group,
-    Handler,
-    Http,
-    Log,
-    MathTool,
-    Matrix,
-    Painter,
-    PaintLayer,
-    Shape,
-    SmicBrokenLine,
-    SmicCircle,
-    SmicEllipse,
-    SmicImage,
-    SmicIsogon,
-    SmicPoint,
-    SmicPolygon,
-    SmicRectangle,
-    SmicRing,
-    SmicSector,
-    SmicStar,
-    SmicText,
-    Storage,
-    Transformable,
-    Util,
-    LevelRendererVector,
-    SUtil
-};
+export { LevelRenderer };
+export { Transform };

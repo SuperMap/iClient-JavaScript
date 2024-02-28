@@ -1,4 +1,4 @@
-﻿/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+﻿/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 (function() {
@@ -49,83 +49,97 @@
     }
 
     //加载类库资源文件
-    function load() {
+    function load(config) {
+        var libsurl = config.libsurl;
+        var disturl = config.disturl;
         var includes = (targetScript.getAttribute('include') || '').split(',');
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
-        if (!inArray(excludes, 'ol') && !inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css');
-            inputScript('https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js');
+        if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
+            inputCSS(libsurl + '/openlayers/6.14.1/ol.css');
+            inputScript(libsurl + '/openlayers/6.14.1/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.css');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol.js');
+            inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
+            inputScript(libsurl + '/openlayers/4.6.5/ol.js');
         }
         if (inArray(includes, 'ol-debug')) {
-            inputCSS('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.css');
-            inputScript('https://cdn.bootcdn.net/ajax/libs/openlayers/4.6.5/ol-debug.js');
+            inputCSS(libsurl + '/openlayers/4.6.5/ol-debug.css');
+            inputScript(libsurl + '/openlayers/4.6.5/ol-debug.js');
+        }
+        if (inArray(includes, 'g6')) {
+          inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
         }
         if (inArray(includes, 'mapv')) {
-            inputScript('https://cdn.jsdelivr.net/npm/mapv@2.0.62/build/mapv.min.js');
+            inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
         }
         if (inArray(includes, 'turf')) {
-            inputScript('https://cdn.bootcdn.net/ajax/libs/Turf.js/6.5.0/turf.min.js');
+            inputScript(libsurl + '/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.min.js');
+            inputScript(libsurl + '/echarts/5.4.3/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript('https://cdn.jsdelivr.net/npm/proj4@2.7.5/dist/proj4.js');
+            inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@2.0.4/dist/ol3Echarts.min.js');
+            inputScript(libsurl + '/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
-            inputScript('https://cdn.jsdelivr.net/npm/ol3-echarts@1.3.6/dist/ol3Echarts.min.js');
+            inputScript(libsurl + '/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol-mapbox-style')) {
-            inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-3/olms.js');
+            inputScript(libsurl + '/openlayers/plugins/ol-mapbox-style/2.11.2-4/olms.js');
         }
         if (inArray(includes, 'deck')) {
-            inputScript('https://iclient.supermap.io/web/libs/deck.gl/5.1.3/deck.gl.min.js');
+            inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript('https://iclient.supermap.io/web/libs/osmbuildings/OSMBuildings-OL3.js');
+            inputScript(libsurl + '/osmbuildings/OSMBuildings-OL3.js');
         }
         if (inArray(includes, 'animatedclusterlayer')) {
-            inputScript('https://iclient.supermap.io/web/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js');
+            inputScript(libsurl + '/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js');
         }
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/src/ol-layerswitcher.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ol-layerswitcher@3.8.3/dist/ol-layerswitcher.min.js');
+            inputCSS(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.css');
+            inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
         }
         if (inArray(includes, 'jsonsql')) {
-            inputScript('https://iclient.supermap.io/web/libs/jsonsql/jsonsql.js');
+            inputScript(libsurl + '/jsonsql/jsonsql.js');
         }
         if (inArray(includes, 'geostats')) {
-            inputScript('https://iclient.supermap.io/web/libs/geostats/geostats.js');
+            inputScript(libsurl + '/geostats/geostats.js');
         }
         if (inArray(includes, 'canvg')) {
-            inputScript('https://iclient.supermap.io/web/libs/canvg/canvg.min.js');
+            inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
         }
         if (inArray(includes, 'tensorflow')) {
-          inputScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js');
+          inputScript(libsurl + '/tensorflow/3.9.0/tf.min.js');
+        }
+        if (inArray(includes, 'xlsx')) {
+            inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
+        }
+        if (inArray(includes, 'lodash')) {
+          inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
         }
 
         // dist
         if (!inArray(excludes, 'iclient-ol')) {
             if (supportES6()) {
-                inputScript('../../dist/ol/iclient-ol-es6.min.js');
+                inputScript(disturl + '/ol/iclient-ol-es6.min.js');
             } else {
-                inputScript('../../dist/ol/iclient-ol.min.js');
+                inputScript(disturl + '/ol/iclient-ol.min.js');
             }
         }
         if (!inArray(excludes, 'iclient-ol-css')) {
-            inputCSS('../../dist/ol/iclient-ol.min.css');
+            inputCSS(disturl + '/ol/iclient-ol.min.css');
         }
     }
 
-    load();
+    load({
+        libsurl: 'https://iclient.supermap.io/web/libs',
+        disturl: '../../dist'
+    });
     window.isLocal = false;
     window.server = document.location.toString().match(/file:\/\//)
         ? 'http://localhost:8090'

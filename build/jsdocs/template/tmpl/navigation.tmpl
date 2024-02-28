@@ -25,6 +25,7 @@ var self = this;
 //}
 
 function build(nav,navOrder,level){
+    
      if(!nav){
          return;
      }
@@ -68,8 +69,9 @@ function build(nav,navOrder,level){
     }
 }
 function buildLi(obj){
+    
     ?>
-     <li class="item" data-name="<?js= obj.longname ?>">
+     <li class="item" file-name="<?js= obj.fileName ?>" data-name="<?js= obj.longname ?>">
             <span class="title" title="<?js= obj.longname ?>">
                 <?js= self.linkto(obj.longname, obj.longname) ?>
             </span>
@@ -109,8 +111,10 @@ function buildLi(obj){
             <?js
 
                 obj.methods.forEach(function (v) {
+                    var commentLength = v.comment?v.comment.split('\n').length:0;
+                    var funLineNo = v.meta.lineno + commentLength;
             ?>
-                <li data-version= "<?js= v.version||obj.version  ?>" data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                <li data-version= "<?js= v.version||obj.version  ?>" data-name="<?js= v.longname ?>" data-line="<?js= funLineNo ?>"><?js= self.linkto(v.longname, v.name) ?></li>
             <?js
                 });
             }
@@ -142,10 +146,12 @@ function buildLi(obj){
          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" title="fold">
             <div class="glyphicon glyphicon-menu-hamburger"></div>
         </a>
+    <div class="apiTitile">API</div>
     <div class="search">
         <input id="searchBox" type="text" class="form-control input-sm" placeholder="Search Documentations">
+        <div class="split-line"></div>
     </div>
-    <div style='width: 100%;position: absolute;top: 0px;bottom: 0px;left: 0px;margin-top:50px;height:100%' id='categories'>
+    <div style='width: 100%;position: absolute;top: 0px;bottom: 0px;left: 0px;margin-top:125px;height:100%' id='categories'>
     <div style='height:100%;overflow:auto'>
             <ul class="sidebar-menu tree list" data-widget='tree'>
                 <?js

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -45,62 +45,62 @@
         zoom: 3
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
 
     function createTheme() {
         var style1, style2, style3;
-        style1 = new SuperMap.ServerTextStyle({
+        style1 = new mapboxgl.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(0, 0, 0),
+            foreColor: new mapboxgl.supermap.ServerColor(0, 0, 0),
 
         });
-        style2 = new SuperMap.ServerTextStyle({
+        style2 = new mapboxgl.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(155, 30, 45),
+            foreColor: new mapboxgl.supermap.ServerColor(155, 30, 45),
         });
-        style3 = new SuperMap.ServerTextStyle({
+        style3 = new mapboxgl.supermap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new SuperMap.ServerColor(30, 45, 155),
+            foreColor: new mapboxgl.supermap.ServerColor(30, 45, 155),
         });
         var themeLabelItem1, themeLabelItem2, themeLabelItem3;
-        themeLabelItem1 = new SuperMap.ThemeLabelItem({
+        themeLabelItem1 = new mapboxgl.supermap.ThemeLabelItem({
             start: 300,//110000,
             end: 3508,//350000,
             style: style1
         });
-        themeLabelItem2 = new SuperMap.ThemeLabelItem({
+        themeLabelItem2 = new mapboxgl.supermap.ThemeLabelItem({
             start: 3508,//350000,
             end: 5508,//550000,
             style: style2
         });
-        themeLabelItem3 = new SuperMap.ThemeLabelItem({
+        themeLabelItem3 = new mapboxgl.supermap.ThemeLabelItem({
             start: 5508,//550000,
             end: 10724,//820000,
             style: style3
         });
 
-        var themeLabel = new SuperMap.ThemeLabel({
+        var themeLabel = new mapboxgl.supermap.ThemeLabel({
             labelExpression: "NAME",
             rangeExpression: "pop_2014",
             numericPrecision: 0,
             items: [themeLabelItem1, themeLabelItem2, themeLabelItem3],
-            background: new SuperMap.ThemeLabelBackground({
-                backStyle: new SuperMap.ServerStyle({
-                    fillForeColor: new SuperMap.ServerColor(179, 209, 193),
+            background: new mapboxgl.supermap.ThemeLabelBackground({
+                backStyle: new mapboxgl.supermap.ServerStyle({
+                    fillForeColor: new mapboxgl.supermap.ServerColor(179, 209, 193),
                     fillOpaqueRate: 60,
                     lineWidth: 0.1
                 }),
                 labelBackShape: "RECT"
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new mapboxgl.supermap.ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]
         });
 
-        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

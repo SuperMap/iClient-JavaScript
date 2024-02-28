@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,7 @@
             info = L.control({
                 position: 'topright'
             });
-        L.supermap.tiledMapLayer(mapURL).addTo(map);
+        new L.supermap.TiledMapLayer(mapURL).addTo(map);
 
         info.onAdd = function () {
             var popup = L.DomUtil.create('div');
@@ -73,10 +73,10 @@
         };
         info.addTo(map);
 
-        var processingService = new L.supermap.processingService(processingUrl, {
+        var processingService = new L.supermap.ProcessingService(processingUrl, {
             withCredentials: window.isLocal
         });
-        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+        L.supermap.SecurityManager.registerToken(processingUrl, window.exampleToken);
 
 
         function getBounds() {
@@ -98,7 +98,7 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            var buffersAnalystJobsParameter = new SuperMap.BuffersAnalystJobsParameter({
+            var buffersAnalystJobsParameter = new L.supermap.BuffersAnalystJobsParameter({
                 datasetName: $('#datasetName').val(),
                 bounds: getBounds(),
                 distance: $('#distace').val(),
@@ -115,12 +115,12 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        L.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                            layer = new L.supermap.TiledMapLayer(mapUrl, {
                                 noWrap: true,
                                 transparent: true
                             });

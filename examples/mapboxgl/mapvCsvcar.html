@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -19,6 +23,10 @@
             top: 0;
             bottom: 0;
             width: 100%;
+        }
+
+        .mapboxgl-popup-close-button {
+          outline: none;
         }
     </style>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
@@ -62,7 +70,7 @@
         .addTo(map);
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     $.get('../data/car.csv', function (csvstr) {
         var options = {
             strokeStyle: 'rgba(50, 50, 255, 0.8)',
@@ -72,8 +80,7 @@
         };
         var dataSet = mapv.csv.getDataSet(csvstr);
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVLayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+        var mapVLayer = new mapboxgl.supermap.MapvLayer(dataSet, options);
         map.addLayer(mapVLayer);
     });
 </script>

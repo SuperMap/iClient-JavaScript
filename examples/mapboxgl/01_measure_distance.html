@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* mapbox-gl-draw (https://github.com/mapbox/mapbox-gl-draw)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -42,7 +46,7 @@
         maxZoom: 18,
         zoom: 3
     });
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     var draw = new MapboxDraw({
@@ -59,8 +63,8 @@
         if (!e.features) {
             widgets.alert.showAlert(resources.msg_noDataRedraw, false);
         }
-        var param = new SuperMap.MeasureParameters(e.features[0]);
-        new mapboxgl.supermap.MeasureService(url).measureDistance(param, function (serviceResult) {
+        var param = new mapboxgl.supermap.MeasureParameters(e.features[0]);
+        new mapboxgl.supermap.MeasureService(url).measureDistance(param).then(function (serviceResult) {
             var distance = serviceResult.result.distance;
             widgets.alert.showAlert(distance + resources.msg_m, true);
         });

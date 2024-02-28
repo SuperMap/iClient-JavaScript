@@ -1,8 +1,8 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
- * @constant  ol.supermap.pointMap
+ * @constant  pointMap
  * @description 点图。
  * @private
  */
@@ -19,7 +19,7 @@ export var pointMap = {
 };
 
 /**
- * @constant ol.supermap.lineMap
+ * @constant lineMap
  * @description 线图。
  * @private
  */
@@ -38,7 +38,7 @@ export var lineMap = {
 };
 
 /**
- * @constant ol.supermap.polygonMap
+ * @constant polygonMap
  * @description 面图。
  * @private
  */
@@ -63,14 +63,25 @@ export var polygonMap = {
 };
 
 /**
- * @constant ol.supermap.StyleMap
+ * @enum StyleMap {Object}
  * @description 地图样式。
+ * @category BaseTypes Constant
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.StyleMap.CartoStyleMap;
+ *
+ * </script>
+ * // ES6 Import
+ * import { StyleMap } from '{npm}';
+ *
+ * const result = StyleMap.CartoStyleMap;
+ * ```
  */
 export var StyleMap = {
-    /**
-     * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
-     * @description CartoCSS 中的 style 属性名与 Canvas 的 style 属性名的对应表
-     */
+    /** CartoCSS 中的 style 属性名与 Canvas 的 style 属性名的对应表 */
     CartoStyleMap: {
         "TEXT": {
             //前两个属性值组成font
@@ -102,10 +113,7 @@ export var StyleMap = {
         "POLYGON": polygonMap,
         "MULTIPOLYGON": polygonMap
     },
-    /**
-     * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
-     * @description 服务端传过来的 style 属性名与 Canvas 的 style 属性名的对应表。
-     */
+    /** 服务端传过来的 style 属性名与 Canvas 的 style 属性名的对应表。 */
     ServerStyleMap: {
         fillBackOpaque: {
             canvasStyle: "",
@@ -204,10 +212,7 @@ export var StyleMap = {
             defaultValue: 0
         }
     },
-    /**
-     * @constant ol.supermap.StyleMap.prototype.CartoCompOpMap
-     * @description Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。
-     */
+    /** Canvas 中的 globalCompositeOperation 属性值与 CartoCSS 中的 CompOp 属性值对照表。 */
     CartoCompOpMap: {
         "clear": "",
         "src": "",

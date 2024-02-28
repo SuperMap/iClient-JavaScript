@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -15,12 +15,12 @@
             font-size: 12px;
         }
 
-        .leaflet-popup-content {
-            margin: 5px
-        }
-
         .mapboxgl-popup-content {
             box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .mapboxgl-popup-close-button {
+          outline: none;
         }
 
     </style>
@@ -63,7 +63,7 @@
         zoom: 3
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     initThemeLayer();
     initLegendView();
@@ -72,7 +72,7 @@
         themeLayer = new mapboxgl.supermap.LabelThemeLayer("labelThemeLayer", {
 //                map: map,//该可选参数将在下个版本遗弃
             attributions: " ",
-            style: new SuperMap.ThemeStyle({
+            style: new mapboxgl.supermap.ThemeStyle({
                 labelRect: true,
                 fontColor: "#000000",
                 fontWeight: "bolder",

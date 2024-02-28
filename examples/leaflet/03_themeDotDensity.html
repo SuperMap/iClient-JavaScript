@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -21,28 +21,28 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
+    new L.supermap.TiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
     createTheme();
 
     function createTheme() {
-        themeService = L.supermap.themeService(url);
-        themeDotDensity = new SuperMap.ThemeDotDensity({
+        themeService = new L.supermap.ThemeService(url);
+        themeDotDensity = new L.supermap.ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
-            style: new SuperMap.ServerStyle({
+            style: new L.supermap.ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(url, {
+                themeLayer = new L.supermap.TiledMapLayer(url, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

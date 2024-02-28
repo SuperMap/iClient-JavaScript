@@ -1,15 +1,19 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Turf (https://github.com/Turfjs/turf/) 
+* leaflet-geoman (https://github.com/geoman-io/leaflet-geoman)
 *********************************************************************-->
 <!DOCTYPE html>
 <html style="width: 100%; height: 100%">
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_image_service"></title>
-    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
     <script
       type="text/javascript"
-      include="proj4,turf,leaflet-geoman"
+      include="turf,leaflet-geoman"
       src="../../dist/leaflet/include-leaflet.js"
     ></script>
     <style>
@@ -169,7 +173,7 @@
         color: rgba(0, 0, 0, 0.65);
       }
       .modal-dialog {
-        width: 800px !important;
+        width: 1100px !important;
         top: 50px;
       }
       .modal-body {
@@ -197,6 +201,13 @@
         border-right: 1px solid #e8e8e8;
         font-size: 14px;
         line-height: 1.5;
+        word-wrap: break-word;
+      }
+      .modal-content-row .modal-content-item-content:nth-child(2){
+          width: 193px;
+      }
+      .modal-content-row .modal-content-item-content:nth-child(4){
+          width: 479px;
       }
     </style>
   </head>
@@ -324,19 +335,12 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var mapUrl = host + '/iserver/services/map-world/rest/maps/World';
       var root = host + '/iserver/services/imageservice-hainan/restjsr';
       var url = host + '/iserver/services/data-china400/rest/data';
-      var map = L.map('map', {
-        crs: L.CRS.EPSG4326,
-        center: [19.2, 110],
-        maxZoom: 18,
-        zoom: 8
-      });
-      L.supermap.tiledMapLayer(mapUrl).addTo(map);
       var currentIndex = 0;
       var features = [];
       var pageMax = 10;
@@ -351,12 +355,20 @@
       var searchBoxLayer;
       var provinceLayer;
       var selectedFeature;
+      var plotLayer;
+      var map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [19.2, 110],
+        maxZoom: 18,
+        zoom: 8
+      });
+      L.supermap.tiledMapLayer(mapUrl).addTo(map);
+      widgets.loader.showLoader("data loading...");
       var result = queryFromDataService(url);
       var drawControl = addDrawControl();
-      var plotLayer;
       var imageService = ImageService();
       function ImageService() {
-        var service = new L.supermap.imageService(root);
+        var service = new L.supermap.ImageService(root);
         service.getCollections(getCollectionsCompleted);
         return service;
       }
@@ -493,13 +505,13 @@
 
       function queryFromDataService(url) {
         var result = [];
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
           queryParameter: { attributeFilter: "PAC Like '46%'" },
           datasetNames: ['China:City_R'],
           targetPrj: { epsgCode: 4326 },
           maxFeatures: 10000
         });
-        new L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
           var featureResults = serviceResult.result;
           if (featureResults) {
             var features = featureResults.features;
@@ -513,6 +525,7 @@
             });
           }
           appendOptions('provinces', result, 'value', 'label');
+          widgets.loader.removeLoader();
           provinces = result;
           return result;
         });
@@ -524,8 +537,8 @@
         if (!isShow) {
           removeSearchItemTile(featureId);
         } else {
-          var layer = L.supermap
-            .imageTileLayer(root, {
+          var layer = new L.supermap
+            .ImageTileLayer(root, {
               collectionId,
               names: [name]
             })
@@ -545,7 +558,7 @@
       }
 
       function removeLayer(map, layer) {
-        if (map.hasLayer(layer)) {
+        if (layer && map.hasLayer(layer)) {
           map.removeLayer(layer);
         }
       }
@@ -626,7 +639,8 @@
           '</a>' +
           '</li>';
         for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
-          pageHtml += '<li onclick="clickPage(' + i - 1 + ')"><a href="#">' + i + '</a></li>';
+          var pageIndex = i - 1;
+          pageHtml += '<li onclick="clickPage('+ pageIndex + ')"><a href="#">' + i + '</a></li>';
         }
         pageHtml +=
           '<li id="next-page" style="margin-right: 0">' +
@@ -676,7 +690,7 @@
       }
 
       function clickPage(i) {
-        currentIndex = i;
+        currentIndex = parseInt(i);
         var start = tableMax * currentIndex;
         $($('#pagination').children('.active')).removeClass('active');
         $(
@@ -761,6 +775,7 @@
       }
 
       function query() {
+        clearSearchResult();
         var postData = {};
         if (provinceId != -1) {
           postData.bbox = provinceBbox;

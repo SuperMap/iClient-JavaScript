@@ -1,14 +1,15 @@
-require('../../../../src/common/commontypes/geometry/GeoText');
+import { GeoText as GeometryGeoText } from '../../../../src/common/commontypes/geometry/GeoText';
+import { Vector as FeatureVector } from '../../../../src/common/commontypes/Vector';
 
 describe('GeoText', function () {
     it('constructor, destroy', function () {
         var x = 100, y = 35, text = "中华人民共和国";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         geoText.bsInfo = {
             h: 100,
             w: 150
         };
-        var geoTextFeature = new SuperMap.Feature.Vector(geoText);
+        var geoTextFeature = new FeatureVector(geoText);
         expect(geoText).not.toBeNull();
         expect(geoTextFeature).not.toBeNull();
         expect(geoTextFeature.CLASS_NAME).toEqual("SuperMap.Feature.Vector");
@@ -28,7 +29,7 @@ describe('GeoText', function () {
 
     it('clone', function () {
         var x = 100, y = 35, text = "中华人民共和国";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         var obj = geoText.clone();
         expect(geoText).not.toBeNull();
         expect(geoText.id).not.toBeNull();
@@ -46,7 +47,7 @@ describe('GeoText', function () {
 
     it('calculateBounds', function () {
         var x = 100, y = 35, text = "中华人民共和国";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         geoText.calculateBounds();
         expect(geoText).not.toBeNull();
         expect(geoText.bounds).not.toBeNull();
@@ -60,7 +61,7 @@ describe('GeoText', function () {
     //获取标签对象的质心
     it('getCentroid', function () {
         var x = 100, y = 35, text = "中华人民共和国";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         var centroid = geoText.getCentroid();
         expect(centroid).not.toBeNull();
         expect(centroid.CLASS_NAME).toEqual("SuperMap.Geometry.Point");
@@ -74,7 +75,7 @@ describe('GeoText', function () {
     //根据绘制好的标签获取文字标签的像素范围，参数的单位是像素
     it('getLabelPxBoundsByLabel', function () {
         var x = 0, y = 0, text = "test";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         var locationPixel = {X: 0, y: 0};
         var labelWidth = "100px";
         var labelHeight = "60px";
@@ -171,7 +172,7 @@ describe('GeoText', function () {
     // 根据文本内容获取文字标签的像素范围 处理斜体字
     it('getLabelPxBoundsByText_italic', function () {
         var x = 0, y = 0, text = "test";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         var locationPixel = {X: 10, y: 10};
         var style = {
             fill: true,
@@ -266,7 +267,7 @@ describe('GeoText', function () {
     // 根据文本内容获取文字标签的像素范围 正常字体
     it('getLabelPxBoundsByText_normalontStyle', function () {
         var x = 0, y = 0, text = "test";
-        var geoText = new SuperMap.Geometry.GeoText(x, y, text);
+        var geoText = new GeometryGeoText(x, y, text);
         var locationPixel = {X: 10, y: 10};
         var style = {
             fill: true,

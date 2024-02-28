@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -140,7 +140,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [110.85, 39.79],
                 zoom: 4,
@@ -162,7 +162,7 @@
         themeSource = new ol.source.Label("labelThemeLayer", {
             map: map,
             attributions: " ",
-            style: new SuperMap.ThemeStyle({
+            style: new ol.supermap.ThemeStyle({
                 labelRect: true,
                 fontColor: "#000000",
                 fontWeight: "bolder",

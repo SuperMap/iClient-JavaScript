@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* xlsx (https://github.com/SheetJS/sheetjs)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -58,10 +62,10 @@
                             </div>
                             <h5 data-i18n="resources.text_data_name"></h5>
                             <input id="data-name" class='form-control' type="text" style="width: 100%;">
-                            
+
                             <h5 data-i18n="resources.detail_iPortal_tags"></h5>
                             <input id="data-tags" class='form-control' type="text" style="width: 100%;" data-i18n="[placeholder]resources.text_user_data">
-                            
+
                             <div><button class="btn btn-primary col-md-offset-6" style="margin-top: 20px;" onclick="inNext()" data-i18n="resources.btn_next" id="upload-or-next"></button></div>
                         </div>
                         <div id="two">
@@ -74,7 +78,7 @@
                             <div>
                                 <h5 data-i18n="resources.text_y_field"></h5>
                                 <select id="yFleid" class='form-control' >
-                                    
+
                                 </select>
                             </div>
                             <div id="file-encoding-container">
@@ -95,11 +99,11 @@
         </div>
     </div>
 <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
-<script type="text/javascript" include="iclient-leaflet-css,xlsx" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="xlsx" src="../../dist/ol/include-ol.js"></script>
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
     var iPortalUrl = "https://iportal.supermap.io/iportal";
-    var token = "MFEKl8kVmkvEDrDFcgnjodlPCudIO83mBSwvdjiUlWNnySGD-FCEyYEk4CsY2WnSCujfAs8HI0ZkSL6Vxa-njg..";
+    var token = window.iportalToken;
     //上传文件的一些变量（文件对象 文件格式 数据类型 上传的文件名称）
     var file,fileFormats,dataType,uploadDataFileName;
     //excel csv解析（回调重定向对象 x坐标区域 y坐标区域）
@@ -116,18 +120,18 @@
         //初始化上传的文件名称（选择文件）
         uploadDataFileName = resources.text_openFile;
     });
-    
+
     //获取token
     function generatePortalToken() {
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new ol.supermap.ServerInfo(ol.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        ol.supermap.SecurityManager.registerServers([serverInfo]);
+        ol.supermap.SecurityManager.destroyToken(iPortalUrl);
+        ol.supermap.SecurityManager.registerToken(iPortalUrl, token);
     }
-    
+
     //选中数据类型函数
     function onSelectDataType(){
         $("#data-tags").val("");
@@ -174,7 +178,7 @@
                 break;
         }
     }
-    
+
     //上传文件函数
     $("#input_file").change(function(e){
         file = e.currentTarget.files[0];
@@ -198,7 +202,7 @@
         $("#data-name").val(dataName)
         $(".component-openfile__span").text(uploadDataFileName)
     })
-   
+
     //获取文件名称的后缀名
     function getExtension(fileName) {
         if (!fileName) {
@@ -209,7 +213,7 @@
         }
         return fileName.substring(fileName.lastIndexOf('.'));
     }
-    
+
     //下一步
     function inNext(){
         if(!file) {
@@ -236,7 +240,7 @@
             visualForm();
         }
     }
-    
+
     //返回上一步
     function returnOnePage(){
         $("#one").css("display","block");
@@ -262,7 +266,7 @@
             "tags": tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
             "type": dataType
         }
-        var queryParams = new SuperMap.iPortalAddDataParam({
+        var queryParams = new ol.supermap.iPortalAddDataParam({
             fileName: params.fileName,
             type: params.type,
             tags: params.tags
@@ -276,8 +280,8 @@
             if(dataType === 'CSV') {
                 newDataMetaParams.fileEncoding = $("#file-encoding").val();
             }
-            var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam(newDataMetaParams)
-            queryParams = new SuperMap.iPortalAddDataParam({
+            var dataMetaParams = new ol.supermap.iPortalDataMetaInfoParam(newDataMetaParams)
+            queryParams = new ol.supermap.iPortalAddDataParam({
                 fileName: params.fileName,
                 type: params.type,
                 tags: params.tags,
@@ -286,7 +290,7 @@
         }
         const formData = new FormData();
         formData.append('newfile', file);
-        new SuperMap.iPortalUser(iPortalUrl).addData(queryParams,formData).then(res=>{
+        new ol.supermap.iPortalUser(iPortalUrl).addData(queryParams,formData).then(res=>{
             if(res.childID) {
                 widgets.alert.showAlert(resources.msg_upload_success, true);
             }else {
@@ -294,16 +298,16 @@
             }
         })
     }
-    
+
     //解析excel csv表格数据
     function visualForm(){
         var files = {
             file:file
         }
         //解析excel csv
-        SuperMap.Components.FileReaderUtil.readFile(dataType,files,success,failed,context)
+        ol.supermap.Components.FileReaderUtil.readFile(dataType,files,success,failed,context)
     }
-    
+
     //Excel CSV数据处理成功的回调
     function success(res){
         Xfields = [];
@@ -311,7 +315,7 @@
         $("#xFleid").empty();
         $("#yFleid").empty();
         //把excel csv数据解析为geojson的数据
-        var result = SuperMap.Components.FileReaderUtil.processExcelDataToGeoJson(res);
+        var result = ol.supermap.Components.FileReaderUtil.processExcelDataToGeoJson(res);
         //excel csv表头数据
         var title = Object.keys(result[0].properties);
         //把表格数据为数字的项 做为xField yField的值
@@ -333,7 +337,7 @@
             $("#yFleid").append("<option value='"+item+"'>"+item+"</option>");//新增
         })
     }
-    
+
     //Excel CSV数据处理失败的回调
     function failed(res){
         console.log(res)

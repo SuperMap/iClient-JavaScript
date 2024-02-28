@@ -1,15 +1,16 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.iManagerCreateNodeParam
+ * @class IManagerCreateNodeParam
+ * @aliasclass iManagerCreateNodeParam
+ * @deprecatedclass SuperMap.iManagerCreateNodeParam
  * @classdesc iManager 创建节点参数。
  * @category iManager
- * @param {Object} [params] - iManager 创建节点参数。
- *
+ * @param {Object} [params] - 节点参数。
+ * @usage
  */
 export class IManagerCreateNodeParam {
 
@@ -27,6 +28,3 @@ export class IManagerCreateNodeParam {
     }
 
 }
-
-SuperMap.iManagerCreateNodeParam = IManagerCreateNodeParam;
-

@@ -1,29 +1,24 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { CommonServiceBase } from './CommonServiceBase';
 
 /**
- * @class SuperMap.MapService
+ * @class MapService
+ * @deprecatedclass SuperMap.MapService
  * @category iServer Map
- * @classdesc 地图信息服务类。
- * @extends {SuperMap.CommonServiceBase}
+ * @classdesc 地图信息服务类。通过该类可以获得地图的基本信息、投影信息、切片列表信息等等。
+ * @extends {CommonServiceBase}
  * @example
- * var myMapService = new SuperMap.MapService(url, {
- * eventListeners:{
- *     "processCompleted": MapServiceCompleted,
- *       "processFailed": MapServiceFailed
- *       }
- * });
+ * var myMapService = new MapService(url);
  *
- * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class MapService extends CommonServiceBase {
 
@@ -31,7 +26,7 @@ export class MapService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.MapService.prototype.projection
+         * @member {string} MapService.prototype.projection
          * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
          */
         this.projection = null;
@@ -56,55 +51,46 @@ export class MapService extends CommonServiceBase {
     }
 
     /**
-     * @function  destroy
+     * @function MapService.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
         super.destroy();
-        var me = this;
-        if (me.events) {
-            me.events.un(me.eventListeners);
-            me.events.listeners = null;
-            me.events.destroy();
-            me.events = null;
-            me.eventListeners = null;
-        }
     }
 
     /**
-     * @function  SuperMap.MapService.prototype.processAsync
+     * @function MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync() {
+    processAsync(callback) {
         var me = this;
-        me.request({
+        return me.request({
             method: "GET",
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
-    /*
-     * Method: getMapStatusCompleted
-     * 获取地图状态完成，执行此方法。
-     *
-     * Parameters:
-     * {Object} result - 服务器返回的结果对象。
+    /**
+     * @function MapService.prototype.transformResult
+     * @description 状态完成时转换结果。
+     * @param {Object} result - 服务器返回的结果对象。
+     * @param {Object} options - 请求参数。
+     * @return {Object} 转换结果。
      */
-    serviceProcessCompleted(result) {
-        var me = this;
+    transformResult(result, options) {
         result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {
-            me.events && me.events.triggerEvent("processCompleted", {result: result});
+            return {result: result, options};
         } else {
             ////在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
-            me.events.triggerEvent("processFailed", {error: result});
+            return {error: result, options};
         }
     }
-
 }
 
-SuperMap.MapService = MapService;

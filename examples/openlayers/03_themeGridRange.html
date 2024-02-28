@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -14,12 +14,12 @@
 <script type="text/javascript">
     var map, themeLayer, options,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
-    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(url).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [117, 40],
                 zoom: 7,
@@ -36,92 +36,92 @@
     });
 
     function createTheme() {
-        var themeGridRangeItem1 = new SuperMap.ThemeGridRangeItem({
+        var themeGridRangeItem1 = new ol.supermap.ThemeGridRangeItem({
                 start: -4,
                 end: 120,
-                color: new SuperMap.ServerColor(198, 244, 240)
+                color: new ol.supermap.ServerColor(198, 244, 240)
             }),
 
-            themeGridRangeItem2 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem2 = new ol.supermap.ThemeGridRangeItem({
                 start: 120,
                 end: 240,
-                color: new SuperMap.ServerColor(176, 244, 188)
+                color: new ol.supermap.ServerColor(176, 244, 188)
             }),
-            themeGridRangeItem3 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem3 = new ol.supermap.ThemeGridRangeItem({
                 start: 240,
                 end: 360,
-                color: new SuperMap.ServerColor(218, 251, 178)
+                color: new ol.supermap.ServerColor(218, 251, 178)
             }),
-            themeGridRangeItem4 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem4 = new ol.supermap.ThemeGridRangeItem({
                 start: 360,
                 end: 480,
-                color: new SuperMap.ServerColor(220, 236, 145)
+                color: new ol.supermap.ServerColor(220, 236, 145)
             }),
-            themeGridRangeItem5 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem5 = new ol.supermap.ThemeGridRangeItem({
                 start: 480,
                 end: 600,
-                color: new SuperMap.ServerColor(96, 198, 66)
+                color: new ol.supermap.ServerColor(96, 198, 66)
             }),
-            themeGridRangeItem6 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem6 = new ol.supermap.ThemeGridRangeItem({
                 start: 600,
                 end: 720,
-                color: new SuperMap.ServerColor(20, 142, 53)
+                color: new ol.supermap.ServerColor(20, 142, 53)
             }),
-            themeGridRangeItem7 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem7 = new ol.supermap.ThemeGridRangeItem({
                 start: 720,
                 end: 840,
-                color: new SuperMap.ServerColor(85, 144, 55)
+                color: new ol.supermap.ServerColor(85, 144, 55)
             }),
 
-            themeGridRangeItem8 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem8 = new ol.supermap.ThemeGridRangeItem({
                 start: 840,
                 end: 960,
-                color: new SuperMap.ServerColor(171, 168, 38)
+                color: new ol.supermap.ServerColor(171, 168, 38)
             }),
-            themeGridRangeItem9 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem9 = new ol.supermap.ThemeGridRangeItem({
                 start: 960,
                 end: 1100,
-                color: new SuperMap.ServerColor(235, 165, 9)
+                color: new ol.supermap.ServerColor(235, 165, 9)
             }),
-            themeGridRangeItem10 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem10 = new ol.supermap.ThemeGridRangeItem({
                 start: 1100,
                 end: 1220,
-                color: new SuperMap.ServerColor(203, 89, 2)
+                color: new ol.supermap.ServerColor(203, 89, 2)
             }),
-            themeGridRangeItem11 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem11 = new ol.supermap.ThemeGridRangeItem({
                 start: 1220,
                 end: 1340,
-                color: new SuperMap.ServerColor(157, 25, 1)
+                color: new ol.supermap.ServerColor(157, 25, 1)
             }),
-            themeGridRangeItem12 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem12 = new ol.supermap.ThemeGridRangeItem({
                 start: 1340,
                 end: 1460,
-                color: new SuperMap.ServerColor(118, 15, 3)
+                color: new ol.supermap.ServerColor(118, 15, 3)
             }),
-            themeGridRangeItem13 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem13 = new ol.supermap.ThemeGridRangeItem({
                 start: 1460,
                 end: 1600,
-                color: new SuperMap.ServerColor(112, 32, 7)
+                color: new ol.supermap.ServerColor(112, 32, 7)
             }),
 
-            themeGridRangeItem14 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem14 = new ol.supermap.ThemeGridRangeItem({
                 start: 1600,
                 end: 1800,
-                color: new SuperMap.ServerColor(106, 45, 12)
+                color: new ol.supermap.ServerColor(106, 45, 12)
             }),
-            themeGridRangeItem15 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem15 = new ol.supermap.ThemeGridRangeItem({
                 start: 1800,
                 end: 2000,
-                color: new SuperMap.ServerColor(129, 80, 50)
+                color: new ol.supermap.ServerColor(129, 80, 50)
             }),
-            themeGridRangeItem16 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeItem16 = new ol.supermap.ThemeGridRangeItem({
                 start: 2000,
                 end: 2167,
-                color: new SuperMap.ServerColor(160, 154, 146)
+                color: new ol.supermap.ServerColor(160, 154, 146)
             });
-        var themeGridRange = new SuperMap.ThemeGridRange({
+        var themeGridRange = new ol.supermap.ThemeGridRange({
             reverseColor: false,
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: ol.supermap.RangeMode.EQUALINTERVAL,
             items: [
                 themeGridRangeItem1, themeGridRangeItem2,
                 themeGridRangeItem3, themeGridRangeItem4,
@@ -133,7 +133,7 @@
                 themeGridRangeItem15, themeGridRangeItem16
             ]
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             datasetNames: ["JingjinTerrain"],
             dataSourceNames: ["Jingjin"],
             joinItems: null,
@@ -141,7 +141,7 @@
         });
 
         var extent = [114.59, 37.76, 119.51, 42.31];
-        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -44,30 +44,30 @@
         zoom: 3
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     function createTheme() {
-        var themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
+        var themeGraduatedSymbol = new mapboxgl.supermap.ThemeGraduatedSymbol({
             expression: "SMAREA",
             baseValue: 3000000000000,
-            graduatedMode: SuperMap.GraduatedMode.CONSTANT,
-            style: new SuperMap.ThemeGraduatedSymbolStyle({
-                positiveStyle: new SuperMap.ServerStyle({
+            graduatedMode: mapboxgl.supermap.GraduatedMode.CONSTANT,
+            style: new mapboxgl.supermap.ThemeGraduatedSymbolStyle({
+                positiveStyle: new mapboxgl.supermap.ServerStyle({
                     markerSize: 50,
                     markerSymbolID: 0,
-                    lineColor: new SuperMap.ServerColor(255, 165, 0),
-                    fillBackColor: new SuperMap.ServerColor(255, 0, 0)
+                    lineColor: new mapboxgl.supermap.ServerColor(255, 165, 0),
+                    fillBackColor: new mapboxgl.supermap.ServerColor(255, 0, 0)
                 })
             })
         });
 
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new mapboxgl.supermap.ThemeParameters({
             themes: [themeGraduatedSymbol],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]
         });
 
-        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 map.addSource("theme", {

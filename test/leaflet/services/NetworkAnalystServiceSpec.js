@@ -11,6 +11,8 @@ import { UpdateEdgeWeightParameters } from '../../../src/common/iServer/UpdateEd
 import { UpdateTurnNodeWeightParameters } from '../../../src/common/iServer/UpdateTurnNodeWeightParameters';
 import { TransportationAnalystParameter } from '../../../src/common/iServer/TransportationAnalystParameter';
 import { TransportationAnalystResultSetting } from '../../../src/common/iServer/TransportationAnalystResultSetting';
+import { TraceAnalystParameters } from '../../../src/common/iServer/TraceAnalystParameters';
+import { ConnectedEdgesAnalystParameters } from '../../../src/common/iServer/ConnectedEdgesAnalystParameters';
 import { SupplyCenter } from '../../../src/common/iServer/SupplyCenter'
 import { SupplyCenterType } from '../../../src/common/REST';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -225,6 +227,70 @@ describe('leaflet_NetworkAnalystService', () => {
                 console.log("'findClosestFacilities'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 service.destroy();
+                done();
+            }
+        });
+    });
+
+    // 上游/下游追踪分析服务
+    it('TraceAnalyst', (done) => {
+        var traceAnalystParameters = new TraceAnalystParameters({
+            edgeID:336,
+            // nodeID:336,
+            // 0:上游； 1：下游
+            traceType:0,
+            weightName:"",
+            isUncertainDirectionValid: true,
+            returnFeatures: true
+        });
+        var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/traceup");
+            return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
+        });
+        service.traceAnalyst(traceAnalystParameters, (result) => {
+            serviceResult = result;
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.result.nodes.length).toBe(1);
+                expect(serviceResult.result).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                done();
+            } catch (e) {
+                console.log("'TraceAnalyst_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
+    });
+
+    // 连通性分析服务
+    it('connectedEdgesAnalyst', (done) => {
+        var connectedEdgesAnalystParameters = new ConnectedEdgesAnalystParameters({
+            connected: false,
+            returnFeatures: true,
+            edgeIDs:[2,3,500]
+        });
+        var service = networkAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(url + "/connectededges");
+            return Promise.resolve(new Response(JSON.stringify(streamFacilityAnalystResultJson)));
+        });
+        service.connectedEdgesAnalyst(connectedEdgesAnalystParameters, (result) => {
+            serviceResult = result;
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.result.nodes.length).toBe(1);
+                expect(serviceResult.result).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                done();
+            } catch (e) {
+                console.log("'ConnectedEdgesAnalyst_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
                 done();
             }
         });

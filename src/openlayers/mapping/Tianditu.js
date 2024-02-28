@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6,9 +6,11 @@ import WMTS from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 
 /**
- * @class ol.source.Tianditu
+ * @class Tianditu
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 天地图图层源。
+ * @modulecategory Mapping
  * @param {Object} opt_options - 参数。
  * @param {string} [opt_options.url='http://t{0-7}.tianditu.gov.cn/{layer}_{proj}/wmts?'] - 服务地址。
  * @param {string} opt_options.key - 天地图服务密钥。详见{@link http://lbs.tianditu.gov.cn/server/MapService.html}
@@ -21,7 +23,8 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS';
  * @param {boolean} [opt_options.isLabel] - 是否是标注图层。
  * @param {boolean} [opt_options.opaque=true] - 是否透明。
  * @param {string} [opt_options.tileProxy] - 代理地址。
- * @extends {ol/source/WMTS}
+ * @extends {ol.source.WMTS}
+ * @usage
  */
 export class Tianditu extends WMTS {
   constructor(opt_options) {
@@ -37,8 +40,8 @@ export class Tianditu extends WMTS {
     }
     var options = opt_options || {};
     var attributions = options.attributions || "Map Data <a href='http://www.tianditu.gov.cn' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
-      "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-      "<span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+    "src='http://api.tianditu.gov.cn/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
+    "<span>© SuperMap iClient</span>"
     options.layerType = options.layerType || "vec";
     options.layerType = options.isLabel ? layerLabelMap[options.layerType] : options.layerType;
     options.matrixSet = (options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490') ? "c" : "w";
@@ -91,10 +94,10 @@ export class Tianditu extends WMTS {
   }
 
   /**
-   * @function ol.source.Tianditu.getTileGrid
+   * @function Tianditu.getTileGrid
    * @description 获取瓦片网格。
    * @param {string} projection - 投影参考对象。
-   * @returns {ol/tilegrid/WMTS} 返回瓦片网格对象
+   * @returns {ol.tilegrid.WMTS} 返回瓦片网格对象。
    */
   static getTileGrid(projection) {
     if (projection === "EPSG:4326" || projection === "EPSG:4490") {
@@ -104,9 +107,9 @@ export class Tianditu extends WMTS {
   }
 
   /**
-   * @function ol.source.Tianditu.default4326TileGrid
+   * @function Tianditu.default4326TileGrid
    * @description 获取默认 4326 网格瓦片。
-   * @returns {ol/tilegrid/WMTS} 返回默认 4326 网格瓦片对象。
+   * @returns {ol.tilegrid.WMTS} 返回默认 4326 网格瓦片对象。
    */
   static default4326TileGrid() {
     var tdt_WGS84_resolutions = [];
@@ -126,9 +129,9 @@ export class Tianditu extends WMTS {
   }
 
   /**
-   * @function ol.source.Tianditu.default3857TileGrid
+   * @function Tianditu.default3857TileGrid
    * @description 获取默认 3857 网格瓦片。
-   * @returns {ol/tilegrid/WMTS} 返回默认 3857 网格瓦片对象。
+   * @returns {ol.tilegrid.WMTS} 返回默认 3857 网格瓦片对象。
    */
   static default3857TileGrid() {
     var tdt_Mercator_resolutions = [];

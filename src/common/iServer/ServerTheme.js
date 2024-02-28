@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {LonLat} from '../commontypes/LonLat';
 import {ThemeLabel} from './ThemeLabel';
@@ -13,12 +12,14 @@ import {ThemeRange} from './ThemeRange';
 import {UGCSubLayer} from './UGCSubLayer';
 
 /**
- * @class SuperMap.ServerTheme
+ * @class ServerTheme
+ * @deprecatedclass SuperMap.ServerTheme
  * @category  iServer Map Theme
- * @classdesc UGC 专题图图层类。
- * @extends {SuperMap.UGCSubLayer}
- * @param {SuperMap.Theme} theme - 专题图对象。
- * @param {SuperMap.LonLat} themeElementPosition - 专题图元素位置。
+ * @classdesc SuperMap 专题图图层类。
+ * @extends {UGCSubLayer}
+ * @param {CommonTheme} theme - 专题图对象。
+ * @param {LonLat} themeElementPosition - 专题图元素位置。
+ * @usage
  */
 export class ServerTheme extends UGCSubLayer {
 
@@ -27,13 +28,13 @@ export class ServerTheme extends UGCSubLayer {
         super(options);
 
         /**
-         * @member {SuperMap.Theme} SuperMap.ServerTheme.prototype.theme
+         * @member {CommonTheme} ServerTheme.prototype.theme
          * @description 专题图对象。
          */
         this.theme = null;
 
         /**
-         * @member {SuperMap.LonLat} SuperMap.ServerTheme.prototype.themeElementPosition
+         * @member {LonLat} ServerTheme.prototype.themeElementPosition
          * @description 专题图元素位置。
          */
         this.themeElementPosition = null;
@@ -44,7 +45,8 @@ export class ServerTheme extends UGCSubLayer {
 
 
     /**
-     * @function SuperMap.ServerTheme.prototype.destroy
+     * @function ServerTheme.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      * @override
      */
     destroy() {
@@ -54,8 +56,8 @@ export class ServerTheme extends UGCSubLayer {
 
 
     /**
-     * @function SuperMap.ServerTheme.prototype.fromJson
-     * @description 将服务端 JSON 对象转换成当前客户端对象
+     * @function ServerTheme.prototype.fromJson
+     * @description 将服务端 JSON 对象转换成当前客户端对象。
      * @param {Object} jsonObject - 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
@@ -91,7 +93,7 @@ export class ServerTheme extends UGCSubLayer {
     }
 
     /**
-     * @function SuperMap.ServerTheme.prototype.toServerJSONObject
+     * @function ServerTheme.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
@@ -113,4 +115,3 @@ export class ServerTheme extends UGCSubLayer {
 
 }
 
-SuperMap.ServerTheme = ServerTheme;

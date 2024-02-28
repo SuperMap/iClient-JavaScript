@@ -1,14 +1,23 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* pixijs (https://github.com/pixijs/pixijs)
+* Leaflet.PixiOverlay (https://github.com/manubb/Leaflet.PixiOverlay)
+* bezier-easing (https://github.com/gre/bezier-easing)
+*********************************************************************-->
 <!DOCTYPE html>
 <html style="height: 100%; margin: 0;">
     <head>
         <meta charset="UTF-8" />
         <title data-i18n="resources.title_pixiOverlay_taxi"></title>
-        <script type="text/javascript" include="jquery,bootstrap,papaparse,widgets" src="../js/include-web.js"></script>
     </head>
     <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
         <div id="map" style="margin:0 auto;width: 100%;height: 100%" class="cartes"></div>
         <!-- 引入 pixi.js 、L.PixiOverlay.js等相关js -->
         <script type="text/javascript" include="pixi" src="../../dist/leaflet/include-leaflet.js"></script>
+        <script type="text/javascript" include="jquery,bootstrap,papaparse,widgets" src="../js/include-web.js"></script>
         <script>
             let host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var url = host + '/iserver/services/map-china400/rest/maps/China';
@@ -18,8 +27,8 @@
                 zoom: 11
             });
             // iclient-leaflet添加tilelayer
-            L.supermap
-                .tiledMapLayer(url, {
+            new L.supermap
+                .TiledMapLayer(url, {
                     attribution:
                         "<a href='https://github.com/manubb/Leaflet.PixiOverlay' target='_blank' >© Leaflet.PixiOverlay</a>"
                 })

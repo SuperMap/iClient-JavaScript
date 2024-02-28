@@ -66,129 +66,126 @@ describe('mapboxgl_UniqueThemeLayer', () => {
             datasetNames: ["Jingjin:Landuse_R"]
         });
         var getFeatureBySQLService = new GetFeaturesBySQLService(dataUrl, {
-            format: DataFormat.ISERVER,
-            eventListeners: {
-                processCompleted: (serviceResult) => {
-                    if (serviceResult.error) {
-                        alert("error:" + JSON.stringify(serviceResult.error));
-                        return;
-                    }
-                    result = serviceResult.result;
-                    if (result && result.features) {
-                        //岛洞和多面的处理
-                        var features = result.features;
-                        var feas = [];
-                        var IHFeas = []; //岛洞多面
-                        for (var i = 0, len = features.length; i < len; i++) {
-                            var feature = features[i];
-                            var smid = feature.fieldValues[0];
-                            if (smid === "86" || smid === "87" || smid === "89") {
-                                // islandHoleHandlerForFeature 处理岛洞面
-                                IHFeas.push(islandHoleHandlerForFeature(feature));
-                            }
-                            else {
-                                feas.push(feature);
-                            }
-                        }
-                        // 岛洞多面要素必需在其他要素之前添加
-                        feas = IHFeas.concat(feas);
-                        //创建RangeThemeLayer
-                        themeLayer = new Unique("ThemeLayer",
-                            {
-                                map: map,
-                                style: {
-                                    shadowBlur: 3,
-                                    shadowColor: "#000000",
-                                    shadowOffsetX: 1,
-                                    shadowOffsetY: 1,
-                                    fillColor: "#FFFFFF"
-                                },
-                                isHoverAble: true,
-                                highlightStyle: {
-                                    stroke: true,
-                                    strokeWidth: 2,
-                                    strokeColor: 'blue',
-                                    fillColor: "#00F5FF",
-                                    fillOpacity: 0.2
-                                },
-                                themeField: "LANDTYPE",
-                                styleGroups: [
-                                    {
-                                        value: "草地",
-                                        style: {
-                                            fillColor: "#C1FFC1"
-                                        }
-                                    },
-                                    {
-                                        value: "城市",
-                                        style: {
-                                            fillColor: "#CD7054"
-                                        }
-                                    },
-                                    {
-                                        value: "灌丛",
-                                        style: {
-                                            fillColor: "#7CCD7C"
-                                        }
-                                    },
-                                    {
-                                        value: "旱地",
-                                        style: {
-                                            fillColor: "#EE9A49"
-                                        }
-                                    },
-                                    {
-                                        value: "湖泊水库",
-                                        style: {
-                                            fillColor: "#8EE5EE"
-                                        }
-                                    }
-                                ]
-                            });
-                        expect(themeLayer.features.length).toEqual(0);
-                        var cacheCount = themeLayer.getCacheCount();
-                        expect(cacheCount).toEqual(0);
-                        //添加数据
-                        themeLayer.addFeatures(feas);
-                        expect(themeLayer).not.toBeNull();
-                        expect(themeLayer.features.length).toBeGreaterThan(0);
-                        for (var j = 0; j < themeLayer.features.length; j++) {
-                            var features_j = themeLayer.features[j];
-                            expect(features_j.data).not.toBeNull();
-                            expect(features_j.CLASS_NAME).toBe("SuperMap.Feature.Vector");
-                            expect(features_j.id).not.toBeNull();
-                            var geometry_j = features_j.geometry;
-                            expect(geometry_j).not.toBeNull();
-                            expect(geometry_j.CLASS_NAME).toBe("SuperMap.Geometry.MultiPolygon");
-                            expect(geometry_j.bounds).not.toBeUndefined();
-                            expect(geometry_j.componentTypes).not.toBeUndefined();
-                            expect(geometry_j.components).not.toBeUndefined();
-                            expect(geometry_j.id).not.toBeUndefined();
-                        }
-                        expect(themeLayer.styleGroups.length).toEqual(5);
-                        expect(themeLayer.renderer).not.toBeUndefined();
-                        expect(themeLayer.renderer).not.toBeNull();
-                        expect(themeLayer.style).not.toBeNull();
-                        expect(themeLayer.maxCacheCount).toBeGreaterThan(0);
-                        expect(themeLayer.themeField).toBe("LANDTYPE");
-                        var shape1 = themeLayer.getShapesByFeatureID(result.features[1].id);
-                        var shape2 = themeLayer.getShapesByFeatureID();
-                        expect(shape1.length).toBeGreaterThan(0);
-                        expect(shape2.length).toBeGreaterThan(0);
-                        var cacheCount1 = themeLayer.getCacheCount();
-                        expect(cacheCount1).toBeGreaterThan(0);
-                        themeLayer.setMaxCacheCount(10);
-                        expect(themeLayer.maxCacheCount).toEqual(10);
-                        themeLayer.removeFeatures();
-                        expect(themeLayer.features.length).toBeGreaterThan(0);
-                        themeLayer.removeAllFeatures();
-                        expect(themeLayer.features.length).toEqual(0);
-                    }
-                    done();
-                }
-            }
+            format: DataFormat.ISERVER
         });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams, (serviceResult) => {
+          if (serviceResult.error) {
+              alert("error:" + JSON.stringify(serviceResult.error));
+              return;
+          }
+          result = serviceResult.result;
+          if (result && result.features) {
+              //岛洞和多面的处理
+              var features = result.features;
+              var feas = [];
+              var IHFeas = []; //岛洞多面
+              for (var i = 0, len = features.length; i < len; i++) {
+                  var feature = features[i];
+                  var smid = feature.fieldValues[0];
+                  if (smid === "86" || smid === "87" || smid === "89") {
+                      // islandHoleHandlerForFeature 处理岛洞面
+                      IHFeas.push(islandHoleHandlerForFeature(feature));
+                  }
+                  else {
+                      feas.push(feature);
+                  }
+              }
+              // 岛洞多面要素必需在其他要素之前添加
+              feas = IHFeas.concat(feas);
+              //创建RangeThemeLayer
+              themeLayer = new Unique("ThemeLayer",
+                  {
+                      map: map,
+                      style: {
+                          shadowBlur: 3,
+                          shadowColor: "#000000",
+                          shadowOffsetX: 1,
+                          shadowOffsetY: 1,
+                          fillColor: "#FFFFFF"
+                      },
+                      isHoverAble: true,
+                      highlightStyle: {
+                          stroke: true,
+                          strokeWidth: 2,
+                          strokeColor: 'blue',
+                          fillColor: "#00F5FF",
+                          fillOpacity: 0.2
+                      },
+                      themeField: "LANDTYPE",
+                      styleGroups: [
+                          {
+                              value: "草地",
+                              style: {
+                                  fillColor: "#C1FFC1"
+                              }
+                          },
+                          {
+                              value: "城市",
+                              style: {
+                                  fillColor: "#CD7054"
+                              }
+                          },
+                          {
+                              value: "灌丛",
+                              style: {
+                                  fillColor: "#7CCD7C"
+                              }
+                          },
+                          {
+                              value: "旱地",
+                              style: {
+                                  fillColor: "#EE9A49"
+                              }
+                          },
+                          {
+                              value: "湖泊水库",
+                              style: {
+                                  fillColor: "#8EE5EE"
+                              }
+                          }
+                      ]
+                  });
+              expect(themeLayer.features.length).toEqual(0);
+              var cacheCount = themeLayer.getCacheCount();
+              expect(cacheCount).toEqual(0);
+              //添加数据
+              themeLayer.addFeatures(feas);
+              expect(themeLayer).not.toBeNull();
+              expect(themeLayer.features.length).toBeGreaterThan(0);
+              for (var j = 0; j < themeLayer.features.length; j++) {
+                  var features_j = themeLayer.features[j];
+                  expect(features_j.data).not.toBeNull();
+                  expect(features_j.CLASS_NAME).toBe("SuperMap.Feature.Vector");
+                  expect(features_j.id).not.toBeNull();
+                  var geometry_j = features_j.geometry;
+                  expect(geometry_j).not.toBeNull();
+                  expect(geometry_j.CLASS_NAME).toBe("SuperMap.Geometry.MultiPolygon");
+                  expect(geometry_j.bounds).not.toBeUndefined();
+                  expect(geometry_j.componentTypes).not.toBeUndefined();
+                  expect(geometry_j.components).not.toBeUndefined();
+                  expect(geometry_j.id).not.toBeUndefined();
+              }
+              expect(themeLayer.styleGroups.length).toEqual(5);
+              expect(themeLayer.renderer).not.toBeUndefined();
+              expect(themeLayer.renderer).not.toBeNull();
+              expect(themeLayer.style).not.toBeNull();
+              expect(themeLayer.maxCacheCount).toBeGreaterThan(0);
+              expect(themeLayer.themeField).toBe("LANDTYPE");
+              var shape1 = themeLayer.getShapesByFeatureID(result.features[1].id);
+              var shape2 = themeLayer.getShapesByFeatureID();
+              expect(shape1.length).toBeGreaterThan(0);
+              expect(shape2.length).toBeGreaterThan(0);
+              var cacheCount1 = themeLayer.getCacheCount();
+              expect(cacheCount1).toBeGreaterThan(0);
+              themeLayer.setMaxCacheCount(10);
+              expect(themeLayer.maxCacheCount).toEqual(10);
+              themeLayer.removeFeatures();
+              expect(themeLayer.features.length).toBeGreaterThan(0);
+              themeLayer.removeAllFeatures();
+              expect(themeLayer.features.length).toEqual(0);
+          }
+          done();
+      });
         // setTimeout(() => {
          
         // }, 5000)
@@ -345,7 +342,7 @@ describe('mapboxgl_UniqueThemeLayer', () => {
         }
 
         /*
-         * 判断一个点是否在多边形里面。(射线法)
+         * 判断一个点是否在多边形里面（射线法）。
          * Parameters:
          * pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
          * poly - {Array(Objecy)}  多边形节点数组。例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。

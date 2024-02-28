@@ -1,11 +1,17 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_dynamicPlot"></title>
+    <link rel="stylesheet" href="../css/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont/plotting.css">
     <style type="text/css">
         body {
             margin: 0;
@@ -25,22 +31,128 @@
         }
 
         #plottingMenu {
-            position: absolute;
-            top: 20%;
-            z-index: 888;
-            border-radius: 4px;
-            padding-top: 2px;
-            left: 265px;
-            color: #000000;
-            background-color: #fff;
+          position: absolute;
+          top: 20%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
         }
 
+        /* #drawMenu {
+          position: absolute;
+          top: 20%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #layerMenu {
+          position: absolute;
+          top: 25%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #editMenu {
+          position: absolute;
+          top: 30%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #editSymbolMenu {
+          position: absolute;
+          top: 35%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #situationMapMenu {
+          position: absolute;
+          top: 40%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #selectMenu {
+          position: absolute;
+          top: 45%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #groupMenu {
+          position: absolute;
+          top: 50%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #avoidRegionMenu {
+          position: absolute;
+          top: 55%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #advanceMenu {
+          position: absolute;
+          top: 60%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        } */
+
+        /* #alignMenu {
+          position: absolute;
+          top: 60%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #sameSizeMenu {
+          position: absolute;
+          top: 65%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+
+        #distributionMenu {
+            position: absolute;
+            top: 70%;
+            z-index: 888;
+            left: 260px;
+            color: #000000;
+            background-color: #fff;
+        } */
+
         #plottingPanel {
-            float: left;
-            background: #ffffff;
-            width: 250px;
-            height: 100%;
-            border: 1px solid #3473b7;
+          float: left;
+          background: #ffffff;
+          width: 250px;
+          height: 100%;
+          border: 1px solid #3473b7;
         }
     </style>
 </head>
@@ -54,154 +166,126 @@
         </div>
     </div>
 </div>
-<div id="plottingMenu" class="sticklr">
+<div id="plottingMenu" class="plotting-menu">
+    <li><span class="icon iconfont icon-circle-wrong" title="取消标绘"
+     onclick="cancelDraw()"></span></li>
     <li>
-        <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow"
-           data-i18n="[title]resources.text_cancelDraw"
-           onclick="cancelDraw()"></a>
+      <i class="icon iconfont icon-draw"></i>
+      <ul style="width: 160px;">
+          <li><span class="icon iconfont icon-draw" title="添加图层"
+           onclick="addPlottingLayer()"></span></li>
+          <li><span class="icon iconfont icon-lock" title="图层可锁定"
+           onclick="setPlottingLayerIsLocked()"></span></li>
+           <li><span class="icon iconfont icon-plot-layer-edit" title="图层可编辑"
+            onclick="setPlottingLayerIsEdit()"></span></li>
+          <li><span class="icon iconfont icon-plot-layer-selection" title="图层可选择"
+           onclick="setPlottingLayerIsSelected()"></span></li>
+           <li><span class="icon iconfont icon-style" title="清空图层上所有标号"
+            onclick="clearLayer()"></span></li>
+      </ul>
     </li>
     <li>
-        <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow"
-           data-i18n="[title]resources.text_input_value_clear"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_deleteMarker" onclick="deleteSymbol()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_clearLayers" onclick="clearLayer()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"/></li>
-        </ul>
+      <i class="icon iconfont icon-bound-rectangle-edit"></i>
+      <ul style="width: 128px;">
+          <li><span class="icon iconfont icon-bound-rectangle-edit" title="外接矩形编辑"
+           onclick="editCircusRetangle()"></span></li>
+          <li><span class="icon iconfont icon-node-edit" title="节点编辑"
+           onclick="editContorPoints()"></span></li>
+           <li><span class="icon iconfont icon-add-node" title="增加节点"
+            onclick="addControlPoints()"></span></li>
+            <li><span class="icon iconfont icon-delete-node" title="删除节点"
+             onclick="removeControlPoints()"></span></li>
+      </ul>
     </li>
     <li>
-        <a class="glyphicon glyphicon-pencil notArrow" data-i18n="[title]resources.text_editor"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_copy" onclick="copySymbol()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_cut" onclick="cutSymbol()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"/></li>
-            <li><input type="button" data-i18n="[value]resources.btn_paste" onclick="pasteSymbol()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"/></li>
-        </ul>
+      <i class="icon iconfont icon-copy2"></i>
+      <ul style="width: 192px;">
+          <li><span class="icon iconfont icon-copy2" title="复制标号"
+           onclick="copySymbol()"></span></li>
+          <li><span class="icon iconfont icon-shear" title="剪切标号"
+           onclick="cutSymbol()"></span></li>
+           <li><span class="icon iconfont icon-paste" title="粘贴标号"
+            onclick="pasteSymbol()"></span></li>
+            <li><span class="icon iconfont icon-delete" title="删除标号"
+             onclick="deleteSymbol()"></span></li>
+             <li><span class="icon iconfont icon-undo" title="撤销上一次编辑"
+              onclick="undo()"></span></li>
+              <li><span class="icon iconfont icon-redo" title="恢复上一次撤销"
+               onclick="redo()"></span></li>
+      </ul>
     </li>
     <li>
-        <a class="glyphicon glyphicon-plus notArrow" data-i18n="[title]resources.text_addLayer" onclick="addPlottingLayer()"></a>
+      <i class="icon iconfont icon-cloud-upload"></i>
+      <ul style="width: 64px;">
+          <li><span class="icon iconfont icon-cloud-upload" title="保存态势图"
+           onclick="saveSimulationMap()"></span></li>
+          <li><span class="icon iconfont icon-cloud-download" title="加载态势图"
+           onclick="loadSimulationMap()"></span></li>
+      </ul>
     </li>
     <li>
-        <a class="glyphicon plotting-lyphicon-save-simulationMap" data-i18n="[title]resources.text_situationMapOperation"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_saveSimulationMap" onclick="saveSimulationMap()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_loadSimulationMap" onclick="loadSimulationMap()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"/></li>
-        </ul>
+      <span class="icon iconfont icon-quanxuan" title="框选" onclick="multiSelectModel()"></span>
     </li>
-    <li>
-        <a class="glyphicon glyphicon-edit notArrow" data-i18n="[title]resources.text_editMarker"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_editRectangle" onclick="editCircusRetangle()"
-                       style="width:85px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_editNode" onclick="editContorPoints()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_addNode" onclick="addControlPoints()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"/></li>
-            <li><input type="button" data-i18n="[value]resources.btn_deleteNode" onclick="removeControlPoints()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
-        </ul>
-    </li>
-    <li>
-        <a class="glyphicon glyphicon-lock notArrow" data-i18n="[title]resources.text_aboutMode"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_lockSwitch" onclick="setPlottingLayerIsLocked()"
-                       style="width:85px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_editSwitch" onclick="setPlottingLayerIsEdit()"
-                       style="width:85px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_selectSwitch" onclick="setPlottingLayerIsSelected()"
-                       style="width:85px;height: 25px ;margin:0 auto;"/> </li>
-        </ul>
-    </li>
-    <li>
-        <a class="glyphicon glyphicon-check notArrow"   data-i18n="[title]resources.text_multiselect" onclick="multiSelectModel()"></a>
-
-    </li>
-    <li>
-        <a class="glyphicon glyphicon-align-justify notArrow" data-i18n="[title]resources.text_multiselectAlign"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_leftAlignment" onclick="setSymbolAlighLeft()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_rightAlignment" onclick="setSymbolAlighRight()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"/></li>
-
-            <li><input type="button" data-i18n="[value]resources.btn_topAlignment" onclick="setSymbolAlighUp()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-
-            <li><input type="button" data-i18n="[value]resources.btn_bottomAlignment" onclick="setSymbolAlighDown()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_verticalCenter" onclick="setSymbolAlighVerticalcenter()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_horizontalCenter" onclick="setSymbolAlighHorizontalcenter()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-        </ul>
-    </li>
-
-    <li>
-        <a class="glyphicon glyphicon-adjust notArrow" data-i18n="[title]resources.text_avoid"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_avoidEdit" onclick="drawAvoidRegion()"
-                       style="width:80px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_cancelAvoidEdit" onclick="doneAvoidEdit()"
-                       style="width:80px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_deleteAvoid" onclick="deleteAvoidEdit()"
-                       style="width:80px;height: 25px ;margin:0 auto;"/> </li>
-        </ul>
-    </li>
-    <li>
-        <a class="glyphicon glyphicon-gift notArrow" data-i18n="[title]resources.text_createGroup"></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_group" onclick="createGroupObjects()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_flags" onclick="createDrawFlags()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_unbundling" onclick="unGroupObject()"
-                       style="width:70px;height: 25px ;margin:0 auto;"/> </li>
-        </ul>
-    </li>
-    <li>
-        <a class="glyphicon glyphicon-arrow-left notArrow" data-i18n="[title]resources.btn_undo" onclick="undo()"></a>
-    </li>
-    <li>
-        <a class="glyphicon glyphicon-arrow-right notArrow" data-i18n="[title]resources.btn_redo" onclick="redo()"></a>
-    </li>
-    <li>
-        <a  class="glyphicon glyphicon-th-large notArrow" data-i18n="[title]resources.text_symbolEqualSize" ></a>
-        <ul>
-            <li><input type="button" data-i18n="[value]resources.btn_symbolEqualWidth" onclick="setSymbolEqualWidth()"
-                       style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_symbolEqualHeight" onclick="setSymbolEqualHeight()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
-            <li><input type="button" data-i18n="[value]resources.btn_symbolEqualWidthHeight" onclick="setSymbolEqualWidthHeight()"
-                       style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-        </ul>
-    </li>
-    <li>
-        <a  class="glyphicon glyphicon-th" data-i18n="[title]resources.text_symbolDistribution" ></a>
-        <ul>
-            <li><input type="button"  data-i18n="[value]resources.btn_symbolLevelDistribution" onclick="setSymbolLevelDistribution()"
-                       style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-            <li><input type="button" data-i18n="[value]resources.btn_symbolVerticalDistribution" onclick="setSymbolVerticalDistribution()"
-                       style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
-        </ul>
-    </li>
+     <li>
+       <i class="icon iconfont icon-combination"></i>
+       <ul style="width: 96px;">
+           <li><span class="icon iconfont icon-combination" title="对多选的标号，创建组合"
+            onclick="createGroupObjects()"></span></li>
+           <li><span class="icon iconfont icon-multiflag" title="对多选的旗子类标号，创建多旗"
+            onclick="createDrawFlags()"></span></li>
+            <li><span class="icon iconfont icon-decompose" title="解组组合或多旗标号"
+             onclick="unGroupObject()"></span></li>
+       </ul>
+     </li>
+     <li>
+       <i class="icon iconfont icon-draw-avoid"></i>
+       <ul style="width: 96px;">
+           <li><span class="icon iconfont icon-draw-avoid" title="避让编辑"
+            onclick="drawAvoidRegion()"></span></li>
+           <li><span class="icon iconfont icon-exit-avoid" title="退出避让编辑"
+            onclick="doneAvoidEdit()"></span></li>
+            <li><span class="icon iconfont icon-delete-avoid" title="删除避让"
+             onclick="deleteAvoidEdit()"></span></li>
+       </ul>
+     </li>
+     <li>
+       <i class="icon iconfont icon-align-left"></i>
+       <ul style="width: 354px;">
+           <li><span class="icon iconfont icon-align-left" title="左对齐"
+            onclick="setSymbolAlighLeft()"></span></li>
+           <li><span class="icon iconfont icon-align-right" title="右对齐"
+            onclick="setSymbolAlighRight()"></span></li>
+            <li><span class="icon iconfont icon-align-up" title="上对齐"
+             onclick="setSymbolAlighUp()"></span></li>
+            <li><span class="icon iconfont icon-align-bottom" title="下对齐"
+             onclick="setSymbolAlighDown()"></span> </li>
+           <li><span class="icon iconfont icon-vertical-center" title="竖直居中对齐"
+            onclick="setSymbolAlighVerticalcenter()"></span></li>
+           <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-horizontal-center" title="水平居中对齐"
+            onclick="setSymbolAlighHorizontalcenter()"></span></li>
+            <li><span class="icon iconfont icon-equal-width" title="等宽"
+             onclick="setSymbolEqualWidth()"></span></li>
+            <li><span class="icon iconfont icon-equal-high" title="等高"
+             onclick="setSymbolEqualHeight()"></span></li>
+             <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-equal-width-high" title="等大小"
+              onclick="setSymbolEqualWidthHeight()"></span></li>
+              <li><span class="icon iconfont icon-transverse-uniform-distribution" title="横向均匀分布"
+               onclick="setSymbolLevelDistribution()"></span></li>
+              <li><span class="icon iconfont icon-portrait-uniform-distribution" title="纵向均匀分布"
+               onclick="setSymbolVerticalDistribution()"></span></li>
+       </ul>
+     </li>
 </div>
 <div id="contentMe" style="width:100px;background-color:#f4f4f4;box-shadow:3px 3px 3px rgba(0,0,0,0.5);position:absolute;z-index:1000; top:20px;left:100px;display:none;text-align:center;">
     <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;">粘贴此处</a>
 </div>
-<script type="text/javascript" include="bootstrap,responsive,sticklr,plottingPanel" src="../js/include-web.js"></script>
+<script type="text/javascript" include="plottingPanel" src="../js/include-web.js"></script>
 <script type="text/javascript"  include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript" include="PlotPanel,StylePanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
-
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
     var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
-
 
     var map;
     map = L.map('map', {
@@ -503,6 +587,3 @@
 </script>
 </body>
 </html>
-
-
-

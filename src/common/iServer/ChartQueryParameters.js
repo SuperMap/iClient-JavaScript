@@ -1,66 +1,67 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
 
 /**
- * @class SuperMap.ChartQueryParameters
+ * @class ChartQueryParameters
+ * @deprecatedclass SuperMap.ChartQueryParameters
  * @category iServer Map Chart
- * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询和海图范围查询两类，通过属性 queryMode 指定查询模式。
- *            必设属性有：queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括 bounds。
- * @param {Object} options - 参数。 
- * @param {string} options.queryMode - 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"）。 
+ * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性查询、海图范围查询、海图要素范围查询三类，通过属性 queryMode 指定查询模式。
+ *            必设属性有：queryMode。 当进行海图属性查询和海图范围查询时，必设属性还包括chartLayerNames、chartQueryFilterParameters, 当进行海图范围查询和海图要素范围查询时，必设属性还包括 bounds。
+ * @param {Object} options - 参数。
+ * @param {string} options.queryMode - 海图查询模式类型，支持三种查询方式：海图属性查询（"ChartAttributeQuery"）和海图范围查询（"ChartBoundsQuery"）和海图要素范围查询（"ChartFeatureBoundsQuery"）。
  * @param {Array.<string>} options.chartLayerNames - 查询的海图图层的名称。
- * @param {Array.<{SuperMap.ChartQueryFilterParameter}>} options.chartQueryFilterParameters - 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。 
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.bounds] - 海图查询范围。当进行海图范围查询时，此参数为必选。
- * @param {boolean} [options.returnContent=true] - 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。 
- * @param {number} [options.startRecord=0] - 查询起始记录位置。 
+ * @param {Array.<ChartQueryFilterParameter>} options.chartQueryFilterParameters - 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} options.bounds - 海图查询范围。当进行海图范围查询和海图要素范围查询时，此为必选参数。
+ * @param {boolean} [options.returnContent=true] - 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。
+ * @param {number} [options.startRecord=0] - 查询起始记录位置。
  * @param {number} [options.expectCount] - 期望查询结果返回的记录数，该值大于0。
+ * @usage
  */
 export class ChartQueryParameters {
 
 
     constructor(options) {
         /**
-         * @member {string} SuperMap.ChartQueryParameters.prototype.queryMode
-         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
+         * @member {string} ChartQueryParameters.prototype.queryMode
+         * @description 海图查询模式类型，支持三种查询方式：海图属性查询（"ChartAttributeQuery"）和海图范围查询（"ChartBoundsQuery"）和海图要素范围查询（"ChartFeatureBoundsQuery"）。
          */
         this.queryMode = null;
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.ChartQueryParameters.prototype.bounds
+         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} ChartQueryParameters.prototype.bounds
          * @description 海图查询范围。
          */
-        this.bounds = null;
+         this.bounds = null;
 
         /**
-         * @member {Array.<string>} SuperMap.ChartQueryParameters.prototype.chartLayerNames
+         * @member {Array.<string>} ChartQueryParameters.prototype.chartLayerNames
          * @description 查询的海图图层的名称。
          */
         this.chartLayerNames = null;
 
         /**
-         * @member {Array.<SuperMap.ChartQueryFilterParameter>} SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters
+         * @member {Array.<ChartQueryFilterParameter>} ChartQueryParameters.prototype.chartQueryFilterParameters
          * @description 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
          */
         this.chartQueryFilterParameters = null;
 
         /**
-         * @member {boolean} [SuperMap.ChartQueryParameters.prototype.returnContent=true]
+         * @member {boolean} [ChartQueryParameters.prototype.returnContent=true]
          * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。
          */
         this.returnContent = true;
 
         /**
-         * @member {number} [SuperMap.ChartQueryParameters.prototype.startRecord=0]
+         * @member {number} [ChartQueryParameters.prototype.startRecord=0]
          * @description 查询起始记录位置。
          */
         this.startRecord = 0;
 
         /**
-         * @member {number} [SuperMap.ChartQueryParameters.prototype.expectCount]
+         * @member {number} [ChartQueryParameters.prototype.expectCount]
          * @description 期望查询结果返回的记录数，该值大于0。
          */
         this.expectCount = null;
@@ -70,7 +71,7 @@ export class ChartQueryParameters {
     }
 
     /**
-     * @function SuperMap.ChartQueryParameters.prototype.destroy
+     * @function ChartQueryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -85,7 +86,7 @@ export class ChartQueryParameters {
     }
 
     /**
-     * @function SuperMap.ChartQueryParameters.prototype.getVariablesJson
+     * @function ChartQueryParameters.prototype.getVariablesJson
      * @description 将属性信息转换成能够被服务识别的 JSON 格式字符串。
      * @returns {string} JSON 字符串。
      */
@@ -104,7 +105,7 @@ export class ChartQueryParameters {
             json += "\"chartLayerNames\":" + layerNames + ",";
         }
 
-        if (this.queryMode === "ChartBoundsQuery" && this.bounds) {
+        if ((this.queryMode === "ChartBoundsQuery" || this.queryMode === "ChartFeatureBoundsQuery") && this.bounds) {
             json += "\"bounds\":" + "{" + "\"leftBottom\":" + "{" + "\"x\":" + this.bounds.left + "," +
                 "\"y\":" + this.bounds.bottom + "}" + "," + "\"rightTop\":" + "{" + "\"x\":" + this.bounds.right + "," +
                 "\"y\":" + this.bounds.top + "}" + "},";
@@ -131,5 +132,3 @@ export class ChartQueryParameters {
         return json;
     }
 }
-
-SuperMap.ChartQueryParameters = ChartQueryParameters;

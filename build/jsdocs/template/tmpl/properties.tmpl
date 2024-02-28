@@ -89,7 +89,7 @@
             <?js if (props.hasDefault) {?>
                 <td class="default">
                 <?js if (typeof prop.defaultvalue !== 'undefined') {?>
-                    <?js= (typeof prop.defaultvalue === 'string') ?self.linkto( prop.defaultvalue, self.htmlsafe( prop.defaultvalue)): self.htmlsafe( prop.defaultvalue) ?>
+                    <?js= (typeof prop.defaultvalue === 'string') ?self.linkto( prop.defaultvalue, self.htmlsafe( prop.defaultvalue), 'defaultvalue'): self.htmlsafe( prop.defaultvalue) ?>
                 <?js } ?>
                 </td>
             <?js } ?>

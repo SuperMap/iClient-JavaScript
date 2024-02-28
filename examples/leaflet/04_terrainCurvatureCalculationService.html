@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -23,22 +23,22 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
         terrainCurvatureCalculationProcess();
     });
 
     function terrainCurvatureCalculationProcess() {
         //创建地形曲率计算服务实例
-        terrainCurvatureCalculationService = L.supermap.spatialAnalystService(serviceUrl);
+        terrainCurvatureCalculationService = new L.supermap.SpatialAnalystService(serviceUrl);
         //创建地形曲率计算参数实例
-        terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+        terrainCurvatureCalculationParameters = new L.supermap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: "CurvatureA",
             deleteExistResultDataset: true
         });
         //向iServer发起地形曲率计算请求
-        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters).then(function (serviceResult) {
             terrainCurvatureCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -46,35 +46,35 @@
     }
 
     function showAnalysisResult_ThemeGridRange() {
-        themeService = L.supermap.themeService(baseUrl);
-        var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
+        themeService = new L.supermap.ThemeService(baseUrl);
+        var themeGridRangeIteme1 = new L.supermap.ThemeGridRangeItem({
                 start: -9000000,
                 end: -1000,
-                color: new SuperMap.ServerColor(0, 0, 255)
+                color: new L.supermap.ServerColor(0, 0, 255)
             }),
-            themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme2 = new L.supermap.ThemeGridRangeItem({
                 start: -1000,
                 end: -1,
-                color: new SuperMap.ServerColor(0, 0, 125)
+                color: new L.supermap.ServerColor(0, 0, 125)
             }),
-            themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme3 = new L.supermap.ThemeGridRangeItem({
                 start: -1,
                 end: 1,
-                color: new SuperMap.ServerColor(0, 125, 125)
+                color: new L.supermap.ServerColor(0, 125, 125)
             }),
-            themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme4 = new L.supermap.ThemeGridRangeItem({
                 start: 1,
                 end: 1000,
-                color: new SuperMap.ServerColor(0, 125, 0)
+                color: new L.supermap.ServerColor(0, 125, 0)
             }),
-            themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+            themeGridRangeIteme5 = new L.supermap.ThemeGridRangeItem({
                 start: 1000,
                 end: 20000000,
-                color: new SuperMap.ServerColor(0, 255, 0)
+                color: new L.supermap.ServerColor(0, 255, 0)
             });
-        themeGridRange = new SuperMap.ThemeGridRange({
+        themeGridRange = new L.supermap.ThemeGridRange({
             reverseColor: false,
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: L.supermap.RangeMode.EQUALINTERVAL,
             //栅格分段专题图子项数组
             items: [themeGridRangeIteme1,
                 themeGridRangeIteme2,
@@ -83,17 +83,17 @@
                 themeGridRangeIteme5
             ]
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        themeParameters = new L.supermap.ThemeParameters({
             //制作专题图的数据集（地形曲率计算的结果数据集）
             datasetNames: [terrainCurvatureCalculationResult.averageCurvatureResult.dataset.split('@')[0]],
             dataSourceNames: ["Jingjin"],
             joinItems: null,
             themes: [themeGridRange]
         });
-        themeService.getThemeInfo(themeParameters, function (serviceResult1) {
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult1) {
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
-                themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                themeLayer = new L.supermap.TiledMapLayer(baseUrl, {
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

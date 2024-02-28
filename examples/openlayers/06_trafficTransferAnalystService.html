@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -66,7 +66,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [4700, -3600],
                 zoom: 2,
@@ -150,7 +150,7 @@
 
     function execTransSolutionsQuery(tactic) {
         paths.points = [26, 180];
-        var params = new SuperMap.TransferSolutionParameters({
+        var params = new ol.supermap.TransferSolutionParameters({
             solutionCount: 6,        //最大换乘导引数量
             transferTactic: tactic,  //公交换乘策略类型
             walkingRatio: 10,        //步行与公交的消耗权重比
@@ -214,7 +214,6 @@
         }
         var table = $("<table id='trafficRes' border='1'></table>");
         var startStop = $("<tr></tr>");
-        $("<td class='start_transfer' width='10px'></td>").appendTo(startStop);
         $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[0].startPosition.x + "," + transGuide.items[0].startPosition.y + "</span>" + transGuide.items[0].startStopName + "</span></td>").appendTo(startStop);
         startStop.appendTo(table);
         var indexY = 0;
@@ -222,7 +221,6 @@
             var item = transGuide.items[m];
             var tr2 = $("<tr></tr>");
             if (item.isWalking) {
-                $("<td class='step_transfer' ></td>").appendTo(tr2);
                 $("<td>" + resources.text_walkTO + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
                 $("<td>" + parseInt(item.distance) + resources.msg_m + "</td>").appendTo(tr2);
             } else {
@@ -238,7 +236,6 @@
                         }
                     }
                 }
-                $("<td class='bus_transfer'></td>").appendTo(tr2);
                 var points = item.route.points, pointStr = "";
                 for (var i = 0; i < points.length; i++) {
                     pointStr += points[i].x + " " + points[i].y;
@@ -254,7 +251,6 @@
         }
         var endStop = $("<tr></tr>");
         endStop.appendTo(table);
-        $("<td class='end_transfer' width='10px'></td>").appendTo(endStop);
         $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[transGuide.items.length - 1].endPosition.x + "," + transGuide.items[transGuide.items.length - 1].endPosition.y + "</span>" + transGuide.items[transGuide.items.length - 1].endStopName + "</span></td>").appendTo(endStop);
         return table;
     }
@@ -361,12 +357,12 @@
     }
 
     function execTransPathQuery(id, transLines) {
-        var params = new SuperMap.TransferPathParameters({
+        var params = new ol.supermap.TransferPathParameters({
             points: paths["points"],
             transferLines: transLines
         });
         new ol.supermap.TrafficTransferAnalystService(serviceUrl)
-            .analysisTransferPath(params, function (serviceResult) {
+            .analysisTransferPath(params).then(function (serviceResult) {
                 $("#transferInfo-" + id).empty();
                 var transGuide = serviceResult.result;
                 transSolutions = paths["transSolutions"];

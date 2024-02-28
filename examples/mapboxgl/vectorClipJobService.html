@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* mapbox-gl-draw (https://github.com/mapbox/mapbox-gl-draw)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +98,7 @@
             zoom: 11
         });
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-        map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+        map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
         var draw = new MapboxDraw({
             displayControlsDefault: false,
             controls: {
@@ -114,7 +118,7 @@
             }
         });
 
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        mapboxgl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl, {
             withCredentials: window.isLocal
@@ -162,7 +166,7 @@
                     clipParam = "";
                 }
             }
-            var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
+            var vectorClipJobsParameter = new mapboxgl.supermap.VectorClipJobsParameter({
                 datasetName: $('#datasetName').val(),
                 datasetVectorClip: clipParam,
                 geometryClip: points,
@@ -177,7 +181,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        mapboxgl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -34,7 +38,7 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var plottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
     plottingLayer.addTo(map);
     var queryPlottingLayer = L.supermap.plotting.plottingLayer("plot", serverUrl);
@@ -180,7 +184,11 @@
             queryResult = L.supermap.plotting.query(map).getGObjectsInCircle(latLngs[0], radius);
         }
         if (symbolType === SuperMap.Plot.SymbolType.RECTANGLESYMBOL) {
-            queryResult = L.supermap.plotting.query(map).getGObjectsInRect(latLngs[0], latLngs[1]);
+			if(latLngs[0].lng < latLngs[1].lng){
+                queryResult = L.supermap.plotting.query(map).getGObjectsInRect(latLngs[0], latLngs[1]);
+            } else {
+                queryResult = L.supermap.plotting.query(map).getGObjectsInRect(latLngs[1], latLngs[0]);
+            }
         }
         if (queryResult && queryResult.length !== 0) {
             for (var i in queryResult) {

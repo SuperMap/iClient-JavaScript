@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -248,7 +248,7 @@
         if (!checkUrl(loginUrl)) {
             return;
         }
-        SuperMap.SecurityManager
+        L.supermap.SecurityManager
             .loginiServer(loginUrl, userName, password)
             .then(function (result) {
                 console.log(JSON.stringify(result));
@@ -265,7 +265,7 @@
     /*登出*/
     function logoutiServer() {
         var loginUrl = $("#loginUrl_iserver").val();
-        SuperMap.SecurityManager
+        L.supermap.SecurityManager
             .logoutiServer(loginUrl)
             .then(function (succeed) {
                 if (succeed) {
@@ -285,16 +285,16 @@
         if (!checkUrl(serverTokenUrl)) {
             return;
         }
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.ISERVER, {
+        var serverInfo = new L.supermap.ServerInfo(L.supermap.ServerType.ISERVER, {
             server: serverTokenUrl
         });
-        SuperMap.SecurityManager.registerServers([serverInfo]);
+        L.supermap.SecurityManager.registerServers([serverInfo]);
         var userName = $('#username_iserver').val();
         var password = $('#password_iserver').val();
         var clientType = $('#clientType_iserver').val();
         var referer = $('#referer_iserver').val();
         var expiration = $('#expiration_iserver').val();
-        SuperMap.SecurityManager.generateToken(serverTokenUrl, new SuperMap.TokenServiceParameter({
+        L.supermap.SecurityManager.generateToken(serverTokenUrl, new L.supermap.TokenServiceParameter({
             userName: userName,
             password: password,
             clientType: clientType,
@@ -315,11 +315,11 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        SuperMap.SecurityManager.destroyToken(serviceUrl);
+        L.supermap.SecurityManager.destroyToken(serviceUrl);
         //使用前要先注册token,如果为该地址注册过则不用重复注册
-        SuperMap.SecurityManager.registerToken(serviceUrl, token);
-        L.supermap
-            .mapService(serviceUrl)
+        L.supermap.SecurityManager.registerToken(serviceUrl, token);
+        new L.supermap
+            .MapService(serviceUrl)
             .getMapInfo(function (json) {
                 if (json.error) {
                     widgets.alert.showAlert(JSON.stringify(json.error), false);
@@ -343,14 +343,14 @@
             return;
         }
         //使用前要先注册token,如果为该地址注册过则不用重复注册
-        SuperMap.SecurityManager.registerToken(mapUrl, token);
+        L.supermap.SecurityManager.registerToken(mapUrl, token);
 
         var onlineMap = L.map('iserver_map', {
             center: [30, 104],
             maxZoom: 18,
             zoom: 2
         });
-        L.supermap.tiledMapLayer(mapUrl).addTo(onlineMap);
+        new L.supermap.TiledMapLayer(mapUrl).addTo(onlineMap);
     }
 
     /*出图 end*/

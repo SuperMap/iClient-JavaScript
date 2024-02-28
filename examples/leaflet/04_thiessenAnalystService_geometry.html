@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -25,7 +25,7 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
         .addTo(map)
         .once("load", function () {
             thiessenAnalystProcess();
@@ -44,13 +44,13 @@
             [5472.712382, -2189.15344],
             [5752.716961, -2425.40363]
         ];
-        gThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
+        gThiessenAnalystParameters = new L.supermap.GeometryThiessenAnalystParameters({
             points: pointsList
         });
-        thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+        thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters).then(function (serviceResult) {
             L.geoJSON(serviceResult.result.regions, {weight: 2}).addTo(map);
-        })
+        });
     }
 </script>
 </body>

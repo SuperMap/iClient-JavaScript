@@ -1,18 +1,20 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.CommonContainer
+ * @class CommonContainer
+ * @aliasclass Components.CommonContainer
+ * @deprecatedclass SuperMap.Components.CommonContainer
  * @classdesc 组件统一外框。
  * @version 9.1.1
- * @param {Object} options - 组件可选参数。
+ * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 标题。
  * @category Components Common
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
+ * @usage
  */
 export class CommonContainer extends TemplateBase {
     constructor(options) {
@@ -47,20 +49,18 @@ export class CommonContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.CommonContainer.prototype.getContentElement
-     * @description 获取内容元素容器
+     * @function CommonContainer.prototype.getContentElement
+     * @description 获取内容元素容器。
      */
     getContentElement() {
         return this.content;
     }
 
     /**
-     * @function SuperMap.Components.CommonContainer.prototype.appendContent
-     * @description 填充内容元素
+     * @function CommonContainer.prototype.appendContent
+     * @description 填充内容元素。
      */
     appendContent(element) {
         this.content.appendChild(element);
     }
 }
-
-SuperMap.Components.CommonContainer = CommonContainer;

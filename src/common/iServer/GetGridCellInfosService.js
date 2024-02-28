@@ -1,29 +1,24 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
 
 /**
- * @class SuperMap.GetGridCellInfosService
+ * @class GetGridCellInfosService
+ * @deprecatedclass SuperMap.GetGridCellInfosService
  * @category iServer Data Grid
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息。
- * @param {string} url - 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
- * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {string} url - 服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+ * @param {Object} options - 参数。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example
- * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
- *     "processCompleted": queryCompleted,
- *     "processFailed": queryError
- *     }
- * });
- *
+ * var myService = new GetGridCellInfosService(url);
+ * @usage
  */
 export class GetGridCellInfosService extends CommonServiceBase {
 
@@ -31,32 +26,32 @@ export class GetGridCellInfosService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.GetGridCellInfosService.prototype.datasetName
+         * @member {string} GetGridCellInfosService.prototype.datasetName
          * @description 数据集名称。
          */
         this.datasetName = null;
 
         /**
-         * @member {string} SuperMap.GetGridCellInfosService.prototype.dataSourceName
+         * @member {string} GetGridCellInfosService.prototype.dataSourceName
          * @description 数据源名称。
          */
         this.dataSourceName = null;
 
         /**
-         * @member {string} SuperMap.GetGridCellInfosService.prototype.datasetType
+         * @member {string} GetGridCellInfosService.prototype.datasetType
          * @description 数据集类型。
          */
         this.datasetType = null;
 
         /**
-         * @member {number} SuperMap.GetGridCellInfosService.prototype.X
-         * @description 要查询的地理位置X轴
+         * @member {number} GetGridCellInfosService.prototype.X
+         * @description 要查询的地理位置 X 坐标。
          */
         this.X = null;
 
         /**
-         * @member {number} SuperMap.GetGridCellInfosService.prototype.Y
-         * @description 要查询的地理位置Y轴
+         * @member {number} GetGridCellInfosService.prototype.Y
+         * @description 要查询的地理位置 Y 坐标。
          */
         this.Y = null;
         if (options) {
@@ -66,7 +61,7 @@ export class GetGridCellInfosService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GetGridCellInfosService.prototype.destroy
+     * @function GetGridCellInfosService.prototype.destroy
      * @override
      */
     destroy() {
@@ -80,72 +75,76 @@ export class GetGridCellInfosService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.GetGridCellInfosService.prototype.processAsync
+     * @function GetGridCellInfosService.prototype.processAsync
      * @description 执行服务，查询数据集信息。
-     * @param {SuperMap.GetGridCellInfosParameters} params - 查询参数。
+     * @param {GetGridCellInfosParameters} params - 查询参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof GetGridCellInfosParameters)) {
             return;
         }
         Util.extend(this, params);
         var me = this;
         me.url = Util.urlPathAppend(me.url,`datasources/${me.dataSourceName}/datasets/${me.datasetName}`);
-        me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
-    }
-
-    /**
-     * @function SuperMap.GetGridCellInfosService.prototype.queryRequest
-     * @description 执行服务，查询。
-     * @callback {function} successFun - 成功后执行的函数。
-     * @callback {function} failedFunc - 失败后执行的函数。
-     */
-    queryRequest(successFun, failedFunc) {
-        var me = this;
-        me.request({
-            method: "GET",
-            data: null,
-            scope: me,
-            success: successFun,
-            failure: failedFunc
+        return me.request({
+          method: "GET",
+          data: null,
+          scope: me,
+          success({result}) {
+            callback && me.getDatasetInfoCompleted(result, callback);
+          },
+          failure: callback
+        }).then(({result}) => {
+          return me.getDatasetInfoCompleted(result);
         });
     }
 
     /**
-     * @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoCompleted
+     * @function GetGridCellInfosService.prototype.getDatasetInfoCompleted
      * @description 数据集查询完成，执行此方法。
      * @param {Object} result - 服务器返回的结果对象。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getDatasetInfoCompleted(result) {
+    getDatasetInfoCompleted(result, callback) {
         var me = this;
         result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
-        me.queryGridInfos();
+        return me.queryGridInfos(callback);
     }
 
     /**
-     * @function SuperMap.GetGridCellInfosService.prototype.queryGridInfos
-     * @description 执行服务，查询数据集栅格信息信息。
+     * @function GetGridCellInfosService.prototype.queryGridInfos
+     * @description 执行服务，查询数据集栅格信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    queryGridInfos() {
+    queryGridInfos(callback) {
         var me = this;
-        me.url = Util.urlPathAppend(me.url, me.datasetType == 'GRID' ? 'gridValue' : 'imageValue');
-        if (me.X != null && me.Y != null) {
-            me.url = Util.urlAppend(me.url, `x=${me.X}&y=${me.Y}`);
+        var datasetType = me.datasetType === 'GRID' ? 'gridValue' : 'imageValue';
+        var queryMode = me.bounds ? datasetType + 's' : datasetType;
+        var url = Util.urlPathAppend(me.url, queryMode);
+        var method = 'GET';
+        var data = null;
+        if (Array.isArray(me.bounds)) {
+            method = 'POST';
+            data = me.bounds;
+        } else {
+            if (me.bounds) {
+                url = Util.urlAppend(url, `bounds=${encodeURIComponent(JSON.stringify(me.bounds))}`);
+            } else if (me.X != null && me.Y != null) {
+                url = Util.urlAppend(url, `x=${me.X}&y=${me.Y}`);
+            }
         }
-        me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed);
-    }
-
-
-    /**
-     * @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoFailed
-     * @description 数据集查询失败，执行此方法。
-     * @param {Object} result - 服务器返回的结果对象。
-     */
-    getDatasetInfoFailed(result) {
-        var me = this;
-        me.serviceProcessFailed(result);
+        return me.request({
+            url,
+            method: method,
+            data: data,
+            scope: me,
+            success: callback,
+            failure: callback
+        });
     }
 }
-
-SuperMap.GetGridCellInfosService = GetGridCellInfosService;

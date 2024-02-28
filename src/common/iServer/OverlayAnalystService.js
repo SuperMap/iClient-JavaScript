@@ -1,33 +1,30 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {DatasetOverlayAnalystParameters} from './DatasetOverlayAnalystParameters';
 import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParameters';
+import { DataFormat } from '../REST';
 
 /**
- * @class SuperMap.OverlayAnalystService
+ * @class OverlayAnalystService
+ * @deprecatedclass SuperMap.OverlayAnalystService
  * @category iServer SpatialAnalyst OverlayAnalyst
  * @classdesc 叠加分析服务类。
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
- * @param {string} url - 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
- * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @param {string} url - 服务地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON、GeoJSON、FGB 三种格式。参数格式为 "ISERVER"，"GEOJSON"，"FGB"。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example 例如：
  * (start code)
- * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
- *     eventListeners: {
- *	       "processCompleted": OverlayCompleted,
- *		   "processFailed": OverlayFailed
- *		   }
- * });
+ * var myOverlayAnalystService = new OverlayAnalystService(url);
  * (end)
+ * @usage
  */
 
 export class OverlayAnalystService extends SpatialAnalystBase {
@@ -36,7 +33,7 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         super(url, options);
 
         /**
-         * @member {string} SuperMap.OverlayAnalystService.prototype.mode
+         * @member {string} OverlayAnalystService.prototype.mode
          * @description 叠加分析类型
          */
         this.mode = null;
@@ -44,7 +41,6 @@ export class OverlayAnalystService extends SpatialAnalystBase {
         if (options) {
             Util.extend(this, options);
         }
-
         this.CLASS_NAME = "SuperMap.OverlayAnalystService";
     }
 
@@ -57,11 +53,13 @@ export class OverlayAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.OverlayAnalystService.prototype.processAsync
+     * @function OverlayAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.OverlayAnalystParameters} parameter - 叠加分析参数类。
+     * @param {OverlayAnalystParameters} parameter - 叠加分析参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var parameterObject = {};
         var me = this;
 
@@ -80,16 +78,18 @@ export class OverlayAnalystService extends SpatialAnalystBase {
             }
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-        me.url = Util.urlAppend(me.url, 'returnContent=true');
+        this.returnContent = true;
         var jsonParameters = Util.toJSON(parameterObject);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
-}
 
-SuperMap.OverlayAnalystService = OverlayAnalystService;
+    dataFormat() {
+      return [DataFormat.GEOJSON, DataFormat.ISERVER, DataFormat.FGB];
+    }
+}

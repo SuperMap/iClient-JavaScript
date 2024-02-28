@@ -1,114 +1,480 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title data-i18n="resources.title_getGridCellInfos"></title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <!-- <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script> -->
     <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
     <style>
-        .ol-popup {
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
             position: absolute;
-            background-color: white;
-            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
-            min-width: 280px;
+            width: 100%;
+            height: 100%;
         }
 
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
+        .sidebar-config-wrap {
             position: absolute;
-            pointer-events: none;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 400px;
+            padding: 20px;
+            background: #fff;
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            box-shadow: -2px 0 8px rgb(0 0 0 / 15%);
         }
 
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
+        .sidebar-config-wrap .panel-group .panel {
+            border-color: transparent;
+            background: transparent;
+            color: rgba(0, 0, 0, 0.85);
         }
 
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
+        .sidebar-config-wrap .panel .panel-heading {
+            background: #fafafa;
+            color: rgba(0, 0, 0, 0.85);
+            border-color: #e8e8e8 !important;
+            position: relative;
         }
+
+        .sidebar-config-wrap .panel .panel-heading::before {
+            content: '';
+            height: 100%;
+            width: 2px;
+            background: #3394dc;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+        }
+
+        .sidebar-config-wrap .button-group {
+            margin: 0 auto;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .sidebar-config-wrap .button-group button {
+            width: 30%;
+            outline: none;
+        }
+
+        .sidebar-config-wrap .btn-search {
+            width: 24%;
+            text-align: center;
+            outline: none;
+            height: 32px;
+            padding: 0 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            color: rgba(0, 0, 0, 0.65);
+            border-color: #d9d9d9;
+            background-color: rgb(255, 255, 255);
+        }
+
+        .sidebar-config-wrap .btn-search:hover,
+        .sidebar-config-wrap .btn-search:active,
+        .sidebar-config-wrap .btn-search:focus {
+            color: #40a9ff;
+            border-color: #40a9ff;
+            background-color: rgb(255, 255, 255);
+            box-shadow: none;
+        }
+
+        .sidebar-config-wrap button:focus {
+            outline: none !important;
+        }
+
+        .sidebar-config-wrap .panel-title a {
+            width: 100%;
+            display: block;
+            text-decoration: none !important;
+            overflow: hidden;
+        }
+
+        .sidebar-config-wrap .panel-title a span.glyphicon {
+            float: right;
+        }
+
+        .sidebar-config-wrap .panel-title a[aria-expanded='true'] .glyphicon-chevron-down {
+            display: none;
+        }
+
+        .sidebar-config-wrap .panel-title a[aria-expanded='false'] .glyphicon-chevron-up {
+            display: none;
+        }
+
+        .table-containerAll {
+            overflow: auto;
+            max-height: 475px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .table-container {
+            max-height: 320px;
+            overflow: auto;
+            border-bottom: 1px solid #e8e8e8;
+            margin-bottom: 10px;
+        }
+
+        .table-bordered>thead>tr {
+            border-bottom: none !important;
+        }
+
+        .table-bordered>thead>tr>th,
+        .table-bordered>tbody>tr>td {
+            vertical-align: middle !important;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .table-bordered>thead>tr>th {
+            background: #fafafa;
+            color: rgba(0, 0, 0, 0.85);
+            font-weight: 500;
+            border-color: #e8e8e8 !important;
+            padding: 16px !important;
+            overflow-wrap: break-word;
+        }
+
+        .table-bordered>tbody>tr>td {
+            text-align: center;
+            color: rgba(0, 0, 0, 0.85);
+            font-weight: 500;
+            border-color: #e8e8e8 !important;
+            padding: 8px !important;
+            overflow-wrap: break-word;
+        }
+
+        .btn.btn-default {
+            padding-right: 15px;
+        }
+
     </style>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div id="popup" class="ol-popup">
-    <div id="popup-content"></div>
-</div>
-<script type="text/javascript">
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var overlay = new ol.Overlay(({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    }));
-    var map, baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
-            url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
-    map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
-        view: new ol.View({
-            center: [0, 0],
-            zoom: 3,
-            projection: 'EPSG:4326',
-            multiWorld: true
-        }),
-        overlays: [overlay]
-    });
-    var layer = new ol.layer.Tile({
-        source: new ol.source.TileSuperMapRest({
-            url: baseUrl
-        }),
-        projection: 'EPSG:4326'
-    });
-    map.addLayer(layer);
 
-    map.on("click", function (evt) {
-        var x = evt.coordinate[0];
-        var y = evt.coordinate[1];
-        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
-            return;
-        }
-        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
-            dataSourceName: "World",
-            datasetName: "WorldEarth",
-            X: x,
-            Y: y
+<body style=" margin: 0;overflow: hidden;background: #fff;">
+    <div id="map"></div>
+    <div class="panel-group sidebar-config-wrap" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                        <span data-i18n="resources.text_query"></span>
+                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body btn-draw">
+                    <button id="drawPoint" value='Point' type="button" class="btn btn-search"
+                        data-i18n="resources.text_input_value_drawPoint">
+                    </button>
+                    <button id="drawPolygon" value='Polygon' type="button" class="btn btn-search"
+                        data-i18n="resources.text_input_value_drawPolygon">
+                    </button>
+                    <button id="drawRectangle" value='Box' type="button" class="btn btn-search"
+                        data-i18n="resources.text_input_value_drawRectangle">
+                    </button>
+                    <button id="drawCircle" value='Circle' type="button" class="btn btn-search"
+                        data-i18n="resources.btn_drawCircle">
+                    </button>
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="query" data-i18n="resources.text_query"
+                            onclick="queryResult()"></button>
+                        <button class="btn btn-primary" id="printBtn" data-i18n="resources.text_reset"
+                            onclick="clearSearchResult(true)"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="exportOptions">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                        href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <span data-i18n="resources.text_queryResult"></span>
+                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="exportOptions">
+                <div id="tableContainerAll" class="panel-body table-containerAll">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript">
+        var map,
+            baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/世界地图_Day",
+            url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data",
+            draw,
+            querylist = [],
+            bounds
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({ attributionOptions: { collapsed: false } }).extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
+            view: new ol.View({
+                center: [120, 28],
+                zoom: 6,
+                projection: 'EPSG:4326',
+                multiWorld: true,
+            })
+        });
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: baseUrl
+            }),
+            projection: 'EPSG:4326'
         });
 
-        new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-            if (!serviceResult.result) {
+        var source = new ol.source.Vector({ wrapX: false });
+        var vector = new ol.layer.Vector({
+            source: source
+        });
+        map.addLayer(layer);
+        map.addLayer(vector);
+
+        function queryResult() {
+            var parm = {
+                dataSourceName: 'World',
+                datasetName: 'WorldEarth'
+            }
+            var len = querylist.length;
+            if (len === 1) {
+                if (querylist[0].hasOwnProperty('point')) {
+                    parm.X = querylist[0]['point']['x'];
+                    parm.Y = querylist[0]['point']['y'];
+                } else {
+                    parm.bounds = querylist[0];
+                }
+
+            } else {
+                parm.bounds = querylist;
+            }
+            var getGridCellInfosParam = new ol.supermap.GetGridCellInfosParameters(parm);
+            new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam).then(res => {
+                $('#tableContainerAll').empty()
+                clearInteraction();
+                appendTable(res);
+            })
+        }
+        function getValuesCount(res) {
+            var count = 0;
+            if (!res.object.bounds) {
+                count += 1;
+            } else if (res.object.bounds && !Array.isArray(res.object.bounds)) {
+                count += res.result.valuesCount;
+            } else {
+                var customResult = res.result.customResult;
+                for (var i = 0; i < customResult.length; i++) {
+                    if (customResult[i].values) {
+                        count += customResult[i].valuesCount;
+                    } else {
+                        count += 1;
+                    }
+                }
+            }
+            return count;
+        }
+        function appendTable(res) {
+            if (!res) {
                 return;
             }
-            var result = serviceResult.result;
-            var innerHTML = resources.text_gridQueryResult + "<br>" + "column: " + result.column + "<br>";
-            innerHTML += "row: " + result.row + "<br>";
-            innerHTML += "value: " + result.value + "<br>";
-            content.innerHTML = innerHTML;
-            overlay.setPosition([evt.coordinate[0], evt.coordinate[1]]);
-        });
-    });
-</script>
+            if ((res.error && res.error.code === 400) || getValuesCount(res) > 5000) {
+                return widgets.alert.showAlert(resources.msg_outOfQueryRange, false);
+            }
+            // 展开table
+            collapseTable();
+            if (!res.object.bounds) {
+                var tableContainer = createPointTable(res.result, 1)
+                $('#tableContainerAll').append(tableContainer);
+                return;
+            }
+            if (res.object.bounds && !Array.isArray(res.object.bounds)) {
+                var tableContainer = createAreaTable(res.result.values);
+                $('#tableContainerAll').append(tableContainer);
+                return;
+            }
+            if (Array.isArray(res.object.bounds)) {
+                var content = res.result.customResult;
+                if (content.length === 0) {
+                    return;
+                }
+                for (var i = 0; i < content.length; i++) {
+                    if (content[i].values) {
+                        var table = createAreaTable(content[i].values);
+                        $('#tableContainerAll').append(table);
+                    } else {
+                        var table = createPointTable(content[i], 1)
+                        $('#tableContainerAll').append(table);
+                    }
+                }
+            }
+        }
+        function clearSearchResult(reset) {
+            source.clear();
+            querylist.length = 0;
+            $('#tableContainerAll').empty();
+        }
+        function collapseTable() {
+            $('#collapseTwo').addClass('in');
+        }
+        function createPointTable(content, index) {
+            var tbodyHtml = '';
+            tbodyHtml += generateTbodyHtml(1, content);
+            return generateTableHtml(tbodyHtml);
+        }
+        function createAreaTable(values) {
+            var tbodyHtml = '';
+
+            var index = 1;
+            for (var i = 0; i < values.length; i++) {
+                if (values[i].length !== 0) {
+                    var values2 = values[i];
+                    for (var j = 0; j < values2.length; j++) {
+                        var content = values2[j];
+                        tbodyHtml += generateTbodyHtml(index, content);
+                        index++;
+                    }
+                }
+            }
+            return generateTableHtml(tbodyHtml);
+        }
+        function generateTableHtml(tbodyHtml) {
+            var tableContainer = document.createElement('div');
+            tableContainer.className = 'table-container';
+
+            var table = document.createElement('table');
+            table.className = 'table table-bordered';
+
+            var thead = document.createElement('thead');
+            var tbody = document.createElement('tbody');
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            var theadInfo = '<tr><th>' + resources.text_index + '</th><th>' + resources.text_row_index + '</th><th>' + resources.text_column_index + '</th><th>' + resources.text_color_number + '</th><th>' + resources.text_color_rgba + '</th></tr>';
+            thead.append(theadInfo);
+            thead.innerHTML = theadInfo;
+            tbody.innerHTML = tbodyHtml;
+            tableContainer.append(table);
+            return tableContainer;
+        }
+        function generateTbodyHtml(index, content) {
+            let h = ''
+            h += '<tr>' +
+                '<td>' +
+                index +
+                '</td>' +
+                '<td>' +
+                content.row +
+                '</td>' +
+                '<td>' +
+                content.column +
+                '</td>' +
+                '<td>' +
+                content.value +
+                '</td>' +
+                '<td>' +
+                JSON.stringify(content.color) +
+                '</td>' +
+                '</tr>';
+            return h;
+        }
+        var buttons = $('.btn-draw').children();
+        buttons.map(function (key, element) {
+            if (element instanceof HTMLDivElement) {
+                return;
+            }
+            var value = buttons[key].value;
+            $(buttons[key]).on('click', function () {
+                clearInteraction();
+                draw = new ol.interaction.Draw({
+                    source: source,
+                    type: buttons[key].value === "Box" ? 'Circle' : buttons[key].value,
+                    snapTolerance: 20,
+                    geometryFunction: buttons[key].value === "Box" ? ol.interaction.Draw.createBox(4) : null
+                })
+                map.addInteraction(draw);
+                snap = new ol.interaction.Snap({
+                    source: source
+                });
+                map.addInteraction(snap);
+
+                draw.on('drawend', function (event) {
+                    var feature = event.feature;
+                    var geometry = feature.getGeometry();
+                    var type = geometry.getType();
+                    if (type === 'Circle') {
+                        var center = geometry.getCenter();
+                        var radius = geometry.getRadius();
+                        querylist.push({
+                            'circle': {
+                                'centerPoint': {
+                                    'x': center[0],
+                                    'y': center[1]
+                                },
+                                'radius': radius
+                            }
+                        })
+                    } else if (type === 'Point') {
+                        var coordinates = geometry.getCoordinates();
+                        querylist.push({
+                            'point': {
+                                'x': coordinates[0],
+                                'y': coordinates[1],
+                            }
+                        })
+                    } else if (type === 'Polygon') {
+                        var coordinates = geometry.getCoordinates();
+                        coordinate = coordinates[0];
+                        DvalueXButtom = coordinate[1][0] - coordinate[0][0];
+                        DvalueXTop = coordinate[2][0] - coordinate[3][0];
+
+                        DvalueYLeft = coordinate[3][1] - coordinate[0][1];
+                        DvalueYRight = coordinate[2][1] - coordinate[1][1];
+
+                        if (DvalueXButtom === DvalueXTop && DvalueYLeft === DvalueYRight) {
+                            querylist.push({
+                                'leftBottom': { 'x': coordinate[0][0], 'y': coordinate[0][1] },
+                                'rightTop': { 'x': coordinate[2][0], 'y': coordinate[2][1] }
+                            });
+                        } else {
+                            var points = [];
+                            for (var i = 0; i < coordinate.length - 1; i++) {
+                                points.push({ 'x': coordinate[i][0], 'y': coordinate[i][1] });
+                            }
+                            querylist.push({
+                                'points': points
+                            });
+                        }
+
+                    }
+                })
+            })
+        })
+        function clearInteraction() {
+            if (draw) {
+                map.removeInteraction(draw);
+            }
+        }
+    </script>
 </body>
+
 </html>

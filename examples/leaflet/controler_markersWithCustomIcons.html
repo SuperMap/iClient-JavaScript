@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -32,7 +32,7 @@
         popupAnchor: [-3, -76]
     });
     L.marker([39.830660058696104, 116.92866163503169], {icon: greenIcon}).bindPopup(resources.text_beijingCity).addTo(map);
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -17,12 +17,12 @@
         mapUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
     var mapService = new ol.supermap.MapService(url);
-    mapService.getMapInfo(function (serviceResult) {
+    mapService.getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [117, 40],
                 zoom: 7,
@@ -39,53 +39,53 @@
     });
 
     function createTheme() {
-        var themeGraph = new SuperMap.ThemeGraph({
+        var themeGraph = new ol.supermap.ThemeGraph({
             items: [
-                new SuperMap.ThemeGraphItem({
+                new ol.supermap.ThemeGraphItem({
                     caption: "1992-1995人口增长率",
                     graphExpression: "Pop_Rate95",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(92, 73, 234),
+                    uniformStyle: new ol.supermap.ServerStyle({
+                        fillForeColor: new ol.supermap.ServerColor(92, 73, 234),
                         lineWidth: 0.1
                     })
                 }),
-                new SuperMap.ThemeGraphItem({
+                new ol.supermap.ThemeGraphItem({
                     caption: "1995-1999人口增长率",
                     graphExpression: "Pop_Rate99",
-                    uniformStyle: new SuperMap.ServerStyle({
-                        fillForeColor: new SuperMap.ServerColor(211, 111, 240),
+                    uniformStyle: new ol.supermap.ServerStyle({
+                        fillForeColor: new ol.supermap.ServerColor(211, 111, 240),
                         lineWidth: 0.1
                     })
                 })
             ],
             barWidth: 0.03,
-            graduatedMode: SuperMap.GraduatedMode.SQUAREROOT,
-            graphAxes: new SuperMap.ThemeGraphAxes({
+            graduatedMode: ol.supermap.GraduatedMode.SQUAREROOT,
+            graphAxes: new ol.supermap.ThemeGraphAxes({
                 axesDisplayed: true
             }),
-            graphSize: new SuperMap.ThemeGraphSize({
+            graphSize: new ol.supermap.ThemeGraphSize({
                 maxGraphSize: 1,
                 minGraphSize: 0.35
             }),
-            graphText: new SuperMap.ThemeGraphText({
+            graphText: new ol.supermap.ThemeGraphText({
                 graphTextDisplayed: true,
-                graphTextFormat: SuperMap.ThemeGraphTextFormat.VALUE,
-                graphTextStyle: new SuperMap.ServerTextStyle({
+                graphTextFormat: ol.supermap.ThemeGraphTextFormat.VALUE,
+                graphTextStyle: new ol.supermap.ServerTextStyle({
                     sizeFixed: true,
                     fontHeight: 9,
                     fontWidth: 5
                 })
             }),
-            graphType: SuperMap.ThemeGraphType.BAR3D
+            graphType: ol.supermap.ThemeGraphType.BAR3D
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeGraph],
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]
         });
 
         var extent = [114.59, 37.76, 119.51, 42.31];
-        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({

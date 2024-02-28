@@ -9,7 +9,7 @@ describe('Grid', () => {
         var options = {
             brightness: 10,
             colorGradientType: false,
-            gridType: SuperMap.GridType.CROSS
+            gridType: GridType.CROSS
         };
         var grid = new Grid(options);
         expect(grid.CLASS_NAME).toEqual("SuperMap.Grid");

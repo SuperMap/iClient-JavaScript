@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <html>
 <head>
@@ -33,7 +37,7 @@
         maxZoom: 18,
         zoom: 10
     });
-    L.supermap.tiledMapLayer(tileURL).addTo(map);
+    new L.supermap.TiledMapLayer(tileURL).addTo(map);
 
     option = {
         progressive: 20000,
@@ -65,7 +69,7 @@
         }]
     };
 
-    var echartsLayer = L.supermap.echartsLayer(option).addTo(map);
+    var echartsLayer = new L.supermap.EchartsLayer(option).addTo(map);
 
     var CHUNK_COUNT = 19;
 

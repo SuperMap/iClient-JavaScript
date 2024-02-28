@@ -60,22 +60,23 @@ describe('leaflet_WebPrintingJobService', () => {
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(JSON.stringify(createWebPringintJobResultJson)));
         });
+        jobService.createWebPrintingJob(null);
         jobService.createWebPrintingJob(param, (serviceResult) => {
-            try {
-                expect(jobService).not.toBeNull();
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toEqual('processCompleted');
-                expect(serviceResult.result[0].resourceConfigID).not.toBeNull();
-                expect(serviceResult.result[0].path).toEqual(url + '/jobs/' + serviceResult.result[0].resourceConfigID);
-                expect(serviceResult.result[0].name).toEqual(serviceResult.result[0].resourceConfigID);
-                done();
-            } catch (e) {
-                console.log("'createWebPrintingJob'案例失败" + e.name + ':' + e.message);
-                expect(false).toBeTruthy();
-                jobService.destroy();
-                done();
-            }
-        });
+          try {
+              expect(jobService).not.toBeNull();
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.type).toEqual('processCompleted');
+              expect(serviceResult.result[0].resourceConfigID).not.toBeNull();
+              expect(serviceResult.result[0].path).toEqual(url + '/jobs/' + serviceResult.result[0].resourceConfigID);
+              expect(serviceResult.result[0].name).toEqual(serviceResult.result[0].resourceConfigID);
+              done();
+          } catch (e) {
+              console.log("'createWebPrintingJob'案例失败" + e.name + ':' + e.message);
+              expect(false).toBeTruthy();
+              jobService.destroy();
+              done();
+          }
+      });
     });
 
     it('getPrintingJob', (done) => {
@@ -102,6 +103,31 @@ describe('leaflet_WebPrintingJobService', () => {
             }
         });
     });
+
+//     it('getPrintingJob promise', (done) => {
+//       var jobId = 'e3ff26fa-a0b5-46d3-ad4a-096611a59c03@9fd5defe-d77d-4e17-967e-643c4f34d67e';
+//       var jobService = webPrintingJobService(url);
+//       spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+//           expect(method).toBe('GET');
+//           expect(testUrl).toBe(url + `/jobs/${jobId}`);
+//           return Promise.resolve(new Response(JSON.stringify(getPrintingJobResultJson)));
+//       });
+//       jobService.getPrintingJob(jobId).then((serviceResult) => {
+//         try {
+//             expect(serviceResult).not.toBeNull();
+//             expect(serviceResult.type).toBe('processCompleted');
+//             expect(serviceResult.result).not.toBeNull();
+//             expect(serviceResult.result.id).toEqual(jobId);
+//             expect(serviceResult.result.status).toEqual('FINISHED');
+//             done();
+//         } catch (exception) {
+//             expect(false).toBeTruthy();
+//             console.log("getPrintingJob'案例失败：" + exception.name + ':' + exception.message);
+//             jobService.destroy();
+//             done();
+//         }
+//     });
+//   });
 
     // 获取 Web 打印模板列表
     it('getLayoutTemplates', (done) => {

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -26,15 +26,15 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     routeCalculateMeasureProcess();
 
     function routeCalculateMeasureProcess() {
         //通过SQL查询的方法建立路由,并添加到地图上
-        queryBySQLService = L.supermap.queryService(baseUrl);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryBySQLService = new L.supermap.QueryService(baseUrl);
+        queryBySQLParams = new L.supermap.QueryBySQLParameters({
             queryParams: [
-                new SuperMap.FilterParameter({
+                new L.supermap.FilterParameter({
                     name: "RouteDT_road@Changchun",
                     attributeFilter: "RouteID=1690"
                 })
@@ -53,15 +53,15 @@
                 }
                 routeLine = L.polyline(pointsList);
                 //里程定点服务
-                routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+                routeLocatorParameters_point = new L.supermap.RouteLocatorParameters({
                     "sourceRoute": routeLine,
                     "type": "POINT",
                     "measure": 200,
                     "offset": 0,
                     "isIgnoreGap": true
                 });
-                routeLocatorService = L.supermap.spatialAnalystService(serviceUrl);
-                routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocatorServiceResult) {
+                routeLocatorService = new L.supermap.SpatialAnalystService(serviceUrl);
+                routeLocatorService.routeLocate(routeLocatorParameters_point).then(function (routeLocatorServiceResult) {
                     if (routeLocatorServiceResult.result && routeLocatorServiceResult.result.resultGeometry) {
                         var layer = L.geoJSON(routeLocatorServiceResult.result.resultGeometry).addTo(map);
                         layer.bindTooltip(resources.msg_queryMileagePoint1 + routeLocatorParameters_point.measure + resources.msg_queryMileagePoint2, {

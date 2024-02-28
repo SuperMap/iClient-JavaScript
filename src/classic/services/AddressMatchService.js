@@ -1,15 +1,16 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
-import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
-import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common/iServer/AddressMatchService';
+ import {SuperMap} from '../SuperMap';
+ import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
+import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
 
 /**
  * @class SuperMap.REST.AddressMatchService
  * @category  iServer AddressMatch
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @extends {SuperMap.CommonServiceBase}
+ * @classdesc 地址匹配服务类。此类提供了地址的正向匹配和反向匹配功能，正向匹配即通过地点名称关键词查找地址位置坐标，反向匹配即根据位置坐标查询地点。
+ * @modulecategory Services
+ * @extends {CommonServiceBase}
  * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
@@ -24,9 +25,10 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.code
-     * @description 正向匹配。
-     * @param {SuperMap.GeoCodingParameter} params - 正向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @description 正向匹配，即通过地点名称关键词查找地址位置坐标。
+     * @param {GeoCodingParameter} params - 正向匹配参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     code(params, callback) {
         var me = this;
@@ -34,21 +36,17 @@ export class AddressMatchService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            crossOrigin: me.crossOrigin
         });
-        addressMatchService.code(me.url + '/geocoding', params);
+        return addressMatchService.code(me.url + '/geocoding', params, callback);
     }
 
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.decode
-     * @description 反向匹配。
-     * @param {SuperMap.GeoDecodingParameter} params - 反向匹配参数。
-     * @param {RequestCallback} callback - 回调函数。
+     * @description 反向匹配，即根据地址位置坐标查询地点。
+     * @param {GeoDecodingParameter} params - 反向匹配参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     decode(params, callback) {
         var me = this;
@@ -56,15 +54,9 @@ export class AddressMatchService extends CommonServiceBase {
             headers: me.headers,
             proxy: me.proxy,
             withCredentials: me.withCredentials,
-            crossOrigin: me.crossOrigin,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            crossOrigin: me.crossOrigin
         });
-        addressMatchService.decode(me.url + '/geodecoding', params);
+        return addressMatchService.decode(me.url + '/geodecoding', params, callback);
     }
 }
-
 SuperMap.REST.AddressMatchService = AddressMatchService;

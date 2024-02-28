@@ -1,0 +1,108 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_getFeatureBySQL_FGB"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>";
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var baseUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var dataUrl = host + '/iserver/services/data-world/rest/data';
+
+      var map = new mapboxgl.Map({
+        container: 'map', //div id
+        renderWorldCopies: false,
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [baseUrl],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              maxzoom: 18
+            }
+          ]
+        },
+        center: [0, 0],
+        zoom: 2
+      });
+      map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+      map.on('load', function () {
+        query();
+      });
+
+      function query() {
+        var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+          queryParameter: {
+            name: 'world@World',
+            attributeFilter: 'SMID > 0'
+          },
+          datasetNames: ['World:world']
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+          sqlParam,
+          'FGB'
+        ).then(function (serviceResult) {
+            var FGBLayer = new mapboxgl.supermap.FGBLayer({
+              url: serviceResult.result.newResourceLocation,
+              layerId: 'queryDatas',
+              strategy: 'all',
+              paint: {
+                'fill-color': '#FF3300' /* 填充的颜色 */,
+                'fill-opacity': 0.6 /* 透明度 */
+              }
+            });
+            map.addLayer(FGBLayer);
+            map.on('click', 'queryDatas', function (e) {
+              new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(
+                  e.features[0].properties.SMID +
+                    '<br>' +
+                    resources.text_country +
+                    '：' +
+                    e.features[0].properties.COUNTRY
+                )
+                .addTo(map);
+            });
+          });
+      }
+    </script>
+  </body>
+</html>

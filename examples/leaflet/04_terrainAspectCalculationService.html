@@ -1,0 +1,165 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_terrainAspectCalculation"></title>
+    <style>
+       #toolbar {
+          position: absolute;
+          top: 50px;
+          right: 10px;
+          text-align: center;
+          z-index: 999;
+          border-radius: 4px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_terrainAspectCalculation"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainAspectCalculation"
+              onclick="terrainAspectCalculationProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+              onclick="removeTheme()"/>
+  </div>
+</div>
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var map, terrainAspectCalculationResult, themeLayer,
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [39.79, 116.85],
+        maxZoom: 18,
+        zoom: 7
+    });
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+
+    function terrainAspectCalculationProcess() {
+        removeTheme();
+        var terrainAspectCalculationParameters = new L.supermap.TerrainAspectCalculationParameters({
+            dataset: "JingjinTerrain@Jingjin",
+            terrainAnalystSetting: new L.supermap.terrainAnalystSetting({
+              boundsType: L.supermap.BoundsType.UNION,
+              cellSizeType: L.supermap.CellSizeType.MAX
+            }), 
+            resultDatasetName:"testAspect", 
+            deleteExistResultDataset:true
+        }
+        );
+        new L.supermap.SpatialAnalystService(serviceUrl).terrainAspectCalculate(terrainAspectCalculationParameters).then(function (serviceResult) {
+            terrainAspectCalculationResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
+
+        //构造栅格专题图
+        function showAnalysisResult_ThemeGridRange() {
+            var themeGridRangeIteme = new L.supermap.ThemeGridRangeItem({
+                    start: -1,
+                    end: 0,
+                    color: new L.supermap.ServerColor(60,164,3)
+                });
+                themeGridRangeIteme0 = new L.supermap.ThemeGridRangeItem({
+                    start: 0,
+                    end: 22.5,
+                    color: new L.supermap.ServerColor(91,188,11)
+                    });
+                themeGridRangeIteme1 = new L.supermap.ThemeGridRangeItem({
+                    start: 22.5,
+                    end: 67.5,
+                    color: new L.supermap.ServerColor(135,211,0)
+                }),
+                themeGridRangeIteme2 = new L.supermap.ThemeGridRangeItem({
+                    start: 67.5,
+                    end: 112.5,
+                    color: new L.supermap.ServerColor(193,230,5)
+                }),
+                themeGridRangeIteme3 = new L.supermap.ThemeGridRangeItem({
+                    start: 112.5,
+                    end: 157.5,
+                    color: new L.supermap.ServerColor(254,255,0)
+                }),
+                themeGridRangeIteme4 = new L.supermap.ThemeGridRangeItem({
+                    start: 157.5,
+                    end: 202.5,
+                    color: new L.supermap.ServerColor(255,190,0)
+                }),
+                themeGridRangeIteme5 = new L.supermap.ThemeGridRangeItem({
+                    start: 202.5,
+                    end: 247.5,
+                    color: new L.supermap.ServerColor(255,127,0)
+                });
+                themeGridRangeIteme6 = new L.supermap.ThemeGridRangeItem({
+                    start: 247.5,
+                    end: 292.5,
+                    color: new L.supermap.ServerColor(255,63,2)
+                });
+                themeGridRangeIteme7 = new L.supermap.ThemeGridRangeItem({
+                    start: 292.5,
+                    end: 337.5,
+                    color: new L.supermap.ServerColor(240,9,0)
+                });
+                themeGridRangeIteme8 = new L.supermap.ThemeGridRangeItem({
+                    start: 337.5,
+                    end: 360,
+                    color: new L.supermap.ServerColor(91,188,11)
+                });
+
+
+            var themeGridRange = new L.supermap.ThemeGridRange({
+                reverseColor: false,
+                rangeMode: L.supermap.RangeMode.EQUALINTERVAL,
+                //栅格分段专题图子项数组
+                items: [
+                    themeGridRangeIteme,
+                    themeGridRangeIteme0,
+                    themeGridRangeIteme1,
+                    themeGridRangeIteme2,
+                    themeGridRangeIteme3,
+                    themeGridRangeIteme4,
+                    themeGridRangeIteme5,
+                    themeGridRangeIteme6,
+                    themeGridRangeIteme7,
+                    themeGridRangeIteme8
+                ]
+            });
+
+            var themeParameters = new L.supermap.ThemeParameters({
+                //制作专题图的数据集（坡向计算的结果数据集）
+                datasetNames: [terrainAspectCalculationResult.dataset.split('@')[0]],
+                dataSourceNames: ["Jingjin"],
+                joinItems: null,
+                themes: [themeGridRange]
+            });
+            new L.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
+                var result = serviceResult1.result;
+                if (result && result.newResourceID) {
+                    themeLayer = new L.supermap.TiledMapLayer(baseUrl, {
+                        noWrap: true,
+                        cacheEnabled: false,
+                        transparent: true,
+                        layersID: result.newResourceID
+                    }).addTo(map);
+                }
+            })
+          }
+    }
+
+    //移除专题图
+    function removeTheme() {
+      if (themeLayer && map.hasLayer(themeLayer)) {
+          map.removeLayer(themeLayer);
+      }
+    }
+</script>
+</body>
+</html>

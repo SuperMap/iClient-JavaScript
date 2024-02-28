@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -19,7 +23,7 @@
         maxZoom: 18,
         zoom: 14
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     $.get('../data/hangzhou-tracks.json', function (data) {
         var points = [].concat.apply([], data.map(function (track) {
@@ -48,7 +52,7 @@
                 blurSize: 6
             }]
         };
-        L.supermap.echartsLayer(option).addTo(map);
+        new L.supermap.EchartsLayer(option).addTo(map);
     });
 </script>
 </body>

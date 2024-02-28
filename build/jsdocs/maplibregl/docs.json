@@ -1,0 +1,82 @@
+{
+  "opts": {
+    "recurse": true,
+    "template": "../template",
+    "configPath": "../maplibregl",
+    "destination": "./docs/maplibregl"
+  },
+  "disqus": "",
+  "tags": {
+    "allowUnknownTags": true,
+    "linkdoc-maplibregl": "https://maplibre.org/maplibre-gl-js-docs/api/"
+  },
+  "i18n": {
+    "defaultLang": "en",
+    "possibleLang": ["en"],
+    "dbFilePath": "./build/jsdocs/maplibregl"
+  },
+  "source": {
+    "includePattern": ".+\\.js?$",
+    "excludePattern": ".+[\\\\/]src[\\\\/]common[\\\\/]iServer[\\\\/].*Service.js?$",
+    "include": ["src/common", "src/maplibregl"],
+    "exclude": [
+      "src/common/overlay/levelRenderer",
+      "src/common/thirdparty/ai",
+      "src/common/lang/locales",
+      "src/common/iPortal/iPortalQueryResult",
+      "src/common/online/OnlineServiceBase",
+      "src/common/online/OnlineData",
+      "src/common/online/Online",
+      "src/common/iManager/iManagerServiceBase",
+      "src/common/iServer/GetFeaturesServiceBase",
+      "src/common/iServer/NetworkAnalystServiceBase",
+      "src/common/iServer/SpatialAnalystBase",
+      "src/common/iServer/ProcessingServiceBase",
+      "src/common/iServer/PointWithMeasure",
+      "src/common/iServer/ServerTheme",
+      "src/common/overlay/RankSymbol",
+      "src/common/overlay/ThemeVector",
+      "src/common/overlay/Graph",
+      "src/common/overlay/feature/ShapeFactory",
+      "src/common/overlay/feature/ShapeParameters",
+      "src/common/overlay/feature/Rectangle",
+      "src/common/overlay/feature/Circle",
+      "src/common/overlay/feature/Image",
+      "src/common/overlay/feature/Label",
+      "src/common/overlay/feature/Line",
+      "src/common/overlay/feature/Point",
+      "src/common/overlay/feature/Polygon",
+      "src/common/overlay/feature/Sector",
+      "src/common/overlay/feature/Theme",
+      "src/common/commontypes/Credential",
+      "src/common/components/chart/ChartViewModel",
+      "src/common/components/util/Util",
+      "src/common/components/templates/AttributesPopContainer",
+      "src/common/components/templates/CityTabsPage",
+      "src/common/components/templates/CommonContainer",
+      "src/common/components/templates/DropDownBox",
+      "src/common/components/templates/NavTabsPage",
+      "src/common/components/templates/IndexTabsPageContainer",
+      "src/common/components/templates/PaginationContainer",
+      "src/common/components/templates/PopContainer",
+      "src/common/components/templates/Select",
+      "src/common/security/KeyServiceParameter",
+      "src/common/components/templates/TemplateBase",
+      "src/mapboxgl/core/Util"
+    ]
+  },
+  "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories"],
+  "markdown": {
+    "tags": ["usage"]
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "default": {
+      "outputSourceFiles": false
+    },
+    "namespace": "maplibregl.supermap",
+    "npm": "@supermap/iclient-maplibregl",
+    "cdn": "https://iclient.supermap.io/dist/maplibregl/iclient-maplibregl.js"
+  }
+}

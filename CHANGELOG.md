@@ -1,3 +1,351 @@
+# 11.1.1 #
+
+## 新特性
+
+### iClient for MapLibreGL 新增支持 Web符号化制图能力
+
+  - 提供Web符号库列表，方便用户检索，同时提供在线制图示例
+  - 改造地图库API支持直接传入Web符号库ID进行快速制图
+  - 支持mapbox样式规范表达式，可以对符号进行数据驱动制图
+
+### Service 相关 API 编程模式支持 ECMAScript 6 Promise，简化异步编程，使代码更优雅更易维护
+
+## API changes
+
+
+### for Leaflet
+ - `L.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `L.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `L.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `L.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `L.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `L.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `L.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+
+### for OpenLayers
+ - `ol.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `ol.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `ol.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `ol.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `ol.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `ol.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `ol.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+### for MapboxGL
+ - 新增 `mapboxgl.supermap.initMap` 支持调用SuperMap iServer REST Map 服务快速创建地图，无需再设置相关参数
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `mapboxgl.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `mapboxgl.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `mapboxgl.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `mapboxgl.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `mapboxgl.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+### for MaplibreGL
+ - 新增 `maplibregl.supermap.initMap` 支持调用SuperMap iServer REST Map 服务快速创建地图，无需再设置相关参数
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `minDistanceAnalysis` 接口，支持数据集和几何对象最近距离计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainAspectCalculate` 接口，支持地形坡向计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainSlopeCalculate` 接口，支持地形坡度计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `terrainCutFillCalculate` 接口，支持填挖方计算
+ - `maplibregl.supermap.SpatialAnalystService` 新增 `convexHullAnalysis`接口，支持凸包运算
+ - `maplibregl.supermap.NetworkAnalystService` 新增 `traceAnalyst` 接口，支持上/下游追踪分析
+ - `maplibregl.supermap.NetworkAnalystService` 新增 `connectedEdgesAnalyst` 接口，支持连通性分析
+ - `maplibregl.supermap.FeatureService` 新增 `getMetadata` 接口，支持获取地理要素元数据功能
+ - `maplibregl.supermap.LayerInfoService` 新增 `getLayersLegendInfo` 接口，支持获取地图图例功能
+ - 升级支持ECharts v5.x版本
+
+# 11.1.0 #
+
+## 新特性
+
+### 提供全新地图库：iClient for MaplibreGL，可将现有Mapbox方案平滑迁移
+ - 作为MapboxGL v1版本的开源分支，可将现有的MapboxGL方案平滑迁移
+ - 提供iServer地图、数据、分析等服务访问API和可视化相关API
+![1110-1](https://iclient.supermap.io/web/img/whatsNewMaplibre.png)
+
+### 支持地理知识图谱Web可视化
+ - 提供地理知识图谱和实体关系访问的API，一句代码快速出图
+ - 提供样式编辑和交互事件相关API
+![1110-2](https://iclient.supermap.io/web/img/whatsNewKnowledge.png)
+
+### iClient for MapboxGL支持地理、投影全坐标系
+ - 支持访问SuperMap iServer地图服务和OGC WMTS/WMS服务
+ - 支持地理坐标系、投影坐标系
+ - 支持栅格瓦片、矢量瓦片
+![1110-3](https://iclient.supermap.io/web/img/whatsNewCoor.png)
+
+### iClient for MapboxGL提供前后端一致的Web符号化制图能力
+ - 提供Web符号库列表，方便用户检索，同时提供在线制图示例
+ - 改造地图库API支持直接传入Web符号库ID进行快速制图
+ - 支持mapbox样式规范表达式，可以对符号进行数据驱动制图
+![1110-4](https://iclient.supermap.io/web/img/whatsNewSymbol.png)
+
+### GIS数据上云访问支持，新增支持云原生矢量交换格式（FlatGeoBuf）
+ - 支持直接访问云存储和SuperMap iServer服务返回的FlatGeoBuf格式文件，并支持流式传输和渲染
+ - 支持全量渲染或按需渲染两种模式
+![1110-5](https://iclient.supermap.io/web/img/whatsNewFGB.gif)
+
+# 11.1.0-beta #
+
+## 新特性
+
+### 新增支持云原生矢量交换格式（FlatGeobuf），支持直接访问云存储和SuperMap iServer服务返回的FlatGeobuf格式文件，并支持流式传输和渲染
+
+ - 新增 L.supermap.FGBLayer、mapboxgl.supermap.FGBLayer 、ol.source.FGB，支持全量或按需渲染FlatGeobuf格式数据
+
+ - QueryService类queryBySQL、queryByGeometry、queryByDistance、queryByBounds方法dataFormat 参数新增支持 DataFormat.FGB
+
+ - FeatureService类getFeaturesBySQL、getFeaturesByBuffer、getFeaturesByGeometry、getFeaturesByBounds、getFeaturesByIDs方法dataFormat 参数新增支持 DataFormat.FGB
+
+ - SpatialAnalystService类bufferAnalysis、thiessenAnalysis、surfaceAnalysis、overlayAnalysis方法dataFormat 参数新增支持 DataFormat.FGB
+
+### iClient for MapboxGL enhance 支持全坐标系
+
+ - 支持访问SuperMap iServer地图服务和OGC WMTS/WMS服务
+
+ - 支持地理坐标系、投影坐标系
+
+ - 支持栅格瓦片、矢量瓦片
+
+
+## Fixed
+
+### for Leaflet
+
+- 修复`L.supermap.NetworkAnalystService`最近设施分析、最短路径分析设施点数量太多请求失败的问题
+
+### for OpenLayers
+
+- 修复ol.source.Graphic高效率点图层webgl渲染时onclick不生效、多次渲染的问题
+
+- 修复`ol.supermap.NetworkAnalystService`最近设施分析、最短路径分析设施点数量太多请求失败的问题
+
+- 修复ol.supermap.WebMap 图层过滤设置以数字开头或包含特殊字符不起作用的问题
+
+- ol.supermap.WebMap 新增restDataSingleRequestCount参数，支持设置rest data服务单次请求数量
+
+
+### for MapboxGL
+
+- 修复`mapboxgl.supermap.NetworkAnalystService`最近设施分析、最短路径分析设施点数量太多请求失败的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复地图组件(sm-web-map)GeoJOSN数据来源的图层自动更新失败的问题
+
+  - 地图组件(sm-web-map)增加googleMapsAPIKey googleMapsLanguage参数支持显示谷歌地图底图
+
+  - 修复地图组件(sm-web-map)图层过滤设置以数字开头或包含特殊字符不起作用的问题
+
+  - 修复地图组件(sm-web-map)无法显示只有单个Layer的WMTS服务的问题
+
+  - 修复地图组件(sm-web-map)显示China2000坐标系地图中心点不对的问题
+
+  - 视频组件新增是否全屏播放、填充方式、设置视屏封面功能
+
+
+# 11.0.1 #
+## Fixed
+
+### for Leaflet
+
+- 优化 SuperMap iClient for Lealfet 出图示例，更具代表性，使iServer缓存利用率更高
+- 修复当浏览器缩放比例不是100%时，`L.supermap.MapVLayer` 热力图偏移的问题
+- 修复当 `L.supermap.FeatureService` 删除要素过多时，删除失败的问题
+- 修复 `L.supermap.WMTSLayer` 加载带认证参数的WMTS出图失败的问题
+
+### for OpenLayers
+
+- 优化 SuperMap iClient for OpenLayers 出图示例，更具代表性，使iServer缓存利用率更高
+- 修复当 `ol.supermap.FeatureService` 删除要素过多时，删除失败的问题
+
+### for MapboxGL
+
+- 修复当 `mapboxgl.supermap.FeatureService` 删除要素过多时，删除失败的问题
+
+# 11.0.0 #
+
+## 新特性
+
+### 实现全库按需引入和构建，大幅降低构建应用的包大小，最高至90%左右，提升应用加载性能
+
+### 全面优化所有API的命名空间，更加符合开源库的使用习惯，并且对每个接口增加了使用示例说明
+
+### 新增视频增强组件，支持在视频上叠加点位数据，支持点选交互查询，漫游、缩放等交互操作
+
+### 新增动态标绘图管理功能，支持导入、导出标绘图
+
+## API changes
+
+### for Leaflet
+
+- 废弃所有以 SuperMap 为命名空间的接口，更改为以 L.supermap 为命名空间。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+  ```js
+  new SuperMap.ThemeParameters(options);
+  ```
+
+  现在的写法：
+
+  ```js
+  new L.supermap.ThemeParameters(options);
+  ```
+
+- 使用类时，废弃原[工厂方法](https://leafletjs.com/SlavaUkraini/reference.html#class)，更改为类的实例化。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+    ```js
+    L.supermap.tiledMapLayer(url, options);
+    ```
+
+  现在的写法：
+
+    ```js
+    new L.supermap.TiledMapLayer(url, options);
+    ```
+
+- 废弃 `L.Proj.CRS` 更名为 `L.supermap.Proj.CRS`
+
+- 废弃 `L.CRS.NonEarthCRS ` 更名为 `L.supermap.CRS.NonEarthCRS`
+
+- 废弃 `L.CRS.BaiduCRS` 更名为 `L.supermap.CRS.BaiduCRS`
+
+- 废弃 `L.CRS.TianDiTu_WGS84CRS` 更名为 `L.supermap.CRS.TianDiTu_WGS84CRS`
+
+- 废弃 `L.CRS.TianDiTu_MercatorCRS` 更名为 `L.supermap.CRS.TianDiTu_MercatorCRS`
+
+- 动态标绘图层新增支持最大、最小可见比例尺，用来控制图层中标号按照可见比例尺显示
+
+- 动态标绘图层新增支持缩放基准，用来控制图层中标号缩放
+
+### for OpenLayers
+
+- 废弃所有以 SuperMap 为命名空间的接口，更改为以 ol.supermap 为命名空间。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+  ```js
+  new SuperMap.ThemeParameters(options);
+  ```
+
+  现在的写法：
+
+  ```js
+  new ol.supermap.ThemeParameters(options);
+  ```
+
+### for MapboxGL
+
+- 废弃所有以 SuperMap 为命名空间的接口，更改为以 mapboxgl.supermap 为命名空间。废弃的接口已做兼容。
+
+  如：
+
+  之前的写法：
+
+  ```js
+  new SuperMap.ThemeParameters(options);
+  ```
+
+  现在的写法：
+
+  ```js
+  new mapboxgl.supermap.ThemeParameters(options);
+  ```
+
+### Component
+
+- 新增视频增强组件(sm-video-plus)及其子组件
+
+## Fixed
+
+### for Leaflet
+
+- 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+- 修复 `LabelThemeLayer` `GraphThemeLayer` 中调用 `removeFeatures` 失败的问题
+
+- 修复 `EchartsLayer` 在地图移动后再叠加是偏移的问题
+
+### for OpenLayers
+
+- 修复 `ol.source.imageSupermapRest` 出图以整图方式出图
+
+- 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+- 修复 `ol.source.Graph` `ol.source.Label` 中调用 `removeFeatures` 失败的问题
+
+### for MapboxGL
+
+- 修复 `QueryByDistanceParameters` 中 `distance` 参数描述错误的问题
+
+- 修复 `LabelThemeLayer` `GraphThemeLayer` 中调用 `removeFeatures` 失败的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复地图组件(sm-web-map)无法显示数据上图中制作的文本标注图层的问题
+
+  - 修复地图组件(sm-web-map)当底图为WMTS WMS MapBoxStyle时与其他图层叠加顺序不对的问题
+
+  - 修复幻灯片组件(sm-slide-show)动态增加页数后无法跳转至最后一页的问题
+
+# 10.2.1 #
+## Fixed
+
+### for Leaflet
+
+- 修复 `L.supermap.featureService` 删除要素接口 URL 未编码的问题
+
+### for OpenLayers
+
+- 修复 `ol.supermap.FeatureService` 删除要素接口 URL 未编码的问题
+
+### for MapboxGL
+
+- 修复 `mapboxgl.supermap.FeatureService` 删除要素接口 URL 未编码的问题
+
+### Component
+
+- vue-iclient-mapboxgl
+
+  - 修复属性表组件(sm-attributes)切换数据后再次选中数据显示的总数不正确的问题
+
+  - 修复图层管理组件(sm-layer-manage)销毁时没清除已添加图层的问题
+
+  - 修复属性表组件(sm-attributes)切换数据后再次选中数据显示的总数不正确的问题
+
+  - 修复图层列表组件(sm-layer-manage) 销毁时没清除已添加图层的问题
+
+  - 修复文本列表组件(sm-text-list)修改排序后未正确高亮的问题
+
+  - 修复属性表组件 (sm-attributes)点击搜索按钮时会触发排序的问题
+
+  - 修复场景组件（sm-scene)无法打开三维地球v2版本成果的问题
+
+  - 修复幻灯片组件(sm-slide-show)在幻灯片总数为 3，切换方式为方块时，首尾页切换重叠的问题
+
 # 10.2.0 #
 
 ## 新特性
@@ -833,7 +1181,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -849,7 +1197,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -923,7 +1271,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -939,7 +1287,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -961,7 +1309,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -977,7 +1325,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -999,7 +1347,7 @@
 
     - 新增 `uploadDataRequest` 接口，支持上传数据
 
-    - 新增 `addData` 接口，支持添加数据项（上传/注册）
+    - 新增 `addData` 接口，支持添加数据项（上传/注册)
 
     - 新增 `publishOrUnpublish` 接口，支持数据的发布/取消发布
 
@@ -1015,7 +1363,7 @@
 
   - 新增 `SuperMap.iPortalRegisterServiceParam` 注册服务参数类
 
-  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册）参数类
+  - 新增 `SuperMap.iPortalAddDataParam` 添加数据项（上传/注册)参数类
 
   - 新增 `SuperMap.iPortalDataConnectionInfoParam` HBASE数据源连接信息参数类
 
@@ -1224,7 +1572,7 @@
 
 ![1001-1](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-1.png)
 
-（具体兼容情况详见compatibility一节）
+（具体兼容情况详见compatibility一节)
 
 ### 新增 SuperMap iPortal 资源访问系列接口和范例，支持对资源中心的地图、服务、大屏、洞察等资源进行更新
 ![1001-6](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1001-6.png)
@@ -1425,7 +1773,7 @@
 
 - 可视化 – Pixi
 
-  - 新增 “纽约出租车上车点分布图（140万点数据绘制）” 示例
+  - 新增 “纽约出租车上车点分布图（140万点数据绘制)” 示例
 
 ### for OpenLayers
 
@@ -1456,7 +1804,7 @@
 
   - 矢量瓦片
 
-    - 多面（MultiPolygon）
+    - 多面（MultiPolygon)
   
     - 中文沿线标注
 
@@ -1619,7 +1967,7 @@
 ## 新特性
 
 ### 积木式搭建应用：[SuperMap iClient Vue 组件库](https://github.com/SuperMap/vue-iclient)
- - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel）同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
+ - SuperMap iClient Vue 组件库在架构设计上采用 MVVM 模式（Model-View-ViewModel)同时也能兼容其它框架，例如 React、Angular 以及原生 H5 开发。 使用 SuperMap iClient Vue 组件库，可像搭积木一样快速的创建自定义的 WebGIS 应用
 ![1000-2](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-2.png)
 
 ### 开箱即用：丰富的组件选择
@@ -1662,7 +2010,7 @@
 
 ## 新特性
 
-- iClient for MapboxGL（for vue）组件库新增示例，新增房产项目可视化监控平台示例，使用 iClient Vue 组件快速搭建行业大屏应用
+- iClient for MapboxGL（for vue)组件库新增示例，新增房产项目可视化监控平台示例，使用 iClient Vue 组件快速搭建行业大屏应用
 
 ![whatsNewComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/1000-1.gif)
 
@@ -1722,9 +2070,9 @@
 
 ## 新特性
 
-### iClient for MapboxGL 新增组件（for vue）
+### iClient for MapboxGL 新增组件（for vue)
 
-- iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格）
+- iClient for MapboxGL 新增 WebMap 地图组件，图表组件，图例组件，图层列表组件，量算组件，查询/搜索组件，进度条等基础组件，支持多种主题（可一键切换风格)
 
 ![whatsNewMapboxGlComponents](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/912-1.png)
  
@@ -1806,7 +2154,7 @@
 
 - iClient for MapboxGL新增支持WGS84、China2000、Xian80、Beijing54等标准地理坐标系，覆盖MVT矢量瓦片、栅格瓦片、可视化图层、标绘等功能
 
-- 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0）
+- 需单独引用iClient对Mapbox GL JS的增强库（基于2018年10月版本v0.51.0)
  https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/mapbox-gl-enhance.js
 
 ![whatsNewMultiCoordinate](https://github.com/SuperMap/iClient-JavaScript/blob/master/.github/911-1.png)
@@ -1942,7 +2290,7 @@
     - `removeGraphics` 接口新增删除单个或多个要素的功能
 
 ### Classic
-- `SuperMap.Layer.MapVLayer` 支持北京54 等其他坐标系（注：数据坐标系要求与地图保持一致）
+- `SuperMap.Layer.MapVLayer` 支持北京54 等其他坐标系（注：数据坐标系要求与地图保持一致)
 
 ## Fixed
 

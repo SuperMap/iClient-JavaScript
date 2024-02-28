@@ -1,26 +1,29 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
 
 /**
- * @class L.supermap.unicodeMarker
- * @classdesc Unicode 字符图标。
+ * @class UnicodeMarker
+ * @deprecatedclassinstance L.supermap.unicodeMarker
+ * @classdesc Unicode 字符图标类。Unicode 是由 Unicode 联盟维护的文本编码标准，它定义了许多常见字符，包括数字、标点符号和其他符号。
  * @category Visualization Marker
+ * @modulecategory Overlay
  * @extends {L.Path}
  * @param {L.LatLngBounds} latlng - 经纬度坐标。
- * @param {Object} options - 符号参数。
+ * @param {Object} options - 参数。
  * @param {string} options.label - 符号 Unicode 值。
  * @param {string} [options.labelRotation='0'] - 符号旋转角度。
- * @param {string} [options.globalAlpha='1'] - 符号的透明值。
+ * @param {string} [options.globalAlpha='1'] - 符号的不透明度。
  * @param {string} [options.fontStyle='normal'] - 符号的风格。
  * @param {string} [options.fontWeight='normal'] - 符号的粗细。
  * @param {string} [options.fontSize='1em'] - 符号的尺寸。
  * @param {string} [options.fontFamily='sans-serif'] - 符号的字体。
  * @param {string} [options.textAlign='center'] - 符号内容的对齐方式。
  * @param {string} [options.textBaseline='middle'] - 绘制符号时使用的基线。
- * @fires L.supermap.unicodeMarker#move
+ * @fires UnicodeMarker#move
+ * @usage
  */
 export var UnicodeMarker = L.Path.extend({
     // @section
@@ -44,7 +47,7 @@ export var UnicodeMarker = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.unicodeMarker.prototype.setLatLng
+     * @function UnicodeMarker.prototype.setLatLng
      * @description 设置 marker 新坐标。
      * @param {L.LatLng} setLatLng - 需要设置的新坐标。
      */
@@ -52,7 +55,7 @@ export var UnicodeMarker = L.Path.extend({
         this._latlng = latlng;
         this.redraw();
         /**
-         * @event L.supermap.unicodeMarker#move
+         * @event UnicodeMarker#move
          * @description circle marker 重设坐标之后触发。
          * @property {L.LatLng} latlng - 当前 marker 坐标。
          */
@@ -60,7 +63,7 @@ export var UnicodeMarker = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.unicodeMarker.prototype.getLatLng
+     * @function UnicodeMarker.prototype.getLatLng
      * @description 获取 marker 坐标。
      * @returns {L.LatLng} 返回当前 marker 坐标。
      */
@@ -163,5 +166,3 @@ L.Canvas.include({
         }
     }
 });
-
-L.supermap.unicodeMarker = unicodeMarker;

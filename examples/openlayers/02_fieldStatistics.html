@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -37,7 +37,7 @@
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
@@ -66,7 +66,7 @@
     //获取子图层信息
     function showLayersInfo() {
         var subLayer;
-        new ol.supermap.LayerInfoService(mapURL).getLayersInfo(function (serviceResult) {
+        new ol.supermap.LayerInfoService(mapURL).getLayersInfo().then(function (serviceResult) {
             var layers = serviceResult.result.subLayers.layers;
             if (!layers) return;
             for (var i = 0, len = layers.length; i < len; i++) {
@@ -94,11 +94,11 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                var param = new SuperMap.FieldParameters({
+                var param = new ol.supermap.FieldParameters({
                     datasource: dataInfo.dataSourceName,
                     dataset: dataInfo.dataSetName
                 });
-                new ol.supermap.FieldService(dataURL).getFields(param, function (serviceResult) {
+                new ol.supermap.FieldService(dataURL).getFields(param).then(function (serviceResult) {
                     fieldStatistic();
                 });
             }
@@ -107,17 +107,17 @@
 
     function fieldStatistic() {
         var fieldName = 'SmID';
-        var param = new SuperMap.FieldStatisticsParameters({
+        var param = new ol.supermap.FieldStatisticsParameters({
             datasource: currentData.dataSourceName,
             dataset: currentData.dataSetName,
             fieldName: fieldName,
             statisticMode: [
-                SuperMap.StatisticMode.MAX,
-                SuperMap.StatisticMode.MIN,
-                SuperMap.StatisticMode.SUM,
-                SuperMap.StatisticMode.AVERAGE,
-                SuperMap.StatisticMode.STDDEVIATION,
-                SuperMap.StatisticMode.VARIANCE
+                ol.supermap.StatisticMode.MAX,
+                ol.supermap.StatisticMode.MIN,
+                ol.supermap.StatisticMode.SUM,
+                ol.supermap.StatisticMode.AVERAGE,
+                ol.supermap.StatisticMode.STDDEVIATION,
+                ol.supermap.StatisticMode.VARIANCE
             ]
         });
         if (currentData) {

@@ -48,7 +48,7 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
     });
     afterEach(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -71,11 +71,21 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
                 format: format
             })
         });
-        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callThrough();
-        setTimeout(() => {
-            expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4)
-            done();
-        }, 2000);
+        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callFake((tile)=>{
+            tile.setLoader(()=>{
+                tile.setFeatures([])
+            })
+        });
+        let count = 0;
+        vectorLayer.getSource().on('tileloadend',()=>{
+            count++;
+            console.log(count)
+            if(count === 4){
+                expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4);
+                done();
+            }
+            
+        })
         map.addLayer(vectorLayer);
 
     });
@@ -92,12 +102,22 @@ describe('openlayers_VectorTileSuperMapRest_mapboxStyle', () => {
                 format: format
             })
         });
-        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callThrough();
-        setTimeout(() => {
-            expect(vectorLayer.getSource()._tileUrl).toContain("California");
-            expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4)
-            done();
-        }, 2000);
+        spyOn(vectorLayer.getSource(), 'tileLoadFunction').and.callFake((tile)=>{
+            tile.setLoader(()=>{
+                tile.setFeatures([])
+            })
+        });
+        let count = 0;
+        vectorLayer.getSource().on('tileloadend',()=>{
+            count++;
+            console.log(count)
+            if(count === 4){
+                expect(vectorLayer.getSource()._tileUrl).toContain("California");
+                expect(vectorLayer.getSource().tileLoadFunction.calls.count()).toEqual(4);
+                done();
+            }
+            
+        })
         map.addLayer(vectorLayer);
 
     });

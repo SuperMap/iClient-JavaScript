@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 //数据
@@ -13,6 +13,7 @@ import {ChartViewModel} from './chart/ChartViewModel';
 //公用模板：
 import {CommonContainer} from './templates/CommonContainer';
 import {Select} from './templates/Select';
+import {TemplateBase} from './templates/TemplateBase';
 import {DropDownBox} from './templates/DropDownBox';
 import {AttributesPopContainer} from './templates/AttributesPopContainer';
 import {PopContainer} from './templates/PopContainer';
@@ -32,6 +33,7 @@ export {ChartView};
 export {ChartViewModel};
 export {CommonContainer};
 export {Select};
+export {TemplateBase};
 export {DropDownBox};
 export {AttributesPopContainer};
 export {PopContainer};

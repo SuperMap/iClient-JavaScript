@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +42,7 @@
         zoom: 2
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on("load", function () {
         queryPolygonGeometry = {
@@ -69,12 +69,12 @@
     });
 
     function query() {
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+        var geometryParam = new mapboxgl.supermap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: queryPolygonGeometry,
             spatialQueryMode: "INTERSECT"
         });
-        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByGeometry(geometryParam, function (serviceResult) {
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByGeometry(geometryParam).then(function (serviceResult) {
             map.addSource("queryDatas", {
                 "type": "geojson",
                 "data": serviceResult.result.features

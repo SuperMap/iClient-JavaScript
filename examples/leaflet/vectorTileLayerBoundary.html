@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -100,7 +100,7 @@
         zoom: 11
     });
     var cartoCSS = document.getElementById("cartoCssStr").text;
-    layer = L.supermap.tiledVectorLayer(url, {
+    layer = new L.supermap.TiledVectorLayer(url, {
         cacheEnabled: true,
         cartoCSS: cartoCSS,
         serverCartoCSSStyle: false,

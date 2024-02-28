@@ -1,25 +1,27 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {LogoBase64} from '@supermap/iclient-common/control/img/Logo';
 
 /**
- * @class mapboxgl.supermap.LogoControl
+ * @class Logo
+ * @deprecatedclass mapboxgl.supermap.LogoControl
  * @category  Control
- * @classdesc Logo 控件。默认不显示。
+ * @classdesc Logo 控件类。默认不显示。
+ * @modulecategory Control
  *
  * @example
  * (start code)
- *  map.addControl(new mapboxgl.supermap.LogoControl(),'bottom-right');
+ *  map.addControl(new Logo(),'bottom-right');
  * (end)
  * @param {Object} options - logo 控件配置项。
  * @param {string} [options.imageUrl] - logo 图片地址。
- * @param {string} [options.width] - logo 图片宽。
- * @param {string} [options.height] - logo 图片高。
- * @param {string} [options.link] - logo 图片跳转链接。
+ * @param {string} [options.width] - logo 图片宽度。
+ * @param {string} [options.height] - logo 图片高度。
+ * @param {string} [options.link] - logo图片跳转链接。
  * @param {string} [options.alt='SuperMap iClient'] - logo 图片失效时显示文本。
+ * @usage
  */
 export class Logo {
     constructor(options) {
@@ -37,9 +39,9 @@ export class Logo {
     }
 
     /**
-     * @function mapboxgl.supermap.LogoControl.prototype.onAdd
-     * @description 添加一个 logo。
-     * @returns {HTMLElement} 返回创建的 logo 元素。
+     * @function Logo.prototype.onAdd
+     * @description 添加Logo。
+     * @returns {HTMLElement} 返回创建的 Logo 元素。
      */
     onAdd(map) {
         this._map = map;
@@ -67,7 +69,7 @@ export class Logo {
                 styleSize = "";
             }
         }
-        var link = this.link || "https://iclient.supermap.io";
+        var link = this.link;
         this._container.innerHTML = "<a href='" + link + "' target='_blank'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
         this._createStyleSheet();
@@ -112,5 +114,3 @@ export class Logo {
         return dest;
     }
 }
-
-mapboxgl.supermap.LogoControl = Logo;

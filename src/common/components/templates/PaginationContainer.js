@@ -1,19 +1,21 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.PaginationContainer
+ * @class PaginationContainer
+ * @aliasclass Components.PaginationContainer
+ * @deprecatedclass SuperMap.Components.PaginationContainer
  * @classdesc 分页组件模板。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
- * @param {string} optionsArr.id - 组件 dom 元素 id。
+ * @param {string} options.id - 组件 dom 元素 id。
  * @param {HTMLElement} options.contents - 页面填充的 DOM 元素对象。
  * @param {number} options.pageCounts - 页数。
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
  * @category Components Common
+ * @usage
  */
 export class PaginationContainer extends TemplateBase {
     constructor(options) {
@@ -30,7 +32,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.PaginationContainer.prototype.setLinkageEvent
+     * @function PaginationContainer.prototype.setLinkageEvent
      * @description 设置页面联动方法。
      * @param {function} linkageEvent - 联动方法，实现指定功能。
      */
@@ -71,9 +73,9 @@ export class PaginationContainer extends TemplateBase {
 
     /**---------以下是页面相关操作 **/
     /**
-     * @function SuperMap.Components.PaginationContainer.prototype.setContent
+     * @function PaginationContainer.prototype.setContent
      * @description 设置页面内容。
-     * @param {Element} element - 页面内容元素。
+     * @param {HTMLElement} element - 页面内容元素。
      */
     setContent(element) {
         this.clearContent();
@@ -81,16 +83,16 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.PaginationContainer.prototype.appendContent
+     * @function PaginationContainer.prototype.appendContent
      * @description 追加内容。
-     * @param {Element} element - 页面内容元素。
+     * @param {HTMLElement} element - 页面内容元素。
      */
     appendContent(element) {
         this.content.appendChild(element);
     }
 
     /**
-     * @function SuperMap.Components.PaginationContainer.prototype.clearContent
+     * @function PaginationContainer.prototype.clearContent
      * @description 清空内容元素。
      */
     clearContent() {
@@ -101,7 +103,7 @@ export class PaginationContainer extends TemplateBase {
 
     /** -----以下是页码相关的操作：**/
     /**
-     * @function SuperMap.Components.PaginationContainer.prototype.setPageLink
+     * @function PaginationContainer.prototype.setPageLink
      * @description 设置页码数。
      * @param {number} pageNumber - 页码数。
      */
@@ -171,7 +173,7 @@ export class PaginationContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.PaginationContainer.prototype.clearPageLink
+     * @function PaginationContainer.prototype.clearPageLink
      * @description 清除页码列表。
      */
     clearPageLink() {
@@ -309,5 +311,3 @@ export class PaginationContainer extends TemplateBase {
     }
 
 }
-
-SuperMap.Components.PaginationContainer = PaginationContainer;

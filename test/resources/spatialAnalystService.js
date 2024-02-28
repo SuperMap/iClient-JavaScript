@@ -353,3 +353,25 @@ var geoRelationAnalystCommonResultJson = [{
     }
 }
 ];
+
+var minDistanceAnalystEscapedJson = {
+    "datasetName": null,
+    "datasourceName": null,
+    "distanceResults": [ 
+      {
+        "distance": 1941565.658677927,
+        "referenceGeometryIDs": [465],
+        "sourceGeometryID": 1
+      },
+      {
+        "distance": 1941549.5697663245,
+        "referenceGeometryIDs": [465],
+        "sourceGeometryID": 2
+      }
+    ],
+    "succeed": true,
+    "message": null
+  }
+  
+
+var getAreaSolarRadiationResultJson = {};

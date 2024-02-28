@@ -1,26 +1,27 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {ShapeFactory} from './feature/ShapeFactory';
 import {Sector} from './feature/Sector';
 import {Graph} from './Graph';
 
 /**
- * @class SuperMap.Feature.Theme.Pie
+ * @class FeatureThemePie
+ * @aliasclass Feature.Theme.Pie
+ * @deprecatedclass SuperMap.Feature.Theme.Pie
  * @classdesc 饼图。
  * @category Visualization Theme
- * @param {SuperMap.Feature.Vector} data - 用户数据。
+ * @param {FeatureVector} data - 用户数据。
  * @param {SuperMap.Layer.Graph} layer - 此专题要素所在图层。
  * @param {Array.<string>} fields - data 中的参与此图表生成的字段名称。
- * @param {SuperMap.Feature.Theme.Point.setting} setting - 图表配置对象。
- * @param {SuperMap.LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
- * @extends SuperMap.Feature.Theme.Graph
+ * @param {FeatureThemePoint.setting} setting - 图表配置对象。
+ * @param {LonLat} [lonlat] - 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @extends FeatureThemeGraph
  * @example
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
- * // style: 数据可视化图形的 style，这个样式对象的可设属性： <SuperMap.Feature.ShapeParameters.Sector.style> 。
+ * // style: 数据可视化图形的 style，这个样式对象的可设属性： <ShapeParametersSector.style> 。
  * // sectorStyleByCodomain 数组形如：
  * [
  *   {
@@ -52,7 +53,8 @@ import {Graph} from './Graph';
  *      }
  *  }
  * ]
- * @extends {SuperMap.Feature.Theme.Graph}
+ * @usage
+ * @private
  */
 export class Pie extends Graph {
 
@@ -62,7 +64,7 @@ export class Pie extends Graph {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Pie.prototype.destroy
+     * @function FeatureThemePie.prototype.destroy
      * @description 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
     destroy() {
@@ -70,7 +72,7 @@ export class Pie extends Graph {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Pie.prototype.assembleShapes
+     * @function FeatureThemePie.prototype.assembleShapes
      * @description 装配图形（扩展接口）。
      */
     assembleShapes() {
@@ -118,7 +120,7 @@ export class Pie extends Graph {
             valueSum += Math.abs(fv[i]);
         }
 
-        // 重要步骤：定义图表 Pie 数据视图框中单位值的含义，单位值：每度代表的数值
+        // 重要步骤：定义图表 FeatureThemePie 数据视图框中单位值的含义，单位值：每度代表的数值
         this.DVBUnitValue = 360 / valueSum;
         var uv = this.DVBUnitValue;
 
@@ -185,27 +187,3 @@ export class Pie extends Graph {
     }
 
 }
-
-/**
- * @typedef {Object} SuperMap.Feature.Theme.Pie.setting
- * @property {number} width - 专题要素（图表）宽度。
- * @property {number} height - 专题要素（图表）高度。
- * @property {Array.<number>} codomain - 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
- * @property {number} [XOffset] - 专题要素（图表）在 X 方向上的偏移值，单位像素。
- * @property {number} [YOffset] - 专题要素（图表）在 Y 方向上的偏移值，单位像素。
- * @property {Array.<number>} [dataViewBoxParameter=[0, 0, 0, 0]] - 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- * @property {Array.<number>} decimalNumber - 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- * @property {boolean} [useBackground=false] - 是否使用图表背景框。
- * @property {SuperMap.Feature.ShapeParameters.Rectangle.style} backgroundStyle - 背景样式。
- * @property {Array.<number>} [backgroundRadius=[0, 0, 0, 0]] - 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ，则 backgroundRadius 为 [r1、r2、r3、r4 ]。
- * @property {SuperMap.Feature.ShapeParameters.Sector.style} sectorStyle - 饼图中扇形的基础 style，此参数控制饼图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
- * @property {Array.<SuperMap.Feature.ShapeParameters.Sector.style>} sectorStyleByFields - 按专题字段 themeFields（<SuperMap.Layer.Graph.themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph.themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。
- * @property {Array.<Object>} sectorStyleByCodomain - 按饼图扇形代表的数据值所在值域范围控制饼图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
- * @property {Object} [sectorHoverStyle] 饼图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * @property {boolean} [sectorHoverAble=true] 是否允许饼图扇形使用 hover 状态。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
- * @property {boolean} [sectorClickAble=true] 是否允许饼图扇形被点击。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
- */
-
-SuperMap.Feature.Theme.Pie = Pie;

@@ -1,0 +1,166 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
+* proj4js (https://github.com/proj4js/proj4js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_lianjia"></title>
+    <script type="text/javascript" include="mapv,proj4" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        #titleContainer {
+            width: 100%;
+            position: absolute;
+            top: 15px;
+            color: white;
+            z-index: 999;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #titleContainer > #title {
+            letter-spacing: 0.1em;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .maplibregl-popup-close-button {
+          outline: none;
+        }
+
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="titleContainer">
+    <h2 id="title" data-i18n="resources.title_lianjia"></h2>
+</div>
+<div id="map"></div>
+<script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+<script type="text/javascript">
+    var attribution = "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+            "<a href='https://mapv.baidu.com' target='_blank'>© 2018 百度 MapV</a>";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
+    var dataUrl = "https://www.supermapol.com/iserver/services/map_201802beijingfangjia/rest/maps/2018年2月北京房价_链家小区参考价_蜂巢";
+    var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileURL],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [116.36, 39.954],
+        zoom: 11
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    map.on('load', function() {
+      query();
+    });
+
+    function query() {
+        var param = new maplibregl.supermap.QueryBySQLParameters({
+            queryParams: {
+                name: "lj_xq_500fc@BJ_201802LJ",
+                attributeFilter: "SMID > 0"
+            },
+            fromIndex: 0,
+            toIndex: 10000,
+            maxFeatures: 10000,
+        });
+
+        new maplibregl.supermap.QueryService(dataUrl).queryBySQL(param).then(function (serviceResult) {
+            var features = serviceResult.result.recordsets[0].features.features;
+
+            //构造mapv数据
+            var data = [];
+            for (var i = 0; i < features.length; i++) {
+
+                var feature = features[i];
+                var average_price = feature.properties.average_price_1;
+                var coordinates = feature.geometry.coordinates[0];
+                for (var k = 0; k < coordinates.length; k++) {
+                    for (var j = 0; j < coordinates[k].length; j++) {
+                        coordinates[k][j] = proj4('EPSG:3857', 'EPSG:4326', coordinates[k][j]);
+                    }
+                }
+                data.push({
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: coordinates
+                    },
+                    count: Math.floor(average_price / 10000),
+                    price: parseFloat(average_price).toFixed(2),
+                });
+
+            }
+
+            var dataSet = new mapv.DataSet(data.concat());
+            var mapvOptions = {
+                max: 27,
+                globalAlpha: 0.7,
+                gradient: { // 显示的颜色渐变范围
+                    '0': '#5d5dff',
+                    '0.2': '#74add1',
+                    '0.4': '#ffffbf',
+                    '0.6': '#d73027',
+                    '0.8': '#FF0000'
+                },
+                draw: 'intensity',
+                methods: {
+                    click: function (item) {
+                        if (item != null) {
+                            map.getCanvas().style.cursor = 'pointer';
+                            popup.setLngLat(new maplibregl.LngLat(item.geometry.coordinates[0][0][0], item.geometry.coordinates[0][0][1])).setHTML("￥" + item.price).addTo(map);
+                            popup.setPosition;
+                        } else {
+                            popup.remove();
+                        }
+                    }
+                }
+            };
+            var popup = new maplibregl.Popup({closeOnClick: false});
+            var mapVLayer = new maplibregl.supermap.MapvLayer(dataSet, mapvOptions);
+            map.addLayer(mapVLayer);
+        });
+    }
+</script>
+</body>
+</html>

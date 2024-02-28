@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -40,26 +40,26 @@
             maxZoom: 18,
             zoom: 7
         });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        new L.supermap.TiledMapLayer(baseUrl).addTo(map);
         initThemeLayer();
     }
 
     function initThemeLayer() {
-        themeLayer = L.supermap.rangeThemeLayer("ThemeLayer", {
+        themeLayer = new L.supermap.RangeThemeLayer("ThemeLayer", {
             // 开启 hover 高亮效果
             isHoverAble: true,
             opacity: 0.8,
             alwaysMapCRS: true
         }).addTo(map);
 
-        themeLayer.style = new SuperMap.ThemeStyle({
+        themeLayer.style = new L.supermap.ThemeStyle({
             shadowBlur: 16,
             shadowColor: "#000000",
             fillColor: "#FFFFFF"
         });
 
         // hover 高亮样式
-        themeLayer.highlightStyle = new SuperMap.ThemeStyle({
+        themeLayer.highlightStyle = new L.supermap.ThemeStyle({
             stroke: true,
             strokeWidth: 4,
             strokeColor: 'blue',
@@ -107,16 +107,16 @@
     }
 
     function addThemeFeatures() {
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new L.supermap.GetFeaturesBySQLParameters({
+            queryParameter: new L.supermap.FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_R"]
         });
-        L.supermap.featureService(dataUrl)
-            .getFeaturesBySQL(getFeatureBySQLParams, processComplete, SuperMap.DataFormat.ISERVER);
+        new L.supermap.featureService(dataUrl)
+            .getFeaturesBySQL(getFeatureBySQLParams, L.supermap.DataFormat.ISERVER).then(processComplete);
 
     }
 

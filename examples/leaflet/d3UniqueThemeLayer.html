@@ -1,5 +1,10 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* d3 (https://github.com/d3/d3)
+* Leaflet.D3SvgOverlay (https://github.com/SuperMap/Leaflet.D3SvgOverlay)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -31,7 +36,7 @@
         maxZoom: 18,
         zoom: 7
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     var uniqueMap = {
@@ -49,7 +54,7 @@
     };
 
     function query() {
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new L.supermap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Landuse_R@Jingjin",
                 attributeFilter: "SMID > -1"
@@ -58,7 +63,7 @@
             fromIndex: 0,
             toIndex: 200
         });
-        L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+        new L.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
             var d3Layer = L.supermap.d3Layer(function (sel, proj) {
                 var upd = sel.selectAll('path').data(serviceResult.result.features.features);
                 upd.enter()

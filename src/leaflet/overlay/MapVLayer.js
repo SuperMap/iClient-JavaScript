@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -7,16 +7,22 @@ import {MapVRenderer} from "./mapv/MapVRenderer";
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.mapVLayer
- * @classdesc MapV 图层。
+ * @class MapVLayer
+ * @deprecatedclassinstance L.supermap.mapVLayer
+ * @classdesc MapV 图层类。MapV 是一款地理信息可视化开源库，MapV 图层可以用来展示大量地理信息数据，点、线、面的数据，每种数据也有不同的展示类型，如直接打点、热力图、网格、聚合等方式展示数据。<br>
+ * 展示大量的点数据：如热力图、网格、蜂窝状、点聚合、按颜色区间、按半径大小等方式。<br>
+ * 展示大量的线数据：如普通画线、高亮叠加、热力线数据展示等方式，适合展示大量轨迹的场景。<br>
+ * 展示大量的自定义面数据：按颜色区间来展示，如展示行政区划数据。
  * @category Visualization MapV
+ * @modulecategory Overlay
  * @extends {L.Layer}
- * @param {mapv.DataSet} dataSet - MapV 图层数据集。
+ * @param {Mapv.DataSet} dataSet - MapV 图层数据集。
  * @param {Object} mapVOptions - MapV 图层参数。
  * @param {Object} options - 参数。
  * @param {string} [options.attributionPrefix] - 版权信息前缀。
- * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权信息。
- * @fires L.supermap.mapVLayer#loaded
+ * @param {string} [options.attribution='© 2018 百度 MapV'] - 版权描述信息。
+ * @fires MapVLayer#loaded
+ * @usage
  */
 export var MapVLayer = L.Layer.extend({
 
@@ -41,9 +47,9 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @private
-     * @function L.supermap.mapVLayer.prototype.onAdd
+     * @function MapVLayer.prototype.onAdd
      * @description 添加地图图层。
-     * @param {L.Map} map - 要添加的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onAdd: function (map) {
         this._map = map;
@@ -56,7 +62,7 @@ export var MapVLayer = L.Layer.extend({
         this.renderer = new MapVRenderer(map, this, this.dataSet, this.mapVOptions);
         this.draw();
         /**
-         * @event L.supermap.mapVLayer#loaded
+         * @event MapVLayer#loaded
          * @description 图层添加完成之后触发。
          */
         this.fire("loaded");
@@ -72,7 +78,7 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @private
-     * @function L.supermap.mapVLayer.prototype.onRemove
+     * @function MapVLayer.prototype.onRemove
      * @description 删除地图图层。
      */
     onRemove: function () {
@@ -81,30 +87,30 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.addData
-     * @description 追加数据。
-     * @param {Object} data - 要追加的数据。
-     * @param {Object} options - 要追加的值。
+     * @function MapVLayer.prototype.addData
+     * @description 添加数据。
+     * @param {Object} data - 需要添加的数据。
+     * @param {Object} options - 参数。
      */
     addData: function (data, options) {
         this.renderer.addData(data, options);
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.update
+     * @function MapVLayer.prototype.update
      * @description 更新图层。
      * @param {Object} opt - 待更新的数据。
      * @param {Object} data - mapv 数据集。
-     * @param {Object} options - mapv 绘制参数。
+     * @param {Object} options - 参数。
      */
     update: function (opt) {
         this.renderer.update(opt);
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.getData
+     * @function MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} mapv 数据集。
+     * @returns {Mapv.DataSet} mapv 数据集。
      */
     getData: function () {
         if (this.renderer) {
@@ -114,9 +120,9 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.removeData
-     * @description 删除符合过滤条件的数据。
-     * @param {Function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
+     * @function MapVLayer.prototype.removeData
+     * @description 删除数据。
+     * @param {function} filter - 过滤条件。指定数据项后，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
      *  filter=function(data){
      *    if(data.id=="1"){
@@ -130,7 +136,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.clearData
+     * @function MapVLayer.prototype.clearData
      * @description 清除数据。
      */
     clearData: function () {
@@ -138,7 +144,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.draw
+     * @function MapVLayer.prototype.draw
      * @description 绘制图层。
      */
     draw: function () {
@@ -146,7 +152,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.setZIndex
+     * @function MapVLayer.prototype.setZIndex
      * @description 设置 canvas 层级。
      * @param {number} zIndex - canvas 层级。
      */
@@ -155,7 +161,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.render
+     * @function MapVLayer.prototype.render
      * @description 渲染。
      */
     render: function () {
@@ -163,7 +169,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.getCanvas
+     * @function MapVLayer.prototype.getCanvas
      * @description 获取 canvas。
      * @returns {HTMLElement} 返回 mapV 图层包含的 canvas 对象。
      */
@@ -172,7 +178,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.getContainer
+     * @function MapVLayer.prototype.getContainer
      * @description 获取容器。
      * @returns {HTMLElement} 返回包含 mapV 图层的 dom 对象。
      */
@@ -181,7 +187,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.prototype.getTopLeft
+     * @function MapVLayer.prototype.getTopLeft
      * @description 获取左上角坐标。
      * @returns {L.Bounds} 返回左上角坐标。
      */
@@ -202,7 +208,7 @@ export var MapVLayer = L.Layer.extend({
         canvas.style.top = 0 + "px";
         canvas.style.left = 0 + "px";
         canvas.style.pointerEvents = "none";
-        canvas.style.zIndex = this.options.zIndex || 600;
+        canvas.style.zIndex = this.options.zIndex || 200;
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio || 1;
         if (!this.mapVOptions.context || this.mapVOptions.context === '2d') {
@@ -220,8 +226,13 @@ export var MapVLayer = L.Layer.extend({
 
         var map = this._map;
         var size = map.getSize();
-        canvas.width = size.x;
-        canvas.height = size.y;
+        if (this.mapVOptions.draw === 'heatmap') {
+          canvas.width = parseInt(size.x) * this.devicePixelRatio;
+          canvas.height = parseInt(size.y) * this.devicePixelRatio;
+        } else {
+          canvas.width = parseInt(size.x);
+          canvas.height = parseInt(size.y);
+        }
         canvas.style.width = size.x + 'px';
         canvas.style.height = size.y + 'px';
         var bounds = map.getBounds();
@@ -247,5 +258,3 @@ export var MapVLayer = L.Layer.extend({
 export var mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer(dataSet, mapVOptions, options);
 };
-
-L.supermap.mapVLayer = mapVLayer;

@@ -1,0 +1,93 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+    <title data-i18n="resources.title_mapvBeijingVillage"></title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .maplibregl-popup-close-button {
+        outline: none;
+      }
+    </style>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
+    <div id="map"></div>
+    <script type="text/javascript">
+      var attribution =
+        "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+        "<a href='https://mapv.baidu.com' target='_blank'>© 2018 百度 MapV</a>";
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [116.443571, 39.887549],
+        zoom: 11
+      });
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+      map.addControl(new maplibregl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
+      new maplibregl.Popup({ closeOnClick: false })
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient)
+        .addTo(map);
+      map.on('load', function () {
+        $.get('../data/beijing-village.json', function (data) {
+          var dataSet = new mapv.DataSet(data);
+
+          var options = {
+            fillStyle: 'rgba(255, 80, 53, 0.8)',
+            strokeStyle: 'rgba(250, 255, 53, 0.8)',
+            size: 3,
+            lineWidth: 1,
+            draw: 'simple'
+          };
+          var mapVLayer = new maplibregl.supermap.MapvLayer(dataSet, options);
+          map.addLayer(mapVLayer);
+        });
+      });
+    </script>
+  </body>
+</html>

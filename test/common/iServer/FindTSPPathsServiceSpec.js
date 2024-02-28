@@ -8,13 +8,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 //服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
 var serviceFailedEventArgsSystem = null, serviceSucceedEventArgsSystem = null;
-var initFindTSPPathService = (findTSPPathServiceCompleted, findTSPPathServiceFailed) => {
-    return new FindTSPPathsService(url, {
-        eventListeners: {
-            'processFailed': findTSPPathServiceFailed,
-            'processCompleted': findTSPPathServiceCompleted
-        }
-    });
+var initFindTSPPathService = () => {
+    return new FindTSPPathsService(url);
 };
 
 
@@ -93,8 +88,6 @@ describe('FindTSPPathsService', () => {
                 expect(analystResult[0].route).not.toBeNull();
                 expect(analystResult[0].route.type).toBe("Feature");
                 findTSPPathsService.destroy();
-                expect(findTSPPathsService.EVENT_TYPES).toBeNull();
-                expect(findTSPPathsService.events).toBeNull();
                 parameter.destroy();
                 done();
             } catch (exception) {
@@ -113,7 +106,7 @@ describe('FindTSPPathsService', () => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(JSON.stringify(findTSPPathsResultJson)))
         });
-        findTSPPathsService.processAsync(parameter);
+        findTSPPathsService.processAsync(parameter, findTSPPathServiceCompleted);
     });
 
     //id为空
@@ -166,7 +159,7 @@ describe('FindTSPPathsService', () => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"参数nodes 不是有效的JSON 字符串对象"}}`))
         });
-        findTSPPathsService.processAsync(parameter);
+        findTSPPathsService.processAsync(parameter, findTSPPathServiceFailed);
     });
 
     //参数错误
@@ -219,7 +212,7 @@ describe('FindTSPPathsService', () => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"执行 findTSPPath 操作时出错,原因是：权重字段TurnCost1不存在。 "}}`))
         });
-        findTSPPathsService.processAsync(parameter);
+        findTSPPathsService.processAsync(parameter, findTSPPathServiceFailed);
     });
 
     //参数为空
@@ -228,12 +221,9 @@ describe('FindTSPPathsService', () => {
         var findTSPPathServiceCompleted = (serviceSucceedEventArgs) => {
             flag = true;
         };
-        var findTSPPathServiceFailed = (serviceFailedEventArgsSystem) => {
-            flag = true;
-        };
 
-        var findTSPPathsService = initFindTSPPathService(findTSPPathServiceCompleted, findTSPPathServiceFailed);
-        findTSPPathsService.processAsync();
+        var findTSPPathsService = initFindTSPPathService();
+        findTSPPathsService.processAsync(findTSPPathServiceCompleted);
         expect(flag).toBeFalsy;
     });
 
@@ -278,16 +268,63 @@ describe('FindTSPPathsService', () => {
                 done();
             }
         };
-        var findTSPPathServiceFailed = (serviceFailedEventArgsSystem) => {
 
-        };
-
-        var findTSPPathsService = initFindTSPPathService(findTSPPathServiceCompleted, findTSPPathServiceFailed);
+        var findTSPPathsService = initFindTSPPathService();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
             return Promise.resolve(new Response(`tsppath`))
         });
 
-        findTSPPathsService.processAsync(parameter);
+        findTSPPathsService.processAsync(parameter, findTSPPathServiceCompleted);
     })
+
+    it('processAsync_AnalyzeById_wrong promise', (done) => {
+      var nodeArray = [new Point(5627.7550668827, -3627.4849836293),
+      new Point(5018.1469160422, -4638.5424045354),
+      new Point(6133.2837773358, -4645.9766502774)
+      ];
+      var resultSetting = new TransportationAnalystResultSetting({
+          returnEdgeFeatures: true,
+          returnEdgeGeometry: true,
+          returnEdgeIDs: true,
+          returnNodeFeatures: true,
+          returnNodeGeometry: true,
+          returnNodeIDs: true,
+          returnPathGuides: true,
+          returnRoutes: true
+      });
+      var analystParameter = new TransportationAnalystParameter({
+          resultSetting: resultSetting,
+          weightFieldName: "length"
+      });
+      var parameter = new FindTSPPathsParameters({
+          isAnalyzeById: "AnalyzeById",
+          nodes: nodeArray,
+          endNodeAssigned: false,
+          parameter: analystParameter
+      });
+      var findTSPPathServiceCompleted = (serviceSucceedEventArgs) => {
+          try {
+              expect(serviceSucceedEventArgs.type).toBe("processCompleted");
+              expect(serviceSucceedEventArgs.result.succeed).toBeTruthy;
+              findTSPPathsService.destroy();
+              parameter.destroy();
+              done();
+          } catch (exception) {
+              expect(false).toBeTruthy();
+              console.log("FindTSPPathsService_" + exception.name + ":" + exception.message);
+              findTSPPathsService.destroy();
+              parameter.destroy();
+              done();
+          }
+      };
+
+      var findTSPPathsService = initFindTSPPathService();
+      spyOn(FetchRequest, 'get').and.callFake((url) => {
+          expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/tsppath");
+          return Promise.resolve(new Response(`tsppath`))
+      });
+
+      findTSPPathsService.processAsync(parameter).then(findTSPPathServiceCompleted);
+  })
 });

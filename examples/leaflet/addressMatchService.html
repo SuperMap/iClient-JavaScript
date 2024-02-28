@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -16,14 +16,14 @@
     var map, codeMarkers = [], decodeMarkers = [],
         url = host + "/iserver/services/map-china400/rest/maps/China_4326",
         addressUrl = host + "/iserver/services/addressmatch-Address/restjsr/v1/address",
-        addressMatchService = L.supermap.addressMatchService(addressUrl);
+        addressMatchService = new L.supermap.AddressMatchService(addressUrl);
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
         center: [39.914714, 116.383572],
         maxZoom: 18,
         zoom: 11
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var control = L.control({position: 'topright'});
     control.onAdd = function () {
         var popup = L.DomUtil.create('div');
@@ -125,7 +125,7 @@
         return re.test(str);
     }
     $("#codeBtn").click(function () {
-        var geoCodeParam = new SuperMap.GeoCodingParameter({
+        var geoCodeParam = new L.supermap.GeoCodingParameter({
             address: $('#address').val() || $('#address').attr('placeholder'),
             fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
             toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
@@ -133,10 +133,12 @@
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });
-        addressMatchService.code(geoCodeParam, match);
+        addressMatchService.code(geoCodeParam).then((obj) => {
+          match(obj);
+        });
     });
     $("#decodeBtn").click(function () {
-        var geoDecodeParam = new SuperMap.GeoDecodingParameter({
+        var geoDecodeParam = new L.supermap.GeoDecodingParameter({
             x: $('#xCoord').val() || $('#xCoord').attr('placeholder'),
             y: $('#yCoord').val() || $('#yCoord').attr('placeholder'),
             fromIndex: $('#fromIndex2').val() || $('#fromIndex2').attr('placeholder'),
@@ -146,7 +148,9 @@
             maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
             geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
         });
-        addressMatchService.decode(geoDecodeParam, match);
+        addressMatchService.decode(geoDecodeParam).then((obj) => {
+          match(obj);
+        });
     });
 
     function match(obj) {

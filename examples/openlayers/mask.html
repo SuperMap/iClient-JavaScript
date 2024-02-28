@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* ol-mapbox-style (https://github.com/openlayers/ol-mapbox-style)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -60,7 +64,7 @@
                 target: 'map',
                 controls: ol.control
                     .defaults({ attributionOptions: { collapsed: false } })
-                    .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                 view: new ol.View({
                     center: [11523496.18, 3735091.51],
                     zoom: 4,
@@ -84,7 +88,7 @@
             function addMask() {
                 if (!sichuanFeature) {
                     widgets.loader.showLoader(resources.text_add_sicahun_plygon);
-                    var param = new SuperMap.QueryBySQLParameters({
+                    var param = new ol.supermap.QueryBySQLParameters({
                         queryParams: {
                             name: 'China_Province_pl@China',
                             attributeFilter: 'SMID =14'

@@ -1,6 +1,8 @@
 import { FeatureService } from '../../../src/openlayers/services/FeatureService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import { GetFeaturesByBoundsParameters } from '../../../src/common/iServer/GetFeaturesByBoundsParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 
 import Polygon from 'ol/geom/Polygon';
 
@@ -40,7 +42,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
         var getFeaturesByBoundsService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(featureServiceURL + '/featureResults?returnContent=true&fromIndex=1&toIndex=3');
+            expect(testUrl).toBe(featureServiceURL + '/featureResults?fromIndex=1&toIndex=3&returnContent=true');
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
@@ -130,7 +132,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var polygon = new Polygon([
             [
                 [-20, 20],
@@ -160,7 +162,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var polygon = new Polygon([
           [
               [-20, 20],

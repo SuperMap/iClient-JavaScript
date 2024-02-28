@@ -20,6 +20,7 @@ import Polygon from 'ol/geom/Polygon';
 import VectorLayer from 'ol/layer/Vector';
 import LayerGroup from 'ol/layer/Group';
 import VectorSource from 'ol/source/Vector';
+import { unByKey } from 'ol/Observable';
 
 describe('openlayers_MapExtend', () => {
     let originalTimeout, map, testDiv;
@@ -80,7 +81,9 @@ describe('openlayers_MapExtend', () => {
         });
         map.addLayer(graphicLayer);
 
-        setTimeout(() => {
+        const key = graphicLayer.once('postrender', function () {
+          if (graphicLayer.getSource().renderer) {
+            unByKey(key);
             graphicLayer.getSource()._forEachFeatureAtCoordinate([30, 30], 1, (result) => {
                 expect(graphics).toContain(result);
             });
@@ -97,7 +100,8 @@ describe('openlayers_MapExtend', () => {
             expect(map.getFeaturesAtPixel(pixel).length).toBe(2);
             map.removeLayer(graphicLayer);
             done();
-        }, 4000)
+          }
+        })
     })
     it('forEachFeatureAtPixel_layerGroup_issue26', (done) => {
         var feature = new Feature(new Polygon([
@@ -163,6 +167,6 @@ describe('openlayers_MapExtend', () => {
             expect(map.getFeaturesAtPixel(pixel).length).toBe(3);
             map.removeLayer(layers);
             done();
-        }, 4000)
+        }, 1000)
     })
 })

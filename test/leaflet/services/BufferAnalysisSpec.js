@@ -160,4 +160,51 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', () => {
         });
     });
 
+    it('bufferAnalysis_byDatasets promise', (done) => {
+      var dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
+          dataset: "RoadLine2@Changchun",
+          filterQueryParameter: new FilterParameter({
+              attributeFilter: 'NAME="团结路"'
+          }),
+          bufferSetting: new BufferSetting({
+              endType: BufferEndType.ROUND,
+              leftDistance: {value: 10},
+              rightDistance: {value: 10},
+              semicircleLineSegment: 10
+          }),
+          resultSetting: new DataReturnOption({
+              expectCount: 2000,
+              dataset: resultDataset,
+              dataReturnMode: DataReturnMode.DATASET_ONLY,
+              deleteExistResultDataset: true
+          })
+      });
+      var bufferAnalystService = spatialAnalystService(spatialAnalystURL);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe("POST");
+          expect(testUrl).toBe(spatialAnalystURL + "/datasets/RoadLine2@Changchun/buffer?returnContent=true");
+          expect(params).not.toBeNull();
+          var paramsObj = JSON.parse(params.replace(/'/g, "\""));
+          expect(paramsObj.bufferAnalystParameter.endType).toBe("ROUND");
+          expect(paramsObj.bufferAnalystParameter.leftDistance.value).toEqual(10);
+          expect(paramsObj.dataReturnOption.expectCount).toEqual(2000);
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(JSON.stringify(bufferAnalysisByDatasetRecordNullResultJson)));
+      });
+      bufferAnalystService.bufferAnalysis(dsBufferAnalystParameters).then((result) => {
+        serviceResult = result;
+        try {
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toBe('processCompleted');
+            expect(serviceResult.result.succeed).toBeTruthy();
+            done();
+        }catch (exception) {
+            console.log("'bufferAnalysis_byDatasets'案例失败" + exception.name + ":" + exception.message);
+            bufferAnalystService.destroy();
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  });
+
 });

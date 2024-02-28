@@ -1,26 +1,28 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {Geometry} from '../Geometry';
 import {Bounds} from '../Bounds';
 
 /**
- * @class  SuperMap.Geometry.Rectangle
+ * @class  GeometryRectangle
+ * @aliasclass Geometry.Rectangle
+ * @deprecatedclass SuperMap.Geometry.Rectangle
  * @classdesc 矩形几何对象类。
  * @category BaseTypes Geometry
- * @param {float} x - 矩形左下角点的横坐标。
- * @param {float} y - 矩形左下角点的纵坐标。
- * @param {float} width - 矩形的宽度。
- * @param {float} height -  矩形的高度。
- * @extends {SuperMap.Geometry}
+ * @param {number} x - 矩形左下角点的横坐标。
+ * @param {number} y - 矩形左下角点的纵坐标。
+ * @param {number} width - 矩形的宽度。
+ * @param {number} height -  矩形的高度。
+ * @extends {Geometry}
  * @example
  *  //x 为矩形左下角点的横坐标；y 为矩形左下角点的纵坐标；w 为矩形的宽度；h 为矩形的高度
  *  var x = 1;
  *  var y = 2;
  *  var w = 10;
  *  var h = 20;
- *  var recttangle = new SuperMap.Geometry.Rectangle(x, y, w, h);
+ *  var recttangle = new GeometryRectangle(x, y, w, h);
+ * @usage
  */
 
 export class Rectangle extends Geometry {
@@ -29,25 +31,25 @@ export class Rectangle extends Geometry {
     constructor(x, y, width, height) {
         super(x, y, width, height);
         /**
-         * @member {float} SuperMap.Geometry.Rectangle.prototype.x
+         * @member {number} GeometryRectangle.prototype.x
          * @description 矩形左下角点的横坐标。
          */
         this.x = x;
 
         /**
-         * @member {float} SuperMap.Geometry.Rectangle.prototype.y
+         * @member {number} GeometryRectangle.prototype.y
          * @description 矩形左下角点的纵坐标。
          */
         this.y = y;
 
         /**
-         * @member {float} SuperMap.Geometry.Rectangle.prototype.width
+         * @member {number} GeometryRectangle.prototype.width
          * @description 矩形的宽度。
          */
         this.width = width;
 
         /**
-         * @member {float} SuperMap.Geometry.Rectangle.prototype.height
+         * @member {number} GeometryRectangle.prototype.height
          * @description 矩形的高度。
          */
         this.height = height;
@@ -57,7 +59,7 @@ export class Rectangle extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Rectangle.prototype.calculateBounds
+     * @function GeometryRectangle.prototype.calculateBounds
      * @description 计算出此矩形对象的 bounds。
      */
     calculateBounds() {
@@ -68,9 +70,9 @@ export class Rectangle extends Geometry {
 
 
     /**
-     * @function SuperMap.Geometry.Rectangle.prototype.getArea
+     * @function GeometryRectangle.prototype.getArea
      * @description 获取矩形对象的面积。
-     * @returns {float} 矩形对象面积。
+     * @returns {number} 矩形对象面积。
      */
     getArea() {
         var area = this.width * this.height;
@@ -79,5 +81,3 @@ export class Rectangle extends Geometry {
 
 
 }
-
-SuperMap.Geometry.Rectangle = Rectangle;

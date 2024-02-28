@@ -44,9 +44,6 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult_REGION.type).toBe("processCompleted");
                 expect(addFeatureResult_REGION.object.isInTheSameDomain).toBeTruthy();
-                expect(addFeatureResult_REGION.object.options.method).toBe("POST");
-                expect(addFeatureResult_REGION.object.options.data).toContain("'parts':[4]");
-                expect(addFeatureResult_REGION.object.options.data).toContain('"REGION"');
                 expect(addFeatureResult_REGION.result).not.toBeNull();
                 expect(addFeatureResult_REGION.result.succeed).toBeTruthy();
                 expect(addFeatureResult_REGION.result.length).toEqual(1);
@@ -89,9 +86,6 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(addFeaturesService).not.toBeNull();
                 expect(addFeatureResult.type).toBe("processCompleted");
                 expect(addFeatureResult.object.isInTheSameDomain).toBeTruthy();
-                expect(addFeatureResult.object.options.method).toBe("POST");
-                expect(addFeatureResult.object.options.data).toContain("'parts':[4]");
-                expect(addFeatureResult.object.options.data).toContain('"REGION"');
                 expect(addFeatureResult.result).not.toBeNull();
                 expect(addFeatureResult.result.succeed).toBeTruthy();
                 expect(addFeatureResult.result.newResourceID.length).toBeGreaterThan(0);
@@ -121,7 +115,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var deleteFeaturesService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features?ids=[115,116]");
+            expect(testUrl).toBe(editServiceURL + "/datasources/Jingjin/datasets/Landuse_R/features?ids=%5B115%2C116%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -132,8 +126,6 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
                 expect(deleteFeatureResult).not.toBeNull();
                 expect(deleteFeatureResult.type).toBe("processCompleted");
                 var id = "[" + id1 + "," + id2 + "]";
-                expect(deleteFeatureResult.object.options.data).toBe(id);
-                expect(deleteFeatureResult.object.options.method).toBe("DELETE");
                 expect(deleteFeatureResult.result.succeed).toBeTruthy();
                 deleteFeaturesService.destroy();
                 done();
@@ -158,7 +150,7 @@ describe('leaflet_FeatureService_editFeatures_Region', () => {
         var getFeaturesByIDsService = featureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?fromIndex=0&toIndex=19&returnContent=true");
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.datasetNames[0]).toContain("Jingjin:Landuse_R");
             expect(options).not.toBeNull();

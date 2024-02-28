@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [5000, -3700],
                 zoom: 2,
@@ -80,7 +80,7 @@
             source: eventSource
         });
         //创建最近设施分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+        var resultSetting = new ol.supermap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -90,12 +90,12 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new ol.supermap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             turnWeightField: "TurnCost",
             weightFieldName: "length"  //length,time
         });
-        var findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
+        var findClosetFacilitiesParameter = new ol.supermap.FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: new ol.geom.Point([5000, -3700]),
             //要查找的设施点数量。默认值为1

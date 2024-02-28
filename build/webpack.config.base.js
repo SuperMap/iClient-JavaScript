@@ -1,7 +1,27 @@
 const webpack = require('webpack');
 const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const LintExportWebpackPlugin = require('./lint-export-webpack-plugin');
+const chalk = require('chalk');
 const pkg = require('../package.json');
+
+function compareDependencies(pkgName, dependenciesToCompare, rootDependencies = pkg.dependencies) {
+  Object.keys(dependenciesToCompare).forEach(name => {
+    if (!rootDependencies[name] || rootDependencies[name] !== dependenciesToCompare[name]) {
+      if (rootDependencies[name].includes('file:src/')){
+        return;
+      }
+      console.log(chalk.red(`ERROR [${pkgName}]: The dependency ${name} version can not match in root package.json!\n`));
+    }
+  });
+}
+
+const packageToClients = ['common', 'classic', 'leaflet', 'openlayers', 'mapboxgl', 'maplibregl'];
+packageToClients.forEach(client => {
+  // eslint-disable-next-line import/no-dynamic-require
+  const clientPkg = require(`../src/${client}/package.json`);
+  compareDependencies(clientPkg.name, clientPkg.dependencies);
+});
 
 //包版本(ES6或者ES5)
 let moduleVersion = process.env.moduleVersion || 'es5';
@@ -13,7 +33,9 @@ module.exports = {
 
     mode: 'production',
     //页面入口文件配置
-    entry: {},
+    entry: moduleVersion === "es5" ? [
+      `${__dirname}/../node_modules/core-js/actual/symbol/async-iterator.js`, `${__dirname}/../node_modules/core-js/actual/object/assign.js`
+    ] : [],
 
     output: function (libName, productName) {
         let fileName = moduleVersion === 'es6' ? `${productName}-${moduleVersion}` : `${productName}`;
@@ -42,7 +64,7 @@ module.exports = {
     externals: {
         echarts: 'function(){try{return echarts}catch(e){return {}}}()',
         mapv: 'function(){try{return mapv}catch(e){return {}}}()',
-        elasticsearch: 'function(){try{return elasticsearch}catch(e){return {}}}()',
+        '@antv/g6': 'function(){try{return G6}catch(e){return {}}}()',
         '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()'
     },
 
@@ -51,14 +73,12 @@ module.exports = {
             img: {
                 //图片小于80k采用base64编码
                 test: /\.(png|jpg|jpeg|gif|woff|woff2|svg|eot|ttf)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 150000
-                        }
-                    }
-                ]
+                type: 'asset',
+                parser: {
+                  dataUrlCondition: {
+                    maxSize: 150000
+                  }
+                }
             },
             css: {
                 test: /\.css$/,
@@ -69,8 +89,8 @@ module.exports = {
 
     bannerInfo: function (libName) {
         return `
-         ${libName}.(${pkg.homepage})
-         Copyright© 2000 - 2021 SuperMap Software Co.Ltd
+         ${libName}
+         Copyright© 2000 - 2023 SuperMap Software Co.Ltd
          license: ${pkg.license}
          version: v${pkg.version}
         `;
@@ -78,6 +98,7 @@ module.exports = {
 
     plugins: function (libName, productName) {
         return [
+            new LintExportWebpackPlugin(libName),
             new webpack.BannerPlugin(this.bannerInfo(productName)),
             new MiniCssExtractPlugin({filename:`./${productName}.css`}),
             new ESLintPlugin({ failOnError: true, files: 'src' })

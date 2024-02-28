@@ -1,60 +1,62 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {BufferEndType, BufferRadiusUnit} from '../REST';
 import {BufferDistance} from './BufferDistance';
 
 /**
- * @class SuperMap.BufferSetting
+ * @class BufferSetting
+ * @deprecatedclass SuperMap.BufferSetting
  * @category iServer SpatialAnalyst BufferAnalyst
- * @classdesc 缓冲区分析通用设置类。
- * @param {Object} options - 参数。 
- * @param {SuperMap.BufferEndType} [options.endType=SuperMap.BufferEndType.FLAT] - 缓冲区端点枚举值。 
- * @param {SuperMap.BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。 
- * @param {SuperMap.BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。 
- * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。 
- * @param {SuperMap.BufferRadiusUnit} [options.radiusUnit=SuperMap.BufferRadiusUnit.METER] - 缓冲半径单位。
+ * @classdesc 缓冲区分析通用设置类。该类可用于设置缓冲区分析中的缓冲区端点类型、左/右侧缓冲距离、缓冲半径单位等参数。
+ * @param {Object} options - 可选参数。
+ * @param {BufferEndType} [options.endType=BufferEndType.FLAT] - 缓冲区端点枚举值。
+ * @param {BufferDistance} [options.leftDistance=100] - 左侧缓冲距离。
+ * @param {BufferDistance} [options.rightDistance=100] - 右侧缓冲距离。左/右缓冲距离的设置仅对线对象/数据集有效，如果是点/面对象/数据集，则只需要设置左缓冲距离，即使设置了右缓冲距离，在缓冲分析时也不起作用。
+ * @param {number} [options.semicircleLineSegment=4] - 圆头缓冲圆弧处线段的个数。
+ * @param {BufferRadiusUnit} [options.radiusUnit=BufferRadiusUnit.METER] - 缓冲半径单位。
+ * @usage
  */
 export class BufferSetting {
 
 
     constructor(options) {
         /**
-         * @member {SuperMap.BufferEndType} [SuperMap.BufferSetting.prototype.endType = SuperMap.BufferEndType.FLAT]
-         * @description 缓冲区端点枚举值。分为平头和圆头两种。
+         * @member {BufferEndType} [BufferSetting.prototype.endType = BufferEndType.FLAT]
+         * @description 缓冲区端点枚举值。分为平头和圆头两种。当设置缓冲区端点为平头时，左侧、右侧缓冲距离需为相同数值。
          */
         this.endType = BufferEndType.FLAT;
 
         /**
-         * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.leftDistance=100]
+         * @member {BufferDistance} [BufferSetting.prototype.leftDistance=100]
          * @description 左侧缓冲距离。
-         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
+         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如 EPSG:3857 为米，EPSG:4326 为度），
          * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
          */
         this.leftDistance = new BufferDistance();
 
         /**
-         * @member {SuperMap.BufferDistance} [SuperMap.BufferSetting.prototype.rightDistance=100]
+         * @member {BufferDistance} [BufferSetting.prototype.rightDistance=100]
          * @description 右侧缓冲距离。
-         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如3857为米，4326为度），
-         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting.radiusUnit}设置（默认全部为米）。
+         * 当为 GeometryBufferAnalyst 时，单位为默认地图的投影系的单位（如 EPSG:3857 为米，EPSG:4326 为度），
+         * 当为 DatasetBufferAnalyst 时，单位通过{@link BufferSetting#radiusUnit}设置（默认全部为米）。<br>
+         * 左/右缓冲距离的设置仅对线对象/数据集有效，如果是点/面对象/数据集，则只需要设置左缓冲距离，即使设置了右缓冲距离，在缓冲分析时也不起作用。
          */
         this.rightDistance = new BufferDistance();
 
         /**
-         * @member {number} [SuperMap.BufferSetting.prototype.semicircleLineSegment=4]
+         * @member {number} [BufferSetting.prototype.semicircleLineSegment=4]
          * @description 圆头缓冲圆弧处线段的个数。即用多少个线段来模拟一个半圆。
          */
         this.semicircleLineSegment = 4;
 
         /**
-         * @member {SuperMap.BufferRadiusUnit} [SuperMap.BufferSetting.prototype.radiusUnit = SuperMap.BufferRadiusUnit.METER]
-         * @description 缓冲半径单位，可以是{@link SuperMap.BufferRadiusUnit.METER}、{@link SuperMap.BufferRadiusUnit.MILIMETER}、
-         * {@link SuperMap.BufferRadiusUnit.CENTIMETER}、{@link SuperMap.BufferRadiusUnit.DECIMETER}、{@link SuperMap.BufferRadiusUnit.KILOMETER}、
-         * {@link SuperMap.BufferRadiusUnit.FOOT}、{@link SuperMap.BufferRadiusUnit.INCH}、{@link SuperMap.BufferRadiusUnit.MILE}、{@link SuperMap.BufferRadiusUnit.YARD}。
-         * 仅对BufferAnalyst有效。
+         * @member {BufferRadiusUnit} [BufferSetting.prototype.radiusUnit = BufferRadiusUnit.METER]
+         * @description 缓冲半径单位，可以是{@link BufferRadiusUnit.METER}、{@link BufferRadiusUnit.MILLIMETER}、
+         * {@link BufferRadiusUnit.CENTIMETER}、{@link BufferRadiusUnit.DECIMETER}、{@link BufferRadiusUnit.KILOMETER}、
+         * {@link BufferRadiusUnit.FOOT}、{@link BufferRadiusUnit.INCH}、{@link BufferRadiusUnit.MILE}、{@link BufferRadiusUnit.YARD}。
+         * 仅对 BufferAnalyst 有效。
          */
         this.radiusUnit = BufferRadiusUnit.METER;
 
@@ -66,7 +68,7 @@ export class BufferSetting {
 
 
     /**
-     * @function SuperMap.BufferSetting.prototype.destroy
+     * @function BufferSetting.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -84,5 +86,3 @@ export class BufferSetting {
         me.radiusUnit = null;
     }
 }
-
-SuperMap.BufferSetting = BufferSetting;

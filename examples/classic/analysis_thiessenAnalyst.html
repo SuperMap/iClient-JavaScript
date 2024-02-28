@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -114,7 +114,7 @@
             new SuperMap.Geometry.Point(5472.712382, -2189.15344),
             new SuperMap.Geometry.Point(5752.716961, -2425.40363)];
 
-        var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url2); //初始化泰森多边形分析服务类
+        var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url2, { isInTheSameDomain: true }); //初始化泰森多边形分析服务类
         var gThiessenAnalystParameters = new SuperMap.REST.GeometryThiessenAnalystParameters({points: points});   //初始化泰森多边形分析参数基类
         myThiessenAnalystService.events.on({
             "processCompleted": thiessenAnalystCompleted,

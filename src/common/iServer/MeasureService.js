@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { CommonServiceBase } from './CommonServiceBase';
 import { MeasureParameters } from './MeasureParameters';
@@ -9,25 +8,23 @@ import { ServerGeometry } from './ServerGeometry';
 import { MeasureMode } from '../REST';
 
 /**
- * @class SuperMap.MeasureService
+ * @class MeasureService
+ * @deprecatedclass SuperMap.MeasureService
  * @category iServer Map Measure
- * @classdesc 量算服务类。
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  *            该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
- * @extends {SuperMap.CommonServiceBase}
+ * @extends {CommonServiceBase}
  * @example
- * var myMeasuerService = new SuperMap.MeasureService(url, {
- *      measureMode: SuperMap.MeasureMode.DISTANCE,
- *      eventListeners:{
- *          "processCompleted": measureCompleted
- *      }
+ * var myMeasuerService = new MeasureService(url, {
+ *      measureMode: MeasureMode.DISTANCE
  * });
- * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有 processCompleted 属性可传入处理完成后的回调函数。processFailed 属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
  * @param {MeasureMode} options.measureMode - 量算模式，包括距离量算模式和面积量算模式。
+ * @usage
  */
 export class MeasureService extends CommonServiceBase {
 
@@ -35,7 +32,7 @@ export class MeasureService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {SuperMap.MeasureMode} [SuperMap.MeasureService.prototype.measureMode=MeasureMode.DISTANCE]
+         * @member {MeasureMode} [MeasureService.prototype.measureMode=MeasureMode.DISTANCE]
          * @description 量算模式，包括距离量算模式和面积量算模式。
          */
         this.measureMode = MeasureMode.DISTANCE;
@@ -43,7 +40,6 @@ export class MeasureService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
-
         this.CLASS_NAME = "SuperMap.MeasureService";
     }
 
@@ -57,11 +53,13 @@ export class MeasureService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.MeasureService.prototype.processAsync
+     * @function MeasureService.prototype.processAsync
      * @description 负责将客户端的量算参数传递到服务端。
-     * @param {SuperMap.MeasureParameters} params - 量算参数。
+     * @param {MeasureParameters} params - 量算参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof MeasureParameters)) {
             return;
         }
@@ -98,16 +96,12 @@ export class MeasureService extends CommonServiceBase {
             paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit, "distanceMode": params.distanceMode || 'Geodesic'};
         }
 
-        me.request({
+        return me.request({
             method: "GET",
             params: paramsTemp,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
-
     }
-
 }
-
-SuperMap.MeasureService = MeasureService;

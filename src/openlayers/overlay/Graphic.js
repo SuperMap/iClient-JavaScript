@@ -1,11 +1,10 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import '../core/MapExtend';
 import { Util } from '../core/Util';
 import { HitCloverShape } from './graphic/HitCloverShape';
 import { CloverShape } from './graphic/CloverShape';
-import { CommonUtil } from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import { GraphicWebGLRenderer } from './graphic/WebGLRenderer';
 import { GraphicCanvasRenderer } from './graphic/CanvasRenderer';
 import { Graphic as OverlayGraphic } from './graphic/Graphic';
@@ -33,27 +32,30 @@ const defaultProps = {
 const Renderer = ['canvas', 'webgl'];
 
 /**
- * @class ol.source.Graphic
+ * @class Graphic
+ * @browsernamespace ol.source
  * @category  Visualization Graphic
- * @classdesc 高效率点图层源。
- * @param {Object} options - 图形参数。
- * @param {ol/map} options.map - openlayers 地图对象。
- * @param {ol/Graphic} options.graphics - 高效率点图层点要素。
+ * @classdesc 高效率点图层源。能够支持前端百万点数据的渲染，并支持 GeoJSON、TopoJSON、二维表等多种数据格式，支持修改样式，
+ * 支持属性筛选、鼠标事件等交互操作。
+ * @param {Object} options - 参数。
+ * @param {ol.Map} options.map - OpenLayers 地图对象。
+ * @param {OverlayGraphic} options.graphics - 高效率点图层点要素。
  * @param {string} [options.render ='canvas']  -  指定使用的渲染器。可选值："webgl"，"canvas"（webgl 渲染目前只支持散点）。
  * @param {boolean} [options.isHighLight=true] - 事件响应是否支持要素高亮。
- * @param {ol/style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
- * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。
+ * @param {ol.style.Style} [options.highLightStyle=defaultHighLightStyle] - 高亮风格。
+ * @param {Array.<number>} [options.color=[0, 0, 0, 255]] - 要素颜色。当 {@link OverlayGraphic} 的 style 参数传入设置了 fill 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {Array.<number>} [options.highlightColor] - webgl 渲染时要素高亮颜色。
- * @param {number} [options.opacity=0.8] - 要素透明度。
- * @param {number} [options.radius=10] - 要素半径，单位像素。
+ * @param {number} [options.opacity=0.8] - 要素不透明度。当 {@link OverlayGraphic} 的 style 参数传入设置了 fillOpacity 或 strokeOpacity 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
+ * @param {number} [options.radius=10] - 要素半径，单位为像素。当 {@link OverlayGraphic} 的 style 参数传入设置了 radius 的 {@link HitCloverShape} 或 {@link CloverShape}，此参数无效。
  * @param {number} [options.radiusScale=1] - webgl 渲染时的要素放大倍数。
- * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值（像素）。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值（像素）。
+ * @param {number} [options.radiusMinPixels=0] - webgl 渲染时的要素半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - webgl 渲染时的要素半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
  * @param {function} [options.onHover] -  图层鼠标悬停响应事件（只有 webgl 渲染时有用）。
  * @param {function} [options.onClick] -  图层鼠标点击响应事件（webgl、canvas 渲染时都有用）。
- * @extends {ol/source/ImageCanvas}
+ * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class Graphic extends ImageCanvasSource {
     constructor(options) {
@@ -78,34 +80,40 @@ export class Graphic extends ImageCanvasSource {
         this.isHighLight = typeof options.isHighLight === 'undefined' ? true : options.isHighLight;
         this.hitGraphicLayer = null;
         this._forEachFeatureAtCoordinate = _forEachFeatureAtCoordinate;
-
+        this._options = options;
         const me = this;
-
         if (options.onClick) {
             me.map.on('click', function(e) {
-                if (me.renderer instanceof GraphicWebGLRenderer) {
-                    return;
-                }
-                const features = me.map.getFeaturesAtPixel(e.pixel) || [];
-                for (let index = 0; index < features.length; index++) {
-                    const graphic = features[index];
-                    if (me.graphics.indexOf(graphic) > -1) {
-                        options.onClick(graphic, e);
-                        if (me.isHighLight) {
-                            me._highLight(
-                                graphic.getGeometry().getCoordinates(),
-                                new Style({
-                                    image: graphic.getStyle()
-                                }).getImage(),
-                                graphic,
-                                e.pixel
-                            );
-                        }
-                        break;
-                    }
-                }
+              if (me.isDeckGLRender) {
+                const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+                options.onClick(params);
+                return;
+              }
+              const graphic = me.findGraphicByPixel(e, me);
+              if (graphic) {
+                  options.onClick(graphic, e);
+                  if (me.isHighLight) {
+                    me._highLight(
+                        graphic.getGeometry().getCoordinates(),
+                        new Style({
+                            image: graphic.getStyle()
+                        }).getImage(),
+                        graphic,
+                        e.pixel
+                    );
+                  }
+                
+              }
             });
         }
+          me.map.on('pointermove', function(e) {
+            if (me.isDeckGLRender) {
+              const params = me.renderer.deckGL.pickObject({ x: e.pixel[0], y: e.pixel[1] });
+              if (options.onHover) {
+                  options.onHover(params);
+              }
+            }
+          });
         //eslint-disable-next-line no-unused-vars
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             var mapWidth = size[0] / pixelRatio;
@@ -123,6 +131,13 @@ export class Graphic extends ImageCanvasSource {
             me.renderer._clearBuffer();
             me.renderer.selected = this.selected;
             me.renderer.drawGraphics(graphics);
+            me.isDeckGLRender = me.renderer instanceof GraphicWebGLRenderer;
+            if(me.isDeckGLRender){
+              if (!me.context) {
+                me.context = Util.createCanvasContext2D(mapWidth, mapHeight);
+              }
+              return me.context.canvas;
+            }
             return me.renderer.getCanvas();
         }
 
@@ -164,12 +179,12 @@ export class Graphic extends ImageCanvasSource {
 
         /**
          * @private
-         * @function ol.source.Graphic.prototype._forEachFeatureAtCoordinate
+         * @function Graphic.prototype._forEachFeatureAtCoordinate
          * @description 获取在视图上的要素。
          * @param {string} coordinate -坐标。
          * @param {number} resolution -分辨率。
          * @param {RequestCallback} callback -回调函数。
-         * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+         * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
          */
         function _forEachFeatureAtCoordinate(coordinate, resolution, callback, evtPixel, e) {
             let graphics = me.getGraphicsInExtent();
@@ -178,7 +193,7 @@ export class Graphic extends ImageCanvasSource {
             for (let i = graphics.length - 1; i >= 0; i--) {
                 let style = graphics[i].getStyle();
                 if (!style) {
-                    return;
+                  return;
                 }
                 //已经被高亮的graphics 不被选选中
                 if (style instanceof HitCloverShape) {
@@ -238,10 +253,21 @@ export class Graphic extends ImageCanvasSource {
         }
     }
 
+    findGraphicByPixel(e, me) {
+      const features = me.map.getFeaturesAtPixel(e.pixel) || [];
+      for (let index = 0; index < features.length; index++) {
+          const graphic = features[index];
+          if (me.graphics.indexOf(graphic) > -1) {
+            return graphic;
+          }
+      }
+      return undefined;
+    }
+
     /**
-     * @function ol.source.Graphic.prototype.setGraphics
+     * @function Graphic.prototype.setGraphics
      * @description 设置绘制的点要素，会覆盖之前的所有要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<OverlayGraphic>}  graphics - 点要素对象数组。
      */
     setGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -252,9 +278,9 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.addGraphics
+     * @function Graphic.prototype.addGraphics
      * @description 追加点要素，不会覆盖之前的要素。
-     * @param {Array.<ol.Graphic>}  graphics - 点要素对象数组。
+     * @param {Array.<OverlayGraphic>}  graphics - 点要素对象数组。
      */
     addGraphics(graphics) {
         this.graphics = this.graphics || [];
@@ -264,11 +290,11 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicBy
+     * @function Graphic.prototype.getGraphicBy
      * @description 在 Vector 的要素数组 graphics 里面遍历每一个 graphic，当 graphic[property]===value 时，返回此 graphic（并且只返回第一个）。
-     * @param {string} property - graphic 的某个属性名称。
+     * @param {string} property - graphic 的属性名称。
      * @param {string} value - property 所对应的值。
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicBy(property, value) {
         let graphic = null;
@@ -282,21 +308,21 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicById
-     * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param {string} graphicId - 矢量要素的属性 id
-     * @returns {ol.Graphic} 一个匹配的 graphic。
+     * @function Graphic.prototype.getGraphicById
+     * @description 通过给定一个 ID，返回对应的矢量要素。
+     * @param {string} graphicId - 矢量要素的属性 ID。
+     * @returns {OverlayGraphic} 一个匹配的 graphic。
      */
     getGraphicById(graphicId) {
         return this.getGraphicBy('id', graphicId);
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicsByAttribute
+     * @function Graphic.prototype.getGraphicsByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param {string} attrName - graphic 的某个属性名称。
-     * @param {string} attrValue - property 所对应的值。
-     * @returns {Array.<ol.Graphic>} 一个匹配的 graphic 数组。
+     * @param {string} attrName - 属性的 key 值。
+     * @param {string} attrValue - 属性的 value 值。
+     * @returns {Array.<OverlayGraphic>} 一个匹配的 graphic 数组。
      */
     getGraphicsByAttribute(attrName, attrValue) {
         var graphic,
@@ -313,9 +339,9 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.removeGraphics
+     * @function Graphic.prototype.removeGraphics
      * @description 删除要素数组，默认将删除所有要素。
-     * @param {Array.<ol.Graphic>} [graphics] - 删除的 graphics 数组。
+     * @param {Array.<OverlayGraphic>} [graphics] - 删除的 graphics 数组。
      */
     removeGraphics(graphics = null) {
         //当 graphics 为 null 、为空数组，或 === this.graphics，则清除所有要素
@@ -347,7 +373,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.clear
+     * @function Graphic.prototype.clear
      * @description 释放图层资源。
      */
     clear() {
@@ -355,7 +381,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.update
+     * @function Graphic.prototype.update
      * @description 更新图层。
      */
     update() {
@@ -386,16 +412,16 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.setStyle
+     * @function Graphic.prototype.setStyle
      * @description 设置图层要素整体样式（接口仅在 webgl 渲染时有用）。
      * @param {Object} styleOptions - 样式对象。
      * @param {Array.<number>} [styleOptions.color=[0, 0, 0, 255]] - 点颜色。
-     * @param {number} [styleOptions.radius=10] - 点半径。
+     * @param {number} [styleOptions.radius=10] - 点半径，单位为像素。
      * @param {number} [styleOptions.opacity=0.8] - 不透明度。
      * @param {Array}  [styleOptions.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
      * @param {number} [styleOptions.radiusScale=1] - 点放大倍数。
-     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值(像素)。
-     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+     * @param {number} [styleOptions.radiusMinPixels=0] - 半径最小值，单位为像素。
+     * @param {number} [styleOptions.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
      * @param {number} [styleOptions.strokeWidth=1] - 边框大小。
      * @param {boolean} [styleOptions.outline=false] - 是否显示边框。
      */
@@ -418,9 +444,9 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getLayerState
+     * @function Graphic.prototype.getLayerState
      * @description 获取当前地图及图层状态。
-     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态。
+     * @returns {Object} 地图及图层状态，包含地图状态信息和本图层相关状态信息。
      */
     getLayerState() {
         let map = this.map;
@@ -466,7 +492,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLightClose
+     * @function Graphic.prototype._highLightClose
      * @description 关闭高亮要素显示。
      * @private
      */
@@ -480,12 +506,12 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype._highLight
+     * @function Graphic.prototype._highLight
      * @description 高亮显示选中要素。
      * @param {Array.<number>} center - 中心点。
-     * @param {ol/style/Style} image - 点样式。
-     * @param {ol.Graphic} selectGraphic - 高效率点图层点要素。
-     * @param {ol/Pixel} evtPixel - 当前选中的屏幕像素坐标。
+     * @param {ol.style.Style} image - 点样式。
+     * @param {OverlayGraphic} selectGraphic - 高效率点图层点要素。
+     * @param {ol.Pixel} evtPixel - 当前选中的屏幕像素坐标。
      * @private
      */
     _highLight(center, image, selectGraphic, evtPixel) {
@@ -540,7 +566,7 @@ export class Graphic extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Graphic.prototype.getGraphicsInExtent
+     * @function Graphic.prototype.getGraphicsInExtent
      * @description 在指定范围中获取几何要素面积。
      * @param {Object} extent - 长度范围。
      */

@@ -5,13 +5,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var eventCompleted, eventFailed;
 
-var initGetGridCellInfosService = (url, queryCompleted, queryError) => {
-    return new GetGridCellInfosService(url, {
-        eventListeners: {
-            processCompleted: queryCompleted,
-            processFailed: queryError
-        }
-    });
+var initGetGridCellInfosService = (url) => {
+    return new GetGridCellInfosService(url);
 };
 
 describe('GetGridCellInfosService', () => {
@@ -40,28 +35,14 @@ describe('GetGridCellInfosService', () => {
     });
 
     it('constructor, destroy', () => {
-        var queryCompleted = event => {
-            eventCompleted = event;
-        };
-        var queryError = event => {
-            eventFailed = event;
-        };
-        var getGridCellInfosService = initGetGridCellInfosService(dataServiceURL, queryCompleted, queryError);
+        var getGridCellInfosService = initGetGridCellInfosService(dataServiceURL);
         expect(getGridCellInfosService.CLASS_NAME).toEqual('SuperMap.GetGridCellInfosService');
-        expect(getGridCellInfosService.EVENT_TYPES.length).toEqual(2);
-        expect(getGridCellInfosService.EVENT_TYPES[0]).toEqual('processCompleted');
-        expect(getGridCellInfosService.EVENT_TYPES[1]).toEqual('processFailed');
-        expect(getGridCellInfosService.events).not.toBeNull();
-        expect(getGridCellInfosService.eventListeners).not.toBeNull();
         expect(getGridCellInfosService.datasetName).toBeNull();
         expect(getGridCellInfosService.dataSourceName).toBeNull();
         expect(getGridCellInfosService.datasetType).toBeNull();
         expect(getGridCellInfosService.X).toBeNull();
         expect(getGridCellInfosService.Y).toBeNull();
         getGridCellInfosService.destroy();
-        expect(getGridCellInfosService.EVENT_TYPES).toBeNull();
-        expect(getGridCellInfosService.events).toBeNull();
-        expect(getGridCellInfosService.eventListeners).toBeNull();
     });
 
     it('success:processAsync', done => {
@@ -73,11 +54,25 @@ describe('GetGridCellInfosService', () => {
         });
         var queryCompleted = event => {
             eventCompleted = event;
+            try {
+                expect(myService.url).toEqual(
+                    dataServiceURL + '/datasources/World/datasets/LandCover'
+                );
+                myService.destroy();
+                queryParam.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
+                myService.destroy();
+                queryParam.destroy();
+                done();
+            }
         };
         var queryError = event => {
             eventFailed = event;
         };
-        var myService = initGetGridCellInfosService(dataServiceURL, queryCompleted, queryError);
+        var myService = initGetGridCellInfosService(dataServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('GET');
             expect(options).not.toBeNull();
@@ -96,24 +91,7 @@ describe('GetGridCellInfosService', () => {
             }
             return null;
         });
-        myService.processAsync(queryParam);
-
-        setTimeout(() => {
-            try {
-                expect(myService.url).toEqual(
-                    dataServiceURL + '/datasources/World/datasets/LandCover/gridValue?x=110&y=50'
-                );
-                myService.destroy();
-                queryParam.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log('GetGridCellInfosService_' + exception.name + ':' + exception.message);
-                myService.destroy();
-                queryParam.destroy();
-                done();
-            }
-        }, 2000);
+        myService.processAsync(queryParam, queryCompleted);
     });
 
     it('fail:processAsync', done => {
@@ -121,18 +99,11 @@ describe('GetGridCellInfosService', () => {
         var queryCompleted = event => {
             eventCompleted = event;
         };
-        var queryError = event => {
-            eventFailed = event;
-        };
         var myService = new GetGridCellInfosService(url, {
-            eventListeners: {
-                processCompleted: queryCompleted,
-                processFailed: queryError
-            },
             X: 110,
             Y: 50
         });
-        myService.processAsync();
+        myService.processAsync(queryCompleted);
         setTimeout(() => {
             try {
                 expect(myService.processAsync() === undefined).toBeTruthy();
@@ -144,22 +115,11 @@ describe('GetGridCellInfosService', () => {
                 myService.destroy();
                 done();
             }
-        }, 2000);
+        }, 0);
     });
 
     it('getDatasetInfoCompleted', () => {
-        var queryCompleted = event => {
-            eventCompleted = event;
-        };
-        var queryError = event => {
-            eventFailed = event;
-        };
-        var myService = new GetGridCellInfosService(dataServiceURL, {
-            eventListeners: {
-                processCompleted: queryCompleted,
-                processFailed: queryError
-            }
-        });
+        var myService = new GetGridCellInfosService(dataServiceURL);
         var result = {
             datasetInfo: {
                 type: 'GRID'
@@ -177,15 +137,8 @@ describe('GetGridCellInfosService', () => {
     });
 
     it('getDatasetInfoFailed', () => {
-        var queryCompleted = event => {
-            eventCompleted = event;
-        };
-        var queryError = event => {
-            eventFailed = event;
-        };
-        var myService = initGetGridCellInfosService(dataServiceURL, queryCompleted, queryError);
+        var myService = initGetGridCellInfosService(dataServiceURL);
         var result = {};
-        myService.getDatasetInfoFailed(result);
         expect(result).not.toBeNull();
     });
 
@@ -206,9 +159,65 @@ describe('GetGridCellInfosService', () => {
         });
         myService.queryGridInfos();
         expect(myService.url).toEqual(
-            dataServiceURL + '/datasources/World/datasets/LandCover/imageValue?x=110&y=50'
+            dataServiceURL + '/datasources/World/datasets/LandCover'
         );
     });
+    it('queryGridInfos Bounds exist and it is an object', () => {
+        var url = dataServiceURL + '/datasources/World/datasets/WorldEarth';
+        var myService = initGetGridCellInfosService(url);
+        var bounds = {
+            leftBottom: {
+                x: 112,
+                y: 34
+            },
+            rightTop: {
+                x: 113,
+                y: 35
+            }
+        };
+        myService.bounds = bounds;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValues?bounds=%7B%22leftBottom%22%3A%7B%22x%22%3A112%2C%22y%22%3A34%7D%2C%22rightTop%22%3A%7B%22x%22%3A113%2C%22y%22%3A35%7D%7D');
+            expect(options).not.toBeNull();
+            return Promise.resolve(
+                new Response(
+                    `{"color":{"red":138,"green":118,"blue":91,"alpha":255},"column":1218,"bounds":null,"row":388,"value":9074267,"centerPoint":{"x":34.23738956451416,"y":21.64506733417511}}`
+                )
+            );
+        });
+        myService.queryGridInfos();
+    })
+    it('queryGridInfos Bounds exist and it is an Arrary', () => {
+        var url = dataServiceURL + '/datasources/World/datasets/WorldEarth';
+        var myService = initGetGridCellInfosService(url);
+        var bounds = [
+            {
+                point: {
+                    x: 112.361881,
+                    y: 34.673401
+                }
+            },
+            {
+                point: { 
+                    x: 107.669629,
+                    y: 32.888868
+                }
+            }
+        ];
+        myService.bounds = bounds;
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(dataServiceURL + '/datasources/World/datasets/WorldEarth/imageValues');
+            expect(options).not.toBeNull();
+            return Promise.resolve(
+                new Response(
+                    `[{"color":{"red":74, "green":84, "blue":50, "alpha":255}, "column":1663, "bounds":null, "row":314, "value":4871218, "centerPoint":{"x":112.361881, "y":34.673401}}, {"color":{"red":38, "green":48, "blue":21, "alpha":255}, "column":1636, "bounds":null, "row":324, "value":2502677, "centerPoint":{"x":107.669629, "y":32.888868}}]`
+                )
+            );
+        });
+        myService.queryGridInfos();
+    })
     it('queryGridInfos_customQueryParam', () => {
         var url = dataServiceURL + '/datasources/World/datasets/LandCover?key=123';
         var myService = initGetGridCellInfosService(url);
@@ -224,7 +233,7 @@ describe('GetGridCellInfosService', () => {
         });
         myService.queryGridInfos();
         expect(myService.url).toEqual(
-            dataServiceURL + '/datasources/World/datasets/LandCover/imageValue?key=123&x=110&y=50'
+            dataServiceURL + '/datasources/World/datasets/LandCover?key=123'
         );
     });
 });

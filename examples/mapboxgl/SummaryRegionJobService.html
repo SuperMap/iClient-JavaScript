@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -186,7 +186,7 @@
                 zoom: 10
             });
             map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-            map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+            map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
             $("#standardSummaryFields").change(function (e) {
                 if (e.target.checked) {
@@ -216,7 +216,7 @@
                 $("#regionDatasetS").show();
             });
 
-            SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+            mapboxgl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
             var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl, {
                 withCredentials: window.isLocal
@@ -245,7 +245,7 @@
                     map.removeLayer("summaryLayer");
                     map.removeSource("summarySource");
                 }
-                var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
+                var summaryRegionJobParameter = new mapboxgl.supermap.SummaryRegionJobParameter({
                     datasetName: $('#datasetName').val(),
                     regionDataset: $('#regionDataset').val(),
                     type: $('#type option:selected').attr('value'),
@@ -270,7 +270,7 @@
                     }
                     serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                         if (info.serviceType === 'RESTMAP') {
-                            SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(
+                            mapboxgl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(
                                 function (response) {
                                     return response.json();
                                 }).then(function (result) {

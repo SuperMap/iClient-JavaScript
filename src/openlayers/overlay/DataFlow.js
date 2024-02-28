@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { DataFlowService } from "../services/DataFlowService";
@@ -6,25 +6,26 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
 /**
- * @class ol.source.DataFlow
+ * @class DataFlow
+ * @browsernamespace ol.source
  * @category  iServer DataFlow
- * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务,并将订阅得到的数据根据 `options.idField` 自动更新。与 {@link ol/layer/Vector} 结合使用可以实现SuperMap iServer 数据流上图、根据`options.idField`自动更新。
+ * @classdesc 数据流图层源。订阅SuperMap iServer 数据流服务,并将订阅得到的数据根据 `options.idField` 自动更新。与 {@link ol.layer.Vector} 结合使用可以实现SuperMap iServer 数据流上图、根据`options.idField`自动更新。
  * @param {Object} opt_options - 参数。
  * @param {string} opt_options.ws - SuperMap iServer 数据流服务地址，例如：http://localhost:8090/iserver/services/dataflowTest/dataflow。
  * @param {string} [opt_options.idField = 'id'] - 要素属性中表示唯一标识的字段。
- * @param {GeoJSONObject} [opt_options.geometry] - 指定几何范围，该范围内的要素才能被订阅。
- * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
- * @param {Object} [opt_options.excludeField] - 排除字段
- * @extends {ol/source/Vector}
+ * @param {GeoJSONObject} [opt_options.geometry] - 指定几何范围，只有在该范围内的要素才能被订阅。
+ * @param {Object} [opt_options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时，系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
+ * @param {Object} [opt_options.excludeField] - 排除字段。
+ * @extends {ol.source.Vector}
  * @example
- * var source = new ol.source.DataFlow({
+ * var source = new DataFlow({
  *   ws: urlDataFlow,
  *   idField:"objectId"
  * });
  * var layer = new ol.layer.Vector({
  *    source: source,
  * });
- *
+ * @usage
  */
 export class DataFlow extends VectorSource {
     constructor(opt_options) {
@@ -56,7 +57,7 @@ export class DataFlow extends VectorSource {
     }
 
     // /**
-    //  * @function ol.source.DataFlow.prototype.setPrjCoordSys
+    //  * @function DataFlow.prototype.setPrjCoordSys
     //  * @description 设置坐标参考系。
     //  * @param {Object} prjCoordSys - 参考系。
     //  */
@@ -67,7 +68,7 @@ export class DataFlow extends VectorSource {
     // }
 
     /**
-     * @function ol.source.DataFlow.prototype.setExcludeField
+     * @function DataFlow.prototype.setExcludeField
      * @description 设置唯一字段。
      * @param {Object} excludeField - 排除字段。
      */
@@ -78,7 +79,7 @@ export class DataFlow extends VectorSource {
     }
 
     /**
-     * @function ol.source.DataFlow.prototype.setGeometry
+     * @function DataFlow.prototype.setGeometry
      * @description 设置几何图形。
      * @param {Object} geometry - 要素图形。
      */

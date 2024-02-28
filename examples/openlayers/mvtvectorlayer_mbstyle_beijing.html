@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* ol-mapbox-style (https://github.com/boundlessgeo/ol-mapbox-style)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -101,9 +105,9 @@
         <input id='positron' type='radio' name='rtoggle' value='positron'>
         <label for='positron' data-i18n="resources.text_positronStyle"></label>
     </div>
-    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/i18next/10.0.7/i18next.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery-i18next/1.2.1/jquery-i18next.min.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/i18next/i18next.min.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/web/libs/jquery-i18next/jquery-i18next.min.js"></script>
     <script type="text/javascript" src="../js/utils.js"></script>
     <script type="text/javascript" src=".././locales/zh-CN/resources.js"></script>
     <script type="text/javascript" src="../js/localization.js"></script>
@@ -113,7 +117,7 @@
             Localization.initGlobal();
         });
     </script>
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://iclient.supermap.io/web/libs/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" include='ol-mapbox-style' src="../../dist/ol/include-ol.js"></script>
     <script type="text/javascript">
         var url = (window.isLocal ? window.server : "https://iserver.supermap.io") +
@@ -164,7 +168,7 @@
                         collapsed: false
                     }
                 })
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 maxResolution: 40075016.68557849 / 512,
                 center: ol.proj.fromLonLat([116.4, 39.9]),

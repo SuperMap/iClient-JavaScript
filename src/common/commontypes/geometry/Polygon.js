@@ -1,26 +1,28 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {Collection} from './Collection';
 import './Point';
 import './LineString';
 import './LinearRing';
 
 /**
- * @class SuperMap.Geometry.Polygon
+ * @class GeometryPolygon
+ * @aliasclass Geometry.Polygon
+ * @deprecatedclass SuperMap.Geometry.Polygon
  * @classdesc  多边形几何对象类。
  * @category BaseTypes Geometry
- * @extends {SuperMap.Geometry.Collection}
- * @param {Array.<SuperMap.Geometry.LinearRing>} components - 用来生成多边形的线环数组。
+ * @extends GeometryCollection
+ * @param {Array.<GeometryLinearRing>} components - 多边形的线环数组。
  * @example
- * var points =[new SuperMap.Geometry.Point(0,4010338),
- *      new SuperMap.Geometry.Point(1063524,4010338),
- *      new SuperMap.Geometry.Point(1063524,3150322),
- *      new SuperMap.Geometry.Point(0,3150322)
+ * var points =[new GeometryPoint(0,4010338),
+ *      new GeometryPoint(1063524,4010338),
+ *      new GeometryPoint(1063524,3150322),
+ *      new GeometryPoint(0,3150322)
  *  ],
- *  var linearRings = new SuperMap.Geometry.LinearRing(points),
- *  var  region = new SuperMap.Geometry.Polygon([linearRings]);
+ *  var linearRings = new GeometryLinearRing(points),
+ *  var  region = new GeometryPolygon([linearRings]);
+ * @usage
  */
 export class Polygon extends Collection {
 
@@ -28,8 +30,8 @@ export class Polygon extends Collection {
     constructor(components) {
         super(components);
         /**
-         * @member {Array.<string>} [SuperMap.Geometry.Polygon.prototype.componentTypes=["SuperMap.Geometry.LinearRing"]]
-         * @description components 存储的的几何对象所支持的几何类型数组。
+         * @member {Array.<string>} [GeometryPolygon.prototype.componentTypes=["SuperMap.Geometry.LinearRing"]]
+         * @description components 存储的几何对象所支持的几何类型数组。
          * @readonly
          */
         this.componentTypes = ["SuperMap.Geometry.LinearRing"];
@@ -38,9 +40,9 @@ export class Polygon extends Collection {
     }
 
     /**
-     * @function SuperMap.Geometry.Polygon.prototype.getArea
+     * @function GeometryPolygon.prototype.getArea
      * @description 获得区域面积，从区域的外部口径减去计此区域内部口径算所得的面积。
-     * @returns {float} 几何对象的面积。
+     * @returns {number} 几何对象的面积。
      */
     getArea() {
         var area = 0.0;
@@ -55,5 +57,3 @@ export class Polygon extends Collection {
 
 
 }
-
-SuperMap.Geometry.Polygon = Polygon;

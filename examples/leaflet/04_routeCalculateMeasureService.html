@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -26,15 +26,15 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
     routeCalculateMeasureProcess();
 
     function routeCalculateMeasureProcess() {
         //通过SQL查询的方法建立路由,并添加到地图上
-        queryBySQLService = L.supermap.queryService(baseUrl);
-        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+        queryBySQLService = new L.supermap.QueryService(baseUrl);
+        queryBySQLParams = new L.supermap.QueryBySQLParameters({
             queryParams: [
-                new SuperMap.FilterParameter({
+                new L.supermap.FilterParameter({
                     name: "RouteDT_road@Changchun",
                     attributeFilter: "RouteID=1690"
                 })
@@ -55,14 +55,14 @@
                 //在组成路由的点中选取一个查询点(数组中第8个点),并添加到地图上
                 var marker = L.circleMarker([routeObj[7][1], routeObj[7][0]], {radius: 3, color: 'black'}).addTo(map);
                 //点定里程服务
-                routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
+                routeCalculateMeasureParameters = new L.supermap.RouteCalculateMeasureParameters({
                     "sourceRoute": routeLine,   //必选,路由类型
                     "point": L.point(routeObj[7][0], routeObj[7][1]),            //必选
                     "tolerance": 10,
                     "isIgnoreGap": false
                 });
-                routeCalculateMeasureService = L.supermap.spatialAnalystService(serviceUrl);
-                routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCalculateServiceResult) {
+                routeCalculateMeasureService = new L.supermap.SpatialAnalystService(serviceUrl);
+                routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters).then(function (routeCalculateServiceResult) {
                     if (routeCalculateServiceResult.result && routeCalculateServiceResult.result.measure) {
                         marker.bindTooltip(resources.msg_MByQuery + routeCalculateServiceResult.result.measure + "", {
                             direction: "top",

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
             center: [-10, 15],
             zoom: 3,
@@ -56,11 +56,11 @@
         });
         map.addLayer(vectorLayer);
         //创建集Bounds查询服务
-        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+        var boundsParam = new ol.supermap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getExtent()
         });
-        new ol.supermap.FeatureService(url).getFeaturesByBounds(boundsParam, function (serviceResult) {
+        new ol.supermap.FeatureService(url).getFeaturesByBounds(boundsParam).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
                 wrapX: false

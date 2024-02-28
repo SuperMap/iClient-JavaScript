@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,7 @@
         baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.CRS.NonEarthCRS({
+        crs: new L.supermap.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),
@@ -25,16 +25,16 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
     thiessenAnalystProcess();
 
     function thiessenAnalystProcess() {
-        thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        dsThiessenAnalystParameters = new L.supermap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
-        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters, function (serviceResult) {
+        thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters).then(function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.regions, {weight: 2}).addTo(map);
         });
     }

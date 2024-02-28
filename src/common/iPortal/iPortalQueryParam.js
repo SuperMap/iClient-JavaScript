@@ -1,28 +1,30 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
- 
+
 /**
- * @class SuperMap.iPortalQueryParam
- * @classdesc iPortal 资源查询参数。
+ * @class IPortalQueryParam
+ * @aliasclass iPortalQueryParam
+ * @deprecatedclass SuperMap.iPortalQueryParam
+ * @classdesc SuperMap iPortal 资源查询参数。
  * @version 10.0.1
- * @category iPortal/Online
- * @param {Object} params - iPortal 资源查询具体参数。
- * @param {SuperMap.ResourceType} [params.resourceType] - 资源类型
+ * @category iPortal/Online Resources ResourcesQuery
+ * @param {Object} params - 可选参数。
+ * @param {ResourceType} [params.resourceType] - 资源类型。
  * @param {number} [params.pageSize] - 分页中每页大小。
  * @param {number} [params.currentPage] - 分页页码。
- * @param {SuperMap.OrderBy} [params.orderBy] - 排序字段。
- * @param {SuperMap.OrderType} [params.orderType] - 根据升序还是降序过滤。
- * @param {SuperMap.SearchType} [params.searchType] - 根据查询的范围进行过滤。
+ * @param {OrderBy} [params.orderBy] - 排序字段。
+ * @param {OrderType} [params.orderType] - 根据升序还是降序过滤。
+ * @param {SearchType} [params.searchType] - 根据查询的范围进行过滤。
  * @param {Array} [params.tags] - 标签。
- * @param {Array} [params.dirIds] - 目录 id
+ * @param {Array} [params.dirIds] - 目录 ID。
  * @param {Array} [params.resourceSubTypes] - 根据资源的子类型进行过滤。
- * @param {SuperMap.AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
+ * @param {AggregationTypes} [params.aggregationTypes] - 聚合查询的类型。
  * @param {string} [params.text] - 	搜索的关键词。
  * @param {Array} [params.groupIds] - 	根据群组进行过滤。
  * @param {Array} [params.departmentIds] - 根据部门进行过滤。
+ * @usage
  */
 export class IPortalQueryParam {
 
@@ -44,6 +46,4 @@ export class IPortalQueryParam {
         Util.extend(this, params);
     }
 }
-SuperMap.iPortalQueryParam = IPortalQueryParam;
- 
- 
+

@@ -1,5 +1,6 @@
+import L from "leaflet";
 export function mockCreateTile() {
-    spyOn(L.TileLayer.prototype, 'createTile').and.callFake(function (coords, done) {
+    L.TileLayer.prototype.createTile=function (coords, done) {
         var tile = document.createElement('img');
 
         L.DomEvent.on(tile, 'load', L.Util.bind(this._tileOnLoad, this, done, tile));
@@ -10,18 +11,19 @@ export function mockCreateTile() {
         }
         tile.alt = '';
         tile.setAttribute('role', 'presentation');
+        tile.src = 'base/resources/img/baiduTileTest.png';
         this.getTileUrl(coords);
         return tile;
-    });
+    };
 }
 export function mockInitImage() {
-    spyOn(L.ImageOverlay.prototype, '_initImage').and.callFake(function () {
+    L.ImageOverlay.prototype._initImage=function () {
         this._image = L.DomUtil.create('img');
         var me = this;
         setTimeout(function () {
             me.fire('load', {});
-        }, 1000);
-    });
+        }, 100);
+    };
 }
 export function mockHeatLayer() {
     L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({

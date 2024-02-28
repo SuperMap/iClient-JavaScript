@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -23,7 +27,7 @@
         maxZoom: 18,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     option = {
         legend: {
             data: [resources.text_rainfall, resources.text_runoff],
@@ -76,7 +80,7 @@
 
     function query() {
         clearLayer();
-        var param = new SuperMap.QueryBySQLParameters({
+        var param = new L.supermap.QueryBySQLParameters({
             queryParams: [{
                 name: "China_ProCenCity_pt@China",
                 attributeFilter: "1 = 1"
@@ -86,9 +90,9 @@
             }]
         });
 
-        L.supermap
-            .queryService(url2)
-            .queryBySQL(param, function (serviceResult) {
+        new L.supermap
+            .QueryService(url2)
+            .queryBySQL(param).then(function (serviceResult) {
                 serviceResult.result.recordsets.map(function (records) {
                     resultLayer = L.geoJSON(records.features, {
                         coordsToLatLng: function (coords) {

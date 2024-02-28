@@ -1,10 +1,10 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 
 /**
- * @class L.supermap.Symbolizer
+ * @class Symbolizer
  * @description 符号类。
  * @category Visualization VectorTile
  * @private
@@ -20,7 +20,7 @@ export var Symbolizer = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.Symbolizer.prototype.render
+     * @function Symbolizer.prototype.render
      * @description 绘制线符号。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。
@@ -39,8 +39,8 @@ export var Symbolizer = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.Symbolizer.prototype.updateStyle
-     * @description 更新替换符号样式。
+     * @function Symbolizer.prototype.updateStyle
+     * @description 更新符号样式。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。
      */
@@ -50,7 +50,7 @@ export var Symbolizer = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.Symbolizer.prototype.getElement
+     * @function Symbolizer.prototype.getElement
      * @description 获取文本信息。
      */
     getElement: function () {

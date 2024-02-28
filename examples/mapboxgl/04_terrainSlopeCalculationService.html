@@ -1,0 +1,181 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_terrainSlopeCalculation"></title>
+    <style>
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        text-align: center;
+        z-index: 100;
+        border-radius: 4px;
+      }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
+<div id="toolbar" class="panel panel-primary">
+  <div class='panel-heading'>
+      <h5 class='panel-title text-center' data-i18n="resources.text_terrainSlopeCalculation"></h5></div>
+  <div class='panel-body content'>
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_terrainSlopeCalculation"
+              onclick="terrainSlopeCalculationProcess()"/>&nbsp;
+      <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+              onclick="removeTheme()"/>
+  </div>
+</div>
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, options, terrainSlopeCalculationResult, themeLayer,
+    baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    function terrainSlopeCalculationProcess() {
+        removeTheme();
+        var terrainSlopeCalculationParameters = new mapboxgl.supermap.TerrainSlopeCalculationParameters({
+            dataset: "JingjinTerrain@Jingjin",
+            zFactor:0.00001, 
+            slopeType:"DEGREE", 
+            terrainAnalystSetting: new mapboxgl.supermap.terrainAnalystSetting({
+              boundsType: mapboxgl.supermap.BoundsType.UNION,
+              cellSizeType: mapboxgl.supermap.CellSizeType.MAX
+            }), 
+            resultDatasetName:"testSlope", 
+            deleteExistResultDataset:true
+
+        });
+        new mapboxgl.supermap.SpatialAnalystService(serviceUrl).terrainSlopeCalculate(terrainSlopeCalculationParameters)
+        .then(function (serviceResult) {
+            terrainCurvatureCalculationResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();   
+        });
+
+        //构造栅格专题图
+        function showAnalysisResult_ThemeGridRange() {
+          var themeGridRangeIteme1 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 0,
+                  end: 1,
+                  color: new mapboxgl.supermap.ServerColor(60,164,3)
+              }),
+              themeGridRangeIteme2 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 1,
+                  end: 2,
+                  color: new mapboxgl.supermap.ServerColor(91,188,11)
+              }),
+              themeGridRangeIteme3 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 2,
+                  end: 3,
+                  color: new mapboxgl.supermap.ServerColor(135,211,0)
+              }),
+              themeGridRangeIteme4 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 3,
+                  end: 9,
+                  color: new mapboxgl.supermap.ServerColor(193,230,5)
+              }),
+              themeGridRangeIteme5 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 9,
+                  end: 15,
+                  color: new mapboxgl.supermap.ServerColor(254,255,0)
+              });
+              themeGridRangeIteme6 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 15,
+                  end: 30,
+                  color: new mapboxgl.supermap.ServerColor(255,190,0)
+              });
+              themeGridRangeIteme7 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 30,
+                  end: 45,
+                  color: new mapboxgl.supermap.ServerColor(255,127,0)
+              });
+              themeGridRangeIteme8 = new mapboxgl.supermap.ThemeGridRangeItem({
+                  start: 45,
+                  end: 90,
+                  color: new mapboxgl.supermap.ServerColor(255,63,2)
+              });
+
+          var themeGridRange = new mapboxgl.supermap.ThemeGridRange({
+              reverseColor: false,
+              rangeMode: mapboxgl.supermap.RangeMode.EQUALINTERVAL,
+              //栅格分段专题图子项数组
+              items: [themeGridRangeIteme1,
+                  themeGridRangeIteme2,
+                  themeGridRangeIteme3,
+                  themeGridRangeIteme4,
+                  themeGridRangeIteme5,
+                  themeGridRangeIteme6,
+                  themeGridRangeIteme7,
+                  themeGridRangeIteme8
+              ]
+          });
+
+          var themeParameters = new mapboxgl.supermap.ThemeParameters({
+              //制作专题图的数据集（坡度计算的结果数据集）
+              datasetNames: [terrainCurvatureCalculationResult.dataset.split('@')[0]],
+              dataSourceNames: ["Jingjin"],
+              joinItems: null,
+              themes: [themeGridRange]
+          });
+
+          new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters).then(function (serviceResult1) {
+            var result = serviceResult1.result;
+            if (result && result.newResourceID) {
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": {
+                        "type": "raster",
+                        "tiles": [baseUrl + "&transparent=true&cacheEnabled=false&layersID=" + result.newResourceID],
+                        "tileSize": 256
+                    },
+                    "minzoom": 0,
+                    "maxzoom": 22
+                });
+            }
+        })
+      }
+    }
+    //移除专题图
+    function removeTheme() {
+      if (map.getLayer('themeLayer')) {
+        map.removeLayer('themeLayer');
+        map.removeSource('themeLayer');
+      }
+    }
+</script>
+</body>
+</html>

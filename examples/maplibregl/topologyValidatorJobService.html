@@ -1,0 +1,171 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_topologyValidatorJobService"></title>
+    <style>
+        .mb-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+    <div id="map" style="width: 100%;height:100%"></div>
+    <div id="popup" class="mb-popup" style='width:350px'>
+        <div class="panel panel-default">
+            <div class='panel-heading'>
+                <h3 class='panel-title' data-i18n="resources.title_topologyValidatorJobService"></h3>
+            </div>
+            <div class='panel-body'>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_inputData"></span><span data-i18n="[title]resources.text_requiredField"
+                            style="color: red;"> * </span>　</span>
+                    <input id='datasetName' type='text' class='form-control' value='samples_processing_newyorkZone_R' /></div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_topologyValidatorRule"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <select class='form-control' id='rule' name='rule'>
+                        <option value='REGIONNOOVERLAP' data-i18n="resources.btn_regionNoOverlap"></option>
+                        <option value='REGIONNOOVERLAPWITH' data-i18n="resources.btn_regionNoOverlapWith"></option>
+                        <option value='REGIONCONTAINEDBYREGION' data-i18n="resources.btn_regionContainedByRegion"></option>
+                        <option value='REGIONCOVEREDBYREGION' selected data-i18n="resources.btn_regionCoveredByRegion"></option>
+                        <option value='LINENOOVERLAP' data-i18n="resources.btn_lineNoOverlap"></option>
+                        <option value='LINENOOVERLAPWITH' data-i18n="resources.btn_lineNoOverlapWith"></option>
+                        <option value='POINTNOIDENTICAL' data-i18n="resources.btn_pointNoIdentical"></option>
+                    </select>
+                </div>
+                <p></p>
+                <div class='input-group' id='datasetTopologyDiv'>
+                    <span class='input-group-addon'><span data-i18n="resources.text_topologyValidatorDataset"></span><span
+                            data-i18n="[title]resources.text_requiredField" style="color: red;"> * </span></span>
+                    <input id='datasetTopology' type='text' class='form-control' value='samples_processing_newyorkResidential_R' /></div>
+                <p></p>
+                <div class='input-group'>
+                    <span class='input-group-addon' data-i18n="resources.text_tolerance"></span>
+                    <input id='tolerance' type='text' class='form-control' value='0.000001' />
+                </div>
+                <p></p>
+                <div align='right'>
+                    <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_analyst" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script>
+        var map,
+            baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/map-world/rest/maps/World",
+            mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+            processingsUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") +
+            "/iserver/services/distributedanalyst/rest/v1/jobs";
+        var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+        map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [mapUrl],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
+                    "type": "raster",
+                    "source": "raster-tiles",
+                }]
+            },
+            center: [-73.95, 40.75],
+            zoom: 11
+        });
+        map.addControl(new maplibregl.NavigationControl(), 'top-left');
+        map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+        bindClick();
+
+        $("#rule").change(function () {
+            var rule = $(this).val();
+            if (rule == "PointNoIdentical" || rule == "LineNoOverlap" || rule == "RegionNoOverlap") {
+                $("#datasetTopologyDiv").hide();
+            } else {
+                $("#datasetTopologyDiv").show();
+            }
+        });
+
+        maplibregl.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+
+        var processingService = new maplibregl.supermap.ProcessingService(processingsUrl, {
+            withCredentials: window.isLocal
+        });
+
+        function bindClick() {
+            $('#btn').on('click', function () {
+                if ($('#msg_container')[0]) {
+                    $('#msg_container').remove();
+                }
+                widgets.loader.showLoader();
+                if (map.getLayer("singleLayer")) {
+                    map.removeLayer("singleLayer");
+                }
+                TopologyValidatorJobs();
+            });
+        }
+
+        function TopologyValidatorJobs() {
+            var topologyValidatorJobsParameter = new maplibregl.supermap.TopologyValidatorJobsParameter({
+                datasetName: $('#datasetName').val(),
+                datasetTopology: $('#datasetTopology').val(),
+                rule: $('#rule option:selected').attr('value'),
+                tolerance: $('#tolerance').val()
+            });
+            processingService.addTopologyValidatorJob(topologyValidatorJobsParameter, function (serviceResult) {
+                if (serviceResult.error) {
+                    widgets.loader.removeLoader();
+                    var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                    widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
+                    return;
+                }
+                serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                    if (info.serviceType === 'RESTMAP') {
+                        maplibregl.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                            response) {
+                            return response.json();
+                        }).then(function (result) {
+                            var mapUrl = result[0].path +
+                                "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
+                            map.addSource("singleData", {
+                                "type": "raster",
+                                "tiles": [mapUrl],
+                                "tileSize": 256
+                            });
+                            map.addLayer({
+                                "id": "singleLayer",
+                                "type": "raster",
+                                "source": "singleData",
+                                "minzoom": 0,
+                                "maxzoom": 22
+                            });
+                            widgets.loader.removeLoader();
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

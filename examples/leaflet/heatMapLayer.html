@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -46,7 +46,7 @@
         center: {lon: 0, lat: 0},
         zoom: 2
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     initEditView();
 
@@ -104,7 +104,7 @@
 
     function createHeatPoints() {
         clearHeatPoints();
-        heatMapLayer = L.supermap.heatMapLayer(
+        heatMapLayer = new L.supermap.HeatMapLayer(
             "heatMap",
             {
                 "map": map,
@@ -136,7 +136,7 @@
             var attributions = {
                 "value": Math.random() * 9,
             };
-            features[i] = L.supermap.heatMapFeature(geometry, attributions);
+            features[i] = new L.supermap.HeatMapFeature(geometry, attributions);
             //参数为geojson格式:
             /*features[i] = {
                 "type": "feature",

@@ -1,31 +1,26 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialAnalystBase} from './SpatialAnalystBase';
 import {MathExpressionAnalysisParameters} from './MathExpressionAnalysisParameters';
 
 /**
- * @class SuperMap.MathExpressionAnalysisService
+ * @class MathExpressionAnalysisService
+ * @deprecatedclass SuperMap.MathExpressionAnalysisService
  * @category  iServer SpatialAnalyst GridMathAnalyst
- * @classdesc 栅格代数运算服务类。
- * @param {string} url - 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
- * @param {Object} options - 参数。</br>
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
+ * @classdesc 栅格代数运算服务类。栅格代数运算的思想是运用代数学的观点对地理特征和现象进行空间分析，实质上是对多个栅格数据集进行数学运算以及函数运算。
+ * 运算结果栅格的像元值是由输入的一个或多个栅格同一位置的像元的值通过代数规则运算得到的。
+ * @param {string} url - 服务地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
+ * @param {Object} options - 参数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {SuperMap.SpatialAnalystBase}
+ * @extends {SpatialAnalystBase}
  * @example 例如：
  * (start code)
- * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
- * myMathExpressionAnalysisService.on({
-     *     "processCompleted": processCompleted,
-     *     "processFailed": processFailed
-     *     }
- * );
+ * var myMathExpressionAnalysisService = new MathExpressionAnalysisService(url);
  * (end)
- *
+ * @usage
  */
 export class MathExpressionAnalysisService extends SpatialAnalystBase {
 
@@ -43,11 +38,13 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
     }
 
     /**
-     * @function SuperMap.MathExpressionAnalysisService.prototype.processAsync
+     * @function MathExpressionAnalysisService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param {SuperMap.MathExpressionAnalysisParameters} parameter - 栅格代数运算参数类。
+     * @param {MathExpressionAnalysisParameters} parameter - 栅格代数运算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(parameter) {
+    processAsync(parameter, callback) {
         var me = this;
         var parameterObject = {};
 
@@ -58,15 +55,13 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
         MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
         var jsonParameters = Util.toJSON(parameterObject);
         me.url = Util.urlAppend(me.url, 'returnContent=true');
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
 }
-
-SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;

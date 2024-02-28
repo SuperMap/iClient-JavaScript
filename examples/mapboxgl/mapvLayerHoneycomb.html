@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -61,8 +65,10 @@
                 zoom: 3
             });
             map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-            map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
-            loadData();
+            map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+            map.on('load', function() {
+              loadData();
+            });
 
             function loadData() {
                 var randomCount = 1000;
@@ -139,8 +145,7 @@
                 };
 
                 //创建MapV图层
-                //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-                var mapVLayer = new mapboxgl.supermap.MapvLayer('', dataSet, options);
+                var mapVLayer = new mapboxgl.supermap.MapvLayer(dataSet, options);
                 map.addLayer(mapVLayer);
             }
         </script>

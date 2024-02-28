@@ -1,18 +1,20 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.PopContainer
+ * @class PopContainer
+ * @aliasclass Components.PopContainer
+ * @deprecatedclass SuperMap.Components.PopContainer
  * @classdesc 弹框组件。
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {string} options.title - 弹框组件名称。
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
  * @category Components Common
+ * @usage
  */
 export class PopContainer extends TemplateBase {
     constructor(options) {
@@ -56,14 +58,12 @@ export class PopContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.PopContainer.prototype.appendContent
+     * @function PopContainer.prototype.appendContent
      * @description 追加内容。
-     * @param {Element} dom - 内容元素。
+     * @param {HTMLElement} dom - 内容元素。
      */
     appendContent(dom) {
         this.content.appendChild(dom);
     }
 
 }
-
-SuperMap.Components.PopContainer = PopContainer;

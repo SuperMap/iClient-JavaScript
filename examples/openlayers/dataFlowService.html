@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -79,7 +79,7 @@
                                 collapsed: false
                             }
                         })
-                        .extend([new ol.supermap.control.Logo()]),
+                        .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                     view: new ol.View({
                         center: [116.443571, 39.887549],
                         zoom: 12,
@@ -94,7 +94,7 @@
                 });
                 map.addLayer(layer);
 
-                SuperMap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+                ol.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
 
                 //添加dataflow
                 var source = new ol.source.DataFlow({
@@ -121,13 +121,13 @@
                 //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
                 query();
                 function query() {
-                    var param = new SuperMap.QueryBySQLParameters({
+                    var param = new ol.supermap.QueryBySQLParameters({
                         queryParams: {
                             name: "Main_Road_L@China#1",
                             attributeFilter: "SMID = 1755"
                         }
                     });
-                    new ol.supermap.QueryService(urlQuery).queryBySQL(param, function(serviceResult) {
+                    new ol.supermap.QueryService(urlQuery).queryBySQL(param).then(function(serviceResult) {
                         featureResult = serviceResult;
                         dataFlowBroadcast = new ol.supermap.DataFlowService(urlDataFlow).initBroadcast();
                         dataFlowBroadcast.on("broadcastSocketConnected", function(e) {

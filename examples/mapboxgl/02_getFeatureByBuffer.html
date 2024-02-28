@@ -1,97 +1,105 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title data-i18n="resources.title_getFeatureByBuffer"></title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_getFeatureByBuffer"></title>
+  <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+  <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <style>
+    .mapboxgl-popup-close-button {
+      outline: none;
+    }
+  </style>
 </head>
+
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script>
+  <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+  <script>
     var map, queryBufferGeometry,
-        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
-        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
+      baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World",
+      mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+      dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
-       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+      " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
 
     map = new mapboxgl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
-                    "type": "raster",
-                    "tiles": [mapUrl],
-                    "tileSize": 256
-                }
-            },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-            }]
+      container: 'map',
+      style: {
+        "version": 8,
+        "sources": {
+          "raster-tiles": {
+            "attribution": attribution,
+            "type": "raster",
+            "tiles": [mapUrl],
+            "tileSize": 256
+          }
         },
-        center: [0, 0],
-        zoom: 2
+        "layers": [{
+          "id": "simple-tiles",
+          "type": "raster",
+          "source": "raster-tiles",
+        }]
+      },
+      center: [0, 0],
+      zoom: 2
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
 
     map.on("load", function () {
-        queryBufferGeometry = {
-            "type": "Polygon",
-            "coordinates": [[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]
-        };
-        map.addLayer({
-            "id": "queryPolygon",
-            "type": "fill",
-            "source": {
-                "type": "geojson",
-                "data": {
-                    "type": "Feature",
-                    "geometry": queryBufferGeometry
-                }
-            },
-            "paint": {
-                "fill-color": "rgba(0, 0, 255, 0.1)",
-                'fill-outline-color': "red",
-            },
-        });
+      queryBufferGeometry = {
+        "type": "Polygon",
+        "coordinates": [[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]
+      };
+      map.addLayer({
+        "id": "queryPolygon",
+        "type": "fill",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "Feature",
+            "geometry": queryBufferGeometry
+          }
+        },
+        "paint": {
+          "fill-color": "rgba(0, 0, 255, 0.1)",
+          'fill-outline-color': "red",
+        },
+      });
 
-        query();
+      query();
     });
 
     function query() {
-        var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
-            datasetNames: ["World:Capitals"],
-            bufferDistance: 30,
-            geometry: queryBufferGeometry
+      var bufferParam = new mapboxgl.supermap.GetFeaturesByBufferParameters({
+        datasetNames: ["World:Capitals"],
+        bufferDistance: 30,
+        geometry: queryBufferGeometry
+      });
+      new mapboxgl.Popup().setText(resources.text_bufferDistance + ' = 30').setLngLat([0, 0]).addTo(map);
+      new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam).then(function (serviceResult) {
+        map.addSource("queryDatas", {
+          "type": "geojson",
+          "data": serviceResult.result.features
         });
-        new mapboxgl.Popup().setText(resources.text_bufferDistance+' = 30').setLngLat([0, 0]).addTo(map);
-        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByBuffer(bufferParam, function (serviceResult) {
-            map.addSource("queryDatas", {
-                "type": "geojson",
-                "data": serviceResult.result.features
-            });
-            map.addLayer({
-                "id": "queryDatas",
-                "type": "circle",
-                "source": "queryDatas",
-                "paint": {
-                    "circle-radius": 6, /* 圆的直径，单位像素 */
-                    "circle-color": "blue", /* 圆的颜色 */
-                    "circle-opacity": 0.5  /* 圆的颜色 */
-                },
-            });
+        map.addLayer({
+          "id": "queryDatas",
+          "type": "circle",
+          "source": "queryDatas",
+          "paint": {
+            "circle-radius": 6, /* 圆的直径，单位像素 */
+            "circle-color": "blue", /* 圆的颜色 */
+            "circle-opacity": 0.5  /* 圆的颜色 */
+          },
         });
+      });
     }
-</script>
+  </script>
 </body>
+
 </html>

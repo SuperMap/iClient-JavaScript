@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { SuperMap } from '../SuperMap';
@@ -7,26 +7,30 @@ import { MapVRenderer } from './mapv/MapVRenderer';
 /**
  * @class SuperMap.Layer.MapVLayer
  * @category  Visualization MapV
- * @classdesc MapV 图层。
+ * @classdesc MapV 图层类。MapV 是一款地理信息可视化开源库，MapV 图层可以用来展示大量地理信息数据，点、线、面的数据，每种数据也有不同的展示类型，如直接打点、热力图、网格、聚合等方式展示数据。<br>
+ * 展示大量的点数据：如热力图、网格、蜂窝状、点聚合、按颜色区间、按半径大小等方式。<br>
+ * 展示大量的线数据：如普通画线、高亮叠加、热力线数据展示等方式，适合展示大量轨迹的场景。<br>
+ * 展示大量的自定义面数据：按颜色区间来展示，如展示行政区划数据。
+ * @modulecategory Overlay
  * @extends {SuperMap.Layer}
  * @param {string} name - 图层名。
  * @param {Object} options - 可选参数。
- * @param {Mapv.DataSet} options.dataSet - mapv 的 dataSet 对象。
- * @param {Object} options.options - mapv 绘图风格配置信息。
+ * @param {Mapv.DataSet} options.dataSet - MapV 的 dataSet 对象。
+ * @param {Object} options.options - MapV 绘图风格配置信息。
  */
 export class MapVLayer extends SuperMap.Layer {
     constructor(name, options) {
         super(name, options);
 
         /**
-         * @member {mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
-         * @description mapv dataset 对象。
+         * @member {Mapv.DataSet} SuperMap.Layer.MapVLayer.prototype.dataSet
+         * @description MapV 的 dataset 对象。
          */
         this.dataSet = null;
 
         /**
          * @member {Object} SuperMap.Layer.MapVLayer.prototype.options
-         * @description mapv 绘图风格配置信息。
+         * @description MapV 绘图风格配置信息。
          */
         this.options = null;
 
@@ -37,7 +41,7 @@ export class MapVLayer extends SuperMap.Layer {
         this.supported = false;
 
         /**
-         * @member {Canvas} SuperMap.Layer.MapVLayer.prototype.canvas
+         * @member {HTMLCanvasElement} SuperMap.Layer.MapVLayer.prototype.canvas
          * @description MapV 图主绘制面板。
          */
         this.canvas = null;
@@ -50,9 +54,9 @@ export class MapVLayer extends SuperMap.Layer {
         this.canvasContext = null;
 
         if (options) {
-            SuperMap.Util.extend(this, options);
+          SuperMap.Util.extend(this, options);
         }
-        
+
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement('canvas');
         if (!this.canvas.getContext) {
@@ -80,6 +84,7 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.destroy
+     * @description 销毁此图层，销毁后此图层的所有属性为 null。
      * @override
      */
     destroy() {
@@ -101,8 +106,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据。
-     * @param {mapv.DataSet} dataSet - mapv 数据集。
-     * @param {Object} options - mapv 绘图参数。
+     * @param {Mapv.DataSet} dataSet - MapV 的 dataSet 对象。
+     * @param {Object} options - MapV 绘图风格配置信息。
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -111,8 +116,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据。
-     * @param {mapv.DataSet} dataSet - mapv 数据集。
-     * @param {Object} options - mapv 绘图参数。
+     * @param {Mapv.DataSet} dataSet - MapV 的 dataSet 对象。
+     * @param {Object} options - MapV 绘图风格配置信息。
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -121,7 +126,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} - mapv 数据集。
+     * @returns {Mapv.DataSet} MapV 的 dataSet 对象。
      */
     getData() {
         if (this.renderer) {
@@ -148,7 +153,7 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.clearData
-     * @description 清除数据
+     * @description 清除数据。
      */
     clearData() {
         this.renderer.clearData();
@@ -201,7 +206,7 @@ export class MapVLayer extends SuperMap.Layer {
                 this.canvas.width = parseInt(size.w);
                 this.canvas.height = parseInt(size.h);
             }
-           
+
             this.canvas.style.width = this.div.style.width;
             this.canvas.style.height = this.div.style.height;
             this.maxWidth = size.w;
@@ -220,7 +225,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
      * @description 将经纬度转成底图的投影坐标。
-     * @param {SuperMap.Lonlat} latLng - 经纬度坐标。
+     * @param {SuperMap.LonLat} latLng - 经纬度坐标。
      * @deprecated
      */
     transferToMapLatLng(latLng) {
@@ -233,5 +238,4 @@ export class MapVLayer extends SuperMap.Layer {
         return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 }
-
 SuperMap.Layer.MapVLayer = MapVLayer;

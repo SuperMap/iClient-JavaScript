@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -19,7 +23,7 @@
         maxZoom: 18,
         zoom: 9
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var COLORS = ["#070093", "#1c3fbf", "#1482e5", "#70b4eb", "#b4e0f3", "#262626"];
     var lngExtent = [39.5, 40.6];
     var latExtent = [115.9, 116.8];
@@ -80,7 +84,7 @@
 
     };
 
-    L.supermap.echartsLayer(option, {loadWhileAnimating: false}).addTo(map);
+    new L.supermap.EchartsLayer(option, {loadWhileAnimating: false}).addTo(map);
 
     //自定义渲染：
     function renderItem(params, api) {

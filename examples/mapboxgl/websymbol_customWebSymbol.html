@@ -1,0 +1,256 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title data-i18n="resources.title_websymbol_customWebSymbol"></title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+  <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+  <script>
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var baseServiceUrl =  host + "/iserver/services/map-china400/rest/maps/China";
+    var serverUrl = host +  "/iserver/services/map-Population/rest/maps/PopulationDistribution";
+    var map = new mapboxgl.Map({
+      container: "map",
+      style: {
+        "sources": {
+          "raster-tiles": {
+            "tiles": [
+              baseServiceUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}"
+            ],
+            "type": "raster"
+          },
+          "全国人口密度空间分布图": {
+            "tiles": [
+              serverUrl + "/tileFeature.mvt?z={z}&x={x}&y={y}"
+            ],
+            "type": "vector"
+          }
+        },
+        "glyphs": serverUrl + "/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+        "name": "全国人口密度空间分布图",
+        "layers": [{
+          "id": "simple-tiles",
+          "type": "raster",
+          "source": "raster-tiles"
+        }],
+        "version": 8
+      },
+      center: [
+        104.48,
+        37.3
+      ],
+      zoom: 3.7
+    });
+
+    var createPopDensityPolygon = function () {
+      map.addSymbol("PoPdensity_R_MAX70", {
+        paint: {
+          "fill-color": "rgba(246,229,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX140", {
+        paint: {
+          "fill-color": "rgba(237,204,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX210", {
+        paint: {
+          "fill-color": "rgba(229,179,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX280", {
+        paint: {
+          "fill-color": "rgba(215,139,254,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX350", {
+        paint: {
+          "fill-color": "rgba(208,114,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX420", {
+        paint: {
+          "fill-color": "rgba(197,88,254,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX490", {
+        paint: {
+          "fill-color": "rgba(190,63,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX560", {
+        paint: {
+          "fill-color": "rgba(187,50,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX640", {
+        paint: {
+          "fill-color": "rgba(183,38,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX700", {
+        paint: {
+          "fill-color": "rgba(177,25,255,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX770", {
+        paint: {
+          "fill-color": "rgba(174,16,252,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_MAX1000", {
+        paint: {
+          "fill-color": "rgba(169,9,249,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("PoPdensity_R_Exceed1000", {
+        paint: {
+          "fill-color": "rgba(165,2,247,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addSymbol("Country_R", {
+        paint: {
+          "fill-color": "rgba(197,88,254,1.00)",
+          "fill-antialias": true
+        }
+      });
+      map.addLayer({
+        "id": "PopDensity_R@Population",
+        "source": "全国人口密度空间分布图",
+        "source-layer": "PopDensity_R@Population",
+        "type": "fill",
+        "symbol": [
+          "case",
+          ["all", ["<=", ["get", "dMaxZValue"], 70]], "PoPdensity_R_MAX70",
+          ["all", [">", ["get", "dMaxZValue"], 70],["<=", ["get", "dMaxZValue"], 140]], "PoPdensity_R_MAX140",
+          ["all", [">", ["get", "dMaxZValue"], 140],["<=", ["get", "dMaxZValue"], 210]], "PoPdensity_R_MAX210",
+          ["all", [">", ["get", "dMaxZValue"], 210],["<=", ["get", "dMaxZValue"], 280]], "PoPdensity_R_MAX280",
+          ["all", [">", ["get", "dMaxZValue"], 280],["<=", ["get", "dMaxZValue"], 350]], "PoPdensity_R_MAX350",
+          ["all", [">", ["get", "dMaxZValue"], 350],["<=", ["get", "dMaxZValue"], 420]], "PoPdensity_R_MAX420",
+          ["all", [">", ["get", "dMaxZValue"], 420],["<=", ["get", "dMaxZValue"], 490]], "PoPdensity_R_MAX490",
+          ["all", [">", ["get", "dMaxZValue"], 490],["<=", ["get", "dMaxZValue"], 560]], "PoPdensity_R_MAX560",
+          ["all", [">", ["get", "dMaxZValue"], 560],["<=", ["get", "dMaxZValue"], 640]], "PoPdensity_R_MAX640",
+          ["all", [">", ["get", "dMaxZValue"], 640],["<=", ["get", "dMaxZValue"], 700]], "PoPdensity_R_MAX700",
+          ["all", [">", ["get", "dMaxZValue"], 700],["<=", ["get", "dMaxZValue"], 770]], "PoPdensity_R_MAX770",
+          ["all", [">", ["get", "dMaxZValue"], 770],["<=", ["get", "dMaxZValue"], 1000]], "PoPdensity_R_MAX1000",
+          ["all", [">", ["get", "dMaxZValue"], 1000]], "PoPdensity_R_Exceed1000",
+          "Country_R"
+        ]
+      });
+    };
+
+    var createProvinceCityPoint = function () {
+      map.loadImage("../img/circleRed.png", function (error, image) {
+        if(error){
+          widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
+          return;
+        }
+        map.addImage("cityPoint", image);
+        map.addSymbol("Province_P", {
+          "paint": {
+            "icon-translate": [0, 4]
+          },
+          "layout": {
+            "icon-image": "cityPoint",
+            "icon-size": 0.1
+          }
+        });
+        map.addLayer({
+          "id": "ProvinceCapital_Text@Population",
+          "source": "全国人口密度空间分布图",
+          "source-layer": "ProvinceCapital_P@Population",
+          "type": "symbol",
+          "layout": {
+            "text-field": "{Name}",
+            "text-size": 11.55,
+            "text-anchor": "bottom",
+            "text-allow-overlap": false,
+            "text-font": [
+              "Microsoft YaHei"
+            ],
+            "text-rotate": 360,
+            "text-letter-spacing": 0,
+            "text-justify": "left",
+            "text-rotation-alignment": "viewport",
+            "text-ignore-placement": false,
+          },
+          "paint": {
+            "text-color": "rgba(0,0,0,1.00)",
+            "text-translate": [
+              0.93,
+              -3
+            ]
+          },
+          "symbol": "Province_P"
+        });
+      });
+    };
+
+    var createProvinceLine = function () {
+      map.addSymbol("Province_L", {
+        "paint": {
+          "line-width": 0.38,
+          "line-dasharray": [
+            2.5,
+            2
+          ],
+          "line-color": "#AE10FC"
+        }
+      });
+      map.addLayer({
+        "id": "Province_L@Population",
+        "source": "全国人口密度空间分布图",
+        "source-layer": "Province_L@Population",
+        "type": "line",
+        "symbol": "Province_L"
+      });
+    };
+
+    map.on("load", function () {
+      // 配置基础路径
+      new mapboxgl.supermap.WebSymbol().init({basePath: window.exampleWebSymbolBasePath});
+      createPopDensityPolygon();
+      createProvinceLine();
+      createProvinceCityPoint();
+    });
+
+  </script>
+</body>
+
+</html>

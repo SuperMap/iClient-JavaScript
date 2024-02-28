@@ -1,41 +1,48 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
-import {
-    GeoJSON as GeoJSONFormat,
-    GeometryVector,
-    ServerFeature,
-    CommonUtil,
-    LonLat,
-    GeometryPoint,
-    GeoText
-} from '@supermap/iclient-common';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { Vector as FeatureVector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 
 /**
- * @class ol.source.HeatMap
- * @classdesc 热力图层类。
+ * @class HeatMap
+ * @browsernamespace ol.source
+ * @classdesc 热力图层类。热力图是通过颜色分布，描述诸如人群分布、密度和变化趋势等的一种地图表现手法。
+ * 热点图的衰减是像素级别的，视觉效果极佳，但不能与具体数据进行一一对应，只能表示权重之间的差别，
+ * 因此可以用于一些对精度要求不高而需要重点突出权重渐变的行业，如制作气象温度对比动态效果图、地震区域的震点强弱图等。<br>
+ * 在客户端直接渲染栅格图的三要素：<br>
+ * 1.热点数据，热点数据需要点数据，每一个热点数据需要有地理位置以及权重值 （能够明显地表现某位置某事件发生频率或事物分布密度等，如可以为温度的高低、人口密集度等等)；<br>
+ * 2.热点衰减渐变填充色集合， 用于渲染每一个热点从中心向外衰减时的渐变色；<br>
+ * 3.热点半径，也就是衰减半径。每一个热点需要从中心点外四周根据半径计算衰减度，对在热点衰减区内的每一个像素计算需要渲染的颜色值。
+ * @modulecategory Overlay
  * @category Visualization HeatMap
- * @param {string} name - 图层名称s
- * @param {Object} options - 构造参数。
- * @param {ol/Map} options.map - openlayers 的 map 对象。
+ * @param {string} name - 图层名称。
+ * @param {Object} options - 参数。
+ * @param {ol.Map} options.map - OpenLayers 的地图对象。
  * @param {string} [options.id] - 专题图层 ID，默认使用 CommonUtil.createUniqueID("HeatMapSource_") 创建专题图层 ID。
- * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 float。
+ * @param {string} [options.featureWeight] - 对应 feature 属性中的热点权重字段名称，权重值类型为 number。
  * @param {number} [options.radius=50] - 热点渲染的最大半径（热点像素半径），单位为 px，当 useGeoUnit 参数 为 true 时，单位使用当前图层地理坐标单位。热点显示的时候以精确点为中心点开始往四周辐射衰减，其衰减半径和权重值成比列。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {Array.<string>} [options.colors=['blue','cyan','lime','yellow','red']] - 颜色线性渐变数组，颜色值必须为 canvas 所支持的。
  * @param {boolean} [options.useGeoUnit=false] - 使用地理单位，false 表示默认热点半径默认使用像素单位。当设置为 true 时，热点半径和图层地理坐标保持一致。
- * @extends {ol/source/ImageCanvas}
+ * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class HeatMap extends ImageCanvasSource {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
@@ -96,9 +103,9 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.addFeatures
+     * @function HeatMap.prototype.addFeatures
      * @description 添加热点信息。
-     * @param {(GeoJSONObject|Array.<ol/Feature>)} features - 待添加的要素数组。
+     * @param {(GeoJSONObject|Array.<ol.Feature>)} features - 待添加的要素数组。
      * @example
      * var geojson = {
      *      "type": "FeatureCollection",
@@ -115,7 +122,7 @@ export class HeatMap extends ImageCanvasSource {
      *          }
      *      ]
      *   };
-     * var heatMapSource = new ol.source.HeatMap("heatMap",{"map": map});
+     * var heatMapSource = new HeatMap("heatMap",{"map": map});
      * heatMapSource.addFeatures(geojson);
      * map.addLayer(new ol.layer.Image({
      *       source: heatMapSource
@@ -128,8 +135,8 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.setOpacity
-     * @description 设置图层的不透明度，取值 [0-1] 之间。
+     * @function HeatMap.prototype.setOpacity
+     * @description 设置图层的不透明度，取值范围：[0-1]。
      * @param {number} opacity - 不透明度。
      */
     setOpacity(opacity) {
@@ -147,7 +154,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.updateHeatPoints
+     * @function HeatMap.prototype.updateHeatPoints
      * @description 刷新热点图显示。
      * @param {ol.LngLatBounds} resolution - 当前显示范围。
      * @private
@@ -161,7 +168,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.convertFastToPixelPoints
+     * @function HeatMap.prototype.convertFastToPixelPoints
      * @description 过滤位于当前显示范围内的热点，并转换其为当前分辨率下的像素坐标。
      * @param {number} resolution - 当前分辨率。
      * @private
@@ -214,7 +221,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.draw
+     * @function HeatMap.prototype.draw
      * @description 绘制热点图。
      * @param {Array} data - convertToPixelPoints 方法计算出的点。
      * @param {number} maxWeight -最大权重。
@@ -244,7 +251,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.colorize
+     * @function HeatMap.prototype.colorize
      * @description 根据渐变色重置热点图 rgb 值。
      * @param {Object} pixels - 像素 rgba 值。
      * @param {Array} gradient - 渐变 canvas.getImageData.data。
@@ -262,7 +269,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.drawCircle
+     * @function HeatMap.drawCircle
      * @description 绘制热点半径圆。
      * @param {number} r - 热点半径。
      * @private
@@ -286,7 +293,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.createGradient
+     * @function HeatMap.createGradient
      * @description 根据 this.canvasColors 设置渐变并 getImageData。
      * @private
      */
@@ -311,8 +318,8 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.getLocalXY
-     * @description 获取坐标系统。
+     * @function HeatMap.prototype.getLocalXY
+     * @description 地理坐标转为像素坐标。
      * @param {Object} coordinate - 坐标位置。
      */
     getLocalXY(coordinate) {
@@ -339,7 +346,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.rotate
+     * @function HeatMap.prototype.rotate
      * @description 获取某像素坐标点 pixelP 绕中心 center 逆时针旋转 rotation 弧度后的像素点坐标。
      * @param {number} pixelP - 像素坐标点位置。
      * @param {number} rotation - 旋转角度。
@@ -352,12 +359,12 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.scale
+     * @function HeatMap.prototype.scale
      * @description 获取某像素坐标点 pixelP 相对于中心 center 进行缩放 scaleRatio 倍后的像素点坐标。
      * @param {Object} pixelP - 像素点。
      * @param {Object} center - 中心点。
      * @param {number} scaleRatio - 缩放倍数。
-     * @returns {Array.<number>} 返回数组形比例
+     * @returns {Array.<number>} 返回数组型比例。
      */
     scale(pixelP, center, scaleRatio) {
         var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
@@ -366,9 +373,9 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.removeFeatures
+     * @function HeatMap.prototype.removeFeatures
      * @description 移除指定的热点信息。
-     * @param {Array.<SuperMap.Feature.Vector>} features - 热点信息数组。
+     * @param {Array.<FeatureVector>|FeatureVector} features - 热点信息数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0 || !this.features || this.features.length === 0) {
@@ -399,7 +406,7 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMapprototype.removeAllFeatures
+     * @function HeatMap.prototype.removeAllFeatures
      * @description 移除全部的热点信息。
      */
     removeAllFeatures() {
@@ -408,10 +415,10 @@ export class HeatMap extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.HeatMap.prototype.toiClientFeature
+     * @function HeatMap.prototype.toiClientFeature
      * @description 转为 iClient 要素。
-     * @param {GeoJSONObject|Array.<ol/Feature>} features - 待添加的要素数组。
-     * @returns {SuperMap.Feature.Vector} 转换后的 iClient 要素
+     * @param {GeoJSONObject|Array.<ol.Feature>} features - 待添加的要素数组。
+     * @returns {FeatureVector} 转换后的 iClient 要素。
      */
     toiClientFeature(features) {
         if (!Util.isArray(features)) {
@@ -425,7 +432,7 @@ export class HeatMap extends ImageCanvasSource {
                     geometry = new GeometryPoint(features[i].getGeometry().getCoordinates()[0], features[i].getGeometry().getCoordinates()[1]);
                     //固定属性字段为 "Properties"
                     attributes = features[i].getProperties()["Properties"] ? features[i].getProperties()["Properties"] : {};
-                    featuresTemp.push(new GeometryVector(geometry, attributes));
+                    featuresTemp.push(new FeatureVector(geometry, attributes));
                 }
             } else if (["FeatureCollection", "Feature", "Geometry"].indexOf(features[i].type) != -1) {
                 let format = new GeoJSONFormat();

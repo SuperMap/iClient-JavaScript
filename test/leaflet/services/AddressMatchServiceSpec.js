@@ -121,6 +121,53 @@ describe('leaflet_AddressMatchService', () => {
         });
     });
 
+    it('successEvent:decode promise', (done) => {
+      var GeoDecodingParams = new GeoDecodingParameter({
+          x: 116.31740122415627,
+          y: 39.92311315752059,
+          fromIndex: 0,
+          toIndex: 5,
+          filters: '北京市,海淀区',
+          prjCoordSys: '{epsgcode:4326}',
+          maxReturn: -1,
+          geoDecodingRadius: 500
+      });
+      var GeoDecodingService = addressMatchService(addressMatchURL, options);
+
+      spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+          expect(testUrl).toBe(addressMatchURL + "/geodecoding");
+          expect(params).not.toBeNull();
+          expect(params.maxReturn).toEqual(-1);
+          expect(params.prjCoordSys).toBe('{epsgcode:4326}');
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(decodeSuccessEscapedJson));
+      });
+
+      GeoDecodingService.decode(GeoDecodingParams).then((result) => {
+        serviceResult = result;
+        try {
+            expect(GeoDecodingService).not.toBeNull();
+            expect(serviceResult.type).toBe("processCompleted");
+            var result = serviceResult.result;
+            expect(result).not.toBeNull();
+            expect(result.length).toEqual(5);
+            for (var i = 0; i < result.length; i++) {
+                expect(result[i].filters.length).toEqual(2);
+                expect(result[i].filters[0]).toBe("北京市");
+                expect(result[i].filters[1]).toBe("海淀区");
+            }
+            expect(result[0].score).not.toBeNull();
+            GeoDecodingService.destroy();
+            done();
+        } catch (exception) {
+            console.log("'successEvent:decode'案例失败：" + exception.name + ":" + exception.message);
+            GeoDecodingService.destroy();
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+  });
+
     it('failEvent:code_AddressNull', (done) => {
         var geoCodingParams = new GeoCodingParameter({
             address: null,

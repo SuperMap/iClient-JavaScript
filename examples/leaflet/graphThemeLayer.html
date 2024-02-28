@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +72,7 @@
         center: {lon: 105.85, lat: 36.79},
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     initEditView();
 
     function initEditView() {
@@ -177,7 +177,7 @@
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
             // 省居民消费水平（单位：元）信息
             var provinceInfo = chinaConsumptionLevel[i];
-            //支持传入 L.supermap.themeFeature 类型：
+            //支持传入 new L.supermap.ThemeFeature 类型：
             /*var geo = L.point([provinceInfo[1], provinceInfo[2]]);
             var attrs = {};
             attrs.NAME = provinceInfo[0];
@@ -186,7 +186,7 @@
             attrs.CON2011 = provinceInfo[5];
             attrs.CON2012 = provinceInfo[6];
             attrs.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geo, attrs);
+            var fea = new L.supermap.ThemeFeature(geo, attrs);
             features.push(fea);*/
             
             //支持传入 GeoJSON 规范数据类型：
@@ -311,7 +311,7 @@
             ["#FF9900", "#A2945E"]];
 
         themeLayerOptions.chartsSetting = chartsSettingForBar;
-        themeLayer = L.supermap.graphThemeLayer("BarLayer", "Bar", themeLayerOptions);//.addTo(map)
+        themeLayer = new L.supermap.GraphThemeLayer("BarLayer", "Bar", themeLayerOptions);//.addTo(map)
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         themeLayer.on('mousemove', showInfoWin);
@@ -340,7 +340,7 @@
         };
 
         themeLayerOptions.chartsSetting = chartsSettingForBar3D;
-        themeLayer = L.supermap.graphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
+        themeLayer = new L.supermap.GraphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         themeLayer.on('mousemove', showInfoWin);
@@ -351,7 +351,7 @@
     function createLineThemeLayer() {
         chartsSettingForPointOrLine.pointStyle.fillColor = "#9966CC";
         themeLayerOptions.chartsSetting = chartsSettingForPointOrLine;
-        themeLayer = L.supermap.graphThemeLayer("LineLayer", "Line", themeLayerOptions);
+        themeLayer = new L.supermap.GraphThemeLayer("LineLayer", "Line", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         themeLayer.on('mousemove', showInfoWin);
@@ -362,7 +362,7 @@
     function createPointThemeLayer() {
         chartsSettingForPointOrLine.pointStyle.fillColor = "#D8361B";
         themeLayerOptions.chartsSetting = chartsSettingForPointOrLine;
-        themeLayer = L.supermap.graphThemeLayer("PiontLayer", "Point", themeLayerOptions);
+        themeLayer = new L.supermap.GraphThemeLayer("PiontLayer", "Point", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         themeLayer.on('mousemove', showInfoWin);
@@ -372,7 +372,7 @@
     //创建Pie图表
     function createPieThemeLayer() {
         themeLayerOptions.chartsSetting = chartsSettingForPieOrRing;
-        themeLayer = L.supermap.graphThemeLayer("PieLayer", "Pie", themeLayerOptions);
+        themeLayer = new L.supermap.GraphThemeLayer("PieLayer", "Pie", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         themeLayer.on('mousemove', showInfoWin);
@@ -383,7 +383,7 @@
     function createRingThemeLayer() {
         chartsSettingForPieOrRing.innerRingRadius = 20;
         themeLayerOptions.chartsSetting = chartsSettingForPieOrRing;
-        themeLayer = L.supermap.graphThemeLayer("RingLayer", "Ring", themeLayerOptions);
+        themeLayer = new L.supermap.GraphThemeLayer("RingLayer", "Ring", themeLayerOptions);
         themeLayer.addFeatures(features);
         map.addLayer(themeLayer);
         themeLayer.on('mousemove', showInfoWin);
@@ -401,7 +401,7 @@
     //设置弹框
     function showInfoWin(e) {
         // e.target 是图形对象，即数据的可视化对象，柱状图中是柱条;
-        // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+        // 图形对象的 refDataID 属性是数据（feature）的 ID 属性，它指明图形对象是由那个数据制作而来;
         // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field 和 value;
         if (e.target && e.target.refDataID && e.target.dataInfo) {
             closeInfoWin();

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -25,7 +25,7 @@
                 })]
         });
 
-        layer = new SuperMap.Layer.CloudLayer();
+        layer = new SuperMap.Layer.OSM("OSM");
         map.addLayers([layer]);
         map.setCenter(new SuperMap.LonLat(11339634.286396, 4588716.5813769), 4);
 </script>

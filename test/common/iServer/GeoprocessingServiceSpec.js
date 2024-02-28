@@ -20,8 +20,6 @@ describe('GeoprocessingService', () => {
         expect(geoprocessing).not.toBeNull();
         expect(geoprocessing.url).toEqual(serverUrl);
         geoprocessing.destroy();
-        expect(geoprocessing.EVENT_TYPES).toBeNull();
-        expect(geoprocessing.options).toBeNull();
         expect(geoprocessing.url).toBeNull();
     });
 
@@ -44,21 +42,13 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const getToolsFailed = (result) => {
-            server = result;
-        };
-        const getToolsService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: getTools,
-                processFaild: getToolsFailed
-            }
-        });
+        const getToolsService = new GeoprocessingService(serverUrl);
         expect(getToolsService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(serverUrl + '/list');
             return Promise.resolve(new Response(toolSuccessEscapedJson));
         });
-        getToolsService.getTools();
+        getToolsService.getTools(getTools);
     });
 
     it('getTool', (done) => {
@@ -83,19 +73,14 @@ describe('GeoprocessingService', () => {
         const getToolFailed = (result) => {
             server = result;
         };
-        const getToolService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: getTool,
-                processFaild: getToolFailed
-            }
-        });
+        const getToolService = new GeoprocessingService(serverUrl);
         expect(getToolService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(serverUrl + '/sps.WorkflowProcessFactory.models:sps');
             const getToolSuccessEscapedJson = `{"outputs":[{"dataType":"long","isCollection":false,"description":"RDD 中要素对象的数目","id":"countrdd-resultCount","title":"countrdd-resultCount"}],"environments":{"BDT_Spark_Environment":{"settings":[""],"appName":"BDTSpark","master":"local[*]"}},"inputs":[{"isRequired":true,"defaultValue":"","meta":{"stringType":"connection","connection.mode":"select"},"dataType":"java.lang.String","isCollection":false,"description":"访问数据的连接信息,需要包含数据类型，连接参数，数据集名字等信息。使用'--key=value'的方式设置，多个值使用' '空格分隔。如连接HBase数据为 --providerType=hbase --hbase.zookeepers=192.168.12.34:2181 --hbase.catalog=demo --dataset=dltb; 连接dsf数据为--providerType=dsf --path=hdfs://ip:9000/dsfdata ; 本地数据为--providerType=dsf --path=/home/dsfdata","enumItems":"","id":"readasfeaturerdd-dataConnInfo","title":"readasfeaturerdd-dataConnInfo"},{"isRequired":false,"defaultValue":"","meta":{},"dataType":"java.lang.String","isCollection":false,"description":"数据查询条件，支持属性条件和空间查询, 如 SmID<100 and BBOX(the_geom, 120,30,121,31)","enumItems":"","id":"readasfeaturerdd-filter","title":"readasfeaturerdd-filter"}],"description":"sps","id":"sps.WorkflowProcessFactory.models:sps","title":"sps","succeed":true}`;
             return Promise.resolve(new Response(getToolSuccessEscapedJson));
         });
-        getToolService.getTool('sps.WorkflowProcessFactory.models:sps');
+        getToolService.getTool('sps.WorkflowProcessFactory.models:sps', getTool);
     });
 
     // 同步传参
@@ -117,15 +102,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const executeFailed = (result) => {
-            server = result;
-        };
-        const executeService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: execute,
-                processFaild: executeFailed
-            }
-        });
+        const executeService = new GeoprocessingService(serverUrl);
         expect(executeService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             const URL = serverUrl + '/sps.WorkflowProcessFactory.models:sps/execute';
@@ -138,7 +115,8 @@ describe('GeoprocessingService', () => {
                 'readasfeaturerdd-dataConnInfo':
                     'sdx --server=C:/Users/MEVHREVO/Desktop/mode/111.udbx --dbType=udbx --dataset=ccccc_result_R'
             },
-            [{ type: 'BDT_Spark_Environment', settings: [''], appName: 'BDTSpark', master: 'local[*]' }]
+            [{ type: 'BDT_Spark_Environment', settings: [''], appName: 'BDTSpark', master: 'local[*]' }],
+            execute
         );
     });
 
@@ -160,15 +138,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const submitJobFailed = (result) => {
-            server = result;
-        };
-        const submitJobService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: submitJob,
-                processFaild: submitJobFailed
-            }
-        });
+        const submitJobService = new GeoprocessingService(serverUrl);
         expect(submitJobService).not.toBeNull();
         spyOn(FetchRequest, 'post').and.callFake((url) => {
             expect(url).toBe(`${serverUrl}/sps.WorkflowProcessFactory.models:sps/jobs`);
@@ -182,7 +152,8 @@ describe('GeoprocessingService', () => {
                 'readasfeaturerdd-dataConnInfo':
                     'sdx --server=C:/Users/MEVHREVO/Desktop/mode/111.udbx --dbType=udbx --dataset=ccccc_result_R'
             },
-            [{ type: 'BDT_Spark_Environment', settings: [''], appName: 'BDTSpark', master: 'local[*]' }]
+            [{ type: 'BDT_Spark_Environment', settings: [''], appName: 'BDTSpark', master: 'local[*]' }],
+            submitJob
         );
     });
 
@@ -204,15 +175,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const waitForJobCompletionFailed = (result) => {
-            server = result;
-        };
-        const waitForJobCompletionService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: waitForJobCompletion,
-                processFaild: waitForJobCompletionFailed
-            }
-        });
+        const waitForJobCompletionService = new GeoprocessingService(serverUrl);
         expect(waitForJobCompletionService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url, paramter, serviceProcessCompleted) => {
             expect(url).toBe(`${serverUrl}/sps.WorkflowProcessFactory.models:sps/jobs/gp-20200920-182520-AA0E8`);
@@ -232,7 +195,8 @@ describe('GeoprocessingService', () => {
         waitForJobCompletionService.waitForJobCompletion(
             'gp-20200920-182520-AA0E8',
             'sps.WorkflowProcessFactory.models:sps',
-            options
+            options,
+            waitForJobCompletion
         );
     });
 
@@ -256,12 +220,7 @@ describe('GeoprocessingService', () => {
         const getJobInfoFailed = (result) => {
             server = result;
         };
-        const getJobInfoService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: getJobInfo,
-                processFaild: getJobInfoFailed
-            }
-        });
+        const getJobInfoService = new GeoprocessingService(serverUrl);
         expect(getJobInfoService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(`${serverUrl}/sps.WorkflowProcessFactory.models:sps/jobs/gp-20200910-200646-C2A3A`);
@@ -271,11 +230,11 @@ describe('GeoprocessingService', () => {
                 )
             );
         });
-        getJobInfoService.getJobInfo('sps.WorkflowProcessFactory.models:sps', 'gp-20200910-200646-C2A3A');
+        getJobInfoService.getJobInfo('sps.WorkflowProcessFactory.models:sps', 'gp-20200910-200646-C2A3A', getJobInfo);
     });
 
     it('cancelJob', (done) => {
-        const cancelJob = (result) => {
+        const cancelJobCallback = (result) => {
             serverResult = result;
             try {
                 expect(cancelJobService).not.toBeNull();
@@ -294,15 +253,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const cancelJobFailed = (result) => {
-            server = result;
-        };
-        const cancelJobService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: cancelJob,
-                processFaild: cancelJobFailed
-            }
-        });
+        const cancelJobService = new GeoprocessingService(serverUrl);
         expect(cancelJobService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(`${serverUrl}/sps.WorkflowProcessFactory.models:sps/jobs/gp-20200910-200646-C2A3A/cancel`);
@@ -310,7 +261,7 @@ describe('GeoprocessingService', () => {
                 new Response(`{"jobID":"gp-20200910-200646-C2A3A","jobStatus":"JobCancelled","succeed":true}`)
             );
         });
-        cancelJobService.cancelJob('sps.WorkflowProcessFactory.models:sps', 'gp-20200910-200646-C2A3A');
+        cancelJobService.cancelJob('sps.WorkflowProcessFactory.models:sps', 'gp-20200910-200646-C2A3A', cancelJobCallback);
     });
 
     // 传参
@@ -336,15 +287,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const getJobsFailed = (result) => {
-            server = result;
-        };
-        const getJobsService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: getJobs,
-                processFaild: getJobsFailed
-            }
-        });
+        const getJobsService = new GeoprocessingService(serverUrl);
         expect(getJobsService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(serverUrl + '/sps.WorkflowProcessFactory.models:sps/jobs');
@@ -354,7 +297,7 @@ describe('GeoprocessingService', () => {
                 )
             );
         });
-        getJobsService.getJobs(`sps.WorkflowProcessFactory.models:sps`);
+        getJobsService.getJobs(`sps.WorkflowProcessFactory.models:sps`, getJobs);
     });
 
     // 不传参
@@ -380,15 +323,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const getJobsFailed = (result) => {
-            server = result;
-        };
-        const getJobsService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: getJobs,
-                processFaild: getJobsFailed
-            }
-        });
+        const getJobsService = new GeoprocessingService(serverUrl);
         expect(getJobsService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(serverUrl + '/jobs');
@@ -398,7 +333,7 @@ describe('GeoprocessingService', () => {
                 )
             );
         });
-        getJobsService.getJobs();
+        getJobsService.getJobs(getJobs);
     });
 
     it('getResults', (done) => {
@@ -419,15 +354,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const getResultsFailed = (result) => {
-            server = result;
-        };
-        const getResultsService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: getResults,
-                processFaild: getResultsFailed
-            }
-        });
+        const getResultsService = new GeoprocessingService(serverUrl);
         expect(getResultsService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(
@@ -435,7 +362,7 @@ describe('GeoprocessingService', () => {
             );
             return Promise.resolve(new Response(`{"countrdd-resultCount":"12","succeed":true}`));
         });
-        getResultsService.getResults('sps.WorkflowProcessFactory.models:sps', 'gp-20200910-200646-C2A3A');
+        getResultsService.getResults('sps.WorkflowProcessFactory.models:sps', 'gp-20200910-200646-C2A3A', getResults);
     });
 
     it('filterResult', (done) => {
@@ -456,15 +383,7 @@ describe('GeoprocessingService', () => {
                 done();
             }
         };
-        const filterResultFailed = (result) => {
-            server = result;
-        };
-        const filterResultService = new GeoprocessingService(serverUrl, {
-            eventListeners: {
-                processCompleted: filterResult,
-                processFaild: filterResultFailed
-            }
-        });
+        const filterResultService = new GeoprocessingService(serverUrl);
         expect(filterResultService).not.toBeNull();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             expect(url).toBe(
@@ -475,7 +394,8 @@ describe('GeoprocessingService', () => {
         filterResultService.getResults(
             'sps.WorkflowProcessFactory.models:sps',
             'gp-20200910-200646-C2A3A',
-            'countrdd-resultCount'
+            'countrdd-resultCount',
+            filterResult
         );
     });
 });

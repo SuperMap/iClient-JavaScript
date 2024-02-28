@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -6,20 +6,23 @@ import RegularShape from 'ol/style/RegularShape';
 import FillStyle from 'ol/style/Fill';
 import StrokeStyle from 'ol/style/Stroke';
 /**
- * @class ol.style.CloverShape
+ * @class CloverShape
+ * @browsernamespace ol.style
  * @category  Visualization Graphic
- * @classdesc 三叶草要素风格。
- * @extends {ol/style/RegularShape}
+ * @classdesc 三叶草要素风格。除了基本的线颜色、线宽、填充色、填充透明度、填充形状等参数，还可以设置三叶草要素扇叶的圆心角、间隔角度、数量、半径等。
+ * @modulecategory Overlay
+ * @extends {ol.style.RegularShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} [options.angle=30] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {number} [options.count=3] - 扇叶数量。
- * @param {ol/style/Fill} [options.fill] - 填充样式。
- * @param {number} [options.strokeOpacity] - 透明度。
- * @param {number} [options.fillOpacity] - 填充透明度。
- * @param {number} [options.radius] - 半径。
- * @param {ol/style/Stroke} [options.stroke] - 边框样式。
- * @param {string} [options.stroke.color='#3388ff'] - 边框颜色。
+ * @param {ol.style.Fill} [options.fill] - 填充样式。
+ * @param {number} [options.strokeOpacity] - 边框不透明度。
+ * @param {number} [options.fillOpacity] - 填充不透明度。
+ * @param {number} [options.radius] - 扇叶的半径，单位为像素。
+ * @param {ol.style.Stroke} [options.stroke] - 边框样式。
+ * @param {string} [options.stroke.color='#3388ff'] - 十六进制边框颜色。
  * @param {number} [options.stroke.width=1] - 边框宽度。
+ * @usage
  */
 export class CloverShape extends RegularShape {
 
@@ -79,12 +82,12 @@ export class CloverShape extends RegularShape {
     }
 
     /**
-     * @function  ol.style.CloverShape.prototype.drawSector
+     * @function CloverShape.prototype.drawSector
      * @description 绘制扇形。
-     * @param {CanvasRenderingContext2D} ctx - context 对象
-     * @param {number} x - 中心点 x。
-     * @param {number} y - 中心点 y。
-     * @param {number} r - 中心点 r。
+     * @param {CanvasRenderingContext2D} ctx - context 对象。
+     * @param {number} x - 中心点 x 坐标。
+     * @param {number} y - 中心点 y 坐标。
+     * @param {number} r - 扇叶半径 r。
      * @param {number} sAngle - 扇叶起始角度。
      * @param {number} eAngle - 扇叶终止角度。
      */
@@ -114,14 +117,14 @@ export class CloverShape extends RegularShape {
         }
     }
      /**
-     * @function  ol.style.CloverShape.prototype.getCount
+     * @function CloverShape.prototype.getCount
      * @description 获取扇叶数量。
      */
     getCount() {
         return this.count_;
     }
     /**
-     * @function  ol.style.CloverShape.prototype.getSpaceAngle
+     * @function CloverShape.prototype.getSpaceAngle
      * @description 获取扇叶间隔角度。
      */
     getSpaceAngle() {

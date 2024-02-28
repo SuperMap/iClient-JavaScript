@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -21,12 +21,12 @@
         extent: extent,
         units: 'm'
     });
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [4503.62, -3861.91],
                 zoom: 1,
@@ -44,7 +44,7 @@
 
     function generateSpatialDataAnalystProcess() {
         //配置动态分段Parameters
-        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        var generateSpatialDataParameters = new ol.supermap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -54,14 +54,14 @@
             measureEndField: "LineMeasureTo",
             measureOffsetField: "",
             errorInfoField: "",
-            dataReturnOption: new SuperMap.DataReturnOption({
+            dataReturnOption: new ol.supermap.DataReturnOption({
                 expectCount: 1000,
                 dataset: "generateSpatialData@Changchun",
                 deleteExistResultDataset: true,
-                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
+                dataReturnMode: ol.supermap.DataReturnMode.DATASET_ONLY
             })
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).generateSpatialData(generateSpatialDataParameters).then(function (serviceResult) {
             var a = serviceResult.result;
             //用专题图展示分析结果
             showAnalysisResult_ThemeGridUnique();
@@ -71,49 +71,49 @@
         function showAnalysisResult_ThemeGridUnique() {
             //配置专题样式
             var style1, style2, style3;
-            style1 = new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(242, 48, 48),
-                lineColor: new SuperMap.ServerColor(242, 48, 48),
+            style1 = new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(242, 48, 48),
+                lineColor: new ol.supermap.ServerColor(242, 48, 48),
                 lineWidth: 1
             });
-            style2 = new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(255, 159, 25),
-                lineColor: new SuperMap.ServerColor(255, 159, 25),
+            style2 = new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(255, 159, 25),
+                lineColor: new ol.supermap.ServerColor(255, 159, 25),
                 lineWidth: 1
             });
-            style3 = new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(91, 195, 69),
-                lineColor: new SuperMap.ServerColor(91, 195, 69),
+            style3 = new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(91, 195, 69),
+                lineColor: new ol.supermap.ServerColor(91, 195, 69),
                 lineWidth: 1
             });
             //配置专题项
             var themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3;
-            themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme1 = new ol.supermap.ThemeUniqueItem({
                 unique: "拥挤",
                 style: style1
             });
-            themeUniqueIteme2 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme2 = new ol.supermap.ThemeUniqueItem({
                 unique: "缓行",
                 style: style2
             });
-            themeUniqueIteme3 = new SuperMap.ThemeUniqueItem({
+            themeUniqueIteme3 = new ol.supermap.ThemeUniqueItem({
                 unique: "畅通",
                 style: style3
             });
-            var themeUnique = new SuperMap.ThemeUnique({
+            var themeUnique = new ol.supermap.ThemeUnique({
                 uniqueExpression: "TrafficStatus",
-                defaultStyle: new SuperMap.ServerStyle({
-                    fillForeColor: new SuperMap.ServerColor(48, 89, 14),
-                    lineColor: new SuperMap.ServerColor(48, 89, 14)
+                defaultStyle: new ol.supermap.ServerStyle({
+                    fillForeColor: new ol.supermap.ServerColor(48, 89, 14),
+                    lineColor: new ol.supermap.ServerColor(48, 89, 14)
                 }),
                 items: [themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3]
             });
-            var themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new ol.supermap.ThemeParameters({
                 themes: [themeUnique],
                 datasetNames: ["generateSpatialData"],
                 dataSourceNames: ["Changchun"]
             });
-            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     var themeLayer = new ol.layer.Tile({

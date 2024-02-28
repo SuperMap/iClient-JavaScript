@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -68,7 +68,7 @@
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
             center: [0, 0],
             zoom: 2,
@@ -87,11 +87,11 @@
     mapService();
 
     function mapService() {
-        var param = new SuperMap.FieldParameters({
+        var param = new ol.supermap.FieldParameters({
             datasource: "World",
             dataset: "continent_T"
         });
-        new ol.supermap.FieldService(url).getFields(param,function (serviceResult) {
+        new ol.supermap.FieldService(url).getFields(param).then(function (serviceResult) {
             content.innerHTML = serviceResult.result.fieldNames.join(', ');
             overlay.setPosition([0, 0]);
         });

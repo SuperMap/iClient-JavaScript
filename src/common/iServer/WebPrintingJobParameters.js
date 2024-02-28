@@ -1,21 +1,22 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { WebPrintingJobContent } from './WebPrintingJobContent';
 import { WebPrintingJobLayoutOptions } from './WebPrintingJobLayoutOptions';
 import { WebPrintingJobExportOptions } from './WebPrintingJobExportOptions';
 
 /**
- * @class SuperMap.WebPrintingJobParameters
+ * @class WebPrintingJobParameters
+ * @deprecatedclass SuperMap.WebPrintingJobParameters
  * @category iServer WebPrintingJob
  * @version 10.1.0
- * @classdesc Web 打印参数类
- * @param {Object} options - 初始化参数。
- * @param {SuperMap.WebPrintingJobContent} options.content - Web 打印的内容类。
- * @param {SuperMap.WebPrintingJobLayoutOptions} options.layoutOptions - Web 打印的布局类，包含各种布局元素的设置。
- * @param {SuperMap.WebPrintingJobExportOptions} options.exportOptions - Web 打印的输出类，包含 DPI、页面大小等。
+ * @classdesc Web 打印参数类。此类用于设置 Web 地图打印的打印内容、布局信息、输出信息等参数。 
+ * @param {Object} options - 参数。
+ * @param {WebPrintingJobContent} options.content - Web 打印的内容类。
+ * @param {WebPrintingJobLayoutOptions} options.layoutOptions - Web 打印的布局类，包含各种布局元素的设置。
+ * @param {WebPrintingJobExportOptions} options.exportOptions - Web 打印的输出类，包含 DPI、页面大小等。
+ * @usage
  */
 export class WebPrintingJobParameters {
     constructor(options) {
@@ -23,19 +24,19 @@ export class WebPrintingJobParameters {
             return;
         }
         /**
-         * @member {SuperMap.WebPrintingJobContent} SuperMap.WebPrintingJobParameters.prototype.content
+         * @member {WebPrintingJobContent} WebPrintingJobParameters.prototype.content
          * @description Web 打印的内容类。
          */
         this.content = null;
 
         /**
-         * @member {SuperMap.WebPrintingJobLayoutOptions} SuperMap.WebPrintingJobParameters.prototype.layoutOptions
+         * @member {WebPrintingJobLayoutOptions} WebPrintingJobParameters.prototype.layoutOptions
          * @description Web 打印的布局类，包含各种布局元素的设置。
          */
         this.layoutOptions = null;
 
         /**
-         * @member {SuperMap.WebPrintingJobExportOptions} SuperMap.WebPrintingJobParameters.prototype.exportOptions
+         * @member {WebPrintingJobExportOptions} WebPrintingJobParameters.prototype.exportOptions
          * @description Web 打印的输出类，包含 DPI、页面大小等。
          */
         this.exportOptions = null;
@@ -46,7 +47,7 @@ export class WebPrintingJobParameters {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobParameters.prototype.destroy
+     * @function WebPrintingJobParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -65,4 +66,3 @@ export class WebPrintingJobParameters {
     }
 }
 
-SuperMap.WebPrintingJobParameters = WebPrintingJobParameters;

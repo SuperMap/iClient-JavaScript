@@ -1,21 +1,24 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.GeoDecodingParameter
+ * @class GeoDecodingParameter
+ * @deprecatedclass SuperMap.GeoDecodingParameter
  * @category iServer AddressMatch
- * @classdesc 地理反向匹配参数类。
- * @param {Object} options - 参数。 
- * @param {number} options.x - 查询位置的横坐标。 
- * @param {number} options.y - 查询位置的纵坐标。 
- * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。 
- * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。 
- * @param {string} [options.prjCoordSys] - 查询结果的坐标系。 
- * @param {number} [options.maxReturn] - 最大返回结果数。 
+ * @classdesc 地理反向匹配参数类。地理反向匹配是指通过位置坐标信息查询相关地点。
+ * 此类用于设置地理反向匹配中的查询位置坐标、过滤字段、查询半径等参数，还可以对返回结果进行一系列参数设置。
+ * @param {Object} options - 参数。
+ * @param {number} options.x - 查询位置的横坐标。
+ * @param {number} options.y - 查询位置的纵坐标。
+ * @param {number} [options.fromIndex] - 设置返回对象的起始索引值。
+ * @param {number} [options.toIndex] - 设置返回对象的结束索引值。
+ * @param {Array.<string>} [options.filters] - 过滤字段，限定查询区域。
+ * @param {string} [options.prjCoordSys] - 查询结果的坐标系。
+ * @param {number} [options.maxReturn] - 最大返回结果数。
  * @param {number} [options.geoDecodingRadius] - 查询半径。
+ * @usage
  */
 export class GeoDecodingParameter {
 
@@ -26,48 +29,48 @@ export class GeoDecodingParameter {
             options.filters = options.filters.split(',');
         }
         /**
-         * @member {number} SuperMap.GeoDecodingParameter.prototype.x
+         * @member {number} GeoDecodingParameter.prototype.x
          * @description 查询位置的横坐标。
          */
         this.x = null;
 
         /**
-         * @member {number} SuperMap.GeoDecodingParameter.prototype.y
+         * @member {number} GeoDecodingParameter.prototype.y
          * @description 查询位置的纵坐标。
          */
         this.y = null;
         /**
-         * @member {number} [SuperMap.GeoDecodingParameter.prototype.fromIndex]
+         * @member {number} [GeoDecodingParameter.prototype.fromIndex]
          * @description  设置返回对象的起始索引值。
          */
         this.fromIndex = null;
 
         /**
-         * @member {number} [SuperMap.GeoDecodingParameter.prototype.toIndex]
+         * @member {number} [GeoDecodingParameter.prototype.toIndex]
          * @description 设置返回对象的结束索引值。
          */
         this.toIndex = null;
 
         /**
-         * @member {Array.<string>} [SuperMap.GeoDecodingParameter.prototype.filters]
+         * @member {Array.<string>} [GeoDecodingParameter.prototype.filters]
          * @description 过滤字段，限定查询区域。
          */
         this.filters = null;
 
         /**
-         * @member {string} [SuperMap.GeoDecodingParameter.prototype.prjCoordSys]
+         * @member {string} [GeoDecodingParameter.prototype.prjCoordSys]
          * @description 查询结果的坐标系。
          */
         this.prjCoordSys = null;
 
         /**
-         *  @member {number} [SuperMap.GeoDecodingParameter.prototype.maxReturn]
+         *  @member {number} [GeoDecodingParameter.prototype.maxReturn]
          *  @description 最大返回结果数。
          */
         this.maxReturn = null;
 
         /**
-         * @member {number} SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius
+         * @member {number} GeoDecodingParameter.prototype.geoDecodingRadius
          * @description 查询半径。
          */
         this.geoDecodingRadius = null;
@@ -75,7 +78,7 @@ export class GeoDecodingParameter {
     }
 
     /**
-     * @function SuperMap.GeoDecodingParameter.prototype.destroy
+     * @function GeoDecodingParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -90,5 +93,3 @@ export class GeoDecodingParameter {
     }
 
 }
-
-SuperMap.GeoDecodingParameter = GeoDecodingParameter;

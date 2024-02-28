@@ -46,14 +46,14 @@ describe('mapboxgl_GridCellInfosService', () => {
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.object.dataSourceName).toEqual("World");
                 expect(serviceResult.object.datasetName).toEqual("WorldEarth");
-                expect(serviceResult.object.options.method).toEqual("GET");
+                expect(serviceResult.options.method).toEqual("GET");
                 expect(serviceResult.result.centerPoint.x).toEqual(4);
                 expect(serviceResult.result.centerPoint.y).toEqual(20);
                 expect(serviceResult.result.color).not.toBeNull();
                 expect(serviceResult.result.column).toEqual(1046);
                 expect(serviceResult.result.row).toEqual(398);
                 expect(serviceResult.result.value).toEqual(12295026);
-                expect(FetchRequest.commit.calls.count()).toEqual(2);
+                expect(FetchRequest.commit.calls.count()).toEqual(3);
                 done();
             } catch (e) {
                 console.log("'getGridCellInfos'案例失败" + e.name + ":" + e.message);

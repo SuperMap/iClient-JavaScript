@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -66,7 +70,7 @@
                             collapsed: false
                         }
                     })
-                    .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
@@ -90,7 +94,7 @@
         info.setMap(map);
         map.addControl(info);
 
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         $('#btn').on('click', function () {
             if ($('#msg_container')[0]) {
@@ -101,13 +105,13 @@
                 map.removeControl(control);
                 $("#infoControl").html("");
             }
-            var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
+            var summaryAttributesJobsParameter = new ol.supermap.SummaryAttributesJobsParameter({
                 datasetName: $('#datasetName').val(),
                 groupField: $('#groupField').val(),
                 attributeField: $('#attributeField').val(),
                 statisticModes: $('#statisticModes').val()
             });
-            processingService.addSummaryAttributesJob(summaryAttributesJobsParameter, function (serviceResult) {
+            processingService.addSummaryAttributesJob(summaryAttributesJobsParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error;
@@ -117,7 +121,7 @@
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTDATA') {
                         var dataUrl = info.serviceAddress + '/data';
-                        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                        var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
                             queryParameter: {
                                 name: "analystResult@UntitledDatasource",
                                 attributeFilter: "SMID > 0"
@@ -125,7 +129,7 @@
                             datasetNames: ["UntitledDatasource:analystResult"]
                         });
                         new ol.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam,
-                            function (serviceResult) {
+                            ).then(function (serviceResult) {
                                 result = serviceResult.result.features.features;
                                 var names = [];
                                 var data1 = [];

@@ -6,13 +6,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var serviceFailedEventArgsSystem = null;
 var getFeaturesEventArgsSystem = null;
-var initGetFeaturesBySQLService = (getFeaturesBySQLCompleted, getFeaturesBySQLFailed) => {
-  return new GetFeaturesBySQLService(dataServiceURL, {
-    eventListeners: {
-      processCompleted: getFeaturesBySQLCompleted,
-      processFailed: getFeaturesBySQLFailed
-    }
-  });
+var initGetFeaturesBySQLService = () => {
+  return new GetFeaturesBySQLService(dataServiceURL);
 };
 //        var getFeaturesBySQLService = initGetFeaturesBySQLService(getFeaturesBySQLCompleted,getFeaturesBySQLFailed);
 describe('GetFeaturesBySQLService', () => {
@@ -53,9 +48,6 @@ describe('GetFeaturesBySQLService', () => {
         expect(getFeaturesResult.newResourceID).not.toBeNull();
         expect(getFeaturesResult.newResourceLocation).not.toBeNull();
         getFeaturesBySQLService.destroy();
-        expect(getFeaturesBySQLService.EVENT_TYPES).toBeNull();
-        expect(getFeaturesBySQLService.events).toBeNull();
-        expect(getFeaturesBySQLService.eventListeners).toBeNull();
         expect(getFeaturesBySQLService.returnContent).toBeNull();
         expect(getFeaturesBySQLService.fromIndex).toBeNull();
         expect(getFeaturesBySQLService.hasGeometry).toBeNull();
@@ -92,7 +84,7 @@ describe('GetFeaturesBySQLService', () => {
         )
       );
     });
-    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters, getFeaturesBySQLCompleted);
   });
 
   //直接返回查询结果
@@ -133,14 +125,14 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=2&toIndex=10&returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countries');
       expect(paramsObj.hasGeometry).toBe(false);
       expect(options).not.toBeNull();
       return Promise.resolve(new Response(JSON.stringify(getFeaturesResultJson)));
     });
-    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters, getFeaturesBySQLCompleted);
   });
 
   //测试没有传入参数时的情况
@@ -167,7 +159,7 @@ describe('GetFeaturesBySQLService', () => {
       getFeaturesEventArgsSystem = getFeaturesEventArgs;
     };
 
-    var getFeaturesBySQLService = initGetFeaturesBySQLService(getFeaturesBySQLCompleted, getFeaturesBySQLFailed);
+    var getFeaturesBySQLService = initGetFeaturesBySQLService();
     var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
       datasetNames: ['World:Countries'],
       returnContent: true,
@@ -176,7 +168,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=2&toIndex=10&returnContent=true');
       expect(options).not.toBeNull();
       return Promise.resolve(
         new Response(
@@ -184,7 +176,7 @@ describe('GetFeaturesBySQLService', () => {
         )
       );
     });
-    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters, getFeaturesBySQLFailed);
   });
 
   //查询目标图层不存在情况
@@ -210,7 +202,7 @@ describe('GetFeaturesBySQLService', () => {
     var getFeaturesBySQLCompleted = getFeaturesEventArgs => {
       getFeaturesEventArgsSystem = getFeaturesEventArgs;
     };
-    var getFeaturesBySQLService = initGetFeaturesBySQLService(getFeaturesBySQLCompleted, getFeaturesBySQLFailed);
+    var getFeaturesBySQLService = initGetFeaturesBySQLService();
     var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
       datasetNames: ['World:Countriess'],
       queryParameter: new FilterParameter({
@@ -224,7 +216,7 @@ describe('GetFeaturesBySQLService', () => {
     });
     spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
       expect(method).toBe('POST');
-      expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=2&toIndex=10');
+      expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=2&toIndex=10&returnContent=true');
       var paramsObj = JSON.parse(params.replace(/'/g, '"'));
       expect(paramsObj.datasetNames[0]).toBe('World:Countriess');
       expect(paramsObj.hasGeometry).toBe(true);
@@ -235,20 +227,11 @@ describe('GetFeaturesBySQLService', () => {
         )
       );
     });
-    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters, getFeaturesBySQLFailed);
   });
 
   it('getFeaturesBySQLParameters:targetEpsgCode', done => {
-    var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL, {
-      eventListeners: {
-        processFailed: () => { },
-        processCompleted: () => {
-          getFeaturesBySQLService.destroy();
-          getFeaturesBySQLParameters.destroy();
-          done();
-        }
-      }
-    });
+    var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL);
     var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
       datasetNames: ['World:Countries'],
       queryParameter: new FilterParameter({
@@ -266,19 +249,14 @@ describe('GetFeaturesBySQLService', () => {
         )
       );
     });
-    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters, function(){
+      getFeaturesBySQLService.destroy();
+      getFeaturesBySQLParameters.destroy();
+      done();
+    });
   })
   it('getFeaturesBySQLParameters:targetPrj', done => {
-    var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL, {
-      eventListeners: {
-        processFailed: () => { },
-        processCompleted: () => {
-          getFeaturesBySQLService.destroy();
-          getFeaturesBySQLParameters.destroy();
-          done();
-        }
-      }
-    });
+    var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL);
     var getFeaturesBySQLParameters = new GetFeaturesBySQLParameters({
       datasetNames: ['World:Countries'],
       queryParameter: new FilterParameter({
@@ -296,6 +274,44 @@ describe('GetFeaturesBySQLService', () => {
         )
       );
     });
-    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+    getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters, function() {
+      getFeaturesBySQLService.destroy();
+      getFeaturesBySQLParameters.destroy();
+      done();
+    });
+  })
+  it('GetFeaturesBySQLParameters:returnFeaturesOnly', done => {
+    var serviceCompleted = serviceSucceedEventArgsSystem => {
+      console.log('serviceSucceedEventArgsSystem', serviceSucceedEventArgsSystem);
+      try {
+        getFeaturesBySQLService.destroy();
+        sqlParams.destroy();
+        expect(serviceSucceedEventArgsSystem.result.features.type).toBe('FeatureCollection');
+        expect(serviceSucceedEventArgsSystem.result.features.features.length).toBe(4);
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('GetFeaturesBySQLService_' + exception.name + ':' + exception.message);
+        getFeaturesBySQLService.destroy();
+        sqlParams.destroy();
+        done();
+      }
+    };
+    var getFeaturesBySQLService = new GetFeaturesBySQLService(dataServiceURL);
+    var sqlParams = new GetFeaturesBySQLParameters({
+      datasetNames: ['World:Countries'],
+      queryParameter: new FilterParameter({
+        attributeFilter: 'SmID>0',
+        name: 'Countries@World'
+      }),
+      targetPrj: { "epsgCode": 4326 },
+      returnFeaturesOnly: true
+    });
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      if (testUrl.indexOf('returnFeaturesOnly') > -1) {
+        return Promise.resolve(new Response(JSON.stringify(getReturnFeaturesOnlyResultJson)));
+      }
+    });
+    getFeaturesBySQLService.processAsync(sqlParams, serviceCompleted);
   })
 });

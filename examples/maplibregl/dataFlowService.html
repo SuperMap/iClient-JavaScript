@@ -1,0 +1,169 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="resources.title_dataFlowService"></title>
+  <script type="text/javascript" src="../js/include-web.js"></script>
+  <style>
+    .maplibregl-popup {
+      max-width: 200px;
+    }
+
+    .maplibregl-popup-close-button {
+      outline: none;
+    }
+  </style>
+</head>
+
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+  <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+  <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  <script>
+    var host = (window.isLocal ? window.server : "https://iserver.supermap.io"),
+      tileUrl = host +
+        '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' + encodeURIComponent('{"epsgCode":3857}') + '&z={z}&x={x}&y={y}',
+      urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
+
+    wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
+
+    var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
+    var attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+      " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+      " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    var dataFlowService;
+    var map = new maplibregl.Map({
+      container: 'map',
+      style: {
+        "version": 8,
+        "sources": {
+          "raster-tiles": {
+            "attribution": attribution,
+            "type": "raster",
+            "tiles": [tileUrl],
+            "tileSize": 256,
+          },
+        },
+        "layers": [{
+          "id": "simple-tiles",
+          "type": "raster",
+          "source": "raster-tiles",
+          "minzoom": 0,
+          "maxzoom": 18
+        }],
+      },
+      center: [116.443571, 39.887549],
+      maxZoom: 18,
+      zoom: 10
+    });
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+    maplibregl.supermap.SecurityManager.registerToken(urlDataFlow, window.exampleToken);
+    var popup = new maplibregl.Popup({
+      focusAfterOpen: false
+    });
+
+    map.on('load', function () {
+      var options = {
+        ws: urlDataFlow
+      };
+      var dataFlowSubscribe = new maplibregl.supermap.DataFlowService(options.ws, {
+        geometry: options.geometry,
+        prjCoordSys: options.prjCoordSys,
+        excludeField: options.excludeField
+      }).initSubscribe();
+      dataFlowSubscribe.on('messageSucceeded', function (msg) {
+        popup.remove();
+        addLayer(msg);
+      });
+      query();
+    });
+
+    //模拟实时数据 start
+    //查询一个线数据，每两秒将一个点通过dataFlowService广播给iSevrer的dataflow服务
+    function query() {
+      var param = new maplibregl.supermap.QueryBySQLParameters({
+        queryParams: {
+          name: "Main_Road_L@China#1",
+          attributeFilter: "SMID = 1755"
+        }
+      });
+      queryService = new maplibregl.supermap.QueryService(urlQuery).queryBySQL(param).then(function (serviceResult) {
+        featureResult = serviceResult;
+        dataFlowBroadcast = new maplibregl.supermap.DataFlowService(urlDataFlow).initBroadcast();
+        dataFlowBroadcast.on('broadcastSocketConnected', function (e) {
+          timer = window.setInterval("broadcast()", 2000);
+        });
+      });
+    }
+
+    var count = 200;
+
+    function broadcast() {
+
+      if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
+        window.clearInterval(timer);
+        return;
+      }
+      var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
+      var feature = {
+        geometry: {
+          coordinates: [point[0], point[1]],
+          type: "Point"
+        },
+        type: "Feature",
+        properties: {
+          id: 1,
+          time: new Date()
+        }
+      };
+      dataFlowBroadcast.broadcast(feature);
+      count += 3;
+    }
+
+    function addLayer(msg) {
+      if (!msg.featureResult) {
+        return;
+      }
+      var feature = msg.featureResult;
+      var coord = feature.geometry.coordinates;
+      var data = {
+        geometry: {
+          type: 'Point',
+          coordinates: coord,
+        },
+        type: "Feature"
+      };
+
+      if (!map.getSource('location')) {
+        map.addSource('location', {
+          'type': 'geojson',
+          'data': data
+        });
+        map.addLayer({
+          "id": "point",
+          "type": "circle",
+          "paint": {
+            "circle-radius": 6,
+            "circle-color": 'red',
+          },
+          "source": 'location'
+        });
+      }
+
+      map.getSource('location').setData(data);
+
+      popup.setLngLat(coord)
+        .setHTML(feature.properties.time)
+        .addTo(map);
+    }
+        //模拟实时数据 end
+  </script>
+
+</body>
+
+</html>

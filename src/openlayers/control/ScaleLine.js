@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 
@@ -7,7 +7,8 @@ import * as olProj from 'ol/proj';
 import AssertionError from 'ol/AssertionError';
 
 /**
- * @class ol.supermap.control.ScaleLine
+ * @class ScaleLine
+ * @aliasclass control.ScaleLine
  * @category  Control
  * @version 9.1.2
  * @classdesc 比例尺控件。
@@ -15,15 +16,17 @@ import AssertionError from 'ol/AssertionError';
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能继承 {@link ol.control.ScaleLine },与 {@link ol.control.ScaleLine } 功能完全相同。仅为修复 `openlayers` v4.6.5 版本中 WGS84 等地理坐标系比例尺数值错误的问题。
  * </div>
- * @extends {ol/control/ScaleLine}
- * @param {options} options -参数。
+ * @modulecategory Control
+ * @extends {ol.control.ScaleLine}
+ * @param {Object} options -参数。
  * @param {string} [options.className='ol-scale-line'] - CSS Class name.。
  * @param {number} [options.minWidth=64] - 最小像素宽度。
  * @param {(HTMLElement|string) } [options.target] - 指定比例尺控件目标容器。
- * @param {(ol.control.ScaleLineUnits|string)} [options.units='metric'] - 上一个版本的按钮布局。
+ * @param {(ol.control.ScaleLine.Units|string)} [options.units='metric'] - 上一个版本的按钮布局。
  * @example
- * var control = new ol.supermap.control.ScaleLine();
- *      map.addControl(control)
+ * var control = new ScaleLine();
+ * map.addControl(control)
+ * @usage
  */
 export class ScaleLine extends Scale {
     constructor(options) {
@@ -37,15 +40,15 @@ export class ScaleLine extends Scale {
                 this.viewState_ = frameState.viewState; //NOSONAR
             }
             this.updateElementRepair(); //NOSONAR
-        }
+        };
         super(options); //NOSONAR
     }
 
     updateElementRepair() {
-        const viewState = this.viewState_ || this.o;
+        const viewState = this.viewState_ || this.o || this.Om;
 
         if (!viewState) {
-            this.renderedVisible_ = this.renderedVisible_ || this.j;
+            this.renderedVisible_ = this.renderedVisible_ || this.j || this.yn;
             if (this.renderedVisible_) {
                 this.element_ = this.element_ || this.c;
                 this.element.style.display = 'none';
@@ -62,7 +65,7 @@ export class ScaleLine extends Scale {
             "m";
         let pointResolution =
         olProj.getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
-        this.minWidth_ = this.minWidth_ || this.v;
+        this.minWidth_ = this.minWidth_ || this.v || this.Em;
         let nominalCount = this.minWidth_ * pointResolution;
         let suffix = '';
         if (units == "degrees") {
@@ -136,10 +139,10 @@ export class ScaleLine extends Scale {
             }
             ++i;
         }
-        this.renderedHTML_ = this.renderedHTML_ || this.D;
-        this.innerElement_ = this.innerElement_ || this.l;
-        this.renderedWidth_ = this.renderedWidth_ || this.B;
-        this.renderedVisible_ = this.renderedVisible_ || this.j;
+        this.renderedHTML_ = this.renderedHTML_ || this.D || this.am;
+        this.innerElement_ = this.innerElement_ || this.l || this.Tm;
+        this.renderedWidth_ = this.renderedWidth_ || this.B || this.Am;
+        this.renderedVisible_ = this.renderedVisible_ || this.j || this.yn;
         this.element_ = this.element_ || this.c;
         let html= count.toFixed(decimalCount < 0 ? -decimalCount : 0) + ' ' + suffix;
         if (this.renderedHTML_ != html) {

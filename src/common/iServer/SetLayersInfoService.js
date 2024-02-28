@@ -1,27 +1,26 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
-import './SetLayersInfoParameters';
 
 /**
- * @class SuperMap.SetLayersInfoService
+ * @class SetLayersInfoService
+ * @deprecatedclass SuperMap.SetLayersInfoService
  * @category  iServer Map TempLayersSet
  * @classdesc  设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，
  *             当 isTempLayers 为 false的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行对临时图层的编辑。
  *             该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
- * @extends {SuperMap.CommonServiceBase}
- * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：
+ * @extends {CommonServiceBase}
+ * @param url - {string} 服务地址。请求地图服务,URL 应为：
  *              http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param {Object} options - 参数。
  * @param {string} options.resourceID - 图层资源ID，临时图层的资源ID标记。
  * @param {boolean} options.isTempLayers - 当前url对应的图层是否是临时图层。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
- * @param {SuperMap.DataFormat} [options.format=SuperMap.DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
+ * @param {DataFormat} [options.format=DataFormat.GEOJSON] - 查询结果返回格式，目前支持 iServerJSON 和 GeoJSON 两种格式。参数格式为 "ISERVER"，"GEOJSON"。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class SetLayersInfoService extends CommonServiceBase {
 
@@ -29,19 +28,19 @@ export class SetLayersInfoService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         /**
-         * @member {string} SuperMap.SetLayersInfoService.prototype.resourceID
+         * @member {string} SetLayersInfoService.prototype.resourceID
          * @description 图层资源ID，临时图层的资源ID标记。
          */
         this.resourceID = null;
 
         /**
-         * @function {boolean} SuperMap.SetLayersInfoService.prototype.isTempLayers
+         * @function {boolean} SetLayersInfoService.prototype.isTempLayers
          * @description 当前url对应的图层是否是临时图层。
          */
         this.isTempLayers = false;
 
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
 
         this.CLASS_NAME = "SuperMap.SetLayersInfoService";
@@ -56,11 +55,13 @@ export class SetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.SetLayersInfoService.prototype.processAsync
+     * @function SetLayersInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务 <{@link SuperMap.GetLayersInfoService}>返回图层信息，然后对其属性进行修改来获取。
+     * @param {Object} params - 修改后的图层资源信息。该参数可以使用获取图层信息服务 <{@link GetLayersInfoService}>返回图层信息，然后对其属性进行修改来获取。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!params) {
             return;
         }
@@ -111,15 +112,14 @@ export class SetLayersInfoService extends CommonServiceBase {
         jsonParams.subLayers = {"layers": subLayers};
         jsonParams.object = null;
         var jsonParamsStr = Util.toJSON([jsonParams]);
-        me.request({
+        return me.request({
             method: method,
             data: jsonParamsStr,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
 }
 
-SuperMap.SetLayersInfoService = SetLayersInfoService;

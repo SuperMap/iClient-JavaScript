@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -27,9 +27,12 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var map, marker, featureGroup, resultLayer, featureService,
+    var map, marker, featureGroup, resultLayer, featureService, newAddId,
         baseUrl = host + "/iserver/services/map-world/rest/maps/World",
         url = host + "/iserver/services/data-world/rest/data";
+    var popup = L.popup({
+        offset: [0, -20]
+    })
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -37,21 +40,21 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     featureGroup = L.featureGroup().addTo(map);
-    featureService = L.supermap.featureService(url);
+    featureService = new L.supermap.FeatureService(url);
     initFeature();
     initEditView();
 
     function initFeature() {
         var polygon = L.polygon([[20, 118], [20, 120], [50, 120], [50, -120], [20, 118]]);
-        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeatureParams = new L.supermap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon
         });
 
-        featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
+        featureService.getFeaturesByGeometry(getFeatureParams).then(function (serviceResult) {
             resultLayer = L.geoJSON(serviceResult.result.features).addTo(map);
             resultLayer.on("mousemove", function (e) {
                 e.layer.bindPopup(resources.text_capital + "：" + e.layer.feature.properties.CAPITAL).openPopup();
@@ -72,7 +75,8 @@
                 "<input type='button' class='btn btn-default' value='" + resources.btn_addMarker + "' onclick='addMarker()'/>&nbsp;" +
                 "<input type='button' class='btn btn-default' value='" + resources.btn_undoAdd + "' onclick='revocationMarker()'/>&nbsp;" +
                 "<input type='button' class='btn btn-default' value='" + resources.text_input_value_submit + "' onclick='commit()'/>&nbsp;" +
-                "<input type='button' class='btn btn-default' value='" + resources.text_input_value_clear + "' onclick='clearLayer()'/></div>";
+                "<input type='button' class='btn btn-default' value='" + resources.text_input_value_clear + "' onclick='clearLayer()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value='" + resources.btn_getMetadata + "' onclick='getMetadata()'/></div>";
 
             handleMapEvent(me._div, me._map);
             return me._div;
@@ -112,7 +116,7 @@
         closeClearListener();
         var xmax = 120, xmin = 100, ymax = 50, ymin = 20,
             point = [];
-        if (!featureGroup.hasLayer(marker)) {
+        if (!marker || !featureGroup.hasLayer(marker)) {
 
             point = [
                 Math.floor(Math.random() * (ymax - ymin + 1) + ymin),
@@ -137,7 +141,7 @@
 
     function revocationMarker() {
         closeClearListener();
-        if (featureGroup.hasLayer(marker)) {
+        if (marker && featureGroup.hasLayer(marker)) {
             featureGroup.clearLayers();
             marker = null;
         } else {
@@ -148,18 +152,19 @@
     function commit() {
         widgets.alert.clearAlert();
         closeClearListener();
-        if (featureGroup.hasLayer(marker)) {
+        if (marker && featureGroup.hasLayer(marker)) {
             marker = marker.toGeoJSON();
             marker.properties = {POP: 1, CAPITAL: 'test'};
-            var addFeatureParams = new SuperMap.EditFeaturesParameters({
+            var addFeatureParams = new L.supermap.EditFeaturesParameters({
                 dataSourceName: "World",
                 dataSetName: "Capitals",
                 features: marker,
                 editType: "add",
                 returnContent: true
             });
-            featureService.editFeatures(addFeatureParams, function (serviceResult) {
+            featureService.editFeatures(addFeatureParams).then(function (serviceResult) {
                 if (serviceResult.result.succeed) {
+                    newAddId = serviceResult.result[0];
                     featureGroup.clearLayers();
                     marker = null;
                     if (resultLayer) {
@@ -175,6 +180,43 @@
         }
     }
 
+    function getMetadata() {
+      // 检查是否支持元信息功能
+      new L.supermap.DatasetService(url).getDataset("World", "Capitals", function (serviceResult) {
+        if(!serviceResult.result.supportFeatureMetadatas) {
+            return widgets.alert.showAlert(resources.msg_notSupportMetadatas, false);
+        }
+        if(!newAddId) {
+            return widgets.alert.showAlert(resources.msg_noNewFeature, false);
+        }
+        // 获取地理要素元信息
+        featureService.getMetadata({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            featureId: newAddId
+        }, function (serviceResult) {
+            var createTime = new Date(serviceResult.result.createTime).toLocaleString();
+            var createUser = serviceResult.result.createUser;
+            var lastEditTime = new Date(serviceResult.result.lastEditTime).toLocaleString();
+            var lastEditUser = serviceResult.result.lastEditUser;
+            // 获取新增要素坐标
+            var idsParam = new L.supermap.GetFeaturesByIDsParameters({
+                IDs: [newAddId],
+                datasetNames: ["World:Capitals"]
+            });
+            new L.supermap.FeatureService(url).getFeaturesByIDs(idsParam, function (serviceResult) {
+                var newAddCoor = serviceResult.result.features.features[0].geometry.coordinates;
+                var contentHTML = resources.text_createUser + createUser + "<br/>";
+                contentHTML += resources.text_createTime + createTime + "<br/>";
+                contentHTML += resources.text_lastEditUser + lastEditUser + "<br/>";
+                contentHTML += resources.text_lastEditTime + lastEditTime
+                popup.setLatLng([newAddCoor[1], newAddCoor[0]]).setContent(contentHTML).openOn(map);
+            });
+        });
+
+      })
+    }
+
     function clearLayer() {
         map.on('mousemove', pointerMoveHandler);
         if (resultLayer) {
@@ -184,14 +226,14 @@
     }
 
     function layerClickListener(e) {
-        var deleteParams = new SuperMap.EditFeaturesParameters({
+        var deleteParams = new L.supermap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [e.layer.feature.id],
             editType: "delete"
         });
-        featureService.editFeatures(deleteParams, function (serviceResult) {
-            if (serviceResult.result.succeed) {
+        featureService.editFeatures(deleteParams).then(function (serviceResult) {
+            if (serviceResult.result && serviceResult.result.succeed) {
                 if (resultLayer) {
                     map.removeLayer(resultLayer);
                     resultLayer = null;
@@ -199,6 +241,10 @@
                 initFeature();
                 widgets.alert.showAlert(resources.text_deleteSuccess, true);
                 closeClearListener();
+                if(e.layer.feature.id === newAddId) {
+                  newAddId = undefined;
+                  map.closePopup();
+                }
             } else {
                 widgets.alert.showAlert(resources.msg_deleteFailed, false);
             }

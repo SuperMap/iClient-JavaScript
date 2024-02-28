@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -29,6 +29,7 @@
             bottom: 12px;
             left: -50px;
             min-width: 120px;
+            white-space: nowrap;
         }
 
         .ol-popup:after, .ol-popup:before {
@@ -71,6 +72,9 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
+<div id="popup2" class="ol-popup">
+    <div id="popup-content2"></div>
+</div>
 <div>
     <div class="panel panel-primary editPane" id="editPane">
         <div class='panel-heading'>
@@ -84,12 +88,14 @@
                    onclick='commit()'/>&nbsp;
             <input type='button' class='btn btn-default' data-i18n="[value]resources.text_input_value_clear"
                    onclick='clearLayer()'/>
+            <input type='button' class='btn btn-default' data-i18n="[value]resources.btn_getMetadata"
+                   onclick='getMetadata()'/>
         </div>
     </div>
 </div>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var map, id = [], pointFeature, vectorSource, resultLayer, editFeaturesService, alertDiv,
+    var map, newAddId, pointFeature, vectorSource, resultLayer, editFeaturesService, alertDiv,
         addPointsSource, addPointsLayer,
         host = window.isLocal ? window.server : "https://iserver.supermap.io",
         baseUrl = host + "/iserver/services/map-world/rest/maps/World",
@@ -104,11 +110,21 @@
             },
             offset: [0, -20]
         })),
+        container2 = document.getElementById('popup2'),
+        content2 = document.getElementById('popup-content2'),
+        overlay2 = new ol.Overlay(({
+            element: container2,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            },
+            offset: [0, -20]
+        })),
 
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [0, 0],
                 zoom: 3,
@@ -171,13 +187,13 @@
     function initFeature() {
         var polygon = new ol.geom.Polygon([[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]);
         var featureService = new ol.supermap.FeatureService(url);
-        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+        var getFeatureParams = new ol.supermap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
+        featureService.getFeaturesByGeometry(getFeatureParams).then(function (serviceResult) {
             var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features);
             for (var i = 0; i < features.length; i++) {
                 features[i].setStyle(new ol.style.Style({
@@ -285,16 +301,16 @@
             closeSelectListener();
         }
         if (pointFeature) {
-            var addFeatureParams = new SuperMap.EditFeaturesParameters({
+            var addFeatureParams = new ol.supermap.EditFeaturesParameters({
                 features: pointFeature,
                 dataSourceName: "World",
                 dataSetName: "Capitals",
                 editType: "add",
                 returnContent: true
             });
-            editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
+            editFeaturesService.editFeatures(addFeatureParams).then(function (serviceResult) {
                 if (serviceResult.result.succeed) {
-                    id.push(serviceResult.result[0]);
+                    newAddId = serviceResult.result[0];
                     addPointsSource.clear();
                     vectorSource.clear();
                     pointFeature = null;
@@ -307,6 +323,44 @@
         }
     }
 
+    function getMetadata() {
+      // 检查是否支持元信息功能
+      new ol.supermap.DatasetService(url).getDataset("World", "Capitals", function (serviceResult) {
+        if(!serviceResult.result.supportFeatureMetadatas) {
+            return widgets.alert.showAlert(resources.msg_notSupportMetadatas, false);
+        }
+        if(!newAddId) {
+            return widgets.alert.showAlert(resources.msg_noNewFeature, false);
+        }
+        // 获取地理要素元信息
+        editFeaturesService.getMetadata({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            featureId: newAddId
+        }).then(function (serviceResult) {
+            var createTime = new Date(serviceResult.result.createTime).toLocaleString();
+            var createUser = serviceResult.result.createUser;
+            var lastEditTime = new Date(serviceResult.result.lastEditTime).toLocaleString();
+            var lastEditUser = serviceResult.result.lastEditUser;
+            // 获取新增要素坐标
+            var idsParam = new ol.supermap.GetFeaturesByIDsParameters({
+                IDs: [newAddId],
+                datasetNames: ["World:Capitals"]
+            });
+            new ol.supermap.FeatureService(url).getFeaturesByIDs(idsParam).then(function (serviceResult) {
+                var newAddCoor = serviceResult.result.features.features[0].geometry.coordinates;
+                var contentHTML = resources.text_createUser + createUser + "<br/>";
+                contentHTML += resources.text_createTime + createTime + "<br/>";
+                contentHTML += resources.text_lastEditUser + lastEditUser + "<br/>";
+                contentHTML += resources.text_lastEditTime + lastEditTime
+                content2.innerHTML = contentHTML;
+                overlay2.setPosition(newAddCoor);
+                map.addOverlay(overlay2);
+            });
+        });
+      })
+    }
+    
     function clearLayer() {
         widgets.alert.clearAlert();
         isclearPoint = true;
@@ -319,19 +373,24 @@
             //只删选中第一个要素：
             if (!deletedId) {
                 deletedId = feature.getId();
-                var deleteParams = new SuperMap.EditFeaturesParameters({
+                var deleteParams = new ol.supermap.EditFeaturesParameters({
                     dataSourceName: "World",
                     dataSetName: "Capitals",
                     IDs: [deletedId],
                     editType: "delete"
                 });
 
-                editFeaturesService.editFeatures(deleteParams, function (serviceResult) {
+                editFeaturesService.editFeatures(deleteParams).then(function (serviceResult) {
                     if (serviceResult.result.succeed) {
                         initFeature();
                         vectorSource.clear();
                         isclearPoint = false;
                         closeSelectListener();
+                        if(deletedId === newAddId) {
+                          newAddId = undefined;
+                          overlay2.setPosition(undefined);
+                          map.removeOverlay(overlay2);
+                        }
                         widgets.alert.showAlert(resources.text_deleteSuccess, true);
                     } else {
                         widgets.alert.showAlert(resources.msg_deleteFailed, false)

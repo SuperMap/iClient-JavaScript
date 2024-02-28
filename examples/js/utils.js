@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 var utils = {
     //设置语言。参数："zh_CN"，"en-US"
     setLanguage: null,
@@ -19,8 +19,8 @@ var utils = {
 
     //设置语言。参数："zh_CN"，"en-US"
     function setLanguage(language) {
-        //默认设置过期时间为1个小时
-        setCookie(cKey, language, 60 * 60 * 1000);
+        //默认设置过期时间为7天
+        setCookie(cKey, language, 7 * 24 * 60 * 60 * 1000);
     }
 
     //获取当前语言。默认从cookie读取，没有则读取浏览器默认语言
@@ -100,6 +100,9 @@ var utils = {
             throw new Error("element is required")
         }
         $.get(templateFilePath, function (html) {
+            if(data && data.nav && data.nav.path) {
+              window.path = data.nav.path
+            }
             $(element).html(window.template.compile(html)(data));
         });
 

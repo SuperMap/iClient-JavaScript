@@ -1,0 +1,260 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* deck.gl (https://github.com/visgl/deck.gl)
+* PapaParse (https://github.com/mholt/PapaParse)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+    <title data-i18n="resources.title_mb_deckglLayer_ukcommute"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      #title {
+        position: absolute;
+        color: white;
+        left: 40%;
+        top: 30px;
+        text-align: center;
+        width: 500px;
+        z-index: 2;
+      }
+
+      #title > h3 {
+        margin: 10px 0;
+        letter-spacing: 0.1em;
+      }
+
+      #title > h6 {
+        margin: 0;
+        font-weight: normal;
+      }
+
+      .whiteBackground {
+        background-color: rgba(225, 225, 225, 0.1);
+        border-top: 1px dotted;
+        border-image: linear-gradient(
+            to right,
+            rgba(114, 159, 207, 1),
+            rgba(104, 104, 104, 1) 200px,
+            rgba(104, 104, 104, 0) 75%
+          )
+          30;
+      }
+
+      .legendContainer {
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        color: white;
+        padding: 10px 10px 0px 10px;
+        z-index: 1000;
+      }
+
+      .legendHead {
+        align-self: flex-end;
+      }
+
+      .legendBody {
+        padding-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title">
+      <h3 data-i18n="resources.title_mb_deckglLayer_ukcommute"></h3>
+      <h6 data-i18n="resources.text_mb_deckglLayer_ukcommute"></h6>
+    </div>
+    <div class="legendContainer whiteBackground">
+      <div class="legendHead _flex">
+        <div>home to work</div>
+        <div>Arc Color</div>
+      </div>
+      <div class="legendBody _flex">
+        <svg width="120" height="40">
+          <g transform="translate(0, 0)">
+            <rect width="30" height="20" style="fill: rgb(228, 155, 0);"></rect>
+          </g>
+          <g transform="translate(40, 0)">
+            <rect width="30" height="20" style="fill: rgb(149, 12, 105);"></rect>
+          </g>
+        </svg>
+      </div>
+      <div class="legendHead _flex">
+        <div>workplace add residence</div>
+        <div>Point Color</div>
+      </div>
+      <div class="legendBody _flex">
+        <svg width="120" height="40">
+          <g transform="translate(0, 0)">
+            <rect width="30" height="20" style="fill: rgb(255, 255, 255);"></rect>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" include="papaparse,bootstrap,widgets" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="deck" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
+        url = host + '/iserver/services/map-china400/rest/maps/ChinaDark';
+      var map, deckglLayer, popup;
+      var attribution =
+        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='https://uber.github.io/kepler.gl' target='_blank'>kepler.gl</a></span> ";
+
+      map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [-1.8597998742833441, 52.430580528979654],
+        zoom: 6.5,
+        pitch: 40,
+        bearing: -8
+      });
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+      widgets.loader.showLoader('data loading...');
+
+      $.get('https://iclient.supermap.io/web/data/deck.gl/ukcommute_data.csv', function(csvstr) {
+        widgets.loader.removeLoader();
+        var features = Papa.parse(csvstr, { skipEmptyLines: true, header: true });
+        addLayer(features.data);
+      });
+
+      function addLayer(features) {
+        deckglLayer = new maplibregl.supermap.DeckglLayer('arc-layer', {
+          data: features,
+          props: {
+            pickable: true,
+            strokeWidth: 1.5,
+            opacity: 0.3
+          },
+          callback: {
+            getStrokeWidth: 12,
+            getSourcePosition: function(feature) {
+              if (!feature.residence_lat || !feature.residence_lng) {
+                return [0, 0];
+              }
+              return [Number(feature.residence_lng), Number(feature.residence_lat)];
+            },
+            getTargetPosition: function(feature) {
+              if (!feature.workplace_lng || !feature.workplace_lat) {
+                return [0, 0];
+              }
+              return [Number(feature.workplace_lng), Number(feature.workplace_lat)];
+            },
+            getSourceColor: function(d) {
+              return [228, 155, 0, 255];
+            },
+            getTargetColor: function(d) {
+              return [149, 12, 105, 120];
+            }
+          }
+        });
+        map.addLayer(deckglLayer);
+
+        var pointsProps = {
+          opacity: 0.3,
+          radiusMinPixels: 0.8,
+          autoHighlight: true,
+          highlightColor: [255, 255, 0, 255],
+          onHover: function(e) {
+            if (!popup) {
+              popup = new maplibregl.Popup({
+                anchor: 'bottom',
+                closeButton: false,
+                offset: {
+                  bottom: [0, -10]
+                }
+              });
+            }
+            if (!e.object) {
+              popup.remove();
+              return;
+            }
+            popup.setHTML('all_flows： ' + e.object.all_flows);
+            popup.setLngLat(map.unproject([e.x, e.y]));
+            popup.addTo(map);
+          }
+        };
+        var workPlace = new maplibregl.supermap.DeckglLayer('scatter-plot', {
+          data: features,
+          props: pointsProps,
+          callback: {
+            getPosition: function(feature) {
+              if (!feature.workplace_lng || !feature.workplace_lat) {
+                return [0, 0];
+              }
+              return [Number(feature.workplace_lng), Number(feature.workplace_lat)];
+            },
+            getColor: function(d) {
+              return [255, 255, 255, 110];
+            },
+            getRadius: function(d) {
+              return 10;
+            }
+          }
+        });
+        map.addLayer(workPlace);
+        var homePlace = new maplibregl.supermap.DeckglLayer('scatter-plot', {
+          data: features,
+          props: pointsProps,
+          callback: {
+            getPosition: function(feature) {
+              if (!feature.residence_lat || !feature.residence_lng) {
+                return [0, 0];
+              }
+              return [Number(feature.residence_lng), Number(feature.residence_lat)];
+            },
+            getColor: function(d) {
+              return [255, 255, 255, 110];
+            },
+            getRadius: function(d) {
+              return 10;
+            }
+          }
+        });
+        map.addLayer(homePlace);
+      }
+    </script>
+  </body>
+</html>

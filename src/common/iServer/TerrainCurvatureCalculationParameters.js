@@ -1,20 +1,21 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 
 /**
- * @class SuperMap.TerrainCurvatureCalculationParameters
+ * @class TerrainCurvatureCalculationParameters
+ * @deprecatedclass SuperMap.TerrainCurvatureCalculationParameters
  * @category  iServer SpatialAnalyst TerrainCalculation
- * @classdesc 地形曲率计算参数类。
+ * @classdesc 地形曲率计算参数类。此类用于指定地形曲率计算的数据集、高程缩放系数等参数，还可以对结果数据集进行一系列设置。支持计算地形的平均曲率、剖面曲率和平面曲率。
  * @param {Object} options - 参数。
- * @param {string} options.dataset - 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
+ * @param {string} options.dataset - 用于做地形曲率计算的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
  * @param {string} options.averageCurvatureName - 结果数据集：平均曲率数据集的名称。
  * @param {string} options.profileCurvatureName - 结果数据集：剖面曲率数据集的名称。
  * @param {string} options.planCurvatureName - 结果数据集：平面曲率数据集的名称。
  * @param {number} [options.zFactor=1.0] - 指定的高程缩放系数。1.0 表示不缩放。
  * @param {boolean} [options.deleteExistResultDataset=false] - 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+ * @usage
  */
 export class TerrainCurvatureCalculationParameters {
 
@@ -23,15 +24,15 @@ export class TerrainCurvatureCalculationParameters {
             return;
         }
         /**
-         * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.dataset
-         * @description 要用来做地形曲率计算数据源中数据集的名称。
+         * @member {string} TerrainCurvatureCalculationParameters.prototype.dataset
+         * @description 用于做地形曲率计算的数据源中数据集的名称。
          * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。
          * 注：地形曲率计算必须为栅格数据集。
          */
         this.dataset = null;
 
         /**
-         * @member {number} [SuperMap.TerrainCurvatureCalculationParameters.prototype.zFactor=1.0]
+         * @member {number} [TerrainCurvatureCalculationParameters.prototype.zFactor=1.0]
          * @description 指定的高程缩放系数。1.0 表示不缩放。
          * 该值是指在 DEM 栅格数据中，栅格值（ Z 坐标，即高程值）相对于 X 和 Y 坐标的单位变换系数。
          * 通常有 X，Y，Z 都参加的计算中，需要将高程值乘以一个高程缩放系数，使得三者单位一致。
@@ -40,25 +41,25 @@ export class TerrainCurvatureCalculationParameters {
         this.zFactor = 1.0;
 
         /**
-         * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.averageCurvatureName
+         * @member {string} TerrainCurvatureCalculationParameters.prototype.averageCurvatureName
          * @description 结果数据集：平均曲率数据集的名称。
          */
         this.averageCurvatureName = null;
 
         /**
-         * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.profileCurvatureName
+         * @member {string} TerrainCurvatureCalculationParameters.prototype.profileCurvatureName
          * @description 结果数据集：剖面曲率数据集的名称。
          */
         this.profileCurvatureName = "";
 
         /**
-         * @member {string} SuperMap.TerrainCurvatureCalculationParameters.prototype.planCurvatureName
+         * @member {string} TerrainCurvatureCalculationParameters.prototype.planCurvatureName
          * @description 结果数据集：平面曲率数据集的名称。
          */
         this.planCurvatureName = "";
 
         /**
-         * @member {boolean} [SuperMap.TerrainCurvatureCalculationParameters.prototype.deleteExistResultDataset=false]
+         * @member {boolean} [TerrainCurvatureCalculationParameters.prototype.deleteExistResultDataset=false]
          * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
          */
         this.deleteExistResultDataset = false;
@@ -70,7 +71,7 @@ export class TerrainCurvatureCalculationParameters {
 
 
     /**
-     * @function SuperMap.TerrainCurvatureCalculationParameters.prototype.destroy
+     * @function TerrainCurvatureCalculationParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -84,7 +85,7 @@ export class TerrainCurvatureCalculationParameters {
     }
 
     /**
-     * @function SuperMap.TerrainCurvatureCalculationParameters.toObject
+     * @function TerrainCurvatureCalculationParameters.toObject
      * @param {Object} derrainCurvatureCalculationParameters - 地形曲率计算参数。
      * @param {Object} tempObj - 目标对象。
      * @description 生成地形曲率计算对象。
@@ -99,4 +100,3 @@ export class TerrainCurvatureCalculationParameters {
 
 }
 
-SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters;

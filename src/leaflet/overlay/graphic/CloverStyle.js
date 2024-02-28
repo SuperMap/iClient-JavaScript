@@ -1,30 +1,33 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../../core/Base';
 
 /**
- * @class L.supermap.cloverStyle
- * @classdesc 三叶草要素风格。
+ * @class CloverStyle
+ * @deprecatedclassinstance L.supermap.cloverStyle
+ * @classdesc 三叶草要素风格类。除了基本的线颜色、线宽、填充色、填充透明度、填充形状等参数，还可以设置三叶草要素扇叶的圆心角、间隔角度、数量、半径。
  * @category Visualization Graphic
+ * @modulecategory Overlay
  * @extends {L.Class}
- * @param {Object} options - 三叶草形要素风格参数。
+ * @param {Object} options - 参数。
  * @param {number} [options.angle=60] - 三叶草每个扇叶的圆心角，单位弧度。
  * @param {number} [options.spaceAngle=0] - 扇叶间隔角度，通过计算获取。
  * @param {number} [options.count=3] - 扇叶数量。
  * @param {boolean} [options.stroke=true] - 是否描边。
- * @param {number} [options.strokeWidth=1] - 边框宽度。
- * @param {string} [options.color='#3388ff'] - 颜色。
- * @param {number} [options.weight=1] - 线宽。
- * @param {number} [options.opacity=1] - 透明度。
+ * @param {number} [options.strokeWidth=1] - 描边宽度。
+ * @param {string} [options.color='#3388ff'] - 十六进制描边颜色。
+ * @param {number} [options.weight=1] - 描边宽度。
+ * @param {number} [options.opacity=1] - 描边不透明度。
  * @param {string} [options.lineCap='round'] - 线帽形状。
  * @param {string} [options.lineJoin='round'] - 线条交汇边角形状。
  * @param {boolean} [options.fill=false] - 是否填充。
- * @param {string} [options.fillColor='#66ccff'] - 填充色。
+ * @param {string} [options.fillColor='#66ccff'] - 十六进制填充颜色。
  * @param {number} [options.fillOpacity=0.2] - 填充透明度。
  * @param {string} [options.fillRule='evenodd'] - 填充形状。
- * @param {number} [options.radius=10] - 半径。
+ * @param {number} [options.radius=10] - 扇叶的半径，单位为像素。
+ * @usage
  */
 export var CloverStyle = L.Class.extend({
 
@@ -46,7 +49,7 @@ export var CloverStyle = L.Class.extend({
         strokeWidth:1
     },
 
-    
+
     initialize: function (options) {
         options = options || {};
         L.Util.setOptions(this, options);
@@ -62,7 +65,7 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.cloverStyle.prototype.getStyle
+     * @function CloverStyle.prototype.getStyle
      * @description 获取画布。
      */
     getStyle: function () {
@@ -70,12 +73,12 @@ export var CloverStyle = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.cloverStyle.prototype.drawSector
+     * @function CloverStyle.prototype.drawSector
      * @description 绘制扇形。
      * @param  {CanvasRenderingContext2D} ctx - context 对象。
-     * @param {number} x - 中心点 x。
-     * @param {number} y - 中心点 y。
-     * @param {number} r - 中心点 r。
+     * @param {number} x - 中心点 x 坐标。
+     * @param {number} y - 中心点 y 坐标。
+     * @param {number} r - 扇叶半径 r。
      * @param {number} sAngle - 扇叶起始角度。
      * @param {number} eAngle - 扇叶终止角度。
      */
@@ -129,5 +132,3 @@ export var CloverStyle = L.Class.extend({
 export var cloverStyle = function (options) {
     return new CloverStyle(options);
 };
-
-L.supermap.cloverStyle = cloverStyle;

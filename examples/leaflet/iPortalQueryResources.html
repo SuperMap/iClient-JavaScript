@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -188,7 +188,7 @@
     var searchText = ""; // 搜索字段
     //全局变量，承载请求后，一共有多少页数
     var totalPages;
-    var queryParams = new SuperMap.iPortalQueryParam({
+    var queryParams = new L.supermap.iPortalQueryParam({
         resourceType: resourceType,
         pageSize: resourcePageSize,
         currentPage: resourceCurrentPage,
@@ -196,7 +196,7 @@
         orderType: resourceOrderType
     });
     //资源查询初始化工作
-    var iPortal = new SuperMap.iPortal(iPortalUrl);
+    var iPortal = new L.supermap.iPortal(iPortalUrl);
     $(document).ready(function () {
         //加载完DOM后，开始资源数据查询并添加
         queryResouces(queryParams);
@@ -329,7 +329,7 @@
         if(param){
             resourceCurrentPage =1;
         }
-        queryParams = new SuperMap.iPortalQueryParam({
+        queryParams = new L.supermap.iPortalQueryParam({
             resourceType: resourceType,
             pageSize: resourcePageSize,
             currentPage: resourceCurrentPage,

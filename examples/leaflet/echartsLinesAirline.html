@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -20,7 +24,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(tileURL, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
+    new L.supermap.TiledMapLayer(tileURL, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
 
     $.get('../data/flights.json', function (data) {
 
@@ -67,7 +71,7 @@
                 blendMode: 'lighter'
             }]
         };
-        L.supermap.echartsLayer(option).addTo(map);
+        new L.supermap.EchartsLayer(option).addTo(map);
     });
 </script>
 </body>

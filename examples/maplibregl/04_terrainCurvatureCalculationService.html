@@ -1,0 +1,135 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_terrainCurvatureCalculation"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/maplibregl/include-maplibregl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, terrainCurvatureCalculationService, terrainCurvatureCalculationParameters,
+        terrainCurvatureCalculationResult,
+        themeService, themeGridRange, themeParameters, themeLayer,
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        attribution = "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    map.on("load", function () {
+        terrainCurvatureCalculationProcess();
+    });
+
+    function terrainCurvatureCalculationProcess() {
+        //创建地形曲率计算服务实例
+        terrainCurvatureCalculationService = new maplibregl.supermap.SpatialAnalystService(serviceUrl);
+        //创建地形曲率计算参数实例
+        terrainCurvatureCalculationParameters = new maplibregl.supermap.TerrainCurvatureCalculationParameters({
+            dataset: "JingjinTerrain@Jingjin",
+            zFactor: 1.0,
+            averageCurvatureName: "CurvatureA",
+            deleteExistResultDataset: true
+        });
+        //向iServer发起地形曲率计算请求
+        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters).then(function (serviceResult) {
+            terrainCurvatureCalculationResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
+    }
+
+    function showAnalysisResult_ThemeGridRange() {
+        themeService = new maplibregl.supermap.ThemeService(dataUrl);
+        var themeGridRangeIteme1 = new maplibregl.supermap.ThemeGridRangeItem({
+                start: -9000000,
+                end: -1000,
+                color: new maplibregl.supermap.ServerColor(0, 0, 255)
+            }),
+            themeGridRangeIteme2 = new maplibregl.supermap.ThemeGridRangeItem({
+                start: -1000,
+                end: -1,
+                color: new maplibregl.supermap.ServerColor(0, 0, 125)
+            }),
+            themeGridRangeIteme3 = new maplibregl.supermap.ThemeGridRangeItem({
+                start: -1,
+                end: 1,
+                color: new maplibregl.supermap.ServerColor(0, 125, 125)
+            }),
+            themeGridRangeIteme4 = new maplibregl.supermap.ThemeGridRangeItem({
+                start: 1,
+                end: 1000,
+                color: new maplibregl.supermap.ServerColor(0, 125, 0)
+            }),
+            themeGridRangeIteme5 = new maplibregl.supermap.ThemeGridRangeItem({
+                start: 1000,
+                end: 20000000,
+                color: new maplibregl.supermap.ServerColor(0, 255, 0)
+            });
+        themeGridRange = new maplibregl.supermap.ThemeGridRange({
+            reverseColor: false,
+            rangeMode: maplibregl.supermap.RangeMode.EQUALINTERVAL,
+            //栅格分段专题图子项数组
+            items: [themeGridRangeIteme1,
+                themeGridRangeIteme2,
+                themeGridRangeIteme3,
+                themeGridRangeIteme4,
+                themeGridRangeIteme5
+            ]
+        });
+        themeParameters = new maplibregl.supermap.ThemeParameters({
+            //制作专题图的数据集（地形曲率计算的结果数据集）
+            datasetNames: [terrainCurvatureCalculationResult.averageCurvatureResult.dataset.split('@')[0]],
+            dataSourceNames: ["Jingjin"],
+            joinItems: null,
+            themes: [themeGridRange]
+        });
+        themeService.getThemeInfo(themeParameters).then(function (serviceResult1) {
+            var result = serviceResult1.result;
+            if (result && result.newResourceID) {
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": {
+                        "type": "raster",
+                        "tiles": [baseUrl + "&transparent=true&cacheEnabled=false&layersID=" + result.newResourceID],
+                        "tileSize": 256
+                    },
+                    "minzoom": 0,
+                    "maxzoom": 22
+                });
+            }
+        })
+    }
+</script>
+</body>
+</html>

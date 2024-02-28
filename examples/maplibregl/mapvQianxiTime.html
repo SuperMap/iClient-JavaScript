@@ -1,0 +1,168 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title data-i18n="resources.title_mapvQianxiTime"></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .maplibregl-popup-close-button {
+          outline: none;
+        }
+    </style>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map"></div>
+<script type="text/javascript">
+    var attribution = "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© MapLibre </a>" +
+            " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+            " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+            "<a href='https://mapv.baidu.com' target='_blank'>© 2018 百度 MapV</a>";
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
+    var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileURL],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [112, 37.94],
+        zoom: 3
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new maplibregl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+    new maplibregl.Popup({closeOnClick: false})
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient)
+        .addTo(map);
+
+    var data = [];
+    var timeData = [];
+
+    function curive(fromPoint, endPoint, n) {
+        var delLng = (endPoint.lng - fromPoint.lng) / n;
+        var delLat = (endPoint.lat - fromPoint.lat) / n;
+
+        for (var i = 0; i < n; i++) {
+            var pointNLng = fromPoint.lng + delLng * i;
+            var pointNLat = fromPoint.lat + delLat * i;
+            timeData.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [pointNLng, pointNLat]
+                },
+                count: 1,
+                time: i
+            });
+        }
+    }
+
+  map.on('load', function() {
+      // 构造数据
+      $.ajax({
+        url: '../data/qianxi-time',
+        success: function (rs) {
+            var items = rs.split('|');
+            for (var i = 0; i < items.length; i++) {
+                var itemArr = items[i].split(/\n/);
+                for (var k = 0; k < itemArr.length; k++) {
+                    if (!!itemArr[k]) {
+                        var item = itemArr[k].split(/\t/);
+                        if (item[0] === '起点城市' || item[0] === '迁出城市') {
+                            var cityBegin = item[1];
+                        }
+                        if (item[0] !== '起点城市' || item[0] !== '迁出城市' && item.length > 1) {
+                            var cityCenter1 = mapv.utilCityCenter.getCenterByCityName(item[0].replace(/市|省/, ""));
+                            var cityCenter2 = mapv.utilCityCenter.getCenterByCityName(cityBegin.replace(/市|省/, "").trim());
+                            if (cityCenter1) {
+                                if (Math.random() > 0.7) {
+                                    curive(cityCenter2, cityCenter1, 50);
+                                }
+                                data.push({
+                                    geometry: {
+                                        type: 'LineString',
+                                        coordinates: [[cityCenter1.lng, cityCenter1.lat], [cityCenter2.lng, cityCenter2.lat]]
+                                    },
+                                    count: 100 * Math.random()
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            var dataSet = new mapv.DataSet(data);
+            var options = {
+                strokeStyle: 'rgba(55, 50, 250, 0.3)',
+                globalCompositeOperation: 'lighter',
+                shadowColor: 'rgba(55, 50, 250, 0.5)',
+                methods: {
+                    click: function (item) {
+                    }
+                },
+                gradient: {0: 'rgba(55, 50, 250, 0)', 1: 'rgba(55, 50, 250, 1)'},
+                lineWidth: .2,
+                draw: 'intensity'
+            };
+            //maplibregl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
+            var mapVLayer1 = new maplibregl.supermap.MapvLayer(dataSet, options);
+            map.addLayer(mapVLayer1);
+
+            var dataSet2 = new mapv.DataSet(timeData);
+            var options2 = {
+                fillStyle: 'rgba(255, 250, 250, 0.9)',
+                size: .5,
+                animation: {
+                    type: 'time',
+                    stepsRange: {
+                        start: 0,
+                        end: 50
+                    },
+                    trails: 1,
+                    duration: 5,
+                },
+                draw: 'simple'
+            };
+            var mapVLayer2 = new maplibregl.supermap.MapvLayer(dataSet2, options2);
+            map.addLayer(mapVLayer2);
+        }
+    });
+  })
+
+</script>
+</body>
+</html>

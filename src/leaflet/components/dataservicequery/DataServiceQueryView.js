@@ -1,36 +1,38 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from "leaflet";
-import {ComponentsViewBase} from '../ComponentsViewBase';
-import {DataServiceQueryViewModel} from './DataServiceQueryViewModel';
-import {
-    CommonContainer,
-    Select,
-    MessageBox,
-    GetFeaturesByIDsParameters,
-    GetFeaturesBySQLParameters,
-    GetFeaturesByBoundsParameters,
-    GetFeaturesByBufferParameters,
-    GetFeaturesByGeometryParameters,
-    Lang
-} from '@supermap/iclient-common';
+ import L from 'leaflet';
+ import { ComponentsViewBase } from '../ComponentsViewBase';
+ import { DataServiceQueryViewModel } from './DataServiceQueryViewModel';
+ import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
+ import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
+ import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
+ import { GetFeaturesByBufferParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBufferParameters';
+ import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters';
+ import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermap/iclient-common/components/templates/Select';
+ import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermap/iclient-common/lang/Lang';
 
 /**
- * @class L.supermap.components.dataServiceQuery
- * @classdesc 数据服务查询组件。
+ * @class DataServiceQueryView
+ * @aliasclass Components.DataServiceQueryView
+ * @deprecatedclassinstance L.supermap.components.dataServiceQuery
+ * @classdesc 数据服务查询组件类。
  * @version 9.1.1
+ * @modulecategory Components
  * @param {string} dataServiceUrl - 数据服务地址。
  * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries"。
- * @param {Object} options - 可选参数。
- * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} [options.getFeatureMode] - 查询方式。
- * @param {string} [options.position='topright'] - 组件在地图中显示的位置，包括：'topleft'，'topright'，'bottomleft' 和 'bottomright'，继承自 leaflet control。
- * @param {function} [options.style] - 设置图层点线面默认样式，点样式返回 maker 或者 circleMaker；线和面返回 L.path 样式。
- * @param {function} [options.onEachFeature] - 在创建和设置样式后，将为每个创建的要素调用一次的函数。用于将事件和弹出窗口附加到要素。默认情况下，对新创建的图层不执行任何操作。
- * @fires L.supermap.components.dataServiceQuery#getfeaturessucceeded
- * @fires L.supermap.components.dataServiceQuery#getfeaturesfailed
+ * @param {Object} options - 参数。
+ * @param {(Array.<GetFeatureMode>|GetFeatureMode)} [options.getFeatureMode] - 查询方式。
+ * @param {string} [options.position='topright'] - 组件在地图中显示的位置（ 'topleft'|'topright'|'bottomleft'|'bottomright' ）。
+ * @param {function} [options.style] - 默认图层样式。返回类型：点样式（ maker|circleMaker）；线和面样式（ L.path ）。
+ * @param {function} [options.onEachFeature] - 给该元素绑定事件和弹窗。
+ * @fires DataServiceQueryView#getfeaturessucceeded
+ * @fires DataServiceQueryView#getfeaturesfailed
  * @category Components DataServiceQuery
- * @extends {L.supermap.components.componentsViewBase}
+ * @extends {ComponentsViewBase}
+ * @usage
  */
 export var DataServiceQueryView = ComponentsViewBase.extend({
 
@@ -49,7 +51,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype.onAdd
+     * @function DataServiceQueryView.prototype.onAdd
      * @description 添加控件。
      * @private
      * @override
@@ -59,7 +61,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype.onRemove
+     * @function DataServiceQueryView.prototype.onRemove
      * @description 移除控件。
      * @private
      */
@@ -68,8 +70,8 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype.setDataSetNames
-     * @description 设置查询的数据集名。
+     * @function DataServiceQueryView.prototype.setDataSetNames
+     * @description 设置查询的数据集名称。
      * @param {(Array.<string>|string)} dataSetNames - 配置查询方式和查询的数据集数组。格式：" 数据源名：数据集名 "，例："World: Countries";
      */
     setDataSetNames(dataSetNames) {
@@ -81,28 +83,28 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype.setGetFeatureMode
+     * @function DataServiceQueryView.prototype.setGetFeatureMode
      * @description 设置查询方式。
-     * @param {(Array.<SuperMap.GetFeatureMode>|SuperMap.GetFeatureMode)} getFeatureMode - 查询方式。
+     * @param {(Array.<GetFeatureMode>|GetFeatureMode)} getFeatureMode - 查询方式。
      */
     setGetFeatureMode(getFeatureMode) {
         this.getFeatureMode = getFeatureMode;
         this._getFeatureModeOnchange(this.getFeatureMode);
     },
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype.setDataServiceUrl
+     * @function DataServiceQueryView.prototype.setDataServiceUrl
      * @description 设置查询的数据服务地址。
      * @param {string} dataServiceUrl - 数据服务地址。
      */
     setDataServiceUrl(dataServiceUrl) {
         this.dataServiceUrl = dataServiceUrl;
-        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
+        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl, this.options.onEachFeature);
 
     },
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype._getFeatureModeOnchange
+     * @function DataServiceQueryView.prototype._getFeatureModeOnchange
      * @private
-     * @description 查询方式改变时改变 UI。
+     * @description 改变查询方式时改变 UI。
      * @param {string} getFeatureMode - 查询方式。
      */
     _getFeatureModeOnchange(getFeatureMode) {
@@ -118,14 +120,14 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype._initView
+     * @function DataServiceQueryView.prototype._initView
      * @description 创建数据服务查询组件。
      * @returns {HTMLElement}
      * @private
      */
     _initView: function () {
         // 初始化 ViewModel:
-        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl);
+        this.viewModel = new DataServiceQueryViewModel(this.dataServiceUrl, this.options.onEachFeature);
         this.messageBox = new MessageBox();
 
         // 组件 container
@@ -259,7 +261,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
                     this.messageBox.showView(Lang.i18n('msg_dataReturnedIsEmpty'), "success");
                 }
                 /**
-                 * @event L.supermap.components.dataServiceQuery#getfeaturessucceeded
+                 * @event DataServiceQueryView#getfeaturessucceeded
                  * @description features 获取成功时触发。
                  * @property {Object} result - 服务器返回的结果。
                  */
@@ -270,7 +272,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
                 analysisBtn.style.display = 'block';
                 this.messageBox.showView(e.error.errorMsg, "failure");
                 /**
-                 * @event L.supermap.components.dataServiceQuery#getfeaturesfailed
+                 * @event DataServiceQueryView#getfeaturesfailed
                  * @description features 获取失败时触发。
                  * @property {string} error - 服务器返回的错误。
                  */
@@ -498,7 +500,7 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
     },
 
     /**
-     * @function L.supermap.components.dataServiceQuery.prototype._creatInputBox
+     * @function DataServiceQueryView.prototype._creatInputBox
      * @description 创建含有 span 的 input 框。
      * @private
      */
@@ -516,5 +518,3 @@ export var DataServiceQueryView = ComponentsViewBase.extend({
 export var dataServiceQueryView = function (dataServiceUrl, dataSetNames, options) {
     return new DataServiceQueryView(dataServiceUrl, dataSetNames, options);
 };
-
-L.supermap.components.dataServiceQuery = dataServiceQueryView;

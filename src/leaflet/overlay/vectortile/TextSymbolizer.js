@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -7,7 +7,7 @@ import {CanvasRenderer} from './CanvasRenderer';
 import {SVGRenderer} from './SVGRenderer';
 
 /**
- * @class L.supermap.TextSymbolizer
+ * @class TextSymbolizer
  * @classdesc 文本符号类。
  * @category Visualization VectorTile
  * @private
@@ -18,8 +18,8 @@ import {SVGRenderer} from './SVGRenderer';
 export var TextSymbolizer = L.Path.extend({
 
     /**
-     * @member L.supermap.TextSymbolizer.prototype.includes
-     * @description 包含符号。
+     * @member TextSymbolizer.prototype.includes
+     * @description 包含的符号。
      */
     includes: Symbolizer.prototype,
 
@@ -48,7 +48,7 @@ export var TextSymbolizer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.TextSymbolizer.prototype.render
+     * @function TextSymbolizer.prototype.render
      * @description 绘制点符号。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。
@@ -84,7 +84,7 @@ export var TextSymbolizer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.TextSymbolizer.prototype.makeInteractive
+     * @function TextSymbolizer.prototype.makeInteractive
      * @description 设置交互。
      */
     makeInteractive: function () {
@@ -92,8 +92,8 @@ export var TextSymbolizer = L.Path.extend({
     },
 
     /**
-     * @function L.supermap.TextSymbolizer.prototype.updateStyle
-     * @description 更新替换符号样式。
+     * @function TextSymbolizer.prototype.updateStyle
+     * @description 更新符号样式。
      * @param {Object} renderer - 渲染器。
      * @param {string} style - 符号样式。
      */

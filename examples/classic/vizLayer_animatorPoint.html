@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -73,7 +73,7 @@
         });
         map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
 
-        layer = new SuperMap.Layer.CloudLayer();
+        layer = new SuperMap.Layer.OSM("OSM");
 
         map.addLayers([layer]);
 

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 $(document).ready(function () {
     window.initI18N(function(){
     initPage();
@@ -6,7 +6,6 @@ $(document).ready(function () {
     sidebarScrollFix();
 });
 });
-
 var aceEditor;
 var containExamples = true;
 
@@ -16,11 +15,34 @@ function initPage() {
     screenResize();
 }
 
+
+
+//获取示例页面的配置信息
+function getActiveExampleConfig(){
+  var activeId = getActiveId();
+  var config = exampleConfig;
+  for(var key in config){
+    const item = config[key];
+    for(var contentKey in item.content){
+      const contentItem = item.content[contentKey];
+      for(var i=0; i< contentItem.content.length; i++ ){
+         var arrItem = contentItem.content[i];
+         if(activeId === arrItem.fileName){
+           return arrItem;
+         }
+      }
+    }
+  }
+  return {}
+}
+
 function initSideBar() {
     var config = exampleConfig;
     var sideBar = $("ul#sidebar-menu");
     for (var key in config) {
+      if (typeof config[key] === 'object' && config[key] !== null) {
         sideBar.append(createSideBarMenuItem(key, config[key], containExamples));
+      }
     }
     $(sideBar).ready(function () {
         initSelect();
@@ -35,7 +57,13 @@ function screenResize() {
 }
 
 //初始化编辑器
-function initCodeEditor() {
+function initCodeEditor(showCode) {
+  const codeBtn = document.getElementById("showCodeBtn");
+    if(showCode === false){
+      codeBtn.classList.add('hide');
+      return
+    }
+    codeBtn.classList.remove('hide');
     if (!aceEditor) {
         aceEditor = ace.edit("editor");
         aceEditor.setTheme("ace/theme/textmate");
@@ -51,8 +79,9 @@ function initCodeEditor() {
 
 //初始化编辑器以及预览内容
 function initEditor() {
+  var pageConfig = getActiveExampleConfig();
     loadExampleHtml();
-    initCodeEditor();
+    initCodeEditor(pageConfig.showCode);
 }
 
 function loadExampleHtml() {
@@ -66,17 +95,21 @@ function loadExampleHtml() {
     if (!mapUrl) {
         return;
     }
-    var html = $.ajax({
+    var isError = false;
+    var response = $.ajax({
         url: mapUrl,
         async: false,
         error: function (error) {
             alert(resources.editor.envTips);
-            html = "";
+            isError = true;
         }
-    }).responseText;
-    if (html && html != "") {
+    });
+    var html = response.responseText;
+    if (html && html != "" && !isError) {
         $('#editor').val(html);
         loadPreview(html);
+    } else {
+      window.location.href = window.location.origin + '/web/404.html';
     }
 }
 
@@ -136,14 +169,20 @@ function refresh() {
     run();
 }
 
+//获取当前页的id
+function getActiveId(){
+  var hash = window.location.hash;
+  if (hash.indexOf("#") === -1) {
+      return $("section#sidebar .thirdMenu a.link").first().attr('id');
+  }
+  return hash.split("#")[1];
+}
+
 function initSelect() {
     var hash = window.location.hash;
-    var id;
+    var id = getActiveId();
     if (hash.indexOf("#") === -1) {
-        id = $("section#sidebar .thirdMenu a.link").first().attr('id');
         window.location.hash = (id) ? "#" + id : window.location.hash;
-    } else {
-        id = hash.split("#")[1];
     }
     selectMenu(id);
 }

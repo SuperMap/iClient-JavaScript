@@ -1,23 +1,26 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
-import '../core/Base';import {Util} from '../core/Util';
+import '../core/Base';
+import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import {Geometry, MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
+import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
 
 /**
- * @class mapboxgl.supermap.MeasureService
+ * @class MeasureService
  * @category  iServer Map Measure
- * @classdesc 测量服务。
- * @extends {mapboxgl.supermap.ServiceBase}
- * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。
- * @param {Object} options - 交互服务时所需可选参数。 
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
+ * @modulecategory Services
+ * @extends {ServiceBase}
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map。
+ * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @param {SuperMap.MeasureMode} [options.measureMode=SuperMap.MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
+ * @param {MeasureMode} [options.measureMode=MeasureMode.DISTANCE] - 量算模式，包括距离量算模式和面积量算模式。
+ * @usage
  */
 export class MeasureService extends ServiceBase {
 
@@ -26,32 +29,34 @@ export class MeasureService extends ServiceBase {
     }
 
     /**
-     * @function mapboxgl.supermap.MeasureService.prototype.measureDistance
-     * @description 距离测量。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @function MeasureService.prototype.measureDistance
+     * @description 距离量算。
+     * @param {MeasureParameters} params - 量算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance(params, callback) {
-        this.measure(params, 'DISTANCE', callback);
+        return this.measure(params, 'DISTANCE', callback);
     }
 
     /**
-     * @function mapboxgl.supermap.MeasureService.prototype.measureArea
-     * @description 面积测量。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @function MeasureService.prototype.measureArea
+     * @description 面积量算。
+     * @param {MeasureParameters} params - 量算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureArea(params, callback) {
-        this.measure(params, 'AREA', callback);
+        return this.measure(params, 'AREA', callback);
     }
 
     /**
-     * @function mapboxgl.supermap.MeasureService.prototype.measure
-     * @description 测量。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
-     * @param {string} type - 测量类型。
-     * @param {RequestCallback} callback - 回调函数。
-     * @returns {mapboxgl.supermap.MeasureService} 测量服务。
+     * @function MeasureService.prototype.measure
+     * @description 量算。
+     * @param {MeasureParameters} params - 量算参数类。
+     * @param {string} type - 量算类型。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {MeasureService} 量算服务。
      */
     measure(params, type, callback) {
         var me = this;
@@ -60,14 +65,9 @@ export class MeasureService extends ServiceBase {
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            measureMode: type,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            measureMode: type
         });
-        measureService.processAsync(me._processParam(params));
+        return measureService.processAsync(me._processParam(params), callback);
     }
 
     _processParam(params) {
@@ -80,5 +80,3 @@ export class MeasureService extends ServiceBase {
     }
 
 }
-
-mapboxgl.supermap.MeasureService = MeasureService;

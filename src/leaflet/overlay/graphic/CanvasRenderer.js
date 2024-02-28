@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from 'leaflet';
@@ -13,8 +13,8 @@ export var GraphicCanvasRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicCanvasRenderer.prototype.getRenderer
-     * @description 返回渲染器给图层，提供图层后续的数据增删改。
+     * @function GraphicCanvasRenderer.prototype.getRenderer
+     * @description 返回渲染器，提供图层后续的数据增删改。
      * @returns {L.Canvas}
      */
     getRenderer: function () {
@@ -23,7 +23,7 @@ export var GraphicCanvasRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicCanvasRenderer.prototype.update
+     * @function GraphicCanvasRenderer.prototype.update
      * @description  更新图层，数据或者样式改变后调用。
      */
     update: function () {

@@ -1,7 +1,9 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { FetchRequest, CommonUtil, SecurityManager } from '@supermap/iclient-common';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
 import { olExtends } from './olExtends';
 import remove from 'lodash.remove';
 import Observable from 'ol/Observable';
@@ -11,28 +13,29 @@ import FillStyle from 'ol/style/Fill';
 import StrokeStyle from 'ol/style/Stroke';
 import Text from 'ol/style/Text';
 /**
- * @class ol.supermap.MapboxStyles
+ * @class MapboxStyles
  * @classdesc Mapbox 矢量瓦片风格。
  * <div style="padding: 20px;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;border-left-color: #ce4844;">
  *      <p style="color: #ce4844">Notice</p>
  *      <p style="font-size: 13px">该功能依赖 <a href='https://github.com/boundlessgeo/ol-mapbox-style'>ol-mapbox-style</a> 插件，请确认引入该插件。</p>
- *      `<script type="text/javascript" src="https://rawgit.com/boundlessgeo/ol-mapbox-style/v2.11.2-1/dist/olms.js"></script>`
+ *      <a src="https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-4/olms.js">https://iclient.supermap.io/web/libs/openlayers/plugins/ol-mapbox-style/2.11.2-4/olms.js</a>
  * </div>
+ * @modulecategory Overlay
  * @category  Visualization VectorTile
- * @param {Object} options - 初始化参数。
- * @param {(string|undefined)} [options.url] - SuperMap iServer 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与options.style互斥，优先级低于options.style。
- * @param {(Object|string|undefined)} [opStyleMaptions.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
- * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol/View} 的分辨率一致。</br>
+ * @param {Object} options - 参数。
+ * @param {(string|undefined)} [options.url] - SuperMap iServer 地图服务地址，例如'http://localhost:8090/iserver/services/map-mvt-test/rest/maps/test'，与 options.style 互斥，优先级低于 options.style。
+ * @param {(Object|string|undefined)} [options.style] - Mapbox Style JSON 对象或获取 Mapbox Style JSON 对象的 URL。与 options.url 互斥，优先级高于 options.url。
+ * @param {Array.<number>} [options.resolutions] - 地图分辨率数组，用于映射 zoom 值。通常情況与地图的 {@link ol.View} 的分辨率一致。</br>
  * 默认值为：[78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564, 1222.99245256282,611.49622628141,305.748113140705,152.8740565703525, 76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032, 4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395, 0.29858214173896974,0.14929107086948487,0.07464553543474244]。
  * @param {(string|Array.<string>|undefined)} [options.source] - Mapbox Style 'source'的 key 值或者 'layer' 的 ID 数组。
  * 当配置 'source' 的 key 值时，source 为该值的 layer 会被加载；
  * 当配置为 'layer' 的 ID 数组时，指定的 layer 会被加载，注意被指定的 layer 需要有相同的 source。
  * 当不配置时，默认为 Mapbox Style JSON 的 `sources` 对象中的第一个。
- * @param {ol/Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
- * @param {ol/StyleFunction} [options.selectedStyle] -选中样式Function。
+ * @param {ol.Map} [options.map] - Openlayers 地图对象，仅用于面填充样式，若没有面填充样式可不填。
+ * @param {ol.StyleFunction} [options.selectedStyle] -选中样式 Function。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
  * @example
- *  var mbStyle = new ol.supermap.MapboxStyles({
+ *  var mbStyle = new MapboxStyles({
             url: url,
             source: 'California',
             resolutions: [78271.51696402048,39135.75848201024, 19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564]
@@ -52,6 +55,7 @@ import Text from 'ol/style/Text';
             });
             map.addLayer(vectorLayer);
         })
+ * @usage
  */
 export class MapboxStyles extends Observable {
     constructor(options) {
@@ -101,15 +105,15 @@ export class MapboxStyles extends Observable {
         this._loadStyle(this.styleTarget);
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.getStyleFunction
-     * @description 获取 ol/StyleFunction。
-     * @returns {ol/StyleFunction} 返回 ol/StyleFunction
+     * @function MapboxStyles.prototype.getStyleFunction
+     * @description 获取 ol.StyleFunction。
+     * @returns {ol.StyleFunction} 返回 ol.StyleFunction。
      */
     getStyleFunction() {
         return this.featureStyleFuntion;
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.getStylesBySourceLayer
+     * @function MapboxStyles.prototype.getStylesBySourceLayer
      * @description 根据图层名称获取样式。
      * @param {string} sourceLayer - 数据图层名称。
      */
@@ -129,9 +133,9 @@ export class MapboxStyles extends Observable {
         return layers;
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.setSelectedId
-     * @description 设置选中要素，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
-     * @param {number} selectedId - 要素ID。
+     * @function MapboxStyles.prototype.setSelectedId
+     * @description 设置选中要素，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`，才能生效。
+     * @param {number} selectedId - 要素 ID。
      * @param {string} sourceLayer - 要素所在图层名称。
      */
     setSelectedId(selectedId, sourceLayer) {
@@ -142,17 +146,17 @@ export class MapboxStyles extends Observable {
         });
     }
     /**
-     * @typedef {Object} ol.supermap.MapboxStyles.selectedObject
+     * @typedef {Object} MapboxStyles.selectedObject
      * @description 要选择的要素对象。
-     * @property {number} selectedId - 要素ID。
+     * @property {number} selectedId - 要素 ID。
      * @property {string} sourceLayer - 要素所在图层名称。
      */
 
     /**
-     * @function ol.supermap.MapboxStyles.prototype.setSelectedObjects
+     * @function MapboxStyles.prototype.setSelectedObjects
      * @version 10.0.0
-     * @description 设置选中要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
-     * @param {ol.supermap.MapboxStyles.selectedObject|Array.<ol.supermap.MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
+     * @description 设置选中要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`，才能生效。
+     * @param {MapboxStyles.selectedObject|Array.<MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
     setSelectedObjects(selectedObjects) {
         if (!Array.isArray(selectedObjects)) {
@@ -162,10 +166,10 @@ export class MapboxStyles extends Observable {
         this.selectedObjects = selectedObjects;
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.addSelectedObjects
+     * @function MapboxStyles.prototype.addSelectedObjects
      * @version 10.0.0
-     * @description 增加选中的要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
-     * @param {ol.supermap.MapboxStyles.selectedObject|Array.<ol.supermap.MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
+     * @description 增加选中的要素或要素数组，该要素将会用 `selectedStyle` 样式绘制。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed` ，才能生效。
+     * @param {MapboxStyles.selectedObject|Array.<MapboxStyles.selectedObject>} addSelectedObjects - 选择的要素或要素数组。
      */
     addSelectedObjects(selectedObjects) {
         if (!Array.isArray(selectedObjects)) {
@@ -174,9 +178,9 @@ export class MapboxStyles extends Observable {
         this.selectedObjects.push(...selectedObjects);
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.clearSelectedObjects
+     * @function MapboxStyles.prototype.removeSelectedObjects
      * @version 10.0.0
-     * @description 清空选中状态。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
+     * @description 清空选中状态。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed` ，才能生效。
      */
     removeSelectedObjects(selectedObjects) {
         if (!Array.isArray(selectedObjects)) {
@@ -189,15 +193,15 @@ export class MapboxStyles extends Observable {
         });
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.clearSelectedObjects
+     * @function MapboxStyles.prototype.clearSelectedObjects
      * @version 10.0.0
-     * @description 清空选中状态。调用该方法后需要调用 `ol/layer/VectorTile` 的 `changed`,才能生效。
+     * @description 清空选中状态。调用该方法后需要调用 {@link ol.layer.VectorTile} 的 `changed`，才能生效。
      */
     clearSelectedObjects() {
         this.selectedObjects = [];
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.updateStyles
+     * @function MapboxStyles.prototype.updateStyles
      * @description 更新图层样式。
      * @param {Object} layerStyles - 图层样式或图层样式数组。
      */
@@ -231,7 +235,7 @@ export class MapboxStyles extends Observable {
         this._createStyleFunction();
     }
     /**
-     * @function ol.supermap.MapboxStyles.prototype.setStyle
+     * @function MapboxStyles.prototype.setStyle
      * @version 9.1.1
      * @description 设置 Mapbox style 对象。
      * @param {Object} style - Mapbox style 对象。
@@ -243,7 +247,9 @@ export class MapboxStyles extends Observable {
     _loadStyle(style) {
         if (Object.prototype.toString.call(style) == '[object Object]') {
             this._mbStyle = style;
-            this._resolve();
+            setTimeout(() => {
+                this._resolve();
+            }, 0);
         } else {
             var url = SecurityManager.appendCredential(style);
             FetchRequest.get(url, null, { withCredentials: this.withCredentials })
@@ -285,6 +291,11 @@ export class MapboxStyles extends Observable {
                         this._initStyleFunction();
                     };
                     img.src = this._spriteImageUrl;
+                })
+                .catch( err => {
+                    console.log(err);
+                    this._spriteImage = null;
+                    this._initStyleFunction();
                 });
         } else {
             this._initStyleFunction();
@@ -302,7 +313,7 @@ export class MapboxStyles extends Observable {
         }
         this._createStyleFunction();
         /**
-         * @event ol.supermap.MapboxStyles#styleloaded
+         * @event MapboxStyles#styleloaded
          * @description 样式加载成功后触发。
          */
         this.dispatchEvent('styleloaded');

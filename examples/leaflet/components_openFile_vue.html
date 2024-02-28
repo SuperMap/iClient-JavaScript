@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* xlsx (https://github.com/SheetJS/sheetjs)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,11 +26,11 @@
     var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var url = host + '/iserver/services/map-china400/rest/maps/China';
 
-    var baseLayers = L.supermap.tiledMapLayer(url).addTo(map);
+    var baseLayers = new L.supermap.TiledMapLayer(url).addTo(map);
     var layersControl = L.control.layers({"baseLayers": baseLayers}, {}, {"position": 'topleft'}).addTo(map);
 
-    var openFileViewModel = L.supermap.components.openFileViewModel(map);
-    var messageBox = new SuperMap.Components.MessageBox();
+    var openFileViewModel = new L.supermap.Components.OpenFileViewModel(map);
+    var messageBox = new L.supermap.Components.MessageBox();
 
     initEditView();
 

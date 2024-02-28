@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -14,12 +14,13 @@
         <div
             id="popup"
             class="ol-popup"
-            style="background-color: white;padding: 15px;border-radius: 10px;border: 1px solid #cccccc;"
+            style="background-color: white;padding: 15px;border-radius: 10px;border: 1px solid #cccccc;max-width:400px;"
         >
             <div id="popup-content"></div>
         </div>
         <script type="text/javascript">
-            new ol.supermap.WebMap(128, {
+            new ol.supermap.WebMap(659947449, {
+                server: 'https://www.supermapol.com',
                 successCallback: function(map) {
                     var popup = new ol.Overlay({
                         element: document.getElementById('popup')

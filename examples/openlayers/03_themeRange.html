@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -14,12 +14,12 @@
 <script type="text/javascript">
     var map, themeLayer, options
     url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China";
-    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(url).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [12406035, 4304933],
                 zoom: 4,
@@ -38,46 +38,46 @@
     function createTheme() {
         var themeRangeItem1, themeRangeItem2,
             themeRangeItem3, themeRange;
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
+        themeRangeItem1 = new ol.supermap.ThemeRangeItem({
             start: 0,
             end: 500000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(211, 255, 250),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(211, 255, 250),
+                lineColor: new ol.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
+        themeRangeItem2 = new ol.supermap.ThemeRangeItem({
             start: 500000000000,
             end: 1000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(178, 218, 199),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(178, 218, 199),
+                lineColor: new ol.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem3 = new SuperMap.ThemeRangeItem({
+        themeRangeItem3 = new ol.supermap.ThemeRangeItem({
             start: 1000000000000,
             end: 3000000000000,
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(58, 178, 166),
-                lineColor: new SuperMap.ServerColor(179, 209, 193),
+            style: new ol.supermap.ServerStyle({
+                fillForeColor: new ol.supermap.ServerColor(58, 178, 166),
+                lineColor: new ol.supermap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRange = new SuperMap.ThemeRange({
+        themeRange = new ol.supermap.ThemeRange({
             rangeExpression: "SMAREA",
-            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            rangeMode: ol.supermap.RangeMode.EQUALINTERVAL,
             items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             joinItems: null,
             themes: [themeRange]
         });
 
-        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({

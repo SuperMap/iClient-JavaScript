@@ -4,15 +4,12 @@ import { InterpolationDensityAnalystParameters } from '../../../src/common/iServ
 import { InterpolationIDWAnalystParameters } from '../../../src/common/iServer/InterpolationIDWAnalystParameters';
 import { InterpolationKrigingAnalystParameters } from '../../../src/common/iServer/InterpolationKrigingAnalystParameters';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import request from 'request';
 import { InterpolationAnalystParameters } from '../../../src/common/iServer/InterpolationAnalystParameters';
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var initInterpolationAnalystService = (url, analyzeFailed, analyzeCompleted) => {
-    return new InterpolationAnalystService(url, {
-        eventListeners: { processCompleted: analyzeCompleted, processFailed: analyzeFailed }
-    });
+var initInterpolationAnalystService = (url) => {
+    return new InterpolationAnalystService(url);
 };
 
 describe('InterpolationAnalystService', () => {
@@ -60,10 +57,7 @@ describe('InterpolationAnalystService', () => {
             interpolationRBFAnalystParameters.destroy();
             done();
         };
-        var analyzeFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationRBFAnalystParameters = new InterpolationRBFAnalystParameters({
@@ -92,8 +86,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_RBFByDS_commonTest@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
-        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
+        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters, analyzeCompleted);
     });
 
     //数据集 点密度插值分析
@@ -117,7 +110,7 @@ describe('InterpolationAnalystService', () => {
         var analyzeFailed = serviceFailedEventArgs => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationDensityAnalystParameters = new InterpolationDensityAnalystParameters({
@@ -143,8 +136,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_densityByDS_commonTest@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
-        interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
+        interpolationAnalystService.processAsync(interpolationDensityAnalystParameters, analyzeCompleted);
     });
 
     var resultDataset_IDWByDS = 'Interpolation_IDWByDS_commonTest';
@@ -174,7 +166,7 @@ describe('InterpolationAnalystService', () => {
         var analyzeFailed = serviceFailedEventArgs => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
         };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationIDWAnalystParameters = new InterpolationIDWAnalystParameters({
@@ -201,8 +193,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_IDWByDS_commonTest_32@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationIDWAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
+        interpolationAnalystService.processAsync(interpolationIDWAnalystParameters, analyzeCompleted);
     });
 
     var resultDataset_krigingByDS = 'Interpolation_krigingByDS_commonTest';
@@ -229,10 +220,7 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         };
-        var analyzeFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationKrigingAnalystParameters = new InterpolationKrigingAnalystParameters({
@@ -268,8 +256,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_krigingByDS_commonTest_29@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
+        interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters, analyzeCompleted);
     });
 
     var resultDataset_RBFByGeo = 'Interpolation_RBFByGeo_commonTest';
@@ -296,10 +283,7 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         };
-        var analyzeFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationRBFAnalystParameters = new InterpolationRBFAnalystParameters({
@@ -332,8 +316,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_RBFByGeo_commonTest_23@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
+        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters, analyzeCompleted);
     });
 
     var resultDataset_densityByGeo = 'Interpolation_densityByGeo_commonTest';
@@ -360,10 +343,7 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         };
-        var analyzeFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationDensityAnalystParameters = new InterpolationDensityAnalystParameters({
@@ -393,8 +373,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_densityByGeo_commonTest_22@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
+        interpolationAnalystService.processAsync(interpolationDensityAnalystParameters, analyzeCompleted);
     });
 
     var resultDataset_IDWByGeo = 'Interpolation_IDWByGeo_commonTest';
@@ -421,10 +400,7 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         };
-        var analyzeFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationIDWAnalystParameters = new InterpolationIDWAnalystParameters({
@@ -457,8 +433,7 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_IDWByGeo_commonTest_35@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationIDWAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
+        interpolationAnalystService.processAsync(interpolationIDWAnalystParameters, analyzeCompleted);
     });
 
     var resultDataset_krigingByGeo = 'Interpolation_krigingByGeo_commonTest';
@@ -485,10 +460,7 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         };
-        var analyzeFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationKrigingAnalystParameters = new InterpolationKrigingAnalystParameters({
@@ -525,16 +497,12 @@ describe('InterpolationAnalystService', () => {
                 '{"succeed":true,"recordset":null,"message":null,"dataset":"Interpolation_krigingByGeo_commonTest_22@Interpolation"}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters);
-        interpolationAnalystService.events.on({ processCompleted: analyzeCompleted });
+        interpolationAnalystService.processAsync(interpolationKrigingAnalystParameters, analyzeCompleted);
     });
 
     //分析失败
     it('FailedEvent', done => {
         var url = GlobeParameter.spatialAnalystURL;
-        var analyzeCompleted = analyseEventArgs => {
-            analystEventArgsSystem = analyseEventArgs;
-        };
         var analyzeFailed = serviceFailedEventArgs => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -554,7 +522,7 @@ describe('InterpolationAnalystService', () => {
                 done();
             }
         };
-        var interpolationAnalystService = initInterpolationAnalystService(url, analyzeFailed, analyzeCompleted);
+        var interpolationAnalystService = initInterpolationAnalystService(url);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationRBFAnalystParameters = new InterpolationRBFAnalystParameters({
@@ -580,8 +548,7 @@ describe('InterpolationAnalystService', () => {
             var escapedJson = '{"succeed":false,"error":{"code":400,"errorMsg":"数据集xxx@Interpolation不存在"}}';
             return Promise.resolve(new Response(escapedJson));
         });
-        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
-        interpolationAnalystService.events.on({ processFailed: analyzeFailed });
+        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters, analyzeFailed);
     });
 
     //插值分析参数类

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -15,12 +15,12 @@
     var map, themeLayer, options,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io")+"/iserver/services/map-china400/rest/maps/China";
     var mapService = new ol.supermap.MapService(url);
-    mapService.getMapInfo(function (serviceResult) {
+    mapService.getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [12406035, 4304933],
                 zoom: 4,
@@ -37,25 +37,25 @@
     });
 
     function createTheme() {
-        var themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
+        var themeGraduatedSymbol = new ol.supermap.ThemeGraduatedSymbol({
             expression: "SMAREA",
             baseValue: 3000000000000,
-            graduatedMode: SuperMap.GraduatedMode.CONSTANT,
-            style: new SuperMap.ThemeGraduatedSymbolStyle({
-                positiveStyle: new SuperMap.ServerStyle({
+            graduatedMode: ol.supermap.GraduatedMode.CONSTANT,
+            style: new ol.supermap.ThemeGraduatedSymbolStyle({
+                positiveStyle: new ol.supermap.ServerStyle({
                     markerSize: 50,
                     markerSymbolID: 0,
-                    lineColor: new SuperMap.ServerColor(255, 165, 0),
-                    fillBackColor: new SuperMap.ServerColor(255, 0, 0)
+                    lineColor: new ol.supermap.ServerColor(255, 165, 0),
+                    fillBackColor: new ol.supermap.ServerColor(255, 0, 0)
                 })
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeGraduatedSymbol],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]
         });
-        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({

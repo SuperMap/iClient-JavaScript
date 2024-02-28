@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * MapboxGL 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -69,6 +69,27 @@ var exampleConfig = {
                         name_en: 'SQL query',
                         thumbnail: 'mb_mapQueryBySQL.png',
                         fileName: '01_mapQueryBySQL'
+                    },
+                    {
+                      name: 'SQL查询 (FGB)',
+                      name_en: 'SQL query (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'query_fgb_features.png',
+                      fileName: '01_mapQueryBySQL_FGB'
+                    }, 
+                    {
+                      name: "图例",
+                      name_en: "Legend",
+                      version: '11.1.1',
+                      thumbnail: "layersLegend.png",
+                      fileName: "01_layersLegend"
+                    },
+                    {
+                      name: "海图",
+                      name_en: "Chart",
+                      version: '11.2.0',
+                      thumbnail: "chart.png",
+                      fileName: "01_chartService"
                     }
                 ]
             },
@@ -87,6 +108,13 @@ var exampleConfig = {
                         name_en: 'SQL query',
                         thumbnail: 'mb_getFeatureBySQL.png',
                         fileName: '02_getFeatureBySQL'
+                    },
+                    {
+                      name: 'SQL查询 (FGB)',
+                      name_en: 'SQL query (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'query_fgb_features.png',
+                      fileName: '02_getFeatureBySQL_FGB'
                     },
                     {
                         name: '范围查询',
@@ -131,6 +159,12 @@ var exampleConfig = {
                         fileName: '02_editFeatures'
                     },
                     {
+                        name: "要素关联附件",
+                        name_en: "feature attachment",
+                        thumbnail: "mb_featureAttachments.png",
+                        fileName: "02_FeatureAttachment"
+                    },
+                    {
                         name: '数据源信息查询',
                         name_en: 'datasource information service',
                         thumbnail: '02_datasourceService.png',
@@ -141,6 +175,20 @@ var exampleConfig = {
                         name_en: 'dataset information service',
                         thumbnail: '02_datasetService.png',
                         fileName: '02_datasetService'
+                    },
+                    {
+                        name: "要素编辑",
+                        name_en: "draw and edit features",
+                        version: '11.2.0',
+                        thumbnail: "drawAndEditFeatures.png",
+                        fileName: "drawAndEditFeatures"
+                    },
+                    {
+                      name: "属性表",
+                      name_en: "attributes",
+                      version: '11.2.0',
+                      thumbnail: "attributes.png",
+                      fileName: "02_attributes"
                     }
                 ]
             },
@@ -209,10 +257,24 @@ var exampleConfig = {
                         fileName: '04_bufferAnalystService'
                     },
                     {
+                      name: '数据集缓冲区分析 (FGB)',
+                      name_en: 'buffer (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'mb_bufferAnalystService.png',
+                      fileName: '04_bufferAnalystService_FGB'
+                    },
+                    {
                         name: '几何对象缓冲区分析',
                         name_en: 'buffer-geometry',
                         thumbnail: 'mb_bufferAnalystService_geometry.png',
                         fileName: '04_bufferAnalystService_geometry'
+                    },
+                    {
+                      name: '几何对象缓冲区分析 (FGB)',
+                      name_en: 'buffer-geometry (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'mb_bufferAnalystService_geometry.png',
+                      fileName: '04_bufferAnalystService_geometry_FGB'
                     },
                     {
                         name: '数据集泰森多边形',
@@ -221,10 +283,24 @@ var exampleConfig = {
                         fileName: '04_thiessenAnalystService_datasets'
                     },
                     {
+                      name: '数据集泰森多边形 (FGB)',
+                      name_en: 'thiessen-dataset (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'mb_thiessenAnalystService-datasets.png',
+                      fileName: '04_thiessenAnalystService_datasets_FGB'
+                    },
+                    {
                         name: '几何泰森多边形',
                         name_en: 'thiessen-geometry',
                         thumbnail: 'mb_thiessenAnalystService-geometry.png',
                         fileName: '04_thiessenAnalystService_geometry'
+                    },
+                    {
+                      name: '几何泰森多边形 (FGB)',
+                      name_en: 'thiessen-geometry (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'mb_thiessenAnalystService-geometry.png',
+                      fileName: '04_thiessenAnalystService_geometry_FGB'
                     },
                     {
                         name: '叠加分析',
@@ -233,10 +309,45 @@ var exampleConfig = {
                         fileName: '04_overlayAnalystService'
                     },
                     {
+                      name: '叠加分析 (FGB)',
+                      name_en: 'overlay (FGB)',
+                      version: '11.1.0',
+                      thumbnail: 'mb_overlayAnalystService.png',
+                      fileName: '04_overlayAnalystService_FGB'
+                    },
+                    {
                         name: '地形曲率计算',
                         name_en: 'terrain curvature calculation',
                         thumbnail: 'mb_terrainCurvatureCalculationService.png',
                         fileName: '04_terrainCurvatureCalculationService'
+                    },
+                    {
+                        name: "地形坡度计算",
+                        name_en: "terrain slope calculation",
+                        version: '11.1.1',
+                        thumbnail: "terrainSlopeCalculationService.png",
+                        fileName: "04_terrainSlopeCalculationService"
+                    }, 
+                    {
+                        name: "地形坡向计算",
+                        name_en: "terrain aspect calculation",
+                        version: '11.1.1',
+                        thumbnail: "terrainAspectCalculationService.png",
+                        fileName: "04_terrainAspectCalculationService"
+                    }, 
+                    {
+                        name: "填挖方计算",
+                        name_en: "terrain cutfill calculation",
+                        version: '11.1.1',
+                        thumbnail: "terrainCutFillCalculationService.png",
+                        fileName: "04_terrainCutFillCalculationService"
+                    }, 
+                    {
+                        name: "最近距离计算",
+                        name_en: "min distance analysis",
+                        version: '11.1.1',
+                        thumbnail: "minDistanceAnalysisService.png",
+                        fileName: "04_minDistanceAnalysisService"
                     },
                     {
                         name: '栅格代数运算',
@@ -302,11 +413,11 @@ var exampleConfig = {
             },
             webPrinting: {
                 name: 'Web 打印',
-                name_en: 'Web Printing',
+                name_en: 'Web printing',
                 content: [
                     {
                         name: 'Web 地图打印',
-                        name_en: 'Web Map Print',
+                        name_en: 'web map print',
                         version: '10.1.0',
                         thumbnail: 'webPrintingJob.png',
                         fileName: 'webPrintingJob'
@@ -315,7 +426,7 @@ var exampleConfig = {
             },
             processingService: {
                 name: '分布式分析',
-                name_en: 'Distributed analysis services',
+                name_en: 'Distributed analysis service',
                 content: [
                     {
                         name: '密度分析',
@@ -403,7 +514,7 @@ var exampleConfig = {
             },
             image: {
               name: "影像服务",
-              name_en: "Image Service",
+              name_en: "Image service",
               content: [
                   {
                       name: "影像服务",
@@ -412,6 +523,34 @@ var exampleConfig = {
                       thumbnail: "imageService.png",
                       fileName: "imageService"
                   }
+              ]
+            },
+            KnowledgeGraph: {
+              name: '知识图谱',
+              name_en: 'KnowledgeGraph',
+              version: '11.1.0',
+              content: [
+                  {
+                      name: '不动产图谱',
+                      name_en: 'Real Estate GraphMap',
+                      version: '11.1.0',
+                      thumbnail: 'knowledgeGraphMap.png',
+                      fileName: 'knowledgeGraphMap'
+                  },
+                  {
+                    name: '不动产图谱-样式',
+                    name_en: 'Real Estate GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap2.png',
+                    fileName: 'knowledgeGraphMap2'
+                  },
+                  {
+                    name: '河流流经省份图谱',
+                    name_en: 'Rivers flowing through provinces GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap1.png',
+                    fileName: 'knowledgeGraphMap1'
+                }
               ]
             }
         }
@@ -1054,6 +1193,92 @@ var exampleConfig = {
                         fileName: 'graticuleLayer_3857'
                     }
                 ]
+            },
+            FlatGeobuf: {
+              name: 'FlatGeobuf',
+              name_en: 'FlatGeobuf',
+              version: '11.0.1',
+              content: [
+                  {
+                      name: 'FGB 全量加载（2500万点数据量）',
+                      name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                      version: '11.1.0',
+                      thumbnail: 'fgb_all_load.png',
+                      fileName: 'fgb_all_load'
+                  },
+                  {
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
+                  }
+                ]
+            },
+            WebSymbol: {
+              name: 'Web符号',
+              name_en: 'WebSymbol',
+              version: '11.1.0',
+              content: [{
+                name: 'Web符号库',
+                name_en: 'WebSymbol Gallery',
+                version: '11.1.0',
+                showCode: false,
+                thumbnail: 'websymbol_gallery.png',
+                fileName: 'websymbol_gallery'
+                },{
+                  name: 'Web符号编辑器',
+                  name_en: 'WebSymbol Editor',
+                  version: '11.1.0',
+                  showCode: false,
+                  thumbnail: 'websymbol_editor.png',
+                  fileName: 'websymbol_editor'
+                },{
+                  name: '长江三角洲',
+                  name_en: 'Yangtze River Delta',
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_YangtzeRiverdelta.png',
+                  fileName: 'websymbol_YangtzeRiverdelta'
+                },{
+                  name: '土地利用',
+                  name_en: 'Land Use',
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_landuse.png',
+                  fileName: 'websymbol_landuse'
+                }
+                ,{
+                  name: '数字线划地图',
+                  name_en: 'DLG_I49',
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_DLG_I49.png',
+                  fileName: 'websymbol_DLG_I49'
+                }
+                ,{
+                  name: '新疆土地利用',
+                  name_en: 'Land Use of Xinjiang',
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_landuseOfXinjiang.png',
+                  fileName: 'websymbol_landuseOfXinjiang'
+                },{
+                  name: '自定义Web符号',
+                  name_en: 'Custom WebSymbol',
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_customWebSymbol.png',
+                  fileName: 'websymbol_customWebSymbol'
+                },{
+                  name: '京津地区土地利用现状图',
+                  name_en: 'Land Use of Jingjin ',
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_landuseOfJingjin.png',
+                  fileName: 'websymbol_landuseOfJingjin'
+                },{
+                  name: '2019年中国各省GDP',
+                  name_en: "2019 China's GDP by Province",
+                  version: '11.1.0',
+                  thumbnail: 'websymbol_2019ChinaGDP.png',
+                  fileName: 'websymbol_2019ChinaGDP'
+                }
+              ]
             }
         }
     },
@@ -1166,6 +1391,13 @@ var exampleConfig = {
                         version: '9.1.1',
                         thumbnail: 'mvt_4326.png',
                         fileName: 'mvtVectorTile_4326'
+                    },
+                    {
+                        name: '矢量瓦片_EPSG2362',
+                        name_en: 'MVT EPSG2362',
+                        version: '11.1.0',
+                        thumbnail: 'mvtvectorlayer_mbstyle_landuse.png',
+                        fileName: 'mvtVectorTile_2362'
                     },
                     {
                         name: '地图打印',

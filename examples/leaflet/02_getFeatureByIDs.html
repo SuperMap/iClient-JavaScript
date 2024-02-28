@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -23,24 +23,35 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
-        var idsParam = new SuperMap.GetFeaturesByIDsParameters({
+        var idsParam = new L.supermap.GetFeaturesByIDsParameters({
             IDs: [233, 234],
             datasetNames: ["World:Countries"]
         });
-        L.supermap
-            .featureService(url)
-            .getFeaturesByIDs(idsParam, function (serviceResult) {
-                resultLayer = L.geoJSON(serviceResult.result.features, {
+        // new L.supermap
+        //     .FeatureService(url)
+        //     .getFeaturesByIDs(idsParam, function (serviceResult) {
+        //         resultLayer = L.geoJSON(serviceResult.result.features, {
+        //             onEachFeature: function (feature, layer) {
+        //                 layer.bindPopup("ID: " + feature.properties.SMID +
+        //                     "<br>" + resources.text_country + "：" + feature.properties.COUNTRY);
+        //             }
+        //         }).addTo(map);
+        //     });
+        // 用法 2 Promise
+        new L.supermap
+            .FeatureService(url)
+            .getFeaturesByIDs(idsParam).then((serviceResult) => {
+              resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("ID: " + feature.properties.SMID +
                             "<br>" + resources.text_country + "：" + feature.properties.COUNTRY);
                     }
                 }).addTo(map);
-            });
+            })
     }
 </script>
 </body>

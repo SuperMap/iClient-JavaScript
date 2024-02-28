@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 /**
  * OpenLayers 示例配置文件：包括示例的分类、名称、缩略图、文件路径
  */
@@ -82,7 +82,29 @@ var exampleConfig = {
                     name_en: "SQL query",
                     thumbnail: "ol_mapQueryBySQL.png",
                     fileName: "01_mapQueryBySQL"
-                }]
+                },
+                {
+                  name: "SQL查询 (FGB)",
+                  name_en: "SQL query (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "query_fgb_features.png",
+                  fileName: "01_mapQueryBySQL_FGB"
+                }, 
+                {
+                  name: "图例",
+                  name_en: "Legend",
+                  version: '11.1.1',
+                  thumbnail: "layersLegend.png",
+                  fileName: "01_layersLegend"
+                },
+                {
+                  name: "海图",
+                  name_en: "Chart",
+                  version: '11.2.0',
+                  thumbnail: "chart.png",
+                  fileName: "01_chartService"
+                }
+              ]
             },
             "data": {
                 name: "数据",
@@ -98,6 +120,13 @@ var exampleConfig = {
                     thumbnail: "ol_getFeatureBySQL.png",
                     fileName: "02_getFeatureBySQL"
                 }, {
+                  name: "SQL查询 (FGB)",
+                  name_en: "SQL query (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "query_fgb_features.png",
+                  fileName: "02_getFeatureBySQL_FGB"
+                }, 
+                {
                     name: "范围查询",
                     name_en: "bounds query",
                     thumbnail: "ol_getFeatureByBounds.png",
@@ -132,7 +161,13 @@ var exampleConfig = {
                     name_en: "data editing",
                     thumbnail: "ol_editFeatures.png",
                     fileName: "02_editFeatures"
-                },                    
+                },
+                {
+                    name: "要素关联附件",
+                    name_en: "feature attachment",
+                    thumbnail: "ol_featureAttachments.png",
+                    fileName: "02_FeatureAttachment"
+                },
                 {
                     name: "数据源信息查询",
                     name_en: "datasource information service",
@@ -144,7 +179,21 @@ var exampleConfig = {
                     name_en: "dataset information service",
                     thumbnail: "02_datasetService.png",
                     fileName: "02_datasetService"
-                }]
+                },
+                {
+                    name: "要素编辑",
+                    name_en: "draw and edit features",
+                    version: '11.2.0',
+                    thumbnail: "drawAndEditFeatures.png",
+                    fileName: "drawAndEditFeatures"
+                },
+                {
+                  name: "属性表",
+                  name_en: "attributes",
+                  version: '11.2.0',
+                  thumbnail: "attributes.png",
+                  fileName: "02_attributes"
+              }]
             },
             "theme": {
                 name: "专题图",
@@ -200,31 +249,67 @@ var exampleConfig = {
                     thumbnail: "ol_bufferAnalystService.png",
                     fileName: "04_bufferAnalystService"
                 }, {
+                  name: "数据集缓冲区分析 (FGB)",
+                  name_en: "buffer (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "ol_bufferAnalystService.png",
+                  fileName: "04_bufferAnalystService_FGB"
+                },{
                     name: "几何对象缓冲区分析",
                     name_en: "buffer-geometry",
                     thumbnail: "ol_bufferAnalystService_geometry.png",
                     fileName: "04_bufferAnalystService_geometry"
+                },{
+                  name: "几何对象缓冲区分析 (FGB)",
+                  name_en: "buffer-geometry",
+                  version: '11.1.0',
+                  thumbnail: "ol_bufferAnalystService_geometry.png",
+                  fileName: "04_bufferAnalystService_geometry_FGB"
                 }, {
                     name: "数据集泰森多边形",
                     name_en: "thiessen-dataset",
                     thumbnail: "ol_thiessenAnalystService-datasets.png",
                     fileName: "04_thiessenAnalystService_datasets"
-                }, {
+                },{
+                  name: "数据集泰森多边形 (FGB)",
+                  name_en: "thiessen-dataset (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "ol_thiessenAnalystService-datasets.png",
+                  fileName: "04_thiessenAnalystService_datasets_FGB"
+                },  {
                     name: "几何泰森多边形",
                     name_en: "thiessen-geometry",
                     thumbnail: "ol_thiessenAnalystService-geometry.png",
                     fileName: "04_thiessenAnalystService_geometry"
+                }, {
+                  name: "几何泰森多边形 (FGB)",
+                  name_en: "thiessen-geometry (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "ol_thiessenAnalystService-geometry.png",
+                  fileName: "04_thiessenAnalystService_geometry_FGB"
                 }, {
                     name: "叠加分析",
                     name_en: "overlay",
                     thumbnail: "ol_overlayAnalystService.png",
                     fileName: "04_overlayAnalystService"
                 }, {
+                  name: "叠加分析 (FGB)",
+                  name_en: "overlay (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "ol_overlayAnalystService.png",
+                  fileName: "04_overlayAnalystService_FGB"
+                },{
                     name: "表面分析(提取等值线)",
                     name_en: "surface(Getting Contour Line)",
                     thumbnail: "ol_surfaceAnalystService.png",
                     fileName: "04_surfaceAnalystService"
                 }, {
+                  name: "表面分析(提取等值线) (FGB)",
+                  name_en: "surface(Getting Contour Line) (FGB)",
+                  version: '11.1.0',
+                  thumbnail: "ol_surfaceAnalystService.png",
+                  fileName: "04_surfaceAnalystService_FGB"
+                },{
                     name: "动态分析",
                     name_en: "dynamic segmentation",
                     thumbnail: "ol_generateSpatialDataService.png",
@@ -275,6 +360,30 @@ var exampleConfig = {
                     thumbnail: "ol_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
                 }, {
+                    name: "地形坡度计算",
+                    name_en: "terrain slope calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainSlopeCalculationService.png",
+                    fileName: "04_terrainSlopeCalculationService"
+                }, {
+                    name: "地形坡向计算",
+                    name_en: "terrain aspect calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainAspectCalculationService.png",
+                    fileName: "04_terrainAspectCalculationService"
+                }, {
+                    name: "填挖方计算",
+                    name_en: "terrain cutfill calculation",
+                    version: '11.1.1',
+                    thumbnail: "terrainCutFillCalculationService.png",
+                    fileName: "04_terrainCutFillCalculationService"
+                }, {
+                    name: "最近距离计算",
+                    name_en: "min distance analysis",
+                    version: '11.1.1',
+                    thumbnail: "minDistanceAnalysisService.png",
+                    fileName: "04_minDistanceAnalysisService"
+                },{
                     name: "离散点插值分析",
                     name_en: "discrete point interpolation",
                     thumbnail: "ol_interpolationAnalystService_IDW_geometry.png",
@@ -334,6 +443,18 @@ var exampleConfig = {
                     name_en: "traveler - quality inspection",
                     thumbnail: "ol_findTSPPathsService.png",
                     fileName: "05_findTSPPathsService"
+                }, {
+                    name: "连通性分析",
+                    name_en: "connectivity analysis",
+                    version: '11.1.1',
+                    thumbnail: "connectedEdgesService.png",
+                    fileName: "05_connectedEdgesService"
+                }, {
+                    name: "上下游追踪分析",
+                    name_en: "upstream and downstream trace",
+                    version: '11.1.1',
+                    thumbnail: "traceAnalystService.png",
+                    fileName: "05_traceAnalystService"
                 }]
             },
             "trafficTransferAnalyst": {
@@ -440,6 +561,34 @@ var exampleConfig = {
                       thumbnail: "imageService.png",
                       fileName: "imageService"
                   }
+              ]
+            },
+            KnowledgeGraph: {
+              name: '知识图谱',
+              name_en: 'KnowledgeGraph',
+              version: '11.1.0',
+              content: [
+                  {
+                      name: '不动产图谱',
+                      name_en: 'Real Estate GraphMap',
+                      version: '11.1.0',
+                      thumbnail: 'knowledgeGraphMap.png',
+                      fileName: 'knowledgeGraphMap'
+                  },
+                  {
+                    name: '不动产图谱-样式',
+                    name_en: 'Real Estate GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap2.png',
+                    fileName: 'knowledgeGraphMap2'
+                  },
+                  {
+                    name: '河流流经省份图谱',
+                    name_en: 'Rivers flowing through provinces GraphMap',
+                    version: '11.1.0',
+                    thumbnail: 'knowledgeGraphMap1.png',
+                    fileName: 'knowledgeGraphMap1'
+                }
               ]
             },
             "security": {
@@ -555,8 +704,8 @@ var exampleConfig = {
                 name: "地图",
                 name_en: "Web map",
                 content: [{
-                    name: "2014当了一回背包客",
-                    name_en: "2014 backpack travel",
+                    name: "地图",
+                    name_en: "Web Map",
                     thumbnail: "ol_onlineWebMap.png",
                     fileName: "onlineWebMap"
                 }]
@@ -572,12 +721,6 @@ var exampleConfig = {
                 }]
             }
         }
-    },
-    "iManager": {
-        name: "iManager",
-        name_en: "iManager",
-        localIgnore: true,
-        content: null
     },
     "viz": {
         name: "可视化",
@@ -1008,6 +1151,27 @@ var exampleConfig = {
                     fileName: "mask"
                 }]
             },
+            FlatGeobuf: {
+              name: 'FlatGeobuf',
+              name_en: 'FlatGeobuf',
+              version: '11.1.0',
+              content: [
+                  {
+                    name: 'FGB 全量加载（2500万点数据量）',
+                    name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_all_load.png',
+                    fileName: 'fgb_all_load'
+                  },
+                  {
+                    name: 'FGB 按需加载（2500万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    version: '11.1.0',
+                    thumbnail: 'fgb_bbox_load.png',
+                    fileName: 'fgb_bbox_load'
+                  }
+                ]
+            }
         }
     },
     "plot": {

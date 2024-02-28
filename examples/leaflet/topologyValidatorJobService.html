@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -27,12 +27,12 @@
             info = L.control({
                 position: 'topright'
             });
-        L.supermap.tiledMapLayer(mapURL).addTo(map);
+        new L.supermap.TiledMapLayer(mapURL).addTo(map);
 
-        processingService = L.supermap.processingService(processingUrl, {
+        processingService = new L.supermap.ProcessingService(processingUrl, {
             withCredentials: window.isLocal
         });
-        SuperMap.SecurityManager.registerToken(processingUrl, window.exampleToken);
+        L.supermap.SecurityManager.registerToken(processingUrl, window.exampleToken);
         initForm();
         bindClick();
 
@@ -113,7 +113,7 @@
         }
 
         function TopologyValidatorJobs() {
-            var topologyValidatorJobsParameter = new SuperMap.TopologyValidatorJobsParameter({
+            var topologyValidatorJobsParameter = new L.supermap.TopologyValidatorJobsParameter({
                 datasetName: $('#datasetName').val(),
                 datasetTopology: $('#datasetTopology').val(),
                 rule: $('#rule option:selected').attr('value'),
@@ -128,12 +128,12 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        L.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            layer = L.supermap.tiledMapLayer(mapUrl, {
+                            layer = new L.supermap.TiledMapLayer(mapUrl, {
                                 noWrap: true,
                                 transparent: true
                             });

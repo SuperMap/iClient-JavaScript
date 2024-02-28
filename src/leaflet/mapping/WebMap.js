@@ -1,21 +1,22 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
 import "../core/Base";
-import {
-    FetchRequest as Request,
-    DataFormat,
-    GeoJSON as GeoJSONFormat,
-    ServerFeature,
-    ThemeStyle,
-    GeometryVector as Vector,
-    GeometryPoint as Point,
-    CommonUtil as Util,
-    GetFeaturesBySQLParameters
-} from '@supermap/iclient-common';
+import { BaiduCRS, TianDiTu_WGS84CRS, TianDiTu_MercatorCRS} from '../core/ExtendsCRS'
+import { crs as CRS } from '../core/Proj4Leaflet'
+import { toGeoJSON, getResolutionFromScaleDpi } from '../core/Util'
+import { FetchRequest as Request } from '@supermap/iclient-common/util/FetchRequest';
+import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
+import { DataFormat } from '@supermap/iclient-common/REST';
+import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
+import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { ThemeStyle } from '@supermap/iclient-common/style/ThemeStyle';
+import { Vector } from '@supermap/iclient-common/commontypes/Vector';
+import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Util } from '@supermap/iclient-common/commontypes/Util';
 import {
     CartoCSSToLeaflet
 } from '../overlay/carto/CartoCSSToLeaflet';
@@ -61,31 +62,34 @@ import {
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.webmap
+ * @class WebMap
+ * @deprecatedclassinstance L.supermap.webMap
  * @classdesc 对接 iPortal/Online 地图类。
- * @category iPortal/Online
+ * @category iPortal/Online Resources Map
+ * @modulecategory Mapping
  * @extends {L.LayerGroup}
  * @param {number} id - iPortal/Online 地图 id。
- * @param {Object} options - 可选参数。
- * @param {string} [options.map='map'] - 地图容器id。
- * @param {string} [options.server='https://www.supermapol.com'] - iPortal/Online 服务地址。
+ * @param {Object} options - 参数。
+ * @param {string} [options.map='map'] - 地图容器 id。
+ * @param {string} [options.server] - iPortal/Online 服务地址。
  * @param {boolean} [options.featureLayerPopupEnable=true] -  是否启动要素图层提示框。
  * @param {string} [options.featureLayerPopup] - 提示框提示信息。
  * @param {string} [options.credentialValue] - 证书值。
  * @param {string} [options.credentialKey='key'] - 证书密钥。
- * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权信息。
- * @fires L.supermap.webmap#mapLoaded
- * @fires L.supermap.webmap#coordconvertsuccess
- * @fires L.supermap.webmap#coordconvertfailed
- * @fires L.supermap.webmap#featureunselected
- * @fires L.supermap.webmap#featureselected
- * @fires L.supermap.webmap#featuremousemove
+ * @param {string} [options.attribution='Map Data <span>© <a href='https://www.supermapol.com' title='SuperMap Online' target='_blank'>SuperMap Online</a></span>'] - 版权描述信息。
+ * @fires WebMap#maploaded
+ * @fires WebMap#coordconvertsuccess
+ * @fires WebMap#coordconvertfailed
+ * @fires WebMap#featureunselected
+ * @fires WebMap#featureselected
+ * @fires WebMap#featuremousemove
+ * @usage
  */
 export var WebMap = L.LayerGroup.extend({
 
     options: {
         map: 'map',
-        server: 'https://www.supermapol.com',
+        server: '',
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
@@ -95,9 +99,9 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
+     * @function WebMap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框。
-     * @param {L.Layer} layer - 指定图层。
+     * @param {L.Layer} layer - Leaflet Layer 对象。
      * @returns {string} 图层弹出框内容。
      */
     defaultFeatureLayerPopup: function (layer) {
@@ -117,7 +121,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.load
+     * @function WebMap.prototype.load
      * @description 登陆后添加地图图层。
      */
     load: function () {
@@ -143,12 +147,12 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.addLayerWrapper
+     * @function WebMap.prototype.addLayerWrapper
      * @description 添加图层容器。
-     * @param {L.Layer} layer - 待添加的图层。
+     * @param {L.Layer} layer - Leaflet Layer 对象。
      * @param {boolean} [isBaseLayer] - 是否为底图层。
-     * @param {Object} options - 创建地图的可选参数。
-     * @returns {this} this
+     * @param {Object} options - 参数。
+     * @returns {WebMap} WebMap的实例对象。
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -163,9 +167,9 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createLayersByJson
+     * @function WebMap.prototype.createLayersByJson
      * @description 通过 JSON 创建图层。
-     * @param {JSON} layersJson - 图层的 JSON 信息。
+     * @param {JSONObject} layersJson - 图层的 JSON 信息。
      */
     createLayersByJson: function (layersJson) {
         if (!L.Util.isArray(layersJson)) {
@@ -200,9 +204,9 @@ export var WebMap = L.LayerGroup.extend({
             this.createLayer(type, layerInfo);
         }
         /**
-         * @event L.supermap.webmap#maploaded
+         * @event WebMap#maploaded
          * @description 底图加载完成后触发。
-         * @property {L.Map} map  - Leaflet Map 对象。
+         * @property {L.Map} map - Leaflet Map 对象。
          */
         this.fire('maploaded', {
             map: this._map
@@ -211,7 +215,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createCRS
+     * @function WebMap.prototype.createCRS
      * @description 创建坐标对象。
      * @param {number} epsgCode - epsg 编码。
      * @param {string} type - 坐标类型。
@@ -229,7 +233,7 @@ export var WebMap = L.LayerGroup.extend({
         }
 
         if (epsgCode === 910112 || epsgCode === 910102) {
-            return L.CRS.BaiduCRS;
+            return BaiduCRS;
         }
         if (epsgCode === 910111) {
             epsgCode = 3857
@@ -239,7 +243,7 @@ export var WebMap = L.LayerGroup.extend({
             epsgCode = 4326
             //todo 火星
         }
-        return L.Proj.CRS("EPSG:" + epsgCode, {
+        return CRS("EPSG:" + epsgCode, {
             origin: origin,
             resolutions: resolutions,
             bounds: bounds
@@ -248,9 +252,9 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createMap
+     * @function WebMap.prototype.createMap
      * @description 创建地图。
-     * @param {Object} options - 创建地图所需参数。
+     * @param {Object} options - 参数。
      */
     createMap: function (options) {
         var crs = options.crs || L.CRS.EPSG3857;
@@ -276,25 +280,25 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.getResolutionsFromScales
+     * @function WebMap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率。
      * @param {Array.<number>} scales - 排序比例尺数组。
      * @param {number} dpi - 屏幕分辨率。
      * @param {string} units - 地图的单位。
-     * @param {SuperMap.Datum} datum - 大地参照系类。
+     * @param {Datum} datum - 大地参照系类。
      * @returns {Array.<number>} 返回给定比例尺所对应的分辨率。
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(L.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(getResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     },
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createLayer
+     * @function WebMap.prototype.createLayer
      * @description 创建图层。
      * @param {string} type - 图层类型。
      * @param {Object} layerInfo - 图层信息。
@@ -336,13 +340,13 @@ export var WebMap = L.LayerGroup.extend({
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                mapOptions.crs = epsgCode === 4326 ? L.CRS.TianDiTu_WGS84 : L.CRS.TianDiTu_Mercator;
+                mapOptions.crs = epsgCode === 4326 ? TianDiTu_WGS84CRS : TianDiTu_MercatorCRS;
                 mapOptions.minZoom = 1;
                 mapOptions.zoom = 1 + mapOptions.zoom;
                 layer = this.createTiandituLayer(layerInfo);
                 break;
             case "BAIDU":
-                mapOptions.crs = L.CRS.BaiduCRS;
+                mapOptions.crs = BaiduCRS;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
                 layer = baiduTileLayer();
@@ -394,10 +398,10 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createTiandituLayer
+     * @function WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层。
      * @param {Object} layerInfo - 图层信息。
-     * @returns {L.supermap.tiandituTileLayer} 返回天地图图层对象。
+     * @returns {tiandituTileLayer} 返回天地图图层对象。
      */
     createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
@@ -411,7 +415,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createMarkersLayer
+     * @function WebMap.prototype.createMarkersLayer
      * @description 创建图标图层。
      * @param {Object} layerInfo - 图层信息。
      * @param {Object} crs - 坐标对象。
@@ -429,7 +433,7 @@ export var WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
 
-        var layer = L.geoJSON(L.Util.toGeoJSON(markers), {
+        var layer = L.geoJSON(toGeoJSON(markers), {
             pointToLayer: function (geojson, latlng) {
                 var m = new L.Marker(latlng);
                 m.setStyle = function (style) {
@@ -451,7 +455,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createWmsLayer
+     * @function WebMap.prototype.createWmsLayer
      * @description 创建 Wms 图层。
      * @param {Object} layerInfo - 图层信息。
      * @returns {L.Layer} 返回 Wms 图层对象。
@@ -475,7 +479,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createVectorLayer
+     * @function WebMap.prototype.createVectorLayer
      * @description 创建矢量要素图层。
      * @param {Object} layerInfo - 图层信息。
      * @param {Object} crs - 坐标对象。
@@ -491,7 +495,7 @@ export var WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.features), {
+            var layer = L.geoJSON(toGeoJSON(layerInfo.features), {
                 pointToLayer: function (geojson, latlng) {
                     var m = new L.Marker(latlng);
                     m.setStyle = function (style) {
@@ -563,7 +567,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     /**
      * @private
-     * @function L.supermap.webmap.prototype.createThemeLayer
+     * @function WebMap.prototype.createThemeLayer
      * @description 创建专题图图层。
      * @param {Object} layerInfo - 图层信息。
      * @returns {L.Layer} 返回专题图图层对象。
@@ -1096,9 +1100,9 @@ export var WebMap = L.LayerGroup.extend({
         }
         if (success) {
             /**
-             * @event L.supermap.webmap#coordconvertsuccess
+             * @event WebMap#coordconvertsuccess
              * @description 坐标转换成功后触发。
-             * @property {L.latLng} newCoor  - 转换成功后的坐标。
+             * @property {L.LatLng} newCoor  - 转换成功后的坐标。
              */
             me.fire('coordconvertsuccess', {
                 newCoor: newCoor
@@ -1154,7 +1158,7 @@ export var WebMap = L.LayerGroup.extend({
                 return;
             }
             /**
-             * @event L.supermap.webmap#coordconvertfailed
+             * @event WebMap#coordconvertfailed
              * @description 坐标转换失败后触发。
              * @property {Object} err - error 对象。
              */
@@ -1264,9 +1268,9 @@ export var WebMap = L.LayerGroup.extend({
             }
             if (this.selectedFeature) {
                 /**
-                 * @event L.supermap.webmap#featureunselected
+                 * @event WebMap#featureunselected
                  * @description 重置选中的要素为空。
-                 * @property {SuperMap.Feature.Vector} feature - 在重置之前选中的要素。
+                 * @property {FeatureVector} feature - 在重置之前选中的要素。
                  */
                 this.fire('featureunselected', {
                     feature: this.selectedFeature
@@ -1280,9 +1284,9 @@ export var WebMap = L.LayerGroup.extend({
             if (feature) {
                 this.selectedFeature = feature;
                 /**
-                 * @event L.supermap.webmap#featureselected
+                 * @event WebMap#featureselected
                  * @description 点击要素，要素存在之后触发。设置选中的要素。
-                 * @property {SuperMap.Feature.Vector} feature - 点击的要素。
+                 * @property {FeatureVector} feature - 点击的要素。
                  */
                 this.fire('featureselected', {
                     feature: feature
@@ -1300,9 +1304,9 @@ export var WebMap = L.LayerGroup.extend({
                 }
                 if (feature) {
                     /**
-                     * @event L.supermap.webmap#featuremousemove
+                     * @event WebMap#featuremousemove
                      * @description 鼠标移动到要素上之后触发。
-                     * @property {SuperMap.Feature.Vector} feature - 当前被移动到的要素。
+                     * @property {FeatureVector} feature - 当前被移动到的要素。
                      */
                     this.fire('featuremousemove', {
                         feature: feature
@@ -1326,5 +1330,3 @@ export var WebMap = L.LayerGroup.extend({
 export var webMap = function (id, options) {
     return new WebMap(id, options);
 };
-
-L.supermap.webmap = webMap;

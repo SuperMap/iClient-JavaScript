@@ -1,26 +1,28 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 /**
- * @class SuperMap.AggregationParameter
- * @classdesc 聚合查询参数设置，该参数仅支持数据来源 Elasticsearch 服务的数据服务。
+ * @class AggregationParameter
+ * @deprecatedclass SuperMap.AggregationParameter
+ * @classdesc 聚合查询参数设置类，此类用于设置聚合查询的聚合名称、聚合字段等参数。<br>
+ * 注意：该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer REST 数据服务。
  * @category iServer Data FeatureResults
- * @param {Object} options - 初始化参数。
+ * @param {Object} options - 参数。
  * @param {string} options.aggName - 聚合名称。
  * @param {string} options.aggFieldName - 聚合字段。
+ * @usage
  */
 export class AggregationParameter {
     constructor(options) {
         /**
-         * @member {string} SuperMap.AggregationParameter.prototype.aggName
+         * @member {string} AggregationParameter.prototype.aggName
          * @description 聚合名称。
          */
         this.aggName = null;
         /**
-         * @member {string} SuperMap.AggregationParameter.prototype.aggFieldName
+         * @member {string} AggregationParameter.prototype.aggFieldName
          * @description 聚合字段。
          */
         this.aggFieldName = null;
@@ -37,4 +39,3 @@ export class AggregationParameter {
     }
 }
 
-SuperMap.AggregationParameter = AggregationParameter;

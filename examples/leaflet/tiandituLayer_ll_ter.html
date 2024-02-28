@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -16,16 +16,16 @@
       var map = L.map('map', {
         center: [0, 0],
         zoom: 0,
-        crs: L.CRS.TianDiTu_WGS84
+        crs: L.supermap.CRS.TianDiTu_WGS84
       });
-      L.supermap
-        .tiandituTileLayer({
+      new L.supermap
+        .TiandituTileLayer({
           layerType: 'ter',
           key: '1d109683f4d84198e37a38c442d68311'
         })
         .addTo(map);
-      L.supermap
-        .tiandituTileLayer({
+      new L.supermap
+        .TiandituTileLayer({
           layerType: 'ter',
           isLabel: true,
           key: '1d109683f4d84198e37a38c442d68311'

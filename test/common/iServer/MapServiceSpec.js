@@ -4,10 +4,8 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 //初始化注册事件监听器的Services
 var getMapStatusEventArgsSystem = null;
 var serviceFailedEventArgsSystem = null;
-var initMapService_RegisterListener = (url, GetMapStatusFailed, GetMapStatusCompleted) => {
-    return new MapService(url, {
-        eventListeners: { processFailed: GetMapStatusFailed, processCompleted: GetMapStatusCompleted }
-    });
+var initMapService_RegisterListener = (url) => {
+    return new MapService(url);
 };
 describe('MapService', () => {
     var originalTimeout;
@@ -60,9 +58,6 @@ describe('MapService', () => {
                 expect(getMapStatusResult.viewer.height).toEqual(256);
                 expect(getMapStatusResult.viewer.width).toEqual(256);
                 getMapService.destroy();
-                expect(getMapService.EVENT_TYPES).toBeNull();
-                expect(getMapService.events).toBeNull();
-                expect(getMapService.eventListeners).toBeNull();
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -71,10 +66,7 @@ describe('MapService', () => {
                 done();
             }
         };
-        var GetMapStatusFailed = serviceFailedEventArgs => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
-        var getMapService = initMapService_RegisterListener(worldMapURL, GetMapStatusFailed, GetMapStatusCompleted);
+        var getMapService = initMapService_RegisterListener(worldMapURL);
         expect(getMapService).not.toBeNull();
         expect(getMapService.url).toEqual(worldMapURL);
         spyOn(FetchRequest, 'get').and.callFake(testUrl => {
@@ -85,14 +77,11 @@ describe('MapService', () => {
                 )
             );
         });
-        getMapService.processAsync();
+        getMapService.processAsync(GetMapStatusCompleted);
     });
 
     it('fail:processAsync', done => {
         var mapServiceURL = GlobeParameter.mapServiceURL;
-        var GetMapStatusCompleted = getMapStatusEventArgs => {
-            getMapStatusEventArgsSystem = getMapStatusEventArgs;
-        };
         var GetMapStatusFailed = serviceFailedEventArgs => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
@@ -108,9 +97,7 @@ describe('MapService', () => {
             }
         };
         var getMapService = initMapService_RegisterListener(
-            mapServiceURL + 'MapNameError',
-            GetMapStatusFailed,
-            GetMapStatusCompleted
+            mapServiceURL + 'MapNameError'
         );
         spyOn(FetchRequest, 'get').and.callFake(testUrl => {
             expect(testUrl).toBe(GlobeParameter.mapServiceURL + 'MapNameError');
@@ -120,22 +107,18 @@ describe('MapService', () => {
                 )
             );
         });
-        getMapService.events.on({ processFailed: GetMapStatusFailed });
-        getMapService.processAsync();
+        getMapService.processAsync(GetMapStatusFailed);
     });
 
     it('failed:processAsync_withWrongUrl', done => {
         var wrongUrl = 'http://iserverurl.com:8090/iserver/services/map-world/rest/maps';
-        var GetMapStatusCompleted = getMapStatusEventArgs => {
-            getMapStatusEventArgsSystem = getMapStatusEventArgs;
-        };
         var GetMapStatusFailed = serviceFailedEventArgs => {
             serviceFailedEventArgsSystem = serviceFailedEventArgs;
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.type).toBe('processFailed');
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
-                expect(serviceFailedEventArgsSystem.object.options.method).toBe('GET');
+                expect(serviceFailedEventArgsSystem.options.method).toBe('GET');
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -144,10 +127,10 @@ describe('MapService', () => {
                 done();
             }
         };
-        var mapService = initMapService_RegisterListener(wrongUrl, GetMapStatusFailed, GetMapStatusCompleted);
+        var mapService = initMapService_RegisterListener(wrongUrl);
         expect(mapService).not.toBeNull();
         expect(mapService.url).toEqual('http://iserverurl.com:8090/iserver/services/map-world/rest/maps');
         //get请求，url为http://iserverurl.com:8090/iserver/services/map-world/rest/maps.json因为没有返回值，并且也是假的发请求，未模拟请求。
-        mapService.processAsync();
+        mapService.processAsync(GetMapStatusFailed);
     });
 });

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import * as turf from '@turf/turf';
@@ -7,11 +7,15 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { Util } from '../core/Util';
 
 /**
- * @class ol.source.Turf
+ * @class Turf
+ * @browsernamespace ol.source
  * @category  Visualization Turf
- * @classdesc Turf.js 图层源。
+ * @classdesc Turf.js 图层源。Turf.js 是一个用于空间分析的 JavaScript 库。它包括传统的空间操作，用于创建 GeoJSON数据的帮助函数，
+ * 以及数据分类和统计工具。此类提供了执行 Turf.js 中相关空间分析方法的功能。
+ * @modulecategory Overlay
  * @param {Object} opt_options - 参数。
- * @extends {ol/source/Vector}
+ * @extends {ol.source.Vector}
+ * @usage
  */
 export class Turf extends VectorSource {
 
@@ -19,7 +23,7 @@ export class Turf extends VectorSource {
         var options = opt_options ? opt_options : {};
 
         super({
-            attributions: options.attributions || "<span>© <a href='https://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "<span>© turfjs</span> with <span>© SuperMap iClient</span>",
             features: options.features,
             format: options.format,
             extent: options.extent,
@@ -225,12 +229,12 @@ export class Turf extends VectorSource {
     }
 
     /**
-     * @function ol.source.turf.prototype.process
+     * @function Turf.prototype.process
      * @description 执行 Turf.js 提供的相关空间分析方法。
      * @param {string} type - Turf.js 提供的空间分析方法名。
      * @param {Object} args - Turf.js 提供的空间分析方法对应的参数对象。
      * @param {function} callback - 空间分析完成执行的回调函数，返回执行的结果。
-     * @param {boolean} addFeaturesToMap - 是否添加到 Map。
+     * @param {boolean} addFeaturesToMap - 是否添加要素到地图。
      */
     process(type, args, callback, addFeaturesToMap) {
         var result;

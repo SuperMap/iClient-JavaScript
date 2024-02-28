@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 export {DataFlow} from './DataFlow';
@@ -12,6 +12,9 @@ export {Turf} from './Turf';
 export {Unique} from './Unique';
 export {VectorTileSuperMapRest} from './VectorTileSuperMapRest';
 export {HeatMap} from './HeatMap';
+export {FGB} from './FGB';
+export {GraphMap} from './GraphMap';
+
 export * from './graphic/index';
 export * from './mapv/index';
 export * from './theme';

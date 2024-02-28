@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -6,19 +6,23 @@ import {
 } from './CloverShape'
 
 /**
- * @class ol.style.HitCloverShape
+ * @class HitCloverShape
+ * @browsernamespace ol.style
  * @category  Visualization Graphic
- * @classdesc 三叶草要素高亮风格。
- * @extends {ol.style.CloverShape}
+ * @classdesc 三叶草要素高亮风格。除了基本的线颜色、线宽、填充色、填充透明度、填充形状等参数，
+ * 还可以设置三叶草要素扇叶的圆心角、间隔角度、数量、半径等。
+ * @modulecategory Overlay
+ * @extends {CloverShape}
  * @param {Object} options - 三叶草形要素风格参数。
  * @param {number} options.sAngle - 扇叶起始角度。
  * @param {number} options.eAngle - 扇叶终止角度。
  * @param {number} [options.angle = 30] - 三叶草每个扇叶的圆心角，单位弧度。
- * @param {ol/style/Fill} [options.fill] - 填充样式。
- * @param {ol/style/Stroke} [options.stroke] - 边框样式。
- * @param {number} [options.strokeOpacity] - 透明度。
+ * @param {ol.style.Fill} [options.fill] - 填充样式。
+ * @param {ol.style.Stroke} [options.stroke] - 边框样式。
+ * @param {number} [options.strokeOpacity] - 边框透明度。
  * @param {number} [options.fillOpacity] - 填充透明度。
- * @param {number} [options.radius] - 半径。
+ * @param {number} [options.radius] -扇叶半径。
+ * @usage
  */
 export class HitCloverShape extends CloverShape {
 
@@ -44,14 +48,14 @@ export class HitCloverShape extends CloverShape {
         this._ctx.closePath();
     }
     /**
-     * @function ol.style.HitCloverShape.prototype.getSAngle
+     * @function HitCloverShape.prototype.getSAngle
      * @description 获取扇叶起始角度。
      */
     getSAngle() {
         return this.sAngle;
     }
     /**
-     * @function ol.style.HitCloverShape.prototype.getEAngle
+     * @function HitCloverShape.prototype.getEAngle
      * @description 获取扇叶终止角度。
      */
     getEAngle() {

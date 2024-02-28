@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import TileImage from 'ol/source/TileImage';
@@ -7,28 +7,31 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import { Util } from '../core/Util';
 
 /**
- * @class ol.source.BaiduMap
+ * @class BaiduMap
+ * @browsernamespace ol.source
  * @category  ThirdPartyMap
  * @classdesc 百度地图图层源。
+ * @modulecategory Mapping
  * @param {Object} opt_options - 参数。
- * @param {string} [opt_options.url='http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
+ * @param {string} [opt_options.url='https://maponline{num}.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408'] - 服务地址。
  * @param {string} [opt_options.tileProxy] - 代理地址。
  * @param {boolean} [hidpi = false] - 是否使用高分辨率地图。
- * @extends {ol/source/TileImage}
+ * @extends {ol.source.TileImage}
+ * @usage
  */
 export class BaiduMap extends TileImage {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions =
             options.attributions ||
-            "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "Map Data © 2018 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© SuperMap iClient</span>";
         var tileGrid = BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
 
         var url =
             options.url !== undefined
                 ? options.url
-                : 'http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408';
+                : 'https://maponline{num}.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408';
         var hidpi =
             options.hidpi || (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI) > 1;
         url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
@@ -55,6 +58,7 @@ export class BaiduMap extends TileImage {
         // eslint-disable-next-line no-unused-vars
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             var tempUrl = url
+                .replace('{num}', Math.abs((tileCoord[1] + tileCoord[2]) % 4))
                 .replace('{z}', tileCoord[0].toString())
                 .replace('{x}', tileCoord[1].toString())
                 .replace('{y}', function() {
@@ -80,9 +84,9 @@ export class BaiduMap extends TileImage {
 
     // TODO 确认这个方法是否要开出去
     /**
-     * @function ol.source.BaiduMap.defaultTileGrid
+     * @function BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网。
-     * @returns {ol/tilegrid/TileGrid} 返回瓦片格网对象。
+     * @returns {ol.tilegrid.TileGrid} 返回瓦片格网对象。
      */
     static defaultTileGrid() {
         var tileGird = new TileGrid({

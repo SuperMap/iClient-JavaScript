@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -105,7 +105,7 @@
                             collapsed: false
                         }
                     })
-                    .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
@@ -136,7 +136,7 @@
 
         info.setMap(map);
         map.addControl(info);
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function getQuery() {
             if ($('#query').val() === "") {
@@ -157,7 +157,7 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
+            var summaryMeshJobParameter = new ol.supermap.SummaryMeshJobParameter({
                 datasetName: $('#datasetName').val(),
                 resolution: $('#resolution').val(),
                 meshType: $('#meshType option:selected').attr('value'),
@@ -167,7 +167,7 @@
                 type: $('#type option:selected').attr('value'),
                 regionDataset: $('#regionDataset option:selected').attr('value')
             });
-            processingService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
+            processingService.addSummaryMeshJob(summaryMeshJobParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -176,12 +176,12 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            new ol.supermap.MapService(mapUrl).getMapInfo(function (
+                            new ol.supermap.MapService(mapUrl).getMapInfo().then(function (
                                 mapInfo) {
                                 layer = new ol.layer.Tile({
                                     source: new ol.source.ImageSuperMapRest(

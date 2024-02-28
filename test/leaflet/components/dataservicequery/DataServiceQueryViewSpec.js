@@ -10,6 +10,7 @@ var dataServiceURL = GlobeParameter.dataServiceURL;
 describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
     var serviceResult;
     var originalTimeout;
+    var options;
     beforeAll(() => {
         testDiv = document.createElement("div");
         testDiv.id = 'map';
@@ -28,7 +29,12 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         tiledMapLayer(url).addTo(map);
 
         var dataSetNames = ['World:Countries'];
-        dataServiceQuery = dataServiceQueryView(dataServiceURL, dataSetNames);
+        options = {
+          onEachFeature(feature, layer) {
+          }
+        }
+        spyOn(options, 'onEachFeature');
+        dataServiceQuery = dataServiceQueryView(dataServiceURL, dataSetNames, options);
         dataServiceQuery.addTo(map);
     });
     beforeEach(() => {
@@ -56,24 +62,28 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             return Promise.resolve();
         });
 
-        dataServiceQuery.on('getfeaturessucceeded', (e) => {
-            serviceResult = e.result;
-            try {
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toBe("FeatureCollection");
-                expect(serviceResult.features).not.toBeNull();
-                expect(serviceResult.features.length).toBe(3);
-                let features = serviceResult.features;
-                expect(features[0].id).toBe(1);
-                expect(features[1].id).toBe(2);
-                expect(features[2].id).toBe(3);
-                done();
-            } catch (exception) {
-                console.log("'getFeatureByID'案例失败：" + exception.name + ":" + exception.message);
-                expect(false).toBeTruthy();
-                done();
-            }
-        })
+        const callbackFn = (e) => {
+          serviceResult = e.result;
+          try {
+              expect(serviceResult).not.toBeNull();
+              expect(serviceResult.type).toBe("FeatureCollection");
+              expect(serviceResult.features).not.toBeNull();
+              expect(serviceResult.features.length).toBe(3);
+              let features = serviceResult.features;
+              expect(features[0].id).toBe(1);
+              expect(features[1].id).toBe(2);
+              expect(features[2].id).toBe(3);
+              expect(options.onEachFeature).toHaveBeenCalled();
+              dataServiceQuery.off("getfeaturessucceeded", callbackFn);
+              done();
+          } catch (exception) {
+              console.log("'getFeatureByID'案例失败：" + exception.name + ":" + exception.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+        }
+
+        dataServiceQuery.on('getfeaturessucceeded', callbackFn);
         var analysitBtn = document.getElementsByClassName('component-analysis__analysisbtn--analysis')[0];
         analysitBtn.click();
     });
@@ -247,7 +257,7 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
         spatialQueryModeSelectName.title = 'WITHIN';
         spatialQueryModeSelectName.innerHTML = 'WITHIN';
 
-       
+
         var queryRangeRecIcon = document.getElementsByClassName('supermapol-icons-polygon-layer')[0];
         queryRangeRecIcon.click();
         let layer = {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[99.2065429688,41.8798828125]}}
@@ -333,6 +343,5 @@ describe('leaflet_DataServiceQuery_DataServiceQueryView', () => {
             done();
         }
     })
-    
 });
 

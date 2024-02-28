@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -10,8 +10,8 @@ const emptyFunc = L.Util.falseFn;
  * @classdesc 高效率点图层 webgl 渲染器。
  * @category Visualization Graphic
  * @extends {L.Layer}
- * @param {Array.<L.supermap.graphicLayer>} layer - 高效率点图层。
- * @param {Object} options - 图层参数。
+ * @param {Array.<GraphicLayer>} layer - 高效率点图层。
+ * @param {Object} options - 参数。
  * @param {number} options.width - 地图宽度。
  * @param {number} options.height - 地图高度。
  * @param {HTMLElement} options.container - 放置渲染器的父元素。
@@ -20,12 +20,12 @@ const emptyFunc = L.Util.falseFn;
  * @param {number} [options.opacity=0.8] - 不透明度。
  * @param {Array}  [options.highlightColor] - 高亮颜色，目前只支持 rgba 数组。
  * @param {number} [options.radiusScale=1] - 点放大倍数。
- * @param {number} [options.radiusMinPixels=0] - 半径最小值(像素)。
- * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值(像素)。
+ * @param {number} [options.radiusMinPixels=0] - 半径最小值，单位为像素。
+ * @param {number} [options.radiusMaxPixels=Number.MAX_SAFE_INTEGER] - 半径最大值，单位为像素。
  * @param {number} [options.strokeWidth=1] - 边框大小。
  * @param {boolean} [options.outline=false] - 是否显示边框。
- * @param {Function} [options.onClick] - 点击事件。
- * @param {Function} [options.onHover] - 悬停事件。
+ * @param {function} [options.onClick] - 点击事件。
+ * @param {function} [options.onHover] - 悬停事件。
 
  */
 const CSS_TRANSFORM = (function () {
@@ -57,8 +57,8 @@ export var GraphicWebGLRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.getRenderer
-     * @description 返回渲染器本身给图层，提供图层后续的数据增删改。
+     * @function GraphicWebGLRenderer.prototype.getRenderer
+     * @description 返回渲染器，可对图层数据增加、删除和修改。
      * @returns {GraphicWebGLRenderer}
      */
     getRenderer: function () {
@@ -67,8 +67,8 @@ export var GraphicWebGLRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.update
-     * @description  更新图层，数据或者样式改变后调用。
+     * @function GraphicWebGLRenderer.prototype.update
+     * @description  更新图层。
      */
     update: function (graphics) {
 
@@ -92,7 +92,7 @@ export var GraphicWebGLRenderer = L.Class.extend({
 
     /**
      * @private
-     * @function  GraphicWebGLRenderer.prototype.drawGraphics
+     * @function GraphicWebGLRenderer.prototype.drawGraphics
      * @description 绘制点要素。
      */
     drawGraphics: function (graphics) {

@@ -1,5 +1,10 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Turf (http://turfjs.org/)
+* Leaflet.draw (https://github.com/Leaflet/Leaflet.draw/)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +38,7 @@
             mixZoom: 2,
             zoom: 4
         });
-    L.supermap.tiledMapLayer(mapUrl, {
+    new L.supermap.TiledMapLayer(mapUrl, {
         noWrap: true,
         prjCoordSys: {"epsgCode": "4326"},
         minZoom: 3
@@ -134,7 +139,7 @@
             var center = L.latLng(36, 106);
             map.flyTo(center, 4);
             //初始化turfLayer
-            turfLayer = L.supermap.turfLayer({
+            turfLayer = new L.supermap.TurfLayer({
                 pointToLayer: function (feature, latlng) {
                     return L.marker(latlng, {
                             icon: airportRedIcon, zIndexOffset: 1000
@@ -143,7 +148,7 @@
                 }
             }).addTo(map);
 
-            var airportsParam = new SuperMap.QueryBySQLParameters({
+            var airportsParam = new L.supermap.QueryBySQLParameters({
                 queryParams: {
                     name: "Airport_pt@China.1",
                 }
@@ -151,16 +156,15 @@
 
             //只发送一次请求
             if (!nearestQueryResultLayer) {
-                L.supermap
-                    .queryService(nearestDataUrl)
-                    .queryBySQL(airportsParam, function (serviceResult) {
+                new L.supermap
+                    .QueryService(nearestDataUrl)
+                    .queryBySQL(airportsParam).then(function (serviceResult) {
                         classificationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
                         nearestQueryResultLayer = L.geoJSON(classificationAnalyst.sourcePoints, {
                             pointToLayer: function (feature, latlng) {
                                 return L.marker(latlng, {icon: airportBlueIcon}).bindPopup(feature.properties.NAME);
                             }
                         }).addTo(map);
-
                     });
             } else {
                 nearestQueryResultLayer.addTo(map);

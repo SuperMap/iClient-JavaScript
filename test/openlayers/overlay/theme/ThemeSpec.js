@@ -521,14 +521,14 @@ describe('openlayers_Theme', () => {
                 ]
             ])
         });
-        //ol/geom/Point
+        //ol.geom.Point
         const tempPoint = Theme.prototype.toiClientFeature([pointFeature]);
         expect(tempPoint).not.toBeNull();
         expect(tempPoint[0].geometry.type).toBe("Point");
         expect(tempPoint[0].geometry.CLASS_NAME).toBe("SuperMap.Geometry.Point");
         expect(tempPoint[0].geometry.x).toEqual(0);
         expect(tempPoint[0].geometry.y).toEqual(0);
-        //ol/geom/LineString
+        //ol.geom.LineString
         const tempLine = Theme.prototype.toiClientFeature([lineFeature]);
         expect(tempLine).not.toBeNull();
         expect(tempLine[0].geometry.CLASS_NAME).toBe("SuperMap.Geometry.LineString");
@@ -538,7 +538,7 @@ describe('openlayers_Theme', () => {
         expect(tempLine[0].geometry.components[1].y).toEqual(1);
         expect(tempLine[0].geometry.components[1].y).toEqual(1);
 
-        //ol/geom/Polygon
+        //ol.geom.Polygon
         const tempPolygon = Theme.prototype.toiClientFeature([polygonFeature]);
         expect(tempPolygon).not.toBeNull();
         expect(tempPolygon[0].geometry.CLASS_NAME).toBe("SuperMap.Geometry.Polygon");

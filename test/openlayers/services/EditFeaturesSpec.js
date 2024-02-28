@@ -58,11 +58,11 @@ describe('openlayers_FeatureService_editFeatures', () => {
                 id = serviceResult.result[0];
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
-                expect(serviceResult.object.options.method).toBe("POST");
-                expect(serviceResult.object.options.data).toContain("'parts':[1]");
-                expect(serviceResult.object.options.data).toContain('"POINT"');
-                expect(serviceResult.object.options.data).toContain("'x':118.05408801141");
-                expect(serviceResult.object.options.data).toContain("'y':58.837029131724");
+                expect(serviceResult.options.method).toBe("POST");
+                expect(serviceResult.options.data).toContain("'parts':[1]");
+                expect(serviceResult.options.data).toContain('"POINT"');
+                expect(serviceResult.options.data).toContain("'x':118.05408801141");
+                expect(serviceResult.options.data).toContain("'y':58.837029131724");
                 done();
             } catch (e) {
                 console.log("'addFeature'案例失败" + e.name + ":" + e.message);
@@ -106,13 +106,13 @@ describe('openlayers_FeatureService_editFeatures', () => {
                 expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.object.isUseBatch).toBe(true);
                 expect(serviceResult.object.isInTheSameDomain).toBeTruthy();
-                expect(serviceResult.object.options.method).toBe("POST");
-                expect(serviceResult.object.options.data).toContain("'parts':[1]");
-                expect(serviceResult.object.options.data).toContain('"POINT"');
-                expect(serviceResult.object.options.data).toContain("'x':100");
-                expect(serviceResult.object.options.data).toContain("'y':58");
-                expect(serviceResult.object.options.data).toContain("'x':120");
-                expect(serviceResult.object.options.data).toContain("'y':42");
+                expect(serviceResult.options.method).toBe("POST");
+                expect(serviceResult.options.data).toContain("'parts':[1]");
+                expect(serviceResult.options.data).toContain('"POINT"');
+                expect(serviceResult.options.data).toContain("'x':100");
+                expect(serviceResult.options.data).toContain("'y':58");
+                expect(serviceResult.options.data).toContain("'x':120");
+                expect(serviceResult.options.data).toContain("'y':42");
                 id1 = id + 1;
                 id2 = id + 2;
                 done();
@@ -135,7 +135,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=[238,239,240]");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=%5B238%2C239%2C240%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":true}`));
         });
@@ -144,10 +144,10 @@ describe('openlayers_FeatureService_editFeatures', () => {
             try {
                 expect(featureService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
-                expect(serviceResult.object.options.method).toBe("DELETE");
-                expect(serviceResult.object.options.data).toContain(id);
-                expect(serviceResult.object.options.data).toContain(id1);
-                expect(serviceResult.object.options.data).toContain(id2);
+                expect(serviceResult.options.method).toBe("DELETE");
+                expect(serviceResult.options.data).toContain(id);
+                expect(serviceResult.options.data).toContain(id1);
+                expect(serviceResult.options.data).toContain(id2);
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBeTruthy();
                 done();
@@ -171,7 +171,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var featureService = new FeatureService(featureServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, options) => {
             expect(method).toBe("DELETE");
-            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=[241]");
+            expect(testUrl).toBe(featureServiceURL + "/datasources/World/datasets/Capitals/features?ids=%5B241%5D");
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"the specified features does not exist"}}`));
         });
@@ -204,7 +204,7 @@ describe('openlayers_FeatureService_editFeatures', () => {
         var getFeaturesByIDsService = new FeatureService(editServiceURL);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe("POST");
-            expect(testUrl).toBe(editServiceURL + "/featureResults?returnContent=true&fromIndex=0&toIndex=19");
+            expect(testUrl).toBe(editServiceURL + "/featureResults?fromIndex=0&toIndex=19&returnContent=true");
             expect(params).not.toBeNull();
             var paramsObj = JSON.parse(params.replace(/'/g, "\""));
             expect(paramsObj.datasetNames[0]).toBe("Jingjin:Landuse_R");
@@ -270,5 +270,39 @@ describe('openlayers_FeatureService_editFeatures', () => {
             console.log("'updateFeature'未获取到数据");
             done();
         }
+    });
+
+    // 获取地理要素元信息
+    it('getMetadata', (done) => {
+        var featureService = new FeatureService(featureServiceURL);
+        spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+            expect(method).toBe("GET");
+            expect(testUrl).toBe(featureServiceURL+"/datasources/World/datasets/Capitals/features/238/metadata");
+
+            return Promise.resolve(new Response(`{
+                "createTime": 1436945830474,
+                "createUser": "admin",
+                "lastEditTime": 1436945830474,
+                "lastEditUser": "admin"
+              }`
+            ));
+        });
+        featureService.getMetadata({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            featureId: 238
+          }, (result) => {
+            serviceResult = result;
+            try {
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.result.createTime).toBe(1436945830474);
+                expect(serviceResult.result.succeed).toBe(true);
+                done();
+            } catch (e) {
+                console.log("'addFeature'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        });
     });
 });

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 var widgets = {
     loader: {
         //显示loading
@@ -48,7 +48,7 @@ var widgets = {
             $(alertDiv).remove();
         }
         if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' style='z-index:999999;position: absolute;top: 20px;left: 40%; display: none;text-align: center'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button><strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' style='z-index:999999;position: absolute;top: 20px;left: 40%; display: none;text-align: center'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button><strong><p id='msg' style='word-wrap: break-word; margin: 0'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').css('width', width + 'px');

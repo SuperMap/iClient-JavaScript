@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -65,8 +65,8 @@
     buildThemeLayer();
 
     function buildThemeLayer() {
-        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: new SuperMap.FilterParameter({
+        var getFeatureBySQLParams = new mapboxgl.supermap.GetFeaturesBySQLParameters({
+            queryParameter: new mapboxgl.supermap.FilterParameter({
                 name: "Jingjin",
                 attributeFilter: "SMID > -1"
             }),
@@ -74,27 +74,25 @@
             datasetNames: ["Jingjin:BaseMap_R"]
         });
 
-        var queryFeatures = new SuperMap.GetFeaturesBySQLService(dataUrl, {
-            eventListeners: {
-                processCompleted: function (serviceResult) {
-                    if (serviceResult.error) {
-                        alert("error:" + JSON.stringify(serviceResult.error));
-                        return;
-                    }
-                    var result = serviceResult.result;
-                    if (result.features) {
-                        createThemeLayer(result.features);
-                    }
-                }
-            },
-            format: SuperMap.DataFormat.GEOJSON
-        });
-        queryFeatures.processAsync(getFeatureBySQLParams);
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(
+            getFeatureBySQLParams,
+            mapboxgl.supermap.DataFormat.GEOJSON
+            ).then(processCompleted);
     }
 
+    function processCompleted(serviceResult) {
+        if (serviceResult.error) {
+            alert("error:" + JSON.stringify(serviceResult.error));
+            return;
+        }
+        var result = serviceResult.result;
+        if (result.features) {
+            createThemeLayer(result.features);
+        }
+    }
     //创建专题图图层
     function createThemeLayer(data) {
-        popup = new mapboxgl.Popup({closeOnClick: true}).addTo(map);
+        popup = new mapboxgl.Popup({closeButton: false}).addTo(map);
         themeLayer = new mapboxgl.supermap.RangeTheme3DLayer("range3DThemeLayer", {
             heightField: themeField,
             themeField: themeField,

@@ -1,8 +1,8 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 /**
- * @constant ol.supermap.pointStyle
+ * @constant pointStyle
  * @description 点属性名的对应表。
  * @private
  */
@@ -23,7 +23,7 @@ export var pointStyle = {
 };
 
 /**
- * @constant ol.supermap.lineStyle
+ * @constant lineStyle
  * @description 线属性名的对应表。
  * @private
  */
@@ -45,7 +45,7 @@ export var lineStyle = {
 };
 
 /**
- * @constant ol.supermap.polygonStyle
+ * @constant polygonStyle
  * @description 面属性名的对应表。
  * @private
  */
@@ -75,13 +75,13 @@ export var polygonStyle = {
 };
 
 /**
- * @constant ol.supermap.DeafultCanvasStyle
+ * @constant DeafultCanvasStyle
  * @description 默认画布属性名的对应表。
  * @private
  */
 export var DeafultCanvasStyle = {
     /**
-     * @constant ol.supermap.DeafultCanvasStyle.prototype.TEXT
+     * @constant DeafultCanvasStyle.prototype.TEXT
      * @description 默认文本样式。
      */
     "TEXT": {

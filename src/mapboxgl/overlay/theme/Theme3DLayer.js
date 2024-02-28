@@ -1,16 +1,16 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
 
 /**
- * @class mapboxgl.supermap.Theme3DLayer
+ * @class Theme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维专题图基类,不能直接实例化。
- * @param  {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @classdesc 三维专题图基类。不能直接实例化。目前提供的三维专题图有：三维单值专题图、三维分段专题图。
+ * @modulecategory Overlay
+ * @param  {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
  * @param  {Object} layerOptions -专题图图层配置项。
- * @param  {number} [layerOptions.opacity=1] - 图层透明度。
+ * @param  {number} [layerOptions.opacity=1] - 图层不透明度。
  * @param  {boolean} [layerOptions.parseNumber=fasle] - 是否预处理数据，将数据转换为 number。
  * @param  {boolean} [layerOptions.enableHighlight=false] - 是否开启高亮。
  * @param  {string} [layerOptions.highlight="#ADA91E"] - 高亮颜色。
@@ -18,100 +18,101 @@ import '../../core/Base';
  * @param  {number} [layerOptions.height] - 高度。如果数据指定的 heightField (为height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param  {string} [layerOptions.heightField] - 数据中表示高度的字段。
  * @param  {string} [layerOptions.themeField] - 专题展示的字段。
- * @param  {boolean} [playerOptions.showLegend=true] - 是否显示图例。
+ * @param  {boolean} [layerOptions.showLegend=true] - 是否显示图例。
  * @param  {string} [layerOptions.legendTitle] - 图例标题。
  * @param  {string} [layerOptions.legendTheme='light'] - 图例主题，取值：'light','dark'。
  * @param  {string} [layerOptions.legendOrientation='horizontal'] - 图例方向，取值：'horizontal','vertical'。
  * @param  {string} [layerOptions.legendPosition] - 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'。
+ * @usage
  */
 export class Theme3DLayer {
 
 
     constructor(id, layerOptions) {
         /**
-         * @member {string} mapboxgl.supermap.Theme3DLayer.prototype.id 
-         * @description Mapbox GL 图层 id。
+         * @member {string} Theme3DLayer.prototype.id
+         * @description Mapbox GL 图层 ID。
          */
         this.id = id;
 
         /**
-         * @member {Object} mapboxgl.supermap.Theme3DLayer.prototype.map 
+         * @member {Object} Theme3DLayer.prototype.map
          * @description Mapbox GL 地图对象。
          */
         this.map = null;
         /**
-         * @member {number} [mapboxgl.supermap.Theme3DLayer.prototype.opacity=1] 
-         * @description 图层透明度。
+         * @member {number} [Theme3DLayer.prototype.opacity=1]
+         * @description 图层不透明度。
          */
         this.opacity = 1;
         /**
-         * @member {boolean} [mapboxgl.supermap.Theme3DLayer.prototype.parseNumber=false]
-         * @description 是否进行数据预处理,有些字段是 string 类型，需要转换为 number。
+         * @member {boolean} [Theme3DLayer.prototype.parseNumber=false]
+         * @description 是否进行数据预处理，有些字段是 string 类型，需要转换为 number。
          */
         this.parseNumber = false;
         /**
-         * @member {boolean} [mapboxgl.supermap.Theme3DLayer.prototype.enableHighlight=false]
+         * @member {boolean} [Theme3DLayer.prototype.enableHighlight=false]
          * @description 是否开启高亮。
          */
         this.enableHighlight = false;
 
         /**
-         * @member {Object} [mapboxgl.supermap.Theme3DLayer.prototype.highlight={color: "#ADA91E"}]
+         * @member {Object} [Theme3DLayer.prototype.highlight={color: "#ADA91E"}]
          * @description 高亮相关配置。
          */
         this.highlight = {color: "#ADA91E"};
 
         /**
-         * @member {string} mapboxgl.supermap.Theme3DLayer.prototype.baseHeightField 
+         * @member {string} Theme3DLayer.prototype.baseHeightField
          * @description 数据中表示基础高度的字段。
          */
         this.baseHeightField = null;
 
         /**
-         * @member {number} mapboxgl.supermap.Theme3DLayer.prototype.height 
+         * @member {number} Theme3DLayer.prototype.height
          * @description 高度。如果数据指定的 heightField (默认 height) 没有可以表示高度的字段，可以为所有数据统一设置一个高度。
          */
         this.height = null;
 
         /**
-         * @member {string} mapboxgl.supermap.Theme3DLayer.prototype.heightField 
+         * @member {string} Theme3DLayer.prototype.heightField
          * @description 数据中表示高度的字段。
          */
         this.heightField = 'height';
 
         /**
-         * @member {string} [mapboxgl.supermap.Theme3DLayer.prototype.themeField]
+         * @member {string} [Theme3DLayer.prototype.themeField]
          * @description 专题展示的字段。
          */
         this.themeField = this.heightField;
 
         /**
-         * @member {boolean} [mapboxgl.supermap.Theme3DLayer.prototype.showLegend=true]
+         * @member {boolean} [Theme3DLayer.prototype.showLegend=true]
          * @description 是否显示图例。
          */
         this.showLegend = true;
 
         /**
-         * @member {string} [mapboxgl.supermap.Theme3DLayer.prototype.legendTitle]
+         * @member {string} [Theme3DLayer.prototype.legendTitle]
          * @description 图例标题。
          */
         this.legendTitle = null;
 
         /**
-         * @member {string} [mapboxgl.supermap.Theme3DLayer.prototype.legendTheme='light']
+         * @member {string} [Theme3DLayer.prototype.legendTheme='light']
          * @description 图例主题，取值：'light','dark'。
          * @default 'light'
          */
         this.legendTheme = 'light';
 
         /**
-         * @member {string} [mapboxgl.supermap.Theme3DLayer.prototype.legendOrientation='horizontal']
+         * @member {string} [Theme3DLayer.prototype.legendOrientation='horizontal']
          * @description 图例方向，取值：'horizontal','vertical'。
          * @default 'horizontal'
          */
         this.legendOrientation = 'horizontal';
         /**
-         * @member {string} mapboxgl.supermap.Theme3DLayer.prototype.legendPosition 
+         * @member {string} Theme3DLayer.prototype.legendPosition
          * @description 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'。
          * @default 'bottom-right'
          */
@@ -121,12 +122,12 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.setLayerOptions
+     * @function Theme3DLayer.prototype.setLayerOptions
      * @description 设置图层相关参数。
      * @param {Object} layerOptions - 该专题图图层相关参数。
-     * @param {number} [layerOptions.opacity=1] - 图层透明度。
+     * @param {number} [layerOptions.opacity=1] - 图层不透明度。
      * @param {boolean} [layerOptions.parseNumber=false] - 是否预处理数据，将数据转换为 number。
-     * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段
+     * @param {string} [layerOptions.baseHeightField] - 数据中表示基础高度的字段。
      * @param {number} [layerOptions.height] - 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
      * @param {string} [layerOptions.heightField] - 数据中表示高度的字段。
      * @param {string} [layerOptions.themeField] - 专题展示的字段。
@@ -135,7 +136,7 @@ export class Theme3DLayer {
      * @param {string} [layerOptions.legendTheme='light'] - 图例主题，取值：'light','dark'。
      * @param {string} [layerOptions.legendOrientation='horizontal'] - 图例方向，取值：'horizontal','vertical'。
      * @param {string} [layerOptions.legendPosition] - 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'。
-     * @returns {this}
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     setLayerOptions(layerOptions) {
         this._extend(this, layerOptions);
@@ -143,12 +144,12 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.setHighlightStyleOptions
+     * @function Theme3DLayer.prototype.setHighlightStyleOptions
      * @description 设置图层高亮相关参数。
      * @param {Object} highlightOptions - 该专题图图层高亮相关参数。
      * @param {string} [highlightOptions.color] - 颜色。
-     * @param {function} highlightOptions.callback - 回调,返回数据参数（data,event）。
-     * @returns {this}
+     * @param {function} highlightOptions.callback - 回调，返回数据参数（data,event）。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     setHighlightStyleOptions(highlightOptions) {
         this._extend(this.highlight, highlightOptions);
@@ -156,10 +157,10 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.setData
+     * @function Theme3DLayer.prototype.setData
      * @description 设置数据，数据格式必须为 GeoJSON 格式。
      * @param {GeoJSONObject} data - GeoJSON 格式数据。
-     * @param {boolean} [parseNumber=false] - 是否进行数据预处理,有些字段是 string 类型，需要转换为 number。
+     * @param {boolean} [parseNumber=false] - 是否进行数据预处理，有些字段是 string 类型，需要转换为 number。
      */
     setData(data, parseNumber) {
         var me = this;
@@ -180,7 +181,7 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.getData
+     * @function Theme3DLayer.prototype.getData
      * @description 获取数据。
      * @returns {GeoJSONObject} 获取的数据。
      */
@@ -189,10 +190,10 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.addTo
+     * @function Theme3DLayer.prototype.addTo
      * @description 添加图层到地图上。
-     * @param {mapboxgl.Map} map - Mapbox GL 地图对象。
-     * @returns {this} this 对象。
+     * @param {mapboxgl.Map} map - MapBoxGL Map 对象。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     addTo(map) {
         this.map = map;
@@ -205,10 +206,10 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.show
+     * @function Theme3DLayer.prototype.show
      * @description 显示图层。
      * @param {Object} options - 图层配置项。
-     * @returns {this} this 对象。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     show(options) {
         this._extend(this, options);
@@ -226,9 +227,9 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.remove
+     * @function Theme3DLayer.prototype.remove
      * @description 从地图上移除图层。
-     * @returns {this} this 对象。
+     * @returns {Theme3DLayer} Theme3DLayer的实例对象。
      */
     remove() {
         if (!this.map) {
@@ -255,7 +256,7 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function  mapboxgl.supermap.Theme3DLayer.prototype.getLayerStyleOptions
+     * @function Theme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -264,8 +265,8 @@ export class Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme3DLayer.prototype.getHighlightStyleOptions
-     * @description 获取高亮样式,子类重写实现。
+     * @function Theme3DLayer.prototype.getHighlightStyleOptions
+     * @description 获取高亮样式，子类重写实现。
      * @returns {Object} Mapbox GL 样式对象。
      */
     getHighlightStyleOptions() {
@@ -518,5 +519,3 @@ export class Theme3DLayer {
         return dest;
     }
 }
-
-mapboxgl.supermap.Theme3DLayer = Theme3DLayer;

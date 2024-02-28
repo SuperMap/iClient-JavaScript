@@ -1,7 +1,10 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Unit, SecurityManager, CommonUtil, ServerGeometry } from '@supermap/iclient-common';
+import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Unit } from '@supermap/iclient-common/REST';
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { ServerGeometry } from '@supermap/iclient-common/iServer/ServerGeometry';
 import { Util } from '../core/Util';
 import TileImage from 'ol/source/TileImage';
 import Geometry from 'ol/geom/Geometry';
@@ -11,37 +14,40 @@ import * as olTilegrid from 'ol/tilegrid';
 import TileGrid from 'ol/tilegrid/TileGrid';
 
 /**
- * @class ol.source.TileSuperMapRest
- * @category iServer Map
+ * @class TileSuperMapRest
+ * @browsernamespace ol.source
+ * @category iServer Map Tile
+ * @modulecategory Mapping
  * @classdesc SuperMap iServer TileImage 图层源。
  * @param {Object} options - 参数。
- * @param {string} options.url - 地图服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
- * @param {ol/tilegrid/TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
+ * @param {string} options.url - 服务地址,例如: http://{ip}:{port}/iserver/services/map-world/rest/maps/World。
+ * @param {ol.tilegrid.TileGrid} [options.tileGrid] - 瓦片网格对象。当不指定时，会通过 options.extent 或投影范围生成。
  * @param {boolean} [options.redirect = false] - 是否重定向。
  * @param {boolean} [options.transparent = true] - 瓦片是否透明。
  * @param {boolean} [options.cacheEnabled = true] - 是否使用服务端的缓存。
- * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时， 系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
+ * @param {Object} [options.prjCoordSys] - 请求的地图的坐标参考系统。当此参数设置的坐标系统不同于地图的原有坐标系统时，系统会进行动态投影，并返回动态投影后的地图瓦片。例如：{"epsgCode":3857}。
  * @param {string} [options.layersID] - 获取进行切片的地图图层 ID，即指定进行地图切片的图层，可以是临时图层集，也可以是当前地图中图层的组合。
  * @param {boolean} [options.clipRegionEnabled = false] - 是否只地图只显示该区域覆盖的部分。true 表示地图只显示该区域覆盖的部分。
- * @param {(ol/geom/Geometry|ol/geom/Geometry)} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
+ * @param {ol.geom.Geometry} [options.clipRegion] - 地图显示裁剪的区域。是一个面对象，当 clipRegionEnabled = true 时有效，即地图只显示该区域覆盖的部分。
  * @param {boolean} [options.overlapDisplayed = false] - 地图对象在同一范围内时，是否重叠显示。如果为 true，则同一范围内的对象会直接压盖；如果为 false 则通过 overlapDisplayedOptions 控制对象不压盖显示。
- * @param {SuperMap.OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
+ * @param {OverlapDisplayedOptions} [options.overlapDisplayedOptions] - 避免地图对象压盖显示的过滤选项，当 overlapDisplayed 为 false 时有效，用来增强对地图对象压盖时的处理。
  * @param {string} [options.tileversion] - 切片版本名称，_cache 为 true 时有效。
- * @param {string} [options.tileProxy] - 代理地址。
- * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、 "gif" 等图片类型。
- * @param {(SuperMap.NDVIParameter|SuperMap.HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
- * @extends {ol/source/TileImage}
+ * @param {string} [options.tileProxy] - 服务代理地址。
+ * @param {string} [options.format = 'png'] - 瓦片表述类型，支持 "png" 、"webp"、"bmp" 、"jpg"、"gif" 等图片类型。
+ * @param {(NDVIParameter|HillshadeParameter)} [options.rasterfunction] - 栅格分析参数。
+ * @param {ChartSetting} [options.chartSetting] - 海图显示参数设置类，用于管理海图显示环境，包括海图的显示模式、显示类型名称、颜色模式、安全水深线等各种显示风格。
+ * @extends {ol.source.TileImage}
+ * @usage
  */
 export class TileSuperMapRest extends TileImage {
     constructor(options) {
         options = options || {};
         options.attributions =
-            options.attributions ||
-            "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            options.attributions || "Map Data <span>© SuperMap iServer</span> with <span>© SuperMap iClient</span>";
 
         options.format = options.format ? options.format : 'png';
 
-        super({
+        super({ 
             attributions: options.attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
@@ -72,7 +78,7 @@ export class TileSuperMapRest extends TileImage {
         var layerUrl = CommonUtil.urlPathAppend(options.url, 'tileImage.' + options.format);
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.getAllRequestParams
+         * @function TileSuperMapRest.prototype.getAllRequestParams
          * @description 获取全部请求参数。
          */
         function getAllRequestParams() {
@@ -126,12 +132,15 @@ export class TileSuperMapRest extends TileImage {
             if (options.rasterfunction) {
                 params['rasterfunction'] = JSON.stringify(options.rasterfunction);
             }
+            if (options.chartSetting) {
+                params["chartSetting"] = JSON.stringify(options.chartSetting);
+            }
 
             return params;
         }
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.getFullRequestUrl
+         * @function TileSuperMapRest.prototype.getFullRequestUrl
          * @description 获取完整的请求地址。
          */
         function getFullRequestUrl() {
@@ -143,7 +152,7 @@ export class TileSuperMapRest extends TileImage {
         }
 
         /**
-         * @function  ol.source.TileSuperMapRest.prototype.createLayerUrl
+         * @function TileSuperMapRest.prototype.createLayerUrl
          * @description 获取新建图层地址。
          */
         function createLayerUrl() {
@@ -212,7 +221,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
+     * @function TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息。
      * @param {Object} tileSets - 瓦片集合。
      */
@@ -234,7 +243,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.lastTilesVersion
+     * @function TileSuperMapRest.prototype.lastTilesVersion
      * @description 请求上一个版本切片，并重新绘制。
      */
     lastTilesVersion() {
@@ -243,7 +252,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.nextTilesVersion
+     * @function TileSuperMapRest.prototype.nextTilesVersion
      * @description 请求下一个版本切片，并重新绘制。
      */
     nextTilesVersion() {
@@ -252,7 +261,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
+     * @function TileSuperMapRest.prototype.changeTilesVersion
      * @description 切换到某一版本的切片，并重绘。通过 this.tempIndex 保存需要切换的版本索引。
      */
     changeTilesVersion() {
@@ -282,7 +291,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
+     * @function TileSuperMapRest.prototype.updateCurrentTileSetsIndex
      * @description 更新当前切片集索引，目前主要提供给控件使用。
      * @param {number} index - 索引号。
      */
@@ -291,7 +300,7 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
+     * @function TileSuperMapRest.prototype.mergeTileVersionParam
      * @description 更改 URL 请求参数中的切片版本号，并重绘。
      * @param {Object} version - 版本信息。
      * @returns {boolean} 是否成功。
@@ -307,61 +316,35 @@ export class TileSuperMapRest extends TileImage {
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
+     * @function TileSuperMapRest.optionsFromMapJSON
      * @description 从 MapJSON 中获取参数对象。
-     * @param {string} url - 地址。
+     * @param {string} url - 服务地址。
      * @param {Object} mapJSONObj - 地图 JSON 对象。
      */
     static optionsFromMapJSON(url, mapJSONObj) {
-        var options = {};
+        var options = {
+        };
+        if (mapJSONObj.tileFormat) {
+          options.format = mapJSONObj.tileFormat;
+        }
+        if (mapJSONObj.origin) {
+          options.origin = mapJSONObj.origin;
+        }
         options.url = url;
         options.crossOrigin = 'anonymous';
         var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
-        var resolutions = getResolutions();
-
-        function getResolutions() {
-            var level = 22;
-            var dpi = 96;
-            var width = extent[2] - extent[0];
-            var height = extent[3] - extent[1];
-            var tileSize = width >= height ? width : height;
-            var maxReolution;
-            if (tileSize === width) {
-                maxReolution = tileSize / mapJSONObj.viewer.width;
-            } else {
-                maxReolution = tileSize / mapJSONObj.viewer.height;
-            }
-            var resolutions = [];
-            var unit = Unit.METER;
-            if (mapJSONObj.coordUnit === Unit.DEGREE) {
-                unit = Unit.DEGREE;
-            }
-            if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
-                for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
-                    resolutions.push(Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
-                }
-            } else {
-                for (let i = 0; i < level; i++) {
-                    resolutions.push(maxReolution / Math.pow(2, i));
-                }
-            }
-
-            function sortNumber(a, b) {
-                return b - a;
-            }
-
-            return resolutions.sort(sortNumber);
-        }
-
+        const { visibleScales, bounds, dpi, coordUnit } = mapJSONObj;
+        var resolutions = Util.scalesToResolutions(visibleScales, bounds, dpi, coordUnit);
         options.tileGrid = new TileGrid({
             extent: extent,
-            resolutions: resolutions
+            resolutions: resolutions,
+            tileSize: mapJSONObj.tileSize || 256
         });
         return options;
     }
 
     /**
-     * @function  ol.source.TileSuperMapRest.createTileGrid
+     * @function TileSuperMapRest.createTileGrid
      * @description 创建切片网格。
      * @param {number} extent - 长度。
      * @param {number} maxZoom - 最大的放大级别。
@@ -383,5 +366,16 @@ export class TileSuperMapRest extends TileImage {
             resolutions: tilegrid.getResolutions(),
             tileSize: tilegrid.getTileSize()
         });
+    }
+
+    /**
+     * @function  TileSuperMapRest.updateParams
+     * @description 更新参数。
+     * @param {Object} params - 参数对象。
+     */
+    updateParams(params) {
+      Object.assign(this.requestParams, params);
+      this._paramsChanged = true;
+      this.refresh();
     }
 }

@@ -1,6 +1,7 @@
 import {MapvLayer} from '../../../src/mapboxgl/overlay/MapvLayer';
 import mapboxgl from 'mapbox-gl';
 import {utilCityCenter, DataSet} from 'mapv';
+import mbglmap from '../../tool/mock_mapboxgl_map';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
@@ -19,7 +20,8 @@ describe('mapboxgl_MapVLayer', () => {
         draw: 'intensity',
         layerID: "mapv"
     };
-    beforeAll(() => {
+    beforeAll((done) => {
+        spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -29,7 +31,7 @@ describe('mapboxgl_MapVLayer', () => {
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
         map = new mapboxgl.Map({
-            container: 'map',
+            container: testDiv,
             style: {
                 "version": 8,
                 "sources": {
@@ -50,7 +52,9 @@ describe('mapboxgl_MapVLayer', () => {
             center: [112, 37.94],
             zoom: 3
         });
-
+        map.on('load', function() {
+          done();
+        });
     });
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -101,7 +105,7 @@ describe('mapboxgl_MapVLayer', () => {
             expect(mapvLayer.renderer).not.toBeNull();
             expect(mapvLayer.renderer.context).toBe("2d");
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('getTopLeft', () => {
@@ -158,7 +162,7 @@ describe('mapboxgl_MapVLayer', () => {
         setTimeout(() => {
             expect(mapvLayer.dataSet._data.length).toEqual(999);
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('update', () => {
@@ -189,7 +193,7 @@ describe('mapboxgl_MapVLayer', () => {
 
     it('setZIndex', () => {
         mapvLayer.setZIndex(2);
-        expect(mapvLayer.canvas.style.zIndex).toEqual('2');
+        expect(mapvLayer.renderer.canvas.style.zIndex).toEqual('2');
     });
 
 });

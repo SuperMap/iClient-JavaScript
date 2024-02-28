@@ -1,31 +1,48 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
-import XLSX from 'xlsx'
+import * as XLSX from 'xlsx';
 import {FileTypes} from '../CommonTypes';
 import {Lang} from '../../lang/Lang';
 
 /**
- * @class SuperMap.Components.FileReaderUtil
- * @classdesc 组件读取文件工具类。
+ * @name FileReaderUtil
+ * @namespace
+ * @category Components OpenFile
+ * @description 组件读取文件工具类。
  * @version 9.1.1
  * @type {{rABS: (boolean|*), rABF: (boolean|*), rAT: (boolean|*), readFile: (function(*, *=, *=, *=, *=)), readTextFile: (function(*, *=, *=, *=)), readXLSXFile: (function(*, *=, *=, *=)), processDataToGeoJson: (function(string, Object): GeoJSONObject), processExcelDataToGeoJson: (function(Object): GeoJSONObject), isXField: (function(*)), isYField: (function(*)), string2Csv: (function(*, *=))}}
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.Components.FileReaderUtil.isXField(data);
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.Components.FileReaderUtil.isXField(data);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { FileReaderUtil } from '{npm}';
+ *
+ * const result = FileReaderUtil.isXField(data);
+ * ```
  */
 export let FileReaderUtil = {
     rABS: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString,
     rABF: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsArrayBuffer,
     rAT: typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsText,
-
     /**
-     * @function SuperMap.Components.FileReaderUtil.prototype.readFile
-     * @description 读取文件
-     * @param {string} fileType - 当前读取的文件类型
+     * @function FileReaderUtil.prototype.readFile
+     * @description 读取文件。
+     * @param {string} fileType - 当前读取的文件类型。
      *
-     * @param {Object} file - 读取回来的文件内容对象
-     * @param {function} success - 读取文件成功回调函数
-     * @param {function} failed - 读取文件失败回调函数
-     * @param {Object} context - 回调重定向对象
+     * @param {Object} file - 读取回来的文件内容对象。
+     * @param {function} success - 读取文件成功回调函数。
+     * @param {function} failed - 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readFile(fileType, file, success, failed, context) {
         if (FileTypes.JSON === fileType || FileTypes.GEOJSON === fileType) {
@@ -36,11 +53,11 @@ export let FileReaderUtil = {
     },
 
     /**
-     * 读取文本文件
-     * @param file
-     * @param success
-     * @param failed
-     * @param {Object} context - 回调重定向对象
+     * @description 读取文本文件。
+     * @param {Object} file 文件内容对象。
+     * @param {function} success 读取文件成功回调函数。
+     * @param {function} failed 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readTextFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -54,11 +71,11 @@ export let FileReaderUtil = {
     },
 
     /**
-     * 读取excel或csv文件
-     * @param file
-     * @param success
-     * @param failed
-     * @param {Object} context - 回调重定向对象
+     * @description 读取excel或csv文件。
+     * @param {Object} file 文件内容对象。
+     * @param {function} success 读取文件成功回调函数。
+     * @param {function} failed 读取文件失败回调函数。
+     * @param {Object} context - 回调重定向对象。
      */
     readXLSXFile(file, success, failed, context) {
         let reader = new FileReader();
@@ -83,14 +100,14 @@ export let FileReaderUtil = {
     },
 
     /**
-     * @function SuperMap.Components.FileReaderUtil.prototype.processDataToGeoJson
-     * @description 将读取回来得数据统一处理为 GeoJSON 格式
-     * @param {string} type - 文件类型
-     * @param {Object} data - 读取返回的数据对象
-     * @param {function} success - 数据处理成功的回调
-     * @param {function} failed - 数据处理失败的回调
-     * @param {Object} context - 回调重定向对象
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @function FileReaderUtil.prototype.processDataToGeoJson
+     * @description 将读取回来得数据统一处理为 GeoJSON 格式。
+     * @param {string} type - 文件类型。
+     * @param {Object} data - 读取返回的数据对象。
+     * @param {function} success - 数据处理成功的回调。
+     * @param {function} failed - 数据处理失败的回调。
+     * @param {Object} context - 回调重定向对象。
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据。
      * @private
      */
     processDataToGeoJson(type, data, success, failed, context) {
@@ -119,10 +136,10 @@ export let FileReaderUtil = {
         }
     },
     /**
-     * @function SuperMap.Components.FileReaderUtil.prototype.processExcelDataToGeoJson
-     * @description 表格文件数据处理
-     * @param {Object} data - 读取的表格文件数据
-     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据
+     * @function FileReaderUtil.prototype.processExcelDataToGeoJson
+     * @description 表格文件数据处理。
+     * @param {Object} data - 读取的表格文件数据。
+     * @returns {GeoJSONObject} 返回标准 GeoJSON 规范格式数据。
      * @private
      */
     processExcelDataToGeoJson(data) {
@@ -170,8 +187,8 @@ export let FileReaderUtil = {
         return features;
     },
     /**
-     * 判断是否地理X坐标
-     * @param data
+     * @description 判断是否地理X坐标。
+     * @param {string} data 字段名。
      */
     isXField(data) {
         var lowerdata = data.toLowerCase();
@@ -181,8 +198,8 @@ export let FileReaderUtil = {
     },
 
     /**
-     * 判断是否地理Y坐标
-     * @param data
+     * @description 判断是否地理Y坐标。
+     * @param {string} data 字段名。
      */
     isYField(data) {
         var lowerdata = data.toLowerCase();
@@ -191,9 +208,9 @@ export let FileReaderUtil = {
             lowerdata === "latitude" || lowerdata === "lat" || lowerdata === "y坐标");
     },
     /**
-     * 字符串转为dataEditor 支持的csv格式数据
-     * @param string
-     * @param withoutTitle
+     * @description 字符串转为dataEditor 支持的csv格式数据。
+     * @param {string} string 待转化的字符串。
+     * @param {boolean} withoutTitle 是否需要列标题。
      */
     string2Csv(string, withoutTitle) {
         // let rows = string.split('\r\n');
@@ -213,5 +230,4 @@ export let FileReaderUtil = {
 
 };
 
-SuperMap.Components.FileReaderUtil = FileReaderUtil;
 

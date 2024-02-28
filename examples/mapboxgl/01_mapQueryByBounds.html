@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -44,7 +44,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     map.on('load', function () {
@@ -72,12 +72,12 @@
             }
         });
 
-        var param = new SuperMap.QueryByBoundsParameters({
+        var param = new mapboxgl.supermap.QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: new mapboxgl.LngLatBounds([0, 0], [60, 39])
         });
 
-        queryService = new mapboxgl.supermap.QueryService(url).queryByBounds(param, function (serviceResult) {
+        queryService = new mapboxgl.supermap.QueryService(url).queryByBounds(param).then(function (serviceResult) {
             var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
 
             var features = recordsets && recordsets[0] && recordsets[0].features;

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@
         maxZoom: 18,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     query();
 
@@ -29,18 +29,18 @@
         var polygon = L.polygon([[38, 100], [36, 110], [35, 105], [38, 100]], {color: 'red'});
         polygon.addTo(map);
         //服务端数据坐标系为 3857，因此将查询数据转为与服务端对应坐标系：
-        var geometry = L.Util.transform(polygon, L.CRS.EPSG4326, L.CRS.EPSG3857);
+        var geometry = L.supermap.Util.transform(polygon, L.CRS.EPSG4326, L.CRS.EPSG3857);
 
-        var param = new SuperMap.QueryByGeometryParameters({
+        var param = new L.supermap.QueryByGeometryParameters({
             queryParams: {name: "China_Province_pl@China"},
             geometry: geometry
         });
         widgets.loader.showLoader();
-        L.supermap
-            .queryService(url)
-            .queryByGeometry(param, function (serviceResult) {
+        new L.supermap
+            .QueryService(url)
+            .queryByGeometry(param).then(function (serviceResult) {
                 //leaflet 绘制数据默认为 4326，服务器返回数据为 3857，因此在加载到地图前，先进行坐标系转换：
-                var result = L.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
+                var result = L.supermap.Util.transform(serviceResult.result.recordsets[0].features, L.CRS.EPSG3857, L.CRS.EPSG4326);
                 widgets.loader.removeLoader();
                 resultLayer = L.geoJSON(result).addTo(map);
                 polygon.remove();

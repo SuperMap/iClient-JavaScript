@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -23,19 +23,19 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl).addTo(map);
     query();
 
     function query() {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]], {color: 'red'});
         polygon.addTo(map);
-        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+        var boundsParam = new L.supermap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getBounds()
         });
-        L.supermap
-            .featureService(url)
-            .getFeaturesByBounds(boundsParam, function (serviceResult) {
+        new L.supermap
+            .FeatureService(url)
+            .getFeaturesByBounds(boundsParam).then(function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup(resources.text_capital+"：" + feature.properties.CAPITAL);

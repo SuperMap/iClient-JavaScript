@@ -1,13 +1,15 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Turf (https://github.com/Turfjs/turf/)
 *********************************************************************-->
 <!DOCTYPE html>
 <html style="width: 100%; height: 100%">
     <head>
         <meta charset="UTF-8" />
         <title data-i18n="resources.title_image_service"></title>
-        <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
-        <script type="text/javascript" include="proj4,turf" src="../../dist/ol/include-ol.js"></script>
         <style>
             .sidebar-config-wrap {
                 position: absolute;
@@ -163,7 +165,7 @@
                 color: rgba(0, 0, 0, 0.65);
             }
             .modal-dialog {
-                width: 800px !important;
+                width: 1100px !important;
                 top: 50px;
             }
             .modal-body {
@@ -191,6 +193,12 @@
                 border-right: 1px solid #e8e8e8;
                 font-size: 14px;
                 line-height: 1.5;
+            }
+            .modal-content-row .modal-content-item-content:nth-child(2){
+                width: 193px;
+            }
+            .modal-content-row .modal-content-item-content:nth-child(4){
+                width: 479px;
             }
         </style>
     </head>
@@ -334,9 +342,10 @@
                 <!-- /.modal-content -->
             </div>
         </div>
-
-        <script type="text/javascript" include="bootstrap,jquery" src="../js/include-web.js"></script>
+        <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
+        <script type="text/javascript" include="turf" src="../../dist/ol/include-ol.js"></script>
         <script type="text/javascript">
+            widgets.loader.showLoader("data loading...");
             var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
             var root = host + '/iserver/services/imageservice-hainan/restjsr';
             var url = host + '/iserver/services/data-china400/rest/data';
@@ -474,7 +483,7 @@
                         function (feature) {
                             selectedFeature = feature;
                             $('#myModal').modal('show');
-                            showTifInfo(selectedFeature.id_);
+                            showTifInfo(selectedFeature.V);
                             return true;
                         },
                         {
@@ -679,7 +688,7 @@
 
             function queryFromDataService(url) {
                 var result = [];
-                var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
                     queryParameter: { attributeFilter: "PAC Like '46%'" },
                     datasetNames: ['China:City_R'],
                     targetPrj: { epsgCode: 4326 },
@@ -699,6 +708,7 @@
                         });
                     }
                     appendOptions('provinces', result, 'value', 'label');
+                    widgets.loader.removeLoader();
                     provinces = result;
                     return result;
                 });
@@ -806,7 +816,8 @@
                     '</a>' +
                     '</li>';
                 for (var i = 1; i <= Math.ceil(features.length / pageMax) && i < pageMax; i++) {
-                    pageHtml += '<li onclick="clickPage(' + (i - 1) + ')"><a href="#">' + i + '</a></li>';
+                    var pageIndex = i - 1;
+                    pageHtml += '<li onclick="clickPage(' + pageIndex + ')"><a href="#">' + i + '</a></li>';
                 }
                 pageHtml +=
                     '<li id="next-page" style="margin-right: 0">' +
@@ -856,7 +867,7 @@
             }
 
             function clickPage(i) {
-                currentIndex = i;
+                currentIndex = parseInt(i);
                 var start = tableMax * currentIndex;
                 $($('#pagination').children('.active')).removeClass('active');
                 $(
@@ -941,6 +952,7 @@
             }
 
             function query() {
+                clearSearchResult();
                 var postData = {};
                 if (provinceId != -1) {
                     postData['bbox'] = provinceBbox;

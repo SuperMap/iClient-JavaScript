@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* leaflet-geoman (https://github.com/geoman-io/leaflet-geoman)
 *********************************************************************-->
 
 <!DOCTYPE html>
@@ -25,10 +29,10 @@
             maxZoom: 18,
             zoom: 2
         });
-        L.supermap.tiledMapLayer(url).addTo(map);
+        new L.supermap.TiledMapLayer(url).addTo(map);
 
         var dataserviceUrl = host + '/iserver/services/data-world/rest/data';
-        var dataServiceQuery = L.supermap.components.dataServiceQuery(dataserviceUrl, ['World:Countries']).addTo(map);
+        var dataServiceQuery = new L.supermap.Components.DataServiceQuery(dataserviceUrl, ['World:Countries']).addTo(map);
     </script>
 </body>
 

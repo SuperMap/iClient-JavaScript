@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import '../../libs/deck.gl/5.1.3/deck.gl';
 import { GraphicLayer } from '../../../src/mapboxgl/overlay/GraphicLayer';
+import { Graphic } from '../../../src/mapboxgl/overlay/Graphic';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('mapboxgl_GraphicLayer', () => {
@@ -12,15 +13,16 @@ describe('mapboxgl_GraphicLayer', () => {
     [-37.16, 40.05],
     [-38.16, 39.05]
   ];
+  let testDiv, map;
   function creatGraphicLayer() {
-    let testDiv, map, graphics = [], graphicLayer;
+    let graphics = [], graphicLayer;
     //构建数据
     for (let i = 0; i < coors.length; i++) {
       let lngLat = {
         lng: parseFloat(coors[i][0]),
         lat: parseFloat(coors[i][1])
       };
-      graphics.push(new mapboxgl.supermap.Graphic(lngLat));
+      graphics.push(new Graphic(lngLat));
       graphics[i].setId(i);
       graphics[i].setAttributes({ name: "graphic_" + i });
     }
@@ -34,7 +36,25 @@ describe('mapboxgl_GraphicLayer', () => {
     window.document.body.appendChild(testDiv);
     map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v9',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
       center: [13.413952, 52.531913],
       zoom: 16.000000000000004,
       pitch: 33.2
@@ -42,7 +62,7 @@ describe('mapboxgl_GraphicLayer', () => {
     graphicLayer = new GraphicLayer("graphicLayer", {
       graphics: graphics
     });
-    graphicLayer.onAdd(map);
+    graphicLayer.addTo(map);
     return graphicLayer
   }
   beforeEach(() => {
@@ -50,30 +70,35 @@ describe('mapboxgl_GraphicLayer', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
   });
   afterEach(() => {
+    if(testDiv){
+      document.body.removeChild(testDiv);
+      testDiv = null;
+    }
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
   afterAll(() => {
-    document.body.removeChild(document.getElementById('map'));
+    // document.body.removeChild(document.getElementById('map'));
+    map = null;
     // map.removeLayer("graphicLayer");
   });
 
   it('constructor', (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
-      expect(graphicLayer.deckGL).not.toBeNull();
+      expect(graphicLayer.renderer.deckGL).not.toBeNull();
       graphicLayer.remove();
       done();
-    }, 1000)
+    }, 0)
   });
 
   it('setVisibility', (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
       graphicLayer.setVisibility(false);
-      expect(graphicLayer.visibility).toBeFalsy();
+      expect(graphicLayer.renderer.visibility).toBeFalsy();
       graphicLayer.remove();
       done();
-    }, 1000)
+    }, 0)
   });
 
   it("getGraphicBy add getGraphicById", (done) => {
@@ -88,7 +113,7 @@ describe('mapboxgl_GraphicLayer', () => {
       graphicLayer.remove();
 
       done();
-    }, 1000)
+    }, 0)
   });
   it("getGraphicsByAttribute", (done) => {
     let graphicLayer = creatGraphicLayer();
@@ -98,30 +123,31 @@ describe('mapboxgl_GraphicLayer', () => {
       expect(graphic[0].getAttributes().name).toBe("graphic_1");
       graphicLayer.remove();
       done();
-    }, 1000);
+    }, 0);
   });
   it("removeGraphics", (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
       //删除单个
-      let deleteGraphic = graphicLayer.graphics[0];
-      expect(graphicLayer.graphics.length).toEqual(5);
+      const graphics = graphicLayer.renderer.graphics;
+      let deleteGraphic = graphics[0];
+      expect(graphics.length).toEqual(5);
       graphicLayer.removeGraphics(deleteGraphic);
-      expect(graphicLayer.graphics.length).toEqual(4);
+      expect(graphics.length).toEqual(4);
 
       //多个
-      deleteGraphic = [graphicLayer.graphics[1], graphicLayer.graphics[2]];
+      deleteGraphic = [graphics[1], graphics[2]];
       graphicLayer.removeGraphics(deleteGraphic);
-      expect(graphicLayer.graphics.length).toEqual(2);
+      expect(graphics.length).toEqual(2);
 
       //默认
       graphicLayer.removeGraphics();
-      expect(graphicLayer.graphics.length).toEqual(0);
+      expect(graphics.length).toEqual(0);
 
       graphicLayer.remove();
 
       done();
-    }, 1000);
+    }, 0);
 
   });
   it("getState", (done) => {
@@ -133,42 +159,44 @@ describe('mapboxgl_GraphicLayer', () => {
 
       graphicLayer.remove();
       done();
-    }, 1000);
+    }, 0);
   });
 
   it("setStyle", (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
-      expect(graphicLayer.color).toEqual([0, 0, 0, 255]);
+      const renderer = graphicLayer.renderer;
+      expect(renderer.color).toEqual([0, 0, 0, 255]);
       graphicLayer.setStyle({ color: "blue" });
-      expect(graphicLayer.color).toEqual("blue");
+      expect(renderer.color).toEqual("blue");
 
       graphicLayer.remove();
       done();
-    }, 4000);
+    }, 0);
   });
 
   it("addGraphics", (done) => {
     let graphicLayer = creatGraphicLayer();
     setTimeout(() => {
       graphicLayer.clear();
-      expect(graphicLayer.graphics.length).toEqual(0);
+      const renderer = graphicLayer.renderer;
+      expect(renderer.graphics.length).toEqual(0);
       let graphics = [];
       for (let i = 0; i < coors.length; i++) {
         let lngLat = {
           lng: parseFloat(coors[i][0]),
           lat: parseFloat(coors[i][1])
         };
-        graphics.push(new mapboxgl.supermap.Graphic(lngLat));
+        graphics.push(new Graphic(lngLat));
         graphics[i].setId(i);
         graphics[i].setAttributes({ name: "graphic_" + i });
       }
       graphicLayer.addGraphics(graphics);
-      expect(graphicLayer.graphics.length).toEqual(5);
+      expect(renderer.graphics.length).toEqual(5);
 
       graphicLayer.remove();
       done();
-    }, 4000);
+    }, 0);
   });
 
   it("setGraphics", (done) => {
@@ -180,15 +208,26 @@ describe('mapboxgl_GraphicLayer', () => {
           lng: parseFloat(coors[i][0]),
           lat: parseFloat(coors[i][1])
         };
-        graphics.push(new mapboxgl.supermap.Graphic(lngLat));
+        graphics.push(new Graphic(lngLat));
         graphics[i].setId(i);
         graphics[i].setAttributes({ name: "graphic_" + i });
       }
       graphicLayer.setGraphics(graphics);
-      expect(graphicLayer.graphics.length).toEqual(5);
+      expect(graphicLayer.renderer.graphics.length).toEqual(5);
 
       graphicLayer.remove();
       done();
-    }, 4000);
+    }, 0);
+  });
+
+  it("moveTo onRemove render", (done) => {
+    let graphicLayer = creatGraphicLayer();
+    setTimeout(() => {
+      graphicLayer.render();
+      graphicLayer.moveTo('test', true);
+      graphicLayer.onRemove();
+      expect(graphicLayer.renderer.graphics.length).toEqual(0);
+      done();
+    }, 0);
   });
 });

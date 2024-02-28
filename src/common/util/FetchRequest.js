@@ -1,52 +1,315 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import 'promise-polyfill/dist/polyfill';
 import 'fetch-ie8';
 import fetchJsonp from 'fetch-jsonp';
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 
 let fetch = window.fetch;
 export var setFetch = function (newFetch) {
     fetch = newFetch;
 }
+export var RequestJSONPPromise = {
+  limitLength: 1500,
+  queryKeys: [],
+  queryValues: [],
+  supermap_callbacks: {},
+  addQueryStrings: function (values) {
+      var me = this;
+      for (var key in values) {
+          me.queryKeys.push(key);
+          if (typeof values[key] !== 'string') {
+              values[key] = Util.toJSON(values[key]);
+          }
+          var tempValue = encodeURIComponent(values[key]);
+          me.queryValues.push(tempValue);
+      }
+  },
+  issue: function (config) {
+      var me = this,
+          uid = me.getUid(),
+          url = config.url,
+          splitQuestUrl = [];
+
+      // me.addQueryStrings({
+      //     callback: "RequestJSONPPromise.supermap_callbacks[" + uid + "]"
+      // });
+      var sectionURL = url,
+          keysCount = 0; //此次sectionURL中有多少个key
+      var length = me.queryKeys ? me.queryKeys.length : 0;
+      for (var i = 0; i < length; i++) {
+          if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
+              //+2 for ("&"or"?")and"="
+              if (keysCount == 0) {
+                  return false;
+              }
+              splitQuestUrl.push(sectionURL);
+              sectionURL = url;
+              keysCount = 0;
+              i--;
+          } else {
+              if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
+                  var leftValue = me.queryValues[i];
+                  while (leftValue.length > 0) {
+                      var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
+                      if (sectionURL.indexOf('?') > -1) {
+                          sectionURL += '&';
+                      } else {
+                          sectionURL += '?';
+                      }
+                      var tempLeftValue = leftValue.substring(0, leftLength);
+                      //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
+                      if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
+                          leftLength -= 1;
+                          tempLeftValue = leftValue.substring(0, leftLength);
+                      } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
+                          leftLength -= 2;
+                          tempLeftValue = leftValue.substring(0, leftLength);
+                      }
+
+                      sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
+                      leftValue = leftValue.substring(leftLength);
+                      if (tempLeftValue.length > 0) {
+                          splitQuestUrl.push(sectionURL);
+                          sectionURL = url;
+                          keysCount = 0;
+                      }
+                  }
+              } else {
+                  keysCount++;
+                  if (sectionURL.indexOf('?') > -1) {
+                      sectionURL += '&';
+                  } else {
+                      sectionURL += '?';
+                  }
+                  sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
+              }
+          }
+      }
+      splitQuestUrl.push(sectionURL);
+      return me.send(
+          splitQuestUrl,
+          'SuperMapJSONPCallbacks_' + uid,
+          config && config.proxy
+      );
+  },
+
+  getUid: function () {
+      var uid = new Date().getTime(),
+          random = Math.floor(Math.random() * 1e17);
+      return uid * 1000 + random;
+  },
+
+  send: function (splitQuestUrl, callback, proxy) {
+      var len = splitQuestUrl.length;
+      if (len > 0) {
+         return new Promise((resolve) => {
+          var jsonpUserID = new Date().getTime();
+          for (var i = 0; i < len; i++) {
+              var url = splitQuestUrl[i];
+              if (url.indexOf('?') > -1) {
+                  url += '&';
+              } else {
+                  url += '?';
+              }
+              url += 'sectionCount=' + len;
+              url += '&sectionIndex=' + i;
+              url += '&jsonpUserID=' + jsonpUserID;
+              if (proxy) {
+                  url = decodeURIComponent(url);
+                  url = proxy + encodeURIComponent(url);
+              }
+              fetchJsonp(url, {
+                  jsonpCallbackFunction: callback,
+                  timeout: 30000
+              }).then((result) => {
+                resolve(result.json());
+              });
+          }
+         })
+      }
+  },
+
+  GET: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings(config.params);
+      return me.issue(config);
+  },
+
+  POST: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  },
+
+  PUT: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  },
+  DELETE: function (config) {
+      var me = this;
+      me.queryKeys.length = 0;
+      me.queryValues.length = 0;
+      me.addQueryStrings({
+          requestEntity: config.data
+      });
+      return me.issue(config);
+  }
+};
+
+var CORS;
+var RequestTimeout;
 /**
- * @function SuperMap.setCORS
+ * @function setCORS
  * @description 设置是否允许跨域请求，全局配置，优先级低于 service 下的 crossOring 参数。
+ * @category BaseTypes Util
  * @param {boolean} cors - 是否允许跨域请求。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   {namespace}.setCORS(cors);
+ *
+ *   // 弃用的写法
+ *   SuperMap.setCORS(cors);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { setCORS } from '{npm}';
+ *
+ * setCORS(cors);
+ * ```
  */
-export var setCORS = SuperMap.setCORS = function (cors) {
-    SuperMap.CORS = cors;
+export var setCORS = function (cors) {
+    CORS = cors;
 }
 /**
- * @function SuperMap.isCORS
+ * @function isCORS
  * @description 是是否允许跨域请求。
+ * @category BaseTypes Util
  * @returns {boolean} 是否允许跨域请求。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.isCORS();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.isCORS();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { isCORS } from '{npm}';
+ *
+ * const result = isCORS();
+ * ```
  */
-export var isCORS = SuperMap.isCORS = function () {
-    if (SuperMap.CORS != undefined) {
-        return SuperMap.CORS;
+export var isCORS = function () {
+    if (CORS != undefined) {
+        return CORS;
     }
     return window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
 }
 /**
- * @function SuperMap.setRequestTimeout
+ * @function setRequestTimeout
+ * @category BaseTypes Util
  * @description 设置请求超时时间。
- * @param {number} [timeout=45] - 请求超时时间，单位秒。
+ * @param {number} [timeout=45] - 请求超时时间，单位为秒。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cdn}"></script>
+  <script>
+    {namespace}.setRequestTimeout(timeout);
+
+    // 弃用的写法
+    SuperMap.setRequestTimeout(timeout);
+
+  </script>
+
+  // ES6 Import
+  import { setRequestTimeout } from '{npm}';
+
+  setRequestTimeout(timeout);
+ * ```
  */
-export var setRequestTimeout = SuperMap.setRequestTimeout = function (timeout) {
-    return SuperMap.RequestTimeout = timeout;
+export var setRequestTimeout = function (timeout) {
+    return RequestTimeout = timeout;
 }
 /**
- * @function SuperMap.getRequestTimeout
- * @description 获取请求超时时间。
+ * @function getRequestTimeout
+ * @category BaseTypes Util
+ * @description 获取请求超时的时间。
  * @returns {number} 请求超时时间。
+ * @usage
+ * ```
+ * // 浏览器
+  <script type="text/javascript" src="{cdn}"></script>
+  <script>
+    {namespace}.getRequestTimeout();
+
+    // 弃用的写法
+    SuperMap.getRequestTimeout();
+
+  </script>
+
+  // ES6 Import
+  import { getRequestTimeout } from '{npm}';
+
+  getRequestTimeout();
+ * ```
  */
-export var getRequestTimeout = SuperMap.getRequestTimeout = function () {
-    return SuperMap.RequestTimeout || 45000;
+export var getRequestTimeout = function () {
+    return RequestTimeout || 45000;
 }
-export var FetchRequest = SuperMap.FetchRequest = {
+
+/**
+ * @name FetchRequest
+ * @namespace
+ * @category BaseTypes Util
+ * @description 获取请求。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.FetchRequest.commit(method, url, params, options);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { FetchRequest } from '{npm}';
+ *
+ * const result = FetchRequest.commit(method, url, params, options);
+ *
+ * ```
+ */
+export var FetchRequest = {
+    /**
+     * @function FetchRequest.commit
+     * @description commit 请求。
+     * @param {string} method - 请求方法。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -62,6 +325,13 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 return this.get(url, params, options);
         }
     },
+    /**
+     * @function FetchRequest.supportDirectRequest
+     * @description supportDirectRequest 请求。
+     * @param {string} url - 请求地址。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {boolean} 是否允许跨域请求。
+     */
     supportDirectRequest: function (url, options) {
         if (Util.isInTheSameDomain(url)) {
             return true;
@@ -72,6 +342,14 @@ export var FetchRequest = SuperMap.FetchRequest = {
             return isCORS() || options.proxy;
         }
     },
+    /**
+     * @function FetchRequest.get
+     * @description get 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     get: function (url, params, options) {
         options = options || {};
         var type = 'GET';
@@ -83,15 +361,22 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url,
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.GET(config);
+            return RequestJSONPPromise.GET(config);
         }
         if (!this.urlIsLong(url)) {
             return this._fetch(url, params, options, type);
         } else {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
         }
     },
-
+    /**
+     * @function FetchRequest.delete
+     * @description delete 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options -请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     delete: function (url, params, options) {
         options = options || {};
         var type = 'DELETE';
@@ -103,26 +388,42 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=DELETE",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.DELETE(config);
+            return RequestJSONPPromise.DELETE(config);
         }
         if (this.urlIsLong(url)) {
-            return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+            return this._postSimulatie(type, url.substring(0, url.indexOf('?')), params, options);
         }
         return this._fetch(url, params, options, type);
     },
+    /**
+     * @function FetchRequest.post
+     * @description post 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     post: function (url, params, options) {
         options = options || {};
+        url = this._processUrl(url, options);
         if (!this.supportDirectRequest(url, options)) {
             url = url.replace('.json', '.jsonp');
             var config = {
-                url: url += "&_method=POST",
+                url: Util.urlAppend(url, "_method=POST"),
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.POST(config);
+            return RequestJSONPPromise.POST(config);
         }
-        return this._fetch(this._processUrl(url, options), params, options, 'POST');
+        return this._fetch(url, params, options, 'POST');
     },
-
+    /**
+     * @function FetchRequest.put
+     * @description put 请求。
+     * @param {string} url - 请求地址。
+     * @param {string} params - 请求参数。
+     * @param {Object} options - 请求的配置属性。
+     * @returns {Promise} Promise 对象。
+     */
     put: function (url, params, options) {
         options = options || {};
         url = this._processUrl(url, options);
@@ -132,10 +433,16 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 url: url += "&_method=PUT",
                 data: params
             };
-            return SuperMap.Util.RequestJSONPPromise.PUT(config);
+            return RequestJSONPPromise.PUT(config);
         }
         return this._fetch(url, params, options, 'PUT');
     },
+    /**
+     * @function FetchRequest.urlIsLong
+     * @description URL 的字节长度是否太长。
+     * @param {string} url - 请求地址。
+     * @returns {boolean} URL 的字节长度是否太长。
+     */
     urlIsLong: function (url) {
         //当前url的字节长度。
         var totalLength = 0,
@@ -271,164 +578,3 @@ export var FetchRequest = SuperMap.FetchRequest = {
         return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
     }
 }
-SuperMap.Util.RequestJSONPPromise = {
-    limitLength: 1500,
-    queryKeys: [],
-    queryValues: [],
-    supermap_callbacks: {},
-    addQueryStrings: function (values) {
-        var me = this;
-        for (var key in values) {
-            me.queryKeys.push(key);
-            if (typeof values[key] !== 'string') {
-                values[key] = SuperMap.Util.toJSON(values[key]);
-            }
-            var tempValue = encodeURIComponent(values[key]);
-            me.queryValues.push(tempValue);
-        }
-    },
-    issue: function (config) {
-        var me = this,
-            uid = me.getUid(),
-            url = config.url,
-            splitQuestUrl = [];
-        var p = new Promise(function (resolve) {
-            me.supermap_callbacks[uid] = function (response) {
-                delete me.supermap_callbacks[uid];
-                resolve(response);
-            };
-        });
-
-        // me.addQueryStrings({
-        //     callback: "SuperMap.Util.RequestJSONPPromise.supermap_callbacks[" + uid + "]"
-        // });
-        var sectionURL = url,
-            keysCount = 0; //此次sectionURL中有多少个key
-        var length = me.queryKeys ? me.queryKeys.length : 0;
-        for (var i = 0; i < length; i++) {
-            if (sectionURL.length + me.queryKeys[i].length + 2 >= me.limitLength) {
-                //+2 for ("&"or"?")and"="
-                if (keysCount == 0) {
-                    return false;
-                }
-                splitQuestUrl.push(sectionURL);
-                sectionURL = url;
-                keysCount = 0;
-                i--;
-            } else {
-                if (sectionURL.length + me.queryKeys[i].length + 2 + me.queryValues[i].length > me.limitLength) {
-                    var leftValue = me.queryValues[i];
-                    while (leftValue.length > 0) {
-                        var leftLength = me.limitLength - sectionURL.length - me.queryKeys[i].length - 2; //+2 for ("&"or"?")and"="
-                        if (sectionURL.indexOf('?') > -1) {
-                            sectionURL += '&';
-                        } else {
-                            sectionURL += '?';
-                        }
-                        var tempLeftValue = leftValue.substring(0, leftLength);
-                        //避免 截断sectionURL时，将类似于%22这样的符号截成两半，从而导致服务端组装sectionURL时发生错误
-                        if (tempLeftValue.substring(leftLength - 1, leftLength) === '%') {
-                            leftLength -= 1;
-                            tempLeftValue = leftValue.substring(0, leftLength);
-                        } else if (tempLeftValue.substring(leftLength - 2, leftLength - 1) === '%') {
-                            leftLength -= 2;
-                            tempLeftValue = leftValue.substring(0, leftLength);
-                        }
-
-                        sectionURL += me.queryKeys[i] + '=' + tempLeftValue;
-                        leftValue = leftValue.substring(leftLength);
-                        if (tempLeftValue.length > 0) {
-                            splitQuestUrl.push(sectionURL);
-                            sectionURL = url;
-                            keysCount = 0;
-                        }
-                    }
-                } else {
-                    keysCount++;
-                    if (sectionURL.indexOf('?') > -1) {
-                        sectionURL += '&';
-                    } else {
-                        sectionURL += '?';
-                    }
-                    sectionURL += me.queryKeys[i] + '=' + me.queryValues[i];
-                }
-            }
-        }
-        splitQuestUrl.push(sectionURL);
-        me.send(
-            splitQuestUrl,
-            'SuperMap.Util.RequestJSONPPromise.supermap_callbacks[' + uid + ']',
-            config && config.proxy
-        );
-        return p;
-    },
-
-    getUid: function () {
-        var uid = new Date().getTime(),
-            random = Math.floor(Math.random() * 1e17);
-        return uid * 1000 + random;
-    },
-
-    send: function (splitQuestUrl, callback, proxy) {
-        var len = splitQuestUrl.length;
-        if (len > 0) {
-            var jsonpUserID = new Date().getTime();
-            for (var i = 0; i < len; i++) {
-                var url = splitQuestUrl[i];
-                if (url.indexOf('?') > -1) {
-                    url += '&';
-                } else {
-                    url += '?';
-                }
-                url += 'sectionCount=' + len;
-                url += '&sectionIndex=' + i;
-                url += '&jsonpUserID=' + jsonpUserID;
-                if (proxy) {
-                    url = decodeURIComponent(url);
-                    url = proxy + encodeURIComponent(url);
-                }
-                fetchJsonp(url, {
-                    jsonpCallbackFunction: callback,
-                    timeout: 30000
-                });
-            }
-        }
-    },
-
-    GET: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings(config.params);
-        return me.issue(config);
-    },
-
-    POST: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings({
-            requestEntity: config.data
-        });
-        return me.issue(config);
-    },
-
-    PUT: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings({
-            requestEntity: config.data
-        });
-        return me.issue(config);
-    },
-    DELETE: function (config) {
-        var me = this;
-        me.queryKeys.length = 0;
-        me.queryValues.length = 0;
-        me.addQueryStrings({
-            requestEntity: config.data
-        });
-        return me.issue(config);
-    }
-};

@@ -1,7 +1,6 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from "../SuperMap";
 import { FetchRequest } from "../util/FetchRequest";
 import { IPortalServiceBase } from "./iPortalServiceBase";
 import { IPortalQueryParam } from "./iPortalQueryParam";
@@ -10,13 +9,17 @@ import { IPortalResource } from "./iPortalResource";
 import { IPortalShareParam } from "./iPortalShareParam";
 
 /**
- * @class SuperMap.iPortal
+ * @class IPortal
+ * @aliasclass iPortal
+ * @deprecatedclass SuperMap.iPortal
  * @classdesc 对接 SuperMap iPortal 基础服务。
- * @category iPortal/Online
- * @extends {SuperMap.iPortalServiceBase}
- * @param {string} iportalUrl - 地址。
- * @param {Object} options - 参数。
+ * @category iPortal/Online Resources
+ * @modulecategory Services
+ * @extends {IPortalServiceBase}
+ * @param {string} iportalUrl - 服务地址。
+ * @param {Object} options - 可选参数。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+ * @usage
  */
 export class IPortal extends IPortalServiceBase {
     constructor(iportalUrl, options) {
@@ -27,20 +30,20 @@ export class IPortal extends IPortalServiceBase {
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.load
+     * @function IPortal.prototype.load
      * @description 加载页面。
-     * @returns {Promise} 返回包含 iportal web 资源信息的 Promise 对象。
+     * @returns {Promise} 包含 SuperMap iPortal Web 资源信息的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.iportalUrl + "/web");
     }
 
     /**
-     * @function SuperMap.iPortal.prototype.queryResources
+     * @function IPortal.prototype.queryResources
      * @description 查询资源。
      * @version 10.0.1
-     * @param {SuperMap.iPortalQueryParam} queryParams - 查询参数。
-     * @returns {Promise} 返回包含所有资源结果的 Promise 对象。
+     * @param {IPortalQueryParam} queryParams - 查询参数。
+     * @returns {Promise} 包含所有资源结果的 Promise 对象。
      */
     queryResources(queryParams) {
         if (!(queryParams instanceof IPortalQueryParam)) {
@@ -55,7 +58,7 @@ export class IPortal extends IPortalServiceBase {
         queryParams.t = new Date().getTime();
         return this.request("GET", resourceUrl, queryParams).then(function(result) {
             var content = [];
-            result.content.forEach(function(item) {
+            (result.content || []).forEach(function(item) {
                 content.push(new IPortalResource(me.iportalUrl, item));
             });
             let queryResult = new IPortalQueryResult();
@@ -70,11 +73,11 @@ export class IPortal extends IPortalServiceBase {
 
 
     /**
-     * @function SuperMap.iPortal.prototype.updateResourcesShareSetting
+     * @function IPortal.prototype.updateResourcesShareSetting
      * @description 更新共享设置。
      * @version 10.0.1
-     * @param {SuperMap.iPortalShareParam} shareParams - 共享的参数。
-     * @returns {Promise} 返回包含共享资源结果的 Promise 对象。
+     * @param {IPortalShareParam} shareParams - 共享的参数。
+     * @returns {Promise} 包含共享资源结果的 Promise 对象。
      */
     updateResourcesShareSetting(shareParams) {
         if (!(shareParams instanceof IPortalShareParam)) {
@@ -98,5 +101,3 @@ export class IPortal extends IPortalServiceBase {
         });
     }
 }
-
-SuperMap.iPortal = IPortal;

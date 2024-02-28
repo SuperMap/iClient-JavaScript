@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [4503.6240321526, -3861.911472192499],
                 zoom: 1,
@@ -43,7 +43,7 @@
     });
 
     function thiessenAnalystProcess() {
-        var dThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
+        var dThiessenAnalystParameters = new ol.supermap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
         new ol.supermap.SpatialAnalystService(serviceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {

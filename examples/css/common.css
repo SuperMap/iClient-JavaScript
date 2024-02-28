@@ -23,12 +23,6 @@ a {
     cursor: pointer;
 }
 
-@media (max-width: 767px) {
-    .main-sidebar,
-    .left-side {
-        padding-top: 50px;
-    }
-}
 
 @media (max-width: 768px) {
     .sidebar-mini.sidebar-collapse .main-header .navbar {
@@ -54,7 +48,7 @@ a {
 .skin-blue .wrapper,
 .skin-blue .main-sidebar,
 .skin-blue .left-side {
-    background-color: #ffffff;
+    background-color: var(--background-color);
 }
 
 .main-header .navbar {
@@ -64,18 +58,18 @@ a {
     margin-bottom: 0;
     margin-left: 0;
     border: none;
-    min-height: 60px;
+    min-height: 72px;
     border-radius: 0;
 }
 
 .navbar-header {
-    margin: 0 16px;
+  margin: 0 40px;
+  float: left;
 }
 
 .navbar-brand {
-    height: 60px;
-    line-height: 50px;
-    padding: 0;
+  height: 72px;
+  padding: 0;
 }
 
 .main-header .sidebar-toggle {
@@ -88,26 +82,18 @@ a {
 
 .navbar-nav > .nav-dropdown-menu > .dropdown-menu {
     width: 150px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    padding: 0 0 0 0;
+    box-shadow: 0px 6px 18px 0px var(--dropdown-shadow-color);
+    padding: 4px 0;
     margin: 0;
     right: 16px;
     top: 100%;
 }
 
 .main-header .navbar-custom-menu {
-    padding: 0;
-    margin: 0 16px;
+  float: left;
+  padding: 0;
 }
 
-@media screen and (min-width: 1221px) and (max-width: 1366px) {
-    .navbar-header, .main-header .navbar-custom-menu {
-        margin: 0 4px;
-    }
-    .skin-blue .main-header .navbar .nav>li>a {
-        padding: 12.5px 6px;
-    }
-}
 
 *,
 *:after,
@@ -119,12 +105,12 @@ a {
 
 .main-sidebar,
 .left-side {
-    padding-top: 60px;
+    padding-top: 72px;
 }
 
 /*重写AdmineLTE 的部分效果 end*/
 .skin-blue .main-header .navbar {
-    background-color: #212121;
+  background-color: var(--header-background-color);
 }
 /*footer */
 
@@ -135,22 +121,25 @@ a {
 }
 
 .icl-footer {
-    margin-top: 100px;
     text-align: center;
     bottom: 0;
     width: 100%;
 }
 
 .icl-copyright {
-    font-size: 14px !important;
+    font-size: 12px !important;
     text-align: center;
-    height: 54px;
-    line-height: 54px;
-    border-top: 1px solid #ddd;
+    color: rgba(0,0,0,0.45);
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px -1px 4px 0px rgba(0,0,0,0.06);
 }
-
-.icl-contact {
-    padding: 10px 0;
+.icl-copyright span{
+  display: inline-block;
+  height: 16px;
+  line-height: 16px;
 }
 
 .contact-main {

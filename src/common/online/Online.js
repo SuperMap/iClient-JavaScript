@@ -1,22 +1,24 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {SecurityManager} from '../security/SecurityManager';
 import {OnlineData} from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class SuperMap.Online
+ * @class Online
+ * @deprecatedclass SuperMap.Online
  * @classdesc 对接 SuperMap Online 所有基础服务。
- * @category iPortal/Online
+ * @category iPortal/Online Resources
+ * @modulecategory Services
  * @example
- * var online=new SuperMap.Online();
+ * var online=new Online();
  * var services = online.queryDatas(param);
  * service.then(function(services){
  *      var service= services[0];
  *      service.updateDataInfo();
  * })
+ * @usage
  */
 export class Online {
 
@@ -33,9 +35,9 @@ export class Online {
     }
 
     /**
-     * @function SuperMap.Online.prototype.load
+     * @function Online.prototype.load
      * @description 加载 online，验证 online 是否可用。
-     * @returns {Promise} 返回包含网络请求结果的 Promise 对象。
+     * @returns {Promise} 包含网络请求结果的 Promise 对象。
      */
     load() {
         return FetchRequest.get(this.rootUrl).then(function (response) {
@@ -44,7 +46,7 @@ export class Online {
     }
 
     /**
-     * @function SuperMap.Online.prototype.login
+     * @function Online.prototype.login
      * @description 登录Online
      */
     login() {
@@ -52,10 +54,10 @@ export class Online {
     }
 
     /**
-     * @function SuperMap.Online.prototype.queryDatas
+     * @function Online.prototype.queryDatas
      * @description 查询 Online “我的内容” 下 “我的数据” 服务（需要登录状态获取），并返回可操作的服务对象。
-     * @param {SuperMap.OnlineQueryDatasParameter} parameter - myDatas 服务资源查询参数。
-     * @returns {Promise} 返回包含所有数据服务信息的 Promise 对象。
+     * @param {OnlineQueryDatasParameter} parameter - myDatas 服务资源查询参数。
+     * @returns {Promise} 包含所有数据服务信息的 Promise 对象。
      */
     queryDatas(parameter) {
         var me = this, url = me.mDatasUrl;
@@ -76,5 +78,3 @@ export class Online {
         });
     }
 }
-
-SuperMap.Online = Online;

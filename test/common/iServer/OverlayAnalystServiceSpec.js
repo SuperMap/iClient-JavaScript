@@ -10,13 +10,8 @@ import {FetchRequest} from '../../../src/common/util/FetchRequest';
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var initOverlayAnalystService_Register = (url,OverlayAnalystServiceFailed,OverlayAnalystServiceCompleted) => {
-    return new OverlayAnalystService(url, {
-        eventListeners: {
-            'processFailed': OverlayAnalystServiceFailed,
-            'processCompleted': OverlayAnalystServiceCompleted
-        }
-    });
+var initOverlayAnalystService_Register = (url) => {
+    return new OverlayAnalystService(url);
 };
 describe('OverlayAnalystService', () => {
     var originalTimeout;
@@ -54,9 +49,6 @@ describe('OverlayAnalystService', () => {
                 var overlayResult = analystEventArgsSystem.result;
                 expect(overlayResult).not.toBeNull();
                 overlayServiceByDatasets.destroy();
-                expect(overlayServiceByDatasets.EVENT_TYPES).toBeNull();
-                expect(overlayServiceByDatasets.eventListeners).toBeNull();
-                expect(overlayServiceByDatasets.events).toBeNull();
                 dsOverlayAnalystParameters.destroy();
                 done();
             } catch (exception) {
@@ -67,10 +59,7 @@ describe('OverlayAnalystService', () => {
                 done();
             }
         };
-        var OverlayAnalystServiceFailed = (eventArgs) => {
-            serviceFailedEventArgsSystem = eventArgs;
-        };
-        var overlayServiceByDatasets = initOverlayAnalystService_Register(spatialAnalystURL,OverlayAnalystServiceFailed,OverlayAnalystServiceCompleted);
+        var overlayServiceByDatasets = initOverlayAnalystService_Register(spatialAnalystURL);
         expect(overlayServiceByDatasets).not.toBeNull();
         expect(overlayServiceByDatasets.url).toEqual(spatialAnalystURL);
         var dsOverlayAnalystParameters = new DatasetOverlayAnalystParameters();
@@ -85,8 +74,7 @@ describe('OverlayAnalystService', () => {
             expect(paramsObj.operation).toBe("UPDATE");
             return Promise.resolve(new Response(overlayEscapedJson));
         });
-        overlayServiceByDatasets.events.on({"processCompleted": OverlayAnalystServiceCompleted});
-        overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
+        overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters, OverlayAnalystServiceCompleted);
     });
 
     it('fail:processAsync_byDatasets', (done) => {
@@ -110,7 +98,7 @@ describe('OverlayAnalystService', () => {
                 done();
             }
         };
-        var overlayServiceByDatasets = initOverlayAnalystService_Register(spatialAnalystURL,OverlayAnalystServiceFailed,OverlayAnalystServiceCompleted);
+        var overlayServiceByDatasets = initOverlayAnalystService_Register(spatialAnalystURL);
         expect(overlayServiceByDatasets).not.toBeNull();
         var dsOverlayAnalystParameters = new DatasetOverlayAnalystParameters();
         dsOverlayAnalystParameters.sourceDataset = "Landu@Jingjin";
@@ -124,8 +112,7 @@ describe('OverlayAnalystService', () => {
             expect(paramsObj.operation).toBe("UPDATE");
             return Promise.resolve(new Response(`{"succeed":false,"error":{"code":400,"errorMsg":"数据集Landu@Jingjin不存在"}}`));
         });
-        overlayServiceByDatasets.events.on({"processFailed": OverlayAnalystServiceFailed});
-        overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
+        overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters, OverlayAnalystServiceFailed);
     });
 
     it('processAsync_byGeometry', (done) => {
@@ -146,10 +133,7 @@ describe('OverlayAnalystService', () => {
                 done();
             }
         };
-        var OverlayAnalystServiceFailed = (eventArgs) => {
-            serviceFailedEventArgsSystem = eventArgs;
-        };
-        var overlayServiceByDatasets = initOverlayAnalystService_Register(spatialAnalystURL,OverlayAnalystServiceFailed,OverlayAnalystServiceCompleted);
+        var overlayServiceByDatasets = initOverlayAnalystService_Register(spatialAnalystURL);
         expect(overlayServiceByDatasets).not.toBeNull();
         var points = [new Point(47.9909960608, 382.4873382105),
             new Point(47.9909960608, 437.8615644344),
@@ -172,7 +156,6 @@ describe('OverlayAnalystService', () => {
             expect(paramsObj.operation).toBe("CLIP");
             return Promise.resolve(new Response(`{"image":null,"resultGeometry":{"center":{"x":170.3545301069,"y":395.31795160385},"parts":[2],"style":null,"prjCoordSys":null,"id":0,"type":"LINE","partTopo":null,"points":[{"x":170.3545301069,"y":408.1485649972},{"x":170.3545301069,"y":382.4873382105}]},"succeed":true,"message":null}`));
         });
-        overlayServiceByDatasets.events.on({"processCompleted": OverlayAnalystServiceCompleted});
-        overlayServiceByDatasets.processAsync(geOverlayAnalystParameters);
+        overlayServiceByDatasets.processAsync(geOverlayAnalystParameters, OverlayAnalystServiceCompleted);
     });
 });

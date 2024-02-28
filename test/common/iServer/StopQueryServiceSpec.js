@@ -3,13 +3,8 @@ import {StopQueryParameters} from '../../../src/common/iServer/StopQueryParamete
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var stopQueryServiceEventArgsSystem = null, serviceFailedEventArgsSystem = null;
-var initStopQueryService = (url,succeed,failed) => {
-    return new StopQueryService(url, {
-        eventListeners: {
-            processCompleted: succeed,
-            processFailed: failed
-        }
-    });
+var initStopQueryService = (url) => {
+    return new StopQueryService(url);
 };
 
 describe('StopQueryService', () => {
@@ -45,11 +40,8 @@ describe('StopQueryService', () => {
         var succeed = (event) => {
             flag=true;
         };
-        var failed = (event) => {
-            flag=true;
-        };
-        var stopQueryService = initStopQueryService(trafficTransferURL,succeed,failed);
-        stopQueryService.processAsync();
+        var stopQueryService = initStopQueryService(trafficTransferURL);
+        stopQueryService.processAsync(succeed);
         expect(flag).toBeFalsy();
     });
 
@@ -61,8 +53,6 @@ describe('StopQueryService', () => {
                 expect(stopQueryServiceEventArgsSystem.result).not.toBeNull();
                 expect(stopQueryServiceEventArgsSystem.result[0].position).not.toBeNull();
                 stopQueryService.destroy();
-                expect(stopQueryService.eventListeners).toBeNull();
-                expect(stopQueryService.events).toBeNull();
                 stopQueryServiceParams.destroy();
                 done();
             } catch (exception) {
@@ -73,10 +63,7 @@ describe('StopQueryService', () => {
                 done();
             }
         };
-        var failed = (event) => {
-            serviceFailedEventArgsSystem = event;
-        };
-        var stopQueryService = initStopQueryService(trafficTransferURL,succeed,failed);
+        var stopQueryService = initStopQueryService(trafficTransferURL);
         var stopQueryServiceParams = new StopQueryParameters({
             keyWord: '人民',
             returnPosition: true
@@ -85,7 +72,7 @@ describe('StopQueryService', () => {
             expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":{"x":5308.614037099708,"y":-3935.573639156803}}]`));
         });
-        stopQueryService.processAsync(stopQueryServiceParams);
+        stopQueryService.processAsync(stopQueryServiceParams, succeed);
     });
 
     it('success:processAsync_returnPosition:false', (done) => {
@@ -108,11 +95,7 @@ describe('StopQueryService', () => {
                 done();
             }
         };
-        var failed = (event) => {
-            serviceFailedEventArgsSystem = event;
-
-        };
-        var stopQueryService = initStopQueryService(trafficTransferURL,succeed,failed);
+        var stopQueryService = initStopQueryService(trafficTransferURL);
         var stopQueryServiceParams = new StopQueryParameters({
             keyWord: '人民',
             returnPosition: false
@@ -121,7 +104,7 @@ describe('StopQueryService', () => {
             expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
         });
-        stopQueryService.processAsync(stopQueryServiceParams);
+        stopQueryService.processAsync(stopQueryServiceParams, succeed);
     })
     it('success:processAsync_customQueryParam', (done) => {
         var trafficTransferURL = GlobeParameter.trafficTransferURL;
@@ -139,11 +122,7 @@ describe('StopQueryService', () => {
                 done();
             }
         };
-        var failed = (event) => {
-            serviceFailedEventArgsSystem = event;
-
-        };
-        var stopQueryService = initStopQueryService(trafficTransferURL + '?key=123',succeed,failed);
+        var stopQueryService = initStopQueryService(trafficTransferURL + '?key=123');
         var stopQueryServiceParams = new StopQueryParameters({
             keyWord: '人民',
             returnPosition: false
@@ -152,6 +131,6 @@ describe('StopQueryService', () => {
             expect(testUrl).toBe(trafficTransferURL+"/stops/keyword/人民?key=123");
             return Promise.resolve(new Response(`[{"name":"人民广场","alias":null,"stopID":164,"id":164,"position":null}]`));
         });
-        stopQueryService.processAsync(stopQueryServiceParams);
+        stopQueryService.processAsync(stopQueryServiceParams, succeed);
     })
 });

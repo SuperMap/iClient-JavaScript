@@ -5,19 +5,10 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = "http://supermap:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
 var serviceFailedEventArgsSystem = null, serviceCompletedEventArgsSystem = null;
 var initBurstPipelineAnalystService = () => {
-    return new BurstPipelineAnalystService(url, options);
-};
-var analyzeFailed = (serviceFailedEventArgs) => {
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+    return new BurstPipelineAnalystService(url);
 };
 var analyzeCompleted = (analyseEventArgs) => {
     serviceCompletedEventArgsSystem = analyseEventArgs;
-};
-var options = {
-    eventListeners: {
-        "processCompleted": analyzeCompleted,
-        'processFailed': analyzeFailed
-    }
 };
 
 describe('BurstPipelineAnalystService', () => {
@@ -25,7 +16,6 @@ describe('BurstPipelineAnalystService', () => {
     beforeEach(() => {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        serviceFailedEventArgsSystem = null;
         serviceCompletedEventArgsSystem = null;
     });
     afterEach(() => {
@@ -47,7 +37,6 @@ describe('BurstPipelineAnalystService', () => {
 
     it('constructor, destroy', () => {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
-        burstPipelineAnalystService.events.on({ "processCompleted": analyzeCompleted });
         var burstPipelineAnalystParams = new BurstPipelineAnalystParameters();
         burstPipelineAnalystParams.edgeID = 124;
         burstPipelineAnalystParams.isUncertainDirectionValid = true;
@@ -56,8 +45,6 @@ describe('BurstPipelineAnalystService', () => {
         expect(burstPipelineAnalystParams.nodeID).toBeNull();
         expect(burstPipelineAnalystParams.isUncertainDirectionValid).toBeTruthy();
         burstPipelineAnalystService.destroy();
-        expect(burstPipelineAnalystService.EVENT_TYPES).toBeNull();
-        expect(burstPipelineAnalystService.events).toBeNull();
         burstPipelineAnalystParams.destroy();
         expect(burstPipelineAnalystParams.sourceNodeIDs).toBeNull();
         expect(burstPipelineAnalystParams.edgeID).toBeNull();
@@ -74,14 +61,11 @@ describe('BurstPipelineAnalystService', () => {
             expect(serviceFailedEventArgsSystem).toBeNull();
             burstPipelineAnalystService.destroy();
             done();
-        }, 1000);
+        }, 0);
     });
 
     //正确返回结果
     it('processAsync_success', (done) => {
-        var analyzeFailed = (serviceFailedEventArgs) => {
-            serviceFailedEventArgsSystem = serviceFailedEventArgs;
-        };
         var analyzeCompleted = (analyseEventArgs) => {
             serviceCompletedEventArgsSystem = analyseEventArgs;
             var analystResult = serviceCompletedEventArgsSystem.result;
@@ -95,13 +79,7 @@ describe('BurstPipelineAnalystService', () => {
             burstPipelineAnalystParams.destroy();
             done();
         };
-        var options = {
-            eventListeners: {
-                "processCompleted": analyzeCompleted,
-                'processFailed': analyzeFailed
-            }
-        };
-        var burstPipelineAnalystService = new BurstPipelineAnalystService(url, options);
+        var burstPipelineAnalystService = new BurstPipelineAnalystService(url);
         var burstPipelineAnalystParams = new BurstPipelineAnalystParameters({
             sourceNodeIDs: [1, 2],
             edgeID: 3434,
@@ -119,6 +97,41 @@ describe('BurstPipelineAnalystService', () => {
             var escapedJson = "{\"normalNodes\":[],\"edges\":[1,2,3,4,5,6,7,8,9],\"criticalNodes\":[2]}";
             return Promise.resolve(new Response(escapedJson));
         });
-        burstPipelineAnalystService.processAsync(burstPipelineAnalystParams);
+        burstPipelineAnalystService.processAsync(burstPipelineAnalystParams, analyzeCompleted);
     });
+
+    it('processAsync_success promise', (done) => {
+      var analyzeCompleted = (analyseEventArgs) => {
+          serviceCompletedEventArgsSystem = analyseEventArgs;
+          var analystResult = serviceCompletedEventArgsSystem.result;
+          expect(analystResult).not.toBeNull();
+          expect(analystResult.succeed).toBeTruthy();
+          expect(analystResult.criticalNodes.length).toEqual(1);
+          expect(analystResult.criticalNodes[0]).toEqual(2);
+          expect(analystResult.edges.length).toEqual(9);
+          expect(analystResult.normalNodes.length).toEqual(0);
+          burstPipelineAnalystService.destroy();
+          burstPipelineAnalystParams.destroy();
+          done();
+      };
+      var burstPipelineAnalystService = new BurstPipelineAnalystService(url);
+      var burstPipelineAnalystParams = new BurstPipelineAnalystParameters({
+          sourceNodeIDs: [1, 2],
+          edgeID: 3434,
+          nodeID: null,
+          isUncertainDirectionValid: true
+      });
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('GET');
+          expect(testUrl).toBe(url + "/burstAnalyse");
+          expect(params.edgeID).toEqual(3434);
+          expect(params.isUncertainDirectionValid).toBe(true);
+          expect(params.sourceNodeIDs[0]).toEqual(1);
+          expect(params.sourceNodeIDs[1]).toEqual(2);
+          expect(options).not.toBeNull();
+          var escapedJson = "{\"normalNodes\":[],\"edges\":[1,2,3,4,5,6,7,8,9],\"criticalNodes\":[2]}";
+          return Promise.resolve(new Response(escapedJson));
+      });
+      burstPipelineAnalystService.processAsync(burstPipelineAnalystParams).then(analyzeCompleted);
+  });
 });

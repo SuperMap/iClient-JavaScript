@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -39,14 +39,14 @@
 
     function terrainCurvatureCalculationProcess() {
         //创建地形曲率计算参数实例
-        var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+        var terrainCurvatureCalculationParameters = new ol.supermap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: "CurvatureA",
             deleteExistResultDataset: true
         });
         //向iServer发起地形曲率计算请求
-        new ol.supermap.SpatialAnalystService(serviceUrl).terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).terrainCurvatureCalculate(terrainCurvatureCalculationParameters).then(function (serviceResult) {
             terrainCurvatureCalculationResult = serviceResult.result;
             //用栅格专题图展示分析结果
             showAnalysisResult_ThemeGridRange();
@@ -54,35 +54,35 @@
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
+            var themeGridRangeIteme1 = new ol.supermap.ThemeGridRangeItem({
                     start: -9000000,
                     end: -1000,
-                    color: new SuperMap.ServerColor(0, 0, 255)
+                    color: new ol.supermap.ServerColor(0, 0, 255)
                 }),
-                themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme2 = new ol.supermap.ThemeGridRangeItem({
                     start: -1000,
                     end: -1,
-                    color: new SuperMap.ServerColor(0, 0, 125)
+                    color: new ol.supermap.ServerColor(0, 0, 125)
                 }),
-                themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme3 = new ol.supermap.ThemeGridRangeItem({
                     start: -1,
                     end: 1,
-                    color: new SuperMap.ServerColor(0, 125, 125)
+                    color: new ol.supermap.ServerColor(0, 125, 125)
                 }),
-                themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme4 = new ol.supermap.ThemeGridRangeItem({
                     start: 1,
                     end: 1000,
-                    color: new SuperMap.ServerColor(0, 125, 0)
+                    color: new ol.supermap.ServerColor(0, 125, 0)
                 }),
-                themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+                themeGridRangeIteme5 = new ol.supermap.ThemeGridRangeItem({
                     start: 1000,
                     end: 20000000,
-                    color: new SuperMap.ServerColor(0, 255, 0)
+                    color: new ol.supermap.ServerColor(0, 255, 0)
                 });
 
-            var themeGridRange = new SuperMap.ThemeGridRange({
+            var themeGridRange = new ol.supermap.ThemeGridRange({
                 reverseColor: false,
-                rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+                rangeMode: ol.supermap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
                 items: [themeGridRangeIteme1,
                     themeGridRangeIteme2,
@@ -92,7 +92,7 @@
                 ]
             });
 
-            var themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new ol.supermap.ThemeParameters({
                 //制作专题图的数据集（地形曲率计算的结果数据集）
                 datasetNames: [terrainCurvatureCalculationResult.averageCurvatureResult.dataset.split('@')[0]],
                 dataSourceNames: ["Jingjin"],
@@ -100,7 +100,7 @@
                 themes: [themeGridRange]
             });
 
-            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters).then(function (serviceResult) {
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     var themeLayer = new ol.layer.Tile({

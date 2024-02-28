@@ -1,6 +1,7 @@
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
 import {NDVIParameter} from '../../../src/common/iServer/NDVIParameter';
 import {HillshadeParameter} from '../../../src/common/iServer/HillshadeParameter';
+import {ChartSetting} from '../../../src/common/iServer/ChartSetting';
 import {getQueryValue} from '../../tool/utils';
 import {mockCreateTile} from '../../tool/mock_leaflet';
 
@@ -196,6 +197,36 @@ describe('leaflet_TiledMapLayer', () => {
         expect(clipRegionParameter.points[0].y).toBe(-20);
         expect(clipRegionParameter.points[4].x).toBe(20);
         expect(clipRegionParameter.points[4].y).toBe(-20);
+    });
+    it("chartSetting", () => {
+        const tempOptions = {
+            chartSetting: new ChartSetting({
+              colourModeChart:L.supermap.ColourModeChart.DUSK
+            })
+        };
+        const tiledMapLayerObject = tiledMapLayer(url, tempOptions).addTo(map);
+        expect(tiledMapLayerObject).not.toBeNull();
+        const tileUrl = tiledMapLayerObject.getTileUrl(L.point(1, 4));
+        const chartSetting = getQueryValue(tileUrl,'chartSetting');
+        expect(chartSetting).not.toBeNull();
+    });
+    it("updateParams", () => {
+        const tempOptions = {
+            chartSetting: new ChartSetting({
+              colourModeChart:L.supermap.ColourModeChart.DUSK
+            })
+        };
+        const tiledMapLayerObject = tiledMapLayer(url, tempOptions).addTo(map);
+        expect(tiledMapLayerObject).not.toBeNull();
+        const tileUrl = tiledMapLayerObject.getTileUrl(L.point(1, 4));
+        const chartSetting = getQueryValue(tileUrl,'chartSetting');
+        expect(chartSetting).not.toBeNull();
+        const newChartSetting = new ChartSetting({
+          colourModeChart:L.supermap.ColourModeChart.NIGHT
+        });
+        tiledMapLayerObject.updateParams({chartSetting: newChartSetting});
+        expect(tiledMapLayerObject.requestParams.chartSetting.colourModeChart).toBe('NIGHT');
+
     });
 
 });

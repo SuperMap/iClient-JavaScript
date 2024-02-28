@@ -1,0 +1,292 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
+*********************************************************************-->
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+
+    <title data-i18n="resources.title_mapvQianxi"></title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      .maplibregl-popup-close-button {
+        outline: none;
+      }
+    </style>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapv" src="../../dist/maplibregl/include-maplibregl.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%">
+    <div id="map"></div>
+    <script type="text/javascript">
+      var attribution =
+        "<a href='https://www.maplibre.com/about/maps/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> | </span>" +
+        "<a href='https://mapv.baidu.com' target='_blank'>© 2018 百度 MapV</a>";
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [112, 37.94],
+        zoom: 4
+      });
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+      map.addControl(new maplibregl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
+      map.setPitch(60);
+      new maplibregl.Popup({ closeOnClick: false })
+        .setLngLat(map.getCenter())
+        .setHTML(resources.text_iClient)
+        .addTo(map);
+
+      map.on('load', function () {
+        $.get('../data/china.json', function (geojson) {
+          var geojsonOptions = {
+            gradient: {
+              0: 'rgba(55, 50, 250, 0.4)',
+              1: 'rgba(55, 50, 250, 1)'
+            },
+            max: 354551,
+            draw: 'intensity'
+          };
+
+          var geojsonDataSet = mapv.geojson.getDataSet(geojson);
+
+          var to = '北京';
+
+          var qianxi = new mapv.DataSet([
+            {
+              from: '河北',
+              count: 354551,
+              to: to
+            },
+            {
+              from: '天津',
+              count: 97323,
+              to: to
+            },
+            {
+              from: '山东',
+              count: 28664,
+              to: to
+            },
+            {
+              from: '山西',
+              count: 16650,
+              to: to
+            },
+            {
+              from: '辽宁',
+              count: 14379,
+              to: to
+            },
+            {
+              from: '河南',
+              count: 10980,
+              to: to
+            },
+            {
+              from: '内蒙古自治区',
+              count: 9603,
+              to: to
+            },
+            {
+              from: '江苏',
+              count: 4536,
+              to: to
+            },
+            {
+              from: '上海',
+              count: 3556,
+              to: to
+            },
+            {
+              from: '广东',
+              count: 2600,
+              to: to
+            }
+          ]);
+
+          var qianxiData = qianxi.get();
+
+          var lineData = [];
+          var pointData = [];
+          var textData = [];
+          var timeData = [];
+
+          var citys = {};
+
+          for (var i = 0; i < qianxiData.length; i++) {
+            var fromCenter = mapv.utilCityCenter.getCenterByCityName(qianxiData[i].from);
+            var toCenter = mapv.utilCityCenter.getCenterByCityName(qianxiData[i].to);
+            if (!fromCenter || !toCenter) {
+              continue;
+            }
+            citys[qianxiData[i].from] = qianxiData[i].count;
+            citys[qianxiData[i].to] = 100;
+            pointData.push({
+              geometry: {
+                type: 'Point',
+                coordinates: [fromCenter.lng, fromCenter.lat]
+              }
+            });
+            pointData.push({
+              geometry: {
+                type: 'Point',
+                coordinates: [toCenter.lng, toCenter.lat]
+              }
+            });
+            textData.push({
+              geometry: {
+                type: 'Point',
+                coordinates: [fromCenter.lng, fromCenter.lat]
+              },
+              text: qianxiData[i].from
+            });
+            textData.push({
+              geometry: {
+                type: 'Point',
+                coordinates: [toCenter.lng, toCenter.lat]
+              },
+              text: qianxiData[i].to
+            });
+
+            var curve = mapv.utilCurve.getPoints([fromCenter, toCenter]);
+
+            for (j = 0; j < curve.length; j++) {
+              timeData.push({
+                geometry: {
+                  type: 'Point',
+                  coordinates: curve[j]
+                },
+                count: 1,
+                time: j
+              });
+            }
+
+            lineData.push({
+              geometry: {
+                type: 'LineString',
+                coordinates: curve
+                //coordinates: [[fromCenter.lng, fromCenter.lat], [toCenter.lng, toCenter.lat]]
+              },
+              count: 30 * Math.random()
+            });
+          }
+
+          var data = geojsonDataSet.get({
+            filter: function (item) {
+              if (!citys[item.name]) {
+                return false;
+              }
+
+              item.count = citys[item.name];
+              return true;
+            }
+          });
+          geojsonDataSet = new mapv.DataSet(data);
+
+          var mapVlayer = new maplibregl.supermap.MapvLayer(geojsonDataSet, geojsonOptions);
+          map.addLayer(mapVlayer);
+
+          var textDataSet = new mapv.DataSet(textData);
+
+          var textOptions = {
+            draw: 'text',
+            font: '14px Arial',
+            fillStyle: 'white',
+            shadowColor: 'yellow',
+            shadowBlue: 10,
+            zIndex: 11,
+            shadowBlur: 10
+          };
+          var textLayer = new maplibregl.supermap.MapvLayer(textDataSet, textOptions);
+          map.addLayer(textLayer);
+
+          var lineDataSet = new mapv.DataSet(lineData);
+
+          var lineOptions = {
+            strokeStyle: 'rgba(255, 250, 50, 0.8)',
+            shadowColor: 'rgba(255, 250, 50, 1)',
+            shadowBlur: 20,
+            lineWidth: 2,
+            zIndex: 100,
+            draw: 'simple'
+          };
+          var lineLayer = new maplibregl.supermap.MapvLayer(lineDataSet, lineOptions);
+          map.addLayer(lineLayer);
+
+          var pointOptions = {
+            fillStyle: 'rgba(254,175,3,0.7)',
+            shadowColor: 'rgba(55, 50, 250, 0.5)',
+            shadowBlur: 10,
+            size: 5,
+            zIndex: 10,
+            draw: 'simple'
+          };
+
+          var pointDataSet = new mapv.DataSet(pointData);
+
+          var pointLayer = new maplibregl.supermap.MapvLayer(pointDataSet, pointOptions);
+          map.addLayer(pointLayer);
+
+          var timeDataSet = new mapv.DataSet(timeData);
+
+          var timeOptions = {
+            fillStyle: 'rgba(255, 250, 250, 0.5)',
+            zIndex: 200,
+            size: 2.5,
+            animation: {
+              type: 'time',
+              stepsRange: {
+                start: 0,
+                end: 50
+              },
+              trails: 10,
+              duration: 2
+            },
+            draw: 'simple'
+          };
+          var timeLayer = new maplibregl.supermap.MapvLayer(timeDataSet, timeOptions);
+          map.addLayer(timeLayer);
+        });
+      });
+    </script>
+  </body>
+</html>

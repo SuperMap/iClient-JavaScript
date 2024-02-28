@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -9,12 +9,13 @@ import '../../core/Base';
  * @classdesc 数据流图层普通渲染器。
  * @category  iServer DataFlow
  * @extends {L.GeoJSON}
- * @param {string} url - 数据流图层服务地址
- * @param {Object} options - 设置图层参数。
+ * @param {string} url - 服务地址
+ * @param {Object} options - 参数。
  * @param {GeoJSONObject} [options.geometry] - GeoJSON 几何对象。
  * @param {Object} [options.prjCoordSys] - 投影坐标对象。
  * @param {string} [options.excludeField] - 排除字段。
  * @param {string} [options.idField='id'] - 要素属性中表示唯一标识的字段。
+ * @usage
  */
 export var NormalRenderer = L.GeoJSON.extend({
 

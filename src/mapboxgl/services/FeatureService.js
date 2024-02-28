@@ -1,171 +1,111 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import {
-    DataFormat,
-    Geometry,
-    GeometryPoint,
-    GetFeaturesByIDsService,
-    GetFeaturesBySQLService,
-    GetFeaturesByBoundsService,
-    GetFeaturesByBufferService,
-    GetFeaturesByGeometryService,
-    EditFeaturesService,
-    CommonUtil
-} from '@supermap/iclient-common';
-
+import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { EditFeaturesService } from '@supermap/iclient-common/iServer/EditFeaturesService';
+import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
+import { FeatureService as CommonFeatureService } from '@supermap/iclient-common/iServer/FeatureService';
 /**
- * @class mapboxgl.supermap.FeatureService
+ * @class FeatureService
  * @category  iServer Data Feature
- * @classdesc 要素数据集类。提供：ID 查询，范围查询，SQL 查询，几何查询，bounds 查询，缓冲区查询，地物编辑。
+ * @classdesc 要素数据集类。提供：ID 查询、范围查询、SQL 查询、几何查询、缓冲区查询、地物编辑，要素附件查询、编辑等方法。
+ * @modulecategory Services
  * @example
- * new mapboxgl.supermap.FeatureService(url)
+ * new FeatureService(url)
  *  .getFeaturesByIDs(param,function(result){
  *     //doSomething
  * })
- * @extends {mapboxgl.supermap.ServiceBase}
- * @param {string} url - 要素数据集服务地址。
- * @param {Object} options - 创建要素数据集服务类可选参数。
+ * @extends {ServiceBase}
+ * @param {string} url - 服务地址。
+ * @param {Object} options -参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class FeatureService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
+        this._featureService = new CommonFeatureService(url, options);
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByIDs
+     * @function FeatureService.prototype.getFeaturesByIDs
      * @description 数据集 ID 查询服务。
-     * @param {SuperMap.GetFeaturesByIDsParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {GetFeaturesByIDsParameters} params - ID 查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByIDs(params, callback, resultFormat) {
-        var me = this;
-        var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeaturesByIDsService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByIDs(params, callback, resultFormat);
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByBounds
-     * @description 数据集 Bounds 查询服务。
-     * @param {SuperMap.GetFeaturesByBoundsParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @function FeatureService.prototype.getFeaturesByBounds
+     * @description 数据集范围查询服务。
+     * @param {GetFeaturesByBoundsParameters} params - 数据集范围查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBounds(params, callback, resultFormat) {
-        var me = this;
-        var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeaturesByBoundsService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByBounds(params, callback, resultFormat);
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByBuffer
+     * @function FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集 Buffer 查询服务。
-     * @param {SuperMap.GetFeaturesByBufferParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {GetFeaturesByBufferParameters} params - 数据集缓冲区查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
-        var me = this;
-        var getFeatureService = new GetFeaturesByBufferService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeatureService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByBuffer(params, callback, resultFormat);
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesBySQL
+     * @function FeatureService.prototype.getFeaturesBySQL
      * @description 数据集 SQL 查询服务。
-     * @param {SuperMap.GetFeaturesBySQLParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=SuperMap.DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {GetFeaturesBySQLParameters} params - 数据集 SQL 查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesBySQL(params, callback, resultFormat) {
-        var me = this;
-        var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-
-        getFeatureBySQLService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        return this._featureService.getFeaturesBySQL(params, callback, resultFormat);
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.getFeaturesByGeometry
+     * @function FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类。
-     * @param {SuperMap.GetFeaturesByGeometryParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback - 回调函数。
-     * @param {SuperMap.DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回的数据格式。
+     * @param {GetFeaturesByGeometryParameters} params - 数据集几何查询参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @param {DataFormat} [resultFormat=DataFormat.GEOJSON] - 返回结果类型。
+     * @returns {Promise} Promise 对象。
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
-        var me = this;
-        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
-            proxy: me.options.proxy,
-            withCredentials: me.options.withCredentials,
-            crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: me._processFormat(resultFormat)
-        });
-        getFeaturesByGeometryService.processAsync(me._processParams(params));
+        params = this._processParams(params);
+        return this._featureService.getFeaturesByGeometry(params, callback, resultFormat);
     }
 
     /**
-     * @function mapboxgl.supermap.FeatureService.prototype.editFeatures
+     * @function FeatureService.prototype.editFeatures
      * @description 地物编辑服务。
-     * @param {SuperMap.EditFeaturesParameters} params - 查询所需参数类。
-     * @param {RequestCallback} callback 回调函数。
+     * @param {EditFeaturesParameters} params - 数据服务中数据集添加、修改、删除参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     editFeatures(params, callback) {
         if (!params || !params.dataSourceName || !params.dataSetName) {
@@ -181,20 +121,77 @@ export class FeatureService extends ServiceBase {
             proxy: me.options.proxy,
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
-            headers: me.options.headers,
-
-            eventListeners: {
-                processCompleted: callback,
-                processFailed: callback
-            }
+            headers: me.options.headers
         });
-        editFeatureService.processAsync(me._processParams(params));
+        return editFeatureService.processAsync(me._processParams(params), callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getMetadata
+     * @description 地理要素元信息。
+     * @version 11.1.1
+     * @param {Object} params - 包括数据源名称、数据集名称、要素 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getMetadata(params, callback) {
+        return this._featureService.getMetadata(params, callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getFeatureAttachments
+     * @description 要素附件查询服务。
+     * @version 11.2.0
+     * @param {AttachmentsParameters} params - 要素附件服务中附件查询除参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeatureAttachments(params, callback) {
+        return this._featureService.getFeatureAttachments(params, callback);
+    }
+    
+    /**
+       * @function FeatureService.prototype.editFeatureAttachments
+       * @description 要素附件编辑服务。
+       * @version 11.2.0
+       * @param {EditAttachmentsParameters} params - 要素附件服务中附件添加、删除参数类。
+       * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+       * @returns {Promise} Promise 对象。
+       */
+    editFeatureAttachments(params, callback) {
+        return this._featureService.editFeatureAttachments(params, callback);
+    }
+
+    /**
+     * @function FeatureService.prototype.getFeaturesCount
+     * @description 获取要素数量。
+     * @version 11.2.0
+     * @param {GetFeaturesByIDsParameters|GetFeaturesByBoundsParameters|GetFeaturesByBufferParameters|GetFeaturesByGeometryParameters|GetFeaturesBySQLParameters} params - 查询参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeaturesCount(params, callback) {
+      params = this._processParams(params);
+      return this._featureService.getFeaturesCount(params, callback);
+    }
+    
+     /**
+     * @function FeatureService.prototype.getFeaturesDatasetInfo
+     * @description 获取要素数据集信息。
+     * @version 11.2.0
+     * @param {GetFeaturesByIDsParameters|GetFeaturesByBoundsParameters|GetFeaturesByBufferParameters|GetFeaturesByGeometryParameters|GetFeaturesBySQLParameters} params - 查询参数类。
+     * @param {RequestCallback} [callback] 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
+     */
+    getFeaturesDatasetInfo(params, callback) {
+      params = this._processParams(params);
+      return this._featureService.getFeaturesDatasetInfo(params, callback);
     }
 
     /**
      * @private
      * @description 参数类型转换。
-     * @param {Object} params - 服务参数 。
+     * @param {Object} params - 参数。
      * @returns {Object} params - 转换后的对接 SuperMap 服务的参数。
      */
     _processParams(params) {
@@ -260,10 +257,5 @@ export class FeatureService extends ServiceBase {
         feature.geometry = Util.toSuperMapGeometry(geoFeature);
         return feature;
     }
-
-    _processFormat(resultFormat) {
-        return resultFormat ? resultFormat : DataFormat.GEOJSON;
-    }
 }
 
-mapboxgl.supermap.FeatureService = FeatureService;

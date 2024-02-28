@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Leaflet.draw (https://github.com/Leaflet/Leaflet.draw/)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -18,7 +22,7 @@
         center: [33, 114],
         zoom: 4
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
 
     var editableLayers = new L.FeatureGroup();
     map.addLayer(editableLayers);

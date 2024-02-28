@@ -1,47 +1,49 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { WebPrintingJobLayers } from './WebPrintingJobLayers';
 import { WebPrintingJobCustomItems } from './WebPrintingJobCustomItems';
 
 /**
- * @class SuperMap.WebPrintingJobLegendOptions
- * @classdesc Web 打印图例参数类。
+ * @class WebPrintingJobLegendOptions
+ * @deprecatedclass SuperMap.WebPrintingJobLegendOptions
+ * @classdesc Web 打印图例参数类。此类用于设置图例名称、图例元素等参数，图例元素可以是图例的URL地址、Base64 位图片信息、布局业务图层参数以及自定义图例元素参数等，
+ * 优先级：picAsBase64 > picAsUrl > customItems > layers，四者必选其一。
  * @version 10.1.0
  * @category iServer WebPrintingJob
- * @param {Object} option - 初始化参数。
+ * @param {Object} option - 参数。
  * @param {string} [option.title] - 图例名称。
- * @param {string} [option.picAsUrl] - 图例的图片 url 地址。
- * @param {string} [option.picAsBase64] - 图例的 base64 位图片信息。
- * @param {SuperMap.WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
- * @param {SuperMap.WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
+ * @param {string} [option.picAsUrl] - 图例的图片 URL 地址。
+ * @param {string} [option.picAsBase64] - 图例的 Base64 位图片信息。
+ * @param {WebPrintingJobLayers} [option.layers] - 图例的布局业务图层参数类。
+ * @param {WebPrintingJobCustomItems} [option.customItems] - 自定义图例元素参数类。
+ * @usage
  */
 export class WebPrintingJobLegendOptions {
     constructor(option) {
         /**
-         * @member {string} SuperMap.WebPrintingJobLegendOptions.prototype.title
+         * @member {string} WebPrintingJobLegendOptions.prototype.title
          * @description  图例名称。
          */
         this.title = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobLegendOptions.prototype.picAsUrl]
-         * @description  图例的图片 url 地址。
+         * @member {string} [WebPrintingJobLegendOptions.prototype.picAsUrl]
+         * @description  图例的图片 URL 地址。
          */
         this.picAsUrl = null;
         /**
-         * @member {string} [SuperMap.WebPrintingJobLegendOptions.prototype.picAsBase64]
-         * @description  图例的 base64 位图片信息。
+         * @member {string} [WebPrintingJobLegendOptions.prototype.picAsBase64]
+         * @description  图例的 Base64 位图片信息。
          */
         this.picAsBase64 = null;
         /**
-         * @member {SuperMap.WebPrintingJobLayers} [SuperMap.WebPrintingJobLegendOptions.prototype.layers]
+         * @member {WebPrintingJobLayers} [WebPrintingJobLegendOptions.prototype.layers]
          * @description  图例的布局业务图层参数类。
          */
         this.layers = null;
         /**
-         * @member {SuperMap.WebPrintingJobCustomItems} [SuperMap.WebPrintingJobLegendOptions.prototype.customItems]
+         * @member {WebPrintingJobCustomItems} [WebPrintingJobLegendOptions.prototype.customItems]
          * @description  自定义图例元素参数类。
          */
         this.customItems = null;
@@ -51,7 +53,7 @@ export class WebPrintingJobLegendOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobLegendOptions.prototype.destroy
+     * @function WebPrintingJobLegendOptions.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -69,9 +71,9 @@ export class WebPrintingJobLegendOptions {
     }
 
     /**
-     * @function SuperMap.WebPrintingJobLegendOptions.prototype.toJSON
-     * @description 将 SuperMap.WebPrintingJobLegendOptions 对象转化为 JSON 字符串。
-     * @returns {string} 返回转换后的 JSON 字符串。
+     * @function WebPrintingJobLegendOptions.prototype.toJSON
+     * @description 将 WebPrintingJobLegendOptions 对象转化为 JSON 字符串。
+     * @returns {string} 转换后的 JSON 字符串。
      */
     toJSON() {
         var params = {
@@ -88,4 +90,3 @@ export class WebPrintingJobLegendOptions {
     }
 }
 
-SuperMap.WebPrintingJobLegendOptions = WebPrintingJobLegendOptions;

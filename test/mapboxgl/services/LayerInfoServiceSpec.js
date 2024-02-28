@@ -2,6 +2,7 @@ import {LayerInfoService} from '../../../src/mapboxgl/services/LayerInfoService'
 import {SetLayerStatusParameters} from '../../../src/common/iServer/SetLayerStatusParameters';
 import {SetLayersInfoParameters} from '../../../src/common/iServer/SetLayersInfoParameters';
 import {SetLayerInfoParameters} from '../../../src/common/iServer/SetLayerInfoParameters';
+import {GetLayersLegendInfoParameters} from '../../../src/common/iServer/GetLayersLegendInfoParameters';
 import {LayerStatus} from '../../../src/common/iServer/LayerStatus';
 import '../../resources/LayersInfo'
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
@@ -168,8 +169,8 @@ describe('mapboxgl_LayerInfoService', () => {
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.object.resourceID).toEqual(id);
-                expect(serviceResult.object.options.method).toEqual("PUT");
-                expect(serviceResult.object.options.data).toContain("'description':\"test\"");
+                expect(serviceResult.options.method).toEqual("PUT");
+                expect(serviceResult.options.data).toContain("'description':\"test\"");
                 done();
             } catch (e) {
                 console.log("'setLayersInfo_isTempLayer'案例失败" + e.name + ":" + e.message);
@@ -199,8 +200,8 @@ describe('mapboxgl_LayerInfoService', () => {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
-                expect(serviceResult.object.options.method).toEqual("PUT");
-                expect(serviceResult.object.options.data).toContain("this is a test");
+                expect(serviceResult.options.method).toEqual("PUT");
+                expect(serviceResult.options.data).toContain("this is a test");
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result.succeed).toEqual(true);
                 expect(serviceResult.result.newResourceLocation).not.toBeNull();
@@ -213,5 +214,34 @@ describe('mapboxgl_LayerInfoService', () => {
         });
 
     });
+
+    // 获取图例
+    it('getLayersLegend', (done) => {
+      var layerService = new LayerInfoService(url);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl) => {
+        expect(method).toBe("GET");
+        expect(testUrl).toBe(url+"/legend");
+        return Promise.resolve(new Response(JSON.stringify(legendInfo)));
+      });
+      var getLayersLegendInfoParams = new GetLayersLegendInfoParameters({
+        bbox: "-180,90,180,90",
+        width: 18,
+        height: 18
+      })
+      layerService.getLayersLegendInfo(getLayersLegendInfoParams, (serviceResult) => {
+        try {
+          expect(serviceResult).not.toBeNull();
+          expect(serviceResult.type).toEqual("processCompleted");
+          expect(serviceResult.result.succeed).toEqual(true);
+          expect(serviceResult.result.layerLegends[0].legends[0].url).not.toBeUndefined();
+          done();
+        } catch (e) {
+            console.log("'getLayersLegend'案例失败" + e.name + ":" + e.message);
+            service.destroy();
+            expect(false).toBeTruthy();
+            done();
+          }
+        })
+      })
 });
                  

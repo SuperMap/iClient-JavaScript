@@ -1,37 +1,29 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { CommonServiceBase } from './CommonServiceBase';
 
 /**
- * @class SuperMap.WebPrintingService
+ * @class WebPrintingService
+ * @deprecatedclass SuperMap.WebPrintingService
  * @category iServer WebPrintingJob
  * @version 10.1.0
  * @classdesc 打印地图服务基类。
- * @extends {SuperMap.CommonServiceBase}
- * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
+ * @extends {CommonServiceBase}
+ * @param {string} url - 服务地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class WebPrintingService extends CommonServiceBase {
-    /**
-     * @function SuperMap.WebPrintingService.prototype.constructor
-     * @description 打印地图服务基类。
-     * @param {string} url - 资源根地址。请求打印地图服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/webprinting/rest/webprinting/v1。
-     * @param {Object} options -参数。
-     * @param {Object} options.eventListeners - 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
 
         if (options) {
             Util.extend(this, options);
         }
-
         this.CLASS_NAME = 'SuperMap.WebPrintingService';
         if (!this.url) {
             return;
@@ -39,7 +31,7 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.destroy
+     * @function WebPrintingService.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -47,11 +39,13 @@ export class WebPrintingService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.createWebPrintingJob
+     * @function WebPrintingService.prototype.createWebPrintingJob
      * @description 创建 Web 打印任务。
-     * @param {SuperMap.WebPrintingJobParameters} params - Web 打印的请求参数。
+     * @param {WebPrintingJobParameters} params - Web 打印的请求参数。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    createWebPrintingJob(params) {
+    createWebPrintingJob(params, callback) {
         if (!params) {
             return;
         }
@@ -72,100 +66,81 @@ export class WebPrintingService extends CommonServiceBase {
                 }
             }
         }
-        var me = this;
-        me.request({
-            url: me._processUrl('jobs'),
-            method: 'POST',
-            data: Util.toJSON(params),
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+        return this.processAsync('jobs', 'POST', callback, params)
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.getPrintingJob
-     * @description 获取 Web 打印输出文档任务。
-     * @param {String} jobId - Web 打印任务 ID
+     * @function WebPrintingService.prototype.getPrintingJob
+     * @description 获取 Web 打印输出文档任务, 轮询获取打印状态，只有当状态为完成或失败才返回结果。
+     * @param {string} jobId - Web 打印任务 ID
+     * @param {RequestCallback} callback - 回调函数。
      */
-    getPrintingJob(jobId) {
+    getPrintingJob(jobId, callback) {
         var me = this;
-        var url = me._processUrl(`jobs/${jobId}`);
-        me.request({
-            url,
-            method: 'GET',
-            scope: me,
-            success: function (result) {
-                me.rollingProcess(result, url);
-            },
-            failure: me.serviceProcessFailed
-        });
+        me.rollingProcess(me._processUrl(`jobs/${jobId}`), callback);
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.getPrintingJobResult
+     * @function WebPrintingService.prototype.getPrintingJobResult
      * @description 获取 Web 打印任务的输出文档。
-     * @param {String} jobId - Web 打印输入文档任务 ID。
+     * @param {string} jobId -  Web 打印输出文档任务 ID。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getPrintingJobResult(jobId) {
-        var me = this;
-        me.request({
-            url: me._processUrl(`jobs/${jobId}/result`),
-            method: 'GET',
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getPrintingJobResult(jobId, callback) {
+        return this.processAsync(`jobs/${jobId}/result`, 'GET', callback);
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.getLayoutTemplates
+     * @function WebPrintingService.prototype.getLayoutTemplates
      * @description 查询 Web 打印服务所有可用的模板信息。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    getLayoutTemplates() {
-        var me = this;
-        me.request({
-            url: me._processUrl('layouts'),
-            method: 'GET',
-            scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
-        });
+    getLayoutTemplates(callback) {
+      return this.processAsync('layouts', 'GET', callback);
     }
 
     /**
-     * @function SuperMap.WebPrintingService.prototype.rollingProcess
+     * @function WebPrintingService.prototype.rollingProcess
      * @description 轮询查询 Web 打印任务。
      * @param {Object} result - 服务器返回的结果对象。
      */
-    rollingProcess(result, url) {
+    rollingProcess(url, callback) {
         var me = this;
-        if (!result) {
-            return;
-        }
-        var id = setInterval(function () {
-            me.request({
-                url,
-                method: 'GET',
-                scope: me,
-                success: function (result) {
-                    switch (result.status) {
-                        case 'FINISHED':
-                            clearInterval(id);
-                            me.serviceProcessCompleted(result);
-                            break;
-                        case 'ERROR':
-                            clearInterval(id);
-                            me.serviceProcessFailed(result);
-                            break;
-                        case 'RUNNING':
-                            me.events.triggerEvent('processRunning', result);
-                            break;
-                    }
-                },
-                failure: me.serviceProcessFailed
-            });
+        this.id && clearInterval(this.id);
+        this.id = setInterval(function () {
+          me.request({
+            url,
+            method: 'GET',
+            scope: me,
+            success: callback,
+            failure: callback
+          });
         }, 1000);
+    }
+
+    processAsync(url, method, callback, params) {
+      var me = this;
+      let requestConfig = {
+        url: me._processUrl(url),
+        method,
+        scope: me,
+        success: callback,
+        failure: callback
+      };
+      params && (requestConfig.data = Util.toJSON(params));
+      return me.request(requestConfig);
+    }
+
+    transformResult(result, options) {
+      result = Util.transformResult(result);
+      if (result.status === 'FINISHED' || result.status === 'ERROR') {
+        clearInterval(this.id);
+      } else if (result.status === 'RUNNING') {
+        options.success = false;
+      }
+      return { result, options };
     }
 
     _processUrl(appendContent) {
@@ -176,4 +151,3 @@ export class WebPrintingService extends CommonServiceBase {
     }
 }
 
-SuperMap.WebPrintingService = WebPrintingService;

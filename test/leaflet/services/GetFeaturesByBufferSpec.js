@@ -38,7 +38,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
             expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
@@ -159,7 +159,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World1:Capitals');
             expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
@@ -213,7 +213,7 @@ describe('leaflet_FeatureService_getFeaturesByBuffer', () => {
         var getFeaturesByBufferService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.attributeFilter).toBe('SMID%26gt;0');
             expect(paramsObj.bufferDistance).toBe(30);

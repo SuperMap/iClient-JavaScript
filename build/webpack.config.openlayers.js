@@ -6,6 +6,7 @@ var productName = 'iclient-openlayers';
 
 var argv = JSON.parse(process.env['npm_config_argv']);
 var origin = argv.original;
+
 if (origin && origin.includes('deploy-ol')) {
     libName = 'ol';
     productName = 'iclient-ol';
@@ -20,7 +21,8 @@ var externals = [
         'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
         xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
         canvg: 'function(){try{return canvg}catch(e){return {}}}()',
-        jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()'
+        jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
+        three: 'function(){try{return THREE}catch(e){return {}}}()'
     }),
     function(context, request, callback) {
         if (/^ol\//.test(request)) {
@@ -34,7 +36,7 @@ module.exports = {
     target: configBase.target,
     mode: configBase.mode,
     //页面入口文件配置
-    entry: configBase.entry,
+    entry: [...configBase.entry, `${__dirname}/../src/openlayers/namespace.js`, `${__dirname}/../src/openlayers/css/index.js`],
     //入口文件输出配置
     output: configBase.output(libName, productName),
     //是否启用压缩
@@ -49,10 +51,8 @@ module.exports = {
         rules: (function() {
             let moduleRules = [];
             moduleRules.push(configBase.module.rules.img);
-            if (configBase.moduleVersion === 'es5') {
-                //打包为es5相关配置
-                moduleRules.push({
-                    test: [/\.js$/],
+            const babelConfig = {
+              test: [/\.js$/],
                     exclude: /classic | webgl-debug/,
                     loader: 'babel-loader',
                     options: {
@@ -70,8 +70,9 @@ module.exports = {
                             ]
                         ]
                     }
-                });
             }
+            configBase.moduleVersion === "es6" && (babelConfig.include = /FGB|flatgeobuf/);
+            moduleRules.push(babelConfig);
             moduleRules.push(configBase.module.rules.css);
             return moduleRules;
         })()

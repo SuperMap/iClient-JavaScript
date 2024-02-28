@@ -1,18 +1,21 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Theme3DLayer} from './theme/Theme3DLayer';
 
 /**
- * @class mapboxgl.supermap.UniqueTheme3DLayer
+ * @class UniqueTheme3DLayer
  * @category  Visualization Theme
- * @classdesc 三维单值专题图。
- * @param {string} [id] - 专题图图层 id。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
- * @param {Object} layerOptions - 专题图图层配置项,参数继承自 Theme3DLayer。
- * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height )没有可以表示高度的字段，可以为所有数据统一设置一个高度。
+ * @classdesc 三维单值专题图将字段或表达式的值相同的要素采用相同的风格来显示， 从而用来区分不同的类别。
+ * 单值专题图着重表示现象质的差别，一般不表示数量的特征。
+ * 尤其是有交叉或重叠现象时，不推荐使用三维单值专题图，例如：民族分布区等。
+ * @modulecategory Overlay
+ * @param {string} [id] - 专题图图层 ID。默认使用 CommonUtil.createUniqueID("theme3DLayer") 创建专题图层 ID。
+ * @param {Object} layerOptions - 专题图图层配置项，参数继承自 Theme3DLayer。
+ * @param {number} [layerOptions.height] - 新增参数，如果数据指定的 heightField (默认为 height)没有可以表示高度的字段，可以为所有数据统一设置一个高度。
  * @param {Array} layerOptions.colorStops - 新增参数，数据颜色分段数组。
+ * @usage
  */
 export class UniqueTheme3DLayer extends Theme3DLayer {
 
@@ -20,7 +23,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     constructor(id, layerOptions) {
         super(id, layerOptions);
         /**
-         * @member  mapboxgl.supermap.UniqueTheme3DLayer.prototype.colorStops -{Array}
+         * @member {Array} UniqueTheme3DLayer.prototype.colorStops
          * @description 数据颜色数组，如[["绿地","#CD7054"],["道路","#AD1283"]]。
          */
         this.colorStops = null;
@@ -28,7 +31,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function  mapboxgl.supermap.UniqueTheme3DLayer.prototype.getLayerStyleOptions
+     * @function UniqueTheme3DLayer.prototype.getLayerStyleOptions
      * @description 获取图层样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -63,7 +66,7 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.UniqueTheme3DLayer.prototype.getHighlightStyleOptions
+     * @function UniqueTheme3DLayer.prototype.getHighlightStyleOptions
      * @description 获取高亮样式。
      * @returns {Object} Mapbox GL 样式对象。
      */
@@ -96,5 +99,3 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
         return legendListElement;
     }
 }
-
-mapboxgl.supermap.UniqueTheme3DLayer = UniqueTheme3DLayer;

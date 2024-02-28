@@ -1,32 +1,35 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
+import { BucketAggType } from '../REST';
 import { BucketAggParameter } from './BucketAggParameter';
 
 /**
- * @class SuperMap.GeoHashGridAggParameter
- * @classdesc 格网聚合查询参数类，该参数仅支持数据来源 Elasticsearch 服务的Supermap iServer的rest数据服务。
+ * @class GeoHashGridAggParameter
+ * @deprecatedclass SuperMap.GeoHashGridAggParameter
+ * @classdesc 格网聚合查询参数类，此类可设置格网聚合的名称和聚合字段、格网聚合类型等参数。<br>
+ * 注意：该参数仅支持数据来源为 Elasticsearch 服务的 SuperMap iServer 的 REST 数据服务。
  * @category iServer Data FeatureResults
- * @param {Object} options - 初始化参数。
- * @param {number} [options.precision=5] - 精度。
- * @extends {SuperMap.BucketAggParameter}
+ * @param {Object} options - 可选参数。
+ * @param {number} [options.precision=5] - 网格中数字的精度。
+ * @extends {BucketAggParameter}
+ * @usage
  */
 export class GeoHashGridAggParameter extends BucketAggParameter {
     constructor(options) {
         super();
         /**
-         * @member {number} [SuperMap.GeoHashGridAggParameter.prototype.precision=5]
+         * @member {number} [GeoHashGridAggParameter.prototype.precision=5]
          * @description 网格中数字的精度。
          */
         this.precision = 5;
         Util.extend(this, options);
         /**
-         * @member {SuperMap.BucketAggType} [SuperMap.GeoHashGridAggParameter.prototype.aggType=SuperMap.BucketAggType.GEOHASH_GRID]
+         * @member {BucketAggType} [GeoHashGridAggParameter.prototype.aggType=BucketAggType.GEOHASH_GRID]
          * @description 格网聚合类型。
          */
-        this.aggType = SuperMap.BucketAggType.GEOHASH_GRID;
+        this.aggType = BucketAggType.GEOHASH_GRID;
 
         this.CLASS_NAME = 'SuperMap.GeoHashGridAggParameter';
     }
@@ -38,10 +41,10 @@ export class GeoHashGridAggParameter extends BucketAggParameter {
     }
 
     /**
-     * @function SuperMap.GeoHashGridAggParameter.toJsonParameters
+     * @function GeoHashGridAggParameter.toJsonParameters
      * @description 将对象转为 JSON 格式。
      * @param param 转换对象。
-     * @returns {object}
+     * @returns {Object}
      */
     static toJsonParameters(param) {
         var parameters = {
@@ -54,4 +57,3 @@ export class GeoHashGridAggParameter extends BucketAggParameter {
     }
 }
 
-SuperMap.GeoHashGridAggParameter = GeoHashGridAggParameter;

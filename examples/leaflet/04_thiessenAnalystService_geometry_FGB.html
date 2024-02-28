@@ -1,0 +1,59 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_thiessenAnalystGeometry_FGB"></title>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    var map, thiessenAnalystService, gThiessenAnalystParameters,
+        baseUrl = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+    map = L.map('map', {
+        crs: new L.supermap.CRS.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+            origin: L.point(48.4, -55.58)
+        }),
+        center: [-3375, 5105],
+        maxZoom: 18,
+        zoom: 1
+    });
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true})
+        .addTo(map)
+        .once("load", function () {
+            thiessenAnalystProcess();
+        });
+
+    function thiessenAnalystProcess() {
+        var pointsList = [
+            [5238.998556, -1724.229865],
+            [4996.270055, -2118.538477],
+            [5450.34263, -2070.794081],
+            [5317.70775, -2521.162355],
+            [5741.149405, -1970.130198],
+            [4716.133098, -1575.858795],
+            [5447.671615, -2255.928819],
+            [4783.423507, -1135.598744],
+            [5472.712382, -2189.15344],
+            [5752.716961, -2425.40363]
+        ];
+        gThiessenAnalystParameters = new L.supermap.GeometryThiessenAnalystParameters({
+            points: pointsList
+        });
+        thiessenAnalystService = new L.supermap.SpatialAnalystService(serviceUrl);
+        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters, 'FGB').then(function (serviceResult) {
+          new L.supermap.FGBLayer(serviceResult.result.newResourceLocation, {
+            strategy: 'all'
+          }).addTo(map);
+        })
+    }
+</script>
+</body>
+</html>

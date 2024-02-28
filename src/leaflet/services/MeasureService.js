@@ -1,31 +1,34 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
 import * as Util from '../core/Util';
-import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} from '@supermap/iclient-common';
+import { MeasureMode } from '@supermap/iclient-common/REST';
+import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
+import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParameters';
 
 /**
- * @class L.supermap.measureService
- * @classdesc 量算服务类。
+ * @class MeasureService
+ * @deprecatedclassinstance L.supermap.measureService
+ * @classdesc 量算服务类。提供方法：面积量算、距离量算等。
  * @category  iServer Map Measure
- * @augments {L.supermap.ServiceBase}
+ * @modulecategory Services
  * @example
  * 用法：
- * L.supermap.measureService(url).measureDistance({
+ * new MeasureService(url).measureDistance({
  *     geometry:xxx
  * },function(result){
  *     //doSomething
  * })
- * @param {string} url - 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World。
+ * @param {string} url - 服务地址。
  * @param {Object} options - 参数。
  * @param {string} [options.proxy] - 服务代理地址。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
- * @extends {L.supermap.ServiceBase}
+ * @extends {ServiceBase}
+ * @usage
  */
 export var MeasureService = ServiceBase.extend({
 
@@ -34,32 +37,33 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.measureService.prototype.measureDistance
-     * @description 测距。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @function MeasureService.prototype.measureDistance
+     * @description 距离量算。
+     * @param {MeasureParameters} params - 量算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureDistance: function (params, callback) {
-        this.measure(MeasureMode.DISTANCE, params, callback);
-        return this;
+      return this.measure(MeasureMode.DISTANCE, params, callback);
     },
 
     /**
-     * @function L.supermap.measureService.prototype.measureArea
-     * @description 测面积。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @function MeasureService.prototype.measureArea
+     * @description 面积量算。
+     * @param {MeasureParameters} params - 量算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measureArea: function (params, callback) {
-        this.measure(MeasureMode.AREA, params, callback);
-        return this;
+      return this.measure(MeasureMode.AREA, params, callback);
     },
 
     /**
-     * @function L.supermap.measureService.measure
-     * @param {SuperMap.MeasureMode} [type=SuperMap.MeasureMode.DISTANCE] - 量算模式。
-     * @param {SuperMap.MeasureParameters} params - 测量相关参数类。
-     * @param {RequestCallback} callback - 回调函数。
+     * @function MeasureService.measure
+     * @param {MeasureMode} [type=MeasureMode.DISTANCE] - 量算模式。
+     * @param {MeasureParameters} params - 量算参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
     measure: function (type, params, callback) {
         if (!(params instanceof MeasureParameters)) {
@@ -74,19 +78,12 @@ export var MeasureService = ServiceBase.extend({
             withCredentials: me.options.withCredentials,
             crossOrigin: me.options.crossOrigin,
             headers: me.options.headers,
-            measureMode: type,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            }
+            measureMode: type
         });
-        measureService.processAsync(params);
+        return measureService.processAsync(params, callback);
     }
 });
 
 export var measureService = function (url, options) {
     return new MeasureService(url, options);
 };
-
-L.supermap.measureService = measureService;

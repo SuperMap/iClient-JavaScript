@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,14 +22,14 @@
         center: [0, 0],
         maxZoom: 18,
         zoom: 0,
-        crs: new L.Proj.CRS("EPSG:3857",
+        crs: new L.supermap.Proj.CRS("EPSG:3857",
             {
                 origin: [-2.0037508342789244E7, 2.0037508342789244E7],
                 resolutions: res,
                 bounds: L.bounds([-2.0037508342789244E7, -2.0037508342789244E7], [2.0037508342789244E7, 2.0037508342789244E7])
             })
     });
-    L.supermap.wmtsLayer(host + "/iserver/services/map-china400/wmts100",
+    new L.supermap.WMTSLayer(host + "/iserver/services/map-china400/wmts100",
         {
             layer: "China",
             style: "default",

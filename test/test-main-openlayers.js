@@ -1,5 +1,6 @@
 /*openlayers -- control*/
 import './openlayers/control/ChangeTileVersionSpec.js';
+import './openlayers/control/ScaleLineSpec';
 
 /*openlayers -- core*/
 import './openlayers/core/StyleUtilsSpec.js';
@@ -11,6 +12,7 @@ import './openlayers/mapping/ImageSuperMapRestSpec.js';
 import './openlayers/mapping/TileSuperMapRestSpec.js';
 import './openlayers/mapping/WebMapSpec.js';
 import './openlayers/mapping/ImageTileSuperMapRestSpec.js';
+import './openlayers/mapping/initMapSpec.js';
 
 /*openlayers -- overlay*/
 import './openlayers/overlay/DataFlowSpec.js';
@@ -33,6 +35,8 @@ import './openlayers/overlay/theme/ThemeSpec.js';
 import './openlayers/overlay/vectortile/VectorTileStylesSpec.js';
 import './openlayers/overlay/vectortile/MapboxStylesSpec.js';
 import './openlayers/overlay/TurfSpec.js';
+import './openlayers/overlay/FGBSpec.js';
+import './openlayers/overlay/GraphMapSpec';
 
 // /**openlayers --services**/
 import './openlayers/services/BufferAnalysisSpec.js';
@@ -61,6 +65,11 @@ import './openlayers/services/RouteCalculateMeasureSpec.js';
 import './openlayers/services/RouteLocateSpec.js';
 import './openlayers/services/SurfaceAnalysisSpec.js';
 import './openlayers/services/TerrainCurvatureCalculateSpec.js';
+import './openlayers/services/TerrainAspectCalculateSpec.js';
+import './openlayers/services/TerrainSlopeCalculateSpec.js';
+import './openlayers/services/TerrainCutFillCalculateSpec.js';
+import './openlayers/services/MinDistanceAnalysisSpec.js';
+import './openlayers/services/ConvexHullAnalysisSpec.js';
 import './openlayers/services/ThemeServiceSpec.js';
 import './openlayers/services/ThiessenAnalysisSpec.js';
 import './openlayers/services/TrafficTransferAnalystServiceSpec.js';
@@ -71,3 +80,6 @@ import './openlayers/services/DatasetServiceSpec.js';
 import './openlayers/services/DatasourceServiceSpec.js';
 import './openlayers/services/ImageServiceSpec';
 import './openlayers/services/ImageCollectionServiceSpec';
+import './openlayers/services/KnowledgeGraphServiceSpec.js';
+import './openlayers/services/ChartServiceSpec.js';
+

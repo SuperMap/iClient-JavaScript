@@ -1,84 +1,79 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from './Util';
 import {Curve} from './Curve';
 
 /**
- * @class  SuperMap.LevelRenderer.Tool.Area
+ * @class  LevelRenderer.Tool.Area
  * @category Visualization Theme
  * @classdesc LevelRenderer 工具-图形范围判断
- * @private 
+ * @private
  */
 export class Area {
-    
-    /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.constructor
-     * @description 构造函数。
-     */
     constructor() {
         /**
-         * @member {SuperMap.LevelRenderer.Tool.Util}  SuperMap.LevelRenderer.Tool.Areal.prototype.util
+         * @member {LevelRenderer.Tool.Util}  LevelRenderer.Tool.Areal.prototype.util
          * @description 基础工具对象。
          */
         this.util = new Util();
 
         /**
-         * @member {SuperMap.LevelRenderer.Tool.Curve}  SuperMap.LevelRenderer.Tool.Areal.prototype.curve
+         * @member {LevelRenderer.Tool.Curve}  LevelRenderer.Tool.Areal.prototype.curve
          * @description 曲线工具对象
          */
         this.curve = new Curve();
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Tool.Areal.prototype._ctx
+         * @member {Object} LevelRenderer.Tool.Areal.prototype._ctx
          * @description Cavans2D 渲染上下文
          */
         this._ctx = null;
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Tool.Areal.prototype._textWidthCache
+         * @member {Object} LevelRenderer.Tool.Areal.prototype._textWidthCache
          * @description 文本宽度缓存
          */
         this._textWidthCache = {};
 
         /**
-         * @member {Object} SuperMap.LevelRenderer.Tool.Areal.prototype._textHeightCache
+         * @member {Object} LevelRenderer.Tool.Areal.prototype._textHeightCache
          * @description 文本高度缓存
          */
         this._textHeightCache = {};
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype._textWidthCacheCounter
+         * @member {number} LevelRenderer.Tool.Areal.prototype._textWidthCacheCounter
          * @description 文本宽度缓存数量
          */
         this._textWidthCacheCounter = 0;
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype._textHeightCacheCounter
+         * @member {number} LevelRenderer.Tool.Areal.prototype._textHeightCacheCounter
          * @description 文本高度缓存数量
          */
         this._textHeightCacheCounter = 0;
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype.TEXT_CACHE_MAX
+         * @member {number} LevelRenderer.Tool.Areal.prototype.TEXT_CACHE_MAX
          * @description 文本最大缓存数量
          */
         this.TEXT_CACHE_MAX = 5000;
 
         /**
-         * @member {number} SuperMap.LevelRenderer.Tool.Areal.prototype.PI2
+         * @member {number} LevelRenderer.Tool.Areal.prototype.PI2
          * @description 2*PI 的值
          */
         this.PI2 = Math.PI * 2;
 
         /**
-         * @member {Array} SuperMap.LevelRenderer.Tool.Areal.prototype.roots
+         * @member {Array.<number>} LevelRenderer.Tool.Areal.prototype.roots
          * @description 临时数组
          */
         this.roots = [-1, -1, -1];
 
         /**
-         * @member {Array} SuperMap.LevelRenderer.Tool.Areal.prototype.extrema
+         * @member {Array.<number>} LevelRenderer.Tool.Areal.prototype.extrema
          * @description 临时数组
          */
         this.extrema = [-1, -1];
@@ -87,7 +82,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.normalizeRadian
+     * @function LevelRenderer.Tool.Areal.prototype.normalizeRadian
      * @description 弧度标准化函数。
      * @param {number} angle - 弧度值。
      * @returns {number} 标准化后的弧度值。
@@ -101,7 +96,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInside
+     * @function LevelRenderer.Tool.Areal.prototype.isInside
      * @description 包含判断。
      * @param {Object} shape - 图形。
      * @param {number} area - 目标区域。
@@ -149,7 +144,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype._mathMethod
+     * @function LevelRenderer.Tool.Areal.prototype._mathMethod
      * @description 包含判断。用数学方法判断，三个方法中最快，但是支持的shape少。
      * @param {Object} shape - 图形。
      * @param {number} area - 目标区域。
@@ -383,7 +378,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype._buildPathMethod
+     * @function LevelRenderer.Tool.Areal.prototype._buildPathMethod
      * @description 包含判断。通过buildPath方法来判断，三个方法中较快，但是不支持线条类型的 shape。
      * @param {Object} shape - 图形。
      * @param {Object} context - 上下文。
@@ -401,7 +396,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isOutside
+     * @function LevelRenderer.Tool.Areal.prototype.isOutside
      * @description 图形是否不包含鼠标位置。
      * @param {Object} shape - 图形。
      * @param {number} area - 目标区域。
@@ -414,7 +409,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideLine
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideLine
      * @description 线段包含判断。
      * @param {number} x0 - 线起始点横坐标。
      * @param {number} y0 - 线起始点纵坐标。
@@ -454,7 +449,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideCubicStroke
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideCubicStroke
      * @description 三次贝塞尔曲线描边包含判断。
      * @param {number} x0 - 点1横坐标。
      * @param {number} y0 - 点1纵坐标。
@@ -489,7 +484,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideQuadraticStroke
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideQuadraticStroke
      * @description 二次贝塞尔曲线描边包含判断。
      * @param {number} x0 - 点1横坐标。
      * @param {number} y0 - 点1纵坐标。
@@ -524,7 +519,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideArcStroke
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideArcStroke
      * @description 圆弧描边包含判断。
      * @param {number} cx - 圆心横坐标。
      * @param {number} cy - 圆心纵坐标。
@@ -576,7 +571,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideBrokenLine
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideBrokenLine
      * @description 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
      * @param {Array} points - 曲线点对象。
      * @param {number} lineWidth - 线宽。
@@ -601,7 +596,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideRing
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideRing
      * @description  图形 Ring 是否包含鼠标位置, true表示坐标处在图形内。
      * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
      */
@@ -611,7 +606,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideRect
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideRect
      * @description 图形 Rect 是否包含鼠标位置, true表示坐标处在图形内。
      * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
      */
@@ -620,7 +615,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideCircle
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideCircle
      * @description 图形 Circle 是否包含鼠标位置, true表示坐标处在图形内。
      * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
      */
@@ -629,16 +624,16 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsideSector
+     * @function LevelRenderer.Tool.Areal.prototype.isInsideSector
      * @description 图形 Sector 是否包含鼠标位置, true表示坐标处在图形内。
      * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
      */
     isInsideSector(cx, cy, r0, r, startAngle, endAngle, anticlockwise, x, y) {
         return this.isInsideArcStroke(cx, cy, (r0 + r) / 2, startAngle, endAngle, anticlockwise, r - r0, x, y);
     }
-    
+
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsidePolygon
+     * @function LevelRenderer.Tool.Areal.prototype.isInsidePolygon
      * @description 图形 Polygon 是否包含鼠标位置, true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
      * @returns {boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
      */
@@ -659,7 +654,7 @@ export class Area {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingLine
+     * @function LevelRenderer.Tool.Areal.prototype.windingLine
      */
     windingLine(x0, y0, x1, y1, x, y) {
         if ((y > y0 && y > y1) || (y < y0 && y < y1)) {
@@ -676,7 +671,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.swapExtrema
+     * @function LevelRenderer.Tool.Areal.prototype.swapExtrema
      */
     swapExtrema() {
         var tmp = this.extrema[0];
@@ -685,7 +680,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingCubic
+     * @function LevelRenderer.Tool.Areal.prototype.windingCubic
      */
     windingCubic(x0, y0, x1, y1, x2, y2, x3, y3, x, y) {
         var curve = this.curve;
@@ -745,7 +740,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingQuadratic
+     * @function LevelRenderer.Tool.Areal.prototype.windingQuadratic
      */
     windingQuadratic(x0, y0, x1, y1, x2, y2, x, y) {
         var curve = this.curve;
@@ -789,7 +784,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.windingArc
+     * @function LevelRenderer.Tool.Areal.prototype.windingArc
      * // TODO   Arc 旋转
      */
     windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y) {
@@ -853,7 +848,7 @@ export class Area {
 
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.isInsidePath
+     * @function LevelRenderer.Tool.Areal.prototype.isInsidePath
      * @description 与 canvas 一样采用 non-zero winding rule
      */
     isInsidePath(pathArray, lineWidth, brushType, x, y) {
@@ -1008,7 +1003,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.getTextWidth
+     * @function LevelRenderer.Tool.Areal.prototype.getTextWidth
      * @description 测算多行文本宽度
      */
     getTextWidth(text, textFont) {
@@ -1044,7 +1039,7 @@ export class Area {
     }
 
     /**
-     * @function SuperMap.LevelRenderer.Tool.Areal.prototype.getTextHeight
+     * @function LevelRenderer.Tool.Areal.prototype.getTextHeight
      * @description 测算多行文本高度
      */
     getTextHeight(text, textFont) {

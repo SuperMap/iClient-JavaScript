@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -10,27 +10,33 @@ import {
 import ImageCanvasSource from 'ol/source/ImageCanvas';
 
 /**
- * @class ol.source.Mapv
+ * @class Mapv
+ * @browsernamespace ol.source
  * @category  Visualization MapV
- * @classdesc MapV 图层源。
+ * @classdesc MapV 图层源。MapV 是一款地理信息可视化开源库，MapV 图层可以用来展示大量地理信息数据，点、线、面的数据，每种数据也有不同的展示类型，如直接打点、热力图、网格、聚合等方式展示数据。<br>
+ * 展示大量的点数据：如热力图、网格、蜂窝状、点聚合、按颜色区间、按半径大小等方式。<br>
+ * 展示大量的线数据：如普通画线、高亮叠加、热力线数据展示等方式，适合展示大量轨迹的场景。<br>
+ * 展示大量的自定义面数据：按颜色区间来展示，如展示行政区划数据。
+ * @modulecategory Overlay
  * @param {Object} opt_options - 参数。
- * @param {ol/Map} opt_options.map - 当前 Map 对象。
+ * @param {ol.Map} opt_options.map - 当前 OpenLayers 地图对象。
  * @param {Mapv.DataSet} opt_options.dataSet - MapV 的数据集。
  * @param {Object} opt_options.mapvOptions - MapV 的配置对象。
- * @param {string} [opt_options.logo] - Logo（openLayers 5.0.0 及更高版本不再支持此参数）。
- * @param {ol/proj/Projection} [opt_option.projection] - 投影信息。
- * @param {number} [opt_option.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。 必须是 1 或更高。
- * @param {Array} [opt_option.resolutions] - 分辨率数组。
- * @param {ol/source/State} [opt_option.state] - 资源状态。
- * @param {(string|Object)} [opt_option.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权信息。
- * @extends {ol/source/ImageCanvas}
+ * @param {string} [opt_options.logo] - Logo（OpenLayers 5.0.0 及更高版本不再支持此参数）。
+ * @param {ol.proj.Projection} [opt_options.projection] - 投影信息。
+ * @param {number} [opt_options.ratio=1.5] - 视图比，1 表示画布是地图视口的大小，2 表示地图视口的宽度和高度的两倍，依此类推。必须是 1 或更高。
+ * @param {Array} [opt_options.resolutions] - 分辨率数组。
+ * @param {ol.source.State} [opt_options.state] - 资源状态。
+ * @param {(string|Object)} [opt_options.attributions='© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
+ * @extends {ol.source.ImageCanvas}
+ * @usage
  */
 export class Mapv extends ImageCanvasSource {
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
         super({
-            attributions: options.attributions || "© 2018 百度 MapV with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            attributions: options.attributions || "© 2018 百度 MapV with <span>© SuperMap iClient</span>",
             canvasFunction: canvasFunctionInternal_,
             logo: Util.getOlVersion() === '4' ? options.logo : null,
             projection: options.projection,
@@ -84,7 +90,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.addData
+     * @function Mapv.prototype.addData
      * @description 追加数据。
      * @param {Object} data - 要追加的数据。
      * @param {Object} options - 要追加的值。
@@ -94,9 +100,9 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.getData
+     * @function Mapv.prototype.getData
      * @description 获取数据。
-     * @returns {mapv.DataSet} MapV 数据集。
+     * @returns {Mapv.DataSet} MapV 数据集。
      */
     getData() {
         if (this.layer) {
@@ -106,7 +112,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.removeData
+     * @function Mapv.prototype.removeData
      * @description 删除符合过滤条件的数据。
      * @param {function} filter - 过滤条件。条件参数为数据项，返回值为 true，表示删除该元素；否则表示不删除。
      * @example
@@ -122,7 +128,7 @@ export class Mapv extends ImageCanvasSource {
     }
 
     /**
-     * @function ol.source.Mapv.prototype.clearData
+     * @function Mapv.prototype.clearData
      * @description 清除数据。
      */
     clearData() {
@@ -131,7 +137,7 @@ export class Mapv extends ImageCanvasSource {
 
 
     /**
-     * @function ol.source.Mapv.prototype.update
+     * @function Mapv.prototype.update
      * @description 更新数据。
      * @param {Object} options - 待更新的数据。
      * @param {Object} options.data - mapv 数据集。

@@ -1,4 +1,5 @@
 import {wmtsLayer} from '../../../src/leaflet/mapping/TileLayer.WMTS';
+import { SecurityManager } from '../../../src/common/security/SecurityManager';
 
 var url = GlobeParameter.WMTSURL;
 describe('leaflet_TileLayerWMTS', () => {
@@ -71,4 +72,38 @@ describe('leaflet_TileLayerWMTS', () => {
         expect(WMTStiledMapLayerObject.getTileUrl(coords)).toBe(url + '/China/default/Custom_China/NaN/0/0.png');
     });
 
+    it("getTileUrl_params Token", () => {
+      var coords = {x: 0, y: 0, z: 0};
+      var option = {
+          layer: "China",
+          style: "default",
+          tilematrixSet: "Custom_China",
+          format: "image/png",
+          requestEncoding: 'REST'
+      };
+      var url = GlobeParameter.WMTSURL+'?token=test';
+      WMTStiledMapLayerObject = wmtsLayer(url, option);
+      const tileUrl = WMTStiledMapLayerObject.getTileUrl(coords)
+      expect(tileUrl).not.toBeNull();
+      expect(tileUrl).toBe(GlobeParameter.WMTSURL + '/China/default/Custom_China/NaN/0/0.png?token=test');
+    });
+
+    it("getTileUrl_registerToken", () => {
+      var coords = {x: 0, y: 0, z: 0};
+      var option = {
+          layer: "China",
+          style: "default",
+          tilematrixSet: "Custom_China",
+          format: "image/png",
+          requestEncoding: 'REST'
+      };
+      var url = GlobeParameter.WMTSURL;
+      SecurityManager.registerToken(url, 'test');
+      WMTStiledMapLayerObject = wmtsLayer(url, option);
+      const tileUrl = WMTStiledMapLayerObject.getTileUrl(coords)
+      expect(tileUrl).not.toBeNull();
+      expect(tileUrl).toBe(GlobeParameter.WMTSURL + '/China/default/Custom_China/NaN/0/0.png?token=test');
+      SecurityManager.destroyToken(url);
+      SecurityManager.destroyAllCredentials();
+  });
 });

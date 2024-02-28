@@ -209,7 +209,7 @@ describe('leaflet_UniqueThemeLayer', () => {
 
             /*
              * Method: PointInPoly
-             * 判断一个点是否在多边形里面。(射线法)
+             * 判断一个点是否在多边形里面（射线法）。
              *
              * Parameters:
              * pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
@@ -264,7 +264,7 @@ describe('leaflet_UniqueThemeLayer', () => {
                 console.log("未能通过'getFeaturesBySQL'方法获取接下来'addFeatures'方法所需要的数据");
                 done();
             }
-        }, 6000);
+        }, 2000);
     });
 
     it('addFeatures', (done) => {
@@ -398,9 +398,11 @@ describe('leaflet_UniqueThemeLayer', () => {
                     expect(false).toBeTruthy();
                     done();
                 }
-            }, 6000);
+            }, 2000);
         } else {
+            expect(false).toBeTruthy();
             console.log("'addFeatures'案例未获取到待添加的数据");
+            done();
         }
     });
 });

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
             serviceUrl = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
         //最佳路径分析必须按照指定顺序对站点进行访问
         map = L.map('map', {
-            crs: L.CRS.NonEarthCRS({
+            crs: new L.supermap.CRS.NonEarthCRS({
                 bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
                 origin: L.point(48.4, -55.58)
             }),
@@ -28,7 +28,7 @@
             maxZoom: 18,
             zoom: 2
         });
-        L.supermap.tiledMapLayer(baseUrl, { noWrap: true })
+        new L.supermap.TiledMapLayer(baseUrl, { noWrap: true })
             .addTo(map)
             .once("load", function () {
                 findPathProcess();
@@ -44,9 +44,9 @@
             marker3.bindPopup(resources.text_site3);
 
             //创建最佳路径分析服务实例
-            findPathService = L.supermap.networkAnalystService(serviceUrl);
+            findPathService = new L.supermap.NetworkAnalystService(serviceUrl);
             //创建最佳路径分析参数实例
-            var resultSetting = new SuperMap.TransportationAnalystResultSetting({
+            var resultSetting = new L.supermap.TransportationAnalystResultSetting({
                 returnEdgeFeatures: true,
                 returnEdgeGeometry: true,
                 returnEdgeIDs: true,
@@ -56,11 +56,11 @@
                 returnPathGuides: true,
                 returnRoutes: true
             });
-            var analystParameter = new SuperMap.TransportationAnalystParameter({
+            var analystParameter = new L.supermap.TransportationAnalystParameter({
                 resultSetting: resultSetting,
                 weightFieldName: "length"
             });
-            findPathParameter = new SuperMap.FindPathParameters({
+            findPathParameter = new L.supermap.FindPathParameters({
                 isAnalyzeById: false,
                 nodes: [L.point(4000, -3000), L.point(5500, -2500), L.point(6900, -4000)],
                 parameter: analystParameter
@@ -70,7 +70,7 @@
                 iconSize: [20, 20]
             });
             //进行查找
-            findPathService.findPath(findPathParameter, function (serviceResult) {
+            findPathService.findPath(findPathParameter).then(function (serviceResult) {
                 var result = serviceResult.result;
                 result.pathList.map(function (result) {
                     L.geoJSON(result.route).addTo(map);

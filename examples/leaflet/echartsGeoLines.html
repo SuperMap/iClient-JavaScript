@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* Echarts (https://github.com/apache/echarts)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -20,7 +24,7 @@
         maxZoom: 18,
         zoom: 5
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     var geoCoordMap = {
         '上海': [121.4648, 31.2891],
         '东莞': [113.8953, 22.901],
@@ -299,7 +303,7 @@
 
         series: series
     };
-    L.supermap.echartsLayer(option).addTo(map);
+    new L.supermap.EchartsLayer(option).addTo(map);
 </script>
 </body>
 </html>

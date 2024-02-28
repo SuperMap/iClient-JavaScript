@@ -1,25 +1,26 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {TimeControlBase} from './TimeControlBase';
 
 /**
- * @class SuperMap.TimeFlowControl
- * @classdesc 时间管理类。
+ * @class TimeFlowControl
+ * @deprecatedclass SuperMap.TimeFlowControl
  * @category  Control
- * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
+ * @classdesc 时间管理类。此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
  * 如设置起始时间为 1000，结束时间是 2000，步长设置为 1，
- * 那么表示按照每次1年（可以通过 setSpeed 进行修改）的变化从公元 1000 年开始到公元 2000 年为止，默认每 1 秒会 1 次（通过 setFrequency 修改）
- * @extends {SuperMap.TimeControlBase}
+ * 那么表示按照每次1年（可以通过 setSpeed 进行修改）的变化从公元 1000 年开始到公元 2000 年为止，默认每 1 秒会变化 1 次（通过 setFrequency 修改）
+ * @modulecategory Control
+ * @extends {TimeControlBase}
  * @param {function} callback - 每次刷新回调函数。具体的效果需要用户在此回调函数里面实现。
- * @param {Object} options - 该类开放的可选属性。
+ * @param {Object} options - 可选参数。
  * @param {number} [options.speed=1] - 步长（单位 ms）。不能小于 0，（每次刷新的数据之间的间隔为 1ms）。
  * @param {number} [options.frequency=1000] - 刷新频率（单位 ms）。
  * @param {number} [options.startTime=0] - 起始时间，必须为数字，且小于等于 endTime。如果不设置，初始化时为 0，建议设置。
  * @param {number} [options.endTime] - 结束时间，必须为数字，且大于等于 startTime。如果不设置，初始化时使用 new Date() 以当前时间进行设置，建议设置。
  * @param {boolean} [options.repeat=true] - 是否重复循环。
  * @param {boolean} [options.reverse=false] - 是否反向。
+ * @usage
  */
 export class TimeFlowControl extends TimeControlBase {
 
@@ -28,7 +29,7 @@ export class TimeFlowControl extends TimeControlBase {
         super(options);
         var me = this;
         /**
-         * @member SuperMap.TimeFlowControl.prototype.callback -{function}
+         * @member TimeFlowControl.prototype.callback -{function}
          * @description 每次刷新执行的回调函数。
          */
         me.callback = callback;
@@ -65,7 +66,7 @@ export class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @function SuperMap.TimeFlowControl.prototype.updateOptions
+     * @function TimeFlowControl.prototype.updateOptions
      * @override
      */
     updateOptions(options) {
@@ -75,7 +76,7 @@ export class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @function SuperMap.TimeFlowControl.prototype.start
+     * @function TimeFlowControl.prototype.start
      * @override
      */
     start() {
@@ -100,7 +101,7 @@ export class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @function SuperMap.TimeFlowControl.prototype.stop
+     * @function TimeFlowControl.prototype.stop
      * @override
      */
     stop() {
@@ -117,7 +118,7 @@ export class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @function SuperMap.TimeFlowControl.prototype.destroy
+     * @function TimeFlowControl.prototype.destroy
      * @override
      */
     destroy() {
@@ -129,7 +130,7 @@ export class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @function SuperMap.TimeFlowControl.prototype.tick
+     * @function TimeFlowControl.prototype.tick
      * @description 定时刷新。
      */
     tick() {
@@ -141,8 +142,8 @@ export class TimeFlowControl extends TimeControlBase {
     }
 
     /**
-     * @function SuperMap.TimeFlowControl.prototype.update
-     * @override
+     * @function TimeFlowControl.prototype.update
+     * @description 更新控件。
      */
     update() {
         var me = this;
@@ -201,6 +202,4 @@ export class TimeFlowControl extends TimeControlBase {
 
 
 }
-
-SuperMap.TimeFlowControl = TimeFlowControl;
 

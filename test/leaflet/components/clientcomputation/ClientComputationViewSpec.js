@@ -82,13 +82,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
             }
            
         };
-        var options = {
-            eventListeners: {
-                'processFailed': QueryBySQLFailed,
-                'processCompleted': QueryBySQLCompleted
-            }
-        };
-        var queryBySQLService = new QueryBySQLService(queryUrl, options);
+        var queryBySQLService = new QueryBySQLService(queryUrl);
         var params = new QueryBySQLParameters({
 
             expectCount: 2,
@@ -98,8 +92,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 name: "中国历史5级以上地震_1900至2016@自然气候数据",
             }))
         })
-        queryBySQLService.events.on({ 'processCompleted': QueryBySQLCompleted });
-        queryBySQLService.processAsync(params);
+        queryBySQLService.processAsync(params, QueryBySQLCompleted);
     
     });
 
@@ -119,7 +112,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
         setTimeout(() => {
             try {
                 expect(document.getElementById('dropDownTop').getAttribute('data-value')).toBe("isolines");
-                clientComputation.viewModel.on('layerloaded', (e) => {
+                clientComputation.viewModel.once('layerloaded', (e) => {
                     try {
                         if (e.name.indexOf("等值线") > -1) {
                             expect(e.layer._layers).not.toBeNull;
@@ -145,7 +138,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
                 console.log("clientcomputation" + exception.name + ":" + exception.message);
                 done();
             }
-        }, 600)
+        }, 0)
     });
 
 
@@ -154,7 +147,7 @@ describe('leaflet_clientcomputation_ClientComputationView', () => {
             try {
                 document.getElementById('dropDownTop').click();
                 document.getElementsByClassName('component-dropdownbox__item')[2].click();
-                clientComputation.viewModel.on('layerloaded', (e) => {
+                clientComputation.viewModel.once('layerloaded', (e) => {
                     try {
                         if (e.name.indexOf("等值线") > -1) {
                             expect(e.name.layer._layers).not.toBeNull;

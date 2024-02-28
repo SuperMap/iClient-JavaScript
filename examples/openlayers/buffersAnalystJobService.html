@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -80,7 +80,7 @@
                             collapsed: false
                         }
                     })
-                    .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
@@ -103,7 +103,7 @@
 
         info.setMap(map);
         map.addControl(info);
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function getBounds() {
             if ($('#bounds').val() === "") {
@@ -124,7 +124,7 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            var buffersAnalystJobsParameter = new SuperMap.BuffersAnalystJobsParameter({
+            var buffersAnalystJobsParameter = new ol.supermap.BuffersAnalystJobsParameter({
                 datasetName: $('#datasetName').val(),
                 bounds: getBounds(),
                 distance: $('#distace').val(),
@@ -141,7 +141,7 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {

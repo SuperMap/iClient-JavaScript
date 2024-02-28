@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {
@@ -13,7 +13,10 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
 /**
  * @class MapvLayer
- * @classdesc MapV 图层类。
+ * @classdesc MapV 图层类。MapV 是一款地理信息可视化开源库，MapV 图层可以用来展示大量地理信息数据，点、线、面的数据，每种数据有不同的展示类型，如直接打点、热力图、网格、聚合等方式展示数据。<br>
+ * 展示大量的点数据：如热力图、网格、蜂窝状、点聚合、按颜色区间、按半径大小等方式。<br>
+ * 展示大量的线数据：如普通画线、高亮叠加、热力线数据展示等方式，适合展示大量轨迹的场景。<br>
+ * 展示大量的自定义面数据：按颜色区间来展示，如展示行政区划数据。
  * @private
  * @param {Object} map - 地图。
  * @param {Mapv.DataSet} [dataSet] - 数据集。
@@ -21,8 +24,8 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @param {number} mapWidth - 地图宽度。
  * @param {number} mapHeight - 地图高度。
  * @param {Object} source - 资源。
- * @param {number} options.width - 画布宽。
- * @param {number} options.height - 画布高。
+ * @param {number} options.width - 画布宽度。
+ * @param {number} options.height - 画布高度。
  * @param {string} [options.paneName='mapPane'] - 窗口名。
  * @param {string} [options.context] - 内容。
  * @param {number} [options.zIndex] - 层级。

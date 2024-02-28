@@ -1,5 +1,7 @@
 import { featureService } from '../../../src/leaflet/services/FeatureService';
 import { GetFeaturesByGeometryParameters } from '../../../src/common/iServer/GetFeaturesByGeometryParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
@@ -64,7 +66,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Countries');
             expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
@@ -174,7 +176,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World1:Countries');
             expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
@@ -218,7 +220,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(dataServiceURL + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(dataServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Countries');
             expect(paramsObj.spatialQueryMode).toBe('CONTAIN');
@@ -298,7 +300,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
         var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
             queryParameter: null,
@@ -324,7 +326,7 @@ describe('leaflet_FeatureService_getFeaturesByGeometry', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var getFeaturesByGeometryService = featureService(dataServiceURL, options);
         var getFeaturesByGeometryParams = new GetFeaturesByGeometryParameters({
             queryParameter: null,

@@ -1,5 +1,9 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after:function(browser){
+        console.log('Closing down...');
+        browser.end();
+      },
     'leaflet_01_tiledMapLayer3857': function (browser) {
         browser.windowMaximize();
         var type = 'leaflet';
@@ -9,8 +13,8 @@ module.exports = {
         commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 0, 0, 128, 128);
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
-        browser.end();
+        // browser.pause(1000);
+        // browser.end();
     }
 };
 

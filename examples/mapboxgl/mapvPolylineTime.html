@@ -1,5 +1,10 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* Mapv (https://github.com/huiyan-fe/mapv)
+* proj4js (https://github.com/proj4js/proj4js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en-US">
@@ -19,6 +24,9 @@
             top: 0;
             bottom: 0;
             width: 100%;
+        }
+        .mapboxgl-popup-close-button {
+          outline: none;
         }
     </style>
 
@@ -58,7 +66,7 @@
         zoom: 10
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
         .setLngLat(map.getCenter())
         .setHTML(resources.text_iClient)
@@ -114,8 +122,7 @@
             draw: 'simple'
         };
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVlayer = new mapboxgl.supermap.MapvLayer("", dataSet, options);
+        var mapVlayer = new mapboxgl.supermap.MapvLayer(dataSet, options);
         map.addLayer(mapVlayer);
 
         var dataSet2 = new mapv.DataSet(timeData);
@@ -136,8 +143,7 @@
             draw: 'simple'
         };
 
-        //mapboxgl.supermap.MapvLayer 构造函数的第一个 map 参数将在下个版本遗弃
-        var mapVlayer2 = new mapboxgl.supermap.MapvLayer("", dataSet2, options2);
+        var mapVlayer2 = new mapboxgl.supermap.MapvLayer(dataSet2, options2);
         map.addLayer(mapVlayer2);
     });
 

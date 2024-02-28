@@ -268,7 +268,7 @@ describe('leaflet_GeoprocessingService', () => {
                 )
             );
         });
-        getJobsService.getJobs(null, (result) => {
+        getJobsService.getJobs((result) => {
             serverResult = result;
             try {
                 expect(getJobsService).not.toBeNull();
@@ -317,7 +317,8 @@ describe('leaflet_GeoprocessingService', () => {
                     expect(false).toBeTruthy();
                     done();
                 }
-            }
+            },
+            null
         );
     });
 
@@ -349,7 +350,8 @@ describe('leaflet_GeoprocessingService', () => {
                     expect(false).toBeTruthy();
                     done();
                 }
-            }
+            },
+            'countrdd-resultCount'
         );
     });
 });

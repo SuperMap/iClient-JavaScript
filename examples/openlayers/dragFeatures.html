@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -31,7 +31,7 @@
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+            .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
             center: [116, 30],
             zoom: 4,
@@ -47,14 +47,14 @@
         projection: 'EPSG:4326'
     });
     map.addLayer(layer);
-    var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+    var sqlParam = new ol.supermap.GetFeaturesBySQLParameters({
         queryParameter: {
             name: "Countries@World",
             attributeFilter: "SMID = 234"
         },
         datasetNames: ["World:Countries"]
     });
-    new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+    new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
         source = new ol.source.Vector({
             features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
             wrapX: false

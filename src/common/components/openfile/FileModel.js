@@ -1,10 +1,11 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {FileTypes, FileConfig} from '../CommonTypes'
 
 /**
- * @class SuperMap.FileModel
+ * @class FileModel
+ * @deprecatedclass SuperMap.FileModel
  * @description 文件数据组件数据模型，用于存储一些文件数据或状态，todo 结构待完善
  * @category Components OpenFile
  * @private
@@ -17,7 +18,7 @@ export class FileModel {
     }
 
     /**
-     * @function SuperMap.FileModel.prototype.set
+     * @function FileModel.prototype.set
      * @description 设置属性值
      * @param {string} key - 属性名称
      * @param {string|Object} value - 属性值
@@ -27,7 +28,7 @@ export class FileModel {
     }
 
     /**
-     * @function SuperMap.FileModel.prototype.get
+     * @function FileModel.prototype.get
      * @description 获取数据值
      * @param {string} key - 属性名称
      * @returns {string|Object} value - 返回属性值

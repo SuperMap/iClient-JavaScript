@@ -1,7 +1,8 @@
 import { FeatureService } from '../../../src/mapboxgl/services/FeatureService';
 import { GetFeaturesBySQLParameters } from '../../../src/common/iServer/GetFeaturesBySQLParameters';
+import { MetricsAggParameter } from '../../../src/common/iServer/MetricsAggParameter';
+import { GeoHashGridAggParameter } from '../../../src/common/iServer/GeoHashGridAggParameter';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import { SuperMap } from '@supermap/iclient-common';
 
 var url = GlobeParameter.dataServiceURL;
 
@@ -37,7 +38,7 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         var service = new FeatureService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
             expect(method).toBe('POST');
-            expect(testUrl).toBe(url + '/featureResults?returnContent=true&fromIndex=0&toIndex=19');
+            expect(testUrl).toBe(url + '/featureResults?fromIndex=0&toIndex=19&returnContent=true');
             var paramsObj = JSON.parse(params.replace(/'/g, '"'));
             expect(paramsObj.datasetNames[0]).toBe('World:Countries');
             expect(paramsObj.getFeatureMode).toBe('SQL');
@@ -52,8 +53,8 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe('processCompleted');
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.object.options.data).toContain('Countries@World');
-                expect(serviceResult.object.options.data).toContain('SMID = 247');
+                expect(serviceResult.options.data).toContain('Countries@World');
+                expect(serviceResult.options.data).toContain('SMID = 247');
                 expect(serviceResult.result.featureCount).toEqual(1);
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual('FeatureCollection');
@@ -120,7 +121,7 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         });
     });
     it('MetricsAggParameter', done => {
-        var aggregations = new SuperMap.MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new MetricsAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: 'Countries@World',
@@ -145,7 +146,7 @@ describe('mapboxgl_FeatureService_getFeaturesBySQL', () => {
         });
     });
     it('GeoHashGridAggParameter', done => {
-        var aggregations = new SuperMap.GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
+        var aggregations = new GeoHashGridAggParameter({ aggName: 'test', aggFieldName: 'SMID' });
         var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: 'Countries@World',

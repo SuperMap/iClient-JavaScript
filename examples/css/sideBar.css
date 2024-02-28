@@ -14,7 +14,7 @@
 }
 
 .skin-blue .main-sidebar {
-    background-color: #424242;
+    background-color: var(--sidebar-background-color);
 }
 
 .skin-blue .sidebar-menu > li.treeview:hover > a {
@@ -62,8 +62,8 @@ a.sidebar-toggle {
     height: 36px;
     line-height: 36px;
     text-align: center;
-    background-color: #282828;
-    color: white !important;
+    background-color: var(--sidebar-background-color);
+    color: var(--text-color) !important;
     display: block;
 }
 
@@ -75,36 +75,47 @@ a.sidebar-toggle {
     transform: rotate(90deg);
     transition: transform .5s;
 }
+.sidebar-collapse a.sidebar-toggle #suffix-title{
+  display: none;
+}
 
 /*侧边栏滚动设置 end*/
 
+.skin-blue .sidebar-menu > li.treeview.active > a span,
+.skin-blue .sidebar-menu > li.treeview.active > a .iconName {
+  color: var(--active-color);
+}
 .skin-blue .treeview-menu li > a {
-    border-left: 3px solid #424242;
+    border-left: 3px solid var(--sidebar-background-color);
 }
   
 .skin-blue .treeview-menu li > a:hover,
 .skin-blue .treeview-menu li.active > a {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-left-color: rgba(161, 161, 161, 0.3);
+    color: var(--active-color);
+    background-color: var(--active-background-color);
+    border-left-color: var(--active-color);
+}
+.skin-blue .treeview-menu li > a:hover > span,
+.skin-blue .treeview-menu li.active > a > span{
+  color: var(--active-color);
 }
 
 .skin-blue .treeview-menu > li > a {
-    color: white;
-    padding-left: 35px;
-    padding-right: 17px !important;
+    color: var(--text-color-secondary);
+    padding: 10px 40px;
 }
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
     margin: 0;
-    background: #424242;
+    background: var(--sidebar-background-color);
 }
 
 .sidebar-menu li.active > .treeview-menu {
-    background: #424242;
+    background: var(--sidebar-background-color);
 }
 
-.sidebar-title-bar .fa-angle-left,
-.sidebar-title-bar .pull-right-container > .fa-angle-lef {
+.sidebar-title-bar .fa-angle-down,
+.sidebar-title-bar .pull-right-container > .fa-angle-down {
     width: auto;
     height: auto;
     padding: 0;
@@ -131,18 +142,18 @@ a.sidebar-toggle {
 
 .skin-blue .sidebar-menu > li:hover > a,
 .skin-blue .sidebar-menu > li.active > a {
-    color: #424242;
-    background: #313131;
+    color: var(--text-color);
+    background: var(--sidebar-background-color);
 }
 
 .skin-blue .treeview-menu > li.active > a,
 .skin-blue .treeview-menu > li > a:hover {
-    color: white;
+    color: var(--text-color);
 }
 
 .main-sidebar .iconName {
-    margin-right: 10px;
-    color: white
+    margin-right: 4px;
+    color: var(--text-color);
 }
 
 .menuTitle a.active {
@@ -150,7 +161,7 @@ a.sidebar-toggle {
 }
 
 .sidebar-menu span {
-    color: white;
+    color: var(--text-color);
 }
 
 li.menuTitle a {
@@ -161,18 +172,18 @@ li.menuTitle a {
 }
 
 .main-sidebar .secondMenuTitle {
-    padding-left: 10px;
-    color: white;
+    font-weight: 400;
+    color: var(--text-color-secondary);
 }
 
 .main-sidebar .thirdMenuTitle {
     font-size: 12px;
     padding-left: 32px;
-    color: white;
+    color: var(--text-color-secondary);
 }
 
 .main-sidebar .pull-right {
-    color: white
+    color: var(--text-color-secondary)
 }
 
 @media screen and (max-width: 768px) {
@@ -182,6 +193,9 @@ li.menuTitle a {
         width: 26px;
         height: 36px;
         left: 100%;
+    }
+    #suffix-title{
+      display: none;
     }
     /*侧边栏滚动设置 start*/
     #sidebar-menu > li:hover .sidebar-title-bar {

@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
@@ -12,18 +12,18 @@ import {VectorTileJSON} from './VectorTileJSON';
 import {VectorTileFormat} from '../VectorTileFormat';
 
 /**
- * @class L.supermap.VectorTile
- * @classdesc 矢量瓦片图层基类。
+ * @class VectorTile
+ * @classdesc 矢量瓦片图层基类。此类存储了矢量瓦片图层名称、瓦片大小、返回值类型等、坐标系统、渲染器等参数。
  * @category Visualization VectorTile
  * @private
  * @extends {L.Class}
- * @param {Object} options - 矢量瓦片类构造可选参数。
+ * @param {Object} options - 参数。
  * @param {string} [options.layer] - 图层名称。
  * @param {(number|L.Point)} [options.tileSize=256] - 瓦片大小。
  * @param {string} [options.format] - 返回值类型。
  * @param {Object} [options.coords] -  坐标系统对象。
  * @param {Object} [options.renderer] - 渲染器对象。
- * @param {Function} done - 回调函数。
+ * @param {function} done - 回调函数。
  */
 export var VectorTile = L.Class.extend({
 
@@ -38,7 +38,7 @@ export var VectorTile = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.VectorTile.prototype.renderTile
+     * @function VectorTile.prototype.renderTile
      * @description 渲染切片。
      */
     renderTile: function () {
@@ -60,9 +60,9 @@ export var VectorTile = L.Class.extend({
     },
 
     /**
-     * @function L.supermap.VectorTile.prototype.render
+     * @function VectorTile.prototype.render
      * @description 渲染切片要素。
-     * @param {Object} tileFeature - 要渲染的切片要素。
+     * @param {Object} tileFeature - 需要渲染的切片要素。
      * @param {Object} coords - 切片坐标参数对象。
      */
     render: function (tileFeature, coords) {

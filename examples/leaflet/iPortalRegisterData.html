@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* xlsx (https://github.com/SheetJS/sheetjs)
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +57,7 @@
 <script>
     //iportal的URL地址 或根据情况添加自己的本地iportal地址：http://localhost:8190/iportal
     var iPortalUrl = "https://iportal.supermap.io/iportal";
-    var token = "MFEKl8kVmkvEDrDFcgnjodlPCudIO83mBSwvdjiUlWNnySGD-FCEyYEk4CsY2WnSCujfAs8HI0ZkSL6Vxa-njg..";
+    var token = window.iportalToken;
     //数据类型
     var dataType;
 
@@ -65,13 +69,13 @@
     
     //获取token
     function generatePortalToken() {
-        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
+        var serverInfo = new L.supermap.ServerInfo(L.supermap.ServerType.IPORTAL, {
             server: iPortalUrl
         });
 
-        SuperMap.SecurityManager.registerServers([serverInfo]);
-        SuperMap.SecurityManager.destroyToken(iPortalUrl);
-        SuperMap.SecurityManager.registerToken(iPortalUrl, token);
+        L.supermap.SecurityManager.registerServers([serverInfo]);
+        L.supermap.SecurityManager.destroyToken(iPortalUrl);
+        L.supermap.SecurityManager.registerToken(iPortalUrl, token);
     }
     
     //选中数据类型函数
@@ -93,15 +97,15 @@
             case "HDFS":
                 var tags = $("#hdfs-tags").val();
                 var HDFSCatalog = $("#hdfs-address").val();
-                var dataStoreInfoParams = new SuperMap.iPortalDataStoreInfoParam({
+                var dataStoreInfoParams = new L.supermap.iPortalDataStoreInfoParam({
                     type:dataType,
                     url:HDFSCatalog
                 })
-                var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam({
+                var dataMetaParams = new L.supermap.iPortalDataMetaInfoParam({
                     url:HDFSCatalog,
                     dataStoreInfo:dataStoreInfoParams
                 })
-                params = new SuperMap.iPortalAddDataParam({
+                params = new L.supermap.iPortalAddDataParam({
                     type:dataType,
                     fileName:$("#hdfs-name").val(),
                     tags:tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
@@ -111,18 +115,18 @@
             case "HBASE":
                 var tags = $("#hbase-tags").val();
                 var serviceAddress = $("#hbase-address").val();
-                var connectionInfoParam =  new SuperMap.iPortalDataConnectionInfoParam({
+                var connectionInfoParam =  new L.supermap.iPortalDataConnectionInfoParam({
                     dataBase:$("#hbase-name").val(),
                     server:serviceAddress
                 })
-                var dataStoreInfoParams = new SuperMap.iPortalDataStoreInfoParam({
+                var dataStoreInfoParams = new L.supermap.iPortalDataStoreInfoParam({
                     type:dataType,
                     connectionInfo:connectionInfoParam
                 })
-                var dataMetaParams = new SuperMap.iPortalDataMetaInfoParam({
+                var dataMetaParams = new L.supermap.iPortalDataMetaInfoParam({
                     dataStoreInfo:dataStoreInfoParams
                 })
-                params = new SuperMap.iPortalAddDataParam({
+                params = new L.supermap.iPortalAddDataParam({
                     type:dataType,
                     fileName:$("#hbase-name").val(),
                     tags:tags ? tags.replace('，',',').split(',') : [], // 将中文逗号替换为英文逗号并去重
@@ -130,7 +134,7 @@
                 });
                 break;
         }
-        new SuperMap.iPortalUser(iPortalUrl).addData(params).then(res=>{
+        new L.supermap.iPortalUser(iPortalUrl).addData(params).then(res=>{
             if(res.childID) {
                 widgets.alert.showAlert(resources.msg_register_success, true);
             }else {

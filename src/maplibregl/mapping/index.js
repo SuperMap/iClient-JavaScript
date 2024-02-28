@@ -1,0 +1,1 @@
+export { initMap } from './InitMap';

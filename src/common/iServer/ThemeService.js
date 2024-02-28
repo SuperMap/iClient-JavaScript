@@ -1,35 +1,31 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {CommonServiceBase} from './CommonServiceBase';
 import {ThemeParameters} from './ThemeParameters';
 
 /**
- * @class SuperMap.ThemeService
+ * @class ThemeService
+ * @deprecatedclass SuperMap.ThemeService
  * @category  iServer Map Theme
- * @classdesc 专题图服务类。
- * @extends {SuperMap.CommonServiceBase}
+ * @classdesc 专题图服务类。地图学中将突出而深入地表示一种或几种要素或现象，即集中表示一个主题内容的地图称为专题地图。
+ * 在 SuperMap 中，专题图是地图图层的符号化显示，即用各种图形渲染风格（大小，颜色，线型，填充等）来图形化地表现专题要素的某方面特征。该类可用于获取专题图的信息。
+ * @extends {CommonServiceBase}
  * @example
- * var myThemeService = new SuperMap.ThemeService(url, {
- *     eventListeners: {
- *           "processCompleted": themeCompleted,
- *           "processFailed": themeFailed
- *           }
- * });
- * @param {string} url - 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * var myThemeService = new ThemeService(url);
+ * @param {string} url - 服务地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param {Object} options - 参数。
- * @param {Object} options.eventListeners - 需要被注册的监听器对象。
  * @param {boolean} [options.crossOrigin] - 是否允许跨域请求。
  * @param {Object} [options.headers] - 请求头。
+ * @usage
  */
 export class ThemeService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         this.url = Util.urlPathAppend(this.url, 'tempLayersSet');
         this.CLASS_NAME = 'SuperMap.ThemeService';
@@ -43,30 +39,32 @@ export class ThemeService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ThemeService.prototype.processAsync
+     * @function ThemeService.prototype.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
-     * @param {SuperMap.ThemeParameters} params - 专题图参数类。
+     * @param {ThemeParameters} params - 专题图参数类。
+     * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+     * @returns {Promise} Promise 对象。
      */
-    processAsync(params) {
+    processAsync(params, callback) {
         if (!(params instanceof ThemeParameters)) {
             return;
         }
         var me = this,
             jsonParameters = null;
         jsonParameters = me.getJsonParameters(params);
-        me.request({
+        return me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.serviceProcessCompleted,
-            failure: me.serviceProcessFailed
+            success: callback,
+            failure: callback
         });
     }
 
     /**
-     * @function SuperMap.ThemeService.prototype.getJsonParameters
+     * @function ThemeService.prototype.getJsonParameters
      * @description 将专题图参数参数转化为 JSON 字符串。
-     * @param {SuperMap.ThemeParameters} parameter - 专题图参数类。
+     * @param {ThemeParameters} parameter - 专题图参数类。
      * @returns {Object} 转化后的JSON字符串。
      */
     getJsonParameters(parameter) {
@@ -130,5 +128,3 @@ export class ThemeService extends CommonServiceBase {
     }
 
 }
-
-SuperMap.ThemeService = ThemeService;

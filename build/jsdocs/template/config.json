@@ -33,6 +33,10 @@
           "Tilesets": {
             "name": "切片集",
             "name_en": "Tilesets"
+          },
+          "Tile": {
+            "name": "瓦片",
+            "name_en": "Tile"
           }
         }
       },
@@ -102,17 +106,21 @@
             "name": "邻近分析",
             "name_en": "ThiessenPolygonAnalyst"
           },
-          "GeorelationAnalyst": {
+          "MinDistanceAnalyst": {
+            "name": "最近距离分析",
+            "name_en": "MinDistanceAnalyst"
+          },
+          "GeoRelationAnalyst": {
             "name": "空间关系分析",
-            "name_en": "GeorelationAnalyst"
+            "name_en": "GeoRelationAnalyst"
           },
           "GridMathAnalyst": {
             "name": "栅格代数运算",
             "name_en": "GridMathAnalyst"
           },
-          "SolarradiationAnalyst": {
+          "SolarRadiationAnalyst": {
             "name": "太阳辐射分析",
-            "name_en": "SolarradiationAnalyst"
+            "name_en": "SolarRadiationAnalyst"
           },
           "RouteCalculateMeasure": {
             "name": "路由计算",
@@ -125,6 +133,10 @@
           "TerrainCalculation": {
             "name": "地形分析",
             "name_en": "TerrainCalculation"
+          },
+          "ConvexHullAnalyst": {
+            "name": "凸包运算",
+            "name_en": "ConvexHullAnalyst"
           },
           "BatchAnalyst": {
             "name": "批量分析",
@@ -164,8 +176,16 @@
             "name": "服务区分析",
             "name_en": "ServiceArea"
           },
+          "ConnectedEdges": {
+            "name": "连通性分析",
+            "name_en": "ConnectedEdges"
+          },
+          "TraceAnalystService": {
+            "name": "上游/下游追踪分析",
+            "name_en": "TraceAnalystService"
+          },
           "UpstreamCirticalFaclilities": {
-            "name": "上游关键设施查找",
+            "name": "上游/下游关键设施查找",
             "name_en": "UpstreamCirticalFaclilities"
           },
           "WeightMatrix": {
@@ -287,11 +307,58 @@
       "Image": {
         "name": "影像服务",
         "name_en": "Image"
+      },
+      "KnowledgeGraph": {
+        "name": "知识图谱",
+        "name_en": "KnowledgeGraph"
+      },
+      "Core": {
+        "name": "核心类",
+        "name_en": "Core"
       }
     }
   },
   "iPortal/Online": {
-    "name": "iPortal/Online"
+    "name": "iPortal/Online",
+    "name_en": "iPortal/Online",
+    "content": {
+      "Online": {
+        "name": "Online",
+        "name_en": "Online",
+        "content": {
+          "Data": {
+            "name": "数据",
+            "name_en": "Data"
+          }
+        }
+      },
+      "Resources": {
+        "name": "资源",
+        "name_en": "Resources",
+        "content": {
+          "Map": {
+            "name": "地图",
+            "name_en": "Map"
+          },
+          "Data": {
+            "name": "数据",
+            "name_en": "Data"
+          },
+          "ResourcesQuery": {
+            "name": "资源查询",
+            "name_en": "ResourcesQuery"
+          },
+          "ResourcesShare": {
+            "name": "资源共享",
+            "name_en": "ResourcesShare"
+          }
+        }
+      },
+      "Core": {
+        "name": "核心类",
+        "name_en": "Core"
+      }
+    }
   },
   "iManager": {
     "name": "iManager"
@@ -340,6 +407,13 @@
       },
       "GraticuleLayer": {
         "name": "经纬网"
+      },
+      "FGB": {
+        "name": "FGB"
+      },
+      "WebSymbol": {
+        "name": "Web符号",
+        "name_en": "WebSymbol"
       }
     }
   },
@@ -400,13 +474,17 @@
     "name": "基础类",
     "name_en": "BaseTypes",
     "content": {
-      "Namespace": {
-        "name": "命名空间",
-        "name_en": "Namespace"
+      "Internationalization": {
+        "name": "国际化",
+        "name_en": "Internationalization"
       },
       "Util": {
         "name": "工具",
         "name_en": "Util"
+      },
+      "Events": {
+        "name": "事件",
+        "name_en": "Event"
       },
       "Geometry": {
         "name": "几何要素",
@@ -423,6 +501,10 @@
       "Style": {
         "name": "样式",
         "name_en": "Style"
+      },
+      "Constant": {
+        "name": "常量",
+        "name_en": "Constant"
       }
     }
   }

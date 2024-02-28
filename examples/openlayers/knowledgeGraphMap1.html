@@ -1,0 +1,42 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_knowledgeGraphMap"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #knowledgeGraph {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="knowledgeGraph"></div>
+    <script type="text/javascript" include="g6" src="../../dist/ol/include-ol.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      const graphmap = new ol.supermap.GraphMap(
+        host + '/iserver/services/knowledgeGraph-rivers/restjsr/graph/graphmaps/图谱',
+        {}
+      );
+    </script>
+  </body>
+</html>

@@ -1,52 +1,60 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../SuperMap';
 import {Feature} from './Feature';
 import {Util} from './Util';
 
-
-
 /**
- * @class SuperMap.Feature.Vector
+ * @class FeatureVector
+ * @aliasclass Feature.Vector
+ * @deprecatedclass SuperMap.Feature.Vector
  * @category BaseTypes Geometry
  * @classdesc 矢量要素类。该类具有 Geometry 属性存放几何信息，
  * attributes 属性存放非几何信息，另外还包含了 style 属性，用来定义矢量要素的样式，
- * 其中，默认的样式在 {@link SuperMap.Feature.Vector.style} 类中定义，如果没有特别的指定将使用默认的样式。
- * @extends {SuperMap.Feature}
- * @param {SuperMap.Geometry} geometry - 代表要素的几何形状。
+ * 其中，默认的样式在 {@link FeatureVector.style} 类中定义，如果没有特别的指定将使用默认的样式。
+ * @extends {Feature}
+ * @param {Geometry} geometry - 要素的几何信息。
  * @param {Object} [attributes] - 描述要素的任意的可序列化属性，将要映射到 attributes 属性中的对象。
  * @param {Object} [style] - 样式对象。
  * @example
- * var geometry = new SuperMap.Geometry.Point(-115,10);
+ * var geometry = new GeometryPoint(-115,10);
  *  var style = {
      *      strokeColor:"#339933",
      *      strokeOpacity:1,
      *      strokeWidth:3,
      *      pointRadius:6
      *  }
- *  var pointFeature = new SuperMap.Feature.Vector(geometry,null,style);
+ *  var pointFeature = new FeatureVector(geometry,null,style);
  *  vectorLayer.addFeatures(pointFeature);
+ * @usage
  */
+// TRASH THIS
+export const State = {
+  /** states */
+  UNKNOWN: 'Unknown',
+  INSERT: 'Insert',
+  UPDATE: 'Update',
+  DELETE: 'Delete'
+};
 export class Vector extends Feature {
 
 
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
         /**
-         * @member {string} SuperMap.Feature.Vector.prototype.fid
-         * @description fid
+         * @member {string} FeatureVector.prototype.fid
+         * @description fid。
          */
         this.fid = null;
 
         /**
-         * @member {SuperMap.Geometry} SuperMap.Feature.Vector.prototype.geometry
-         * @description 该属性用于存放几何信息。
+         * @member {Geometry} FeatureVector.prototype.geometry
+         * @description 存放几何信息。
          */
         this.geometry = geometry ? geometry : null;
 
         /**
-         * @member {Object} SuperMap.Feature.Vector.prototype.attributes
+         * @member {Object} FeatureVector.prototype.attributes
          * @description 描述要素的任意的可序列化属性。
          */
         this.attributes = {};
@@ -56,43 +64,32 @@ export class Vector extends Feature {
         }
 
         /**
-         * @member {SuperMap.Bounds} SuperMap.Feature.Vector.prototype.bounds
-         * @description The box bounding that feature's geometry, that
-         *     property can be set by an <SuperMap.Format> object when
-         *     deserializing the feature, so in most cases it represents an
-         *     information set by the server.
+         * @member {Bounds} FeatureVector.prototype.bounds
+         * @description 限制要素几何的边界。
          */
         this.bounds = null;
 
         /**
-         * @member {string} SuperMap.Feature.Vector.prototype.state
-         * @description state
+         * @member {string} FeatureVector.prototype.state
+         * @description state。
          */
         this.state = null;
 
         /**
-         * @member {Object} SuperMap.Feature.Vector.prototype.style
+         * @member {Object} FeatureVector.prototype.style
          * @description 要素的样式属性，地图查询返回的 feature 的 style，8C 变为null。
          */
         this.style = style ? style : null;
 
         /**
-         * @member {string} SuperMap.Feature.Vector.prototype.url 
-         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 {@link SuperMap.HTTP} 。
+         * @member {string} FeatureVector.prototype.url
+         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 {@link HTTP} 。
          */
         this.url = null;
 
         this.lonlat = null;
 
         this.CLASS_NAME = "SuperMap.Feature.Vector";
-        // TRASH THIS
-        SuperMap.State = {
-            /** states */
-            UNKNOWN: 'Unknown',
-            INSERT: 'Insert',
-            UPDATE: 'Update',
-            DELETE: 'Delete'
-        };
 
         Vector.style = {
             'default': {
@@ -174,8 +171,8 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function SuperMap.Feature.Vector.prototype.destroy
-     * @description nullify references to prevent circular references and memory leaks
+     * @function FeatureVector.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         if (this.layer) {
@@ -188,10 +185,9 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function SuperMap.Feature.Vector.prototype.clone
-     * @description Create a clone of this vector feature.  Does not set any non-standard
-     *     properties.
-     * @returns {SuperMap.Feature.Vector} An exact clone of this vector feature.
+     * @function FeatureVector.prototype.clone
+     * @description 复制矢量要素，并返回复制后的新对象。
+     * @returns {FeatureVector} 相同要素的新的矢量要素。
      */
     clone() {
         return new Vector(
@@ -201,50 +197,50 @@ export class Vector extends Feature {
     }
 
     /**
-     * @function SuperMap.Feature.Vector.prototype.toState
+     * @function FeatureVector.prototype.toState
      * @description 设置新状态。
      * @param {string} state - 状态。
      */
     toState(state) {
-        if (state === SuperMap.State.UPDATE) {
+        if (state === State.UPDATE) {
             switch (this.state) {
-                case SuperMap.State.UNKNOWN:
-                case SuperMap.State.DELETE:
+                case State.UNKNOWN:
+                case State.DELETE:
                     this.state = state;
                     break;
-                case SuperMap.State.UPDATE:
-                case SuperMap.State.INSERT:
+                case State.UPDATE:
+                case State.INSERT:
                     break;
             }
-        } else if (state === SuperMap.State.INSERT) {
+        } else if (state === State.INSERT) {
             switch (this.state) {
-                case SuperMap.State.UNKNOWN:
+                case State.UNKNOWN:
                     break;
                 default:
                     this.state = state;
                     break;
             }
-        } else if (state === SuperMap.State.DELETE) {
+        } else if (state === State.DELETE) {
             switch (this.state) {
-                case SuperMap.State.INSERT:
+                case State.INSERT:
                     // the feature should be destroyed
                     break;
-                case SuperMap.State.DELETE:
+                case State.DELETE:
                     break;
-                case SuperMap.State.UNKNOWN:
-                case SuperMap.State.UPDATE:
+                case State.UNKNOWN:
+                case State.UPDATE:
                     this.state = state;
                     break;
             }
-        } else if (state === SuperMap.State.UNKNOWN) {
+        } else if (state === State.UNKNOWN) {
             this.state = state;
         }
     }
 }
 /**
  *
- * @typedef {Object} SuperMap.Feature.Vector.style
- * @description SuperMap.features 有大量的样式属性，如果没有特别的指定将使用默认的样式，
+ * @typedef {Object} FeatureVector.style
+ * @description Feature 有大量的样式属性，如果没有特别的指定将使用默认的样式，
  * 大部分样式通过 SVG 标准定义属性。
  * - fill properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#FillProperties}
  * - stroke properties 资料介绍：{@link http://www.w3.org/TR/SVG/painting.html#StrokeProperties}
@@ -264,10 +260,10 @@ export class Vector extends Feature {
  * @property {boolean} [allowRotate='false'] - 是否允许图标随着运行方向旋转。用于时空数据图层。
  * @property {string} [externalGraphic] - 连接到用来渲染点的外部的图形。
  * @property {number} [graphicWidth] - 外部图表的像素宽度。
- * @property {number} [graphicHeight] - 外部图表的高宽度。
- * @property {number} [graphicOpacity] - 外部图表的不透明度(0-1)。
- * @property {number} [graphicXOffset] - 外部图表沿着x方向的偏移量。
- * @property {number} [graphicYOffset] - 外部图表沿着y方向的偏移量 Pixel。
+ * @property {number} [graphicHeight] - 外部图表的像素高度。
+ * @property {number} [graphicOpacity] - 外部图表的不透明度，取值范围：[0，1]。
+ * @property {number} [graphicXOffset] - 外部图表沿着 x 方向的偏移量。
+ * @property {number} [graphicYOffset] - 外部图表沿着 y 方向的偏移量。
  * @property {number} [rotation] - 一个图表沿着其中心点（或者偏移中心指定点）在顺时针方向旋转。
  * @property {number} [graphicZIndex] - 渲染时使用的索引值。
  * @property {string} [graphicName='circle'] - 渲染点时图标使用的名字。支持"circle" , "square", "star", "x", "cross", "triangle"。
@@ -289,8 +285,8 @@ export class Vector extends Feature {
  * @property {number} [labelXOffset] - 标签在 x 轴方向的偏移量。
  * @property {number} [labelYOffset] - 标签在 y 轴方向的偏移量。
  * @property {boolean} [labelSelect=false] - 如果设为 true，标签可以选用 SelectFeature 或者 similar 控件。
- * @property {string} [fontColor='#000000'] - 标签字体颜色。
- * @property {number} [fontOpacity] - 标签透明度 (0-1)。
+ * @property {string} [fontColor='#000000'] - 十六进制标签字体颜色。
+ * @property {number} [fontOpacity] - 标签不透明度，取值范围：[0，1]。
  * @property {string} [fontFamily] - 标签的字体类型。
  * @property {string} [fontSize] - 标签的字体大小。
  * @property {string} [fontStyle] - 标签的字体样式。
@@ -299,8 +295,8 @@ export class Vector extends Feature {
  * @example
  *  // label的用法如下：
  *  function addGeoTest(){
- *  var geometry = new SuperMap.Geometry.Point(105, 35);
- *  var pointFeature = new SuperMap.Feature.Vector(geometry);
+ *  var geometry = new GeometryPoint(105, 35);
+ *  var pointFeature = new FeatureVector(geometry);
  *  var styleTest = {
  *        label:"supermap",
  *        fontColor:"#0000ff",
@@ -315,6 +311,5 @@ export class Vector extends Feature {
  *          vectorLayer.addFeatures([pointFeature]);
  * }
      */
-SuperMap.Feature.Vector = Vector;
 
 

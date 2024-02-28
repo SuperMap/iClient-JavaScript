@@ -1,71 +1,73 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { SuperMap } from '../SuperMap';
 import { Util } from '../commontypes/Util';
 import { AnalystSizeUnit } from '../REST';
 import { OutputSetting } from './OutputSetting';
 import { MappingParameters } from './MappingParameters';
 
 /**
- * @class SuperMap.BuffersAnalystJobsParameter
+ * @class BuffersAnalystJobsParameter
+ * @deprecatedclass SuperMap.BuffersAnalystJobsParameter
  * @category iServer ProcessingService BufferAnalyst
- * @classdesc 缓冲区分析任务参数类。
+ * @classdesc 缓冲区分析任务参数类。此类用于设置缓冲区分析的数据集、分析范围、缓冲字段、缓冲距离、距离单位等参数，
+ * 还可以对分析结果的输出参数、可视化参数进行一系列设置。
  * @param {Object} options - 参数。
- * @param {string} options.datasetName - 数据集名。
- * @param {(SuperMap.Bounds|L.Bounds|ol.extent)} [options.bounds] - 分析范围（默认为全图范围）。
+ * @param {string} options.datasetName - 数据集名称。
+ * @param {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} [options.bounds] - 缓冲区分析范围（默认为全图范围）。
  * @param {string} [options.distance='15'] - 缓冲距离，或缓冲区半径。
  * @param {string} [options.distanceField='pickup_latitude'] - 缓冲区分析距离字段。
- * @param {SuperMap.AnalystSizeUnit} [options.distanceUnit=SuperMap.AnalystSizeUnit.METER] - 缓冲距离单位单位。
- * @param {SuperMap.OutputSetting} [options.output] - 输出参数设置。
- * @param {SuperMap.MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @param {AnalystSizeUnit} [options.distanceUnit=AnalystSizeUnit.METER] - 缓冲距离单位。
+ * @param {OutputSetting} [options.output] - 输出参数设置。
+ * @param {MappingParameters} [options.mappingParameters] - 分析后结果可视化的参数类。
+ * @usage
  */
 export class BuffersAnalystJobsParameter {
     constructor(options) {
         /**
-         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.datasetName
-         * @description 数据集名。
+         * @member {string} BuffersAnalystJobsParameter.prototype.datasetName
+         * @description 数据集名称。
          */
         this.datasetName = '';
 
         /**
-         * @member {(SuperMap.Bounds|L.Bounds|ol.extent)} SuperMap.BuffersAnalystJobsParameter.prototype.bounds
+         * @member {(SuperMap.Bounds|L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject)} BuffersAnalystJobsParameter.prototype.bounds
          * @description 分析范围。
          */
         this.bounds = '';
 
         /**
-         * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distance='15']
-         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
+         * @member {string} [BuffersAnalystJobsParameter.prototype.distance='15']
+         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段为空时，此参数有效。
          */
         this.distance = '';
 
         /**
-         * @member {string} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceField='pickup_latitude']
-         * @description 缓冲距离字段。
+         * @member {string} [BuffersAnalystJobsParameter.prototype.distanceField='pickup_latitude']
+         * @description 缓冲距离字段。启用此参数时，将使用每个对象中该字段对应的值作为缓冲距离，此时 distance 无效。仅支持系统字段以外的数值型的字段。
          */
         this.distanceField = '';
 
         /**
-         * @member {SuperMap.AnalystSizeUnit} [SuperMap.BuffersAnalystJobsParameter.prototype.distanceUnit=SuperMap.AnalystSizeUnit.METER]
+         * @member {AnalystSizeUnit} [BuffersAnalystJobsParameter.prototype.distanceUnit=AnalystSizeUnit.METER]
          * @description 缓冲距离单位。
          */
         this.distanceUnit = AnalystSizeUnit.METER;
 
         /**
-         * @member {string} SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField
+         * @member {string} BuffersAnalystJobsParameter.prototype.dissolveField
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
         this.dissolveField = '';
 
         /**
-         * @member {SuperMap.OutputSetting} [SuperMap.BuffersAnalystJobsParameter.prototype.output]
+         * @member {OutputSetting} [BuffersAnalystJobsParameter.prototype.output]
          * @description 输出参数设置类。
          */
         this.output = null;
 
         /**
-         * @member {SuperMap.MappingParameters} [SuperMap.BuffersAnalystJobsParameter.prototype.mappingParameters]
+         * @member {MappingParameters} [BuffersAnalystJobsParameter.prototype.mappingParameters]
          * @description 分析后结果可视化的参数类。
          */
         this.mappingParameters = null;
@@ -79,7 +81,7 @@ export class BuffersAnalystJobsParameter {
     }
 
     /**
-     * @function SuperMap.BuffersAnalystJobsParameter.prototype.destroy
+     * @function BuffersAnalystJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -100,8 +102,8 @@ export class BuffersAnalystJobsParameter {
     }
 
     /**
-     * @function SuperMap.BuffersAnalystJobsParameter.toObject
-     * @param {SuperMap.BuffersAnalystJobsParameter} BuffersAnalystJobsParameter - 缓冲区分析任务参数。
+     * @function BuffersAnalystJobsParameter.toObject
+     * @param {BuffersAnalystJobsParameter} BuffersAnalystJobsParameter - 缓冲区分析任务参数。
      * @param {Object} tempObj - 目标对象。
      * @description 生成缓冲区分析任务对象。
      */
@@ -132,4 +134,3 @@ export class BuffersAnalystJobsParameter {
     }
 }
 
-SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;

@@ -130,11 +130,11 @@ deps = {
                     "./src/leaflet/mapping/ImageMapLayer.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.tiledMapLayer",
+                    "name": "L.supermap.TiledMapLayer",
                     "des": "iServer tileImage 地图",
                     "des_en": "iServer tileImage resources tile layer"
                 }, {
-                    "name": "L.supermap.imageMapLayer",
+                    "name": "L.supermap.ImageMapLayer",
                     "des": "iServer image 地图",
                     "des_en": "iServer image resources tile layer"
                 }]
@@ -143,7 +143,7 @@ deps = {
                 "name": "百度图层",
                 "src": ['./src/leaflet/mapping/BaiduTileLayer.js'],
                 "modules": [{
-                    "name": "L.supermap.baiduTileLayer",
+                    "name": "L.supermap.BaiduTileLayer",
                     "des": "百度地图",
                     "des_en": "Baidu map tile layer"
                 }]
@@ -152,7 +152,7 @@ deps = {
                 "name": "SuperMap 云图层",
                 "src": ['./src/leaflet/mapping/CloudTileLayer.js'],
                 "modules": [{
-                    "name": "L.supermap.cloudTileLayer",
+                    "name": "L.supermap.CloudTileLayer",
                     "des": "超图云地图",
                     "des_en": "SuperMap cloud map tile layer"
                 }]
@@ -161,7 +161,7 @@ deps = {
                 "name": "WMTS服务",
                 "src": ["./src/leaflet/mapping/TileLayer.WMTS.js"],
                 "modules": [{
-                    "name": "L.supermap.wmtsLayer",
+                    "name": "L.supermap.WMTSLayer",
                     "des": "WMTS 地图",
                     "des_en": "WMTS tile layer"
                 }]
@@ -170,7 +170,7 @@ deps = {
                 "name": "天地图图层",
                 "src": ["./src/leaflet/mapping/TiandituTileLayer.js"],
                 "modules": [{
-                    "name": "L.supermap.tiandituTileLayer",
+                    "name": "L.supermap.TiandituTileLayer",
                     "des": "天地图图层",
                     "des_en": "Tianditu map tile layer"
                 }]
@@ -179,7 +179,7 @@ deps = {
                 "name": "iPortal webmap",
                 "src": ["./src/leaflet/mapping/WebMap.js"],
                 "modules": [{
-                    "name": "L.supermap.webmap",
+                    "name": "L.supermap.WebMap",
                     "des": "iPortal、Online 地图",
                     "des_en": "SuperMap iPortal and Online tile layer"
                 }]
@@ -201,23 +201,23 @@ deps = {
                     "./src/leaflet/services/ChartService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.mapService",
+                    "name": "L.supermap.MapService",
                     "des": "地图信息服务",
                     "des_en": "iServer map service"
                 }, {
-                    "name": "L.supermap.queryService",
+                    "name": "L.supermap.QueryService",
                     "des": "地图查询服务",
                     "des_en": "iServer map query service"
                 }, {
-                    "name": "L.supermap.layerInfoService",
+                    "name": "L.supermap.LayerInfoService",
                     "des": "图层信息服务",
                     "des_en": "iServer layer information service"
                 }, {
-                    "name": "L.supermap.measureService",
+                    "name": "L.supermap.MeasureService",
                     "des": "测量服务",
                     "des_en": "iServer measure service"
                 }, {
-                    "name": "L.supermap.chartService",
+                    "name": "L.supermap.ChartService",
                     "des": "海图服务",
                     "des_en": "iServer chart service"
                 }]
@@ -230,15 +230,15 @@ deps = {
                     "./src/leaflet/services/GridCellInfosService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.featureService",
+                    "name": "L.supermap.FeatureService",
                     "des": "数据集服务",
                     "des_en": "iServer feature service"
                 }, {
-                    "name": "L.supermap.fieldService",
+                    "name": "L.supermap.FieldService",
                     "des": "字段服务",
                     "des_en": "iServer field service"
                 }, {
-                    "name": "L.supermap.gridCellInfosService",
+                    "name": "L.supermap.GridCellInfosService",
                     "des": "数据栅格查询服务",
                     "des_en": "iServer data grid cell information service"
                 }]
@@ -249,7 +249,7 @@ deps = {
                     "./src/leaflet/services/ThemeService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.themeService",
+                    "name": "L.supermap.ThemeService",
                     "des": "专题图服务",
                     "des_en": "iServer thematic service"
                 }]
@@ -260,7 +260,7 @@ deps = {
                     "./src/leaflet/services/NetworkAnalystService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.networkAnalystService",
+                    "name": "L.supermap.NetworkAnalystService",
                     "des": "网络分析服务",
                     "des_en": "iServer network analyst service"
                 }]
@@ -271,7 +271,7 @@ deps = {
                     "./src/leaflet/services/NetworkAnalyst3DService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.networkAnalyst3DService",
+                    "name": "L.supermap.NetworkAnalyst3DService",
                     "des": "3D 网络分析服务",
                     "des_en": "iServer 3D network analyst service"
                 }]
@@ -282,7 +282,7 @@ deps = {
                     "./src/leaflet/services/SpatialAnalystService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.spatialAnalystService",
+                    "name": "L.supermap.SpatialAnalystService",
                     "des": "空间分析服务",
                     "des_en": "iServer spatial analyst service"
                 }]
@@ -293,7 +293,7 @@ deps = {
                     "./src/leaflet/services/TrafficTransferAnalystService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.trafficTransferAnalystService",
+                    "name": "L.supermap.TrafficTransferAnalystService",
                     "des": "交通换乘服务",
                     "des_en": "iServer traffic transfer analyst service"
                 }]
@@ -304,7 +304,7 @@ deps = {
                     "./src/leaflet/services/ProcessingService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.processingService",
+                    "name": "L.supermap.ProcessingService",
                     "des": "分布式分析服务",
                     "des_en": "iServer distributed analyst service"
                 }]
@@ -314,7 +314,7 @@ deps = {
                 "src": [
                     "./src/common/iPortal/iPortal.js"
                 ], "modules": [{
-                    "name": "SuperMap.iPortal",
+                    "name": "SuperMap.IPortal",
                     "des": "iPortal 服务",
                     "des_en": "SuperMap iPortal service"
                 }]
@@ -335,7 +335,7 @@ deps = {
                 "src": [
                     "./src/common/iManager/iManager.js"
                 ], "modules": [{
-                    "name": "SuperMap.iManager",
+                    "name": "SuperMap.IManager",
                     "des": "iManager 服务",
                     "des_en": "SuperMap iManager service"
                 }]
@@ -346,7 +346,7 @@ deps = {
                     "./src/leaflet/services/AddressMatchService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.addressMatchService",
+                    "name": "L.supermap.AddressMatchService",
                     "des": "地址匹配服务",
                     "des_en": "iServer address match service"
                 }]
@@ -370,11 +370,11 @@ deps = {
                     "./src/leaflet/overlay/DataFlowLayer.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.dataFlowService",
+                    "name": "L.supermap.DataFlowService",
                     "des": "数据流服务",
                     "des_en": "iServer data flow service"
                 }, {
-                    "name": "L.supermap.dataFlowLayer",
+                    "name": "L.supermap.DataFlowLayer",
                     "des": "数据流图层",
                     "des_en": "iServer data flow layer"
 
@@ -393,7 +393,7 @@ deps = {
                     "./src/leaflet/overlay/HeatMapLayer.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.heatMapLayer",
+                    "name": "L.supermap.HeatMapLayer",
                     "des": "热力图图层",
                     "des_en": "HeatMap layer"
                 }]
@@ -404,7 +404,7 @@ deps = {
                     "./src/leaflet/overlay/EChartsLayer.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.echartsLayer",
+                    "name": "L.supermap.EChartsLayer",
                     "des": "ECharts 图层",
                     "des_en": "ECharts layer"
                 }]
@@ -419,23 +419,23 @@ deps = {
                     "./src/leaflet/overlay/graphic/Graphic.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.graphicLayer",
+                    "name": "L.supermap.GraphicLayer",
                     "des": "高效率点图层",
                     "des_en": "High efficiency point layer of graphic Layer"
                 }, {
-                    "name": "L.supermap.circleStyle",
+                    "name": "L.supermap.CircleStyle",
                     "des": "高效率点图层圆形要素风格",
                     "des_en": "Circle style of graphic Layer"
                 }, {
-                    "name": "L.supermap.graphic",
+                    "name": "L.supermap.Graphic",
                     "des": "高效率点图层高效率点对象",
                     "des_en": "Graphic object of graphic Layer"
                 }, {
-                    "name": "L.supermap.cloverStyle",
+                    "name": "L.supermap.CloverStyle",
                     "des": "高效率点图层三叶草风格",
                     "des_en": "Clover style of graphic Layer"
                 }, {
-                    "name": "L.supermap.imageStyle",
+                    "name": "L.supermap.ImageStyle",
                     "des": "高效率点图层符号风格",
                     "des_en": "Image style of graphic Layer"
                 }]
@@ -444,10 +444,10 @@ deps = {
             "TileVectorLayer": {
                 "name": "矢量瓦片",
                 "src": [
-                    './src/leaflet/overlay/TileVectorLayer.js'
+                    './src/leaflet/overlay/TiledVectorLayer.js'
                 ],
                 "modules": [{
-                    "name": "L.supermap.tiledVectorLayer",
+                    "name": "L.supermap.TiledVectorLayer",
                     "des": "矢量瓦片图层",
                     "des_en": "Vector tile layer"
                 }]
@@ -462,23 +462,23 @@ deps = {
                     './src/leaflet/overlay/LabelThemeLayer.js'
                 ],
                 "modules": [{
-                    "name": "L.supermap.uniqueThemeLayer",
+                    "name": "L.supermap.UniqueThemeLayer",
                     "des": "单值专题图图层",
                     "des_en": "Unique thematic map layer"
                 }, {
-                    "name": "L.supermap.rangeThemeLayer",
+                    "name": "L.supermap.RangeThemeLayer",
                     "des": "分段专题图图层",
                     "des_en": "Range thematic map layer"
                 }, {
-                    "name": "L.supermap.rankSymbolThemeLayer",
+                    "name": "L.supermap.RankSymbolThemeLayer",
                     "des": "等级符号专题图图层",
                     "des_en": "Rank symbol thematic map layer"
                 }, {
-                    "name": "L.supermap.graphThemeLayer",
+                    "name": "L.supermap.GraphThemeLayer",
                     "des": "统计专题图图层",
                     "des_en": "Statistical thematic map layer"
                 }, {
-                    "name": "L.supermap.labelThemeLayer",
+                    "name": "L.supermap.LabelThemeLayer",
                     "des": "标签专题图图层",
                     "des_en": "Label thematic map layer"
                 }]
@@ -489,7 +489,7 @@ deps = {
                     './src/leaflet/overlay/MapVLayer.js'
                 ],
                 "modules": [{
-                    "name": "L.supermap.mapVLayer",
+                    "name": "L.supermap.MapVLayer",
                     "des": "MapV 图层",
                     "des_en": "MapV layer"
                 }]
@@ -500,7 +500,7 @@ deps = {
                     './src/leaflet/overlay/TurfLayer.js'
                 ],
                 "modules": [{
-                    "name": "L.supermap.turfLayer",
+                    "name": "L.supermap.TurfLayer",
                     "des": "Turf 图层",
                     "des_en": "Turf layer"
                 }]
@@ -511,7 +511,7 @@ deps = {
                     './src/leaflet/overlay/UnicodeMarker.js'
                 ],
                 "modules": [{
-                    "name": "L.supermap.unicodeMarker",
+                    "name": "L.supermap.UnicodeMarker",
                     "des": "Unicode Marker",
                     "des_en": "Unicode Marker"
                 }]
@@ -529,7 +529,7 @@ deps = {
                     "./src/leaflet/control/ChangeTileVersion.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.control.changeTileVersion",
+                    "name": "L.supermap.control.ChangeTileVersion",
                     "des": "瓦片版本切换控件",
                     "des_en": "Tile version switch control"
                 }]
@@ -540,7 +540,7 @@ deps = {
                     "./src/leaflet/control/Logo.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.control.logo",
+                    "name": "L.supermap.control.Logo",
                     "des": "Logo 控件",
                     "des_en": "Logo control"
                 }]
@@ -558,7 +558,7 @@ deps = {
                     "./src/leaflet/components/openfile/OpenFileView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.openFile",
+                    "name": "L.supermap.components.OpenFileView",
                     "des": "打开文件组件",
                     "des_en": "Open file components"
                 }]
@@ -569,7 +569,7 @@ deps = {
                     "./src/leaflet/components/clientcomputation/ClientComputationView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.clientComputation",
+                    "name": "L.supermap.components.ClientComputationView",
                     "des": "客户端计算组件",
                     "des_en": "Client computation component"
                 }]
@@ -580,7 +580,7 @@ deps = {
                     "./src/leaflet/components/distributedanalysis/DistributedAnalysisView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.distributedAnalysis",
+                    "name": "L.supermap.components.DistributedAnalysisView",
                     "des": "分布式分析组件",
                     "des_en": "Distributed analysis component"
                 }]
@@ -591,7 +591,7 @@ deps = {
                     "./src/leaflet/components/search/SearchView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.search",
+                    "name": "L.supermap.components.SearchView",
                     "des": "图层查询组件",
                     "des_en": "Search"
                 }]
@@ -602,7 +602,7 @@ deps = {
                     "./src/leaflet/components/dataflow/DataFlowView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.dataFlow",
+                    "name": "L.supermap.components.DataFlowView",
                     "des": "数据流组件",
                     "des_en": "Data flow"
                 }]
@@ -613,7 +613,7 @@ deps = {
                     "./src/leaflet/components/dataservicequery/DataServiceQueryView.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.components.dataServiceQuery",
+                    "name": "L.supermap.components.DataServiceQueryView",
                     "des": "数据服务查询组件",
                     "des_en": "Data service query"
                 }]
@@ -801,7 +801,7 @@ deps = {
                     "./src/common/iPortal/iPortal.js"
                 ],
                 "modules": [{
-                    "name": "SuperMap.iPortal",
+                    "name": "SuperMap.IPortal",
                     "des": "iPortal 服务",
                     "des_en": "SuperMap iPortal service"
                 }]
@@ -822,7 +822,7 @@ deps = {
                 "src": [
                     "./src/common/iManager/iManager.js"
                 ], "modules": [{
-                    "name": "SuperMap.iManager",
+                    "name": "SuperMap.IManager",
                     "des": "iManager 服务",
                     "des_en": "SuperMap iManager service"
                 }]
@@ -1304,7 +1304,7 @@ deps = {
                     "./src/mapboxgl/control/Logo.js"
                 ],
                 "modules": [{
-                    "name": "mapboxgl.supermap.LogoControl",
+                    "name": "mapboxgl.supermap.control.Logo",
                     "des": "Logo 控件",
                     "des_en": "Logo control"
                 }]

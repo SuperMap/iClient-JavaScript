@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -19,9 +19,9 @@
         center: [33.03, 104.79],
         zoom: 3,
     });
-    var baseLayer = L.supermap.tiledMapLayer(url,{transparent:true}).addTo(map);
+    var baseLayer = new L.supermap.TiledMapLayer(url,{transparent:true}).addTo(map);
 
-    L.supermap.control.changeTileVersion({
+    new L.supermap.control.ChangeTileVersion({
         layer: baseLayer,
         position: "topleft",
         orientation: "horizontal"

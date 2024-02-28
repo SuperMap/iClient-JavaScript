@@ -1,13 +1,15 @@
 import {MeshPhongMaterial, Mesh, PointLight, BoxBufferGeometry} from 'three';
 import {ThreeLayer} from '../../../src/mapboxgl/overlay/ThreeLayer';
 import mapboxgl from 'mapbox-gl';
+import mbglmap from '../../tool/mock_mapboxgl_map';
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibW9ua2VyIiwiYSI6ImNpd2Z6aTE5YTAwdHEyb2tpOWs2ZzRydmoifQ.LwQMRArUP8Q9P7QApuOIHg';
 describe('mapboxgl_ThreeLayer', () => {
     var originalTimeout;
     var testDiv, map, threeLayer;
-    beforeAll(() => {
+    beforeAll((done) => {
+        spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
@@ -18,11 +20,32 @@ describe('mapboxgl_ThreeLayer', () => {
         window.document.body.appendChild(testDiv);
         map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
+            style: {
+                version: 8,
+                sources: {
+                  'raster-tiles': {
+                    type: 'raster',
+                    tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    tileSize: 256
+                  }
+                },
+                layers: [
+                  {
+                    id: 'simple-tiles',
+                    type: 'raster',
+                    source: 'raster-tiles',
+                    minzoom: 0,
+                    maxzoom: 22
+                  }
+                ]
+              },
             center: [13.413952, 52.531913],
             zoom: 16.000000000000004,
             pitch: 33.2
         });
+        map.on('load',()=>{
+            done();
+        })
 
 
     });
@@ -70,7 +93,7 @@ describe('mapboxgl_ThreeLayer', () => {
             expect(threeLayer.renderer.scene).not.toBeNull();
             expect(threeLayer.renderer.camera).not.toBeNull();
             done();
-        }, 4000)
+        }, 0)
     });
 
     it('setPosition', () => {

@@ -1,27 +1,32 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import mapboxgl from 'mapbox-gl';
 import '../core/Base';
-import {CommonUtil, ShapeFactory, ThemeVector as Vector} from '@supermap/iclient-common';
+import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector as Vector } from '@supermap/iclient-common/overlay/ThemeVector';
 import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 
 /**
- * @class mapboxgl.supermap.RangeThemeLayer
+ * @class RangeThemeLayer
  * @category  Visualization Theme
- * @classdesc 分段专题图层。
+ * @classdesc 分段专题图图层类。分段专题图是指按照某种分段方式被分成多个范围段，要素根据各自的专题值被分配到其中一个范围段中，
+ * 在同一个范围段中的要素使用相同的颜色，填充，符号等风格进行显示。 分段专题图所基于的专题变量必须为数值型，
+ * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
+ * @modulecategory Overlay
  * @param {string} name - 图层名。
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 专题图层 ID。默认使用 CommonUtil.createUniqueID("themeLayer_") 创建专题图层 ID。
  * @param {boolean} [options.loadWhileAnimating=true] - 是否实时重绘。
- * @param {mapboxgl.Map} options.map - 当前 Mapbox GL map 对象。
- * @param {number} [options.opacity=1] - 图层透明度。
+ * @param {mapboxgl.Map} options.map - MapBoxGL Map 对象。
+ * @param {number} [options.opacity=1] - 图层不透明度。
  * @param {string} options.themeField - 指定创建专题图字段。
  * @param {Object} options.style - 专题图样式。
  * @param {Object} options.styleGroups - 各专题类型样式组。
  * @param {boolean} [options.isHoverAble=false] - 是否开启 hover 事件。
- * @param {Object} [options.highlightStyle] - 开启 hover 事件后，触发的样式风格。
- * @extends {mapboxgl.supermap.GeoFeatureThemeLayer}
+ * @param {Object} [options.highlightStyle] - hover 的高亮样式。
+ * @extends {GeoFeatureThemeLayer}
+ * @usage
  */
 export class Range extends GeoFeature {
 
@@ -35,7 +40,7 @@ export class Range extends GeoFeature {
     }
 
     /**
-     * @function mapboxgl.supermap.RangeThemeLayer.prototype.createThematicFeature
+     * @function RangeThemeLayer.prototype.createThematicFeature
      * @description 创建专题图要素。
      * @param {Object} feature - 要创建的专题图形要素。
      */
@@ -63,7 +68,7 @@ export class Range extends GeoFeature {
 
     /**
      * @private
-     * @function mapboxgl.supermap.RangeThemeLayer.prototype.getStyleByData
+     * @function RangeThemeLayer.prototype.getStyleByData
      * @description 通过数据获取 style。
      * @param {Object} fea - 要素数据。
      */
@@ -103,5 +108,3 @@ export class Range extends GeoFeature {
     }
 
 }
-
-mapboxgl.supermap.RangeThemeLayer = Range;

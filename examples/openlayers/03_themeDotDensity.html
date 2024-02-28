@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [0, 0],
                 zoom: 2,
@@ -37,20 +37,20 @@
     });
 
     function createTheme() {
-        var themeDotDensity = new SuperMap.ThemeDotDensity({
+        var themeDotDensity = new ol.supermap.ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
-            style: new SuperMap.ServerStyle({
+            style: new ol.supermap.ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        var themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new ol.supermap.ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]
         });
-        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters).then(function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({

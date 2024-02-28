@@ -1,13 +1,33 @@
-import {
-    SuperMap
-} from '../SuperMap';
-
-export class ArrayStatistic {
+/**
+ * @name ArrayStatistic
+ * @namespace
+ * @category BaseTypes Util
+ * @classdesc 处理数组。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.ArrayStatistic.newInstance();
+ *
+ *   // 弃用的写法
+ *   const result = SuperMap.ArrayStatistic.newInstance();
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { ArrayStatistic } from '{npm}';
+ *
+ * const result = ArrayStatistic.newInstance();
+ * ```
+ */
+ export class ArrayStatistic {
 
     // geostatsInstance: null,
 
     /**
-     * 初始化插件实例
+     * @function ArrayStatistic.newInstance
+     * @description 初始化插件实例。
      */
     static newInstance() {
         // if(!this.geostatsInstance) {
@@ -23,9 +43,9 @@ export class ArrayStatistic {
     }
 
     /**
-     * 设置需要被处理的数组
-     * 
-     * @param array 
+     * @function ArrayStatistic.getInstance
+     * @description 设置需要被处理的数组。
+     * @param {Array} array - 数组。
      */
     static getInstance(array) {
         let instance = this.newInstance();
@@ -34,10 +54,10 @@ export class ArrayStatistic {
     }
 
     /**
-     * 获取数组统计的值
-     *    
-     * @param array 需要统计的数组
-     * @param type  统计方法
+     * @function ArrayStatistic.getArrayStatistic
+     * @description 获取数组统计的值。
+     * @param {Array.<number>} array - 需要统计的数组。
+     * @param {string} type - 统计方法。
      */
     static getArrayStatistic(array, type){
         if(!array.length) {
@@ -59,11 +79,11 @@ export class ArrayStatistic {
     }
 
     /**
-     * 获取数组分段后的数值
-     * 
-     * @param array  需要分段的数组
-     * @param type   分段方法
-     * @param segNum 分段个数
+     * @function ArrayStatistic.getArraySegments
+     * @description 获取数组分段后的数值。
+     * @param {Array.<number>} array - 需要分段的数组。
+     * @param {string} type - 分段方法。
+     * @param {number} segNum - 分段个数。
      */
     static getArraySegments(array, type, segNum) {
         if(type === "offset") {
@@ -95,86 +115,90 @@ export class ArrayStatistic {
     }
 
     /**
-     * 求和
-     * @param array
-     * @returns {number}
+     * @function ArrayStatistic.getSum
+     * @description 求和。
+     * @param {Array.<number>} array 需要求和的参数。
+     * @returns {number} 返回求和结果。
      */
     static getSum(array){
         return this.getInstance(array).sum();
     }
 
     /**
-     * 最小值
-     * @param array
-     * @returns {*}
+     * @function ArrayStatistic.getMax
+     * @description 最大值。
+     * @param {Array.<number>} array 需要求最大值的参数。
+     * @returns {number} 返回最大值。
      */
     static getMax(array){
         return this.getInstance(array).max();
     }
 
     /**
-     * 最大值
-     * @param array
-     * @returns {*}
+     * @function ArrayStatistic.getMin
+     * @description 最小值。
+     * @param {Array.<number>} array 需要求最小值的参数。
+     * @returns {number} 返回最小值。
      */
     static getMin(array){
         return this.getInstance(array).min();
     }
 
     /**
-     * 求平均
-     * @param array
-     * @returns {number}
+     * @function ArrayStatistic.getMean
+     * @description 求平均数。
+     * @param {Array.<number>} array 需要求平均数的参数。
+     * @returns {number} 返回平均数。
      */
     static getMean(array){
         return this.getInstance(array).mean();
     }
 
     /**
-     * 求中位数
-     * 
-     * @param array
-     * @returns {number} 
+     * @function ArrayStatistic.getMedian
+     * @description 求中位数。
+     * @param {Array.<number>} array 需要求中位数的参数。
+     * @returns {number} 返回中位数。
      */
     static getMedian(array) {
         return this.getInstance(array).median();
     }
 
     /**
-     * 计数
-     * 
-     * @param array
-     * @returns {number} 
+     * @function ArrayStatistic.getTimes
+     * @description 计数。
+     * @param {Array.<number>} array 需要计数的参数。
+     * @returns {number} 返回计数结果。
      */
     static getTimes(array) {
         return array.length;
     }
 
     /**
-     * 等距分段法
-     * 
-     * @param array 
-     * @param segNum
+     * @function ArrayStatistic.getEqInterval
+     * @description 等距分段法。
+     * @param {Array} array 需要进行等距分段的数组。
+     * @param {number} segNum 分段个数。
      */
     static getEqInterval(array, segNum) {
         return this.getInstance(array).getClassEqInterval(segNum);
     }
     
     /**
-     * 自然断裂法
-     * 
-     * @param array 
-     * @param segNum
+     * @function ArrayStatistic.getJenks
+     * @description 自然断裂法。
+     * @param {Array} array 需要进行自然断裂的参数。
+     * @param {number} segNum 分段个数。
      */
     static getJenks(array, segNum) {
         return this.getInstance(array).getClassJenks(segNum);
     }
 
     /**
-     * 平方根分段法
-     * 
-     * @param array
-     * @param segNum
+     * @function ArrayStatistic.getSqrtInterval
+     * @description 平方根分段法。
+     * @param {Array} array 需要进行平方根分段的参数。
+     * @param {number} segNum 分段个数。
      */
     static getSqrtInterval(array, segNum) {
         array = array.map(function(value) {
@@ -189,14 +213,13 @@ export class ArrayStatistic {
     }
 
     /**
-     * 对数分段法
-     * 
-     * @param array 
-     * @param segNum
+     * @function ArrayStatistic.getGeometricProgression
+     * @description 对数分段法。
+     * @param {Array} array 需要进行对数分段的参数。
+     * @param {number} segNum 分段个数。
      */
     static getGeometricProgression(array, segNum) {
         return this.getInstance(array).getClassGeometricProgression(segNum);
     }
 
 }
-SuperMap.ArrayStatistic = ArrayStatistic;

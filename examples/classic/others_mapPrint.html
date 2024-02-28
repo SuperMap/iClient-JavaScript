@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -111,7 +111,7 @@
 
         var strHeader = "<!DOCTYPE html><html><head><META HTTP-EQUIV='pragma' CONTENT='no-cache'><META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'><META HTTP-EQUIV='expires' CONTENT='Wed, 26 Feb 1997 08:21:57 GMT'><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' /><meta name='apple-mobile-web-app-capable' content='yes' /><title>地图打印</title>";
         var strCSS = "<script type='text/javascript' include='style,sm-doc'exclude='iclient-classic' src='../../dist/classic/include-classic.js'>";
-        var strScript = "<script src='https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js'><\/script><script type = 'text/javascript'>" + "\n" + "function printDiv(){document.getElementsByClassName('newuiPrint')[0].style.display ='none';window.print();document.getElementsByClassName('newuiPrint')[0].style.display ='block';}<\/script>";
+        var strScript = "<script src='https://iclient.supermap.io/web/libs/jquery/3.2.1/jquery.min.js'><\/script><script type = 'text/javascript'>" + "\n" + "function printDiv(){document.getElementsByClassName('newuiPrint')[0].style.display ='none';window.print();document.getElementsByClassName('newuiPrint')[0].style.display ='block';}<\/script>";
         var strBody = "</head><body><div class='print-header'><div class='superD'><h3>地图</h3></div><div id='" + id + "' >" + strInnerHTML + "</div><div id='superft'><div class='printClose'>" + "<span class='newuiPrint' onclick = 'printDiv()'></span></div></div></div></body></html>";
 
         var strHTML = strHeader + strCSS + strScript + strBody;

@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -27,7 +27,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [531762, 3580330],
                 zoom: 2,
@@ -51,12 +51,12 @@
             [1063524, 3150322],
             [0, 3150322]
         ]]);
-        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
-            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+        surfaceAnalystParameters = new ol.supermap.DatasetSurfaceAnalystParameters({
+            extractParameter: new ol.supermap.SurfaceAnalystParametersSetting({
                 datumValue: 0,
                 interval: 2,
                 resampleTolerance: 0,
-                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothMethod: ol.supermap.SmoothMethod.BSPLINE,
                 smoothness: 3,
                 clipRegion: region
             }),

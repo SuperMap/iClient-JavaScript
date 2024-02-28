@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {SuperMap} from '../../SuperMap';
@@ -101,8 +101,8 @@ export class MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.addData
      * @description 追加数据
-     * @param {oject} data - 待添加的数据。
-     * @param {oject} options - 待添加的数据信息。
+     * @param {Object} data - 待添加的数据。
+     * @param {Object} options - 待添加的数据信息。
      */
     addData(data, options) {
         var _data = data;
@@ -116,8 +116,8 @@ export class MapVRenderer extends MapVBaseLayer {
     /**
      * @function MapvRenderer.prototype.updateData
      * @description 更新覆盖原数据。
-     * @param {oject} data - 待更新的数据。
-     * @param {oject} options - 待更新的数据信息。
+     * @param {Object} data - 待更新的数据。
+     * @param {Object} options - 待更新的数据信息。
      */
     setData(data, options) {
         var _data = data;

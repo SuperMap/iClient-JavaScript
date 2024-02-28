@@ -1,20 +1,27 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import L from "leaflet";
 import '../core/Base';
-import echarts from "echarts";
+import * as echarts from "echarts";
 import Attributions from '../core/Attributions'
 
 /**
- * @class L.supermap.echartsLayer
- * @classdesc 百度 ECharts 图层类。
+ * @class EchartsLayer
+ * @deprecatedclassinstance L.supermap.echartsLayer
+ * @classdesc 百度 ECharts 图层类。ECharts 是一个使用 JavaScript 实现的开源可视化库，可以流畅的运行在 PC 和移动设备上，
+ * 兼容当前绝大部分浏览器（IE8/9/10/11，Chrome，Firefox，Safari 等）。<br>
+ * 提供直观，交互丰富，可高度个性化定制的数据可视化图表。
+ * 比如常规的折线图、柱状图、散点图、饼图、K线图，用于统计的盒形图，用于地理数据可视化的地图、热力图、线图，
+ * 用于关系数据可视化的关系图、treemap、旭日图，多维数据可视化的平行坐标，还有用于 BI 的漏斗图，仪表盘，并且支持图与图之间的混搭。
  * @category  Visualization ECharts
+ * @modulecategory Overlay
  * @extends {L.Layer}
  * @param {Object} echartsOptions - 图表参数。
- * @param {Object} options - 可选图层参数。
+ * @param {Object} options - 参数。
  * @param {boolean} [options.loadWhileAnimating=false] - 是否在移动时实时绘制。
- * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权信息。
+ * @param {string} [options.attribution='© 2018 百度 ECharts'] - 版权描述信息。
+ * @usage
  */
 export const EchartsLayer = L.Layer.extend({
 
@@ -34,7 +41,7 @@ export const EchartsLayer = L.Layer.extend({
         this.setOption(echartsOptions);
     },
     /**
-     * @function L.supermap.echartsLayer.prototype.setOption
+     * @function EchartsLayer.prototype.setOption
      * @description 设置图表地图参数。
      * @param {Object} echartsOptions - 图表参数。
      * @param {string} lazyUpdate - 后台自动更新。
@@ -61,9 +68,9 @@ export const EchartsLayer = L.Layer.extend({
 
     /**
      * @private
-     * @function L.supermap.echartsLayer.prototype.onAdd
+     * @function EchartsLayer.prototype.onAdd
      * @description 添加地图。
-     * @param {L.Map} map - 待添加的地图。
+     * @param {L.Map} map - Leaflet Map 对象。
      */
     onAdd: function (map) {
         this._map = map;
@@ -71,7 +78,6 @@ export const EchartsLayer = L.Layer.extend({
         this._ec = echarts.init(this._echartsContainer);
         this._ec.leafletMap= map;
         const me = this;
-
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
@@ -112,15 +118,12 @@ export const EchartsLayer = L.Layer.extend({
                 const coordSys = LeafletMapModel.coordinateSystem;
 
                 const ecLayers = api.getZr().painter.getLayers();
-
+                _setCanvasPosition(me._map, viewportRoot);
                 const moveHandler = function () {
                     if (rendering) {
                         return;
                     }
-                    const offset = me._map.containerPointToLayerPoint([0, 0]);
-                    const mapOffset = [offset.x || 0, offset.y || 0];
-                    viewportRoot.style.left = mapOffset[0] + 'px';
-                    viewportRoot.style.top = mapOffset[1] + 'px';
+                    const mapOffset = _setCanvasPosition(me._map, viewportRoot);
 
                     if (!me.options.loadWhileAnimating) {
                         for (let item in ecLayers) {
@@ -182,7 +185,7 @@ export const EchartsLayer = L.Layer.extend({
         this._ec.dispose();
         delete this._ec;
         L.DomUtil.remove(this._echartsContainer);
-        
+
         if (this._oldZoomEndHandler) {
             this._map.off("zoomend", this._oldZoomEndHandler);
             this._oldZoomEndHandler = null;
@@ -205,9 +208,8 @@ export const EchartsLayer = L.Layer.extend({
         _div.style.position = 'absolute';
         _div.style.height = size.y + 'px';
         _div.style.width = size.x + 'px';
-        _div.style.zIndex = 10;
+        _div.style.zIndex = 200;
         this._echartsContainer = _div;
-
         this.getPane().appendChild(this._echartsContainer);
         const me = this;
 
@@ -225,15 +227,15 @@ export const EchartsLayer = L.Layer.extend({
 });
 
 /**
- * @class L.supermap.LeafletMapCoordSys
+ * @class LeafletMapCoordSys
  * @private
  * @classdesc 地图坐标系统类。
- * @param {L.Map} leafletMap - 地图。
+ * @param {L.Map} leafletMap - Leaflet Map 对象。
  */
 export function LeafletMapCoordSys(leafletMap) {
     this._LeafletMap = leafletMap;
     this.dimensions = ['lng', 'lat'];
-    this._mapOffset = [0, 0];
+    this._mapOffset = _getMapOffset(leafletMap);
 }
 
 LeafletMapCoordSys.prototype.dimensions = ['lng', 'lat'];
@@ -328,10 +330,10 @@ LeafletMapCoordSys.create = function (ecModel) {
             coordSys = new LeafletMapCoordSys(leafletMap);
         }
         leafletMapModel.coordinateSystem = coordSys;
-        leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || [0, 0]);
+        leafletMapModel.coordinateSystem.setMapOffset(leafletMapModel.__mapOffset || _getMapOffset(leafletMap));
     });
     ecModel.eachSeries(function (seriesModel) {
-        if (!seriesModel.get('coordinateSystem') || seriesModel.get('coordinateSystem') === 'leaflet') {
+        if (seriesModel.get('coordinateSystem') === 'leaflet') {
             if (!coordSys) {
                 coordSys = new LeafletMapCoordSys(leafletMap);
             }
@@ -340,8 +342,19 @@ LeafletMapCoordSys.create = function (ecModel) {
         }
     })
 };
+
+function _getMapOffset(map) {
+  const offset = map.containerPointToLayerPoint([0, 0]);
+  const mapOffset = [offset.x || 0, offset.y || 0];
+  return mapOffset;
+}
+
+function _setCanvasPosition(map, viewportRoot) {
+  const mapOffset = _getMapOffset(map);
+  viewportRoot.style.left = mapOffset[0] + 'px';
+  viewportRoot.style.top = mapOffset[1] + 'px';
+  return mapOffset;
+}
 export const echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
-
-L.supermap.echartsLayer = echartsLayer;

@@ -1,17 +1,19 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {TemplateBase} from './TemplateBase';
 
 /**
- * @class SuperMap.Components.IndexTabsPageContainer
- * @description 标签索引组件。
+ * @class IndexTabsPageContainer
+ * @aliasclass Components.IndexTabsPageContainer
+ * @deprecatedclass SuperMap.Components.IndexTabsPageContainer
+ * @classdesc 标签索引组件。
  * @version 9.1.1
- * @param {Object} options - 可选参数。
+ * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @category Components Common
- * @extends {SuperMap.Components.TemplateBase}
+ * @extends {TemplateBase}
+ * @usage
  */
 export class IndexTabsPageContainer extends TemplateBase {
     constructor(options) {
@@ -41,9 +43,9 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.setTabs
+     * @function IndexTabsPageContainer.prototype.setTabs
      * @description 设置标签元素。
-     * @param {Array.<Element>} tabs
+     * @param {Array.<HTMLElement>} tabs
      */
     setTabs(tabs) {
         this.removeAllTabs();
@@ -51,9 +53,9 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.appendTabs
+     * @function IndexTabsPageContainer.prototype.appendTabs
      * @description 追加标签元素。
-     * @param {Array.<Element>} tabs
+     * @param {Array.<HTMLElement>} tabs
      */
     appendTabs(tabs) {
         for (let i = 0; i < tabs.length; i++) {
@@ -76,7 +78,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.removeTab
+     * @function IndexTabsPageContainer.prototype.removeTab
      * @description 删除某个标签页面。
      * @param {number} index - 标签索引号。
      */
@@ -86,7 +88,7 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
     /**
-     * @function SuperMap.Components.IndexTabsPageContainer.prototype.removeAllTabs
+     * @function IndexTabsPageContainer.prototype.removeAllTabs
      * @description 删除所有标签。
      */
     removeAllTabs() {
@@ -109,5 +111,3 @@ export class IndexTabsPageContainer extends TemplateBase {
     }
 
 }
-
-SuperMap.Components.IndexTabsPageContainer = IndexTabsPageContainer;

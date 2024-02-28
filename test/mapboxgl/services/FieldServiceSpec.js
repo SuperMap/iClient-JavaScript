@@ -90,14 +90,14 @@ describe('mapboxgl_FieldService', () => {
             serviceResult = result;
             try {
                 expect(service).not.toBeNull();
-                expect(service.currentStatisticResult).not.toBeNull();
-                expect(service.currentStatisticResult.AVERAGE).toEqual(4);
-                expect(service.currentStatisticResult.MAX).toEqual(7);
-                expect(service.currentStatisticResult.MIN).toEqual(1);
-                expect(service.currentStatisticResult.STDDEVIATION).toEqual(2.160246899469287);
-                expect(service.currentStatisticResult.SUM).toEqual(28);
-                expect(service.currentStatisticResult.VARIANCE).toEqual(4.666666666666667);
-                expect(service.currentStatisticResult.fieldName).toEqual("SmID");
+                expect(service._fieldService.currentStatisticResult).not.toBeNull();
+                expect(service._fieldService.currentStatisticResult.AVERAGE).toEqual(4);
+                expect(service._fieldService.currentStatisticResult.MAX).toEqual(7);
+                expect(service._fieldService.currentStatisticResult.MIN).toEqual(1);
+                expect(service._fieldService.currentStatisticResult.STDDEVIATION).toEqual(2.160246899469287);
+                expect(service._fieldService.currentStatisticResult.SUM).toEqual(28);
+                expect(service._fieldService.currentStatisticResult.VARIANCE).toEqual(4.666666666666667);
+                expect(service._fieldService.currentStatisticResult.fieldName).toEqual("SmID");
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.result.AVERAGE).toEqual(4);
                 expect(serviceResult.result.MAX).toEqual(7);

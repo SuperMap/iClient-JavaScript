@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 //左侧层级是否包含示例
 var containExample = false;
 var sideBarIconConfig = sideBarIconConfig || {};
@@ -27,15 +27,7 @@ function sidebarScrollFix() {
             "width": "233px"
         });
 
-        //如果底部空间不够，动态增加侧边栏高度
         var visibleOffsetTop = $(this).offset().top - $(window).scrollTop();
-        var offsetBottom = $('.sidebar-menu').height() - visibleOffsetTop;
-        var requireVisibleHeight = $(this).height() + $(this).children('ul').height();
-        if (offsetBottom <= requireVisibleHeight) {
-            $('.sidebar-menu').css({
-                "height": (requireVisibleHeight + $(window).height()) + "px"
-            })
-        }
 
         //调整一级菜单li下子列表的布局位置至右侧
         var offsetTop = visibleOffsetTop + $(this).height();
@@ -45,16 +37,11 @@ function sidebarScrollFix() {
 
         //fix小尺寸屏幕下二级菜单高度高于窗口高度时显示不全的情况
         var $activeList = $(this).children('ul');
-        var activeListOffsetBottom = Math.abs($(window).height() - visibleOffsetTop - $(this).height());
-        var requireActiveListHeight = $activeList.height();
-        if (activeListOffsetBottom < requireActiveListHeight) {
-            $activeList.css({
-                "height": requireActiveListHeight
-            });
-            //滚动条样式
-            $activeList.addClass('scroll-list');
-        }
-
+        var maxHeight = Math.abs($(window).height() - offsetTop);
+        $activeList.css({
+          "max-height": maxHeight
+        });
+        $activeList.addClass('scroll-list');
     }, function (evt) {
         if (!$('body').hasClass('sidebar-collapse')) {
             return;
@@ -63,7 +50,7 @@ function sidebarScrollFix() {
         $(this).children('ul').removeClass('scroll-list');
         //恢复原来的高度
         $(this).children('ul').css({
-            "height": "auto"
+            "max-height": ''
         });
     });
     $('.main-sidebar').on('scroll', function (evt) {
@@ -174,7 +161,7 @@ function createSideBarMenuTitle(id, title, collapse, hasNewExamples) {
     var titleBar = $("<span class='sidebar-title-bar'></span>");
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='var(--active-color)'></circle>/svg>";
     }
     var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + newIcon + "</span>");
     titleBar.append(firstMenuTitle);
@@ -195,7 +182,7 @@ function createSideBarMenuSecondTitle(id, title, collapse, hasNewExamples) {
     }
     var newIcon = "";
     if (hasNewExamples) {
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='var(--active-color)'></circle>/svg>";
     }
     var div = $(
         "<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon +
@@ -217,7 +204,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
     }
     var newIcon="";
     if(window.version===version){
-        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='#e14d57'></circle>/svg>";
+        newIcon = "<svg style='width:16px;height:16px;padding-left:5px'><circle cx='3' cy='3' r='3' fill='var(--active-color)'></circle>/svg>";
     }
 
     var div = $(
@@ -232,7 +219,7 @@ function createSideBarMenuThirdTitle(id, title, collapse,version) {
 
 //创建右侧折叠菜单
 function createCollapsedIcon() {
-    return $("<span class='pull-right-container'> <i class='fa fa-angle-left pull-right'></i> </span>");
+    return $("<span class='pull-right-container'> <i class='fa fa-angle-down pull-right'></i> </span>");
 }
 
 //只处理三层节点,后续可优化

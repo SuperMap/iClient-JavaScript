@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
 var data;
 L.supermap.plotting.initIportalStylePanel = function(div, type, data, plotName){
     data = data;

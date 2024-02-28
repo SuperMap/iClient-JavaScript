@@ -1,8 +1,11 @@
 import {mapVLayer} from '../../../src/leaflet/overlay/MapVLayer';
 import {tiledMapLayer} from '../../../src/leaflet/mapping/TiledMapLayer';
+import {RangeThemeLayer} from '../../../src/leaflet/overlay/RangeThemeLayer';
 import {utilCityCenter, DataSet} from 'mapv';
 
 var url = GlobeParameter.ChinaURL;
+var dataSet,options;
+
 describe('leaflet_MapVLayer', () => {
     var originalTimeout;
     var testDiv, map, layer;
@@ -39,8 +42,8 @@ describe('leaflet_MapVLayer', () => {
                 count: 30 * Math.random()
             });
         }
-        var dataSet = new DataSet(data);
-        var options = {
+        dataSet = new DataSet(data);
+        options = {
             fillStyle: 'rgba(55, 50, 250, 0.8)',
             shadowColor: 'rgba(255, 250, 50, 1)',
             shadowBlur: 20,
@@ -64,6 +67,7 @@ describe('leaflet_MapVLayer', () => {
         layer.remove();
     });
     afterAll(() => {
+        window.devicePixelRatio = 1;
         document.body.removeChild(testDiv);
         map.remove();
     });
@@ -116,7 +120,7 @@ describe('leaflet_MapVLayer', () => {
         setTimeout(() => {
             expect(layer.dataSet._data.length).toEqual(999);
             done();
-        }, 6000);
+        }, 0);
     });
 
     it('update', () => {
@@ -154,6 +158,14 @@ describe('leaflet_MapVLayer', () => {
         expect(layer.canvas.style.width).toBe('500px');
     });
 
+    it('draw, redraw heatmap', () => {
+      options.draw = 'heatmap';
+      window.devicePixelRatio = 2;
+      var layer = mapVLayer(dataSet, options).addTo(map);
+      layer.draw();
+      expect(layer.canvas.width).toEqual(500 * 2);
+   });
+
     it('setZIndex', () => {
         layer.setZIndex(2);
         expect(layer.canvas.style.zIndex).toEqual('2');
@@ -177,4 +189,18 @@ describe('leaflet_MapVLayer', () => {
         expect(topLeft.lng).toEqual(87.01171875);
         expect(topLeft.lat).toEqual(48.63290858589535);
     });
+
+    it('layer index fix', () => {
+      var canvas = layer.getCanvas();
+      expect(canvas).not.toBeNull();
+      var themeLayer = new RangeThemeLayer("ThemeLayer", {
+        isHoverAble:false,
+        opacity: 0.8,
+        alwaysMapCRS: true
+      });
+      themeLayer.addTo(map);
+      const themeLayerElement = document.getElementsByClassName('themeLayer')[0];
+      expect(+canvas.style.zIndex).toEqual(+themeLayerElement.style.zIndex);
+      expect(canvas.parentNode.nextSibling.classList.contains('themeLayer')).toBeTruthy();
+  });
 });

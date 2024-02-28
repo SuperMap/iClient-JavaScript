@@ -1,3 +1,4 @@
+
 import {webMap} from '../../../src/leaflet/mapping/WebMap';
 import {FetchRequest} from '../../../src/common/util/FetchRequest';
 import {mockCreateTile,mockHeatLayer} from '../../tool/mock_leaflet';
@@ -24,12 +25,11 @@ describe('leaflet_WebMap', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
     afterEach(() => {
-        map = null;
         window.document.body.removeChild(testDiv);
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('getResolutionsFromScales', () => {
+   it('getResolutionsFromScales', () => {
         map = webMap();
         var scales = [2.9582935545E8, 1.47914677725E8, 7.39573388625E7, 3.697866943125E7, 1.8489334715625E7],
             units = "meter";
@@ -42,7 +42,7 @@ describe('leaflet_WebMap', () => {
         expect(resolutions[4]).toEqual(4891.969810175781);
     });
 
-    it('initialize_SUPERMAP_REST', (done) => {
+   it('initialize_SUPERMAP_REST', (done) => {
         var id = 55;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -52,7 +52,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+        map.on('maploaded',()=>{
             expect(map.id).toEqual(55);
             expect(map.layers.length).toEqual(0);
             var mapInfo = map.mapInfo;
@@ -86,10 +86,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("testH");
             expect(map.options.server).toBe(server);
             done();
-        }, 2000)
+        })
     });
 
-    it('initialize_TIANDITU_VEC', (done) => {
+   it('initialize_TIANDITU_VEC', (done) => {
         var id = 568205813;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -99,7 +99,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -132,10 +132,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        })
     });
 
-    it('initialize_TIANDITU_IMG', (done) => {
+   it('initialize_TIANDITU_IMG', (done) => {
         var id = 567946816;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -145,7 +145,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -178,10 +178,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        })
     });
 
-    it('initialize_TIANDITU_TER', (done) => {
+   it('initialize_TIANDITU_TER', (done) => {
         var id = 2048499925;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -191,7 +191,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -224,10 +224,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        })
     });
 
-    it('initialize_BAIDU', (done) => {
+   it('initialize_BAIDU', (done) => {
         var id = 1123771109;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -237,7 +237,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -270,10 +270,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000);
+        })
     });
 
-    it('initialize_WMS', (done) => {
+   it('initialize_WMS', (done) => {
         var id = 419;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -283,7 +283,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toEqual(419);
             expect(map.layers.length).toEqual(0);
             var mapInfo = map.mapInfo;
@@ -317,10 +317,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe("http://supermapiserver");
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('initialize_WMTS', (done) => {
+   it('initialize_WMTS', (done) => {
         var id = 612;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -330,7 +330,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toEqual(612);
             expect(map.layers.length).toEqual(0);
             var mapInfo = map.mapInfo;
@@ -364,10 +364,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("180065");
             expect(map.options.server).toBe("http://supermapiserver");
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('initialize_CLOUD', (done) => {
+   it('initialize_CLOUD', (done) => {
         var id = 359319824;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -377,7 +377,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -410,10 +410,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("361143");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('CLOUD add FEATURE_LAYER', (done) => {
+   it('CLOUD add FEATURE_LAYER', (done) => {
         var id = 840;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -423,7 +423,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -451,10 +451,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("328215");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('SUPERMAP_REST add MARKER_LAYER', (done) => {
+   it('SUPERMAP_REST add MARKER_LAYER', (done) => {
         var id = 370;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -464,7 +464,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -493,10 +493,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("10235");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('createThemeLayer_HeatLayer', (done) => {
+   it('createThemeLayer_HeatLayer', (done) => {
         var id = 2489;
         mockHeatLayer();
         spyOn(FetchRequest, 'get').and.callFake((url) => {
@@ -507,7 +507,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -534,12 +534,12 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe(server);
-            map = null;
+            
             done();
-        }, 5000)
+        }, 0)
     });
 
-    it('createThemeLayer_UniqueLayer', (done) => {
+   it('createThemeLayer_UniqueLayer', (done) => {
         var id = 1765;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -549,7 +549,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -576,9 +576,9 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.title).toBe("北京高校分布热点图");
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe(server);
-            map = null;
+            // 
             done();
-        }, 5000)
+        }, 0)
     });
 
     xit('createThemeLayer_RangeLayer', (done) => {
@@ -591,7 +591,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -617,12 +617,12 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.title).toBe("北京三级甲等医院");
             expect(mapInfo.userName).toBe("10047");
             expect(map.options.server).toBe(server);
-            map = null;
+            
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('createThemeLayer_VectorThemeLayer', (done) => {
+   it('createThemeLayer_VectorThemeLayer', (done) => {
         var id = 1765;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -633,7 +633,7 @@ describe('leaflet_WebMap', () => {
         });
        
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(2);
@@ -662,10 +662,10 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("48372");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 
-    it('createThemeLayer_LabelLayer', (done) => {
+   it('createThemeLayer_LabelLayer', (done) => {
         var id = 2489;
         spyOn(FetchRequest, 'get').and.callFake((url) => {
             if (url === server + "/web/maps/" + id + ".json") {
@@ -675,7 +675,7 @@ describe('leaflet_WebMap', () => {
             return Promise.resolve();
         });
         map = webMap(id, {server: server});
-        setTimeout(() => {
+       map.on('maploaded',()=>{
             expect(map.id).toBe(id);
             var mapInfo = map.mapInfo;
             expect(mapInfo.authorizeSetting.length).toEqual(4);
@@ -703,6 +703,6 @@ describe('leaflet_WebMap', () => {
             expect(mapInfo.userName).toBe("599184");
             expect(map.options.server).toBe(server);
             done();
-        }, 1000)
+        }, 0)
     });
 });

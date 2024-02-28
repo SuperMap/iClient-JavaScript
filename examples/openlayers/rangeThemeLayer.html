@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -70,12 +70,12 @@
     baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         url2 = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-jingjin/rest/data",
         extent = [104.07, 30.54, 119.51, 42.31];
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [116.85, 39.79],
                 zoom: 8,
@@ -90,20 +90,19 @@
         map.addLayer(layer);
 
         var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new SuperMap.FilterParameter({
+        getFeatureParam = new ol.supermap.FilterParameter({
             name: "Jingjin",
             attributeFilter: "SMID > -1"
         });
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        getFeatureBySQLParams = new ol.supermap.GetFeaturesBySQLParameters({
             queryParameter: getFeatureParam,
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_R"]
         });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
-            format: SuperMap.DataFormat.ISERVER,
-            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        getFeatureBySQLService = new ol.supermap.FeatureService(url2).getFeaturesBySQL(
+            getFeatureBySQLParams,
+            ol.supermap.DataFormat.ISERVER
+        ).then(processCompleted).catch(processFailed);
     });
 
     function processCompleted(getFeaturesEventArgs) {

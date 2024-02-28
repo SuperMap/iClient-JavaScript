@@ -15,14 +15,14 @@ module.exports = {
         browser.setValue('#prjCoordSys', '{epsgcode:4326}');
         browser.pause(1000);
         browser.click('#codeBtn', function () {
-            browser.pause(2000);
+            // browser.pause(2000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
             browser.elements('css selector', '.leaflet-marker-icon', function (result) {
                 browser.assert.equal(result.value.length, 1, "expect query result of '正向匹配' to be 10, actual is " + result.value.length);
             });
             browser.click('.leaflet-marker-icon', function () {
-                browser.pause(1000);
+                // browser.pause(1000);
                 browser.waitForElementPresent('.leaflet-popup.leaflet-zoom-animated', 10000);
                 browser.expect.element('.leaflet-popup-content').text.to.contain('地址');
                 browser.expect.element('.leaflet-popup-content').text.to.contain('坐标');
@@ -52,7 +52,7 @@ module.exports = {
         browser.setValue('#prjCoordSys2', '{epsgcode:4326}');
         browser.pause(1000);
         browser.click('#decodeBtn', function () {
-            browser.pause(2000);
+            // browser.pause(2000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 20000);
             browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 20000);
             browser.elements('css selector', '.leaflet-marker-icon', function (result) {
@@ -60,13 +60,13 @@ module.exports = {
             });
             browser.pause(1000);
             browser.click('.leaflet-marker-icon', function () {
-                browser.pause(1000);
+                // browser.pause(1000);
                 browser.waitForElementPresent('.leaflet-popup.leaflet-zoom-animated', 20000);
                 browser.expect.element('.leaflet-popup-content').text.to.contain('地址');
                 browser.expect.element('.leaflet-popup-content').text.to.contain('坐标');
                 browser.expect.element('.leaflet-popup-content').text.to.contain('过滤字段');
             })
         });
-        browser.end();
+        // browser.end();
     }
 };

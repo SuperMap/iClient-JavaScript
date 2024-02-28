@@ -1,20 +1,22 @@
-/* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import {SuperMap} from '../../SuperMap';
 import {IndexTabsPageContainer} from './IndexTabsPageContainer';
 import {Util} from '../../commontypes/Util';
 
 /**
- * @class SuperMap.Components.CityTabsPage
+ * @class CityTabsPage
+ * @aliasclass Components.CityTabsPage
+ * @deprecatedclass SuperMap.Components.CityTabsPage
  * @classdesc 城市地址匹配组件模板
  * @version 9.1.1
  * @param {Object} options - 组件配置参数。
  * @param {string} options.id - 组件 dom 元素 id。
  * @param {Object|Array.<string>} options.config - 城市名称配置列表，支持两种格式：{key1:{A:[],B:[]}, key2:{C:[],D:[]}} 或
  *                               ["成都市","北京市"]，用户可根据自己的项目需求进行配置
- * @extends {SuperMap.Components.IndexTabsPageContainer}
+ * @extends {IndexTabsPageContainer}
  * @category Components Common
+ * @usage
  */
 export class CityTabsPage extends IndexTabsPageContainer {
     constructor(options) {
@@ -43,7 +45,7 @@ export class CityTabsPage extends IndexTabsPageContainer {
     }
 
     /**
-     * @function SuperMap.Components.CityTabsPage.prototype._createTabs
+     * @function CityTabsPage.prototype._createTabs
      * @description 创建 Tabs
      * @private
      */
@@ -71,7 +73,7 @@ export class CityTabsPage extends IndexTabsPageContainer {
     }
 
     /**
-     * @function SuperMap.Components.CityTabsPage.prototype._createCityContent
+     * @function CityTabsPage.prototype._createCityContent
      * @description 创建列表容器
      * @private
      */
@@ -88,7 +90,7 @@ export class CityTabsPage extends IndexTabsPageContainer {
     }
 
     /**
-     * @function SuperMap.Components.CityTabsPage.prototype._createCityContent
+     * @function CityTabsPage.prototype._createCityContent
      * @description 创建列表容器
      * @private
      */
@@ -117,5 +119,3 @@ export class CityTabsPage extends IndexTabsPageContainer {
     }
 
 }
-
-SuperMap.Components.CityTabsPage = CityTabsPage;

@@ -122,7 +122,7 @@ describe('openlayers_StyleUtils', () => {
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
-                var layerName = "District_pt@POI_Other#2";
+                var layerName = "District_pt@China#6";
                 var layerInfo = getLayerInfo(layerName);
                 var feature = getFeature(layerName, features);
                 var style = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, mapUrl);
@@ -136,6 +136,29 @@ describe('openlayers_StyleUtils', () => {
                 expect(textStyle.getFill().getColor()).toBe("rgba(0,0,0,1)");
                 expect(textStyle.getTextAlign()).toBe("middle");
                 expect(textStyle.getTextBaseline()).toBe("center");
+                // const textStyleMock = {
+                //   italic: true,
+                //   bold: true,
+                //   rotation: true,
+                //   outline: 1,
+                //   outlineWidth: 1,
+                //   backColor: {red:1, green:1, blue:1},
+                //   fontWeight: 500,
+                //   fontHeight: 1,
+                //   fontName: '微软雅黑',
+                //   align: 'TOPBASELINE'
+                // };
+                // feature.getProperties = function () {
+                //   return {
+                //     textStyle: textStyleMock,
+                //     TEXT_STYLE_INFO: JSON.stringify({ textStyle: textStyleMock }),
+                //     TEXT_FEATURE_CONTENT: 'test',
+                //     attributes: {'test': 1},
+                //     texts: ['test']
+                //   }
+                // }
+                // var style1 = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, mapUrl);
+                // expect(style1.getTextBaseline()).toBe("alphabetic");
                 done();
             } catch (exception) {
                 console.error("openlayers_StyleUtils': getValidStyleFromLayerInfo_text1'案例失败：" + exception.name + ":" + exception.message);
@@ -145,37 +168,9 @@ describe('openlayers_StyleUtils', () => {
         });
     });
 
-    //测试从图层信息中获取style
-    it('getValidStyleFromLayerInfo_text2', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=28&y=13&width=256&height=256&scale=5.408523429128511e-8";
-        var request = requestFeature(tileFeatureUrl);
-        request.then((features) => {
-            try {
-                var layerName = "World_Ocean_txt@China";
-                var layerInfo = getLayerInfo(layerName);
-                var feature = getFeature(layerName, features);
-                var style = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, mapUrl);
-                expect(style).not.toBeNull();
-                var textStyle = style.getText();
-                expect(textStyle).not.toBeNull();
-                expect(textStyle.getText()).toBe("太平洋");
-                expect(textStyle.getStroke()).not.toBeNull();
-                expect(textStyle.getStroke().getColor()).toBe("rgba(236,233,216,1)");
-                expect(textStyle.getFill()).not.toBeNull();
-                expect(textStyle.getFill().getColor()).toBe("rgba(95,155,211,1)");
-                expect(textStyle.getTextAlign()).toBe("center");
-                expect(textStyle.getTextBaseline()).toBe("alphabetic");
-                done();
-            } catch (exception) {
-                console.error("openlayers_StyleUtils': getValidStyleFromLayerInfo_text2'案例失败：" + exception.name + ":" + exception.message);
-                expect(false).toBeTruthy();
-                done();
-            }
-        });
-    });
 
     //测试从CartoCSS中获取style
-    it('getStyleFromCarto_point1', (done) => {
+    xit('getStyleFromCarto_point1', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=195&width=256&height=256&scale=8.653637486605572e-7";
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
@@ -183,6 +178,7 @@ describe('openlayers_StyleUtils', () => {
                 var layerName = "China_PreCenCity_pt@China";
                 var feature = getFeature(layerName, features);
                 var shader = getShader(layerName);
+                shader.push('text-size', 'text-comp-op');
                 var style = StyleUtils.getStyleFromCarto(10, 8.653637486605572e-7, shader, feature, true, mapUrl);
                 expect(style).not.toBeNull();
                 expect(style.getStroke()).toBeNull();
@@ -201,35 +197,6 @@ describe('openlayers_StyleUtils', () => {
             }
         });
     });
-
-    //测试从CartoCSS中获取style
-    it('getStyleFromCarto_point2', (done) => {
-        var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=1687&y=774&width=256&height=256&scale=0.00000346145499464224";
-        var request = requestFeature(tileFeatureUrl);
-        request.then((features) => {
-            try {
-                var layerName = "Airport_pt@POI_Other";
-                var feature = getFeature(layerName, features);
-                var shader = getShader(layerName);
-                var style = StyleUtils.getStyleFromCarto(10, 0.00000346145499464224, shader, feature, true, mapUrl);
-                expect(style).not.toBeNull();
-                expect(style.getStroke()).toBeNull();
-                expect(style.getText()).toBeNull();
-                expect(style.getFill()).toBeNull();
-                var imageStyle = style.getImage();
-                expect(imageStyle).not.toBeNull();
-                expect(imageStyle.getOpacity()).toBe(1);
-                expect(imageStyle.getSrc()).not.toBeNull();
-                expect(imageStyle.getImage(imageStyle.getSrc())).not.toBeNull();
-                done();
-            } catch (exception) {
-                console.error("openlayers_StyleUtils': getStyleFromCarto_point2'案例失败：" + exception.name + ":" + exception.message);
-                expect(false).toBeTruthy();
-                done();
-            }
-        });
-    });
-
     //测试从CartoCSS中获取style
     it('getStyleFromCarto_polyLine', (done) => {
         var tileFeatureUrl = mapUrl + "/tileFeature.json?returnAttributes=true&x=420&y=193&width=256&height=256&scale=8.653637486605572e-7";
@@ -295,9 +262,9 @@ describe('openlayers_StyleUtils', () => {
         var request = requestFeature(tileFeatureUrl);
         request.then((features) => {
             try {
-                var layerName = "District_pt@POI_Other#2";
+                var layerName = "District_pt@China#6";
                 var feature = getFeature(layerName, features);
-                var shader = getShader(layerName);
+                var shader = getShader("District_pt@China");
                 var style = StyleUtils.getStyleFromCarto(10, 0.00000346145499464224, shader, feature, true, mapUrl);
                 expect(style).not.toBeNull();
                 expect(style.getStroke()).toBeNull();

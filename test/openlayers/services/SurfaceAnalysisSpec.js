@@ -57,8 +57,5 @@ describe('openlayers_SpatialAnalystService_surfaceAnalysis', () => {
             expect(serviceResults.result.recordset).not.toBeNull();
             done();
         });
-        setTimeout(() => {
-
-        }, 8000);
     });
 });

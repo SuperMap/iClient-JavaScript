@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +73,7 @@
                             collapsed: false
                         }
                     })
-                    .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
@@ -122,16 +122,16 @@
                 TopologyValidatorJobs();
             });
         }
-        SuperMap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
+        ol.supermap.SecurityManager.registerToken(processingsUrl, window.exampleToken);
 
         function TopologyValidatorJobs() {
-            var topologyValidatorJobsParameter = new SuperMap.TopologyValidatorJobsParameter({
+            var topologyValidatorJobsParameter = new ol.supermap.TopologyValidatorJobsParameter({
                 datasetName: $('#datasetName').val(),
                 datasetTopology: $('#datasetTopology').val(),
                 rule: $('#rule option:selected').attr('value'),
                 tolerance: $('#tolerance').val()
             });
-            processingService.addTopologyValidatorJob(topologyValidatorJobsParameter, function (serviceResult) {
+            processingService.addTopologyValidatorJob(topologyValidatorJobsParameter).then(function (serviceResult) {
                 if (serviceResult.error) {
                     widgets.loader.removeLoader();
                     var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -140,12 +140,12 @@
                 }
                 serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                     if (info.serviceType === 'RESTMAP') {
-                        SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
+                        ol.supermap.FetchRequest.get(info.serviceAddress + '/maps').then(function (
                             response) {
                             return response.json();
                         }).then(function (result) {
                             var mapUrl = result[0].path;
-                            new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                            new ol.supermap.MapService(mapUrl).getMapInfo().then(function (mapInfo) {
                                 layer = new ol.layer.Tile({
                                     source: new ol.source.ImageSuperMapRest(ol.source
                                         .ImageSuperMapRest.optionsFromMapJSON(

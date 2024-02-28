@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -34,7 +38,7 @@
         maxZoom: 18,
         zoom: 3
     });
-    L.supermap.tiledMapLayer(url).addTo(map);
+    new L.supermap.TiledMapLayer(url).addTo(map);
     L.supermap.plotting.editControl().addTo(map);
     var graphicLayer = L.supermap.plotting.graphicLayer();
     graphicLayer.addTo(map);

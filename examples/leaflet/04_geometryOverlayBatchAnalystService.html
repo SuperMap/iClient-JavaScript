@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@
             maxZoom: 18,
             zoom: 8
         });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    new L.supermap.TiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
     overlayerBatchAnalystFromGeometry();
 
@@ -86,13 +86,13 @@
             style: overlayDataStyle
         }).addTo(map);
 
-        var OverlayBatchAnalystParameters = new SuperMap.GeometryOverlayAnalystParameters({
+        var OverlayBatchAnalystParameters = new L.supermap.GeometryOverlayAnalystParameters({
             sourceGeometries: [sourceGeometry1, sourceGeometry2],
             operateGeometries: [operateGeometry1, operateGeometry2],
-            operation: SuperMap.OverlayOperationType.INTERSECT
+            operation: L.supermap.OverlayOperationType.INTERSECT
         });
 
-        L.supermap.spatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters, function (serviceResult) {
+        new L.supermap.SpatialAnalystService(serviceUrl).overlayAnalysis(OverlayBatchAnalystParameters).then(function (serviceResult) {
             var overlayResultStyle = {
                 "color": "red",
                 "opacity": 0.65

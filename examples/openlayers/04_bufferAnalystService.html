@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -22,12 +22,12 @@
         units: 'm'
     });
 
-    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+    new ol.supermap.MapService(baseUrl).getMapInfo().then(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [5105, -3375],
                 zoom: 6,
@@ -68,19 +68,19 @@
     });
 
     function bufferAnalystProcess() {
-        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+        var dsBufferAnalystParameters = new ol.supermap.DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new SuperMap.FilterParameter({
+            filterQueryParameter: new ol.supermap.FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new SuperMap.BufferSetting({
-                endType: SuperMap.BufferEndType.ROUND,
+            bufferSetting: new ol.supermap.BufferSetting({
+                endType: ol.supermap.BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10
             })
         });
-        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters).then(function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordset.features)
             });

@@ -1,5 +1,8 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
+    after: function(browser){
+        browser.end();
+    }, 
     'openlayers_03_themeGraduatedSymbol': function (browser) {
         // browser.windowMaximize();
         browser.resizeWindow(1200, 800);
@@ -10,6 +13,6 @@ module.exports = {
         // commonTools.getStdTile(browser, type, exampleName, 0, 0, 256, 256);
         //测试过程中截取地图瓦片, 和已有的标准瓦片进行对比
         commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 0, 0, 256, 256);
-        browser.end();
+        // browser.end();
     }
 };

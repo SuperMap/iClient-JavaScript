@@ -1,5 +1,9 @@
 <!--********************************************************************
-* Copyright© 2000 - 2021 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* tensorflow (https://github.com/tensorflow/tensorflow)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -28,8 +32,8 @@
   var ctx = canvas.getContext('2d');
   var predictBtn = document.querySelector('#predict');
   ctx.drawImage(img, 0, 0, 600, 600);
-  var webMachineLearning = new SuperMap.WebMachineLearning();
-  var objectDetection = new SuperMap.ObjectDetection({ modelUrl, image: img });
+  var webMachineLearning = new mapboxgl.supermap.WebMachineLearning();
+  var objectDetection = new mapboxgl.supermap.ObjectDetection({ modelUrl, image: img });
   predictBtn.addEventListener('click', function() {
     webMachineLearning.execute(objectDetection).then((bboxList) => {
         bboxList.forEach(bbox => {

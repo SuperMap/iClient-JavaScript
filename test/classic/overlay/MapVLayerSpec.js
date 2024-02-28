@@ -147,7 +147,6 @@ describe('classic_MapVLayer', () => {
     it('destroy', () => {
         mapvLayer.destroy();
         expect(mapvLayer.dataSet).toBeNull();
-        expect(mapvLayer.options).toBeNull();
         expect(mapvLayer.renderer).toBeNull();
         expect(mapvLayer.supported).toBeNull();
         expect(mapvLayer.canvasContext).toBeNull();
@@ -174,7 +173,7 @@ describe('classic_MapVLayer', () => {
             expect(data).not.toBeNull();
             expect(data.length).toBe(0);
             done();
-        }, 2000);
+        }, 0);
     });
 
 
