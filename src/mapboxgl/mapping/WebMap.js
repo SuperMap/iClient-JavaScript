@@ -214,5 +214,4 @@
       return this.webMapInstance;
    }
  }
-
- mapboxgl.supermap.WebMap = WebMap;
+ 

@@ -64,7 +64,7 @@ import {
   ChartView
 } from '@supermap/iclient-common/namespace';
 
-import { WebMap, initMap } from './mapping';
+import { WebMap, initMap, WebMapV3 } from './mapping';
 import mapboxgl from 'mapbox-gl';
 
 mapboxgl.supermap = {...SuperMap, ...mapboxgl.supermap};
@@ -75,6 +75,7 @@ mapboxgl.supermap.Logo = Logo;
 mapboxgl.supermap.Util = Util;
 mapboxgl.supermap.WebMap = WebMap;
 mapboxgl.supermap.initMap = initMap;
+mapboxgl.supermap.WebMapV3 = WebMapV3;
 mapboxgl.supermap.Graphic = Graphic;
 mapboxgl.supermap.map.getDefaultVectorTileStyle = getDefaultVectorTileStyle;
 mapboxgl.supermap.map.setBackground = setBackground;

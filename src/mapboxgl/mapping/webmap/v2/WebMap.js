@@ -16,8 +16,8 @@
    ColorsPickerUtil
  } from '@supermap/iclient-common';
  import { Util } from '../../../core/Util';
- import convert from 'xml-js';
  import canvg from 'canvg';
+ import { XMLParser } from "fast-xml-parser";
 
  const MB_SCALEDENOMINATOR_3857 = [
   '559082264.0287178',
@@ -324,9 +324,9 @@ const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
          return response.text();
        })
        .then(capabilitiesText => {
-         let converts = convert ? convert : window.convert;
-         let tileMatrixSet = JSON.parse(converts.xml2json(capabilitiesText, { compact: true, spaces: 4 }))
-                     .Capabilities.Contents.TileMatrixSet;
+        const parser = new XMLParser({numberParseOptions:{hex : false, leadingZeros: false,eNotation: false},alwaysCreateTextNode: true, textNodeName: "_text"});
+        let tileMatrixSet = parser.parse(capabilitiesText)
+            .Capabilities.Contents.TileMatrixSet;
          if (!Array.isArray(tileMatrixSet)) {
            tileMatrixSet = [tileMatrixSet];
          }
