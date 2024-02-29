@@ -648,9 +648,12 @@
 
          // 切换状态
          document.querySelector('#addFeature').addEventListener('click', function() {
-          console.log(isChanged);
           if (isChanged) {
-            document.querySelector('.message').style.display = 'block';
+            var message = document.querySelector('.message');
+            message.style.display = 'block';
+            setTimeout(() => {
+              message.style.display = 'none';
+            }, 3000);
             document.querySelector('.add-tips').style.display = 'inline-block';
             return;
           }
@@ -658,7 +661,11 @@
         });
         document.querySelector('#editFeature').addEventListener('click', function() {
           if (isChanged) {
-            document.querySelector('.message').style.display = 'block';
+            var message = document.querySelector('.message');
+            message.style.display = 'block';
+            setTimeout(() => {
+              message.style.display = 'none';
+            }, 3000);
             document.querySelector('.add-tips').style.display = 'inline-block';
             return;
           }
