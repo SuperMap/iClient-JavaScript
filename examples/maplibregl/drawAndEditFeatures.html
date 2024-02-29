@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
-    <script type="text/javascript" include="draw,snap" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript" include="draw,snap,lodash" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <style>
       .key-input,
       .value-input {
@@ -976,6 +976,18 @@
           });
           editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
+              if(addFeatureId) {
+                draw.delete(addFeatureId);
+                var addFeature = _.cloneDeep(currentFeature.data);
+                addFeature.properties.datasetName = currentDataset;
+                var source = map.getSource(currentDataset);
+                var features = source._data.features;
+                features.push(addFeature);
+                source.setData({
+                  type: 'FeatureCollection',
+                  features: features
+                });
+              }
               widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
             }
           });

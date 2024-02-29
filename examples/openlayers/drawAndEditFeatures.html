@@ -351,6 +351,7 @@
       var container = document.getElementById('popup');
       var content = document.getElementById('popup-content');
       var isChanged = false;
+      var currentAddFeature = null;
       getDomains(currentDataset);
       var overlayPopup = new ol.Overlay({
         element: container,
@@ -869,6 +870,7 @@
         });
         console.log('properties', properties);
         currentFeature.data.properties = properties;
+        currentAddFeature.setProperties(properties);
         var olFeature = new ol.format.GeoJSON().readFeature(currentFeature.data);
         if (!olFeature.getId()) {
           datasetInfoList[currentDataset].uniqueId++;
@@ -935,6 +937,8 @@
           });
           editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
+              // currentSource.removeFeature(currentAddFeature);
+              // currentSource.addFeature(currentFeature.origin);
               widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
             }
           });
@@ -970,8 +974,6 @@
       function startSelect(multi = false) {
         clearInteraction();
         select = new ol.interaction.Select({
-          wrapX: false,
-          multi: true,
           style: new ol.style.Style({
             fill: new ol.style.Fill({
               color: [90, 90, 90, 0.9]
@@ -991,7 +993,8 @@
         select.on('select', function (e) {
           isChanged = true;
           var feature = e.selected[0];
-          if (feature) {
+          isModifyFeature = feature && feature.getProperties().features && feature.getProperties().geometries;
+          if (feature && !isModifyFeature) {
             if (status == 'DELETE') {
             var props = new ol.format.GeoJSON().writeFeature(feature);
             props = JSON.parse(props);
@@ -1076,6 +1079,7 @@
           });
           draw.on('drawend', function(e) {
             if (e.feature) {
+              currentAddFeature = e.feature;
               map.removeOverlay(overlayPopup);
               var props = new ol.format.GeoJSON().writeFeature(e.feature);
               props = JSON.parse(props);

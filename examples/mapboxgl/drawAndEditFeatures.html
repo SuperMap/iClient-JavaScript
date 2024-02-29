@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="resources.title_editFeatures"></title>
-    <script type="text/javascript" include="draw,snap" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="draw,snap,lodash" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <style>
       .key-input,
       .value-input {
@@ -140,9 +140,10 @@
         margin-bottom: 10px;
       }
       .info-bottom {
-        margin-top: 20px;
-        height: 55px;
-        float: right;
+        position: absolute;
+        right: 20px;
+        margin-top: 40px;
+        bottom: 10px;
       }
       .edit-tips {
         width: 300px;
@@ -976,11 +977,17 @@
           });
           editFeaturesService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
-              var addFeature = draw.getAll().features[0];
-              if (addFeature) {
+              if(addFeatureId) {
+                draw.delete(addFeatureId);
+                var addFeature = _.cloneDeep(currentFeature.data);
                 addFeature.properties.datasetName = currentDataset;
-                addFeature.properties.id = currentFeature.data.id;
-                draw.add(addFeature);
+                var source = map.getSource(currentDataset);
+                var features = source._data.features;
+                features.push(addFeature);
+                source.setData({
+                  type: 'FeatureCollection',
+                  features: features
+                });
               }
               widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true, 240);
             }
