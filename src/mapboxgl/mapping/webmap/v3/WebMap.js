@@ -48,6 +48,7 @@ export class WebMap extends mapboxgl.Evented {
     if (this._mapInfo.center && crs === 'EPSG:3857') {
       center = Util.unproject(center);
     }
+    const fontFamilys = this._getLabelFontFamily();
     // 初始化 map
     const mapOptions = {
       container: this.target,
@@ -63,7 +64,8 @@ export class WebMap extends mapboxgl.Evented {
       minzoom,
       maxzoom,
       bearing,
-      pitch
+      pitch,
+      localIdeographFontFamily: fontFamilys || ''
     };
     this.map = new mapboxgl.Map(mapOptions);
     this.fire('mapinitialized', { map: this.map });
@@ -244,7 +246,7 @@ export class WebMap extends mapboxgl.Evented {
    * @param {Array<Object>} layers - 图层信息。
    */
    _generateV2LayersStructure() {
-    const originLayers = this._mapResourceInfo.layers.filter(item => item.visible);
+    const originLayers = this._mapResourceInfo.catalogs.filter(item => item.visible);
     const layers = originLayers.map(layer => {
       const { themeSetting = {}, title } = layer;
       const realLayerId = this._layerIdMapList[layer.id];
@@ -265,5 +267,23 @@ export class WebMap extends mapboxgl.Evented {
       return overlayLayers;
     })
     return layers;
+  }
+
+  /**
+   * @private
+   * @function mapboxgl.supermap.WebMap.prototype._getLabelFontFamily
+   * @description 获取图层字体类型。
+   */
+  _getLabelFontFamily() {
+    const fonts = [];
+    const layers = this._mapInfo.layers;
+    if (layers && layers.length > 0) {
+      layers.forEach(layer => {
+        const textFont = layer.layout && layer.layout['text-font'] || [];
+        fonts.push(...textFont);
+      });
+    }
+    const fontFamilys = fonts.join(',');
+    return fontFamilys;
   }
 }
