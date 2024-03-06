@@ -44,7 +44,7 @@ export class WebMap extends mapboxgl.Evented {
    * @description 创建地图。
    */
   _createMap() {
-    let { name, crs, center = new mapboxgl.LngLat(0, 0), zoom = 0, bearing = 0, pitch = 0, minzoom, maxzoom } = this._mapInfo;
+    let { name, crs, center = new mapboxgl.LngLat(0, 0), zoom = 0, bearing = 0, pitch = 0, minzoom, maxzoom, sprite } = this._mapInfo;
     if (this._mapInfo.center && crs === 'EPSG:3857') {
       center = Util.unproject(center);
     }
@@ -56,6 +56,7 @@ export class WebMap extends mapboxgl.Evented {
       center,
       zoom,
       style: {
+        sprite,
         name,
         version: 8,
         sources: {},
@@ -90,11 +91,8 @@ export class WebMap extends mapboxgl.Evented {
         description: relatedInfo.description
       };
       this._mapResourceInfo = JSON.parse(relatedInfo.projectInfo);
-      this._createMapRelatedInfo().then(res => {
-        if (res) {
-          this._addLayersToMap();
-        }
-      });
+      this._createMapRelatedInfo();
+      this._addLayersToMap();
     });
   }
 
@@ -108,31 +106,14 @@ export class WebMap extends mapboxgl.Evented {
     for (let key in glyphs) {
       this.map.style.addGlyphs(key, glyphs[key]);
     }
-    for (let key in sprite) {
-      this.map.style.addSprite(key, sprite[key]);
-    }
-    // 添加地图图片资源
-    const { images } = this._mapResourceInfo;
-    const loadImagePromises = images.map(({ url, id }) => {
-      return new Promise((resolve, reject) => {
-        this.map.loadImage(url, (error, image) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          !this.map.hasImage(id) && this.map.addImage(id, image, { sdf: true });
-          resolve(url);
-        });
-      });
-    });
-    return Promise.all(loadImagePromises)
-      .then((imagesAddToMap) => {
-        this.fire('getlayerresourcesucceeded', { images: imagesAddToMap });
-        return imagesAddToMap;
-      })
-      .catch((error) => {
-        this.fire('getlayerresourcefailed', { error });
-      });
+    // if (typeof sprite === 'object') {
+    //   for (let key in sprite) {
+    //     this.map.style.addSprite(key, sprite[key]);
+    //   }
+    // } else {
+    //   this.map.style.sprite = sprite;
+    //   this.map.setStyle(this.map.style);
+    // }
   }
 
   /**
