@@ -50,4 +50,10 @@ describe('FacilityAnalystStreamParameters', () => {
         expect(parameter.isUncertainDirectionValid).toBeFalsy();
         parameter.destroy();
     });
+
+    it('returnFeatures', () => {
+      var parameter = new FacilityAnalystStreamParameters({ returnFeatures: false });
+      expect(parameter.returnFeatures).toBeFalsy;
+      parameter.destroy();
+  });
 });

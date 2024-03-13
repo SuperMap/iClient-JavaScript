@@ -60,7 +60,8 @@ export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,
-            isUncertainDirectionValid: params.isUncertainDirectionValid
+            isUncertainDirectionValid: params.isUncertainDirectionValid,
+            returnFeatures: params.returnFeatures
         };
 
         if (params.edgeID !== null && params.nodeID !== null) {

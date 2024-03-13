@@ -11,6 +11,7 @@ import {Util} from '../commontypes/Util';
  * @param {Object} options - 参数。
  * @param {Array.<number>} options.sourceNodeIDs - 指定的设施点 ID 数组。
  * @param {number} options.queryType - 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。
+ * @param {boolean} [options.returnFeatures=true] - 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
  * @param {number} [options.edgeID] - 指定的弧段 ID，edgeID 与 nodeID 必须指定一个。
  * @param {number} [options.nodeID] - 指定的结点 ID，edgeID 与 nodeID 必须指定一个。
  * @param {boolean} [options.isUncertainDirectionValid=false] - 指定不确定流向是否有效。
@@ -38,6 +39,12 @@ export class FacilityAnalystStreamParameters {
          */
         this.nodeID = null;
 
+         /**
+          * @member {boolean} [TraceAnalystParameters.prototype.returnFeatures=true]
+          * @description 是否返回结果要素的详细描述信息。若为 false，只返回结果要素的 ID 集合。
+          */
+         this.returnFeatures = true;
+
         /**
          * @member {boolean} [FacilityAnalystStreamParameters.prototype.isUncertainDirectionValid=false]
          * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
@@ -64,6 +71,7 @@ export class FacilityAnalystStreamParameters {
         me.edgeID = null;
         me.nodeID = null;
         me.weightName = null;
+        me.returnFeatures = null;
         me.isUncertainDirectionValid = null;
         me.type = null;
     }
