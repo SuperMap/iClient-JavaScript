@@ -58,7 +58,12 @@ module.exports = {
 
     //其它解决方案配置
     resolve: {
-        extensions: ['.js', '.json', '.css']
+        extensions: ['.js', '.json', '.css'],
+        fallback: {
+          crypto: false,
+          stream: false,
+          vm: false
+        }
     },
 
     externals: {

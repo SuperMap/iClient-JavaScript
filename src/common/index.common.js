@@ -333,7 +333,8 @@ import {
     ArrayStatistic,
     getMeterPerMapUnit,
     getWrapNum,
-    conversionDegree
+    conversionDegree,
+    EncryptFetchRequestUtil
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -498,6 +499,7 @@ export {
     isCORS,
     setCORS,
     FetchRequest,
+    EncryptFetchRequestUtil,
     ColorsPickerUtil,
     ArrayStatistic,
     getMeterPerMapUnit,
