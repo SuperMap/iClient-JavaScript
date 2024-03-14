@@ -668,6 +668,8 @@ describe('mapboxgl_NetworkAnalystService', () => {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
+                expect(serviceResult.result.edgesFeatures.type).toEqual('FeatureCollection');
+                expect(Array.isArray(serviceResult.result.edgesFeatures.features)).toBeTruthy();
                 done();
             } catch (e) {
                 console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
