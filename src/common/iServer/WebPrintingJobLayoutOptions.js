@@ -19,8 +19,10 @@ import { WebPrintingJobLegendOptions } from './WebPrintingJobLegendOptions';
  * @param {string} option.subTitle - 地图副标题名称。
  * @param {string} option.author - 地图作者名称。
  * @param {string} option.copyright - 版权描述信息。
- * @param {WebPrintingJobLittleMapOptions} option.littleMapOptions - 小地图参数类。
- * @param {WebPrintingJobLegendOptions} option.legendOptions - 图例参数类。
+ * @param {string} [option.summaryText] - 自定义描述信息。
+ * @param {string} [option.time] - 打印时间。
+ * @param {WebPrintingJobLittleMapOptions} [option.littleMapOptions] - 小地图参数类。
+ * @param {WebPrintingJobLegendOptions} [option.legendOptions] - 图例参数类。
  * @param {WebPrintingJobScaleBarOptions} [option.scaleBarOptions] - 地图比例尺参数类。
  * @param {WebPrintingJobNorthArrowOptions} [option.northArrowOptions] - 地图指北针参数类。
  * @usage
@@ -52,6 +54,16 @@ export class WebPrintingJobLayoutOptions {
          * @description 地图版权描述信息。
          */
         this.copyright = null;
+        /**
+         * @member {string} WebPrintingJobLayoutOptions.prototype.summaryText
+         * @description 自定义描述信息。
+         */
+        this.summaryText = null;
+        /**
+         * @member {string} WebPrintingJobLayoutOptions.prototype.time
+         * @description 打印时间
+         */
+        this.time = null;
         /**
          * @member {WebPrintingJobScaleBarOptions} [WebPrintingJobLayoutOptions.prototype.scaleBarOptions]
          * @description 地图比例尺参数类。
@@ -87,6 +99,8 @@ export class WebPrintingJobLayoutOptions {
         this.subTitle = null;
         this.author = null;
         this.copyright = null;
+        this.summaryText = null;
+        this.time = null;
         if (this.scaleBarOptions instanceof WebPrintingJobScaleBarOptions) {
             this.scaleBarOptions.destroy();
             this.scaleBarOptions = null;
@@ -103,34 +117,6 @@ export class WebPrintingJobLayoutOptions {
             this.legendOptions.destroy();
             this.legendOptions = null;
         }
-    }
-
-    /**
-     * @function WebPrintingJobLayoutOptions.prototype.toJSON
-     * @description 将 WebPrintingJobLayoutOptions 对象转化为 JSON 字符串。
-     * @returns {string} 转换后的 JSON 字符串。
-     */
-    toJSON() {
-        var params = {
-            templateName: this.templateName,
-            title: this.title,
-            subTitle: this.subTitle,
-            author: this.author,
-            copyright: this.copyright
-        };
-        if (this.scaleBarOptions) {
-            params.scaleBarOptions = this.scaleBarOptions;
-        }
-        if (this.northArrowOptions) {
-            params.northArrowOptions = this.northArrowOptions;
-        }
-        if (this.littleMapOptions) {
-            params.littleMapOptions = this.littleMapOptions;
-        }
-        if (this.legendOptions) {
-            params.legendOptions = this.legendOptions;
-        }
-        return Util.toJSON(params);
     }
 }
 
