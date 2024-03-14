@@ -2,6 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../commontypes/Util';
+import {GeoJSON} from '../format/GeoJSON';
 import { NetworkAnalystServiceBase } from './NetworkAnalystServiceBase';
 import { FacilityAnalystStreamParameters } from './FacilityAnalystStreamParameters';
 
@@ -83,6 +84,25 @@ export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
             success: callback,
             failure: callback
         });
+    }
+
+    /**
+     * @function FacilityAnalystStreamService.prototype.toGeoJSONResult
+     * @description 将含有 geometry 的数据转换为 GeoJSON 格式。
+     * @param {Object} result - 服务器返回的结果对象。
+     */
+    toGeoJSONResult(result) {
+      if (!result) {
+        return null;
+      }
+      var geoJSONFormat = new GeoJSON();
+      if (result.edgesFeatures) {
+        result.edgesFeatures = geoJSONFormat.toGeoJSON(result.edgesFeatures);
+      }
+      if (result.nodesFeatures) {
+        result.nodesFeatures = geoJSONFormat.toGeoJSON(result.nodesFeatures);
+      }
+      return result;
     }
 
 }
