@@ -28,52 +28,14 @@ describe('WebPrintingService', () => {
 
   it('_processParams', (done) => {
     var webPrintingService = new WebPrintingService(url, { crossOrigin: false });
-    const templates = [
-      {
-        layoutOptions: {
-          hasNorthArrow: false,
-          hasCopyright: false,
-          hasSummaryText: true,
-          hasSubtitle: false,
-          hasAuthor: true,
-          hasScaleBar: false,
-          hasTitle: true,
-          hasLegend: false,
-          hasTime: true,
-          hasLittleMap: false
-        },
-        templateName: 'MapGrid',
-        maxDPI: 400,
-        webMapFrameSize: [1008, 565],
-        suggestionDpis: [72, 120, 200, 254, 300]
-      },
-      {
-        layoutOptions: {
-          hasNorthArrow: true,
-          hasCopyright: true,
-          hasSummaryText: false,
-          hasSubtitle: true,
-          hasAuthor: true,
-          hasScaleBar: true,
-          hasTitle: true,
-          hasLegend: true,
-          hasTime: false,
-          hasLittleMap: true
-        },
-        templateName: 'A2_landscape',
-        maxDPI: 400,
-        webMapFrameSize: [1600, 900],
-        suggestionDpis: [72, 120, 200, 254, 300]
-      }
-    ];
     spyOn(webPrintingService, 'getLayoutTemplates').and.callFake(() => {
-      return Promise.resolve({ result: templates });
+      return Promise.resolve({ result: getLayoutsResultJson });
     });
     expect(webPrintingService.templates.length).toBe(0);
     let params = {
       content: { type: 'WEBMAP', url: 'https://www.supermapol.com/web/maps/1887887232/map.json' },
       layoutOptions: {
-        templateName: 'A2_landscape',
+        templateName: 'UGCTemplate',
         title: '土地利用',
         author: '北京超图软件股份有限公司',
         scaleBarOptions: { scaleText: '', type: 'BAR', intervals: '', unit: 'METER' },
@@ -93,7 +55,7 @@ describe('WebPrintingService', () => {
       exportOptions: { format: 'PDF', dpi: 96, scale: 0.00006266381790307081, center: null }
     };
     webPrintingService._processParams(params).then(() => {
-      expect(webPrintingService.templates).toEqual(templates);
+      expect(webPrintingService.templates).toEqual(getLayoutsResultJson);
       expect(params.layoutOptions.subTitle).not.toBeUndefined();
       expect(params.layoutOptions.copyright).not.toBeUndefined();
       expect(params.layoutOptions.time).toBeUndefined();

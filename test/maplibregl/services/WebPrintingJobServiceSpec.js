@@ -66,14 +66,12 @@ describe('maplibregl_WebPrintingJobService', () => {
         });
         var webPrintingJobService = new WebPrintingJobService(url);
         spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
-            expect(method).toBe('POST');
-            expect(testUrl).toBe(url + '/jobs');
             expect(params).not.toBeNull();
-            const paramsObj = JSON.parse(params.replace(/'/g, "\""));
-            expect(paramsObj.layoutOptions.subTitle).toBeNull();
-            expect(paramsObj.layoutOptions.copyright).toBeNull();
             expect(options).not.toBeNull();
-            return Promise.resolve(new Response(JSON.stringify(createWebPringintJobResultJson)));
+            if (testUrl === url + '/jobs') {
+              return Promise.resolve(new Response(JSON.stringify(createWebPringintJobResultJson)));
+            }
+            return Promise.resolve(new Response(JSON.stringify(getLayoutsResultJson)));
         });
         webPrintingJobService.createWebPrintingJob(null);
         webPrintingJobService.createWebPrintingJob(param, (result) => {
