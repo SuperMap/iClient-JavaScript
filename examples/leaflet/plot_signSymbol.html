@@ -1,0 +1,472 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入
+* iclient-plot-leaflet (https://iclient.supermap.io/web/libs/plotting/leaflet/11.1.0/iclient-plot-leaflet.min.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_signSymbol"></title>
+    <link rel="stylesheet" href="../css/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont/plotting.css">
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+        #map {
+            position: absolute;
+            left: 250px;
+            right: 0px;
+            height: 100%;
+        }
+        #plottingMenu {
+          position: absolute;
+          top: 20%;
+          z-index: 888;
+          left: 260px;
+          color: #000000;
+          background-color: #fff;
+        }
+        #plottingPanel {
+          float: left;
+          background: #ffffff;
+          width: 250px;
+          height: 100%;
+          border: 1px solid #3473b7;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+    <div  id="toolbar0" class="panel panel-primary" style=" position: absolute;top: 00px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+        <div class='panel-heading' id="panelheading">
+            <h5 class='panel-title text-center' data-i18n="resources.title_plotMap" style=" font-size: 16px;color: #ffffff;"></h5>
+        </div>
+        <div class='panel-body content' id="panelbodycontent" style="display: flex;width:300px;justify-content: center;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+            <div class="panel01" id = "changeVisiable" style="display: flex;flex-direction: column;padding: 10px;">
+            <input type="button" class="btn btn-default" style="width:100px;height:30px;margin-left: 10px;
+            margin-right: 10px;" data-i18n="[value]resources.btn_savePlot" onclick="saveFile()" />
+            </div>
+            <div class="panel02" id = "changeVisiable" style="display: flex;flex-direction: column;padding: 10px;">
+            <input type="button" class="btn btn-default" style="width:100px;height:30px;" data-i18n="[value]resources.btn_openPlot" onclick="openFile()" />
+            <input type = "file"  accept=".json" id="plottingOpenMapFile" style="display: none">
+            </div>
+        </div>
+        </div>
+<div  id="toolbar1" class="panel panel-primary" style=" position: absolute;top: 90px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+    <div class='panel-heading' id="panelheading">
+        <h5 class='panel-title text-center' data-i18n="resources.title_signSymbol" style=" font-size: 16px;color: #ffffff;"></h5>
+    </div>
+    <div class='panel-body content' id="panelbodycontent" style="display: flex;width:300px;justify-content: center;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+       <div class="panel01" id = "create&delete" style="display: flex;flex-direction: column;padding: 10px;">
+        <select id="selectMenu1" style="width:100px;height:30px; margin-left:10px; margin-right:10px" onclick="changeTypeValue(this.value)">
+            <option id="10001" value="0">简单标牌</option>
+            <option id="10002" value="1">复杂标牌</option>
+            <option id="10003" value="2">模板标牌</option>
+        </select>
+        <select id="selectMenu2" style="width:100px;height:30px; margin-left:10px; margin-right:10px ;margin-top:16px;" disabled="true">
+            <option id="20001" value="0">模板样式一</option>
+            <option id="20002" value="1">模板样式二</option>
+            <option id="20003" value="2">模板样式三</option>
+            <option id="20004" value="3">模板样式四</option>
+            <option id="20005" value="4">模板样式五</option>
+            <option id="20006" value="5">模板样式六</option>
+            <option id="20007" value="6">模板样式七</option>
+        </select>
+        </div>
+        <div  class="panel02" id = "create&delete" style="display:flex; flex-direction: column;padding: 10px;">
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="创建标牌" onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        <input id = "removeSignSymbol" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" value="移除标牌" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    </div>
+</div>
+<div  id="plottingPanel">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div class="easyui-tabs" style="width: 100%;height: 100%">
+            <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+            <div id="signStylePanel" data-i18n="[title]resources.text_attributeSignSymbolPanel"></div>
+        </div>
+    </div>
+</div>
+<div  id="popupWin" class="panel panel-primary popupWindow" style=" position: absolute;right: 10px;top: 245px;width: 300px;background: #FFF;z-index: 9999;display: block;">
+    <div class="winTitle" style=" background: #1E90FF;">
+        <span class="title_left" data-i18n="resources.title_signSymbolTree"></span>
+        <span class="title_active" style="margin-left: 21px;color: #0fff00;">当前激活图层：标牌图层</span>
+    </div>
+    <div id="signTree" class="winContent" style="  padding: 5px;overflow-y: auto;height: 400px;"></div>
+    <div class="treePanel">
+    <div class="panel1" id = "add&remove" style="display:flex; padding: 10px;justify-content: center;">
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="添加图层" onclick="addLayer()" /> 
+        <input id = "removeLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" value="删除图层" onclick="removeLayer()" /> 
+        <input id="layerVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="图层隐藏" onclick="signLayer()" />
+    </div>
+    
+    
+    <div class="panel5" id = "max&minScale" style="display:flex; padding: 10px;justify-content: center;">
+        <input id = "maxLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" value="最大比例尺" onclick="setMax()" /> 
+        <input id = "minLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" value="最小比例尺" onclick="setMin()" /> 
+        <input id = "cancelScale" type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" disabled = "true" value="清空比例尺" onclick="setClear()" /> 
+    </div>
+    <div  class="panel3" id = "operator" style="display:flex; padding: 10px;justify-content: center;">
+        <input id="signSymbolVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="标牌隐藏" onclick="signSignSymbol()" /> 
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="绑定标号" onclick="bind()" /> 
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="解绑标牌" onclick="unbind()" />
+    </div>
+    </div>
+</div>
+<div  id="map" style="margin:0 auto;width: 100%;height: 100%" ></div>
+<script type="text/javascript" include="bootstrap,widgets.alert,plottingPanel" src="../js/include-web.js"></script>
+<script type="text/javascript" include="iclient-leaflet-css,iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
+<script type="text/javascript" include="PlotPanel,StylePanel,SignSymbolPanel" src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+<script type="text/javascript" >
+    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+    host = "http://localhost:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = "http://localhost:8090" + "/iserver/services/plot-jingyong/rest/plot/";
+    var map;
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [37.6171875, 109.3359375],
+        maxZoom: 18,
+        zoom:4
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    L.control.scale().addTo(map);
+    var plottingLayer = L.supermap.plotting.plottingLayer("标绘图层", serverUrl).addTo(map);
+    var signSymbolLayer = L.supermap.plotting.SignSymbolLayer("标牌图层",serverUrl).addTo(map);
+    var drawControl = L.supermap.plotting.drawControl(plottingLayer).addTo(map);
+    var editControl = L.supermap.plotting.editControl().addTo(map);
+    L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
+    L.supermap.plotting.getControl().setTouchMode(false);//触屏模式
+    var plotting = L.supermap.plotting.getControl(map, serverUrl);
+    var plotMapManager = plotting.getPlotMapManager();
+    var specialEffectManager= plotting.getSpecialEffectManager();
+    L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
+    L.supermap.plotting.initSignStylePanel("signStylePanel",editControl);
+    L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+
+    var templateURL = "http://localhost:8090/iserver/mgis/situationSimulation/Sign/sign3_blue_单行文字.html";
+
+    var currentSelectedSignSymbolUuid, activeSignSymbolLayer, selectedSignSymbolLayer;
+    function create() {
+        var signType = parseInt(document.getElementById("selectMenu1").value);
+        if(signType == 2){
+           var index =  parseInt(document.getElementById("selectMenu2").value)
+           switch (index) {
+                case 0:
+                    templateURL = "../data/html/sign1.html";
+                break;
+                case 1:
+                    templateURL = "../data/html/sign2.html";
+                break;
+                case 2:
+                    templateURL = "../data/html/sign3.html";
+                break;
+                case 3:
+                    templateURL = "../data/html/sign4.html";
+                break;
+                case 4:
+                    templateURL = "../data/html/sign5.html";
+                break;
+                case 5:
+                    templateURL = "../data/html/sign6.html";
+                break;
+                case 6:
+                    templateURL = "../data/html/sign7.html";
+                break;
+               default:
+                   break;
+           }
+           
+        }
+        var title = "";
+        if(signType === SuperMap.Plot.SignSymbolType.SIMPLE){
+            title = "简单标牌";
+        }else if(signType === SuperMap.Plot.SignSymbolType.COMPLEX){
+            title = "复杂标牌";
+        }else if(signType === SuperMap.Plot.SignSymbolType.TEMPLATE){
+            title = "模板标牌";
+        }
+        var signPosition = SuperMap.Plot.SignSymbolPosition.TOP;
+        var signOption = {
+            signSymbolType: signType, visible: true, lineVisible: true,signPosition: signPosition,
+            title: title, offsetX: 0, offsetY: -50, content: "", templateURL: templateURL
+        };
+        var sign = new SuperMap.Plot.Sign(signOption);
+        var options = {
+            isLocked: false,
+            enableEdit: true,
+            enableSelected: true
+        };
+        if (editControl.getSelectedFeatures()[0]) {
+            var feature = editControl.getSelectedFeatures()[0];
+            sign.content = "经度：" + feature.getLatLngs()[0].lng + "\n" + "纬度: "+feature.getLatLngs()[0].lat;
+            activeSignSymbolLayer.createSignSymbol(feature.uuid, sign, options);
+        } else {
+            var latlng = L.latLng(35.5, 103.84);
+            sign.content = "经度：" + latlng.lng + "\n" + "纬度: "+ latlng.lat;
+            activeSignSymbolLayer.createSignSymbolByPosition(latlng, sign, options);
+        }
+    }
+    function remove() {
+        var sign = editControl.getSelectedSignSymbols()[0];
+        editControl.unselectSignSymbol();
+        if (sign) {
+            sign.remove();
+        }else{
+            sign = map.getSignSymbolByUuid(currentSelectedSignSymbolUuid);
+            if(sign){
+                sign.remove();
+            }
+        }
+    }
+    function signLayer(){
+        if(selectedSignSymbolLayer.getVisibility()){
+            signLayerUnshow(selectedSignSymbolLayer);
+            document.getElementById("layerVisiable").value = "图层显示";
+        }else{
+            signLayerShow(selectedSignSymbolLayer);
+            document.getElementById("layerVisiable").value = "图层隐藏"
+        }
+    }
+    function signLayerShow(selectedSignSymbolLayer) {
+        if (selectedSignSymbolLayer) {
+            selectedSignSymbolLayer.setVisibility(true);
+        }
+    }
+    function signLayerUnshow(selectedSignSymbolLayer) {
+        if (selectedSignSymbolLayer) {
+            selectedSignSymbolLayer.setVisibility(false);
+            if (selectedSignSymbolLayer.selectedFeatures) {
+                editControl.unselectSignSymbol();
+            }
+        }
+    }
+    function signSignSymbol(){
+        if (editControl.getSelectedSignSymbols()[0]) {
+           var sign =  editControl.getSelectedSignSymbols()[0];
+           if(sign.getVisible()){
+                sign.setVisible(false);
+                editControl.unselectSignSymbol();
+                document.getElementById("signSymbolVisiable").value = "标牌显示";
+           }else{
+                sign.setVisible(true);
+                sign.getLayer().setSelectedSignSymbol(sign);
+                currentSelectedSignSymbolUuid = sign.uuid;
+                document.getElementById("signSymbolVisiable").value = "标牌隐藏";
+           }
+        }else{
+            var sign = map.getSignSymbolByUuid(currentSelectedSignSymbolUuid);
+            if(sign){
+                if(sign.getVisible()){
+                    sign.setVisible(false);
+                    editControl.unselectSignSymbol();
+                    document.getElementById("signSymbolVisiable").value = "标牌显示";
+                }else{
+                    sign.setVisible(true);
+                    sign.getLayer().setSelectedSignSymbol(sign);
+                    currentSelectedSignSymbolUuid = sign.uuid;
+                    document.getElementById("signSymbolVisiable").value = "标牌隐藏";
+                }
+            }
+            
+        }
+        
+
+    }
+    var currentSignSymbol;
+    function bind(){
+        if (editControl.getSelectedSignSymbols()[0]) {
+           currentSignSymbol =  editControl.getSelectedSignSymbols()[0];
+           editControl.once("featuresselected",getTieFeature);
+        }else{
+           currentSignSymbol = map.getSignSymbolByUuid(currentSelectedSignSymbolUuid);
+           editControl.once("featuresselected",getTieFeature);
+        }
+        
+    }
+    function unbind(){
+        if (editControl.getSelectedSignSymbols()[0]) {
+           var sign =  editControl.getSelectedSignSymbols()[0];
+            if(sign.associatedUuid !=null){
+                sign.disConnectToFeature();
+            }else{
+                alert("请选择绑定至标号上的标牌进行解除绑定！")
+            }
+        }else{
+            var sign = map.getSignSymbolByUuid(currentSelectedSignSymbolUuid);
+            if(sign.associatedUuid !=null){
+                sign.disConnectToFeature();
+            }else{
+                alert("请选择绑定至标号上的标牌进行解除绑定！")
+            }
+        }
+        initSignTree();
+    }
+    function setMax() {
+        activeSignSymbolLayer.setMaxVisibleScale(map.getScale());
+    }
+    function setMin() {
+        activeSignSymbolLayer.setMinVisibleScale(map.getScale());
+    }
+    function setClear(){
+        activeSignSymbolLayer.clearVisibleScale();
+    }
+    function openFile(){
+        document.getElementById("plottingOpenMapFile").click();
+    }
+    function saveFile(){
+      let strJson = plotMapManager.saveTo();
+      const blob = new Blob([strJson], {
+        type: "application/json",
+      });
+      const objectURL = URL.createObjectURL(blob);
+      const domElement = document.createElement("a");
+      domElement.href = objectURL;
+      domElement.download = "标绘图" + getFileTime();
+      domElement.click();
+      URL.revokeObjectURL(objectURL);
+    }
+    function getFileTime() {
+      const data = new Date();
+      let year = data.getFullYear();
+      let month = data.getMonth() + 1;
+      let day = data.getDate();
+      let hours = data.getHours();
+      let minutes = data.getMinutes();
+      month = month > 9 ? month : "0" + month;
+      day = day > 9 ? day : "0" + day;
+      hours = hours > 9 ? hours : "0" + hours;
+      minutes = minutes > 9 ? minutes : "0" + minutes;
+      return `${year}${month}${day}${hours}${minutes}`;
+    }
+    function addLayer() {
+        var layer = L.supermap.plotting.SignSymbolLayer("标牌图层", serverUrl).addTo(map);
+        activeSignSymbolLayer = layer;
+        document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：${activeSignSymbolLayer.name}`
+        // layer.on(SuperMap.Plot.Event.signsymbolsadded, refresh);
+        // layer.on(SuperMap.Plot.Event.signsymbolsremoved, refresh);
+    }
+    function removeLayer() {
+        if (selectedSignSymbolLayer) {
+            var isCurrent = false
+            if (activeSignSymbolLayer.name == selectedSignSymbolLayer.name) {
+                isCurrent = true;
+            }
+            selectedSignSymbolLayer.off(SuperMap.Plot.Event.signsymbolsadded, refresh);
+            selectedSignSymbolLayer.off(SuperMap.Plot.Event.signsymbolsremoved, refresh);
+            plotMapManager.removeSignSymbolLayer(selectedSignSymbolLayer);
+            if (isCurrent) {
+                var layers = L.supermap.plotting.getControl().getPlotMapManager().getSignSymbolLayers();
+                if (layers.length > 0) {
+                    activeSignSymbolLayer = layers[0];
+                    document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：${activeSignSymbolLayer.name}`
+                } else {
+                    activeSignSymbolLayer = null;
+                    document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：`
+                }
+            }
+        }
+    }
+    function changeTypeValue(value){
+        var type = parseInt(value)
+        if(value == 2){
+            document.getElementById("selectMenu2").disabled = false;
+        }else{
+            document.getElementById("selectMenu2").disabled = true;
+        }
+    }
+    function getTieFeature(event){
+    if(event.features){
+        if(event.features.length>0){
+            var associated = event.features[0];
+            currentSignSymbol.connectToFeature(associated);
+            currentSignSymbol = null;
+        }
+    }else{
+        alert("选择了错误的绑定对象！")
+    }  
+    initSignTree();
+    // editControl.off("featuresselected",getTieFeature);   
+
+    }
+    document.onkeydown = function (event) {
+        var event = event || window.event;
+        if(event && event.keyCode === 46){//Delete键
+            editControl.deleteSelectedFeatures();
+        }
+    }
+    document.getElementById("plottingOpenMapFile").addEventListener('input',(evt)=>{
+        var file = evt.target.files;
+        var reader = new FileReader();
+        reader.readAsText(file[0]);
+        reader.onload = function(e){
+            plotMapManager.loadFrom(JSON.parse(reader.result));
+            plotMapManager.setActivePlottingLayer(plotMapManager.getPlottingLayers()[0]);
+            signSymbolLayer = plotMapManager.getSignSymbolLayers()[0];
+            L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
+            document.getElementById("plottingOpenMapFile").value = "";
+        }
+    });
+    editControl.on("signsymbolselected",(event)=>{
+        document.getElementById("removeSignSymbol").disabled = false;
+        var tree = $.fn.zTree.getZTreeObj("tree");
+        var treeData = tree.transformToArray(tree.getNodes());
+        var uuid = event.signSymbols[0].uuid;
+        var node;
+        for(let i in treeData){
+            if(treeData[i].uuid && treeData[i].uuid == uuid){
+                node = treeData[i]
+            }
+        }
+        tree.selectNode(node);
+        
+    })
+    editControl.on("signsymbolunselected",()=>{
+        currentSelectedSignSymbolUuid = null;
+        document.getElementById("removeSignSymbol").disabled = true;
+        var tree = $.fn.zTree.getZTreeObj("tree");
+        tree.cancelSelectedNode();
+    })
+    document.addEventListener('click',(e)=>{
+        if(e.target.classList.value =="node_name"){
+            if(e.target.childNodes[0].data.indexOf("标牌图层")!=-1){
+                document.getElementById("removeLayer").disabled = false;
+                document.getElementById("maxLayer").disabled = false;
+                document.getElementById("minLayer").disabled = false;
+                document.getElementById("cancelScale").disabled = false;
+            }else{
+                document.getElementById("removeLayer").disabled = true;
+                document.getElementById("maxLayer").disabled = true;
+                document.getElementById("minLayer").disabled = true;
+                document.getElementById("cancelScale").disabled = true;
+            }
+            if(e.target.childNodes[0].data.indexOf("标牌")!=-1&&e.target.childNodes[0].data.indexOf("图层")==-1){
+                document.getElementById("removeSignSymbol").disabled = false;
+            }else{
+                document.getElementById("removeSignSymbol").disabled = true;
+            }
+        }else{
+            document.getElementById("removeLayer").disabled = true;
+            document.getElementById("maxLayer").disabled = true;
+            document.getElementById("minLayer").disabled = true;
+            document.getElementById("cancelScale").disabled = true;
+        }
+    })
+    plotMapManager.on("loadfinished",()=>{
+        L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
+    })
+</script>
+</body>
+</html>

@@ -1552,7 +1552,7 @@ window.examplesResources = {
         "text_prevPage": "上一页",
         "text_nextPage": "下一页",
         "text_lastPage": "尾页",
-        
+
 
 
         "btn_previous":"上一步",
@@ -1598,6 +1598,18 @@ window.examplesResources = {
         "btn_addToLater": "添加到指定图层",
         "btn_drawMarker": "绘制标号",
         "btn_cancelMarker": "取消标绘",
+        "btn_createSymbolGroup": "创建聚合对象",
+        "btn_unSymbolGroup": "解绑聚合对象",
+        "btn_deleteSymbolGroup": "删除聚合对象",
+        "btn_unSelectedSymbolGroup": "解绑选中标号",
+        "btn_setCulsterRangeVisible":"显示聚合范围",
+        "btn_rangeOnlyInClusterVisible":"仅聚合显示范围",
+        "btn_infoOnlyInCluserVisible":"仅聚合显示信息",
+        "btn_setCulsterRangeInvisible":"隐藏聚合范围",
+        "btn_setCulsterInfoVisible":"显示聚合信息",
+        "btn_setCulsterInfoInvisible":"隐藏聚合信息",
+        "btn_openPlot":"打开标绘图",
+        "btn_savePlot":"保存标绘图",
         "btn_drawText": "绘文字",
         "btn_drawImage": "绘图片",
         "btn_route1": "航线1",
@@ -1680,7 +1692,7 @@ window.examplesResources = {
         "btn_selectFeature": "选择地物",
         "btn_editFeature": "编辑地物",
         "btn_deleteFeature": "删除地物",
-        "btn_getMetadata": "获取新增要素元信息", 
+        "btn_getMetadata": "获取新增要素元信息",
         "btn_statistic": "统计",
         "btn_point": "点",
         "btn_line": "线",

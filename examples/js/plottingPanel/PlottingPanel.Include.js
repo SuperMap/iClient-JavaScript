@@ -51,6 +51,18 @@
         if (inArray(includes, 'iPortalStylePanel')) {
             inputScript("../js/plottingPanel/iPortalStylePanel.js");
         }
+        if (inArray(includes, 'PlotMapPanel')) {
+            inputScript("../js/plottingPanel/PlotMapPanel.js");
+        }
+        if (inArray(includes, 'SignSymbolPanel')) {
+            inputScript("../js/plottingPanel/customEditor/ColorpickerEditor.js");
+            inputScript("../js/plottingPanel/SignSymbolPanel.js");
+        }
+        if (inArray(includes, 'SpecialEffectStylePanel')) {
+            inputScript("../js/plottingPanel/customEditor/ColorpickerEditor.js");
+            inputScript("../js/plottingPanel/SpecialEffectStyleFunction.js");
+            inputScript("../js/plottingPanel/SpecialEffectStylePanel.js");
+        }
     }
 
     load();
