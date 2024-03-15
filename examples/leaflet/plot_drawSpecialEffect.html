@@ -1,0 +1,653 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="resources.title_specialEffect"></title>
+    <link rel="stylesheet" href="../css/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../css/iconfont/plotting.css">
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #map {
+            position: absolute;
+            left: 250px;
+            right: 0px;
+            height: 100%;
+        }
+
+        #plottingMenu {
+            position: absolute;
+            top: 20%;
+            z-index: 888;
+            left: 260px;
+            color: #000000;
+            background-color: #fff;
+        }
+
+        #plottingPanel {
+            float: left;
+            background: #ffffff;
+            width: 250px;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false">
+    <div id="toolbar0" class="panel panel-primary" style=" position: absolute;top: 15px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;width: 300px;
+        border: 1px solid #337ab7;">
+        <div class='panel-heading' id="panelheading">
+            <h5 class='panel-title text-center' data-i18n="resources.title_plotMap"
+                style=" font-size: 16px;color: #ffffff;"></h5>
+        </div>
+        <div style="margin: 10px;">
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_savePlot"
+                onclick="savePlotMap()" />
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_openPlot"
+                onclick="openPlotMap()" />
+            <input type="file" accept=".json" id="plottingOpenMapFile" style="display: none">
+        </div>
+    </div>
+    <div id="toolbar" class="panel panel-primary"
+        style=" position: absolute;top: 115px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
+        <div class='panel-heading' id="panelheading">
+            <h5 class='panel-title text-center' data-i18n="resources.title_specialEffect"
+                style=" font-size: 16px;color: #ffffff;"></h5>
+        </div>
+        <div class='panel-body content' id="panelbodycontent"
+            style="display: flex;width:300px;justify-content: center;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+            <div class="panel01" id="create&delete"
+                style="display: flex;flex-direction: column;padding: 10px;padding-bottom: 0px;">
+                <select id="specialEffectTypeMenu" style="width:100px;height:30px; margin-left:10px; margin-right:10px">
+                    <option id="10001" value="0">雷达特效</option>
+                    <option id="10002" value="1">扫描特效</option>
+                    <option id="10003" value="2">爆炸特效</option>
+                    <option id="10003" value="3">摧毁特效</option>
+                    <option id="10003" value="4">瞄准特效</option>
+                    <option id="10003" value="5">通讯链路</option>
+
+                </select>
+                <input type="button" id="playorpauseAllSpecialEffect" class="btn btn-default" style="width:100px;height:30px;padding: 0px;margin-top: 17px;
+                margin-left: 10px;" value="暂停所有特效" onclick="playorpauseAllSpecialEffect()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="panel02" id="create&delete"
+                style="display:flex; flex-direction: column;padding: 10px;padding-bottom: 0px;">
+                <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="创建特效"
+                    onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
+                    value="移除所有特效" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="plottingPanel">
+        <div class="easyui-panel"
+            style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+            <div class="easyui-tabs" style="width: 100%;height: 100%">
+                <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
+                <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
+                <div id="specialEffectStylePanel" data-i18n="[title]resources.text_specialEffect_attributePanel"></div>
+            </div>
+        </div>
+    </div>
+    <div id="popupWin" class="panel panel-primary popupWindow"
+        style=" position: absolute;right: 10px;top: 265px;width: 300px;background: #FFF;z-index: 9999;display: block;">
+        <div class="winTitle" style=" background: #1E90FF;">
+            <span class="title_left" data-i18n="resources.title_specialEffectTree"></span>
+        </div>
+        <div id="specialEffectTree" class="winContent" style="  padding: 5px;overflow-y: auto;height: 400px;"></div>
+        <div class="treePanel">
+            <div class="panel01" id="selectPointType" style="display: contents;flex-direction: column;padding: 10px;">
+                <select id="pointType" style="width:100px;height:30px; margin-left:40px; margin-right:12px"
+                    disabled="true" onchange="changeConnectType(event)">
+                    <option style="display: block;" id="unselect" value="-1">请选择</option>
+                    <option style="display: none;" id="viewPoint" value="0">观察点</option>
+                    <option style="display: none;" id="aimPoint" value="1">瞄准点</option>
+                    <option style="display: none;" id="senderPoint" value="2">发送信号点</option>
+                    <option style="display: none;" id="receiverPoint" value="3">接收信号点</option>
+                </select>
+                <input disabled="true" type="button" id="connectordisconnect" class="btn btn-default"
+                    style="width:100px;height:30px;padding: 0px;" value="绑定标号" onclick="connectordisconnect()" />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="panel1" id="play&remove" style="display:flex; padding: 10px;justify-content: center">
+                <input disabled="true" type="button" id="playorpause" class="btn btn-default"
+                    style="width:100px;height:30px;padding: 0px;margin-left: 11px;" value="播放选中特效" onclick="playOrPauseSelectFeature()" />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input disabled="true" id="removeSelectSpecialEffect" type="button" class="btn btn-default"
+                    style="width:100px;height:30px;padding: 0px;" value="移除选中特效" onclick="removeSelectFeature()" />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+    <div id="plottingMenu" class="plotting-menu">
+        <li>
+            <span class="icon iconfont icon-quanxuan" title="框选" onclick="multiSelectModel()"></span>
+        </li>
+    </div>
+    <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+    <script type="text/javascript" include="bootstrap,widgets.alert,plottingPanel" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="iclient-leaflet-css,iclient-plot-leaflet"
+        src="../../dist/leaflet/include-leaflet.js"></script>
+    <script type="text/javascript" include="PlotPanel,StylePanel,SpecialEffectStylePanel"
+        src="../js/plottingPanel/PlottingPanel.Include.js"></script>
+    <script type="text/javascript">
+        var host = window.isLocal ? window.server : "https://iserver.supermap.io";
+        host = "http://localhost:8090";
+        var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+        var serverUrl = "http://localhost:8090" + "/iserver/services/plot-jingyong/rest/plot/";
+        var map;
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: [37.6171875, 109.3359375],
+            maxZoom: 18,
+            zoom: 4
+        });
+        var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
+        L.control.scale().addTo(map);
+        var plottingLayer = L.supermap.plotting.plottingLayer("标绘图层", serverUrl).addTo(map);
+        var drawControl = L.supermap.plotting.drawControl(plottingLayer).addTo(map);
+        var editControl = L.supermap.plotting.editControl().addTo(map);
+        L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
+        L.supermap.plotting.getControl().setTouchMode(false);//触屏模式
+        var plotting = L.supermap.plotting.getControl(map, serverUrl);
+        var plotMapManager = plotting.getPlotMapManager();
+        var specialEffectManager = plotting.getSpecialEffectManager();
+        L.supermap.plotting.initSpecialEffectTreePanel("specialEffectTree", specialEffectManager);
+        L.supermap.plotting.initSpecialEffectStylePanel("specialEffectStylePanel", specialEffectManager);
+        L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
+        
+
+        var selectedSpecialEffectUuid, currentPoint, allIsPlay = false;
+        specialEffectManager.on(SuperMap.Plot.Event.specialeffectselected, function (event) {
+
+            document.getElementById("connectordisconnect").disabled = false;
+            document.getElementById("playorpause").disabled = false;
+            document.getElementById("removeSelectSpecialEffect").disabled = false;
+
+            if (event.specialEffect.isPlay) {
+                document.getElementById("playorpause").value = "暂停选中特效";
+            } else {
+                document.getElementById("playorpause").value = "播放选中特效";
+            }
+            selectedSpecialEffectUuid = event.specialEffect.uuid;
+            var type = event.specialEffect.getType();
+            var selectPointType = document.getElementById("pointType");
+            // var linkSelect = document.getElementById("linkTypeList");
+            if (type == SuperMap.Plot.SpecialEffectType.AIM) {
+                selectPointType.disabled = false;
+
+                document.getElementById("unselect").style.display = "none";
+                document.getElementById("viewPoint").style.display = "block";
+                document.getElementById("aimPoint").style.display = "block";
+                document.getElementById("senderPoint").style.display = "none";
+                document.getElementById("receiverPoint").style.display = "none";
+
+                if ((selectPointType.value == "0" || selectPointType.value == "-1") && event.specialEffect.viewUuid) {
+                    document.getElementById("connectordisconnect").value = "解绑标号";
+                } else if (selectPointType.value == "0" && !event.specialEffect.viewUuid) {
+                    document.getElementById("connectordisconnect").value = "绑定标号";
+                }
+
+                if (selectPointType.value == "1" && event.specialEffect.aimUuid) {
+                    document.getElementById("connectordisconnect").value = "解绑标号";
+                } else if (selectPointType.value == "1" && !event.specialEffect.aimUuid) {
+                    document.getElementById("connectordisconnect").value = "绑定标号";
+                }
+            } else if (type == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+                selectPointType.disabled = false;
+
+                document.getElementById("unselect").style.display = "none";
+                document.getElementById("viewPoint").style.display = "none";
+                document.getElementById("aimPoint").style.display = "none";
+                document.getElementById("senderPoint").style.display = "block";
+                document.getElementById("receiverPoint").style.display = "block";
+                selectPointType.value = "2";
+
+                if (selectPointType.value == "2" && event.specialEffect.senderUuid) {
+                    document.getElementById("connectordisconnect").value = "解绑标号";
+                } else if (selectPointType.value == "2" && !event.specialEffect.senderUuid) {
+                    document.getElementById("connectordisconnect").value = "绑定标号";
+                }
+
+                if (selectPointType.value == "3" && event.specialEffect.receiverUuid) {
+                    document.getElementById("connectordisconnect").value = "解绑标号";
+                } else if (selectPointType.value == "3" && !event.specialEffect.receiverUuid) {
+                    document.getElementById("connectordisconnect").value = "绑定标号";
+                }
+            } else {
+                selectPointType.value = "-1";
+                selectPointType.disabled = true;
+
+                document.getElementById("unselect").style.display = "block"
+                document.getElementById("viewPoint").style.display = "none"
+                document.getElementById("aimPoint").style.display = "none"
+                document.getElementById("senderPoint").style.display = "none"
+                document.getElementById("receiverPoint").style.display = "none"
+
+                if (event.specialEffect.associatedUuid) {
+                    document.getElementById("connectordisconnect").value = "解绑标号";
+                } else if (!event.specialEffect.associatedUuid) {
+                    document.getElementById("connectordisconnect").value = "绑定标号";
+                }
+            }
+
+            var tree = $.fn.zTree.getZTreeObj("tree");
+            var treeData = tree.transformToArray(tree.getNodes());
+            var node;
+            for (let i in treeData) {
+                if (treeData[i].uuid && treeData[i].uuid == selectedSpecialEffectUuid) {
+                    node = treeData[i]
+                }
+            }
+            tree.selectNode(node);
+
+            if (type == SuperMap.Plot.SpecialEffectType.AIM) {
+                selectPointType.value = "0";
+            } else if (type == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+                selectPointType.value = "2";
+            }
+
+        });
+        specialEffectManager.on(SuperMap.Plot.Event.specialeffectunselected, function (event) {
+            document.getElementById("playorpause").value = "播放选中特效";
+            document.getElementById("connectordisconnect").value = "绑定标号";
+
+            document.getElementById("pointType").value = "-1";
+            document.getElementById("pointType").disabled = true;
+            document.getElementById("connectordisconnect").disabled = true;
+            document.getElementById("playorpause").disabled = true;
+            document.getElementById("removeSelectSpecialEffect").disabled = true;
+
+            var tree = $.fn.zTree.getZTreeObj("tree");
+            tree.cancelSelectedNode();
+            currentSelectedSpecialEffectUuid = null;
+        });
+        document.getElementById("plottingOpenMapFile").addEventListener('input', (evt) => {
+            var file = evt.target.files;
+            var reader = new FileReader();
+            reader.readAsText(file[0]);
+            reader.onload = function (e) {
+                plotMapManager.loadFrom(JSON.parse(reader.result));
+                drawControl.setDrawingLayer(plotMapManager.getActivePlottingLayer());
+                plottingLayer = plotMapManager.getActivePlottingLayer();
+                L.supermap.plotting.initSpecialEffectTreePanel("specialEffectTree", specialEffectManager);
+            }
+        });
+        function create() {
+            var specialEffectType = parseInt(document.getElementById("specialEffectTypeMenu").value);
+            switch (specialEffectType) {
+                case 0:
+                    createScanRadar();
+                    break;
+                case 1:
+                    createSectorDetectionRange();
+                    break;
+                case 2:
+                    createBoom();
+                    break;
+                case 3:
+                    createDestroy();
+                    break;
+                case 4:
+                    createAim();
+                    break;
+                case 5:
+                    createCommunicationLink();
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        function multiSelectModel() {
+            editControl.multiSelect();
+        }
+        function createScanRadar() {
+            if (editControl.getSelectedFeatures().length != 0) {
+                for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
+                    var feature = editControl.getSelectedFeatures()[i];
+                    specialEffectManager.createScanRadar(feature.uuid, {});
+                }
+            } else {
+                var latlng = L.latLng(35.5, 103.84);
+                specialEffectManager.createScanRadarByPosition(latlng, {});
+                alert("当前在默认位置创建雷达，可使用绑定功能或选中标号后创建，从而与标号绑定！");
+            }
+        }
+        function createSectorDetectionRange() {
+            if (editControl.getSelectedFeatures().length != 0) {
+                for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
+                    var feature = editControl.getSelectedFeatures()[i];
+                    specialEffectManager.createSectorDetectionRange(feature.uuid, {});
+                }
+            } else {
+                var latlng = L.latLng(39.5, 87.84);
+                specialEffectManager.createSectorDetectionRangeByPosition(latlng, -90, {});
+                alert("当前在默认位置创建扇形扫描，可使用绑定功能或选中标号后创建，从而与标号绑定！");
+            }
+        }
+        function createBoom() {
+            if (editControl.getSelectedFeatures().length != 0) {
+                for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
+                    var feature = editControl.getSelectedFeatures()[i];
+                    specialEffectManager.createBoom(feature.uuid, {});
+                }
+            } else {
+                var latlng = L.latLng(32.5, 118.84);
+                specialEffectManager.createBoomByPosition(latlng, {});
+                alert("当前在默认位置创建爆炸，可使用绑定功能或选中标号后创建，从而与标号绑定！");
+            }
+        }
+        function createDestroy() {
+            if (editControl.getSelectedFeatures().length != 0) {
+                for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
+                    var feature = editControl.getSelectedFeatures()[i];
+                    specialEffectManager.createDestroy(feature.uuid, {});
+                }
+            } else {
+                alert("请选择一个标号作为摧毁对象");
+            }
+        }
+        function createAim() {
+            if (editControl.getSelectedFeatures().length >= 2) {
+                var viewfeature = editControl.getSelectedFeatures()[0];
+                for (var i = 1; i < editControl.getSelectedFeatures().length; i++) {
+                    var aimfeature = editControl.getSelectedFeatures()[i];
+                    specialEffectManager.createAim(viewfeature.uuid, aimfeature.uuid, {});
+                }
+            } else {
+                var viewLatlng = L.latLng(29.30, 91.91);
+                var aimLatlng = L.latLng(24.5, 102.84);
+                specialEffectManager.createAimByPosition(viewLatlng, aimLatlng, {});
+
+                alert("当前在默认位置创建雷达，可使用绑定功能或选中两个标号作为观察点与瞄准点后创建，从而与标号绑定！");
+            }
+        }
+        function createCommunicationLink() {
+            if (editControl.getSelectedFeatures().length >= 2) {
+                var sendfeature = editControl.getSelectedFeatures()[0];
+                for (var i = 1; i < editControl.getSelectedFeatures().length; i++) {
+                    var receiverfeature = editControl.getSelectedFeatures()[i];
+                    specialEffectManager.createCommunicationLink(sendfeature.uuid, receiverfeature.uuid, {});
+                }
+            } else {
+
+                var sendLatlng = L.latLng(40.30, 111.91);
+                var receiverLatlng = L.latLng(30.5, 114.84);
+                specialEffectManager.createCommunicationLinkByPosition(sendLatlng, receiverLatlng, {});
+                alert("当前在默认位置创建雷达，可使用绑定功能或选中两个标号作为发送信号与接收信号后创建，从而与标号绑定！");
+            }
+        }
+        function changeConnectType(event) {
+            var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+            if (effect == null) {
+                return;
+            }
+            switch (event.target.value) {
+                case '0':
+                    currentPoint = "viewPoint";
+                    this.checkIsConnectedToFeature(effect.viewUuid);
+                    break;
+                case '1':
+                    currentPoint = "aimPoint";
+                    this.checkIsConnectedToFeature(effect.aimUuid);
+                    break;
+                case '2':
+                    currentPoint = "senderPoint";
+                    this.checkIsConnectedToFeature(effect.senderUuid);
+                    break;
+                case '3':
+                    currentPoint = "receiverPoint";
+                    this.checkIsConnectedToFeature(effect.receiverUuid);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        function checkIsConnectedToFeature(uuid) {
+            if (uuid) {
+                document.getElementById("connectordisconnect").value = "解绑标号";
+            } else {
+                document.getElementById("connectordisconnect").value = "绑定标号";
+            }
+        }
+        function removeSelectFeature() {
+            if (selectedSpecialEffectUuid) {
+                specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected, { specialEffect: specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid) });
+                specialEffectManager.removeSpecialEffect(selectedSpecialEffectUuid);
+                selectedSpecialEffectUuid = null;
+                specialEffectManager.fire(SuperMap.Plot.Event.specialeffectremoved)
+                document.getElementById("pointType").disabled = true;
+            }
+        }
+        function remove() {
+            // specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected);
+            if (editControl.getSelectedFeatures().length > 0) {
+                for (var j = 0; j < editControl.getSelectedFeatures().length; j++) {
+                    var feature = editControl.getSelectedFeatures()[j];
+                    var specialEffectListByFeature = specialEffectManager.getSpecialEffectByFeature(feature.uuid);
+                    for (var i = 0; i < specialEffectListByFeature.length; i++) {
+                        var effectUuid = specialEffectListByFeature[i].uuid;
+                        specialEffectManager.removeSpecialEffect(effectUuid);
+                    }
+                }
+            } else {
+                var specialEffectList = specialEffectManager.getSpecialEffectList();
+                for (var i = 0; i < specialEffectList.length; i++) {
+                    specialEffectManager.removeSpecialEffect(specialEffectList[i].uuid);
+                }
+            }
+
+            specialEffectManager.fire(SuperMap.Plot.Event.specialeffectremoved)
+        }
+        function playorpauseAllSpecialEffect() {
+            if (allIsPlay == true) {
+                document.getElementById("playorpauseAllSpecialEffect").value = "暂停所有特效";
+                this.palyAllSpecialEffect();
+                allIsPlay = false;
+            } else {
+                document.getElementById("playorpauseAllSpecialEffect").value = "播放所有特效";
+                this.pauseAllSpecialEffect();
+                allIsPlay = true;
+            }
+        }
+        function palyAllSpecialEffect() {
+            var specialEffectList = specialEffectManager.getSpecialEffectList();
+            for (var i = 0; i < specialEffectList.length; i++) {
+                specialEffectList[i].play();
+            }
+        }
+        function pauseAllSpecialEffect() {
+            var specialEffectList = specialEffectManager.getSpecialEffectList();
+            for (var i = 0; i < specialEffectList.length; i++) {
+                specialEffectList[i].pause();
+            }
+        }
+
+        function connectordisconnect() {
+            if (document.getElementById("connectordisconnect").value == "绑定标号") {
+                this.bind();
+                document.getElementById("connectordisconnect").value = "解绑标号";
+            } else {
+                this.disconnectionToFeature();
+                document.getElementById("connectordisconnect").value = "绑定标号";
+            }
+        }
+        function bind() {
+            editControl.on("featuresselected", connectionToFeature);
+        }
+        function connectionToFeature() {
+            if (!editControl.getSelectedFeatures()[0]) {
+                // alert("请选择目标标号进行绑定");
+                return;
+            }
+            var associatedUuid = editControl.getSelectedFeatures()[0].uuid;
+            if (selectedSpecialEffectUuid) {
+                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+                // specialEffectManager.connectToFeature(associatedUuids, effect);
+                if (effect.getType() == SuperMap.Plot.SpecialEffectType.AIM || effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+                    if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.AIM) {
+                        currentPoint = document.getElementById("pointType").value;
+                        if (currentPoint == "0" || currentPoint == "-1") {
+                            currentPoint = "viewPoint";
+                        } else {
+                            currentPoint = "aimPoint";
+                        }
+                    } else if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+                        currentPoint = document.getElementById("pointType").value;
+                        if (currentPoint == "2" || currentPoint == "-1") {
+                            currentPoint = "senderPoint";
+                        } else {
+                            currentPoint = "receiverPoint";
+                        }
+                    }
+                    switch (currentPoint) {
+                        case "aimPoint":
+                            effect.connectToFeature(associatedUuid, SuperMap.Plot.AimType.AIM);
+                            break;
+                        case "viewPoint":
+                            effect.connectToFeature(associatedUuid, SuperMap.Plot.AimType.VIEW);
+                            break;
+                        case "senderPoint":
+                            effect.connectToFeature(associatedUuid, SuperMap.Plot.CommunicationLinkType.SENDER);
+                            break;
+                        case "receiverPoint":
+                            effect.connectToFeature(associatedUuid, SuperMap.Plot.CommunicationLinkType.RECEIVER);
+                            break;
+
+                        default:
+                            break;
+                    }
+                } else {
+                    effect.connectToFeature(associatedUuid);
+                }
+            }
+
+            editControl.off("featuresselected", connectionToFeature);
+
+        }
+        function disconnectionToFeature() {
+            if (selectedSpecialEffectUuid) {
+                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+                if (effect.getType() == SuperMap.Plot.SpecialEffectType.DESTROY) {
+                    alert("摧毁标号不支持解绑！");
+                    return;
+                }
+                if (effect.getType() == SuperMap.Plot.SpecialEffectType.AIM || effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+                    if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.AIM) {
+                        currentPoint = document.getElementById("pointType").value;
+                        if (currentPoint == "0") {
+                            currentPoint = "viewPoint";
+                        } else {
+                            currentPoint = "aimPoint";
+                        }
+                    } else if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+                        currentPoint = document.getElementById("pointType").value;
+                        if (currentPoint == "2") {
+                            currentPoint = "senderPoint";
+                        } else {
+                            currentPoint = "receiverPoint";
+                        }
+                    }
+                    switch (currentPoint) {
+                        case "aimPoint":
+                            effect.disConnectToFeature(SuperMap.Plot.AimType.AIM);
+                            break;
+                        case "viewPoint":
+                            effect.disConnectToFeature(SuperMap.Plot.AimType.VIEW);
+                            break;
+                        case "senderPoint":
+                            effect.disConnectToFeature(SuperMap.Plot.CommunicationLinkType.SENDER);
+                            break;
+                        case "receiverPoint":
+                            effect.disConnectToFeature(SuperMap.Plot.CommunicationLinkType.RECEIVER);
+                            break;
+
+                        default:
+                            break;
+                    }
+                } else {
+                    effect.disConnectToFeature();
+                }
+            }
+        }
+        function playOrPauseSelectFeature() {
+            if (document.getElementById("playorpause").value == "播放选中特效") {
+                this.playSelectFeature();
+                document.getElementById("playorpause").value = "暂停选中特效";
+            } else {
+                this.pauseSelectFeature();
+                document.getElementById("playorpause").value = "播放选中特效"
+            }
+        }
+        function playSelectFeature() {
+            if (selectedSpecialEffectUuid) {
+                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+                effect.play();
+            }
+        }
+        function pauseSelectFeature() {
+            if (selectedSpecialEffectUuid) {
+                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+                effect.pause();
+            }
+        }
+        function openPlotMap() {
+            document.getElementById("plottingOpenMapFile").click();
+        }
+
+        function savePlotMap() {
+
+            let strJson = plotMapManager.saveTo();
+            const blob = new Blob([strJson], {
+                type: "application/json",
+            });
+            const objectURL = URL.createObjectURL(blob);
+            const domElement = document.createElement("a");
+            domElement.href = objectURL;
+            domElement.download = "标绘图" + getFileTime();
+            domElement.click();
+            URL.revokeObjectURL(objectURL);
+        }
+        function getFileTime() {
+            const data = new Date();
+            let year = data.getFullYear();
+            let month = data.getMonth() + 1;
+            let day = data.getDate();
+            let hours = data.getHours();
+            let minutes = data.getMinutes();
+            month = month > 9 ? month : "0" + month;
+            day = day > 9 ? day : "0" + day;
+            hours = hours > 9 ? hours : "0" + hours;
+            minutes = minutes > 9 ? minutes : "0" + minutes;
+            return `${year}${month}${day}${hours}${minutes}`;
+        }
+
+
+        document.onkeydown = function (event) {
+            var event = event || window.event;
+            if (event && event.keyCode === 46) {//Delete键
+                editControl.deleteSelectedFeatures();
+            }
+        }
+
+    </script>
+</body>
+
+</html>
