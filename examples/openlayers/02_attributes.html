@@ -123,7 +123,7 @@
         new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
           var tbody = document.querySelector('.tbody');
           tbody.innerHTML = '';
-          serviceResult.result.features.forEach((feature) => {
+          serviceResult.result.features.features.forEach((feature) => {
             var tr = document.createElement('tr');
             var props = feature.properties;
             fieldList.forEach((field) => {
