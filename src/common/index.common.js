@@ -334,7 +334,7 @@ import {
     getMeterPerMapUnit,
     getWrapNum,
     conversionDegree,
-    EncryptFetchRequestUtil
+    EncryptRequest
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -499,7 +499,7 @@ export {
     isCORS,
     setCORS,
     FetchRequest,
-    EncryptFetchRequestUtil,
+    EncryptRequest,
     ColorsPickerUtil,
     ArrayStatistic,
     getMeterPerMapUnit,
