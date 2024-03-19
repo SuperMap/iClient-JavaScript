@@ -11,7 +11,7 @@ import {
 
 import { ColorsPickerUtil } from './ColorsPickerUtil';
 
-import { EncryptFetchRequestUtil } from './EncryptFetchRequestUtil';
+import { EncryptRequest } from './EncryptRequest';
 
 import { ArrayStatistic } from './ArrayStatistic';
 import { getMeterPerMapUnit, getWrapNum, conversionDegree } from './MapCalculateUtil';
@@ -72,7 +72,7 @@ export {
   setRequestTimeout,
   getRequestTimeout,
   FetchRequest,
-  EncryptFetchRequestUtil,
+  EncryptRequest,
   ColorsPickerUtil,
   ArrayStatistic,
   getMeterPerMapUnit,

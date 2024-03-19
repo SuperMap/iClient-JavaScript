@@ -9,13 +9,14 @@ import {
 
 /**
  * @private
- * @name EncryptFetchRequestUtil
+ * @name EncryptRequest
  * @namespace
  * @category BaseTypes Util
  * @classdesc 加密请求地址
+ * @param {string} serverUrl - 服务地址。
  */
-export class EncryptFetchRequestUtil {
-  constructor(serverUrl = 'http://172.16.13.234:8090/iserver') {
+export class EncryptRequest {
+  constructor(serverUrl = '') {
     this.serverUrl = serverUrl.split('').slice(-1)[0] === '/' ? serverUrl : `${serverUrl}/`;
     this.tunnelUrl = undefined;
     this.blockedUrlRegex = {
@@ -29,9 +30,22 @@ export class EncryptFetchRequestUtil {
     this.encryptAESIV = generateAESRandomIV();
   }
 
-  async encryptRequest(options) {
+  /**
+   * @function EncryptRequest.prototype.request
+   * @description 加密请求地址。
+   * @param {Object} config - 加密请求参数。
+   * @param {string} config.method - 请求方法。
+   * @param {string} config.url - 请求地址。
+   * @param {string} config.params - 请求参数。
+   * @param {Object} config.options - 请求的配置属性。
+   * @returns {Promise} Promise 对象。
+   */
+  async request(options) {
+    if (!this.serverUrl) {
+      throw 'serverUrl can not be empty.';
+    }
     const config = Object.assign({ baseURL: '' }, options);
-    const tunnelUrl = await this.createTunnel();
+    const tunnelUrl = await this._createTunnel();
     if (!tunnelUrl) {
       return;
     }
@@ -63,12 +77,23 @@ export class EncryptFetchRequestUtil {
         console.debug('解密请求响应失败');
         return;
       }
-      return JSON.parse(decryptResult).data;
+      const resultData = JSON.parse(decryptResult);
+      const resData = Object.create({
+        json: function () {
+          return Promise.resolve(resultData.data);
+        }
+      });
+      return Object.assign(resData, resultData);
     }
     return response;
   }
 
-  async getRSAPublicKey() {
+  /**
+   * @private
+   * @description 获取RSA public key
+   * @function EncryptRequest.prototype._getRSAPublicKey
+   */
+  async _getRSAPublicKey() {
     try {
       const response = await FetchRequest.get(`${this.serverUrl}services/security/tunnel/v1/publickey`);
       // 解析publicKey
@@ -88,10 +113,15 @@ export class EncryptFetchRequestUtil {
     }
   }
 
-  async createTunnel() {
+  /**
+   * @private
+   * @description 创建隧道
+   * @function EncryptRequest.prototype._createTunnel
+   */
+  async _createTunnel() {
     if (!this.tunnelUrl) {
       try {
-        const data = await this.getRSAPublicKey();
+        const data = await this._getRSAPublicKey();
         if (!data) {
           throw 'fetch RSA publicKey failed';
         }

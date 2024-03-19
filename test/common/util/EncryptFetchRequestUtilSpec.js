@@ -1,18 +1,18 @@
 import { FetchRequest } from '../../../src/common//util/FetchRequest';
-import { EncryptFetchRequestUtil } from '../../../src/common//util/EncryptFetchRequestUtil';
+import { EncryptRequest } from '../../../src/common//util/EncryptRequest';
 
-describe('EncryptFetchRequestUtil', () => {
+describe('EncryptRequest', () => {
   const serverUrl = 'http://fake.iserver.com/iserver';
   const options = {
     url: 'http://fake.iserver.com/iserver/iserver/services/security/svckeys/keyIDNAME.json',
     method: 'get'
   };
 
-  it('encryptRequest fail', (done) => {
+  it('request fail', (done) => {
     const spyGet = spyOn(FetchRequest, 'get').and.returnValue('');
     const spyPost = spyOn(FetchRequest, 'post').and.returnValue({});
-    const encryptFetchRequestUtil = new EncryptFetchRequestUtil(serverUrl);
-    encryptFetchRequestUtil.encryptRequest(options).then((result) => {
+    const encryptRequest = new EncryptRequest(serverUrl);
+    encryptRequest.request(options).then((result) => {
       expect(result).toBeUndefined();
       expect(spyGet.calls.count()).toBe(1);
       expect(spyPost.calls.count()).toBe(0);
@@ -22,7 +22,7 @@ describe('EncryptFetchRequestUtil', () => {
     });
   });
 
-  it('encryptRequest succeed', (done) => {
+  it('request succeed', (done) => {
     const spyGet = spyOn(FetchRequest, 'get').and.callFake(() => {
       const response = {
         keyLength: 2048,
@@ -50,16 +50,16 @@ describe('EncryptFetchRequestUtil', () => {
         'HAsHE/ok/jROEySWBxWSr2FTLXcnIkeFAYzig+V7NGalR0f/VnBorkAOyOnbCSq9nM3YWrhEUFaWwAouSDeEVqe+BLuIA+7KmCBfD7hh+qyM0lC5cvZ8vOIjsI3eqhHhiPOi+IQLGHQsRbFl8hSkE0XU1GIojqjppSEAxW5jhFC2bH5hdCt/+PKuHPhATElgJqOI6FJHpVpbLWiqoP7WMYVYvZm7wubYCQIG77LUSivbUQ61gjW0mevsKRdoiRl8fafV8Zq5D+QBbCy+Mn4rWXDC+gjwvyyYxEdOixALJgfnjWL48RRHxvITPapzbEsEkcnZiu+INSULcT60BeuduKzxp+hUg6Q8sn2Bu//CNk0NlGMeT5hqTON72iI4GBgfEOnGrcBHjsT/N2jX0NnVz1bgR6B9O6TpQQr3zkjVPidw8ElSO+lM8P5AuRqtNH9ajYt2uDwWBhbG+OfyR4hKIJ9V5aDhAwkIzkUerRP78Colsg==';
       return Promise.resolve({ text: () => Promise.resolve(response) });
     });
-    const encryptFetchRequestUtil = new EncryptFetchRequestUtil(serverUrl);
-    encryptFetchRequestUtil.encryptAESKey = 'SLbsaRbf4Rou8Bju';
-    encryptFetchRequestUtil.encryptAESIV = 'rzLM7Z4RJGFd';
-    encryptFetchRequestUtil.encryptRequest(options).then((result) => {
+    const encryptRequest = new EncryptRequest(serverUrl);
+    encryptRequest.encryptAESKey = 'SLbsaRbf4Rou8Bju';
+    encryptRequest.encryptAESIV = 'rzLM7Z4RJGFd';
+    encryptRequest.request(options).then((result) => {
       expect(result).toBe('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=');
       expect(spyGet.calls.count()).toBe(1);
       expect(spyPost.calls.count()).toBe(1);
       expect(spyCommit.calls.count()).toBe(1);
-      expect(encryptFetchRequestUtil.tunnelUrl).not.toBeUndefined();
-      encryptFetchRequestUtil.encryptRequest(options).then(result => {
+      expect(encryptRequest.tunnelUrl).not.toBeUndefined();
+      encryptRequest.request(options).then(result => {
         expect(result).toBe('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=');
         expect(FetchRequest.get.calls.count()).toBe(1);
         expect(FetchRequest.post.calls.count()).toBe(1);
