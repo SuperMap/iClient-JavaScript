@@ -5,6 +5,29 @@ import mapboxgl from 'mapbox-gl';
 import { FetchRequest } from '@supermap/iclient-common';
 import { Util } from '../../../core/Util';
 
+const LAEYR_TYPE_LEGEND_TYPE = {
+  circle: 'POINT',
+  symbol: 'POINT',
+  line: 'LINE',
+  fill: 'FILL',
+  ['fill-extrusion']: 'FILLEXTRUSION'
+};
+
+const LegendPointStyleKey = ['symbolsContent', 'size', 'color', 'opacity'];
+
+const LegendLineStyleKey = ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'];
+
+const LegendFillStyleKey = ['color', 'opacity', 'antialias', 'outlineColor', 'symbolsContent'];
+
+const LegendFILLEXTRUSIONStyleKey = ['color', 'opacity', 'symbolsContent'];
+
+export const LEGEND_STYLE_KEYS = {
+  POINT: LegendPointStyleKey,
+  LINE: LegendLineStyleKey,
+  FILL: LegendFillStyleKey,
+  FILLEXTRUSION: LegendFILLEXTRUSIONStyleKey
+};
+
 export class WebMap extends mapboxgl.Evented {
   /**
    * @constructs
@@ -19,7 +42,10 @@ export class WebMap extends mapboxgl.Evented {
     this.mapResourceUrl = Util.transformUrl(Object.assign({ url: `${this.server}web/maps/${mapId}` }, this.options));
     this._layersOfV3 = [];
     this._layerIdMapList = {};
+    this._legendList = [];
     this._mapResourceInfo = {};
+    this._sprite = '';
+    this._spriteDatas = {};
   }
 
   /**
@@ -71,6 +97,8 @@ export class WebMap extends mapboxgl.Evented {
     this.map = new mapboxgl.Map(mapOptions);
     this.fire('mapinitialized', { map: this.map });
     this.map.on('load', () => {
+      sprite && this._getSpriteDatas(sprite);
+      this._sprite = sprite;
       this._initLayers();
     });
   }
@@ -102,18 +130,10 @@ export class WebMap extends mapboxgl.Evented {
    * @description 创建地图相关资源。
    */
   _createMapRelatedInfo() {
-    const { glyphs, sprite } = this._mapInfo;
+    const { glyphs } = this._mapInfo;
     for (let key in glyphs) {
       this.map.style.addGlyphs(key, glyphs[key]);
     }
-    // if (typeof sprite === 'object') {
-    //   for (let key in sprite) {
-    //     this.map.style.addSprite(key, sprite[key]);
-    //   }
-    // } else {
-    //   this.map.style.sprite = sprite;
-    //   this.map.setStyle(this.map.style);
-    // }
   }
 
   /**
@@ -121,7 +141,7 @@ export class WebMap extends mapboxgl.Evented {
    * @function mapboxgl.supermap.WebMap.prototype._getMapRelatedInfo
    * @description 获取地图关联信息的 JSON 信息。
    */
-   _getMapRelatedInfo() {
+  _getMapRelatedInfo() {
     return FetchRequest.get(this.mapResourceUrl, null, { withCredentials: this.withCredentials })
       .then((response) => {
         return response.json();
@@ -216,8 +236,31 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    */
   _sendMapToUser() {
-    const overlayLayers = this._generateV2LayersStructure();
+    const overlayLayers = this._generateLayers();
     this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: overlayLayers });
+  }
+
+  _getLayerInfosFromCatalogs(catalogs) {
+    let results = [];
+    for (let i = 0; i < catalogs.length; i++) {
+      const { catalogType, children, visible } = catalogs[i];
+      if (catalogType === 'layer' && visible) {
+        results.push(catalogs[i]);
+      }
+      if (catalogType === 'group' && children && children.lnegth) {
+        const result = this._getLayerInfosFromCatalogs(children);
+        results = results.concat(result);
+      }
+    }
+    return results;
+  }
+
+  getMapInfo() {
+    return this._mapInfo;
+  }
+
+  getLegendInfo() {
+    return this._legendList;
   }
 
   /**
@@ -226,24 +269,44 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    * @param {Array<Object>} layers - 图层信息。
    */
-   _generateV2LayersStructure() {
-    const originLayers = this._mapResourceInfo.catalogs.filter(item => item.visible);
+  _generateLayers() {
+    const originLayers = this._getLayerInfosFromCatalogs(this._mapResourceInfo.catalogs);
+    let _this = this;
     const layers = originLayers.map(layer => {
-      const { themeSetting = {}, title } = layer;
+      const { visualization, title } = layer;
       const realLayerId = this._layerIdMapList[layer.id];
-      let layerType = themeSetting.type;
-      if (!layerType) {
-        const matchLayer = this._mapInfo.layers.find(item => item.id === layer.id);
-        layerType = this._mapInfo.sources[matchLayer.source].type;
-        if (layerType === 'raster') {
-          layerType = 'TIle';
-        }
-      }
-      const overlayLayers = {
+      let dataId = '';
+      let layerType = _this._mapInfo.layers.find(function (item) {
+        return item.id === layer.id;
+      }).type;
+      this._createLegendInfo(layer, layerType);
+      let type = layerType;
+      layerType = layerType === 'raster' ? 'raster' : 'vector';
+      var dataType = '';
+      _this._mapResourceInfo.datas.forEach((data) => {
+        data.datasets.forEach((dataset) => {
+          if (dataset.msDatasetId === layer.msDatasetId) {
+            dataType = data.sourceType;
+            dataId = dataset.datasetId;
+          }
+        });
+      });
+      var overlayLayers = {
+        dataSource: {
+          serverId: dataId,
+          type: dataType
+        },
         layerID: realLayerId,
-        name: title,
-        layerType: layerType,
-        themeSetting
+        layerType,
+        type,
+        name: title
+      };
+      if (visualization) {
+        if (visualization.renderer[0] && visualization.renderer[0].color && visualization.renderer[0].color.field) {
+          overlayLayers.themeSetting = {
+            themeField: visualization.renderer[0].color.field
+          }
+        }
       }
       return overlayLayers;
     })
@@ -266,5 +329,74 @@ export class WebMap extends mapboxgl.Evented {
     }
     const fontFamilys = fonts.join(',');
     return fontFamilys;
+  }
+
+  /**
+   * @private
+   * @function mapboxgl.supermap.WebMap.prototype._getSpriteDatas
+   * @description 获取雪碧图信息。
+   */
+  _getSpriteDatas(spriteUrl) {
+    return FetchRequest.get(spriteUrl, null, { withCredentials: this.withCredentials })
+      .then((response) => {
+        return response.json();
+      }).then((res) => {
+        this._spriteDatas = res;
+      });
+  }
+
+  _createLegendInfo(layer, layerType) {
+    const legendType = LAEYR_TYPE_LEGEND_TYPE[layerType];
+    const keys = LEGEND_STYLE_KEYS[legendType];
+    const styleList = layer.visualization.renderer[0];
+    const simpleStyle = this._getLegendSimpleStyle(layerType, styleList);
+
+    keys.forEach((keyName) => {
+      if (!simpleStyle[keyName]) {
+        const legendItemInfo = {
+          themeField: styleList[keyName].field[0],
+          styleGroup: [],
+          layerId: layer.id
+        };
+        if (keyName === 'color') {
+          let symbolId = simpleStyle['symbolsContent'].value.symbol;
+          if (symbolId) {
+            let symbolInfo = this._spriteDatas[symbolId];
+            styleList[keyName].values.forEach((info) => {
+              let groupItemInfo = {
+                value: info.key,
+                style: {
+                  backgroundColor: info.value
+                }
+              }
+              if (symbolInfo) {
+                const { width, height, x, y, pixelRatio } = symbolInfo;
+                groupItemInfo.style.width = `${width}px`;
+                groupItemInfo.style.height = `${height}px`;
+                groupItemInfo.style.backgroundPosition = `-${x * pixelRatio}px -${y * pixelRatio}px`;
+                groupItemInfo.style.backgroundImage = `url(${this._sprite}.png)`;
+              }
+              if (legendType === 'FILL') {
+                groupItemInfo.style.width = '20px';
+                groupItemInfo.style.height = '20px';
+              }
+              legendItemInfo.styleGroup.push(groupItemInfo);
+            });
+          }
+        }
+        this._legendList.push(legendItemInfo);
+      }
+    });
+  }
+
+  _getLegendSimpleStyle(layerType, styleSetting) {
+    const simpleStyle = {};
+    const legendType = LAEYR_TYPE_LEGEND_TYPE[layerType];
+    const keys = LEGEND_STYLE_KEYS[legendType];
+    const simpleKeys = keys.filter(k => styleSetting[k]?.type === 'simple');
+    simpleKeys.forEach(k => {
+      simpleStyle[k] = styleSetting[k]?.value;
+    });
+    return simpleStyle;
   }
 }
