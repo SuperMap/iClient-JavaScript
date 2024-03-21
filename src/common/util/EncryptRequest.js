@@ -140,3 +140,41 @@ export class EncryptRequest {
     return this.tunnelUrl;
   }
 }
+
+/**
+ * @function getServiceKey
+ * @version 11.2.0
+ * @category iServer
+ * @description 获取矢量瓦片解密密钥
+ * @param {string} serviceUrl - iserver服务地址,例如： 'http://127.0.0.1:8090/iserver/services/xxx'、 'http://127.0.0.1:8090/iserver/services/xxx/rest/maps' 、 'http://127.0.0.1:8090/iserver/services/xxx/restjsr/v1/vectortile'
+ * @return {Promise} key - 矢量瓦片密钥
+ */
+export async function getServiceKey(serviceUrl) {
+  try {
+    const workspaceServerUrl = ((serviceUrl &&
+      serviceUrl.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/))/)) ||
+      [])[0];
+    if (!workspaceServerUrl) {
+      return;
+    }
+    const servicesResponse = await FetchRequest.get(workspaceServerUrl);
+    const servicesResult = await servicesResponse.json();
+    const matchRestData = (servicesResult || []).find(
+      (item) => serviceUrl.includes(item.name) && item.serviceEncryptInfo
+    );
+    if (!matchRestData) {
+      return;
+    }
+    const iserverHost = workspaceServerUrl.split('/services/')[0];
+    const encryptRequest = new EncryptRequest(iserverHost);
+    const svckeyUrl =
+      matchRestData && `${iserverHost}/services/security/svckeys/${matchRestData.serviceEncryptInfo.encrptKeyID}.json`;
+    const svcReponse = await encryptRequest.request({
+      method: 'get',
+      url: svckeyUrl
+    });
+    return await svcReponse.json();
+  } catch (error) {
+    console.error(error);
+  }
+}

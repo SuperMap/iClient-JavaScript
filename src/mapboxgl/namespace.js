@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Logo } from './control';
-import { Util } from './core';
+import { Util, decryptSources } from './core';
 import {
   GraphThemeLayer,
   LabelThemeLayer,
@@ -69,10 +69,10 @@ import mapboxgl from 'mapbox-gl';
 
 mapboxgl.supermap = {...SuperMap, ...mapboxgl.supermap};
 mapboxgl.supermap.map = mapboxgl.supermap.map || {};
-
 mapboxgl.supermap.LogoControl = Logo;
 mapboxgl.supermap.Logo = Logo;
 mapboxgl.supermap.Util = Util;
+mapboxgl.supermap.decryptSources = decryptSources;
 mapboxgl.supermap.WebMap = WebMap;
 mapboxgl.supermap.initMap = initMap;
 mapboxgl.supermap.Graphic = Graphic;
