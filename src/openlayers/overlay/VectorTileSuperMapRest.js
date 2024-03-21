@@ -4,6 +4,7 @@
 import { Util } from '../core/Util';
 import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { EncryptRequest } from '@supermap/iclient-common/util/EncryptRequest';
 import { Unit } from '@supermap/iclient-common/REST';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
@@ -16,6 +17,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import * as olSize from 'ol/size';
 import Projection from 'ol/proj/Projection';
 import TileGrid from 'ol/tilegrid/TileGrid';
+import decodeUtil from './bundle.esm';
 
 /**
  * @class VectorTileSuperMapRest
@@ -32,6 +34,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
+ * @param {boolean} [options.decrypt] - 瓦片是否需要解密。
  * @extends {ol.source.VectorTile}
  * @usage
  */
@@ -59,9 +62,7 @@ export class VectorTileSuperMapRest extends VectorTile {
             overlaps: options.overlaps,
             projection: options.projection,
             state:
-                options.format instanceof MVT &&
-                options.style &&
-                Object.prototype.toString.call(options.style) == '[object String]'
+                options.format instanceof MVT
                     ? 'loading'
                     : options.state,
             tileClass: options.tileClass,
@@ -77,21 +78,7 @@ export class VectorTileSuperMapRest extends VectorTile {
         me.withCredentials = options.withCredentials;
         me._tileType = options.tileType || 'ScaleXY';
         this.vectorTileStyles = new VectorTileStyles();
-        if (options.format instanceof MVT && options.style) {
-            if (Object.prototype.toString.call(options.style) == '[object String]') {
-                var url = SecurityManager.appendCredential(options.style);
-                FetchRequest.get(url, null, { withCredentials: options.withCredentials })
-                    .then((response) => response.json())
-                    .then((mbStyle) => {
-                        this._fillByStyleJSON(mbStyle, options.source);
-                        this.setState('ready');
-                    });
-            } else {
-                this._fillByStyleJSON(options.style, options.source);
-            }
-        } else {
-            this._fillByRestMapOptions(options.url, options);
-        }
+        this._initialized(options);
 
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
@@ -156,10 +143,10 @@ export class VectorTileSuperMapRest extends VectorTile {
             if (!tileCoord) {
                 return undefined;
             } else {
-                return me._tileUrl
+                              return me._tileUrl
                     .replace(zRegEx, tileCoord[0].toString())
                     .replace(xRegEx, tileCoord[1].toString())
-                    .replace(yRegEx, function () {
+                     .replace(yRegEx, function () {
                         var y = ['4', '5'].indexOf(Util.getOlVersion()) > -1 ? -tileCoord[2] - 1 : tileCoord[2];
                         return y.toString();
                     })
@@ -284,13 +271,17 @@ export class VectorTileSuperMapRest extends VectorTile {
                             source = xhr.response;
                         }
                         if (source) {
+                            // console.time('瓦片解密完成');
+                            source = me._decryptMvt(source);
+                            // console.timeEnd('瓦片解密完成');
+                            // console.log('瓦片解密字节大小: ', source.byteLength);
                             if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
-                                success.call(
-                                    this,
-                                    format.readFeatures(source, { featureProjection: projection }),
-                                    format.readProjection(source),
-                                    format.getLastExtent()
-                                );
+                              success.call(
+                                  this,
+                                  format.readFeatures(source, { featureProjection: projection }),
+                                  format.readProjection(source),
+                                  format.getLastExtent()
+                              );
                             } else {
                                 success.call(
                                     this,
@@ -315,6 +306,27 @@ export class VectorTileSuperMapRest extends VectorTile {
             });
         }
     }
+
+    async _initialized(options) {
+      if (options.format instanceof MVT && options.style) {
+          let style = options.style;
+          if (Object.prototype.toString.call(options.style) == '[object String]') {
+            var url = SecurityManager.appendCredential(options.style);
+            const response = await FetchRequest.get(url, null, { withCredentials: options.withCredentials })
+            style = await response.json();
+          }
+          this._fillByStyleJSON(style, options.source);
+      } else {
+          this._fillByRestMapOptions(options.url, options);
+      }
+      if (options.format instanceof MVT) {
+        if (options.decrypt) {
+          await this._verifyVectorTileIsEncrypt(options);
+        }
+        this.setState('ready');
+      }
+    }
+
     _fillByStyleJSON(style, source) {
         if (!source) {
             source = Object.keys(style.sources)[0];
@@ -373,6 +385,44 @@ export class VectorTileSuperMapRest extends VectorTile {
             params['returnCutEdges'] = options.returnCutEdges;
         }
         this._tileUrl = CommonUtil.urlAppend(this._tileUrl, CommonUtil.getParameterString(params));
+    }
+
+    async _verifyVectorTileIsEncrypt(options) {
+      try {
+        let serviceUrl = options.url || typeof options.style === 'string' && options.style;
+
+        if (!serviceUrl && Object.prototype.toString.call(options.style) == '[object Object]') {
+          const firstSource = Object.keys(options.style.sources)[0];
+          serviceUrl = options.style.sources[firstSource].tiles[0];
+        }
+        const workspaceServerUrl = (serviceUrl && serviceUrl.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/))/) || [])[0];
+        if (!workspaceServerUrl) {
+          return;
+        }
+        const servicesResponse = await FetchRequest.get(workspaceServerUrl);
+        const servicesResult = await servicesResponse.json();
+        const matchRestData = (servicesResult || []).find(item => serviceUrl.includes(item.name) && item.serviceEncryptInfo);
+        if (!matchRestData) {
+          return;
+        }
+        const iserverHost = workspaceServerUrl.split('/services/')[0];
+        const encryptRequest = new EncryptRequest(iserverHost);
+        const svckeyUrl = matchRestData && `${iserverHost}/services/security/svckeys/${matchRestData.serviceEncryptInfo.encrptKeyID}.json`
+        const svcReponse = await encryptRequest.request({
+          method: 'get',
+          url: svckeyUrl
+        })
+        this.serviceKey = await svcReponse.json();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    _decryptMvt(mvtData) {
+      if (this.serviceKey) {
+        return decodeUtil(mvtData, this.serviceKey);
+      }
+      return mvtData;
     }
 
     /**
