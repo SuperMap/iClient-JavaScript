@@ -2,6 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
+import { decryptSources } from './decryptSource';
+import { getServiceKey } from '@supermap/iclient-common/util/EncryptRequest';
 
 /**
  * @function MapExtend
@@ -9,6 +11,17 @@ import mapboxgl from 'mapbox-gl';
  * @private
  */
 export var MapExtend = (function () {
+  if (mapboxgl.VectorTileSource.prototype.beforeLoadBak === undefined) {
+    mapboxgl.VectorTileSource.prototype.beforeLoadBak = mapboxgl.VectorTileSource.prototype.beforeLoad;
+    mapboxgl.VectorTileSource.prototype.beforeLoad = async function (id, options) {
+      const url = options && options.tiles && options.tiles[0];
+      if (decryptSources.values.includes(id) && url) {
+        const decryptKey = await getServiceKey(url);
+        this.decryptKey = decryptKey;
+      }
+      this.beforeLoadBak(id, options);
+    };
+  }
   mapboxgl.Map.prototype.overlayLayersManager = {};
   if (mapboxgl.Map.prototype.addLayerBak === undefined) {
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
