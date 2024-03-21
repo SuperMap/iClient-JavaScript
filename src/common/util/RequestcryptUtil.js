@@ -1,7 +1,8 @@
-import pki from 'node-forge/lib/pki';
-import md from 'node-forge/lib/md';
-import cipher from 'node-forge/lib/cipher';
-import util from 'node-forge/lib/util';
+// import pki from 'node-forge/lib/pki';
+// import md from 'node-forge/lib/md';
+// import cipher from 'node-forge/lib/cipher';
+// import util from 'node-forge/lib/util';
+import { pki, md, cipher, util } from 'node-forge/dist/forge.min';
 
 /**
  * @private

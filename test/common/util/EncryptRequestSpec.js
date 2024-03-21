@@ -53,13 +53,13 @@ describe('EncryptRequest', () => {
     const encryptRequest = new EncryptRequest(serverUrl);
     encryptRequest.encryptAESKey = 'SLbsaRbf4Rou8Bju';
     encryptRequest.encryptAESIV = 'rzLM7Z4RJGFd';
-    encryptRequest.request(options).then((result) => {
+    encryptRequest.request(options).then(res => res.json()).then((result) => {
       expect(result).toBe('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=');
       expect(spyGet.calls.count()).toBe(1);
       expect(spyPost.calls.count()).toBe(1);
       expect(spyCommit.calls.count()).toBe(1);
       expect(encryptRequest.tunnelUrl).not.toBeUndefined();
-      encryptRequest.request(options).then(result => {
+      encryptRequest.request(options).then(res => res.json()).then(result => {
         expect(result).toBe('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=');
         expect(FetchRequest.get.calls.count()).toBe(1);
         expect(FetchRequest.post.calls.count()).toBe(1);

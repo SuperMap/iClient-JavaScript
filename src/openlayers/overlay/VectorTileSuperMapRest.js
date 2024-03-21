@@ -4,7 +4,7 @@
 import { Util } from '../core/Util';
 import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { EncryptRequest } from '@supermap/iclient-common/util/EncryptRequest';
+import { getServiceKey } from '@supermap/iclient-common/util/EncryptRequest';
 import { Unit } from '@supermap/iclient-common/REST';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
@@ -17,7 +17,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import * as olSize from 'ol/size';
 import Projection from 'ol/proj/Projection';
 import TileGrid from 'ol/tilegrid/TileGrid';
-import decodeUtil from './bundle.esm';
+import decryptTileUtil from '@supermap/tile-decryptor';
 
 /**
  * @class VectorTileSuperMapRest
@@ -271,10 +271,7 @@ export class VectorTileSuperMapRest extends VectorTile {
                             source = xhr.response;
                         }
                         if (source) {
-                            // console.time('瓦片解密完成');
                             source = me._decryptMvt(source);
-                            // console.timeEnd('瓦片解密完成');
-                            // console.log('瓦片解密字节大小: ', source.byteLength);
                             if (['4', '5'].indexOf(Util.getOlVersion()) > -1) {
                               success.call(
                                   this,
@@ -395,24 +392,7 @@ export class VectorTileSuperMapRest extends VectorTile {
           const firstSource = Object.keys(options.style.sources)[0];
           serviceUrl = options.style.sources[firstSource].tiles[0];
         }
-        const workspaceServerUrl = (serviceUrl && serviceUrl.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/))/) || [])[0];
-        if (!workspaceServerUrl) {
-          return;
-        }
-        const servicesResponse = await FetchRequest.get(workspaceServerUrl);
-        const servicesResult = await servicesResponse.json();
-        const matchRestData = (servicesResult || []).find(item => serviceUrl.includes(item.name) && item.serviceEncryptInfo);
-        if (!matchRestData) {
-          return;
-        }
-        const iserverHost = workspaceServerUrl.split('/services/')[0];
-        const encryptRequest = new EncryptRequest(iserverHost);
-        const svckeyUrl = matchRestData && `${iserverHost}/services/security/svckeys/${matchRestData.serviceEncryptInfo.encrptKeyID}.json`
-        const svcReponse = await encryptRequest.request({
-          method: 'get',
-          url: svckeyUrl
-        })
-        this.serviceKey = await svcReponse.json();
+        this.serviceKey = await getServiceKey(serviceUrl);
       } catch (error) {
         console.error(error);
       }
@@ -420,7 +400,7 @@ export class VectorTileSuperMapRest extends VectorTile {
 
     _decryptMvt(mvtData) {
       if (this.serviceKey) {
-        return decodeUtil(mvtData, this.serviceKey);
+        return decryptTileUtil(mvtData, this.serviceKey);
       }
       return mvtData;
     }
