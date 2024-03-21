@@ -9,8 +9,8 @@ import {
 import URI from 'urijs';
 
 /**
- * @private
  * @name EncryptRequest
+ * @version 11.2.0
  * @namespace
  * @category BaseTypes Util
  * @classdesc 加密请求地址
@@ -173,7 +173,7 @@ export async function getServiceKey(serviceUrl) {
       method: 'get',
       url: svckeyUrl
     });
-    return await svcReponse.json();
+    return svcReponse.json();
   } catch (error) {
     console.error(error);
   }

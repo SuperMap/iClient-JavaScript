@@ -1,6 +1,6 @@
 import { VectorTileSuperMapRest } from '../../../src/openlayers/overlay/VectorTileSuperMapRest';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import * as RequestcryptUtil from '@supermap/iclient-common/util/RequestcryptUtil';
+import { EncryptRequest } from '@supermap/iclient-common/util/EncryptRequest';
 import { MapService } from '../../../src/openlayers/services/MapService';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -59,7 +59,7 @@ const mapObject = {
 };
 describe('openlayers_VectorTileSuperMapRest', () => {
   var testDiv, map, vectorTileOptions, vectorTileSource, originalTimeout, vectorLayer, spyGet, spyPost, spyCommit;
-  const mockCallback = (testUrl, method) => {
+  const mockCallback = (testUrl) => {
     if ((url.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/))/) || [])[0] === testUrl) {
       return Promise.resolve(
         new Response(
@@ -80,33 +80,6 @@ describe('openlayers_VectorTileSuperMapRest', () => {
           ])
         )
       );
-    } else if (testUrl.includes('/security/tunnel/v1/publickey')) {
-      return Promise.resolve(
-        new Response(
-          JSON.stringify({
-            keyLength: 2048,
-            publicKey:
-              'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2BQweGm/+YpzPn/QaRvkOYQQOwO0LI52NSdtJDehARLvFLfKfpaXs2Qks2VISYX8bl1aBRtS5m5/Z8mdo41k2XM9sRUKldF5M0gTUqKWUnDkS6INnNfsW4VsHNizIiZY7YvQA2cwl/4eYm4YF5Qy3KugPGrxt5KxZvh8O7b6si9JwLwIx53Y5oRbFttCHdjWR4mqFTzTR/yD4K1xYo/fizdvqUmWLhfpirHQsWv3WLaUOdEj36nDGBxuqahQ5JbH3VeASdbJQRTp+0QQcfpZ1x0GxXJWstemCrCUETQIQczYtj98qxSqknC8HZQhDz8F31NFV4341vrGKgOzrsq5HQIDAQAB',
-            keyScheme: 'PKCS#8'
-          })
-        )
-      );
-    } else if (testUrl.includes('/services/security/tunnel/v1/tunnels/')) {
-      const response =
-        'HAsHE/ok/jROEySWBxWSr2FTLXcnIkeFAYzig+V7NGalR0f/VnBorkAOyOnbCSq9nM3YWrhEUFaWwAouSDeEVqe+BLuIA+7KmCBfD7hh+qyM0lC5cvZ8vOIjsI3eqhHhiPOi+IQLGHQsRbFl8hSkE0XU1GIojqjppSEAxW5jhFC2bH5hdCt/+PKuHPhATElgJqOI6FJHpVpbLWiqoP7WMYVYvZm7wubYCQIG77LUSivbUQ61gjW0mevsKRdoiRl8fafV8Zq5D+QBbCy+Mn4rWXDC+gjwvyyYxEdOixALJgfnjWL48RRHxvITPapzbEsEkcnZiu+INSULcT60BeuduKzxp+hUg6Q8sn2Bu//CNk0NlGMeT5hqTON72iI4GBgfEOnGrcBHjsT/N2jX0NnVz1bgR6B9O6TpQQr3zkjVPidw8ElSO+lM8P5AuRqtNH9ajYt2uDwWBhbG+OfyR4hKIJ9V5aDhAwkIzkUerRP78Colsg==';
-      return Promise.resolve({ text: () => Promise.resolve(response) });
-    } else if (testUrl.includes('/services/security/tunnel/v1/tunnels')) {
-      const response = {
-        blockedUrlRegex: {
-          DELETE: [],
-          POST: [],
-          GET: ['.*/services/security/svckeys/[a-zA-Z]+\\.json'],
-          PUT: []
-        },
-        tunnelUrl:
-          'http://fake.iserver.com/iserver/services/security/tunnel/v1/tunnels/UUV6U25KNkVSNHhnQTYzcFVOTnZlNm9KVEVWZE4yeXVPNHlEVHAzeEZ2UnQ3WmtxS29qZURXQi9HcDBDYjNtM1FaOHFabGQwclduNGNzNjFjck1PbmFyakdOcGxQR25id2dQZ2ljY1NWdU5lMWg3dzV4UUtDQktyQ3doc3MzWnhmTkdNNWU3V01FZ21XNWJsR3pVdEtJenRpQXRTQ2RYQVBkN1oxRGNhNTh1a2pGSG1rUUZBeStjYVZPMXJ3NXFJcUdxN05ack1SNEEzNWRwNEZVNWV6ME96anYwN0tQempHZVl2U2VHa3YxRlc1R3ZXUW9KNmgwb290MjE1cEVZT2xNdzAwdXBidWpNOTQ2ck1iR1FFajFVUEtpeSt0OU9xdzdON0ZpZnhkTjEvRlF2cFpHN3ZBalVPV0ovVkNDdU9nN3RyU081SlhRMlZVQXhsbDlkMHZnPT0=.json'
-      };
-      return Promise.resolve(new Response(JSON.stringify(response)));
     }
     return Promise.resolve(new Response(JSON.stringify(mapObject)));
   };
@@ -121,8 +94,8 @@ describe('openlayers_VectorTileSuperMapRest', () => {
     window.document.body.appendChild(testDiv);
   });
   beforeEach(() => {
-    // originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    // jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
 
     spyGet = spyOn(FetchRequest, 'get').and.callFake((url) => mockCallback(url, 'GET'));
     spyPost = spyOn(FetchRequest, 'post').and.callFake((url) => mockCallback(url, 'POST'));
@@ -132,7 +105,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
     if (vectorLayer) {
       map.removeLayer(vectorLayer);
     }
-    // jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     spyGet.calls.reset();
     spyPost.calls.reset();
     spyCommit.calls.reset();
@@ -141,7 +114,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
     window.document.body.removeChild(testDiv);
   });
 
-  xit('initialize', (done) => {
+  it('initialize', (done) => {
     new MapService(url).getMapInfo((serviceResult) => {
       map = new Map({
         target: 'map',
@@ -169,7 +142,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
       map.addLayer(vectorLayer);
     });
   });
-  xit('custom_tileLoadFunction', (done) => {
+  it('custom_tileLoadFunction', (done) => {
     var spy = jasmine.createSpy('test');
     var tileLoadFunction = (tile) => {
       tile.setLoader(() => {
@@ -202,16 +175,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
 
   it('mvt_decrypt ', (done) => {
     const spy = jasmine.createSpy('test');
-    // function EncryptRequestTest() {}
-    // EncryptRequestTest.prototype.request = function (options) {
-    //   console.log(111111111111111111111111111, optios.url);
-    //   spy();
-    //   return Promise.resolve({ json: () => Promise.resolve('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=') });
-    // };
-    // const spyEncrypt = spyOn(EncryptRequestHelper, 'EncryptRequest').and.returnValue(EncryptRequestTest);
-    // RequestcryptUtil.generateAESRandomKey = () => 'SLbsaRbf4Rou8Bju';
-    // RequestcryptUtil.generateAESRandomIV = () => 'rzLM7Z4RJGFd';
-    const spyEncrypt = spyOn(RequestcryptUtil, 'AESGCMDecrypt').and.returnValue(true);
+    const spyEncrypt = spyOn(EncryptRequest.prototype, 'request').and.callFake(() => ({ json: () => Promise.resolve('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=')}));
     new MapService(url).getMapInfo((serviceResult) => {
       map = new Map({
         target: 'map',
@@ -239,6 +203,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
       vectorLayer.getSource().once('tileloadend', () => {
         expect(vectorTileOptions).not.toBeNull();
         expect(spy.calls.count()).toBe(1);
+        expect(spyEncrypt).toHaveBeenCalled();
         expect(vectorTileSource.serviceKey).not.toBeUndefined();
         spy.calls.reset();
         spyEncrypt.calls.reset();
