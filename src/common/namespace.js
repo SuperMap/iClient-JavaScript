@@ -337,6 +337,8 @@ import {
   isCORS,
   setCORS,
   FetchRequest,
+  EncryptRequest,
+  getServiceKey,
   ColorsPickerUtil,
   ArrayStatistic,
   CartoCSS,
@@ -493,7 +495,8 @@ SuperMap.isCORS = isCORS;
 SuperMap.setRequestTimeout = setRequestTimeout;
 SuperMap.getRequestTimeout = getRequestTimeout;
 SuperMap.FetchRequest = FetchRequest;
-
+SuperMap.EncryptRequest = EncryptRequest;
+SuperMap.getServiceKey = getServiceKey;
 // commontypes
 SuperMap.inherit = inheritExt;
 SuperMap.mixin = mixinExt;
