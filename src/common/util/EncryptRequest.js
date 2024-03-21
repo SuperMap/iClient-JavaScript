@@ -5,7 +5,8 @@ import {
   AESGCMDecrypt,
   generateAESRandomKey,
   generateAESRandomIV
-} from './RSAAndAESEn-DecryptorUtil';
+} from './RequestcryptUtil';
+import URI from 'urijs';
 
 /**
  * @private
@@ -16,8 +17,8 @@ import {
  * @param {string} serverUrl - 服务地址。
  */
 export class EncryptRequest {
-  constructor(serverUrl = '') {
-    this.serverUrl = serverUrl.split('').slice(-1)[0] === '/' ? serverUrl : `${serverUrl}/`;
+  constructor(serverUrl) {
+    this.serverUrl = serverUrl;
     this.tunnelUrl = undefined;
     this.blockedUrlRegex = {
       HEAD: [],
@@ -95,7 +96,7 @@ export class EncryptRequest {
    */
   async _getRSAPublicKey() {
     try {
-      const response = await FetchRequest.get(`${this.serverUrl}services/security/tunnel/v1/publickey`);
+      const response = await FetchRequest.get(URI(this.serverUrl).segment('services/security/tunnel/v1/publickey').toString());
       // 解析publicKey
       const publicKeyObj = await response.json();
       // 生成AES密钥
@@ -126,7 +127,7 @@ export class EncryptRequest {
           throw 'fetch RSA publicKey failed';
         }
         // 创建隧道
-        const response = await FetchRequest.post(`${this.serverUrl}services/security/tunnel/v1/tunnels`, data);
+        const response = await FetchRequest.post(URI(this.serverUrl).segment('services/security/tunnel/v1/tunnels').toString(), data);
         const result = await response.json();
         Object.assign(this, {
           tunnelUrl: result.tunnelUrl,
