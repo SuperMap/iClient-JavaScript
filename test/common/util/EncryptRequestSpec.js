@@ -1,5 +1,5 @@
-import { FetchRequest } from '../../../src/common//util/FetchRequest';
-import { EncryptRequest } from '../../../src/common//util/EncryptRequest';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
+import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
 
 describe('EncryptRequest', () => {
   const serverUrl = 'http://fake.iserver.com/iserver';
