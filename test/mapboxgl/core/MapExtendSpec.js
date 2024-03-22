@@ -4,6 +4,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
 import { decryptSources } from '../../../src/mapboxgl/core/decryptSource';
+import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
 
 describe('getServiceKey', () => {
   let originalTimeout;
@@ -170,6 +171,15 @@ describe('getServiceKey', () => {
   });
 
   it('getServiceKey', async () => {
+    EncryptRequest.prototype.request = () => {
+      return {
+        json: () =>
+          new Promise((resolve) => {
+            resolve('P8h08GonNjuCB4+CAykAGmLYwNsiv4G6H8KFrFi7Afk=');
+          })
+      };
+    };
+
     try {
       const source = {
         tiles: [
