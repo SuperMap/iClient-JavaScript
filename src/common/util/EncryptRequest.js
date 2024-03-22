@@ -9,12 +9,12 @@ import {
 import URI from 'urijs';
 
 /**
- * @name EncryptRequest
- * @version 11.2.0
- * @namespace
- * @category BaseTypes Util
+ * @class EncryptRequest
+ * @category  iServer Core
  * @classdesc 加密请求地址
- * @param {string} serverUrl - 服务地址。
+ * @param {string} serverUrl - iServer 服务地址。如：http://127.0.0.1:8090/iserver。
+ * @version 11.2.0
+ * @usage
  */
 export class EncryptRequest {
   constructor(serverUrl) {
@@ -144,10 +144,24 @@ export class EncryptRequest {
 /**
  * @function getServiceKey
  * @version 11.2.0
- * @category iServer
+ * @category  iServer Core
  * @description 获取矢量瓦片解密密钥
- * @param {string} serviceUrl - iserver服务地址,例如： 'http://127.0.0.1:8090/iserver/services/xxx'、 'http://127.0.0.1:8090/iserver/services/xxx/rest/maps' 、 'http://127.0.0.1:8090/iserver/services/xxx/restjsr/v1/vectortile'
- * @return {Promise} key - 矢量瓦片密钥
+ * @param {string} serviceUrl - iServer 服务地址。例如：http://127.0.0.1:8090/iserver/services/xxx、http://127.0.0.1:8090/iserver/services/xxx/rest/maps、http://127.0.0.1:8090/iserver/services/xxx/restjsr/v1/vectortile。
+ * @return {Promise} key - 矢量瓦片密钥。
+ * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script>
+ *   const result = {namespace}.getServiceKey(serviceUrl);
+ *
+ * </script>
+ *
+ * // ES6 Import
+ * import { getServiceKey } from '{npm}';
+ *
+ * const result = getServiceKey(serviceUrl);
+ * ```
  */
 export async function getServiceKey(serviceUrl) {
   try {
