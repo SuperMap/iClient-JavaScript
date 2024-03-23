@@ -1,6 +1,6 @@
 import { ImageRenderingRule, ImageCollectionService } from '../../../src/openlayers';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-describe('ImageCollectionService', () => {
+describe('openlayers_ImageCollectionService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;

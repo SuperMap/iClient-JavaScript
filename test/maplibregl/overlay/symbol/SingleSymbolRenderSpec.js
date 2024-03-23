@@ -1,6 +1,6 @@
 import SingleSymbolRender from '../../../../src/maplibregl/overlay/symbol/SingleSymbolRender'
 
-describe('SingleSymbolRender', () => {
+describe('maplibregl_SingleSymbolRender', () => {
   var testDiv, map, singleSymbolRender;
   beforeAll(() => {
     testDiv = window.document.createElement('div');

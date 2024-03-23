@@ -7,7 +7,7 @@ var {
   validateSymbol
 } = require("../../../../src/mapboxgl/overlay/symbol/SymbolUtil");
 
-describe('SymbolUtilSpec', () => {
+describe('mapboxgl_SymbolUtilSpec', () => {
   it('isMultiSymbol', () => {
     var res = isMultiSymbol([]);
     expect(res).toBeFalsy();

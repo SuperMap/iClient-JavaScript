@@ -1,6 +1,6 @@
 import { ImageRenderingRule, ImageCollectionService } from '../../../src/leaflet';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-describe('ImageCollectionService', () => {
+describe('leaflet_ImageCollectionService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;

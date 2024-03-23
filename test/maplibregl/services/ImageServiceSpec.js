@@ -1,7 +1,7 @@
 import { ImageSearchParameter, ImageService } from '../../../src/maplibregl';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-describe('ImageService', () => {
+describe('maplibregl_ImageService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;

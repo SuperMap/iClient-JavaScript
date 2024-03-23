@@ -1,6 +1,6 @@
 import SymbolManager from '../../../../src/maplibregl/overlay/symbol/SymbolManager'
 
-describe('SymbolManager', () => {
+describe('maplibregl_SymbolManager', () => {
 
     it('addSymbol', () => {
       const symbolId = 'user-star';

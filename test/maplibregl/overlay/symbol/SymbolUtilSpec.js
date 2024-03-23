@@ -7,7 +7,7 @@ var {
   validateSymbol
 } = require("../../../../src/maplibregl/overlay/symbol/SymbolUtil");
 
-describe('SymbolUtilSpec', () => {
+describe('maplibregl_SymbolUtilSpec', () => {
   it('isMultiSymbol', () => {
     var res = isMultiSymbol([]);
     expect(res).toBeFalsy();

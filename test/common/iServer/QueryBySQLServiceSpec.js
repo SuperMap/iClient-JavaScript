@@ -424,7 +424,7 @@ describe('testQueryBySQLService_processAsync', () => {
         queryBySQLService.processAsync(queryBySQLParameters, QueryBySQLCompleted);
     });
 
-    it('processAsync_customQueryParam', (done) => {
+    it('processAsync_customQueryParam2', (done) => {
       var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
       var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
       var QueryBySQLCompleted = (queryEventArgs) => {

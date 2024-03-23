@@ -1,7 +1,7 @@
 import { initMap } from '../../../src/maplibregl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-describe('InitMap', () => {
+describe('maplibregl_InitMap', () => {
   let originalTimeout, testDiv;
 
   beforeEach(() => {

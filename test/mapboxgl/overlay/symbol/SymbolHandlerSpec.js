@@ -309,7 +309,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     expect(handler.compositeSymbolRender.removeLayerId).toHaveBeenCalled();
   });
 
-  it('removeLayerId', () => {
+  it('removeLayerId1', () => {
     spyOn(handler.map.style, 'getLayer').and.returnValue({
         id: 'testRemoveLayerId'
     });
@@ -386,7 +386,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     });
   });
 
-  it('getStyle-hasSymbol', () => {
+  it('getStyle-hasSymbol2', () => {
     spyOn(handler.map.style, 'serialize').and.returnValue({
         layers: [
             {

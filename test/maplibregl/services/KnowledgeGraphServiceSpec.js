@@ -3,7 +3,7 @@ import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import '../../resources/KnowledgeGraphService';
 
 var knowledgegraphURL = 'http://fake:8090/iserver/services/knowledgeGraph-test/restjsr/graph';
-describe('KnowledgeGraphService', () => {
+describe('maplibregl_KnowledgeGraphService', () => {
   var originalTimeout;
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;

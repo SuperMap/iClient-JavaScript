@@ -1,6 +1,6 @@
 import SymbolManager from '../../../../src/mapboxgl/overlay/symbol/SymbolManager'
 
-describe('SymbolManager', () => {
+describe('mapboxgl_SymbolManager', () => {
 
     it('addSymbol', () => {
       const symbolId = 'user-star';

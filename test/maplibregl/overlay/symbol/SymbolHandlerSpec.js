@@ -1,5 +1,5 @@
 import SymbolHandler from '../../../../src/maplibregl/overlay/symbol/SymbolHandler';
-describe('mapboxgl_symbol_SymbolHandler', () => {
+describe('maplibregl_symbol_SymbolHandler', () => {
   var testDiv, map, handler;
   var originalTimeout;
   beforeAll((done) => {
@@ -379,7 +379,7 @@ describe('mapboxgl_symbol_SymbolHandler', () => {
     });
   });
 
-  it('getStyle-hasSymbol', () => {
+  it('getStyle-hasSymbol2', () => {
     spyOn(handler.map.style, 'serialize').and.returnValue({
         layers: [
             {

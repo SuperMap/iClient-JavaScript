@@ -3,7 +3,7 @@ import mbglmap from '../../tool/mock_mapboxgl_map';
 import { initMap } from '../../../src/mapboxgl/mapping/InitMap';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-describe('InitMap', () => {
+describe('mapboxgl_InitMap', () => {
   let originalTimeout, testDiv;
 
   beforeEach(() => {

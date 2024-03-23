@@ -1,7 +1,7 @@
 import { ImageSearchParameter, ImageService } from '../../../src/leaflet';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
-describe('ImageService', () => {
+describe('leaflet_ImageService', () => {
     var originalTimeout;
     var service;
     var requestUrl = GlobeParameter.imageServiceURL;
