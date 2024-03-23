@@ -1,5 +1,5 @@
 import CompositeSymbolRender from '../../../../src/maplibregl/overlay/symbol/CompositeSymbolRender';
-describe('mapboxgl_symbol_CompositeSymbolRender', () => {
+describe('maplibregl_symbol_CompositeSymbolRender', () => {
   var testDiv, map, handler;
   beforeAll(() => {
     testDiv = window.document.createElement('div');

@@ -5,7 +5,7 @@ import '../../resources/KnowledgeGraphService';
 var knowledgegraphURL = `http://fake:8090/iserver/services/knowledgeGraph-test/restjsr/graph`;
 var knowledgegraphmapURL = knowledgegraphURL + '/graphmaps/xxx图谱';
 
-describe('GraphMap leaflet', () => {
+describe('GraphMap maplibregl', () => {
   var originalTimeout;
   var dom;
   beforeAll(() => {

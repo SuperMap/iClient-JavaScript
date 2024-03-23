@@ -1,7 +1,7 @@
 import {WebSymbol} from '../../../../src/maplibregl/overlay/symbol/WebSymbol';
 import maplibregl from 'maplibre-gl';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
-describe('mapboxgl_WebSymbol', () => {
+describe('maplibregl_WebSymbol', () => {
   var originalTimeout;
   var testDiv, map;
   beforeAll(() => {
