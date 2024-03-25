@@ -39,7 +39,7 @@
   * @param {boolean} [options.textClipRegionEnabled=false] - 是否启用海图图层的文本显示裁剪区。
   * @param {boolean} [options.displayLowAccurateMarker=true] - 是否显示低精度符号。
   * @param {number} [options.displayScaleFactor] - 比例尺缩放。
-  * @param {object} [options.chartAcronymClassify] - 物标分组是否可显示的对应关系。
+  * @param {object} [options.displayableAcronymClassify] - 物标分组是否可显示的对应关系。
   * @usage
   */
  export class ChartSetting {
@@ -208,10 +208,10 @@
          this.displayScaleFactor = 0.05;
 
          /**
-          * @member {object} [options.chartAcronymClassify]
+          * @member {object} [options.displayableAcronymClassify]
           * @description 物标分组是否可显示的对应关系。
           */
-         this.chartAcronymClassify = null;
+         this.displayableAcronymClassify = null;
  
          if (options) {
              Util.extend(this, options);
@@ -252,7 +252,7 @@
       this.textClipRegionEnabled = null;
       this.displayLowAccurateMarker = null;
       this.displayScaleFactor = null;
-      this.chartAcronymClassify = null;
+      this.displayableAcronymClassify = null;
      }
  }
  

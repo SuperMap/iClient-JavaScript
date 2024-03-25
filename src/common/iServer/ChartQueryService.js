@@ -162,8 +162,8 @@ export class ChartQueryService extends CommonServiceBase {
                     this._transformFeatures(recordsets[i], fieldNameFormatter, me.format)
                 }
                 // 点选查询的返回结果
-                if(recordsets[i].chartFeatureRecordsets) {
-                    recordsets[i].chartFeatureRecordsets.forEach(chartFeatureRecordset => {
+                if(recordsets[i].chartRecordsets) {
+                    recordsets[i].chartRecordsets.forEach(chartFeatureRecordset => {
                       this._transformFeatures(chartFeatureRecordset, fieldNameFormatter, me.format)
                     });
                 }
