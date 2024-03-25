@@ -1,3 +1,4 @@
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initSignTreePanel = function (div, plotMapManager, layer) {
     plotMapManager.on(SuperMap.Plot.Event.signsymbollayeradded, function (event) {
         event.signSymbolLayer.on(SuperMap.Plot.Event.signsymbolsadded, refresh);
@@ -419,25 +420,25 @@ function parseUrlFromIndex(index){
     var templateURL;
     switch (index) {
         case 0:
-            templateURL = "../../dist/leaflet/plot-sign/sign1.html";
+            templateURL = "../data/plot-sign/sign1.html";
         break;
         case 1:
-            templateURL = "../../dist/leaflet/plot-sign/sign2.html";
+            templateURL = "../data/plot-sign/sign2.html";
         break;
         case 2:
-            templateURL = "../../dist/leaflet/plot-sign/sign3.html";
+            templateURL = "../data/plot-sign/sign3.html";
         break;
         case 3:
-            templateURL = "../../dist/leaflet/plot-sign/sign4.html";
+            templateURL = "../data/plot-sign/sign4.html";
         break;
         case 4:
-            templateURL = "../../dist/leaflet/plot-sign/sign5.html";
+            templateURL = "../data/plot-sign/sign5.html";
         break;
         case 5:
-            templateURL = "../../dist/leaflet/plot-sign/sign6.html";
+            templateURL = "../data/plot-sign/sign6.html";
         break;
         case 6:
-            templateURL = "../../dist/leaflet/plot-sign/sign7.html";
+            templateURL = "../data/plot-sign/sign7.html";
         break;
        default:
            break;
@@ -842,25 +843,25 @@ function getURLRows(){
 function urlValueToString(value){
     var result;
     switch (value) {
-        case "../../dist/leaflet/plot-sign/sign1.html":
+        case "../../dist/leaflet/html/sign1.html":
             result = "模板样式一";
             break;
-        case "../../dist/leaflet/plot-sign/sign2.html":
+        case "../../dist/leaflet/html/sign2.html":
             result = "模板样式二";
             break;
-        case "../../dist/leaflet/plot-sign/sign3.html":
+        case "../../dist/leaflet/html/sign3.html":
             result = "模板样式三";
             break;
-        case "../../dist/leaflet/plot-sign/sign4.html":
+        case "../../dist/leaflet/html/sign4.html":
             result = "模板样式四";
             break;
-        case "../../dist/leaflet/plot-sign/sign5.html":
+        case "../../dist/leaflet/html/sign5.html":
             result = "模板样式五";
             break;
-        case "../../dist/leaflet/plot-sign/sign6.html":
+        case "../../dist/leaflet/html/sign6.html":
             result = "模板样式六";
             break;
-        case "../../dist/leaflet/plot-sign/sign7.html":
+        case "../../dist/leaflet/html/sign7.html":
             result = "模板样式七";
             break;
         default:
