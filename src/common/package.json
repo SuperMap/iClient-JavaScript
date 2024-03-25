@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@antv/g6": "^4.8.14",
-    "@supermap/tile-decryptor": "^0.0.1",
+    "@supermap/tile-decryptor": "^0.0.2",
     "echarts": "5.4.3",
     "fetch-ie8": "1.5.0",
     "fetch-jsonp": "1.1.3",
