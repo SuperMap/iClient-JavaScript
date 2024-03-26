@@ -242,7 +242,6 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
         expect(serviceResult.result.succeed).toBeTruthy();
         expect(serviceResult.result.totalCount).toEqual(1889);
         expect(serviceResult.result.features).toBe(null);
-        done();
         bufferParam.destroy();
         done();
     });
