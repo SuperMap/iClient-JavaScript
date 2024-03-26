@@ -319,7 +319,7 @@ describe('KnowledgeGraph', () => {
     var data = KnowledgeGraph.dataFromGraphMap(graphData, {
       styles: { style },
       captionFields: { captionField: [captionField] },
-      showRelationTypes: false
+      showRelationTypes: true
     });
     expect(data.edges[0].label).toBe('邻接');
     done();
