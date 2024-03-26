@@ -91,6 +91,240 @@ describe('KnowledgeGraph', () => {
     done();
   });
 
+  it('node label 0', (done) => {
+    var graphData = [
+      {
+        path: [
+          {
+            id: 17732923532771331,
+            properties: {
+              server: 0
+            },
+            labels: ['面1']
+          },
+          {
+            start: 17732923532771331,
+            end: 18014398509481990,
+            id: 20547673299877890,
+            type: '邻接',
+            properties: {}
+          },
+          {
+            id: 18014398509481990,
+            properties: {
+              server: '0'
+            },
+            labels: ['面2']
+          }
+        ]
+      },
+      {
+        id: 177329231,
+        properties: {
+          server: 0
+        },
+        labels: ['面1']
+      },
+      {
+        start: 177329231,
+        end: 17732923,
+        id: 20547673890,
+        type: '邻接1',
+        properties: {}
+      }
+    ];
+    var style = [
+      {
+        type: 'entity',
+        color: '#ffc454',
+        textColor: '#ffffff',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 13,
+          fontStyle: 0
+        },
+        size: 20,
+        entityIds: '[12,16,18,21,23,25,28,29]'
+      },
+      {
+        type: 'entity',
+        color: '#c990c0',
+        textColor: '#595959',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 6,
+          fontStyle: 0
+        },
+        size: 20,
+        entityTypes: '["地籍子区"]'
+      }
+    ];
+    var captionField = { entityTypes: '["面1"]', name: 'server' };
+    var data = KnowledgeGraph.dataFromGraphMap(graphData, {
+      styles: { style },
+      captionFields: { captionField: [captionField] }
+    });
+    expect(data.nodes[0].label).toBe('0');
+    expect(data.edges).not.toBeNull();
+    done();
+  });
+
+  it('showRelationTypes false', (done) => {
+    var graphData = [
+      {
+        path: [
+          {
+            id: 17732923532771331,
+            properties: {
+              server: undefined
+            },
+            labels: ['面1']
+          },
+          {
+            start: 17732923532771331,
+            end: 18014398509481990,
+            id: 20547673299877890,
+            type: '邻接',
+            properties: {}
+          },
+          {
+            id: 18014398509481990,
+            properties: {
+              server: undefined
+            },
+            labels: ['面2']
+          }
+        ]
+      },
+      {
+        id: 177329231,
+        properties: {
+          server: 0
+        },
+        labels: ['面1']
+      },
+      {
+        start: 177329231,
+        end: 17732923,
+        id: 20547673890,
+        type: '邻接1',
+        properties: {}
+      }
+    ];
+    var style = [
+      {
+        type: 'entity',
+        color: '#ffc454',
+        textColor: '#ffffff',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 13,
+          fontStyle: 0
+        },
+        size: 20,
+        entityIds: '[12,16,18,21,23,25,28,29]'
+      },
+      {
+        type: 'entity',
+        color: '#c990c0',
+        textColor: '#595959',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 6,
+          fontStyle: 0
+        },
+        size: 20,
+        entityTypes: '["地籍子区"]'
+      }
+    ];
+    var captionField = { entityTypes: '["面1"]', name: 'server' };
+    var data = KnowledgeGraph.dataFromGraphMap(graphData, {
+      styles: { style },
+      captionFields: { captionField: [captionField] },
+      showRelationTypes: false
+    });
+    expect(data.nodes[0].label).toBe('');
+    expect(data.edges[0].label).toBeUndefined();
+    done();
+  });
+  it('showRelationTypes true', (done) => {
+    var graphData = [
+      {
+        path: [
+          {
+            id: 17732923532771331,
+            properties: {
+              server: 0
+            },
+            labels: ['面1']
+          },
+          {
+            start: 17732923532771331,
+            end: 18014398509481990,
+            id: 20547673299877890,
+            type: '邻接',
+            properties: {}
+          },
+          {
+            id: 18014398509481990,
+            properties: {
+              server: '0'
+            },
+            labels: ['面2']
+          }
+        ]
+      },
+      {
+        id: 177329231,
+        properties: {
+          server: 0
+        },
+        labels: ['面1']
+      },
+      {
+        start: 177329231,
+        end: 17732923,
+        id: 20547673890,
+        type: '邻接1',
+        properties: {}
+      }
+    ];
+    var style = [
+      {
+        type: 'entity',
+        color: '#ffc454',
+        textColor: '#ffffff',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 13,
+          fontStyle: 0
+        },
+        size: 20,
+        entityIds: '[12,16,18,21,23,25,28,29]'
+      },
+      {
+        type: 'entity',
+        color: '#c990c0',
+        textColor: '#595959',
+        font: {
+          fontName: 'Microsoft Yahei UI',
+          fontSize: 6,
+          fontStyle: 0
+        },
+        size: 20,
+        entityTypes: '["地籍子区"]'
+      }
+    ];
+    var captionField = { entityTypes: '["面1"]', name: 'server' };
+    var data = KnowledgeGraph.dataFromGraphMap(graphData, {
+      styles: { style },
+      captionFields: { captionField: [captionField] },
+      showRelationTypes: false
+    });
+    expect(data.edges[0].label).toBe('邻接');
+    done();
+  });
+
   it('dataFromGraphMap', (done) => {
     var graphData = [
       {
@@ -162,6 +396,7 @@ describe('KnowledgeGraph', () => {
     var data = KnowledgeGraph.dataFromGraphMap(graphData, { styles: { style } });
     expect(data.nodes).not.toBeNull();
     expect(data.edges).not.toBeNull();
+    expect(data.edges[0].label).toBe('邻接');
     done();
   });
 
