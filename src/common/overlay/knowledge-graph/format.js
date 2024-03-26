@@ -1,8 +1,9 @@
 import uniqBy from 'lodash.uniqby';
 
 export function transformGraphMap(data, graphMap) {
-  const style = graphMap && graphMap.styles && graphMap.styles.style;
-  const captionField = graphMap && graphMap.captionFields && graphMap.captionFields.captionField;
+  graphMap = graphMap || {};
+  const style = graphMap.styles && graphMap.styles.style;
+  const captionField = graphMap.captionFields && graphMap.captionFields.captionField;
 
   const rst = { nodes: [], edges: [] };
   data.forEach((item) => {
@@ -51,7 +52,7 @@ export function nodeFromGraphMap(entity, style, captionField) {
   const fillColor = styleData.fillColor || '';
   const node = {
     id: id + '',
-    label: label,
+    label: label === undefined ? '' : label + '',
     properties,
     lables
   };
@@ -161,11 +162,11 @@ function getNodeLabel(entity, captionField) {
       const types = JSON.parse(entityTypes || '[]');
       const labelStr = labels && labels.join('&');
       if (ids.includes(id) || types.includes(labelStr)) {
-        return properties[name] || '';
+        return properties[name];
       }
     }
   }
-  return properties[properties._labelfieldname] || '';
+  return properties[properties._labelfieldname];
 }
 
 function formatFontStyle(fontStyle) {
