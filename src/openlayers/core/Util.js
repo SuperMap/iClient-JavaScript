@@ -98,6 +98,9 @@
     * @returns {Bounds} 返回 SuperMap 的 Bounds 对象。
     */
    toSuperMapBounds(bounds) {
+     if (bounds instanceof Bounds) {
+       return bounds;
+     }
      return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
    },
 

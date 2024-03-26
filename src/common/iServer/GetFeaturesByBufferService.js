@@ -47,10 +47,7 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
      * @returns {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
-        if (!(params instanceof GetFeaturesByBufferParameters)) {
-            return;
-        }
-        return GetFeaturesByBufferParameters.toJsonParameters(params);
+      return GetFeaturesByBufferParameters.toJsonParameters(params);
     }
 
 }

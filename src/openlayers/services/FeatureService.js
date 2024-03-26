@@ -8,6 +8,7 @@ import { FeatureService as CommonFeatureService } from '@supermap/iclient-common
 import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
 import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
 
 /**
  * @class FeatureService
@@ -198,7 +199,7 @@ export class FeatureService extends ServiceBase {
     if (params.bounds) {
       params.bounds = Util.toSuperMapBounds(params.bounds);
     }
-    if (params.geometry) {
+    if (params.geometry && params.geometry instanceof Geometry) {
       params.geometry = Util.toSuperMapGeometry(JSON.parse(new GeoJSON().writeGeometry(params.geometry)));
     }
     if (params.editType) {

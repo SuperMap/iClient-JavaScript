@@ -558,4 +558,81 @@ var getReturnFeaturesOnlyResultJson = [
         ],
         "ID": 4
     }
+];
+
+var getReturnDatasetInfoOnlyResult = [
+  {
+      "fieldInfos": [
+          {
+              "name": "SmID",
+              "caption": "SmID",
+              "type": "INT32"
+          },
+          {
+              "name": "SmUserID",
+              "caption": "SmUserID",
+              "type": "INT32"
+          },
+          {
+              "name": "SmArea",
+              "caption": "SmArea",
+              "type": "DOUBLE"
+          },
+          {
+              "name": "SmPerimeter",
+              "caption": "SmPerimeter",
+              "type": "DOUBLE"
+          },
+          {
+              "name": "SmGeoParam",
+              "caption": "SmGeoParam",
+              "type": "LONGBINARY"
+          },
+          {
+              "name": "COUNTRY",
+              "caption": "Country",
+              "type": "WTEXT"
+          },
+          {
+              "name": "CAPITAL",
+              "caption": "Capital",
+              "type": "WTEXT"
+          },
+          {
+              "name": "ColorID",
+              "caption": "ColorID",
+              "type": "INT32"
+          },
+          {
+              "name": "COLOR_MAP",
+              "caption": "COLOR_MAP",
+              "type": "WTEXT"
+          },
+          {
+              "name": "SQKM",
+              "caption": "SQKM",
+              "type": "DOUBLE"
+          },
+          {
+              "name": "SQMI",
+              "caption": "SQMI",
+              "type": "DOUBLE"
+          },
+          {
+              "name": "POP_1994",
+              "caption": "Pop_1994",
+              "type": "DOUBLE"
+          },
+          {
+              "name": "CONTINENT",
+              "caption": "CONTINENT",
+              "type": "WTEXT"
+          }
+      ],
+      "featureRange": {
+          "start": 0,
+          "end": 19
+      },
+      "datasetName": "World:Countries"
+  }
 ]

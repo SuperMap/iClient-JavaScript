@@ -129,15 +129,15 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
             console.warn('recommend set returnFeaturesOnly config to true to imporve performance. if need get Total amount and Dataset information. FeatureService provide getFeaturesCount and getFeaturesDatasetInfo method');
           }
           if (params.returnCountOnly) {
-            me.url = Util.urlAppend(me.url, "&returnCountOnly=" + params.returnCountOnly)
+            me.url = Util.urlAppend(me.url, "returnCountOnly=" + params.returnCountOnly)
          }
 
           if (params.returnDatasetInfoOnly) {
-            me.url = Util.urlAppend(me.url, "&returnDatasetInfoOnly=" + params.returnDatasetInfoOnly)
+            me.url = Util.urlAppend(me.url, "returnDatasetInfoOnly=" + params.returnDatasetInfoOnly)
           }
           
           if (params.returnFeaturesOnly) {
-            me.url = Util.urlAppend(me.url, "&returnFeaturesOnly=" + params.returnFeaturesOnly)
+            me.url = Util.urlAppend(me.url, "returnFeaturesOnly=" + params.returnFeaturesOnly)
           }
        }
 
