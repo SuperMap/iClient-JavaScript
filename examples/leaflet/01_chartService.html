@@ -637,15 +637,15 @@
           };
       }}
 
+      var featuresListEle = document.getElementById("featuresList");
+      var localName = featuresListEle.options[featuresListEle.selectedIndex].text;
+
       new L.supermap.ChartService(url).queryChart(chartQueryParameters).then(function(res) {
         var queryRes = res.result.recordsets;
         queryResults.innerHTML = queryRes.length ? '': resources.text_queryEmpty;;
         queryRes.forEach(function(recordset) {
           allFeatures.features.push(...recordset.features.features);
           recordset.features.features.forEach(function(feature) {
-            var localName = featureInfos.find(function(featureInfo) {
-              return featureInfo.acronym === feature.properties.Acronym;
-            }).localName;
             var type = feature.geometry.type;
             
             var acronym = document.createElement('li');

@@ -662,6 +662,8 @@
               color: 'rgba(255, 0, 0, 0.1)'
           })
       });
+      var featuresListEle = document.getElementById("featuresList");
+      var localName = featuresListEle.options[featuresListEle.selectedIndex].text;
 
       new ol.supermap.ChartService(url).queryChart(chartQueryParameters).then(function(res) {
         var queryRes = res.result.recordsets;
@@ -669,9 +671,6 @@
         queryRes.forEach(function(recordset) {
           allFeatures.features.push(...recordset.features.features);
           recordset.features.features.forEach(function(feature) {
-            var localName = featureInfos.find(function(featureInfo) {
-              return featureInfo.acronym === feature.properties.Acronym;
-            }).localName;
             var fea = (new ol.format.GeoJSON()).readFeature(feature);
             var type = feature.geometry.type;
             var feaGeometry = fea.getGeometry();
