@@ -372,6 +372,7 @@ export class TileSuperMapRest extends TileImage {
      * @function  TileSuperMapRest.updateParams
      * @description 更新参数。
      * @param {Object} params - 参数对象。
+     * @version 11.2.0
      */
     updateParams(params) {
       Object.assign(this.requestParams, params);

@@ -62,9 +62,7 @@
             "src/common/components/templates/PopContainer",
             "src/common/components/templates/Select",
             "src/common/security/KeyServiceParameter",
-            "src/common/components/templates/TemplateBase",
-
-            "src/openlayers/core/Util"
+            "src/common/components/templates/TemplateBase"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],
