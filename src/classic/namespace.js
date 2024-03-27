@@ -1,6 +1,7 @@
 import {
   ElasticSearch,
   SecurityManager,
+  VectorClipJobsParameter,
   KernelDensityJobParameter,
   SingleObjectQueryJobsParameter,
   SummaryAttributesJobsParameter,
@@ -19,6 +20,7 @@ import {
 
 SuperMap.ElasticSearch = ElasticSearch;
 SuperMap.SecurityManager = SecurityManager;
+SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
