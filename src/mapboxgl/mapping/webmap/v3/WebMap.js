@@ -19,7 +19,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   /**
-   * @function mapboxgl.supermap.WebMap.prototype.createWebMap
+   * @function WebMap.prototype.createWebMap
    * @description 登陆窗口后添加地图图层。
    * @param {Object} mapInfo - map 信息。
    * @param {Object} map - map 实例。
@@ -36,7 +36,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._createMap
+   * @function WebMap.prototype._createMap
    * @description 创建地图。
    */
   _createMap() {
@@ -44,6 +44,7 @@ export class WebMap extends mapboxgl.Evented {
     if (this._mapInfo.center && crs === 'EPSG:3857') {
       center = Util.unproject(center);
     }
+    const fontFamilys = this._getLabelFontFamily();
     // 初始化 map
     const mapOptions = {
       container: this.target,
@@ -59,7 +60,8 @@ export class WebMap extends mapboxgl.Evented {
       minzoom,
       maxzoom,
       bearing,
-      pitch
+      pitch,
+      localIdeographFontFamily: fontFamilys || ''
     };
     this.map = new mapboxgl.Map(mapOptions);
     this.fire('mapinitialized', { map: this.map });
@@ -70,7 +72,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._initLayers
+   * @function WebMap.prototype._initLayers
    * @description emit 图层加载成功事件。
    */
   _initLayers() {
@@ -94,7 +96,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._createMapRelatedInfo
+   * @function WebMap.prototype._createMapRelatedInfo
    * @description 创建地图相关资源。
    */
   _createMapRelatedInfo() {
@@ -131,7 +133,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._getMapRelatedInfo
+   * @function WebMap.prototype._getMapRelatedInfo
    * @description 获取地图关联信息的 JSON 信息。
    */
    _getMapRelatedInfo() {
@@ -141,7 +143,7 @@ export class WebMap extends mapboxgl.Evented {
       })
       .catch((error) => {
         /**
-         * @event mapboxgl.supermap.WebMap#getmapfailed
+         * @event WebMap#getmapfailed
          * @description 获取地图信息失败。
          * @property {Object} error - 失败原因。
          */
@@ -151,7 +153,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._addLayersToMap
+   * @function WebMap.prototype._addLayersToMap
    * @description emit 图层加载成功事件。
    */
   _addLayersToMap() {
@@ -168,7 +170,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._setUniqueId
+   * @function WebMap.prototype._setUniqueId
    * @description 返回唯一 id 的 sources 和 layers。
    * @param {Object} mapInfo - map 信息。
    */
@@ -202,7 +204,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._sortLayers
+   * @function WebMap.prototype._sortLayers
    * @description 调整图层位置。
    * @param {Array<Object>} layers - 图层信息。
    */
@@ -225,7 +227,7 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._sendMapToUser
+   * @function WebMap.prototype._sendMapToUser
    * @description emit 图层加载成功事件。
    */
   _sendMapToUser() {
@@ -235,12 +237,12 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @private
-   * @function mapboxgl.supermap.WebMap.prototype._generateV2LayersStructure
+   * @function WebMap.prototype._generateV2LayersStructure
    * @description emit 图层加载成功事件。
    * @param {Array<Object>} layers - 图层信息。
    */
    _generateV2LayersStructure() {
-    const originLayers = this._mapResourceInfo.layers.filter(item => item.visible);
+    const originLayers = this._mapResourceInfo.catalogs.filter(item => item.visible);
     const layers = originLayers.map(layer => {
       const { themeSetting = {}, title } = layer;
       const realLayerId = this._layerIdMapList[layer.id];
@@ -261,5 +263,23 @@ export class WebMap extends mapboxgl.Evented {
       return overlayLayers;
     })
     return layers;
+  }
+
+  /**
+   * @private
+   * @function WebMap.prototype._getLabelFontFamily
+   * @description 获取图层字体类型。
+   */
+  _getLabelFontFamily() {
+    const fonts = [];
+    const layers = this._mapInfo.layers;
+    if (layers && layers.length > 0) {
+      layers.forEach(layer => {
+        const textFont = layer.layout && layer.layout['text-font'] || [];
+        fonts.push(...textFont);
+      });
+    }
+    const fontFamilys = fonts.join(',');
+    return fontFamilys;
   }
 }
