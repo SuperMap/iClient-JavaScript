@@ -17,7 +17,7 @@
   "dependencies": {
     "mapv": "2.0.62",
     "mapbox-gl": "1.13.2",
-    "three": "0.150.1",
+    "three": "0.156.1",
     "@supermap/iclient-common": "11.2.0-dev",
     "canvg": "3.0.10",
     "fast-xml-parser": "^4.2.7",
