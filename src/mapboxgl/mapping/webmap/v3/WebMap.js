@@ -263,5 +263,3 @@ export class WebMap extends mapboxgl.Evented {
     return layers;
   }
 }
-
-mapboxgl.supermap.WebMapV3 = WebMap;
