@@ -95,6 +95,9 @@ export class WebMap extends mapboxgl.Evented {
         this._addLayers(layers);
       }
     });
+    this.map.on('remove', () => {
+      this._stopCanvg();
+    });
    }
 
 	/**
@@ -149,9 +152,6 @@ export class WebMap extends mapboxgl.Evented {
 			localIdeographFontFamily: fontFamilys || ''
 		});
 		this.fire('mapinitialized');
-    this.map.on('remove', () => {
-      this._stopCanvg();
-    });
    }
 
 	/**

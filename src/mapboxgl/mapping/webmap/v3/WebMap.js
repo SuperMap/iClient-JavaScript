@@ -29,12 +29,18 @@ export const LEGEND_STYLE_KEYS = {
 };
 
 export class WebMap extends mapboxgl.Evented {
-  constructor(mapId, options) {
+  constructor(mapId, options, mapOptions) {
     super();
     this.mapId = mapId;
     this.server = options.server;
     this.withCredentials = options.withCredentials;
     this.target = options.target;
+    this.mapOptions = {
+      center: mapOptions.center,
+      zoom: mapOptions.zoom,
+      bearing: mapOptions.bearing,
+      pitch: mapOptions.pitch
+    }
     this.mapResourceUrl = Util.transformUrl(Object.assign({ url: `${this.server}web/maps/${mapId}` }, this.options));
     this._layersOfV3 = [];
     this._layerIdMapList = {};
@@ -67,9 +73,13 @@ export class WebMap extends mapboxgl.Evented {
    */
   _createMap() {
     let { name, crs, center = new mapboxgl.LngLat(0, 0), zoom = 0, bearing = 0, pitch = 0, minzoom, maxzoom, sprite } = this._mapInfo;
+    center = this.mapOptions.center || center;
     if (this._mapInfo.center && crs === 'EPSG:3857') {
       center = Util.unproject(center);
     }
+    zoom = this.mapOptions.zoom || zoom;
+    bearing = this.mapOptions.bearing || bearing;
+    pitch = this.mapOptions.pitch || pitch;
     const fontFamilys = this._getLabelFontFamily();
     // 初始化 map
     const mapOptions = {
@@ -259,6 +269,15 @@ export class WebMap extends mapboxgl.Evented {
     return this._legendList;
   }
 
+  cleanWebMap() {
+    if (this.map) {
+      this.map = null;
+      this._legendList = [];
+      this.mapOptions = {};
+      this._appreciableLayers = [];
+    }
+  }
+
   /**
    * @private
    * @function WebMap.prototype._generateV2LayersStructure
@@ -333,6 +352,7 @@ export class WebMap extends mapboxgl.Evented {
    * @description 获取雪碧图信息。
    */
   _getSpriteDatas(spriteUrl) {
+    spriteUrl = this.server + spriteUrl.split('/iportal')[1];
     return FetchRequest.get(spriteUrl, null, { withCredentials: this.withCredentials })
       .then((response) => {
         return response.json();
@@ -355,7 +375,7 @@ export class WebMap extends mapboxgl.Evented {
           layerId: layer.id
         };
         if (keyName === 'color') {
-          let symbolId = simpleStyle['symbolsContent'].value.symbol;
+          let symbolId = simpleStyle['symbolsContent'] && simpleStyle['symbolsContent'].value.symbol;
           if (symbolId) {
             let symbolInfo = this._spriteDatas[symbolId];
             styleList[keyName].values.forEach((info) => {
