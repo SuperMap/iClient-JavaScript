@@ -15,7 +15,8 @@ import {
   GeoCodingParameter,
   GeoDecodingParameter,
   SuperMap,
-  Util
+  Util,
+  FetchRequest
 } from './index';
 
 SuperMap.ElasticSearch = ElasticSearch;
@@ -33,5 +34,6 @@ SuperMap.OutputSetting = OutputSetting;
 SuperMap.MappingParameters = MappingParameters;
 SuperMap.GeoCodingParameter = GeoCodingParameter;
 SuperMap.GeoDecodingParameter = GeoDecodingParameter;
+SuperMap.FetchRequest = FetchRequest;
 SuperMap.Util = {...SuperMap.Util, ...Util};
 export * from './index';

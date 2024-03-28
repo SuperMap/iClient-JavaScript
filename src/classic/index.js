@@ -17,6 +17,7 @@ export { MappingParameters } from '@supermap/iclient-common/iServer/MappingParam
 export { GeoCodingParameter } from '@supermap/iclient-common/iServer/GeoCodingParameter';
 export { GeoDecodingParameter } from '@supermap/iclient-common/iServer/GeoDecodingParameter';
 export { VectorClipJobsParameter } from '@supermap/iclient-common/iServer/VectorClipJobsParameter';
+export { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 export { Util } from '@supermap/iclient-common/commontypes/Util';
 export * from './overlay';
 export * from './services';
