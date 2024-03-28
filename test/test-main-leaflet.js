@@ -86,6 +86,8 @@ import './leaflet/services/DatasourceServiceSpec.js';
 import './leaflet/services/ImageServiceSpec';
 import './leaflet/services/ImageCollectionServiceSpec';
 import './leaflet/services/ChartServiceSpec';
+import './leaflet/services/GetFeatureAttachmentsSpec';
+import './leaflet/services/EditFeatureAttachmentsSpec';
 /* component */
 import './leaflet/components/openfile/OpenFileViewSpec.js';
 import './leaflet/components/dataservicequery/DataServiceQueryViewSpec.js';

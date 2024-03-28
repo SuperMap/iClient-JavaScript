@@ -114,7 +114,8 @@ import './common/iServer/ImageRenderingRuleSpec';
 import './common/iServer/SortbySpec';
 import './common/iServer/ImageStretchOptionSpec';
 import './common/iServer/CompatibleSpec.js';
-
+import './common/iServer/AttachmentsParametersSpec.js';
+import './common/iServer/EditAttachmentsParametersSpec.js';
 /**common -- control**/
 import './common/control/TimeControlBaseSpec.js';
 import './common/control/TimeFlowControlSpec.js';
