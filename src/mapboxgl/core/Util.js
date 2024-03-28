@@ -235,5 +235,44 @@ export const Util = {
           return !!fieldName.match(new RegExp(shortName));
       }
       return false;
+  },
+
+  /**
+   * @description 墨卡托转经纬度。
+   * @param {Array} point - 待转换的点。
+   * @returns {Object} 经纬度坐标。
+   */
+  unproject(point) {
+    var d = 180 / Math.PI,
+      r = 6378137,
+      ts = Math.exp(-point[1] / r),
+      phi = Math.PI / 2 - 2 * Math.atan(ts);
+    for (var i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {
+      con = 1;
+      dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi;
+      phi += dphi;
+    }
+    return new mapboxgl.LngLat((point[0] * d) / r, phi * d);
+  },
+
+  /**
+   * @description url 拼接代理或者凭证信息
+   * @param {string} point - 待转换的 url
+   * @returns {string} 转换后的 url
+   */
+  transformUrl({ url, server, excludePortalProxyUrl, credentialValue, credentialKey }) {
+    let mapUrl = url.indexOf('.json') === -1 ? `${url}.json` : url;
+    let filter = 'getUrlResource.json?url=';
+    if (excludePortalProxyUrl && server.indexOf(filter) > -1) {
+      //大屏需求,或者有加上代理的
+      let urlArray = server.split(filter);
+      if (urlArray.length > 1) {
+        mapUrl = urlArray[0] + filter + mapUrl;
+      }
+    }
+    if (credentialValue && credentialKey) {
+      mapUrl += '?' + credentialKey + '=' + credentialValue;
+    }
+    return mapUrl;
   }
 }

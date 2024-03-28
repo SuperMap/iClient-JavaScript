@@ -76,7 +76,7 @@ var exampleConfig = {
                       version: '11.1.0',
                       thumbnail: 'query_fgb_features.png',
                       fileName: '01_mapQueryBySQL_FGB'
-                    }, 
+                    },
                     {
                       name: "图例",
                       name_en: "Legend",
@@ -327,21 +327,21 @@ var exampleConfig = {
                         version: '11.1.1',
                         thumbnail: "terrainSlopeCalculationService.png",
                         fileName: "04_terrainSlopeCalculationService"
-                    }, 
+                    },
                     {
                         name: "地形坡向计算",
                         name_en: "terrain aspect calculation",
                         version: '11.1.1',
                         thumbnail: "terrainAspectCalculationService.png",
                         fileName: "04_terrainAspectCalculationService"
-                    }, 
+                    },
                     {
                         name: "填挖方计算",
                         name_en: "terrain cutfill calculation",
                         version: '11.1.1',
                         thumbnail: "terrainCutFillCalculationService.png",
                         fileName: "04_terrainCutFillCalculationService"
-                    }, 
+                    },
                     {
                         name: "最近距离计算",
                         name_en: "min distance analysis",
@@ -599,6 +599,13 @@ var exampleConfig = {
                         version: '9.1.2',
                         thumbnail: 'iPortalWebmap_unicode.png',
                         fileName: 'iPortalWebmap_unicode'
+                    },
+                    {
+                        name: 'WebMap 3.0',
+                        name_en: 'WebMap 3.0',
+                        version: '9.1.2',
+                        thumbnail: 'iPortalWebmap_mapstudio.png',
+                        fileName: 'iPortalWebmap_mapstudio'
                     }
                 ]
             }
