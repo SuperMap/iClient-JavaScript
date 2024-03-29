@@ -46,8 +46,8 @@ import './maplibregl/services/KnowledgeGraphServiceSpec.js';
 import './maplibregl/services/AreaSolarRadiationServiceSpec.js';
 import './maplibregl/services/NetworkAnalyst3DServiceSpec.js';
 import './maplibregl/services/ChartServiceSpec.js';
-import './mapboxgl/services/GetFeatureAttachmentsSpec';
-import './mapboxgl/services/EditFeatureAttachmentsSpec';
+import './maplibregl/services/GetFeatureAttachmentsSpec';
+import './maplibregl/services/EditFeatureAttachmentsSpec';
 // overlay
 import './maplibregl/overlay/GraphMapSpec';
 import './maplibregl/overlay/HeatMapLayerSpec.js';
