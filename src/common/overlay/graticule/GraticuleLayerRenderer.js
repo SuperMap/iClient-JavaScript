@@ -185,7 +185,7 @@ export class GraticuleLayerRenderer {
         this.oldExtent = this.options.extent;
         this._calcInterval();
         this.isRotate = false;
-        this.visible = true;
+        this.visible = this.options.visible;
         this.features = this._getGraticuleFeatures();
     }
 
