@@ -1,18 +1,20 @@
 import uniqBy from 'lodash.uniqby';
 
 export function transformGraphMap(data, graphMap) {
-  const style = graphMap && graphMap.styles && graphMap.styles.style;
-  const captionField = graphMap && graphMap.captionFields && graphMap.captionFields.captionField;
+  graphMap = graphMap || {};
+  const style = graphMap.styles && graphMap.styles.style;
+  const captionField = graphMap.captionFields && graphMap.captionFields.captionField;
+  const showRelationTypes = graphMap.showRelationTypes;
 
   const rst = { nodes: [], edges: [] };
   data.forEach((item) => {
     const pathData = item.path;
     if (pathData) {
-      const { nodes, edges } = transformPath(pathData, style, captionField);
+      const { nodes, edges } = transformPath(pathData, style, captionField, showRelationTypes);
       rst.nodes.push(...nodes);
       rst.edges.push(...edges);
     } else if (isEdge(item)) {
-      const edge = edgeFromGraphMap(item, style);
+      const edge = edgeFromGraphMap(item, style, showRelationTypes);
       rst.edges.push(edge);
     } else {
       const node = nodeFromGraphMap(item, style, captionField);
@@ -30,11 +32,11 @@ function isEdge(entity) {
   return entity.hasOwnProperty('start') && entity.hasOwnProperty('end');
 }
 
-function transformPath(pathData, style, captionField) {
+function transformPath(pathData, style, captionField, showRelationTypes) {
   const rst = { nodes: [], edges: [] };
   pathData.forEach((item) => {
     if (isEdge(item)) {
-      const edge = edgeFromGraphMap(item, style);
+      const edge = edgeFromGraphMap(item, style, showRelationTypes);
       rst.edges.push(edge);
     } else {
       const node = nodeFromGraphMap(item, style, captionField);
@@ -51,7 +53,7 @@ export function nodeFromGraphMap(entity, style, captionField) {
   const fillColor = styleData.fillColor || '';
   const node = {
     id: id + '',
-    label: label,
+    label: label === undefined ? '' : label + '',
     properties,
     lables
   };
@@ -73,7 +75,7 @@ export function nodeFromGraphMap(entity, style, captionField) {
   }
   return node;
 }
-export function edgeFromGraphMap(entity, style) {
+export function edgeFromGraphMap(entity, style, showRelationTypes) {
   const { start, end, id, type, properties } = entity;
   const styleData = style ? getEdgeStyle(entity, style) : {};
   const edge = {
@@ -85,6 +87,9 @@ export function edgeFromGraphMap(entity, style) {
     labelCfg: {},
     properties
   };
+  if (showRelationTypes === false) {
+    delete edge.label;
+  }
   if (styleData.stroke) {
     edge.style.stroke = styleData.stroke;
     edge.style.endArrow = {
@@ -161,11 +166,11 @@ function getNodeLabel(entity, captionField) {
       const types = JSON.parse(entityTypes || '[]');
       const labelStr = labels && labels.join('&');
       if (ids.includes(id) || types.includes(labelStr)) {
-        return properties[name] || '';
+        return properties[name];
       }
     }
   }
-  return properties[properties._labelfieldname] || '';
+  return properties[properties._labelfieldname];
 }
 
 function formatFontStyle(fontStyle) {

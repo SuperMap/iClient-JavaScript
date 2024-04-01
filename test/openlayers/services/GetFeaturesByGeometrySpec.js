@@ -187,4 +187,92 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', () => {
             done();
         });
     });
+
+    it('getFeaturesCountOnly', done => {
+      var polygon = new Polygon([
+          [
+              [0, 0],
+              [-10, 30],
+              [-30, 0],
+              [0, 0]
+          ]
+      ]);
+      var geometryParam = new GetFeaturesByGeometryParameters({
+          datasetNames: ['World:Countries'],
+          geometry: polygon,
+          spatialQueryMode: 'INTERSECT'
+      });
+      var getFeaturesByGeometryService = new FeatureService(featureServiceURL, options);
+      spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+          expect(method).toBe('POST');
+          expect(testUrl).toBe(featureServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnCountOnly=true&returnContent=true');
+          var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+          expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+          expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
+          expect(options).not.toBeNull();
+          return Promise.resolve(new Response(JSON.stringify({
+            "features": null,
+            "featureUriList": null,
+            "datasetInfos": null,
+            "totalCount": 1889,
+            "featureCount": 20
+        })));
+      });
+      getFeaturesByGeometryService.getFeaturesCount(geometryParam, result => {
+          serviceResult = result;
+          try {
+              expect(serviceResult.result).not.toBeNull();
+              expect(serviceResult.result.succeed).toBeTruthy();
+              expect(serviceResult.result.totalCount).toEqual(1889);
+              expect(serviceResult.result.features).toBe(null);
+              done();
+          } catch (exception) {
+              console.log("'getFeaturesCountOnly'案例失败" + exception.name + ':' + exception.message);
+              expect(false).toBeTruthy();
+              done();
+          }
+      });
+  });
+
+
+  it('getFeaturesDatasetInfoOnly', done => {
+    var polygon = new Polygon([
+        [
+            [0, 0],
+            [-10, 30],
+            [-30, 0],
+            [0, 0]
+        ]
+    ]);
+    var geometryParam = new GetFeaturesByGeometryParameters({
+        datasetNames: ['World:Countries'],
+        geometry: polygon,
+        spatialQueryMode: 'INTERSECT'
+    });
+    var getFeaturesByGeometryService = new FeatureService(featureServiceURL, options);
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+        expect(method).toBe('POST');
+        expect(testUrl).toBe(featureServiceURL + '/featureResults?fromIndex=0&toIndex=19&returnDatasetInfoOnly=true&returnContent=true');
+        var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+        expect(paramsObj.datasetNames[0]).toBe('World:Countries');
+        expect(paramsObj.spatialQueryMode).toBe('INTERSECT');
+        expect(options).not.toBeNull();
+        return Promise.resolve(new Response(JSON.stringify(getReturnDatasetInfoOnlyResult)));
+    });
+    getFeaturesByGeometryService.getFeaturesDatasetInfo(geometryParam, result => {
+        serviceResult = result;
+        try {
+            expect(serviceResult.type).toBe('processCompleted');
+            expect(serviceResult.result).not.toBeNull();
+            expect(serviceResult.result.succeed).toBeTruthy();
+            expect(serviceResult.result[0].datasetName).toBe("World:Countries");
+            expect(serviceResult.result[0].fieldInfos.length).toEqual(13);
+            done();
+        } catch (exception) {
+            console.log("'getFeaturesDatasetInfoOnly'案例失败" + exception.name + ':' + exception.message);
+            expect(false).toBeTruthy();
+            done();
+        }
+    });
+});
 });

@@ -5,13 +5,14 @@ const serveIndex = require('serve-index');
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
+
 const product = process.argv[2];
 var dirname = product === 'openlayers' ? 'ol' : product
 const app = (module.exports = express());
 if (product) {
     const config = require(`./webpack.config.${product}.js`);
     const configBase = require(`./webpack.config.base.js`);
-    const entry = [`./src/${product}/${product === 'classic'? 'index': 'namespace'}.js`];
+    const entry = [`./src/${product}/namespace.js`];
     const filename = `iclient-${dirname}`;
     config.output.filename = `${filename}-es6.min.js`;
     config.output.path = path.resolve(`${__dirname}/../dist/${dirname}`);

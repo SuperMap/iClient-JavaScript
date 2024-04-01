@@ -58,6 +58,9 @@ export const Util = {
         if (bounds instanceof mapboxgl.LngLatBounds) {
           return new Bounds(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
         }
+        if (bounds instanceof Bounds) {
+          return bounds;
+        }
         return bounds;
     },
 

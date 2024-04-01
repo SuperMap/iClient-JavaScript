@@ -198,4 +198,95 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', () => {
             done();
         });
     });
+
+    it('getFeaturesCount', done => {
+      var queryBufferGeometry = {
+        type: 'Polygon',
+        coordinates: [
+            [
+                [-20, 20],
+                [-20, -20],
+                [20, -20],
+                [20, 20],
+                [-20, 20]
+            ]
+        ]
+    };
+    var bufferParam = new GetFeaturesByBufferParameters({
+        datasetNames: ['World:Capitals'],
+        bufferDistance: 10,
+        geometry: queryBufferGeometry,
+        fromIndex: 1,
+        toIndex: 3
+    });
+    var service = new FeatureService(url);
+    spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+        expect(method).toBe('POST');
+        expect(testUrl).toBe(url + '/featureResults?fromIndex=1&toIndex=3&returnCountOnly=true&returnContent=true');
+        var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+        expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+        expect(paramsObj.bufferDistance).toEqual(10);
+        expect(paramsObj.getFeatureMode).toBe('BUFFER');
+        expect(options).not.toBeNull();
+        return Promise.resolve(new Response(JSON.stringify({
+          "features": null,
+          "featureUriList": null,
+          "datasetInfos": null,
+          "totalCount": 1889,
+          "featureCount": 20
+      })));
+    });
+    service.getFeaturesCount(bufferParam, testResult => {
+        serviceResult = testResult;
+        expect(serviceResult.result).not.toBeNull();
+        expect(serviceResult.result.succeed).toBeTruthy();
+        expect(serviceResult.result.totalCount).toEqual(1889);
+        expect(serviceResult.result.features).toBe(null);
+        bufferParam.destroy();
+        done();
+    });
+  });
+
+  it('getFeaturesDatasetInfo', done => {
+    var queryBufferGeometry = {
+      type: 'Polygon',
+      coordinates: [
+          [
+              [-20, 20],
+              [-20, -20],
+              [20, -20],
+              [20, 20],
+              [-20, 20]
+          ]
+      ]
+  };
+  var bufferParam = new GetFeaturesByBufferParameters({
+      datasetNames: ['World:Capitals'],
+      bufferDistance: 10,
+      geometry: queryBufferGeometry,
+      fromIndex: 1,
+      toIndex: 3
+  });
+  var service = new FeatureService(url);
+  spyOn(FetchRequest, 'commit').and.callFake((method, testUrl, params, options) => {
+      expect(method).toBe('POST');
+      expect(testUrl).toBe(url + '/featureResults?fromIndex=1&toIndex=3&returnDatasetInfoOnly=true&returnContent=true');
+      var paramsObj = JSON.parse(params.replace(/'/g, '"'));
+      expect(paramsObj.datasetNames[0]).toBe('World:Capitals');
+      expect(paramsObj.bufferDistance).toEqual(10);
+      expect(paramsObj.getFeatureMode).toBe('BUFFER');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(JSON.stringify(getReturnDatasetInfoOnlyResult)));
+  });
+    service.getFeaturesDatasetInfo(bufferParam, testResult => {
+        serviceResult = testResult;
+        expect(serviceResult.type).toBe('processCompleted');
+        expect(serviceResult.result).not.toBeNull();
+        expect(serviceResult.result.succeed).toBeTruthy();
+        expect(serviceResult.result[0].datasetName).toBe("World:Countries");
+        expect(serviceResult.result[0].fieldInfos.length).toEqual(13);
+        bufferParam.destroy();
+        done();
+    });
+  });
 });

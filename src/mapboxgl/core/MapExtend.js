@@ -11,7 +11,7 @@ import { getServiceKey } from '@supermap/iclient-common/util/EncryptRequest';
  * @private
  */
 export var MapExtend = (function () {
-  if (mapboxgl.VectorTileSource.prototype.beforeLoadBak === undefined) {
+  if (mapboxgl.VectorTileSource && mapboxgl.VectorTileSource.prototype.beforeLoadBak === undefined) {
     mapboxgl.VectorTileSource.prototype.beforeLoadBak = mapboxgl.VectorTileSource.prototype.beforeLoad;
     mapboxgl.VectorTileSource.prototype.beforeLoad = async function (id, options) {
       const url = options && options.tiles && options.tiles[0];

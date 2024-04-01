@@ -355,10 +355,10 @@
     </div>
     <script type="text/javascript" include="mapbox-gl-enhance,turf" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
-      let host = window.isLocal ? window.server : "https://iserver.supermap.io",
+      var host = window.isLocal ? window.server : "https://iserver.supermap.io",
           url = host + "/iserver/services/map-Chart9FU/rest/maps/Chart9Fu"
-      let featureInfos;
-      let imgSrc = {
+      var featureInfos;
+      var imgSrc = {
           "Point": "../img/point1.png",
           "MultiPoint": "../img/point1.png",
           "LineString": "../img/line.png",
@@ -366,9 +366,9 @@
           "Polygon": "../img/polygon.png",
           "MultiPolygon": "../img/polygon.png",
       };
-      let chartAcronymClassify = {};
-      let chartSetting = getChartSetting();
-      let map = new mapboxgl.Map({
+      var displayableAcronymClassify = {};
+      var chartSetting = getChartSetting();
+      var map = new mapboxgl.Map({
         container: 'map',
         style: {
           version: 8,
@@ -398,40 +398,40 @@
       changeDisplayModeChart();
       function changeDisplayModeChart() { 
       // 当将显示模式设置为OTHER时,是否显示水深点、是否显示元物标、是否显示其他等深线标注 才有效
-      let displayModeChart = document.getElementById("displayModeChart").value;
+      var displayModeChart = document.getElementById("displayModeChart").value;
       document.getElementById("displaySounding").disabled = displayModeChart !== 'OTHER';
       document.getElementById("displayMetaObject").disabled = displayModeChart !== 'OTHER';
       document.getElementById("displayOtherContourLabel").disabled = displayModeChart !== 'OTHER';
     }
    
       function getChartSetting() { 
-      let displayModeChart = document.getElementById("displayModeChart").value;
-      let colourModeChart = document.getElementById("colourModeChart").value;
-      let displayTypeName = document.getElementById("displayTypeName").value;
-      let displayScaleFactor = parseFloat(document.getElementById("displayScaleFactor").value);
-      let fontName = document.getElementById("fontName").value;
-      let simplifiedMarker = document.getElementById("simplifiedMarker").value === "true";
-      let symbolizedAreaBoundary = document.getElementById("symbolizedAreaBoundary").value === "true";
-      let displayTextMessage = document.getElementById("displayTextMessage").value === "true";
-      let displaySounding = document.getElementById("displaySounding").value === "true";
-      let minVisibleScaleEnabled = document.getElementById("minVisibleScaleEnabled").value === "true";
-      let localizationDisplayText = document.getElementById("localizationDisplayText").value === "true";
-      let displayMetaObject = document.getElementById("displayMetaObject").value === "true";
-      let displayCellName = document.getElementById("displayCellName").value === "true";
-      let displayBorder = document.getElementById("displayBorder").value === "true";
-      let displaySafetyContourLabel = document.getElementById("displaySafetyContourLabel").value === "true";
-      let safetyContour = parseFloat(document.getElementById("safetyContour").value);
-      let shallowContour = parseFloat(document.getElementById("shallowContour").value);
-      let deepContour = parseFloat(document.getElementById("deepContour").value);
-      let safetyDepth = parseFloat(document.getElementById("safetyDepth").value);
-      let displayOtherContourLabel = document.getElementById("displayOtherContourLabel").value === "true";
-      let displayTwoShades = document.getElementById("displayTwoShades").value === "true";
-      let depthUnit = document.getElementById("depthUnit").value;
-      let fontSize = parseFloat(document.getElementById("fontSize").value);
-      let textClipRegionEnabled = document.getElementById("textClipRegionEnabled").value === "true";
-      let displayLowAccurateMarker = document.getElementById("displayLowAccurateMarker").value === "true";
+      var displayModeChart = document.getElementById("displayModeChart").value;
+      var colourModeChart = document.getElementById("colourModeChart").value;
+      var displayTypeName = document.getElementById("displayTypeName").value;
+      var displayScaleFactor = parseFloat(document.getElementById("displayScaleFactor").value);
+      var fontName = document.getElementById("fontName").value;
+      var simplifiedMarker = document.getElementById("simplifiedMarker").value === "true";
+      var symbolizedAreaBoundary = document.getElementById("symbolizedAreaBoundary").value === "true";
+      var displayTextMessage = document.getElementById("displayTextMessage").value === "true";
+      var displaySounding = document.getElementById("displaySounding").value === "true";
+      var minVisibleScaleEnabled = document.getElementById("minVisibleScaleEnabled").value === "true";
+      var localizationDisplayText = document.getElementById("localizationDisplayText").value === "true";
+      var displayMetaObject = document.getElementById("displayMetaObject").value === "true";
+      var displayCellName = document.getElementById("displayCellName").value === "true";
+      var displayBorder = document.getElementById("displayBorder").value === "true";
+      var displaySafetyContourLabel = document.getElementById("displaySafetyContourLabel").value === "true";
+      var safetyContour = parseFloat(document.getElementById("safetyContour").value);
+      var shallowContour = parseFloat(document.getElementById("shallowContour").value);
+      var deepContour = parseFloat(document.getElementById("deepContour").value);
+      var safetyDepth = parseFloat(document.getElementById("safetyDepth").value);
+      var displayOtherContourLabel = document.getElementById("displayOtherContourLabel").value === "true";
+      var displayTwoShades = document.getElementById("displayTwoShades").value === "true";
+      var depthUnit = document.getElementById("depthUnit").value;
+      var fontSize = parseFloat(document.getElementById("fontSize").value);
+      var textClipRegionEnabled = document.getElementById("textClipRegionEnabled").value === "true";
+      var displayLowAccurateMarker = document.getElementById("displayLowAccurateMarker").value === "true";
     
-      let chartSetting = new mapboxgl.supermap.ChartSetting({
+      var chartSetting = new mapboxgl.supermap.ChartSetting({
         displayModeChart: displayModeChart,
         colourModeChart: colourModeChart,
         displayTypeName: displayTypeName,
@@ -457,13 +457,13 @@
         displayBorder: displayBorder,
         textClipRegionEnabled: textClipRegionEnabled,
         displayLowAccurateMarker: displayLowAccurateMarker,
-        chartAcronymClassify: chartAcronymClassify
+        displayableAcronymClassify: displayableAcronymClassify
       })
       return chartSetting;
     }
 
       function update() { 
-        let newChartSetting = getChartSetting();
+        var newChartSetting = getChartSetting();
         map.getSource('raster-tiles').tiles=[url + '/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&origin={"x":-180,"y":90}&chartSetting='+ JSON.stringify(newChartSetting)]
         map.style.sourceCaches['raster-tiles'].clearTiles()
         map.style.sourceCaches['raster-tiles'].update(map.transform)
@@ -472,7 +472,7 @@
 
       getChartFeatureInfo();
       function getChartFeatureInfo() {
-        new mapboxgl.supermap.ChartService(url).getChartFeatureInfo().then(serviceResult => {
+        new mapboxgl.supermap.ChartService(url).getChartFeatureInfo().then(function(serviceResult) {
           featureInfos = serviceResult.result;
           getFeaturesList();
         })
@@ -480,29 +480,29 @@
 
       getClassify();
       function getClassify() {
-        let classifications = document.getElementById('classify')
-        let chartService = new mapboxgl.supermap.ChartService(url);
+        var classifications = document.getElementById('classify')
+        var chartService = new mapboxgl.supermap.ChartService(url);
         // 获取海图物标分类信息
-        chartService.getChartAcronymClassify().then(serviceResult => {
+        chartService.getChartAcronymClassify().then(function(serviceResult) {
           // 创建分类信息复选框
-          serviceResult.result.forEach(element => {
-            chartAcronymClassify[element.name] = true
+          serviceResult.result.forEach(function(element) {
+            displayableAcronymClassify[element.name] = true
             update();
-            let checkbox = document.createElement('input');
+            var checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = element.name;
             checkbox.checked = true;
             checkbox.id = element.name;
-            let label = document.createElement('label');
+            var label = document.createElement('label');
             label.textContent = element.aliasName;
             label.style.marginLeft = "15px";
             label.htmlFor = element.name;
             classifications.appendChild(checkbox);
             classifications.appendChild(label);
-            let brElement = document.createElement('br');
+            var brElement = document.createElement('br');
             classifications.appendChild(brElement);
             checkbox.addEventListener("click", function() {
-              chartAcronymClassify[checkbox.value] = checkbox.checked;
+              displayableAcronymClassify[checkbox.value] = checkbox.checked;
               update();
             });
           });
@@ -510,10 +510,10 @@
       }
 
       function clickHandler(event) {
-        let coordinates = [event.lngLat.lng, event.lngLat.lat];
-        let pixelCoor = event.point;
-        let b1 = map.unproject([pixelCoor.x-15,pixelCoor.y+15]);
-        let b2 = map.unproject([pixelCoor.x+15,pixelCoor.y-15]);
+        var coordinates = [event.lngLat.lng, event.lngLat.lat];
+        var pixelCoor = event.point;
+        var b1 = map.unproject([pixelCoor.x-15,pixelCoor.y+15]);
+        var b2 = map.unproject([pixelCoor.x+15,pixelCoor.y-15]);
         // 清除上一个点
         if (map.getLayer('markerLayer')) {
           map.removeLayer('markerLayer');
@@ -541,53 +541,55 @@
         });
         hasMarker = true;
 
-        let parms = new mapboxgl.supermap.ChartQueryParameters({
+        var parms = new mapboxgl.supermap.ChartQueryParameters({
             queryMode:"ChartFeatureBoundsQuery",
             bounds: new mapboxgl.LngLatBounds(b1, b2)
         });
-        let groups = document.getElementById('groups');
-        let featuresAttr = document.getElementById('featuresAttr');
-        let queryTips = document.querySelector('#queryTips');
-        let attrTitle = document.getElementById('attrTitle');
+        var groups = document.getElementById('groups');
+        var featuresAttr = document.getElementById('featuresAttr');
+        var queryTips = document.querySelector('#queryTips');
+        var attrTitle = document.getElementById('attrTitle');
         groups.innerHTML = '';
         featuresAttr.innerHTML = '';
         attrTitle.style.display = 'none';
         queryTips.innerHTML = resources.text_isQuerying;
 
-        new mapboxgl.supermap.ChartService(url).queryChart(parms).then(res => {
-          let queryRes = res.result.recordsets;
+        new mapboxgl.supermap.ChartService(url).queryChart(parms).then(function(res) {
+          var queryRes = res.result.recordsets;
           attrTitle.style.display = queryRes.length ? "block" : "none";
           if(queryRes.length) {
             queryTips.innerHTML = '';
-            queryRes.forEach(recordset => {
+            queryRes.forEach(function(recordset) {
               // 图幅
-              let groupName = document.createElement('div');
+              var groupName = document.createElement('div');
               groupName.innerHTML = recordset.datasetGroupName;
               groupName.style.fontWeight = 600;
               groups.append(groupName);
-              recordset.chartFeatureRecordsets.forEach(chartFeatureRecordset => {
-                let localName = featureInfos.find(featureInfo => featureInfo.acronym === chartFeatureRecordset.acronym).localName;
-                chartFeatureRecordset.features.features.forEach(feature => {
+              recordset.chartRecordsets.forEach(function(chartFeatureRecordset) {
+                var localName = featureInfos.find(function(featureInfo) {
+                  return featureInfo.acronym === chartFeatureRecordset.acronym;
+                }).localName;
+                chartFeatureRecordset.features.features.forEach(function(feature) {
                   // 图幅下的物标
-                  let type = feature.geometry.type;
-                  let acronym = document.createElement('li');
-                  acronym.innerHTML = `<img src=${imgSrc[type]}></img><a href="#${chartFeatureRecordset.acronym}${feature.id}" data-toggle="tab">${localName}</a>`;
+                  var type = feature.geometry.type;
+                  var acronym = document.createElement('li');
+                  acronym.innerHTML = '<img src=' + imgSrc[type] + '></img><a href="#' + chartFeatureRecordset.acronym + feature.id + '" data-toggle="tab">' + localName + '</a>';
                   document.getElementById('groups').append(acronym);
                   // 物标属性表格
-                  let field = document.createElement('table');
+                  var field = document.createElement('table');
                   field.id=chartFeatureRecordset.acronym+feature.id;
                   field.className='tab-pane';
-                  let thead = document.createElement('thead');
-                  thead.innerHTML = `<tr><th>${resources.text_propertyName}</th><th>${resources.text_propertyValue}</th></tr>`;
+                  var thead = document.createElement('thead');
+                  thead.innerHTML = '<tr><th>' + resources.text_propertyName + '</th><th>' + resources.text_propertyValue + '</th></tr>';
                   field.append(thead);
                   featuresAttr.append(field);
-                  let tbody = document.createElement('tbody');
+                  var tbody = document.createElement('tbody');
                   field.append(tbody);
-                  let propertiesKeys = Object.keys(feature.properties)
-                  propertiesKeys.forEach((fieldName) => {
-                    let tr = document.createElement('tr');
-                    let fieldValue = feature.properties[fieldName];
-                    tr.innerHTML = `<td title=${fieldName}>${fieldName}</td> <td title="${fieldValue}">${fieldValue}</td>`;
+                  var propertiesKeys = Object.keys(feature.properties)
+                  propertiesKeys.forEach(function(fieldName) {
+                    var tr = document.createElement('tr');
+                    var fieldValue = feature.properties[fieldName];
+                    tr.innerHTML = '<td title=' + fieldName + '>' + fieldName + '</td> <td title="' + fieldValue + '">' + fieldValue + '</td>';
                     tbody.append(tr);
                   })
                 })
@@ -617,13 +619,13 @@
 
       getLayers()
       function getLayers() {
-        let chartLayers= [];
-        new mapboxgl.supermap.LayerInfoService(url).getLayersInfo().then(serviceResult => {
+        var chartLayers= [];
+        new mapboxgl.supermap.LayerInfoService(url).getLayersInfo().then(function(serviceResult) {
           serviceResult.result.subLayers.layers.map(function (layer) {
               chartLayers.push(layer.name);
           });
-          let selectElement = document.getElementById('chartLayers');
-          for (let i = 0; i < chartLayers.length; i++) {
+          var selectElement = document.getElementById('chartLayers');
+          for (var i = 0; i < chartLayers.length; i++) {
             const optionElement = document.createElement('option');
             optionElement.value = chartLayers[i];
             optionElement.textContent = chartLayers[i];
@@ -633,8 +635,8 @@
       }
 
       function getFeaturesList() {
-        let featuresList = document.getElementById('featuresList');
-        for (let i = 0; i < featureInfos.length; i++) {
+        var featuresList = document.getElementById('featuresList');
+        for (var i = 0; i < featureInfos.length; i++) {
             const optionElement = document.createElement('option');
             optionElement.value = featureInfos[i]['code'];
             optionElement.textContent = featureInfos[i]['localName'];
@@ -644,37 +646,37 @@
 
       map.loadImage(
         '../img/point2.png', 
-        (error, image) => {
+        function(error, image) {
         if (error) throw error;
           map.addImage('icon_name', image);
       });
       function sqlQuery() { 
-        let chartLayerNames = document.getElementById("chartLayers").value;
-        let chartFeatureInfoSpecCode = document.getElementById("featuresList").value;
-        let attributeFilter = document.getElementById("attributeFilter").value;
-        let isQueryPoint = document.getElementById("isQueryPoint").value === "true";
-        let isQueryLine = document.getElementById("isQueryLine").value === "true";
-        let isQueryRegion = document.getElementById("isQueryRegion").value === "true";
+        var chartLayerNames = document.getElementById("chartLayers").value;
+        var chartFeatureInfoSpecCode = document.getElementById("featuresList").value;
+        var attributeFilter = document.getElementById("attributeFilter").value;
+        var isQueryPoint = document.getElementById("isQueryPoint").value === "true";
+        var isQueryLine = document.getElementById("isQueryLine").value === "true";
+        var isQueryRegion = document.getElementById("isQueryRegion").value === "true";
         
-        let chartQueryFilterParameter = new mapboxgl.supermap.ChartQueryFilterParameter({
+        var chartQueryFilterParameter = new mapboxgl.supermap.ChartQueryFilterParameter({
           isQueryPoint,
           isQueryLine,
           isQueryRegion,
           attributeFilter,
           chartFeatureInfoSpecCode
         });
-        let chartQueryParameters = new mapboxgl.supermap.ChartQueryParameters({
+        var chartQueryParameters = new mapboxgl.supermap.ChartQueryParameters({
           queryMode:"ChartAttributeQuery",
           chartLayerNames:[chartLayerNames],
           returnContent:true,
           chartQueryFilterParameters:[chartQueryFilterParameter]
         });
         removeSqlRes();
-        let queryResults = document.getElementById('queryResults')
+        var queryResults = document.getElementById('queryResults')
         queryResults.innerHTML = resources.text_isQuerying;
 
-        let allFeatures = {features: [], type:"FeatureCollection"};
-        let layerStyle = {
+        var allFeatures = {features: [], type:"FeatureCollection"};
+        var layerStyle = {
           pointToLayer: function (feature, latlng) {
             return mapboxgl.marker(latlng, {
               icon: mapboxgl.icon({
@@ -692,27 +694,29 @@
             };
         }}
 
-        new mapboxgl.supermap.ChartService(url).queryChart(chartQueryParameters).then(res => {
-          let queryRes = res.result.recordsets;
+        var featuresListEle = document.getElementById("featuresList");
+        var localName = featuresListEle.options[featuresListEle.selectedIndex].text;
+
+        new mapboxgl.supermap.ChartService(url).queryChart(chartQueryParameters).then(function(res) {
+          var queryRes = res.result.recordsets;
           queryResults.innerHTML = queryRes.length ? '': resources.text_queryEmpty;
-          queryRes.forEach(recordset => {
+          queryRes.forEach(function(recordset) {
             allFeatures.features.push(...recordset.features.features);
-            recordset.features.features.forEach(feature => {
-              let localName = featureInfos.find(featureInfo => featureInfo.acronym === feature.properties.Acronym).localName;
-              let type = feature.geometry.type;
+            recordset.features.features.forEach(function(feature) {
+              var type = feature.geometry.type;
               
-              let acronym = document.createElement('li');
+              var acronym = document.createElement('li');
               acronym.addEventListener('click', addLayerAndFlyTo);
               // 点击列表物标，创建图层高亮显示
               function addLayerAndFlyTo() {
                 removeSqlRes(false);
                 addSourceAndLayer(feature);
-                let bounds = turf.bbox(feature);
+                var bounds = turf.bbox(feature);
                 map.fitBounds(bounds, {
                   padding: 200
                 });
               }
-              acronym.innerHTML = `<img src=${imgSrc[type]}></img><a data-toggle="tab">${localName}</a>`;
+              acronym.innerHTML = '<img src=' + imgSrc[type] + '></img><a data-toggle="tab">' + localName + '</a>';
               queryResults.append(acronym);
             })
           })
@@ -763,7 +767,7 @@
           document.getElementById('queryResults').innerHTML = '';
         }
         const layers = ['sql-layer-fill', 'sql-layer-line', 'sql-layer-point'];
-        layers.forEach(layer => {
+        layers.forEach(function(layer) {
           if (map.getLayer(layer)) {
             map.removeLayer(layer);
           }

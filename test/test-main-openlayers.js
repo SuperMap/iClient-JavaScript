@@ -82,4 +82,5 @@ import './openlayers/services/ImageServiceSpec';
 import './openlayers/services/ImageCollectionServiceSpec';
 import './openlayers/services/KnowledgeGraphServiceSpec.js';
 import './openlayers/services/ChartServiceSpec.js';
-
+import './openlayers/services/GetFeatureAttachmentsSpec';
+import './openlayers/services/EditFeatureAttachmentsSpec';

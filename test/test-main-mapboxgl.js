@@ -71,7 +71,8 @@ import './mapboxgl/services/DatasourceServiceSpec.js';
 import './mapboxgl/services/ImageServiceSpec';
 import './mapboxgl/services/ImageCollectionServiceSpec';
 import './mapboxgl/services/ChartServiceSpec';
-
+import './mapboxgl/services/GetFeatureAttachmentsSpec';
+import './mapboxgl/services/EditFeatureAttachmentsSpec';
 /*mapboxgl -- mapping*/
 import './mapboxgl/mapping/WebMapSpec.js';
 import './mapboxgl/mapping/InitMapSpec.js';

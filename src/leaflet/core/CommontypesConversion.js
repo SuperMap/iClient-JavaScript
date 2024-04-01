@@ -41,6 +41,9 @@ export const CommontypesConversion = {
                 bounds.max.y
             );
         }
+        if (bounds instanceof Bounds) {
+          return bounds;
+        }
         if (isArray(bounds)) {
             return new Bounds(
                 bounds[0],

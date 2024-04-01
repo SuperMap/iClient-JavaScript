@@ -2,6 +2,7 @@
  * @name decryptSources
  * @namespace
  * @category BaseTypes Util
+ * @version 11.2.0
  * @description 配置需要解密的矢量瓦片的sourceId。
  * @usage
  * ```
@@ -24,6 +25,7 @@ const decryptSources = {
    * @description 设置需要解密的矢量瓦片的sourceId数组
    * @param {Array.<string>} sourceIds sourceId数组
    * @returns {Array.<string>} sourceId数组
+   * @version 11.2.0
    */
   set(sourceIds) {
     this.values = sourceIds;
@@ -34,6 +36,7 @@ const decryptSources = {
    * @description 添加需要解密的矢量瓦片的sourceId
    * @param {string} sourceId sourceId
    * @returns {Array.<string>} sourceId
+   * @version 11.2.0
    */
   add(sourceId) {
     this.values.push(sourceId);

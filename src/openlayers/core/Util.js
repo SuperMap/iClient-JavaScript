@@ -31,7 +31,7 @@
   * // ES6 Import
   * import { Util } from '{npm}';
   *
-  * const result = Util.getOlVersion();
+  * const result = Util.setMask();
   * ```
   */
  export const Util = {
@@ -54,6 +54,7 @@
     * @function Util.toGeoJSON
     * @description 将传入对象转为 GeoJSON 格式。
     * @param {Object} smObj - 待转换参数。
+    * @private
     */
    toGeoJSON(smObj) {
      if (!smObj) {
@@ -66,6 +67,7 @@
     * @function Util.toSuperMapGeometry
     * @description 将 GeoJSON 对象转为 SuperMap 几何图形。
     * @param {GeoJSONObject} geoJSON - GeoJSON 对象。
+    * @private
     */
    toSuperMapGeometry(geoJSON) {
      if (!geoJSON || !geoJSON.type) {
@@ -82,6 +84,7 @@
     * @param {number} dpi - 屏幕分辨率。
     * @param {string} mapUnit - 地图单位。
     * @returns {number} 比例尺。
+    * @private
     */
    resolutionToScale(resolution, dpi, mapUnit) {
      const inchPerMeter = 1 / 0.0254;
@@ -96,8 +99,12 @@
     * @description 转为 SuperMapBounds 格式。
     * @param {Array.<number>} bounds - bounds 数组。
     * @returns {Bounds} 返回 SuperMap 的 Bounds 对象。
+    * @private
     */
    toSuperMapBounds(bounds) {
+     if (bounds instanceof Bounds) {
+       return bounds;
+     }
      return new Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
    },
 
@@ -106,6 +113,7 @@
     * @description 将 Region 节点数组转为 Processing 服务需要的分析参数。
     * @param {Array} points - Region 各个节点数组。
     * @returns processing 服务裁剪、查询分析的分析参数。
+    * @private
     */
    toProcessingParam(points) {
      if (points.length < 1) {
@@ -131,6 +139,7 @@
     * @param {number} dpi - 屏幕分辨率。
     * @param {string} mapUnit - 地图单位。
     * @returns {number} 分辨率。
+    * @private
     */
    scaleToResolution(scale, dpi, mapUnit) {
      const inchPerMeter = 1 / 0.0254;
@@ -145,6 +154,7 @@
     * @description 获取每地图单位多少米。
     * @param {string} mapUnit - 地图单位。
     * @returns {number} 返回每地图单位多少米。
+    * @private
     */
    getMeterPerMapUnit,
 
@@ -153,6 +163,7 @@
     * @description 判断是否为数组格式。
     * @param {Object} obj - 待判断对象。
     * @returns {boolean} 是否是数组。
+    * @private
     */
    isArray,
 
@@ -161,6 +172,7 @@
     * @description 将 csv 格式转为 GeoJSON。
     * @param {Object} csv - csv 对象。
     * @param {Object} options - 转换参数。
+    * @private
     */
    Csv2GeoJSON(csv, options) {
      const defaultOptions = {
@@ -249,6 +261,7 @@
     * @description 创建 2D 画布。
     * @param {number} opt_width - 画布宽度。
     * @param {number} opt_height - 画布高度。
+    * @private
     */
    createCanvasContext2D(opt_width, opt_height) {
      const canvas = document.createElement('CANVAS');
@@ -263,6 +276,7 @@
    /**
     * @function Util.supportWebGL2
     * @description 是否支持 webgl2。
+    * @private
     */
    supportWebGL2() {
      const canvas = document.createElement('canvas');
@@ -274,6 +288,7 @@
     * @description 是否为字符串
     * @param {string} str - 需要判断的内容
     * @returns {boolean}
+    * @private
     */
    isString,
    /**
@@ -281,6 +296,7 @@
     * @description 是否为对象
     * @param {any} obj - 需要判断的内容
     * @returns {boolean}
+    * @private
     */
    isObject(obj) {
      return Object.prototype.toString.call(obj) === '[object Object]';
@@ -291,6 +307,7 @@
     * @description 字符串裁剪两边的空格
     * @param {string} str - 需要裁剪的字符串
     * @returns {boolean}
+    * @private
     */
    trim(str = '') {
      return str.replace(/(^\s*)|(\s*$)/g, '');
@@ -300,6 +317,7 @@
     * @description 随机生成id
     * @param {string} attr - 几位数字的id
     * @returns {string}
+    * @private
     */
    newGuid(attr) {
      let len = attr || 32;
@@ -315,6 +333,7 @@
     * @description 检测数据是否为number
     * @param {string} value - 值，未知数据类型
     * @returns {boolean}
+    * @private
     */
    isNumber(value) {
      if (value === '') {
@@ -333,6 +352,7 @@
     * @param {string} featureName 原始数据中的地名
     * @param {string} fieldName 需要匹配的地名
     * @returns {boolean} 是否匹配
+    * @private
     */
    isMatchAdministrativeName,
 
@@ -341,6 +361,7 @@
     * @param {string} featureName 初始匹配的要素数组
     * @param {string} fieldName 要匹配的地名
     * @returns {boolean} 是否匹配
+    * @private
     */
    getHighestMatchAdministration(features, fieldName) {
      let filterFeatures = features.filter((item) => {
