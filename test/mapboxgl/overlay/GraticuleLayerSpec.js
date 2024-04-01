@@ -75,11 +75,10 @@ describe('mapboxgl_GraticuleLayer', () => {
   
   it('_initialize visible', (done) => {
     setTimeout(() => {
-      expect(graticuleLayer).not.toBeNull();
       const graticuleLayer = new GraticuleLayer({ layerID: 'graticuleLayer_test', visible: false });
       graticuleLayer.onAdd(map);
-      var visible = map.getLayoutProperty('graticuleLayer_1_line', 'visibility');
-      expect(visible).toBe('false');
+      var visible = map.getLayoutProperty('graticuleLayer_test_line', 'visibility');
+      expect(visible).toBe('none');
       done();
     }, 0);
   });
