@@ -1,4 +1,3 @@
-/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 L.supermap.plotting.initSignTreePanel = function (div, plotMapManager, layer) {
     plotMapManager.on(SuperMap.Plot.Event.signsymbollayeradded, function (event) {
         event.signSymbolLayer.on(SuperMap.Plot.Event.signsymbolsadded, refresh);
@@ -21,7 +20,7 @@ L.supermap.plotting.initSignTreePanel = function (div, plotMapManager, layer) {
     treeNodeStyle.style.border = '1px solid #617775';
     treeNodeStyle.style.overflow = 'scroll';
     var treeNode = document.createElement("div");
-    treeNode.id = "tree";
+    treeNode.id = "signSymbolTree";
     treeNode.className = "ztree";
     treeNodeStyle.appendChild(treeNode);
     signTreePanel.appendChild(treeNodeStyle);
@@ -95,7 +94,7 @@ function initSignTree() {
     };
 
     var treeData = analysisSignTree();
-    $.fn.zTree.init($("#tree"), setting, treeData);
+    $.fn.zTree.init($("#signSymbolTree"), setting, treeData);
 }
 function analysisSignTree() {
     var treeData = [];

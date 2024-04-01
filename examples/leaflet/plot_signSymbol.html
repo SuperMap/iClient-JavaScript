@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入
@@ -106,20 +106,20 @@
     <div id="signTree" class="winContent" style="  padding: 5px;overflow-y: auto;height: 400px;"></div>
     <div class="treePanel">
     <div class="panel1" id = "add&remove" style="display:flex; padding: 10px;justify-content: center;">
-        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="添加图层" onclick="addLayer()" /> 
-        <input id = "removeLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" value="删除图层" onclick="removeLayer()" /> 
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="添加图层" onclick="addLayer()" />
+        <input id = "removeLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" value="删除图层" onclick="removeLayer()" />
         <input id="layerVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="图层隐藏" onclick="signLayer()" />
     </div>
-    
-    
+
+
     <div class="panel5" id = "max&minScale" style="display:flex; padding: 10px;justify-content: center;">
-        <input id = "maxLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" value="最大比例尺" onclick="setMax()" /> 
-        <input id = "minLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" value="最小比例尺" onclick="setMin()" /> 
-        <input id = "cancelScale" type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" disabled = "true" value="清空比例尺" onclick="setClear()" /> 
+        <input id = "maxLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" value="最大比例尺" onclick="setMax()" />
+        <input id = "minLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" value="最小比例尺" onclick="setMin()" />
+        <input id = "cancelScale" type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" disabled = "true" value="清空比例尺" onclick="setClear()" />
     </div>
     <div  class="panel3" id = "operator" style="display:flex; padding: 10px;justify-content: center;">
-        <input id="signSymbolVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="标牌隐藏" onclick="signSignSymbol()" /> 
-        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="绑定标号" onclick="bind()" /> 
+        <input id="signSymbolVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="标牌隐藏" onclick="signSignSymbol()" />
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="绑定标号" onclick="bind()" />
         <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="解绑标牌" onclick="unbind()" />
     </div>
     </div>
@@ -143,7 +143,7 @@
     L.supermap.tiledMapLayer(url).addTo(map);
     L.control.scale().addTo(map);
     var plottingLayer = L.supermap.plotting.plottingLayer("标绘图层", serverUrl).addTo(map);
-    var signSymbolLayer = L.supermap.plotting.SignSymbolLayer("标牌图层",serverUrl).addTo(map);
+    var signSymbolLayer = L.supermap.plotting.signSymbolLayer("标牌图层",serverUrl).addTo(map);
     var drawControl = L.supermap.plotting.drawControl(plottingLayer).addTo(map);
     var editControl = L.supermap.plotting.editControl().addTo(map);
     L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
@@ -164,30 +164,30 @@
            var index =  parseInt(document.getElementById("selectMenu2").value)
            switch (index) {
                 case 0:
-                    templateURL = "../data/html/sign1.html";
+                    templateURL = "../data/plot-sign/sign1.html";
                 break;
                 case 1:
-                    templateURL = "../data/html/sign2.html";
+                    templateURL = "../data/plot-sign/sign2.html";
                 break;
                 case 2:
-                    templateURL = "../data/html/sign3.html";
+                    templateURL = "../data/plot-sign/sign3.html";
                 break;
                 case 3:
-                    templateURL = "../data/html/sign4.html";
+                    templateURL = "../data/plot-sign/sign4.html";
                 break;
                 case 4:
-                    templateURL = "../data/html/sign5.html";
+                    templateURL = "../data/plot-sign/sign5.html";
                 break;
                 case 5:
-                    templateURL = "../data/html/sign6.html";
+                    templateURL = "../data/plot-sign/sign6.html";
                 break;
                 case 6:
-                    templateURL = "../data/html/sign7.html";
+                    templateURL = "../data/plot-sign/sign7.html";
                 break;
                default:
                    break;
            }
-           
+
         }
         var title = "";
         if(signType === SuperMap.Plot.SignSymbolType.SIMPLE){
@@ -279,9 +279,9 @@
                     document.getElementById("signSymbolVisiable").value = "标牌隐藏";
                 }
             }
-            
+
         }
-        
+
 
     }
     var currentSignSymbol;
@@ -293,7 +293,7 @@
            currentSignSymbol = map.getSignSymbolByUuid(currentSelectedSignSymbolUuid);
            editControl.once("featuresselected",getTieFeature);
         }
-        
+
     }
     function unbind(){
         if (editControl.getSelectedSignSymbols()[0]) {
@@ -351,7 +351,7 @@
       return `${year}${month}${day}${hours}${minutes}`;
     }
     function addLayer() {
-        var layer = L.supermap.plotting.SignSymbolLayer("标牌图层", serverUrl).addTo(map);
+        var layer = L.supermap.plotting.signSymbolLayer("标牌图层", serverUrl).addTo(map);
         activeSignSymbolLayer = layer;
         document.getElementsByClassName("title_active")[0].innerText = `当前激活图层：${activeSignSymbolLayer.name}`
         // layer.on(SuperMap.Plot.Event.signsymbolsadded, refresh);
@@ -395,9 +395,9 @@
         }
     }else{
         alert("选择了错误的绑定对象！")
-    }  
+    }
     initSignTree();
-    // editControl.off("featuresselected",getTieFeature);   
+    // editControl.off("featuresselected",getTieFeature);
 
     }
     document.onkeydown = function (event) {
@@ -430,7 +430,7 @@
             }
         }
         tree.selectNode(node);
-        
+
     })
     editControl.on("signsymbolunselected",()=>{
         currentSelectedSignSymbolUuid = null;

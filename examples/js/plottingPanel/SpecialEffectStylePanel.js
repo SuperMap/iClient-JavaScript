@@ -396,7 +396,7 @@ L.supermap.plotting.initSpecialEffectTreePanel = function (divId, specialEffectM
     treeNodeStyle.style.border = '1px solid #617775';
     treeNodeStyle.style.overflow = 'scroll';
     var treeNode = document.createElement("div");
-    treeNode.id = "tree";
+    treeNode.id = "specialEffecttree";
     treeNode.className = "ztree";
     treeNodeStyle.appendChild(treeNode);
     specialEffectTreePanel.appendChild(treeNodeStyle);
@@ -417,7 +417,7 @@ function updateSpecialEffectTree() {
             specialEffectManager.selectedSpecialEffect(effect);
             curSelectEffect = effect;
         } else {
-            var tree = $.fn.zTree.getZTreeObj("tree");
+            var tree = $.fn.zTree.getZTreeObj("specialEffecttree");
             if (currentSelectedSpecialEffectUuid) {
                 var treeData = tree.transformToArray(tree.getNodes());
                 var node;
@@ -461,7 +461,7 @@ function updateSpecialEffectTree() {
     };
 
     var treeData = getSpecialEffectTreeData();
-    $.fn.zTree.init($("#tree"), setting, treeData);
+    $.fn.zTree.init($("#specialEffecttree"), setting, treeData);
 }
 
 function getSpecialEffectTreeData() {
