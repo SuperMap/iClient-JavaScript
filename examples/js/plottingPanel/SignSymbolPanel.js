@@ -40,9 +40,9 @@ function initSignTree() {
                 sign.getLayer().setSelectedSignSymbol(sign);
                 currentSelectedSignSymbolUuid = treeNode.uuid;
                 if(sign.getVisible()){
-                    document.getElementById("signSymbolVisiable").value = "标牌隐藏";
+                    document.getElementById("signSymbolVisiable").value = resources.title_hideSignSymbol;
                 }else{
-                    document.getElementById("signSymbolVisiable").value = "标牌显示";
+                    document.getElementById("signSymbolVisiable").value = resources.title_showSignSymbol;
                 }
             }
         }
@@ -64,9 +64,9 @@ function initSignTree() {
                 }
             }
             if(selectedSignSymbolLayer.getVisibility()){
-                document.getElementById("layerVisiable").value = "图层隐藏"
+                document.getElementById("layerVisiable").value = resources.title_hideLayer
             }else{
-                document.getElementById("layerVisiable").value = "图层显示"
+                document.getElementById("layerVisiable").value = resources.title_showLayer
             }
         }
     }
@@ -445,11 +445,11 @@ function parseUrlFromIndex(index){
    return templateURL
 }
 
-var signGroup = ["标牌", "标题样式","内容样式","边框","连接线"];
-var displaySignName = ["关联点位", "标牌位置", "标题", "内容", "偏移量X：", "偏移量Y：","横向填充距离", "纵向填充距离", "边框颜色","边框宽度","模板"];
-var displaySignTitleStyleName = ["标题字体","标题颜色", "标题字体大小","标题背景色", "标题透明度", "标题是否加粗", "标题的对齐方式"];
-var displaySignContentStyleName = [ "内容字体","内容颜色", "内容字体大小","内容背景色", "内容透明度" , "内容是否加粗", "内容的对齐方式"];
-var displaySignLineStyleName = ["线的颜色", "线的宽度", "线的透明度"];
+var signGroup = [resources.text_signSymbol, resources.text_titleStyle, resources.text_contentStyle, resources.text_opt_border, resources.text_associatedLine];
+var displaySignName = [resources.text_signAssociatedPoint, resources.text_signPosition, resources.text_title, resources.text_content, resources.text_XOffset, resources.text_YOffset,resources.horizenFillDis, resources.verticalFillDis, resources.text_borderColor,resources.text_borderWidth,resources.text_mode];
+var displaySignTitleStyleName = [resources.text_titleFont, resources.text_titleColor, resources.text_titleFontSize,resources.text_titleBackColor, resources.text_titleOpacity, resources.text_titleBold, resources.text_titleAlignType];
+var displaySignContentStyleName = [ resources.text_contentFont, resources.text_contentColor, resources.text_contentFontSize,resources.text_contentBackColor, resources.text_contentOpacity , resources.text_contentBold, resources.text_contentAlignType];
+var displaySignLineStyleName = [resources.text_signLineColor, resources.text_signLineWidth, resources.text_signLineOpacity];
 
 function collectionSignSymbolPropertyGridRows(signSymbol) {
     var rows = [];
@@ -704,8 +704,8 @@ function collectionSignSymbolPropertyGridRows(signSymbol) {
 }
 function getTie(){
     var rows = [];
-    rows.push({ "value": "0", "text": "否" });
-    rows.push({ "value": "1", "text": "是" });
+    rows.push({ "value": "0", "text": resources.text_false});
+    rows.push({ "value": "1", "text": resources.text_true });
     return rows;
 }
 function tieValueToString(value){
@@ -713,10 +713,10 @@ function tieValueToString(value){
     var result ;
     switch (type) {
         case 0:
-            result = "否";
+            result = resources.text_false;
             break;
         case 1:
-            result = "是";
+            result = resources.text_true;
             break;
         default:
             break;
@@ -725,10 +725,10 @@ function tieValueToString(value){
 }
 function getPositionRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "上" });
-    rows.push({ "value": "1", "text": "下" });
-    rows.push({ "value": "2", "text": "左" });
-    rows.push({ "value": "3", "text": "右" });
+    rows.push({ "value": "0", "text": resources.text_top });
+    rows.push({ "value": "1", "text": resources.text_bottom });
+    rows.push({ "value": "2", "text": resources.text_left });
+    rows.push({ "value": "3", "text": resources.text_right });
     return rows;
 }
 function positionValueToString(value) {
@@ -736,16 +736,16 @@ function positionValueToString(value) {
     var result;
     switch (type) {
         case 0:
-            result = "上";
+            result = resources.text_top;
             break;
         case 1:
-            result = "下";
+            result = resources.text_bottom;
             break;
         case 2:
-            result = "左";
+            result = resources.text_left;
             break;
         case 3:
-            result = "右";
+            result = resources.text_right;
             break;
         default:
             break;
@@ -754,9 +754,9 @@ function positionValueToString(value) {
 }
 function getFontRows() {
     var rows = [];
-    rows.push({ "value": "宋体", "text": "宋体" });
-    rows.push({ "value": "隶书", "text": "隶书" });
-    rows.push({ "value": "楷书", "text": "楷书" });
+    rows.push({ "value": resources.text_song, "text": resources.text_song });
+    rows.push({ "value": resources.text_li, "text": resources.text_li });
+    rows.push({ "value": resources.text_kai, "text": resources.text_kai });
     rows.push({ "value": "Helvetica", "text": "Helvetica" });
     rows.push({ "value": "Times New Roman", "text": "Times New Roman" });
     return rows;
@@ -764,14 +764,14 @@ function getFontRows() {
 function fontValueToStrin(value) {
     var result;
     switch (value) {
-        case "宋体":
-            result = "宋体";
+        case resources.text_song:
+            result = resources.text_song;
             break;
-        case "隶书":
-            result = "隶书";
+        case resources.text_li:
+            result = resources.text_li;
             break;
-        case "楷书":
-            result = "楷书";
+        case resources.text_kai:
+            result = resources.text_kai;
             break;
         case "Helvetica":
             result = "Helvetica";
@@ -786,18 +786,18 @@ function fontValueToStrin(value) {
 }
 function getFontWeight() {
     var rows = [];
-    rows.push({ "value": " ", "text": "不加粗" });
-    rows.push({ "value": "bold", "text": "加粗" });
+    rows.push({ "value": " ", "text": resources.text_unbold });
+    rows.push({ "value": "bold", "text": resources.text_bold });
     return rows;
 }
 function fontWeightValueToString(value) {
     var result;
     switch (value) {
         case " ":
-            result = "不加粗";
+            result = resources.text_unbold;
             break;
         case "bold":
-            result = "加粗";
+            result = resources.text_bold;
             break;
         default:
             break;
@@ -830,38 +830,38 @@ function fontAlignValueToString(value) {
 }
 function getURLRows(){
     var rows = [];
-    rows.push({ "value": "0", "text": "模板样式一" });
-    rows.push({ "value": "1", "text": "模板样式二" });
-    rows.push({ "value": "2", "text": "模板样式三" });
-    rows.push({ "value": "3", "text": "模板样式四" });
-    rows.push({ "value": "4", "text": "模板样式五" });
-    rows.push({ "value": "5", "text": "模板样式六" });
-    rows.push({ "value": "6", "text": "模板样式七" });
+    rows.push({ "value": "0", "text": resources.title_template1 });
+    rows.push({ "value": "1", "text": resources.title_template2 });
+    rows.push({ "value": "2", "text": resources.title_template3 });
+    rows.push({ "value": "3", "text": resources.title_template4 });
+    rows.push({ "value": "4", "text": resources.title_template5 });
+    rows.push({ "value": "5", "text": resources.title_template6 });
+    rows.push({ "value": "6", "text": resources.title_template7 });
     return rows;
 }
 function urlValueToString(value){
     var result;
     switch (value) {
         case "../../dist/leaflet/html/sign1.html":
-            result = "模板样式一";
+            result = resources.title_template1;
             break;
         case "../../dist/leaflet/html/sign2.html":
-            result = "模板样式二";
+            result = resources.title_template2;
             break;
         case "../../dist/leaflet/html/sign3.html":
-            result = "模板样式三";
+            result = resources.title_template3;
             break;
         case "../../dist/leaflet/html/sign4.html":
-            result = "模板样式四";
+            result = resources.title_template4;
             break;
         case "../../dist/leaflet/html/sign5.html":
-            result = "模板样式五";
+            result = resources.title_template5;
             break;
         case "../../dist/leaflet/html/sign6.html":
-            result = "模板样式六";
+            result = resources.title_template6;
             break;
         case "../../dist/leaflet/html/sign7.html":
-            result = "模板样式七";
+            result = resources.title_template7;
             break;
         default:
             break;

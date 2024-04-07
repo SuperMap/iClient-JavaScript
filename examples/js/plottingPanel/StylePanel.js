@@ -23,7 +23,7 @@ L.supermap.plotting.initStylePanel = function (div, serverUrl, editControl) {
             var _this = this;
             new Promise(function (resolve, reject) {
                 if (updated.length !== 0) {
-                    // if(updated[0].group == "子标�){
+                    // if(updated[0].group == "子标号"){
                     //     updateSubFeature(updated[0], selectFeatures);
                     // }else{
                     //     updateSelectFeature(updated[0], selectFeatures, serverUrl);
@@ -123,7 +123,7 @@ function updateSelectFeature(updated, selectfeatures) {
         transInfo.uuid = selectfeatures[i].uuid;
         if (updated != null) {
             switch (updated.name) {
-                case "内容":
+                case resources.text_content:
                     transInfo.functionName = "setTextContent";
                     transInfo.undoParams = [selectfeatures[i].getTextContent()];
                     transInfo.redoParams = [updated.value];
@@ -705,11 +705,11 @@ function updateSelectFeature(updated, selectfeatures) {
                         selectfeatures[i].setSubSymbol(code, updated.index, 100);
                     }
                 }
-                if (updated.name == "子标号线�) {//2023.6.25新加测试接口内容�
+                if (updated.name == resources.text_subSymbolLineWidth) {
                     let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
                     selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, 100, subSymbol.lineColor, parseFloat(updated.value));
                 }
-                if (updated.name == "子标号线�) {
+                if (updated.name == resources.text_subSymbolLineColor) {
                     let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
                     selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, 100, updated.value, subSymbol.width2D);
                 }
@@ -737,10 +737,10 @@ function openDialog(obj) {
             }
             e.target.parentElement.classList.add("selected");
         })
-        if (typename == "虚线" || typename == "线型") {
-            th.innerHTML = "实线";
+        if (typename == resources.text_dashedLine || typename == resources.text_lineType) {
+            th.innerHTML = resources.text_solidLine;
         } else {
-            th.innerHTML = "虚线";
+            th.innerHTML = resources.text_dashedLine;
         }
         var td = document.createElement('td');
         td.classList.add("td")

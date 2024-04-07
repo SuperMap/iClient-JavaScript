@@ -473,8 +473,8 @@ function getSpecialEffectTreeData() {
     var cellRootNode = new Object();
     cellRootNode.id = rootid - 1;
     cellRootNode.pId = 0;
-    cellRootNode.name = "特效列表";
-    cellRootNode.fullName = "特效列表" + "/";
+    cellRootNode.name = resources.text_specialEffectList;
+    cellRootNode.fullName = resources.text_specialEffectList + "/";
     cellRootNode.tag = "specialEffectList";
     treeData.push(cellRootNode);
     var cellId = cellRootNode.id + 1;
@@ -492,38 +492,38 @@ function getSpecialEffectTreeData() {
                 //     features.push(map.getFeatureByUuid(specialEffect.senderUuid));
                 //     features.push(map.getFeatureByUuid(specialEffect.receiverUuid));
                 // }
-                name = "通讯链路";
+                name = resources.option_communication;
                 break;
             case SuperMap.Plot.SpecialEffectType.AIM:
                 // if (specialEffect.viewUuid && specialEffect.aimUuid) {
                 //     features.push(map.getFeatureByUuid(specialEffect.viewUuid));
                 //     features.push(map.getFeatureByUuid(specialEffect.aimUuid));
                 // }
-                name = "瞄准";
+                name = resources.text_aim;
                 break;
             case SuperMap.Plot.SpecialEffectType.BOOM:
                 // if (specialEffect.associatedUuid) {
                 //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
                 // }
-                name = "爆炸";
+                name = resources.text_boom;
                 break;
             case SuperMap.Plot.SpecialEffectType.DESTROY:
                 // if (specialEffect.associatedUuid) {
                 //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
                 // }
-                name = "摧毁";
+                name = resources.text_destroy;
                 break;
             case SuperMap.Plot.SpecialEffectType.SCANRADAR:
                 // if (specialEffect.associatedUuid) {
                 //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
                 // }
-                name = "扇形雷达";
+                name = resources.text_scanRadar;
                 break;
             case SuperMap.Plot.SpecialEffectType.SECTORDETECTIONRANGE:
                 // if (specialEffect.associatedUuid) {
                 //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
                 // }
-                name = "扇形扫描";
+                name = resources.text_sectorDetectionRange;
                 break;
 
             default:

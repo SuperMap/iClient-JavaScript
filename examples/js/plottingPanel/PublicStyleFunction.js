@@ -1,24 +1,24 @@
 
-var group = ["标号", "解除锁定", "对象可见性", "常用:点", "主线", "衬线", "填充", "注记", "子标号"];
-var displayName = ["锁定", "可见性", "LibID", "Code"];
-var displayLineStyleName = ["线宽", "线颜色", "线型", "线透明度"];
-var displaySurroundLineName = ["衬线类型", "衬线宽", "衬线颜色", "衬线透明度"];
-var displayFillStyleName = ["填充", "填充色", "填充透明度", "渐变填充方式", "填充背景色", "填充背景透明度", "渐变填充角度", "渐变填充水平偏移", "渐变填充竖直偏移"];
-var displayNameDot = ["旋转角度", "随图缩放", "镜像", "标号级别", "位置点偏移", "偏移线类型", "宽高锁定", "标号Width", "标号Height"];
-var displayTextContentName = ["注记内容", "注记位置", "注记大小", "注记颜色", "注记字体", "注记距离",
-    "字间距", "字宽百分比", "字体描边", "描边色", "描边宽度",
-    "文字背景", "背景色", "文字阴影", "阴影色", "阴影偏移量X", "阴影偏移量Y"];
-var groupNew = ["组合类型", "箭头类型", "沿线类型", "边框属性", "半径", "轨道设置", "节点设置", "连线类型", "折线设置"];
-var displayNameNew = ["箭头", "箭身", "箭尾",
-    "起始", "终止",
-    "路径线", "贝塞尔曲线", "显示箭头", "避让",
-    "标注框边框", "圆角边框", "对象标注边框",
-    "半径类型", "半径角度", "注记一", "注记二",
-    "卫星轨道",
-    "节点类型", "节点旋转角度",
-    "对象间连线",
-    "折线显示",
-    "文字对齐方式"];
+var group = [resources.option_symbol, resources.text_cancleLocked, resources.text_objectVisible, resources.text_commonUsePoint, resources.text_mainLine, resources.text_surroundLine, resources.text_fill, resources.text_textContent, resources.text_subSymbol];
+var displayName = [resources.text_locked, resources.text_visible, resources.text_libID, resources.text_symbolCode];
+var displayLineStyleName = [resources.text_line_width, resources.text_signLineColor, resources.text_symbolLineType, resources.text_signLineOpacity];
+var displaySurroundLineName = [resources.text_surroundLindType, resources.text_surroundLindWidth, resources.text_surroundLindColor, resources.text_surroundLindOpacity];
+var displayFillStyleName = [resources.text_fill, resources.text_fillColor, resources.text_fillOpacity, resources.text_gradiendFillMode, resources.text_fillBackColor, resources.text_fillBackOpacity, resources.text_gradientFillAngle, resources.text_gradientFillHorizenOffset, resources.text_gradientFillVerticalOffset];
+var displayNameDot = [resources.text_rotateAngle, resources.text_followMapSize, resources.text_mirrorImage, resources.text_symbolRanke, resources.text_locationOffset, resources.text_offsetLineType, resources.text_sizeLocked, resources.text_symbolWidth, resources.text_symbolHeight];
+var displayTextContentName = [resources.text_symbolTextContent, resources.text_textContentLocation, resources.text_textContentSize, resources.text_textContentColor, resources.text_textContentFont, resources.text_textContentDis,
+    resources.text_textContentSpace, resources.text_fontSizePercent, resources.text_fontBorder, resources.text_fontBorderColor, resources.text_fontBorderWidth,
+    resources.text_fontBack, resources.text_fontBackColor, resources.text_fontShadow, resources.text_fontShadowColor, resources.text_shadowOffsetX, resources.text_shadowOffsetY];
+var groupNew = [resources.text_groupType, resources.text_arrowType, resources.text_alongLineType, resources.text_borderAttributr, resources.text_radius, resources.text_orbitSet, resources.text_nodeSet, resources.text_associatedLineType, resources.text_foldLineSet];
+var displayNameNew = [resources.text_arrowHead, resources.text_arrowBody, resources.text_arrowTail,
+    resources.text_start, resources.text_end,
+    resources.text_pathLine, resources.text_bezierCurves, resources.text_showArrow, resources.text_avoidance,
+    resources.text_textBoxBorder, resources.text_radiusBox, resources.text_objectTextBox,
+    resources.text_radiusType, resources.text_radiusAngle, resources.text_textContent1, resources.text_textContent2,
+    resources.text_satelliteOrbit,
+    resources.text_nodeType, resources.text_nodeRotateAngle,
+    resources.text_objectLines,
+    resources.text_showFoldLine,
+    resources.text_textAlignType];
 function collectionPropertyGridRows(featuresParameter) {
     var features = [];
     var styles = [];
@@ -71,10 +71,10 @@ function collectionPropertyGridRows(featuresParameter) {
 
     if (selectfeatures.length === sameFeatures.length) {
         rows = [
-            { "name": "标号几何ID", "value": selectfeature.symbolType, "group": group[0] },
-            { "name": "标号库ID", "value": selectfeature.libID, "group": group[0] },
-            { "name": "标号Code", "value": selectfeature.code, "group": group[0] },
-            { "name": "标号名字", "value": selectfeature.symbolName, "group": group[0] }
+            { "name": resources.text_symbolGeometryID, "value": selectfeature.symbolType, "group": group[0] },
+            { "name": resources.text_symbolLibID, "value": selectfeature.libID, "group": group[0] },
+            { "name": resources.text_symbolCode2, "value": selectfeature.code, "group": group[0] },
+            { "name": resources.text_symbolName, "value": selectfeature.symbolName, "group": group[0] }
         ];
         if(selectfeature.libID === 100&&(selectfeature.code === 23902||selectfeature.code === 21600)){
             rows.push({"name":"内容","value":selectfeature.textContent,"group": group[0],"editor":"text"});
@@ -129,15 +129,15 @@ function fromCheckboxValue(checkboxStr) {
  */
 function getDisplayRows() {
     var rows = [];
-    rows.push({ "value": "display", "text": "显示" });
-    rows.push({ "value": "none", "text": "不显示" });
+    rows.push({ "value": "display", "text": resources.text_show });
+    rows.push({ "value": "none", "text": resources.text_inVisible });
     return rows;
 }
 function displayToString(display) {
     if (display && display === "none") {
-        return "不显示";
+        return resources.text_inVisible;
     }
-    return "显示";
+    return resources.text_show;
 }
 /**
  * 8C使用线型
@@ -157,43 +157,43 @@ function get8CLineStyleRows() {
  */
 function lineStyleToString(lineStyle) {
     if (lineStyle == 1)
-        return "长虚线";
+        return resources.text_longDashLine;
     else if (lineStyle == 2)
-        return "由点构成的直线";
+        return resources.text_lineByPoint;
     else if (lineStyle == 3)
-        return "由线划线段组成的直线";
+        return resources.text_lineByLineSegment;
     else if (lineStyle == 4)
-        return "由重复的线划点图案构成的直线";
+        return resources.text_lineByPointSegment;
     else if (lineStyle == 5)
-        return "两段虚线";
+        return resources.text_twoSegDashline;
     else if (lineStyle == 6)
-        return "三段虚线";
+        return resources.text_threeSegDashline;
     else if (lineStyle == 7)
-        return "四段虚线";
+        return resources.text_fourSegDashline;
     else if (lineStyle == 8)
-        return "五段虚线";
+        return resources.text_fiveSegDashline;
     else if (lineStyle == 888)
-        return "NULL";
+        return resources.text_NULL;
     else if (lineStyle == 999)
-        return "自定义虚线";
+        return resources.text_selfDefinedDashline;
     else if (lineStyle == 0)
-        return "实线";
+        return resources.text_solidLine;
     else if (lineStyle)
-        return "实线";
+        return resources.text_solidLine;
 }
 function getLineStyleRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "实线" });//实线(solid)
-    rows.push({ "value": "1", "text": "长虚线" });//长虚线(longdash) //虚线(dash)
-    rows.push({ "value": "2", "text": "由点构成的直线" });//由点构成的直线(dot)
-    rows.push({ "value": "3", "text": "由线划线段组成的直线" });//由线划线段组成的直线(dashdot)(longdashdot)
-    rows.push({ "value": "4", "text": "由重复的线划点图案构成的直线" });//由重复的划线点图案构成的直线
-    rows.push({ "value": "888", "text": "NULL" });
-    rows.push({ "value": "5", "text": "两段虚线" });
-    rows.push({ "value": "6", "text": "三段虚线" });
-    rows.push({ "value": "7", "text": "四段虚线" });
-    rows.push({ "value": "8", "text": "五段虚线" });
-    rows.push({ "value": "999", "text": "自定义虚线" });
+    rows.push({ "value": "0", "text": resources.text_solidLine });//实线(solid)
+    rows.push({ "value": "1", "text": resources.text_longDashLine });//长虚线(longdash) //虚线(dash)
+    rows.push({ "value": "2", "text": resources.text_lineByPoint });//由点构成的直线(dot)
+    rows.push({ "value": "3", "text": resources.text_lineByLineSegment });//由线划线段组成的直线(dashdot)(longdashdot)
+    rows.push({ "value": "4", "text": resources.text_lineByPointSegment });//由重复的划线点图案构成的直线
+    rows.push({ "value": "888", "text": resources.text_NULL });
+    rows.push({ "value": "5", "text": resources.text_twoSegDashline });
+    rows.push({ "value": "6", "text": resources.text_threeSegDashline });
+    rows.push({ "value": "7", "text": resources.text_fourSegDashline });
+    rows.push({ "value": "8", "text": resources.text_fiveSegDashline });
+    rows.push({ "value": "999", "text": resources.text_selfDefinedDashline });
     return rows;
 }
 /**
@@ -201,62 +201,62 @@ function getLineStyleRows() {
  */
 function getAnnotationRows(geometry) {
     var annotations = [];
-    annotations.push({ "value": "0", "text": "左上" });
-    annotations.push({ "value": "1", "text": "左下" });
-    annotations.push({ "value": "2", "text": "右上" });
-    annotations.push({ "value": "3", "text": "右下" });
-    annotations.push({ "value": "4", "text": "上" });
-    annotations.push({ "value": "5", "text": "下" });
-    annotations.push({ "value": "6", "text": "左" });
-    annotations.push({ "value": "7", "text": "右" });
+    annotations.push({ "value": "0", "text": resources.text_leftTop });
+    annotations.push({ "value": "1", "text": resources.text_leftBottom });
+    annotations.push({ "value": "2", "text": resources.text_rightTop });
+    annotations.push({ "value": "3", "text": resources.text_rightBottom });
+    annotations.push({ "value": "4", "text": resources.text_top });
+    annotations.push({ "value": "5", "text": resources.text_bottom });
+    annotations.push({ "value": "6", "text": resources.text_left });
+    annotations.push({ "value": "7", "text": resources.text_right });
     if (geometry.symbolData && geometry.symbolData.middleMarkExist)
-        annotations.push({ "value": "8", "text": "中间" });
+        annotations.push({ "value": "8", "text": resources.text_middlePosition });
     return annotations;
 }
 function annotationToString(annotation) {
     if (annotation === 0)
-        return "左上";
+        return resources.text_leftTop;
     else if (annotation === 1)
-        return "左下";
+        return resources.text_leftBottom;
     else if (annotation === 2)
-        return "右上";
+        return resources.text_rightTop;
     else if (annotation === 3)
-        return "右下";
+        return resources.text_rightBottom;
     else if (annotation === 4)
-        return "上";
+        return resources.text_top;
     else if (annotation === 5)
-        return "下";
+        return resources.text_bottom;
     else if (annotation === 6)
-        return "左";
+        return resources.text_left;
     else if (annotation === 7)
-        return "右";
+        return resources.text_right;
     else if (annotation === 8)
-        return "中间";
+        return resources.text_middlePosition;
 }
 /**
  * 标号级别
  */
 function symbolRankToString(symbolRank) {
     if (symbolRank == 0)
-        return "无级别";
+        return resources.text_noRank;
     else if (symbolRank == 1)
-        return "军区级";
+        return resources.text_JQRank;
     else if (symbolRank == 2)
-        return "副大军区级";
+        return resources.text_FJQRank;
     else if (symbolRank == 3)
-        return "集团军级";
+        return resources.text_JTJRank;
     else if (symbolRank == 4)
-        return "师级";
+        return resources.text_SRank;
     else if (symbolRank == 5)
-        return "旅级";
+        return resources.text_LRank;
     else if (symbolRank == 6)
-        return "团级";
+        return resources.text_TRank;
     else if (symbolRank == 7)
-        return "营级";
+        return resources.text_YRank;
     else if (symbolRank == 8)
-        return "连级";
+        return resources.text_LianRank;
     else if (symbolRank == 9)
-        return "排级";
+        return resources.text_PRank;
 }
 function getSymbolRankRows(geometry) {
     var symbolRanks = [];
@@ -264,26 +264,26 @@ function getSymbolRankRows(geometry) {
         symbolRanks = geometry.symbolData.symbolRanks;
     }
     var rows = [];
-    rows.push({ "value": "0", "text": "无级别" });
+    rows.push({ "value": "0", "text": resources.text_noRank });
     for (var i = 0; i < symbolRanks.length; i++) {
         if (symbolRanks[i] == 1)
-            rows.push({ "value": "1", "text": "军区级" });
+            rows.push({ "value": "1", "text": resources.text_JQRank });
         else if (symbolRanks[i] == 2)
-            rows.push({ "value": "2", "text": "副大军区级" });
+            rows.push({ "value": "2", "text": resources.text_FJQRank });
         else if (symbolRanks[i] == 3)
-            rows.push({ "value": "3", "text": "集团军级" });
+            rows.push({ "value": "3", "text": resources.text_JTJRank });
         else if (symbolRanks[i] == 4)
-            rows.push({ "value": "4", "text": "师级" });
+            rows.push({ "value": "4", "text": resources.text_SRank });
         else if (symbolRanks[i] == 5)
-            rows.push({ "value": "5", "text": "旅级" });
+            rows.push({ "value": "5", "text": resources.text_LRank });
         else if (symbolRanks[i] == 6)
-            rows.push({ "value": "6", "text": "团级" });
+            rows.push({ "value": "6", "text": resources.text_TRank });
         else if (symbolRanks[i] == 7)
-            rows.push({ "value": "7", "text": "营级" });
+            rows.push({ "value": "7", "text": resources.text_YRank });
         else if (symbolRanks[i] == 8)
-            rows.push({ "value": "8", "text": "连级" });
+            rows.push({ "value": "8", "text": resources.text_LianRank });
         else if (symbolRanks[i] == 9)
-            rows.push({ "value": "9", "text": "排级" });
+            rows.push({ "value": "9", "text": resources.text_PRank });
     }
     return rows;
 }
@@ -293,30 +293,30 @@ function getSymbolRankRows(geometry) {
 function surroundLineTypeToString(symbolType, surroundLineType) {
     if (symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL) {
         if (surroundLineType === 0)
-            return "无衬线";
+            return resources.text_noSurroundLine;
         else if (surroundLineType === 1)
-            return "有衬线";
+            return resources.text_haveSurroundLine;
     } else {
         if (surroundLineType === 0)
-            return "无衬线";
+            return resources.text_noSurroundLine;
         else if (surroundLineType === 1)
-            return "内侧衬线";
+            return resources.text_innerSurroundLine;
         else if (surroundLineType === 2)
-            return "外侧衬线";
+            return resources.text_outerSurroundLine;
         else if (surroundLineType === 3)
-            return "双侧衬线";
+            return resources.text_bothSurroundLine;
     }
 }
 function getSurroundLineTypeRows(symbolType) {
     var rows = [];
     if (symbolType === SuperMap.Plot.SymbolType.DOTSYMBOL) {
-        rows.push({ "value": "0", "text": "无衬线" });
-        rows.push({ "value": "1", "text": "有衬线" });
+        rows.push({ "value": "0", "text": resources.text_noSurroundLine });
+        rows.push({ "value": "1", "text": resources.text_haveSurroundLine });
     } else {
-        rows.push({ "value": "0", "text": "无衬线" });
-        rows.push({ "value": "1", "text": "内侧衬线" });
-        rows.push({ "value": "2", "text": "外侧衬线" });
-        rows.push({ "value": "3", "text": "双侧衬线" });
+        rows.push({ "value": "0", "text": resources.text_noSurroundLine });
+        rows.push({ "value": "1", "text": resources.text_innerSurroundLine });
+        rows.push({ "value": "2", "text": resources.text_outerSurroundLine });
+        rows.push({ "value": "3", "text": resources.text_bothSurroundLine });
     }
     return rows;
 }
@@ -325,41 +325,41 @@ function getSurroundLineTypeRows(symbolType) {
  */
 function fillGradientModeToString(fillGradientMode) {
     if (fillGradientMode === "NONE") {
-        return "无渐变";
+        return resources.text_noGradient;
     } else if (fillGradientMode === "LINEAR") {
-        return "线性渐变";
+        return resources.text_lineGradient;
     } else if (fillGradientMode === "RADIAL") {
-        return "辐射渐变";
+        return resources.text_radialGradient;
     } else {
-        return "无渐变";
+        return text_noGradient;
     }
 }
 function getFillGradientModeRows() {
     var rows = [];
-    rows.push({ "value": "NONE", "text": "无渐变" });
-    rows.push({ "value": "LINEAR", "text": "线性渐变" });
-    rows.push({ "value": "RADIAL", "text": "辐射渐变" });
+    rows.push({ "value": "NONE", "text": resources.text_noGradient });
+    rows.push({ "value": "LINEAR", "text": resources.text_lineGradient });
+    rows.push({ "value": "RADIAL", "text": resources.text_radialGradient });
     return rows;
 }
 function fillToString(fillSymbolID, selectfeature) {
     if (fillSymbolID === 0) {
-        return "实填充";
+        return resources.text_solidFill;
     } else if (fillSymbolID === 1) {
-        return "无填充";
+        return resources.text_noFill;
     }
     if (selectfeature.symbolType !== SuperMap.Plot.SymbolType.SYMBOLTEXT) {
         if (fillSymbolID === 2) {
-            return "向上斜填充";
+            return resources.text_slashFill;
         } else if (fillSymbolID === 3) {
-            return "十字填充";
+            return resources.text_crossPatternFill;
         } else if (fillSymbolID === 4) {
-            return "交叉填充";
+            return resources.text_crossFill;
         } else if (fillSymbolID === 5) {
-            return "反斜线填充";
+            return resources.text_backslashFill;
         } else if (fillSymbolID === 6) {
-            return "水平填充";
+            return resources.text_horizonfill;
         } else if (fillSymbolID === 7) {
-            return "竖直填充";
+            return resources.text_verticalFill;
         }
 
     }
@@ -367,15 +367,15 @@ function fillToString(fillSymbolID, selectfeature) {
 }
 function getFillRows(selectfeature) {
     var rows = [];
-    rows.push({ "value": 0, "text": "实填充" });
-    rows.push({ "value": 1, "text": "无填充" });
+    rows.push({ "value": 0, "text": resources.text_solidFill });
+    rows.push({ "value": 1, "text": resources.text_noFill });
     if (selectfeature.symbolType !== SuperMap.Plot.SymbolType.SYMBOLTEXT) {
-        rows.push({ "value": 2, "text": "向上斜填充" });
-        rows.push({ "value": 3, "text": "十字填充" });
-        rows.push({ "value": 4, "text": "交叉填充" });
-        rows.push({ "value": 5, "text": "反斜线填充" });
-        rows.push({ "value": 6, "text": "水平填充" });
-        rows.push({ "value": 7, "text": "竖直填充" });
+        rows.push({ "value": 2, "text": resources.text_slashFill });
+        rows.push({ "value": 3, "text": resources.text_crossPatternFill });
+        rows.push({ "value": 4, "text": resources.text_crossFill });
+        rows.push({ "value": 5, "text": resources.text_backslashFill });
+        rows.push({ "value": 6, "text": resources.text_horizonfill });
+        rows.push({ "value": 7, "text": resources.text_verticalFill });
     }
     return rows;
 }
@@ -384,15 +384,15 @@ function getFillRows(selectfeature) {
  */
 function positionOffsetTypeToString(positionOffsetType) {
     if (positionOffsetType === 0) {
-        return "直线";
+        return resources.text_straightLine;
     } else if (positionOffsetType === 1) {
-        return "线粗渐变";
+        return resources.text_lineWithThickGradient;
     }
 }
 function getPositionOffsetTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "直线" });
-    rows.push({ "value": "1", "text": "线粗渐变" });
+    rows.push({ "value": "0", "text": resources.text_straightLine });
+    rows.push({ "value": "1", "text": resources.text_lineWithThickGradient });
     return rows;
 }
 /**
@@ -400,33 +400,33 @@ function getPositionOffsetTypeRows() {
  */
 function getShowRows() {
     var rows = [];
-    rows.push({ "value": "true", "text": "显示" });
-    rows.push({ "value": "false", "text": "不显示" });
+    rows.push({ "value": "true", "text": resources.text_show });
+    rows.push({ "value": "false", "text": resources.text_inVisible });
     return rows;
 }
 function showToString(show) {
     if (show === true) {
-        return "显示";
+        return resources.text_show;
     } else if (show === false) {
-        return "不显示";
+        return resources.text_inVisible;
     }
 }
 function relLineTextToString(relLineText) {
     if (relLineText === SuperMap.Plot.RelLineText.ONLINE)
-        return "线上";
+        return resources.text_underLine;
     else if (relLineText === SuperMap.Plot.RelLineText.ONLEFTLINE)
-        return "线左";
+        return resources.text_lineLeft;
     else if (relLineText === SuperMap.Plot.RelLineText.ONRIGHTLINE)
-        return "线右";
+        return resources.text_lineRight;
     else if (relLineText === SuperMap.Plot.RelLineText.ONBOTHLINE)
-        return "双侧";
+        return resources.text_lineBilateral;
 }
 function getRelLineTextRows() {
     var annotations = [];
-    annotations.push({ "value": "0", "text": "线上" });
-    annotations.push({ "value": "1", "text": "线左" });
-    annotations.push({ "value": "2", "text": "线右" });
-    annotations.push({ "value": "3", "text": "双侧" });
+    annotations.push({ "value": "0", "text": resources.text_underLine });
+    annotations.push({ "value": "1", "text": resources.text_lineLeft });
+    annotations.push({ "value": "2", "text": resources.text_lineRight });
+    annotations.push({ "value": "3", "text": resources.text_lineBilateral });
     return annotations;
 }
 /***
@@ -434,17 +434,17 @@ function getRelLineTextRows() {
  */
 function lineRelationTypeToString(lineRelationType) {
     if (lineRelationType == 0)
-        return "实直线";
+        return resources.text_solidStraightLine;
     else if (lineRelationType == 1)
-        return "虚直线";
+        return resources.text_dashStraightLine;
     else if (lineRelationType == 2)
-        return "箭头线";
+        return resources.text_arrowLine;
 }
 function getLineRelationTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "实直线" });
-    rows.push({ "value": "1", "text": "虚直线" });
-    rows.push({ "value": "2", "text": "箭头线" });
+    rows.push({ "value": "0", "text": resources.text_solidStraightLine });
+    rows.push({ "value": "1", "text": resources.text_dashStraightLine });
+    rows.push({ "value": "2", "text": resources.text_arrowLine });
     return rows;
 }
 /**
@@ -452,62 +452,62 @@ function getLineRelationTypeRows() {
  */
 function routeNodeTypeToString(routeNodeType) {
     if (routeNodeType === SuperMap.Plot.RouteNodeType.AIMING)
-        return "瞄准点";
+        return resources.option_aimPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.COMMONROUTE)
-        return "普通航路点";
+        return resources.text_ordinaryRoutesPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.EXPANDING)
-        return "展开点";
+        return resources.text_unfoldPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.INITIAL)
-        return "初始点";
+        return resources.text_initialPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.LANCH)
-        return "发射点";
+        return resources.text_launch;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.RENDEZVOUS)
-        return "会合点";
+        return resources.text_convergePoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.STANDBY)
-        return "待机点";
+        return resources.text_standbyPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.SUPPLY)
-        return "补给点";
+        return resources.text_supplyPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.TAKEOFF)
-        return "起飞点";
+        return resources.text_takeoffPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.TURNING)
-        return "转弯点";
+        return resources.text_turnPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.VISUALINITAL)
-        return "可视初始点";
+        return resources.text_visibleInitialPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.VOLLEY)
-        return "齐射点";
+        return resources.text_salvoPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.WEAPONLAUNCH)
-        return "武器发射点";
+        return resources.text_weaponLaunchPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.TARGET)
-        return "目标点";
+        return resources.text_targetPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.ATTACK)
-        return "攻击点";
+        return resources.text_attackPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.SUPPRESS)
-        return "压制点";
+        return resources.text_suppressPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.EIGHTSPIRAL)
-        return "八字盘旋点";
+        return resources.text_circledWithFigureofEightPoint;
     else if (routeNodeType == SuperMap.Plot.RouteNodeType.HAPPYVALLEY)
-        return "跑马圈点";
+        return resources.text_horseRingPoint;
 }
 function getRouteNodeTypeRows() {
     var rows = [];
-    rows.push({ "value": "AIMING", "text": "瞄准点" });
-    rows.push({ "value": "COMMONROUTE", "text": "普通航路点" });
-    rows.push({ "value": "EXPANDING", "text": "展开点" });
-    rows.push({ "value": "INITIAL", "text": "初始点" });
-    rows.push({ "value": "LANCH", "text": "发射点" });
-    rows.push({ "value": "RENDEZVOUS", "text": "会合点" });
-    rows.push({ "value": "STANDBY", "text": "待机点" });
-    rows.push({ "value": "SUPPLY", "text": "补给点" });
-    rows.push({ "value": "TAKEOFF", "text": "起飞点" });
-    rows.push({ "value": "TURNING", "text": "转弯点" });
-    rows.push({ "value": "VISUALINITAL", "text": "可视初始点" });
-    rows.push({ "value": "VOLLEY", "text": "齐射点" });
-    rows.push({ "value": "WEAPONLAUNCH", "text": "武器发射点" });
-    rows.push({ "value": "TARGET", "text": "目标点" });
-    rows.push({ "value": "ATTACK", "text": "攻击点" });
-    rows.push({ "value": "SUPPRESS", "text": "压制点" });
-    rows.push({ "value": "EIGHTSPIRAL", "text": "八字盘旋点" });
-    rows.push({ "value": "HAPPYVALLEY", "text": "跑马圈点" });
+    rows.push({ "value": "AIMING", "text": resources.option_aimPoint });
+    rows.push({ "value": "COMMONROUTE", "text": resources.text_ordinaryRoutesPoint });
+    rows.push({ "value": "EXPANDING", "text": resources.text_unfoldPoint });
+    rows.push({ "value": "INITIAL", "text": resources.text_initialPoint });
+    rows.push({ "value": "LANCH", "text": resources.text_launch });
+    rows.push({ "value": "RENDEZVOUS", "text": resources.text_convergePoint });
+    rows.push({ "value": "STANDBY", "text": resources.text_standbyPoint });
+    rows.push({ "value": "SUPPLY", "text": resources.text_supplyPoint });
+    rows.push({ "value": "TAKEOFF", "text": resources.text_takeoffPoint });
+    rows.push({ "value": "TURNING", "text": resources.text_turnPoint });
+    rows.push({ "value": "VISUALINITAL", "text": resources.text_visibleInitialPoint });
+    rows.push({ "value": "VOLLEY", "text": resources.text_salvoPoint });
+    rows.push({ "value": "WEAPONLAUNCH", "text": resources.text_weaponLaunchPoint });
+    rows.push({ "value": "TARGET", "text": resources.text_targetPoint });
+    rows.push({ "value": "ATTACK", "text": resources.text_attackPoint });
+    rows.push({ "value": "SUPPRESS", "text": resources.text_suppressPoint });
+    rows.push({ "value": "EIGHTSPIRAL", "text": resources.text_circledWithFigureofEightPoint });
+    rows.push({ "value": "HAPPYVALLEY", "text": resources.text_horseRingPoint });
     return rows;
 }
 /**
@@ -515,17 +515,17 @@ function getRouteNodeTypeRows() {
  */
 function arrowTypeToString(arrowType) {
     if (arrowType == 0)
-        return "双线箭头";
+        return resources.text_doubleLineArrow;
     else if (arrowType == 1)
-        return "实心三角形";
+        return resources.text_solidTriangle;
     else if (arrowType == 2)
-        return "无箭头";
+        return resources.text_noArrow;
 }
 function getArrowTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "双线箭头" });
-    rows.push({ "value": "1", "text": "实心三角形" });
-    rows.push({ "value": "2", "text": "无箭头" });
+    rows.push({ "value": "0", "text": resources.text_doubleLineArrow });
+    rows.push({ "value": "1", "text": resources.text_solidTriangle });
+    rows.push({ "value": "2", "text": resources.text_noArrow });
     return rows;
 }
 /**
@@ -533,17 +533,17 @@ function getArrowTypeRows() {
  */
 function radiusTypeToString(radiusType) {
     if (radiusType == 0)
-        return "不显示";
+        return resources.text_inVisible;
     else if (radiusType == 1)
-        return "直线";
+        return resources.text_straightLine;
     else if (radiusType == 2)
-        return "箭头线";
+        return resources.text_arrowLine;
 }
 function getRadiusTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "不显示" });
-    rows.push({ "value": "1", "text": "直线" });
-    rows.push({ "value": "2", "text": "箭头线" });
+    rows.push({ "value": "0", "text": resources.text_inVisible });
+    rows.push({ "value": "1", "text": resources.text_straightLine });
+    rows.push({ "value": "2", "text": resources.text_arrowLine });
     return rows;
 }
 /**
@@ -551,17 +551,17 @@ function getRadiusTypeRows() {
  */
 function textBoxTypeToString(textBoxType) {
     if (textBoxType == 0)
-        return "带角矩形边框";
+        return resources.text_rectBorderWithAngle;
     else if (textBoxType == 1)
-        return "矩形边框";
+        return resources.text_rectBorder;
     else if (textBoxType == 3)
-        return "无边框";
+        return resources.text_noBorder;
 }
 function getTextBoxTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "带角矩形边框" });
-    rows.push({ "value": "1", "text": "矩形边框" });
-    rows.push({ "value": "3", "text": "无边框" });
+    rows.push({ "value": "0", "text": resources.text_rectBorderWithAngle });
+    rows.push({ "value": "1", "text": resources.text_rectBorder });
+    rows.push({ "value": "3", "text": resources.text_noBorder });
     return rows;
 }
 /**
@@ -569,15 +569,15 @@ function getTextBoxTypeRows() {
  */
 function lineMarkingTypeToString(lineMarkingType) {
     if (lineMarkingType === 1) {
-        return "矩形边框";
+        return resources.text_rectBorder;
     } else if (lineMarkingType === 2) {
-        return "线型底边";
+        return resources.text_linerHemline;
     }
 }
 function getLineMarkingTypeRows() {
     var rows = [];
-    rows.push({ "value": "1", "text": "矩形边框" });
-    rows.push({ "value": "2", "text": "线型底边" });
+    rows.push({ "value": "1", "text": resources.text_rectBorder });
+    rows.push({ "value": "2", "text": resources.text_linerHemline });
     return rows;
 }
 /**
@@ -586,97 +586,55 @@ function getLineMarkingTypeRows() {
  */
 function getArrowHeadTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "双线箭头" });
-    rows.push({ "value": "2", "text": "燕尾箭头" });
-    rows.push({ "value": "3", "text": "实心三角形" });
-    rows.push({ "value": "6", "text": "新燕尾箭头" });
-    rows.push({ "value": "-1", "text": "无箭头" });
+    rows.push({ "value": "0", "text": resources.text_doubleLineArrow });
+    rows.push({ "value": "2", "text": resources.text_dovetailArroe });
+    rows.push({ "value": "3", "text": resources.text_solidTriangle });
+    rows.push({ "value": "6", "text": resources.text_newDovetailArroe });
+    rows.push({ "value": "-1", "text": resources.text_noArrow });
     return rows;
 }
 function arrowHeadTypeToString(arrowHeadType) {
     if (arrowHeadType == 0)
-        return "双线箭头";
+        return resources.text_doubleLineArrow;
     else if (arrowHeadType == 2)
-        return "燕尾箭头";
+        return resources.text_dovetailArroe;
     else if (arrowHeadType == 3)
-        return "实心三角形";
+        return resources.text_solidTriangle;
     else if (arrowHeadType == 6)
-        return "新燕尾箭头";
+        return resources.text_newDovetailArroe;
     else if (arrowHeadType == -1)
-        return "无箭头";
+        return resources.text_noArrow;
 }
 function arrowBodyTypeToString(arrowBodyType) {
     if (arrowBodyType == 0)
-        return "折线";
+        return resources.text_foldLine;
     else if (arrowBodyType == 1)
-        return "贝塞尔曲线";
+        return resources.text_bezierCurves;
     else if (arrowBodyType == 5)
-        return "新增箭身";
+        return resources.text_addArrowBody;
 
 }
 function getArrowBodyTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "折线" });
-    rows.push({ "value": "1", "text": "贝塞尔曲线" });
-    rows.push({ "value": "5", "text": "新增箭身" });
+    rows.push({ "value": "0", "text": resources.text_foldLine });
+    rows.push({ "value": "1", "text": resources.text_bezierCurves });
+    rows.push({ "value": "5", "text": resources.text_addArrowBody });
     return rows;
 }
 function arrowTailTypeToString(arrowTailType) {
     if (arrowTailType == 0)
-        return "无箭尾";
+        return resources.text_noArrowTail;
     else if (arrowTailType == 1)
-        return "直线箭尾";
+        return resources.text_linearArrowTail;
     else if (arrowTailType == 3)
-        return "燕尾箭尾";
+        return resources.text_dovetailArrowTail;
 }
 function getArrowTailTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "无箭尾" });
-    rows.push({ "value": "1", "text": "直线箭尾" });
-    rows.push({ "value": "3", "text": "燕尾箭尾" });
+    rows.push({ "value": "0", "text": resources.text_noArrowTail });
+    rows.push({ "value": "1", "text": resources.text_linearArrowTail });
+    rows.push({ "value": "3", "text": resources.text_dovetailArrowTail });
     return rows;
-}
-/**
- * 线面标号子标号
- */
-function libIDToString(libID) {
-    if (libID == 421)
-        return "421(警用库)";
-    else if (libID == 100)
-        return "100(军队库)";
-    else if (libID == 123)
-        return "123(武警库)";
-    else if (libID == 900)
-        return "900(人防库)";
-
-}
-
-function subAlgoRankTypeString(subSymbolsLength, geometry) {
-    if (subSymbolsLength === 0) {
-        return "";
-    } else {
-        if (geometry.libID === 100) {
-            if (geometry.getSubSymbols()[0].code === 3200) {
-                return "集团军级";
-            } else if (geometry.getSubSymbols()[0].code === 3201) {
-                return "副大军区级";
-            } else if (geometry.getSubSymbols()[0].code === 3202) {
-                return "军区级";
-            } else if (geometry.getSubSymbols()[0].code === 3302) {
-                return "师级";
-            } else if (geometry.getSubSymbols()[0].code === 3301) {
-                return "旅级";
-            } else if (geometry.getSubSymbols()[0].code === 3300) {
-                return "团级";
-            } else if (geometry.getSubSymbols()[0].code === 3402) {
-                return "营级";
-            } else if (geometry.getSubSymbols()[0].code === 3401) {
-                return "连级";
-            } else if (geometry.getSubSymbols()[0].code === 3400) {
-                return "排级";
-            }
-        }
-    }
 }
 
 function subSymbolsTypeString(subSymbolsLength, geometry,index) {
@@ -688,35 +646,35 @@ function subSymbolsTypeString(subSymbolsLength, geometry,index) {
     } else {
         if (geometry.libID === 100) {
             if (geometry.getSubSymbols()[index].code === 100) {
-                return "陆军";
+                return resources.text_army;
             } else if (geometry.getSubSymbols()[index].code === 200) {
-                return "海军";
+                return resources.text_navy2;
             } else if (geometry.getSubSymbols()[index].code === 300) {
-                return "空军";
+                return resources.text_airForce;
             }
         } else if (geometry.libID === 123) {
             if (geometry.getSubSymbols()[index].code === 10101) {
-                return "武装警察部队";
+                return resources.text_armedPoliceForce;
             } else if (geometry.getSubSymbols()[index].code === 10102) {
-                return "防爆装甲";
+                return resources.text_explosionProofArmor;
             } else if (geometry.getSubSymbols()[index].code === 10103) {
-                return "火炮";
+                return resources.text_artillery;
             }
         } else if (geometry.libID === 900) {
             if (geometry.getSubSymbols()[index].code === 910200) {
-                return "人民防空重点城市";
+                return resources.text_civilAirDefenseCity;
             } else if (geometry.getSubSymbols()[index].code === 910300) {
-                return "人民防空基本指挥所";
+                return resources.text_basicCommandPostofCivilAirDefense;
             } else if (geometry.getSubSymbols()[index].code === 910402) {
-                return "水路抢修专业队";
+                return resources.text_waterwayRepairProfessionalTeam;
             }
         } else if (geometry.libID === 0) {
             if (geometry.getSubSymbols()[index].code === 9) {
-                return "刑警";
+                return resources.text_police;
             } else if (geometry.getSubSymbols()[index].code === 80103) {
-                return "交警";
+                return resources.text_trafficPolice;
             } else if (geometry.getSubSymbols()[index].code === 80109) {
-                return "专业警";
+                return resources.text_professionalPolice;
             }
         }
     }
@@ -726,16 +684,16 @@ function getAlgoRankTypeRows(geometry) {
     var rows = [];
     rows.push({ "value": "0", "text": "" });
     if (geometry.libID === 100) {
-        rows.push({ "value": "0", "text": "无级别" });
-        rows.push({ "value": "3200", "text": "集团军级" });
-        rows.push({ "value": "3201", "text": "副大军区级" });
-        rows.push({ "value": "3202", "text": "军区级" });
-        rows.push({ "value": "3302", "text": "师级" });
-        rows.push({ "value": "3301", "text": "旅级" });
-        rows.push({ "value": "3300", "text": "团级" });
-        rows.push({ "value": "3402", "text": "营级" });
-        rows.push({ "value": "3401", "text": "连级" });
-        rows.push({ "value": "3400", "text": "排级" });
+        rows.push({ "value": "0", "text": resources.text_noRank });
+        rows.push({ "value": "3200", "text": resources.text_JTJRank });
+        rows.push({ "value": "3201", "text": resources.text_FJQRank });
+        rows.push({ "value": "3202", "text": resources.text_JQRank });
+        rows.push({ "value": "3302", "text": resources.text_SRank });
+        rows.push({ "value": "3301", "text": resources.text_LRank });
+        rows.push({ "value": "3300", "text": resources.text_TRank });
+        rows.push({ "value": "3402", "text": resources.text_YRank });
+        rows.push({ "value": "3401", "text": resources.text_LianRank });
+        rows.push({ "value": "3400", "text": resources.text_PRank });
     }
     return rows;
 }
@@ -744,21 +702,21 @@ function getSubSymbolsTypeRows(geometry) {
     var rows = [];
     rows.push({ "value": "0", "text": "" });
     if (geometry.libID === 100) {
-        rows.push({ "value": "100", "text": "陆军" });
-        rows.push({ "value": "200", "text": "海军" });
-        rows.push({ "value": "300", "text": "空军" });
+        rows.push({ "value": "100", "text": resources.text_army });
+        rows.push({ "value": "200", "text": resources.text_navy2 });
+        rows.push({ "value": "300", "text": resources.text_airForce });
     } else if (geometry.libID === 123) {
-        rows.push({ "value": "10101", "text": "武装警察部队" });
-        rows.push({ "value": "10102", "text": "防爆装甲" });
-        rows.push({ "value": "10103", "text": "火炮" });
+        rows.push({ "value": "10101", "text": resources.text_armedPoliceForce });
+        rows.push({ "value": "10102", "text": resources.text_explosionProofArmor });
+        rows.push({ "value": "10103", "text": resources.text_artillery });
     } else if (geometry.libID === 900) {
-        rows.push({ "value": "910200", "text": "人民防空重点城市" });
-        rows.push({ "value": "910300", "text": "人民防空基本指挥所" });
-        rows.push({ "value": "910402", "text": "水路抢修专业队" });
+        rows.push({ "value": "910200", "text": resources.text_civilAirDefenseCity });
+        rows.push({ "value": "910300", "text": resources.text_basicCommandPostofCivilAirDefense });
+        rows.push({ "value": "910402", "text": resources.text_waterwayRepairProfessionalTeam });
     } else if (geometry.libID === 0) {
-        rows.push({ "value": "9", "text": "刑警" });
-        rows.push({ "value": "80103", "text": "交警" });
-        rows.push({ "value": "80109", "text": "专业警" });
+        rows.push({ "value": "9", "text": resources.text_police });
+        rows.push({ "value": "80103", "text": resources.text_trafficPolice });
+        rows.push({ "value": "80109", "text": resources.text_professionalPolice });
     }
     return rows;
 }
@@ -768,29 +726,29 @@ function getSubSymbolsTypeRows(geometry) {
  */
 function fontAlignTypeToString(alignType) {
     if (alignType === 'lm')
-        return "左对齐";
+        return resources.text_alignLeft;
     else if (alignType === 'rm')
-        return "右对齐";
+        return resources.text_alignRight;
     else if (alignType === 'cm')
-        return "中间对齐";
+        return resources.text_alignMiddle;
     else if (alignType === 'lt')
-        return "左上对齐";
+        return resources.text_alignLeftTop;
     else if (alignType === 'lb')
-        return "左下对齐";
+        return resources.text_alignLeftBottom;
     else if (alignType === 'rt')
-        return "右上对齐";
+        return resources.text_alignRightTop;
     else if (alignType === 'rb')
-        return "右下对齐";
+        return resources.text_alignRightBottom;
 }
 function getFontAlignTypeRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "左对齐" });
-    rows.push({ "value": "1", "text": "右对齐" });
-    rows.push({ "value": "2", "text": "居中对齐" });
-    rows.push({ "value": "3", "text": "左上对齐" });
-    rows.push({ "value": "4", "text": "左下对齐" });
-    rows.push({ "value": "5", "text": "右上对齐" });
-    rows.push({ "value": "6", "text": "右下对齐" });
+    rows.push({ "value": "0", "text": resources.text_alignLeft });
+    rows.push({ "value": "1", "text": resources.text_alignRight });
+    rows.push({ "value": "2", "text": resources.text_alignMiddle });
+    rows.push({ "value": "3", "text": resources.text_alignLeftTop });
+    rows.push({ "value": "4", "text": resources.text_alignLeftBottom });
+    rows.push({ "value": "5", "text": resources.text_alignRightTop });
+    rows.push({ "value": "6", "text": resources.text_alignRightBottom });
     return rows;
 }
 function fontAlignTypeValue(value) {
@@ -1362,14 +1320,14 @@ function symbolPropertyObject(selectfeature, styleObject) {
                 algoSymbolRows.push(objectSubCode1);
                 var subSymbolLineWidth = new Object();
                 subSymbolLineWidth.group = group[8];
-                subSymbolLineWidth.name = "子标号线宽";
+                subSymbolLineWidth.name = resources.text_subSymbolLineWidth;
                 subSymbolLineWidth.editor = "text";
                 subSymbolLineWidth.index = i;
                 subSymbolLineWidth.value = (selectfeature.getSubSymbols()[i]&&selectfeature.getSubSymbols()[i].code!=0)?selectfeature.getSubSymbols()[i].width2D:""
                 algoSymbolRows.push(subSymbolLineWidth);
                 var subSymbolLineColor = new Object();
                 subSymbolLineColor.group = group[8];
-                subSymbolLineColor.name = "子标号线色";
+                subSymbolLineColor.name = resources.text_subSymbolLineColor;
                 subSymbolLineColor.editor = "colorpicker";
                 subSymbolLineColor.index = i;
                 subSymbolLineColor.value = (selectfeature.getSubSymbols()[i]&&selectfeature.getSubSymbols()[i].code!=0)?selectfeature.getSubSymbols()[i].lineColor:""
@@ -1386,14 +1344,14 @@ function symbolPropertyObject(selectfeature, styleObject) {
                 algoSymbolRows.push(objectSubCode);
                 var subSymbolLineWidth = new Object();
                 subSymbolLineWidth.group = group[8];
-                subSymbolLineWidth.name = "子标号线宽";
+                subSymbolLineWidth.name = resources.text_subSymbolLineWidth;
                 subSymbolLineWidth.editor = "text";
                 subSymbolLineWidth.index = i;
                 subSymbolLineWidth.value = selectfeature.getSubSymbols()[i].width2D;
                 algoSymbolRows.push(subSymbolLineWidth);
                 var subSymbolLineColor = new Object();
                 subSymbolLineColor.group = group[8];
-                subSymbolLineColor.name = "子标号线色";
+                subSymbolLineColor.name = resources.text_subSymbolLineColor;
                 subSymbolLineColor.editor = "colorpicker";
                 subSymbolLineColor.index = i;
                 subSymbolLineColor.value = selectfeature.getSubSymbols()[i].lineColor;
@@ -1687,12 +1645,12 @@ function symbolPropertyObject(selectfeature, styleObject) {
 function picturePropertyObject(selectfeature){
     var rows = [];
     var dotSymbolWidthObj = new Object();
-    dotSymbolWidthObj.group = "属性";
+    dotSymbolWidthObj.group = resources.text_attribute;
     dotSymbolWidthObj.name = displayNameDot[7];
     dotSymbolWidthObj.editor = "text";
     dotSymbolWidthObj.value = selectfeature.style.graphicWidth;
     var dotSymbolHeightObj = new Object();
-    dotSymbolHeightObj.group = "属性";
+    dotSymbolHeightObj.group = resources.text_attribute;
     dotSymbolHeightObj.name = displayNameDot[8];
     dotSymbolHeightObj.editor = "text";
     dotSymbolHeightObj.value =selectfeature.style.graphicHeight;
@@ -1705,15 +1663,15 @@ function picturePropertyObject(selectfeature){
 
 function getLoopRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "否" });
-    rows.push({ "value": "1", "text": "是" });
+    rows.push({ "value": "0", "text": resources.text_false });
+    rows.push({ "value": "1", "text": resources.text_true });
     return rows;
 }
 
 function getTie() {
     var rows = [];
-    rows.push({ "value": "0", "text": "否" });
-    rows.push({ "value": "1", "text": "是" });
+    rows.push({ "value": "0", "text": resources.text_false });
+    rows.push({ "value": "1", "text": resources.text_true });
     return rows;
 }
 function tieValueToString(value) {
@@ -1721,10 +1679,10 @@ function tieValueToString(value) {
     var result;
     switch (type) {
         case 0:
-            result = "否";
+            result = resources.text_false;
             break;
         case 1:
-            result = "是";
+            result = resources.text_true;
             break;
         default:
             break;
@@ -1733,10 +1691,10 @@ function tieValueToString(value) {
 }
 function getPositionRows() {
     var rows = [];
-    rows.push({ "value": "0", "text": "上" });
-    rows.push({ "value": "1", "text": "下" });
-    rows.push({ "value": "2", "text": "左" });
-    rows.push({ "value": "3", "text": "右" });
+    rows.push({ "value": "0", "text": resources.text_top });
+    rows.push({ "value": "1", "text": resources.text_bottom });
+    rows.push({ "value": "2", "text": resources.text_left });
+    rows.push({ "value": "3", "text": resources.text_right });
     return rows;
 }
 function positionValueToString(value) {
@@ -1744,16 +1702,16 @@ function positionValueToString(value) {
     var result;
     switch (type) {
         case 0:
-            result = "上";
+            result = resources.text_top;
             break;
         case 1:
-            result = "下";
+            result = resources.text_bottom;
             break;
         case 2:
-            result = "左";
+            result = resources.text_left;
             break;
         case 3:
-            result = "右";
+            result = resources.text_right;
             break;
         default:
             break;
@@ -1762,9 +1720,9 @@ function positionValueToString(value) {
 }
 function getFontRows() {
     var rows = [];
-    rows.push({ "value": "宋体", "text": "宋体" });
-    rows.push({ "value": "隶书", "text": "隶书" });
-    rows.push({ "value": "楷书", "text": "楷书" });
+    rows.push({ "value": resources.text_song, "text": resources.text_song });
+    rows.push({ "value": resources.text_li, "text": resources.text_li });
+    rows.push({ "value": resources.text_kai, "text": resources.text_kai });
     rows.push({ "value": "Helvetica", "text": "Helvetica" });
     rows.push({ "value": "Times New Roman", "text": "Times New Roman" });
     return rows;
@@ -1772,14 +1730,14 @@ function getFontRows() {
 function fontValueToStrin(value) {
     var result;
     switch (value) {
-        case "宋体":
-            result = "宋体";
+        case resources.text_song:
+            result = resources.text_song;
             break;
-        case "隶书":
-            result = "隶书";
+        case resources.text_li:
+            result = resources.text_li;
             break;
-        case "楷书":
-            result = "楷书";
+        case resources.text_kai:
+            result = resources.text_kai;
             break;
         case "Helvetica":
             result = "Helvetica";
@@ -1794,8 +1752,8 @@ function fontValueToStrin(value) {
 }
 function getFontWeight() {
     var rows = [];
-    rows.push({ "value": " ", "text": "不加粗" });
-    rows.push({ "value": "bold", "text": "加粗" });
+    rows.push({ "value": " ", "text": resources.text_unbold });
+    rows.push({ "value": "bold", "text": resources.text_bold });
     return rows;
 }
 function fontWeightValueToString(value) {

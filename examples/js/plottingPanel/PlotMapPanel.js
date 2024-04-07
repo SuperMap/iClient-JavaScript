@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2020 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 // import {ChildPlotLayer} from "../../../plugins/plotting/leaflet/mapping";
 
 L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
@@ -33,7 +33,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
     treeNodeStyle.style.border = '1px solid #617775';
     treeNodeStyle.style.overflow ='scroll';
     var treeNode = document.createElement("div");
-    treeNode.id = "tree";
+    treeNode.id = "treePanel";
     treeNode.className = "ztree";
 
     createRightMenu(plotMapPanel);
@@ -70,14 +70,14 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var createPlotLayer = document.createElement("li");
         createPlotLayer.id="createPlottingLayer";
-        createPlotLayer.innerText = "创建图元层";
+        createPlotLayer.innerText = resources.text_createBaseLayer;
         createPlotLayer.style.margin = '1px 0';
         createPlotLayer.style.padding = '0 5px';
         createPlotLayer.style.cursor = 'pointer';
         createPlotLayer.style.backgroundColor = '#cad4e6';
         createPlotLayer.style.listStyle = 'none outside none';
         createPlotLayer.onclick = function () {
-            var plottingLayerName = "图元层";
+            var plottingLayerName = resources.text_baseLayer;
             var plottingLayer = L.supermap.plotting.plottingLayer(plottingLayerName, serverUrl);
             plottingLayer.addTo(map);
 
@@ -87,7 +87,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var activePlottingLayer = document.createElement("li");
         activePlottingLayer.id="activePlottingLayer";
-        activePlottingLayer.innerText = "激活";
+        activePlottingLayer.innerText = resource.text_active;
         activePlottingLayer.style.margin = '1px 0';
         activePlottingLayer.style.padding = '0 5px';
         activePlottingLayer.style.cursor = 'pointer';
@@ -105,7 +105,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var activeChildPlotLayer = document.createElement("li");
         activeChildPlotLayer.id="activeChildPlotLayer";
-        activeChildPlotLayer.innerText = "激活";
+        activeChildPlotLayer.innerText = resource.text_active;
         activeChildPlotLayer.style.margin = '1px 0';
         activeChildPlotLayer.style.padding = '0 5px';
         activeChildPlotLayer.style.cursor = 'pointer';
@@ -124,7 +124,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var fixSymScale = document.createElement("li");
         fixSymScale.id="fixSymScale";
-        fixSymScale.innerText = "修改缩放基准为当前地图比例尺";
+        fixSymScale.innerText = resources.text_changeZoomDatumToCurrentMapScale;
         fixSymScale.style.margin = '1px 0';
         fixSymScale.style.padding = '0 5px';
         fixSymScale.style.cursor = 'pointer';
@@ -142,7 +142,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var createChildPlotLayer = document.createElement("li");
         createChildPlotLayer.id="createChildPlotLayer";
-        createChildPlotLayer.innerText = "创建子图层";
+        createChildPlotLayer.innerText = resources.btn_createChildLayer;
         createChildPlotLayer.style.margin = '1px 0';
         createChildPlotLayer.style.padding = '0 5px';
         createChildPlotLayer.style.cursor = 'pointer';
@@ -151,7 +151,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
         createChildPlotLayer.onclick = function () {
             if(currentSelectedNode != null && currentSelectedNode.type === "PlottingLayer"){
                 var plottingLayers = L.supermap.plotting.getControl().getPlotMapManager().getPlottingLayers();
-                var plottingLayerName = "子图层";
+                var plottingLayerName = resources.text_subLayer;
                 var plottingLayerCaption = plottingLayerName;
                 var childPlotLayer = L.supermap.plotting.childPlotLayer(plottingLayerName,plottingLayerCaption);
                 plottingLayers[currentSelectedNode.tag].addChildPlotLayer(childPlotLayer);
@@ -163,7 +163,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var setMinVisibleScale = document.createElement("li");
         setMinVisibleScale.id="setMinVisibleScale";
-        setMinVisibleScale.innerText = "设置当前地图比例尺为最小可见比例尺";
+        setMinVisibleScale.innerText = resources.text_setCurrentMapScaleToMintVisibleScale;
         setMinVisibleScale.style.margin = '1px 0';
         setMinVisibleScale.style.padding = '0 5px';
         setMinVisibleScale.style.cursor = 'pointer';
@@ -181,7 +181,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var setMaxVisibleScale = document.createElement("li");
         setMaxVisibleScale.id="setMaxVisibleScale";
-        setMaxVisibleScale.innerText = "设置当前地图比例尺为最大可见比例尺";
+        setMaxVisibleScale.innerText = resources.text_setCurrentMapScaleToMaxVisibleScale;
         setMaxVisibleScale.style.margin = '1px 0';
         setMaxVisibleScale.style.padding = '0 5px';
         setMaxVisibleScale.style.cursor = 'pointer';
@@ -199,7 +199,7 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
 
         var clearVisibleScale = document.createElement("li");
         clearVisibleScale.id="clearVisibleScale";
-        clearVisibleScale.innerText = "清除可见比例尺设置";
+        clearVisibleScale.innerText = resources.text_clearVisibleScaleSet;
         clearVisibleScale.style.margin = '1px 0';
         clearVisibleScale.style.padding = '0 5px';
         clearVisibleScale.style.cursor = 'pointer';
@@ -279,14 +279,14 @@ L.supermap.plotting.initPlotMapPanel = function(div, plotMapManager){
         };
 
         var symbolTreeData = analysisPlotMap();
-        $.fn.zTree.init($("#tree"), setting, symbolTreeData);
+        $.fn.zTree.init($("#treePanel"), setting, symbolTreeData);
     }
 
     function refreshLayers() {
         hideRightMenu();
 
         var layers = L.supermap.plotting.getControl().getPlotMapManager().getPlottingLayers();
-        var zTree = $.fn.zTree.getZTreeObj("tree");
+        var zTree = $.fn.zTree.getZTreeObj("treePanel");
         var changeNodes = zTree.getChangeCheckedNodes();
 		if(changeNodes.length > 0){
 			var treeNode = changeNodes[0];

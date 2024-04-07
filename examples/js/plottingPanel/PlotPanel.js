@@ -161,7 +161,7 @@ function addBasicCellTreeNodes(treeData) {
     var cellRootNode = new Object();
     cellRootNode.id = 1;
     cellRootNode.pId = 0;
-    cellRootNode.name = "基本标号";
+    cellRootNode.name = resources.text_commonSymbol;
     cellRootNode.fullName = "BasicCell" + "/";
     cellRootNode.drawData = [];
     treeData.push(cellRootNode);
@@ -170,11 +170,11 @@ function addBasicCellTreeNodes(treeData) {
         , 1019, 1022, 1024, 321, 1023, 1025
         , 1013, 1014, 1016, 1017, 1026
         , 1001, 1003, 1004, 1028, 1029, 3000];
-    var symbolName = ["折线", "平行四边形", "圆", "椭圆", "注记", "正多边形", "多边形", "贝赛尔曲线", "闭合贝赛尔曲线"
-        , "集结地", "大括号", "梯形", "矩形", "弓形", "扇形", "弧线", "弓形", "扇形", "弧线", "平行线", "注记指示框"
-        , "同心圆", "组合圆", "标注框", "多角标注框", "自由线", "节点链"
-        , "跑道形", "八字形", "箭头线", "沿线注记", "线型标注"
-        , "对象间连线", "多边形区域", "扇形区域", "铁丝网", "直线箭头", "图片"];
+    var symbolName = [resources.text_foldLine, resources.text_parallelogram, resources.btn_circle, resources.text_elliptical, resources.text_textContent, resources.text_regularPolygon, resources.btn_polygon, resources.text_bezierCurves, resources.text_closeBezierCurves
+        , resources.text_rallyGround, resources.text_braces, resources.text_trapezium, resources.text_input_value_drawRectangle, resources.text_bow, resources.text_sector, resources.text_arc, resources.text_bow, resources.text_sector, resources.text_arc, resources.text_parallel, resources.text_textNodeBox
+        , resources.text_concentricCircle, resources.text_combinedCircle, resources.text_textbox, resources.text_mutilAngleTextbox, resources.text_freeLine, resources.text_nodeChain
+        , resources.text_runway, resources.text_eight, resources.text_arrowLine, resources.text_textAlongLine, resources.text_linearText
+        , resources.text_objectLines, resources.text_polygonArea, resources.text_sectorArea, resources.text_barbedWire, resources.text_straightLineArrow, resources.option_picture];
     var cellId = cellRootNode.id + 1;
     for (var i = 0; i < symbolCode.length; i++) {
         var drawCellNode = {
@@ -195,12 +195,12 @@ function addRouteTreeNodes(treeData) {
     var cellRootNode = new Object();
     cellRootNode.id = 1;
     cellRootNode.pId = 0;
-    cellRootNode.name = "航线对象";
+    cellRootNode.name = resources.text_routeObj;
     cellRootNode.drawData = [];
     treeData.push(cellRootNode);
 
     var symbolCode = [1005, 1006, 1007];
-    var symbolName = ["航线1", "航线2", "航线3"];
+    var symbolName = [resources.text_route1, resources.text_route2, resources.text_route3];
     var cellId = cellRootNode.id + 1;
     for (var i = 0; i < symbolCode.length; i++) {
         var drawCellNode = {

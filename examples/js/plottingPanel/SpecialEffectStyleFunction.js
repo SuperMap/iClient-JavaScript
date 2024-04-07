@@ -1,29 +1,29 @@
 
-var associatedLatlngName = ["关联位置点"];
-var aimAssociatedLatlngName = ["观察点关联位置点","目标点关联位置点"];
-var communicationAssociatedLatlngName = ["发送信号关联位置点","接收信号关联位置点"];
-var aimPropsName = ["闪烁循环", "闪烁次数", "闪烁间隔", "瞄准圆半径", "是否显示"];
+var associatedLatlngName = [resources.text_associatedPoint];
+var aimAssociatedLatlngName = [resources.text_associatedViewPoint,resources.text_associatedAimPoint];
+var communicationAssociatedLatlngName = [resources.text_associatedSenderPoint,resources.text_associatedReceiverPoint];
+var aimPropsName = [resources.text_barkLoop, resources.text_barkTimes, resources.text_barkInterval, resources.text_aimCircleRadius, resources.text_display];
 
-var boomGroup = ["爆炸"];
-var boomPropsName = ["爆炸循环", "爆炸次数", "是否显示"];
-var communicationLinkPropsName = ["移动速度", "是否显示"];
+var boomGroup = [resources.text_boom];
+var boomPropsName = [resources.text_boomLoop, resources.text_boomTimes, resources.text_display];
+var communicationLinkPropsName = [resources.text_moveSpeed, resources.text_display];
 
-var destroyGroup = ["摧毁"];
-var destroyPropsName = ["持续时间"];
-var radarPropsName = ["扫描循环", "起始角度", "扫描周期", "雷达半径", "是否显示"];
-var sectorDetectionPropsName = ["开合角度", "扇形半径", "是否显示"];
+var destroyGroup = [resources.text_destroy];
+var destroyPropsName = [resources.text_durationTime];
+var radarPropsName = [resources.text_scanLoop, resources.text_startAngle, resources.text_scanCycle, resources.text_scanRadarRadius, resources.text_display];
+var sectorDetectionPropsName = [resources.text_closingAngle, resources.text_sectorRadius, resources.text_display];
 
-var aimStyleGroup = ["瞄准", "瞄准圆样式", "瞄准线样式"]
-var aimStyleName = ["瞄准圆颜色", "瞄准线颜色", "瞄准线线宽", "瞄准线透明度", "虚线间隔"]
+var aimStyleGroup = [resources.text_aim, resources.text_aimCircleStyle, resources.text_aimLineStyle]
+var aimStyleName = [resources.text_aimCircleColor, resources.text_aimLineColor, resources.text_aimLineWidth, resources.text_aimLineOpacity, resources.text_dashlineSpace]
 
-var communicationLinkStyleGroup = ["通讯链路", "通讯链路样式", "动态线样式", "静态线样式"];
-var communicationLinkStyleName = ["线宽", "链路虚线间隔", "动态线颜色", "动态线透明度", "静态线颜色", "静态线透明度"]
+var communicationLinkStyleGroup = [resources.option_communication, resources.text_communicationStyle, resources.text_moveLineStyle, resources.text_staticLineStyle];
+var communicationLinkStyleName = [resources.text_line_width, resources.text_communicationDashlineSpace, resources.text_moveLineColor, resources.text_moveLineOpacity, resources.text_staticLineColor, resources.text_staticLineOpacity]
 
-var radarStyleGroup = ["扫描雷达", "内圆样式", "外圆样式", "扫描瓣样式"];
-var radarStyleName = ["内圆填充色", "内圆填充透明度", "内圆边界色", "内圆边界透明度", "外圆填充色", "外圆填充透明度", "外圆边界色", "外圆边界透明度", "雷达扫描瓣填充色", "雷达扫描瓣填充透明度"]
+var radarStyleGroup = [resources.text_scanRadarName, resources.text_innerCircleStyle, resources.text_outterCircleStyle, resources.text_scanStyle];
+var radarStyleName = [resources.text_innerCircleFillColor, resources.text_innerCircleFillOpacity, resources.text_innerBorderColor, resources.text_innerBorderOpacity, resources.text_outerCircleFillColor, resources.text_outerCircleFillOpacity, resources.text_outerCircleBorderColor, resources.text_outerCircleBorderOpacity, resources.text_scanFillColor, resources.text_scanFillOpacity]
 
-var sectorStyleGroup = ["扇形扫描", "扇形样式", "扫描瓣样式"]
-var sectorDetectionStyleName = ["扇形填充色", "扇形填充透明度", "扇形边界颜色", "扇形边界透明度", "扇形扫描瓣填充色", "扇形扫描瓣填充透明度", "扇形扫描瓣边界颜色","扇形扫描瓣边界透明度" ];
+var sectorStyleGroup = [resources.text_sectorDetectionRange, resources.text_scanRadarSectorStyle, resources.text_scanRadarScanStyle]
+var sectorDetectionStyleName = [resources.text_scanRadarSectorFillColor, resources.text_scanRadarSectorFillOpacity, resources.text_scanRadarSectorBorderColor, resources.text_scanRadarSectorBorderOpacity, resources.text_scanRadarScanFillColor, resources.text_scanRadarScanFillOpacity, resources.text_scanRadarScanBorderColor,resources.text_scanRadarScanBorderOpacity ];
 
 function collectionSpecialEffectPropertyGridRows(specialEffect) {
     var rows = [];
