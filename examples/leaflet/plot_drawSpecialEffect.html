@@ -76,23 +76,23 @@
             <div class="panel01" id="create&delete"
                 style="display: flex;flex-direction: column;padding: 10px;padding-bottom: 0px;">
                 <select id="specialEffectTypeMenu" style="width:100px;height:30px; margin-left:10px; margin-right:10px">
-                    <option id="10001" value="0">雷达特效</option>
-                    <option id="10002" value="1">扫描特效</option>
-                    <option id="10003" value="2">爆炸特效</option>
-                    <option id="10003" value="3">摧毁特效</option>
-                    <option id="10003" value="4">瞄准特效</option>
-                    <option id="10003" value="5">通讯链路</option>
+                    <option id="10001" data-i18n="resources.option_scanRadar" value="0"></option>
+                    <option id="10002" data-i18n="resources.option_sectorDetectionRange" value="1"></option>
+                    <option id="10003" data-i18n="resources.option_boom" value="2"></option>
+                    <option id="10003" data-i18n="resources.option_destroy" value="3"></option>
+                    <option id="10003" data-i18n="resources.option_aim" value="4"></option>
+                    <option id="10003" data-i18n="resources.option_communication" value="5"></option>
 
                 </select>
                 <input type="button" id="playorpauseAllSpecialEffect" class="btn btn-default" style="width:100px;height:30px;padding: 0px;margin-top: 17px;
-                margin-left: 10px;" value="暂停所有特效" onclick="playorpauseAllSpecialEffect()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+                margin-left: 10px;" data-i18n="[value]resources.text_pauseAllSpecialEffect" onclick="playorpauseAllSpecialEffect()" /> &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="panel02" id="create&delete"
                 style="display:flex; flex-direction: column;padding: 10px;padding-bottom: 0px;">
-                <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" value="创建特效"
+                <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_createSpecialEffect"
                     onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
-                    value="移除所有特效" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+                data-i18n="[value]resources.text_removeAllSpecialEffect" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
     </div>
@@ -117,29 +117,29 @@
             <div class="panel01" id="selectPointType" style="display: contents;flex-direction: column;padding: 10px;">
                 <select id="pointType" style="width:100px;height:30px; margin-left:40px; margin-right:12px"
                     disabled="true" onchange="changeConnectType(event)">
-                    <option style="display: block;" id="unselect" value="-1">请选择</option>
-                    <option style="display: none;" id="viewPoint" value="0">观察点</option>
-                    <option style="display: none;" id="aimPoint" value="1">瞄准点</option>
-                    <option style="display: none;" id="senderPoint" value="2">发送信号点</option>
-                    <option style="display: none;" id="receiverPoint" value="3">接收信号点</option>
+                    <option style="display: block;" id="unselect" data-i18n="resources.option_pleaseCheck" value="-1"></option>
+                    <option style="display: none;" id="viewPoint" data-i18n="resources.option_viewPoint" value="0"></option>
+                    <option style="display: none;" id="aimPoint" data-i18n="resources.option_aimPoint" value="1"></option>
+                    <option style="display: none;" id="senderPoint" data-i18n="resources.option_senderPoint" value="2"></option>
+                    <option style="display: none;" id="receiverPoint" data-i18n="resources.option_receiverPoint" value="3"></option>
                 </select>
                 <input disabled="true" type="button" id="connectordisconnect" class="btn btn-default"
-                    style="width:100px;height:30px;padding: 0px;" value="绑定标号" onclick="connectordisconnect()" />
+                    style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_bindSymbol" onclick="connectordisconnect()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="panel1" id="play&remove" style="display:flex; padding: 10px;justify-content: center">
                 <input disabled="true" type="button" id="playorpause" class="btn btn-default"
-                    style="width:100px;height:30px;padding: 0px;margin-left: 11px;" value="播放选中特效" onclick="playOrPauseSelectFeature()" />
+                    style="width:100px;height:30px;padding: 0px;margin-left: 11px;" data-i18n="[value]resources.text_playSelectedEffect" onclick="playOrPauseSelectFeature()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input disabled="true" id="removeSelectSpecialEffect" type="button" class="btn btn-default"
-                    style="width:100px;height:30px;padding: 0px;" value="移除选中特效" onclick="removeSelectFeature()" />
+                    style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_removeSelectedEffect" onclick="removeSelectFeature()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
     </div>
     <div id="plottingMenu" class="plotting-menu">
         <li>
-            <span class="icon iconfont icon-quanxuan" title="框选" onclick="multiSelectModel()"></span>
+            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect" onclick="multiSelectModel()"></span>
         </li>
     </div>
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -162,7 +162,7 @@
         });
         var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
         L.control.scale().addTo(map);
-        var plottingLayer = L.supermap.plotting.plottingLayer("标绘图层", serverUrl).addTo(map);
+        var plottingLayer = L.supermap.plotting.plottingLayer("plottingLayer", serverUrl).addTo(map);
         var drawControl = L.supermap.plotting.drawControl(plottingLayer).addTo(map);
         var editControl = L.supermap.plotting.editControl().addTo(map);
         L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
@@ -183,9 +183,9 @@
             document.getElementById("removeSelectSpecialEffect").disabled = false;
 
             if (event.specialEffect.isPlay) {
-                document.getElementById("playorpause").value = "暂停选中特效";
+                document.getElementById("playorpause").value = resources.text_pauseSelectedEffect;
             } else {
-                document.getElementById("playorpause").value = "播放选中特效";
+                document.getElementById("playorpause").value = resources.text_playSelectedEffect;
             }
             selectedSpecialEffectUuid = event.specialEffect.uuid;
             var type = event.specialEffect.getType();
@@ -201,15 +201,15 @@
                 document.getElementById("receiverPoint").style.display = "none";
 
                 if ((selectPointType.value == "0" || selectPointType.value == "-1") && event.specialEffect.viewUuid) {
-                    document.getElementById("connectordisconnect").value = "解绑标号";
+                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
                 } else if (selectPointType.value == "0" && !event.specialEffect.viewUuid) {
-                    document.getElementById("connectordisconnect").value = "绑定标号";
+                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
                 }
 
                 if (selectPointType.value == "1" && event.specialEffect.aimUuid) {
-                    document.getElementById("connectordisconnect").value = "解绑标号";
+                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
                 } else if (selectPointType.value == "1" && !event.specialEffect.aimUuid) {
-                    document.getElementById("connectordisconnect").value = "绑定标号";
+                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
                 }
             } else if (type == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
                 selectPointType.disabled = false;
@@ -222,15 +222,15 @@
                 selectPointType.value = "2";
 
                 if (selectPointType.value == "2" && event.specialEffect.senderUuid) {
-                    document.getElementById("connectordisconnect").value = "解绑标号";
+                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
                 } else if (selectPointType.value == "2" && !event.specialEffect.senderUuid) {
-                    document.getElementById("connectordisconnect").value = "绑定标号";
+                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
                 }
 
                 if (selectPointType.value == "3" && event.specialEffect.receiverUuid) {
-                    document.getElementById("connectordisconnect").value = "解绑标号";
+                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
                 } else if (selectPointType.value == "3" && !event.specialEffect.receiverUuid) {
-                    document.getElementById("connectordisconnect").value = "绑定标号";
+                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
                 }
             } else {
                 selectPointType.value = "-1";
@@ -243,9 +243,9 @@
                 document.getElementById("receiverPoint").style.display = "none"
 
                 if (event.specialEffect.associatedUuid) {
-                    document.getElementById("connectordisconnect").value = "解绑标号";
+                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
                 } else if (!event.specialEffect.associatedUuid) {
-                    document.getElementById("connectordisconnect").value = "绑定标号";
+                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
                 }
             }
 
@@ -267,8 +267,8 @@
 
         });
         specialEffectManager.on(SuperMap.Plot.Event.specialeffectunselected, function (event) {
-            document.getElementById("playorpause").value = "播放选中特效";
-            document.getElementById("connectordisconnect").value = "绑定标号";
+            document.getElementById("playorpause").value = resources.text_playSelectedEffect;
+            document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
 
             document.getElementById("pointType").value = "-1";
             document.getElementById("pointType").disabled = true;
@@ -425,9 +425,9 @@
         }
         function checkIsConnectedToFeature(uuid) {
             if (uuid) {
-                document.getElementById("connectordisconnect").value = "解绑标号";
+                document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
             } else {
-                document.getElementById("connectordisconnect").value = "绑定标号";
+                document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
             }
         }
         function removeSelectFeature() {
@@ -461,11 +461,11 @@
         }
         function playorpauseAllSpecialEffect() {
             if (allIsPlay == true) {
-                document.getElementById("playorpauseAllSpecialEffect").value = "暂停所有特效";
+                document.getElementById("playorpauseAllSpecialEffect").value = resources.text_pauseAllSpecialEffect;
                 this.palyAllSpecialEffect();
                 allIsPlay = false;
             } else {
-                document.getElementById("playorpauseAllSpecialEffect").value = "播放所有特效";
+                document.getElementById("playorpauseAllSpecialEffect").value = resources.text_playAllSpecialEffect;
                 this.pauseAllSpecialEffect();
                 allIsPlay = true;
             }
@@ -484,12 +484,12 @@
         }
 
         function connectordisconnect() {
-            if (document.getElementById("connectordisconnect").value == "绑定标号") {
+            if (document.getElementById("connectordisconnect").value == resources.text_bindSymbol) {
                 this.bind();
-                document.getElementById("connectordisconnect").value = "解绑标号";
+                document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
             } else {
                 this.disconnectionToFeature();
-                document.getElementById("connectordisconnect").value = "绑定标号";
+                document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
             }
         }
         function bind() {
@@ -591,12 +591,12 @@
             }
         }
         function playOrPauseSelectFeature() {
-            if (document.getElementById("playorpause").value == "播放选中特效") {
+            if (document.getElementById("playorpause").value == resources.text_playSelectedEffect) {
                 this.playSelectFeature();
-                document.getElementById("playorpause").value = "暂停选中特效";
+                document.getElementById("playorpause").value = resources.text_pauseSelectedEffect;
             } else {
                 this.pauseSelectFeature();
-                document.getElementById("playorpause").value = "播放选中特效"
+                document.getElementById("playorpause").value = resources.text_playSelectedEffect
             }
         }
         function playSelectFeature() {
@@ -624,7 +624,7 @@
             const objectURL = URL.createObjectURL(blob);
             const domElement = document.createElement("a");
             domElement.href = objectURL;
-            domElement.download = "标绘图" + getFileTime();
+            domElement.download = resources.title_plotMap + getFileTime();
             domElement.click();
             URL.revokeObjectURL(objectURL);
         }

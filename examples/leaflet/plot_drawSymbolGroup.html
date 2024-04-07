@@ -75,17 +75,17 @@
         </div>
         <div style="margin: 10px;">
             <div class='input-group' style="width: 220px;margin-bottom: 15px;">
-                <span class='input-group-addon'>标号|图片|模型</span>
+                <span class='input-group-addon' data-i18n="resources.text_checkType"></span>
                 <select type='text' class='form-control' id='symbol' onchange="symbolChanged(event)">
-                    <option id="10001" value="0">标号</option>
-                    <option id="10002" value="1">图片</option>
-                    <option id="10003" value="2">模型</option>
+                    <option id="10001" data-i18n="resources.option_symbol" value="0"></option>
+                    <option id="10002" data-i18n="resources.option_picture" value="1"></option>
+                    <option id="10003" data-i18n="resources.option_model" value="2"></option>
                 </select>
             </div>
             <div class='input-group' style="width: 220px;margin-bottom: 15px;">
-                <span class='input-group-addon'>个数</span>
+                <span class='input-group-addon' data-i18n="resources.text_number"></span>
                 <input type='text' class='form-control' id='count' value='15' style="width: 110px;" />
-                <input type="button" class="btn btn-default" value="绘制" onclick="drawGraphics()" />
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.text_drawGraphics" onclick="drawGraphics()" />
             </div>
         </div>
     </div>
@@ -96,22 +96,22 @@
             <h5 class='panel-title text-center' data-i18n="resources.title_symbolGroup"
                 style="font-size: 16px;font-weight: normal;color: #fff;"></h5>
         </div>
-        <div class='panel-body content' id="panelbodycontent">
-            <div class='panel'>
+        <div class='panel-body content'>
+            <div class='panel' id="propertypanel">
                 <div class='input-group' style="width: 220px;margin-bottom: 15px;margin: 15px;">
-                    <span class='input-group-addon'>范围颜色</span>
+                    <span class='input-group-addon' data-i18n="resources.text_rangeColor"></span>
                     <input type="text" id="rangeColor" value="" class='form-control' />
                     <span class='input-group-addon'><img src='../img/colorpicker.png' id="cp1"
                             style="cursor:pointer; z-index: 9999;" /></span>
                 </div>
                 <div class='input-group' style="width: 220px;margin-bottom: 15px;margin: 15px;">
-                    <span class='input-group-addon'>信息背景颜色</span>
+                    <span class='input-group-addon' data-i18n="resources.text_infoBackColor"></span>
                     <input type="text" id="fontBackgroundColor" value="" class='form-control' />
                     <span class='input-group-addon'><img src='../img/colorpicker.png' id="cp2"
                             style="cursor:pointer; z-index: 9999;" /></span>
                 </div>
                 <div class='input-group' style="width: 220px;margin-bottom: 15px;margin: 15px;">
-                    <span class='input-group-addon'>信息边界颜色</span>
+                    <span class='input-group-addon' data-i18n="resources.text_infoBorderColor"></span>
                     <input type="text" id="fontBackgroundBorderColor" value="" class='form-control' />
                     <span class='input-group-addon'><img src='../img/colorpicker.png' id="cp3"
                             style="cursor:pointer; z-index: 9999;" /></span>
@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div style="margin: 10px;">
-                <input type="button" id="createOrUnSymbolGroup" class="btn btn-default" data-i18n="[value]resources.btn_createSymbolGroup" value=""
+                <input type="button" id="createOrUnSymbolGroup" class="btn btn-default" value=""
                     onclick="createOrUnSymbolGroup()" />
                 <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteSymbolGroup"
                     onclick="deleteSymbol()" />
@@ -164,7 +164,7 @@
     </div>
     <div id="plottingMenu" class="plotting-menu">
         <li>
-            <span class="icon iconfont icon-quanxuan" title="框选" onclick="multiSelectModel()"></span>
+            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect" onclick="multiSelectModel()"></span>
         </li>
     </div>
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -199,9 +199,12 @@
         L.supermap.plotting.initPlotPanel("plotPanel", serverUrl, drawControl);
         L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
 
+        diabledPropertyPanel();
+
         editControl.on("featuresselected", featuresSelected);
 
         editControl.on("featuresunselected", featuresUnselected);
+
         featuresUnselected();
         document.getElementById("plottingOpenMapFile").addEventListener('input', (evt) => {
             var file = evt.target.files;
@@ -215,20 +218,37 @@
             }
         });
         document.getElementById("symbol").value = "0";
-        currentSymbolType = "标号";
-        document.getElementById("createOrUnSymbolGroup").value = "创建聚合对象"
+        currentSymbolType = resources.option_symbol;
+        document.getElementById("createOrUnSymbolGroup").value = resources.btn_createSymbolGroup;
 
         function featuresSelected() {
             var features = editControl.getSelectedFeatures();
+            if (features.length == 1 && features[0].symbolType == 999) {
+                document.getElementById("rangeColor").disabled = false;
+                document.getElementById("fontBackgroundColor").disabled = false;
+                document.getElementById("fontBackgroundBorderColor").disabled = false;
+                document.getElementById("cp1").disabled = false;
+                document.getElementById("cp2").disabled = false;
+                document.getElementById("cp3").disabled = false;
+                $("#cp1").css("pointer-events", "");
+                $("#cp2").css("pointer-events", "");
+                $("#cp3").css("pointer-events", "");
+                document.getElementById("culsterRangeVisible").disabled = false;
+                document.getElementById("onlyInCulsterRangeVisible").disabled = false;
+                document.getElementById("culsterInfoVisible").disabled = false;
+                document.getElementById("onlyInCulsterInfoVisible").disabled = false;
+            } else {
+                diabledPropertyPanel();
+            }
             for (var i = 0; i < features.length; i++) {
                 if (features[i].symbolType != 999) {
-                    document.getElementById("createOrUnSymbolGroup").value = "创建聚合对象"
+                    document.getElementById("createOrUnSymbolGroup").value = resources.btn_createSymbolGroup
                     continue;
                 }
                 document.getElementById("rangeColor").value = features[i].style.rangeColor;
                 document.getElementById("fontBackgroundColor").value = features[i].style.fontBackgroundColor;
                 document.getElementById("fontBackgroundBorderColor").value = features[i].style.fontBackgroundBorderColor;
-                document.getElementById("createOrUnSymbolGroup").value = "解绑聚合对象";
+                document.getElementById("createOrUnSymbolGroup").value = resources.btn_unSymbolGroup;
 
                 if (features[i].showClusterRange)
                     document.getElementById("culsterRangeVisible").value = 1;
@@ -261,17 +281,35 @@
 
             document.getElementById("culsterInfoVisible").value = 0;
             document.getElementById("onlyInCulsterInfoVisible").value = 0;
+
+            diabledPropertyPanel();
+            
+        }
+        function diabledPropertyPanel(){
+            document.getElementById("rangeColor").disabled = true;
+            document.getElementById("fontBackgroundColor").disabled = true;
+            document.getElementById("fontBackgroundBorderColor").disabled = true;
+            document.getElementById("cp1").disabled = true;
+            document.getElementById("cp2").disabled = true;
+            document.getElementById("cp3").disabled = true;
+            $("#cp1").css("pointer-events", "none");
+            $("#cp2").css("pointer-events", "none");
+            $("#cp3").css("pointer-events", "none");
+            document.getElementById("culsterRangeVisible").disabled = true;
+            document.getElementById("onlyInCulsterRangeVisible").disabled = true;
+            document.getElementById("culsterInfoVisible").disabled = true;
+            document.getElementById("onlyInCulsterInfoVisible").disabled = true;
         }
         function symbolChanged(event) {
             switch (event.target.value) {
                 case '0':
-                    currentSymbolType = "标号";
+                    currentSymbolType = resources.option_symbol;
                     break;
                 case '1':
-                    currentSymbolType = "图片";
+                    currentSymbolType = resources.option_picture;
                     break;
                 case '2':
-                    currentSymbolType = "模型";
+                    currentSymbolType = resources.option_model;
                     break;
 
                 default:
@@ -310,17 +348,17 @@
             options.path = "../img/Plane/Plane_1.png";
             for (var i = 0; i < num; i++) {
                 var latlngs = [new L.latLng(map.getCenter().lat + (2 * e * Math.random() - e), map.getCenter().lng + (2 * e * Math.random() - e))];
-                // plottingLayer.createSymbol(libID, code, latlngs, "", {}, options);
+                // plottingLayer.createSymbol(libID, code, latlngs, "", {}, options);          
                 plottingLayer.createSymbol(libID, code, latlngs);
             }
         }
         function drawGraphics() {
             plottingLayer.removeAllFeatures();
-            if (currentSymbolType === "标号") {
+            if (currentSymbolType === resources.option_symbol) {
                 this.createRoomNumber();
-            } else if (currentSymbolType === "模型") {
+            } else if (currentSymbolType === resources.option_model) {
                 this.createAirPlane();
-            } else if (currentSymbolType === "图片") {
+            } else if (currentSymbolType === resources.option_picture) {
                 this.createPicture();
             }
         }
@@ -330,6 +368,10 @@
 
         function setCulsterRangeVisible() {
             var features = editControl.getSelectedFeatures();
+            if (features.length == 0) {
+                alert("请选择要修改的聚合对象");
+                return;
+            }
             if (features[0].symbolType != 999) {
                 return;
             }
@@ -351,6 +393,10 @@
 
         function setCulsterInfoVisible() {
             var features = editControl.getSelectedFeatures();
+            if (features.length == 0) {
+                alert("请选择要修改的聚合对象");
+                return;
+            }
             if (features[0].symbolType != 999) {
                 return;
             }
@@ -371,7 +417,7 @@
         }
 
         function createOrUnSymbolGroup() {
-            if (document.getElementById("createOrUnSymbolGroup").value == "创建聚合对象") {
+            if (document.getElementById("createOrUnSymbolGroup").value == resources.btn_createSymbolGroup) {
                 var features = editControl.getSelectedFeatures();
                 if (features.length == 0) {
                     alert("请选择要聚合显示的标号");
@@ -399,7 +445,7 @@
                         plottingLayer.unGroupSymbol(features[i]);
                     }
                 }
-                document.getElementById("createOrUnSymbolGroup").value == "创建聚合对象"
+                document.getElementById("createOrUnSymbolGroup").value == resources.btn_createSymbolGroup
             }
 
         }
@@ -437,7 +483,7 @@
             const objectURL = URL.createObjectURL(blob);
             const domElement = document.createElement("a");
             domElement.href = objectURL;
-            domElement.download = "标绘图" + getFileTime();
+            domElement.download = resources.title_plotMap + getFileTime();
             domElement.click();
             URL.revokeObjectURL(objectURL);
         }
@@ -467,7 +513,7 @@
             $("#cp1").colorpicker({
                 ishex: true,
                 fillcolor: true,
-                event: 'mouseover',
+                event: 'click',
                 target: $("#rangeColor"),
                 success: rangeColorChanges
 
@@ -479,6 +525,10 @@
         function rangeColorChanges() {
             var color = document.getElementById("rangeColor").value;
             var features = editControl.getSelectedFeatures();
+            if (features.length == 0) {
+                alert("请选择要修改的聚合对象");
+                return;
+            }
             features[0].setStyle({ rangeColor: color });
         }
 
@@ -486,7 +536,7 @@
             $("#cp2").colorpicker({
                 ishex: true,
                 fillcolor: true,
-                event: 'mouseover',
+                event: 'click',
                 target: $("#fontBackgroundColor"),
                 success: fontBackgroundColorChanges
 
@@ -498,6 +548,10 @@
         function fontBackgroundColorChanges() {
             var color = document.getElementById("fontBackgroundColor").value;
             var features = editControl.getSelectedFeatures();
+            if (features.length == 0) {
+                alert("请选择要修改的聚合对象");
+                return;
+            }
             features[0].setStyle({ fontBackgroundColor: color });
         }
 
@@ -505,7 +559,7 @@
             $("#cp3").colorpicker({
                 ishex: true,
                 fillcolor: true,
-                event: 'mouseover',
+                event: 'click',
                 target: $("#fontBackgroundBorderColor"),
                 success: fontBackgroundBorderColorChanges
 
@@ -517,6 +571,10 @@
         function fontBackgroundBorderColorChanges() {
             var color = document.getElementById("fontBackgroundBorderColor").value;
             var features = editControl.getSelectedFeatures();
+            if (features.length == 0) {
+                alert("请选择要修改的聚合对象");
+                return;
+            }
             features[0].setStyle({ fontBackgroundBorderColor: color });
         }
         $(document).ready(function () {

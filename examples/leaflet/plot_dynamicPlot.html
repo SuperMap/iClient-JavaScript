@@ -1,5 +1,5 @@
 <!--********************************************************************
-* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入
@@ -167,117 +167,117 @@
     </div>
 </div>
 <div id="plottingMenu" class="plotting-menu">
-    <li><span class="icon iconfont icon-circle-wrong" title="取消标绘"
+    <li><span class="icon iconfont icon-circle-wrong" data-i18n="[title]resources.btn_cancelMarker"
      onclick="cancelDraw()"></span></li>
     <li>
       <i class="icon iconfont icon-draw"></i>
       <ul style="width: 160px;">
-          <li><span class="icon iconfont icon-draw" title="添加图层"
+          <li><span class="icon iconfont icon-draw" data-i18n="[title]resources.text_addLayer"
            onclick="addPlottingLayer()"></span></li>
-          <li><span class="icon iconfont icon-lock" title="图层可锁定"
+          <li><span class="icon iconfont icon-lock" data-i18n="[title]resources.title_layerLocked"
            onclick="setPlottingLayerIsLocked()"></span></li>
-           <li><span class="icon iconfont icon-plot-layer-edit" title="图层可编辑"
+           <li><span class="icon iconfont icon-plot-layer-edit" data-i18n="[title]resources.title_layerEdit"
             onclick="setPlottingLayerIsEdit()"></span></li>
-          <li><span class="icon iconfont icon-plot-layer-selection" title="图层可选择"
+          <li><span class="icon iconfont icon-plot-layer-selection" data-i18n="[title]resources.title_layerSelected"
            onclick="setPlottingLayerIsSelected()"></span></li>
-           <li><span class="icon iconfont icon-style" title="清空图层上所有标号"
+           <li><span class="icon iconfont icon-style" data-i18n="[title]resources.title_clearAllSymbol"
             onclick="clearLayer()"></span></li>
       </ul>
     </li>
     <li>
       <i class="icon iconfont icon-bound-rectangle-edit"></i>
       <ul style="width: 128px;">
-          <li><span class="icon iconfont icon-bound-rectangle-edit" title="外接矩形编辑"
+          <li><span class="icon iconfont icon-bound-rectangle-edit" data-i18n="[title]resources.btn_editRectangle"
            onclick="editCircusRetangle()"></span></li>
-          <li><span class="icon iconfont icon-node-edit" title="节点编辑"
+          <li><span class="icon iconfont icon-node-edit" data-i18n="[title]resources.btn_editNode"
            onclick="editContorPoints()"></span></li>
-           <li><span class="icon iconfont icon-add-node" title="增加节点"
+           <li><span class="icon iconfont icon-add-node" data-i18n="[title]resources.btn_addNode"
             onclick="addControlPoints()"></span></li>
-            <li><span class="icon iconfont icon-delete-node" title="删除节点"
+            <li><span class="icon iconfont icon-delete-node" data-i18n="[title]resources.btn_deleteNode"
              onclick="removeControlPoints()"></span></li>
       </ul>
     </li>
     <li>
       <i class="icon iconfont icon-copy2"></i>
       <ul style="width: 192px;">
-          <li><span class="icon iconfont icon-copy2" title="复制标号"
+          <li><span class="icon iconfont icon-copy2" data-i18n="[title]resources.title_copySymbol"
            onclick="copySymbol()"></span></li>
-          <li><span class="icon iconfont icon-shear" title="剪切标号"
+          <li><span class="icon iconfont icon-shear" data-i18n="[title]resources.title_cutSymbol"
            onclick="cutSymbol()"></span></li>
-           <li><span class="icon iconfont icon-paste" title="粘贴标号"
+           <li><span class="icon iconfont icon-paste" data-i18n="[title]resources.title_pasteSymbol"
             onclick="pasteSymbol()"></span></li>
-            <li><span class="icon iconfont icon-delete" title="删除标号"
+            <li><span class="icon iconfont icon-delete" data-i18n="[title]resources.btn_deleteMarker"
              onclick="deleteSymbol()"></span></li>
-             <li><span class="icon iconfont icon-undo" title="撤销上一次编辑"
+             <li><span class="icon iconfont icon-undo" data-i18n="[title]resources.title_canclePreDo"
               onclick="undo()"></span></li>
-              <li><span class="icon iconfont icon-redo" title="恢复上一次撤销"
+              <li><span class="icon iconfont icon-redo" data-i18n="[title]resources.title_recoverPreDo"
                onclick="redo()"></span></li>
       </ul>
     </li>
     <li>
       <i class="icon iconfont icon-cloud-upload"></i>
       <ul style="width: 64px;">
-          <li><span class="icon iconfont icon-cloud-upload" title="保存态势图"
+          <li><span class="icon iconfont icon-cloud-upload" data-i18n="[title]resources.btn_saveSimulationMap"
            onclick="saveSimulationMap()"></span></li>
-          <li><span class="icon iconfont icon-cloud-download" title="加载态势图"
+          <li><span class="icon iconfont icon-cloud-download" data-i18n="[title]resources.btn_loadSimulationMap"
            onclick="loadSimulationMap()"></span></li>
       </ul>
     </li>
     <li>
-      <span class="icon iconfont icon-quanxuan" title="框选" onclick="multiSelectModel()"></span>
+      <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect" onclick="multiSelectModel()"></span>
     </li>
      <li>
        <i class="icon iconfont icon-combination"></i>
        <ul style="width: 96px;">
-           <li><span class="icon iconfont icon-combination" title="对多选的标号，创建组合"
+           <li><span class="icon iconfont icon-combination" data-i18n="[title]resources.title_mutilSelect_createSymbolGroup"
             onclick="createGroupObjects()"></span></li>
-           <li><span class="icon iconfont icon-multiflag" title="对多选的旗子类标号，创建多旗"
+           <li><span class="icon iconfont icon-multiflag" data-i18n="[title]resources.title_mutilSelect_createFlags"
             onclick="createDrawFlags()"></span></li>
-            <li><span class="icon iconfont icon-decompose" title="解组组合或多旗标号"
+            <li><span class="icon iconfont icon-decompose" data-i18n="[title]resources.title_un_symblGroup_flags"
              onclick="unGroupObject()"></span></li>
        </ul>
      </li>
      <li>
        <i class="icon iconfont icon-draw-avoid"></i>
        <ul style="width: 96px;">
-           <li><span class="icon iconfont icon-draw-avoid" title="避让编辑"
+           <li><span class="icon iconfont icon-draw-avoid" data-i18n="[title]resources.btn_avoidEdit"
             onclick="drawAvoidRegion()"></span></li>
-           <li><span class="icon iconfont icon-exit-avoid" title="退出避让编辑"
+           <li><span class="icon iconfont icon-exit-avoid" data-i18n="[title]resources.btn_cancelAvoidEdit"
             onclick="doneAvoidEdit()"></span></li>
-            <li><span class="icon iconfont icon-delete-avoid" title="删除避让"
+            <li><span class="icon iconfont icon-delete-avoid" data-i18n="[title]resources.btn_deleteAvoid"
              onclick="deleteAvoidEdit()"></span></li>
        </ul>
      </li>
      <li>
        <i class="icon iconfont icon-align-left"></i>
        <ul style="width: 354px;">
-           <li><span class="icon iconfont icon-align-left" title="左对齐"
+           <li><span class="icon iconfont icon-align-left" data-i18n="[title]resources.btn_leftAlignment"
             onclick="setSymbolAlighLeft()"></span></li>
-           <li><span class="icon iconfont icon-align-right" title="右对齐"
+           <li><span class="icon iconfont icon-align-right" data-i18n="[title]resources.btn_rightAlignment"
             onclick="setSymbolAlighRight()"></span></li>
-            <li><span class="icon iconfont icon-align-up" title="上对齐"
+            <li><span class="icon iconfont icon-align-up" data-i18n="[title]resources.btn_topAlignment"
              onclick="setSymbolAlighUp()"></span></li>
-            <li><span class="icon iconfont icon-align-bottom" title="下对齐"
+            <li><span class="icon iconfont icon-align-bottom" data-i18n="[title]resources.btn_bottomAlignment"
              onclick="setSymbolAlighDown()"></span> </li>
-           <li><span class="icon iconfont icon-vertical-center" title="竖直居中对齐"
+           <li><span class="icon iconfont icon-vertical-center" data-i18n="[title]resources.btn_verticalCenter"
             onclick="setSymbolAlighVerticalcenter()"></span></li>
-           <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-horizontal-center" title="水平居中对齐"
+           <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-horizontal-btn_horizontalCenter"
             onclick="setSymbolAlighHorizontalcenter()"></span></li>
-            <li><span class="icon iconfont icon-equal-width" title="等宽"
+            <li><span class="icon iconfont icon-equal-width" data-i18n="[title]resources.btn_symbolEqualWidth"
              onclick="setSymbolEqualWidth()"></span></li>
-            <li><span class="icon iconfont icon-equal-high" title="等高"
+            <li><span class="icon iconfont icon-equal-high" data-i18n="[title]resources.btn_symbolEqualHeight"
              onclick="setSymbolEqualHeight()"></span></li>
-             <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-equal-width-high" title="等大小"
+             <li style="border-right: 1px solid #ccc"><span class="icon iconfont icon-equal-width-high" data-i18n="[title]resources.title_symbolEqualSize"
               onclick="setSymbolEqualWidthHeight()"></span></li>
-              <li><span class="icon iconfont icon-transverse-uniform-distribution" title="横向均匀分布"
+              <li><span class="icon iconfont icon-transverse-uniform-distribution" data-i18n="[title]resources.btn_symbolLevelDistribution"
                onclick="setSymbolLevelDistribution()"></span></li>
-              <li><span class="icon iconfont icon-portrait-uniform-distribution" title="纵向均匀分布"
+              <li><span class="icon iconfont icon-portrait-uniform-distribution" data-i18n="[title]resources.btn_symbolVerticalDistribution"
                onclick="setSymbolVerticalDistribution()"></span></li>
        </ul>
      </li>
 </div>
 <div id="contentMe" style="width:100px;background-color:#f4f4f4;box-shadow:3px 3px 3px rgba(0,0,0,0.5);position:absolute;z-index:1000; top:20px;left:100px;display:none;text-align:center;">
-    <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;">粘贴此处</a>
+    <a href="javascript:void(0)" id="paste" style="border-bottom:1px solid #ccc;display:block;line-height:20px;color:#000; font-size:16px;" data-i18n="resources.title_pasteHere"></a>
 </div>
 <script type="text/javascript" include="plottingPanel" src="../js/include-web.js"></script>
 <script type="text/javascript"  include="iclient-plot-leaflet" src="../../dist/leaflet/include-leaflet.js"></script>
