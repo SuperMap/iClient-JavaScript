@@ -13,9 +13,9 @@ describe('namespace', () => {
   it('FetchRequest, VectorClipJobsParameter', () => {
     expect(FetchRequest).not.toBeNull();
     expect(VectorClipJobsParameter).not.toBeNull();
-    expect(typeof FetchRequest).toBe('function');
+    expect(typeof FetchRequest).toBe('object');
     expect(typeof VectorClipJobsParameter).toBe('function');
-    expect(typeof SuperMap.FetchRequest).toBe('function');
+    expect(typeof SuperMap.FetchRequest).toBe('object');
     expect(typeof SuperMap.VectorClipJobsParameter).toBe('function');
   });
 });
