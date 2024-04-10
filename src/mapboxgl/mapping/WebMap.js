@@ -21,13 +21,18 @@ import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
  * </div>
  * @modulecategory Mapping
  * @param {number} id - iPortal|Online 地图 ID。
- * @param {Object} options - 参数。
+ * @param {Object} options - 基础参数。
  * @param {string} [options.target='map'] - 地图容器 ID。
  * @param {string} [options.server="https://www.supermapol.com"] - 地图的地址。
  * @param {string} [options.credentialKey] - 凭证密钥。
  * @param {string} [options.credentialValue] - 凭证值。
  * @param {boolean} [options.withCredentials=false] - 请求是否携带 cookie。
  * @param {boolean} [options.excludePortalProxyUrl] - 服务端传递过来的 URL 是否带有代理。
+ * @param {Object} mapOptions - 地图参数。
+ * @param {string} [mapOptions.center] - 中心点。
+ * @param {string} [mapOptions.zoom] - 缩放级别。
+ * @param {string} [mapOptions.bearing] - 旋转角度。
+ * @param {string} [mapOptions.pitch] - 倾角。
  * @fires WebMap#getmapfailed
  * @fires WebMap#getwmtsfailed
  * @fires WebMap#getlayersfailed
@@ -37,16 +42,14 @@ import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
  * @usage
  */
 export class WebMap extends mapboxgl.Evented {
-	constructor(id, options) {
+	constructor(id, options = {}, mapOptions) {
 		super();
 		this.mapId = id;
-		options = options || {};
-		this.server = options.server;
-		this.credentialKey = options.credentialKey;
-		this.credentialValue = options.credentialValue;
-		this.withCredentials = options.withCredentials || false;
-		this.target = options.target || 'map';
-    this._canvgsV = [];
+    this.options = Object.assign({}, options);
+    this.options.server = this._formatServerUrl(options.server);
+    this.options.target = options.target || 'map';
+    this.options.withCredentials = options.withCredentials || false;
+    this.mapOptions = mapOptions;
 		this._createWebMap();
     this.on('mapinitialized', () => {
       this.map.on('remove', () => {
@@ -79,7 +82,6 @@ export class WebMap extends mapboxgl.Evented {
 	 */
   setWebMapOptions(webMapOptions) {
     const server = this._formatServerUrl(webMapOptions.server);
-    this.server = server;
     this.options.server = server;
     this._createWebMap();
   }
@@ -107,7 +109,7 @@ export class WebMap extends mapboxgl.Evented {
    * @description 登陆窗口后添加地图图层。
    */
   _createWebMap() {
-     const mapUrl = Util.transformUrl(Object.assign({ url: `${this.server}web/maps/${this.mapId}/map` }, this.options));
+     const mapUrl = Util.transformUrl(Object.assign({ url: `${this.options.server}web/maps/${this.mapId}/map` }, this.options));
      this._getMapInfo(mapUrl);
    }
 
@@ -169,7 +171,7 @@ export class WebMap extends mapboxgl.Evented {
     * @description 获取地图投影。
     */
    _getMapProjection(mapInfo) {
-     if (mapInfo.version === '3.0.0') {
+     if (this._isWebMapV3(mapInfo.version)) {
        return mapInfo.crs;
      }
      return mapInfo.projection;
@@ -182,8 +184,8 @@ export class WebMap extends mapboxgl.Evented {
    * @description 初始化 WebMap 实例
    */
   _initMap(mapInfo) {
-     const WebMapFactory = mapInfo.version === '3.0.0' ? WebMapV3 : WebMapV2;
-     const webMapInstance =  new WebMapFactory(this.mapId, this.options);
+     const WebMapFactory = this._isWebMapV3(mapInfo.version) ? WebMapV3 : WebMapV2;
+     const webMapInstance =  new WebMapFactory(this.mapId, this.options, this.mapOptions);
      webMapInstance.setEventedParent(this);
      return webMapInstance;
    }
@@ -207,5 +209,9 @@ export class WebMap extends mapboxgl.Evented {
 
    _getWebMapInstance() {
       return this.webMapInstance;
+   }
+
+   _isWebMapV3(version) {
+    return version.startsWith('3.');
    }
  }

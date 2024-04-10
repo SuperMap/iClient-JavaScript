@@ -63,12 +63,13 @@ const MB_SCALEDENOMINATOR_4326 = [
 const DEFAULT_WELLKNOWNSCALESET = ['GoogleCRS84Quad', 'GoogleMapsCompatible'];
 
 export class WebMap extends mapboxgl.Evented {
-   constructor(mapId, options) {
+   constructor(mapId, options, mapOptions = {}) {
      super();
      this.mapId = mapId;
      this.server = options.server;
      this.withCredentials = options.withCredentials;
      this.target = options.target;
+     this.mapOptions = mapOptions;
      this._canvgsV = [];
    }
 
@@ -115,7 +116,7 @@ export class WebMap extends mapboxgl.Evented {
 				layer.labelStyle && fonts.push(layer.labelStyle.fontFamily);
 			}, this);
 		}
-		fonts.push("'supermapol-icons'");
+		fonts.push("supermapol-icons");
 		let fontFamilys = fonts.join(',');
 
 		// zoom center
@@ -136,12 +137,14 @@ export class WebMap extends mapboxgl.Evented {
             zoomBase = +Math.log(e) / Math.LN2.toFixed(2);
         }
         zoom += zoomBase;
-    center = oldcenter ? Util._unproject([oldcenter.x, oldcenter.y]) : new mapboxgl.LngLat(0, 0);
+    center = oldcenter ? Util.unproject([oldcenter.x, oldcenter.y]) : new mapboxgl.LngLat(0, 0);
 		// 初始化 map
 		this.map = new mapboxgl.Map({
 			container: this.target,
-			center: center,
-			zoom: zoom,
+			center: this.mapOptions.center || center,
+			zoom: this.mapOptions.zoom || zoom,
+      bearing: this.mapOptions.bearing || 0,
+      pitch: this.mapOptions.pitch || 0,
 			style: {
 				version: 8,
 				sources: {},
@@ -820,7 +823,7 @@ export class WebMap extends mapboxgl.Evented {
 				'text-offset': labelStyle.offsetX
 					? [labelStyle.offsetX / 10 || 0, labelStyle.offsetY / 10 || 0]
 					: [0, -1.5],
-				'text-font': ['DIN Offc Pro Italic', 'Arial Unicode MS Regular'],
+				'text-font': labelStyle.fontFamily ? [labelStyle.fontFamily] : [],
 				visibility: layerInfo.visible
 			}
 		});
@@ -858,7 +861,7 @@ export class WebMap extends mapboxgl.Evented {
 			},
 			layout: {
 				'text-field': text,
-				'text-font': ['DIN Offc Pro Italic', 'Arial Unicode MS Regular'],
+				'text-font': ['supermapol-icons'],
 				visibility: layerInfo.visible
 			}
 		});

@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
-import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
+import { WebMap } from '../../../src/mapboxgl/mapping/webmap/v2/WebMap';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
 import '../../resources/WebMapV5.js';
