@@ -452,6 +452,7 @@ export class WebMap extends mapboxgl.Evented {
   _createLayerLegendList(layer, styleSetting) {
     const layerType = layer.type;
     const layerId = layer.id;
+    const layerTitle = layer.title;
     const layerType2LegendType = LAEYR_TYPE_LEGEND_TYPE[layerType];
     if (styleSetting.type === 'heat') {
       const colors = this._heatColorToGradient((layer.paint || {})['heatmap-color']);
@@ -468,7 +469,8 @@ export class WebMap extends mapboxgl.Evented {
                 }
               }
             ],
-            layerId
+            layerId,
+            layerTitle
           }
         ];
       }
@@ -492,7 +494,8 @@ export class WebMap extends mapboxgl.Evented {
               }
             }
           ],
-          layerId
+          layerId,
+          layerTitle
         }
       ];
     }
@@ -516,7 +519,8 @@ export class WebMap extends mapboxgl.Evented {
         themeField: (subStyleSetting.field || [])[0],
         styleField: styleField,
         styleGroup,
-        layerId
+        layerId,
+        layerTitle
       };
       return legendItem;
     });
