@@ -541,7 +541,6 @@ window.examplesResources = {
         "title_iportalWebMap_unicode": "SuperMap iPortal 点样式",
         "title_iportalWebMap_unique": "SuperMap iPortal 单值专题图",
         "title_iportalWebMap_label": "SuperMap iPortal 标签专题图",
-        "title_iportalWebMap_mapstudio": "SuperMap iPortal Map Studio",
         "title_earthquakeHeatMapLayer": "2005-2016地震次数(Classic)",
         "title_echartsEarthquake": "2005到2016年地震发生情况",
         "title_l_echartsEarthquake": "2001年到2014年地震热力图",

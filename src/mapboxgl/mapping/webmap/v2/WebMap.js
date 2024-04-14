@@ -74,11 +74,11 @@ export class WebMap extends mapboxgl.Evented {
    }
 
    /**
-    * @function WebMap.prototype.createWebMap
+    * @function WebMap.prototype.initializeMap
     * @description 登陆窗口后添加地图图层。
     * @param {Object} mapInfo - map 信息。
     */
-   createWebMap(mapInfo) {
+   initializeMap(mapInfo) {
     this.baseProjection = mapInfo.projection;
     //存储地图的名称以及描述等信息，返回给用户
     this.mapParams = {

@@ -42,34 +42,34 @@ import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
  * @usage
  */
 export class WebMap extends mapboxgl.Evented {
-	constructor(id, options = {}, mapOptions) {
-		super();
-		this.mapId = id;
+  constructor(id, options = {}, mapOptions) {
+    super();
+    this.mapId = id;
     this.options = Object.assign({}, options);
     this.options.server = this._formatServerUrl(options.server);
     this.options.target = options.target || 'map';
     this.options.withCredentials = options.withCredentials || false;
     this.mapOptions = mapOptions;
-		this._createWebMap();
+    this._createWebMap();
     this.on('mapinitialized', () => {
       this.map.on('remove', () => {
         this._stopCanvg();
       });
     });
-	}
-	/**
-	 * @function WebMap.prototype.resize
-	 * @description 地图 resize。
-	 */
-	resize() {
-		this.map.resize();
+  }
+  /**
+   * @function WebMap.prototype.resize
+   * @description 地图 resize。
+   */
+  resize() {
+    this.map.resize();
   }
 
   /**
-	 * @function WebMap.prototype.setMapId
-	 * @param {string} mapId - webMap 地图 ID。
-	 * @description 设置 WebMap ID。
-	 */
+   * @function WebMap.prototype.setMapId
+   * @param {string} mapId - webMap 地图 ID。
+   * @description 设置 WebMap ID。
+   */
   setMapId(mapId) {
     this.mapId = mapId;
     this._createWebMap();
@@ -77,9 +77,9 @@ export class WebMap extends mapboxgl.Evented {
 
   /**
    * @function WebMap.prototype.setWebMapOptions
-	 * @param {Object} webMapOptions - webMap 参数。
-	 * @description 设置 webMap 参数。
-	 */
+   * @param {Object} webMapOptions - webMap 参数。
+   * @description 设置 webMap 参数。
+   */
   setWebMapOptions(webMapOptions) {
     const server = this._formatServerUrl(webMapOptions.server);
     this.options.server = server;
@@ -87,10 +87,10 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   /**
-	 * @function WebMap.prototype.setMapOptions
-	 * @param {Object} mapOptions - map 参数。
-	 * @description 设置 map 参数。
-	 */
+   * @function WebMap.prototype.setMapOptions
+   * @param {Object} mapOptions - map 参数。
+   * @description 设置 map 参数。
+   */
   setMapOptions(mapOptions) {
     let { center, zoom, maxBounds, minZoom, maxZoom, isWorldCopy, bearing, pitch } = mapOptions;
     center && center.length && this.map.setCenter(center);
@@ -109,22 +109,24 @@ export class WebMap extends mapboxgl.Evented {
    * @description 登陆窗口后添加地图图层。
    */
   _createWebMap() {
-     const mapUrl = Util.transformUrl(Object.assign({ url: `${this.options.server}web/maps/${this.mapId}/map` }, this.options));
-     this._getMapInfo(mapUrl);
-   }
+    const mapUrl = Util.transformUrl(
+      Object.assign({ url: `${this.options.server}web/maps/${this.mapId}/map` }, this.options)
+    );
+    this._getMapInfo(mapUrl);
+  }
 
-   /**
-    * @private
-    * @function WebMap.prototype._formatServerUrl
-    * @description 格式化服务地址
-    */
-   _formatServerUrl(server) {
-     let urlArr = server.split('');
-     if (urlArr[urlArr.length - 1] !== '/') {
-       server += '/';
-     }
-     return server;
-   }
+  /**
+   * @private
+   * @function WebMap.prototype._formatServerUrl
+   * @description 格式化服务地址
+   */
+  _formatServerUrl(server) {
+    let urlArr = server.split('');
+    if (urlArr[urlArr.length - 1] !== '/') {
+      server += '/';
+    }
+    return server;
+  }
 
   /**
    * @private
@@ -133,49 +135,43 @@ export class WebMap extends mapboxgl.Evented {
    * @param {string} mapUrl - 请求地图的 url。
    */
   _getMapInfo(mapUrl) {
-     FetchRequest.get(mapUrl, null, { withCredentials: this.options.withCredentials })
-       .then((response) => {
-         return response.json();
-       })
-       .then((mapInfo) => {
-         const projectionMap = {
-           'EPSG:4490': 'EPSG:4490',
-           'EPSG:4214': 'EPSG:4214',
-           'EPSG:4610': 'EPSG:4610',
-           'EPSG:3857': 'EPSG:3857',
-           'EPSG:4326': 'EPSG:4326'
-         };
-         const baseProjection = this._getMapProjection(mapInfo);
-         // 坐标系异常处理
-         if (!(baseProjection in projectionMap)) {
-           throw Error(Lang.i18n('msg_crsunsupport'));
-         }
-         this.webMapInstance = this._initMap(mapInfo);
-         this._registerWebMapEvents();
-         this.webMapInstance.createWebMap(mapInfo);
-       })
-       .catch((error) => {
-         /**
-          * @event WebMap#getmapfailed
-          * @description 获取地图信息失败。
-          * @property {Object} error - 失败原因。
-          */
-         this.fire('getmapfailed', { error: error });
-       });
-   }
+    FetchRequest.get(mapUrl, null, { withCredentials: this.options.withCredentials })
+      .then((response) => {
+        return response.json();
+      })
+      .then((mapInfo) => {
+        const projectionMap = ['EPSG:4490', 'EPSG:4214', 'EPSG:4610', 'EPSG:3857', 'EPSG:4326'];
+        const baseProjection = this._getMapProjection(mapInfo);
+        // 坐标系异常处理
+        if (!projectionMap.find(item => item === baseProjection)) {
+          throw Error(Lang.i18n('msg_crsunsupport'));
+        }
+        this.webMapInstance = this._initMap(mapInfo);
+        this._registerWebMapEvents();
+        this.webMapInstance.initializeMap(mapInfo);
+      })
+      .catch((error) => {
+        /**
+         * @event WebMap#getmapfailed
+         * @description 获取地图信息失败。
+         * @property {Object} error - 失败原因。
+         */
+        this.fire('getmapfailed', { error: error });
+      });
+  }
 
-   /**
-    * @private
-    * @function WebMap.prototype._getMapProjection
-    * @param {object} mapInfo - 地图信息。
-    * @description 获取地图投影。
-    */
-   _getMapProjection(mapInfo) {
-     if (this._isWebMapV3(mapInfo.version)) {
-       return mapInfo.crs;
-     }
-     return mapInfo.projection;
-   }
+  /**
+   * @private
+   * @function WebMap.prototype._getMapProjection
+   * @param {object} mapInfo - 地图信息。
+   * @description 获取地图投影。
+   */
+  _getMapProjection(mapInfo) {
+    if (this._isWebMapV3(mapInfo.version)) {
+      return mapInfo.crs;
+    }
+    return mapInfo.projection;
+  }
 
   /**
    * @private
@@ -184,11 +180,18 @@ export class WebMap extends mapboxgl.Evented {
    * @description 初始化 WebMap 实例
    */
   _initMap(mapInfo) {
-     const WebMapFactory = this._isWebMapV3(mapInfo.version) ? WebMapV3 : WebMapV2;
-     const webMapInstance =  new WebMapFactory(this.mapId, this.options, this.mapOptions);
-     webMapInstance.setEventedParent(this);
-     return webMapInstance;
-   }
+    const WebMap = this._getMapFactory(mapInfo.version);
+    const webMapInstance = new WebMap(this.mapId, this.options, this.mapOptions);
+    webMapInstance.setEventedParent(this);
+    return webMapInstance;
+  }
+
+  _getMapFactory(version) {
+    if (this._isWebMapV3(version)) {
+      return WebMapV3;
+    }
+    return WebMapV2;
+  }
 
   /**
    * @private
@@ -196,22 +199,22 @@ export class WebMap extends mapboxgl.Evented {
    * @description 注册 WebMap 事件
    */
   _registerWebMapEvents() {
-     if (!this.webMapInstance) {
-       return;
-     }
-     this.webMapInstance.on('mapinitialized', () => {
-       this.map = this.webMapInstance.map;
-     });
-     this.webMapInstance.on('addlayerssucceeded', ({ mapparams }) => {
-       this.mapParams = mapparams;
-     });
-   }
+    if (!this.webMapInstance) {
+      return;
+    }
+    this.webMapInstance.on('mapinitialized', () => {
+      this.map = this.webMapInstance.map;
+    });
+    this.webMapInstance.on('addlayerssucceeded', ({ mapparams }) => {
+      this.mapParams = mapparams;
+    });
+  }
 
-   _getWebMapInstance() {
-      return this.webMapInstance;
-   }
+  _getWebMapInstance() {
+    return this.webMapInstance;
+  }
 
-   _isWebMapV3(version) {
+  _isWebMapV3(version) {
     return version.startsWith('3.');
-   }
- }
+  }
+}

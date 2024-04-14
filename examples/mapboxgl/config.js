@@ -599,13 +599,6 @@ var exampleConfig = {
                         version: '9.1.2',
                         thumbnail: 'iPortalWebmap_unicode.png',
                         fileName: 'iPortalWebmap_unicode'
-                    },
-                    {
-                        name: 'WebMap 3.0',
-                        name_en: 'WebMap 3.0',
-                        version: '9.1.2',
-                        thumbnail: 'iPortalWebmap_mapstudio.png',
-                        fileName: 'iPortalWebmap_mapstudio'
                     }
                 ]
             }

@@ -102,15 +102,16 @@ export class WebMap extends mapboxgl.Evented {
     this._mapResourceInfo = {};
     this._sprite = '';
     this._spriteDatas = {};
+    this._appreciableLayers = [];
   }
 
   /**
-   * @function WebMap.prototype.createWebMap
+   * @function WebMap.prototype.initializeMap
    * @description 登陆窗口后添加地图图层。
    * @param {Object} mapInfo - map 信息。
    * @param {Object} map - map 实例。
    */
-  createWebMap(mapInfo, map) {
+  initializeMap(mapInfo, map) {
     this._mapInfo = mapInfo;
     if (map) {
       this.map = map;
@@ -118,6 +119,14 @@ export class WebMap extends mapboxgl.Evented {
       return;
     }
     this._createMap();
+  }
+
+  /**
+   * @function WebMap.prototype.getLayers
+   * @description 获取可感知图层列表。
+   */
+  getLayers() {
+    return this._appreciableLayers || [];
   }
 
   /**
@@ -135,11 +144,11 @@ export class WebMap extends mapboxgl.Evented {
       pitch = 0,
       minzoom,
       maxzoom,
-      sprite
+      sprite = ''
     } = this._mapInfo;
-    if (this._mapInfo.center && crs === 'EPSG:3857') {
-      center = Util.unproject(center);
-    }
+    // if (this._mapInfo.center && crs === 'EPSG:3857') {
+    //   center = Util.unproject(center);
+    // }
     center = this.mapOptions.center || center;
     zoom = this.mapOptions.zoom || zoom;
     bearing = this.mapOptions.bearing || bearing;
@@ -283,8 +292,8 @@ export class WebMap extends mapboxgl.Evented {
    * @param {Object} layerIdMapList - 图层 id 信息
    */
   _sendMapToUser(layerIdMapList) {
-    const overlayLayers = this._generateLayers(layerIdMapList);
-    this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: overlayLayers });
+    this._appreciableLayers = this._generateLayers(layerIdMapList);
+    this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: this._appreciableLayers });
   }
 
   _getLayerInfosFromCatalogs(catalogs) {
@@ -302,15 +311,11 @@ export class WebMap extends mapboxgl.Evented {
     return results;
   }
 
-  getMapInfo() {
-    return this._mapInfo;
-  }
-
   getLegendInfo() {
     return this._legendList;
   }
 
-  cleanWebMap() {
+  clean() {
     if (this.map) {
       this.map = null;
       this._legendList = [];
@@ -326,7 +331,8 @@ export class WebMap extends mapboxgl.Evented {
    * @param {Array<Object>} layers - 图层信息。
    */
   _generateLayers(layerIdMapList) {
-    const originLayers = this._getLayerInfosFromCatalogs(this._mapResourceInfo.catalogs);
+    const { catalogs = [] } = this._mapResourceInfo;
+    const originLayers = this._getLayerInfosFromCatalogs(catalogs);
     const layers = originLayers.map((layer) => {
       const { title, visualization } = layer;
       const realLayerId = layerIdMapList[layer.id];

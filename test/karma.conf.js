@@ -89,6 +89,8 @@ module.exports = function (config) {
       './test-main-openlayers.js',
       /***mapboxgl***/
       { pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', included: true },
+      { pattern: './resources/data/sprite.png', included: false },
+      { pattern: './resources/data/sprite.json', included: false },
       '../src/mapboxgl/**/!(index).js',
       /**测试文件**/
       './test-main-mapboxgl.js',
