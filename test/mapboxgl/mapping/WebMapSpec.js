@@ -9,7 +9,7 @@ window.jsonsql = { query: () => { } };
 describe('mapboxgl_WebMap', () => {
     // spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
     var originalTimeout, testDiv;
-    var server = 'http://fack:8090/iportal/';
+    var server = 'http://fack:8190/iportal/';
     var id = 1788054202;
     var datavizWebmap;
     beforeEach(() => {
@@ -113,8 +113,9 @@ describe('mapboxgl_WebMap', () => {
         });
         datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
-            datavizWebmap._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 } }]);
-            datavizWebmap._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 } }]);
+            const webMapV2 = datavizWebmap._getWebMapInstance();
+            webMapV2._getFiterFeatures('2020年人口数>20', [{ properties: { '2020年人口数': 30 } }]);
+            webMapV2._getFiterFeatures('观测场海拔高度（米）>150', [{ properties: { '观测场海拔高度（米）': 150 } }]);
             done();
         });
     });
@@ -133,7 +134,8 @@ describe('mapboxgl_WebMap', () => {
         datavizWebmap.once('addlayerssucceeded', () => {
             datavizWebmap.setWebMapOptions({ server: 'http://www.test.com' });
             datavizWebmap.on('addlayerssucceeded', () => {
-                expect(datavizWebmap.server).toEqual('http://www.test.com/');
+                const webMapV2 = datavizWebmap._getWebMapInstance();
+                expect(webMapV2.server).toEqual('http://www.test.com/');
                 done();
             })
         })
@@ -668,7 +670,8 @@ describe('mapboxgl_WebMap', () => {
             datavizWebmap.fieldMaxValue = {
                 field: 10
             };
-            datavizWebmap._changeWeight(features, 'field');
+            const webMapV2 = datavizWebmap._getWebMapInstance();
+            webMapV2._changeWeight(features, 'field');
             // expect(feature.get('weight')).toBe(1);
             done();
         });
@@ -703,7 +706,8 @@ describe('mapboxgl_WebMap', () => {
                 }
             };
             features.push(feature);
-            datavizWebmap._getRangeStyleGroup(JSON.parse(params), features);
+            const webMapV2 = datavizWebmap._getWebMapInstance();
+            webMapV2._getRangeStyleGroup(JSON.parse(params), features);
             expect(ArrayStatistic.getArraySegments).toHaveBeenCalled();
             done();
         });
@@ -729,14 +733,18 @@ describe('mapboxgl_WebMap', () => {
             { strokeDashstyle: 'longdash' },
             { strokeDashstyle: 'longdashdot' }
         ];
-        expect(datavizWebmap._dashStyle(style[0]).length).toBe(0);
-        expect(datavizWebmap._dashStyle(style[1]).length).toBe(2);
-        expect(datavizWebmap._dashStyle(style[2]).length).toBe(4);
-        datavizWebmap._dashStyle(style[4]);
-        expect(datavizWebmap._dashStyle(style[3]).length).toBe(2);
-        expect(datavizWebmap._dashStyle(style[5]).length).toBe(2);
-        expect(datavizWebmap._dashStyle(style[6]).length).toBe(4);
-        done();
+        
+        datavizWebmap.on('mapinitialized', () => {
+          const webMapV2 = datavizWebmap._getWebMapInstance();
+          expect(webMapV2._dashStyle(style[0]).length).toBe(0);
+          expect(webMapV2._dashStyle(style[1]).length).toBe(2);
+          expect(webMapV2._dashStyle(style[2]).length).toBe(4);
+          webMapV2._dashStyle(style[4]);
+          expect(webMapV2._dashStyle(style[3]).length).toBe(2);
+          expect(webMapV2._dashStyle(style[5]).length).toBe(2);
+          expect(webMapV2._dashStyle(style[6]).length).toBe(4);
+          done();
+      });
     });
     it('vector_svg', (done) => {
         let options = {
@@ -806,10 +814,11 @@ describe('mapboxgl_WebMap', () => {
         });
         var datavizWebmap = new WebMap(id, options);
         datavizWebmap.on('addlayerssucceeded', () => {
-            datavizWebmap._getFiterFeatures('SmID>20', geojsonData);
+            const webMapV2 = datavizWebmap._getWebMapInstance();
+            webMapV2._getFiterFeatures('SmID>20', geojsonData);
             let feature =
                 '[{ "type" : "Feature", "properties" : { "name" : "aaaa" }, "geometry" : { "type" : "Polygon", "coordinates" : [ [[92.6806640625, 35.9957853864], [92.548828125, 29.8025179058], [99.9755859375, 33.541394669], [92.6806640625, 35.9957853864]], [[110.830078125, 34.5246614718], [103.6326255336, 36.859947123], [109.7218666539, 40.599259339], [110.830078125, 34.5246614718]] ] } } ]';
-            datavizWebmap._handleMultyPolygon(JSON.parse(feature));
+            webMapV2._handleMultyPolygon(JSON.parse(feature));
             expect(datavizWebmap.credentialKey).toBeUndefined();
             expect(datavizWebmap.credentialValue).toBeUndefined();
             done();
