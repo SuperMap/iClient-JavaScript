@@ -136,7 +136,7 @@ export class WebMap extends mapboxgl.Evented {
    */
   _createMap() {
     let {
-      name,
+      name = '',
       crs,
       center = new mapboxgl.LngLat(0, 0),
       zoom = 0,
@@ -186,6 +186,15 @@ export class WebMap extends mapboxgl.Evented {
   _initLayers() {
     if (this.map && this.map.getCRS && this.map.getCRS().epsgCode !== this._mapInfo.crs) {
       this.fire('projectionisnotmatch');
+      return;
+    }
+    if (Object.prototype.toString.call(this.mapId) === '[object Object]') {
+      this.mapParams = {
+        title: this._mapInfo.name,
+        description: ''
+      };
+      this._createMapRelatedInfo();
+      this._addLayersToMap();
       return;
     }
     Promise.all([this._getMapRelatedInfo(), this._getSpriteDatas()])
@@ -240,56 +249,21 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    */
   _addLayersToMap() {
-    const { sources, layers, layerIdMapList } = this._setUniqueId(this._mapInfo);
+    const { sources, layers } = this._mapInfo;
     layers.forEach((layer) => {
       layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
       this.map.addLayer(layer);
     });
-    this._sendMapToUser(layerIdMapList);
-  }
-
-  /**
-   * @private
-   * @function WebMap.prototype._setUniqueId
-   * @description 返回唯一 id 的 sources 和 layers。
-   * @param {Object} mapInfo - map 信息。
-   */
-  _setUniqueId(mapInfo) {
-    let layersToMap = JSON.parse(JSON.stringify(mapInfo.layers));
-    const nextSources = {};
-    const layerIdToChange = {};
-    for (let sourceId in mapInfo.sources) {
-      let timestamp = this.map.getSource(sourceId) ? `_${+new Date()}` : '';
-      const nextSourceId = sourceId + timestamp;
-      nextSources[nextSourceId] = mapInfo.sources[sourceId];
-      layersToMap = layersToMap.map((layer) => {
-        let nextLayer = layer;
-        if (layer.source === sourceId) {
-          let layerId = layer.id;
-          if (this.map.getLayer(layerId)) {
-            layerId = timestamp ? layer.id + timestamp : `${layer.id}_${+new Date()}`;
-          }
-          nextLayer = Object.assign({}, layer, { id: layerId, source: nextSourceId });
-        }
-        layerIdToChange[layer.id] = nextLayer.id;
-        return nextLayer;
-      });
-    }
-    return {
-      sources: nextSources,
-      layers: layersToMap,
-      layerIdMapList: layerIdToChange
-    };
+    this._sendMapToUser();
   }
 
   /**
    * @private
    * @function WebMap.prototype._sendMapToUser
    * @description emit 图层加载成功事件。
-   * @param {Object} layerIdMapList - 图层 id 信息
    */
-  _sendMapToUser(layerIdMapList) {
-    this._appreciableLayers = this._generateLayers(layerIdMapList);
+  _sendMapToUser() {
+    this._appreciableLayers = this._generateLayers();
     this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: this._appreciableLayers });
   }
 
@@ -314,9 +288,11 @@ export class WebMap extends mapboxgl.Evented {
 
   clean() {
     if (this.map) {
+      this.map.remove();
       this.map = null;
       this._legendList = [];
       this.mapOptions = {};
+      this.options = {};
       this._appreciableLayers = [];
     }
   }
@@ -325,18 +301,16 @@ export class WebMap extends mapboxgl.Evented {
    * @private
    * @function WebMap.prototype._generateV2LayersStructure
    * @description emit 图层加载成功事件。
-   * @param {Array<Object>} layers - 图层信息。
    */
-  _generateLayers(layerIdMapList) {
+  _generateLayers() {
     const { catalogs = [] } = this._mapResourceInfo;
     const originLayers = this._getLayerInfosFromCatalogs(catalogs);
     const layers = originLayers.map((layer) => {
       const { title, visualization } = layer;
-      const realLayerId = layerIdMapList[layer.id];
       const layerFromMapInfo = this._mapInfo.layers.find((item) => {
         return item.id === layer.id;
       });
-      this._createLegendInfo(Object.assign({}, layerFromMapInfo, { id: realLayerId }), visualization);
+      this._createLegendInfo(Object.assign({}, layerFromMapInfo), visualization);
       let dataType = '';
       let dataId = '';
       for (const data of this._mapResourceInfo.datas) {
@@ -352,7 +326,7 @@ export class WebMap extends mapboxgl.Evented {
           serverId: dataId,
           type: dataType
         },
-        layerID: realLayerId,
+        layerID: layer.id,
         layerType: layerFromMapInfo.type === 'raster' ? 'raster' : 'vector',
         type: layerFromMapInfo.type,
         name: title

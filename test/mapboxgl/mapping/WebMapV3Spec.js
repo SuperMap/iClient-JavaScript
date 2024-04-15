@@ -1,4 +1,5 @@
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
+import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/v3/WebMap';
 import '../../resources/WebMapV3.js';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
@@ -21,8 +22,8 @@ describe('mapboxgl-webmap3.0', () => {
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
-        const webMapV3 = mapstudioWebmap._getWebMapInstance();
-        webMapV3.clean();
+        const webMapV3 = mapstudioWebmap._getWebMapInstance ? mapstudioWebmap._getWebMapInstance() : mapstudioWebmap;
+        webMapV3.clean && webMapV3.clean();
         mapstudioWebmap = null;
     }
     window.document.body.removeChild(testDiv);
@@ -116,6 +117,31 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       expect(webMapV3.getLayers().length).toBeLessThanOrEqual(mapInfo.layers.length);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
+      done();
+    });
+  });
+
+  it('mapId is JSON', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      var style = map.getStyle();
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      expect(mapstudioWebmap.getLayers().length).toBeLessThanOrEqual(mapInfo.layers.length);
+      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
       done();
     });
   });

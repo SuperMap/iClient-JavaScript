@@ -51,11 +51,6 @@ export class WebMap extends mapboxgl.Evented {
     this.options.withCredentials = options.withCredentials || false;
     this.mapOptions = mapOptions;
     this._createWebMap();
-    this.on('mapinitialized', () => {
-      this.map.on('remove', () => {
-        this._stopCanvg();
-      });
-    });
   }
   /**
    * @function WebMap.prototype.resize
