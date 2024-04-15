@@ -146,9 +146,6 @@ export class WebMap extends mapboxgl.Evented {
       maxzoom,
       sprite = ''
     } = this._mapInfo;
-    // if (this._mapInfo.center && crs === 'EPSG:3857') {
-    //   center = Util.unproject(center);
-    // }
     center = this.mapOptions.center || center;
     zoom = this.mapOptions.zoom || zoom;
     bearing = this.mapOptions.bearing || bearing;
@@ -823,7 +820,7 @@ export class WebMap extends mapboxgl.Evented {
   /**
    * 获取线宽
    * @param symbolStyle
-   * @returns 多线返回整体线宽，单线返回线宽
+   * @returns {number} 多线返回整体线宽，单线返回线宽
    */
   _getLineWidth(symbolStyle) {
     if (symbolStyle instanceof Array) {
@@ -835,7 +832,7 @@ export class WebMap extends mapboxgl.Evented {
   /**
    * 计算多线符号的整体线宽
    * @param styles
-   * @returns
+   * @returns {number} 整体线宽
    */
   _getWholeWidth(styles) {
     let topBoundary;
