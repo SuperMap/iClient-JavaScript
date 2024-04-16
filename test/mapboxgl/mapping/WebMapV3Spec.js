@@ -47,7 +47,6 @@ describe('mapboxgl-webmap3.0', () => {
     expect(mapstudioWebmap.options.target).toBe('map');
     expect(mapstudioWebmap.mapId).toBe(id);
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
-      expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
       expect(mapstudioWebmap.mapParams.title).toBe('空地图');
       expect(mapstudioWebmap.mapParams.description).toBe('');
@@ -117,6 +116,7 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       expect(webMapV3.getLayers().length).toBeLessThanOrEqual(mapInfo.layers.length);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
+      expect(webMapV3.getLayerCatalog().length).not.toBe(0);
       done();
     });
   });

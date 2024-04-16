@@ -306,11 +306,11 @@ export class WebMap extends mapboxgl.Evented {
     const { catalogs = [] } = this._mapResourceInfo;
     const originLayers = this._getLayerInfosFromCatalogs(catalogs);
     const layers = originLayers.map((layer) => {
-      const { title, visualization } = layer;
+      const { id, title, visualization, visible, layersContent } = layer;
       const layerFromMapInfo = this._mapInfo.layers.find((item) => {
         return item.id === layer.id;
       });
-      this._createLegendInfo(Object.assign({}, layerFromMapInfo), visualization);
+      this._createLegendInfo(Object.assign({}, layerFromMapInfo, { title: layer.title }), visualization);
       let dataType = '';
       let dataId = '';
       for (const data of this._mapResourceInfo.datas) {
@@ -321,16 +321,22 @@ export class WebMap extends mapboxgl.Evented {
           break;
         }
       }
-      const overlayLayers = {
+      const overlayLayers = this._formatLayer({
         dataSource: {
           serverId: dataId,
           type: dataType
         },
-        layerID: layer.id,
-        layerType: layerFromMapInfo.type === 'raster' ? 'raster' : 'vector',
+        id,
         type: layerFromMapInfo.type,
-        name: title
-      };
+        title,
+        visible,
+        renderSource: {
+          id: layerFromMapInfo.source,
+          type: layerFromMapInfo.type === 'raster' ? 'raster' : 'vector',
+          sourceLayer: layerFromMapInfo["source-layer"]
+        },
+        renderLayers: this._getRenderLayers(layersContent, id)
+      });
       const styleSettings = this._parseRendererStyleData(visualization.renderer);
       const defaultStyleSetting = styleSettings[0];
       if (defaultStyleSetting) {
@@ -348,7 +354,97 @@ export class WebMap extends mapboxgl.Evented {
       }
       return overlayLayers;
     });
-    return layers;
+    const baseLayer = this._getBaseLayer(layers);
+    return baseLayer ? [baseLayer].concat(layers) : layers;
+  }
+
+  getLayerCatalog() {
+    const originLayerCatalog = this._mapInfo.metadata.layerCatalog;
+    const formatLayerCatalog = this._createFormatCatalogs(originLayerCatalog);
+    const baseLayer = this._getBaseLayer(formatLayerCatalog);
+    return baseLayer ? [baseLayer].concat(formatLayerCatalog) : formatLayerCatalog;
+  }
+
+  _createFormatCatalogs(catalogs) {
+    const formatCatalogs = catalogs.map((catalog) => {
+      let formatItem;
+      const { id, title, type, visible, children, parts } = catalog;
+      if(catalog.type === "group") {
+        formatItem = {
+          children: this._createFormatCatalogs(children),
+          id,
+          title,
+          type,
+          visible
+        }
+      } else {
+        const appreciableLayers = this._generateLayers();
+        const matchLayer = appreciableLayers.find(layer => layer.id === id);
+        formatItem = this._formatLayer({
+          dataSource: matchLayer.dataSource,
+          id,
+          type: matchLayer.type,
+          title,
+          visible,
+          renderSource: matchLayer.renderSource,
+          renderLayers: this._getRenderLayers(parts, id),
+          themeSetting: matchLayer.themeSetting
+        })
+      }
+      return formatItem;
+    });
+    return formatCatalogs;
+  }
+
+  _getRenderLayers(layerIds, layerId) {
+    if(layerIds) {
+      if(layerIds.includes(layerId)) {
+        return layerIds;
+      } else {
+        return [layerId, ...layerIds]
+      }
+    } else {
+      return [layerId]
+    }
+  }
+
+  _getBaseLayer(layers) {
+    const baseLayer = this._mapInfo.layers[0];
+    const { id, type } = baseLayer;
+    const baseLayerInfo = this.map.getLayer(id);
+    const ids = layers.map(layer => layer.id);
+    if(!ids.includes(id)) {
+      const formatBaseLayer = this._formatLayer({
+        dataSource: {},
+        id,
+        title: id,
+        type,
+        visible: true,
+        renderSource: {
+          id: baseLayerInfo.source,
+          type: baseLayerInfo.type === 'raster' ? 'raster' : 'vector',
+          sourceLayer: baseLayerInfo["source-layer"]
+        },
+        renderLayers: [id],
+        themeSetting: {}
+      });
+      return formatBaseLayer;
+    }
+    return null;
+  }
+
+  _formatLayer(option) {
+    const { dataSource = {}, id, title, type, visible = true, renderSource = {}, renderLayers = [], themeSetting = {} } = option;
+    return {
+      dataSource,
+      id,
+      title,
+      type,
+      visible,
+      renderSource,
+      renderLayers,
+      themeSetting
+    }
   }
 
   _parseRendererStyleData(renderer) {
