@@ -11,9 +11,9 @@ import { bbox, polygon } from '@turf/turf';
  * @category  Visualization Video
  * @modulecategory Overlay
  * @param {Object} options - 构造参数。
- * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8 流格式。
+ * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
  * @param {Array} options.extent - 视频范围。
- * @param {Object} [options.opencv] - opencv.js 实例。
+ * @param {Object} [options.opencv] - opencv.js 实例, 未传入时将去 window.cv 获取。
  * @param {string} [options.id] - 视频图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
  * @extends {mapboxgl.Evented}
  * @usage
@@ -28,7 +28,7 @@ export class VideoLayer extends mapboxgl.Evented {
     this.extent = this.options.extent;
     this.cv = this.options.opencv || window.cv;
     if (!this.cv) {
-      throw new Error('opencv.js is not existed!');
+      throw new Error('opencv.js instance is not existed!');
     }
     this.id = _options.id ? _options.id : CommonUtil.createUniqueID("VideoLayer_");
     this.layerId = this.id + '_outer';
@@ -45,7 +45,7 @@ export class VideoLayer extends mapboxgl.Evented {
     this.map = map;
     this.renderer = new VideoLayerRenderer({ url: this.url, id: this.layerId });
     this.video = this.renderer.createVideo();
-    this.videoDomId = this.renderer.getVideoDom();
+    this.videoDomId = this.renderer.getVideoDomId();
     this.video.one('firstplay', () => {
       this.video.play();
     });
@@ -65,7 +65,7 @@ export class VideoLayer extends mapboxgl.Evented {
 
   render() {}
 
-  getPixelBbox(map) {
+  _getPixelBbox(map) {
     let res = [];
     let minX = 0;
     let minY = 0;
@@ -92,7 +92,7 @@ export class VideoLayer extends mapboxgl.Evented {
 
   _addVideoLayer(map) {
     let url = this.videoDomId || this.url;
-    this.pixelBBox = this.getPixelBbox(map);
+    this.pixelBBox = this._getPixelBbox(map);
     const result = bbox(polygon([
       this.extent.concat(this.extent[0])
     ]));

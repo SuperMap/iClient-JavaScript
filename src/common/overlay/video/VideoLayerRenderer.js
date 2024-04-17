@@ -13,7 +13,7 @@ import 'videojs-flvjs-es6';
  * @version 11.2.0
  * @param {Object} options - 参数。
  * @param {string} [options.id] - 图层 ID。
- * @param {Array} [options.extent] - 视频范围。
+ * @param {string} [options.url] - 视频地址。
  * @usage
  */
 
@@ -33,7 +33,10 @@ export class VideoLayerRenderer {
     video.setAttribute('crossorigin', 'anonymous');
     document.body.appendChild(video);
   }
-
+  /**
+   * @function VideoLayerRenderer.prototype.createVideo
+   * @description 创建videojs 实例。
+   */
   createVideo() {
     this._createVideoElement();
     let options = this._getVideoOptions();
@@ -85,7 +88,11 @@ export class VideoLayerRenderer {
     return options;
   }
 
-  getVideoDom() {
+  /**
+   * @function VideoLayerRenderer.prototype.getVideoDomId
+   * @description 获取创建的 video 元素的 DOM id。
+   */
+  getVideoDomId() {
     if (!this.url) {
       return;
     }

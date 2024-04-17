@@ -128,6 +128,11 @@ const Map = function (options) {
 
   this.getSource = function (name) {
     this._sources[name];
+    if (this._sources[name].type === 'video') {
+      return {
+        play: function() {}
+      }
+    }
   };
 
   this.loaded = function () {
@@ -141,6 +146,9 @@ const Map = function (options) {
   this.overlayLayersManager = {};
 
   this.addSource = function (name, source) {
+    if (source && source.drawImageCallback) {
+      source.drawImageCallback();
+    }
     this._sources[name] = source;
   };
   this.removeSource = function (name) {
