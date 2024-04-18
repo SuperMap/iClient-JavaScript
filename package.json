@@ -84,7 +84,7 @@
     "browserify-imgify": "^0.0.1",
     "browserify-versionify": "^1.0.6",
     "chalk": "^3.0.0",
-    "chromedriver": "87.0.5",
+    "chromedriver": "123.0.3",
     "clean-css-cli": "^4.3.0",
     "commander": "^9.0.0",
     "copy-webpack-plugin": "^9.1.0",
