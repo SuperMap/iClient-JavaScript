@@ -735,6 +735,7 @@ window.examplesResources = {
         "title_websymbol_landuse": "Land Use",
         "title_websymbol_customWebSymbol": "Custom WebSymbol",
         "title_dataAttributes": "Attributes",
+        "title_videoLayer":"Video Layer",
 
         "text_graphmap_shortest_analysis": "Shortest Path Analysis",
         "text_startNode": "start node:",
