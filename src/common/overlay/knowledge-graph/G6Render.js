@@ -17,6 +17,7 @@ export class G6Render {
     this.data = null;
     this.collpasedData = {};
     this.importG6();
+    this.hoverColor = '#b4d6ff';
     this.CLASS_NAME = 'SuperMap.G6Render';
   }
   importG6() {
@@ -44,6 +45,24 @@ export class G6Render {
       this.stopDefaultEventPropagation();
     }
     return graph;
+  }
+
+  _getDefaultEdgeHighlightStyle(color = this.hoverColor) {
+    return {
+      stroke: color,
+      shadowColor: color,
+      shadowBlur: 5,
+      endArrow: {
+        path: 'M 0,0 L 4,2 L 4,-2 Z',
+        fill: color
+      }
+    };
+  }
+  _getDefaultNodeHighlightStyle(color = this.hoverColor) {
+    return {
+      lineWidth: 3,
+      stroke: color
+    }
   }
 
   _getContextMenu() {
@@ -115,7 +134,7 @@ export class G6Render {
       speed: 120,
       maxIteration: 83,
       tick: () => {
-        this.refreshPositions()
+        this.refreshPositions();
       }
     };
     const defaultLayout = {
@@ -145,20 +164,6 @@ export class G6Render {
     };
     const contextMenu = this._getContextMenu();
     const defaultPlugins = [new G6.ToolBar(), contextMenu];
-    const hoverColor = '#b4d6ff';
-    const defaultNodeHighlightStyle = {
-      lineWidth: 3,
-      stroke: hoverColor
-    };
-    const defaultEdgeHighlightStyle = {
-      stroke: hoverColor,
-      shadowColor: hoverColor,
-      shadowBlur: 5,
-      endArrow: {
-        path: 'M 0,0 L 4,2 L 4,-2 Z',
-        fill: hoverColor
-      }
-    };
     const defaultGraphConfig = (container = 'knowledgeGraph') => {
       const dom = document.querySelector(`#${container}`);
       return {
@@ -171,10 +176,12 @@ export class G6Render {
         defaultNode,
         defaultEdge,
         nodeStateStyles: {
-          hover: defaultNodeHighlightStyle
+          hover: this._getDefaultNodeHighlightStyle(),
+          actived: this._getDefaultNodeHighlightStyle()
         },
         edgeStateStyles: {
-          hover: defaultEdgeHighlightStyle
+          hover: this._getDefaultEdgeHighlightStyle(),
+          actived: this._getDefaultEdgeHighlightStyle()
         }
       };
     };
@@ -190,18 +197,25 @@ export class G6Render {
     config.layout = { ...defaultLayout, ...(config.layout || {}), ...(config.animate !== false ? animateConfig : {}) };
     config.defaultNode = { ...defaultNode, ...(config.defaultNode || {}) };
     config.defaultEdge = { ...defaultEdge, ...(config.defaultEdge || {}) };
-    config.modes = {
-      default: [
-        config.dragCanvas !== false && 'drag-canvas',
-        config.zoomCanvas !== false && 'zoom-canvas',
-        config.dragNode !== false && 'drag-node'
-      ]
-    };
+    config.modes = { default: [] };
+    if (config.dragCanvas !== false) {
+      config.modes.default.push('drag-canvas');
+    }
+    if (config.zoomCanvas !== false) {
+      config.modes.default.push('zoom-canvas');
+    }
+    if (config.dragNode !== false) {
+      config.modes.default.push('drag-node');
+    }
+    const highlightNodeStyle = { ...this._getDefaultNodeHighlightStyle(), ...(config.nodeHighlightStyle || {}) };
+    const highlightEdgeStyle = { ...this._getDefaultEdgeHighlightStyle(), ...(config.edgeHighlightStyle || {}) };
     config.nodeStateStyles = {
-      hover: { ...defaultNodeHighlightStyle, ...(config.nodeHighlightStyle || {}) }
+      hover: highlightNodeStyle,
+      actived: highlightNodeStyle
     };
     config.edgeStateStyles = {
-      hover: { ...defaultEdgeHighlightStyle, ...(config.edgeHighlightStyle || {}) }
+      hover: highlightEdgeStyle,
+      actived: highlightEdgeStyle
     };
     if (config.showToolBar !== false) {
       config.plugins = [new G6.ToolBar()];
@@ -421,11 +435,13 @@ export class G6Render {
    * @param {Object} graph - graph实例。
    */
   highlightNode(graph = this.graph) {
+    let node = null;
     function clearAllStats() {
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(function (node) {
-        graph.clearItemStates(node);
-      });
+      if (node) {
+        graph.clearItemStates(node, 'hover');
+        node = null;
+      }
       graph.paint();
       graph.setAutoPaint(true);
     }
@@ -433,10 +449,11 @@ export class G6Render {
     graph.on('node:mouseenter', function (e) {
       const item = e.item;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(function (node) {
-        graph.clearItemStates(node);
-      });
+      if (node) {
+        graph.clearItemStates(node, 'hover');
+      }
       graph.setItemState(item, 'hover', true);
+      node = item;
       graph.paint();
       graph.setAutoPaint(true);
     });
@@ -444,16 +461,18 @@ export class G6Render {
   }
 
   /**
-   * @function G6Render.prototype.highlightNode
-   * @description 鼠标移入节点，节点高亮
+   * @function G6Render.prototype.highlightEdge
+   * @description 鼠标移入边，边高亮
    * @param {Object} graph - graph实例。
    */
   highlightEdge(graph = this.graph) {
+    let edge = null;
     function clearAllStats() {
       graph.setAutoPaint(false);
-      graph.getEdges().forEach(function (edge) {
-        graph.clearItemStates(edge);
-      });
+      if (edge) {
+        graph.clearItemStates(edge, 'hover');
+        edge = null;
+      }
       graph.paint();
       graph.setAutoPaint(true);
     }
@@ -461,10 +480,11 @@ export class G6Render {
     graph.on('edge:mouseenter', function (e) {
       const item = e.item;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(function (node) {
-        graph.clearItemStates(node);
-      });
+      if (edge) {
+        graph.clearItemStates(edge, 'hover');
+      }
       graph.setItemState(item, 'hover', true);
+      edge = item;
       graph.paint();
       graph.setAutoPaint(true);
     });

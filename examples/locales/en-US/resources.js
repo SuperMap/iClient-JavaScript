@@ -736,6 +736,12 @@ window.examplesResources = {
         "title_websymbol_customWebSymbol": "Custom WebSymbol",
         "title_dataAttributes": "Attributes",
 
+        "text_graphmap_shortest_analysis": "Shortest Path Analysis",
+        "text_startNode": "start node:",
+        "text_endeNode": "end node:",
+        "text_analysis": "Analysis",
+        "text_selectStartNode": "Capture Start Node",
+        "text_selectEndNode": "Capture End Node",
         "text_district_search": "Administrative region search",
         "text_rectangle_search": "Rectangle retrieval",
         "text_polygon_search": "Polygon retrieval",

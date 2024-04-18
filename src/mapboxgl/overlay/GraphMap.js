@@ -87,4 +87,41 @@ export class GraphMap extends mapboxgl.Evented {
   createKnowledgeGraphService(serverUrl, options) {
     return new KnowledgeGraphService(serverUrl, options);
   }
+
+  /**
+   * @function GraphMap.prototype.getShortestPath
+   * @version 11.2.0
+   * @description 获取开始节点和结束节点之间的最短路径。
+   * @param {Object} params - {startID: 'xxx', endID: 'xxxx'}开始节点的id和结束节点id对象。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   * @returns {Promise} Promise 对象。
+   */
+  getShortestPath(params, callback) {
+    return this.knowledgeGraphService.getShortestPath(params, callback);
+  }
+
+  /**
+   * @function GraphMap.prototype.highlight
+   * @version 11.2.0
+   * @description 高亮节点和边。（在渲染完成后调用）
+   * @param {Object} params - { nodeIDs, edgeIDs}， 高亮节点id数组，高亮边id数组。
+   */
+  highlight(params) {
+    if (!this.graph) {
+      return;
+    }
+    this.graph.highlight(params);
+  }
+  /**
+   * @function GraphMap.prototype.clearHighlight
+   * @version 11.2.0
+   * @description 取消高亮节点和边。（在渲染完成后调用）
+   * @param {Object} params - { nodeIDs, edgeIDs}， 高亮节点id数组，高亮边id数组。
+   */
+  clearHighlight(params) {
+    if (!this.graph) {
+      return;
+    }
+    this.graph.clearHighlight(params);
+  }
 }

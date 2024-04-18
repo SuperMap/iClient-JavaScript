@@ -691,6 +691,13 @@ window.examplesResources = {
         "title_editFeatures": "编辑要素",
         "title_dataAttributes": "属性表",
 
+        "text_graphmap_shortest_analysis": "最短路径分析",
+        "text_startNode": "开始节点：",
+        "text_endeNode": "结束节点： ",
+        "text_analysis": "分析",
+        "text_selectStartNode": "捕捉开始节点",
+        "text_selectEndNode": "捕捉结束节点",
+
         "text_district_search": "行政区检索",
         "text_rectangle_search": "矩形检索",
         "text_polygon_search": "多边形检索",

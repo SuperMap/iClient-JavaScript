@@ -32,6 +32,32 @@ describe('maplibregl_KnowledgeGraphService', () => {
     expect(knowledgeGraphService.crossOrigin).toBeFalsy();
   });
 
+  it('getShortestPath', (done) => {
+    var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
+    spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
+      expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startid=38756&endid=38757');
+      expect(options).not.toBeNull();
+      return Promise.resolve(new Response(getShortestPathData));
+    });
+    knowledgeGraphService.getShortestPath({ startid: 38756, endid: 38757 }, (res) => {
+      try {
+        expect(knowledgeGraphService).not.toBeNull();
+        expect(res).not.toBeNull();
+        expect(res.type).toBe('processCompleted');
+        expect(res.result).not.toBeNull();
+        expect(res.result.nodeIDs).toEqual([40229, 40237, 64058]);
+        expect(res.result.edgeIDs).toEqual([69575, 66619]);
+        knowledgeGraphService.destroy();
+        done();
+      } catch (exception) {
+        console.log("'getShortestPath'案例失败：" + exception.name + ':' + exception.message);
+        knowledgeGraphService.destroy();
+        expect(false).toBeTruthy();
+        done();
+      }
+    });
+  });
+
   it('query', (done) => {
     var knowledgeGraphService = new KnowledgeGraphService(knowledgegraphURL);
     spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {

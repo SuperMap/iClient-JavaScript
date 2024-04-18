@@ -550,7 +550,14 @@ var exampleConfig = {
                     version: '11.1.0',
                     thumbnail: 'knowledgeGraphMap1.png',
                     fileName: 'knowledgeGraphMap1'
-                }
+                  },
+                  {
+                    name: '最短路径',
+                    name_en: 'Shortest Path',
+                    version: '11.2.0',
+                    thumbnail: 'knowledgeGraphMap2.png',
+                    fileName: 'knowledgeGraph_shortestpath'
+                  }
               ]
             }
         }

@@ -36,6 +36,17 @@ export class KnowledgeGraphService extends CommonServiceBase {
   }
 
   /**
+   * @function KnowledgeGraphService.prototype.getShortestPath
+   * @description 获取开始节点和结束节点之间的最短路径。
+   * @param {Object} params - {startID: 'xxx', endID: 'xxxx'}开始节点的id和结束节点id对象。
+   * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
+   */
+  getShortestPath(params, callback) {
+    const url = this.url + `/shortestPath.json?startID=${params.startID}&endID=${params.endID}`;
+    this.processAsync({ url, method: 'GET', callback });
+  }
+
+  /**
    * @function KnowledgeGraphService.prototype.query
    * @description 通过查询语句查询知识图谱数据。
    * @param {string} params - 查询条件。

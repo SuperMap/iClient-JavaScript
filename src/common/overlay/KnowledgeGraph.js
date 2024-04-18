@@ -4,7 +4,7 @@ import clonedeep from 'lodash.clonedeep';
 
 /**
  * @class KnowledgeGraph
- * @category SuperMap iServer KnowledgeGraph
+ * @category iServer KnowledgeGraph
  * @classdesc KnowledgeGraph 知识图谱。此类提供了创建知识图谱实例的配置项，
  * 包括知识图谱的尺寸、中心点、缩放比例、布局、节点配置、边配置、高亮样式、拖拽设置等参数。
  * @version 11.1.0
@@ -176,6 +176,70 @@ export class KnowledgeGraph {
    */
   static dataFromKnowledgeGraphQuery(queryResult) {
     return transformGraphMap(queryResult);
+  }
+
+  _handleNodes(nodeIDs, callback) {
+    nodeIDs
+      .filter((id) => id !== '')
+      .forEach((id) => {
+        const item = this.findById(id);
+        callback(item);
+      });
+  }
+
+  _handleEdges(nodeIDs, callback) {
+    nodeIDs
+      .filter((id) => id !== '')
+      .forEach((id) => {
+        const item = this.find('edge', (edge) => {
+          return edge.get('model').edgeId == id;
+        });
+        callback(item);
+      });
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.highlight
+   * @version 11.2.0
+   * @description 高亮节点和边。
+   * @param {Object} params - { nodeIDs, edgeIDs}， 高亮节点id数组，高亮边id数组。
+   */
+  highlight(params) {
+    const { nodeIDs = [], edgeIDs = [] } = params;
+    const graph = this.graph;
+    const activeCallback = (item) => {
+      if (!item) {
+        return;
+      }
+      graph.setItemState(item, 'actived', true);
+      graph.paint();
+      graph.setAutoPaint(true);
+    };
+    this._handleNodes(nodeIDs, activeCallback);
+    this._handleEdges(edgeIDs, activeCallback);
+  }
+
+  /**
+   * @function KnowledgeGraph.prototype.clearHighlight
+   * @version 11.2.0
+   * @description 取消之前高亮节点和边。
+   * @param {Object} params - { nodeIDs, edgeIDs}取消高亮节点id数组和边id数组。
+   */
+  clearHighlight(params) {
+    const graph = this.graph;
+    const { nodeIDs = [], edgeIDs = [] } = params;
+    graph.setAutoPaint(false);
+
+    const clearCallback = (item) => {
+      if (!item) {
+        return;
+      }
+      graph.clearItemStates(item, 'actived');
+      graph.paint();
+      graph.setAutoPaint(true);
+    };
+    this._handleNodes(nodeIDs, clearCallback);
+    this._handleEdges(edgeIDs, clearCallback);
   }
 
   /**
