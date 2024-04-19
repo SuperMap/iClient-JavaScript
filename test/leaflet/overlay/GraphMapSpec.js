@@ -37,11 +37,10 @@ describe('GraphMap leaflet', () => {
       }
     });
     var graphMap = new GraphMap(knowledgegraphmapURL);
-    graphMap.on('loaded',()=>{
+    graphMap.on('loaded', () => {
       expect(graphMap).not.toBeNull();
       done();
-    })
-    
+    });
   });
   it('findShortestPath', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
@@ -64,18 +63,18 @@ describe('GraphMap leaflet', () => {
         expect(graphMap).not.toBeNull();
         spyOn(graphMap.graph, 'highlight');
         spyOn(graphMap.graph, 'clearHighlight');
-        knowledgeGraphService.findShortestPath({ startid: 38756, endid: 38757 }, (res) => {
+        graphMap.findShortestPath({ startid: 38756, endid: 38757 }, (res) => {
           expect(res).not.toBeNull();
           expect(res.type).toBe('processCompleted');
           expect(res.result).not.toBeNull();
           expect(res.result.nodeIDs).toEqual([40229, 40237, 64058]);
           expect(res.result.edgeIDs).toEqual([69575, 66619]);
+          graphMap.highlight({ nodeIDs: [40229], edgeIDs: [69575] });
+          expect(graphMap.graph.highlight).toHaveBeenCalled();
+          graphMap.clearHighlight({ nodeIDs: [40229], edgeIDs: [69575] });
+          expect(graphMap.graph.clearHighlight).toHaveBeenCalled();
+          done();
         });
-        graphMap.highlight({ nodeIDs: [40229], edgeIDs: [69575] });
-        expect(graphMap.graph.highlight).toHaveBeenCalled();
-        graphMap.clearHighlight({ nodeIDs: [40229], edgeIDs: [69575] });
-        expect(graphMap.graph.clearHighlight).toHaveBeenCalled();
-        done();
       } catch (exception) {
         console.log("'findShortestPath'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
