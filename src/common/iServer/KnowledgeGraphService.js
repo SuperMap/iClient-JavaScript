@@ -20,6 +20,11 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @param {Object} [options.headers] - 请求头。
  * @usage
  */
+/**
+ * @typedef {Object} KnowledgeGraphService.findShortestPathParams
+ * @property {string} startID - 开始节点的id
+ * @property {string} endID - 结束节点id
+ */
 export class KnowledgeGraphService extends CommonServiceBase {
   constructor(url, options) {
     super(url, options);
@@ -36,12 +41,12 @@ export class KnowledgeGraphService extends CommonServiceBase {
   }
 
   /**
-   * @function KnowledgeGraphService.prototype.getShortestPath
+   * @function KnowledgeGraphService.prototype.findShortestPath
    * @description 获取开始节点和结束节点之间的最短路径。
-   * @param {Object} params - {startID: 'xxx', endID: 'xxxx'}开始节点的id和结束节点id对象。
+   * @param {KnowledgeGraphService.findShortestPathParams} params - 参数。
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    */
-  getShortestPath(params, callback) {
+  findShortestPath(params, callback) {
     const url = this.url + `/shortestPath.json?startID=${params.startID}&endID=${params.endID}`;
     this.processAsync({ url, method: 'GET', callback });
   }

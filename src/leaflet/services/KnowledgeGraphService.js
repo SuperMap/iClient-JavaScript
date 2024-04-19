@@ -32,15 +32,15 @@ export var KnowledgeGraphService = ServiceBase.extend({
   },
 
   /**
-   * @function KnowledgeGraphService.prototype.getShortestPath
+   * @function KnowledgeGraphService.prototype.findShortestPath
    * @version 11.2.0
    * @description 获取开始节点和结束节点之间的最短路径。
-   * @param {Object} params - {startID: 'xxx', endID: 'xxxx'}开始节点的id和结束节点id对象。
+   * @param {KnowledgeGraphService.findShortestPathParams} params - 参数。
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  getShortestPath(params, callback) {
-    return this._knowledgeGraphService.getShortestPath(params, callback);
+  findShortestPath(params, callback) {
+    return this._knowledgeGraphService.findShortestPath(params, callback);
   },
   /**
    * @function KnowledgeGraphService.prototype.query

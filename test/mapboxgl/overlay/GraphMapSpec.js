@@ -43,7 +43,7 @@ describe('GraphMap mapboxgl', () => {
     });
   });
 
-  it('getShortestPath', (done) => {
+  it('findShortestPath', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
       if (testUrl.includes('/query.json')) {
         return Promise.resolve(new Response(queryData));
@@ -64,7 +64,7 @@ describe('GraphMap mapboxgl', () => {
         expect(graphMap).not.toBeNull();
         spyOn(graphMap.graph, 'highlight');
         spyOn(graphMap.graph, 'clearHighlight');
-        knowledgeGraphService.getShortestPath({ startid: 38756, endid: 38757 }, (res) => {
+        knowledgeGraphService.findShortestPath({ startid: 38756, endid: 38757 }, (res) => {
           expect(res).not.toBeNull();
           expect(res.type).toBe('processCompleted');
           expect(res.result).not.toBeNull();
@@ -77,7 +77,7 @@ describe('GraphMap mapboxgl', () => {
         expect(graphMap.graph.clearHighlight).toHaveBeenCalled();
         done();
       } catch (exception) {
-        console.log("'getShortestPath'案例失败：" + exception.name + ':' + exception.message);
+        console.log("'findShortestPath'案例失败：" + exception.name + ':' + exception.message);
         expect(false).toBeTruthy();
         done();
       }

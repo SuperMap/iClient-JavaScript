@@ -89,22 +89,33 @@ export class GraphMap extends maplibregl.Evented {
   }
 
   /**
-   * @function GraphMap.prototype.getShortestPath
+   * @function GraphMap.prototype.findShortestPath
    * @version 11.2.0
-   * @description 获取开始节点和结束节点之间的最短路径。
-   * @param {Object} params - {startID: 'xxx', endID: 'xxxx'}开始节点的id和结束节点id对象。
+   * @description 获取开始节点和结束节点之间的最短路径。（在渲染完成后调用）
+   * @param {GraphMap.findShortestPathParams} params - 参数。
    * @param {RequestCallback} [callback] - 回调函数，该参数未传时可通过返回的 promise 获取结果。
    * @returns {Promise} Promise 对象。
    */
-  getShortestPath(params, callback) {
-    return this.knowledgeGraphService.getShortestPath(params, callback);
+  findShortestPath(params, callback) {
+    const { startID, endID, isHighlight = true, highlightStateStyles = {} } = params;
+    return this.knowledgeGraphService.findShortestPath({ startID, endID }, (res) => {
+      callback && callback(res);
+      if (isHighlight) {
+        if (res.type === 'processCompleted' && res.result.succeed) {
+          const { nodeIDs, edgeIDs } = res.result;
+          this.highlight({ nodeIDs, edgeIDs, ...highlightStateStyles });
+        } else {
+          alert(res.error.errorMsg, false);
+        }
+      }
+    });
   }
 
   /**
    * @function GraphMap.prototype.highlight
    * @version 11.2.0
    * @description 高亮节点和边。（在渲染完成后调用）
-   * @param {Object} params - { nodeIDs, edgeIDs}， 高亮节点id数组，高亮边id数组。
+   * @param {KnowledgeGraph.highlightParams} params - 高亮参数。
    */
   highlight(params) {
     if (!this.graph) {
@@ -116,7 +127,7 @@ export class GraphMap extends maplibregl.Evented {
    * @function GraphMap.prototype.clearHighlight
    * @version 11.2.0
    * @description 取消高亮节点和边。（在渲染完成后调用）
-   * @param {Object} params - { nodeIDs, edgeIDs}， 高亮节点id数组，高亮边id数组。
+   * @param {KnowledgeGraph.claerHighlightParams} [params] - 取消高亮节点id数组和边id数组, 不传默认取消所有激活状态的高亮。
    */
   clearHighlight(params) {
     if (!this.graph) {

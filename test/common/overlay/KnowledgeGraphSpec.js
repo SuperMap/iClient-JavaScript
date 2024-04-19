@@ -801,36 +801,61 @@ describe('KnowledgeGraph', () => {
 
   it('highlight', (done) => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
-
-    graph.highlight({ nodeIDs: [1], edgeIDs: [2] });
+    var highlightStateStyles = {
+      nodeStateStyles: {
+        lineWidth: 3,
+        stroke: 'red'
+      },
+      edgeStateStyles: {
+        stroke: 'yellow',
+        shadowColor: 'yellow',
+        shadowBlur: 10,
+        endArrow: {
+          path: 'M 0,0 L 4,2 L 4,-2 Z',
+          fill: 'yellow'
+        }
+      }
+    };
+    graph.highlight({ nodeIDs: [1], edgeIDs: [2], ...highlightStateStyles });
     graph.findById = () => true;
     graph.find = () => true;
 
     spyOn(graph.graph, 'setItemState');
+    spyOn(graph.graph, 'updateItem');
+
     expect(graph.graph.setItemState).toHaveBeenCalled();
+    expect(graph.graph.updateItem).toHaveBeenCalled();
 
     graph.highlight({ nodeIDs: [3], edgeIDs: [4] });
     graph.findById = () => false;
     graph.find = () => false;
     expect(graph.graph.setItemState).not.toHaveBeenCalled();
+
     done();
   });
 
   it('clearHighlight', (done) => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
+    spyOn(graph.graph, 'clearItemStates');
+
     graph.clearHighlight({ nodeIDs: [1], edgeIDs: [2] });
     graph.findById = () => true;
     graph.find = () => true;
-    spyOn(graph.graph, 'clearItemStates');
-
     expect(graph.graph.clearItemStates).toHaveBeenCalled();
 
     graph.clearHighlight({ nodeIDs: [3], edgeIDs: [4] });
     graph.findById = () => false;
     graph.find = () => false;
     expect(graph.graph.clearItemStates).not.toHaveBeenCalled();
+
+    graph.getNodes = () => [true];
+    graph.getEdges = () => [true];
+    graph.clearHighlight();
+
+    expect(graph.graph.clearItemStates).toHaveBeenCalled();
     done();
   });
+
   it('modes false', (done) => {
     var graph = new KnowledgeGraph({ dragCanvas: false, zoomCanvas: false, dragNode: false });
     expect(graph.config.modes.default).toEqual([]);

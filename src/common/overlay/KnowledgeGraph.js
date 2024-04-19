@@ -141,6 +141,18 @@ import clonedeep from 'lodash.clonedeep';
  * @property {string} [shadowColor] - 阴影颜色。
  */
 
+/**
+ * @typedef {Object} KnowledgeGraph.highlightParams - 高亮节点、边的参数， 默认高亮样式和hover高亮样式一致。
+ * @property {Array} nodeIDs - 高亮节点id数组。
+ * @property {Array} edgeIDs - 高亮边id数组。
+ * @property {KnowledgeGraph.NodeStyle} [nodeStateStyles] - 高亮节点样式。
+ * @property {KnowledgeGraph.EdgeStyle} [edgeStateStyles] - 高亮边样式。
+ */
+/**
+ * @typedef {Object} KnowledgeGraph.clearHighlightParams - 取消高亮节点、边的参数。
+ * @property {Array} nodeIDs - 高亮节点id数组。
+ * @property {Array} edgeIDs - 高亮边id数组。
+ */
 export class KnowledgeGraph {
   constructor(config, type = 'G6') {
     /**
@@ -183,7 +195,7 @@ export class KnowledgeGraph {
       .filter((id) => id !== '')
       .forEach((id) => {
         const item = this.findById(id);
-        callback(item);
+        callback(item, 'node');
       });
   }
 
@@ -194,7 +206,7 @@ export class KnowledgeGraph {
         const item = this.find('edge', (edge) => {
           return edge.get('model').edgeId == id;
         });
-        callback(item);
+        callback(item, 'edge');
       });
   }
 
@@ -202,14 +214,23 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.prototype.highlight
    * @version 11.2.0
    * @description 高亮节点和边。
-   * @param {Object} params - { nodeIDs, edgeIDs}， 高亮节点id数组，高亮边id数组。
+   * @param {KnowledgeGraph.highlightParams} params - 高亮参数。
    */
   highlight(params) {
     const { nodeIDs = [], edgeIDs = [] } = params;
     const graph = this.graph;
-    const activeCallback = (item) => {
+    const activeCallback = (item, type = 'node') => {
       if (!item) {
         return;
+      }
+      const stateStyles = params[type + 'StateStyles'];
+      if (stateStyles) {
+        graph.updateItem(item, {
+          style: item.style,
+          stateStyles: {
+            actived: stateStyles
+          }
+        });
       }
       graph.setItemState(item, 'actived', true);
       graph.paint();
@@ -223,13 +244,10 @@ export class KnowledgeGraph {
    * @function KnowledgeGraph.prototype.clearHighlight
    * @version 11.2.0
    * @description 取消之前高亮节点和边。
-   * @param {Object} params - { nodeIDs, edgeIDs}取消高亮节点id数组和边id数组。
+   * @param {KnowledgeGraph.clearHighlightParams} [params] - 取消高亮节点id数组和边id数组, 不传默认取消所有激活状态的高亮。
    */
   clearHighlight(params) {
     const graph = this.graph;
-    const { nodeIDs = [], edgeIDs = [] } = params;
-    graph.setAutoPaint(false);
-
     const clearCallback = (item) => {
       if (!item) {
         return;
@@ -238,6 +256,17 @@ export class KnowledgeGraph {
       graph.paint();
       graph.setAutoPaint(true);
     };
+    graph.setAutoPaint(false);
+    if (!params) {
+      graph.getNodes().forEach(function (node) {
+        clearCallback(node);
+      });
+      graph.getEdges().forEach(function (edge) {
+        clearCallback(edge);
+      });
+      return;
+    }
+    const { nodeIDs = [], edgeIDs = [] } = params;
     this._handleNodes(nodeIDs, clearCallback);
     this._handleEdges(edgeIDs, clearCallback);
   }

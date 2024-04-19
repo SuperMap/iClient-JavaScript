@@ -139,23 +139,12 @@
       function resetAll() {
         resetStartEndNode('start');
         resetStartEndNode('end');
-        graphmap.clearHighlight(oldHeightNodesEdges);
+        graphmap.clearHighlight();
       }
 
       function setShortestPath({ startID, endID }) {
-        graphmap.getShortestPath({ startID, endID }, (res) => {
-          if (res.type === 'processCompleted' && res.result.succeed) {
-            highlightShortestPath(res.result);
-          } else {
-            alert(res.error.errorMsg, false);
-          }
-        });
-      }
-
-      function highlightShortestPath({ nodeIDs, edgeIDs }) {
-        graphmap.clearHighlight(oldHeightNodesEdges);
-        graphmap.highlight({ nodeIDs, edgeIDs });
-        oldHeightNodesEdges = { nodeIDs, edgeIDs };
+        graphmap.clearHighlight();
+        graphmap.findShortestPath({ startID, endID });
       }
     </script>
   </body>
