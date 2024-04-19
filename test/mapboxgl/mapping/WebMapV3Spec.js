@@ -117,6 +117,7 @@ describe('mapboxgl-webmap3.0', () => {
       expect(webMapV3.getLayers().length).toBeLessThanOrEqual(mapInfo.layers.length);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
       expect(webMapV3.getLayerCatalog().length).not.toBe(0);
+      expect(webMapV3.getLegendInfo().length).toBe(6);
       done();
     });
   });

@@ -378,8 +378,7 @@ export class WebMap extends mapboxgl.Evented {
           visible
         }
       } else {
-        const appreciableLayers = this._generateLayers();
-        const matchLayer = appreciableLayers.find(layer => layer.id === id);
+        const matchLayer = this._appreciableLayers.find(layer => layer.id === id);
         formatItem = this._formatLayer({
           dataSource: matchLayer.dataSource,
           id,
