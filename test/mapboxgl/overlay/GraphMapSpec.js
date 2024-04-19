@@ -53,7 +53,7 @@ describe('GraphMap mapboxgl', () => {
         return Promise.resolve(new Response(graphmapData));
       }
       if (testUrl.includes('/shortestPath.json')) {
-        expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startid=38756&endid=38757');
+        expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
         expect(options).not.toBeNull();
         return Promise.resolve(new Response(findShortestPathData));
       }
@@ -64,7 +64,7 @@ describe('GraphMap mapboxgl', () => {
         expect(graphMap).not.toBeNull();
         spyOn(graphMap.graph, 'highlight');
         spyOn(graphMap.graph, 'clearHighlight');
-        graphMap.findShortestPath({ startid: 38756, endid: 38757 }, (res) => {
+        graphMap.findShortestPath({ startID: 38756, endID: 38757 }, (res) => {
           expect(res).not.toBeNull();
           expect(res.type).toBe('processCompleted');
           expect(res.result).not.toBeNull();

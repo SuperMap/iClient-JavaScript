@@ -69,6 +69,7 @@ describe('GraphMap maplibregl', () => {
           expect(res.result).not.toBeNull();
           expect(res.result.nodeIDs).toEqual([40229, 40237, 64058]);
           expect(res.result.edgeIDs).toEqual([69575, 66619]);
+          graphMap.highlight({ nodeIDs: [40229], edgeIDs: [69575] });
           expect(graphMap.graph.highlight).toHaveBeenCalled();
           graphMap.clearHighlight({ nodeIDs: [40229], edgeIDs: [69575] });
           expect(graphMap.graph.clearHighlight).toHaveBeenCalled();

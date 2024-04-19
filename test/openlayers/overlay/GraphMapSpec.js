@@ -63,7 +63,7 @@ describe('GraphMap openlayers', () => {
         expect(graphMap).not.toBeNull();
         spyOn(graphMap.graph, 'highlight');
         spyOn(graphMap.graph, 'clearHighlight');
-        graphMap.findShortestPath({ startid: 38756, endid: 38757 }, (res) => {
+        graphMap.findShortestPath({ startID: 38756, endID: 38757 }, (res) => {
           expect(res).not.toBeNull();
           expect(res.type).toBe('processCompleted');
           expect(res.result).not.toBeNull();
