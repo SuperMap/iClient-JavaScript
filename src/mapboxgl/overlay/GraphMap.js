@@ -24,19 +24,6 @@ import mapboxgl from 'mapbox-gl';
  * @usage
  */
 
-/**
- * @typedef {Object} GraphMap.highlightStateStyles - 高亮节点、边样式， 默认高亮样式和hover高亮样式一致。
- * @property {KnowledgeGraph.NodeStyle} [nodeStateStyles] - 高亮节点样式 。
- * @property {KnowledgeGraph.EdgeStyle} [edgeStateStyles] - 高亮边样式。
- */
-/**
- * @typedef {Object} GraphMap.findShortestPathParams
- * @property {string} startID - 开始节点的id
- * @property {string} endID - 结束节点id
- * @property {boolean} [isHighlight = true] - 是否高亮
- * @property {GraphMap.highlightStateStyles} [highlightStateStyles] - 高亮节点、边样式， 默认高亮样式和hover高亮样式一致。
- */
-
 export class GraphMap extends mapboxgl.Evented {
   constructor(serverUrl, options) {
     super(serverUrl, options);
@@ -141,7 +128,7 @@ export class GraphMap extends mapboxgl.Evented {
    * @function GraphMap.prototype.clearHighlight
    * @version 11.2.0
    * @description 取消高亮节点和边。（在渲染完成后调用）
-   * @param {KnowledgeGraph.claerHighlightParams} [params] - 取消高亮节点id数组和边id数组, 不传默认取消所有激活状态的高亮。
+   * @param {KnowledgeGraph.clearHighlightParams} [params] - 取消高亮节点id数组和边id数组, 不传默认取消所有激活状态的高亮。
    */
   clearHighlight(params) {
     if (!this.graph) {

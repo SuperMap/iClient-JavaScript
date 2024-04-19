@@ -20,11 +20,6 @@ import { CommonServiceBase } from './CommonServiceBase';
  * @param {Object} [options.headers] - 请求头。
  * @usage
  */
-/**
- * @typedef {Object} KnowledgeGraphService.findShortestPathParams
- * @property {string} startID - 开始节点的id
- * @property {string} endID - 结束节点id
- */
 export class KnowledgeGraphService extends CommonServiceBase {
   constructor(url, options) {
     super(url, options);

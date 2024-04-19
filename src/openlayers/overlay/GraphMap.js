@@ -129,7 +129,7 @@ export class GraphMap extends Observable {
    * @function GraphMap.prototype.clearHighlight
    * @version 11.2.0
    * @description 取消高亮节点和边。（在渲染完成后调用）
-   * @param {KnowledgeGraph.claerHighlightParams} [params] - 取消高亮节点id数组和边id数组, 不传默认取消所有激活状态的高亮。
+   * @param {KnowledgeGraph.clearHighlightParams} [params] - 取消高亮节点id数组和边id数组, 不传默认取消所有激活状态的高亮。
    */
   clearHighlight(params) {
     if (!this.graph) {

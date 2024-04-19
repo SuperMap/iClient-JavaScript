@@ -153,6 +153,24 @@ import clonedeep from 'lodash.clonedeep';
  * @property {Array} nodeIDs - 高亮节点id数组。
  * @property {Array} edgeIDs - 高亮边id数组。
  */
+
+/**
+ * @typedef {Object} KnowledgeGraphService.findShortestPathParams
+ * @property {string} startID - 开始节点的id
+ * @property {string} endID - 结束节点id
+ */
+/**
+ * @typedef {Object} GraphMap.highlightStateStyles - 高亮节点、边样式， 默认高亮样式和hover高亮样式一致。
+ * @property {KnowledgeGraph.NodeStyle} [nodeStateStyles] - 高亮节点样式 。
+ * @property {KnowledgeGraph.EdgeStyle} [edgeStateStyles] - 高亮边样式。
+ */
+/**
+ * @typedef {Object} GraphMap.findShortestPathParams
+ * @property {string} startID - 开始节点的id
+ * @property {string} endID - 结束节点id
+ * @property {boolean} [isHighlight = true] - 是否高亮
+ * @property {GraphMap.highlightStateStyles} [highlightStateStyles] - 高亮节点、边样式， 默认高亮样式和hover高亮样式一致。
+ */
 export class KnowledgeGraph {
   constructor(config, type = 'G6') {
     /**
