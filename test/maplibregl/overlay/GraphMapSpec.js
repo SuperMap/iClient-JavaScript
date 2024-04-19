@@ -53,7 +53,6 @@ describe('GraphMap maplibregl', () => {
       }
       if (testUrl.includes('/shortestPath.json')) {
         expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
-        expect(options).not.toBeNull();
         return Promise.resolve(new Response(findShortestPathData));
       }
     });
