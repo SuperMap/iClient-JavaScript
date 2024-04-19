@@ -37,7 +37,7 @@ describe('maplibregl_KnowledgeGraphService', () => {
     spyOn(FetchRequest, 'get').and.callFake((testUrl, params, options) => {
       expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
       expect(options).not.toBeNull();
-      return Promise.resolve(new Response(getShortestPathData));
+      return Promise.resolve(new Response(findShortestPathData));
     });
     knowledgeGraphService.findShortestPath({ startID: 38756, endID: 38757 }, (res) => {
       try {
@@ -47,11 +47,9 @@ describe('maplibregl_KnowledgeGraphService', () => {
         expect(res.result).not.toBeNull();
         expect(res.result.nodeIDs).toEqual([40229, 40237, 64058]);
         expect(res.result.edgeIDs).toEqual([69575, 66619]);
-        knowledgeGraphService.destroy();
         done();
       } catch (exception) {
         console.log("'findShortestPath'案例失败：" + exception.name + ':' + exception.message);
-        knowledgeGraphService.destroy();
         expect(false).toBeTruthy();
         done();
       }

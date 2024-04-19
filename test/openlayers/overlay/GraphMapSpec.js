@@ -54,7 +54,7 @@ describe('GraphMap openlayers', () => {
       if (testUrl.includes('/shortestPath.json')) {
         expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
         expect(options).not.toBeNull();
-        return Promise.resolve(new Response(getShortestPathData));
+        return Promise.resolve(new Response(findShortestPathData));
       }
     });
     var graphMap = new GraphMap(knowledgegraphmapURL, { config: { center: [0, 0] } });

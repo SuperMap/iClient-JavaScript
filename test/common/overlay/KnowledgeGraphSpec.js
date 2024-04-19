@@ -787,12 +787,13 @@ describe('KnowledgeGraph', () => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
     spyOn(graph.graph, 'setItemState');
     spyOn(graph.graph, 'clearItemStates');
-    graph.graph.emit('node:mouseenter', { a: 'heloooo' });
+
+    graph.graph.emit('node:mouseenter', { item: { test: 'heloooo' } });
     expect(graph.graph.setItemState).toHaveBeenCalled();
     graph.graph.emit('node:mouseleave');
     expect(graph.graph.clearItemStates).toHaveBeenCalled();
 
-    graph.graph.emit('edge:mouseenter');
+    graph.graph.emit('edge:mouseenter', { item: { test: 'heloooo' } });
     expect(graph.graph.setItemState).toHaveBeenCalled();
     graph.graph.emit('edge:mouseleave');
     expect(graph.graph.clearItemStates).toHaveBeenCalled();
@@ -801,6 +802,9 @@ describe('KnowledgeGraph', () => {
 
   it('highlight', (done) => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
+    spyOn(graph.graph, 'setItemState');
+    spyOn(graph.graph, 'updateItem');
+
     var highlightStateStyles = {
       nodeStateStyles: {
         lineWidth: 3,
@@ -816,21 +820,18 @@ describe('KnowledgeGraph', () => {
         }
       }
     };
-    graph.highlight({ nodeIDs: [1], edgeIDs: [2], ...highlightStateStyles });
+
+    graph.findById = () => false;
+    graph.find = () => false;
+    graph.highlight({ nodeIDs: [3], edgeIDs: [4] });
+    expect(graph.graph.setItemState).not.toHaveBeenCalled();
+
     graph.findById = () => true;
     graph.find = () => true;
-
-    spyOn(graph.graph, 'setItemState');
-    spyOn(graph.graph, 'updateItem');
+    graph.highlight({ nodeIDs: [1], edgeIDs: [2], ...highlightStateStyles });
 
     expect(graph.graph.setItemState).toHaveBeenCalled();
     expect(graph.graph.updateItem).toHaveBeenCalled();
-
-    graph.highlight({ nodeIDs: [3], edgeIDs: [4] });
-    graph.findById = () => false;
-    graph.find = () => false;
-    expect(graph.graph.setItemState).not.toHaveBeenCalled();
-
     done();
   });
 
@@ -838,20 +839,16 @@ describe('KnowledgeGraph', () => {
     var graph = new KnowledgeGraph({ nodeLabelMaxWidth: 100 });
     spyOn(graph.graph, 'clearItemStates');
 
-    graph.clearHighlight({ nodeIDs: [1], edgeIDs: [2] });
-    graph.findById = () => true;
-    graph.find = () => true;
-    expect(graph.graph.clearItemStates).toHaveBeenCalled();
-
-    graph.clearHighlight({ nodeIDs: [3], edgeIDs: [4] });
     graph.findById = () => false;
     graph.find = () => false;
+    graph.clearHighlight({ nodeIDs: [3], edgeIDs: [4] });
     expect(graph.graph.clearItemStates).not.toHaveBeenCalled();
 
-    graph.getNodes = () => [true];
-    graph.getEdges = () => [true];
+    graph.findById = () => true;
+    graph.find = () => true;
+    graph.clearHighlight({ nodeIDs: [1], edgeIDs: [2] });
+    expect(graph.graph.clearItemStates).toHaveBeenCalled();
     graph.clearHighlight();
-
     expect(graph.graph.clearItemStates).toHaveBeenCalled();
     done();
   });
