@@ -214,6 +214,7 @@ export class WebMap extends mapboxgl.Evented {
          * @property {Object} error - 失败原因。
          */
         this.fire('getmapinfofailed', { error: error });
+        console.error(error);
       });
   }
 
@@ -333,7 +334,7 @@ export class WebMap extends mapboxgl.Evented {
         renderSource: {
           id: layerFromMapInfo.source,
           type: layerFromMapInfo.type === 'raster' ? 'raster' : 'vector',
-          sourceLayer: layerFromMapInfo["source-layer"]
+          sourceLayer: layerFromMapInfo['source-layer']
         },
         renderLayers: this._getRenderLayers(layersContent, id)
       });
@@ -369,16 +370,16 @@ export class WebMap extends mapboxgl.Evented {
     const formatCatalogs = catalogs.map((catalog) => {
       let formatItem;
       const { id, title, type, visible, children, parts } = catalog;
-      if(catalog.type === "group") {
+      if (catalog.type === 'group') {
         formatItem = {
           children: this._createFormatCatalogs(children),
           id,
           title,
           type,
           visible
-        }
+        };
       } else {
-        const matchLayer = this._appreciableLayers.find(layer => layer.id === id);
+        const matchLayer = this._appreciableLayers.find((layer) => layer.id === id);
         formatItem = this._formatLayer({
           dataSource: matchLayer.dataSource,
           id,
@@ -388,7 +389,7 @@ export class WebMap extends mapboxgl.Evented {
           renderSource: matchLayer.renderSource,
           renderLayers: this._getRenderLayers(parts, id),
           themeSetting: matchLayer.themeSetting
-        })
+        });
       }
       return formatItem;
     });
@@ -396,14 +397,14 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _getRenderLayers(layerIds, layerId) {
-    if(layerIds) {
-      if(layerIds.includes(layerId)) {
+    if (layerIds) {
+      if (layerIds.includes(layerId)) {
         return layerIds;
       } else {
-        return [layerId, ...layerIds]
+        return [layerId, ...layerIds];
       }
     } else {
-      return [layerId]
+      return [layerId];
     }
   }
 
@@ -411,8 +412,8 @@ export class WebMap extends mapboxgl.Evented {
     const baseLayer = this._mapInfo.layers[0];
     const { id, type } = baseLayer;
     const baseLayerInfo = this.map.getLayer(id);
-    const ids = layers.map(layer => layer.id);
-    if(!ids.includes(id)) {
+    const ids = layers.map((layer) => layer.id);
+    if (!ids.includes(id)) {
       const formatBaseLayer = this._formatLayer({
         dataSource: {},
         id,
@@ -422,7 +423,7 @@ export class WebMap extends mapboxgl.Evented {
         renderSource: {
           id: baseLayerInfo.source,
           type: baseLayerInfo.type === 'raster' ? 'raster' : 'vector',
-          sourceLayer: baseLayerInfo["source-layer"]
+          sourceLayer: baseLayerInfo['source-layer']
         },
         renderLayers: [id],
         themeSetting: {}
@@ -433,7 +434,16 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _formatLayer(option) {
-    const { dataSource = {}, id, title, type, visible = true, renderSource = {}, renderLayers = [], themeSetting = {} } = option;
+    const {
+      dataSource = {},
+      id,
+      title,
+      type,
+      visible = true,
+      renderSource = {},
+      renderLayers = [],
+      themeSetting = {}
+    } = option;
     return {
       dataSource,
       id,
@@ -443,7 +453,7 @@ export class WebMap extends mapboxgl.Evented {
       renderSource,
       renderLayers,
       themeSetting
-    }
+    };
   }
 
   _parseRendererStyleData(renderer) {
@@ -560,6 +570,7 @@ export class WebMap extends mapboxgl.Evented {
         {
           styleGroup: [
             {
+              fieldValue: layerTitle || layerId,
               style: {
                 ...simpleResData,
                 shape: layerType2LegendType
@@ -575,7 +586,8 @@ export class WebMap extends mapboxgl.Evented {
       const subStyleSetting = styleSetting[styleField];
       const defaultSetting = this._getSettingStyle(styleField, subStyleSetting.defaultValue, simpleStyle);
       let styleGroup = [];
-      const params = { layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting };
+      const custom = this._isLinear(subStyleSetting) ? subStyleSetting.value : subStyleSetting.values;
+      const params = { layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom };
       switch (this._getLegendStyleType(styleField, subStyleSetting)) {
         case LegendType.LINEAR:
           styleGroup = this._parseLinearStyle(params);
@@ -616,10 +628,14 @@ export class WebMap extends mapboxgl.Evented {
     return currentType === 'linear' ? value : values;
   }
 
+  _isLinear(subStyleSetting) {
+    return subStyleSetting.type === 'linear';
+  }
+
   _getLegendStyleType(styleField, subStyleSetting) {
     const { type: currentType } = subStyleSetting;
     const custom = this._getSettingValue(subStyleSetting);
-    const interpolateInfo = currentType === 'linear' ? { type: 'linear' } : subStyleSetting.interpolateInfo;
+    const interpolateInfo = this._isLinear(subStyleSetting) ? { type: 'linear' } : subStyleSetting.interpolateInfo;
     if (['unique', 'linear'].includes(currentType)) {
       if (this._isColorAttr(styleField) && interpolateInfo && interpolateInfo.type === 'linear' && custom.length > 1) {
         return LegendType.LINEAR;
@@ -648,8 +664,8 @@ export class WebMap extends mapboxgl.Evented {
     return styleGroup;
   }
 
-  _parseUniqueStyle({ layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting }) {
-    const { values: custom, interpolateInfo = {} } = subStyleSetting;
+  _parseUniqueStyle({ layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom }) {
+    const { interpolateInfo = {} } = subStyleSetting;
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
       const resData = this._parseLegendtyle({ layerType2LegendType, customValue: itemStyle });
@@ -674,8 +690,7 @@ export class WebMap extends mapboxgl.Evented {
     return styleGroup;
   }
 
-  _parseRangeStyle({ layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting }) {
-    const { values: custom } = subStyleSetting;
+  _parseRangeStyle({ layerType2LegendType, styleField, simpleStyle, defaultSetting, custom }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
       const resData = this._parseLegendtyle({ layerType2LegendType, customValue: itemStyle });
