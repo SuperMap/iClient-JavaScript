@@ -586,9 +586,10 @@ export class WebMap extends mapboxgl.Evented {
       const subStyleSetting = styleSetting[styleField];
       const defaultSetting = this._getSettingStyle(styleField, subStyleSetting.defaultValue, simpleStyle);
       let styleGroup = [];
-      const custom = this._isLinear(subStyleSetting) ? subStyleSetting.value : subStyleSetting.values;
-      const params = { layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom };
-      switch (this._getLegendStyleType(styleField, subStyleSetting)) {
+      const custom = this._getSettingCustom(subStyleSetting);
+      const interpolateInfo = this._getSettingInterpolateInfo(subStyleSetting);
+      const params = { layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom, interpolateInfo };
+      switch (this._getLegendStyleType({ styleField, currentType: subStyleSetting.type, custom, interpolateInfo })) {
         case LegendType.LINEAR:
           styleGroup = this._parseLinearStyle(params);
           break;
@@ -623,21 +624,23 @@ export class WebMap extends mapboxgl.Evented {
     return colorList;
   }
 
-  _getSettingValue(setting) {
-    const { type: currentType, value, values } = setting;
-    return currentType === 'linear' ? value : values;
+  _getSettingCustom(setting) {
+    const { value, values } = setting;
+    return this._isLinear(setting) ? value : values;
+  }
+
+  _getSettingInterpolateInfo(setting) {
+    const { interpolateInfo = {} } = setting;
+    return this._isLinear(setting) ? { type: 'linear' }  : interpolateInfo;
   }
 
   _isLinear(subStyleSetting) {
     return subStyleSetting.type === 'linear';
   }
 
-  _getLegendStyleType(styleField, subStyleSetting) {
-    const { type: currentType } = subStyleSetting;
-    const custom = this._getSettingValue(subStyleSetting);
-    const interpolateInfo = this._isLinear(subStyleSetting) ? { type: 'linear' } : subStyleSetting.interpolateInfo;
+  _getLegendStyleType({ styleField, currentType, custom, interpolateInfo }) {
     if (['unique', 'linear'].includes(currentType)) {
-      if (this._isColorAttr(styleField) && interpolateInfo && interpolateInfo.type === 'linear' && custom.length > 1) {
+      if (this._isColorAttr(styleField) && interpolateInfo.type === 'linear' && custom.length > 1) {
         return LegendType.LINEAR;
       }
       return LegendType.UNIQUE;
@@ -649,8 +652,7 @@ export class WebMap extends mapboxgl.Evented {
     return ['color', 'textColor', 'outlineColor', 'textHaloColor'].includes(key);
   }
 
-  _parseLinearStyle({ subStyleSetting, layerType2LegendType }) {
-    const custom = this._getSettingValue(subStyleSetting) || [];
+  _parseLinearStyle({ layerType2LegendType, custom }) {
     const styleGroup = [
       {
         styleField: null,
@@ -664,8 +666,7 @@ export class WebMap extends mapboxgl.Evented {
     return styleGroup;
   }
 
-  _parseUniqueStyle({ layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom }) {
-    const { interpolateInfo = {} } = subStyleSetting;
+  _parseUniqueStyle({ layerType2LegendType, styleField, simpleStyle, defaultSetting, custom, interpolateInfo }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
       const resData = this._parseLegendtyle({ layerType2LegendType, customValue: itemStyle });
