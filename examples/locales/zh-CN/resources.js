@@ -692,9 +692,10 @@ window.examplesResources = {
         "title_dataAttributes": "属性表",
 
         "text_graphmap_shortest_analysis": "最短路径分析",
-        "text_startNode": "开始节点：",
-        "text_endeNode": "结束节点： ",
+        "text_startNode": "开始节点",
+        "text_endeNode": "结束节点",
         "text_analysis": "分析",
+        "text_no_shortestPath": "分析结果：无最短路径",
         "text_selectStartNode": "捕捉开始节点",
         "text_selectEndNode": "捕捉结束节点",
         "title_videoLayer":"视频图层",

@@ -738,9 +738,10 @@ window.examplesResources = {
         "title_videoLayer":"Video Layer",
 
         "text_graphmap_shortest_analysis": "Shortest Path Analysis",
-        "text_startNode": "start node:",
-        "text_endeNode": "end node:",
+        "text_startNode": "start node",
+        "text_endeNode": "end node",
         "text_analysis": "Analysis",
+        "text_no_shortestPath": "Analysis result: No shortest path",
         "text_selectStartNode": "Capture Start Node",
         "text_selectEndNode": "Capture End Node",
         "text_district_search": "Administrative region search",
