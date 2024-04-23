@@ -216,3 +216,4 @@ import './common/components/chart/ChartViewSpec';
 
 import './common/util/FetchRequestSpec';
 import './common/lang/LangSpec.js';
+import './common/util/MapCalculateUtilSpec';
