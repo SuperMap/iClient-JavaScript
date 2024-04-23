@@ -65,7 +65,10 @@ module.exports = {
         echarts: 'function(){try{return echarts}catch(e){return {}}}()',
         mapv: 'function(){try{return mapv}catch(e){return {}}}()',
         '@antv/g6': 'function(){try{return G6}catch(e){return {}}}()',
-        '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()'
+        '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()',
+        'video.js': 'function(){try{return videojs}catch(e){return {}}}()',
+        'flv.js': 'function(){try{return flvjs}catch(e){return {}}}()',
+        'videojs-flvjs-es6': 'function(){try{return;}catch(e){return {}}}()'
     },
 
     module: {

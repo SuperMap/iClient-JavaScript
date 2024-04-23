@@ -29,8 +29,6 @@ module.exports = {
       'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
       xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
       canvg: 'function(){try{return canvg}catch(e){return {}}}()',
-      'video.js': 'function(){try{return videojs}catch(e){return {}}}()',
-      'flv.js': 'function(){try{return flvjs}catch(e){return {}}}()',
       '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
       jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()'
     })

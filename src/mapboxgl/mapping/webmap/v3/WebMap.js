@@ -103,6 +103,7 @@ export class WebMap extends mapboxgl.Evented {
     this._sprite = '';
     this._spriteDatas = {};
     this._appreciableLayers = [];
+    this._layerCatalogs = [];
   }
 
   /**
@@ -250,12 +251,64 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    */
   _addLayersToMap() {
-    const { sources, layers } = this._mapInfo;
+    const { sources, layers, layerIdMapList, layerCataLog } = this._setUniqueId(this._mapInfo);
+    this._layerCatalogs.push(...layerCataLog)
     layers.forEach((layer) => {
       layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
       this.map.addLayer(layer);
     });
+    const appreciableLayers = this._generateLayers(layerIdMapList);
+    this._appreciableLayers.push(...appreciableLayers);
     this._sendMapToUser();
+  }
+
+  /**
+   * @private
+   * @function WebMap.prototype._setUniqueId
+   * @description 返回唯一 id 的 sources 和 layers。
+   * @param {Object} mapInfo - map 信息。
+   */
+  _setUniqueId(mapInfo) {
+    let layersToMap = JSON.parse(JSON.stringify(mapInfo.layers));
+    const nextSources = {};
+    const layerIdToChange = {};
+    for (let sourceId in mapInfo.sources) {
+      let timestamp = this.map.getSource(sourceId) ? `_${+new Date()}` : '';
+      const nextSourceId = sourceId + timestamp;
+      nextSources[nextSourceId] = mapInfo.sources[sourceId];
+      layersToMap = layersToMap.map((layer) => {
+        let nextLayer = layer;
+        if (layer.source === sourceId) {
+          let layerId = layer.id;
+          if (this.map.getLayer(layerId)) {
+            layerId = timestamp ? layer.id + timestamp : `${layer.id}_${+new Date()}`;
+          }
+          nextLayer = Object.assign({}, layer, { id: layerId, source: nextSourceId });
+        }
+        layerIdToChange[layer.id] = [nextLayer.id, nextLayer.source];
+        return nextLayer;
+      });
+    }
+    const layerCataLog = JSON.parse(JSON.stringify(mapInfo.metadata.layerCatalog));
+    this._updateLayerCatalogsId(layerCataLog, layerIdToChange);
+    return {
+      sources: nextSources,
+      layers: layersToMap,
+      layerIdMapList: layerIdToChange,
+      layerCataLog
+    };
+  }
+
+  _updateLayerCatalogsId(catalogs, layerIdMapList) {
+    catalogs.forEach((catalog) => {
+      const { id, children } = catalog;
+      if (catalog.type === 'group') {
+        this._updateLayerCatalogsId(children, layerIdMapList);
+        return;
+      }
+      catalog.originId = id;
+      catalog.id = layerIdMapList[id][0];
+    });
   }
 
   /**
@@ -264,7 +317,6 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    */
   _sendMapToUser() {
-    this._appreciableLayers = this._generateLayers();
     this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: this._appreciableLayers });
   }
 
@@ -292,9 +344,13 @@ export class WebMap extends mapboxgl.Evented {
       this.map.remove();
       this.map = null;
       this._legendList = [];
+      this._mapResourceInfo = {};
+      this._sprite = '';
+      this._spriteDatas = {};
       this.mapOptions = {};
       this.options = {};
       this._appreciableLayers = [];
+      this._layerCatalogs = [];
     }
   }
 
@@ -302,16 +358,18 @@ export class WebMap extends mapboxgl.Evented {
    * @private
    * @function WebMap.prototype._generateV2LayersStructure
    * @description emit 图层加载成功事件。
+   * @param {Array<Object>} layerIdRenameMapList - 图层信息。
    */
-  _generateLayers() {
+  _generateLayers(layerIdRenameMapList) {
     const { catalogs = [] } = this._mapResourceInfo;
     const originLayers = this._getLayerInfosFromCatalogs(catalogs);
     const layers = originLayers.map((layer) => {
-      const { id, title, visualization, visible, layersContent } = layer;
+      const { title, visualization, visible, layersContent } = layer;
+      const [realLayerId, realSourceId] = layerIdRenameMapList[layer.id];
       const layerFromMapInfo = this._mapInfo.layers.find((item) => {
         return item.id === layer.id;
       });
-      this._createLegendInfo(Object.assign({}, layerFromMapInfo, { title: layer.title }), visualization);
+      this._createLegendInfo(Object.assign({}, layerFromMapInfo, { title: layer.title, id: realLayerId }), visualization);
       let dataType = '';
       let dataId = '';
       for (const data of this._mapResourceInfo.datas) {
@@ -327,16 +385,16 @@ export class WebMap extends mapboxgl.Evented {
           serverId: dataId,
           type: dataType
         },
-        id,
+        id: realLayerId,
         type: layerFromMapInfo.type,
         title,
         visible,
         renderSource: {
-          id: layerFromMapInfo.source,
+          id: realSourceId,
           type: layerFromMapInfo.type === 'raster' ? 'raster' : 'vector',
           sourceLayer: layerFromMapInfo['source-layer']
         },
-        renderLayers: this._getRenderLayers(layersContent, id)
+        renderLayers: this._getRenderLayers(layersContent, realLayerId)
       });
       const styleSettings = this._parseRendererStyleData(visualization.renderer);
       const defaultStyleSetting = styleSettings[0];
@@ -360,8 +418,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   getLayerCatalog() {
-    const originLayerCatalog = this._mapInfo.metadata.layerCatalog;
-    const formatLayerCatalog = this._createFormatCatalogs(originLayerCatalog);
+    const formatLayerCatalog = this._createFormatCatalogs(this._layerCatalogs);
     const baseLayer = this._getBaseLayer(formatLayerCatalog);
     return baseLayer ? [baseLayer].concat(formatLayerCatalog) : formatLayerCatalog;
   }
@@ -586,9 +643,10 @@ export class WebMap extends mapboxgl.Evented {
       const subStyleSetting = styleSetting[styleField];
       const defaultSetting = this._getSettingStyle(styleField, subStyleSetting.defaultValue, simpleStyle);
       let styleGroup = [];
-      const custom = this._isLinear(subStyleSetting) ? subStyleSetting.value : subStyleSetting.values;
-      const params = { layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom };
-      switch (this._getLegendStyleType(styleField, subStyleSetting)) {
+      const custom = this._getSettingCustom(subStyleSetting);
+      const interpolateInfo = this._getSettingInterpolateInfo(subStyleSetting);
+      const params = { layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom, interpolateInfo };
+      switch (this._getLegendStyleType({ styleField, currentType: subStyleSetting.type, custom, interpolateInfo })) {
         case LegendType.LINEAR:
           styleGroup = this._parseLinearStyle(params);
           break;
@@ -623,21 +681,23 @@ export class WebMap extends mapboxgl.Evented {
     return colorList;
   }
 
-  _getSettingValue(setting) {
-    const { type: currentType, value, values } = setting;
-    return currentType === 'linear' ? value : values;
+  _getSettingCustom(setting) {
+    const { value, values } = setting;
+    return this._isLinear(setting) ? value : values;
+  }
+
+  _getSettingInterpolateInfo(setting) {
+    const { interpolateInfo = {} } = setting;
+    return this._isLinear(setting) ? { type: 'linear' }  : interpolateInfo;
   }
 
   _isLinear(subStyleSetting) {
     return subStyleSetting.type === 'linear';
   }
 
-  _getLegendStyleType(styleField, subStyleSetting) {
-    const { type: currentType } = subStyleSetting;
-    const custom = this._getSettingValue(subStyleSetting);
-    const interpolateInfo = this._isLinear(subStyleSetting) ? { type: 'linear' } : subStyleSetting.interpolateInfo;
+  _getLegendStyleType({ styleField, currentType, custom, interpolateInfo }) {
     if (['unique', 'linear'].includes(currentType)) {
-      if (this._isColorAttr(styleField) && interpolateInfo && interpolateInfo.type === 'linear' && custom.length > 1) {
+      if (this._isColorAttr(styleField) && interpolateInfo.type === 'linear' && custom.length > 1) {
         return LegendType.LINEAR;
       }
       return LegendType.UNIQUE;
@@ -649,8 +709,7 @@ export class WebMap extends mapboxgl.Evented {
     return ['color', 'textColor', 'outlineColor', 'textHaloColor'].includes(key);
   }
 
-  _parseLinearStyle({ subStyleSetting, layerType2LegendType }) {
-    const custom = this._getSettingValue(subStyleSetting) || [];
+  _parseLinearStyle({ layerType2LegendType, custom }) {
     const styleGroup = [
       {
         styleField: null,
@@ -664,8 +723,7 @@ export class WebMap extends mapboxgl.Evented {
     return styleGroup;
   }
 
-  _parseUniqueStyle({ layerType2LegendType, styleField, subStyleSetting, simpleStyle, defaultSetting, custom }) {
-    const { interpolateInfo = {} } = subStyleSetting;
+  _parseUniqueStyle({ layerType2LegendType, styleField, simpleStyle, defaultSetting, custom, interpolateInfo }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
       const resData = this._parseLegendtyle({ layerType2LegendType, customValue: itemStyle });
