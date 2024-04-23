@@ -111,12 +111,6 @@ export class VectorTileSuperMapRest extends VectorTile {
                 var resolution = me.tileGrid.getResolution(z);
                 var dpi = 96;
                 var unit = projection.getUnits() || 'degrees';
-                if (unit === 'degrees') {
-                    unit = Unit.DEGREE;
-                }
-                if (unit === 'm') {
-                    unit = Unit.METER;
-                }
 
                 var scale = Util.resolutionToScale(resolution, dpi, unit);
                 params =
