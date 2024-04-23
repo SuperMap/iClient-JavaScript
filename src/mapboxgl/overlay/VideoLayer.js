@@ -10,6 +10,7 @@ import { bbox, polygon } from '@turf/turf';
  * @class VideoLayer
  * @category  Visualization Video
  * @modulecategory Overlay
+ * @version 11.2.0
  * @param {Object} options - 构造参数。
  * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
  * @param {Array} options.extent - 视频范围。
