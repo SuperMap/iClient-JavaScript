@@ -226,15 +226,11 @@ export class GeoJSON extends JSONFormat {
              */
             'feature': function (feature) {
                 var geom = this.extract.geometry.apply(this, [feature.geometry]);
-                const { attr , foreignMembers } = this.createAttributes(feature)
                 var json = {
                     "type": "Feature",
-                    "properties": attr,
+                    "properties": this.createAttributes(feature),
                     "geometry": geom
                 };
-                for (const key in foreignMembers) {
-                  json[key] = foreignMembers[key];
-                }
 
                 if (feature.geometry && feature.geometry.type === 'TEXT') {
                     json.properties.texts = feature.geometry.texts;
@@ -718,32 +714,26 @@ export class GeoJSON extends JSONFormat {
             return null;
         }
         var attr = {};
-        var foreignMembers = {};
         processFieldsAttributes(feature, attr);
         var exceptKeys = ["fieldNames", "fieldValues", "geometry", "stringID", "ID"];
         for (var key in feature) {
             if (exceptKeys.indexOf(key) > -1) {
                 continue;
             }
-            if(GeoJSON.supportForeignMembers){
-              foreignMembers[key] = feature[key];
-            }else{
-              attr[key] = feature[key];
-            }            
+            attr[key] = feature[key];
         }
 
         function processFieldsAttributes(feature, attributes) {
-          if (!(feature.hasOwnProperty('fieldNames') && feature.hasOwnProperty('fieldValues'))) {
-            return;
-          }
-          var names = feature.fieldNames,
-            values = feature.fieldValues;
-          for (var i in names) {
-            attributes[names[i]] = values[i];
-          }
+            if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
+                return;
+            }
+            var names = feature.fieldNames,
+                values = feature.fieldValues;
+            for (var i in names) {
+                attributes[names[i]] = values[i];
+            }
         }
 
-        return {attr,foreignMembers};
+        return attr;
     }
 }
-GeoJSON.supportForeignMembers = true;

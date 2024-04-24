@@ -77,7 +77,7 @@
           datasetNames: [datasourceName + ':' + datasetName]
         });
 
-        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(boundsParam).then(function (serviceResult) {
           let coordinates = [];
           turf.featureEach(serviceResult.result.features, function (currentFeature, featureIndex) {
             currentFeature.geometry.coordinates[0][0].forEach((coord) => {
@@ -85,7 +85,7 @@
               coordinates.push(res);
             });
           });
-          let address = serviceResult.result.features.features[0].address;
+          let address = serviceResult.result.features.features[0].properties.address;
           videoLayer = new mapboxgl.supermap.VideoLayer({
             url: address,
             extent: [coordinates[3], coordinates[2], coordinates[1], coordinates[0]]

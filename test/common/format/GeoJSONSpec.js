@@ -757,30 +757,4 @@ describe('GeoJSON', () => {
     var result = new GeoJSON().read(feature, feature.type);
     expect(result.geometry.id).toBe(3);
   });
-  it('geometry foreignMembers', () => {
-    var obj = {
-      test: 'test',
-      ID: null,
-      fieldValues: ['127', '利伯维尔'],
-      fieldNames: ['SMID', 'CAPITAL'],
-      geometry: {
-        id: 1,
-        parts: [1],
-        points: [
-          {
-            y: -4377.027184298267,
-            x: 4020.0045221720466
-          }
-        ],
-        type: GeometryType.POINT
-      }
-    };
-
-    var geo = new GeoJSON().toGeoJSON(obj);
-    expect(geo.test).toEqual('test');
-    GeoJSON.supportForeignMembers = false;
-    geo = new GeoJSON().toGeoJSON(obj);
-    expect(geo.properties.test).toEqual('test');
-    GeoJSON.supportForeignMembers = true;
-  });
 });

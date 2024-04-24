@@ -568,7 +568,7 @@ var exampleConfig = {
         version: '9.1.2',
         content: {
             ip_map: {
-                name: '地图',
+                name: '地图(WebMap2.0)',
                 name_en: 'iPortal Web map',
                 version: '9.1.2',
                 content: [
@@ -606,10 +606,17 @@ var exampleConfig = {
                         version: '9.1.2',
                         thumbnail: 'iPortalWebmap_unicode.png',
                         fileName: 'iPortalWebmap_unicode'
-                    },
+                    }
+                ]
+            },
+            ip_map_3: {
+                name: '地图(WebMap3.0)',
+                name_en: 'iPortal Web map',
+                version: '11.2.0',
+                content: [
                     {
-                        name: 'WebMap 3.0',
-                        name_en: 'WebMap 3.0',
+                        name: '白膜',
+                        name_en: 'Fill Extrusion',
                         version: '11.2.0',
                         thumbnail: 'iPortalWebmap_mapstudio.png',
                         fileName: 'iPortalWebmap_mapstudio'
