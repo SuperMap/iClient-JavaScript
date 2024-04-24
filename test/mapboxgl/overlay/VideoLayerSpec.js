@@ -6,7 +6,41 @@ var videoUrl = 'base/resources/data/index.m3u8';
 describe('mapboxgl_VideoLayer', () => {
   var originalTimeout;
   var testDiv, map;
+  var cv;
   beforeAll((done) => {
+    cv = {
+      CV_32FC2: 'CV_32FC2',
+      matFromImageData: function () {
+        return {
+          delete: function () {
+
+          }
+        }
+      },
+      Size: function () {
+        return {
+          width: 770,
+          height: 690
+        }
+      },
+      matFromArray: function () {
+
+      },
+      Mat: function () {
+        return {
+          delete: function () { },
+          cols: 2,
+          rows: 2,
+          data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
+        }
+      },
+      findHomography: function () {
+
+      },
+      warpPerspective: function () {
+
+      }
+    };
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
@@ -60,39 +94,6 @@ describe('mapboxgl_VideoLayer', () => {
 
   it('init videoLayer', (done) => {
     var url = videoUrl;
-    var cv = {
-      CV_32FC2: 'CV_32FC2',
-      matFromImageData: function () {
-        return {
-          delete: function () {
-
-          }
-        }
-      },
-      Size: function () {
-        return {
-          width: 770,
-          height: 690
-        }
-      },
-      matFromArray: function () {
-
-      },
-      Mat: function () {
-        return {
-          delete: function () { },
-          cols: 2,
-          rows: 2,
-          data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
-        }
-      },
-      findHomography: function () {
-
-      },
-      warpPerspective: function () {
-
-      }
-    }
     spyOn(cv, 'Size');
     spyOn(cv, 'findHomography');
     spyOn(cv, 'warpPerspective');
@@ -115,6 +116,31 @@ describe('mapboxgl_VideoLayer', () => {
       expect(videoLayer.videoDomId).not.toBeNull();
       expect(videoLayer.video).not.toBeNull();
       expect(videoLayer.pixelBBox).not.toBeNull();
+      done();
+    }, 3000);
+  });
+
+  it('render moveLayer onRemove setVisibility', (done) => {
+    var url = videoUrl;
+    var videoLayer = new VideoLayer({
+      url: url,
+      opencv: cv,
+      extent: [
+        [116.14394400766855, 28.249134537249257],
+        [116.143464581289, 28.252977295834056],
+        [116.14734767029731, 28.251762901914655],
+        [116.14737169684759, 28.25095489453961]
+      ]
+    });
+    spyOn(map, 'moveLayer');
+    spyOn(map, 'setLayoutProperty');
+    videoLayer.onAdd(map);
+    videoLayer.moveLayer(videoLayer.layerId, 'simple-tiles');
+    videoLayer.setVisibility(false);
+    setTimeout(() => {
+      expect(map.moveLayer).toHaveBeenCalled();
+      expect(map.setLayoutProperty).toHaveBeenCalled();
+      expect(videoLayer).not.toBeNull();
       done();
     }, 3000);
   });
