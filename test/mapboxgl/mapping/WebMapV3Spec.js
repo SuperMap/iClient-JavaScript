@@ -114,7 +114,7 @@ describe('mapboxgl-webmap3.0', () => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(mapstudioWebMap_symbol);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(webMapV3.getLayers().length).toBeLessThanOrEqual(mapInfo.layers.length);
+      expect(webMapV3.getAppreciableLayers().length).toBeGreaterThanOrEqual(mapInfo.layers.length);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
       expect(webMapV3.getLayerCatalog().length).not.toBe(0);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
@@ -141,8 +141,21 @@ describe('mapboxgl-webmap3.0', () => {
       expect(mapstudioWebmap.map).toEqual(map);
       var style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(mapstudioWebmap.getLayers().length).toBeLessThanOrEqual(mapInfo.layers.length);
+      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(appreciableLayers.length).toBeGreaterThanOrEqual(mapInfo.layers.length);
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      map.addLayer({
+        metadata: {},
+        paint: {
+          'background-color': '#242424'
+        },
+        id: 'ms-background12',
+        type: 'background'
+      });
+      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length + 1);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
       done();
     });
   });
