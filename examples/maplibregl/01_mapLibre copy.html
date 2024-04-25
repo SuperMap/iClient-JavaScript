@@ -1,0 +1,1143 @@
+<!--********************************************************************
+* Copyright© 2000 - 2022 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_mapQueryByBounds"></title>
+    <style>
+      #button-groups {
+        position: absolute;
+        top: 10px;
+        z-index: 1000;
+      }
+      button {
+        margin: 0 10px;
+      }
+    </style>
+    <script type="text/javascript" src="../js/include-web.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden; background: #fff; width: 100%; height: 100%; position: absolute; top: 0">
+    <div id="map" style="margin: 0 auto; width: 100%; height: 100%; position: absolute; top: 0"></div>
+    <div style="position: absolute; z-index: 10; top: 70px">
+      <input id="layerid" placeholder="layer.id" />
+      <input id="beforelayerid" placeholder="before layer.id" />
+      <button id="movelayer" onclick="handleClick()">移动图层</button>
+      <input id="remove" placeholder="删除layer.id" />
+      <button onclick="removeLayer()">删除图层</button>
+    </div>
+    <script
+      type="text/javascript"
+      include="three,L7,L7Three"
+      src="../../dist/maplibregl/include-maplibregl.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/geotiff"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-world/rest/maps/World';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+      var scene;
+      var layers = [];
+      // var map = new maplibregl.Map({
+      //   container: 'map',
+      //   zoom: 12,
+      //   center: [11.39085, 47.27574],
+      //   pitch: 0,
+      //   hash: true,
+      //   style: {
+      //     version: 8,
+      //     sources: {
+      //       osm: {
+      //         type: 'raster',
+      //         tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+      //         tileSize: 256,
+      //         attribution: '&copy; OpenStreetMap Contributors',
+      //         maxzoom: 19
+      //       },
+      //       terrainSource: {
+      //         type: 'raster-dem',
+      //         url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+      //         tileSize: 256
+      //       },
+      //       hillshadeSource: {
+      //         type: 'raster-dem',
+      //         url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+      //         tileSize: 256
+      //       }
+      //     },
+      //     layers: [
+      //       {
+      //         id: 'osm',
+      //         type: 'raster',
+      //         source: 'osm'
+      //       },
+      //       {
+      //         id: 'hills',
+      //         type: 'hillshade',
+      //         source: 'hillshadeSource',
+      //         layout: { visibility: 'visible' },
+      //         paint: { 'hillshade-shadow-color': '#473B24' }
+      //       }
+      //     ],
+      //     terrain: {
+      //       source: 'terrainSource',
+      //       exaggeration: 1
+      //     }
+      //   },
+      //   maxZoom: 18,
+      //   maxPitch: 85
+      // });
+
+      var map = new maplibregl.Map({
+        container: 'map',
+        // style: 'https://api.maptiler.com/maps/basic/style.json?key=49D4vXt4KBt37nKTQbX5',
+        // style: {
+        //     "version": 8,
+        //     "sources": {
+        //         "raster-tiles": {
+        //             "attribution": attribution,
+        //             "type": "raster",
+        //             "tiles": [host + '/iserver/services/maps/rest/maps/World/zxyTileImage.png?prjCoordSys='+encodeURIComponent('{"epsgCode":3857}')+'&z={z}&x={x}&y={y}'],
+        //             "tileSize": 256,
+        //         },
+        //     },
+        //     "layers": [{
+        //         "id": "simple-tiles",
+        //         "type": "raster",
+        //         "source": "raster-tiles",
+        //         "minzoom": 0,
+        //         "maxzoom": 22
+        //     }],
+        // },
+        center: [40, 31.25287],
+        maxZoom: 18,
+        zoom: 2,
+        pitch: 0
+        // zoom: 12,
+        // center: [11.39085, 47.27574],
+        // pitch: 52,
+        // bearing: 0,
+        // renderWorldCopies: false,
+      });
+
+      var marker = new maplibregl.Marker().setLngLat([11.39085, 47.27574]).addTo(map);
+
+      // getDotPointLayer().then((maskLayer) => {
+      //   // setTimeout(() => {
+      //   maskLayer.forEach((layer) => {
+      //     console.log('add clsuter');
+      //     map.addLayer(layer);
+      //   });
+      //   // }, 5000);
+      // });
+      // getClusterLayer().then((clusterLayer) => {
+      //     clusterLayer.forEach((layer) => {
+      //       console.log('add clsuter');
+      //       map.addLayer(layer);
+      //     });
+      //   });
+      getMaskLayer().then((maskLayer) => {
+        maskLayer.forEach((layer) => {
+          console.log('add getMaskLayer');
+          map.addLayer(layer);
+        });
+      });
+
+      // map.on('load', async () => {
+      //   // getClusterLayer().then((clusterLayer) => {
+      //   //   clusterLayer.forEach((layer) => {
+      //   //     console.log('add clsuter');
+      //   //     map.addLayer(layer);
+      //   //   });
+      //   // });
+      //   const dotLayers = await getDotPointLayer();
+
+      //   const flyline = await getFlyLineLayer();
+
+      //   const imagelayers = getImageLayer();
+
+      //   const maskLayer = await getMaskLayer();
+
+      //   const polygons = await getPolygon();
+
+      //   const $3d = await get3DLayer();
+
+      //   const wind = getWindLayer();
+      //   const heat = await getHeatLayer();
+      //   const heatcolumn = await gethexagonColumnLayer();
+      //   const heat3d = await getHeat3DLayer();
+      //   const heathexon = await getHexonLayer();
+
+      //   // window.Three = window.THREE;
+      //   // const threeLayers = await getThreeLayer();
+      //   const clusterLayer = await getClusterLayer();
+      //   // clusterLayer.forEach((layer) => {
+      //   //   console.log('add clsuter')
+      //   //   map.addLayer(layer);
+      //   // });
+      //   // // maskLayer.forEach((layer) => {
+      //   // //   console.log('add clsuter')
+      //   // //   map.addLayer(layer);
+      //   // // });
+      //   layers = {
+      //     dotLayers,
+      //     flyline,
+      //     polygons: polygons,
+      //     imagelayers: imagelayers,
+      //     maskLayer: maskLayer,
+      //     clusterLayer: clusterLayer,
+      //     $3d,
+      //     heat,
+      //     heathexon,
+      //     heat3d,
+      //     heatcolumn,
+      //     wind
+      //     // threeLayers
+      //   };
+      //   createButtons();
+      //   window.Three = window.THREE;
+      //   scene = map.getL7Scene();
+      // });
+      map.getL7Scene().then((scene) => {
+        scene.addImage('plane', 'https://gw.alipayobjects.com/zos/bmw-prod/0ca1668e-38c2-4010-8568-b57cb33839b9.svg');
+      });
+
+      function setLayers(key) {
+        layers[key].forEach((layer) => {
+          map.addLayer(layer);
+        });
+      }
+
+      function createButtons() {
+        console.log('createButtons');
+        const dom = document.createElement('div');
+        dom.id = 'button-groups';
+        let html = ``;
+        for (let key in layers) {
+          const layer = layers[key];
+          let ids = '';
+          layer.forEach((item) => {
+            ids += `${item.id}`;
+          });
+          html += `<button onclick="setLayers('${key}')">${key}=${ids}</button>`;
+        }
+        html += `<button id="iconfontlaeyr" onclick="addIconfontLayer('')">添加iconfont</button>`;
+        dom.innerHTML = html;
+        document.body.appendChild(dom);
+        document.getElementById('iconfontlaeyr');
+      }
+      async function addIconfontLayer() {
+        const layer = await symbolFontLayer();
+        map.addLayer(layer);
+      }
+
+      // function setLayerId() {
+      //   const value = document.getElementById('layerid').value;
+      //   layerId = value;
+      // }
+      // function setLayerBeforeId() {
+      //   beforeLayerId = document.getElementById('beforelayerid').value;
+      // }
+      function handleClick() {
+        const layerId = document.getElementById('layerid').value;
+        const beforeLayerId = document.getElementById('beforelayerid').value;
+        // @ts-ignore
+        this.map.moveLayer(layerId, beforeLayerId);
+      }
+      // var delLayerID;
+      // function setDelLayer(params) {
+      //   delLayerID = document.getElementById('remove').value;
+      // }
+      function removeLayer() {
+        const layerId = document.getElementById('remove').value;
+        let targetLayer;
+        for (let key in layers) {
+          const layer = layers[key];
+          layer.forEach((item) => {
+            if (item.id === layerId) {
+              targetLayer = item;
+            }
+          });
+        }
+        console.log(layerId, targetLayer);
+        this.map.removeLayer(layerId);
+      }
+
+      async function getDotPointLayer() {
+        const layer = getLayer('PointLayer', {
+          visible: true
+        });
+        const l7Layer = layer.getL7Layer();
+        const dot = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/4472780b-fea1-4fc2-9e4b-3ca716933dc7.json'
+        ).then((d) => d.text());
+        // const dot = [
+        //   {
+        //     area: '泰国',
+        //     entryAmount: '0.02',
+        //     outboundAmount: '485.21',
+        //     dotid: 0,
+        //     value: 0.02,
+        //     info: '泰国 入境金额：$0.02万, 出境金额：$485.21万',
+        //     name: '泰国',
+        //     lng: 11.39085,
+        //     lat: 47.27574,
+        //     type: 'ok'
+        //   }
+        // ];
+        l7Layer
+          .source(eval(dot), {
+            parser: {
+              type: 'json',
+              x: 'lng',
+              y: 'lat'
+            }
+          })
+          .shape('circle')
+          .color('rgb(22,119,255)')
+          .size(20)
+          .style({
+            opacity: 1
+          });
+        const layer1 = getLayer();
+        const l7Layer1 = layer1.getL7Layer();
+        l7Layer1
+          .source(eval(dot), {
+            parser: {
+              type: 'json',
+              x: 'lng',
+              y: 'lat'
+            }
+          })
+          .shape('circle')
+          .color('red')
+          .animate(true)
+          .size(30)
+          .style({
+            opacity: 1
+          });
+        return [layer, layer1];
+      }
+
+      async function getFlyLineLayer() {
+        const flyline = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/a5ac7bce-181b-40d1-8a16-271356264ad8.json'
+        ).then((d) => d.text());
+
+        const flydata = eval(flyline).map((item) => {
+          // @ts-ignore
+          const latlng1 = item.from.split(',').map((e) => {
+            return e * 1;
+          });
+          // @ts-ignore
+          const latlng2 = item.to.split(',').map((e) => {
+            return e * 1;
+          });
+          return { coord: [latlng1, latlng2] };
+        });
+
+        const layer = getLayer('LineLayer', {
+          // blend: 'additive',
+          // blend: 'normal',
+          zIndex: 3
+        });
+        const l7Layer = layer.getL7Layer();
+        l7Layer
+          .source(flydata, {
+            parser: {
+              type: 'json',
+              coordinates: 'coord'
+            }
+          })
+          .color('rgb(22,119,255)')
+          .shape('arc3d')
+          .size(1)
+          .style({
+            lineType: 'dash',
+            dashArray: [5, 5],
+            opacity: 0.5
+          });
+        const layer1 = getLayer('LineLayer', {
+          // blend: 'additive',
+          // blend: 'normal'
+          // zIndex: 2
+        });
+        const l7Layer1 = layer1.getL7Layer();
+        l7Layer1
+          .source(flydata, {
+            parser: {
+              type: 'json',
+              coordinates: 'coord'
+            }
+          })
+          .color('rgb(22,119,255)')
+          .texture('plane')
+          .shape('arc3d')
+          .size(25)
+          .animate({
+            enable: true,
+            duration: 1,
+            interval: 0.5,
+            trailLength: 0.05
+          })
+          .style({
+            textureBlend: 'replace',
+            lineTexture: true, // 开启线的贴图功能
+            iconStep: 8, // 设置贴图纹理的间距
+            opacity: 1
+          });
+        return [layer, layer1];
+      }
+
+      async function greatecircle() {
+        const data = await fetch('https://gw.alipayobjects.com/os/rmsportal/UEXQMifxtkQlYfChpPwT.txt').then((res) =>
+          res.text()
+        );
+        const layer = getLayer('LineLayer', {
+          visible: true
+          // blend: 'normal',
+        });
+        const l7Layer = layer.getL7Layer();
+        l7Layer
+          .source(data, {
+            parser: {
+              type: 'csv',
+              x: 'lng1',
+              y: 'lat1',
+              x1: 'lng2',
+              y1: 'lat2'
+            }
+          })
+          .size(1)
+          .shape('greatcircle')
+          .color('#8C1EB2')
+          .style({
+            opacity: 0.8
+          });
+        return [layer];
+      }
+
+      async function getClusterLayer() {
+        const clustdata = await fetch(
+          'https://gw.alipayobjects.com/os/bmw-prod/87e40417-a5da-4fdb-8313-c796ea15f982.csv'
+        )
+          .then((res) => res.text())
+          .then((data) => {
+            return data;
+          });
+        const dataSource = new L7.Source(clustdata, {
+          parser: {
+            type: 'csv',
+            x: 'lng',
+            y: 'lat'
+          },
+          cluster: true
+        });
+
+        const layer = getLayer('PointLayer', {
+          autoFit: true
+        });
+        const l7Layer = layer.getL7Layer();
+        l7Layer
+          .source(dataSource)
+          .shape('circle')
+          // .scale('point_count', {
+          //   type: 'quantile'
+          // })
+          .size('point_count', [5, 10, 15, 20, 25])
+          // .active(true)
+          .color('rgb(73,167,86)')
+          .style({
+            opacity: 1,
+            strokeWidth: 1,
+            stroke: '#fff'
+          });
+
+        // 聚合图标注
+        const layer1 = getLayer('PointLayer', {
+          // autoFit: true
+        });
+        const l7Layer1 = layer1.getL7Layer();
+        l7Layer1.source(dataSource).shape('point_count', 'text').size(15).color('red').style({
+          opacity: 1,
+          halo: 0
+          // strokeWidth: 0,
+          // stroke: 'red'
+        });
+        return [layer1];
+      }
+      async function getCanvasLayer() {
+        const canvasdata = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/337ddbb7-aa3f-4679-ab60-d64359241955.json'
+        ).then((res) => res.json());
+
+        // 聚合图标注
+        const layer1 = getLayer('CanvasLayer', {
+          autoFit: true
+        });
+        const l7Layer = layer1.getL7Layer();
+        l7Layer.style({
+          zIndex: 10,
+          update: 'dragend',
+          drawingOnCanvas: (option) => {
+            const { size, ctx, mapService } = option;
+            const [width, height] = size;
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'rgba(0, 200, 0, 0.2)';
+            // @ts-ignore
+            canvasdata.features.map((feature) => {
+              const pixelCenter = mapService.lngLatToContainer(feature.geometry.coordinates);
+              pixelCenter.x *= window.devicePixelRatio;
+              pixelCenter.y *= window.devicePixelRatio;
+              if (pixelCenter.x < 0 || pixelCenter.y < 0 || pixelCenter.x > width || pixelCenter.y > height) {
+                return '';
+              }
+              ctx.beginPath();
+              ctx.arc(pixelCenter.x, pixelCenter.y, feature.properties.capacity / 200, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.closePath();
+              return '';
+            });
+            return '';
+          }
+        });
+        return [layer1];
+      }
+      async function get3DLayer() {
+        const data = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/893d1d5f-11d9-45f3-8322-ee9140d288ae.json'
+        ).then((res) => res.json());
+        console.log(data);
+        // const list = [{
+        //   "w": 20,
+        //   "t": 23.8,
+        //   "s": "海南",
+        //   "l": 11,
+        //   "m": "海口",
+        //   "j": 110.25,
+        //   "h": "59758"
+        // }]
+        // const pointLayer = new PointLayer({ zIndex: 2, })
+        //   .source(list, {
+        //     parser: {
+        //       type: 'json',
+        //       x: 'j',
+        //       y: 'w'
+        //     }
+        //   })
+        //   .shape('triangleColumn')
+        //   .size('t', function (level) {
+        //     return [15, 15, 100];
+        //   })
+        //   // .animate(true)
+        //   // .active(true)
+        //   // .color('#094D4A')
+        //   .color('t', [
+        //     '#094D4A',
+        //     '#146968',
+        //     '#1D7F7E',
+        //     '#289899',
+        //     '#34B6B7',
+        //     '#4AC5AF',
+        //     '#5FD3A6',
+        //     '#7BE39E',
+        //     '#A1EDB8',
+        //     '#CEF8D6'
+        //   ])
+        //   .style({
+        //     opacity: 1.0
+        //     // heightfixed: true,
+        //     // lightEnable: false
+        //   });
+        const layer1 = getLayer();
+        const l7Layer = layer1.getL7Layer();
+        l7Layer
+          .source(data, {
+            parser: {
+              type: 'json',
+              x: 'longitude',
+              y: 'latitude'
+            }
+          })
+          // .animate(true)
+          .active(true)
+          .shape('name', ['cylinder', 'triangleColumn', 'hexagonColumn', 'squareColumn'])
+          .size('unit_price', (h) => {
+            return [1000, 1000, 70000];
+          })
+          .style({
+            heightfixed: true
+          })
+          .color('name', ['#739DFF', '#61FCBF', '#FFDE74', '#FF896F']);
+
+        return [layer1];
+      }
+      function get3DGEOJSONLayer() {
+        const data = {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {
+                  name: 'squareColumn',
+                  height: 1000000,
+                  color: 'red'
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [0, 0]
+                }
+              },
+              {
+                type: 'Feature',
+                properties: {
+                  name: 'squareColumn',
+                  height: 4000000,
+                  color: 'green'
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [5, 5]
+                }
+              }
+            ]
+          }
+        };
+
+        const layer1 = getLayer();
+        const l7Layer = layer1.getL7Layer();
+        l7Layer
+          .source(data.data)
+          // .animate(true)
+          // .active(true)
+          .shape('squareColumn')
+          .size('height', (h) => {
+            return [1600, 1600, 10000];
+          })
+          .style({
+            heightfixed: true
+          })
+          .color('#739DFF');
+
+        // .color('name', ['#739DFF', '#61FCBF', '#FFDE74', '#FF896F']);
+
+        return [layer1];
+      }
+      function getWindLayer() {
+        const layer1 = getLayer('WindLayer');
+        const l7Layer = layer1.getL7Layer();
+        l7Layer
+          .source('https://gw.alipayobjects.com/mdn/rms_23a451/afts/img/A*wcU8S5xMEDYAAAAAAAAAAAAAARQnAQ', {
+            parser: {
+              type: 'image',
+              extent: [-180, -85, 180, 85]
+            }
+          })
+          .animate(true)
+          .style({
+            uMin: -21.32,
+            uMax: 26.8,
+            vMin: -21.57,
+            vMax: 21.42,
+            numParticles: 35535,
+            fadeOpacity: 0.996,
+            sizeScale: 1.2,
+            rampColors: {
+              0.0: '#3288bd',
+              0.1: '#66c2a5',
+              0.2: '#abdda4',
+              0.3: '#e6f598',
+              0.4: '#fee08b',
+              0.5: '#fdae61',
+              0.6: '#f46d43',
+              1.0: '#d53e4f'
+            }
+          });
+
+        return [layer1];
+      }
+      function getThreeLayer() {
+        window.three = window.THREE;
+
+        const layer = getLayer('ThreeLayer', {
+          enableMultiPassRenderer: false,
+          onAddMeshes: (threeScene, layer) => {
+            threeScene.add(new THREE.AmbientLight(0xffffff));
+            const sunlight = new THREE.DirectionalLight(0xffffff, 0.25);
+            sunlight.position.set(0, 80000000, 100000000);
+            sunlight.matrixWorldNeedsUpdate = true;
+            threeScene.add(sunlight);
+            // 使用 Three.js glTFLoader 加载模型
+            const axesHelper = new THREE.AxesHelper(4);
+            threeScene.add(axesHelper);
+            const helper = new THREE.DirectionalLightHelper(sunlight, 5);
+            threeScene.add(helper);
+            const loader = new GLTFLoader();
+            loader.load(
+              // 'https://gw.alipayobjects.com/os/bmw-prod/3ca0a546-92d8-4ba0-a89c-017c218d5bea.gltf',
+              // 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF/DamagedHelmet.gltf',
+              // 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedCube/glTF/AnimatedCube.gltf',
+              // 'https://gw.alipayobjects.com/os/antvdemo/assets/gltf/radar/34M_17.gltf',
+              // 'https://gw.alipayobjects.com/os/antvdemo/assets/gltf/duck/Duck.gltf', // duck
+              // 'https://gw.alipayobjects.com/os/antvdemo/assets/gltf/truck/CesiumMilkTruck.gltf', // Truck
+              'https://gw.alipayobjects.com/os/antvdemo/assets/gltf/man/CesiumMan.gltf',
+              (gltf) => {
+                // 根据 GeoJSON 数据放置模型
+                layer.getSource().data.dataArray.forEach(() => {
+                  const gltfScene = gltf.scene;
+                  layer.adjustMeshToMap(gltfScene);
+                  layer.setMeshScale(gltfScene, 10000, 10000, 10000);
+                  layer.setObjectLngLat(gltfScene, [112, 31], 0);
+                  gltfScene.traverse(function (child) {
+                    if (child.name === 'eye') {
+                      //@ts-ignore
+                      child.material.color = new THREE.Color('rgb(255, 0, 0)');
+                      //@ts-ignore
+                      child.material.opacity = 1;
+                      console.log(child);
+                    }
+                    //@ts-ignore
+                    // if (child.isMesh) {
+                    //   child.frustumCulled = false;
+                    //   //模型阴影
+                    //   child.castShadow = true;
+                    //   //模型自发光
+                    //   //@ts-ignore
+                    //   child.material.emissive = child.material.color;
+                    //   //@ts-ignore
+                    //   child.material.emissiveMap = child.material.map;
+                    // }
+                  });
+                  const animations = gltf.animations;
+                  if (animations && animations.length) {
+                    const mixer = new THREE.AnimationMixer(gltfScene);
+                    const animation = animations[2];
+                    const action = mixer.clipAction(animation);
+                    action.play();
+                    layer.addAnimateMixer(mixer);
+                  }
+                  // 向场景中添加模型
+                  threeScene.add(gltfScene);
+                });
+                // 重绘图层
+                layer.render();
+              }
+            );
+          }
+        });
+        const l7Layer = layer.getL7Layer();
+        l7Layer
+          .source({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'Point',
+                  // coordinates: [121.4, 31.258134],
+                  // coordinates: [120.1025, 30.2594]
+                  coordinates: [112, 39]
+                }
+              }
+            ]
+          })
+          .animate(true);
+        return [layer];
+      }
+      async function getLine() {
+        const data = await fetch(
+          'https://gw.alipayobjects.com/os/bmw-prod/93a55259-328e-4e8b-8dc2-35e05844ed31.json'
+        ).then((res) => res.json());
+        const layer1 = getLayer('LineLayer');
+        const l7Layer = layer1.getL7Layer();
+        l7Layer.source(data).size(40).shape('wall').style({
+          opacity: 'testOpacity',
+          sourceColor: '#0DCCFF',
+          targetColor: 'rbga(255,255,255, 0)'
+        });
+        return [layer1];
+      }
+
+      async function getPolygon() {
+        const data = await fetch(
+          'https://gw.alipayobjects.com/os/bmw-prod/d434cac3-124e-4922-8eed-ccde01674cd3.json'
+        ).then((res) => res.json());
+        const layer1 = getLayer('PolygonLayer');
+        const provincelayer = layer1.getL7Layer();
+        provincelayer
+          .source(data)
+          .size(150000)
+          .shape('extrude')
+          .color('#0DCCFF')
+          .active({
+            color: 'rgb(100,230,255)'
+          })
+          .style({
+            heightfixed: true,
+            pickLight: true,
+            raisingHeight: 200000,
+            opacity: 0.8
+          });
+        return [layer1];
+      }
+      async function getGeoLayer() {
+        const layer = getLayer('GeometryLayer');
+        const l7Layer = layer.getL7Layer();
+        l7Layer.shape('plane').style({
+          width: 0.074,
+          height: 0.061,
+          center: [120, 30.2594],
+          widthSegments: 100,
+          heightSegments: 100,
+          terrainClipHeight: 1,
+          mapTexture: 'https://gw.alipayobjects.com/mdn/rms_23a451/afts/img/A*gA0NRbuOF5cAAAAAAAAAAAAAARQnAQ',
+          terrainTexture: 'https://gw.alipayobjects.com/mdn/rms_23a451/afts/img/A*eYFaRYlnnOUAAAAAAAAAAAAAARQnAQ',
+          rgb2height: (r, g, b) => {
+            let h = -10000.0 + (r * 255.0 * 256.0 * 256.0 + g * 255.0 * 256.0 + b * 255.0) * 0.1;
+            h = h / 20 - 127600;
+            h = Math.max(0, h);
+            console.log(h);
+            return isNaN(h) ? 1 : h / 10;
+          }
+        });
+        // let currentZo
+        const layer1 = getLayer('GeometryLayer');
+        const l7Layer1 = layer1.getL7Layer();
+        l7Layer1
+          .shape('plane')
+          .style({
+            opacity: 1,
+            width: 1,
+            height: 1,
+            center: [120.1025, 30.2594]
+          })
+          .active(true)
+          .color('#ff0');
+        //   currentModelData = '100x100';
+        // let modelData10,
+        //   modelData20 = null,
+        //   modelData100;
+
+        // layer.on('terrainImageLoaded', () => {
+
+        //   modelData10 = layer.createModelData([], {
+        //     widthSegments: 10,
+        //     heightSegments: 10
+        //   });
+
+        //   modelData20 = layer.createModelData([], {
+        //     widthSegments: 20,
+        //     heightSegments: 20
+        //   });
+
+        //   modelData100 = layer.createModelData([], {
+        //     widthSegments: 100,
+        //     heightSegments: 100
+        //   });
+        // });
+        return [layer, layer1];
+      }
+      async function getHeatLayer() {
+        const heatdata = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/d3564b06-670f-46ea-8edb-842f7010a7c6.json'
+        ).then((res) => res.json());
+        const layer = getLayer('HeatmapLayer', { blend: 'normal' });
+        const l7Layer = layer.getL7Layer();
+        l7Layer
+          .source(heatdata)
+          .shape('heatmap')
+          .size('mag', [0, 1.0]) // weight映射通道
+          .style({
+            intensity: 2,
+            radius: 20,
+            opacity: 1.0,
+            rampColors: {
+              colors: ['#FF4818', '#F7B74A', '#FFF598', '#91EABC', '#2EA9A1', '#206C7C'].reverse(),
+              positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+            }
+          });
+        return [layer];
+      }
+      function getNormalPoint() {
+        return new PointLayer({ blend: 'normal' })
+          .source(
+            [
+              { lng: 113, lat: 29, size: 10000 },
+              { lng: 113.5, lat: 29.5, size: 30000 },
+
+              {
+                lng: 110.23681640625,
+                lat: 29.64509464986076,
+                size: 74020.50373907911
+              },
+              {
+                lng: 115.01586914062499,
+                lat: 26.88777988202911,
+                size: 22908.885529976185
+              },
+              {
+                lng: 111.181640625,
+                lat: 28.724313406473463,
+                size: 73359.37302978932
+              },
+              {
+                lng: 112.686767578125,
+                lat: 29.257648503615542,
+                size: 18500.90838085843
+              },
+              {
+                lng: 114.664306640625,
+                lat: 28.98892237190413,
+                size: 20293.183968726793
+              },
+              {
+                lng: 113.90075683593749,
+                lat: 28.17855984939698,
+                size: 18051.412077639496
+              },
+              {
+                lng: 111.51123046875,
+                lat: 27.45466493898314,
+                size: 37645.94186119526
+              },
+              {
+                lng: 110.67626953125,
+                lat: 28.004101830368654,
+                size: 4214.588023703825
+              },
+              { lng: 114.43359375, lat: 29.477861195816843, size: 61722.01580332115 },
+              {
+                lng: 110.445556640625,
+                lat: 26.96124577052697,
+                size: 70806.75519747598
+              },
+              {
+                lng: 113.75244140624999,
+                lat: 27.88278388425912,
+                size: 70930.24993464859
+              }
+            ],
+            {
+              parser: {
+                type: 'json',
+                x: 'lng',
+                y: 'lat'
+              }
+            }
+          )
+          .shape('circle')
+          .color('red')
+          .size('size', (v) => v)
+          .animate(true)
+          .style({
+            unit: 'meter'
+          });
+      }
+
+      async function gethexagonColumnLayer() {
+        const hexagonColumndata = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/7359a5e9-3c5e-453f-b207-bc892fb23b84.csv'
+        ).then((res) => res.text());
+        const layer = getLayer('HeatmapLayer', { blend: 'normal' });
+        const hexagonColumnLayer = layer.getL7Layer();
+        hexagonColumnLayer
+          .source(hexagonColumndata, {
+            parser: {
+              type: 'csv',
+              x: 'lng',
+              y: 'lat'
+            },
+            transforms: [
+              {
+                type: 'hexagon',
+                size: 200000,
+                field: 'v',
+                method: 'sum'
+              }
+            ]
+          })
+          .size('sum', (value) => {
+            return value * 20;
+          })
+          .shape('hexagonColumn')
+          .color('count', ['#FF4818', '#F7B74A', '#FFF598', '#FF40F3', '#9415FF', '#421EB2'].reverse())
+          .style({
+            coverage: 0.9,
+            angle: 0
+          });
+        return [layer];
+      }
+
+      async function getHeat3DLayer() {
+        const canvasdata = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/337ddbb7-aa3f-4679-ab60-d64359241955.json'
+        ).then((res) => res.json());
+        const layer = getLayer('HeatmapLayer', { blend: 'normal' });
+        const heat3d = layer.getL7Layer();
+        heat3d
+          .source(canvasdata)
+          .size('capacity', [0, 1])
+          .shape('heatmap3D')
+          // weight映射通道
+          .style({
+            heightfixed: true,
+            intensity: 5,
+            radius: 10,
+            opacity: 1.0,
+            rampColors: {
+              colors: ['#2E8AE6', '#69D1AB', '#DAF291', '#FFD591', '#FF7A45', '#CF1D49'],
+              positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+            }
+          });
+        return [layer];
+      }
+      async function getHexonLayer() {
+        const canvasdata = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/337ddbb7-aa3f-4679-ab60-d64359241955.json'
+        ).then((res) => res.json());
+        const layer = getLayer('HeatmapLayer', { blend: 'normal' });
+        const hexagonheatlayer = layer.getL7Layer();
+        hexagonheatlayer
+          .source(canvasdata, {
+            transforms: [
+              {
+                type: 'hexagon',
+                size: 90000,
+                field: 'capacity',
+                method: 'sum'
+              }
+            ]
+          })
+          .shape('hexagon')
+          .style({
+            coverage: 0.9,
+            angle: 0,
+            opacity: 1.0
+          })
+          .color(
+            'sum',
+            [
+              '#3F4BBA',
+              '#3F4BBA',
+              '#3F4BBA',
+              '#3F4BBA',
+              '#3C73DA',
+              '#3C73DA',
+              '#3C73DA',
+              '#0F62FF',
+              '#0F62FF',
+              '#30B2E9',
+              '#30B2E9',
+              '#40C4CE'
+            ].reverse()
+          );
+        return [layer];
+      }
+      function getImageLayer() {
+        const layer = getLayer('ImageLayer');
+        const l7Layer = layer.getL7Layer();
+        l7Layer.source('https://gw.alipayobjects.com/mdn/antv_site/afts/img/A*8SUaRr7bxNsAAAAAAAAAAABkARQnAQ', {
+          parser: {
+            type: 'image',
+            extent: [113.1277263548, 32.3464238863, 118.1365790452, 36.4786759137]
+          }
+        });
+        const baseLayer = getLayer('RasterLayer');
+        const l7Layer1 = baseLayer.getL7Layer();
+        l7Layer1
+          .source(
+            'https://tiles{1-3}.geovisearth.com/base/v1/terrain_rgb/{z}/{x}/{y}?format=png&tmsIds=w&token=b2a0cfc132cd60b61391b9dd63c15711eadb9b38a9943e3f98160d5710aef788',
+            {
+              parser: {
+                type: 'rasterTile',
+                dataType: 'terrainRGB',
+                tileSize: 256,
+                zoomOffset: 0
+              }
+            }
+          )
+          .style({
+            clampLow: false,
+            clampHigh: false,
+            domain: [0, 7000],
+            rampColors: {
+              colors: ['#d73027', '#fc8d59', '#fee08b', '#d9ef8b', '#91cf60', '#1a9850'],
+              positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+            }
+          });
+        return [layer, baseLayer];
+      }
+      async function getMaskLayer() {
+        const maskData = await fetch(
+          'https://gw.alipayobjects.com/os/basement_prod/d2e0e930-fd44-4fca-8872-c1037b0fee7b.json'
+        ).then((res) => res.json());
+        const tiffdata = await getTiffData();
+        const baseLayer = getLayer('PolygonLayer', {
+          visible: false
+        });
+        const polygonLayer = baseLayer.getL7Layer();
+        polygonLayer.source(maskData).shape('fill').color('red').style({ opacity: 0.5 });
+
+        const layer = getLayer('RasterLayer', {
+          maskLayers: [polygonLayer],
+          enableMask: true,
+          maskInside: true
+        });
+        const rasterlayer = layer.getL7Layer();
+        const mindata = -0;
+        const maxdata = 8000;
+        console.log('--------------------tiffdata', tiffdata.data);
+        rasterlayer
+          .source(tiffdata.data, {
+            parser: {
+              type: 'raster',
+              width: tiffdata.width,
+              height: tiffdata.height,
+              extent: [73.482190241, 3.82501784112, 135.106618732, 57.6300459963]
+            }
+          })
+          .style({
+            opacity: 0.8,
+            domain: [mindata, maxdata],
+            clampLow: true,
+            rampColors: {
+              colors: ['rgb(166,97,26)', 'rgb(223,194,125)', 'rgb(245,245,245)', 'rgb(128,205,193)', 'rgb(1,133,113)'],
+              positions: [0, 0.25, 0.5, 0.75, 1.0]
+            }
+          });
+        return [layer];
+      }
+      async function getTiffData() {
+        const response = await fetch(
+          'https://gw.alipayobjects.com/os/rmsportal/XKgkjjGaAzRyKupCBiYW.dat'
+          // 'https://gw.alipayobjects.com/zos/antvdemo/assets/2019_clip/ndvi_201905.tiff',
+        );
+        const arrayBuffer = await response.arrayBuffer();
+        const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
+        const image = await tiff.getImage();
+        const width = image.getWidth();
+        const height = image.getHeight();
+        const values = await image.readRasters();
+        return {
+          data: values[0],
+          width,
+          height,
+          min: 0,
+          max: 8000
+        };
+      }
+
+      function getLayer(type = 'PointLayer', options = {}) {
+        return new maplibregl.supermap.L7Layer({ type, options });
+      }
+    </script>
+  </body>
+</html>

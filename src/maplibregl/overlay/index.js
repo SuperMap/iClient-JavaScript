@@ -11,4 +11,5 @@ export { GraphicLayer } from './GraphicLayer';
 export { GraticuleLayer } from './GraticuleLayer';
 export { FGBLayer } from './FGBLayer';
 export { WebSymbol } from './symbol/WebSymbol';
+export { L7Layer } from './L7Layer';
 export * from './graphic';

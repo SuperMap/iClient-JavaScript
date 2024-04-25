@@ -18,6 +18,7 @@ export { GraticuleLayer } from './GraticuleLayer';
 export { FGBLayer } from './FGBLayer';
 export { VideoLayer } from './VideoLayer';
 export { GraphMap } from './GraphMap';
+export { L7Layer } from './L7Layer';
 
 export * from './graphic';
 export * from './mapv';

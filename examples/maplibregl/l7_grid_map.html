@@ -1,0 +1,389 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_grid_map"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var map = new maplibregl.Map({
+        container: 'map',
+        center: [113, 29],
+        pitch: 80,
+        bearing: 170,
+        zoom: 7.5,
+        antialias: true
+      });
+      function getImageData(img) {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        var { width, height } = img;
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+        var imageData = ctx.getImageData(0, 0, width, height);
+
+        return imageData;
+      }
+
+      function getLatData(data) {
+        var size = Math.floor(Math.sqrt(data.length));
+
+        var arr = [];
+        var startLng = 110,
+          lngStep = 5 / (size - 1);
+        var startLat = 30,
+          latStep = -5 / (size - 1);
+        for (let i = 0; i < size; i++) {
+          var arr2 = [];
+          for (let j = 0; j < size; j++) {
+            var index = i + j * size;
+            var x = startLng + lngStep * i;
+            var y = startLat + latStep * j;
+
+            arr2.push([x, y, data[index]]);
+          }
+          arr.push(arr2);
+        }
+        return arr;
+      }
+
+      function getLngData(data) {
+        var size = Math.floor(Math.sqrt(data.length));
+        var arr = [];
+        var startLng = 110,
+          lngStep = 5 / (size - 1);
+        var startLat = 30,
+          latStep = -5 / (size - 1);
+
+        for (let i = 0; i < size; i++) {
+          var arr2 = [];
+          for (let j = 0; j < size; j++) {
+            var index = i * size + j;
+            var x = startLng + lngStep * j;
+            var y = startLat + latStep * i;
+
+            arr2.push([x, y, data[index]]);
+          }
+          arr.push(arr2);
+        }
+        return arr;
+      }
+
+      function getR(data) {
+        var arr = [];
+        for (let i = 0; i < data.length; i += 4) {
+          arr.push(data[i]);
+        }
+        return arr;
+      }
+
+      function setMaterial(object) {
+        if (object.children && object.children.length && object.children.length > 0) {
+          object.children.map((child) => setMaterial(child));
+        } else if (object.material) {
+          object.material.wireframe = true;
+          object.material.opacity = 0.6;
+        }
+      }
+
+      var airPorts = [
+        {
+          name: '常德桃花源机场',
+          lng: 111.641101,
+          lat: 28.91165
+        },
+        {
+          name: '芷江机场',
+          lng: 109.709699,
+          lat: 27.442172
+        },
+        {
+          name: '铜仁凤凰机场',
+          lng: 109.313971,
+          lat: 27.880629
+        },
+        {
+          name: '永州零陵机场',
+          lng: 111.616049,
+          lat: 26.335053
+        },
+        {
+          name: '桂林两江国际机场',
+          lng: 110.049256,
+          lat: 25.210065
+        },
+        {
+          name: '长沙黄花国际机场',
+          lng: 113.216412,
+          lat: 28.183613
+        },
+        {
+          name: '井冈山机场',
+          lng: 114.745845,
+          lat: 26.852646
+        }
+      ];
+      var planeTarget = {
+        lng2: 111.616049,
+        lat2: 26.335053
+      };
+      var airLineData = [
+        {
+          name: '常德桃花源机场',
+          lng: 111.641101,
+          lat: 28.91165,
+          ...planeTarget
+        },
+        {
+          name: '芷江机场',
+          lng: 109.709699,
+          lat: 27.442172,
+          ...planeTarget
+        },
+        {
+          name: '铜仁凤凰机场',
+          lng: 109.313971,
+          lat: 27.880629,
+          ...planeTarget
+        },
+        {
+          name: '桂林两江国际机场',
+          lng: 110.049256,
+          lat: 25.210065,
+          ...planeTarget
+        },
+        {
+          name: '长沙黄花国际机场',
+          lng: 113.216412,
+          lat: 28.183613,
+          ...planeTarget
+        },
+        {
+          name: '井冈山机场',
+          lng: 114.745845,
+          lat: 26.852646,
+          ...planeTarget
+        }
+      ];
+
+      map.getL7Scene().then((scene) => {
+        scene.setBgColor('#000');
+        scene.addImage('plane', '../img/96327aa6-7fc5-4b5b-b1d8-65771e05afd8.svg');
+
+        var airPrtsLayer = new maplibregl.supermap.L7Layer({ type: 'PointLayer' });
+        airPrtsLayer
+          .getL7Layer()
+          .source(airPorts, {
+            parser: {
+              type: 'json',
+              x: 'lng',
+              y: 'lat'
+            }
+          })
+          .shape('name', 'text')
+          .color('rgb(22,119,255)')
+          .size(10);
+
+        var airLineLayer = new maplibregl.supermap.L7Layer({
+          type: 'LineLayer',
+          options: { blend: 'normal' }
+        });
+        airLineLayer
+          .getL7Layer()
+          .source(airLineData, {
+            parser: {
+              type: 'json',
+              x: 'lng',
+              y: 'lat',
+              x1: 'lng2',
+              y1: 'lat2'
+            }
+          })
+          .shape('arc3d')
+          .size(1)
+          .color('#f00')
+          .style({
+            sourceColor: 'rgb(22,119,255)',
+            targetColor: 'rgba(242,246,250,0.1)'
+          });
+
+        var airPlaneLayer = new maplibregl.supermap.L7Layer({
+          type: 'LineLayer',
+          options: { blend: 'normal' }
+        });
+        airPlaneLayer
+          .getL7Layer()
+          .source(airLineData, {
+            parser: {
+              type: 'json',
+              x: 'lng2',
+              y: 'lat2',
+              x1: 'lng',
+              y1: 'lat'
+            }
+          })
+          .shape('arc3d')
+          .texture('plane')
+          .size(30)
+          .color('#f00')
+          .animate({
+            duration: 0.2,
+            interval: 0.2,
+            trailLength: 0.2
+          })
+          .style({
+            textureBlend: 'replace',
+            lineTexture: true,
+            iconStep: 6
+          });
+
+        fetch('../data/ec5351c9-d22b-4918-ad6c-1838064d3a64.json')
+          .then((res) => res.json())
+          .then((data) => {
+            var layer = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });
+            layer.getL7Layer().source(data).size(20).shape('wall').style({
+              opacity: 0.4,
+              sourceColor: '#0DCCFF',
+              targetColor: 'rbga(255,255,255, 0)',
+              heightfixed: true
+            });
+            map.addLayer(layer);
+
+            var nameLayer = new maplibregl.supermap.L7Layer({ type: 'PointLayer' });
+            nameLayer.getL7Layer().source(data).color('rgb(22,119,255)').size(15).shape('name', 'text');
+            map.addLayer(nameLayer);
+          });
+
+        var pointData = [
+          { lng: 113, lat: 29, size: 10000 },
+          { lng: 113.5, lat: 29.5, size: 30000 },
+          { lng: 110.23681640625, lat: 29.64509464986076, size: 74020.50373907911 },
+          { lng: 115.01586914062499, lat: 26.88777988202911, size: 22908.885529976185 },
+          { lng: 111.181640625, lat: 28.724313406473463, size: 73359.37302978932 },
+          { lng: 112.686767578125, lat: 29.257648503615542, size: 18500.90838085843 },
+          { lng: 114.664306640625, lat: 28.98892237190413, size: 20293.183968726793 },
+          { lng: 113.90075683593749, lat: 28.17855984939698, size: 18051.412077639496 },
+          { lng: 111.51123046875, lat: 27.45466493898314, size: 37645.94186119526 },
+          { lng: 110.67626953125, lat: 28.004101830368654, size: 4214.588023703825 },
+          { lng: 114.43359375, lat: 29.477861195816843, size: 61722.01580332115 },
+          { lng: 110.445556640625, lat: 26.96124577052697, size: 70806.75519747598 },
+          { lng: 113.75244140624999, lat: 27.88278388425912, size: 70930.24993464859 }
+        ];
+        var waveLayer = new maplibregl.supermap.L7Layer({
+          type: 'PointLayer',
+          options: { blend: 'additive' }
+        });
+        waveLayer
+          .getL7Layer()
+          .source(pointData, {
+            parser: {
+              type: 'json',
+              x: 'lng',
+              y: 'lat'
+            }
+          })
+          .shape('circle')
+          .color('rgb(22, 119, 255)')
+          .size('size', (v) => v)
+          .animate(true)
+          .style({
+            unit: 'meter'
+          });
+
+        var barLayer = new maplibregl.supermap.L7Layer({
+          type: 'PointLayer',
+          options: { depth: false }
+        });
+        barLayer
+          .getL7Layer()
+          .source(pointData, {
+            parser: {
+              type: 'json',
+              x: 'lng',
+              y: 'lat'
+            }
+          })
+          .shape('cylinder')
+          .color('rgb(22, 119, 255)')
+          .size('size', (v) => [5, 5, v / 350])
+          .animate(true)
+          .style({
+            opacityLinear: {
+              enable: true,
+              dir: 'up'
+            },
+            lightEnable: false
+          });
+        var img = new Image();
+        img.crossOrigin = 'none';
+        img.src = '../img/A_UkvYRYS5jTAAAAAAAAAAAAAAARQnAQ.png';
+        img.onload = function () {
+          var data = getImageData(img);
+          var rData = getR(data.data);
+          var d1 = getLngData(rData);
+          var d2 = getLatData(rData);
+          var geoData = {
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'MultiLineString',
+                  coordinates: d1
+                }
+              },
+              {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'MultiLineString',
+                  coordinates: d2
+                }
+              }
+            ]
+          };
+          var layer = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });
+          layer.getL7Layer().source(geoData).size(1).shape('simple').color('rgb(22, 119, 255)').style({
+            vertexHeightScale: 2000,
+            opacity: 0.4
+          });
+          map.addLayer(layer);
+          map.addLayer(waveLayer);
+          map.addLayer(barLayer);
+
+          map.addLayer(airPrtsLayer);
+          map.addLayer(airLineLayer);
+          map.addLayer(airPlaneLayer);
+        };
+      });
+    </script>
+  </body>
+</html>

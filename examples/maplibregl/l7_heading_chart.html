@@ -1,0 +1,157 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_heading_chart"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="L7" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://maplibre.org/' target='_blank'>© MapLibre </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        pitch: 40,
+        center: [40, 40.16797],
+        zoom: 2.5
+      });
+
+      map.on('load', function () {
+        map.getL7Scene().then((scene) => {
+          scene.addImage('plane', '../img/0ca1668e-38c2-4010-8568-b57cb33839b9.svg');
+        });
+        Promise.all([
+          fetch('../data/2960e1fc-b543-480f-a65e-d14c229dd777.json').then((d) => d.json()),
+          fetch('../data/4472780b-fea1-4fc2-9e4b-3ca716933dc7.json').then((d) => d.text()),
+          fetch('../data/a5ac7bce-181b-40d1-8a16-271356264ad8.json').then((d) => d.text())
+        ]).then(function onLoad([world, dot, flyline]) {
+          const dotData = eval(dot);
+          const flydata = eval(flyline).map((item) => {
+            const latlng1 = item.from.split(',').map((e) => {
+              return e * 1;
+            });
+            const latlng2 = item.to.split(',').map((e) => {
+              return e * 1;
+            });
+            return { coord: [latlng1, latlng2] };
+          });
+          var worldLine = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });
+          var l7Layer = worldLine.getL7Layer();
+          l7Layer.source(world).color('#41fc9d').size(0.5).style({
+            opacity: 0.4
+          });
+          map.addLayer(worldLine);
+
+          var dotPoint = new maplibregl.supermap.L7Layer({ type: 'PointLayer' });
+          dotPoint
+            .getL7Layer()
+            .source(dotData, {
+              parser: {
+                type: 'json',
+                x: 'lng',
+                y: 'lat'
+              }
+            })
+            .shape('circle')
+            .color('#ffed11')
+            .animate(true)
+            .size(40);
+          map.addLayer(dotPoint);
+
+          var flyLine = new maplibregl.supermap.L7Layer({ type: 'LineLayer', options: { blend: 'normal' } });
+          flyLine
+            .getL7Layer()
+            .source(flydata, {
+              parser: {
+                type: 'json',
+                coordinates: 'coord'
+              }
+            })
+            .color('#ff6b34')
+            .texture('plane')
+            .shape('arc')
+            .size(15)
+            .animate({
+              duration: 1,
+              interval: 0.2,
+              trailLength: 0.05
+            })
+            .style({
+              textureBlend: 'replace',
+              lineTexture: true,
+              iconStep: 10
+            });
+          map.addLayer(flyLine);
+
+          var flyLine2 = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });
+          flyLine2
+            .getL7Layer()
+            .source(flydata, {
+              parser: {
+                type: 'json',
+                coordinates: 'coord'
+              }
+            })
+            .color('#ff6b34')
+            .shape('arc')
+            .size(1)
+            .style({
+              lineType: 'dash',
+              dashArray: [5, 5],
+              opacity: 0.5
+            });
+          map.addLayer(flyLine2);
+        });
+      });
+    </script>
+  </body>
+</html>

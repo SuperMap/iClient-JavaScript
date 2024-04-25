@@ -1,0 +1,105 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_continuous_fill"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" include="mapbox-gl-enhance,L7,g2" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [
+                host +
+                  '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys=' +
+                  encodeURIComponent('{"epsgCode":3857}') +
+                  '&z={z}&x={x}&y={y}'
+              ],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [116.368652, 39.93866],
+        zoom: 10.07
+      });
+
+      map.on('load', function () {
+        fetch('../data/1d27c363-af3a-469e-ab5b-7a7e1ce4f311.json')
+          .then((res) => res.json())
+          .then((data) => {
+            var layer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+            layer
+              .getL7Layer()
+              .source(data)
+              .color(
+                'unit_price',
+                [
+                  '#1A4397',
+                  '#2555B7',
+                  '#3165D1',
+                  '#467BE8',
+                  '#6296FE',
+                  '#7EA6F9',
+                  '#98B7F7',
+                  '#BDD0F8',
+                  '#DDE6F7',
+                  '#F2F5FC'
+                ].reverse()
+              )
+              .shape('fill')
+              .active(true);
+            map.addLayer(layer);
+
+            var layer2 = new mapboxgl.supermap.L7Layer({ type: 'LineLayer' });
+            layer2.getL7Layer().source(data).color('#fff').size(0.8);
+            map.addLayer(layer2);
+          });
+      });
+    </script>
+  </body>
+</html>

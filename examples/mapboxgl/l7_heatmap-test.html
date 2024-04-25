@@ -1,0 +1,137 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!--********************************************************************
+* 该示例需要引入 
+* G6 (https://github.com/antvis/G6)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title data-i18n="resources.title_l7_point_shape"></title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="btns">
+      <button onclick="movePolygonLayer()">热力图在上</button>
+      <button onclick="moveHeatMapLayer()">面图层在上</button>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript" include="mapbox-gl-enhance,L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript">
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var attribution =
+        "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+
+      var tileURL = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              attribution: attribution,
+              type: 'raster',
+              tiles: [tileURL],
+              tileSize: 256
+            }
+          },
+          layers: [
+            {
+              id: 'simple-tiles',
+              type: 'raster',
+              source: 'raster-tiles',
+              minzoom: 0,
+              maxzoom: 22
+            }
+          ]
+        },
+        center: [107.054293, 35.246265],
+        zoom: 4.056
+      });
+      var layer;
+      function movePolygonLayer(params) {
+        console.log('addLayer heatmap');
+        map.moveLayer('maine', layer.id);
+        // map.setMaxZoom(12)
+        layer.reRender();
+      }
+      function moveHeatMapLayer(params) {
+        console.log('addLayer heatmap');
+        map.moveLayer(layer.id, 'maine');
+        // map.setMaxZoom(12)
+        layer.reRender();
+      }
+      map.on('load', function () {
+        fetch('https://gw.alipayobjects.com/os/basement_prod/337ddbb7-aa3f-4679-ab60-d64359241955.json')
+          .then((res) => res.json())
+          .then((data) => {
+            map.addSource('maine', {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: [
+                    [
+                      [70, 20],
+                      [130, 20],
+                      [130, 45],
+                      [70, 45],
+                      [70, 20]
+                    ]
+                  ]
+                }
+              }
+            });
+            const polygon = {
+              id: 'maine',
+              type: 'fill',
+              source: 'maine',
+              paint: {
+                'fill-color': '#0080ff',
+                'fill-opacity': 0.8
+              }
+            };
+
+            layer = new mapboxgl.supermap.L7Layer({ type: 'HeatmapLayer' });
+
+            var l7Layer = layer.getL7Layer();
+            l7Layer
+              .source(data)
+              .size('capacity', [0, 1])
+              .shape('heatmap3D')
+              .style({
+                intensity: 2,
+                radius: 40,
+                opacity: 1,
+                rampColors: {
+                  colors: ['#2E8AE6', '#69D1AB', '#DAF291', '#FFD591', '#FF7A45', '#CF1D49'],
+                  positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+                }
+              });
+            map.addLayer(layer);
+            map.addLayer(polygon);
+          });
+      });
+    </script>
+  </body>
+</html>

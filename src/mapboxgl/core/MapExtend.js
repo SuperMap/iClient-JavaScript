@@ -7,7 +7,7 @@ import { getServiceKey } from '@supermap/iclient-common/util/EncryptRequest';
 
 /**
  * @function MapExtend
- * @description  扩展了 mapboxgl.Map 对图层相关的操作。
+ * @description 扩展 mapboxgl.Map。
  * @private
  */
 export var MapExtend = (function () {
@@ -28,6 +28,7 @@ export var MapExtend = (function () {
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
       if (layer.source || layer.type === 'custom' || layer.type === 'background') {
         this.addLayerBak(layer, before);
+        // overlay文件夹下的图层基本都是自定义图层， 除去几个专题图
         if (layer.overlay && !this.overlayLayersManager[layer.id]) {
           this.overlayLayersManager[layer.id] = layer;
         }
@@ -44,6 +45,26 @@ export var MapExtend = (function () {
       return this;
     };
   }
+  /**
+   * @function listLayers
+   * @category BaseTypes MapExtend
+   * @version 11.2.0
+   * @description 扩展mapboxgl.Map， 获取所有叠加图层;
+   * @returns {Array} 图层数组。
+   */
+  mapboxgl.Map.prototype.listLayers = function () {
+    const layerList = [];
+    const originLayers = this.style._order || [];
+    layerList.push(...originLayers);
+    for (let key in this.overlayLayersManager) {
+      const layer = this.overlayLayersManager[key];
+      const layerId = layer.id;
+      if (!layerList.includes(layerId)) {
+        layerList.push(layerId);
+      }
+    }
+    return layerList;
+  };
 
   mapboxgl.Map.prototype.getLayer = function (id) {
     if (this.overlayLayersManager[id]) {

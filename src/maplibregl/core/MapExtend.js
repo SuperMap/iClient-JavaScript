@@ -1,11 +1,11 @@
 /* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
- import maplibregl from 'maplibre-gl';
+import maplibregl from 'maplibre-gl';
 
- /**
+/**
   * @function MapExtend
-  * @description  扩展了 maplibregl.Map 对图层相关的操作。
+  * @description 扩展 maplibregl.Map。
   * @private
   */
  export var MapExtend = (function () {
@@ -31,6 +31,27 @@
        return this;
      };
    }
+    /**
+       * @function listLayers
+       * @category BaseTypes MapExtend
+       * @version 11.2.0
+       * @description 扩展mapboxgl.Map， 获取所有叠加图层;
+       * @returns {Array} 图层数组。
+       */
+    maplibregl.Map.prototype.listLayers = function () {
+      const layerList = [];
+      const originLayers = this.style._order || [];
+      layerList.push(...originLayers);
+      for (let key in this.overlayLayersManager) {
+        const layer = this.overlayLayersManager[key];
+        const layerId = layer.id;
+        if (!layerList.includes(layerId)) {
+          layerList.push(layerId);
+        }
+      }
+      return layerList;
+    };
+  
  
    maplibregl.Map.prototype.getLayer = function (id) {
      if (this.overlayLayersManager[id]) {
@@ -155,4 +176,3 @@
      }
    }
  })();
- 

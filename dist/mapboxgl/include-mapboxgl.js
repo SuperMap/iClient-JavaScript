@@ -62,6 +62,12 @@
       inputCSS(libsurl + '/mapbox-gl-js-enhance/1.12.1-4/mapbox-gl-enhance.css');
       inputScript(libsurl + '/mapbox-gl-js-enhance/1.12.1-4/mapbox-gl-enhance.js');
     }
+    if (inArray(includes, 'L7')) {
+      inputScript(libsurl+ '/mapboxgl-l7-render/index.js');
+    }
+    if (inArray(includes, 'g2')) {
+      inputScript('https://cdnjs.cloudflare.com/ajax/libs/antv-g2/4.2.8/g2.min.js');
+    }
     if (inArray(includes, 'g6')) {
       inputScript(libsurl + '/antv/g6/4.3.2/g6.min.js');
     }

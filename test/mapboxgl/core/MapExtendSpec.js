@@ -5,6 +5,7 @@ import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
 import { decryptSources } from '../../../src/mapboxgl/core/decryptSource';
 import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
+import '../../../src/mapboxgl/core/MapExtend';
 
 describe('getServiceKey', () => {
   let originalTimeout;
@@ -168,6 +169,38 @@ describe('getServiceKey', () => {
 
   afterEach(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
+
+  it('listLayers', (done) => {
+    map = new mapboxgl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    map.style._order = ['raster', 'fill-1', 'circle-1', 'l7_layer_1'];
+    map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1' }, heatmap_1: { id: 'heatmap_1' } };
+    const layers = map.listLayers();
+    expect(layers).toEqual(['raster', 'fill-1', 'circle-1', 'l7_layer_1', 'heatmap_1']);
+    done();
   });
 
   it('getServiceKey', async () => {

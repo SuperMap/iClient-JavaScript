@@ -414,6 +414,10 @@
       "WebSymbol": {
         "name": "Web符号",
         "name_en": "WebSymbol"
+      },
+      "L7": {
+        "name": "L7",
+        "name_en": "L7"
       }
     }
   },
@@ -505,6 +509,10 @@
       "Constant": {
         "name": "常量",
         "name_en": "Constant"
+      },
+      "MapExtend": {
+        "name": "地图扩展",
+        "name_en": "MapExtend"
       }
     }
   }

@@ -1,4 +1,6 @@
 
+import './maplibregl/core/MapExtendSpec.js';
+
 /*maplibregl -- services*/
 import './maplibregl/services/AddressMatchServiceSpec.js';
 import './maplibregl/services/BufferAnalysisSpec.js';
@@ -65,6 +67,7 @@ import './maplibregl/overlay/symbol/WebSymbolSpec';
 import './maplibregl/overlay/symbol/SymbolHandlerSpec';
 import './maplibregl/overlay/symbol/SymbolUtilSpec';
 import './maplibregl/overlay/symbol/MapExtendSymbolSpec.js';
+import './maplibregl/overlay/L7LayerSpec.js';
 
 /*maplibregl -- mapping*/
 import './maplibregl/mapping/InitMapSpec.js';
