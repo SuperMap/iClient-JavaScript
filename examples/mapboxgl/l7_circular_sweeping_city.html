@@ -29,7 +29,7 @@
 
   <body>
     <div id="map"></div>
-    <script type="text/javascript" include="L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance,L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var attribution =
@@ -94,71 +94,71 @@
                 sweepCenter: [120.145319, 30.238915]
               }
             });
-          map.addLayer(pointLayer);
-        });
-        fetch('../data/67130c6c-7f49-4680-915c-54e69730861d.json')
-          .then((res) => res.json())
-          .then(({ lakeBorderData, lakeData, landData }) => {
-            var lakeLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
-            lakeLayer
-              .getL7Layer()
-              .source(lakeData)
-              .shape('fill')
-              .color('#1E90FF')
-              .style({
-                opacity: 0.4,
-                opacityLinear: {
-                  enable: true,
-                  dir: 'out' // in - out
-                }
-              });
-            var landLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
-            landLayer
-              .getL7Layer()
-              .source(landData)
-              .shape('fill')
-              .color('#3CB371')
-              .style({
-                opacity: 0.4,
-                opacityLinear: {
-                  enable: true,
-                  dir: 'in' // in - out
-                }
-              });
-            var lakeBorderLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
-            lakeBorderLayer
-              .getL7Layer()
-              .source(lakeBorderData)
-              .shape('fill')
-              .color('#ccc')
-              .style({
-                opacity: 0.5,
-                opacityLinear: {
-                  enable: true,
-                  dir: 'in' // in - out
-                }
-              });
+          fetch('../data/67130c6c-7f49-4680-915c-54e69730861d.json')
+            .then((res) => res.json())
+            .then(({ lakeBorderData, lakeData, landData }) => {
+              var lakeLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+              lakeLayer
+                .getL7Layer()
+                .source(lakeData)
+                .shape('fill')
+                .color('#1E90FF')
+                .style({
+                  opacity: 0.4,
+                  opacityLinear: {
+                    enable: true,
+                    dir: 'out' // in - out
+                  }
+                });
+              var landLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+              landLayer
+                .getL7Layer()
+                .source(landData)
+                .shape('fill')
+                .color('#3CB371')
+                .style({
+                  opacity: 0.4,
+                  opacityLinear: {
+                    enable: true,
+                    dir: 'in' // in - out
+                  }
+                });
+              var lakeBorderLayer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+              lakeBorderLayer
+                .getL7Layer()
+                .source(lakeBorderData)
+                .shape('fill')
+                .color('#ccc')
+                .style({
+                  opacity: 0.5,
+                  opacityLinear: {
+                    enable: true,
+                    dir: 'in' // in - out
+                  }
+                });
 
-            map.addLayer(lakeLayer);
-            map.addLayer(lakeBorderLayer);
-            map.addLayer(landLayer);
-          });
-        fetch('../data/40ef2173-df66-4154-a8c0-785e93a5f18e.json')
-          .then((res) => res.json())
-          .then((data) => {
-            var layer = new mapboxgl.supermap.L7Layer(
-              { type: 'LineLayer' },
-              {
-                depth: true
-              }
-            );
-            layer.getL7Layer().source(data).size(1).shape('line').color('#1990FF').animate({
-              interval: 1, // 间隔
-              duration: 2, // 持续时间，延时
-              trailLength: 2 // 流线长度
+              fetch('../data/40ef2173-df66-4154-a8c0-785e93a5f18e.json')
+                .then((res) => res.json())
+                .then((data) => {
+                  var layer = new mapboxgl.supermap.L7Layer(
+                    { type: 'LineLayer' },
+                    {
+                      depth: true
+                    }
+                  );
+                  layer.getL7Layer().source(data).size(1).shape('line').color('#1990FF').animate({
+                    interval: 1, // 间隔
+                    duration: 2, // 持续时间，延时
+                    trailLength: 2 // 流线长度
+                  });
+                  map.addLayer(pointLayer);
+                  map.addLayer(lakeLayer);
+                  map.addLayer(lakeBorderLayer);
+                  map.addLayer(landLayer);
+                  map.addLayer(layer);
+                });
             });
-            map.addLayer(layer);
-          });
+        });
       });
     </script>
   </body>

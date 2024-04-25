@@ -2,7 +2,6 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
-import { getL7Scene } from '@supermap/iclient-common/overlay/l7/L7Extend';
 
 /**
  * @function MapExtend
@@ -14,11 +13,9 @@ export var MapExtend = (function () {
   if (mapboxgl.Map.prototype.addLayerBak === undefined) {
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
-      if (!mapboxgl.Map.prototype.$l7scene && layer.hasOwnProperty('l7layer')) {
-        mapboxgl.Map.prototype.$l7scene = getL7Scene(this, 'Mapbox');
-      }
       if (layer.source || layer.type === 'custom' || layer.type === 'background') {
         this.addLayerBak(layer, before);
+        // overlay文件夹下的图层基本都是自定义图层， 除去几个专题图
         if (layer.overlay && !this.overlayLayersManager[layer.id]) {
           this.overlayLayersManager[layer.id] = layer;
         }
@@ -36,24 +33,24 @@ export var MapExtend = (function () {
     };
   }
   /**
-   * @function getL7Scene
+   * @function listLayers
    * @category BaseTypes MapExtend
-   * @description 扩展mapboxgl.Map， 获取@antv/L7的scene实例。使用方法： map.getL7Scene().then(scene => { console.log(scene) });
-   * @returns {Promise} @antv/L7的scene实例。
+   * @version 11.2.0
+   * @description 扩展mapboxgl.Map， 获取所有叠加图层;
+   * @returns {Array} 图层数组。
    */
-  mapboxgl.Map.prototype.getL7Scene = function () {
-    return new Promise((resolve) => {
-      if (mapboxgl.Map.prototype.$l7scene) {
-        resolve(mapboxgl.Map.prototype.$l7scene);
-        return mapboxgl.Map.prototype.$l7scene;
+  mapboxgl.Map.prototype.listLayers = function () {
+    const layerList = [];
+    const originLayers = this.style._order || [];
+    layerList.push(...originLayers);
+    for (let key in this.overlayLayersManager) {
+      const layer = this.overlayLayersManager[key];
+      const layerId = layer.id;
+      if (!layerList.includes(layerId)) {
+        layerList.push(layerId);
       }
-      const scene = getL7Scene(this, 'Mapbox');
-      scene.on('loaded', () => {
-        mapboxgl.Map.prototype.$l7scene = scene;
-        resolve(scene);
-        return scene;
-      });
-    });
+    }
+    return layerList;
   };
 
   mapboxgl.Map.prototype.getLayer = function (id) {

@@ -67,6 +67,33 @@ describe('L7Layer', () => {
     map = null;
   });
 
+  it('getL7Scene', async () => {
+    const scene = await map.getL7Scene();
+    expect(scene).not.toBeNull();
+  });
+
+  it('getL7Scene init', async () => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        }
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    expect(mapboxgl.Map.prototype.$l7scene).not.toBeNull();
+    const scene = await map.getL7Scene();
+    expect(scene).not.toBeNull();
+  });
+
   it('PointLayer', (done) => {
     var layer = new L7Layer({ type: 'PointLayer' });
     var l7Layer = layer.getL7Layer();
@@ -144,6 +171,86 @@ describe('L7Layer', () => {
     expect(l7Layer).not.toBeNull();
     expect(layer.type).toBe('custom');
     map.removeLayer(layer.id);
+    done();
+  });
+
+  it('PointLayer rerender', (done) => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        }
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    expect(l7Layer).not.toBeNull();
+    expect(layer.type).toBe('custom');
+    layer.reRender();
+    done();
+  });
+
+  it('PointLayer removeLayer', (done) => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        }
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    expect(l7Layer).not.toBeNull();
+    expect(layer.type).toBe('custom');
+    map.removeLayer(layer.id);
+    done();
+  });
+
+  it('PointLayer setVisibility', (done) => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        }
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    expect(l7Layer).not.toBeNull();
+
+    spyOn(l7Layer, 'show');
+    spyOn(l7Layer, 'hide');
+    spyOn(map.style, 'setLayoutProperty');
+
+    map.setVisibility(layer.id, false);
+    expect(l7Layer.hide).toHaveBeenCalled();
+    expect(map.style.setLayoutProperty).toHaveBeenCalled();
+
+    map.setVisibility(layer.id, true);
+    expect(l7Layer.show).toHaveBeenCalled();
+    expect(map.style.setLayoutProperty).toHaveBeenCalled();
+
     done();
   });
 });

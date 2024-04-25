@@ -1,5 +1,6 @@
 import '../../../src/maplibregl/core/MapExtend';
 import maplibregl from 'maplibre-gl';
+import { L7Layer } from '../../../src/maplibregl/overlay';
 
 describe('MapExtend', () => {
   var url = 'http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China';
@@ -43,14 +44,11 @@ describe('MapExtend', () => {
     map && map.remove();
   });
 
-  it('getL7Scene init', async () => {
-    map.addLayer({ l7layer: {} });
-    expect(maplibregl.Map.prototype.$l7scene).not.toBeNull();
-    const scene = await map.getL7Scene();
-    expect(scene).not.toBeNull();
-  });
-  it('getL7Scene', async () => {
-    const scene = await map.getL7Scene();
-    expect(scene).not.toBeNull();
+  it('listLayers', (done) => {
+    map.style._order = ['raster', 'fill-1', 'circle-1', 'l7_layer_1'];
+    map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1' }, heatmap_1: { id: 'heatmap_1' } };
+    const layers = map.listLayers();
+    expect(layers).toEqual(['raster', 'fill-1', 'circle-1', 'l7_layer_1', 'heatmap_1']);
+    done();
   });
 });

@@ -994,7 +994,7 @@ var exampleConfig = {
       L7: {
         name: 'L7',
         name_en: 'L7',
-        version: '11.1.1',
+        version: '11.2.0',
         content: [
           {
             name: '网格地图',
@@ -1374,12 +1374,12 @@ var exampleConfig = {
             thumbnail: 'l7_heatmap_hexagon3.png',
             fileName: 'l7_heatmap_hexagon3'
           },
-          {
-            name: '平面图层',
-            name_en: 'Flat layer',
-            thumbnail: 'l7_flat_layer.png',
-            fileName: 'l7_flat_layer'
-          },
+          // {
+          //   name: '平面图层',
+          //   name_en: 'Flat layer',
+          //   thumbnail: 'l7_flat_layer.png',
+          //   fileName: 'l7_flat_layer'
+          // },
           // {
           //   name: '自定义3D地形（LOD）',
           //   name_en: 'Customize 3D Terrain (LOD)',

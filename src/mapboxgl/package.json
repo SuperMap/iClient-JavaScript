@@ -19,6 +19,7 @@
     "mapbox-gl": "1.13.2",
     "three": "0.150.1",
     "@supermap/iclient-common": "11.2.0-dev",
+    "@supermap/mapboxgl-l7-render": "^0.0.1",
     "canvg": "3.0.10",
     "fast-xml-parser": "^4.2.7",
     "flatgeobuf": "3.23.1",

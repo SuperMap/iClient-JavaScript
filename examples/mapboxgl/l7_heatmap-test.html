@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title data-i18n="resources.title_l7_extrude"></title>
+    <title data-i18n="resources.title_l7_point_shape"></title>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <style>
       body {
@@ -28,6 +28,10 @@
   </head>
 
   <body>
+    <div id="btns">
+      <button onclick="movePolygonLayer()">热力图在上</button>
+      <button onclick="moveHeatMapLayer()">面图层在上</button>
+    </div>
     <div id="map"></div>
     <script type="text/javascript" include="mapbox-gl-enhance,L7" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
@@ -60,22 +64,72 @@
             }
           ]
         },
-        center: [114.050008, 22.529272],
-        zoom: 14.1
+        center: [107.054293, 35.246265],
+        zoom: 4.056
       });
-
+      var layer;
+      function movePolygonLayer(params) {
+        console.log('addLayer heatmap');
+        map.moveLayer('maine', layer.id);
+        // map.setMaxZoom(12)
+        layer.reRender();
+      }
+      function moveHeatMapLayer(params) {
+        console.log('addLayer heatmap');
+        map.moveLayer(layer.id, 'maine');
+        // map.setMaxZoom(12)
+        layer.reRender();
+      }
       map.on('load', function () {
-        fetch('../data/972566c5-a2b9-4a7e-8da1-bae9d0eb0117.json')
+        fetch('https://gw.alipayobjects.com/os/basement_prod/337ddbb7-aa3f-4679-ab60-d64359241955.json')
           .then((res) => res.json())
           .then((data) => {
-            var layer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });
+            map.addSource('maine', {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                geometry: {
+                  type: 'Polygon',
+                  coordinates: [
+                    [
+                      [70, 20],
+                      [130, 20],
+                      [130, 45],
+                      [70, 45],
+                      [70, 20]
+                    ]
+                  ]
+                }
+              }
+            });
+            const polygon = {
+              id: 'maine',
+              type: 'fill',
+              source: 'maine',
+              paint: {
+                'fill-color': '#0080ff',
+                'fill-opacity': 0.8
+              }
+            };
+
+            layer = new mapboxgl.supermap.L7Layer({ type: 'HeatmapLayer' });
+
             var l7Layer = layer.getL7Layer();
             l7Layer
               .source(data)
-              .shape('extrude')
-              .size('h20', [100, 120, 160, 200, 260, 500])
-              .color('h20', ['#816CAD', '#A67FB5', '#C997C7', '#DEB8D4', '#F5D4E6', '#FAE4F1', '#FFF3FC']);
+              .size('capacity', [0, 1])
+              .shape('heatmap3D')
+              .style({
+                intensity: 2,
+                radius: 40,
+                opacity: 1,
+                rampColors: {
+                  colors: ['#2E8AE6', '#69D1AB', '#DAF291', '#FFD591', '#FF7A45', '#CF1D49'],
+                  positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+                }
+              });
             map.addLayer(layer);
+            map.addLayer(polygon);
           });
       });
     </script>

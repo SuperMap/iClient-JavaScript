@@ -26,7 +26,6 @@ import {
 } from './feature';
 import {LevelRenderer} from './levelRenderer';
 import { Transform } from './threejs/Transform'
-import { L7LayerBase } from './l7/L7LayerBase';
 
 export { FeatureThemeBar };
 export { FeatureThemeBar3D };
@@ -49,8 +48,7 @@ export {
   ShapeParametersPolygon,
   ShapeParametersRectangle,
   ShapeParametersSector,
-  FeatureTheme,
-  L7LayerBase
+  FeatureTheme
 };
 export { LevelRenderer };
 export { Transform };
