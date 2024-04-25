@@ -22,8 +22,11 @@ import { Unit } from '../REST';
  * ```
  */
 export var getMeterPerMapUnit = function(mapUnit) {
-  var earchRadiusInMeters = 6378137;
   var meterPerMapUnit;
+  if(!mapUnit){
+    return meterPerMapUnit;
+  }
+  var earchRadiusInMeters = 6378137;
   if (['m','meter','meters'].indexOf(mapUnit.toLocaleLowerCase())>-1) {
       meterPerMapUnit = 1;
   } else if (['degrees','deg','degree','dd'].indexOf(mapUnit.toLocaleLowerCase())>-1) {

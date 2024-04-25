@@ -2145,7 +2145,7 @@ export class WebMap extends Observable {
             dataSourceName = dataSource.dataSourceName || layer.name;
         let requestUrl = that.formatUrlWithCredential(url), serviceOptions = {};
         serviceOptions.withCredentials = this.withCredentials;
-        if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl)) {
+        if (!this.excludePortalProxyUrl && !CommonUtil.isInTheSameDomain(requestUrl) && !this.isIportalProxyServiceUrl(requestUrl)) {
             serviceOptions.proxy = this.getProxy();
         }
         if(['EPSG:0'].includes(layer.projection)) {
