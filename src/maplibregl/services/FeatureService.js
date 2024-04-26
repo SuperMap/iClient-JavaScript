@@ -241,6 +241,13 @@ export class FeatureService extends ServiceBase {
 
     //geoFeature 严格按照 MapLibreGL geojson 的结构
     _createServerFeature(geoFeature) {
+        if (geoFeature.toServerFeature) {
+            return geoFeature.toServerFeature({
+              geometryFunction: (geometry) => {
+                return Util.toSuperMapGeometry(geometry);
+              }
+            });
+        }
         let feature = {},
             fieldNames = [],
             fieldValues = [];

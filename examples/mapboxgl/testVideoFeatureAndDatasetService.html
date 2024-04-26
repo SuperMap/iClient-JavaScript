@@ -1,0 +1,195 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_DatasourceInfo"></title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="mapbox-gl-enhance,proj4,turf,opencv,videojs" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <style>
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title text-center" data-i18n="resources.title_DatasourceInfo"></h5>
+      </div>
+      <div class="panel-body content">
+        <div class="panel">
+          <div class="input-group">
+            <span class="input-group-addon" data-i18n="resources.text_Datasources"></span>
+            <select id="datasourcesSelect" class="form-control"></select>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="input-group">
+            <span class="input-group-addon" data-i18n="resources.text_dataset"></span>
+            <select id="datasetsSelect" class="form-control"></select>
+          </div>
+        </div>
+        <input type="text" name="" id="des" />
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_query" onclick="datasetsPrint()" />
+        <input type="button" class="btn btn-default" value="修改" onclick="commit()" />
+      </div>
+    </div>
+    <div id="map"></div>
+    <script type="text/javascript">
+      var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
+      let map,
+        baseUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-world/rest/maps/World Map/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-world/rest/data";
+    let attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
+       " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl({ link: "https://iclient.supermap.io" }), 'bottom-right');
+
+    map.on("load", function () {
+      dataSetService();
+    })
+      function dataSetService() {
+        new mapboxgl.supermap.DatasourceService(url).getDatasources().then(function (serviceResult) {
+          datasourcesSelect = document.getElementById('datasourcesSelect');
+          const datasourceNames = serviceResult.result.datasourceNames;
+          for (let i = 0, len = datasourceNames.length; i < len; i++) {
+            datasourcesSelect.options[i] = new Option(datasourceNames[i], datasourceNames[i]);
+          }
+          datasourceName = datasourcesSelect.value;
+          datasetsService(datasourceName);
+        });
+      }
+      //数据集信息
+      function datasetsService(datasourceName) {
+        new mapboxgl.supermap.DatasetService(url).getDatasets(datasourceName).then(function (serviceResult) {
+          const datasetNames = serviceResult.result.datasetNames;
+
+          for (let i = 0, len = datasetNames.length; i < len; i++) {
+            datasetsSelect.options[i] = new Option(datasetNames[i], datasetNames[i]);
+          }
+        });
+      }
+
+      function datasetsPrint() {
+        const datasetName = datasetsSelect.value;
+        new mapboxgl.supermap.DatasetService(url).getDataset(datasourceName, datasetName).then(function (serviceResult) {
+          console.log(serviceResult);
+          let innerHTML = '(' + resources.text_datasetInfoPrint + ')' + '<br><br>';
+          innerHTML +=
+            'dataSourceName：' + JSON.stringify(serviceResult.result.datasetInfo.dataSourceName, null, 2) + '<br>';
+          innerHTML += 'description:' + JSON.stringify(serviceResult.result.datasetInfo.description, null, 2) + '<br>';
+          innerHTML += 'isFileCache:' + JSON.stringify(serviceResult.result.datasetInfo.isFileCache, null, 2) + '<br>';
+          innerHTML += 'name:' + JSON.stringify(serviceResult.result.datasetInfo.name, null, 2) + '<br>';
+          innerHTML += 'prjCoordSys:' + '(...)' + '<br>';
+          // infoWin = L.popup({ maxWidth: 420, closeOnClick: false })
+          //   .setLatLng(map.getCenter())
+          //   .setContent(innerHTML)
+          //   .openOn(map);
+        });
+      }
+      function updateDataset() {
+        const des = desElement.value;
+        const datasetName = datasetsSelect.value;
+        var updateparam = new mapboxgl.supermap.UpdateDatasetParameters({
+          datasourceName: datasourceName,
+          datasetName: datasetName,
+          description: des
+        });
+        new mapboxgl.supermap.DatasetService(url).setDataset(updateparam).then(function (serviceResult) {
+          console.log(serviceResult);
+        });
+      }
+      function commit() {
+        const datasetName = datasetsSelect.value;
+    
+// const geometry = [0,0,10,10];
+const geometry = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.75, 39.75],
+                    [117.25, 39.75],
+                    [117.25, 40.75],
+                    [116.75, 40.75],
+                    [116.75, 39.75]]]
+            }
+        }
+
+        var addFeatureParams = new mapboxgl.supermap.EditFeaturesParameters({
+          features: [new mapboxgl.supermap.VideoFeature({ id: 1, name: '123.mp4',geometry:geometry})],
+          dataSourceName: 'aaaa',
+          dataSetName: 'bbb',
+          editType: 'update',
+          returnContent: true
+        });
+        new mapboxgl.supermap.FeatureService(url).editFeatures(addFeatureParams, function (serviceResult) {
+          if (serviceResult.result.succeed) {
+            // widgets.alert.showAlert(isUpdate ? '更新要素成功' : '新增要素成功', true);
+            currentAddFeature = null;
+          }
+        });
+
+
+         // 删除
+         var deleteParams = new mapboxgl.supermap.EditFeaturesParameters({
+            dataSourceName: 'TieTa',
+            dataSetName: 'ptz_2',
+            IDs: [1],
+            editType: "delete"
+        });
+        new mapboxgl.supermap.FeatureService(url).editFeatures(deleteParams, function (serviceResult) {
+          if (serviceResult.result.succeed) {
+            currentAddFeature = null;
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -227,20 +227,34 @@ export var FeatureService = ServiceBase.extend({
     },
 
     _createServerFeature: function (geoFeature) {
-        var geoJSONFeature, feature = {}, fieldNames = [], fieldValues = [];
+        var geoJSONFeature,
+          feature = {},
+          fieldNames = [],
+          fieldValues = [];
 
+        if (geoFeature.toServerFeature) {
+          return geoFeature.toServerFeature({
+            geometryFunction: (geometry) => {
+              return Util.toSuperMapGeometry(Util.toGeoJSON(geometry));
+            }
+          });
+        }
         geoJSONFeature = geoFeature || {};
 
         for (var key in geoJSONFeature.properties) {
-            fieldNames.push(key);
-            fieldValues.push(geoJSONFeature.properties[key]);
+          fieldNames.push(key);
+          fieldValues.push(geoJSONFeature.properties[key]);
         }
         feature.fieldNames = fieldNames;
         feature.fieldValues = fieldValues;
-        if (geoJSONFeature.id) {
-            feature.id = geoJSONFeature.id;
+
+        for (const key in geoJSONFeature) {
+            if (Object.hasOwnProperty.call(geoJSONFeature, key) && key !== 'properties') {
+                feature[key] = geoJSONFeature[key];
+            }
         }
-        feature.geometry = Util.toSuperMapGeometry(geoJSONFeature);
+        const geometry = Util.toSuperMapGeometry(geoJSONFeature);
+        feature.geometry = geometry.type === 'Feature' ? null : geometry;
         return feature;
     },
 

@@ -241,6 +241,13 @@ export class FeatureService extends ServiceBase {
 
     //geoFeature严格按照 mapboxgl geojson的结构
     _createServerFeature(geoFeature) {
+        if (geoFeature.toServerFeature) {
+            return geoFeature.toServerFeature({
+              geometryFunction: (geometry) => {
+                return Util.toSuperMapGeometry(geometry);
+              }
+            });
+        }
         var feature = {},
             fieldNames = [],
             fieldValues = [];

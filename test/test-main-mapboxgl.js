@@ -34,6 +34,7 @@ import './mapboxgl/services/BufferAnalysisSpec.js';
 import './mapboxgl/services/DataFlowServiceSpec.js';
 import './mapboxgl/services/DensityAnalysisSpec.js';
 import './mapboxgl/services/EditFeaturesSpec.js';
+import './mapboxgl/services/EditVideoFeatureSpec.js';
 import './mapboxgl/services/FieldServiceSpec.js';
 import './mapboxgl/services/GenerateSpatialDataSpec.js';
 import './mapboxgl/services/GeoRelationAnalysisSpec.js';

@@ -463,7 +463,8 @@ import {
   BoundsType,
   CellSizeType,
   ColourModeChart,
-  DisplayModeChart
+  DisplayModeChart,
+  VideoFeature
 } from './index.all';
 
 import { INCHES_PER_UNIT, METERS_PER_INCH, DOTS_PER_INCH, IS_GECKO } from './commontypes/Util';
@@ -499,7 +500,6 @@ SuperMap.FetchRequest = FetchRequest;
 SuperMap.EncryptRequest = EncryptRequest;
 SuperMap.getServiceKey = getServiceKey;
 SuperMap.GeometryAnalysis = GeometryAnalysis;
-
 // commontypes
 SuperMap.inherit = inheritExt;
 SuperMap.mixin = mixinExt;
@@ -975,5 +975,6 @@ SuperMap.BoundsType = BoundsType
 SuperMap.CellSizeType = CellSizeType
 SuperMap.ColourModeChart = ColourModeChart;
 SuperMap.DisplayModeChart = DisplayModeChart;
+SuperMap.VideoFeature = VideoFeature;
 
 export * from './index.all';

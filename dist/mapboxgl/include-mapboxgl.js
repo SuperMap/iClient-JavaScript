@@ -210,6 +210,9 @@
     if (inArray(includes, 'snap')) {
       inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.0/mapbox-gl-draw-snap-mode.js');
     }
+    if (inArray(includes, 'ugcwasm')) {
+      inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+    }
   }
 
   load({

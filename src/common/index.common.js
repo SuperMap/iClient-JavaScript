@@ -312,7 +312,8 @@ import {
     ImageSearchParameter,
     ImageRenderingRule,
     Sortby,
-    ImageStretchOption
+    ImageStretchOption,
+    VideoFeature
 } from './iServer';
 import {
     Online,
@@ -715,7 +716,8 @@ export {
     ImageSearchParameter,
     ImageRenderingRule,
     Sortby,
-    ImageStretchOption
+    ImageStretchOption,
+    VideoFeature
 };
 export {
     Online,

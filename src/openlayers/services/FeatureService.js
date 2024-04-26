@@ -9,6 +9,7 @@ import { Util } from '../core/Util';
 import { ServiceBase } from './ServiceBase';
 import GeoJSON from 'ol/format/GeoJSON';
 import Geometry from 'ol/geom/Geometry';
+import Polygon from 'ol/geom/Polygon';
 
 /**
  * @class FeatureService
@@ -224,6 +225,18 @@ export class FeatureService extends ServiceBase {
     var feature = {},
       fieldNames = [],
       fieldValues = [];
+    if(geoFeature.toServerFeature){
+      return geoFeature.toServerFeature({geometryFunction:(geometry)=>{
+        if(Array.isArray(geometry) && geometry.length === 4){
+          const polygon = new Polygon([[[geometry[0], geometry[1]], [geometry[2], geometry[1]], [geometry[2], geometry[3]], [geometry[0], geometry[3]]]]);
+          return Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(polygon));
+        }
+        if(geometry.getExtent){
+          return Util.toSuperMapGeometry(new GeoJSON().writeGeometryObject(geometry));
+        }
+        return Util.toSuperMapGeometry(geometry);
+      }})
+    }  
     var properties = geoFeature.getProperties();
     for (var key in properties) {
       if (key === geoFeature.getGeometryName()) {
