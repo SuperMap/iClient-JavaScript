@@ -335,7 +335,8 @@ import {
     getWrapNum,
     conversionDegree,
     EncryptRequest,
-    getServiceKey
+    getServiceKey,
+    GeometryAnalysis
 } from './util';
 import { CartoCSS, ThemeStyle } from './style';
 import {
@@ -506,7 +507,8 @@ export {
     ArrayStatistic,
     getMeterPerMapUnit,
     getWrapNum,
-    conversionDegree
+    conversionDegree,
+    GeometryAnalysis
 };
 export { IManager, IManagerCreateNodeParam, IManagerServiceBase };
 export {

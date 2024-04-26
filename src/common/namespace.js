@@ -339,6 +339,7 @@ import {
   FetchRequest,
   EncryptRequest,
   getServiceKey,
+  GeometryAnalysis,
   ColorsPickerUtil,
   ArrayStatistic,
   CartoCSS,
@@ -497,6 +498,8 @@ SuperMap.getRequestTimeout = getRequestTimeout;
 SuperMap.FetchRequest = FetchRequest;
 SuperMap.EncryptRequest = EncryptRequest;
 SuperMap.getServiceKey = getServiceKey;
+SuperMap.GeometryAnalysis = GeometryAnalysis;
+
 // commontypes
 SuperMap.inherit = inheritExt;
 SuperMap.mixin = mixinExt;

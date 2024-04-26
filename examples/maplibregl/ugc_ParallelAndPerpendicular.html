@@ -1,0 +1,190 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcParallelAndPerpendicular"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+         position: absolute;
+         top: 50px;
+         right: 10px;
+         width: 280px;
+         text-align: center;
+         z-index: 100;
+         border-radius: 4px;
+       }
+       .maplibregl-popup-close-button {
+          outline: none;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class='panel-heading'>
+          <h5 class='panel-title text-center'>线线关系</h5>
+      </div>
+      <div class='panel-body content'>
+        <div class='panel'>
+          <div class='input-group'>
+              <span class='input-group-addon'>位置</span>
+              <select id='positon' class='form-control'>
+                <option value='isParallel'>平行</option>
+                <option value='isSegmentIntersect'>相交</option>
+              </select>
+            </div>
+        </div>
+          <input type="button" class="btn btn-default" value="查找"
+                  onclick="search()"/>&nbsp;
+          <input type="button" class="btn btn-default" value="移除"
+                  onclick="clearLayer()"/>
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script>
+        var map, targetLine, lineLists = [];
+        var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+        var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+        function initMap(url) {
+          return new Promise((resolve) => {
+            map = new maplibregl.Map({
+              container: "map",
+              style: {
+                version: 8,
+                sources: {
+                  "raster-tiles": {
+                    type: "raster",
+                    tiles: [url],
+                    tileSize: 256
+                  }
+                },
+                layers: [
+                  {
+                    id: "simple-tiles",
+                    type: "raster",
+                    source: "raster-tiles"
+                  }
+                ]
+              },
+              center: [120, 30],
+              zoom: 6
+            })
+            map.on("load", function () {
+              resolve(map);
+            })
+          })
+        }
+
+        function addFeatures() {
+          targetLine = {
+            "type": "Feature",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [[116, 30], [128, 30]]
+            }
+          };
+          const line2 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [[116, 28], [128, 28]]
+            }
+          };
+          const line3 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [[120, 26], [120, 33]]
+            }
+          };
+          const line4 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [[121, 27], [125, 34]]
+            }
+          };
+          const line5 = {
+            "type": "Feature",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [[121, 31], [124, 33]]
+            }
+          };
+          new maplibregl.Popup().setLngLat([116, 30]).setHTML('参考线').addTo(map);
+          
+          searchLines = [line2, line3, line4, line5];
+          addLayer("line", "line", [targetLine], {
+            "line-color": "blue",
+            "line-width": 4
+          })
+          addLayer("searchLine", "line", searchLines, {
+            "line-color": "green",
+            "line-width": 4
+          })
+        }
+
+        function search() {
+          clearLayer();
+          const positonFun = document.getElementById("positon").value;
+          const searchResults = [];
+          const [[x1, y1], [x2, y2]] = targetLine.geometry.coordinates;
+          var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+          searchLines.forEach(line => {
+            const [[x3, y3], [x4, y4]] = line.geometry.coordinates;
+            const booleanResult = geometryAnalysis[positonFun](x1, y1, x2, y2, x3, y3, x4, y4);
+            if(booleanResult) {
+              searchResults.push(line);
+            }
+          });
+          addLayer("highlightLine", "line", searchResults, {
+            "line-color": "red",
+            "line-width": 4
+          })
+        }
+
+        function addLayer(id, type, sourceData, paint) { 
+          map.addLayer({
+            id,
+            type,
+            source: {
+              type: "geojson",
+              data: {
+                type: "FeatureCollection",
+                features: sourceData
+              }
+            },
+            paint
+          });
+        }
+
+        function clearLayer() {
+          if (!map) {
+            return;
+          }
+          if (map.getLayer("highlightLine")) {
+            map.removeLayer("highlightLine")
+            map.removeSource("highlightLine")
+          }
+        }
+        initMap(url).then((map) => {
+          addFeatures();
+        })
+
+    </script>
+  </body>
+</html>

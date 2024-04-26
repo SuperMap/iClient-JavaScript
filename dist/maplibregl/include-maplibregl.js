@@ -183,6 +183,9 @@
     if (inArray(includes, 'snap')) {
       inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.0/mapbox-gl-draw-snap-mode.js');
     }
+    if (inArray(includes, 'ugcwasm')) {
+      inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+    }
     if (!inArray(excludes, 'iclient-maplibregl')) {
       if (supportES6()) {
         inputScript('../../dist/maplibregl/iclient-maplibregl-es6.min.js');

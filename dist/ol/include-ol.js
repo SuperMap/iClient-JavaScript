@@ -122,6 +122,9 @@
         if (inArray(includes, 'lodash')) {
           inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
         }
+        if (inArray(includes, 'ugcwasm')) {
+          inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');
+        }
 
         // dist
         if (!inArray(excludes, 'iclient-ol')) {

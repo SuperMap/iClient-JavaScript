@@ -1,0 +1,135 @@
+<!--********************************************************************
+* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="resources.title_ugcResample"></title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+      #toolbar {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        width: 280px;
+        text-align: center;
+        z-index: 10000;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="toolbar" class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title text-center">重采样</h5>
+      </div>
+      <div class="panel-body content">
+        <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
+      </div>
+    </div>
+    <div id="map" style="width: 100%; height: 100%"></div>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/ol/include-ol.js"></script>
+    <script>
+      var map, polygon;
+      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+      var url = host + '/iserver/services/map-world/rest/maps/World';
+      ol.supermap
+        .initMap(url, {
+          viewOptions: {
+            center: [120, 30],
+            zoom: 6
+          }
+        })
+        .then((res) => {
+          map = res.map;
+          addFeatures();
+        });
+
+      function addFeatures() {
+        polygon = {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            coordinates: [
+              [
+                [42.68359374999926, 62.777396701237194],
+                [64.12890624999898, 64.79523044930204],
+                [63.953124999999545, 65.6786858190815],
+                [63.249999999999574, 66.8114240715017],
+                [62.37109374999898, 67.49389301612896],
+                [61.492187499999574, 68.28772132452241],
+                [60.261718749999005, 69.24256158321563],
+                [57.44921874999906, 69.73527228161362],
+                [54.28515624999915, 70.15718704882335],
+                [50.41796874999915, 70.51210723691744],
+                [47.07812499999977, 70.27617793103235],
+                [42.85937499999977, 69.42865648122586],
+                [42.85937499999977, 67.49389301612896],
+                [40.39843749999986, 65.53348822406599],
+                [38.28906249999986, 64.86998388328377],
+                [35.652343749999346, 63.72666005814014],
+                [34.42187499999994, 62.53517479812743],
+                [33.01562499999994, 61.294036659613994],
+                [32.66406249999994, 59.737073168028644],
+                [34.949218749999346, 58.74830965992459],
+                [37.58593749999986, 57.73060640379683],
+                [39.69531249999986, 56.3926803580984],
+                [44.26562499999977, 56.001509528428585],
+                [48.484374999999744, 55.90309268002264],
+                [51.29687499999969, 56.001509528428585],
+                [54.98828124999915, 56.779873589048776],
+                [59.207031249999005, 58.196819859924375],
+                [61.140624999999574, 59.470250136182244],
+                [63.249999999999574, 61.378353468156746],
+                [63.77734374999898, 61.96224580243168],
+                [61.843749999999574, 63.25592936693977],
+                [59.382812499999574, 63.41370175607415],
+                [42.68359374999926, 62.777396701237194]
+              ]
+            ],
+            type: 'Polygon'
+          }
+        };
+        addLayer(polygon, {
+          color: 'blue',
+          width: 3
+        });
+      }
+
+      function search() {
+        var geometryAnalysis = new ol.supermap.GeometryAnalysis();
+        var result = geometryAnalysis.resample(polygon, 0.5);
+        addLayer(result, {
+          color: 'green',
+          width: 3
+        });
+      }
+
+      function addLayer(line, style) {
+        var lineSource = new ol.source.Vector({
+          features: [new ol.format.GeoJSON().readFeature(line)],
+          wrapX: false
+        });
+        var lineLayer = new ol.layer.Vector({
+          source: lineSource,
+          style: new ol.style.Style({
+            stroke: new ol.style.Stroke(style)
+          })
+        });
+        map.addLayer(lineLayer);
+        return lineLayer;
+      }
+    </script>
+  </body>
+</html>

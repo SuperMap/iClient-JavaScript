@@ -218,8 +218,8 @@ import './common/components/templates/CommonContainerSpec.js';
 import './common/components/chart/ChartModelSpec.js';
 import './common/components/chart/ChartViewModelSpec';
 import './common/components/chart/ChartViewSpec';
-
 import './common/util/FetchRequestSpec';
 import './common/lang/LangSpec.js';
 import './common/util/EncryptRequestSpec';
 import './common/util/MapCalculateUtilSpec';
+import './common/util/GeometrySpec.js';

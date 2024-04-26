@@ -625,6 +625,90 @@ var exampleConfig = {
             }
         }
     },
+    clientSpatialAnalyst: {
+      name: "客户端分析",
+      name_en: "Client spatial analysis",
+      content: {
+        "WebAssembly": {
+          name: "WebAssembly",
+          content: [{
+            name: "缓冲区分析",
+            version: "10.2.0",
+            name_en: "buffer analysis",
+            thumbnail: "ugc_buffer.png",
+            fileName: "ugc_buffer"
+          }, {
+            name: "凹凸面分析",
+            version: "10.2.0",
+            name_en: "convexHull analysis",
+            thumbnail: "ugc_convexHull.png",
+            fileName: "ugc_convexHull"
+          }, {
+            name: "地理面积分析",
+            version: "10.2.0",
+            name_en: "geodesic area analysis",
+            thumbnail: "ugc_computeGeodesicArea.png",
+            fileName: "ugc_computeGeodesicArea"
+          }, {
+            name: "测地线分析",
+            version: "10.2.0",
+            name_en: "geodesic distance analysis",
+            thumbnail: "ugc_computeGeodesicDistance.png",
+            fileName: "ugc_computeGeodesicDistance"
+          }, {
+            name: "平行线分析",
+            name_en: "parallel analysis",
+            version: "10.2.0",
+            thumbnail: "ugc_computeParallel.png",
+            fileName: "ugc_computeParallel"
+          }, {
+            name: "点线距离分析",
+            version: "10.2.0",
+            name_en: "distance To lineSegment analysis",
+            thumbnail: "ugc_distanceToLineSegment.png",
+            fileName: "ugc_distanceToLineSegment"
+          }, {
+            name: "面面相交分析",
+            version: "10.2.0",
+            name_en: "intersectRegion with rect analysis",
+            thumbnail: "ugc_isIntersectRegionWithRect.png",
+            fileName: "ugc_isIntersectRegionWithRect"
+          }, {
+            name: "线线分析",
+            version: "10.2.0",
+            name_en: "parallel and perpendicular analysis",
+            thumbnail: "ugc_ParallelAndPerpendicular.png",
+            fileName: "ugc_ParallelAndPerpendicular"
+          }, {
+            name: "重采样分析",
+            version: "10.2.0",
+            name_en: "resample analysis",
+            thumbnail: "ugc_resample.png",
+            fileName: "ugc_resample"
+          }, {
+            name: "点线分析",
+            version: "10.2.0",
+            name_en: "point and line analysis",
+            thumbnail: "ugc_pointPositon.png",
+            fileName: "ugc_pointPositon"
+          },
+          {
+            name: "线光滑分析",
+            version: "10.2.0",
+            name_en: "smooth analysis",
+            thumbnail: "ugc_smooth.png",
+            fileName: "ugc_smooth"
+          }, 
+          {
+            name: "空间分析",
+            version: "10.2.0",
+            name_en: "spatial analysis",
+            thumbnail: "ugc_spatialRelationship.png",
+            fileName: "ugc_spatialRelationship"
+          }]
+        }
+      }
+    },
     viz: {
         name: '可视化',
         name_en: 'Visualization',
@@ -1976,6 +2060,7 @@ var exampleConfig = {
 var sideBarIconConfig = {
     iServer: 'fa-server',
     iPortal: 'fa-desktop',
+    clientSpatialAnalyst: "fa-object-group",
     viz: 'fa-map',
     control: 'fa-sliders',
     multiCoordSys: 'fa-globe',
@@ -1990,6 +2075,7 @@ var sideBarIconConfig = {
 var exampleIconConfig = {
     iServer: 'fa-server',
     iPortal: 'fa-desktop',
+    clientSpatialAnalyst: "fa-object-group",
     viz: 'fa-map',
     GTC: 'fa-globe',
     multiCoordSys: 'fa-globe'
