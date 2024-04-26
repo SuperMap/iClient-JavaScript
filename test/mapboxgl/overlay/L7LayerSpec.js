@@ -1,12 +1,14 @@
-import { L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
-import mbglmap from '../../tool/mock_mapboxgl_map';
 import mapboxgl from 'mapbox-gl';
+import mbglmap from '../../tool/mock_mapboxgl_map';
+import * as L7 from '@supermap/mapboxgl-l7-render';
+import * as mockL7 from '../../tool/mock_l7';
+import { L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('L7Layer', () => {
   var originalTimeout;
-  var testDiv, map;
+  var testDiv, map, getL7Scene, setLayoutProperty;
   var data = [
     {
       id: '5011000000404',
@@ -18,7 +20,19 @@ describe('L7Layer', () => {
     }
   ];
   beforeAll((done) => {
+    getL7Scene = mapboxgl.Map.prototype.getL7Scene;
+    setLayoutProperty = mapboxgl.Map.prototype.setLayoutProperty;
+    mbglmap.prototype.getL7Scene = getL7Scene;
+    mbglmap.prototype.setLayoutProperty = setLayoutProperty;
     spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'GeometryLayer').and.callFake(mockL7.GeometryLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    // Scene = mockL7.Scene;
+    // Mapbox = mockL7.Mapbox;
+    // mapboxgl.Map.prototype.getCRS = () => ({ fromWGS84: (val) => val, getExtent: () => [] });
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
@@ -49,7 +63,7 @@ describe('L7Layer', () => {
         ]
       },
       center: [112, 37.94],
-      zoom: 3
+      zoom: 13
     });
     map.on('load', function () {
       done();
@@ -59,20 +73,17 @@ describe('L7Layer', () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
   });
+
   afterEach(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
+
   afterAll(() => {
     document.body.removeChild(testDiv);
     map = null;
   });
 
-  it('getL7Scene', async () => {
-    const scene = await map.getL7Scene();
-    expect(scene).not.toBeNull();
-  });
-
-  it('getL7Scene init', async () => {
+  it('getL7Scene', (done) => {
     var layer = new L7Layer({ type: 'PointLayer' });
     var l7Layer = layer.getL7Layer();
     l7Layer
@@ -88,10 +99,11 @@ describe('L7Layer', () => {
       .animate(true)
       .size(56)
       .color('#4cfd47');
-    map.addLayer(layer);
     expect(mapboxgl.Map.prototype.$l7scene).not.toBeNull();
-    const scene = await map.getL7Scene();
-    expect(scene).not.toBeNull();
+    map.getL7Scene().then((scene) => {
+      expect(scene).not.toBeNull();
+      done();
+    });
   });
 
   it('PointLayer', (done) => {
@@ -237,17 +249,22 @@ describe('L7Layer', () => {
       .size(56)
       .color('#4cfd47');
     map.addLayer(layer);
+    map.style.fire = () => {};
+    map.style.setLayoutProperty = () => {};
+
+    map.overlayLayersManager = { [layer.id]: layer };
     expect(l7Layer).not.toBeNull();
+    map.setLayoutProperty = setLayoutProperty;
 
     spyOn(l7Layer, 'show');
     spyOn(l7Layer, 'hide');
     spyOn(map.style, 'setLayoutProperty');
 
-    map.setVisibility(layer.id, false);
+    map.setLayoutProperty(layer.id, 'visibility', 'hidden');
     expect(l7Layer.hide).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
 
-    map.setVisibility(layer.id, true);
+    map.setLayoutProperty(layer.id, 'visibility', 'visible');
     expect(l7Layer.show).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
 

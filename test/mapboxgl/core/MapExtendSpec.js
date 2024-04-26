@@ -1,28 +1,24 @@
+import mapboxglMock from '../../tool/mock_mapboxgl_map';
 import mapboxgl from 'mapbox-gl';
-import mbglmap from '../../tool/mock_mapboxgl_map';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
 import { decryptSources } from '../../../src/mapboxgl/core/decryptSource';
 import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
-import '../../../src/mapboxgl/core/MapExtend';
 
 describe('getServiceKey', () => {
-  let originalTimeout;
+  let originalTimeout, testDiv;
   const url = 'http:/fake:8090/iserver/iserver/services/map-China107/rest/maps/A';
-  MapExtend;
-  beforeEach(() => {
-    spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
-    window.atob = () =>
-      `ú\x86\x00ë\x14ø\n0Ø\x9C¶¬\x1D\x16ü\x99\x19rì;c\x8A\x8F\x83» þH©ü*TÂ.ÒxæêÏKëÔ|^¯à\x14*h\x96à\x80\x1E|\x8E¢\x8F)ÔÐ÷Á-/ì@iCð×F7û\x8B\x01k\x13\x18\x9BA\x88\x923]bSáÒLºÎ\v[váÐÁÆZi\x87\x1DþV\x91o\x97\x02~rÃñ¾\x051¥¬\x1CL\x01úºüê\x95\x0EEs¸/\\{6\x9A\x9DwRËÂ{¨~6T\x91\x19\x12\x1C_\x9Bb÷vhB\f{\x03éØ\x19w-ÂÏ³/\x1B»²C²\x1F\x97¢\x99\x88C\x8DÁCÂ8ð\x96t)ZùÞÓ\x03¨f\x1E´*\x97\x8Fµ±´í\x8B\x9ChíMlÅ\x06\x9Biþ\x03k¢\x83\x9A\x95\x8Fé\x03ùÓ¶N\x02qR?CÙê·Æ\x89\x854 ÞÐÒræéø¢]\x81ú®Ã0\x89ßMòPkå²E\x8DF\x1C¶æ\x84Bj¦\x99'[CÁ\x14ýaP\x1AÛu ×úHÃ:.\x1Eû\x0Eå\x0Féê\x91\x82ÓKÞ6T\x92é6©\x91v¨\f\x1A\x85·\x02¾\x87ÍÂµV[ç\x14DÑ8\x1Bm\x82ö\x1BBÿ\x87þí¬§f´¶\x9Fé\x1Ds¼:µt@\x15Í\x96bÛ"ý\x16~H0¥#l®\x02b`;
-    cipher.createDecipher = () => ({
-      start: () => {},
-      update: () => {},
-      finish: () => true,
-      output: {
-        data: `{"headers":{"X-Frame-Options":"SAMEORIGIN","Access-Control-Expose-Headers":"Access-Control-Allow-Origin,Access-Control-Allow-Credentials","Access-Control-Allow-Origin":"*","Set-Cookie":"rememberMe=deleteMe; Path=/iserver; Max-Age=0; Expires=Tue, 19-Mar-2024 01:43:12 GMT; SameSite=lax"},"data":"P8h08GonNjuCB4+CAykAGmLYwNsiv4G6H8KFrFi7Afk=","status":200}`
-      }
-    });
+  beforeAll(() => {
+    MapExtend;
+    testDiv = window.document.createElement('div');
+    testDiv.setAttribute('id', 'map');
+    testDiv.style.styleFloat = 'left';
+    testDiv.style.marginLeft = '8px';
+    testDiv.style.marginTop = '50px';
+    testDiv.style.width = '500px';
+    testDiv.style.height = '500px';
+    window.document.body.appendChild(testDiv);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.includes('map-China107')) {
         return Promise.resolve(
@@ -163,16 +159,25 @@ describe('getServiceKey', () => {
         );
       }
     });
+    window.atob = () =>
+      `ú\x86\x00ë\x14ø\n0Ø\x9C¶¬\x1D\x16ü\x99\x19rì;c\x8A\x8F\x83» þH©ü*TÂ.ÒxæêÏKëÔ|^¯à\x14*h\x96à\x80\x1E|\x8E¢\x8F)ÔÐ÷Á-/ì@iCð×F7û\x8B\x01k\x13\x18\x9BA\x88\x923]bSáÒLºÎ\v[váÐÁÆZi\x87\x1DþV\x91o\x97\x02~rÃñ¾\x051¥¬\x1CL\x01úºüê\x95\x0EEs¸/\\{6\x9A\x9DwRËÂ{¨~6T\x91\x19\x12\x1C_\x9Bb÷vhB\f{\x03éØ\x19w-ÂÏ³/\x1B»²C²\x1F\x97¢\x99\x88C\x8DÁCÂ8ð\x96t)ZùÞÓ\x03¨f\x1E´*\x97\x8Fµ±´í\x8B\x9ChíMlÅ\x06\x9Biþ\x03k¢\x83\x9A\x95\x8Fé\x03ùÓ¶N\x02qR?CÙê·Æ\x89\x854 ÞÐÒræéø¢]\x81ú®Ã0\x89ßMòPkå²E\x8DF\x1C¶æ\x84Bj¦\x99'[CÁ\x14ýaP\x1AÛu ×úHÃ:.\x1Eû\x0Eå\x0Féê\x91\x82ÓKÞ6T\x92é6©\x91v¨\f\x1A\x85·\x02¾\x87ÍÂµV[ç\x14DÑ8\x1Bm\x82ö\x1BBÿ\x87þí¬§f´¶\x9Fé\x1Ds¼:µt@\x15Í\x96bÛ"ý\x16~H0¥#l®\x02b`;
+    cipher.createDecipher = () => ({
+      start: () => {},
+      update: () => {},
+      finish: () => true,
+      output: {
+        data: `{"headers":{"X-Frame-Options":"SAMEORIGIN","Access-Control-Expose-Headers":"Access-Control-Allow-Origin,Access-Control-Allow-Credentials","Access-Control-Allow-Origin":"*","Set-Cookie":"rememberMe=deleteMe; Path=/iserver; Max-Age=0; Expires=Tue, 19-Mar-2024 01:43:12 GMT; SameSite=lax"},"data":"P8h08GonNjuCB4+CAykAGmLYwNsiv4G6H8KFrFi7Afk=","status":200}`
+      }
+    });
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
   });
-
-  afterEach(() => {
+  afterAll(() => {
+    document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
-
   it('listLayers', (done) => {
-    map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: 'map',
       style: {
         version: 8,
@@ -204,6 +209,8 @@ describe('getServiceKey', () => {
   });
 
   it('getServiceKey', async () => {
+    spyOn(mapboxgl, 'Map').and.callFake(mapboxglMock);
+
     EncryptRequest.prototype.request = () => {
       return {
         json: () =>

@@ -31,6 +31,7 @@ const Map = function (options) {
   this.zoom = this.options.zoom || 0;
   this._container = this.options.container || 'map';
   this._layers = {};
+  this.style = {};
   this.getContainer = function () {
     return this._container;
   };
@@ -130,8 +131,8 @@ const Map = function (options) {
     this._sources[name];
     if (this._sources[name].type === 'video') {
       return {
-        play: function() {}
-      }
+        play: function () {}
+      };
     }
   };
 
@@ -318,3 +319,5 @@ const Map = function (options) {
 };
 
 export default Map;
+var mapboxglMock = { Map };
+export { mapboxglMock };
