@@ -44,6 +44,7 @@ module.exports = function (config) {
               '../node_modules/@turf/**',
               '../node_modules/lodash/**',
               '../src/mapboxgl/overlay/L7/l7-render.js',
+              '../src/maplibregl/overlay/L7/l7-render.js',
               '../src/common/util/UGCWasmAll.js',
               '../node_modules/echarts/dist/echarts.js'
             ],
