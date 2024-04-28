@@ -248,13 +248,10 @@ export var FeatureService = ServiceBase.extend({
         feature.fieldNames = fieldNames;
         feature.fieldValues = fieldValues;
 
-        for (const key in geoJSONFeature) {
-            if (Object.hasOwnProperty.call(geoJSONFeature, key) && key !== 'properties') {
-                feature[key] = geoJSONFeature[key];
-            }
+        if (geoJSONFeature.id) {
+            feature.id = geoJSONFeature.id;
         }
-        const geometry = Util.toSuperMapGeometry(geoJSONFeature);
-        feature.geometry = geometry.type === 'Feature' ? null : geometry;
+        feature.geometry = Util.toSuperMapGeometry(geoJSONFeature);
         return feature;
     },
 
