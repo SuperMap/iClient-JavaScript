@@ -21,7 +21,6 @@
     "canvg": "3.0.10",
     "proj4": "2.9.0",
     "@supermap/iclient-common": "11.2.0-dev",
-    "@supermap/maplibregl-l7-render": "^0.0.1",
     "rbush": "^2.0.2"
   }
 }

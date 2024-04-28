@@ -1,7 +1,7 @@
 import '../core/Base';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import * as L7 from '@supermap/maplibregl-l7-render';
-import { Scene, Maplibre } from '@supermap/maplibregl-l7-render';
+import * as L7 from './L7/l7-render';
+import { Scene, Maplibre } from './L7/l7-render';
 import { getL7Scene } from '@supermap/iclient-common/overlay/l7/util';
 import maplibregl from 'maplibre-gl';
 

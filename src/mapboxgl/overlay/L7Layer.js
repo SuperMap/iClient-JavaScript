@@ -2,8 +2,8 @@ import '../core/Base';
 import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
 import { getL7Scene } from '@supermap/iclient-common/overlay/l7/util';
 import mapboxgl from 'mapbox-gl';
-import * as L7 from '@supermap/mapboxgl-l7-render';
-import { Scene, Mapbox } from '@supermap/mapboxgl-l7-render';
+import * as L7 from './L7/l7-render';
+import { Scene, Mapbox } from './L7/l7-render';
 
 /**
  * @class L7Layer

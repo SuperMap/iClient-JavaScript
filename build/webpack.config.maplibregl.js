@@ -30,7 +30,7 @@ module.exports = {
     canvg: 'function(){try{return canvg}catch(e){return {}}}()',
     jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
     'xml-js': 'function(){try{return convert}catch(e){return {}}}()',
-    '@supermap/maplibregl-l7-render': 'function(){try{return L7}catch(e){return {}}}()'
+    './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()'
   }),
 
   module: {
