@@ -6,7 +6,7 @@ import { L7Layer } from '../../../src/mapboxgl/overlay/L7Layer';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
-describe('L7Layer', () => {
+describe('mapboxgl L7Layer', () => {
   var originalTimeout;
   var testDiv, map, getL7Scene, setLayoutProperty;
   var data = [

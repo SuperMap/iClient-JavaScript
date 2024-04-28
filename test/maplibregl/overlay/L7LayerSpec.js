@@ -6,7 +6,7 @@ import { L7Layer } from '../../../src/maplibregl/overlay/L7Layer';
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
-describe('L7Layer', () => {
+describe('maplibregl L7Layer', () => {
   var originalTimeout;
   var testDiv, map, getL7Scene, setLayoutProperty;
   var data = [

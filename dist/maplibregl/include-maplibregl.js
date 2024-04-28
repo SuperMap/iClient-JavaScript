@@ -50,7 +50,8 @@
 
   //加载类库资源文件
   function load(config) {
-    var libsurl = '../../web/libs';
+    var libsurl = config.libsurl;
+    var disturl = config.disturl;
     var includes = (targetScript.getAttribute('include') || '').split(',');
     var excludes = (targetScript.getAttribute('exclude') || '').split(',');
     if (!inArray(excludes, 'maplibregl')) {
@@ -61,7 +62,7 @@
       inputScript(libsurl + '/maplibregl-l7-render/index.js');
     }
     if (inArray(includes, 'g2')) {
-      inputScript('https://cdnjs.cloudflare.com/ajax/libs/antv-g2/4.2.8/g2.min.js');
+      inputScript(libsurl + '/antv/g2/4.2.8/g2.min.js');
     }
     if (inArray(includes, 'turf')) {
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
@@ -188,15 +189,16 @@
     }
     if (!inArray(excludes, 'iclient-maplibregl')) {
       if (supportES6()) {
-        inputScript('../../dist/maplibregl/iclient-maplibregl-es6.min.js');
+        inputScript(disturl + '/maplibregl/iclient-maplibregl-es6.min.js');
       } else {
-        inputScript('../../dist/maplibregl/iclient-maplibregl.min.js');
+        inputScript(disturl + '/maplibregl/iclient-maplibregl.min.js');
       }
     }
   }
 
   load({
-    libsurl: 'https://iclient.supermap.io/web/libs'
+    libsurl: 'https://iclient.supermap.io/web/libs',
+    disturl: '../../dist'
   });
   window.isLocal = false;
   window.server = document.location.toString().match(/file:\/\//)
