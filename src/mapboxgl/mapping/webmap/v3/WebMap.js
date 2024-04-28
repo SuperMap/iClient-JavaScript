@@ -106,6 +106,7 @@ export class WebMap extends mapboxgl.Evented {
     this._layerIdRenameMapList = [];
     this.excludeSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw'];
     this._appendLayers = false;
+    this._baseProjection = '';
   }
 
   /**
@@ -158,6 +159,18 @@ export class WebMap extends mapboxgl.Evented {
       maxzoom,
       sprite = ''
     } = this._mapInfo;
+    let baseProjection = crs;
+    if (typeof crs === 'object') {
+      baseProjection = crs.name;
+      if (!mapboxgl.CRS) {
+        const error = `The EPSG code ${baseProjection} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
+        this.fire('getmapinfofailed', { error: error });
+        console.error(error);
+        return;
+      }
+      this._setCRS(crs);
+    }
+    this._baseProjection = baseProjection;
     center = this.mapOptions.center || center;
     zoom = this.mapOptions.zoom || zoom;
     bearing = this.mapOptions.bearing || bearing;
@@ -166,7 +179,7 @@ export class WebMap extends mapboxgl.Evented {
     // 初始化 map
     const mapOptions = {
       container: this.options.target,
-      crs,
+      crs: this._baseProjection,
       center,
       zoom,
       style: {
@@ -190,13 +203,18 @@ export class WebMap extends mapboxgl.Evented {
     });
   }
 
+  _setCRS({ name, wkt, extent }) {
+    const crs = new mapboxgl.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
+    mapboxgl.CRS.set(crs);
+  }
+
   /**
    * @private
    * @function WebMap.prototype._initLayers
    * @description emit 图层加载成功事件。
    */
   _initLayers() {
-    if (this.map && this.map.getCRS && this.map.getCRS().epsgCode !== this._mapInfo.crs) {
+    if (this.map.getCRS && this.map.getCRS().epsgCode !== this._baseProjection) {
       this.fire('projectionisnotmatch');
       return;
     }
@@ -371,11 +389,19 @@ export class WebMap extends mapboxgl.Evented {
   _getLayersOnMap() {
     const layersOnMap = this.map.getStyle().layers.map((layer) => this.map.getLayer(layer.id));
     const overlayLayers = Object.values(this.map.overlayLayersManager).reduce((layers, overlayLayer) => {
-      if (overlayLayer.id) {
+      if (overlayLayer.id && !layers.some(item => item.id === overlayLayer.id)) {
+        let visibility = overlayLayer.visibility;
+        if (!visibility && 'visible' in overlayLayer) {
+          visibility = overlayLayer.visible ? 'visible' : 'none';
+        }
+        let source = overlayLayer.source || overlayLayer.sourceId;
+        if (typeof source === 'object') {
+          source = overlayLayer.id;
+        }
         layers.push({
           id: overlayLayer.id,
-          visibility: overlayLayer.visibility || 'visible',
-          source: typeof overlayLayer.source === 'object' ? overlayLayer.id : overlayLayer.source,
+          visibility,
+          source,
           type: overlayLayer.type
         });
       }

@@ -1,3 +1,4 @@
+import mapboxgl from 'mapbox-gl';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/v3/WebMap';
 import '../../resources/WebMapV3.js';
@@ -22,9 +23,9 @@ describe('mapboxgl-webmap3.0', () => {
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
-        const webMapV3 = mapstudioWebmap._getWebMapInstance ? mapstudioWebmap._getWebMapInstance() : mapstudioWebmap;
-        webMapV3.clean && webMapV3.clean();
-        mapstudioWebmap = null;
+      const webMapV3 = mapstudioWebmap._getWebMapInstance ? mapstudioWebmap._getWebMapInstance() : mapstudioWebmap;
+      webMapV3.clean && webMapV3.clean();
+      mapstudioWebmap = null;
     }
     window.document.body.removeChild(testDiv);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -50,7 +51,7 @@ describe('mapboxgl-webmap3.0', () => {
       expect(mapstudioWebmap.map).toEqual(map);
       expect(mapstudioWebmap.mapParams.title).toBe('空地图');
       expect(mapstudioWebmap.mapParams.description).toBe('');
-      var style = map.getStyle();
+      const style = map.getStyle();
       expect(style.name).toBe(mapstudioWebmap.mapParams.title);
       expect(style.layers.length).toBe(1);
       expect(style.sources).toEqual({});
@@ -85,7 +86,7 @@ describe('mapboxgl-webmap3.0', () => {
       expect(+center.lng.toFixed(4)).toEqual(116.3949);
       expect(mapstudioWebmap.mapParams.title).toBe('restmap服务');
       expect(mapstudioWebmap.mapParams.description).toBe('');
-      var style = map.getStyle();
+      const style = map.getStyle();
       expect(style.name).toBe(mapstudioWebmap.mapParams.title);
       expect(style.layers.length).toBe(2);
       done();
@@ -110,14 +111,13 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
-      var style = map.getStyle();
+      const style = map.getStyle();
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(mapstudioWebMap_symbol);
       expect(style.layers.length).toBe(mapInfo.layers.length);
       expect(webMapV3.getAppreciableLayers().length).toBeGreaterThanOrEqual(mapInfo.layers.length);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
       expect(webMapV3.getLayerCatalog().length).not.toBe(0);
-      expect(webMapV3.getLegendInfo().length).not.toBe(0);
       done();
     });
   });
@@ -139,7 +139,7 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
-      var style = map.getStyle();
+      const style = map.getStyle();
       expect(style.layers.length).toBe(mapInfo.layers.length);
       const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
@@ -156,6 +156,126 @@ describe('mapboxgl-webmap3.0', () => {
       });
       expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length + 1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
+      done();
+    });
+  });
+
+  it('projection is 4490 and not include mapbox-gl-enhance', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const nextMapInfo = {
+      ...mapInfo,
+      crs: {
+        name: 'EPSG:4490',
+        extent: [-180, -270, 180, 90],
+        wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
+      }
+    };
+    mapstudioWebmap = new WebMapV3(nextMapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('getmapinfofailed', ({ error }) => {
+      const throwError = `The EPSG code ${nextMapInfo.crs.name} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
+      expect(mapstudioWebmap.map).toBeUndefined();
+      expect(error).toBe(throwError);
+      done();
+    });
+    mapstudioWebmap.initializeMap(nextMapInfo);
+  });
+
+  it('projection is 4490 and include mapbox-gl-enhance', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const nextMapInfo = {
+      ...mapInfo,
+      crs: {
+        name: 'EPSG:4490',
+        extent: [-180, -270, 180, 90],
+        wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
+      }
+    };
+    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
+      expect(epsgCode).toBe(nextMapInfo.crs.name);
+      expect(wkt).toBe(nextMapInfo.crs.wkt);
+      expect(bounds).toEqual(nextMapInfo.crs.extent);
+      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
+    };
+    mapboxgl.CRS.set = function () {};
+    mapstudioWebmap = new WebMapV3(nextMapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.initializeMap(nextMapInfo);
+
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      expect(style.layers.length).toBe(nextMapInfo.layers.length);
+      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(appreciableLayers.length).toBeGreaterThanOrEqual(nextMapInfo.layers.length);
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
+      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      delete mapboxgl.CRS;
+      done();
+    });
+  });
+
+  it('overlayLayersManager', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(appreciableLayers.length).toBeGreaterThanOrEqual(mapInfo.layers.length);
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
+      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      map.overlayLayersManager = {
+        GraticuleLayer: {
+          id: 'GraticuleLayer',
+          overlay: true,
+          sourceId: 'GraticuleLayer',
+          visible: true
+        },
+        EchartLayer: {
+          id: 'EchartLayer',
+          visibility: 'visible',
+          source: {
+            type: 'geoJSON',
+            data: null
+          }
+        },
+        GraticuleLayer1: {
+          id: 'GraticuleLayer',
+          overlay: true,
+          sourceId: 'GraticuleLayer'
+        }
+      };
+      const appreciableLayers2 = mapstudioWebmap.getAppreciableLayers();
+      expect(appreciableLayers2.length).toBe(appreciableLayers.length + 2);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 2);
+      expect(appreciableLayers2.find((item) => item.renderSource.id === 'EchartLayer')).toBeTruthy();
       done();
     });
   });
