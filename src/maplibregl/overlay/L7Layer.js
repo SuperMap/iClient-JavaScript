@@ -19,6 +19,7 @@ import maplibregl from 'maplibre-gl';
 
 export class L7Layer {
   constructor({ type, options }) {
+    this.preBuild();
     this.type = 'custom';
     this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('l7_layer_');
     const _options = { ...(options || {}) };
