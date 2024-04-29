@@ -50,7 +50,7 @@
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" include="ugcwasm" src="../../dist/ol/include-ol.js"></script>
     <script>
-      var map, targetPolygon, searchPolygons, searchLines, searchPoints;
+      var map, targetPolygon, searchPolygons, searchLines, searchPoints, resPolygons=[];
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World';
       ol.supermap
@@ -127,9 +127,10 @@
         searchPolygons.forEach((polygon) => {
           var booleanResult = geometryAnalysis[relationshipFun](polygon, targetPolygon);
           if (booleanResult) {
-            addLayer(polygon, {
+            res = addLayer(polygon, {
               color: 'green'
             });
+            resPolygons.push(res);
           }
         });
       }
@@ -138,6 +139,9 @@
         if (!map) {
           return;
         }
+        resPolygons.forEach(layer => {
+          map.removeLayer(layer);
+        })
       }
 
       function addLayer(polygon, style = {}) {

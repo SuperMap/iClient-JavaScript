@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title data-i18n="resources.title_ugcComputeParallel"></title>
+    <title data-i18n="resources.title_ugcSmooth"></title>
     <style>
       body {
         margin: 0;
@@ -31,35 +31,23 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">距离计算</h5>
+        <h5 class="panel-title text-center">线光滑</h5>
       </div>
       <div class="panel-body content">
-        <div class="panel">
-          <div class="input-group">
-            <span class="input-group-addon">计算</span>
-            <select id="operation" class="form-control">
-              <option value="distanceToLineSegment">点到线段的距离</option>
-            </select>
-          </div>
-        </div>
-        <div class="panel distanceTip">(两个几何对象边线间最短距离)</div>
-        <div class="panel distanceToLineSegmentTip" style="display: none">
-          (如果点到线段的垂足不在线段上，则返回点到线段较近的端点的距离)
-        </div>
-        <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
-        <input type="button" class="btn btn-default" value="移除" onclick="clearPopup()" />
+        <input type="button" class="btn btn-default" value="光滑" onclick="search()" />
+        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
       </div>
     </div>
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
       var map, popup, point, line;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
       function initMap(url) {
         return new Promise((resolve) => {
-          map = new maplibregl.Map({
+          map = new mapboxgl.Map({
             container: 'map',
             style: {
               version: 8,
@@ -78,7 +66,7 @@
                 }
               ]
             },
-            center: [120, 30],
+            center: [123, 32],
             zoom: 6
           });
           map.on('load', function () {
@@ -88,49 +76,47 @@
       }
       function addFeatures() {
         line = {
-          type: 'Feature',
           geometry: {
             type: 'LineString',
             coordinates: [
-              [120, 30],
-              [125, 30]
+              [123.58553734150553, 32.16247150999084],
+              [123.31066843972036, 32.27874122071802],
+              [122.72657202343038, 32.307785402609724],
+              [122.38298589619893, 32.00721419190167],
+              [122.6464019270752, 31.46174386499665],
+              [122.98998805430665, 31.129004118740795],
+              [122.8754593452295, 30.804930818841328],
+              [122.23409857439981, 30.706509979514166],
+              [121.5354734490304, 31.079972856746267],
+              [121.71871938355378, 31.393334706846716],
+              [121.74162512536924, 31.90032194653712],
+              [121.38658612723123, 32.37551895758594],
+              [120.55052655097165, 32.09457888936224],
+              [120.5619794218781, 31.530103082191943],
+              [120.90556554910955, 30.8737655015629],
+              [120.2412990364644, 30.667113490029294],
+              [119.51976816927959, 31.079972856746267],
+              [119.03874759115786, 31.50081239394727],
+              [118.88986026935646, 30.726202194317224]
             ]
-          }
+          },
+          type: 'Feature'
         };
         addLayer('line', 'line', [line], {
           'line-color': 'blue',
-          'line-width': 5
+          'line-width': 2
         });
       }
 
       function search() {
-        clearPopup();
-        const operationFun = document.getElementById('operation').value;
-        var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+        clearLayer();
         let distance;
-        distance = geometryAnalysis.computeParallel(
-          {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              coordinates: [
-                [120, 30],
-                [125, 30]
-              ],
-              type: 'LineString'
-            }
-          },
-          5
-        );
+        var geometryAnalysis = new mapboxgl.supermap.GeometryAnalysis();
+        distance = geometryAnalysis.smooth(line, point);
         addLayer('line1', 'line', [distance], {
           'line-color': 'green',
-          'line-width': 5
+          'line-width': 2
         });
-
-        // popup = new maplibregl.Popup()
-        //   .setLngLat(point.geometry.coordinates)
-        //   .setHTML('距离为: ' + distance)
-        //   .addTo(map);
       }
 
       function addLayer(id, type, sourceData, paint) {
@@ -148,8 +134,12 @@
         });
       }
 
-      function clearPopup() {
-        popup && popup.remove();
+
+      function clearLayer() {
+        if (map.getLayer('line1')) {
+          map.removeLayer('line1');
+          map.removeSource('line1');
+        }
       }
 
       initMap(url).then((map) => {

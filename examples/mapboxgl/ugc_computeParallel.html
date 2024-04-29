@@ -31,30 +31,24 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">距离计算</h5>
+        <h5 class="panel-title text-center">根据设置距离获取直线平行线</h5>
       </div>
       <div class="panel-body content">
         <div class="panel">
           <div class="input-group">
-            <span class="input-group-addon">计算</span>
-            <select id="operation" class="form-control">
-              <option value="distanceToLineSegment">点到线段的距离</option>
-            </select>
+            <span class="input-group-addon">线距(米)</span>
+            <input class="form-control" id="distance" type="number" value="5" />
           </div>
         </div>
-        <div class="panel distanceTip">(两个几何对象边线间最短距离)</div>
-        <div class="panel distanceToLineSegmentTip" style="display: none">
-          (如果点到线段的垂足不在线段上，则返回点到线段较近的端点的距离)
-        </div>
-        <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
-        <input type="button" class="btn btn-default" value="移除" onclick="clearPopup()" />
+        <input type="button" class="btn btn-default" value="分析" onclick="search()" />&nbsp;
+        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
       </div>
     </div>
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" include="ugcwasm" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
-      var map, popup, point, line;
+      var map, popup, point, line, res;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
       function initMap(url) {
@@ -79,7 +73,7 @@
               ]
             },
             center: [120, 30],
-            zoom: 6
+            zoom: 5
           });
           map.on('load', function () {
             resolve(map);
@@ -104,33 +98,15 @@
       }
 
       function search() {
-        clearPopup();
-        const operationFun = document.getElementById('operation').value;
+        clearLayer();
+        const distance = parseFloat(document.getElementById('distance').value);
         var geometryAnalysis = new mapboxgl.supermap.GeometryAnalysis();
-        let distance;
-        distance = geometryAnalysis.computeParallel(
-          {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              coordinates: [
-                [120, 30],
-                [125, 30]
-              ],
-              type: 'LineString'
-            }
-          },
-          5
-        );
-        addLayer('line1', 'line', [distance], {
+        const res = geometryAnalysis.computeParallel(line, distance);
+        console.log(res)
+        addLayer('line1', 'line', [res], {
           'line-color': 'green',
           'line-width': 5
         });
-
-        // popup = new mapboxgl.Popup()
-        //   .setLngLat(point.geometry.coordinates)
-        //   .setHTML('距离为: ' + distance)
-        //   .addTo(map);
       }
 
       function addLayer(id, type, sourceData, paint) {
@@ -148,8 +124,11 @@
         });
       }
 
-      function clearPopup() {
-        popup && popup.remove();
+      function clearLayer() {
+        if (map.getLayer("line1")) {
+          map.removeLayer("line1")
+          map.removeSource("line1")
+        }
       }
 
       initMap(url).then((map) => {

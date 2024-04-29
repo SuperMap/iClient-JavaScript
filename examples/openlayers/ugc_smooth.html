@@ -35,13 +35,14 @@
       </div>
       <div class="panel-body content">
         <input type="button" class="btn btn-default" value="执行" onclick="search()" />
+        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
       </div>
     </div>
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" include="ugcwasm" src="../../dist/ol/include-ol.js"></script>
     <script>
-      var map, popup, point, line;
+      var map, res, point, line;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World';
       ol.supermap
@@ -94,7 +95,7 @@
         var geometryAnalysis = new ol.supermap.GeometryAnalysis();
         let smoothLine;
         smoothLine = geometryAnalysis.smooth(line, point);
-        addLayer(smoothLine, {
+        res = addLayer(smoothLine, {
           width: 5,
           color: 'green'
         });
@@ -113,6 +114,12 @@
         });
         map.addLayer(lineLayer);
         return lineLayer;
+      }
+
+      function clearLayer() {
+        if (res) {
+          map.removeLayer(res);
+        }
       }
     </script>
   </body>

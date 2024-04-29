@@ -52,6 +52,7 @@
     <script type="text/javascript" include="ugcwasm" src="../../dist/leaflet/include-leaflet.js"></script>
     <script>
       var map, targetPolygon, searchPolygons, searchLines, searchPoints;
+      var resArr = [];
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World';
       L.supermap
@@ -163,7 +164,7 @@
             type: 'Polygon'
           }
         };
-        searchPolygons = [targetPolygon, polygon1];
+        searchPolygons = [targetPolygon, polygon1, polygon2];
         L.geoJSON(searchPolygons).addTo(map);
       }
 
@@ -178,12 +179,19 @@
             searchResults.push(polygon);
           }
         });
+        searchResults.forEach((item) => {
+          res = L.geoJSON(item).addTo(map);
+          resArr.push(res);
+        });
       }
 
       function clearLayer() {
         if (!map) {
           return;
         }
+        resArr.forEach(res => {
+          res.removeFrom(map);
+        })
       }
     </script>
   </body>

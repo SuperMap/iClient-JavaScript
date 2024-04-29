@@ -253,6 +253,10 @@
           map.removeLayer('highlightPoints');
           map.removeSource('highlightPoints');
         }
+        if (map.getLayer('line1')) {
+          map.removeLayer('line1');
+          map.removeSource('line1');
+        }
       }
       initMap(url).then((map) => {
         addFeatures();

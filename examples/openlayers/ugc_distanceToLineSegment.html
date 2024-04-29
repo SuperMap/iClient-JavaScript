@@ -71,7 +71,6 @@
         <h5 class="panel-title text-center">计算点到线段的距离</h5>
       </div>
       <div class="panel-body content">
-        <div class="panel distanceTip">(两个几何对象边线间最短距离)</div>
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
         <input type="button" class="btn btn-default" value="移除" onclick="clearPopup()" />
       </div>
@@ -121,6 +120,13 @@
             ]
           }
         };
+        point = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [123, 25]
+          }
+        };
         var lineSource = new ol.source.Vector({
           features: [new ol.format.GeoJSON().readFeature(line)],
           wrapX: false
@@ -134,7 +140,13 @@
             })
           })
         });
+        pointLayer = new ol.layer.Vector({
+          source: new ol.source.Vector({
+            features: new ol.format.GeoJSON().readFeatures(point)
+          })
+        });
         map.addLayer(lineLayer);
+        map.addLayer(pointLayer);
       }
 
       function search() {
@@ -144,6 +156,10 @@
         var innerHTML = '距离为: ' + distance;
         content.innerHTML = innerHTML;
         overlay.setPosition([123, 25]);
+      }
+
+      function clearPopup() { 
+        overlay.setPosition(undefined);
       }
     </script>
   </body>

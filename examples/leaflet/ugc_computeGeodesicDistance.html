@@ -31,14 +31,9 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">距离计算</h5>
+        <h5 class="panel-title text-center">计算测地线的长度</h5>
       </div>
       <div class="panel-body content">
-        <div class="panel">
-          <div class="input-group">
-            <span class="input-group-addon">计算点到线段的距离</span>
-          </div>
-        </div>
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
       </div>
     </div>
@@ -47,6 +42,7 @@
     <script type="text/javascript" include="ugcwasm" src="../../dist/leaflet/include-leaflet.js"></script>
     <script>
       var map, popup, marker, line;
+      popup = L.popup();
       var map, bufferLayer;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World';
@@ -63,7 +59,6 @@
         });
 
       function addFeatures() {
-        marker = L.marker([30, 123]).addTo(map);
         line = {
           type: 'Feature',
           geometry: {
@@ -89,11 +84,13 @@
         var geometryAnalysis = new L.supermap.GeometryAnalysis();
         var distance;
         distance = geometryAnalysis.computeGeodesicDistance([120, 125], [30, 30], 6378137, 0.0033528106647475);
-        marker.bindPopup('距离为: ' + distance).openPopup();
+        popup.setLatLng([30, 123])
+              .setContent('距离为: ' + distance)
+              .openOn(map);
       }
 
       function clearPopup() {
-        marker && marker.closePopup();
+        map.closePopup();
       }
     </script>
   </body>

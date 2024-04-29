@@ -31,15 +31,9 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">距离计算</h5>
+        <h5 class="panel-title text-center">计算点到线段的距离</h5>
       </div>
       <div class="panel-body content">
-        <div class="panel">
-          <div class="input-group">
-            <span class="input-group-addon">计算点到线段的距离</span>
-          </div>
-        </div>
-        <div class="panel distanceTip">(两个几何对象边线间最短距离)</div>
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
         <input type="button" class="btn btn-default" value="移除" onclick="clearPopup()" />
       </div>
@@ -48,7 +42,7 @@
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
     <script type="text/javascript" include="ugcwasm" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script>
-      var map, popup, marker, line;
+      var map, popup, marker, line, point;
       var map, bufferLayer;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
@@ -74,7 +68,7 @@
               ]
             },
             center: [120, 30],
-            zoom: 6
+            zoom: 5
           });
           map.on('load', function () {
             resolve(map);
@@ -106,6 +100,28 @@
           paint: {
             'line-color': 'red',
             'line-width': 4
+          }
+        });
+        point = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [123,25]
+          }
+        };
+        map.addLayer({
+          id: 'Point',
+          type: 'circle',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: [point]
+            }
+          },
+          paint: {
+            "circle-radius": 6,
+            "circle-color": "black"
           }
         });
       }

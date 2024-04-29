@@ -31,18 +31,9 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">距离计算</h5>
+        <h5 class="panel-title text-center">计算点到线段的距离</h5>
       </div>
       <div class="panel-body content">
-        <div class="panel">
-          <div class="input-group">
-            <span class="input-group-addon">计算点到线段的距离</span>
-          </div>
-        </div>
-        <div class="panel distanceTip">(两个几何对象边线间最短距离)</div>
-        <div class="panel distanceToLineSegmentTip" style="display: none">
-          (如果点到线段的垂足不在线段上，则返回点到线段较近的端点的距离)
-        </div>
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
         <input type="button" class="btn btn-default" value="移除" onclick="clearPopup()" />
       </div>

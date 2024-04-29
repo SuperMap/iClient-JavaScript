@@ -58,7 +58,7 @@
     <script>
       var map,
         pointLists = [];
-      var pointResult;
+      var pointResult, line1;
       var line = {
         type: 'Feature',
         geometry: {
@@ -151,14 +151,14 @@
         } else if (positonFun === 'computePerpendicularPosition') {
           const [px, py] = pointLists[0].geometry.coordinates;
           const result = geometryAnalysis[positonFun](px, py, spx, spy, epx, epy);
-          var line = {
+          line = {
             type: 'Feature',
             geometry: {
               type: 'LineString',
               coordinates: [[px, py], result]
             }
           };
-          addLayer(line);
+          line1 = addLayer(line);
         } else if (positonFun === 'nearestPointToVertex') {
           const [px, py] = pointLists[0].geometry.coordinates;
           var line = {
@@ -234,6 +234,7 @@
         if (pointResult) {
           map.removeLayer(pointResult);
         }
+        line1 && map.removeLayer(line1);
       }
     </script>
   </body>

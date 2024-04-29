@@ -22,7 +22,7 @@
         right: 10px;
         width: 280px;
         text-align: center;
-        z-index: 10000;
+        z-index: 100;
         border-radius: 4px;
       }
     </style>
@@ -31,33 +31,52 @@
   <body>
     <div id="toolbar" class="panel panel-primary">
       <div class="panel-heading">
-        <h5 class="panel-title text-center">重采样</h5>
+        <h5 class="panel-title text-center">计算</h5>
       </div>
       <div class="panel-body content">
         <input type="button" class="btn btn-default" value="计算" onclick="search()" />&nbsp;
+        <input type="button" class="btn btn-default" value="移除" onclick="clearLayer()" />
       </div>
     </div>
     <div id="map" style="width: 100%; height: 100%"></div>
     <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="ugcwasm" src="../../dist/ol/include-ol.js"></script>
+    <script type="text/javascript" include="ugcwasm" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script>
-      var map, polygon;
+      var map, popup, point, line;
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var url = host + '/iserver/services/map-world/rest/maps/World';
-      ol.supermap
-        .initMap(url, {
-          viewOptions: {
-            center: [120, 30],
-            zoom: 6
-          }
-        })
-        .then((res) => {
-          map = res.map;
-          addFeatures();
+      var url = host + '/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}';
+      function initMap(url) {
+        return new Promise((resolve) => {
+          map = new maplibregl.Map({
+            container: 'map',
+            style: {
+              version: 8,
+              sources: {
+                'raster-tiles': {
+                  type: 'raster',
+                  tiles: [url],
+                  tileSize: 256
+                }
+              },
+              layers: [
+                {
+                  id: 'simple-tiles',
+                  type: 'raster',
+                  source: 'raster-tiles'
+                }
+              ]
+            },
+            center: [40, 60],
+            zoom: 3
+          });
+          map.on('load', function () {
+            resolve(map);
+          });
         });
+      }
 
       function addFeatures() {
-        polygon = {
+        line = {
           type: 'Feature',
           properties: {},
           geometry: {
@@ -101,35 +120,48 @@
             type: 'Polygon'
           }
         };
-        addLayer(polygon, {
-          color: 'blue',
-          width: 3
+        addLayer('fill', 'fill', [line], {
+          'fill-color': 'blue',
+          'fill-opacity': 0.5
         });
       }
 
       function search() {
-        var geometryAnalysis = new ol.supermap.GeometryAnalysis();
-        var result = geometryAnalysis.resample(polygon, 0.5);
-        addLayer(result, {
-          color: 'green',
-          width: 3
+        clearLayer();
+        var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
+        let distance;
+        distance = geometryAnalysis.resample(line, 0.5);
+        addLayer('fill1', 'fill', [distance], {
+          'fill-color': 'green',
+          'fill-opacity': 0.5
         });
       }
 
-      function addLayer(line, style) {
-        var lineSource = new ol.source.Vector({
-          features: [new ol.format.GeoJSON().readFeature(line)],
-          wrapX: false
+      function addLayer(id, type, sourceData, paint) {
+        map.addLayer({
+          id,
+          type,
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: sourceData
+            }
+          },
+          paint
         });
-        var lineLayer = new ol.layer.Vector({
-          source: lineSource,
-          style: new ol.style.Style({
-            stroke: new ol.style.Stroke(style)
-          })
-        });
-        map.addLayer(lineLayer);
-        return lineLayer;
       }
+
+      function clearLayer() {
+        if (map.getLayer('fill1')) {
+          map.removeLayer('fill1');
+          map.removeSource('fill1');
+        }
+      }
+
+      initMap(url).then((map) => {
+        addFeatures();
+      });
     </script>
   </body>
 </html>
