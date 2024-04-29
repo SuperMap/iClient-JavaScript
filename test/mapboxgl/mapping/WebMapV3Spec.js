@@ -20,6 +20,7 @@ describe('mapboxgl-webmap3.0', () => {
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    mapboxgl.Map.prototype.overlayLayersManager = {}
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
