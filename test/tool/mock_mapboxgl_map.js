@@ -95,6 +95,7 @@ const Map = function (options) {
   }
 
   this.setLayoutProperty = function (layerid) {};
+  this.setLayoutPropertyBySymbolBak = function (layerid) {};
 
   this.addControl = function (control) {
     control.onAdd(this);

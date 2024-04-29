@@ -28,10 +28,8 @@ describe('maplibregl L7Layer', () => {
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'GeometryLayer').and.callFake(mockL7.GeometryLayer);
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
-    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
-    // Scene = mockL7.Scene;
-    // Mapbox = mockL7.Mapbox;
-    // maplibregl.Map.prototype.getCRS = () => ({ fromWGS84: (val) => val, getExtent: () => [] });
+    spyOn(L7, 'Maplibre').and.callFake(mockL7.Maplibre);
+
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';

@@ -24,8 +24,8 @@ import './mapboxgl/overlay/symbol/SymbolManagerSpec';
 import './mapboxgl/overlay/symbol/WebSymbolSpec';
 import './mapboxgl/overlay/symbol/SymbolHandlerSpec';
 import './mapboxgl/overlay/symbol/SymbolUtilSpec';
-import './mapboxgl/overlay/symbol/MapExtendSymbolSpec.js';
 import './mapboxgl/overlay/L7LayerSpec.js';
+import './mapboxgl/overlay/symbol/MapExtendSymbolSpec.js';
 
 /*mapboxgl -- services*/
 import './mapboxgl/services/KnowledgeGraphServiceSpec.js';
