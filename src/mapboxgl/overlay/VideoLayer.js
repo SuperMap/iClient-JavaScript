@@ -9,6 +9,7 @@ import { bbox, polygon } from '@turf/turf';
 /**
  * @class VideoLayer
  * @category  Visualization Video
+ * @classdesc 视频图层，用于将配准后的视频、视频流（HLS(m3u8)、HTTP-FLV）叠加至地图上。
  * @modulecategory Overlay
  * @version 11.2.0
  * @param {Object} options - 构造参数。
