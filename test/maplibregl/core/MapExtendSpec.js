@@ -114,7 +114,7 @@ describe('maplibregl MapExtend', () => {
 
   it('listLayers', (done) => {
     map.style._order = ['raster', 'fill-1', 'circle-1', 'l7_layer_1'];
-    const mockLayer = { recalculate: () => {}, isHidden: () => true, setEventedParent: () => {} };
+    const mockLayer = { recalculate: () => {}, isHidden: () => true, setEventedParent: () => {}, is3D: () => false };
     map.style._layers = { raster: mockLayer, 'fill-1': mockLayer, 'circle-1': mockLayer, l7_layer_1: mockLayer };
     map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1' }, heatmap_1: { id: 'heatmap_1' } };
     const layers = map.listLayers();
