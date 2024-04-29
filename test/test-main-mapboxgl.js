@@ -81,4 +81,3 @@ import './mapboxgl/services/EditFeatureAttachmentsSpec';
 import './mapboxgl/mapping/WebMapSpec.js';
 import './mapboxgl/mapping/WebMapV3Spec.js';
 import './mapboxgl/mapping/InitMapSpec.js';
-import './mapboxgl/core/MapExtendSpec.js';
