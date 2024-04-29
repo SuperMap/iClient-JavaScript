@@ -280,4 +280,27 @@ describe('mapboxgl-webmap3.0', () => {
       done();
     });
   });
+
+  it('filter l7 and drill test', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_l7_and_drill);
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    let count = 0;
+    mapstudioWebmap.on('getlayersfailed', ({ error }) => {
+      expect(['drill', 'line-curve', 'chart', 'circle-animate', 'heatmap-extrusion', 'point-extrusion'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      count++;
+      if (count === 7) {
+        done();
+      }
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+  });
 });

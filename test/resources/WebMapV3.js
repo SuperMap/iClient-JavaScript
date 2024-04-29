@@ -751,3 +751,624 @@ var mapstudioWebMap_symbol = JSON.stringify({
   pitch: 0,
   minzoom: 0
 });
+
+var mapstudioWebMap_l7_and_drill = JSON.stringify({
+  "metadata": {
+    "layerCatalog": [
+      {
+        "visible": true,
+        "id": "ms_buffer_up",
+        "title": "中华人民共和国行政区划边界上",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "parts": [
+          "ms_administrative_center_text"
+        ],
+        "id": "ms_administrative_polygon",
+        "title": "中华人民共和国行政区划",
+        "type": "composite"
+      },
+      {
+        "visible": true,
+        "id": "ms_buffer_down",
+        "title": "中华人民共和国行政区划边界下",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "id": "全球疫情累计数据",
+        "title": "全球疫情累计数据",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "id": "ms_全球疫情累计数据_1714384292309_23",
+        "title": "全球疫情累计数据",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "id": "ms_全球疫情累计数据_1714384276380_19",
+        "title": "全球疫情累计数据",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "id": "ms_全球疫情累计数据_1714384211042_15",
+        "title": "全球疫情累计数据",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "id": "ms_全球疫情累计数据_1714384188551_11",
+        "title": "全球疫情累计数据",
+        "type": "basic"
+      },
+      {
+        "visible": true,
+        "parts": [
+          "ms_composite_全球疫情累计数据"
+        ],
+        "id": "全球疫情累计数据",
+        "title": "全球疫情累计数据1",
+        "type": "composite"
+      }
+    ]
+  },
+  "sources": {
+    "ms_1567920342_1714384276380_20": {
+      "tiles": [
+        "http://172.16.15.206:8190/iportal/services/../web/datas/1567920342/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22confirmedIncrement%22%2C%22Center_Y%22%2C%22Center_X%22%2C%22UserID%22%2C%22Country%22%2C%22index%22%2C%22confirmed%22%5D&geometryFieldName=geometry"
+      ],
+      "bounds": [
+        -110.4475729945999,
+        -76.60271072387695,
+        179.1861874739621,
+        78.31456756591797
+      ],
+      "type": "vector"
+    },
+    "ms_1567920342_1714384292309_24": {
+      "tiles": [
+        "http://172.16.15.206:8190/iportal/services/../web/datas/1567920342/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22confirmedIncrement%22%2C%22Center_Y%22%2C%22Center_X%22%2C%22UserID%22%2C%22Country%22%2C%22index%22%2C%22confirmed%22%2C%22geometry%22%5D&geometryFieldName=geometry"
+      ],
+      "bounds": [
+        -110.4475729945999,
+        -76.60271072387695,
+        179.1861874739621,
+        78.31456756591797
+      ],
+      "type": "vector"
+    },
+    "CHINA_DARK": {
+      "tiles": [
+        "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true"
+      ],
+      "tileSize": 256,
+      "attribution": "",
+      "bounds": [
+        -180,
+        -90,
+        180,
+        90
+      ],
+      "type": "raster"
+    },
+    "ms_1567920342_1714384123649_10": {
+      "data": {
+        "dataId": "1567920342",
+        "type": "supermap-structured-data"
+      },
+      "type": "geojson"
+    },
+    "ms_1567920342_1714384188552_12": {
+      "data": {
+        "dataId": "1567920342",
+        "type": "supermap-structured-data"
+      },
+      "type": "geojson"
+    },
+    "ms_1567920342_1714384211042_16": {
+      "tiles": [
+        "http://172.16.15.206:8190/iportal/services/../web/datas/1567920342/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22confirmedIncrement%22%2C%22Center_Y%22%2C%22Center_X%22%2C%22UserID%22%2C%22Country%22%2C%22index%22%2C%22confirmed%22%2C%22geometry%22%5D&geometryFieldName=geometry"
+      ],
+      "bounds": [
+        -110.4475729945999,
+        -76.60271072387695,
+        179.1861874739621,
+        78.31456756591797
+      ],
+      "type": "vector"
+    },
+    "ms_administrative_buffer_source_province_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_polygon_source_city_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_center_source_city_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_buffer_source_city_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_polygon_source_china_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_polygon_source_province_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_center_source_china_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_center_source_province_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_administrative_buffer_source_china_{adcode}": {
+      "data": "http://172.16.15.206:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf",
+      "attribution": "本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。",
+      "type": "geojson"
+    },
+    "ms_1567920342_1714383928465_10": {
+      "data": {
+        "dataId": "1567920342",
+        "type": "supermap-structured-data"
+      },
+      "type": "geojson"
+    }
+  },
+  "crs": {
+    "extent": [
+      -20037508.342789244,
+      -20037508.342789244,
+      20037508.342789244,
+      20037508.342789244
+    ],
+    "wkt": "PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]",
+    "name": "EPSG:3857"
+  },
+  "center": [
+    105.40643853183451,
+    35.20260040017788
+  ],
+  "zoom": 4.0265953802940615,
+  "glyphs": {},
+  "version": "3.1.5",
+  "rootUrl": "http://172.16.15.206:8190/iportal/",
+  "maxzoom": 12,
+  "name": "无标题地图",
+  "viewExtent": [
+    -159.0499172798419,
+    78.23875449814814,
+    131.0072808340209,
+    12.738503516389864
+  ],
+  "layers": [
+    {
+      "metadata": {},
+      "maxzoom": 12,
+      "id": "CHINA_DARK",
+      "source": "CHINA_DARK",
+      "type": "raster",
+      "minzoom": 0
+    },
+    {
+      "layout": {
+        "line-curve-shape": "greatcircle",
+        "visibility": "visible",
+        "line-curve-segment": 30
+      },
+      "metadata": {},
+      "paint": {
+        "line-curve-color": "#ff6b34",
+        "line-curve-dasharray": [
+          1,
+          0
+        ],
+        "line-curve-opacity": 1,
+        "line-curve-width": 1,
+        "line-curve-pattern-opacity": 1
+      },
+      "source": "ms_1567920342_1714384123649_10",
+      "source-layer": "1567920342$geometry",
+      "id": "全球疫情累计数据",
+      "type": "line-curve"
+    },
+    {
+      "layout": {
+        "line-curve-shape": "greatcircle",
+        "line-curve-animate-duration": 4,
+        "visibility": "visible",
+        "line-curve-segment": 30,
+        "line-curve-animate-trailLength": 0.2,
+        "line-curve-animate-interval": 0.4,
+        "line-curve-pattern-rotate": 0,
+        "line-curve-pattern-blend": "replace",
+        "line-curve-pattern-interval": 20
+      },
+      "metadata": {},
+      "paint": {
+        "line-curve-pattern-color": "rgba(89,89,89,1)",
+        "line-curve-color": "#ff6b34",
+        "line-curve-pattern": "circle",
+        "line-curve-opacity": 1,
+        "line-curve-width": 10,
+        "line-curve-pattern-opacity": 1
+      },
+      "source": "ms_1567920342_1714384123649_10",
+      "source-layer": "1567920342$geometry",
+      "id": "ms_composite_全球疫情累计数据",
+      "type": "line-curve"
+    },
+    {
+      "layout": {
+        "visibility": "visible",
+        "chart-type": "bar",
+        "chart-attribute-color": [
+          [
+            "confirmedIncrement",
+            "#d53e4f"
+          ],
+          [
+            "Center_Y",
+            "#fc8d59"
+          ],
+          [
+            "Center_X",
+            "#fee08b"
+          ]
+        ]
+      },
+      "metadata": {},
+      "maxzoom": 24,
+      "paint": {
+        "chart-width": 100,
+        "chart-yAxis-grid": false,
+        "chart-xAxis-label": true,
+        "chart-background-color": "",
+        "chart-height": 50,
+        "chart-xAxis-line": true,
+        "chart-yAxis-label": true,
+        "chart-xAxis-grid": false,
+        "chart-yAxis-line": true
+      },
+      "source": "ms_1567920342_1714384188552_12",
+      "source-layer": "1567920342$geometry",
+      "id": "ms_全球疫情累计数据_1714384188551_11",
+      "type": "chart",
+      "minzoom": 0
+    },
+    {
+      "layout": {
+        "visibility": "visible",
+        "circle-animate-rings": 3,
+        "circle-animate-speed": 1
+      },
+      "metadata": {},
+      "maxzoom": 24,
+      "paint": {
+        "circle-color": "#EE4D5A",
+        "circle-opacity": 0.9,
+        "circle-radius": 15
+      },
+      "source": "ms_1567920342_1714384211042_16",
+      "source-layer": "1567920342$geometry",
+      "id": "ms_全球疫情累计数据_1714384211042_15",
+      "type": "circle",
+      "minzoom": 0
+    },
+    {
+      "metadata": {},
+      "maxzoom": 24,
+      "paint": {
+        "circle-color": "#EE4D5A",
+        "circle-opacity": 0.9,
+        "circle-translate-anchor": "map",
+        "circle-radius": 4,
+        "circle-translate": [
+          0,
+          0
+        ]
+      },
+      "id": "ms_全球疫情累计数据_1714384276380_19",
+      "source": "ms_1567920342_1714384276380_20",
+      "source-layer": "1567920342$geometry",
+      "type": "circle",
+      "minzoom": 0
+    },
+    {
+      "layout": {
+        "visibility": "visible",
+        "point-extrusion-shape": "cylinder"
+      },
+      "metadata": {},
+      "maxzoom": 24,
+      "paint": {
+        "point-extrusion-width": 12,
+        "point-extrusion-height": 20,
+        "point-extrusion-opacity": 0.9,
+        "point-extrusion-length": 12,
+        "point-extrusion-color": "#EE4D5A"
+      },
+      "source": "ms_1567920342_1714384292309_24",
+      "source-layer": "1567920342$geometry",
+      "id": "ms_全球疫情累计数据_1714384292309_23",
+      "type": "point-extrusion",
+      "minzoom": 0
+    },
+    {
+      "metadata": {},
+      "paint": {
+        "background-color": "#242424"
+      },
+      "id": "ms-background",
+      "type": "background"
+    },
+    {
+      "metadata": {},
+      "paint": {
+        "fill-extrusion-height": [
+          "*",
+          1000,
+          10
+        ],
+        "fill-extrusion-opacity": 0.1,
+        "fill-extrusion-base": [
+          "*",
+          0,
+          10
+        ],
+        "fill-extrusion-vertical-gradient": true,
+        "fill-extrusion-translate-anchor": "map",
+        "fill-extrusion-color": "rgba(13,204,255,1)",
+        "fill-extrusion-translate": [
+          0,
+          0
+        ]
+      },
+      "id": "ms_buffer_down",
+      "source": "ms_administrative_buffer_source_china_100000",
+      "type": "fill-extrusion"
+    },
+    {
+      "metadata": {},
+      "paint": {
+        "fill-extrusion-height": [
+          "*",
+          3000,
+          10
+        ],
+        "fill-extrusion-opacity": 0.44,
+        "fill-extrusion-base": [
+          "*",
+          1000,
+          10
+        ],
+        "fill-extrusion-vertical-gradient": true,
+        "fill-extrusion-translate-anchor": "map",
+        "fill-extrusion-color": "rgba(13,204,255,1)",
+        "fill-extrusion-translate": [
+          0,
+          0
+        ]
+      },
+      "id": "ms_administrative_polygon",
+      "source": "ms_administrative_polygon_source_china_100000",
+      "type": "fill-extrusion"
+    },
+    {
+      "layout": {
+        "text-z-offset": 200000,
+        "text-letter-spacing": 0,
+        "visibility": "visible",
+        "text-field": "{name}",
+        "text-anchor": "left",
+        "text-size": 16,
+        "text-allow-overlap": true,
+        "text-font": [
+          "sans-serif"
+        ]
+      },
+      "metadata": {},
+      "paint": {
+        "text-halo-color": "#242424",
+        "text-halo-blur": 2,
+        "text-color": "#FFFFFF",
+        "text-halo-width": 1,
+        "text-opacity": 1,
+        "text-translate": [
+          10,
+          10
+        ]
+      },
+      "id": "ms_administrative_center_text",
+      "source": "ms_administrative_center_source_china_100000",
+      "type": "symbol"
+    },
+    {
+      "metadata": {},
+      "paint": {
+        "fill-extrusion-height": [
+          "*",
+          3005,
+          10
+        ],
+        "fill-extrusion-opacity": 0.8,
+        "fill-extrusion-base": [
+          "*",
+          3000,
+          10
+        ],
+        "fill-extrusion-vertical-gradient": true,
+        "fill-extrusion-translate-anchor": "map",
+        "fill-extrusion-color": "rgba(13,204,255,1)",
+        "fill-extrusion-translate": [
+          0,
+          0
+        ]
+      },
+      "id": "ms_buffer_up",
+      "source": "ms_administrative_buffer_source_china_100000",
+      "type": "fill-extrusion"
+    },
+    {
+      "layout": {
+        "visibility": "visible"
+      },
+      "metadata": {},
+      "maxzoom": 24,
+      "paint": {
+        "heatmap-extrusion-intensity": 2,
+        "heatmap-extrusion-radius": 10,
+        "heatmap-extrusion-opacity": 1,
+        "heatmap-extrusion-weight": "confirmedIncrement",
+        "heatmap-extrusion-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "heatmap-density"
+          ],
+          0,
+          "rgba(0,0,0,0)",
+          0.2,
+          "#0000ff",
+          0.4,
+          "#00ffff",
+          0.6000000000000001,
+          "#00ff00",
+          0.8,
+          "#ffff00",
+          1,
+          "#ff0000"
+        ]
+      },
+      "source": "ms_1567920342_1714383928465_10",
+      "source-layer": "1567920342$geometry",
+      "id": "全球疫情累计数据",
+      "type": "heatmap-extrusion",
+      "minzoom": 0
+    }
+  ],
+  "interaction": {
+    "drill": [
+      {
+        "triggerUp": "unclick",
+        "triggerDown": "click",
+        "steps": [
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_buffer_source_china_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_buffer_source_province_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_buffer_source_city_{adcode}",
+            "upField": "parent"
+          }
+        ],
+        "layerIds": [
+          "ms_buffer_down"
+        ]
+      },
+      {
+        "triggerUp": "unclick",
+        "triggerDown": "click",
+        "steps": [
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_polygon_source_china_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_polygon_source_province_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_polygon_source_city_{adcode}",
+            "upField": "parent"
+          }
+        ],
+        "layerIds": [
+          "ms_administrative_polygon"
+        ]
+      },
+      {
+        "triggerUp": "unclick",
+        "triggerDown": "click",
+        "steps": [
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_center_source_china_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_center_source_province_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_center_source_city_{adcode}",
+            "upField": "parent"
+          }
+        ],
+        "layerIds": [
+          "ms_administrative_center_text"
+        ]
+      },
+      {
+        "triggerUp": "unclick",
+        "triggerDown": "click",
+        "steps": [
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_buffer_source_china_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_buffer_source_province_{adcode}",
+            "upField": "parent"
+          },
+          {
+            "identifierField": "adcode",
+            "source": "ms_administrative_buffer_source_city_{adcode}",
+            "upField": "parent"
+          }
+        ],
+        "layerIds": [
+          "ms_buffer_up"
+        ]
+      }
+    ]
+  },
+  "pitch": 60,
+  "minzoom": 0
+});

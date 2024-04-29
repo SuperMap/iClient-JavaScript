@@ -87,6 +87,12 @@ export const LEGEND_STYLE_TYPES = {
   STYLE: 'style'
 };
 
+const UN_SUPPORTED_LAYER_TYPE = ['point-extrusion', 'heatmap-extrusion', 'radar', 'line-extrusion', 'line-curve', 'line-curve-extrusion', 'chart']
+const UN_SUPPORTED_LAYER_ATTRS_MAP = {
+  circle: ['circle-animate-speed', 'circle-animate-rings'],
+  line: ['line-animate-duration', 'line-animate-interval ', 'line-animate-trailLength ']
+}
+
 export class WebMap extends mapboxgl.Evented {
   constructor(mapId, options, mapOptions = {}) {
     super();
@@ -116,6 +122,7 @@ export class WebMap extends mapboxgl.Evented {
    * @param {Object} map - map 实例。
    */
   initializeMap(mapInfo, map) {
+    mapInfo = this._handleUnSupportedLayers(mapInfo);
     this._mapInfo = mapInfo;
     if (map) {
       this._appendLayers = true;
@@ -333,15 +340,19 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _updateLayerCatalogsId(catalogs, layerIdMapList) {
-    catalogs.forEach((catalog) => {
+    catalogs.forEach((catalog, index) => {
       const { id, children } = catalog;
       if (catalog.type === 'group') {
         this._updateLayerCatalogsId(children, layerIdMapList);
         return;
       }
       const matchLayer = layerIdMapList.find((item) => item.originId === id);
-      catalog.originId = id;
-      catalog.id = matchLayer.renderId;
+      if (matchLayer) {
+        catalog.originId = id;
+        catalog.id = matchLayer.renderId;
+      } else {
+        catalogs.splice(index, 1);
+      }
     });
   }
 
@@ -358,15 +369,15 @@ export class WebMap extends mapboxgl.Evented {
     this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: matchLayers });
   }
 
-  _getLayerInfosFromCatalogs(catalogs) {
+  _getLayerInfosFromCatalogs(catalogs, layers) {
     const results = [];
     for (let i = 0; i < catalogs.length; i++) {
-      const { catalogType, children, visible } = catalogs[i];
-      if (catalogType === 'layer' && visible) {
+      const { catalogType, children, visible, id } = catalogs[i];
+      if (catalogType === 'layer' && visible && layers.find((layer) => { return layer.id === id})) {
         results.push(catalogs[i]);
       }
       if (catalogType === 'group' && children && children.length > 0) {
-        const result = this._getLayerInfosFromCatalogs(children);
+        const result = this._getLayerInfosFromCatalogs(children, layers);
         results.push(...result);
       }
     }
@@ -422,7 +433,7 @@ export class WebMap extends mapboxgl.Evented {
   _generateLayers() {
     const allLayersOnMap = this._getLayersOnMap();
     const { catalogs = [], datas = [] } = this._mapResourceInfo;
-    const originLayers = this._getLayerInfosFromCatalogs(catalogs);
+    const originLayers = this._getLayerInfosFromCatalogs(catalogs, this._mapInfo.layers);
     const layers = allLayersOnMap.map((layer) => {
       const matchOriginLayer = this._layerIdRenameMapList.find((item) => item.renderId === layer.id) || {};
       const matchLayer = originLayers.find((item) => item.id === matchOriginLayer.originId) || {};
@@ -430,7 +441,7 @@ export class WebMap extends mapboxgl.Evented {
       let dataType = '';
       let dataId = '';
       for (const data of datas) {
-        const matchData = data.datasets.find((dataset) => dataset.msDatasetId === msDatasetId);
+        const matchData = data.datasets && data.datasets.find((dataset) => dataset.msDatasetId === msDatasetId);
         if (matchData) {
           dataType = data.sourceType;
           dataId = matchData.datasetId;
@@ -625,7 +636,7 @@ export class WebMap extends mapboxgl.Evented {
 
   _createLegendInfo() {
     const { catalogs = [] } = this._mapResourceInfo;
-    const originLayers = this._getLayerInfosFromCatalogs(catalogs);
+    const originLayers = this._getLayerInfosFromCatalogs(catalogs, this._mapInfo.layers);
     for (const layer of originLayers) {
       const { renderer } = layer.visualization || {};
       if (!renderer) {
@@ -1071,5 +1082,48 @@ export class WebMap extends mapboxgl.Evented {
       (bottom < bottomBoundary || bottomBoundary === undefined) && (bottomBoundary = bottom);
     });
     return Number((topBoundary - bottomBoundary).toFixed(2));
+  }
+
+  _handleUnSupportedLayers(mapInfo) {
+    let filterLayerIds = [];
+    const unSupportedMsg = 'layer are not supported yet';
+    let { layers, interaction } = mapInfo;
+    if (interaction && interaction.drill) {
+      this.fire('getlayersfailed', { error: `drill ${unSupportedMsg}` });
+      interaction.drill.forEach((drillItem) => {
+        filterLayerIds = filterLayerIds.concat(drillItem.layerIds);
+      });
+    }
+    layers.forEach((layerInfo) => {
+      if (UN_SUPPORTED_LAYER_TYPE.includes(layerInfo.type)) {
+        this.fire('getlayersfailed', { error: `${layerInfo.type} ${unSupportedMsg}` });
+        filterLayerIds.push(layerInfo.id);
+        return;
+      }
+      if (layerInfo.type === 'heatmap' && layerInfo.paint && ['spuare', 'hexagon'].includes(layerInfo.paint['heatmap-shape'])) {
+        this.fire('getlayersfailed', { error: `${layerInfo.paint['heatmap-shape']}-heatmap ${unSupportedMsg}` });
+        filterLayerIds.push(layerInfo.id);
+      }
+      let partialUnSupportProps = UN_SUPPORTED_LAYER_ATTRS_MAP[layerInfo.type];
+      let triggered = false;
+      if (partialUnSupportProps) {
+        partialUnSupportProps.forEach((attr) => {
+          layerInfo.layout && Object.keys(layerInfo.layout).forEach((layoutProp) => {
+            if (layoutProp === attr && !triggered) {
+              this.fire('getlayersfailed', { error: `${layerInfo.type}-animate ${unSupportedMsg}` });
+              filterLayerIds.push(layerInfo.id);
+              triggered = true;
+            }
+          });
+        });
+      }
+    });
+    mapInfo.layers = layers.filter((layer) => {
+      return !filterLayerIds.includes(layer.id);
+    });
+    // metadata.layerCatalog = metadata.layerCatalog.filter((catalog) => {
+    //   return !filterLayerIds.includes(catalog.id);
+    // });
+    return mapInfo;
   }
 }
