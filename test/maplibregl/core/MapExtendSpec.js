@@ -1,6 +1,5 @@
-import '../../../src/maplibregl/core/MapExtend';
 import maplibregl from 'maplibre-gl';
-import { L7Layer } from '../../../src/maplibregl/overlay';
+import '../../../src/maplibregl/core/MapExtend';
 
 describe('maplibregl MapExtend', () => {
   var url = 'http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China';

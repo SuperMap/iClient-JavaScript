@@ -18,13 +18,13 @@ import './mapboxgl/overlay/graphic/GraphicSpec.js';
 import './mapboxgl/overlay/GraphicLayerSpec.js';
 import './mapboxgl/overlay/GraticuleLayerSpec.js';
 import './mapboxgl/overlay/GraphMapSpec';
+import './mapboxgl/overlay/L7LayerSpec.js';
 import './mapboxgl/overlay/symbol/CompositeSymbolRenderSpec';
 import './mapboxgl/overlay/symbol/SingleSymbolRenderSpec';
 import './mapboxgl/overlay/symbol/SymbolManagerSpec';
 import './mapboxgl/overlay/symbol/WebSymbolSpec';
 import './mapboxgl/overlay/symbol/SymbolHandlerSpec';
 import './mapboxgl/overlay/symbol/SymbolUtilSpec';
-import './mapboxgl/overlay/L7LayerSpec.js';
 import './mapboxgl/overlay/symbol/MapExtendSymbolSpec.js';
 
 /*mapboxgl -- services*/
