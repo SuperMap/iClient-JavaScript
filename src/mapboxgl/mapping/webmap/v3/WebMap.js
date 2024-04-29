@@ -196,8 +196,8 @@ export class WebMap extends mapboxgl.Evented {
         sources: {},
         layers: []
       },
-      minzoom,
-      maxzoom,
+      minZoom: minzoom,
+      maxZoom: maxzoom,
       bearing,
       pitch,
       localIdeographFontFamily: fontFamilys || ''
@@ -372,8 +372,8 @@ export class WebMap extends mapboxgl.Evented {
   _getLayerInfosFromCatalogs(catalogs, layers) {
     const results = [];
     for (let i = 0; i < catalogs.length; i++) {
-      const { catalogType, children, visible, id } = catalogs[i];
-      if (catalogType === 'layer' && visible && layers.find((layer) => { return layer.id === id})) {
+      const { catalogType, children, id } = catalogs[i];
+      if (catalogType === 'layer' && layers.find((layer) => { return layer.id === id})) {
         results.push(catalogs[i]);
       }
       if (catalogType === 'group' && children && children.length > 0) {
@@ -434,8 +434,20 @@ export class WebMap extends mapboxgl.Evented {
     const allLayersOnMap = this._getLayersOnMap();
     const { catalogs = [], datas = [] } = this._mapResourceInfo;
     const originLayers = this._getLayerInfosFromCatalogs(catalogs, this._mapInfo.layers);
-    const layers = allLayersOnMap.map((layer) => {
+    const layers = allLayersOnMap.reduce((layersList, layer) => {
       const matchOriginLayer = this._layerIdRenameMapList.find((item) => item.renderId === layer.id) || {};
+      const containLayer = originLayers.find(
+        (item) => {
+          if (item.layersContent && item.id !== layer.id) {
+            const nextLayersContent = this._renameLayersContent(item.layersContent);
+            return nextLayersContent.includes(layer.id);
+          }
+          return false;
+        }
+      );
+      if (matchOriginLayer.originId && containLayer) {
+        return layersList;
+      }
       const matchLayer = originLayers.find((item) => item.id === matchOriginLayer.originId) || {};
       const { title = layer.id, visualization, layersContent, msDatasetId } = matchLayer;
       let dataType = '';
@@ -459,7 +471,7 @@ export class WebMap extends mapboxgl.Evented {
           type: sourceOnMap && sourceOnMap.type,
           sourceLayer: layer.sourceLayer
         },
-        renderLayers: this._getRenderLayers(layersContent, layer.id),
+        renderLayers: this._getRenderLayers(this._renameLayersContent(layersContent), layer.id),
         dataSource: {
           serverId: dataId,
           type: dataType
@@ -483,9 +495,20 @@ export class WebMap extends mapboxgl.Evented {
           }
         }
       }
-      return overlayLayers;
-    });
+      layersList.push(overlayLayers);
+      return layersList;
+    }, []);
     return layers;
+  }
+
+  _renameLayersContent(layersContent) {
+    if (!layersContent) {
+      return layersContent;
+    }
+    return layersContent.map(id => {
+      const matchItem = this._layerIdRenameMapList.find(item => item.originId === id);
+      return matchItem.renderId;
+    });
   }
 
   _generateLayerCatalog() {
@@ -542,7 +565,7 @@ export class WebMap extends mapboxgl.Evented {
   _collectChildrenKey(catalogs, key, list = []) {
     for (const data of catalogs) {
       if (data.type === 'group') {
-        this._collectChildrenKey(data.children, list);
+        this._collectChildrenKey(data.children, key, list);
         continue;
       }
       list.push(data[key]);
@@ -1121,9 +1144,6 @@ export class WebMap extends mapboxgl.Evented {
     mapInfo.layers = layers.filter((layer) => {
       return !filterLayerIds.includes(layer.id);
     });
-    // metadata.layerCatalog = metadata.layerCatalog.filter((catalog) => {
-    //   return !filterLayerIds.includes(catalog.id);
-    // });
     return mapInfo;
   }
 }
