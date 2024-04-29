@@ -185,6 +185,13 @@
       inputCSS(libsurl + '/video-js/7.10.2/video-js.min.css');
       inputScript(libsurl + '/video-js/7.10.2/video.min.js');
     }
+    if (inArray(includes, 'flvjs')) {
+      inputScript(libsurl + '/flvjs/1.6.2/flv.js');
+      inputScript(libsurl + '/videojs-flvjs-es6/1.0.1/videojs-flvjs-es6.js');
+    }
+    if (inArray(includes, 'opencv')) {
+      inputScript(libsurl + '/opencv/3.4/opencv.js');
+    }
     // dist
     if (!inArray(excludes, 'iclient-mapboxgl')) {
       if (supportES6()) {

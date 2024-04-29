@@ -25,7 +25,7 @@
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
     <script
       type="text/javascript"
-      include="mapbox-gl-enhance,proj4,turf,opencv"
+      include="mapbox-gl-enhance,proj4,turf,videojs,opencv"
       src="../../dist/mapboxgl/include-mapboxgl.js"
     ></script>
     <script type="text/javascript">
@@ -47,10 +47,11 @@
           version: 8,
           sources: {
             'raster-tiles': {
-              attribution: attribution,
               type: 'raster',
-              tiles: [url + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
-              tileSize: 256
+              tileSize: 256,
+              tiles: [
+                'https://t4.tianditu.gov.cn/img_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}&tk=1d109683f4d84198e37a38c442d68311'
+              ]
             }
           },
           layers: [
@@ -59,7 +60,7 @@
               type: 'raster',
               source: 'raster-tiles',
               minzoom: 0,
-              maxzoom: 9
+              maxzoom: 22
             }
           ]
         },
@@ -71,13 +72,13 @@
       function query() {
         var sqlParam = new mapboxgl.supermap.GetFeaturesBySQLParameters({
           queryParameter: {
-            name: datasetName +  '@' + datasourceName,
+            name: datasetName + '@' + datasourceName,
             attributeFilter: 'SMID > 0'
           },
           datasetNames: [datasourceName + ':' + datasetName]
         });
 
-        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(boundsParam).then(function (serviceResult) {
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam).then(function (serviceResult) {
           let coordinates = [];
           turf.featureEach(serviceResult.result.features, function (currentFeature, featureIndex) {
             currentFeature.geometry.coordinates[0][0].forEach((coord) => {
@@ -85,6 +86,7 @@
               coordinates.push(res);
             });
           });
+          map.setCenter(coordinates[0]);
           let address = serviceResult.result.features.features[0].properties.address;
           videoLayer = new mapboxgl.supermap.VideoLayer({
             url: address,
