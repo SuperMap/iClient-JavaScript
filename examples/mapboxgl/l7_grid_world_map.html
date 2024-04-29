@@ -43,7 +43,7 @@
         zoom: 4.056
       });
 
-      fetch('../data/3dadb1f5-8f54-4449-8206-72db6e142c40.json')
+      fetch('https://iclient.supermap.io/web/data/L7/3dadb1f5-8f54-4449-8206-72db6e142c40.json')
         .then((res) => res.json())
         .then((data) => {
           var linelayer = new mapboxgl.supermap.L7Layer({ type: 'HeatmapLayer', options: { autoFit: true } });

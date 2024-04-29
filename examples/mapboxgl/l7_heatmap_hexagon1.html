@@ -66,7 +66,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/a1a8158d-6fe3-424b-8e50-694ccf61c4d7.csv')
+        fetch('https://iclient.supermap.io/web/data/L7/a1a8158d-6fe3-424b-8e50-694ccf61c4d7.csv')
           .then((res) => res.text())
           .then((data) => {
             var layer = new mapboxgl.supermap.L7Layer({ type: 'HeatmapLayer' });

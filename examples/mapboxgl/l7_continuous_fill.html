@@ -69,7 +69,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/1d27c363-af3a-469e-ab5b-7a7e1ce4f311.json')
+        fetch('https://iclient.supermap.io/web/data/L7/1d27c363-af3a-469e-ab5b-7a7e1ce4f311.json')
           .then((res) => res.json())
           .then((data) => {
             var layer = new mapboxgl.supermap.L7Layer({ type: 'PolygonLayer' });

@@ -65,7 +65,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/5592c737-1c70-4d6b-82c1-e74e5a019b04.json')
+        fetch('https://iclient.supermap.io/web/data/L7/5592c737-1c70-4d6b-82c1-e74e5a019b04.json')
           .then((res) => res.json())
           .then((data) => {
             var layer = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });

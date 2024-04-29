@@ -77,7 +77,7 @@
             ['cloud', '&#xe601;']
           ]);
           scene.once('fontloaded', () => {
-            fetch('../data/9eb3f1b5-0c3b-49b2-8221-191d4ba8aa5e.json')
+            fetch('https://iclient.supermap.io/web/data/L7/9eb3f1b5-0c3b-49b2-8221-191d4ba8aa5e.json')
               .then((res) => res.json())
               .then((originData) => {
                 var layer = new mapboxgl.supermap.L7Layer({ type: 'PointLayer' });

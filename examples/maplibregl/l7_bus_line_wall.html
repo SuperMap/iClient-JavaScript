@@ -68,7 +68,7 @@
       map.on('load', function () {
         map.getL7Scene().then((scene) => {
           scene.addImage('02', '../img/ce83fc30-701f-415b-9750-4b146f4b3dd6.svg');
-          fetch('../data/0290a972-eedd-42f6-b69e-50a35e8a0824.json')
+          fetch('https://iclient.supermap.io/web/data/L7/0290a972-eedd-42f6-b69e-50a35e8a0824.json')
             .then((res) => res.json())
             .then((data) => {
               var layer = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });

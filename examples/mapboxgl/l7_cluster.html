@@ -65,7 +65,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/87e40417-a5da-4fdb-8313-c796ea15f982.csv')
+        fetch('https://iclient.supermap.io/web/data/L7/87e40417-a5da-4fdb-8313-c796ea15f982.csv')
           .then((res) => res.text())
           .then((data) => {
             const dataSource = new L7.Source(data, {

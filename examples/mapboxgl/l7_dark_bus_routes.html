@@ -66,7 +66,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/ee07641d-5490-4768-9826-25862e8019e1.json')
+        fetch('https://iclient.supermap.io/web/data/L7/ee07641d-5490-4768-9826-25862e8019e1.json')
           .then((res) => res.json())
           .then((data) => {
             var layer = new mapboxgl.supermap.L7Layer({ type: 'LineLayer' });

@@ -70,7 +70,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/oVTMqfzuuRFKiDwhPSFL.json')
+        fetch('https://iclient.supermap.io/web/data/L7/oVTMqfzuuRFKiDwhPSFL.json')
           .then((res) => res.json())
           .then((data) => {
             var layer = new maplibregl.supermap.L7Layer({ type: 'PointLayer' });

@@ -65,7 +65,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/BElVQFEFvpAKzddxFZxJ.txt')
+        fetch('https://iclient.supermap.io/web/data/L7/BElVQFEFvpAKzddxFZxJ.txt')
           .then((res) => res.text())
           .then((data) => {
             var layer = new maplibregl.supermap.L7Layer({ type: 'PointLayer' });

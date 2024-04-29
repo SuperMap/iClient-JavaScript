@@ -264,7 +264,7 @@
             iconStep: 6
           });
 
-        fetch('../data/ec5351c9-d22b-4918-ad6c-1838064d3a64.json')
+        fetch('https://iclient.supermap.io/web/data/L7/ec5351c9-d22b-4918-ad6c-1838064d3a64.json')
           .then((res) => res.json())
           .then((data) => {
             var layer = new maplibregl.supermap.L7Layer({ type: 'LineLayer' });

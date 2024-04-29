@@ -80,7 +80,7 @@
         '#FF0000'
       ];
       map.on('load', function () {
-        fetch('../data/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
+        fetch('https://iclient.supermap.io/web/data/L7/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
           .then((res) => res.json())
           .then((data) => {
             var layer = new maplibregl.supermap.L7Layer({ type: 'PolygonLayer' });

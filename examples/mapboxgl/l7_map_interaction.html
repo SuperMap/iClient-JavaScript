@@ -70,7 +70,7 @@
 
       map.on('load', function () {
         map.getL7Scene().then((scene) => {
-          fetch('../data/d36ad90e-3902-4742-b8a2-d93f7e5dafa2.json')
+          fetch('https://iclient.supermap.io/web/data/L7/d36ad90e-3902-4742-b8a2-d93f7e5dafa2.json')
             .then((res) => res.json())
             .then((data) => {
               const color = [

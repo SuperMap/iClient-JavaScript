@@ -68,7 +68,7 @@
         map.getL7Scene().then((scene) => {
           scene.addImage('arrRed', '../img/A_KWGqT6Oz50EAAAAAAAAAAAAAARQnAQ.png');
           scene.addImage('arrBlue', '../img/A_ZKhURq53OgIAAAAAAAAAAAAAARQnAQ.png');
-          fetch('../data/4c02515b-cb7a-47be-93cf-5596731ef982.json')
+          fetch('https://iclient.supermap.io/web/data/L7/4c02515b-cb7a-47be-93cf-5596731ef982.json')
             .then((res) => res.json())
             .then((monsoon) => {
               const { data, borderData } = monsoon;

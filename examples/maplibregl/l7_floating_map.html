@@ -68,8 +68,8 @@
       map.on('load', function () {
         let lineDown, lineUp, textLayer, provincelayer;
         Promise.all([
-          fetch('../data/ecd1aaac-44c0-4232-b66c-c0ced76d5c7d.json').then((d) => d.json()),
-          fetch('../data/d434cac3-124e-4922-8eed-ccde01674cd3.json').then((d) => d.json())
+          fetch('https://iclient.supermap.io/web/data/L7/ecd1aaac-44c0-4232-b66c-c0ced76d5c7d.json').then((d) => d.json()),
+          fetch('https://iclient.supermap.io/web/data/L7/d434cac3-124e-4922-8eed-ccde01674cd3.json').then((d) => d.json())
         ]).then(function onLoad([data, data1]) {
           const texts = [];
           data.features.map((option) => {

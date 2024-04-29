@@ -77,7 +77,7 @@
           ]);
           scene.addFontFace(fontFamily, fontPath);
           scene.once('fontloaded', () => {
-            fetch('../data/f7d083e2-ad55-44fd-b324-15e1b549948a.json')
+            fetch('https://iclient.supermap.io/web/data/L7/f7d083e2-ad55-44fd-b324-15e1b549948a.json')
               .then((res) => res.json())
               .then((data) => {
                 var layer = new mapboxgl.supermap.L7Layer({ type: 'PointLayer' });

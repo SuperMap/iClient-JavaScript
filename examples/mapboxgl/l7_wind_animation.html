@@ -69,7 +69,7 @@
       });
 
       map.on('load', function () {
-        fetch('../data/7455fead-1dc0-458d-b91a-fb4cf99e701e.txt')
+        fetch('https://iclient.supermap.io/web/data/L7/7455fead-1dc0-458d-b91a-fb4cf99e701e.txt')
           .then((res) => res.text())
           .then((data) => {
             var linelayer = new mapboxgl.supermap.L7Layer({ type: 'LineLayer', options: { blend: 'normal' } });

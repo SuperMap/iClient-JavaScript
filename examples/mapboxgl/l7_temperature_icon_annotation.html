@@ -89,7 +89,7 @@
 
           scene.addFontFace(fontFamily, fontPath);
           scene.once('fontloaded', () => {
-            fetch('../data/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
+            fetch('https://iclient.supermap.io/web/data/L7/94763191-2816-4c1a-8d0d-8bcf4181056a.json')
               .then((res) => res.json())
               .then((data) => {
                 var layer = new mapboxgl.supermap.L7Layer({
