@@ -1,5 +1,6 @@
 import maplibregl from 'maplibre-gl';
 import '../../../src/maplibregl/core/MapExtend';
+import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
 describe('maplibregl MapExtend', () => {
   var url = 'http://supermapiserver:8090/iserver/services/map-china400/rest/maps/China';
@@ -104,10 +105,6 @@ describe('maplibregl MapExtend', () => {
           )
         );
       }
-     
-      if (url.includes('vectorstyles')) {
-        return Promise.resolve(new Response(JSON.stringify({})));
-      }
     });
   });
   afterAll(() => {
@@ -117,6 +114,8 @@ describe('maplibregl MapExtend', () => {
 
   it('listLayers', (done) => {
     map.style._order = ['raster', 'fill-1', 'circle-1', 'l7_layer_1'];
+    const mockLayer = { recalculate: () => {}, isHidden: () => true, setEventedParent: () => {} };
+    map.style._layers = { raster: mockLayer, 'fill-1': mockLayer, 'circle-1': mockLayer, l7_layer_1: mockLayer };
     map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1' }, heatmap_1: { id: 'heatmap_1' } };
     const layers = map.listLayers();
     expect(layers).toEqual(['raster', 'fill-1', 'circle-1', 'l7_layer_1', 'heatmap_1']);
