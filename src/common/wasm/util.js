@@ -34,11 +34,6 @@ export function geojsonCoords2UGDoubleArray(coords) {
   return pDoubleArray
 }
 
-/**
- * 
- * @param {*} pDoubleArray 
- * @returns 
- */
 export function getJSArrayFromUGDoubleArray(pDoubleArray) {
   // get length of doublearray
   var length = window.Module._UGCWasm_Helper_GetDoubleArrayLength(pDoubleArray);
@@ -63,7 +58,8 @@ export function getJSArrayFromUGDoubleArray(pDoubleArray) {
 }
 
 /**
- * Convert UGC geometry pointer to GeoJSON object.
+ * @private
+ * @description Convert UGC geometry pointer to GeoJSON object.
  * @name ugGeometry2Geojson
  * @kind function
  * @param {number} pUGGeo - The UGC geometry pointer.
@@ -174,7 +170,8 @@ export function ugGeometry2Geojson(pUGGeo) {
 }
 
 /**
- * 转换 GeoJSON 对象到 GEOS geometry pointer。
+ * @private
+ * @description 转换 GeoJSON 对象到 GEOS geometry pointer。
  * @name geojsonToGeosGeom
  * @param {GeoJSON} geojson - The GeoJSON object.
  * @returns {number} A pointer to GEOS geometry

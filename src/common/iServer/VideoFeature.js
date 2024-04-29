@@ -25,20 +25,20 @@ export class VideoFeature {
     this.id;
     /**
      * @member {string} VideoFeature.prototype.name
-     * @description
+     * @description 视频名称
      */
     this.name = null;
 
     /**
      * @member {(L.Bounds|L.LatLngBounds|ol.extent|mapboxgl.LngLatBounds|GeoJSONObject|SuperMap.Bounds)} VideoFeature.prototype.geometry
-     * @description
+     * @description 视频参数对应的视频视角空间范围，只支持矩形
      *
      */
     this.geometry = null;
 
     /**
      * @member {string} VideoFeature.prototype.address
-     * @description
+     * @description 视频流地址
      */
     this.address = null;
 
@@ -58,7 +58,7 @@ export class VideoFeature {
 
   /**
    * @function VideoFeature.prototype.destroy
-   * @description
+   * @description 销毁此对象。
    */
   destroy() {
     if (this.geometry && this.geometry.destroy) {
@@ -73,7 +73,8 @@ export class VideoFeature {
   }
   /**
    * @function VideoFeature.prototype.toGeoJSONFeature
-   * @description
+   * @description 转换为GeoJSON Feature Object
+   * @return {Object}
    */
   toGeoJSONFeature(geometryFunction) {
     return {
@@ -87,7 +88,8 @@ export class VideoFeature {
   }
   /**
    * @function VideoFeature.prototype.toServerFeature
-   * @description
+   * @description 转换为iServer Feature Object
+   * @return {Object}
    */
   toServerFeature({ geometryFunction }) {
     const feature = {

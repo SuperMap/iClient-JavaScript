@@ -62,7 +62,8 @@
       "src/common/components/templates/Select",
       "src/common/security/KeyServiceParameter",
       "src/common/components/templates/TemplateBase",
-      "src/mapboxgl/core/Util"
+      "src/mapboxgl/core/Util",
+      "src/mapboxgl/overlay/L7/l7-render"
     ]
   },
   "plugins": ["plugins/markdown", "../plugins/usage", "../plugins/moduleCategories"],
