@@ -8,3 +8,4 @@
 /examples-test/reports
 /web/
 /package-lock.json
+.npmrc
