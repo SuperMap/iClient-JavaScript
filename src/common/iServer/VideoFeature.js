@@ -22,7 +22,7 @@ export class VideoFeature {
      * @member {string|number} VideoFeature.prototype.id
      * @description 要素 ID。
      */
-    this.id;
+    this.id = null;
     /**
      * @member {string} VideoFeature.prototype.name
      * @description 视频名称
