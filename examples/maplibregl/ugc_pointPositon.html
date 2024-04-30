@@ -203,18 +203,16 @@
             }
           };
           const result = geometryAnalysis[positonFun](px, py, line);
-          if (result.find) {
             addLayer('nearestPoint', 'circle', [{
             type: 'Feature',
             geometry: {
               type: 'Point',
-              coordinates: result.values
+              coordinates: result
             }
           }], {
             'circle-radius': 6,
             'circle-color': 'green'
           });
-          }
         } else {
           pointLists.forEach((point) => {
             const [px, py] = point.geometry.coordinates;

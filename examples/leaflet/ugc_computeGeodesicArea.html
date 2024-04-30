@@ -93,7 +93,7 @@
         clearPopup();
         var geometryAnalysis = new L.supermap.GeometryAnalysis();
         var area;
-        area = geometryAnalysis.computeGeodesicArea(polygon, 4326);
+        area = geometryAnalysis.computeGeodesicArea(polygon);
         marker.bindPopup('面积为: ' + area).openPopup();
       }
 

@@ -1,5 +1,5 @@
 import Module from '../../../src/common/util/UGCWasmAll';
-import { GeometryAnalysis } from '../../../src/common/util/Geometry';
+import { GeometryAnalysis } from '../../../src/common/util/GeometryAnalysis';
 
 describe('GeometryAnalysis', () => {
   var instance;
@@ -198,8 +198,7 @@ describe('GeometryAnalysis', () => {
         type: 'LineString'
       }
     });
-    expect(result.find).toBeTruthy();
-    expect(result.values.length).toBe(2);
+    expect(result.length).toBe(2);
   });
 
   it('computeConcaveHullPoints', () => {

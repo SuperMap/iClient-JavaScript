@@ -222,4 +222,4 @@ import './common/util/FetchRequestSpec';
 import './common/lang/LangSpec.js';
 import './common/util/EncryptRequestSpec';
 import './common/util/MapCalculateUtilSpec';
-import './common/util/GeometrySpec.js';
+import './common/util/GeometryAnalysisSpec.js';

@@ -191,15 +191,13 @@
             }
           };
           const result = geometryAnalysis[positonFun](px, py, line);
-          if (result.find) {
-            pointResults.push({
-              geometry: {
-                type: 'Point',
-                coordinates: result.values
-              },
-              type: 'Feature'
-            });
-          }
+          pointResults.push({
+            geometry: {
+              type: 'Point',
+              coordinates: result
+            },
+            type: 'Feature'
+          });
         } else {
           pointLists.forEach((point) => {
             const [px, py] = point.geometry.coordinates;

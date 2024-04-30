@@ -161,16 +161,7 @@
             for (let j = i + 1; j < pointLists.length; j++) {
               const [px1, py1] = pointLists[i].geometry.coordinates;
               const [px2, py2] = pointLists[j].geometry.coordinates;
-              const booleanResult = geometryAnalysis['isOnSameSide'](
-                px1,
-                py1,
-                px2,
-                py2,
-                spx,
-                spy,
-                epx,
-                epy
-              );
+              const booleanResult = geometryAnalysis['isOnSameSide'](px1, py1, px2, py2, spx, spy, epx, epy);
               if (booleanResult) {
                 pointResults.push(pointLists[i], pointLists[j]);
               }
@@ -203,18 +194,23 @@
             }
           };
           const result = geometryAnalysis[positonFun](px, py, line);
-          if (result.find) {
-            addLayer('nearestPoint', 'circle', [{
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: result.values
+          addLayer(
+            'nearestPoint',
+            'circle',
+            [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: result
+                }
+              }
+            ],
+            {
+              'circle-radius': 6,
+              'circle-color': 'green'
             }
-          }], {
-            'circle-radius': 6,
-            'circle-color': 'green'
-          });
-          }
+          );
         } else {
           pointLists.forEach((point) => {
             const [px, py] = point.geometry.coordinates;

@@ -152,7 +152,7 @@
       function search() {
         var geometryAnalysis = new ol.supermap.GeometryAnalysis();
         var area;
-        area = geometryAnalysis.computeGeodesicArea(polygon, 4326);
+        area = geometryAnalysis.computeGeodesicArea(polygon);
         var innerHTML = '面积为: ' + area;
         content.innerHTML = innerHTML;
         overlay.setPosition([121, 31]);

@@ -105,7 +105,7 @@
         clearPopup();
         var geometryAnalysis = new mapboxgl.supermap.GeometryAnalysis();
         var area;
-        area = geometryAnalysis.computeGeodesicArea(polygon, 4326);
+        area = geometryAnalysis.computeGeodesicArea(polygon);
         popup = new mapboxgl.Popup()
           .setLngLat([121, 31])
           .setHTML('面积为: ' + area)
