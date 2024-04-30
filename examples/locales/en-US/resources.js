@@ -1,4 +1,4 @@
-/* Copyright© 2000 - 2023 SuperMap Software Co.Ltd. All rights reserved.*/
+/* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.*/
 window.examplesResources = {
     "app": "SuperMap iClient 9D",
     "nav": {
@@ -136,7 +136,7 @@ window.examplesResources = {
         "join": "Join us: SuperMap Web Client Team",
         "join_tips1": "(Please send email to: ",
         "join_tips2": " and attach your resume)",
-        "copyright": "Copyright © 2000 - 2023 SuperMap Software Co., Ltd. All rights reserved"
+        "copyright": "Copyright © 2000 - 2024 SuperMap Software Co., Ltd. All rights reserved"
     },
     "editor": {
         "expand": " Expand",
