@@ -189,6 +189,13 @@ var exampleConfig = {
                       version: '11.2.0',
                       thumbnail: "attributes.png",
                       fileName: "02_attributes"
+                    },
+                    {
+                      name: "视频图层",
+                      name_en: "videoLayer",
+                      version: '11.2.0',
+                      thumbnail: "videoLayer.png",
+                      fileName: "videoLayer"
                     }
                 ]
             },

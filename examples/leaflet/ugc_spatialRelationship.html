@@ -39,7 +39,6 @@
             <span class="input-group-addon">查找对象</span>
             <select id="positon" class="form-control">
               <option value="hasTouch">边界相触</option>
-              <option value="isIdentical">完全相等</option>
             </select>
           </div>
         </div>
@@ -180,7 +179,13 @@
           }
         });
         searchResults.forEach((item) => {
-          res = L.geoJSON(item).addTo(map);
+          res = L.geoJSON(item, {
+          style: function() {
+            return {
+              color: 'green'
+            }
+          }
+        }).addTo(map);
           resArr.push(res);
         });
       }
