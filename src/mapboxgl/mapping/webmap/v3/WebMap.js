@@ -397,6 +397,15 @@ export class WebMap extends mapboxgl.Evented {
     }
   }
 
+  excludeSource(key) {
+    for (let i = 0; i < this.excludeSourceNames.length; i++) {
+      if (key && key.indexOf(this.excludeSourceNames[i]) >= 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   _getLayersOnMap() {
     const layersOnMap = this.map.getStyle().layers.map((layer) => this.map.getLayer(layer.id));
     const overlayLayers = Object.values(this.map.overlayLayersManager).reduce((layers, overlayLayer) => {
@@ -421,7 +430,8 @@ export class WebMap extends mapboxgl.Evented {
     const allLayersOnMap = layersOnMap
       .concat(overlayLayers)
       .filter((layer) => !this._appendLayers || this._layerIdRenameMapList.some((item) => item.renderId === layer.id))
-      .filter((layer) => !this.excludeSourceNames.includes(layer.source));
+      .filter((layer) => this.excludeSource(layer.source))
+      .filter((layer) => !layer.id.includes('-SM-'));
     return allLayersOnMap;
   }
 

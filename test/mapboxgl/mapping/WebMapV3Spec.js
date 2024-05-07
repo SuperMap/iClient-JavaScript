@@ -303,4 +303,57 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
   });
+
+  it('exclude source and layer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(appreciableLayers.length).toBeGreaterThanOrEqual(mapInfo.layers.length);
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
+      map.addLayer({
+        metadata: {},
+        paint: {
+          'background-color': '#242424'
+        },
+        id: 'layer-identify-SM-highlighted',
+        type: 'background'
+      });
+      map.addSource('mapbox-gl-draw-hot', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      });
+      map.addLayer({
+        metadata: {},
+        paint: {
+          'circle-color': "#f75564"
+        },
+        id: 'draw-vertex-active.hot',
+        source: 'mapbox-gl-draw-hot',
+        type: 'circle'
+      });
+      expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length);
+      done();
+    });
+  });
 });
