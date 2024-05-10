@@ -26,6 +26,7 @@ export class L7Layer {
     if (type !== 'ThreeLayer') {
       this.l7layer = new L7[type]({ ..._options, name: this.id });
     }
+    this.overlay = true;
   }
   preBuild() {
     if (!maplibregl.Map.prototype.mapExtendAddLayerBak) {
