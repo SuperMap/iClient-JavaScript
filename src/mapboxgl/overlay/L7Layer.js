@@ -81,7 +81,7 @@ export class L7Layer {
     this.scene && this.scene.removeLayer(this.l7layer);
   }
   onRemove() {
-    this.scene && this.scene.layerService.stopAnimate();
+    this.scene && this.scene.layerService.stopAnimate(this.l7layer.id);
     this.scene && this.scene.removeLayer(this.l7layer);
   }
 
