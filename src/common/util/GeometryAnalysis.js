@@ -29,7 +29,7 @@ export class GeometryAnalysis extends Events {
    * @version 11.2.0
    * @description 缓冲区分析。
    * @param {GeoJSONFeature} feature - geojson 要素。
-   * @param {string} radius - 半径。
+   * @param {number} radius - 缓冲区距离。
    * @returns {GeoJSONFeature} 结果要素。
    */
   buffer(feature, radius) {
@@ -107,14 +107,14 @@ export class GeometryAnalysis extends Events {
     * @function GeometryAnalysis.prototype.isParallel
     * @version 11.2.0
     * @description 线平行分析。
-    * @param {string} x1 - 第一条线的起点X。
-    * @param {string} y1 - 第一条线的起点Y。
-    * @param {string} x2 - 第一条线的终点X。
-    * @param {Object} y2 - 第一条线的终点Y。
-    * @param {string} x3 - 第二条线的起点X。
-    * @param {string} y3 - 第二条线的起点Y。
-    * @param {string} x4 - 第二条线的终点X。
-    * @param {Object} y4 - 第二条线的终点Y。
+    * @param {number} x1 - 第一条线的起点X。
+    * @param {number} y1 - 第一条线的起点Y。
+    * @param {number} x2 - 第一条线的终点X。
+    * @param {number} y2 - 第一条线的终点Y。
+    * @param {number} x3 - 第二条线的起点X。
+    * @param {number} y3 - 第二条线的起点Y。
+    * @param {number} x4 - 第二条线的终点X。
+    * @param {number} y4 - 第二条线的终点Y。
     * @returns {boolean} 两条线是否平行。
     */
   isParallel(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -125,12 +125,12 @@ export class GeometryAnalysis extends Events {
    * @function GeometryAnalysis.prototype.computePerpendicularPosition
    * @version 11.2.0
    * @description 点到线的垂线分析。
-   * @param {string} x1 - 点坐标 X。
-   * @param {string} y1 - 点坐标 Y。
-   * @param {string} x2 - 第一条线的起点X。
-   * @param {Object} y2 - 第一条线的起点Y。
-   * @param {string} x3 - 第一条线的终点X。
-   * @param {string} y3 - 第一条线的终点Y。
+   * @param {number} x1 - 点坐标 X。
+   * @param {number} y1 - 点坐标 Y。
+   * @param {number} x2 - 第一条线的起点X。
+   * @param {number} y2 - 第一条线的起点Y。
+   * @param {number} x3 - 第一条线的终点X。
+   * @param {number} y3 - 第一条线的终点Y。
    * @returns {Array} 垂线点坐标。
    */
   computePerpendicularPosition(x1, y1, x2, y2, x3, y3) {
@@ -144,12 +144,12 @@ export class GeometryAnalysis extends Events {
      * @function GeometryAnalysis.prototype.isPointOnLine
      * @version 11.2.0
      * @description 点是否在已知线段上。
-     * @param {string} x1 - 点坐标 X。
-     * @param {string} y1 - 点坐标 Y。
-     * @param {string} x2 - 第一条线的起点X。
-     * @param {Object} y2 - 第一条线的起点Y。
-     * @param {string} x3 - 第一条线的终点X。
-     * @param {string} y3 - 第一条线的终点Y。
+     * @param {number} x1 - 点坐标 X。
+     * @param {number} y1 - 点坐标 Y。
+     * @param {number} x2 - 第一条线的起点X。
+     * @param {number} y2 - 第一条线的起点Y。
+     * @param {number} x3 - 第一条线的终点X。
+     * @param {number} y3 - 第一条线的终点Y。
      * @param {boolean} extended - 是否将线段进行延长计算。
      * @returns {boolean} 点是否在已知线段上。
      */
@@ -164,9 +164,9 @@ export class GeometryAnalysis extends Events {
      * @param {number} px- 点 X 坐标。
      * @param {number} px - 点 Y 坐标。
      * @param {number} spx - 线起点 X 坐标。
-     * @param {Object} spy - 线起点 Y 坐标。
-     * @param {string} epx - 线终点 X 坐标。
-     * @param {Object} epy - 线终点 Y 坐标。
+     * @param {number} spy - 线起点 Y 坐标。
+     * @param {number} epx - 线终点 X 坐标。
+     * @param {number} epy - 线终点 Y 坐标。
      * @returns {boolean} 点到线段的垂足是否在该线段上。
      */
   isProjectOnLineSegment(px, py, spx, spy, epx, epy) {
@@ -180,9 +180,9 @@ export class GeometryAnalysis extends Events {
      * @param {number} px- 点 X 坐标。
      * @param {number} px - 点 Y 坐标。
      * @param {number} spx - 线起点 X 坐标。
-     * @param {Object} spy - 线起点 Y 坐标。
-     * @param {string} epx - 线终点 X 坐标。
-     * @param {Object} epy - 线终点 Y 坐标。
+     * @param {number} spy - 线起点 Y 坐标。
+     * @param {number} epx - 线终点 X 坐标。
+     * @param {number} epy - 线终点 Y 坐标。
      * @returns {number} 点到线段的距离。如果点到线段的垂足不在线段上，则返回点到线段较近的端点的距离。。
      */
   distanceToLineSegment(px, py, spx, spy, epx, epy) {
@@ -194,7 +194,7 @@ export class GeometryAnalysis extends Events {
    * @description 计算线到点的最近距离点。
    * @param {number} px - 点 X 坐标。
    * @param {number} py - 点 Y 坐标。
-   * @param {string} lineFeature - geojson 线要素。
+   * @param {GeoJSONFeature} lineFeature - geojson 线要素。
    * @returns {Array} 线到点最近点的坐标数组。
    */
   nearestPointToVertex(px, py, lineFeature) {
@@ -211,7 +211,7 @@ export class GeometryAnalysis extends Events {
      * @description 点数组凹闭包计算。
      * @param {Array} xArray - x 坐标数组。
      * @param {Array} yArray - y 坐标数组。
-     * @param {string} angle - 	凹包内最小角度。
+     * @param {number} angle - 	凹包内最小角度。
      * @returns {GeoJSONFeature} 结果要素。
      */
   computeConcaveHullPoints(xArray, yArray, angle) {
@@ -228,14 +228,14 @@ export class GeometryAnalysis extends Events {
      * @function GeometryAnalysis.prototype.isSegmentIntersect
      * @version 11.2.0
      * @description 计算线段是否相交。
-     * @param {string} x1 - 第一条线的起点X。
-     * @param {string} y1 - 第一条线的起点Y。
-     * @param {string} x2 - 第一条线的终点X。
-     * @param {Object} y2 - 第一条线的终点Y。
-     * @param {string} x3 - 第二条线的起点X。
-     * @param {string} y3 - 第二条线的起点Y。
-     * @param {string} x4 - 第二条线的终点X。
-     * @param {Object} y4 - 第二条线的终点Y。
+     * @param {number} x1 - 第一条线的起点X。
+     * @param {number} y1 - 第一条线的起点Y。
+     * @param {number} x2 - 第一条线的终点X。
+     * @param {number} y2 - 第一条线的终点Y。
+     * @param {number} x3 - 第二条线的起点X。
+     * @param {number} y3 - 第二条线的起点Y。
+     * @param {number} x4 - 第二条线的终点X。
+     * @param {number} y4 - 第二条线的终点Y。
      * @returns {boolean} 线是否相交。
      */
   isSegmentIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -246,10 +246,12 @@ export class GeometryAnalysis extends Events {
      * @function GeometryAnalysis.prototype.isIntersectRegionWithRect
      * @version 11.2.0
      * @description 几何对象与矩形是否相交分析。
-     * @param {string} feature - geojson 要素。
-     * @param {string} url - 请求地址。
-     * @param {string} params - 请求参数。
-     * @param {Object} options - 请求的配置属性。
+     * @param {GeoJSONFeature} feature - geojson 要素。
+     * @param {number} left - 矩形左坐标。
+     * @param {number} top - 矩形上坐标。
+     * @param {number} right - 矩形右坐标。
+     * @param {number} bottom - 矩形下坐标。
+     * @param {number} [tolerance=1e-6] - 容限。
      * @returns {boolean} 要素是否与矩形相交。
      */
   isIntersectRegionWithRect(feature, left, top, right, bottom, tolerance = 1e-6) {
@@ -266,9 +268,9 @@ export class GeometryAnalysis extends Events {
      * @param {number} px1- 点2 X 坐标。
      * @param {number} px2 - 点2 Y 坐标。 
      * @param {number} spx - 线起点 X 坐标。
-     * @param {Object} spy - 线起点 Y 坐标。
-     * @param {string} epx - 线终点 X 坐标。
-     * @param {Object} epy - 线终点 Y 坐标。
+     * @param {number} spy - 线起点 Y 坐标。
+     * @param {number} epx - 线终点 X 坐标。
+     * @param {number} epy - 线终点 Y 坐标。
      * @returns {boolean} 是否两点在线的同一侧。
      */
   isOnSameSide(px1, py1, px2, py2, spx, spy, epx, epy) {
@@ -282,9 +284,9 @@ export class GeometryAnalysis extends Events {
      * @param {number} px- 点 X 坐标。
      * @param {number} px - 点 Y 坐标。
      * @param {number} spx - 线起点 X 坐标。
-     * @param {Object} spy - 线起点 Y 坐标。
-     * @param {string} epx - 线终点 X 坐标。
-     * @param {Object} epy - 线终点 Y 坐标。
+     * @param {number} spy - 线起点 Y 坐标。
+     * @param {number} epx - 线终点 X 坐标。
+     * @param {number} epy - 线终点 Y 坐标。
      * @returns {boolean} 点是否在线的右侧。
      */
   isRight(px, py, spx, spy, epx, epy) {
@@ -298,9 +300,9 @@ export class GeometryAnalysis extends Events {
      * @param {number} px- 点 X 坐标。
      * @param {number} px - 点 Y 坐标。
      * @param {number} spx - 线起点 X 坐标。
-     * @param {Object} spy - 线起点 Y 坐标。
-     * @param {string} epx - 线终点 X 坐标。
-     * @param {Object} epy - 线终点 Y 坐标。
+     * @param {number} spy - 线起点 Y 坐标。
+     * @param {number} epx - 线终点 X 坐标。
+     * @param {number} epy - 线终点 Y 坐标。
      * @returns {boolean} 点是否在线的左侧。
      */
   isLeft(px, py, spx, spy, epx, epy) {
@@ -308,12 +310,12 @@ export class GeometryAnalysis extends Events {
     return result === 1;
   }
   /**
-     * @function GeometryAnalysis.prototype.computeGeodesicArea
-     * @version 11.2.0
-     * @description 计算经纬度面积。
-     * @param {GeoJSONFeature} feature - geojson 面要素。
-     * @returns {number} 经纬度面积。
-     */
+   * @function GeometryAnalysis.prototype.computeGeodesicArea
+   * @version 11.2.0
+   * @description 计算经纬度面积。
+   * @param {GeoJSONFeature} feature - geojson 面要素。
+   * @returns {number} 经纬度面积。
+   */
   computeGeodesicArea(feature) {
     const ugFeature = geojson2UGGeometry(feature);
     const prjCoordSys = this.module._UGCWasm_Geometry_NewUGPrjCoordSys(4326);
@@ -324,7 +326,7 @@ export class GeometryAnalysis extends Events {
    * @version 11.2.0
    * @description 线要素光滑分析。
    * @param {GeoJSONFeature} feature - geojson 要素。
-   * @param {string} [smoothness=2] - 光滑系数。
+   * @param {number} [smoothness=2] - 光滑系数。
    * @returns {GeoJSONFeature} 结果要素。
    */
   smooth(feature, smoothness = 2) {
