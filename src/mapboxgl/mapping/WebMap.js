@@ -3,7 +3,6 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { Lang } from '@supermap/iclient-common/lang/Lang';
 import { Util } from '../core/Util';
 import { WebMap as WebMapV2 } from './webmap/v2/WebMap';
 import { WebMap as WebMapV3 } from './webmap/v3/WebMap';
@@ -135,12 +134,6 @@ export class WebMap extends mapboxgl.Evented {
         return response.json();
       })
       .then((mapInfo) => {
-        const projectionMap = ['EPSG:4490', 'EPSG:4214', 'EPSG:4610', 'EPSG:3857', 'EPSG:4326'];
-        const baseProjection = this._getMapProjection(mapInfo);
-        // 坐标系异常处理
-        if (!projectionMap.find(item => item === baseProjection)) {
-          throw Error(Lang.i18n('msg_crsunsupport'));
-        }
         this.webMapInstance = this._initMap(mapInfo);
         this._registerWebMapEvents();
         this.webMapInstance.initializeMap(mapInfo);
@@ -153,19 +146,6 @@ export class WebMap extends mapboxgl.Evented {
          */
         this.fire('getmapfailed', { error: error });
       });
-  }
-
-  /**
-   * @private
-   * @function WebMap.prototype._getMapProjection
-   * @param {object} mapInfo - 地图信息。
-   * @description 获取地图投影。
-   */
-  _getMapProjection(mapInfo) {
-    if (this._isWebMapV3(mapInfo.version)) {
-      return mapInfo.crs;
-    }
-    return mapInfo.projection;
   }
 
   /**

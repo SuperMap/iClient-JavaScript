@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { Lang } from '@supermap/iclient-common/lang/Lang';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
 import '../../resources/WebMapV5.js';
 window.jsonsql = { query: () => { } };
@@ -866,4 +867,22 @@ describe('mapboxgl_WebMap', () => {
             }, 100);
         });
     });
+
+    it('crs unsupport', (done) => {
+        let options = {
+            server: server
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = JSON.stringify({...JSON.parse(datavizWebMap_WMTS1), projection: 'EPSG:-1000'});
+                return Promise.resolve(new Response(mapJson));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+        datavizWebmap.on('getmapfailed', ({ error }) => {
+            expect(error.message).toBe(Lang.i18n('msg_crsunsupport'));
+            done();
+        });
+    })
 });
