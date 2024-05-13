@@ -118,3 +118,6 @@ mapboxgl.Map.prototype.getL7Scene = function () {
     });
   });
 };
+
+
+export { L7 };

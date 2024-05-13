@@ -3,6 +3,8 @@ import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/v3/WebMap';
 import '../../resources/WebMapV3.js';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import * as L7 from '../../../src/mapboxgl/overlay/L7/l7-render';
+import * as mockL7 from '../../tool/mock_l7';
 
 describe('mapboxgl-webmap3.0', () => {
   var originalTimeout, testDiv;
@@ -20,7 +22,7 @@ describe('mapboxgl-webmap3.0', () => {
     window.document.body.appendChild(testDiv);
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    mapboxgl.Map.prototype.overlayLayersManager = {}
+    mapboxgl.Map.prototype.overlayLayersManager = {};
   });
   afterEach(() => {
     if (mapstudioWebmap && mapstudioWebmap.map) {
@@ -116,9 +118,9 @@ describe('mapboxgl-webmap3.0', () => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       const mapInfo = JSON.parse(mapstudioWebMap_symbol);
       expect(style.layers.length).toBe(mapInfo.layers.length);
-      expect(webMapV3.getAppreciableLayers().length).toBeGreaterThanOrEqual(0);
       expect(webMapV3.getLegendInfo().length).not.toBe(0);
       expect(webMapV3.getLayerCatalog().length).not.toBe(0);
+      expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(webMapV3.getAppreciableLayers().length);
       done();
     });
   });
@@ -144,7 +146,6 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
-      expect(appreciableLayers.length).toBeGreaterThanOrEqual(mapInfo.layers.length);
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
       map.addLayer({
@@ -155,6 +156,7 @@ describe('mapboxgl-webmap3.0', () => {
         id: 'ms-background12',
         type: 'background'
       });
+      expect(map.getStyle().layers.length).toBe(mapInfo.layers.length + 1);
       expect(mapstudioWebmap.getAppreciableLayers().length).toBe(appreciableLayers.length + 1);
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
       done();
@@ -220,7 +222,6 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(nextMapInfo.layers.length);
       const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
-      expect(appreciableLayers.length).toBeGreaterThanOrEqual(nextMapInfo.layers.length);
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
       delete mapboxgl.CRS;
@@ -249,7 +250,6 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
-      expect(appreciableLayers.length).toBeGreaterThanOrEqual(mapInfo.layers.length);
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
       map.overlayLayersManager = {
@@ -257,7 +257,8 @@ describe('mapboxgl-webmap3.0', () => {
           id: 'GraticuleLayer',
           overlay: true,
           sourceId: 'GraticuleLayer',
-          visible: true
+          visible: true,
+          type: 'custom'
         },
         EchartLayer: {
           id: 'EchartLayer',
@@ -265,18 +266,38 @@ describe('mapboxgl-webmap3.0', () => {
           source: {
             type: 'geoJSON',
             data: null
-          }
+          },
+          type: 'custom'
+        },
+        TestLayer: {
+          id: 'TestLayer',
+          overlay: true,
+          type: 'custom'
+        },
+        TestLayer2: {
+          id: 'TestLayer2',
+          overlay: true,
+          type: 'custom',
+          visible: false
         },
         GraticuleLayer1: {
           id: 'GraticuleLayer',
           overlay: true,
-          sourceId: 'GraticuleLayer'
+          type: 'custom'
         }
       };
+      const validNum = 4;
       const appreciableLayers2 = mapstudioWebmap.getAppreciableLayers();
-      expect(appreciableLayers2.length).toBe(appreciableLayers.length + 2);
-      expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 2);
-      expect(appreciableLayers2.find((item) => item.renderSource.id === 'EchartLayer')).toBeTruthy();
+      expect(appreciableLayers2.length).toBe(appreciableLayers.length + validNum);
+      expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + validNum);
+      expect(appreciableLayers2.find((item) => item.id === 'EchartLayer')).toBeTruthy();
+      const testLayer = appreciableLayers2.find((item) => item.id === 'TestLayer');
+      expect(testLayer).not.toBeUndefined();
+      expect(testLayer.visible).toBeTruthy();
+      expect(testLayer.renderSource.id).toBeUndefined();
+      const testLayer2 = appreciableLayers2.find((item) => item.id === 'TestLayer2');
+      expect(testLayer2).not.toBeUndefined();
+      expect(testLayer2.visible).toBeFalsy();
       done();
     });
   });
@@ -293,13 +314,9 @@ describe('mapboxgl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    let count = 0;
     mapstudioWebmap.on('getlayersfailed', ({ error }) => {
-      expect(['drill', 'line-curve', 'chart', 'circle-animate', 'heatmap-extrusion', 'point-extrusion'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
-      count++;
-      if (count === 7) {
-        done();
-      }
+      expect(['drill'].indexOf(error.split(' ')[0]) > -1).toBeTruthy();
+      done();
     });
     mapstudioWebmap.initializeMap(mapInfo);
   });
@@ -325,7 +342,6 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
       const layerCatalogs = mapstudioWebmap.getLayerCatalog();
-      expect(appreciableLayers.length).toBeGreaterThanOrEqual(mapInfo.layers.length);
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       map.addLayer({
         metadata: {},
@@ -345,7 +361,7 @@ describe('mapboxgl-webmap3.0', () => {
       map.addLayer({
         metadata: {},
         paint: {
-          'circle-color': "#f75564"
+          'circle-color': '#f75564'
         },
         id: 'draw-vertex-active.hot',
         source: 'mapbox-gl-draw-hot',
@@ -355,5 +371,101 @@ describe('mapboxgl-webmap3.0', () => {
       expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length);
       done();
     });
+  });
+
+  it('load l7Layers', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: mapInfo.crs.name, getExtent: () => jest.fn() };
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/319778096/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData319778096Items));
+      }
+      if (url.indexOf('/web/datas/319778096/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData319778096));
+      }
+      if (url.indexOf('/web/datas/722265775/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData722265775Items));
+      }
+      if (url.indexOf('/web/datas/722265775/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData722265775));
+      }
+      if (url.indexOf('/web/datas/683260445/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData683260445Items));
+      }
+      if (url.indexOf('/web/datas/683260445/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData683260445));
+      }
+      if (url.indexOf('/web/datas/1074889932/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1074889932Items));
+      }
+      if (url.indexOf('/web/datas/1074889932/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1074889932));
+      }
+      return Promise.resolve();
+    });
+    mapboxgl.CRS = function () {};
+    mapboxgl.CRS.set = function () {};
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      expect(style.layers.length).toBeLessThan(mapInfo.layers.length);
+      expect(mapstudioWebmap._getLayersOnMap().length).toBe(mapInfo.layers.length);
+      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
+      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      delete mapboxgl.Map.prototype.getCRS;
+      delete mapboxgl.CRS;
+      done();
+    });
+  });
+
+  it('projectionisnotmatch', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: '' };
+    };
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+
+    mapstudioWebmap.on('projectionisnotmatch', () => {
+      expect(mapstudioWebmap.map).not.toBeUndefined();
+      const style = mapstudioWebmap.map.getStyle();
+      expect(style.layers.length).toBe(0);
+      delete mapboxgl.Map.prototype.getCRS;
+      done();
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
   });
 });

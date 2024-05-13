@@ -10,7 +10,11 @@ const Scene = () => {
     removeLayer: () => true,
     on: (type, callback) => {
       callback();
-    }
+    },
+    addMarkerLayer: () => true,
+    removeMarkerLayer: () => true,
+    addImage: () => true,
+    hasImage: () => false
   };
 };
 const Mapbox = ({ mapInstance }) => {
@@ -36,6 +40,12 @@ const Layer = () => {
       return this;
     },
     color() {
+      return this;
+    },
+    texture() {
+      return this;
+    },
+    filter() {
       return this;
     },
     shape() {
