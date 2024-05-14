@@ -16,12 +16,33 @@ function compareDependencies(pkgName, dependenciesToCompare, rootDependencies = 
   });
 }
 
+function checkRootDependencies(dependenciesToCompare, rootDependencies = pkg.dependencies) {
+  const clientDepsList = Object.values(dependenciesToCompare);
+  const clientNames = Object.keys(dependenciesToCompare);
+  Object.keys(rootDependencies).forEach(name => {
+    if (rootDependencies[name].includes('file:src/')){
+      return;
+    }
+    if (!clientDepsList.some(deps => Object.keys(deps).some(item => item === name))) {
+      console.log(chalk.red(`ERROR: The dependency ${name} version can not match in (${clientNames.join('|')}) package.json!\n`));
+    }
+  });
+}
+
 const packageToClients = ['common', 'classic', 'leaflet', 'openlayers', 'mapboxgl', 'maplibregl'];
-packageToClients.forEach(client => {
+
+const clientDepencies = packageToClients.reduce((list, client) => {
   // eslint-disable-next-line import/no-dynamic-require
   const clientPkg = require(`../src/${client}/package.json`);
-  compareDependencies(clientPkg.name, clientPkg.dependencies);
-});
+  list[clientPkg.name] = clientPkg.dependencies;
+  return list;
+}, {});
+
+for (const clientName in clientDepencies) {
+  compareDependencies(clientName, clientDepencies[clientName]);
+}
+
+checkRootDependencies(clientDepencies);
 
 //包版本(ES6或者ES5)
 let moduleVersion = process.env.moduleVersion || 'es5';
