@@ -79,6 +79,11 @@ export class WebMap extends mapboxgl.Evented {
     * @param {Object} mapInfo - map 信息。
     */
    initializeMap(mapInfo) {
+	const projectionMap = ['EPSG:4490', 'EPSG:4214', 'EPSG:4610', 'EPSG:3857', 'EPSG:4326'];
+	// 坐标系异常处理
+	if (!projectionMap.find(item => item === mapInfo.projection)) {
+		throw Error(Lang.i18n('msg_crsunsupport'));
+	}
     this.baseProjection = mapInfo.projection;
     //存储地图的名称以及描述等信息，返回给用户
     this.mapParams = {

@@ -4,13 +4,17 @@ const libName = 'mapboxgl';
 //产品包名
 const productName = 'iclient-mapboxgl';
 //复制文件
-const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   target: configBase.target,
   mode: configBase.mode,
   //页面入口文件配置
-  entry: [...configBase.entry, `${__dirname}/../src/mapboxgl/namespace.js`, `${__dirname}/../src/mapboxgl/css/index.js`],
+  entry: [
+    ...configBase.entry,
+    `${__dirname}/../src/mapboxgl/namespace.js`,
+    `${__dirname}/../src/mapboxgl/css/index.js`
+  ],
   //入口文件输出配置
   output: configBase.output(libName, productName),
   //是否启用压缩
@@ -29,9 +33,10 @@ module.exports = {
       'webgl-debug': '(function(){try{return webgl-debug}catch(e){return {}}})()',
       xlsx: 'function(){try{return XLSX}catch(e){return {}}}()',
       canvg: 'function(){try{return canvg}catch(e){return {}}}()',
-      '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
+      '@turf/turf': 'function(){try{return turf}catch(e){return {}}}()',
       jsonsql: 'function(){try{return jsonsql}catch(e){return {}}}()',
-      './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()'
+      './L7/l7-render': 'function(){try{return L7}catch(e){return {}}}()',
+      '@antv/g2': 'function(){try{return G2}catch(e){return {}}}()'
     })
   ],
 
@@ -60,8 +65,8 @@ module.exports = {
             ]
           ]
         }
-      }
-      configBase.moduleVersion === "es6" && (babelConfig.include = /FGBLayer|flatgeobuf/);
+      };
+      configBase.moduleVersion === 'es6' && (babelConfig.include = /FGBLayer|flatgeobuf/);
       moduleRules.push(babelConfig);
       moduleRules.push(configBase.module.rules.css);
       return moduleRules;

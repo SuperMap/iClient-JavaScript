@@ -65,7 +65,8 @@
             "src/common/security/KeyServiceParameter",
             "src/common/components/templates/TemplateBase",
             "src/mapboxgl/core/Util",
-            "src/mapboxgl/overlay/L7/l7-render"
+            "src/mapboxgl/overlay/L7/l7-render",
+            "src/mapboxgl/mapping/utils"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/usage", "../plugins/moduleCategories"],

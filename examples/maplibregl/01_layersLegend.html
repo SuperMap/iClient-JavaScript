@@ -13,6 +13,7 @@
       max-height: 40vh;
       overflow: auto;
       font-size: 12px;
+      text-wrap: nowrap;
     }
 
     #layersList label {
@@ -111,12 +112,12 @@
           layerGroup.innerHTML = layer.name;
           layerGroup.className = 'layer-group';
           layerGroup.setAttribute('data-toggle', 'collapse');
-          layerGroup.setAttribute('data-target', '#' + layer.name);
+          layerGroup.setAttribute('data-target', '#' + layer.name.replace(/#/g, '_'));
           groupWrapper.appendChild(layerGroup);
 
           parentDom.appendChild(groupWrapper);
           var collapse = document.createElement('div');
-          collapse.id = layer.name;
+          collapse.id = layer.name.replace(/#/g, '_');
           collapse.className = 'collapse';
           collapse.style.paddingLeft = '18px';
           groupWrapper.appendChild(collapse);
