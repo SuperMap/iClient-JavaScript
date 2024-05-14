@@ -14,9 +14,12 @@ module.exports = {
     browser.elements('css selector', '.panel.panel-primary', function (result) {
       console.log('----Hope number of panel to be 2, actual is ' + result.value.length);
     });
+    browser.waitForElementVisible('#mapLegend>div');
     browser.expect.elements('#layersList label').count.to.equal(9);
-    browser.click('#layersList input');
+    browser.click('.panel.panel-primary #layersList input');
     browser.click('.btn.btn-default');
+    browser.waitForElementVisible('#mapLegend>div');
+    browser.pause(1000);
     browser.expect.elements('#mapLegend>div').count.to.equal(4);
     browser.expect.element('#mapLegend div:nth-child(1)').text.to.equal('CoordsysLabel@Jingjin');
     browser.expect.element('#mapLegend div:nth-child(3)').text.to.equal('Landuse_R@Jingjin#1');
