@@ -533,7 +533,8 @@ var mapstudioWebMap_symbol = JSON.stringify({
         'text-max-width': 10,
         'icon-anchor': 'center',
         'text-ignore-placement': false,
-        'icon-rotate': 0
+        'icon-rotate': 0,
+        'text-z-offset': 0
       },
       metadata: {},
       paint: {
@@ -547,8 +548,7 @@ var mapstudioWebMap_symbol = JSON.stringify({
         'text-halo-width': 1,
         'icon-opacity': 0.9,
         'text-opacity': 1,
-        'text-translate': [0, 0],
-        'text-z-offset': 0
+        'text-translate': [0, 0]
       },
       id: 'ms_站点3_1712735857741_21',
       source: 'ms_1755873792_1712735857741_22',

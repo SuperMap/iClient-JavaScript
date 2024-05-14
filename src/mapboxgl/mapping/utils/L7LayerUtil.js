@@ -1727,6 +1727,11 @@ function createG2ChartDataByFeature(fields, feature, hasPercent = false) {
  * @param {g2ChartItemData[]} itemData
  */
 function createG2Chart(el, width, height, itemData) {
+  if (!G2) {
+    const errorMsg = 'G2 is not define';
+    console.error(errorMsg);
+    throw new Error(errorMsg);
+  }
   const chart = new G2.Chart({
     container: el,
     width,

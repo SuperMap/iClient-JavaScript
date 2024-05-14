@@ -276,34 +276,38 @@ export class WebMap extends mapboxgl.Evented {
    * @description emit 图层加载成功事件。
    */
   async _addLayersToMap() {
-    const { sources, layers, layerCatalog, catalogs } = this._setUniqueId(this._mapInfo, this._mapResourceInfo);
-    Object.assign(this._mapInfo, {
-      sources,
-      layers,
-      metadata: Object.assign(this._mapInfo.metadata, { layerCatalog })
-    });
-    Object.assign(this._mapResourceInfo, { catalogs });
-    const mapboxglLayers = layers.filter((layer) => !isMapboxUnSupportLayer(layer));
-    mapboxglLayers.forEach((layer) => {
-      layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
-      // L7才会用到此属性
-      if (layer.type === 'symbol' && (layer.layout || {})['text-z-offset'] === 0) {
-        delete layer.layout['text-z-offset'];
-      }
-      this.map.addLayer(layer);
-    });
-    const l7Layers = layers.filter((layer) => isMapboxUnSupportLayer(layer));
-    if (l7Layers.length > 0) {
-      await addL7Layers({
-        map: this.map,
-        webMapInfo: { ...this._mapInfo, layers, sources },
-        l7Layers,
-        spriteDatas: this._spriteDatas,
-        options: this.options
+    try {
+      const { sources, layers, layerCatalog, catalogs } = this._setUniqueId(this._mapInfo, this._mapResourceInfo);
+      Object.assign(this._mapInfo, {
+        sources,
+        layers,
+        metadata: Object.assign(this._mapInfo.metadata, { layerCatalog })
       });
+      Object.assign(this._mapResourceInfo, { catalogs });
+      const mapboxglLayers = layers.filter((layer) => !isMapboxUnSupportLayer(layer));
+      mapboxglLayers.forEach((layer) => {
+        layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
+        // L7才会用到此属性
+        if (layer.type === 'symbol' && (layer.layout || {})['text-z-offset'] === 0) {
+          delete layer.layout['text-z-offset'];
+        }
+        this.map.addLayer(layer);
+      });
+      const l7Layers = layers.filter((layer) => isMapboxUnSupportLayer(layer));
+      if (l7Layers.length > 0) {
+        await addL7Layers({
+          map: this.map,
+          webMapInfo: { ...this._mapInfo, layers, sources },
+          l7Layers,
+          spriteDatas: this._spriteDatas,
+          options: this.options
+        });
+      }
+      this._createLegendInfo();
+      this._sendMapToUser();
+    } catch (error) {
+      this.fire('getlayersfailed', { error, map: this.map });
     }
-    this._createLegendInfo();
-    this._sendMapToUser();
   }
 
   /**
@@ -553,7 +557,7 @@ export class WebMap extends mapboxgl.Evented {
   _generateLayerCatalog() {
     const { layerCatalog } = this._mapInfo.metadata;
     const layerIdsFromCatalog = layerCatalog.reduce((ids, item) => {
-      const list = this._collectChildrenKey([item], 'id');
+      const list = this._collectChildrenKey([item], ['id', 'parts']);
       ids.push(...list);
       return ids;
     }, []);
@@ -602,18 +606,28 @@ export class WebMap extends mapboxgl.Evented {
 
   _updateLayerVisible(catalogs) {
     for (const data of catalogs) {
-      const list = this._collectChildrenKey([data], 'visible');
+      const list = this._collectChildrenKey([data], ['visible']);
       data.visible = list.every((item) => item);
     }
   }
 
-  _collectChildrenKey(catalogs, key, list = []) {
+  _collectChildrenKey(catalogs, keys, list = []) {
     for (const data of catalogs) {
       if (data.type === 'group') {
-        this._collectChildrenKey(data.children, key, list);
+        this._collectChildrenKey(data.children, keys, list);
         continue;
       }
-      list.push(data[key]);
+      keys.forEach(item => {
+        if (!(item in data)) {
+          return;
+        }
+        const value = data[item];
+        if (value instanceof Array) {
+          list.push(...value);
+          return;
+        }
+        list.push(value);
+      });
     }
     return list;
   }
