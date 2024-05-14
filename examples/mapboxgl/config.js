@@ -1602,20 +1602,20 @@ var exampleConfig = {
                   thumbnail: 'l7_path_arrow.png',
                   fileName: 'l7_path_arrow'
                 },
-                // {
-                //   name: '风场动画',
-                //   name_en: 'Wind animation',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_wind_animation.png',
-                //   fileName: 'l7_wind_animation'
-                // },
-                // {
-                //   name: '直线动画',
-                //   name_en: 'Line animation',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_line_animation.png',
-                //   fileName: 'l7_line_animation'
-                // },
+                {
+                  name: '风场动画',
+                  name_en: 'Wind animation',
+                  version: '11.2.0',
+                  thumbnail: 'l7_wind_animation.png',
+                  fileName: 'l7_wind_animation'
+                },
+                {
+                  name: '直线动画',
+                  name_en: 'Line animation',
+                  version: '11.2.0',
+                  thumbnail: 'l7_line_animation.png',
+                  fileName: 'l7_line_animation'
+                },
                 {
                   name: '航向图',
                   name_en: 'Heading chart',
@@ -1637,13 +1637,13 @@ var exampleConfig = {
                   thumbnail: 'l7_trajectory_animation.png',
                   fileName: 'l7_trajectory_animation'
                 },
-                // {
-                //   name: '大圆弧线',
-                //   name_en: 'Large circular arc',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_large_circular_arc.png',
-                //   fileName: 'l7_large_circular_arc'
-                // },
+                {
+                  name: '大圆弧线',
+                  name_en: 'Large circular arc',
+                  version: '11.2.0',
+                  thumbnail: 'l7_large_circular_arc.png',
+                  fileName: 'l7_large_circular_arc'
+                },
                 {
                   name: '3D 弧线',
                   name_en: 'Line arc3d',
@@ -1763,13 +1763,13 @@ var exampleConfig = {
                   thumbnail: 'l7_heatmap3D.png',
                   fileName: 'l7_heatmap3D'
                 },
-                // {
-                //   name: '网格世界地图',
-                //   name_en: 'Grid World Map',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_grid_world_map.png',
-                //   fileName: 'l7_grid_world_map'
-                // },
+                {
+                  name: '网格世界地图',
+                  name_en: 'Grid World Map',
+                  version: '11.2.0',
+                  thumbnail: 'l7_grid_world_map.png',
+                  fileName: 'l7_grid_world_map'
+                },
                 {
                   name: '网格热力图',
                   name_en: 'Heatmap Grid',
@@ -1791,13 +1791,13 @@ var exampleConfig = {
                   thumbnail: 'l7_heatmap_grid2.png',
                   fileName: 'l7_heatmap_grid2'
                 },
-                // {
-                //   name: '蜂窝热力图',
-                //   name_en: 'Heatmap hexagon',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_heatmap_hexagon.png',
-                //   fileName: 'l7_heatmap_hexagon'
-                // },
+                {
+                  name: '蜂窝热力图',
+                  name_en: 'Heatmap hexagon',
+                  version: '11.2.0',
+                  thumbnail: 'l7_heatmap_hexagon.png',
+                  fileName: 'l7_heatmap_hexagon'
+                },
                 {
                   name: '蜂窝热力图',
                   name_en: 'Heatmap hexagon',
@@ -1818,7 +1818,7 @@ var exampleConfig = {
                   version: '11.2.0',
                   thumbnail: 'l7_heatmap_hexagon3.png',
                   fileName: 'l7_heatmap_hexagon3'
-                }
+                },
                 // {
                 //   name: '平面图层',
                 //   name_en: 'Flat layer',
@@ -1833,20 +1833,20 @@ var exampleConfig = {
                 //   thumbnail: 'l7_3d_terrain.png',
                 //   fileName: 'l7_3d_terrain'
                 // },
-                // {
-                //   name: '雪花粒子',
-                //   name_en: 'Snowflake particle',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_snow_particle.png',
-                //   fileName: 'l7_snow_particle'
-                // },
-                // {
-                //   name: '雨滴粒子',
-                //   name_en: 'Raindrop particle',
-                //   version: '11.2.0',
-                //   thumbnail: 'l7_rain_particle.png',
-                //   fileName: 'l7_rain_particle'
-                // }
+                {
+                  name: '雪花粒子',
+                  name_en: 'Snowflake particle',
+                  version: '11.2.0',
+                  thumbnail: 'l7_snow_particle.png',
+                  fileName: 'l7_snow_particle'
+                },
+                {
+                  name: '雨滴粒子',
+                  name_en: 'Raindrop particle',
+                  version: '11.2.0',
+                  thumbnail: 'l7_rain_particle.png',
+                  fileName: 'l7_rain_particle'
+                }
               ]
             }
         }
