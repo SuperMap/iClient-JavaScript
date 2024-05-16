@@ -238,14 +238,6 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
-    var testDiv = window.document.createElement("div");
-    testDiv.setAttribute("id", "map");
-    testDiv.style.styleFloat = "left";
-    testDiv.style.marginLeft = "8px";
-    testDiv.style.marginTop = "50px";
-    testDiv.style.width = "1000px";
-    testDiv.style.height = "500px";
-    window.document.body.appendChild(testDiv);
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     const nextMapInfo = {
       ...mapInfo,
