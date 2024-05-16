@@ -836,7 +836,7 @@ export class WebMap extends mapboxgl.Evented {
         return LEGEND_RENDER_TYPE.LINE;
       case 'fill':
         return LEGEND_RENDER_TYPE.FILL;
-      case 'fill-extrusion':
+      case 'fillExtrusion':
         return LEGEND_RENDER_TYPE.FILLEXTRUSION;
       case 'animatePoint':
         return LEGEND_RENDER_TYPE.ANIMATEPOINT;
@@ -871,7 +871,7 @@ export class WebMap extends mapboxgl.Evented {
       case 'fill':
       case 'heatGrid':
       case 'heat3DGrid':
-      case 'fill-extrusion':
+      case 'fillExtrusion':
         return LEGEND_SHAPE_TYPE.RECTANGLE;
       case 'animatePoint':
         return LEGEND_SHAPE_TYPE.ANIMATEPOINT;
@@ -1207,7 +1207,7 @@ export class WebMap extends mapboxgl.Evented {
           Object.assign(cssStyle, { outline: defaultStyle.outline, marginLeft: '1px' });
         }
         if (this._spriteDatas[symbolId]) {
-          return this._getSpriteStyle(symbolId, cssStyle);
+          return this._getSpriteStyle(symbolId, { ...cssStyle, backgroundColor: 'transparent' });
         }
         return {
           type: LEGEND_STYLE_TYPES.STYLE,
