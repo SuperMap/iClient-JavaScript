@@ -130,7 +130,7 @@ const Map = function (options) {
 
   this.getSource = function (name) {
     this._sources[name];
-    if (this._sources[name].type === 'video') {
+    if (this._sources[name]?.type === 'video') {
       return {
         play: function () {}
       };

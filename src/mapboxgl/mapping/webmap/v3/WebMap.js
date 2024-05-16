@@ -112,6 +112,10 @@ export class WebMap extends mapboxgl.Evented {
   initializeMap(mapInfo, map) {
     mapInfo = this._handleUnSupportedLayers(mapInfo);
     this._mapInfo = mapInfo;
+    const proj = this._setBaseProjection();
+    if(!proj) {
+      return;
+    }
     if (map) {
       this._appendLayers = true;
       this.map = map;
@@ -145,7 +149,6 @@ export class WebMap extends mapboxgl.Evented {
   _createMap() {
     let {
       name = '',
-      crs,
       center = new mapboxgl.LngLat(0, 0),
       zoom = 0,
       bearing = 0,
@@ -154,18 +157,6 @@ export class WebMap extends mapboxgl.Evented {
       maxzoom,
       sprite = ''
     } = this._mapInfo;
-    let baseProjection = crs;
-    if (typeof crs === 'object') {
-      baseProjection = crs.name;
-      if (!mapboxgl.CRS) {
-        const error = `The EPSG code ${baseProjection} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
-        this.fire('getmapinfofailed', { error: error });
-        console.error(error);
-        return;
-      }
-      this._setCRS(crs);
-    }
-    this._baseProjection = baseProjection;
     center = this.mapOptions.center || center;
     zoom = this.mapOptions.zoom || zoom;
     bearing = this.mapOptions.bearing || bearing;
@@ -198,6 +189,23 @@ export class WebMap extends mapboxgl.Evented {
       this._initLayers();
     });
   }
+
+  _setBaseProjection() { 
+    let crs = this._mapInfo.crs;
+    let baseProjection = crs;
+    if (typeof crs === 'object') {
+      baseProjection = crs.name;
+      if (!mapboxgl.CRS) {
+        const error = `The EPSG code ${baseProjection} needs to include mapbox-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/mapboxgl/editor.html#mvtVectorTile_2362`;
+        this.fire('getmapinfofailed', { error: error });
+        console.error(error);
+        return;
+      }
+      this._setCRS(crs);
+    }
+    this._baseProjection = baseProjection;
+    return this._baseProjection;
+   }
 
   _setCRS({ name, wkt, extent }) {
     const crs = new mapboxgl.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
