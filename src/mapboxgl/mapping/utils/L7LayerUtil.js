@@ -1953,7 +1953,7 @@ export async function addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, opti
   for (const l of formateL7Layers) {
     const layerIndex = layers.findIndex((wLayer) => wLayer.id === l.id);
     // 从剩下的图层中找到第一个通过setStyle已经添加过的mapboxgl图层
-    const beforeLayer = layers.slice(layerIndex + 1).find((r) => !isMapboxUnSupportLayer(r));
+    const beforeLayer = layers.slice(layerIndex + 1).find((r) => !isL7Layer(r));
     if (l.layerType === AntvL7LayerType.MarkerLayer) {
       const actionLayer = l;
       (l.options || {}).visible !== false && addL7MarkerLayer(actionLayer, scene);
@@ -1969,7 +1969,7 @@ export async function addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, opti
  * mapboxgl不支持渲染的图层类型
  * @param layer
  */
-export function isMapboxUnSupportLayer(layer) {
+export function isL7Layer(layer) {
   const layout = layer.layout || {};
   return (
     (layer.type === 'circle' && layout['circle-animate-rings']) || // 动画点

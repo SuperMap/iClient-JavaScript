@@ -4,13 +4,29 @@
 import mapboxgl from 'mapbox-gl';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { Util } from '../../../core/Util';
-import { addL7Layers, getL7MarkerLayers, isMapboxUnSupportLayer } from '../../utils/L7LayerUtil';
+import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../../utils/L7LayerUtil';
 
-const LayerType = {
+const LEGEND_RENDER_TYPE = {
   POINT: 'POINT',
   LINE: 'LINE',
   FILL: 'FILL',
-  FILLEXTRUSION: 'FILLEXTRUSION'
+  FILLEXTRUSION: 'FILLEXTRUSION',
+  ANIMATEPOINT: 'ANIMATEPOINT',
+  ANIMATELINE: 'ANIMATELINE',
+  RADARPOINT: 'RADARPOINT',
+  BUILTINSYMBOL: 'BUILTINSYMBOL'
+};
+
+const LEGEND_SHAPE_TYPE = {
+  POINT: 'POINT',
+  LINE: 'LINE',
+  RECTANGLE: 'RECTANGLE',
+  ANIMATEPOINT: 'ANIMATEPOINT',
+  ANIMATELINE: 'ANIMATELINE',
+  RADARPOINT: 'RADARPOINT',
+  HEXAGON: 'HEXAGON',
+  TRIANGLE: 'TRIANGLE',
+  LINEGRADIENT: 'LINEGRADIENT'
 };
 
 const LEGEND_CSS_STATE_KEY = {
@@ -19,18 +35,23 @@ const LEGEND_CSS_STATE_KEY = {
 };
 
 const LEGEND_CSS_DEFAULT = {
-  [LayerType.POINT]: {
+  [LEGEND_RENDER_TYPE.POINT]: {
     fontSize: '8px',
     color: '#FFFFFF',
     opacity: 1
   },
-  [LayerType.LINE]: {
+  [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: {
+    fontSize: '12px',
+    color: '#FFFFFF',
+    opacity: 1
+  },
+  [LEGEND_RENDER_TYPE.LINE]: {
     width: 20,
     height: 8,
     backgroundColor: '#FFFFFF',
     opacity: 1
   },
-  [LayerType.FILL]: {
+  [LEGEND_RENDER_TYPE.FILL]: {
     width: '20px',
     height: '20px',
     opacity: 1,
@@ -39,33 +60,49 @@ const LEGEND_CSS_DEFAULT = {
     outline: '1px solid transparent',
     outlineColor: '#FFFFFF'
   },
-  [LayerType.FILLEXTRUSION]: {
+  [LEGEND_RENDER_TYPE.FILLEXTRUSION]: {
     width: '20px',
     height: '20px',
     opacity: 1,
     backgroundColor: '#FFFFFF'
+  },
+  [LEGEND_RENDER_TYPE.ANIMATEPOINT]: {
+    size: 30, // UI 上显示直径
+    color: '#EE4D5A',
+    opacity: 0.9,
+    speed: 1,
+    rings: 3
+  },
+  [LEGEND_RENDER_TYPE.ANIMATELINE]: {
+    width: 20,
+    height: 8,
+    backgroundColor: '#FFFFFF',
+    opacity: 1
+  },
+  [LEGEND_RENDER_TYPE.RADARPOINT]: {
+    size: 60, // UI 上显示直径
+    color: '#EE4D5A',
+    opacity: 0.9,
+    speed: 3
   }
 };
 
-const LAEYR_TYPE_LEGEND_TYPE = {
-  circle: LayerType.POINT,
-  symbol: LayerType.POINT,
-  line: LayerType.LINE,
-  fill: LayerType.FILL,
-  ['fill-extrusion']: LayerType.FILLEXTRUSION
-};
-
 const LEGEND_STYLE_KEYS = {
-  [LayerType.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
-  [LayerType.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
-  [LayerType.FILL]: ['color', 'opacity', 'antialias', 'outlineColor', 'symbolsContent'],
-  [LayerType.FILLEXTRUSION]: ['color', 'opacity', 'symbolsContent']
+  [LEGEND_RENDER_TYPE.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
+  [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: ['symbolsContent', 'size', 'color', 'opacity'],
+  [LEGEND_RENDER_TYPE.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILL]: ['color', 'opacity', 'antialias', 'outlineColor', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.FILLEXTRUSION]: ['color', 'opacity', 'symbolsContent'],
+  [LEGEND_RENDER_TYPE.ANIMATEPOINT]: ['color', 'opacity', 'size', 'speed', 'rings'],
+  [LEGEND_RENDER_TYPE.ANIMATELINE]: ['color', 'opacity', 'width', 'textureBlend', 'symbolsContent', 'iconStep'],
+  [LEGEND_RENDER_TYPE.RADARPOINT]: ['color', 'opacity', 'size', 'speed']
 };
 
 const LEGEND_SYMBOL_DEFAULT = {
-  [LayerType.POINT]: 'circle',
-  [LayerType.FILL]: 'polygon-0',
-  [LayerType.FILLEXTRUSION]: 'polygon-0'
+  [LEGEND_RENDER_TYPE.POINT]: 'circle',
+  [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: 'circle',
+  [LEGEND_RENDER_TYPE.FILL]: 'polygon-0',
+  [LEGEND_RENDER_TYPE.FILLEXTRUSION]: 'polygon-0'
 };
 
 const LegendType = {
@@ -113,7 +150,7 @@ export class WebMap extends mapboxgl.Evented {
     mapInfo = this._handleUnSupportedLayers(mapInfo);
     this._mapInfo = mapInfo;
     const proj = this._setBaseProjection();
-    if(!proj) {
+    if (!proj) {
       return;
     }
     if (map) {
@@ -190,7 +227,7 @@ export class WebMap extends mapboxgl.Evented {
     });
   }
 
-  _setBaseProjection() { 
+  _setBaseProjection() {
     let crs = this._mapInfo.crs;
     let baseProjection = crs;
     if (typeof crs === 'object') {
@@ -205,7 +242,7 @@ export class WebMap extends mapboxgl.Evented {
     }
     this._baseProjection = baseProjection;
     return this._baseProjection;
-   }
+  }
 
   _setCRS({ name, wkt, extent }) {
     const crs = new mapboxgl.CRS(name, wkt, extent, extent[2] > 180 ? 'meter' : 'degree');
@@ -292,7 +329,7 @@ export class WebMap extends mapboxgl.Evented {
         metadata: Object.assign(this._mapInfo.metadata, { layerCatalog })
       });
       Object.assign(this._mapResourceInfo, { catalogs });
-      const mapboxglLayers = layers.filter((layer) => !isMapboxUnSupportLayer(layer));
+      const mapboxglLayers = layers.filter((layer) => !isL7Layer(layer));
       mapboxglLayers.forEach((layer) => {
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         // L7才会用到此属性
@@ -301,7 +338,7 @@ export class WebMap extends mapboxgl.Evented {
         }
         this.map.addLayer(layer);
       });
-      const l7Layers = layers.filter((layer) => isMapboxUnSupportLayer(layer));
+      const l7Layers = layers.filter((layer) => isL7Layer(layer));
       if (l7Layers.length > 0) {
         await addL7Layers({
           map: this.map,
@@ -529,6 +566,9 @@ export class WebMap extends mapboxgl.Evented {
         },
         themeSetting: {}
       });
+      if (isL7Layer(layer)) {
+        overlayLayers.l7Layer = true;
+      }
       if (visualization) {
         const styleSettings = this._parseRendererStyleData(visualization.renderer);
         const defaultStyleSetting = styleSettings[0];
@@ -625,7 +665,7 @@ export class WebMap extends mapboxgl.Evented {
         this._collectChildrenKey(data.children, keys, list);
         continue;
       }
-      keys.forEach(item => {
+      keys.forEach((item) => {
         if (!(item in data)) {
           return;
         }
@@ -746,10 +786,28 @@ export class WebMap extends mapboxgl.Evented {
     }
   }
 
-  _getLegendSimpleStyle(layerType, styleSetting) {
+  _getAliasKey(renderType, key) {
+    if (renderType === 'isoline3D' && key === 'dashArray') {
+      return 'lineDasharray';
+    }
+    return key;
+  }
+
+  _transStyleKeys(renderType, keys) {
+    return keys.map(key => this._getAliasKey(renderType, key));
+  }
+
+  _transStyleSetting(renderType, styleSetting) {
+    for (const key in styleSetting) {
+      const aliasKey = this._getAliasKey(renderType, key);
+      if (aliasKey !== key) {
+        styleSetting[aliasKey] = styleSetting[key];
+      }
+    }
+  }
+
+  _getLegendSimpleStyle(styleSetting, keys) {
     const simpleStyle = {};
-    const legendType = LAEYR_TYPE_LEGEND_TYPE[layerType];
-    const keys = LEGEND_STYLE_KEYS[legendType];
     if (keys) {
       const simpleKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type === 'simple');
       simpleKeys.forEach((k) => {
@@ -762,92 +820,181 @@ export class WebMap extends mapboxgl.Evented {
     return simpleStyle;
   }
 
+  _getLegendRenderType(renderType) {
+    switch (renderType) {
+      case 'circle':
+      case 'symbol':
+      case 'column':
+        return LEGEND_RENDER_TYPE.POINT;
+      case 'heatGrid':
+      case 'heatHexagon':
+      case 'heat3DGrid':
+      case 'heat3DHexagon':
+        return LEGEND_RENDER_TYPE.BUILTINSYMBOL;
+      case 'line':
+      case 'isoline3D':
+        return LEGEND_RENDER_TYPE.LINE;
+      case 'fill':
+        return LEGEND_RENDER_TYPE.FILL;
+      case 'fill-extrusion':
+        return LEGEND_RENDER_TYPE.FILLEXTRUSION;
+      case 'animatePoint':
+        return LEGEND_RENDER_TYPE.ANIMATEPOINT;
+      case 'line3D':
+      case 'animateLine':
+        return LEGEND_RENDER_TYPE.ANIMATELINE;
+      case 'radarPoint':
+        return LEGEND_RENDER_TYPE.RADARPOINT;
+    }
+  }
+
+  _getLegendShape(renderType, styleSetting) {
+    switch (renderType) {
+      case 'circle':
+      case 'symbol':
+        return LEGEND_SHAPE_TYPE.POINT;
+      case 'column': {
+        const symbolIds = {
+          cylinder: LEGEND_SHAPE_TYPE.POINT,
+          triangleColumn: LEGEND_SHAPE_TYPE.TRIANGLE,
+          squareColumn: LEGEND_SHAPE_TYPE.RECTANGLE,
+          hexagonColumn: LEGEND_SHAPE_TYPE.HEXAGON
+        };
+        return symbolIds[styleSetting.shape.value] || LEGEND_SHAPE_TYPE.POINT;
+      }
+      case 'heatHexagon':
+      case 'heat3DHexagon':
+        return LEGEND_SHAPE_TYPE.HEXAGON;
+      case 'line':
+      case 'isoline3D':
+        return LEGEND_SHAPE_TYPE.LINE;
+      case 'fill':
+      case 'heatGrid':
+      case 'heat3DGrid':
+      case 'fill-extrusion':
+        return LEGEND_SHAPE_TYPE.RECTANGLE;
+      case 'animatePoint':
+        return LEGEND_SHAPE_TYPE.ANIMATEPOINT;
+      case 'animateLine':
+      case 'line3D':
+        return LEGEND_SHAPE_TYPE.ANIMATELINE;
+      case 'radarPoint':
+        return LEGEND_SHAPE_TYPE.RADARPOINT;
+      case 'heat':
+      case 'heat3D':
+        return LEGEND_SHAPE_TYPE.LINEGRADIENT;
+    }
+  }
+
   _createLayerLegendList(layer, styleSetting) {
-    const layerType = layer.type;
     const layerId = layer.id;
     const layerTitle = layer.title;
-    const layerType2LegendType = LAEYR_TYPE_LEGEND_TYPE[layerType];
-    if (styleSetting.type === 'heat') {
-      const colors = this._heatColorToGradient((layer.paint || {})['heatmap-color']);
-      if (colors.length > 0) {
-        return [
-          {
-            themeField: styleSetting.field,
-            styleGroup: [
-              {
-                style: {
-                  type: LEGEND_STYLE_TYPES.STYLE,
-                  shape: layerType2LegendType,
-                  colors
-                }
+    const commonStyleOptions = {
+      themeField: styleSetting.field,
+      layerId,
+      layerTitle
+    };
+    const renderType = styleSetting.type || layer.type;
+    const legendRenderType = this._getLegendRenderType(renderType);
+    const shape = this._getLegendShape(renderType, styleSetting);
+    if (['heat', 'heat3D'].includes(renderType)) {
+      const colorKeyMap = {
+        heat: 'heatmap-color',
+        heat3D: 'heatmap-extrusion-color'
+      };
+      const colors = this._heatColorToGradient((layer.paint || {})[colorKeyMap[renderType]]);
+      return [
+        {
+          ...commonStyleOptions,
+          styleGroup: [
+            {
+              style: {
+                type: LEGEND_STYLE_TYPES.STYLE,
+                shape,
+                colors
               }
-            ],
-            layerId,
-            layerTitle
-          }
-        ];
-      }
+            }
+          ]
+        }
+      ];
+    }
+    const styleKeys = LEGEND_STYLE_KEYS[legendRenderType];
+    if (!styleKeys) {
       return;
     }
-    const keys = LEGEND_STYLE_KEYS[layerType2LegendType];
-    if (!keys) {
-      return;
-    }
-    const simpleStyle = this._getLegendSimpleStyle(layerType, styleSetting);
-    const simpleResData = this._parseLegendtyle({ layerType2LegendType, customValue: simpleStyle });
+    const keys = this._transStyleKeys(renderType, styleKeys);
+    this._transStyleSetting(renderType, styleSetting);
+    const simpleStyle = this._getLegendSimpleStyle(styleSetting, keys);
+    const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle });
     const dataKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type !== 'simple');
     if (!dataKeys.length) {
       return [
         {
+          ...commonStyleOptions,
           styleGroup: [
             {
               fieldValue: layerTitle || layerId,
               style: {
                 ...simpleResData,
-                shape: layerType2LegendType
+                shape
               }
             }
-          ],
-          layerId,
-          layerTitle
+          ]
         }
       ];
     }
-    return dataKeys.map((styleField) => {
-      const subStyleSetting = styleSetting[styleField];
-      const defaultSetting = this._getSettingStyle(styleField, subStyleSetting.defaultValue, simpleStyle);
-      let styleGroup = [];
-      const custom = this._getSettingCustom(subStyleSetting);
-      const interpolateInfo = this._getSettingInterpolateInfo(subStyleSetting);
-      const params = {
-        layerType2LegendType,
-        styleField,
-        subStyleSetting,
-        simpleStyle,
-        defaultSetting,
-        custom,
-        interpolateInfo
-      };
-      switch (this._getLegendStyleType({ styleField, currentType: subStyleSetting.type, custom, interpolateInfo })) {
-        case LegendType.LINEAR:
-          styleGroup = this._parseLinearStyle(params);
-          break;
-        case LegendType.RANGE:
-          styleGroup = this._parseRangeStyle(params);
-          break;
-        case LegendType.UNIQUE:
-          styleGroup = this._parseUniqueStyle(params);
-          break;
-      }
-      const legendItem = {
-        themeField: (subStyleSetting.field || [])[0],
-        styleField: styleField,
-        styleGroup,
-        layerId,
-        layerTitle
-      };
-      return legendItem;
-    });
+    const resultList = [];
+    if (!dataKeys.includes('symbolsContent')) {
+      resultList.push({
+        ...commonStyleOptions,
+        styleGroup: [
+          {
+            fieldValue: layerTitle || layerId,
+            style: {
+              ...simpleResData,
+              shape
+            }
+          }
+        ]
+      });
+    }
+    return resultList.concat(
+      dataKeys.map((styleField) => {
+        const subStyleSetting = styleSetting[styleField];
+        const defaultSetting = this._getSettingStyle(styleField, subStyleSetting.defaultValue, simpleStyle);
+        let styleGroup = [];
+        const custom = this._getSettingCustom(subStyleSetting);
+        const interpolateInfo = this._getSettingInterpolateInfo(subStyleSetting);
+        const params = {
+          legendRenderType,
+          styleField,
+          subStyleSetting,
+          simpleStyle,
+          defaultSetting,
+          custom,
+          interpolateInfo,
+          shape
+        };
+        switch (this._getLegendStyleType({ styleField, currentType: subStyleSetting.type, custom, interpolateInfo })) {
+          case LegendType.LINEAR:
+            styleGroup = this._parseLinearStyle(params);
+            break;
+          case LegendType.RANGE:
+            styleGroup = this._parseRangeStyle(params);
+            break;
+          case LegendType.UNIQUE:
+            styleGroup = this._parseUniqueStyle(params);
+            break;
+        }
+        const legendItem = {
+          ...commonStyleOptions,
+          themeField: (subStyleSetting.field || [])[0],
+          styleField: styleField,
+          styleGroup
+        };
+        return legendItem;
+      })
+    );
   }
 
   _heatColorToGradient(colors = []) {
@@ -891,13 +1038,13 @@ export class WebMap extends mapboxgl.Evented {
     return ['color', 'textColor', 'outlineColor', 'textHaloColor'].includes(key);
   }
 
-  _parseLinearStyle({ layerType2LegendType, custom }) {
+  _parseLinearStyle({ shape, custom }) {
     const styleGroup = [
       {
         styleField: null,
         style: {
           type: LEGEND_STYLE_TYPES.STYLE,
-          shape: layerType2LegendType,
+          shape,
           colors: custom
         }
       }
@@ -905,51 +1052,51 @@ export class WebMap extends mapboxgl.Evented {
     return styleGroup;
   }
 
-  _parseUniqueStyle({ layerType2LegendType, styleField, simpleStyle, defaultSetting, custom, interpolateInfo }) {
+  _parseUniqueStyle({ legendRenderType, styleField, simpleStyle, defaultSetting, custom, interpolateInfo, shape }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
-      const resData = this._parseLegendtyle({ layerType2LegendType, customValue: itemStyle });
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle });
       return {
         fieldValue: c.key,
         style: {
           ...resData,
-          shape: layerType2LegendType
+          shape
         }
       };
     });
     if (!interpolateInfo.type || interpolateInfo.type === 'custom') {
-      const resData = this._parseLegendtyle({ layerType2LegendType, customValue: defaultSetting });
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting });
       styleGroup.push({
         fieldValue: null,
         style: {
           ...resData,
-          shape: layerType2LegendType
+          shape
         }
       });
     }
     return styleGroup;
   }
 
-  _parseRangeStyle({ layerType2LegendType, styleField, simpleStyle, defaultSetting, custom }) {
+  _parseRangeStyle({ legendRenderType, styleField, simpleStyle, defaultSetting, custom, shape }) {
     const styleGroup = custom.map((c) => {
       const itemStyle = this._getSettingStyle(styleField, c.value, simpleStyle);
-      const resData = this._parseLegendtyle({ layerType2LegendType, customValue: itemStyle });
+      const resData = this._parseLegendtyle({ legendRenderType, customValue: itemStyle });
       return {
         start: c.start,
         end: c.end,
         style: {
           ...resData,
-          shape: layerType2LegendType
+          shape
         }
       };
     });
-    const resData = this._parseLegendtyle({ layerType2LegendType, customValue: defaultSetting });
+    const resData = this._parseLegendtyle({ legendRenderType, customValue: defaultSetting });
     styleGroup.push({
       start: null,
       end: null,
       style: {
         ...resData,
-        shape: layerType2LegendType
+        shape
       }
     });
     return styleGroup;
@@ -961,21 +1108,20 @@ export class WebMap extends mapboxgl.Evented {
     return itemStyle;
   }
 
-  _parseLegendtyle({ layerType2LegendType, customValue }) {
-    const cssStyle = { ...LEGEND_CSS_DEFAULT[layerType2LegendType] };
-    if (layerType2LegendType !== LayerType.LINE) {
-      Object.keys(cssStyle).forEach((k) => {
-        const updateValue = customValue[LEGEND_CSS_STATE_KEY[k] || k];
-        // 除了面其他参数都是必要参数
-        if (![LayerType.FILL, LayerType.FILLEXTRUSION].includes(layerType2LegendType) && !updateValue) {
-          return;
-        }
-        cssStyle[k] = updateValue;
-      });
-    }
-    let { symbolId = LEGEND_SYMBOL_DEFAULT[layerType2LegendType], style } = customValue.symbolsContent || {};
-    switch (layerType2LegendType) {
-      case LayerType.POINT: {
+  _parseLegendtyle({ legendRenderType, customValue }) {
+    const cssStyle = { ...LEGEND_CSS_DEFAULT[legendRenderType] };
+    // 线不使用cssStyle，所以不需要重新赋值
+    Object.keys(cssStyle).forEach((k) => {
+      const updateValue = customValue[LEGEND_CSS_STATE_KEY[k] || k];
+      // 除了面其他参数都是必要参数
+      if (![LEGEND_RENDER_TYPE.FILL, LEGEND_RENDER_TYPE.FILLEXTRUSION].includes(legendRenderType) && !updateValue) {
+        return;
+      }
+      cssStyle[k] = updateValue;
+    });
+    let { symbolId = LEGEND_SYMBOL_DEFAULT[legendRenderType], style } = customValue.symbolsContent || {};
+    switch (legendRenderType) {
+      case LEGEND_RENDER_TYPE.POINT: {
         const icon = this._getIconById(symbolId);
         const iconType = icon ? 'BASE' : 'SERVICE';
         if (iconType === 'BASE') {
@@ -986,41 +1132,64 @@ export class WebMap extends mapboxgl.Evented {
         }
         return this._getSpriteStyle(symbolId, cssStyle);
       }
-      case LayerType.LINE: {
-        style = style || [];
-        const defaultStyle = { ...LEGEND_CSS_DEFAULT['LINE'] };
-        const symbolStyles = style instanceof Array ? style : [style];
-        const hasImageLine = symbolStyles.some((v) => !!this._getImageIdBySymbol(v, SymbolType.line));
-        if (hasImageLine) {
-          const imageId = this._getImageIdBySymbol(symbolStyles[0], SymbolType.line);
-          return this._getSpriteStyle(imageId, cssStyle);
-        }
-        const subStyle = !customValue.symbolsContent
-          ? {
-              height: customValue.width || defaultStyle.height,
-              lineWidth: customValue.width || defaultStyle.width,
-              color: customValue.color || defaultStyle.backgroundColor
-            }
-          : {};
-        const nextCustomValue = Object.assign({}, customValue);
-        delete nextCustomValue.symbolsContent;
-        let lineStyles;
-        if (customValue.symbolsContent) {
-          const oldWidth = this._getLineWidth(symbolStyles);
-          lineStyles = symbolStyles.map((l) =>
-            this._transformLineStyle({ oldWidth, symbol: l, defaultStyle, customValue })
-          );
-        }
+      case LEGEND_RENDER_TYPE.BUILTINSYMBOL: {
         return {
           type: LEGEND_STYLE_TYPES.STYLE,
-          ...customValue,
-          ...subStyle,
-          lineStyles,
-          width: LEGEND_LINE_WIDTH
+          ...cssStyle
         };
       }
-      case LayerType.FILL:
-      case LayerType.FILLEXTRUSION: {
+      case LEGEND_RENDER_TYPE.ANIMATEPOINT:
+      case LEGEND_RENDER_TYPE.RADARPOINT: {
+        return {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...cssStyle
+        };
+      }
+      case LEGEND_RENDER_TYPE.LINE:
+      case LEGEND_RENDER_TYPE.ANIMATELINE: {
+        style = style || [];
+        const nextCustomValue = Object.assign({}, customValue);
+        delete nextCustomValue.symbolsContent;
+        const commonInfo = {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          ...nextCustomValue,
+          width: LEGEND_LINE_WIDTH
+        };
+        const defaultStyle = { ...LEGEND_CSS_DEFAULT['LINE'] };
+        const symbolStyles = style instanceof Array ? style : [style];
+        const hasImageLine = symbolStyles.some((v) => !!this._getImageIdByLegendType(v, legendRenderType));
+        // 图片线符号都是单图层(动画线符号的symbol也只有一个)
+        const imageLineSymbol = symbolStyles[0];
+        if (hasImageLine) {
+          const imageId = this._getImageIdByLegendType(imageLineSymbol, legendRenderType);
+          const styleOptions = { ...cssStyle, ...nextCustomValue, height: cssStyle.width, width: LEGEND_LINE_WIDTH };
+          if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE && nextCustomValue.textureBlend === 'replace') {
+            styleOptions.backgroundColor = 'transparent';
+          }
+          return this._getSpriteStyle(imageId, styleOptions);
+        }
+        if (!customValue.symbolsContent || (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE && !hasImageLine)) {
+          return {
+            ...commonInfo,
+            height: customValue.width || defaultStyle.height,
+            lineWidth: customValue.width || defaultStyle.width,
+            color: customValue.color || defaultStyle.backgroundColor
+          };
+        }
+        if (customValue.symbolsContent) {
+          const oldWidth = this._getLineWidth(symbolStyles);
+          const lineStyles = symbolStyles.map((l) =>
+            this._transformLineStyle({ oldWidth, symbol: l, defaultStyle, customValue })
+          );
+          return {
+            ...commonInfo,
+            lineStyles
+          };
+        }
+        return;
+      }
+      case LEGEND_RENDER_TYPE.FILL:
+      case LEGEND_RENDER_TYPE.FILLEXTRUSION: {
         const backgroundColor = cssStyle.backgroundColor;
         const paint = (style || {}).paint || {};
         const color = paint['fill-color'];
@@ -1056,7 +1225,12 @@ export class WebMap extends mapboxgl.Evented {
     return BaseIcons.find((icon) => icon.id === id);
   }
 
-  _getImageIdBySymbol(symbol, symbolType) {
+  _getImageIdByLegendType(symbol, legendType) {
+    const symbolTypes = {
+      ANIMATELINE: SymbolType.point,
+      LINE: SymbolType.line
+    };
+    const symbolType = symbolTypes[legendType];
     const paint = symbol.paint || {};
     if (symbolType === SymbolType.line) {
       return paint['line-pattern'];
@@ -1064,7 +1238,8 @@ export class WebMap extends mapboxgl.Evented {
     if (symbolType === SymbolType.polygon) {
       return paint['fill-pattern'];
     }
-    return paint['icon-image'];
+    const layout = symbol.layout || {};
+    return layout['icon-image'];
   }
 
   _getSpriteStyle(symbolId, cssStyle) {

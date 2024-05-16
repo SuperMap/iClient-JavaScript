@@ -258,36 +258,34 @@ describe('mapboxgl-webmap3.0', () => {
       server: server,
       target: 'map'
     });
-    const map = new mapboxgl.Map({
+    const existedMap = new mapboxgl.Map({
       container: testDiv,
       style: {
-          "version": 8,
-          "sources": {
-              "raster-tiles": {
-                  "type": "raster",
-                  "tiles": [],
-                  "tileSize": 256
-              }
-          },
-          "layers": [{
-              "id": "simple-tiles",
-              "type": "raster",
-              "source": "raster-tiles",
-              "minzoom": 0,
-              "maxzoom": 22
-          }]
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            paint: {
+              'background-color': '#242424'
+            },
+            id: 'background1',
+            type: 'background'
+          }
+        ]
       },
       crs: 'EPSG:4490',
       center: [116.640545, 40.531714],
       zoom: 7
     });
-    map.getCRS = function () { return {epsgCode:'EPSG:4490'}};
-    map.on('load', function () {
-      mapstudioWebmap.initializeMap(nextMapInfo, map);
+    existedMap.getCRS = function () {
+      return { epsgCode: 'EPSG:4490' };
+    };
+    existedMap.on('load', function () {
+      mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
     });
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
       expect(mapstudioWebmap._appendLayers).toBe(true);
-      expect(map).not.toBeUndefined();
+      expect(map).toEqual(existedMap);
       expect(mapstudioWebmap.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBe(nextMapInfo.layers.length + 1);
@@ -463,49 +461,36 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
-      if (url.indexOf('/web/datas/319778096/structureddata/ogc-features/collections/all/items.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData319778096Items));
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
       }
-      if (url.indexOf('/web/datas/319778096/structureddata.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData319778096));
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
       }
-      if (url.indexOf('/web/datas/722265775/structureddata/ogc-features/collections/all/items.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData722265775Items));
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
       }
-      if (url.indexOf('/web/datas/722265775/structureddata.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData722265775));
-      }
-      if (url.indexOf('/web/datas/683260445/structureddata/ogc-features/collections/all/items.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData683260445Items));
-      }
-      if (url.indexOf('/web/datas/683260445/structureddata.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData683260445));
-      }
-      if (url.indexOf('/web/datas/1074889932/structureddata/ogc-features/collections/all/items.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData1074889932Items));
-      }
-      if (url.indexOf('/web/datas/1074889932/structureddata.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData1074889932));
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
       }
       return Promise.resolve();
     });
     mapboxgl.CRS = function () {};
     mapboxgl.CRS.set = function () {};
-    const mapstudioWebmap = new WebMapV3(mapInfo, {
-      server: server,
-      target: 'map'
+    mapstudioWebmap = new WebMap(id, {
+      server: server
     });
-    mapstudioWebmap.initializeMap(mapInfo);
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      const webmapInstance = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
-      expect(mapstudioWebmap.map).toEqual(map);
+      expect(webmapInstance.map).toEqual(map);
       const style = map.getStyle();
       expect(style.layers.length).toBeLessThan(mapInfo.layers.length);
-      expect(mapstudioWebmap._getLayersOnMap().length).toBe(mapInfo.layers.length);
-      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
-      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(webmapInstance._getLayersOnMap().length).toBe(mapInfo.layers.length);
+      const appreciableLayers = webmapInstance.getAppreciableLayers();
+      const layerCatalogs = webmapInstance.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(mapstudioWebmap.getLegendInfo().length).toBe(0);
+      expect(webmapInstance.getLegendInfo().length).toBe(9);
       delete mapboxgl.Map.prototype.getCRS;
       delete mapboxgl.CRS;
       done();

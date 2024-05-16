@@ -1113,23 +1113,23 @@ var msProjectINfo_L7Layers = JSON.stringify({
   description: '',
   verifyReason: null,
   units: null,
-  title: 'ms-l7layers',
+  title: 'ms-动画图例_副本',
   resolution: 0,
   checkStatus: 'SUCCESSFUL',
   projectInfo:
-    '{"images":"http://localhost:9876/base/resources/data/sprite","catalogs":[{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"color":{"type":"simple","value":"#4CC8A3"},"width":{"type":"simple","value":2},"heightfixed":{"type":"simple","value":false},"opacity":{"type":"simple","value":1},"dashArray":{"type":"simple","value":[4,4]},"type":"isoline3D","height":{"type":"simple","value":100},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715329767471_5","bounds":[117.14138601701441,38.9711224900541,118.48249405766424,42.29221227403675],"id":"ms_线-chart_1715329899023_27","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"线-chart"},"title":"chart-线-3D等值线","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"iconStep":{"type":"simple","value":20},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"type":"animateLine","lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"styleRenderMode":"antvL7","textureBlend":{"type":"simple","value":"normal"},"duration":{"type":"simple","value":6},"symbolsContent":{"type":"simple","value":{"symbolId":"rectangle","style":{"layout":{"icon-image":"rectangle"}}}},"lineGapWidth":{"type":"simple","value":0},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"heightfixed":{"type":"simple","value":false},"interval":{"type":"simple","value":0.6},"opacity":{"type":"simple","value":1},"trailLength":{"type":"simple","value":1.5},"height":{"type":"simple","value":0}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715329767471_5","bounds":[117.14138601701441,38.9711224900541,118.48249405766424,42.29221227403675],"id":"ms_线-chart_1715329845026_10","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"线-chart"},"title":"chart-线-动画线","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"yAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"xAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"background":{"type":"simple","value":"rgba(223,147,147,0.81)"},"colorGroup":{"type":"simple","value":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"]},"width":{"type":"simple","value":100},"fields":{"type":"simple","value":{"新建字段":"#d53e4f"}},"type":"barChartLine","height":{"type":"simple","value":50},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715329767471_5","bounds":[117.14138601701441,38.9711224900541,118.48249405766424,42.29221227403675],"id":"线-chart","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"线-chart"},"title":"chart-线-柱状图","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"yAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"xAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"color":{"type":"simple","value":"rgba(97,150,177,1)"},"background":{"type":"simple","value":"rgba(97,168,179,0.49)"},"width":{"type":"simple","value":100},"fields":{"type":"simple","value":["新建字段"]},"type":"lineChartPolygon","height":{"type":"simple","value":50},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715328227654_10","bounds":[116.17885689206213,39.22634949658067,118.56467197485495,41.724866298816615],"id":"面","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"面"},"title":"chart-面-柱状图","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"yAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"xAxis":{"type":"simple","value":{"grid":false,"line":true,"label":true}},"background":{"type":"simple","value":"rgba(93,89,53,0.46)"},"colorGroup":{"type":"simple","value":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"]},"width":{"type":"simple","value":100},"fields":{"type":"simple","value":{"新建字段_1":"#d53e4f"}},"type":"barChartPoint","height":{"type":"simple","value":50},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715326800762_5","bounds":[116.22179808389753,39.90914422329273,116.65124982544923,40.2197170090588],"id":"chart点(2)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"新建字段","type":"FIELD"},{"fieldName":"新建字段_1","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"chart点(2)"},"title":"chart-点-柱状图","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"targetColor":{"type":"simple","value":"rgba(208,2,27,1)"},"shape":{"type":"simple","value":"hexagonColumn"},"color":{"type":"simple","value":"#EE4D5A"},"size":{"type":"simple","value":12},"opacity":{"type":"simple","value":0.9},"type":"column","height":{"type":"simple","value":90},"sourceColor":{"type":"simple","value":"rgba(69,213,62,1)"},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715324965987_1","bounds":[116.3641566517124,39.8489764307281,116.75146503813946,40.12422555542093],"id":"点","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"field1","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"点"},"title":"point-extrusion-点-3D柱状图","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"intensity":5,"field":"field1","color":[{"color":"#0000ff"},{"color":"#00ffff"},{"color":"#00ff00"},{"color":"#ffff00"},{"color":"#ff0000"}],"radius":35,"opacity":1,"type":"heat3D","styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715324965987_1","bounds":[116.3641566517124,39.8489764307281,116.75146503813946,40.12422555542093],"id":"ms_点_1715325505111_20","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"field1","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"点"},"title":"heatmap-点-3D热力","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":{"coverage":{"type":"simple","value":1},"heightMultiple":{"type":"simple","value":1},"color":{"type":"simple","value":"rgba(189,16,224,1)"},"angle":{"type":"simple","value":92},"opacity":{"type":"simple","value":0.9},"type":"heat3DGrid","height":{"type":"simple","value":5000},"styleRenderMode":"antvL7"}},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715324965987_1","bounds":[116.3641566517124,39.8489764307281,116.75146503813946,40.12422555542093],"id":"ms_点_1715325773575_22","source":{"option":{"clusterOption":{"aggType":"AVG","aggField":"smpid","groupBy":{"aggCellSize":3000,"aggCellUnit":"PX"}},"cluster":true}},"popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"field1","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"点"},"title":"heatmap-点-3D格网热力","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":{"coverage":{"type":"simple","value":0.88},"color":{"type":"simple","value":"rgba(126,211,33,1)"},"angle":{"type":"simple","value":28},"opacity":{"type":"simple","value":0.83},"type":"heatHexagon","styleRenderMode":"antvL7"}},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715324965987_1","bounds":[116.3641566517124,39.8489764307281,116.75146503813946,40.12422555542093],"id":"ms_点_1715325178065_17","source":{"option":{"clusterOption":{"aggType":"AVG","aggField":"smpid","groupBy":{"aggCellSize":3000,"aggCellUnit":"PX"}},"cluster":true}},"popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"field1","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"点"},"title":"heatmap-点-蜂巢热力","layerSourceType":"Data","layersContent":[]}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"点","msDatasetId":"ms_datasetId_1715324965987_1","datasetId":"319778096","geometryField":"geometry"}],"title":"点"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"chart点(2)","msDatasetId":"ms_datasetId_1715326800762_5","datasetId":"1074889932","geometryField":"geometry"}],"title":"chart点(2)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"面","msDatasetId":"ms_datasetId_1715328227654_10","datasetId":"722265775","geometryField":"geometry"}],"title":"面"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"线-chart","msDatasetId":"ms_datasetId_1715329767471_5","datasetId":"683260445","geometryField":"geometry"}],"title":"线-chart"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
-  visitCount: 18,
-  centerString: '{"x":117.0019046021514,"y":40.652325317916066}',
+    '{"images":"http://localhost:9876/base/resources/data/sprite","catalogs":[{"visualization":{"renderer":[{"intensity":2,"field":"SmID","color":[{"color":"#0000ff"},{"color":"#00ffff"},{"color":"#00ff00"},{"color":"#ffff00"},{"color":"#ff0000"}],"radius":10,"opacity":1,"type":"heat3D","styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715739545984_684","bounds":[116.36331703990744,39.89942692791154,116.38141290077355,39.9767738835847],"showLegend":true,"id":"ms_站点3_1715765345441_6350","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"站点3"},"title":"3D热力图","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"color":{"type":"simple","value":"#4CC8A3"},"width":{"type":"simple","value":2},"heightfixed":{"type":"simple","value":false},"opacity":{"type":"simple","value":1},"dashArray":{"type":"simple","value":[1,4]},"type":"isoline3D","height":{"type":"simple","value":100},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715672103731_6","bounds":[116.10214436813241,39.72316247533395,116.4357788812853,40.088344539540586],"showLegend":true,"id":"ms_北京市轨道交通线路减_1715764088617_3426","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"终点y","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"起点x","type":"FIELD"},{"fieldName":"起点y","type":"FIELD"},{"fieldName":"testID","type":"FIELD"},{"fieldName":"终点x","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路减"},"title":"3D等值线","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"shape":{"type":"simple","value":"squareColumn"},"color":{"type":"simple","value":"#EE4D5A"},"size":{"type":"simple","value":12},"opacity":{"type":"simple","value":0.9},"type":"column","height":{"type":"simple","value":20},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715739545984_684","bounds":[116.36331703990744,39.89942692791154,116.38141290077355,39.9767738835847],"showLegend":true,"id":"ms_站点3_1715758105128_1774","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"站点3"},"title":"3D柱状图","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"size":{"field":["smpid"],"defaultValue":60,"values":[{"value":8,"key":1},{"value":50,"key":4}],"interpolateInfo":{"type":"linear"},"type":"unique"},"color":{"type":"simple","value":"#EE4D5A"},"opacity":{"type":"simple","value":0.9},"type":"radarPoint","speed":{"type":"simple","value":2.9},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715739545984_684","bounds":[116.36331703990744,39.89942692791154,116.38141290077355,39.9767738835847],"showLegend":true,"id":"ms_站点3_1715739627423_909","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"站点3"},"title":"雷达点","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"size":{"type":"simple","value":30},"color":{"type":"simple","value":"#EE4D5A"},"rings":{"type":"simple","value":3},"opacity":{"type":"simple","value":0.9},"type":"animatePoint","speed":{"type":"simple","value":1},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715739545984_684","bounds":[116.36331703990744,39.89942692791154,116.38141290077355,39.9767738835847],"showLegend":true,"id":"站点3","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"站点3"},"title":"动画点","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"lineDasharray":{"type":"simple","value":[1,0]},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":3}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"lineTranslateAnchor":{"type":"simple","value":"map"},"iconStep":{"type":"simple","value":26},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"type":"animateLine","lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"styleRenderMode":"antvL7","textureBlend":{"type":"simple","value":"replace"},"duration":{"type":"simple","value":6},"symbolsContent":{"type":"simple","value":{"symbolId":"rectangle","style":{"layout":{"icon-image":"rectangle"}}}},"lineGapWidth":{"type":"simple","value":0},"lineCap":{"type":"simple","value":"butt"},"width":{"field":["smpid"],"defaultValue":2,"values":[{"value":10,"key":1},{"value":53,"key":3}],"interpolateInfo":{"type":"linear"},"type":"unique"},"heightfixed":{"type":"simple","value":false},"interval":{"type":"simple","value":0.6},"opacity":{"type":"simple","value":1},"trailLength":{"type":"simple","value":1.5},"height":{"type":"simple","value":0}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1715672103731_6","bounds":[116.10214436813241,39.72316247533395,116.4357788812853,40.088344539540586],"showLegend":true,"id":"北京市轨道交通线路减","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"终点y","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"起点x","type":"FIELD"},{"fieldName":"起点y","type":"FIELD"},{"fieldName":"testID","type":"FIELD"},{"fieldName":"终点x","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路减"},"title":"动画线","layerSourceType":"Data","layersContent":[]}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"云南_县级行政区划图","msDatasetId":"ms_datasetId_1715672103668_2","datasetId":"1688875102","geometryField":"geometry"}],"title":"云南_县级行政区划图"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路减","msDatasetId":"ms_datasetId_1715672103731_6","datasetId":"1052943054","geometryField":"geometry"}],"title":"北京市轨道交通线路减"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"站点3","msDatasetId":"ms_datasetId_1715739545984_684","datasetId":"1767084124","geometryField":"geometry"}],"title":"站点3"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
+  visitCount: 3,
+  centerString: '{"x":117.5037798870834,"y":40.077238929384094}',
   epsgCode: -1000,
   nickname: 'admin_123',
   layers: [],
   id: 617580084,
   searchSetting: null,
-  thumbnail: 'http://172.16.15.94:8190/iportal/resources/thumbnail/map/map1376785386.png',
-  level: 7,
+  thumbnail: 'http://172.16.15.94:8190/iportal/web/static/portal/img/map/defaultThumbnail.png',
+  level: 8,
   center: {
-    x: 117.0019046021514,
-    y: 40.652325317916066
+    x: 117.5037798870834,
+    y: 40.077238929384094
   },
   authorizeSetting: [
     {
@@ -1149,14 +1149,14 @@ var msProjectINfo_L7Layers = JSON.stringify({
       entityId: null
     }
   ],
-  updateTime: 1715330185529,
+  updateTime: 1715766731668,
   userName: 'admin_123',
   tags: [],
   checkUser: null,
   checkUserNick: null,
   checkTime: null,
   sourceType: 'MAPSTUDIO',
-  createTime: 1715326766228,
+  createTime: 1715765397999,
   controlsString: '',
   isDefaultBottomMap: false,
   status: null,
@@ -1168,86 +1168,49 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
     layerCatalog: [
       {
         visible: true,
-        id: 'ms_线-chart_1715329899023_27',
-        title: 'chart-线-3D等值线',
+        id: 'ms_站点3_1715765345441_6350',
+        title: '3D热力图',
         type: 'basic'
       },
       {
         visible: true,
-        id: 'ms_线-chart_1715329845026_10',
-        title: 'chart-线-动画线',
+        id: 'ms_北京市轨道交通线路减_1715764088617_3426',
+        title: '3D等值线',
         type: 'basic'
       },
       {
         visible: true,
-        id: '线-chart',
-        title: 'chart-线-柱状图',
+        id: 'ms_站点3_1715758105128_1774',
+        title: '3D柱状图',
         type: 'basic'
       },
       {
         visible: true,
-        id: '面',
-        title: 'chart-面-柱状图',
+        id: 'ms_站点3_1715739627423_909',
+        title: '雷达点',
         type: 'basic'
       },
       {
         visible: true,
-        id: 'chart点(2)',
-        title: 'chart-点-柱状图',
+        id: '站点3',
+        title: '动画点',
         type: 'basic'
       },
       {
         visible: true,
-        id: '点',
-        title: 'point-extrusion-点-3D柱状图',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_点_1715325505111_20',
-        title: 'heatmap-点-3D热力',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_点_1715325773575_22',
-        title: 'heatmap-点-3D格网热力',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_点_1715325178065_17',
-        title: 'heatmap-点-蜂巢热力',
+        id: '北京市轨道交通线路减',
+        title: '动画线',
         type: 'basic'
       }
     ]
   },
   sources: {
-    ms_319778096_1715325773575_23: {
-      cluster: true,
-      clusterType: 'grid',
-      clusterMethod: 'avg',
-      data: {
-        dataId: '319778096',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson',
-      clusterField: 'smpid',
-      clusterRadius: 3000
-    },
-    ms_683260445_1715329845026_11: {
-      data: {
-        dataId: '683260445',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson'
-    },
-    ms_1074889932_1715326829809_7: {
-      data: {
-        dataId: '1074889932',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson'
+    ms_1767084124_1715758105128_1775: {
+      tiles: [
+        'http://172.16.15.94:8080/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [116.36331703990744, 39.89942692791154, 116.38141290077355, 39.9767738835847],
+      type: 'vector'
     },
     CHINA_DARK: {
       tiles: [
@@ -1258,49 +1221,37 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
       bounds: [-180, -90, 180, 90],
       type: 'raster'
     },
-    ms_aggregation_319778096_1715325181176_19: {
-      cluster: true,
-      clusterType: 'hexagon',
-      clusterMethod: 'avg',
+    ms_1052943054_1715672103742_8: {
       data: {
-        dataId: '319778096',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson',
-      clusterField: 'smpid',
-      clusterRadius: 3000
-    },
-    ms_683260445_1715329778813_9: {
-      data: {
-        dataId: '683260445',
+        dataId: '1052943054',
         type: 'supermap-structured-data'
       },
       type: 'geojson'
     },
-    ms_683260445_1715329899023_28: {
-      data: {
-        dataId: '683260445',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson'
-    },
-    ms_319778096_1715326129672_26: {
+    ms_1767084124_1715739556572_702: {
       tiles: [
-        'http://172.16.15.94:8080/iportal/web/datas/319778096/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22field1%22%5D&geometryFieldName=geometry'
+        'http://172.16.15.94:8080/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
       ],
-      bounds: [116.3641566517124, 39.8489764307281, 116.75146503813946, 40.12422555542093],
+      bounds: [116.36331703990744, 39.89942692791154, 116.38141290077355, 39.9767738835847],
       type: 'vector'
     },
-    ms_319778096_1715325505111_21: {
+    ms_1767084124_1715765345442_6351: {
       data: {
-        dataId: '319778096',
+        dataId: '1767084124',
         type: 'supermap-structured-data'
       },
       type: 'geojson'
     },
-    ms_722265775_1715328245336_14: {
+    ms_1767084124_1715739627423_910: {
+      tiles: [
+        'http://172.16.15.94:8080/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [116.36331703990744, 39.89942692791154, 116.38141290077355, 39.9767738835847],
+      type: 'vector'
+    },
+    ms_1052943054_1715764088617_3427: {
       data: {
-        dataId: '722265775',
+        dataId: '1052943054',
         type: 'supermap-structured-data'
       },
       type: 'geojson'
@@ -1311,17 +1262,16 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
     wkt: 'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]',
     name: 'EPSG:3857'
   },
-  center: [117.0019046021514, 40.652325317916066],
-  zoom: 7.157739944545084,
+  center: [117.5037798870834, 40.077238929384094],
+  zoom: 8.072381924882253,
   glyphs: {},
   version: '3.2.0',
   rootUrl: 'http://172.16.15.94:8190/iportal/',
   maxzoom: 12,
-  name: 'ms-l7layers',
-  viewExtent: [111.10657575524891, 48.04411618182665, 122.89723344906452, 38.51368032487396],
+  name: 'ms-动画图例_副本',
+  viewExtent: [112.58411053622409, 44.15082666388613, 122.42344923794698, 38.941422828756544],
   layers: [
     {
-      metadata: {},
       maxzoom: 12,
       id: 'CHINA_DARK',
       source: 'CHINA_DARK',
@@ -1330,49 +1280,135 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
     },
     {
       layout: {
-        'heatmap-coverage': 0.88,
         visibility: 'visible',
-        'heatmap-rotate': 28,
-        'heatmap-shape': 'hexagon'
+        'line-extrusion-pattern-interval': 26,
+        'line-extrusion-animate-duration': 6,
+        'line-extrusion-pattern-blend': 'replace',
+        'line-extrusion-animate-trailLength': 1.5,
+        'line-extrusion-animate-interval': 0.6
       },
-      metadata: {},
+      metadata: {
+        MapStudio: {
+          title: '动画线'
+        }
+      },
       paint: {
-        'heatmap-color': 'rgba(126,211,33,1)',
-        'heatmap-opacity': 0.83
+        'line-extrusion-base': 0,
+        'line-extrusion-opacity': 1,
+        'line-extrusion-width': ['interpolate', ['linear'], ['get', 'smpid'], 1, 10, 3, 53],
+        'line-extrusion-base-fixed': false,
+        'line-extrusion-color': ['interpolate', ['linear'], ['get', 'smpid'], 1, '#d53e4f', 3, '#3288bd'],
+        'line-extrusion-pattern': 'rectangle'
       },
-      source: 'ms_aggregation_319778096_1715325181176_19',
-      'source-layer': '319778096$geometry',
-      id: 'ms_点_1715325178065_17',
-      type: 'heatmap'
+      source: 'ms_1052943054_1715672103742_8',
+      'source-layer': '1052943054$geometry',
+      id: '北京市轨道交通线路减',
+      type: 'line-extrusion'
     },
     {
       layout: {
-        'heatmap-extrusion-rotate': 92,
-        'heatmap-extrusion-coverage': 1,
         visibility: 'visible',
-        'heatmap-extrusion-shape': 'squareColumn'
+        'circle-animate-rings': 3,
+        'circle-animate-speed': 1
       },
-      metadata: {},
+      metadata: {
+        MapStudio: {
+          title: '动画点'
+        }
+      },
       paint: {
-        'heatmap-extrusion-height': 5000,
-        'heatmap-extrusion-opacity': 0.9,
-        'heatmap-extrusion-color': 'rgba(189,16,224,1)'
+        'circle-color': '#EE4D5A',
+        'circle-opacity': 0.9,
+        'circle-radius': 15
       },
-      source: 'ms_319778096_1715325773575_23',
-      'source-layer': '319778096$geometry',
-      id: 'ms_点_1715325773575_22',
-      type: 'heatmap-extrusion'
+      source: 'ms_1767084124_1715739556572_702',
+      'source-layer': '1767084124$geometry',
+      id: '站点3',
+      type: 'circle'
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'radar-animate-speed': 2.9
+      },
+      metadata: {
+        MapStudio: {
+          title: '雷达点'
+        }
+      },
+      paint: {
+        'radar-radius': ['interpolate', ['linear'], ['get', 'smpid'], 1, 4, 4, 25],
+        'radar-color': '#EE4D5A',
+        'radar-opacity': 0.9
+      },
+      source: 'ms_1767084124_1715739627423_910',
+      'source-layer': '1767084124$geometry',
+      id: 'ms_站点3_1715739627423_909',
+      type: 'radar'
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'point-extrusion-shape': 'squareColumn'
+      },
+      metadata: {
+        MapStudio: {
+          title: '3D柱状图'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'point-extrusion-width': 12,
+        'point-extrusion-height': 20,
+        'point-extrusion-opacity': 0.9,
+        'point-extrusion-length': 12,
+        'point-extrusion-color': '#EE4D5A'
+      },
+      source: 'ms_1767084124_1715758105128_1775',
+      'source-layer': '1767084124$geometry',
+      id: 'ms_站点3_1715758105128_1774',
+      type: 'point-extrusion',
+      minzoom: 0
     },
     {
       layout: {
         visibility: 'visible'
       },
-      metadata: {},
+      metadata: {
+        MapStudio: {
+          title: '3D等值线'
+        }
+      },
+      maxzoom: 24,
       paint: {
-        'heatmap-extrusion-intensity': 5,
-        'heatmap-extrusion-radius': 35,
+        'line-extrusion-base': 100,
+        'line-extrusion-opacity': 1,
+        'line-extrusion-width': 2,
+        'line-extrusion-base-fixed': false,
+        'line-extrusion-dasharray': [1, 4],
+        'line-extrusion-color': '#4CC8A3'
+      },
+      source: 'ms_1052943054_1715764088617_3427',
+      'source-layer': '1052943054$geometry',
+      id: 'ms_北京市轨道交通线路减_1715764088617_3426',
+      type: 'line-extrusion',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible'
+      },
+      metadata: {
+        MapStudio: {
+          title: '3D热力图'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'heatmap-extrusion-intensity': 2,
+        'heatmap-extrusion-radius': 10,
         'heatmap-extrusion-opacity': 1,
-        'heatmap-extrusion-weight': 'field1',
+        'heatmap-extrusion-weight': 'SmID',
         'heatmap-extrusion-color': [
           'interpolate',
           ['linear'],
@@ -1391,140 +1427,11 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
           '#ff0000'
         ]
       },
-      source: 'ms_319778096_1715325505111_21',
-      'source-layer': '319778096$geometry',
-      id: 'ms_点_1715325505111_20',
-      type: 'heatmap-extrusion'
-    },
-    {
-      layout: {
-        visibility: 'visible',
-        'point-extrusion-shape': 'hexagonColumn'
-      },
-      metadata: {},
-      paint: {
-        'point-extrusion-width': 12,
-        'point-extrusion-height': 90,
-        'point-extrusion-target-color': 'rgba(208,2,27,1)',
-        'point-extrusion-source-color': 'rgba(69,213,62,1)',
-        'point-extrusion-opacity': 0.9,
-        'point-extrusion-length': 12,
-        'point-extrusion-color': '#EE4D5A'
-      },
-      source: 'ms_319778096_1715326129672_26',
-      'source-layer': '319778096$geometry',
-      id: '点',
-      type: 'point-extrusion'
-    },
-    {
-      layout: {
-        visibility: 'visible',
-        'chart-type': 'bar',
-        'chart-attribute-color': [['新建字段_1', '#d53e4f']]
-      },
-      metadata: {},
-      paint: {
-        'chart-width': 100,
-        'chart-yAxis-grid': false,
-        'chart-xAxis-label': true,
-        'chart-background-color': 'rgba(93,89,53,0.46)',
-        'chart-height': 50,
-        'chart-xAxis-line': true,
-        'chart-yAxis-label': true,
-        'chart-xAxis-grid': false,
-        'chart-yAxis-line': true
-      },
-      source: 'ms_1074889932_1715326829809_7',
-      'source-layer': '1074889932$geometry',
-      id: 'chart点(2)',
-      type: 'chart'
-    },
-    {
-      layout: {
-        visibility: 'visible',
-        'chart-type': 'line',
-        'chart-attribute-color': [['新建字段', 'rgba(97,150,177,1)']]
-      },
-      metadata: {},
-      paint: {
-        'chart-width': 100,
-        'chart-yAxis-grid': false,
-        'chart-xAxis-label': true,
-        'chart-background-color': 'rgba(97,168,179,0.49)',
-        'chart-height': 50,
-        'chart-xAxis-line': true,
-        'chart-yAxis-label': true,
-        'chart-xAxis-grid': false,
-        'chart-yAxis-line': true
-      },
-      source: 'ms_722265775_1715328245336_14',
-      'source-layer': '722265775$geometry',
-      id: '面',
-      type: 'chart'
-    },
-    {
-      layout: {
-        visibility: 'visible',
-        'chart-type': 'bar',
-        'chart-attribute-color': [['新建字段', '#d53e4f']]
-      },
-      metadata: {},
-      paint: {
-        'chart-width': 100,
-        'chart-yAxis-grid': false,
-        'chart-xAxis-label': true,
-        'chart-background-color': 'rgba(223,147,147,0.81)',
-        'chart-height': 50,
-        'chart-xAxis-line': true,
-        'chart-yAxis-label': true,
-        'chart-xAxis-grid': false,
-        'chart-yAxis-line': true
-      },
-      source: 'ms_683260445_1715329778813_9',
-      'source-layer': '683260445$geometry',
-      id: '线-chart',
-      type: 'chart'
-    },
-    {
-      layout: {
-        visibility: 'visible',
-        'line-extrusion-pattern-interval': 20,
-        'line-extrusion-animate-duration': 6,
-        'line-extrusion-pattern-blend': 'normal',
-        'line-extrusion-animate-trailLength': 1.5,
-        'line-extrusion-animate-interval': 0.6
-      },
-      metadata: {},
-      paint: {
-        'line-extrusion-base': 0,
-        'line-extrusion-opacity': 1,
-        'line-extrusion-width': 2,
-        'line-extrusion-base-fixed': false,
-        'line-extrusion-color': '#4CC8A3',
-        'line-extrusion-pattern': 'rectangle'
-      },
-      source: 'ms_683260445_1715329845026_11',
-      'source-layer': '683260445$geometry',
-      id: 'ms_线-chart_1715329845026_10',
-      type: 'line-extrusion'
-    },
-    {
-      layout: {
-        visibility: 'visible'
-      },
-      metadata: {},
-      paint: {
-        'line-extrusion-base': 100,
-        'line-extrusion-opacity': 1,
-        'line-extrusion-width': 2,
-        'line-extrusion-base-fixed': false,
-        'line-extrusion-dasharray': [4, 4],
-        'line-extrusion-color': '#4CC8A3'
-      },
-      source: 'ms_683260445_1715329899023_28',
-      'source-layer': '683260445$geometry',
-      id: 'ms_线-chart_1715329899023_27',
-      type: 'line-extrusion'
+      source: 'ms_1767084124_1715765345442_6351',
+      'source-layer': '1767084124$geometry',
+      id: 'ms_站点3_1715765345441_6350',
+      type: 'heatmap-extrusion',
+      minzoom: 0
     }
   ],
   sprite: 'http://localhost:9876/base/resources/data/sprite',
@@ -1532,279 +1439,251 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
   minzoom: 0
 });
 
-var l7StructureData319778096 = JSON.stringify({
+var l7StructureData1052943054 = JSON.stringify({
   extent: {
-    top: 4884010.853804182,
-    left: 1.2953598665057342e7,
-    bottom: 4844020.154806364,
+    top: 40.088344539540586,
+    left: 116.10214436813241,
+    bottom: 39.72316247533395,
     leftBottom: {
-      x: 1.2953598665057342e7,
-      y: 4844020.154806364
+      x: 116.10214436813241,
+      y: 39.72316247533395
     },
-    right: 1.2996713637414366e7,
+    right: 116.4357788812853,
     rightTop: {
-      x: 1.2996713637414366e7,
-      y: 4884010.853804182
+      x: 116.4357788812853,
+      y: 40.088344539540586
     }
   },
   firstRowIsHead: false,
   fileEncoding: null,
-  fieldNames: ['smpid', 'field1', 'geometry'],
+  fieldNames: ['smpid', '终点y', 'SmID', '标准名称', '起点x', '起点y', 'testID', '终点x', 'geometry'],
   type: 'geojson',
   separator: null,
-  tableName: 'smp319778096_dian',
-  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:319778096',
-  epsgCode: 3857,
-  fieldTypes: ['INT', 'LONG', 'POINT'],
-  name: '点',
-  tableFieldNames: ['smpid', 'field1', 'geometry'],
-  id: '319778096'
-});
-
-var l7StructureData319778096Items = JSON.stringify({
-  timeStamp: '2024-05-11T09:05:06Z',
-  features: [
-    {
-      geometry: {
-        coordinates: [1.2953598665057342e7, 4844020.154806364],
-        type: 'Point'
-      },
-      id: '1',
-      type: 'Feature',
-      properties: {
-        field1: 0,
-        smpid: 1
-      }
-    },
-    {
-      geometry: {
-        coordinates: [1.2996713637414366e7, 4884010.853804182],
-        type: 'Point'
-      },
-      id: '2',
-      type: 'Feature',
-      properties: {
-        field1: 0,
-        smpid: 2
-      }
-    }
+  tableName: 'smp1052943054_beijingshiguidaojiaotongxianlujian',
+  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:1052943054',
+  epsgCode: 4326,
+  fieldTypes: ['INT', 'TEXT', 'LONG', 'TEXT', 'TEXT', 'TEXT', 'LONG', 'TEXT', 'LINESTRING'],
+  name: '北京市轨道交通线路减',
+  tableFieldNames: [
+    'smpid',
+    'zhongdiany',
+    'smid',
+    'biaozhunmingcheng',
+    'qidianx',
+    'qidiany',
+    'testid',
+    'zhongdianx',
+    'geometry'
   ],
-  numberReturned: 2,
-  numberMatched: 2,
-  type: 'FeatureCollection'
+  id: '1052943054'
 });
 
-var l7StructureData1074889932 = JSON.stringify({
-  extent: {
-    top: 4897922.515024643,
-    left: 1.293775138177813e7,
-    bottom: 4852748.136147062,
-    leftBottom: {
-      x: 1.293775138177813e7,
-      y: 4852748.136147062
-    },
-    right: 1.298555773096795e7,
-    rightTop: {
-      x: 1.298555773096795e7,
-      y: 4897922.515024643
-    }
-  },
-  firstRowIsHead: false,
-  fileEncoding: null,
-  fieldNames: ['smpid', '新建字段', '新建字段_1', 'geometry'],
-  type: 'geojson',
-  separator: null,
-  tableName: 'smp1074889932_chartdian',
-  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:1074889932',
-  epsgCode: 3857,
-  fieldTypes: ['INT', 'STRING', 'INT', 'POINT'],
-  name: 'chart点(2)',
-  tableFieldNames: ['smpid', 'xinjianziduan', 'xinjianziduan1', 'geometry'],
-  id: '1074889932'
-});
-
-var l7StructureData1074889932Items = JSON.stringify({
-  timeStamp: '2024-05-11T09:05:07Z',
-  features: [
-    {
-      geometry: {
-        coordinates: [1.293775138177813e7, 4897922.515024643],
-        type: 'Point'
-      },
-      id: '1',
-      type: 'Feature',
-      properties: {
-        新建字段: '',
-        新建字段_1: 0,
-        smpid: 1
-      }
-    },
-    {
-      geometry: {
-        coordinates: [1.298555773096795e7, 4852748.136147062],
-        type: 'Point'
-      },
-      id: '2',
-      type: 'Feature',
-      properties: {
-        新建字段: '',
-        新建字段_1: 0,
-        smpid: 2
-      }
-    }
-  ],
-  numberReturned: 2,
-  numberMatched: 2,
-  type: 'FeatureCollection'
-});
-
-var l7StructureData722265775 = JSON.stringify({
-  extent: {
-    top: 5119854.434853789,
-    left: 1.2932971190168958e7,
-    bottom: 4754146.252756852,
-    leftBottom: {
-      x: 1.2932971190168958e7,
-      y: 4754146.252756852
-    },
-    right: 1.3198558910312366e7,
-    rightTop: {
-      x: 1.3198558910312366e7,
-      y: 5119854.434853789
-    }
-  },
-  firstRowIsHead: false,
-  fileEncoding: null,
-  fieldNames: ['smpid', '新建字段', 'geometry'],
-  type: 'geojson',
-  separator: null,
-  tableName: 'smp722265775_mian',
-  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:722265775',
-  epsgCode: 3857,
-  fieldTypes: ['INT', 'INT', 'POLYGON'],
-  name: '面(1)',
-  tableFieldNames: ['smpid', 'xinjianziduan', 'geometry'],
-  id: '722265775'
-});
-
-var l7StructureData722265775Items = JSON.stringify({
-  timeStamp: '2024-05-11T09:05:08Z',
+var l7StructureData1052943054Items = JSON.stringify({
+  timeStamp: '2024-05-15T09:42:02Z',
   features: [
     {
       geometry: {
         coordinates: [
-          [
-            [1.2932971190168958e7, 5119854.434853789],
-            [1.3061219800181285e7, 5100094.2585355425],
-            [1.301921151054591e7, 4982515.836883125],
-            [1.2967186614817739e7, 4966883.292008789],
-            [1.2932971190168958e7, 5119854.434853789]
-          ]
-        ],
-        type: 'Polygon'
-      },
-      id: '1',
-      type: 'Feature',
-      properties: {
-        新建字段: 0,
-        smpid: 1
-      }
-    },
-    {
-      geometry: {
-        coordinates: [
-          [
-            [1.3139836443654206e7, 4754146.252756852],
-            [1.3198558910312366e7, 4918690.858286771],
-            [1.3150632753094789e7, 4924271.502149993],
-            [1.3139836443654206e7, 4754146.252756852]
-          ]
-        ],
-        type: 'Polygon'
-      },
-      id: '2',
-      type: 'Feature',
-      properties: {
-        新建字段: 0,
-        smpid: 2
-      }
-    }
-  ],
-  numberReturned: 2,
-  numberMatched: 2,
-  type: 'FeatureCollection'
-});
-
-var l7StructureData683260445 = JSON.stringify({
-  extent: {
-    top: 5204852.428245898,
-    left: 1.304011944223234e7,
-    bottom: 4717535.960775852,
-    leftBottom: {
-      x: 1.304011944223234e7,
-      y: 4717535.960775852
-    },
-    right: 1.3189410906416245e7,
-    rightTop: {
-      x: 1.3189410906416245e7,
-      y: 5204852.428245898
-    }
-  },
-  firstRowIsHead: false,
-  fileEncoding: null,
-  fieldNames: ['smpid', '新建字段', 'geometry'],
-  type: 'geojson',
-  separator: null,
-  tableName: 'smp683260445_xianchart',
-  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:683260445',
-  epsgCode: 3857,
-  fieldTypes: ['INT', 'INT', 'LINESTRING'],
-  name: '线-chart',
-  tableFieldNames: ['smpid', 'xinjianziduan', 'geometry'],
-  id: '683260445'
-});
-
-var l7StructureData683260445Items = JSON.stringify({
-  timeStamp: '2024-05-11T09:05:08Z',
-  features: [
-    {
-      geometry: {
-        coordinates: [
-          [1.3077477011028009e7, 4717535.960775852],
-          [1.304011944223234e7, 4772170.514688734],
-          [1.3074756155553784e7, 4814849.11205564],
-          [1.3116880985575791e7, 4846144.159283224],
-          [1.3110872560744148e7, 4806959.646077744]
+          [116.38050072430798, 39.94888011518407],
+          [116.38714780612922, 39.94892587302934],
+          [116.37993841640692, 39.94887730328765],
+          [116.38050072430798, 39.94888011518407]
         ],
         type: 'LineString'
       },
       id: '1',
       type: 'Feature',
       properties: {
-        新建字段: 0,
-        smpid: 1
+        终点y: '39.948990864179734',
+        SmID: 1,
+        标准名称: '地铁二号线',
+        起点x: '116.38050072430798',
+        smpid: 1,
+        起点y: '39.94888011518407',
+        testID: 1,
+        终点x: '116.39553809862188'
       }
     },
     {
       geometry: {
         coordinates: [
-          [1.3161065253445163e7, 5204852.428245898],
-          [1.3106436812122438e7, 5104955.496715467],
-          [1.3098712561225701e7, 5032421.121086903],
-          [1.3189410906416245e7, 5048156.096117312],
-          [1.3156061984995563e7, 4990322.992853938]
+          [116.42889857098183, 39.84623838293839],
+          [116.42813538465113, 39.846249956793876],
+          [116.40309870619934, 40.087151016112706],
+          [116.40288077701345, 40.08713594411416]
         ],
         type: 'LineString'
       },
       id: '2',
       type: 'Feature',
       properties: {
-        新建字段: 0,
-        smpid: 2
+        终点y: '',
+        SmID: 2,
+        标准名称: '地铁五号线',
+        起点x: '',
+        smpid: 2,
+        起点y: '',
+        testID: 2,
+        终点x: ''
+      }
+    },
+    {
+      geometry: {
+        coordinates: [
+          [116.10214436813241, 39.73067515573697],
+          [116.10229332066908, 39.730666640852405],
+          [116.30174189450294, 39.81253350272267],
+          [116.30196852786845, 39.814349188802616]
+        ],
+        type: 'LineString'
+      },
+      id: '3',
+      type: 'Feature',
+      properties: {
+        终点y: '',
+        SmID: 3,
+        标准名称: '地铁房山线',
+        起点x: '',
+        smpid: 3,
+        起点y: '',
+        testID: 3,
+        终点x: ''
       }
     }
   ],
-  numberReturned: 2,
-  numberMatched: 2,
+  type: 'FeatureCollection'
+});
+
+var l7StructureData1767084124 = JSON.stringify({
+  extent: {
+    top: 39.9767738835847,
+    left: 116.36331703990744,
+    bottom: 39.89942692791154,
+    leftBottom: {
+      x: 116.36331703990744,
+      y: 39.89942692791154
+    },
+    right: 116.38141290077355,
+    rightTop: {
+      x: 116.38141290077355,
+      y: 39.9767738835847
+    }
+  },
+  firstRowIsHead: false,
+  fileEncoding: null,
+  fieldNames: [
+    'smpid',
+    '1111标准名称',
+    'SmID',
+    'SmGeometrySize',
+    '1111SmUserID',
+    'SmY',
+    'SmGeoPosition',
+    'SmX',
+    'SmLibTileID',
+    'geometry'
+  ],
+  type: 'geojson',
+  separator: null,
+  tableName: 'smp1767084124_zhandian3',
+  urn: 'urn:supermapabc:since-1.0:bigdata:_defaulthost:1767084124',
+  epsgCode: 4326,
+  fieldTypes: ['INT', 'TEXT', 'LONG', 'LONG', 'LONG', 'DOUBLE', 'LONG', 'DOUBLE', 'LONG', 'POINT'],
+  name: '站点3',
+  tableFieldNames: [
+    'smpid',
+    'smp_1111biaozhunmingcheng',
+    'smid',
+    'smgeometrysize',
+    'smp_1111smuserid',
+    'smy',
+    'smgeoposition',
+    'smx',
+    'smlibtileid',
+    'geometry'
+  ],
+  id: '1767084124'
+});
+
+var l7StructureData1767084124Items = JSON.stringify({
+  timeStamp: '2024-05-15T09:42:02Z',
+  features: [
+    {
+      geometry: {
+        coordinates: [116.36331703990744, 39.89942692791154],
+        type: 'Point'
+      },
+      id: '1',
+      type: 'Feature',
+      properties: {
+        '1111标准名称': '长椿街站',
+        SmID: 1,
+        SmGeometrySize: 20,
+        smpid: 1,
+        '1111SmUserID': 0,
+        SmGeoPosition: 393216,
+        SmY: 4851338.01991207,
+        SmLibTileID: 1,
+        SmX: 1.29535051998988e7
+      }
+    },
+    {
+      geometry: {
+        coordinates: [116.37438913096268, 39.89976329032906],
+        type: 'Point'
+      },
+      id: '2',
+      type: 'Feature',
+      properties: {
+        '1111标准名称': '宣武门站',
+        SmID: 2,
+        SmGeometrySize: 20,
+        smpid: 2,
+        '1111SmUserID': 0,
+        SmGeoPosition: 393236,
+        SmY: 4851386.82748852,
+        SmLibTileID: 1,
+        SmX: 1.2954737739437e7
+      }
+    },
+    {
+      geometry: {
+        coordinates: [116.38141290077355, 39.9767738835847],
+        type: 'Point'
+      },
+      id: '3',
+      type: 'Feature',
+      properties: {
+        '1111标准名称': '健德门站',
+        SmID: 0,
+        SmGeometrySize: 20,
+        smpid: 3,
+        '1111SmUserID': 0,
+        SmGeoPosition: 393256,
+        SmY: 4862567.6973664,
+        SmLibTileID: 1,
+        SmX: 1.29555196219158e7
+      }
+    },
+    {
+      geometry: {
+        coordinates: [116.38141290077355, 39.9767738835847],
+        type: 'Point'
+      },
+      id: '4',
+      type: 'Feature',
+      properties: {
+        '1111标准名称': '健德门站',
+        SmID: 4,
+        SmGeometrySize: 20,
+        smpid: 4,
+        '1111SmUserID': 0,
+        SmGeoPosition: 393256,
+        SmY: 4862568.6973664,
+        SmLibTileID: 1,
+        SmX: 1.29555196219158e7
+      }
+    }
+  ],
   type: 'FeatureCollection'
 });
