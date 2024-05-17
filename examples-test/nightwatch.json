@@ -1,5 +1,5 @@
 {
-  "src_folders": ["./examples-test/leaflet","./examples-test/openlayers"],
+  "src_folders": ["./examples-test/leaflet", "./examples-test/openlayers", "./examples-test/component"],
   "output_folder": "./examples-test/reports",
   "exclude": ["./examples-test/leaflet/tiandituLayer_llIT.js","./examples-test/leaflet/tiandituLayer_mercatorIT.js"],
   "filter": "",
@@ -37,7 +37,7 @@
         "acceptSslCerts": true,
         "chromeOptions": {
           "w3c": false,
-          "args": [ "disable-gpu", "no-sandbox", "headless", "window-size=1920,1080", "verbose" ]
+          "args": ["disable-gpu", "no-sandbox", "headless", "window-size=1920,1080", "verbose"]
         }
       }
     },
