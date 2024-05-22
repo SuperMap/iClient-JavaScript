@@ -1354,7 +1354,7 @@ function transformWebmapTextLayerToSceneLayer(layer, source, visible) {
   const { paint, layout } = layer;
   const field = layout['text-field'].split('{')[1].split('}')[0];
   const style = {};
-  Object.keys(omitAttrs(TEXT_MAPBOXGL_ANTVL7_KEY, 'text-color', 'text-size', 'text-field')).forEach((k) => {
+  Object.keys(omitAttrs(TEXT_MAPBOXGL_ANTVL7_KEY, ['text-color', 'text-size', 'text-field'])).forEach((k) => {
     const value = (layer[getPaintOrLayutByStyleName(k)] || {})[k];
     value !== undefined && (style[TEXT_MAPBOXGL_ANTVL7_KEY[k]] = value);
   });

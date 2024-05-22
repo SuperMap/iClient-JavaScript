@@ -333,7 +333,7 @@ export class WebMap extends mapboxgl.Evented {
       mapboxglLayers.forEach((layer) => {
         layer.source && !this.map.getSource(layer.source) && this.map.addSource(layer.source, sources[layer.source]);
         // L7才会用到此属性
-        if (layer.type === 'symbol' && (layer.layout || {})['text-z-offset'] === 0) {
+        if (layer.type === 'symbol' && layer.layout['text-z-offset'] === 0) {
           delete layer.layout['text-z-offset'];
         }
         this.map.addLayer(layer);
@@ -434,15 +434,17 @@ export class WebMap extends mapboxgl.Evented {
     this.fire('addlayerssucceeded', { map: this.map, mapparams: this.mapParams, layers: matchLayers });
   }
 
-  _getLayerInfosFromCatalogs(catalogs) {
+  _getLayerInfosFromCatalogs(catalogs, catalogTypeField = 'type') {
     const results = [];
     for (let i = 0; i < catalogs.length; i++) {
-      const { catalogType, children } = catalogs[i];
-      if (catalogType === 'layer') {
+      const catalogType = catalogs[i][catalogTypeField];
+      if (catalogType !== 'group') {
         results.push(catalogs[i]);
+        continue;
       }
-      if (catalogType === 'group' && children && children.length > 0) {
-        const result = this._getLayerInfosFromCatalogs(children);
+      const { children } = catalogs[i];
+      if (children && children.length > 0) {
+        const result = this._getLayerInfosFromCatalogs(children, catalogTypeField);
         results.push(...result);
       }
     }
@@ -527,19 +529,22 @@ export class WebMap extends mapboxgl.Evented {
   _generateLayers() {
     const allLayersOnMap = this._getLayersOnMap();
     const { catalogs = [], datas = [] } = this._mapResourceInfo;
-    const originLayers = this._getLayerInfosFromCatalogs(catalogs);
+    const projectCataglogs = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
+    const metadataCatalogs = this._getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
     const layers = allLayersOnMap.reduce((layersList, layer) => {
-      const containLayer = originLayers.find((item) => {
-        if (item.layersContent && item.id !== layer.id) {
-          return item.layersContent.includes(layer.id);
+      const containLayer = metadataCatalogs.find((item) => {
+        if (item.parts && item.id !== layer.id) {
+          return item.parts.includes(layer.id);
         }
         return false;
       });
       if (containLayer) {
         return layersList;
       }
-      const matchCatalogLayer = originLayers.find((item) => item.id === layer.id) || {};
-      const { title = layer.id, visualization, layersContent, msDatasetId } = matchCatalogLayer;
+      const matchProjectCatalog = projectCataglogs.find((item) => item.id === layer.id) || {};
+      const matchMetadataCatalog = metadataCatalogs.find((item) => item.id === layer.id) || {};
+      const { msDatasetId } = matchProjectCatalog;
+      const { title = layer.id, parts } = matchMetadataCatalog;
       let dataType = '';
       let dataId = '';
       if (msDatasetId) {
@@ -563,7 +568,7 @@ export class WebMap extends mapboxgl.Evented {
           type: sourceOnMap && sourceOnMap.type,
           sourceLayer: layer.sourceLayer
         },
-        renderLayers: this._getRenderLayers(layersContent, layer.id),
+        renderLayers: this._getRenderLayers(parts, layer.id),
         dataSource: {
           serverId: dataId,
           type: dataType
@@ -573,22 +578,13 @@ export class WebMap extends mapboxgl.Evented {
       if (isL7Layer(layer)) {
         overlayLayers.l7Layer = true;
       }
-      if (visualization) {
-        const styleSettings = this._parseRendererStyleData(visualization.renderer);
-        const defaultStyleSetting = styleSettings[0];
-        if (defaultStyleSetting) {
-          let themeField = '';
-          if (defaultStyleSetting.type === 'heat') {
-            themeField = defaultStyleSetting.field;
-          } else if (defaultStyleSetting.color) {
-            themeField = defaultStyleSetting.color.field;
-          }
-          if (themeField) {
-            overlayLayers.themeSetting = {
-              themeField
-            };
-          }
-        }
+      const matchThemeFields = this._legendList
+        .filter((item) => item.layerId === layer.id)
+        .map((item) => item.themeField)
+        .filter((item) => !!item);
+      const validThemeFields = Array.from(new Set(matchThemeFields));
+      if (validThemeFields.length > 0) {
+        overlayLayers.themeSetting = { themeField: validThemeFields };
       }
       layersList.push(overlayLayers);
       return layersList;
@@ -618,7 +614,6 @@ export class WebMap extends mapboxgl.Evented {
     const layerCatalogs = layerCatalog.concat(extraLayers);
     const appreciableLayers = this.getAppreciableLayers();
     const formatLayerCatalog = this._createFormatCatalogs(layerCatalogs, appreciableLayers);
-    this._updateLayerVisible(formatLayerCatalog);
     return formatLayerCatalog;
   }
 
@@ -654,13 +649,6 @@ export class WebMap extends mapboxgl.Evented {
       return formatItem;
     });
     return formatCatalogs;
-  }
-
-  _updateLayerVisible(catalogs) {
-    for (const data of catalogs) {
-      const list = this._collectChildrenKey([data], ['visible']);
-      data.visible = list.every((item) => item);
-    }
   }
 
   _collectChildrenKey(catalogs, keys, list = []) {
@@ -770,7 +758,7 @@ export class WebMap extends mapboxgl.Evented {
 
   _createLegendInfo() {
     const { catalogs = [] } = this._mapResourceInfo;
-    const originLayers = this._getLayerInfosFromCatalogs(catalogs, this._mapInfo.layers);
+    const originLayers = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
     for (const layer of originLayers) {
       const { renderer } = layer.visualization || {};
       if (!renderer) {
@@ -779,7 +767,12 @@ export class WebMap extends mapboxgl.Evented {
       const layerFromMapInfo = this._mapInfo.layers.find((item) => {
         return item.id === layer.id;
       });
-      const nextLayer = Object.assign({}, layerFromMapInfo, { title: layer.title });
+      let themeField;
+      const sourceInfo = this._mapInfo.sources[layerFromMapInfo.source];
+      if ('clusterField' in sourceInfo) {
+        themeField = sourceInfo.clusterField;
+      }
+      const nextLayer = Object.assign({}, layerFromMapInfo, { title: layer.title, themeField });
       const styleSettings = this._parseRendererStyleData(renderer);
       const layerLegends = styleSettings.reduce((legends, styleSetting) => {
         const legendItems = this._createLayerLegendList(nextLayer, styleSetting);
@@ -798,7 +791,7 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _transStyleKeys(renderType, keys) {
-    return keys.map(key => this._getAliasKey(renderType, key));
+    return keys.map((key) => this._getAliasKey(renderType, key));
   }
 
   _transStyleSetting(renderType, styleSetting) {
@@ -894,7 +887,7 @@ export class WebMap extends mapboxgl.Evented {
     const layerId = layer.id;
     const layerTitle = layer.title;
     const commonStyleOptions = {
-      themeField: styleSetting.field,
+      themeField: layer.themeField || styleSetting.field,
       layerId,
       layerTitle
     };

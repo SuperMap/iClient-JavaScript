@@ -290,7 +290,8 @@ describe('mapboxgl-webmap3.0', () => {
       const style = map.getStyle();
       expect(style.layers.length).toBe(nextMapInfo.layers.length + 1);
       const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
-      expect(appreciableLayers.length).toBeGreaterThanOrEqual(nextMapInfo.layers.length);
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       delete mapboxgl.CRS;
       done();
     });
@@ -473,6 +474,7 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
         return Promise.resolve(new Response(l7StructureData1767084124));
       }
+      console.log(url);
       return Promise.resolve();
     });
     mapboxgl.CRS = function () {};
@@ -490,7 +492,7 @@ describe('mapboxgl-webmap3.0', () => {
       const appreciableLayers = webmapInstance.getAppreciableLayers();
       const layerCatalogs = webmapInstance.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(webmapInstance.getLegendInfo().length).toBe(9);
+      expect(webmapInstance.getLegendInfo().length).toBe(11);
       delete mapboxgl.Map.prototype.getCRS;
       delete mapboxgl.CRS;
       done();
