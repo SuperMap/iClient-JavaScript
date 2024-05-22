@@ -1,5 +1,6 @@
 const Scene = () => {
   return {
+    removeAllLayer: () => {},
     layerService: {
       renderLayer: () => {},
       stopAnimate: () => true,
