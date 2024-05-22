@@ -246,7 +246,13 @@ const Map = function (options) {
     enable: function () {}
   };
 
-  this.project = function () {
+  this.project = function (latlng) {
+    if (latlng) {
+      return {
+        x: Math.floor(Math.random() * 800),
+        y: Math.floor(Math.random() * 600),
+      }
+    };
     return {
       x: 500,
       y: 300

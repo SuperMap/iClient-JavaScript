@@ -9,10 +9,19 @@ describe('mapboxgl_VideoLayer', () => {
   var cv;
   beforeAll((done) => {
     cv = {
+      then(cb) {
+        setTimeout(function () {
+          cb();
+        }, 200);
+      },
+      CV_64FC1: 'CV_64FC1',
       CV_32FC2: 'CV_32FC2',
       matFromImageData: function () {
         return {
           delete: function () {
+
+          },
+          copyTo: function () {
 
           }
         }
@@ -24,22 +33,44 @@ describe('mapboxgl_VideoLayer', () => {
         }
       },
       matFromArray: function () {
+        return {
+          copyTo: function () {
 
+          },
+          inv: function () { },
+          delete: function () { },
+          data64F: [200, 100],
+          cols: 2,
+          rows: 2,
+          data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
+        }
       },
       Mat: function () {
         return {
+          copyTo: function () {
+
+          },
+          inv: function () { },
           delete: function () { },
+          data64F: [200, 100],
           cols: 2,
           rows: 2,
           data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
         }
       },
       findHomography: function () {
-
+        return {
+          delete: function () { }
+        }
       },
       warpPerspective: function () {
 
-      }
+      },
+      gemm: function () { },
+      Rodrigues: function () { },
+      projectPoints: function () { },
+      multiply: function () { },
+      subtract: function () { }
     };
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
@@ -95,11 +126,28 @@ describe('mapboxgl_VideoLayer', () => {
   it('init videoLayer', (done) => {
     var url = videoUrl;
     spyOn(cv, 'Size');
-    spyOn(cv, 'findHomography');
     spyOn(cv, 'warpPerspective');
     var videoLayer = new VideoLayer({
       url: url,
       opencv: cv,
+      clipRegion: [
+        [0, 0],
+        [1920, 0],
+        [1920, 900],
+        [0, 900]
+      ],
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      },
       extent: [
         [116.14394400766855, 28.249134537249257],
         [116.143464581289, 28.252977295834056],
@@ -110,7 +158,6 @@ describe('mapboxgl_VideoLayer', () => {
     videoLayer.onAdd(map);
     setTimeout(() => {
       expect(cv.Size).toHaveBeenCalled();
-      expect(cv.findHomography).toHaveBeenCalled();
       expect(cv.warpPerspective).toHaveBeenCalled();
       expect(videoLayer.url).toBe(url);
       expect(videoLayer.videoDomId).not.toBeNull();
@@ -125,6 +172,24 @@ describe('mapboxgl_VideoLayer', () => {
     var videoLayer = new VideoLayer({
       url: url,
       opencv: cv,
+      clipRegion: [
+        [0, 0],
+        [1920, 0],
+        [1920, 900],
+        [0, 900]
+      ],
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      },
       extent: [
         [116.14394400766855, 28.249134537249257],
         [116.143464581289, 28.252977295834056],
