@@ -27,7 +27,7 @@
     "fast-xml-parser": "^4.2.7",
     "flatgeobuf": "3.23.1",
     "rbush": "^2.0.2",
-    "proj4": "2.9.0",
+    "proj4": "2.11.0",
     "flv.js": "^1.6.2",
     "video.js": "^7.10.2",
     "videojs-flvjs-es6": "^1.0.1"

@@ -75,22 +75,21 @@
       inputScript(libsurl + '/turf/6.5.0/turf.min.js');
     }
     if (inArray(includes, 'draw')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.1/mapbox-gl-draw.min.js');
+      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.css');
+      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-draw/1.4.3/mapbox-gl-draw.min.js');
     }
-
     if (inArray(includes, 'mapboxgl-draw-rectangle-drag')) {
       inputScript(libsurl + '/mapboxgl-draw-rectangle-drag/1.0.1/mapboxgl-draw-rectangle-drag.browser.js');
     }
     if (inArray(includes, 'compare')) {
-      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.css');
-      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.0/mapbox-gl-compare.js');
+      inputCSS(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.css');
+      inputScript(libsurl + '/mapbox-gl-js/plugins/mapbox-gl-compare/0.4.1/mapbox-gl-compare.js');
     }
     if (inArray(includes, 'mapv')) {
       inputScript(libsurl + '/mapv/2.0.62/mapv.min.js');
     }
     if (inArray(includes, 'echarts')) {
-      inputScript(libsurl + '/echarts/5.4.3/echarts.min.js');
+      inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
       inputScript(libsurl + '/echartsLayer/EchartsLayer.min.js');
     }
     if (inArray(includes, 'echarts-vue')) {
@@ -109,7 +108,7 @@
       inputScript(libsurl + '/xlsx/0.19.3/xlsx.core.min.js');
     }
     if (inArray(includes, 'proj4')) {
-      inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
+      inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
     }
     if (inArray(includes, 'shapefile')) {
       inputScript(libsurl + '/shapefile/shapefile.js');
@@ -127,16 +126,13 @@
       inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
     }
     if (inArray(includes, 'jsonsql')) {
-      inputScript(libsurl + '/jsonsql/jsonsql.js');
+      inputScript(libsurl + '/jsonsql/0.2.5/jsonsql.min.js');
     }
     if (inArray(includes, 'geostats')) {
       inputScript(libsurl + '/geostats/geostats.js');
     }
     if (inArray(includes, 'canvg')) {
       inputScript(libsurl + '/canvg/3.0.10/umd.min.js');
-    }
-    if (inArray(includes, 'convert')) {
-      inputScript(libsurl + '/xml-js/1.6.8/xml-js.min.js');
     }
     if (inArray(includes, 'XMLParser')) {
       inputScript(libsurl + '/fast-xml-parser/4.2.7/fxparser.min.js');
@@ -167,13 +163,13 @@
       inputScript(libsurl + '/three/0.129.0/examples/js/loaders/GLTFLoader.js');
     }
     if (inArray(includes, 'echarts-gl')) {
-      inputScript(libsurl + '/echarts-gl/2.0.8/echarts-gl.min.js');
+      inputScript(libsurl + '/echarts-gl/2.0.9/echarts-gl.min.js');
     }
     if (inArray(includes, 'mapbox-print-pdf')) {
       inputScript(libsurl + '/mapbox-print-pdf/0.4.4/mapbox-print-pdf.min.js');
     }
     if (inArray(includes, 'moment')) {
-      inputScript(libsurl + '/moment/2.29.4/moment.min.js');
+      inputScript(libsurl + '/moment/2.30.1/moment.min.js');
     }
     if (inArray(includes, 'lodash')) {
       inputScript(libsurl + '/lodash/4.17.21/lodash.min.js');
@@ -215,7 +211,7 @@
       inputScript(libsurl + '/vue-cesium/2.1.4/index.umd.min.js');
     }
     if (inArray(includes, 'snap')) {
-      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.0/mapbox-gl-draw-snap-mode.js');
+      inputScript(libsurl + '/mapbox-gl-draw-snap-mode/0.2.1/mapbox-gl-draw-snap-mode.js');
     }
     if (inArray(includes, 'ugcwasm')) {
       inputScript(libsurl + '/ugcwasm/1.0.0/UGCWasmAll.js');

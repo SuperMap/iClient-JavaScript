@@ -175,23 +175,31 @@
       });
     };
 
-    var createProvinceCityPoint = function () {
-      map.loadImage("../img/circleRed.png", function (error, image) {
-        if(error){
-          widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
-          return;
-        }
-        map.addImage("cityPoint", image);
-        map.addSymbol("Province_P", {
-          "paint": {
-            "icon-translate": [0, 4]
-          },
-          "layout": {
-            "icon-image": "cityPoint",
-            "icon-size": 0.1
-          }
-        });
-        map.addLayer({
+    var createProvinceCityPoint = async function () {
+    
+          // maplibre-gl v3版本用法：
+          // map.loadImage("../img/circleRed.png", function (error, image) {
+          //   if(error){
+          //     widgets.alert.showAlert(resources.msg_addWebSymbolFailed, false);
+          //     return;
+          //   }
+          //   map.addImage("cityPoint", image);
+          // })
+          // maplibre-gl v4版本用法：
+          const image = await map.loadImage('../img/circleRed.png');
+          map.addImage('cityPoint', image.data);
+
+          map.addImage("cityPoint", image);
+          map.addSymbol("Province_P", {
+            "paint": {
+              "icon-translate": [0, 4]
+            },
+            "layout": {
+              "icon-image": "cityPoint",
+              "icon-size": 0.1
+            }
+          });
+          map.addLayer({
           "id": "ProvinceCapital_Text@Population",
           "source": "全国人口密度空间分布图",
           "source-layer": "ProvinceCapital_P@Population",
@@ -219,7 +227,6 @@
           },
           "symbol": "Province_P"
         });
-      });
     };
 
     var createProvinceLine = function () {

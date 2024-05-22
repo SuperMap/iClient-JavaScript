@@ -163,21 +163,42 @@
                 //添加设施点
                 var shoppingImg = new Image();
                 shoppingImg.src = './js/facility/shopping.png';
-                var shoppingMall = new maplibregl.Marker(shoppingImg, { x: -32, y: -54 })
+
+                // maplibre-gl v3版本Marker用法：
+                // var shoppingMall = new maplibregl.Marker(shoppingImg, { x: -32, y: -54 })
+                //     .setLngLat(facilityPositions.shopping)
+                //     .addTo(map);
+
+                // maplibre-gl v4版本Marker用法：
+                var shoppingMall = new maplibregl.Marker({element: shoppingImg})
                     .setLngLat(facilityPositions.shopping)
                     .addTo(map);
 
                 var hospitalImg = new Image();
                 hospitalImg.src = './js/facility/hospital.png';
-                var hospital = new maplibregl.Marker(hospitalImg, { x: -32, y: -54 })
+
+                // maplibre-gl v3版本Marker用法：
+                // var hospital = new maplibregl.Marker(hospitalImg, { x: -32, y: -54 })
+                //     .setLngLat(facilityPositions.hospital)
+                //     .addTo(map);
+
+                // maplibre-gl v4版本Marker用法：
+                var hospital = new maplibregl.Marker({element: hospitalImg})
                     .setLngLat(facilityPositions.hospital)
                     .addTo(map);
 
                 var schoolImg = new Image();
                 schoolImg.src = './js/facility/school.png';
-                var school = new maplibregl.Marker(schoolImg, { x: -32, y: -54 })
-                    .setLngLat(facilityPositions.school)
-                    .addTo(map);
+
+                // maplibre-gl v3版本Marker用法：
+                // var school = new maplibregl.Marker(schoolImg, { x: -32, y: -54 })
+                //     .setLngLat(facilityPositions.school)
+                //     .addTo(map);
+
+                // maplibre-gl v4版本Marker用法：
+                var school = new maplibregl.Marker({element: schoolImg})
+                .setLngLat(facilityPositions.school)
+                .addTo(map);
 
                 //添加购物中心距离路径
                 map.addLayer({

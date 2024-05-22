@@ -73,72 +73,81 @@
         zoom: 5
       });
       map.addControl(new maplibregl.NavigationControl(), 'top-left');
-      map.loadImage('../img/marker-icon.png', function (error, image) {
-        if (error) throw error;
-        map.addImage('positionPoint', image);
-      });
 
-      option = {
-        legend: {
-          data: [resources.text_rainfall, resources.text_runoff],
-          align: 'left'
-        },
-        toolbox: {
-          feature: {
-            magicType: {
-              type: ['stack', 'tiled']
+      map.on('load', async () =>  {
+           // maplibre-gl v3版本用法：
+          //  map.loadImage('../img/marker-icon.png', function (error, image) {
+          //   if (error) throw error;
+          //   map.addImage('positionPoint', image);
+          // });
+          // maplibre-gl v4版本用法：
+          const image =  await map.loadImage('../img/marker-icon.png');
+          map.addImage('positionPoint', image.data);
+
+          option = {
+            legend: {
+              data: [resources.text_rainfall, resources.text_runoff],
+              align: 'left'
             },
-            saveAsImage: {
-              pixelRatio: 2
+            toolbox: {
+              feature: {
+                magicType: {
+                  type: ['stack', 'tiled']
+                },
+                saveAsImage: {
+                  pixelRatio: 2
+                }
+              }
+            },
+            tooltip: {},
+            xAxis: {
+              data: [
+                resources.text_monday,
+                resources.text_tuesday,
+                resources.text_wednesday,
+                resources.text_thursday,
+                resources.text_friday,
+                resources.text_saturday,
+                resources.text_sunday
+              ],
+              silent: false,
+              splitLine: {
+                show: false
+              }
+            },
+            yAxis: {},
+            series: [
+              {
+                name: 'bar',
+                type: 'bar',
+                animationDelay: function (idx) {
+                  return idx * 10;
+                }
+              },
+              {
+                name: 'bar2',
+                type: 'bar',
+                animationDelay: function (idx) {
+                  return idx * 10 + 100;
+                }
+              }
+            ],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+              return idx * 5;
             }
-          }
-        },
-        tooltip: {},
-        xAxis: {
-          data: [
-            resources.text_monday,
-            resources.text_tuesday,
-            resources.text_wednesday,
-            resources.text_thursday,
-            resources.text_friday,
-            resources.text_saturday,
-            resources.text_sunday
-          ],
-          silent: false,
-          splitLine: {
-            show: false
-          }
-        },
-        yAxis: {},
-        series: [
-          {
-            name: 'bar',
-            type: 'bar',
-            animationDelay: function (idx) {
-              return idx * 10;
-            }
-          },
-          {
-            name: 'bar2',
-            type: 'bar',
-            animationDelay: function (idx) {
-              return idx * 10 + 100;
-            }
-          }
-        ],
-        animationEasing: 'elasticOut',
-        animationDelayUpdate: function (idx) {
-          return idx * 5;
-        }
-      };
+          };
 
-      div = document.createElement('div');
-      chart = echarts.init(div, '', {
-        width: 500,
-        height: 300
-      });
-      chart.setOption(option);
-      query();
+          div = document.createElement('div');
+          chart = echarts.init(div, '', {
+            width: 500,
+            height: 300
+          });
+          chart.setOption(option);
+          query();
+        });
+
+      
 
       function query() {
         var sqlParam = new maplibregl.supermap.QueryBySQLParameters({

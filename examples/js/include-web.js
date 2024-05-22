@@ -37,8 +37,8 @@
       var ca = document.cookie.split(';');
       for (var i = 0; i < ca.length; i++) {
           var c = ca[i];
-          while (c.charAt(0) === ' ') c = c.substring(1);
-          if (c.indexOf(name) !== -1) return c.substring(name.length, c.length);
+          while (c.charAt(0) === ' ') {c = c.substring(1);}
+          if (c.indexOf(name) !== -1) {return c.substring(name.length, c.length);}
       }
       return "";
     }
@@ -121,8 +121,8 @@
             inputScript(libsurl + '/papaparse/papaparse.min.js');
         }
         if (inArray(includes, 'moment')) {
-            inputScript(libsurl + '/moment/2.29.4/moment.min.js');
-            inputScript(libsurl + '/moment/2.29.4/zh-cn.min.js');
+            inputScript(libsurl + '/moment/2.30.1/moment.min.js');
+            inputScript(libsurl + '/moment/2.30.1/zh-cn.js');
         }
         if (inArray(includes, 'bootstrap-datetimepicker')) {
             inputCSS(libsurl + '/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css');

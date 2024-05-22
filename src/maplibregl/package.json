@@ -15,11 +15,11 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
-    "maplibre-gl": "3.1.0",
+    "maplibre-gl": "4.3.2",
     "mapv": "2.0.62",
     "three": "0.150.1",
     "canvg": "3.0.10",
-    "proj4": "2.9.0",
+    "proj4": "2.11.0",
     "@supermap/iclient-common": "11.2.0-beta",
     "rbush": "^2.0.2"
   }

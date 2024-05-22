@@ -77,10 +77,10 @@
             inputScript(libsurl + '/turf/6.5.0/turf.min.js');
         }
         if (inArray(includes, 'echarts')) {
-            inputScript(libsurl + '/echarts/5.4.3/echarts.min.js');
+          inputScript(libsurl + '/echarts/5.5.0/echarts.min.js');
         }
         if (inArray(includes, 'proj4')) {
-            inputScript(libsurl + '/proj4/2.9.0/proj4.min.js');
+            inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');
@@ -105,7 +105,7 @@
             inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
         }
         if (inArray(includes, 'jsonsql')) {
-            inputScript(libsurl + '/jsonsql/jsonsql.js');
+          inputScript(libsurl + '/jsonsql/0.2.5/jsonsql.min.js');
         }
         if (inArray(includes, 'geostats')) {
             inputScript(libsurl + '/geostats/geostats.js');

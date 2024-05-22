@@ -74,12 +74,17 @@
             "features": []
         };
 
-    map.loadImage('../img/marker-icon.png', function (error, image) {
-        if (error) throw error;
-        map.addImage('positionPoint', image);
-    });
-
-    initFeature();
+        map.on('load', async () =>  {
+           // maplibre-gl v3版本用法：
+          //  map.loadImage('../img/marker-icon.png', function (error, image) {
+          //     if (error) throw error;
+          //     map.addImage('positionPoint', image);
+          // });
+          // maplibre-gl v4版本用法：
+          const image =  await map.loadImage('../img/marker-icon.png');
+          map.addImage('positionPoint', image.data);
+          initFeature();
+        });
 
     function initFeature() {
 
