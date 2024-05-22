@@ -79,7 +79,12 @@ describe('maplibregl L7Layer', () => {
     document.body.removeChild(testDiv);
     map = null;
   });
-
+  it('getL7Scene', (done) => {
+    map.getL7Scene().then((scene) => {
+      expect(scene).not.toBeNull();
+      done();
+    });
+  });
   it('getL7Scene', (done) => {
     var layer = new L7Layer({ type: 'PointLayer' });
     var l7Layer = layer.getL7Layer();
@@ -96,7 +101,6 @@ describe('maplibregl L7Layer', () => {
       .animate(true)
       .size(56)
       .color('#4cfd47');
-    expect(maplibregl.Map.prototype.$l7scene).not.toBeNull();
     map.getL7Scene().then((scene) => {
       expect(scene).not.toBeNull();
       done();
@@ -133,6 +137,7 @@ describe('maplibregl L7Layer', () => {
         strokeWidth: 2
       });
     map.addLayer(layer);
+    expect(map.$l7scene).not.toBeUndefine();
     expect(l7Layer).not.toBeNull();
     expect(layer.type).toBe('custom');
     map.removeLayer(layer.id);

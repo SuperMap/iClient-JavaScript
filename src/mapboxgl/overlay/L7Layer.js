@@ -19,7 +19,6 @@ import { Scene, Mapbox } from './L7/l7-render';
 
 export class L7Layer {
   constructor({ type, options }) {
-    this.preBuild();
     this.type = 'custom';
     this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('l7_layer_');
     const _options = { ...(options || {}) };
@@ -27,18 +26,6 @@ export class L7Layer {
       this.l7layer = new L7[type]({ ..._options, name: this.id });
     }
     this.overlay = true;
-  }
-  preBuild() {
-    if (!mapboxgl.Map.prototype.mapExtendAddLayerBak) {
-      mapboxgl.Map.prototype.mapExtendAddLayerBak = mapboxgl.Map.prototype.addLayer;
-      mapboxgl.Map.prototype.addLayer = function (layer, before) {
-        if(!mapboxgl.Map.prototype.$l7scene) {
-          mapboxgl.Map.prototype.$l7scene = getL7Scene(Scene, Mapbox, this);
-        }
-        this.mapExtendAddLayerBak(layer, before);
-        return this;
-      };
-    }
   }
   /**
    * @function L7Layer.prototype.getL7Layer
@@ -68,14 +55,22 @@ export class L7Layer {
     visibility ? this.l7layer.show() : this.l7layer.hide();
     this.map.style.setLayoutProperty(this.id, 'visibility', visibility ? 'visible' : 'none');
   }
+  addSceneLayer(scene) {
+    this.scene = scene;
+    this.scene.addLayer(this.l7layer);
+  }
 
   onAdd(map) {
     this.map = map;
-    const scene = map.$l7scene;
-    if (scene) {
-      this.scene = scene;
-      this.scene.addLayer(this.l7layer);
+    if (!map.$l7scene) {
+      const scene = getL7Scene(Scene, Mapbox, map);
+      map.$l7scene = scene;
+      scene.on('loaded', () => {
+        this.addSceneLayer(scene);
+      })
+      return;
     }
+    this.addSceneLayer(map.$l7scene)
   }
   remove() {
     this.scene && this.scene.removeLayer(this.l7layer);
@@ -106,13 +101,13 @@ export class L7Layer {
  */
 mapboxgl.Map.prototype.getL7Scene = function () {
   return new Promise((resolve) => {
-    if (mapboxgl.Map.prototype.$l7scene) {
-      resolve(mapboxgl.Map.prototype.$l7scene);
-      return mapboxgl.Map.prototype.$l7scene;
+    if (this.$l7scene) {
+      resolve(this.$l7scene);
+      return this.$l7scene;
     }
     const scene = getL7Scene(Scene, Mapbox, this);
     scene.on('loaded', () => {
-      mapboxgl.Map.prototype.$l7scene = scene;
+      this.$l7scene = scene;
       resolve(scene);
       return scene;
     });

@@ -451,6 +451,10 @@ export class WebMap extends mapboxgl.Evented {
 
   clean() {
     if (this.map) {
+      const scene = this.map.$l7scene;
+       if (scene) {
+          scene.removeAllLayer();
+       }
       this.map.remove();
       this.map = null;
       this._legendList = [];

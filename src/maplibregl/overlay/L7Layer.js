@@ -19,7 +19,6 @@ import maplibregl from 'maplibre-gl';
 
 export class L7Layer {
   constructor({ type, options }) {
-    this.preBuild();
     this.type = 'custom';
     this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('l7_layer_');
     const _options = { ...(options || {}) };
@@ -28,18 +27,7 @@ export class L7Layer {
     }
     this.overlay = true;
   }
-  preBuild() {
-    if (!maplibregl.Map.prototype.mapExtendAddLayerBak) {
-      maplibregl.Map.prototype.mapExtendAddLayerBak = maplibregl.Map.prototype.addLayer;
-      maplibregl.Map.prototype.addLayer = function (layer, before) {
-        if (!maplibregl.Map.prototype.$l7scene && layer.hasOwnProperty('l7layer')) {
-          maplibregl.Map.prototype.$l7scene = getL7Scene(Scene, Maplibre, this);
-        }
-        this.mapExtendAddLayerBak(layer, before);
-        return this;
-      };
-    }
-  }
+
   /**
    * @function L7Layer.prototype.getL7Layer
    * @description 获取@antv/L7的layer实例。
@@ -69,13 +57,22 @@ export class L7Layer {
     this.map.style.setLayoutProperty(this.id, 'visibility', visibility ? 'visible' : 'none');
   }
 
+  addSceneLayer(scene) {
+    this.scene = scene;
+    this.scene.addLayer(this.l7layer);
+  }
+
   onAdd(map) {
     this.map = map;
-    const scene = map.$l7scene;
-    if (scene) {
-      this.scene = scene;
-      this.scene.addLayer(this.l7layer);
+    if (!map.$l7scene) {
+      const scene = getL7Scene(Scene, Maplibre, map);
+      map.$l7scene = scene;
+      scene.on('loaded', () => {
+        this.addSceneLayer(scene);
+      })
+      return;
     }
+    this.addSceneLayer(map.$l7scene)
   }
   remove() {
     this.scene && this.scene.removeLayer(this.l7layer);
@@ -104,15 +101,15 @@ export class L7Layer {
  */
 maplibregl.Map.prototype.getL7Scene = function () {
   return new Promise((resolve) => {
-    if (maplibregl.Map.prototype.$l7scene) {
-      resolve(maplibregl.Map.prototype.$l7scene);
-      return maplibregl.Map.prototype.$l7scene;
+    if (this.$l7scene) {
+      resolve(this.$l7scene);
+      return this.$l7scene;
     }
     const scene = getL7Scene(Scene, Maplibre, this);
     scene.on('loaded', () => {
-      maplibregl.Map.prototype.$l7scene = scene;
+      this.$l7scene = scene;
       resolve(scene);
-      return maplibregl.Map.prototype.$l7scene;
+      return scene;
     });
   });
 };
