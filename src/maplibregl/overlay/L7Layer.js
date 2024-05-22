@@ -53,6 +53,9 @@ export class L7Layer {
   }
 
   setVisibility(visibility) {
+    if (this.animateStatus) {
+      this.scene.layerService.stopAnimate(this.l7layer.id);
+    }
     visibility ? this.l7layer.show() : this.l7layer.hide();
     this.map.style.setLayoutProperty(this.id, 'visibility', visibility ? 'visible' : 'none');
   }
@@ -85,9 +88,11 @@ export class L7Layer {
     if (this.scene && this.scene.getLayer(this.l7layer.id)) {
       if (this.l7layer.animateStatus || (this.l7layer.layerModel && this.l7layer.layerModel.spriteAnimate)) {
         this.scene.layerService.startAnimate(this.l7layer.id);
+        this.animateStatus = true;
         this.map.triggerRepaint();
       } else {
         this.scene.layerService.renderLayer(this.l7layer.id);
+        this.animateStatus = false;
       }
     }
   }

@@ -252,6 +252,46 @@ describe('mapboxgl L7Layer', () => {
       })
       .shape('circle')
       .active(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    map.style.fire = () => {};
+    map.style.setLayoutProperty = () => {};
+
+    map.overlayLayersManager = { [layer.id]: layer };
+    expect(l7Layer).not.toBeNull();
+    map.setLayoutProperty = setLayoutProperty;
+
+    spyOn(l7Layer, 'show');
+    spyOn(l7Layer, 'hide');
+    spyOn(map.style, 'setLayoutProperty');
+
+    map.setLayoutProperty(layer.id, 'visibility', 'hidden');
+    expect(l7Layer.hide).toHaveBeenCalled();
+    expect(map.style.setLayoutProperty).toHaveBeenCalled();
+    expect(layer.animateStatus).toBeFalsy();
+
+
+    map.setLayoutProperty(layer.id, 'visibility', 'visible');
+    expect(l7Layer.show).toHaveBeenCalled();
+    expect(map.style.setLayoutProperty).toHaveBeenCalled();
+    expect(layer.animateStatus).toBeFalsy();
+
+    done();
+  });
+  it('PointLayer setVisibility animate', (done) => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        }
+      })
+      .shape('circle')
+      .active(true)
       .animate(true)
       .size(56)
       .color('#4cfd47');
@@ -270,10 +310,12 @@ describe('mapboxgl L7Layer', () => {
     map.setLayoutProperty(layer.id, 'visibility', 'hidden');
     expect(l7Layer.hide).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
+    expect(layer.animateStatus).toBeTruthy();
 
     map.setLayoutProperty(layer.id, 'visibility', 'visible');
     expect(l7Layer.show).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
+    expect(layer.animateStatus).toBeTruthy();
 
     done();
   });
