@@ -142,7 +142,7 @@ describe('mapboxgl L7Layer', () => {
         strokeWidth: 2
       });
     map.addLayer(layer);
-    expect(map.$l7scene).not.toBeUndefine();
+    expect(map.$l7scene).not.toBeUndefined();
     expect(l7Layer).not.toBeNull();
     expect(layer.type).toBe('custom');
     map.removeLayer(layer.id);
