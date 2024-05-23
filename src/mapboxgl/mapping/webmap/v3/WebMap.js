@@ -493,7 +493,10 @@ export class WebMap extends mapboxgl.Evented {
     if (this._appendLayers) {
       return selfLayers;
     }
-    const layersOnMap = this.map.getStyle().layers.map((layer) => this.map.getLayer(layer.id));
+    const layersOnMap = this.map.getStyle().layers.map((layer) => {
+      const nextLayer = this.map.getLayer(layer.id);
+      return { ...nextLayer, layout: Object.assign({}, layer.layout, nextLayer.layout) }
+    });
     for (const layerId in this.map.overlayLayersManager) {
       const overlayLayer = this.map.overlayLayersManager[layerId];
       if (overlayLayer.id && !layersOnMap.some((item) => item.id === overlayLayer.id)) {
