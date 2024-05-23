@@ -507,7 +507,7 @@ export class WebMap extends mapboxgl.Evented {
         }
         layersOnMap.push({
           id: overlayLayer.id,
-          visibility,
+          layout: { visibility },
           source,
           type: overlayLayer.type
         });
@@ -558,11 +558,12 @@ export class WebMap extends mapboxgl.Evented {
         }
       }
       const sourceOnMap = this.map.getSource(layer.source);
+      const layout = layer.layout || {};
       const overlayLayers = this._formatLayer({
         id: layer.id,
         type: layer.type,
         title,
-        visible: layer.visibility ? layer.visibility === 'visible' : true,
+        visible: layout.visibility ? layout.visibility === 'visible' : true,
         renderSource: sourceOnMap && {
           id: layer.source,
           type: sourceOnMap && sourceOnMap.type,
