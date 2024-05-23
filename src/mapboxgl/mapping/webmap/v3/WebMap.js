@@ -501,7 +501,10 @@ export class WebMap extends mapboxgl.Evented {
       const overlayLayer = this.map.overlayLayersManager[layerId];
       if (overlayLayer.id && !layersOnMap.some((item) => item.id === overlayLayer.id)) {
         const visibility =
-          !('visible' in overlayLayer) || overlayLayer.visibility === 'visible' || overlayLayer.visible
+          overlayLayer.visibility === 'visible' ||
+          overlayLayer.visibility ||
+          overlayLayer.visible ||
+          (!('visible' in overlayLayer) && !('visibility' in overlayLayer))
             ? 'visible'
             : 'none';
         let source = overlayLayer.source || overlayLayer.sourceId;
