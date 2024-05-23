@@ -17,7 +17,7 @@ describe('mapboxgl_videoMap', () => {
       CV_64FC1: 'CV_64FC1',
       matFromImageData: function () {
         return {
-          delete: function () { }
+          delete: function () {}
         };
       },
       Size: function () {
@@ -26,22 +26,22 @@ describe('mapboxgl_videoMap', () => {
           height: 690
         };
       },
-      matFromArray: function () { },
+      matFromArray: function () {},
       Mat: function () {
         return {
-          inv: function () { },
-          delete: function () { },
+          inv: function () {},
+          delete: function () {},
           data64F: [200, 100],
           cols: 2,
           rows: 2,
           data: [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]
         };
       },
-      gemm: function () { },
-      Rodrigues: function () { },
-      projectPoints: function () { },
-      multiply: function () { },
-      subtract: function () { }
+      gemm: function () {},
+      Rodrigues: function () {},
+      projectPoints: function () {},
+      multiply: function () {},
+      subtract: function () {}
     };
   });
   afterEach(() => {
@@ -61,22 +61,24 @@ describe('mapboxgl_videoMap', () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
   });
-
+ 
   it('init videoMap', (done) => {
     var url = videoUrl;
-    var videoMap = new VideoMap(url, {
-      fovX: 84,
-      fovY: 47,
-      centerX: 960,
-      centerY: 540,
-      pitch: -20,
-      roll: 0,
-      yaw: 2,
-      x: 11587478.810629973,
-      y: 3570800.195541344,
-      z: 154.50312
-    }, {
+    var videoMap = new VideoMap({
+      url: url,
       opencv: cv,
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      }
     });
     videoMap.on('load', function () {
       expect(videoMap.coordTransfer).not.toBe(null);
@@ -87,19 +89,21 @@ describe('mapboxgl_videoMap', () => {
 
   it('addlayer removelayer', (done) => {
     var url = videoUrl;
-    var videoMap = new VideoMap(url, {
-      fovX: 84,
-      fovY: 47,
-      centerX: 960,
-      centerY: 540,
-      pitch: -20,
-      roll: 0,
-      yaw: 2,
-      x: 11587478.810629973,
-      y: 3570800.195541344,
-      z: 154.50312
-    }, {
+    var videoMap = new VideoMap({
+      url: url,
       opencv: cv,
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      }
     });
     videoMap.on('load', function () {
       videoMap.addLayer({
@@ -150,19 +154,21 @@ describe('mapboxgl_videoMap', () => {
 
   it('addSource removeSource', (done) => {
     var url = videoUrl;
-    var videoMap = new VideoMap(url, {
-      fovX: 84,
-      fovY: 47,
-      centerX: 960,
-      centerY: 540,
-      pitch: -20,
-      roll: 0,
-      yaw: 2,
-      x: 11587478.810629973,
-      y: 3570800.195541344,
-      z: 154.50312
-    }, {
+    var videoMap = new VideoMap({
+      url: url,
       opencv: cv,
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      }
     });
     videoMap.on('load', function () {
       videoMap.addSource('test111', {

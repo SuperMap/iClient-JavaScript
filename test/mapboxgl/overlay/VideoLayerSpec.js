@@ -127,18 +127,8 @@ describe('mapboxgl_VideoLayer', () => {
     var url = videoUrl;
     spyOn(cv, 'Size');
     spyOn(cv, 'warpPerspective');
-    var videoLayer = new VideoLayer(url, {
-      fovX: 84,
-      fovY: 47,
-      centerX: 960,
-      centerY: 540,
-      pitch: -20,
-      roll: 0,
-      yaw: 2,
-      x: 11587478.810629973,
-      y: 3570800.195541344,
-      z: 154.50312
-    }, {
+    var videoLayer = new VideoLayer({
+      url: url,
       opencv: cv,
       clipRegion: [
         [0, 0],
@@ -146,6 +136,18 @@ describe('mapboxgl_VideoLayer', () => {
         [1920, 900],
         [0, 900]
       ],
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      },
       extent: [
         [116.14394400766855, 28.249134537249257],
         [116.143464581289, 28.252977295834056],
@@ -167,18 +169,8 @@ describe('mapboxgl_VideoLayer', () => {
 
   it('render moveLayer onRemove setVisibility', (done) => {
     var url = videoUrl;
-    var videoLayer = new VideoLayer(url, {
-      fovX: 84,
-      fovY: 47,
-      centerX: 960,
-      centerY: 540,
-      pitch: -20,
-      roll: 0,
-      yaw: 2,
-      x: 11587478.810629973,
-      y: 3570800.195541344,
-      z: 154.50312
-    }, {
+    var videoLayer = new VideoLayer({
+      url: url,
       opencv: cv,
       clipRegion: [
         [0, 0],
@@ -186,6 +178,18 @@ describe('mapboxgl_VideoLayer', () => {
         [1920, 900],
         [0, 900]
       ],
+      videoParameters: {
+        fovX: 84,
+        fovY: 47,
+        centerX: 960,
+        centerY: 540,
+        pitch: -20,
+        roll: 0,
+        yaw: 2,
+        x: 11587478.810629973,
+        y: 3570800.195541344,
+        z: 154.50312
+      },
       extent: [
         [116.14394400766855, 28.249134537249257],
         [116.143464581289, 28.252977295834056],

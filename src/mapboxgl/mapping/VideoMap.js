@@ -52,36 +52,36 @@ const MAP_EVENTS = [
 /**
  * @class VideoMap
  * @classdesc 视频地图
- * @category Visualization Video
+ * @category VideoMap
  * @version 11.2.0
- * @modulecategory Overlay
- * @param {string} url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
- * @param {string} videoParameters - 视频地图配准参数
- * @param {number} videoParameters.pitch - 俯仰角。
- * @param {number} videoParameters.roll - 侧偏角。
- * @param {number} videoParameters.yaw - 偏航角。
- * @param {number} videoParameters.x - 视频 x 坐标。
- * @param {number} videoParameters.y - 视频 y 坐标。
- * @param {number} videoParameters.z - 视频 z 坐标。
- * @param {number} videoParameters.fovX - 水平方向上以像素为单位的焦距。
- * @param {number} videoParameters.fovY - 垂直方向上以像素为单位的焦距。
- * @param {number} videoParameters.centerX - 相机中心的水平坐标。
- * @param {number} videoParameters.centerY - 相机中心的垂直坐标。
+ * @modulecategory Mapping
  * @param {Object} options - 参数
+ * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
+ * @param {string} options.videoParameters - 视频地图配准参数
+ * @param {number} options.videoParameters.pitch - 俯仰角。
+ * @param {number} options.videoParameters.roll - 侧偏角。
+ * @param {number} options.videoParameters.yaw - 偏航角。
+ * @param {number} options.videoParameters.x - 视频 x 坐标。
+ * @param {number} options.videoParameters.y - 视频 y 坐标。
+ * @param {number} options.videoParameters.z - 视频 z 坐标。
+ * @param {number} options.videoParameters.fovX - 水平方向上以像素为单位的焦距。
+ * @param {number} options.videoParameters.fovY - 垂直方向上以像素为单位的焦距。
+ * @param {number} options.videoParameters.centerX - 相机中心的水平坐标。
+ * @param {number} options.videoParameters.centerY - 相机中心的垂直坐标。
  * @param {string} [options.container='map'] - 地图容器id
  * @param {string} [options.opencv] - opencv 实例
- * @param {function} [options.videoWidth] - 视频地图宽度
- * @param {function} [options.videoHeight] - 视频地图高度
+ * @param {function} [options.videoWidth] - 视频地图宽度，没设置时默认获取视频宽度
+ * @param {function} [options.videoHeight] - 视频地图高度，没设置时默认获取视频高度
  * @param {Object} [options.styleOptions] - 视频地图风格配置
- * @param {string} [options.autoplay = true] - 视频是否自动播放
- * @param {string} [options.loop = true] - 视频是否循环播放
+ * @param {string} [options.autoplay=true] - 视频是否自动播放
+ * @param {string} [options.loop=true] - 视频是否循环播放
  * @extends {mapboxgl.Evented}
  */
 
 export class VideoMap extends mapboxgl.Evented {
-  constructor(url, videoParameters, options) {
+  constructor(options) {
     super();
-    const { container, autoplay, loop, videoWidth, videoHeight, opencv, styleOptions } = options;
+    const { container, url, videoParameters, autoplay, loop, videoWidth, videoHeight, opencv, styleOptions } = options;
     this.container = container || 'map';
     this.layerCache = {};
     this.sourceCache = {};
@@ -108,7 +108,7 @@ export class VideoMap extends mapboxgl.Evented {
    * @function VideoMap.prototype.addLayer
    * @description  添加图层。
    * @param {Object} layer - 图层配置。
-   * @param {Object} beforeId - 已经存在的图层 ID。
+   * @param {string} beforeId - 已经存在的图层 ID。
    */
   addLayer(layer, beforeId) {
     if (!this._mapExisted()) {
@@ -159,7 +159,7 @@ export class VideoMap extends mapboxgl.Evented {
   /**
    * @function VideoMap.prototype.removeSource
    * @description  移除数据源。
-   * @param {string} id - 数据源 id。
+   * @param {string} id - source id。
    */
   removeSource(id) {
     if (!this._mapExisted()) {

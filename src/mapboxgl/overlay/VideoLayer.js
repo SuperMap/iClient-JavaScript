@@ -17,7 +17,17 @@
   * @version 11.2.0
   * @param {Object} options - 构造参数。
   * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
-  * @param {Object} options.videoParameters - 视频配准参数
+  * @param {Object} options.videoParameters - 视频配准参数。
+  * @param {number} options.videoParameters.pitch - 俯仰角。
+  * @param {number} options.videoParameters.roll - 侧偏角。
+  * @param {number} options.videoParameters.yaw - 偏航角。
+  * @param {number} options.videoParameters.x - 视频 x 坐标。
+  * @param {number} options.videoParameters.y - 视频 y 坐标。
+  * @param {number} options.videoParameters.z - 视频 z 坐标。
+  * @param {number} options.videoParameters.fovX - 水平方向上以像素为单位的焦距。
+  * @param {number} options.videoParameters.fovY - 垂直方向上以像素为单位的焦距。
+  * @param {number} options.videoParameters.centerX - 相机中心的水平坐标。
+  * @param {number} options.videoParameters.centerY - 相机中心的垂直坐标。
   * @param {Array} options.extent - 视频范围。
   * @param {Object} [options.opencv] - opencv.js 实例, 未传入时将去 window.cv 获取。
   * @param {string} [options.id] - 视频图层 ID。默认使用 CommonUtil.createUniqueID("VideoLayer_") 创建专题图层 ID。
@@ -53,6 +63,7 @@
    /**
     * @function VideoLayer.prototype.onAdd
     * @description 添加该图层。
+    * @param {Object} 地图实例。
     */
    onAdd(map) {
      this.map = map;
@@ -236,6 +247,7 @@
    /**
      * @function VideoLayer.prototype.moveLayer
      * @description 移动图层。
+     * @param {string} beforeId - 要移动到的图层前的 id。
      */
    moveLayer(beforeId) {
      this.map.moveLayer(this.layerId, beforeId);
