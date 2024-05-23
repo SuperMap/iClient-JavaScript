@@ -6,7 +6,7 @@
  import { VideoLayerRenderer } from '@supermap/iclient-common/overlay/video/VideoLayerRenderer';
  import { bbox, polygon } from '@turf/turf';
  import CoordTransfer from '../mapping/CoordTransfer';
- import { fovXToFx, fovYToFy } from '../mapping/util';
+ import { fovXToFx, fovYToFy } from '../mapping/utils/VideoMapUtil';
  import proj4 from 'proj4';
  
  /**

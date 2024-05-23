@@ -4,16 +4,16 @@
  * @private
  * @classdesc 坐标转换
  * @param {Object} options - 配准参数。
- * @param {number} [options.pitch] - 俯仰角。
- * @param {number} [options.roll] - 侧偏角。
- * @param {number} [options.yaw] - 偏航角。
- * @param {number} [options.x] - 视频 x 坐标。
- * @param {number} [options.y] - 视频 y 坐标。
- * @param {number} [options.z] - 视频 z 坐标。
- * @param {number} [options.fx] - 水平视场角。
- * @param {number} [options.fy] - 垂直视场角。
- * @param {number} [options.centerX] - 相机中心的水平坐标。
- * @param {number} [options.centerY] - 相机中心的垂直坐标。
+ * @param {number} options.pitch - 俯仰角。
+ * @param {number} options.roll - 侧偏角。
+ * @param {number} options.yaw - 偏航角。
+ * @param {number} options.x - 视频 x 坐标。
+ * @param {number} options.y - 视频 y 坐标。
+ * @param {number} options.z - 视频 z 坐标。
+ * @param {number} options.fx - 水平视场角。
+ * @param {number} options.fy - 垂直视场角。
+ * @param {number} options.centerX - 相机中心的水平坐标。
+ * @param {number} options.centerY - 相机中心的垂直坐标。
  */
 
 export default class CoordTransfer {

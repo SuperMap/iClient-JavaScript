@@ -1,6 +1,6 @@
 import { featureEach, coordEach } from '@turf/meta';
 import cloneDeep from 'lodash.clonedeep';
-import { transformCoord } from './util';
+import { transformCoord } from './utils/VideoMapUtil';
 
 /**
  * @class GeojsonSource

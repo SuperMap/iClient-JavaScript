@@ -37,9 +37,9 @@
         "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
         " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
-      var dataUrl = host + '/iserver/services/data-test0104/rest/data';
-      var datasourceName = 'NewDatasource';
-      var datasetName = 'aaa';
+      var dataUrl = 'http://172.16.14.199:8090/iserver/services/data-demo-3/rest/data';
+      var datasourceName = 'VideoData';
+      var datasetName = 'DJI_0937_2';
       var map = new mapboxgl.Map({
         container: 'map',
         renderWorldCopies: false,
@@ -50,7 +50,7 @@
               type: 'raster',
               tileSize: 256,
               tiles: [
-                'https://t4.tianditu.gov.cn/img_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=img&tilematrix={z}&tilerow={y}&tilecol={x}&tk=1d109683f4d84198e37a38c442d68311'
+                'https://t4.tianditu.gov.cn/vec_w/wmts?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=w&format=tiles&width=256&height=256&layer=vec&tilematrix={z}&tilerow={y}&tilecol={x}&tk=1d109683f4d84198e37a38c442d68311'
               ]
             }
           },
@@ -64,8 +64,7 @@
             }
           ]
         },
-        center: [116.14734767029731, 28.320871401184714],
-        zoom: 16
+        zoom: 14
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-left');
       map.addControl(new mapboxgl.supermap.LogoControl({ link: 'https://iclient.supermap.io' }), 'bottom-right');
@@ -86,11 +85,30 @@
               coordinates.push(res);
             });
           });
-          map.setCenter(coordinates[0]);
+          let cc = coordinates[1];
+          map.setCenter(cc);
           let address = serviceResult.result.features.features[0].properties.address;
           videoLayer = new mapboxgl.supermap.VideoLayer({
             url: address,
-            extent: [coordinates[3], coordinates[2], coordinates[1], coordinates[0]]
+            extent: [coordinates[3], coordinates[2], coordinates[1], coordinates[0]],
+            videoParameters: {
+              fovX: 84,
+              fovY: 47,
+              centerX: 960,
+              centerY: 540,
+              pitch: -20,
+              roll: 0,
+              yaw: 2,
+              x: 11587478.810629973,
+              y: 3570800.195541344,
+              z: 154.50312
+            },
+            clipRegion: [
+              [0, 0],
+              [1920, 0],
+              [1920, 900],
+              [0, 900]
+            ]
           });
           map.addLayer(videoLayer);
         });

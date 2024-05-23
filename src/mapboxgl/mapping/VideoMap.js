@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import CoordTransfer from './CoordTransfer';
 import VideoMapLayer from './layers/VideoMapLayer';
 import GeojsonLayer from './layers/GeojsonLayer';
-import { transformCoordReverse, fovXToFx, fovYToFy } from './util';
+import { transformCoordReverse, fovXToFx, fovYToFy } from './utils/VideoMapUtil';
 import GeojsonSource from './GeojsonSource';
 
 const MAP_EVENTS = [
@@ -52,14 +52,24 @@ const MAP_EVENTS = [
 /**
  * @class VideoMap
  * @classdesc 视频地图
- * @category VideoMap
+ * @category Visualization Video
  * @version 11.2.0
- * @modulecategory Mapping
+ * @modulecategory Overlay
+ * @param {string} url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
+ * @param {string} videoParameters - 视频地图配准参数
+ * @param {number} videoParameters.pitch - 俯仰角。
+ * @param {number} videoParameters.roll - 侧偏角。
+ * @param {number} videoParameters.yaw - 偏航角。
+ * @param {number} videoParameters.x - 视频 x 坐标。
+ * @param {number} videoParameters.y - 视频 y 坐标。
+ * @param {number} videoParameters.z - 视频 z 坐标。
+ * @param {number} videoParameters.fovX - 水平方向上以像素为单位的焦距。
+ * @param {number} videoParameters.fovY - 垂直方向上以像素为单位的焦距。
+ * @param {number} videoParameters.centerX - 相机中心的水平坐标。
+ * @param {number} videoParameters.centerY - 相机中心的垂直坐标。
  * @param {Object} options - 参数
  * @param {string} [options.container='map'] - 地图容器id
- * @param {string} options.url - 视频 或 流链接。支持 flv, m3u8, map4 格式。
  * @param {string} [options.opencv] - opencv 实例
- * @param {string} options.videoParameters - 视频地图配准参数
  * @param {function} [options.videoWidth] - 视频地图宽度
  * @param {function} [options.videoHeight] - 视频地图高度
  * @param {Object} [options.styleOptions] - 视频地图风格配置
@@ -69,9 +79,9 @@ const MAP_EVENTS = [
  */
 
 export class VideoMap extends mapboxgl.Evented {
-  constructor(options) {
+  constructor(url, videoParameters, options) {
     super();
-    const { container, src, videoParameters, autoplay, loop, videoWidth, videoHeight, opencv, styleOptions } = options;
+    const { container, autoplay, loop, videoWidth, videoHeight, opencv, styleOptions } = options;
     this.container = container || 'map';
     this.layerCache = {};
     this.sourceCache = {};
@@ -85,12 +95,12 @@ export class VideoMap extends mapboxgl.Evented {
       throw new Error('opencv.js instance is not existed!');
     }
     if (!videoParameters) {
-      throw new Error('videoParameters is not set!');
+      throw new Error('videoParameters must be config!');
     }
     this.videoParameters = videoParameters;
     this._createMap().then((map) => {
       this.map = map;
-      this._addVideoLayer(src);
+      this._addVideoLayer(url);
     });
   }
 
@@ -149,7 +159,7 @@ export class VideoMap extends mapboxgl.Evented {
   /**
    * @function VideoMap.prototype.removeSource
    * @description  移除数据源。
-   * @param {string} id - source id。
+   * @param {string} id - 数据源 id。
    */
   removeSource(id) {
     if (!this._mapExisted()) {
