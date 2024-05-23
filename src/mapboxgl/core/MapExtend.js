@@ -22,7 +22,9 @@ export var MapExtend = (function () {
       this.beforeLoadBak(id, options);
     };
   }
-  mapboxgl.Map.prototype.overlayLayersManager = {};
+  mapboxgl.Map = class Map extends mapboxgl.Map {
+    overlayLayersManager = {};
+  }
   if (mapboxgl.Map.prototype.addLayerBak === undefined) {
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
     mapboxgl.Map.prototype.addLayer = function (layer, before) {
@@ -89,12 +91,21 @@ export var MapExtend = (function () {
 
   mapboxgl.Map.prototype.removeLayer = function (id) {
     if (this.overlayLayersManager[id]) {
+     const layer = this.overlayLayersManager[id];
       delete this.overlayLayersManager[id];
+      if (layer.type !== 'custom') {
+       removeLayer(layer);
+       return this;
+     }
     }
     this.style.removeLayer(id);
     this._update(true);
     return this;
   };
+
+  function removeLayer(layer) {
+    layer.removeFromMap && layer.removeFromMap();
+  }
 
   //目前扩展的overlayer，只支持显示或隐藏图层操作
   mapboxgl.Map.prototype.setLayoutProperty = function (layerID, name, value) {

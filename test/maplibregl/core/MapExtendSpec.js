@@ -107,6 +107,11 @@ describe('maplibregl MapExtend', () => {
       }
     });
   });
+
+  afterEach(() => {
+    map.overlayLayersManager = {};
+  })
+
   afterAll(() => {
     window.document.body.removeChild(testDiv);
     map && map.remove();
@@ -120,5 +125,50 @@ describe('maplibregl MapExtend', () => {
     const layers = map.listLayers();
     expect(layers).toEqual(['raster', 'fill-1', 'circle-1', 'l7_layer_1', 'heatmap_1']);
     done();
+  });
+  
+  it('overlayLayersManager', (done) => {
+    expect(map.overlayLayersManager).toEqual({});
+    map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1', type: 'custom' }, heatmap_1: { id: 'heatmap_1', removeFromMap: function() {} } };
+    spyOn(map.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
+    spyOn(map.style, 'removeLayer').and.callThrough();
+    const removeFromMap = map.overlayLayersManager.heatmap_1.removeFromMap;
+    const testDiv2 = window.document.createElement('div');
+    testDiv2.setAttribute('id', 'map2');
+    window.document.body.appendChild(testDiv2);
+    const map2 = new maplibregl.Map({
+      container: 'map2',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    expect(map2.overlayLayersManager).toEqual({});
+    map.on('load', () => {
+      map.removeLayer('heatmap_1')
+      expect(removeFromMap.calls.count()).toEqual(1);
+      map.removeLayer('l7_layer_1');
+      expect(map.style.removeLayer.calls.count()).toEqual(1);
+      map2.remove();
+      document.body.removeChild(testDiv2);
+      done();
+    })
   });
 });

@@ -6,7 +6,7 @@ import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
 import { decryptSources } from '../../../src/mapboxgl/core/decryptSource';
 import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
 
-describe('getServiceKey', () => {
+describe('MapExtend mapboxgl', () => {
   let originalTimeout, testDiv;
   const url = 'http:/fake:8090/iserver/iserver/services/map-China107/rest/maps/A';
   beforeAll(() => {
@@ -239,5 +239,75 @@ describe('getServiceKey', () => {
     } catch (error) {
       expect(error).toEqual(new Error('mapbox-gl cannot support plane coordinate system.'));
     }
+  });
+  
+  it('overlayLayersManager', (done) => {
+    const map1 = new mapboxgl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    expect(map1.overlayLayersManager).toEqual({});
+    map1.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1', type: 'custom' }, heatmap_1: { id: 'heatmap_1', removeFromMap: function() {} } };
+    spyOn(map1.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
+    spyOn(map1.style, 'removeLayer').and.callThrough();
+    const removeFromMap = map1.overlayLayersManager.heatmap_1.removeFromMap;
+    const testDiv2 = window.document.createElement('div');
+    testDiv2.setAttribute('id', 'map2');
+    window.document.body.appendChild(testDiv2);
+    const map2 = new mapboxgl.Map({
+      container: 'map2',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    expect(map2.overlayLayersManager).toEqual({});
+    map1.on('load', () => {
+      map1.removeLayer('heatmap_1')
+      expect(removeFromMap.calls.count()).toEqual(1);
+      map1.removeLayer('l7_layer_1');
+      expect(map1.style.removeLayer.calls.count()).toEqual(1);
+      map1.remove();
+      map2.remove();
+      document.body.removeChild(testDiv2);
+      done();
+    })
   });
 });

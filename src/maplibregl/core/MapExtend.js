@@ -9,7 +9,9 @@ import maplibregl from 'maplibre-gl';
   * @private
   */
  export var MapExtend = (function () {
-   maplibregl.Map.prototype.overlayLayersManager = {};
+   maplibregl.Map = class Map extends maplibregl.Map {
+     overlayLayersManager = {};
+   }
    if (maplibregl.Map.prototype.addLayerBak === undefined) {
      maplibregl.Map.prototype.addLayerBak = maplibregl.Map.prototype.addLayer;
      maplibregl.Map.prototype.addLayer = function (layer, before) {
@@ -76,12 +78,21 @@ import maplibregl from 'maplibre-gl';
  
    maplibregl.Map.prototype.removeLayer = function (id) {
      if (this.overlayLayersManager[id]) {
+      const layer = this.overlayLayersManager[id];
        delete this.overlayLayersManager[id];
+       if (layer.type !== 'custom') {
+        removeLayer(layer);
+        return this;
+      }
      }
      this.style.removeLayer(id);
      this._update(true);
      return this;
    };
+
+   function removeLayer(layer) {
+      layer.removeFromMap && layer.removeFromMap();
+   }
  
    //目前扩展的overlayer，只支持显示或隐藏图层操作
    maplibregl.Map.prototype.setLayoutProperty = function (layerID, name, value) {
