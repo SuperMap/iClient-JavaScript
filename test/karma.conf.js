@@ -43,10 +43,13 @@ module.exports = function (config) {
               '../node_modules/xlsx/**',
               '../node_modules/@turf/**',
               '../node_modules/lodash/**',
+              '../node_modules/echarts/dist/echarts.js',
               '../src/mapboxgl/overlay/L7/l7-render.js',
               '../src/maplibregl/overlay/L7/l7-render.js',
+              '../node_modules/video.js/dist/video.cjs.js',
               '../src/common/util/UGCWasmAll.js',
-              '../node_modules/echarts/dist/echarts.js'
+              '../node_modules/@mapbox/mapbox-gl-style-spec'
+              
             ],
             plugins: ['istanbul', '@babel/plugin-transform-runtime']
           }

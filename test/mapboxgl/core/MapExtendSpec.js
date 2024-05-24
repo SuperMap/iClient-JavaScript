@@ -1,5 +1,5 @@
-import mapboxglMock from '../../tool/mock_mapboxgl_map';
 import mapboxgl from 'mapbox-gl';
+import mapboxglMock from '../../tool/mock_mapboxgl_map';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 import cipher from 'node-forge/lib/cipher';
 import { MapExtend } from '../../../src/mapboxgl/core/MapExtend';
@@ -223,7 +223,7 @@ describe('MapExtend mapboxgl', () => {
     try {
       const source = {
         tiles: [
-          'http://172.16.13.234:8090/iserver/services/map-China107/rest/maps/A/tileFeature.mvt?returnAttributes=true&width=512&height=512&z={z}&x={x}&y={y}'
+          'http://fake:8090/iserver/services/map-China107/rest/maps/A/tileFeature.mvt?returnAttributes=true&width=512&height=512&z={z}&x={x}&y={y}'
         ],
         bounds: [-180, -90, 180, 90],
         type: 'vector'
@@ -240,37 +240,10 @@ describe('MapExtend mapboxgl', () => {
       expect(error).toEqual(new Error('mapbox-gl cannot support plane coordinate system.'));
     }
   });
-  
+
   it('overlayLayersManager', (done) => {
-    const map1 = new mapboxgl.Map({
-      container: 'map',
-      style: {
-        version: 8,
-        sources: {
-          'raster-tiles': {
-            type: 'raster',
-            tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
-            tileSize: 256
-          }
-        },
-        layers: [
-          {
-            id: 'simple-tiles',
-            type: 'raster',
-            source: 'raster-tiles',
-            minzoom: 0,
-            maxzoom: 22
-          }
-        ]
-      },
-      center: [116.4, 39.79],
-      zoom: 3
-    });
-    expect(map1.overlayLayersManager).toEqual({});
-    map1.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1', type: 'custom' }, heatmap_1: { id: 'heatmap_1', removeFromMap: function() {} } };
-    spyOn(map1.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
-    spyOn(map1.style, 'removeLayer').and.callThrough();
-    const removeFromMap = map1.overlayLayersManager.heatmap_1.removeFromMap;
+    const originRemoveLayer = mapboxgl.Map.prototype.removeLayer;
+    spyOn(mapboxgl, 'Map').and.callFake(mapboxglMock);
     const testDiv2 = window.document.createElement('div');
     testDiv2.setAttribute('id', 'map2');
     window.document.body.appendChild(testDiv2);
@@ -281,7 +254,7 @@ describe('MapExtend mapboxgl', () => {
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+            tiles: ['base/resources/img/baiduTileTest.png'],
             tileSize: 256
           }
         },
@@ -299,8 +272,43 @@ describe('MapExtend mapboxgl', () => {
       zoom: 3
     });
     expect(map2.overlayLayersManager).toEqual({});
+    const map1 = new mapboxgl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['base/resources/img/baiduTileTest.png'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+
     map1.on('load', () => {
-      map1.removeLayer('heatmap_1')
+      map1.removeLayer = originRemoveLayer;
+      expect(map1.overlayLayersManager).toEqual({});
+      map1.style.removeLayer = () => {};
+      map1.overlayLayersManager = {
+        l7_layer_1: { id: 'l7_layer_1', type: 'custom' },
+        heatmap_1: { id: 'heatmap_1', removeFromMap: function () {} }
+      };
+      spyOn(map1.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
+      spyOn(map1.style, 'removeLayer').and.callThrough();
+      const removeFromMap = map1.overlayLayersManager.heatmap_1.removeFromMap;
+      map1.removeLayer('heatmap_1');
       expect(removeFromMap.calls.count()).toEqual(1);
       map1.removeLayer('l7_layer_1');
       expect(map1.style.removeLayer.calls.count()).toEqual(1);
@@ -308,6 +316,6 @@ describe('MapExtend mapboxgl', () => {
       map2.remove();
       document.body.removeChild(testDiv2);
       done();
-    })
+    });
   });
 });

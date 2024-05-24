@@ -1,4 +1,5 @@
 import maplibregl from 'maplibre-gl';
+import mbglmap from '../../tool/mock_mapboxgl_map';
 import '../../../src/maplibregl/core/MapExtend';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 
@@ -127,12 +128,11 @@ describe('maplibregl MapExtend', () => {
     done();
   });
   
-  xit('overlayLayersManager', (done) => {
-    expect(map.overlayLayersManager).toEqual({});
-    map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1', type: 'custom' }, heatmap_1: { id: 'heatmap_1', removeFromMap: function() {} } };
-    spyOn(map.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
-    spyOn(map.style, 'removeLayer').and.callThrough();
-    const removeFromMap = map.overlayLayersManager.heatmap_1.removeFromMap;
+  it('overlayLayersManager', (done) => {
+    const originRemoveLayer = maplibregl.Map.prototype.removeLayer;
+    spyOn(maplibregl, 'Map').and.callFake(mbglmap);
+  
+   
     const testDiv2 = window.document.createElement('div');
     testDiv2.setAttribute('id', 'map2');
     window.document.body.appendChild(testDiv2);
@@ -143,7 +143,7 @@ describe('maplibregl MapExtend', () => {
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+            tiles: ['base/resources/img/baiduTileTest.png'],
             tileSize: 256
           }
         },
@@ -161,11 +161,42 @@ describe('maplibregl MapExtend', () => {
       zoom: 3
     });
     expect(map2.overlayLayersManager).toEqual({});
-    map.on('load', () => {
-      map.removeLayer('heatmap_1')
+    var map1 = new maplibregl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['base/resources/img/baiduTileTest.png'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    map1.on('load', () => {
+      expect(map1.overlayLayersManager).toEqual({});
+      map1.style.removeLayer = () => {};
+      map1.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1', type: 'custom' }, heatmap_1: { id: 'heatmap_1', removeFromMap: function() {} } };
+      spyOn(map1.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
+      spyOn(map1.style, 'removeLayer').and.callThrough();
+      const removeFromMap = map1.overlayLayersManager.heatmap_1.removeFromMap;
+      map1.removeLayer = originRemoveLayer;
+      map1.removeLayer('heatmap_1')
       expect(removeFromMap.calls.count()).toEqual(1);
-      map.removeLayer('l7_layer_1');
-      expect(map.style.removeLayer.calls.count()).toEqual(1);
+      map1.removeLayer('l7_layer_1');
+      expect(map1.style.removeLayer.calls.count()).toEqual(1);
       map2.remove();
       document.body.removeChild(testDiv2);
       done();

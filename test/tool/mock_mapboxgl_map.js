@@ -21,6 +21,7 @@ function functor(x) {
 const Map = function (options) {
   const evented = new mapboxgl.Evented();
   this.on = evented.on;
+  this._update = ()=>{};
   this.fire = evented.fire;
   this.listens = evented.listens;
 
