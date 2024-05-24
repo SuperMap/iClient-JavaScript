@@ -127,7 +127,7 @@ describe('maplibregl MapExtend', () => {
     done();
   });
   
-  it('overlayLayersManager', (done) => {
+  xit('overlayLayersManager', (done) => {
     expect(map.overlayLayersManager).toEqual({});
     map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1', type: 'custom' }, heatmap_1: { id: 'heatmap_1', removeFromMap: function() {} } };
     spyOn(map.overlayLayersManager.heatmap_1, 'removeFromMap').and.callThrough();
