@@ -257,7 +257,7 @@ export class GeometryAnalysis extends Events {
   isIntersectRegionWithRect(feature, left, top, right, bottom, tolerance = 1e-6) {
     const ugFeature = geojson2UGGeometry(feature);
     const result = this.module._UGCWasm_Geometrist_isIntersectRegionWithRect(ugFeature, left, top, right, bottom, tolerance);
-    return result === 1;
+    return result !== 0;
   }
   /**
      * @function GeometryAnalysis.prototype.isOnSameSide
