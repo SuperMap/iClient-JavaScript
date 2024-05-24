@@ -10,7 +10,10 @@ import maplibregl from 'maplibre-gl';
   */
  export var MapExtend = (function () {
    maplibregl.Map = class Map extends maplibregl.Map {
-     overlayLayersManager = {};
+      constructor(options) {
+        super(options);
+        this.overlayLayersManager = {};
+      }
    }
    if (maplibregl.Map.prototype.addLayerBak === undefined) {
      maplibregl.Map.prototype.addLayerBak = maplibregl.Map.prototype.addLayer;

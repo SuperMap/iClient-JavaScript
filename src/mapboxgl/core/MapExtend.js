@@ -23,7 +23,10 @@ export var MapExtend = (function () {
     };
   }
   mapboxgl.Map = class Map extends mapboxgl.Map {
-    overlayLayersManager = {};
+    constructor(options) {
+      super(options);
+      this.overlayLayersManager = {};
+    }
   }
   if (mapboxgl.Map.prototype.addLayerBak === undefined) {
     mapboxgl.Map.prototype.addLayerBak = mapboxgl.Map.prototype.addLayer;
