@@ -68,7 +68,8 @@
 
         var map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({ attributionOptions: { collapsed: true } })
+            // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+            controls: ol.control.defaults.defaults({ attributionOptions: { collapsed: true } })
                 .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: [12954583.524137927, 4860747.532344677],
@@ -83,7 +84,7 @@
             })]
         });
 
-        var echartslayer = new ol3Echarts(null, {
+        var echartslayer = new EChartsLayer(null, {
             hideOnMoving: true,
             hideOnZooming: true
         });

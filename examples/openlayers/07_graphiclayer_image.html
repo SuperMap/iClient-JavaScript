@@ -17,7 +17,8 @@
     var url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/ChinaDark",
         map = new ol.Map({
             target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+            controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
                 .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
             view: new ol.View({
                 center: ol.proj.transform([-73.9286, 40.75], 'EPSG:4326', 'EPSG:3857'),

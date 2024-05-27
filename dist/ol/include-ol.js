@@ -56,8 +56,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
-            inputCSS(libsurl + '/openlayers/6.14.1/ol.css');
-            inputScript(libsurl + '/openlayers/6.14.1/ol.js');
+            inputCSS(libsurl + '/openlayers/7.5.2/ol.min.css');
+            inputScript(libsurl + '/openlayers/7.5.2/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
@@ -83,7 +83,10 @@
             inputScript(libsurl + '/proj4/2.11.0/proj4.min.js');
         }
         if (inArray(includes, 'ol3-echarts')) {
-            inputScript(libsurl + '/openlayers/ol3-echarts/2.0.6/ol3Echarts.min.js');
+            inputScript('../../web/libs' + '/openlayers/ol3-echarts/4.0.0/ol-echarts.js');
+        }
+        if (inArray(includes, 'ol3-echarts@3.0.0')) {
+          inputScript(libsurl + '/openlayers/ol3-echarts/3.0.0/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
@@ -101,8 +104,12 @@
             inputScript(libsurl + '/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js');
         }
         if (inArray(includes, 'layerswitcher')) {
-            inputCSS(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.css');
-            inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
+            inputCSS(libsurl + '/openlayers/plugins/ol-layerswitcher/4.1.1/ol-layerswitcher.min.css');
+            inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/4.1.1/ol-layerswitcher.min.js');
+        }
+        if (inArray(includes, 'layerswitcher@3.8.3')) {
+          inputCSS(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.css');
+          inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
         }
         if (inArray(includes, 'jsonsql')) {
           inputScript(libsurl + '/jsonsql/0.2.5/jsonsql.min.js');

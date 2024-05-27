@@ -28,7 +28,6 @@ import View from 'ol/View';
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import * as olProj from 'ol/proj';
 import * as olProj4 from 'ol/proj/proj4';
-import Units from 'ol/proj/Units';
 import * as olLayer from 'ol/layer';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
@@ -2942,7 +2941,7 @@ export class WebMap extends Observable {
     MVT.prototype.readProjection = function () {
       return new olProj.Projection({
         code: '',
-        units: Units.TILE_PIXELS
+        units: 'tile-pixels'
       });
     };
     let featureType = layerInfo.featureType;

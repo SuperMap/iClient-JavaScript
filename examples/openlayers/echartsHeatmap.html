@@ -21,7 +21,8 @@
     var map, option, url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var map = new ol.Map({
         target: 'map',
-        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+        // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
+        controls: ol.control.defaults.defaults({attributionOptions: {collapsed: false}})
             .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
             center: [120.11, 30.24],
@@ -38,7 +39,7 @@
         })]
     });
 
-    var echartslayer = new ol3Echarts(null, {
+    var echartslayer = new EChartsLayer(null, {
         hideOnMoving: true,
         hideOnZooming: true
     });
