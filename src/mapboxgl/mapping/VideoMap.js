@@ -52,7 +52,7 @@ const MAP_EVENTS = [
 /**
  * @class VideoMap
  * @classdesc 视频地图
- * @category VideoMap
+ * @category Visualization Video
  * @version 11.2.0
  * @modulecategory Mapping
  * @param {Object} options - 参数
@@ -76,6 +76,7 @@ const MAP_EVENTS = [
  * @param {string} [options.autoplay=true] - 视频是否自动播放
  * @param {string} [options.loop=true] - 视频是否循环播放
  * @extends {mapboxgl.Evented}
+ * @usage
  */
 
 export class VideoMap extends mapboxgl.Evented {
@@ -106,8 +107,16 @@ export class VideoMap extends mapboxgl.Evented {
 
   /**
    * @function VideoMap.prototype.addLayer
-   * @description  添加图层。
+   * @description 添加图层。
    * @param {Object} layer - 图层配置。
+   * @param {string} layer.id - 图层 id
+   * @param {string} layer.type - 图层类型
+   * @param {string|Object} layer.source - 数据源配置
+   * @param {Array} [layer.filter] - 过滤配置
+   * @param {Object} [layer.layout] - 布局配置
+   * @param {Object} [layer.paint] - 绘制配置
+   * @param {number} [layer.maxzoom] - 最大级别
+   * @param {number} [layer.minzoom] - 最小级别
    * @param {string} beforeId - 已经存在的图层 ID。
    */
   addLayer(layer, beforeId) {
@@ -127,6 +136,8 @@ export class VideoMap extends mapboxgl.Evented {
    * @description  添加数据源。
    * @param {string} id - 数据源 id。
    * @param {Object} source - 图层源配置。
+   * @param {string} source.type - 只支持 geojson
+   * @param {Object} source.data - geojson 数据。
    */
   addSource(id, source) {
     if (!this._mapExisted()) {
@@ -159,7 +170,7 @@ export class VideoMap extends mapboxgl.Evented {
   /**
    * @function VideoMap.prototype.removeSource
    * @description  移除数据源。
-   * @param {string} id - source id。
+   * @param {string} id - 数据源 id。
    */
   removeSource(id) {
     if (!this._mapExisted()) {

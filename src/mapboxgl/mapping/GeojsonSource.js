@@ -1,6 +1,7 @@
 import { featureEach, coordEach } from '@turf/meta';
 import cloneDeep from 'lodash.clonedeep';
 import { transformCoord } from './utils/VideoMapUtil';
+import proj4 from 'proj4';
 
 /**
  * @class GeojsonSource
@@ -33,7 +34,8 @@ export default class GeojsonSource {
     const newData = cloneDeep(source.data);
     featureEach(newData, (currentFeature) => {
       coordEach(currentFeature, (curCoords) => {
-        let transCoords = this.coordTransfer.toVideoCoordinate(curCoords);
+        let transCurCoords = proj4('EPSG:4326', 'EPSG:3857', curCoords);
+        let transCoords = this.coordTransfer.toVideoCoordinate(transCurCoords);
         curCoords.length = 0;
         curCoords.push(
           ...transformCoord({

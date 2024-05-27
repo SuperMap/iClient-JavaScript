@@ -63,7 +63,7 @@
    /**
     * @function VideoLayer.prototype.onAdd
     * @description 添加该图层。
-    * @param {Object} 地图实例。
+    * @param {mapboxgl.Map} map - 地图实例。
     */
    onAdd(map) {
      this.map = map;

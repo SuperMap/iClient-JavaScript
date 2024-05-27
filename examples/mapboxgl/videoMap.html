@@ -49,6 +49,7 @@
             name: dstName + '@' + datasource,
             attributeFilter: 'SMID > 0'
           },
+          targetEpsgCode: '4326',
           datasetNames: [datasource + ':' + dstName]
         });
 
@@ -203,8 +204,9 @@
           var cameraLocation = serviceResult.result.features.features[0].properties.cameraLocation;
           var calibrationModel = serviceResult.result.features.features[0].properties.videoParameters.videoParameterList[0].calibrationModel;
           videoMap = new mapboxgl.supermap.VideoMap(
+          {
             url,
-            {
+            videoParameters: {
               fovX: calibrationModel.fovX,
               fovY: calibrationModel.fovY,
               centerX: calibrationModel.centerX,
@@ -216,7 +218,6 @@
               y: cameraLocation.cameraY,
               z: cameraLocation.cameraZ
             },
-          {
             autoplay: false,
             styleOptions: {
               sprite: 'https://iclient.supermap.io/web/styles/street/sprite',
