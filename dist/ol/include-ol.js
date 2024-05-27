@@ -56,8 +56,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
-            inputCSS(libsurl + '/openlayers/7.5.2/ol.min.css');
-            inputScript(libsurl + '/openlayers/7.5.2/ol.js');
+            inputCSS('https://cdn.jsdelivr.net/npm/ol@7.5.2/ol.min.css');
+            inputScript('https://cdn.jsdelivr.net/npm/ol@7.5.2/dist/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
@@ -84,9 +84,6 @@
         }
         if (inArray(includes, 'ol3-echarts')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/4.0.1/ol-echarts.js');
-        }
-        if (inArray(includes, 'ol3-echarts@3.0.0')) {
-          inputScript(libsurl + '/openlayers/ol3-echarts/3.0.0/ol3Echarts.min.js');
         }
         if (inArray(includes, 'ol3-echarts@1.3.6')) {
             inputScript(libsurl + '/openlayers/ol3-echarts/1.3.6/ol3Echarts.min.js');
