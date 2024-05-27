@@ -84,7 +84,9 @@ import maplibregl from 'maplibre-gl';
       const layer = this.overlayLayersManager[id];
        delete this.overlayLayersManager[id];
        if (layer.type !== 'custom') {
-        removeLayer(layer);
+        if (layer.removeFromMap) {
+          layer.removeFromMap();
+        }
         return this;
       }
      }
@@ -92,10 +94,6 @@ import maplibregl from 'maplibre-gl';
      this._update(true);
      return this;
    };
-
-   function removeLayer(layer) {
-      layer.removeFromMap && layer.removeFromMap();
-   }
  
    //目前扩展的overlayer，只支持显示或隐藏图层操作
    maplibregl.Map.prototype.setLayoutProperty = function (layerID, name, value) {
