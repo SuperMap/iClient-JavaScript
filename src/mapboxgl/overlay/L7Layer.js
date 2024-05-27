@@ -53,10 +53,11 @@ export class L7Layer {
 
   setVisibility(visibility) {
     if (this.animateStatus) {
-      this.scene.layerService.stopAnimate(this.l7layer.id);
+      this.scene.layerService.stopAnimate();
+      this.animateStatus = false;
     }
     visibility ? this.l7layer.show() : this.l7layer.hide();
-    this.map.style.setLayoutProperty(this.id, 'visibility', visibility ? 'visible' : 'none');
+    this.map.style.setLayoutProperty(this.id, 'visibility', visibility?'visible':'none');
   }
   addSceneLayer(scene) {
     this.scene = scene;
@@ -79,14 +80,16 @@ export class L7Layer {
     this.scene && this.scene.removeLayer(this.l7layer);
   }
   onRemove() {
-    this.scene && this.scene.layerService.stopAnimate(this.l7layer.id);
+    this.scene && this.scene.layerService.stopAnimate();
     this.scene && this.scene.removeLayer(this.l7layer);
   }
 
   render() {
     if (this.scene && this.scene.getLayer(this.l7layer.id)) {
       if (this.l7layer.animateStatus || (this.l7layer.layerModel && this.l7layer.layerModel.spriteAnimate)) {
-        this.scene.layerService.startAnimate(this.l7layer.id);
+        if (!this.animateStatus) {
+          this.scene.layerService.startAnimate();
+        }
         this.animateStatus = true;
         this.map.triggerRepaint();
       } else {
