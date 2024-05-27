@@ -56,8 +56,8 @@
         var excludes = (targetScript.getAttribute('exclude') || '').split(',');
         // 在线
         if (!inArray(includes, 'ol-debug') && !inArray(includes, 'ol@4.6.5') && !inArray(excludes, 'ol')) {
-            inputCSS('https://cdn.jsdelivr.net/npm/ol@7.5.2/ol.min.css');
-            inputScript('https://cdn.jsdelivr.net/npm/ol@7.5.2/dist/ol.js');
+            inputCSS(libsurl + '/openlayers/7.5.2/ol.min.css');
+            inputScript(libsurl + '/openlayers/7.5.2/ol.js');
         }
         if (inArray(includes, 'ol@4.6.5')) {
             inputCSS(libsurl + '/openlayers/4.6.5/ol.css');
