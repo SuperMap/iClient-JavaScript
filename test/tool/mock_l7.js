@@ -25,6 +25,7 @@ const Maplibre = ({ mapInstance }) => {
   return mapInstance;
 };
 const Layer = () => {
+  this.animateStatus = false;
   return {
     animateStatus: this.animateStatus || false,
     source() {
