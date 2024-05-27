@@ -306,11 +306,12 @@ describe('mapboxgl L7Layer', () => {
     spyOn(l7Layer, 'show');
     spyOn(l7Layer, 'hide');
     spyOn(map.style, 'setLayoutProperty');
+    expect(layer.animateStatus).toBeTruthy();
 
     map.setLayoutProperty(layer.id, 'visibility', 'hidden');
     expect(l7Layer.hide).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
-    expect(layer.animateStatus).toBeTruthy();
+    expect(layer.animateStatus).toBeFalsy();
 
     map.setLayoutProperty(layer.id, 'visibility', 'visible');
     expect(l7Layer.show).toHaveBeenCalled();
