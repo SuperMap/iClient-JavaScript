@@ -23,7 +23,7 @@
     "canvg": "3.0.10",
     "lodash.remove": "^4.7.0",
     "lodash.difference": "^4.5.0",
-    "flatgeobuf": "3.23.1",
+    "flatgeobuf": "3.31.1",
     "rbush": "^2.0.2"
   }
 }

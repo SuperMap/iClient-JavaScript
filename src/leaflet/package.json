@@ -24,7 +24,7 @@
     "jsonsql": "0.2.5",
     "pbf": "3.2.1",
     "proj4": "2.11.0",
-    "flatgeobuf": "3.23.1",
+    "flatgeobuf": "3.31.1",
     "rbush": "^2.0.2"
   }
 }
