@@ -170,6 +170,8 @@ const StyleRenderType = {
   fillExtrusion: 'fillExtrusion'
 };
 
+const L7_WIDTH_MULTIPLE = 0.5;
+
 /**
  * @param {string} url
  * @param {string} [token]
@@ -1123,7 +1125,7 @@ function transformWebmapLineLayerToSceneLayer(layer, source, map) {
     type: MSLayerType.line,
     source,
     color: expressionToFunction({ value: color, property: 'color', map }),
-    size: expressionMultiToFunction(map, { value: width }, { value: height }),
+    size: expressionMultiToFunction(map, { value: width, multiple: L7_WIDTH_MULTIPLE }, { value: height }),
     shape: {
       values: 'line'
     },
@@ -1507,12 +1509,28 @@ function imgDataToBlob(imagedata) {
 }
 
 /**
+ * 将雪碧图1倍地址替换成2x的
+ */
+function replaceSprite2X(url) {
+  const arrs = url.split('/');
+  const lastSprite = arrs.slice(-1)[0];
+  if (!lastSprite) {
+    return url;
+  }
+  const newLastSprite = lastSprite.replace('sprite', 'sprite@2x');
+  arrs.splice(arrs.length - 1, 1, newLastSprite);
+  return arrs.join('/');
+}
+
+/**
  * 根据设备比返回对应的Url
  * @param url sprite url
  */
 function getPixelRatioSpriteUrl(url) {
-  const format = window.devicePixelRatio > 1 ? '@2x' : '';
-  return url + format;
+  if (window.devicePixelRatio > 1 && !url.includes('/sprite@2x')) {
+      return replaceSprite2X(url);
+  }
+  return url;
 }
 
 function getSpritePngUrl(spriteUrl) {
@@ -1576,7 +1594,7 @@ async function addTextures({ layers, sprite, spriteJson, scene, options }) {
     const iconInfo = spriteJson[texture];
     if (iconInfo) {
       const image = await changeSpriteIconToImgData(
-        getPixelRatioSpriteUrl(sprite),
+        sprite,
         { ...iconInfo, id: texture },
         options
       );
