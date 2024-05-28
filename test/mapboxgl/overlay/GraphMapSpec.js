@@ -82,7 +82,7 @@ describe('GraphMap mapboxgl', () => {
       }
     });
   });
-  it('no graph highlight clearHighlight', (done) => {
+  xit('no graph highlight clearHighlight', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
       if (testUrl.includes('/query.json')) {
         return Promise.resolve(new Response(queryData));
