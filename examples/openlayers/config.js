@@ -1164,15 +1164,15 @@ var exampleConfig = {
               version: '11.1.0',
               content: [
                   {
-                    name: 'FGB 全量加载（2500万点数据量）',
-                    name_en: 'FGB Full Load (Use lines to draw 25 millions Chinese roads)',
+                    name: 'FGB 全量加载（1400万点数据量）',
+                    name_en: 'FGB Full Load (Use lines to draw 14 millions Chinese roads)',
                     version: '11.1.0',
                     thumbnail: 'fgb_all_load.png',
                     fileName: 'fgb_all_load'
                   },
                   {
-                    name: 'FGB 按需加载（2500万点数据量）',
-                    name_en: 'FGB Extent Load (Use lines to draw 25 millions Chinese roads)',
+                    name: 'FGB 按需加载（1400万点数据量）',
+                    name_en: 'FGB Extent Load (Use lines to draw 14 millions Chinese roads)',
                     version: '11.1.0',
                     thumbnail: 'fgb_bbox_load.png',
                     fileName: 'fgb_bbox_load'

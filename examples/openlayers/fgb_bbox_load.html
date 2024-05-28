@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io',
         url = host + '/iserver/services/map-china400/rest/maps/China_4326';
-      var fgbUrl = 'https://iclient.supermap.io/minio/fgb/roads.fgb';
+      var fgbUrl = 'https://iclient.supermap.io/minio/fgb/waterways.fgb';
       var map;
       map = new ol.Map({
         target: 'map',
@@ -23,7 +23,7 @@
           .extend([new ol.supermap.control.Logo({ link: "https://iclient.supermap.io" })]),
         view: new ol.View({
           center: [116.3966453552246, 39.91313934326172],
-          zoom: 13,
+          zoom: 9,
           projection: 'EPSG:4326',
           multiWorld: true
         })
