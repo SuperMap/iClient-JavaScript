@@ -190,16 +190,14 @@ function addCredentialToUrl(url, credential) {
  * @description 获取数据集表头信息
  * @param {string} datasetUrl 数据集地址
  * @param {Object} credential
- * @param {boolean} withCredentials
+ * @param {Object} options
  */
-function getRestDataFields(datasetUrl, credential, withCredentials) {
+function getRestDataFields(datasetUrl, credential, options) {
   const url = addCredentialToUrl(`${datasetUrl}/fields.json?returnAll=true`, credential);
-  return FetchRequest.get(url, {
-    withCredentials
-  })
+  return FetchRequest.get(url, null, options)
     .then((res) => res.json())
     .then((result) => {
-      return result.data.map((item) => {
+      return result.map((item) => {
         const { caption, name, isSystemField, type, maxLength, isZeroLengthAllowed } = item;
         return {
           name,
@@ -218,13 +216,11 @@ function getRestDataFields(datasetUrl, credential, withCredentials) {
  * @description 获取值域
  * @param {string} datasetUrl
  * @param {Object} credential
- * @param {boolean} withCredentials
+ * @param {Object} options
  */
-function getRestDataDomains(datasetUrl, credential, withCredentials) {
+function getRestDataDomains(datasetUrl, credential, options) {
   const url = addCredentialToUrl(`${datasetUrl}/domain.json`, credential);
-  return FetchRequest.get(url, {
-    withCredentials
-  }).then((result) => {
+  return FetchRequest.get(url, null, options).then((result) => {
     return result.json();
   });
 }
@@ -246,10 +242,10 @@ function sortRestdataField(fieldInfos) {
   return systemFields.concat(nonsystemFields);
 }
 
-async function requestRestDataFieldsInfo(datasetUrl, credential, withCredentials) {
+async function requestRestDataFieldsInfo(datasetUrl, credential, options) {
   const [fields, domains] = await Promise.all([
-    getRestDataFields(datasetUrl, credential, withCredentials),
-    getRestDataDomains(datasetUrl, credential, withCredentials)
+    getRestDataFields(datasetUrl, credential, options),
+    getRestDataDomains(datasetUrl, credential, options)
   ]);
   domains.forEach((domain) => {
     const { fieldName, type, rangeInfos, codeInfos } = domain;
@@ -274,8 +270,8 @@ async function requestRestDataFieldsInfo(datasetUrl, credential, withCredentials
  * @param credential
  * @param withCredentials
  */
-async function getRestDataFieldInfo(datasetUrl, credential, withCredentials) {
-  const fieldsInfos = await requestRestDataFieldsInfo(datasetUrl, credential, withCredentials);
+async function getRestDataFieldInfo(datasetUrl, credential, options) {
+  const fieldsInfos = await requestRestDataFieldsInfo(datasetUrl, credential, options);
   return {
     fieldNames: fieldsInfos.map((el) => el.name),
     fieldTypes: fieldsInfos.map((el) => el.type)
@@ -392,12 +388,9 @@ async function getRestDataGeojsonByWebMap(data, options) {
     targetEpsgCode: '4326',
     queryParameter: { name: datasetName + '@' + dataSourceName }
   };
-  const SQLConfig = {
-    withCredentials: options.withCredentials
-  };
   const datasetUrl = `${url.split('featureResults')[0]}datasources/${dataSourceName}/datasets/${datasetName}`;
-  const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, options.withCredentials);
-  const attrDataInfo = await FetchRequest.post(url, SQLParams, SQLConfig);
+  const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, options);
+  const attrDataInfo = await FetchRequest.post(url, JSON.stringify(SQLParams), options);
   const featuresRes = await attrDataInfo.json();
 
   return {
@@ -409,9 +402,10 @@ async function getRestDataGeojsonByWebMap(data, options) {
 /**
  * 获取单条item
  * @param href
+ * @param option
  */
 function getStructDataItemJson(href, option) {
-  return FetchRequest.get(href, option)
+  return FetchRequest.get(href, null, option)
     .then((res) => res.json())
     .then((data) => {
       if (data.succeed === false) {
@@ -430,7 +424,7 @@ function getStructDataItemJson(href, option) {
  * @param options
  */
 async function getStructDataItem(href, options) {
-  const data = await getStructDataItemJson(href);
+  const data = await getStructDataItemJson(href, options);
   const { features, links = [] } = data || {};
   const nextInfo = links.find((l) => l.rel === 'next');
   if (nextInfo) {
@@ -552,7 +546,11 @@ function transformGeometryCoordinates(features, fromProjection, toProjection = '
  */
 async function getStructuredDataGeojsonByWebMap(data, options) {
   const allFeature = await getStructDataGeojson(data.dataId, options);
-  const resultRes = await FetchRequest.get(`${options.server}web/datas/${data.dataId}/structureddata.json`);
+  const resultRes = await FetchRequest.get(
+    `${options.server}web/datas/${data.dataId}/structureddata.json`,
+    null,
+    options
+  );
   const result = await resultRes.json();
   const projection = `EPSG:${result.epsgCode}`;
   if (projection !== 'EPSG:4326') {
@@ -1528,7 +1526,7 @@ function replaceSprite2X(url) {
  */
 function getPixelRatioSpriteUrl(url) {
   if (window.devicePixelRatio > 1 && !url.includes('/sprite@2x')) {
-      return replaceSprite2X(url);
+    return replaceSprite2X(url);
   }
   return url;
 }
@@ -1593,11 +1591,7 @@ async function addTextures({ layers, sprite, spriteJson, scene, options }) {
     const texture = (l.texture || {}).values;
     const iconInfo = spriteJson[texture];
     if (iconInfo) {
-      const image = await changeSpriteIconToImgData(
-        sprite,
-        { ...iconInfo, id: texture },
-        options
-      );
+      const image = await changeSpriteIconToImgData(sprite, { ...iconInfo, id: texture }, options);
       const style = l.style || {};
       const color = style.textureColor,
         rotate = style.textureRotate;
@@ -1956,7 +1950,12 @@ function getL7Layer(l) {
 export async function addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, options }) {
   // 添加L7图层
   const { layers, sources, sprite } = webMapInfo;
-  const formateL7Layers = await restoreL7Layers({ layers: l7Layers, sources, map, options });
+  const formateL7Layers = await restoreL7Layers({
+    layers: l7Layers,
+    sources,
+    map,
+    options: Object.assign({ withoutFormatSuffix: true }, options)
+  });
   // 批量处理L7纹理
   const scene = await getScene(map);
   if (Object.keys(spriteDatas).length > 0) {

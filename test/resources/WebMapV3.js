@@ -1727,3 +1727,174 @@ var l7StructureData1767084124Items = JSON.stringify({
   ],
   type: 'FeatureCollection'
 });
+
+var RESTDATA_FIELDS_RES = JSON.stringify([
+  {
+    isRequired: true,
+    defaultValue: '',
+    name: 'SmID',
+    caption: 'SmID',
+    type: 'INT32',
+    maxLength: 4,
+    isZeroLengthAllowed: true,
+    isSystemField: true
+  },
+  {
+    isRequired: true,
+    defaultValue: '0',
+    name: 'SmUserID',
+    caption: 'SmUserID',
+    type: 'INT32',
+    maxLength: 4,
+    isZeroLengthAllowed: true,
+    isSystemField: false
+  },
+  {
+    isRequired: true,
+    defaultValue: '0',
+    name: 'SmLength',
+    caption: 'SmLength',
+    type: 'DOUBLE',
+    maxLength: 8,
+    isZeroLengthAllowed: true,
+    isSystemField: true
+  },
+  {
+    isRequired: true,
+    defaultValue: '0',
+    name: 'SmTopoError',
+    caption: 'SmTopoError',
+    type: 'INT32',
+    maxLength: 4,
+    isZeroLengthAllowed: true,
+    isSystemField: true
+  },
+  {
+    isRequired: true,
+    defaultValue: '',
+    name: 'SmGeoParam',
+    caption: 'SmGeoParam',
+    type: 'LONGBINARY',
+    maxLength: 0,
+    isZeroLengthAllowed: true,
+    isSystemField: true
+  },
+  {
+    isRequired: true,
+    defaultValue: '',
+    name: 'SmGeometry',
+    caption: 'SmGeometry',
+    type: 'LONGBINARY',
+    maxLength: 0,
+    isZeroLengthAllowed: true,
+    isSystemField: true
+  },
+  {
+    isRequired: false,
+    defaultValue: '0',
+    name: 'Field_SmUserID',
+    caption: 'Field_SmUserID',
+    type: 'INT32',
+    maxLength: 4,
+    isZeroLengthAllowed: true,
+    isSystemField: false
+  },
+  {
+    isRequired: false,
+    defaultValue: '',
+    name: 'Name',
+    caption: 'Name',
+    type: 'WTEXT',
+    maxLength: 60,
+    isZeroLengthAllowed: true,
+    isSystemField: false
+  },
+  {
+    isRequired: false,
+    defaultValue: '',
+    name: 'VIDEO',
+    caption: 'VIDEO',
+    type: 'WTEXT',
+    maxLength: 255,
+    isZeroLengthAllowed: true,
+    isSystemField: false
+  },
+  {
+    isRequired: false,
+    defaultValue: '',
+    name: 'IMG',
+    caption: 'IMG',
+    type: 'WTEXT',
+    maxLength: 255,
+    isZeroLengthAllowed: true,
+    isSystemField: false
+  }
+]);
+
+var RESTDATA_DOMAINS_RES = JSON.stringify([
+  {
+    fieldName: 'fakename'
+  },
+  {
+    fieldName: 'Name',
+    type: 'RANGE',
+    rangeInfos: []
+  },
+  {
+    fieldName: 'IMG',
+    codeInfos: []
+  }
+]);
+
+var RESTDATA_FEATURES_RES = JSON.stringify({
+  type: 'FeatureCollection',
+  features: [
+    {
+      geometry: {
+        coordinates: [
+          [
+            [106.47124921867669, 29.47033178888113],
+            [106.47119912104279, 29.470401658110177]
+          ],
+          [
+            [106.47119912104279, 29.470401658110177],
+            [106.47113903373958, 29.470271617041654]
+          ],
+          [
+            [106.47119912104279, 29.470401658110177],
+            [106.47119910665361, 29.47050160426579],
+            [106.47116896677461, 29.471111217808648],
+            [106.47116894249285, 29.471281125823456],
+            [106.47114887142345, 29.47153095299127]
+          ],
+          [
+            [106.47114887142345, 29.47153095299127],
+            [106.4710887481474, 29.471660771027924],
+            [106.47200865477578, 29.483526027704155],
+            [106.47207877311706, 29.483546145538366]
+          ],
+          [
+            [106.47114887142345, 29.47153095299127],
+            [106.47121897627488, 29.471661012945546],
+            [106.47202869346961, 29.48349608117939],
+            [106.47208879426262, 29.48351618012777]
+          ]
+        ],
+        type: 'MultiLineString'
+      },
+      id: '1',
+      type: 'Feature',
+      properties: {
+        SMLENGTH: '3295.723073587066',
+        IMG: 'http://172.16.14.44:8190/iportal/apps/mapdashboard/v2/static/component-thumbnail/container.png',
+        SMID: '1',
+        VIDEO: 'https://iclient.supermap.io/web/data/video/VID_1.mp4',
+        SMTOPOERROR: '0',
+        FIELD_SMUSERID: '0',
+        SMGEOPARAM: '',
+        SMUSERID: '0',
+        NAME: '翠柏路'
+      }
+    }
+  ]
+});
