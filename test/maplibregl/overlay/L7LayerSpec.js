@@ -8,7 +8,7 @@ var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('maplibregl L7Layer', () => {
   var originalTimeout;
-  var testDiv, map, getL7Scene, setLayoutProperty;
+  var testDiv, map, getL7Scene, setLayoutProperty,removeLayer;
   var data = [
     {
       id: '5011000000404',
@@ -22,7 +22,9 @@ describe('maplibregl L7Layer', () => {
   beforeAll((done) => {
     getL7Scene = maplibregl.Map.prototype.getL7Scene;
     setLayoutProperty = maplibregl.Map.prototype.setLayoutProperty;
+    removeLayer = maplibregl.Map.prototype.removeLayer;
     mbglmap.prototype.getL7Scene = getL7Scene;
+
     spyOn(maplibregl, 'Map').and.callFake(mbglmap);
 
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
@@ -62,6 +64,8 @@ describe('maplibregl L7Layer', () => {
       center: [112, 37.94],
       zoom: 13
     });
+    map.removeLayer = removeLayer;
+    map.style.removeLayer = () => {};
     map.on('load', function () {
       done();
     });
@@ -82,6 +86,7 @@ describe('maplibregl L7Layer', () => {
   it('getL7Scene', (done) => {
     map.getL7Scene().then((scene) => {
       expect(scene).not.toBeNull();
+      map.$l7scene = null;
       done();
     });
   });
@@ -103,6 +108,7 @@ describe('maplibregl L7Layer', () => {
       .color('#4cfd47');
     map.getL7Scene().then((scene) => {
       expect(scene).not.toBeNull();
+      map.$l7scene = null;
       done();
     });
   });

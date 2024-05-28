@@ -1,5 +1,6 @@
 
 import './maplibregl/core/MapExtendSpec.js';
+import './maplibregl/core/UtilSpec.js';
 
 /*maplibregl -- services*/
 import './maplibregl/services/AddressMatchServiceSpec.js';

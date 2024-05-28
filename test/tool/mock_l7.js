@@ -1,23 +1,42 @@
-const Scene = () => {
-  return {
-    removeAllLayer: () => {},
-    layerService: {
+class Scene {
+  constructor() {
+    this.layerService = {
       renderLayer: () => {},
       stopAnimate: () => true,
       startAnimate: () => true
-    },
-    getLayer: () => true,
-    addLayer: () => true,
-    removeLayer: () => true,
-    on: (type, callback) => {
-      callback();
-    },
-    addMarkerLayer: () => true,
-    removeMarkerLayer: () => true,
-    addImage: () => true,
-    hasImage: () => false
-  };
-};
+    };
+    this.callbacks = {}
+  }
+  removeAllLayer() {}
+  getLayer() {
+    return true;
+  }
+  addLayer() {
+    return true;
+  }
+  removeLayer() {
+    return true;
+  }
+  on(type, callback) {
+    this.callbacks[type] = callback;
+    callback()
+  }
+  emit(type) {
+    this.callbacks[type]();
+  }
+  addMarkerLayer() {
+    return true;
+  }
+  removeMarkerLayer() {
+    return true;
+  }
+  addImage() {
+    return true;
+  }
+  hasImage() {
+    return false;
+  }
+}
 const Mapbox = ({ mapInstance }) => {
   return mapInstance;
 };
@@ -27,6 +46,9 @@ const Maplibre = ({ mapInstance }) => {
 class Layer {
   constructor() {
     this.animateStatus = false;
+    this.layerModel = {
+      spriteAnimate: false
+    };
   }
   source() {
     return this;
@@ -50,7 +72,13 @@ class Layer {
   filter() {
     return this;
   }
-  shape() {
+  shape(type) {
+    this.shape = type;
+    if (this.shape === 'sprite') {
+      this.layerModel = {
+        spriteAnimate: true
+      };
+    }
     return this;
   }
   active() {

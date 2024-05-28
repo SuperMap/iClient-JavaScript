@@ -8,7 +8,7 @@ var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('mapboxgl L7Layer', () => {
   var originalTimeout;
-  var testDiv, map, getL7Scene, setLayoutProperty;
+  var testDiv, map, getL7Scene, setLayoutProperty, removeLayer;
   var data = [
     {
       id: '5011000000404',
@@ -22,17 +22,16 @@ describe('mapboxgl L7Layer', () => {
   beforeAll((done) => {
     getL7Scene = mapboxgl.Map.prototype.getL7Scene;
     setLayoutProperty = mapboxgl.Map.prototype.setLayoutProperty;
+    removeLayer = mapboxgl.Map.prototype.removeLayer;
     mbglmap.prototype.getL7Scene = getL7Scene;
     mbglmap.prototype.setLayoutProperty = setLayoutProperty;
+
     spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
 
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'GeometryLayer').and.callFake(mockL7.GeometryLayer);
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
     spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
-    // Scene = mockL7.Scene;
-    // Mapbox = mockL7.Mapbox;
-    // mapboxgl.Map.prototype.getCRS = () => ({ fromWGS84: (val) => val, getExtent: () => [] });
     testDiv = window.document.createElement('div');
     testDiv.setAttribute('id', 'map');
     testDiv.style.styleFloat = 'left';
@@ -65,6 +64,8 @@ describe('mapboxgl L7Layer', () => {
       center: [112, 37.94],
       zoom: 13
     });
+    map.removeLayer = removeLayer;
+    map.style.removeLayer = () => {};
     map.on('load', function () {
       done();
     });
@@ -86,6 +87,7 @@ describe('mapboxgl L7Layer', () => {
   it('getL7Scene', (done) => {
     map.getL7Scene().then((scene) => {
       expect(scene).not.toBeNull();
+      map.$l7scene = null;
       done();
     });
   });
@@ -108,6 +110,7 @@ describe('mapboxgl L7Layer', () => {
       .color('#4cfd47');
     map.getL7Scene().then((scene) => {
       expect(scene).not.toBeNull();
+      map.$l7scene = null;
       done();
     });
   });
@@ -270,7 +273,6 @@ describe('mapboxgl L7Layer', () => {
     expect(l7Layer.hide).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
     expect(layer.animateStatus).toBeFalsy();
-
 
     map.setLayoutProperty(layer.id, 'visibility', 'visible');
     expect(l7Layer.show).toHaveBeenCalled();

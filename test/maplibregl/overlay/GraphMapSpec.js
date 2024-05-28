@@ -81,4 +81,37 @@ describe('GraphMap maplibregl', () => {
       }
     });
   });
+  it('no graph highlight clearHighlight', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
+      if (testUrl.includes('/query.json')) {
+        return Promise.resolve(new Response(queryData));
+      }
+      if (testUrl === knowledgegraphURL + '/graphmaps/xxx图谱.json') {
+        expect(testUrl).toBe(knowledgegraphURL + '/graphmaps/xxx图谱.json');
+        return Promise.resolve(new Response(graphmapData));
+      }
+      if (testUrl.includes('/shortestPath.json')) {
+        expect(testUrl).toBe(knowledgegraphURL + '/shortestPath.json?startID=38756&endID=38757');
+        return Promise.resolve(new Response(findShortestPathData));
+      }
+    });
+    var graphMap = new GraphMap(knowledgegraphmapURL, { config: { center: [0, 0] } });
+    graphMap.createGraphMap = () => {};
+
+    graphMap.on('loaded', () => {
+      try {
+        expect(graphMap).not.toBeNull();
+        graphMap.graph = null;
+        const res = graphMap.highlight();
+        const res1 = graphMap.clearHighlight();
+        expect(res).toBeUndefined();
+        expect(res1).toBeUndefined();
+        done();
+      } catch (exception) {
+        console.log("'no graph highlight clearHighlight'案例失败：" + exception.name + ':' + exception.message);
+        expect(false).toBeTruthy();
+        done();
+      }
+    });
+  });
 });
