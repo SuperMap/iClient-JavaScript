@@ -450,7 +450,7 @@ describe('mapboxgl-webmap3.0', () => {
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
     spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
     mapboxgl.Map.prototype.getCRS = function () {
-      return { epsgCode: mapInfo.crs.name, getExtent: () => jest.fn() };
+      return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
     };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {

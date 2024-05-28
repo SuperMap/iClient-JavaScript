@@ -5,8 +5,9 @@ import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 describe('L7LayerUtil', () => {
   const mapstudioWebMap_L7LayersRes = JSON.parse(mapstudioWebMap_L7Layers);
 
+  const scene = new mockL7.Scene();
   const map = {
-    getL7Scene: () => Promise.resolve(mockL7.Scene),
+    getL7Scene: () => Promise.resolve(scene),
     addLayer: () => {},
     getZoom: () => 3
   };
@@ -20,7 +21,16 @@ describe('L7LayerUtil', () => {
     map,
     webMapInfo: { ...mapstudioWebMap_L7LayersRes },
     l7Layers: mapstudioWebMap_L7LayersRes.layers.filter((layer) => isL7Layer(layer)),
-    spriteDatas: {},
+    spriteDatas: {
+      shape7: {
+        sdf: true,
+        pixelRatio: 1,
+        width: 104,
+        x: 0,
+        y: 0,
+        height: 104
+      }
+    },
     options
   };
 
@@ -77,75 +87,75 @@ describe('L7LayerUtil', () => {
   it('add od layer', (done) => {
     const layers = [
       {
-        source: 'ms_1554834293_1716384530289_76',
-        'source-layer': '1554834293$msgeometry',
-        minzoom: 0,
-        maxzoom: 24,
+        layout: {
+          'line-curve-shape': 'greatcircle',
+          visibility: 'visible',
+          'line-curve-segment': 30
+        },
         metadata: {
           MapStudio: {
             title: '国内航班数据_100'
           }
         },
-        id: '国内航班数据_100',
-        type: 'line-curve',
+        maxzoom: 24,
         paint: {
           'line-curve-color': '#ff6b34',
+          'line-curve-dasharray': [1, 0],
           'line-curve-opacity': 1,
           'line-curve-width': 1,
-          'line-curve-pattern-opacity': 1,
-          'line-curve-dasharray': [1, 0]
+          'line-curve-pattern-opacity': 1
         },
-        layout: {
-          'line-curve-shape': 'greatcircle',
-          'line-curve-segment': 30,
-          visibility: 'visible'
-        }
+        source: 'ms_1554834293_1716875846578_8',
+        'source-layer': '1554834293$msgeometry',
+        id: '国内航班数据_100',
+        type: 'line-curve',
+        minzoom: 0
       },
       {
-        source: 'ms_1554834293_1716384530289_76',
-        'source-layer': '1554834293$msgeometry',
-        minzoom: 0,
-        maxzoom: 24,
+        layout: {
+          'line-curve-shape': 'greatcircle',
+          'line-curve-animate-duration': 4,
+          visibility: 'visible',
+          'line-curve-segment': 30,
+          'line-curve-animate-trailLength': 0.2,
+          'line-curve-animate-interval': 0.4,
+          'line-curve-pattern-rotate': 0,
+          'line-curve-pattern-blend': 'replace',
+          'line-curve-pattern-interval': 20
+        },
         metadata: {
           MapStudio: {
             title: '国内航班数据_100'
           }
         },
-        id: 'ms_composite_国内航班数据_100',
-        type: 'line-curve',
+        maxzoom: 24,
         paint: {
+          'line-curve-pattern-color': 'rgba(126,211,33,1)',
           'line-curve-color': '#ff6b34',
+          'line-curve-pattern': 'shape7',
           'line-curve-opacity': 1,
           'line-curve-width': 10,
-          'line-curve-pattern': 'circle',
-          'line-curve-pattern-color': 'rgba(89,89,89,1)',
           'line-curve-pattern-opacity': 1
         },
-        layout: {
-          'line-curve-shape': 'greatcircle',
-          'line-curve-pattern-rotate': 0,
-          'line-curve-pattern-interval': 20,
-          'line-curve-pattern-blend': 'replace',
-          'line-curve-segment': 30,
-          'line-curve-animate-duration': 4,
-          'line-curve-animate-interval': 0.4,
-          'line-curve-animate-trailLength': 0.2,
-          visibility: 'visible'
-        }
+        source: 'ms_1554834293_1716875846578_8',
+        'source-layer': '1554834293$msgeometry',
+        id: 'ms_composite_国内航班数据_100',
+        type: 'line-curve',
+        minzoom: 0
       }
     ];
     const sources = {
-      ms_1554834293_1716384530289_76: {
-        type: 'geojson',
+      ms_1554834293_1716875846578_8: {
         data: {
-          type: 'supermap-structured-data',
-          dataId: '1554834293'
+          dataId: '1554834293',
+          type: 'supermap-structured-data'
         },
         od: true,
         originX: '起飞机场x',
         originY: '起飞机场y',
-        destinationX: '降落机场x',
-        destinationY: '降落机场y'
+        destinationX: '到达城市x',
+        destinationY: '到达城市y',
+        type: 'geojson'
       }
     };
     const nextOptions = {
