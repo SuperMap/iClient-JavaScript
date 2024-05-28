@@ -919,11 +919,12 @@ describe('mapboxgl_WebMap', () => {
             server: server
         });
         datavizWebmap.on('addlayerssucceeded', () => {
-            var map = datavizWebmap.map;
-            expect(map).not.toBe(null);
-            var center = map.getCenter();
+          var map = datavizWebmap.map;
+          expect(map).not.toBe(null);
+          setTimeout(() => {
             expect(map.sources['raster-tiles']).not.toBe(undefined);
             done();
+          }, 1000);
         });
     });
     it('createMarkerLayer_svg', (done) => {
