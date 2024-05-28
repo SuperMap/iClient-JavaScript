@@ -60,4 +60,65 @@ describe('leaflet_EditVideoFeature', () => {
       done();
     });
   })
+
+  it('toGeoJSONFeature', done => {
+    const geometry1 = {
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [116.75, 39.75],
+            [117.25, 39.75],
+            [117.25, 40.75],
+            [116.75, 40.75],
+            [116.75, 39.75]
+          ]
+        ]
+      }
+    };
+
+    var videoFeature = new VideoFeature({
+      id: 1,
+      name: 'newTest.mp4',
+      geometry: geometry1,
+      address: 'http://localhost:9876/iserver/services/video/restjsr/hls/stream/test/index.m3u8'
+    });
+
+    var transFeature = videoFeature.toGeoJSONFeature();
+    expect(transFeature.type).toBe('Feature');
+    expect(transFeature.id).toBe(1);
+    expect(transFeature.geometry).toEqual(geometry1);
+    done();
+  })
+
+  it('destroy', done => {
+    const geometry = {
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [116.75, 39.75],
+            [117.25, 39.75],
+            [117.25, 40.75],
+            [116.75, 40.75],
+            [116.75, 39.75]
+          ]
+        ]
+      }
+    };
+
+    var videoFeature = new VideoFeature({
+      id: 1,
+      name: 'newTest.mp4',
+      geometry: geometry,
+      address: 'http://localhost:9876/iserver/services/video/restjsr/hls/stream/test/index.m3u8'
+    });
+    expect(videoFeature.geometry).toEqual(geometry);
+    videoFeature.destroy();
+    expect(videoFeature.name).toBeNull();
+    expect(videoFeature.geometry).toBeNull();
+    done();
+  })
 });

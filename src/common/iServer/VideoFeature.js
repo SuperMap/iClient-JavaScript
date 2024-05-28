@@ -63,8 +63,8 @@ export class VideoFeature {
   destroy() {
     if (this.geometry && this.geometry.destroy) {
       this.geometry.destroy();
-      this.geometry = null;
     }
+    this.geometry = null;
     this.name = null;
     this.videoParameters = null;
     this.cameraLocation = null;

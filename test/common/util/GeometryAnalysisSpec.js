@@ -58,6 +58,64 @@ describe('GeometryAnalysis', () => {
     expect(result).toBeTruthy();
   });
 
+
+  it('isIdentical multilinestring', () => {
+    const line1 = {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [[
+          [
+            67.99609375000006,
+            67.69489448648969
+          ],
+          [
+            89.26562499999926,
+            63.72666005814014
+          ]
+        ], [
+          [
+            57.80078124999906,
+            65.82307382870485
+          ],
+          [
+            93.1328124999992,
+            59.201303359951794
+          ]
+        ]],
+        "type": "MultiLineString"
+      }
+    };
+    const line2 = {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [[
+          [
+            67.99609375000006,
+            67.69489448648969
+          ],
+          [
+            89.26562499999926,
+            63.72666005814014
+          ]
+        ], [
+          [
+            57.80078124999906,
+            65.82307382870485
+          ],
+          [
+            93.1328124999992,
+            59.201303359951794
+          ]
+        ]],
+        "type": "MultiLineString"
+      }
+    };
+    const result = instance.isIdentical(line1, line2);
+    expect(result).toBeTruthy();
+  });
+
   it('hasTouch', () => {
     const polygon1 = {
       type: 'Feature',
@@ -346,7 +404,7 @@ describe('GeometryAnalysis', () => {
     const result = instance.computeGeodesicArea(polygon, 4326);
     expect(result).toBe(6.578677712850164);
   });
-  
+
   it('computeGeodesicDistance', () => {
     var xArray = [120, 125];
     var yArray = [30, 30];

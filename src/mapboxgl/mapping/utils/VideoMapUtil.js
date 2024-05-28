@@ -22,16 +22,6 @@ export const transformCoordReverse = ({
   return [(coord[0] - originCoordsLeftTop.lng) / perWidth, (originCoordsLeftTop.lat - coord[1]) / perHeight];
 };
 
-export const validLnglat = (lnglat) => {
-  if (!lnglat) {
-    return false;
-  }
-  if (lnglat[0] < -90 || lnglat[1] > 90 || lnglat[0] > 90 || lnglat[1] < -90) {
-    return false;
-  }
-  return true;
-};
-
 export const fovXToFx = (fovX, videoWidth) => {
   return videoWidth / (2 * Math.tan(fovX / 2 * Math.PI / 180));
 }
