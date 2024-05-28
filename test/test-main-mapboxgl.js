@@ -84,3 +84,4 @@ import './mapboxgl/mapping/WebMapSpec.js';
 import './mapboxgl/mapping/WebMapV3Spec.js';
 import './mapboxgl/mapping/InitMapSpec.js';
 import './mapboxgl/mapping/VideoMapSpec.js';
+import './mapboxgl/mapping/utils/L7LayerUtilSpec.js';
