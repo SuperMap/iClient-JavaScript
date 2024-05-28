@@ -203,6 +203,10 @@ describe('L7LayerUtil', () => {
     const sources = {
       ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10: {
         data: {
+          credential: {
+            "key": "token",
+            "value": "kF0ZmjLFg-P56UQdHVIkl1tDDnUTsuy5ayBcAHrmdmM6BmLMLHNvk7aul83z2twM8m5rtD3ExQguW0jlThhWkEoWr27Dzw.."
+          },
           datasetName: 'New_LINE',
           type: 'supermap-rest-data',
           url: 'http://localhost:8090/iserver/services/data-Building/rest/data/featureResults.geojson?returnContent=true&fromIndex=0&maxFeatures=2147483647',
