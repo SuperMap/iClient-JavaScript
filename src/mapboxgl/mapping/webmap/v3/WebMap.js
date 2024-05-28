@@ -135,7 +135,7 @@ export class WebMap extends mapboxgl.Evented {
     this._mapResourceInfo = {};
     this._sprite = '';
     this._spriteDatas = {};
-    this.excludeSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw'];
+    this.excludeSourceNames = ['tdt-search-', 'tdt-route-', 'smmeasure', 'mapbox-gl-draw', /tracklayer-\d+-line/];
     this._appendLayers = false;
     this._baseProjection = '';
   }
@@ -470,7 +470,7 @@ export class WebMap extends mapboxgl.Evented {
 
   excludeSource(key) {
     for (let i = 0; i < this.excludeSourceNames.length; i++) {
-      if (key && key.indexOf(this.excludeSourceNames[i]) >= 0) {
+      if (key && key.match(this.excludeSourceNames[i])) {
         return false;
       }
     }
