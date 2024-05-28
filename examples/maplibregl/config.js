@@ -1109,13 +1109,13 @@ var exampleConfig = {
             thumbnail: 'l7_grid_map.png',
             fileName: 'l7_grid_map'
           },
-          {
-            name: '圆形扫光城市',
-            name_en: 'Circular Sweeping City',
-            version: '11.2.0',
-            thumbnail: 'l7_circular_sweeping_city.png',
-            fileName: 'l7_circular_sweeping_city'
-          },
+          // {
+          //   name: '圆形扫光城市',
+          //   name_en: 'Circular Sweeping City',
+          //   version: '11.2.0',
+          //   thumbnail: 'l7_circular_sweeping_city.png',
+          //   fileName: 'l7_circular_sweeping_city'
+          // },
           {
             name: '风场图层',
             name_en: 'Park Layer',
