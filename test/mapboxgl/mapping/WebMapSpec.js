@@ -922,8 +922,31 @@ describe('mapboxgl_WebMap', () => {
             var map = datavizWebmap.map;
             expect(map).not.toBe(null);
             var center = map.getCenter();
-            expect(map.sources['raster-tiles']).not.toBe(null);
+            expect(map.sources['raster-tiles']).not.toBe(undefined);
             done();
+        });
+    });
+    it('createMarkerLayer_svg', (done) => {
+        let options = {
+            server: server
+        };
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_Marker;
+                return Promise.resolve(new Response(mapJson));
+            } else if (url.indexOf('content.json?') > -1) {
+                return Promise.resolve(new Response(JSON.stringify(svgmarker)));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, options);
+        datavizWebmap.on('addlayerssucceeded', () => {
+            var map = datavizWebmap.map;
+            console.log(map._layers);
+            setTimeout(()=>{
+                expect(map._layers['POINT-0']).not.toBe(undefined);
+                done();
+            },1000)
         });
     });
 });
