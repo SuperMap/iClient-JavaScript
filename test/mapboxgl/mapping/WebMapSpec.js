@@ -885,4 +885,45 @@ describe('mapboxgl_WebMap', () => {
             done();
         });
     })
+    it('initialize_MVT', (done) => {
+        spyOn(FetchRequest, 'get').and.callFake((url) => {
+            if (url.indexOf('map.json') > -1) {
+                var mapJson = datavizWebMap_MVT;
+                return Promise.resolve(new Response(JSON.stringify(mapJson)));
+            }
+            if (url.indexOf('tileFeature/vectorstyles.json') > -1) {
+                var stye = {
+                    version: 8,
+                    sources: {
+                      'raster-tiles': {
+                        type: 'raster',
+                        tiles: ['base/resources/img/baiduTileTest.png'],
+                        tileSize: 256
+                      }
+                    },
+                    layers: [
+                      {
+                        id: 'simple-tiles',
+                        type: 'raster',
+                        source: 'raster-tiles',
+                        minzoom: 0,
+                        maxzoom: 22
+                      }
+                    ]
+                  };
+                return Promise.resolve(new Response(JSON.stringify(stye)));
+            }
+            return Promise.resolve();
+        });
+        var datavizWebmap = new WebMap(id, {
+            server: server
+        });
+        datavizWebmap.on('addlayerssucceeded', () => {
+            var map = datavizWebmap.map;
+            expect(map).not.toBe(null);
+            var center = map.getCenter();
+            expect(map.sources['raster-tiles']).not.toBe(null);
+            done();
+        });
+    });
 });
