@@ -9,7 +9,7 @@ import maplibregl from 'maplibre-gl';
   * @private
   */
  export var MapExtend = (function () {
-   maplibregl.Map = class Map extends maplibregl.Map {
+   maplibregl.Map = class MapEnhance extends maplibregl.Map {
       constructor(options) {
         super(options);
         this.overlayLayersManager = {};

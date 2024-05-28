@@ -22,7 +22,7 @@ export var MapExtend = (function () {
       this.beforeLoadBak(id, options);
     };
   }
-  mapboxgl.Map = class Map extends mapboxgl.Map {
+  mapboxgl.Map = class MapEnhance extends mapboxgl.Map {
     constructor(options) {
       super(options);
       this.overlayLayersManager = {};
