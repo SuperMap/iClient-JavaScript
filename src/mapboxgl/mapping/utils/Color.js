@@ -574,9 +574,7 @@ let Color = {
       return v1 + (v2 - v1) * (2 / 3 - vH) * 6;
     }
     return v1;
-  },
-
-  CLASS_NAME: 'SuperMap.LevelRenderer.Tool.Color'
+  }
 };
 
 Color.initialize();
