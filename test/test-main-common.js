@@ -13,6 +13,7 @@ import './common/iServer/ChartQueryFilterParameterSpec.js';
 import './common/iServer/ChartQueryParametersSpec.js';
 import './common/iServer/ChartAcronymClassifyServiceSpec.js';
 import './common/iServer/ChartSettingSpec.js';
+import './common/iServer/ChartQueryServiceSpec.js';
 import './common/iServer/ClipParameterSpec.js';
 import './common/iServer/ComputeWeightMatrixServiceSpec.js';
 import './common/iServer/DensityAnalystServiceSpec.js';
