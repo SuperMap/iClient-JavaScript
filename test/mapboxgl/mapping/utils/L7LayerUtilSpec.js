@@ -34,14 +34,10 @@ describe('L7LayerUtil', () => {
     options
   };
 
-  beforeAll(() => {
-    spyOn(FetchRequest, 'get').and.callFake((url) => {
-      if (url.indexOf('map.json') > -1) {
-        return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
-      }
-      if (url.indexOf('617580084.json') > -1) {
-        return Promise.resolve(new Response(msProjectINfo_L7Layers));
-      }
+  it('add od layer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
+      expect(options.withCredentials).toBe(options.withCredentials);
+      expect(options.withoutFormatSuffix).toBeTruthy();
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
@@ -54,37 +50,9 @@ describe('L7LayerUtil', () => {
       if (url.indexOf('/web/datas/1554834293/structureddata.json') > -1) {
         return Promise.resolve(new Response(l7StructureData1052943054));
       }
-      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData1767084124Items));
-      }
-      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
-        return Promise.resolve(new Response(l7StructureData1767084124));
-      }
-      if (
-        url.indexOf('iserver/services/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/fields.json') >
-        -1
-      ) {
-        return Promise.resolve(new Response(RESTDATA_FIELDS_RES));
-      }
-      if (
-        url.indexOf('iserver/services/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/domain.json') >
-        -1
-      ) {
-        return Promise.resolve(new Response(RESTDATA_DOMAINS_RES));
-      }
       console.log(url);
       return Promise.resolve();
     });
-    spyOn(FetchRequest, 'post').and.callFake((url) => {
-      if (url.indexOf('/iserver/services/data-Building/rest/data/featureResults.geojson') > -1) {
-        return Promise.resolve(new Response(RESTDATA_FEATURES_RES));
-      }
-      console.log(url);
-      return Promise.resolve();
-    });
-  });
-
-  it('add od layer', (done) => {
     const layers = [
       {
         layout: {
@@ -172,6 +140,27 @@ describe('L7LayerUtil', () => {
   });
 
   it('animate line layer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
+      expect(options.withCredentials).toBeUndefined();
+      expect(options.withoutFormatSuffix).toBeTruthy();
+      if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/fields.json') > -1) {
+        return Promise.resolve(new Response(RESTDATA_FIELDS_RES));
+      }
+      if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/domain.json') > -1) {
+        return Promise.resolve(new Response(RESTDATA_DOMAINS_RES));
+      }
+      console.log(url);
+      return Promise.resolve();
+    });
+    spyOn(FetchRequest, 'post').and.callFake((url, _, options) => {
+      expect(options.withCredentials).toBeUndefined();
+      expect(options.withoutFormatSuffix).toBeTruthy();
+      if (url.indexOf('/data-Building/rest/data/featureResults.geojson') > -1) {
+        return Promise.resolve(new Response(RESTDATA_FEATURES_RES));
+      }
+      console.log(url);
+      return Promise.resolve();
+    });
     const layers = [
       {
         layout: {
@@ -204,8 +193,8 @@ describe('L7LayerUtil', () => {
       ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10: {
         data: {
           credential: {
-            "key": "token",
-            "value": "kF0ZmjLFg-P56UQdHVIkl1tDDnUTsuy5ayBcAHrmdmM6BmLMLHNvk7aul83z2twM8m5rtD3ExQguW0jlThhWkEoWr27Dzw.."
+            key: 'token',
+            value: 'kF0ZmjLFg-P56UQdHVIkl1tDDnUTsuy5ayBcAHrmdmM6BmLMLHNvk7aul83z2twM8m5rtD3ExQguW0jlThhWkEoWr27Dzw..'
           },
           datasetName: 'New_LINE',
           type: 'supermap-rest-data',
@@ -219,6 +208,92 @@ describe('L7LayerUtil', () => {
       ...addOptions,
       webMapInfo: { ...mapstudioWebMap_L7LayersRes, layers, sources },
       l7Layers: layers
+    };
+    const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
+    addL7Layers(nextOptions).then(() => {
+      expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+      spy.calls.reset();
+      done();
+    });
+  });
+
+  it('servcie proxy', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
+      expect(options.withCredentials).toBeTruthy();
+      expect(options.withoutFormatSuffix).toBeTruthy();
+      if (url.indexOf('/data-ZhongGuoDiTu/rest/data/datasources/中国矢量数据/datasets/飞机场/fields.json') > -1) {
+        return Promise.resolve(new Response(RESTDATA_FIELDS_RES));
+      }
+      if (url.indexOf('/data-ZhongGuoDiTu/rest/data/datasources/中国矢量数据/datasets/飞机场/domain.json') > -1) {
+        return Promise.resolve(new Response(JSON.stringify([])));
+      }
+      console.log(url);
+      return Promise.resolve();
+    });
+    spyOn(FetchRequest, 'post').and.callFake((url) => {
+      if (url.indexOf('/data-ZhongGuoDiTu/rest/data/featureResults.geojson') > -1) {
+        return Promise.resolve(new Response(RESTDATA_FEATURES_RES));
+      }
+      return Promise.resolve();
+    });
+    const layers = [
+      {
+        layout: {
+          visibility: 'visible'
+        },
+        metadata: {
+          MapStudio: {
+            title: '飞机场'
+          }
+        },
+        paint: {
+          'heatmap-extrusion-intensity': 2,
+          'heatmap-extrusion-radius': 10,
+          'heatmap-extrusion-opacity': 1,
+          'heatmap-extrusion-weight': 'SmID',
+          'heatmap-extrusion-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(0,0,0,0)',
+            0.2,
+            '#0000ff',
+            0.4,
+            '#00ffff',
+            0.6000000000000001,
+            '#00ff00',
+            0.8,
+            '#ffff00',
+            1,
+            '#ff0000'
+          ]
+        },
+        source: 'ms_飞机场_ms_datasetId_1716979413748_4_1716979443420_8',
+        id: 'ms_飞机场_1716979443420_7',
+        type: 'heatmap-extrusion'
+      }
+    ];
+    const sources = {
+      ms_飞机场_ms_datasetId_1716979413748_4_1716979443420_8: {
+        data: {
+          datasetName: '飞机场',
+          type: 'supermap-rest-data',
+          url: 'http://localhost:8195/portalproxy/761c40c7268f75a5/iserver/services/data-ZhongGuoDiTu/rest/data/featureResults.geojson?returnContent=true&fromIndex=0&maxFeatures=2147483647',
+          dataSourceName: '中国矢量数据'
+        },
+        type: 'geojson'
+      }
+    };
+    const nextOptions = {
+      ...addOptions,
+      webMapInfo: { ...mapstudioWebMap_L7LayersRes, layers, sources },
+      l7Layers: layers,
+      options: {
+        withCredentials: false,
+        server: '/iportal/',
+        iportalServiceProxyUrl: 'http://localhost:8195/portalproxy'
+      }
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     addL7Layers(nextOptions).then(() => {

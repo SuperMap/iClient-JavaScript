@@ -268,7 +268,7 @@ async function requestRestDataFieldsInfo(datasetUrl, credential, options) {
  * 获取restDatafield
  * @param datasetUrl
  * @param credential
- * @param withCredentials
+ * @param options
  */
 async function getRestDataFieldInfo(datasetUrl, credential, options) {
   const fieldsInfos = await requestRestDataFieldsInfo(datasetUrl, credential, options);
@@ -375,6 +375,13 @@ function transformFeaturesNameAndType(originFeatures, fieldNames, fieldTypes) {
   return formatFeatures(features, fieldInfo);
 }
 
+function handleWithRequestOptions(url, options) {
+  if (options.iportalServiceProxyUrl && url.indexOf(options.iportalServiceProxyUrl) >= 0) {
+    return { ...options, withCredentials: true };
+  }
+  return { ...options, withCredentials: undefined };
+}
+
 /**
  * 通过webMapsource获取restData-geojson
  * @param data
@@ -389,8 +396,9 @@ async function getRestDataGeojsonByWebMap(data, options) {
     queryParameter: { name: datasetName + '@' + dataSourceName }
   };
   const datasetUrl = `${url.split('featureResults')[0]}datasources/${dataSourceName}/datasets/${datasetName}`;
-  const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, options);
-  const attrDataInfo = await FetchRequest.post(url, JSON.stringify(SQLParams), options);
+  const nextOptions = handleWithRequestOptions(datasetUrl, options);
+  const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, nextOptions);
+  const attrDataInfo = await FetchRequest.post(url, JSON.stringify(SQLParams), nextOptions);
   const featuresRes = await attrDataInfo.json();
 
   return {
@@ -412,9 +420,6 @@ function getStructDataItemJson(href, option) {
         throw data.error.errorMsg;
       }
       return data;
-    })
-    .catch((error) => {
-      console.error(error);
     });
 }
 
