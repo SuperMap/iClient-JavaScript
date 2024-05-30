@@ -147,7 +147,6 @@ export class WebMap extends mapboxgl.Evented {
    * @param {Object} map - map 实例。
    */
   initializeMap(mapInfo, map) {
-    mapInfo = this._handleUnSupportedLayers(mapInfo);
     this._mapInfo = mapInfo;
     const proj = this._setBaseProjection();
     if (!proj) {
@@ -362,7 +361,10 @@ export class WebMap extends mapboxgl.Evented {
    * @param {Object} mapInfo - map 信息。
    */
   _setUniqueId(style, projectInfo) {
-    const layersToMap = JSON.parse(JSON.stringify(style.layers));
+    const unspportedLayers = this._handleUnSupportedLayers(style);
+    const layersToMap = JSON.parse(JSON.stringify(style.layers)).filter((layer) => {
+      return !unspportedLayers.includes(layer.id);
+    });
     const nextSources = {};
     const layerIdToChange = [];
     const timestamp = `_${+new Date()}`;
@@ -387,13 +389,20 @@ export class WebMap extends mapboxgl.Evented {
       layerIdToChange.push({ originId: originId, renderId: layer.id });
     }
     const layerCatalogFromMapJson = JSON.parse(JSON.stringify(style.metadata.layerCatalog), 'parts');
-    this._updateLayerCatalogsId({ catalogs: layerCatalogFromMapJson, layerIdMapList: layerIdToChange });
+    this._updateLayerCatalogsId({
+      loopData: JSON.parse(JSON.stringify(layerCatalogFromMapJson)),
+      catalogs: layerCatalogFromMapJson,
+      layerIdMapList: layerIdToChange,
+      unspportedLayers
+    });
     const catalogsFromProjectInfo = JSON.parse(JSON.stringify(projectInfo.catalogs || []));
     this._updateLayerCatalogsId({
+      loopData: JSON.parse(JSON.stringify(catalogsFromProjectInfo)),
       catalogs: catalogsFromProjectInfo,
       layerIdMapList: layerIdToChange,
       catalogTypeField: 'catalogType',
-      layerIdsField: 'layersContent'
+      layerIdsField: 'layersContent',
+      unspportedLayers
     });
     return {
       sources: nextSources,
@@ -403,11 +412,31 @@ export class WebMap extends mapboxgl.Evented {
     };
   }
 
-  _updateLayerCatalogsId({ catalogs, layerIdMapList, catalogTypeField = 'type', layerIdsField = 'parts' }) {
-    catalogs.forEach((catalog, index) => {
+  _deleteLayerCatalog(catalogs, id) {
+    for (let index = 0; index < catalogs.length; index++) {
+      const catalog = catalogs[index];
+      if (catalog.id === id) {
+        catalogs.splice(index, 1);
+        break;
+      }
+      if (catalog.children) {
+        this._deleteLayerCatalog(catalog.children, id);
+      }
+    }
+  }
+
+  _updateLayerCatalogsId({ loopData, catalogs, layerIdMapList, catalogTypeField = 'type', layerIdsField = 'parts', unspportedLayers }) {
+    loopData.forEach((catalog) => {
       const { id, children } = catalog;
       if (catalog[catalogTypeField] === 'group') {
-        this._updateLayerCatalogsId({ catalogs: children, layerIdMapList, catalogTypeField, layerIdsField });
+        this._updateLayerCatalogsId({
+          loopData: children,
+          catalogs,
+          layerIdMapList,
+          catalogTypeField,
+          layerIdsField,
+          unspportedLayers
+        });
         return;
       }
       const matchLayer = layerIdMapList.find((item) => item.originId === id);
@@ -416,8 +445,10 @@ export class WebMap extends mapboxgl.Evented {
         if (catalog[layerIdsField]) {
           catalog[layerIdsField] = this._renameLayerIdsContent(catalog[layerIdsField], layerIdMapList);
         }
-      } else {
-        catalogs.splice(index, 1);
+        return;
+      }
+      if (unspportedLayers.includes(id)) {
+        this._deleteLayerCatalog(catalogs, id);
       }
     });
   }
@@ -454,9 +485,9 @@ export class WebMap extends mapboxgl.Evented {
   clean() {
     if (this.map) {
       const scene = this.map.$l7scene;
-       if (scene) {
-          scene.removeAllLayer();
-       }
+      if (scene) {
+        scene.removeAllLayer();
+      }
       this.map.remove();
       this.map = null;
       this._legendList = [];
@@ -495,7 +526,7 @@ export class WebMap extends mapboxgl.Evented {
     }
     const layersOnMap = this.map.getStyle().layers.map((layer) => {
       const nextLayer = this.map.getLayer(layer.id);
-      return { ...nextLayer, layout: Object.assign({}, layer.layout, nextLayer.layout) }
+      return { ...nextLayer, layout: Object.assign({}, layer.layout, nextLayer.layout) };
     });
     for (const layerId in this.map.overlayLayersManager) {
       const overlayLayer = this.map.overlayLayersManager[layerId];
@@ -1355,16 +1386,13 @@ export class WebMap extends mapboxgl.Evented {
   _handleUnSupportedLayers(mapInfo) {
     const filterLayerIds = [];
     const unSupportedMsg = 'layer are not supported yet';
-    const { layers, interaction } = mapInfo;
+    const { interaction } = mapInfo;
     if (interaction && interaction.drill) {
       this.fire('getlayersfailed', { error: `drill ${unSupportedMsg}` });
       interaction.drill.forEach((drillItem) => {
         filterLayerIds.push(...drillItem.layerIds);
       });
     }
-    mapInfo.layers = layers.filter((layer) => {
-      return !filterLayerIds.includes(layer.id);
-    });
-    return mapInfo;
+    return filterLayerIds;
   }
 }

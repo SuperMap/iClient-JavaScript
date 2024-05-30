@@ -753,7 +753,7 @@ var mapstudioWebMap_symbol = JSON.stringify({
   minzoom: 0
 });
 
-var mapstudioWebMap_l7_and_drill = JSON.stringify({
+var mapstudioWebMap_drill = JSON.stringify({
   metadata: {
     layerCatalog: [
       {
@@ -764,7 +764,7 @@ var mapstudioWebMap_l7_and_drill = JSON.stringify({
       },
       {
         visible: true,
-        parts: ['ms_administrative_center_text'],
+        parts: ['ms_administrative_polygon', 'ms_administrative_center_text'],
         id: 'ms_administrative_polygon',
         title: '中华人民共和国行政区划',
         type: 'composite'
@@ -777,123 +777,55 @@ var mapstudioWebMap_l7_and_drill = JSON.stringify({
       },
       {
         visible: true,
-        id: '全球疫情累计数据',
-        title: '全球疫情累计数据',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_全球疫情累计数据_1714384292309_23',
-        title: '全球疫情累计数据',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_全球疫情累计数据_1714384276380_19',
-        title: '全球疫情累计数据',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_全球疫情累计数据_1714384211042_15',
-        title: '全球疫情累计数据',
-        type: 'basic'
-      },
-      {
-        visible: true,
-        id: 'ms_全球疫情累计数据_1714384188551_11',
-        title: '全球疫情累计数据',
+        id: 'ms-background',
+        title: '纯色底图',
         type: 'basic'
       }
     ]
   },
   sources: {
-    ms_1567920342_1714384276380_20: {
-      tiles: [
-        'http://172.16.15.206:8190/iportal/services/../web/datas/1567920342/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22confirmedIncrement%22%2C%22Center_Y%22%2C%22Center_X%22%2C%22UserID%22%2C%22Country%22%2C%22index%22%2C%22confirmed%22%5D&geometryFieldName=geometry'
-      ],
-      bounds: [-110.4475729945999, -76.60271072387695, 179.1861874739621, 78.31456756591797],
-      type: 'vector'
-    },
-    ms_1567920342_1714384292309_24: {
-      tiles: [
-        'http://172.16.15.206:8190/iportal/services/../web/datas/1567920342/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22confirmedIncrement%22%2C%22Center_Y%22%2C%22Center_X%22%2C%22UserID%22%2C%22Country%22%2C%22index%22%2C%22confirmed%22%2C%22geometry%22%5D&geometryFieldName=geometry'
-      ],
-      bounds: [-110.4475729945999, -76.60271072387695, 179.1861874739621, 78.31456756591797],
-      type: 'vector'
-    },
-    CHINA_DARK: {
-      tiles: [
-        'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
-      ],
-      tileSize: 256,
-      attribution: '',
-      bounds: [-180, -90, 180, 90],
-      type: 'raster'
-    },
-    ms_1567920342_1714384123649_10: {
-      data: {
-        dataId: '1567920342',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson'
-    },
-    ms_1567920342_1714384188552_12: {
-      data: {
-        dataId: '1567920342',
-        type: 'supermap-structured-data'
-      },
-      type: 'geojson'
-    },
-    ms_1567920342_1714384211042_16: {
-      tiles: [
-        'http://172.16.15.206:8190/iportal/services/../web/datas/1567920342/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22confirmedIncrement%22%2C%22Center_Y%22%2C%22Center_X%22%2C%22UserID%22%2C%22Country%22%2C%22index%22%2C%22confirmed%22%2C%22geometry%22%5D&geometryFieldName=geometry'
-      ],
-      bounds: [-110.4475729945999, -76.60271072387695, 179.1861874739621, 78.31456756591797],
-      type: 'vector'
-    },
     'ms_administrative_buffer_source_province_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/line/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_polygon_source_city_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/polygon/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_center_source_city_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/point/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_buffer_source_city_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/line/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_polygon_source_china_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/polygon/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_polygon_source_province_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/polygon/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/polygon/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_center_source_china_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/point/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_center_source_province_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/point/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/point/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     },
     'ms_administrative_buffer_source_china_{adcode}': {
-      data: 'http://172.16.15.206:8190/iportal/services/../administrativeDivisions/line/{adcode}.pbf',
+      data: 'http://localhost:8190/iportal/administrativeDivisions/line/{adcode}.pbf',
       attribution: '本页面数据来源于高德开放平台<br>该版本数据更新于2021.5, 仅供学习交流使用。',
       type: 'geojson'
     }
@@ -903,35 +835,11 @@ var mapstudioWebMap_l7_and_drill = JSON.stringify({
   zoom: 4.0265953802940615,
   glyphs: {},
   version: '3.1.5',
-  rootUrl: 'http://172.16.15.206:8190/iportal/',
+  rootUrl: 'http://localhost:8190/iportal/',
   maxzoom: 12,
   name: '无标题地图',
   viewExtent: [-159.0499172798419, 78.23875449814814, 131.0072808340209, 12.738503516389864],
   layers: [
-    {
-      metadata: {},
-      maxzoom: 12,
-      id: 'CHINA_DARK',
-      source: 'CHINA_DARK',
-      type: 'raster',
-      minzoom: 0
-    },
-    {
-      metadata: {},
-      maxzoom: 24,
-      paint: {
-        'circle-color': '#EE4D5A',
-        'circle-opacity': 0.9,
-        'circle-translate-anchor': 'map',
-        'circle-radius': 4,
-        'circle-translate': [0, 0]
-      },
-      id: 'ms_全球疫情累计数据_1714384276380_19',
-      source: 'ms_1567920342_1714384276380_20',
-      'source-layer': '1567920342$geometry',
-      type: 'circle',
-      minzoom: 0
-    },
     {
       metadata: {},
       paint: {
@@ -1213,7 +1121,7 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
   sources: {
     ms_1767084124_1715758105128_1775: {
       tiles: [
-        'http://172.16.15.94:8080/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+        'http://localhost:8190/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
       ],
       bounds: [116.36331703990744, 39.89942692791154, 116.38141290077355, 39.9767738835847],
       type: 'vector'
@@ -1236,7 +1144,7 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
     },
     ms_1767084124_1715739556572_702: {
       tiles: [
-        'http://172.16.15.94:8080/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+        'http://localhost:8190/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
       ],
       bounds: [116.36331703990744, 39.89942692791154, 116.38141290077355, 39.9767738835847],
       type: 'vector'
@@ -1250,7 +1158,7 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
     },
     ms_1767084124_1715739627423_910: {
       tiles: [
-        'http://172.16.15.94:8080/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+        'http://localhost:8190/iportal/web/datas/1767084124/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
       ],
       bounds: [116.36331703990744, 39.89942692791154, 116.38141290077355, 39.9767738835847],
       type: 'vector'
