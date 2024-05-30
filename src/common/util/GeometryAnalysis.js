@@ -2,11 +2,11 @@ import { geojson2UGGeometry, geojsonCoordsToPoint2Ds, ugGeometry2Geojson, getJSA
 import { Events } from '../commontypes/Events';
 
 /**
- * @name GeometryAnalysis
- * @namespace
+ * @class GeometryAnalysis
  * @category BaseTypes Util
+ * @classdesc 几何分析。
  * @param {Object} [Module] - 几何分析模块。
- * @description 几何分析。
+ * @usage
  */
 export class GeometryAnalysis extends Events {
   constructor(Module) {
