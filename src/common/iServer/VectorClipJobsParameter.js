@@ -33,7 +33,7 @@ export class VectorClipJobsParameter {
         this.datasetName = "";
 
         /**
-         * @member {string} VectorClipJobsParameter.prototype.datasetOverlay
+         * @member {string} VectorClipJobsParameter.prototype.datasetVectorClip
          * @description 裁剪对象数据集。
          */
         this.datasetVectorClip = "";
