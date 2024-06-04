@@ -54,7 +54,7 @@ export class L7Layer {
 
   setVisibility(visibility) {
     if (this.animateStatus) {
-      this.scene.layerService.stopAnimate(this.l7layer.id);
+      this.cancelAnimationFrame();
     }
     visibility ? this.l7layer.show() : this.l7layer.hide();
     this.map.style.setLayoutProperty(this.id, 'visibility', visibility ? 'visible' : 'none');
@@ -81,19 +81,28 @@ export class L7Layer {
     this.scene && this.scene.removeLayer(this.l7layer);
   }
   onRemove() {
-    this.scene && this.scene.layerService.stopAnimate();
+    this.cancelAnimationFrame();
     this.scene && this.scene.removeLayer(this.l7layer);
+  }
+  cancelAnimationFrame() {
+    this.requestAnimationFrameId && window.cancelAnimationFrame(this.requestAnimationFrameId);
+    this.animateStatus = false;
   }
   render() {
     if (this.scene && this.scene.getLayer(this.l7layer.id)) {
+      this.scene.layerService.renderLayer(this.l7layer.id);
       if (this.l7layer.animateStatus || (this.l7layer.layerModel && this.l7layer.layerModel.spriteAnimate)) {
-        this.scene.layerService.startAnimate(this.l7layer.id);
-        this.animateStatus = true;
-        this.map.triggerRepaint();
-      } else {
-        this.scene.layerService.renderLayer(this.l7layer.id);
-        this.animateStatus = false;
+        const requestAnimationFrame = () => {
+          this.requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrame);
+          this.map.triggerRepaint();
+        };
+        if (!this.animateStatus) {
+          requestAnimationFrame();
+          this.animateStatus = true;
+        }
       }
+    } else {
+      this.cancelAnimationFrame();
     }
   }
 }
