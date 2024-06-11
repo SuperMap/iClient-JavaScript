@@ -482,7 +482,6 @@ describe('mapboxgl-webmap3.0', () => {
       if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
         return Promise.resolve(new Response(l7StructureData1767084124));
       }
-      console.log(url);
       return Promise.resolve();
     });
     mapboxgl.CRS = function () {};
@@ -531,5 +530,58 @@ describe('mapboxgl-webmap3.0', () => {
       done();
     });
     mapstudioWebmap.initializeMap(mapInfo);
+  });
+
+  it('layerdatas', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(apstudioWebMap_layerData));
+      } else if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_layerData));
+      } else if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      const webMapV3 = mapstudioWebmap._getWebMapInstance();
+      const mapInfo = JSON.parse(apstudioWebMap_layerData);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      const appreciableLayers = webMapV3.getAppreciableLayers();
+      const layerList = webMapV3.getLayerCatalog();
+      expect(layerList.length).toBe(4);
+      expect(appreciableLayers.length).toBe(4);
+      expect(
+        appreciableLayers.some(
+          (item) =>
+            item.id === '北京市轨道交通线路-打印(1)' &&
+            item.dataSource.type === 'STRUCTURE_DATA' &&
+            item.dataSource.serverId === '720626591'
+        )
+      ).toBeTruthy();
+      expect(
+        appreciableLayers.some((item) => item.id === 'Buildings_R_3857@Buildings' && item.dataSource.type === void 0)
+      ).toBeTruthy();
+      expect(
+        appreciableLayers.some(
+          (item) =>
+            item.id === 'ms_New_LINE_1718091329989_7' &&
+            item.dataSource.type === 'REST_DATA' &&
+            item.dataSource.url === 'http://172.16.14.44:8090/iserver/services/data-Building/rest/data' &&
+            item.dataSource.serverId === void 0
+        )
+      ).toBeTruthy();
+      expect(
+        appreciableLayers.some((item) => item.id === 'CHINA_DARK' && !Object.keys(item.dataSource).length)
+      ).toBeTruthy();
+      done();
+    });
   });
 });

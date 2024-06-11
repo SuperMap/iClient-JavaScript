@@ -582,14 +582,21 @@ export class WebMap extends mapboxgl.Evented {
       const matchMetadataCatalog = metadataCatalogs.find((item) => item.id === layer.id) || {};
       const { msDatasetId } = matchProjectCatalog;
       const { title = layer.id, parts } = matchMetadataCatalog;
-      let dataType = '';
-      let dataId = '';
+      let dataSource = {};
       if (msDatasetId) {
         for (const data of datas) {
           const matchData = data.datasets && data.datasets.find((dataset) => dataset.msDatasetId === msDatasetId);
           if (matchData) {
-            dataType = data.sourceType;
-            dataId = matchData.datasetId;
+            dataSource = {
+              serverId: matchData.datasetId,
+              type: data.sourceType
+            }
+            if (data.sourceType === 'REST_DATA') {
+              const [serverUrl, datasourceName] = data.url.split('/rest/data/datasources/');
+              dataSource.url = `${serverUrl}/rest/data`;
+              dataSource.dataSourceName = `${datasourceName}:${matchData.datasetName}`;
+              delete dataSource.serverId;
+            }
             break;
           }
         }
@@ -607,10 +614,7 @@ export class WebMap extends mapboxgl.Evented {
           sourceLayer: layer.sourceLayer
         },
         renderLayers: this._getRenderLayers(parts, layer.id),
-        dataSource: {
-          serverId: dataId,
-          type: dataType
-        },
+        dataSource,
         themeSetting: {}
       });
       if (isL7Layer(layer)) {
