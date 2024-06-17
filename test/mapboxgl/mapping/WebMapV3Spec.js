@@ -75,7 +75,8 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     mapstudioWebmap = new WebMap(id, {
-      server: server
+      server: server,
+      iportalServiceProxyUrl: 'initialize_raster'
     });
     expect(mapstudioWebmap.credentialKey).toBeUndefined();
     expect(mapstudioWebmap.credentialValue).toBeUndefined();
@@ -136,7 +137,8 @@ describe('mapboxgl-webmap3.0', () => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
-      target: 'map'
+      target: 'map',
+      iportalServiceProxyUrl: 'mapId is JSON'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -212,7 +214,8 @@ describe('mapboxgl-webmap3.0', () => {
     mapboxgl.CRS.set = function () {};
     mapstudioWebmap = new WebMapV3(nextMapInfo, {
       server: server,
-      target: 'map'
+      target: 'map',
+      iportalServiceProxyUrl: 'projection is 4490 and include mapbox-gl-enhance'
     });
     mapstudioWebmap.initializeMap(nextMapInfo);
 
@@ -307,7 +310,8 @@ describe('mapboxgl-webmap3.0', () => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
-      target: 'map'
+      target: 'map',
+      iportalServiceProxyUrl: 'overlayLayersManager'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -407,7 +411,8 @@ describe('mapboxgl-webmap3.0', () => {
     const mapInfo = JSON.parse(mapstudioWebMap_symbol);
     mapstudioWebmap = new WebMapV3(mapInfo, {
       server: server,
-      target: 'map'
+      target: 'map',
+      iportalServiceProxyUrl: 'exclude source and layer'
     });
     mapstudioWebmap.initializeMap(mapInfo);
 
@@ -486,9 +491,13 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapboxgl.CRS = function () {};
     mapboxgl.CRS.set = function () {};
+    const mapOptions = {
+      transformRequest: function(url) { return { url }; }
+    }
+    spyOn(mapOptions, 'transformRequest').and.callThrough();
     mapstudioWebmap = new WebMap(id, {
       server: server
-    });
+    }, mapOptions);
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
       const webmapInstance = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
@@ -500,6 +509,7 @@ describe('mapboxgl-webmap3.0', () => {
       const layerCatalogs = webmapInstance.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
       expect(webmapInstance.getLegendInfo().length).toBe(11);
+      expect(mapOptions.transformRequest.calls.count()).toBeGreaterThan(0);
       delete mapboxgl.Map.prototype.getCRS;
       delete mapboxgl.CRS;
       done();
@@ -544,7 +554,8 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     mapstudioWebmap = new WebMap(id, {
-      server: server
+      server: server,
+      iportalServiceProxyUrl: 'layerdatas'
     });
 
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
@@ -583,5 +594,29 @@ describe('mapboxgl-webmap3.0', () => {
       ).toBeTruthy();
       done();
     });
+  });
+
+  it('transformRequest', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(mapstudioAppInfo));
+      }
+      return Promise.resolve();
+    });
+    spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_raster);
+    mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      iportalServiceProxyUrl: 'http://localhost:8195/portalproxy'
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+    expect(mapstudioWebmap.map).not.toBeUndefined();
+    let mockTileUrl = 'http://localhost:8195/portalproxy/7c851958ab40a5e0/iserver/services/map_world1_y6nykx3f/rest/maps/World1/tileimage.png?scale=6.760654286410619e-9&x=1&y=0&width=256&height=256&transparent=true&redirect=false&cacheEnabled=true&origin=%7B%22x%22%3A-180%2C%22y%22%3A90%7D';
+    let transformed = mapstudioWebmap.map.options.transformRequest(mockTileUrl, 'Tile');
+    expect(transformed.credentials).toBe('include');
+    mockTileUrl = 'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark';
+    transformed = mapstudioWebmap.map.options.transformRequest(mockTileUrl, 'Tile');
+    expect(transformed.credentials).toBeUndefined();
+    done();
   });
 });

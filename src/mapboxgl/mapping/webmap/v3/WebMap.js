@@ -200,6 +200,17 @@ export class WebMap extends mapboxgl.Evented {
     const fontFamilys = this._getLabelFontFamily();
     // 初始化 map
     const mapOptions = {
+      transformRequest: (url, resourceType) => {
+        const res = { url };
+        if (
+          resourceType === 'Tile' &&
+          this.options.iportalServiceProxyUrl &&
+          url.indexOf(this.options.iportalServiceProxyUrl) >= 0
+          ) {
+          res.credentials = 'include';
+        }
+        return res;
+      },
       ...this.mapOptions,
       container: this.options.target,
       crs: this._baseProjection,
