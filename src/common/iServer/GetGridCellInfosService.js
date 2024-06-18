@@ -92,12 +92,15 @@ export class GetGridCellInfosService extends CommonServiceBase {
           method: "GET",
           data: null,
           scope: me,
-          success({result}) {
-            callback && me.getDatasetInfoCompleted(result, callback);
+          success(result) {
+            if (callback || !result.result) {
+              result = result.result ? result.result : result;
+              me.getDatasetInfoCompleted(result, callback);
+            }
           },
           failure: callback
         }).then(({result}) => {
-          return me.getDatasetInfoCompleted(result);
+          return result && me.getDatasetInfoCompleted(result);
         });
     }
 

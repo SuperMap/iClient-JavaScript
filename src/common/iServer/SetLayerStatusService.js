@@ -106,9 +106,10 @@ export class SetLayerStatusService extends CommonServiceBase {
      */
     createTempLayerComplete(callback, result) {
         var me = this;
-        result.result = Util.transformResult(result.result);
-        if (result.result.succeed) {
-            me.lastparams.resourceID = result.result.newResourceID;
+        result = result.result ? result.result : result;
+        result = Util.transformResult(result);
+        if (result.succeed) {
+            me.lastparams.resourceID = result.newResourceID;
         }
 
         return me.processAsync(me.lastparams, callback);
