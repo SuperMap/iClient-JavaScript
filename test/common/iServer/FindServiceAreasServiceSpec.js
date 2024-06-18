@@ -54,6 +54,8 @@ describe('FindServiceAreasService', () => {
             weights: weightArray,
             isCenterMutuallyExclusive: false,
             isFromCenter: false,
+            isReturnComplexArea: false,
+            serviceBufferRadius: 100,
             parameter: analystParameter
         });
         var findServiceAreasServiceCompleted = (serviceSucceedEventArgsSystem) => {
@@ -75,7 +77,9 @@ describe('FindServiceAreasService', () => {
             }
         };
         var findServiceAreasService = new FindServiceAreasService(url);
-        spyOn(FetchRequest, 'get').and.callFake((url) => {
+        spyOn(FetchRequest, 'get').and.callFake((url, params) => {
+            expect(params.isReturnComplexArea).toBe(false);
+            expect(params.serviceBufferRadius).toBe(100);
             expect(url).toContain("iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun/servicearea");
             return Promise.resolve(new Response(JSON.stringify(findServiceAreasResultJson)))
         });

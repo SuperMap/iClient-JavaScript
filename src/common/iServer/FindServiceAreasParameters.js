@@ -18,6 +18,8 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  * @param {boolean} [options.isAnalyzeById=false] - 是否通过节点 ID 指定路径分析的结点。
  * @param {boolean} [options.isCenterMutuallyExclusive=false] - 按照中心点的距离进行判断是否要进行互斥处理。
  * @param {boolean} [options.isFromCenter=false] - 是否从中心点开始分析。
+ * @param {boolean} [options.isReturnComplexArea=false] - 是否返回详细服务区面。
+ * @param {number} [options.serviceBufferRadius=100] - 	缓冲区半径，仅当返回详细服务区面时可用。默认为100米。
  * @param {TransportationAnalystParameter} [options.parameter] - 交通网络分析通用参数。
  * @usage
  */
@@ -56,6 +58,20 @@ export class FindServiceAreasParameters {
          *              而不从中心点开始分析，是一个服务需求地主动到服务中心获得服务。
          */
         this.isFromCenter = false;
+
+        /**
+         * @member {boolean} [FindServiceAreasParameters.prototype.isReturnComplexArea=false]
+         * @description 是否返回详细服务区面。
+         *              详细服务区面，生成的服务区面会严格按照生成路由生成面轮廓结果，分析结果会更准确，但分析时间更长。
+         */
+        this.isReturnComplexArea = false;
+
+        /**
+         * @member {number} [FindServiceAreasParameters.prototype.serviceBufferRadius=100]
+         * @description 缓冲区半径。
+         *              仅当返回详细服务区面时可用。默认为100米。
+         */
+        this.serviceBufferRadius = 100;
 
         /**
          * APIProperty: weights

@@ -56,6 +56,8 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
         var me = this, jsonObject;
         me.url = Util.urlPathAppend(me.url, 'servicearea');
         jsonObject = {
+            isReturnComplexArea: params.isReturnComplexArea,
+            serviceBufferRadius: params.serviceBufferRadius,
             isFromCenter: params.isFromCenter,
             isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
             parameter: Util.toJSON(params.parameter),
