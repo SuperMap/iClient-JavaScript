@@ -16,7 +16,8 @@ describe('mapboxgl L7Layer', () => {
       longitude: 121.4316962,
       latitude: 31.26082325,
       unit_price: 71469.4,
-      count: 2
+      count: 2,
+      v: 100
     }
   ];
   beforeAll((done) => {
@@ -30,6 +31,8 @@ describe('mapboxgl L7Layer', () => {
 
     spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
     spyOn(L7, 'GeometryLayer').and.callFake(mockL7.GeometryLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.HeatmapLayer);
+
     spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
     spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
     testDiv = window.document.createElement('div');
@@ -319,6 +322,51 @@ describe('mapboxgl L7Layer', () => {
     expect(l7Layer.show).toHaveBeenCalled();
     expect(map.style.setLayoutProperty).toHaveBeenCalled();
 
+    done();
+  });
+  it('HeatmapLayer grid updateSource', (done) => {
+    var layer = new L7Layer({ type: 'HeatmapLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source(data, {
+        parser: {
+          type: 'json',
+          x: 'longitude',
+          y: 'latitude'
+        },
+        transforms: [
+          {
+            type: 'grid',
+            size: 2000000,
+            field: 'v',
+            method: 'sum'
+          }
+        ]
+      })
+      .shape('circle')
+      .active(true)
+      .animate(true)
+      .size(56)
+      .color('#4cfd47');
+    map.addLayer(layer);
+    spyOn(layer, 'reRender');
+    l7Layer.setData(data, {
+      parser: {
+        type: 'json',
+        x: 'j',
+        y: 'w'
+      },
+      transforms: [
+        {
+          type: 'grid',
+          size: 200000,
+          field: 'v',
+          method: 'sum'
+        }
+      ]
+    });
+    expect(l7Layer).not.toBeNull();
+    expect(layer.reRender).toHaveBeenCalled();
     done();
   });
 });

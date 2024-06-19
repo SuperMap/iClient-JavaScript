@@ -61,6 +61,15 @@ export class L7Layer {
   addSceneLayer(scene) {
     this.scene = scene;
     this.scene.addLayer(this.l7layer);
+    this.updateSourceEffect();
+  }
+
+  updateSourceEffect() {
+    const source = this.l7layer.getSource();
+    source &&
+      source.on('update', () => {
+        this.reRender();
+      });
   }
 
   onAdd(map) {

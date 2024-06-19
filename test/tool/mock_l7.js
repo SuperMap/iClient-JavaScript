@@ -5,7 +5,7 @@ class Scene {
       stopAnimate: () => true,
       startAnimate: () => true
     };
-    this.callbacks = {}
+    this.callbacks = {};
   }
   removeAllLayer() {}
   getLayer() {
@@ -19,7 +19,7 @@ class Scene {
   }
   on(type, callback) {
     this.callbacks[type] = callback;
-    callback()
+    callback();
   }
   emit(type) {
     this.callbacks[type]();
@@ -49,6 +49,7 @@ class Layer {
     this.layerModel = {
       spriteAnimate: false
     };
+    this.stacks = {};
   }
   source() {
     return this;
@@ -90,7 +91,23 @@ class Layer {
   hide() {
     return this;
   }
+  getSource() {
+    return {
+      on: (type, cb) => {
+        this.stacks[type] = [cb];
+      },
+      emit: (type) => {
+        this.stacks[type].forEach((cb) => {
+          cb();
+        });
+      }
+    };
+  }
+  setData() {
+    this.getSource().emit('update');
+  }
 }
 const PointLayer = Layer;
 const GeometryLayer = Layer;
-export { PointLayer, GeometryLayer, Scene, Mapbox, Maplibre };
+const HeatmapLayer = Layer;
+export { PointLayer, GeometryLayer, HeatmapLayer, Scene, Mapbox, Maplibre };
