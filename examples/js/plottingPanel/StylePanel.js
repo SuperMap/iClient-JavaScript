@@ -74,7 +74,7 @@ L.supermap.plotting.initStylePanel = function (div, serverUrl, editControl) {
 }
 
 function showFeatureProperty(event) {
-    for (var index in event.features) {
+    for (var index = 0; index < event.features.length; index++) {
         var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
         if (sIndex === -1) {
             selectFeatures.push(event.features[index]);
@@ -91,7 +91,7 @@ function showFeatureProperty(event) {
     //$('#pg').propertygrid('expandGroup',groupIndex);
 }
 function hideFeatureProperty(event) {
-    for (var index in event.features) {
+    for (var index = 0; index < event.features.length; index++) {
         var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
         if (sIndex !== -1) {
             selectFeatures.splice(sIndex, 1);
@@ -168,8 +168,11 @@ function updateSelectFeature(updated, selectfeatures) {
                     if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
                         selectfeatures[i].route.applyTextStyle({ lineSymbolID: updated.value });
                     } else {
-                        selectfeatures[i].setDashLine([]);
-                        selectfeatures[i].setStyle({ lineSymbolID: 0 });
+                        if(selectfeatures[i].symbolType != 1){
+                            selectfeatures[i].setDashLine([]);
+                            selectfeatures[i].setStyle({ lineSymbolID: 0 });
+                        }
+                        
                         if (parseInt(updated.value) === 999) {
                             openDialog(selectfeatures[i]);
                         } else {
@@ -370,23 +373,25 @@ function updateSelectFeature(updated, selectfeatures) {
                     selectfeatures[i].setWidthHeightLimit(fromCheckboxValue(updated.value));
                     break;
                 case displayNameDot[7]:
-                    if(selectfeatures[i].symbolType!=20||selectfeatures[i].symbolType!=21){
+                    if(selectfeatures[i].symbolType!=20 && selectfeatures[i].symbolType!=21){
                         transInfo.functionName = "setSymbolSize";
                         transInfo.undoParams = [selectfeatures[i].getSymbolSize().w];
                         transInfo.redoParams = [parseFloat(updated.value), selectfeatures[i].getSymbolSize().h];
                         selectfeatures[i].setSymbolSize(updated.value, selectfeatures[i].getSymbolSize().h);
                     }else{
-                        //
+                        selectfeatures[i].style.graphicWidth = parseFloat(updated.value);
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
                     }
                     break;
                 case displayNameDot[8]:
-                    if(selectfeatures[i].symbolType!=20||selectfeatures[i].symbolType!=21){
+                    if(selectfeatures[i].symbolType!=20 && selectfeatures[i].symbolType!=21){
                     transInfo.functionName = "setSymbolSize";
                     transInfo.undoParams = [selectfeatures[i].getSymbolSize().h];
                     transInfo.redoParams = [selectfeatures[i].getSymbolSize().w, parseFloat(updated.value)];
                     selectfeatures[i].setSymbolSize(selectfeatures[i].getSymbolSize().w, updated.value);
                     }else{
-                        //
+                        selectfeatures[i].style.graphicHeight = parseFloat(updated.value);
+                        selectfeatures[i].setStyle(selectfeatures[i].style);
                     }
                     break;
                 case displayTextContentName[0]:

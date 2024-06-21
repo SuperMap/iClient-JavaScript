@@ -130,7 +130,7 @@ function collectionSpecialEffectPropertyGridRows(specialEffect) {
             aimCircleRadius.group = aimStyleGroup[0];
             aimCircleRadius.name = aimPropsName[3];
             aimCircleRadius.editor = "text";
-            aimCircleRadius.value = specialEffect.radius;
+            aimCircleRadius.value = specialEffect.radiusSelfDefine;
             rows.push(aimCircleRadius);
 
             var aimVisible = new Object();
@@ -180,7 +180,7 @@ function collectionSpecialEffectPropertyGridRows(specialEffect) {
             boomLoop.group = boomGroup[0];
             boomLoop.name = boomPropsName[0];
             boomLoop.editor = { "type": 'checkbox', "options": { "on": true, "off": false } };
-            boomLoop.value = checkboxValueToString(specialEffect._loop);
+            boomLoop.value = checkboxValueToString(specialEffect.loop);
             rows.push(boomLoop);
 
             var boomTimes = new Object();
@@ -266,7 +266,7 @@ function collectionSpecialEffectPropertyGridRows(specialEffect) {
             radius.group = sectorStyleGroup[0];
             radius.name = sectorDetectionPropsName[1];
             radius.editor = "text";
-            radius.value = specialEffect.radius;
+            radius.value = specialEffect.radiusSelfDefine;
             rows.push(radius);
 
             var sectorVisible = new Object();
@@ -366,7 +366,7 @@ function collectionSpecialEffectPropertyGridRows(specialEffect) {
             radarRadius.group = radarStyleGroup[0];
             radarRadius.name = radarPropsName[3];
             radarRadius.editor = "text";
-            radarRadius.value = specialEffect.radius;
+            radarRadius.value = specialEffect.radiusSelfDefine;
             rows.push(radarRadius);
 
             var radarVisible = new Object();

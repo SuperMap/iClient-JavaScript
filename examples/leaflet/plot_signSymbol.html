@@ -47,7 +47,7 @@
 </head>
 <body oncontextmenu="return false">
     <div  id="toolbar0" class="panel panel-primary" style=" position: absolute;top: 00px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
-        <div class='panel-heading' id="panelheading">
+        <!-- <div class='panel-heading' id="panelheading">
             <h5 class='panel-title text-center' data-i18n="resources.title_plotMap" style=" font-size: 16px;color: #ffffff;"></h5>
         </div>
         <div class='panel-body content' id="panelbodycontent" style="display: flex;width:300px;justify-content: center;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
@@ -59,7 +59,7 @@
             <input type="button" class="btn btn-default" style="width:100px;height:30px;" data-i18n="[value]resources.btn_openPlot" onclick="openFile()" />
             <input type = "file"  accept=".json" id="plottingOpenMapFile" style="display: none">
             </div>
-        </div>
+        </div> -->
         </div>
 <div  id="toolbar1" class="panel panel-primary" style=" position: absolute;top: 90px;right: 10px;text-align: center;z-index: 9999;border-radius: 4px;">
     <div class='panel-heading' id="panelheading">
@@ -67,12 +67,30 @@
     </div>
     <div class='panel-body content' id="panelbodycontent" style="display: flex;width:300px;justify-content: center;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
        <div class="panel01" id = "create&delete" style="display: flex;flex-direction: column;padding: 10px;">
-        <select id="selectMenu1" style="width:100px;height:30px; margin-left:10px; margin-right:10px" onclick="changeTypeValue(this.value)">
+        <select id="selectMenu1" style="width:100px;height:30px; margin-left:10px; margin-right:10px" onclick="changeModeValue(this.value)">
             <option id="10001" data-i18n="resources.title_simpleSignSymbol" value="0"></option>
             <option id="10002" data-i18n="resources.title_complexSignSymbol" value="1"></option>
-            <option id="10003" data-i18n="resources.title_templateSignSymbol" value="2"></option>
+            <option id="10003" data-i18n="resources.title_customSignSymbol" value="2"></option>
+            <!-- <option id="10004" data-i18n="resources.title_imageSignSymbol" value="3"></option> -->
         </select>
-        <select id="selectMenu2" style="width:100px;height:30px; margin-left:10px; margin-right:10px ;margin-top:16px;" disabled="true">
+        <select id="selectMenu2" style="width:100px;height:30px; margin-left:10px; margin-right:10px" onclick="changeTypeValue(this.value)">
+            <option id="30001" data-i18n="resources.title_type1" value="0"></option>
+            <option id="30002" data-i18n="resources.title_type2" value="1"></option>
+            <option id="30003" data-i18n="resources.title_type3" value="2"></option>
+            <option id="30004" data-i18n="resources.title_type4" value="3"></option>
+            <option id="30005" data-i18n="resources.title_type5" value="4"></option>
+            <option id="30006" data-i18n="resources.title_type6" value="5"></option>
+            <option id="30007" data-i18n="resources.title_type7" value="6"></option>
+            <option id="30008" data-i18n="resources.title_type8" value="7"></option>
+            <option id="30009" data-i18n="resources.title_type9" value="8"></option>
+            <option id="300010" data-i18n="resources.title_type10" value="9"></option>
+            <option id="300011" data-i18n="resources.title_type11" value="10"></option>
+            <option id="300012" data-i18n="resources.title_type12" value="11"></option>
+            <option id="300013" data-i18n="resources.title_type13" value="12"></option>
+            <option id="300014" data-i18n="resources.title_type14" value="13"></option>
+            <option id="300015" data-i18n="resources.title_type15" value="14"></option>
+        </select>
+        <select id="selectMenu3" style="width:100px;height:30px; margin-left:10px; margin-right:10px ;margin-top:16px;" disabled="false">
             <option id="20001" data-i18n="resources.title_template1" value="0"></option>
             <option id="20002" data-i18n="resources.title_template2" value="1"></option>
             <option id="20003" data-i18n="resources.title_template3" value="2"></option>
@@ -80,11 +98,16 @@
             <option id="20005" data-i18n="resources.title_template5" value="4"></option>
             <option id="20006" data-i18n="resources.title_template6" value="5"></option>
             <option id="20007" data-i18n="resources.title_template7" value="6"></option>
+            <option id="20008" data-i18n="resources.title_template8" value="7"></option>
+            <option id="20009" data-i18n="resources.title_template9" value="8"></option>
+            <option id="20010" data-i18n="resources.title_template10" value="9"></option>
+            <option id="20011" data-i18n="resources.title_template11" value="10"></option>
+            <option id="20012" data-i18n="resources.title_template12" value="11"></option>
         </select>
         </div>
         <div  class="panel02" id = "create&delete" style="display:flex; flex-direction: column;padding: 10px;">
         <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.title_createSignSymbol" onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
-        <input id = "removeSignSymbol" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" data-i18n="[value]resources.title_removeSignSymbol" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        <input id = "removeSignSymbol" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.title_removeSignSymbol" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
     </div>
@@ -107,20 +130,20 @@
     <div class="treePanel">
     <div class="panel1" id = "add&remove" style="display:flex; padding: 10px;justify-content: center;">
         <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_addLayer" onclick="addLayer()" />
-        <input id = "removeLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" data-i18n="[value]resources.btn_deleteLayer" onclick="removeLayer()" />
+        <!-- <input id = "removeLayer" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" disabled = "true" data-i18n="[value]resources.btn_deleteLayer" onclick="removeLayer()" /> -->
         <input id="layerVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.title_hideLayer" onclick="signLayer()" />
     </div>
 
 
     <div class="panel5" id = "max&minScale" style="display:flex; padding: 10px;justify-content: center;">
-        <input id = "maxLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" data-i18n="[value]resources.title_maxScale" onclick="setMax()" />
-        <input id = "minLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"disabled = "true" data-i18n="[value]resources.title_minScale" onclick="setMin()" />
-        <input id = "cancelScale" type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" disabled = "true" data-i18n="[value]resources.title_clearScale" onclick="setClear()" />
+        <input id = "maxLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" data-i18n="[value]resources.title_maxScale" onclick="setMax()" />
+        <input id = "minLayer"type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;"data-i18n="[value]resources.title_minScale" onclick="setMin()" />
+        <input id = "cancelScale" type="button" class="btn btn-default" style="width:200px;height:30px;padding: 0px;" data-i18n="[value]resources.title_clearScale" onclick="setClear()" />
     </div>
     <div  class="panel3" id = "operator" style="display:flex; padding: 10px;justify-content: center;">
-        <input id="signSymbolVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.title_hideSignSymbol" onclick="signSignSymbol()" />
-        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_bindSymbol" onclick="bind()" />
-        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_unbindSymbol" onclick="unbind()" />
+        <!-- <input id="signSymbolVisiable" type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.title_hideSignSymbol" onclick="signSignSymbol()" /> -->
+        <!-- <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_bindSymbol" onclick="bind()" />
+        <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_unbindSymbol" onclick="unbind()" /> -->
     </div>
     </div>
 </div>
@@ -155,34 +178,50 @@
     L.supermap.plotting.initSignStylePanel("signStylePanel",editControl);
     L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
 
-    var templateURL = "http://localhost:8090/iserver/mgis/situationSimulation/Sign/sign3_blue_单行文字.html";
+    var templateURL = "../data/plot-sign/sign3_蓝色.html";
 
     var currentSelectedSignSymbolUuid, activeSignSymbolLayer, selectedSignSymbolLayer;
     function create() {
-        var signType = parseInt(document.getElementById("selectMenu1").value);
-        if(signType == 2){
-           var index =  parseInt(document.getElementById("selectMenu2").value)
+        var signMode = parseInt(document.getElementById("selectMenu1").value);
+        var signType = parseInt(document.getElementById("selectMenu2").value);
+        if(signMode == 2){
+           var index =  parseInt(document.getElementById("selectMenu3").value)
            switch (index) {
                 case 0:
-                    templateURL = "../data/plot-sign/sign1.html";
+                    templateURL = "../data/plot-sign/sign1_图片背景.html";
                 break;
                 case 1:
-                    templateURL = "../data/plot-sign/sign2.html";
+                    templateURL = "../data/plot-sign/sign2_多行文字_无边框.html";
                 break;
                 case 2:
-                    templateURL = "../data/plot-sign/sign3.html";
+                    templateURL = "../data/plot-sign/sign3_蓝色.html";
                 break;
                 case 3:
-                    templateURL = "../data/plot-sign/sign4.html";
+                    templateURL = "../data/plot-sign/sign4_红色.html";
                 break;
                 case 4:
-                    templateURL = "../data/plot-sign/sign5.html";
+                    templateURL = "../data/plot-sign/sign5_多行文字.html";
                 break;
                 case 5:
-                    templateURL = "../data/plot-sign/sign6.html";
+                    templateURL = "../data/plot-sign/sign6_多行文字1.html";
                 break;
                 case 6:
-                    templateURL = "../data/plot-sign/sign7.html";
+                    templateURL = "../data/plot-sign/sign7_图片背景1.html";
+                break;
+                case 7:
+                    templateURL = "../data/plot-sign/sign8_图片背景2.html";
+                break;
+                case 8:
+                    templateURL = "../data/plot-sign/sign9_图片背景3.html";
+                break;
+                case 9:
+                    templateURL = "../data/plot-sign/sign10_图片背景4.html";
+                break;
+                case 10:
+                    templateURL = "../data/plot-sign/sign11_图片背景5.html";
+                break;
+                case 11:
+                    templateURL = "../data/plot-sign/sign12_图片背景6.html";
                 break;
                default:
                    break;
@@ -190,33 +229,36 @@
 
         }
         var title = "";
-        if(signType === SuperMap.Plot.SignSymbolType.SIMPLE){
+        if(signMode === SuperMap.Plot.SignMode.Simple){
             title = resources.title_simpleSignSymbol;
-        }else if(signType === SuperMap.Plot.SignSymbolType.COMPLEX){
+        }else if(signMode === SuperMap.Plot.SignMode.Complex){
             title = resources.title_complexSignSymbol;
-        }else if(signType === SuperMap.Plot.SignSymbolType.TEMPLATE){
-            title = resources.title_templateSignSymbol;
+        }else if(signMode === SuperMap.Plot.SignMode.Custom){
+            title = resources.title_customSignSymbol;
+        }else if(signMode === SuperMap.Plot.SignMode.Image){
+            title = resources.title_ImageSignSymbol;
         }
-        var signPosition = SuperMap.Plot.SignSymbolPosition.TOP;
+        // var signPosition = SuperMap.Plot.SignSymbolPosition.TOP;
         var signOption = {
-            signSymbolType: signType, visible: true, lineVisible: true,signPosition: signPosition,
-            title: title, offsetX: 0, offsetY: -50, content: "", templateURL: templateURL
+            signMode: signMode,signType:signType,title: title, offsetX: 0, offsetY: -50, style: {contentFontColor: "#00b2ff"}, templateUrl: templateURL
         };
-        var sign = new SuperMap.Plot.Sign(signOption);
+        // var sign = L.supermap.plotting.signSymbol(signOption);
         var options = {
             isLocked: false,
             enableEdit: true,
             enableSelected: true
         };
-        if (editControl.getSelectedFeatures()[0]) {
-            var feature = editControl.getSelectedFeatures()[0];
-            sign.content = resources.text_longitude + feature.getLatLngs()[0].lng + "\n" + resources.text_latitude +feature.getLatLngs()[0].lat;
-            activeSignSymbolLayer.createSignSymbol(feature.uuid, sign, options);
-        } else {
+        var symbolText = new SuperMap.Plot.SymbolText("", SuperMap.Plot.AnnoPosition.TOP, null,signOption)
+        // if (editControl.getSelectedFeatures()[0]) {
+        //     var feature = editControl.getSelectedFeatures()[0];
+        //     symbolText.textContent = resources.text_longitude + feature.getLatLngs()[0].lng + "\n" + resources.text_latitude +feature.getLatLngs()[0].lat;
+        //     var latlng = feature.latLngs[0];
+        //     activeSignSymbolLayer.createSignSymbolByPosition(latlng, symbolText, options);
+        // } else {
             var latlng = L.latLng(35.5, 103.84);
-            sign.content = resources.text_longitude + latlng.lng + "\n" + resources.text_latitude + latlng.lat;
-            activeSignSymbolLayer.createSignSymbolByPosition(latlng, sign, options);
-        }
+            symbolText.textContent = resources.text_longitude + latlng.lng + "\n" + resources.text_latitude + latlng.lat;
+            activeSignSymbolLayer.createSignSymbol(latlng, symbolText, options);
+        // }
     }
     function remove() {
         var sign = editControl.getSelectedSignSymbols()[0];
@@ -378,14 +420,33 @@
             }
         }
     }
-    function changeTypeValue(value){
+    function changeModeValue(value){
         var type = parseInt(value)
-        if(value == 2){
-            document.getElementById("selectMenu2").disabled = false;
+        if(value == 0 || value == 1){
+            document.getElementById("selectMenu3").disabled = true;
         }else{
+            document.getElementById("selectMenu3").disabled = false;
+        }
+        if(value == 2){
             document.getElementById("selectMenu2").disabled = true;
+        }else{
+            document.getElementById("selectMenu2").disabled = false;
+        }
+        if(value == 3){
+            document.getElementById("selectMenu2").disabled = false;
+            document.getElementById("selectMenu3").disabled = false;
         }
     }
+
+    function changeTypeValue(value){
+        var type = parseInt(value)
+        // if(value == 2){
+        //     document.getElementById("selectMenu2").disabled = false;
+        // }else{
+        //     document.getElementById("selectMenu2").disabled = true;
+        // }
+    }
+
     function getTieFeature(event){
     if(event.features){
         if(event.features.length>0){
@@ -406,63 +467,63 @@
             editControl.deleteSelectedFeatures();
         }
     }
-    document.getElementById("plottingOpenMapFile").addEventListener('input',(evt)=>{
-        var file = evt.target.files;
-        var reader = new FileReader();
-        reader.readAsText(file[0]);
-        reader.onload = function(e){
-            plotMapManager.loadFrom(JSON.parse(reader.result));
-            plotMapManager.setActivePlottingLayer(plotMapManager.getPlottingLayers()[0]);
-            signSymbolLayer = plotMapManager.getSignSymbolLayers()[0];
-            L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
-            document.getElementById("plottingOpenMapFile").value = "";
-        }
-    });
-    editControl.on("signsymbolselected",(event)=>{
-        document.getElementById("removeSignSymbol").disabled = false;
-        var tree = $.fn.zTree.getZTreeObj("tree");
-        var treeData = tree.transformToArray(tree.getNodes());
-        var uuid = event.signSymbols[0].uuid;
-        var node;
-        for(let i in treeData){
-            if(treeData[i].uuid && treeData[i].uuid == uuid){
-                node = treeData[i]
-            }
-        }
-        tree.selectNode(node);
+    // document.getElementById("plottingOpenMapFile").addEventListener('input',(evt)=>{
+    //     var file = evt.target.files;
+    //     var reader = new FileReader();
+    //     reader.readAsText(file[0]);
+    //     reader.onload = function(e){
+    //         plotMapManager.loadFrom(JSON.parse(reader.result));
+    //         plotMapManager.setActivePlottingLayer(plotMapManager.getPlottingLayers()[0]);
+    //         signSymbolLayer = plotMapManager.getSignSymbolLayers()[0];
+    //         L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
+    //         document.getElementById("plottingOpenMapFile").value = "";
+    //     }
+    // });
+    // editControl.on("signsymbolselected",(event)=>{
+    //     document.getElementById("removeSignSymbol").disabled = false;
+    //     var tree = $.fn.zTree.getZTreeObj("tree");
+    //     var treeData = tree.transformToArray(tree.getNodes());
+    //     var uuid = event.signSymbols[0].uuid;
+    //     var node;
+    //     for(let i in treeData){
+    //         if(treeData[i].uuid && treeData[i].uuid == uuid){
+    //             node = treeData[i]
+    //         }
+    //     }
+    //     tree.selectNode(node);
 
-    })
+    // })
     editControl.on("signsymbolunselected",()=>{
         currentSelectedSignSymbolUuid = null;
         document.getElementById("removeSignSymbol").disabled = true;
         var tree = $.fn.zTree.getZTreeObj("tree");
         tree.cancelSelectedNode();
     })
-    document.addEventListener('click',(e)=>{
-        if(e.target.classList.value =="node_name"){
-            if(e.target.childNodes[0].data.indexOf(resources.title_signSymbolLayer)!=-1){
-                document.getElementById("removeLayer").disabled = false;
-                document.getElementById("maxLayer").disabled = false;
-                document.getElementById("minLayer").disabled = false;
-                document.getElementById("cancelScale").disabled = false;
-            }else{
-                document.getElementById("removeLayer").disabled = true;
-                document.getElementById("maxLayer").disabled = true;
-                document.getElementById("minLayer").disabled = true;
-                document.getElementById("cancelScale").disabled = true;
-            }
-            if(e.target.childNodes[0].data.indexOf("标牌")!=-1&&e.target.childNodes[0].data.indexOf("图层")==-1){
-                document.getElementById("removeSignSymbol").disabled = false;
-            }else{
-                document.getElementById("removeSignSymbol").disabled = true;
-            }
-        }else{
-            document.getElementById("removeLayer").disabled = true;
-            document.getElementById("maxLayer").disabled = true;
-            document.getElementById("minLayer").disabled = true;
-            document.getElementById("cancelScale").disabled = true;
-        }
-    })
+    // document.addEventListener('click',(e)=>{
+    //     if(e.target.classList.value =="node_name"){
+    //         if(e.target.childNodes[0].data.indexOf(resources.title_signSymbolLayer)!=-1){
+    //             document.getElementById("removeLayer").disabled = false;
+    //             document.getElementById("maxLayer").disabled = false;
+    //             document.getElementById("minLayer").disabled = false;
+    //             document.getElementById("cancelScale").disabled = false;
+    //         }else{
+    //             document.getElementById("removeLayer").disabled = true;
+    //             document.getElementById("maxLayer").disabled = true;
+    //             document.getElementById("minLayer").disabled = true;
+    //             document.getElementById("cancelScale").disabled = true;
+    //         }
+    //         if(e.target.childNodes[0].data.indexOf("标牌")!=-1&&e.target.childNodes[0].data.indexOf("图层")==-1){
+    //             document.getElementById("removeSignSymbol").disabled = false;
+    //         }else{
+    //             document.getElementById("removeSignSymbol").disabled = true;
+    //         }
+    //     }else{
+    //         document.getElementById("removeLayer").disabled = true;
+    //         document.getElementById("maxLayer").disabled = true;
+    //         document.getElementById("minLayer").disabled = true;
+    //         document.getElementById("cancelScale").disabled = true;
+    //     }
+    // })
     plotMapManager.on("loadfinished",()=>{
         L.supermap.plotting.initSignTreePanel("signTree",plotMapManager,signSymbolLayer);
     })

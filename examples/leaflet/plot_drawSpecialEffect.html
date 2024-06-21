@@ -85,14 +85,16 @@
 
                 </select>
                 <input type="button" id="playorpauseAllSpecialEffect" class="btn btn-default" style="width:100px;height:30px;padding: 0px;margin-top: 17px;
-                margin-left: 10px;" data-i18n="[value]resources.text_pauseAllSpecialEffect" onclick="playorpauseAllSpecialEffect()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+                margin-left: 10px;" data-i18n="[value]resources.text_pauseAllSpecialEffect"
+                    onclick="playorpauseAllSpecialEffect()" /> &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="panel02" id="create&delete"
                 style="display:flex; flex-direction: column;padding: 10px;padding-bottom: 0px;">
-                <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_createSpecialEffect"
-                    onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
-                data-i18n="[value]resources.text_removeAllSpecialEffect" onclick="remove()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+                    data-i18n="[value]resources.text_createSpecialEffect" onclick="create()" /> &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" style="width:100px;height:30px;padding: 0px;"
+                    data-i18n="[value]resources.text_removeAllSpecialEffect" onclick="remove()" />
+                &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
     </div>
@@ -114,7 +116,7 @@
         </div>
         <div id="specialEffectTree" class="winContent" style="  padding: 5px;overflow-y: auto;height: 400px;"></div>
         <div class="treePanel">
-            <div class="panel01" id="selectPointType" style="display: contents;flex-direction: column;padding: 10px;">
+            <!-- <div class="panel01" id="selectPointType" style="display: contents;flex-direction: column;padding: 10px;">
                 <select id="pointType" style="width:100px;height:30px; margin-left:40px; margin-right:12px"
                     disabled="true" onchange="changeConnectType(event)">
                     <option style="display: block;" id="unselect" data-i18n="resources.option_pleaseCheck" value="-1"></option>
@@ -126,20 +128,23 @@
                 <input disabled="true" type="button" id="connectordisconnect" class="btn btn-default"
                     style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_bindSymbol" onclick="connectordisconnect()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
+            </div> -->
             <div class="panel1" id="play&remove" style="display:flex; padding: 10px;justify-content: center">
                 <input disabled="true" type="button" id="playorpause" class="btn btn-default"
-                    style="width:100px;height:30px;padding: 0px;margin-left: 11px;" data-i18n="[value]resources.text_playSelectedEffect" onclick="playOrPauseSelectFeature()" />
+                    style="width:100px;height:30px;padding: 0px;margin-left: 11px;"
+                    data-i18n="[value]resources.text_playSelectedEffect" onclick="playOrPauseSelectFeature()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input disabled="true" id="removeSelectSpecialEffect" type="button" class="btn btn-default"
-                    style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_removeSelectedEffect" onclick="removeSelectFeature()" />
+                    style="width:100px;height:30px;padding: 0px;" data-i18n="[value]resources.text_removeSelectedEffect"
+                    onclick="removeSelectFeature()" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
     </div>
     <div id="plottingMenu" class="plotting-menu">
         <li>
-            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect" onclick="multiSelectModel()"></span>
+            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect"
+                onclick="multiSelectModel()"></span>
         </li>
     </div>
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -175,10 +180,10 @@
         L.supermap.plotting.initStylePanel("stylePanel", serverUrl, editControl);
 
 
-        var selectedSpecialEffectUuid, currentPoint, allIsPlay = false;
+        var selectedSpecialEffectUuid, currentPoint, allIsPlay = false, selectedSpecialEffect;
         specialEffectManager.on(SuperMap.Plot.Event.specialeffectselected, function (event) {
 
-            document.getElementById("connectordisconnect").disabled = false;
+            // document.getElementById("connectordisconnect").disabled = false;
             document.getElementById("playorpause").disabled = false;
             document.getElementById("removeSelectSpecialEffect").disabled = false;
 
@@ -188,66 +193,8 @@
                 document.getElementById("playorpause").value = resources.text_playSelectedEffect;
             }
             selectedSpecialEffectUuid = event.specialEffect.uuid;
+            selectedSpecialEffect = event.specialEffect;
             var type = event.specialEffect.getType();
-            var selectPointType = document.getElementById("pointType");
-            // var linkSelect = document.getElementById("linkTypeList");
-            if (type == SuperMap.Plot.SpecialEffectType.AIM) {
-                selectPointType.disabled = false;
-
-                document.getElementById("unselect").style.display = "none";
-                document.getElementById("viewPoint").style.display = "block";
-                document.getElementById("aimPoint").style.display = "block";
-                document.getElementById("senderPoint").style.display = "none";
-                document.getElementById("receiverPoint").style.display = "none";
-
-                if ((selectPointType.value == "0" || selectPointType.value == "-1") && event.specialEffect.viewUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-                } else if (selectPointType.value == "0" && !event.specialEffect.viewUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-                }
-
-                if (selectPointType.value == "1" && event.specialEffect.aimUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-                } else if (selectPointType.value == "1" && !event.specialEffect.aimUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-                }
-            } else if (type == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
-                selectPointType.disabled = false;
-
-                document.getElementById("unselect").style.display = "none";
-                document.getElementById("viewPoint").style.display = "none";
-                document.getElementById("aimPoint").style.display = "none";
-                document.getElementById("senderPoint").style.display = "block";
-                document.getElementById("receiverPoint").style.display = "block";
-                selectPointType.value = "2";
-
-                if (selectPointType.value == "2" && event.specialEffect.senderUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-                } else if (selectPointType.value == "2" && !event.specialEffect.senderUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-                }
-
-                if (selectPointType.value == "3" && event.specialEffect.receiverUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-                } else if (selectPointType.value == "3" && !event.specialEffect.receiverUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-                }
-            } else {
-                selectPointType.value = "-1";
-                selectPointType.disabled = true;
-
-                document.getElementById("unselect").style.display = "block"
-                document.getElementById("viewPoint").style.display = "none"
-                document.getElementById("aimPoint").style.display = "none"
-                document.getElementById("senderPoint").style.display = "none"
-                document.getElementById("receiverPoint").style.display = "none"
-
-                if (event.specialEffect.associatedUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-                } else if (!event.specialEffect.associatedUuid) {
-                    document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-                }
-            }
 
             var tree = $.fn.zTree.getZTreeObj("tree");
             var treeData = tree.transformToArray(tree.getNodes());
@@ -259,20 +206,20 @@
             }
             tree.selectNode(node);
 
-            if (type == SuperMap.Plot.SpecialEffectType.AIM) {
-                selectPointType.value = "0";
-            } else if (type == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
-                selectPointType.value = "2";
-            }
+            // if (type == SuperMap.Plot.SpecialEffectType.AIM) {
+            //     selectPointType.value = "0";
+            // } else if (type == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
+            //     selectPointType.value = "2";
+            // }
 
         });
         specialEffectManager.on(SuperMap.Plot.Event.specialeffectunselected, function (event) {
             document.getElementById("playorpause").value = resources.text_playSelectedEffect;
-            document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
+            // document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
 
-            document.getElementById("pointType").value = "-1";
-            document.getElementById("pointType").disabled = true;
-            document.getElementById("connectordisconnect").disabled = true;
+            // document.getElementById("pointType").value = "-1";
+            // document.getElementById("pointType").disabled = true;
+            // document.getElementById("connectordisconnect").disabled = true;
             document.getElementById("playorpause").disabled = true;
             document.getElementById("removeSelectSpecialEffect").disabled = true;
 
@@ -322,10 +269,24 @@
         }
         function createScanRadar() {
             if (editControl.getSelectedFeatures().length != 0) {
+                // for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
+                //     var feature = editControl.getSelectedFeatures()[i];
+                //     specialEffectManager.createScanRadar(feature.uuid, {});
+                // }
                 for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
                     var feature = editControl.getSelectedFeatures()[i];
-                    specialEffectManager.createScanRadar(feature.uuid, {});
+                    // var options = new SuperMap.Plot.ScanRadar({});
+                    // var options = {loop : false};
+                    var style = {
+                        centerStyle: { fillColor: "#0000ff", fillOpacity: 0.51, color: "#00ff00", opacity: 1 }
+                        , circleStyle: { fillColor: "#00ff00", fillOpacity: 0.1, color: "#0000ff", opacity: 0.51 }
+                        , scanStyle: { fillColor: "#0fff00", fillOpacity: 0.5 }
+                    };
+
+                    var options = { period: 1, startAngle: 0, loop: false, radius: 50, style: style };
+                    var effectObj = new L.supermap.plotting.ScanRadar(feature.uuid, null, options);
                 }
+
             } else {
                 var latlng = L.latLng(35.5, 103.84);
                 specialEffectManager.createScanRadarByPosition(latlng, {});
@@ -336,7 +297,9 @@
             if (editControl.getSelectedFeatures().length != 0) {
                 for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
                     var feature = editControl.getSelectedFeatures()[i];
-                    specialEffectManager.createSectorDetectionRange(feature.uuid, {});
+                    // specialEffectManager.createSectorDetectionRange(feature.uuid, {});
+                    var options = new SuperMap.Plot.SectorDetectionRange({});
+                    var effectObj = new L.supermap.plotting.SectorDetectionRange(feature.uuid, null, options);
                 }
             } else {
                 var latlng = L.latLng(39.5, 87.84);
@@ -348,7 +311,9 @@
             if (editControl.getSelectedFeatures().length != 0) {
                 for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
                     var feature = editControl.getSelectedFeatures()[i];
-                    specialEffectManager.createBoom(feature.uuid, {});
+                    // specialEffectManager.createBoom(feature.uuid, {});
+                    var options = new SuperMap.Plot.Boom({});
+                    var effectObj = new L.supermap.plotting.Boom(feature.uuid, null, options);
                 }
             } else {
                 var latlng = L.latLng(32.5, 118.84);
@@ -360,7 +325,9 @@
             if (editControl.getSelectedFeatures().length != 0) {
                 for (var i = 0; i < editControl.getSelectedFeatures().length; i++) {
                     var feature = editControl.getSelectedFeatures()[i];
-                    specialEffectManager.createDestroy(feature.uuid, {});
+                    // specialEffectManager.createDestroy(feature.uuid, {});
+                    var options = new SuperMap.Plot.Destroy({});
+                    var effectObj = new L.supermap.plotting.Destroy(feature.uuid, options);
                 }
             } else {
                 alert("请选择一个标号作为摧毁对象");
@@ -371,14 +338,18 @@
                 var viewfeature = editControl.getSelectedFeatures()[0];
                 for (var i = 1; i < editControl.getSelectedFeatures().length; i++) {
                     var aimfeature = editControl.getSelectedFeatures()[i];
-                    specialEffectManager.createAim(viewfeature.uuid, aimfeature.uuid, {});
+                    // specialEffectManager.createAim(viewfeature.uuid, aimfeature.uuid, {});
+                    var options = new SuperMap.Plot.Aim({});
+                    var effectObj = new L.supermap.plotting.Aim(viewfeature.uuid, aimfeature.uuid, null, null, options);
                 }
+            } else if (editControl.getSelectedFeatures().length === 1) {
+                alert("请至少选中两个标号分别作为瞄准对象的观察点与瞄准点！");
             } else {
                 var viewLatlng = L.latLng(29.30, 91.91);
                 var aimLatlng = L.latLng(24.5, 102.84);
                 specialEffectManager.createAimByPosition(viewLatlng, aimLatlng, {});
 
-                alert("当前在默认位置创建雷达，可使用绑定功能或选中两个标号作为观察点与瞄准点后创建，从而与标号绑定！");
+                alert("当前在默认位置创建瞄准特效，可使用绑定功能或选中两个标号作为观察点与瞄准点后创建，从而与标号绑定！");
             }
         }
         function createCommunicationLink() {
@@ -386,76 +357,97 @@
                 var sendfeature = editControl.getSelectedFeatures()[0];
                 for (var i = 1; i < editControl.getSelectedFeatures().length; i++) {
                     var receiverfeature = editControl.getSelectedFeatures()[i];
-                    specialEffectManager.createCommunicationLink(sendfeature.uuid, receiverfeature.uuid, {});
+                    // specialEffectManager.createCommunicationLink(sendfeature.uuid, receiverfeature.uuid, {});
+                    var options = new SuperMap.Plot.CommunicationLink({});
+                    var effectObj = new L.supermap.plotting.CommunicationLink(sendfeature.uuid, receiverfeature.uuid, null, null, options);
                 }
+            } else if (editControl.getSelectedFeatures().length === 1) {
+                alert("请至少选中两个标号分别作为通讯链路的发送点与接收点！");
             } else {
-
                 var sendLatlng = L.latLng(40.30, 111.91);
                 var receiverLatlng = L.latLng(30.5, 114.84);
                 specialEffectManager.createCommunicationLinkByPosition(sendLatlng, receiverLatlng, {});
-                alert("当前在默认位置创建雷达，可使用绑定功能或选中两个标号作为发送信号与接收信号后创建，从而与标号绑定！");
+                alert("当前在默认位置创建通讯链路，可使用绑定功能或选中两个标号作为发送信号与接收信号后创建，从而与标号绑定！");
             }
         }
-        function changeConnectType(event) {
-            var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
-            if (effect == null) {
-                return;
-            }
-            switch (event.target.value) {
-                case '0':
-                    currentPoint = "viewPoint";
-                    this.checkIsConnectedToFeature(effect.viewUuid);
-                    break;
-                case '1':
-                    currentPoint = "aimPoint";
-                    this.checkIsConnectedToFeature(effect.aimUuid);
-                    break;
-                case '2':
-                    currentPoint = "senderPoint";
-                    this.checkIsConnectedToFeature(effect.senderUuid);
-                    break;
-                case '3':
-                    currentPoint = "receiverPoint";
-                    this.checkIsConnectedToFeature(effect.receiverUuid);
-                    break;
+        // function changeConnectType(event) {
+        //     var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+        //     if (effect == null) {
+        //         return;
+        //     }
+        //     switch (event.target.value) {
+        //         case '0':
+        //             currentPoint = "viewPoint";
+        //             this.checkIsConnectedToFeature(effect.viewUuid);
+        //             break;
+        //         case '1':
+        //             currentPoint = "aimPoint";
+        //             this.checkIsConnectedToFeature(effect.aimUuid);
+        //             break;
+        //         case '2':
+        //             currentPoint = "senderPoint";
+        //             this.checkIsConnectedToFeature(effect.senderUuid);
+        //             break;
+        //         case '3':
+        //             currentPoint = "receiverPoint";
+        //             this.checkIsConnectedToFeature(effect.receiverUuid);
+        //             break;
 
-                default:
-                    break;
-            }
-        }
-        function checkIsConnectedToFeature(uuid) {
-            if (uuid) {
-                document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-            } else {
-                document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-            }
-        }
+        //         default:
+        //             break;
+        //     }
+        // }
+        // function checkIsConnectedToFeature(uuid) {
+        //     if (uuid) {
+        //         document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
+        //     } else {
+        //         document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
+        //     }
+        // }
         function removeSelectFeature() {
             if (selectedSpecialEffectUuid) {
-                specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected, { specialEffect: specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid) });
-                specialEffectManager.removeSpecialEffect(selectedSpecialEffectUuid);
+                specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected, { specialEffect: selectedSpecialEffect });
+                // specialEffectManager.removeSpecialEffect(selectedSpecialEffectUuid);
+                selectedSpecialEffect.remove();
                 selectedSpecialEffectUuid = null;
+                selectedSpecialEffect = null;
                 specialEffectManager.fire(SuperMap.Plot.Event.specialeffectremoved)
-                document.getElementById("pointType").disabled = true;
+                // document.getElementById("pointType").disabled = true;
             }
         }
         function remove() {
-            // specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected);
-            if (editControl.getSelectedFeatures().length > 0) {
-                for (var j = 0; j < editControl.getSelectedFeatures().length; j++) {
-                    var feature = editControl.getSelectedFeatures()[j];
-                    var specialEffectListByFeature = specialEffectManager.getSpecialEffectByFeature(feature.uuid);
-                    for (var i = 0; i < specialEffectListByFeature.length; i++) {
-                        var effectUuid = specialEffectListByFeature[i].uuid;
-                        specialEffectManager.removeSpecialEffect(effectUuid);
-                    }
+            // if (editControl.getSelectedFeatures().length > 0) {
+            //     for (var j = 0; j < editControl.getSelectedFeatures().length; j++) {
+            //         var feature = editControl.getSelectedFeatures()[j];
+            //         var specialEffectListByFeature = feature.getSpecialEffects();
+            //         var effectMap = new Map();
+            //         for (var n = 0; n < specialEffectListByFeature.length; n++) {
+            //             effectMap.set(specialEffectListByFeature[n].uuid, specialEffectListByFeature[n]);
+            //         }
+            //         for (var key of effectMap.keys()) {
+            //             specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected, { specialEffect: effectMap.get(key) });
+            //             effectMap.get(key).remove();
+            //         }
+            //     }
+            // } else {
+            var specialEffectList = specialEffectManager.getSpecialEffectList();
+            for (var i = 0; i < specialEffectList.length; i++) {
+                specialEffectManager.removeSpecialEffect(specialEffectList[i].uuid);
+            }
+
+            var features = plottingLayer.features;
+            for (var j = 0; j < features.length; j++) {
+                var specialEffects = features[j].getSpecialEffects();
+                var effectMap = new Map();
+                for (var n = 0; n < specialEffects.length; n++) {
+                    effectMap.set(specialEffects[n].uuid, specialEffects[n]);
                 }
-            } else {
-                var specialEffectList = specialEffectManager.getSpecialEffectList();
-                for (var i = 0; i < specialEffectList.length; i++) {
-                    specialEffectManager.removeSpecialEffect(specialEffectList[i].uuid);
+                for (var key of effectMap.keys()) {
+                    specialEffectManager.fire(SuperMap.Plot.Event.specialeffectunselected, { specialEffect: effectMap.get(key) });
+                    effectMap.get(key).remove();
                 }
             }
+            //}
 
             specialEffectManager.fire(SuperMap.Plot.Event.specialeffectremoved)
         }
@@ -475,121 +467,30 @@
             for (var i = 0; i < specialEffectList.length; i++) {
                 specialEffectList[i].play();
             }
+
+            var features = plottingLayer.features;
+            for (var j = 0; j < features.length; j++) {
+                var specialEffects = features[j].getSpecialEffects();
+                for (var k = 0; k < specialEffects.length; k++) {
+                    specialEffects[k].play();
+                }
+            }
         }
         function pauseAllSpecialEffect() {
             var specialEffectList = specialEffectManager.getSpecialEffectList();
             for (var i = 0; i < specialEffectList.length; i++) {
                 specialEffectList[i].pause();
             }
-        }
 
-        function connectordisconnect() {
-            if (document.getElementById("connectordisconnect").value == resources.text_bindSymbol) {
-                this.bind();
-                document.getElementById("connectordisconnect").value = resources.text_unbindSymbol;
-            } else {
-                this.disconnectionToFeature();
-                document.getElementById("connectordisconnect").value = resources.text_bindSymbol;
-            }
-        }
-        function bind() {
-            editControl.on("featuresselected", connectionToFeature);
-        }
-        function connectionToFeature() {
-            if (!editControl.getSelectedFeatures()[0]) {
-                // alert("请选择目标标号进行绑定");
-                return;
-            }
-            var associatedUuid = editControl.getSelectedFeatures()[0].uuid;
-            if (selectedSpecialEffectUuid) {
-                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
-                // specialEffectManager.connectToFeature(associatedUuids, effect);
-                if (effect.getType() == SuperMap.Plot.SpecialEffectType.AIM || effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
-                    if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.AIM) {
-                        currentPoint = document.getElementById("pointType").value;
-                        if (currentPoint == "0" || currentPoint == "-1") {
-                            currentPoint = "viewPoint";
-                        } else {
-                            currentPoint = "aimPoint";
-                        }
-                    } else if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
-                        currentPoint = document.getElementById("pointType").value;
-                        if (currentPoint == "2" || currentPoint == "-1") {
-                            currentPoint = "senderPoint";
-                        } else {
-                            currentPoint = "receiverPoint";
-                        }
-                    }
-                    switch (currentPoint) {
-                        case "aimPoint":
-                            effect.connectToFeature(associatedUuid, SuperMap.Plot.AimType.AIM);
-                            break;
-                        case "viewPoint":
-                            effect.connectToFeature(associatedUuid, SuperMap.Plot.AimType.VIEW);
-                            break;
-                        case "senderPoint":
-                            effect.connectToFeature(associatedUuid, SuperMap.Plot.CommunicationLinkType.SENDER);
-                            break;
-                        case "receiverPoint":
-                            effect.connectToFeature(associatedUuid, SuperMap.Plot.CommunicationLinkType.RECEIVER);
-                            break;
-
-                        default:
-                            break;
-                    }
-                } else {
-                    effect.connectToFeature(associatedUuid);
-                }
-            }
-
-            editControl.off("featuresselected", connectionToFeature);
-
-        }
-        function disconnectionToFeature() {
-            if (selectedSpecialEffectUuid) {
-                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
-                if (effect.getType() == SuperMap.Plot.SpecialEffectType.DESTROY) {
-                    alert("摧毁标号不支持解绑！");
-                    return;
-                }
-                if (effect.getType() == SuperMap.Plot.SpecialEffectType.AIM || effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
-                    if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.AIM) {
-                        currentPoint = document.getElementById("pointType").value;
-                        if (currentPoint == "0") {
-                            currentPoint = "viewPoint";
-                        } else {
-                            currentPoint = "aimPoint";
-                        }
-                    } else if (!currentPoint && effect.getType() == SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK) {
-                        currentPoint = document.getElementById("pointType").value;
-                        if (currentPoint == "2") {
-                            currentPoint = "senderPoint";
-                        } else {
-                            currentPoint = "receiverPoint";
-                        }
-                    }
-                    switch (currentPoint) {
-                        case "aimPoint":
-                            effect.disConnectToFeature(SuperMap.Plot.AimType.AIM);
-                            break;
-                        case "viewPoint":
-                            effect.disConnectToFeature(SuperMap.Plot.AimType.VIEW);
-                            break;
-                        case "senderPoint":
-                            effect.disConnectToFeature(SuperMap.Plot.CommunicationLinkType.SENDER);
-                            break;
-                        case "receiverPoint":
-                            effect.disConnectToFeature(SuperMap.Plot.CommunicationLinkType.RECEIVER);
-                            break;
-
-                        default:
-                            break;
-                    }
-                } else {
-                    effect.disConnectToFeature();
+            var features = plottingLayer.features;
+            for (var j = 0; j < features.length; j++) {
+                var specialEffects = features[j].getSpecialEffects();
+                for (var k = 0; k < specialEffects.length; k++) {
+                    specialEffects[k].pause();
                 }
             }
         }
+
         function playOrPauseSelectFeature() {
             if (document.getElementById("playorpause").value == resources.text_playSelectedEffect) {
                 this.playSelectFeature();
@@ -601,14 +502,32 @@
         }
         function playSelectFeature() {
             if (selectedSpecialEffectUuid) {
-                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
-                effect.play();
+                // var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+                // effect.play();
+                selectedSpecialEffect.play();
+                for (var i = 0; i < plottingLayer.features.length; i++) {
+                    var effects = plottingLayer.features[i].getSpecialEffects();
+                    for (var j = 0; j < effects.length; j++) {
+                        if (effects[j].uuid == selectedSpecialEffectUuid) {
+                            effects[j].play();
+                        }
+                    }
+                }
             }
         }
         function pauseSelectFeature() {
-            if (selectedSpecialEffectUuid) {
-                var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
-                effect.pause();
+            if (selectedSpecialEffectUuid && selectedSpecialEffect) {
+                // var effect = specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid);
+                // effect.pause();
+                // selectedSpecialEffect.pause();
+                for (var i = 0; i < plottingLayer.features.length; i++) {
+                    var effects = plottingLayer.features[i].getSpecialEffects();
+                    for (var j = 0; j < effects.length; j++) {
+                        if (effects[j].uuid == selectedSpecialEffectUuid) {
+                            effects[j].pause();
+                        }
+                    }
+                }
             }
         }
         function openPlotMap() {

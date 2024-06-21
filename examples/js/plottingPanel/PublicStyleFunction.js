@@ -196,6 +196,16 @@ function getLineStyleRows() {
     rows.push({ "value": "999", "text": resources.text_selfDefinedDashline });
     return rows;
 }
+
+function getDotLineStyleRows() {
+    var rows = [];
+    rows.push({ "value": "0", "text": resources.text_solidLine });//实线(solid)
+    rows.push({ "value": "1", "text": resources.text_longDashLine });//长虚线(longdash) //虚线(dash)
+    rows.push({ "value": "2", "text": resources.text_lineByPoint });//由点构成的直线(dot)
+    rows.push({ "value": "3", "text": resources.text_lineByLineSegment });//由线划线段组成的直线(dashdot)(longdashdot)
+    rows.push({ "value": "4", "text": resources.text_lineByPointSegment });//由重复的划线点图案构成的直线
+    return rows;
+}
 /**
  *注记位置
  */
@@ -636,6 +646,48 @@ function getArrowTailTypeRows() {
     rows.push({ "value": "3", "text": resources.text_dovetailArrowTail });
     return rows;
 }
+/**
+ * 线面标号子标号
+ */
+// function libIDToString(libID) {
+//     if (libID == 421)
+//         return resources.text_policeLib;
+//     else if (libID == 100)
+//         return resources.text_militaryLib;
+//     else if (libID == 123)
+//         return resources.text_armedPoliceLib;
+//     else if (libID == 900)
+//         return resources.text_airDefenseLib;
+
+// }
+
+function subAlgoRankTypeString(subSymbolsLength, geometry) {
+    if (subSymbolsLength === 0) {
+        return "";
+    } else {
+        if (geometry.libID === 100) {
+            if (geometry.getSubSymbols()[0].code === 3200) {
+                return resources.text_JTJRank;
+            } else if (geometry.getSubSymbols()[0].code === 3201) {
+                return resources.text_FJQRank;
+            } else if (geometry.getSubSymbols()[0].code === 3202) {
+                return resources.text_JQRank;
+            } else if (geometry.getSubSymbols()[0].code === 3302) {
+                return resources.text_SRank;
+            } else if (geometry.getSubSymbols()[0].code === 3301) {
+                return resources.text_LRank;
+            } else if (geometry.getSubSymbols()[0].code === 3300) {
+                return resources.text_TRank;
+            } else if (geometry.getSubSymbols()[0].code === 3402) {
+                return resources.text_YRank;
+            } else if (geometry.getSubSymbols()[0].code === 3401) {
+                return resources.text_LianRank;
+            } else if (geometry.getSubSymbols()[0].code === 3400) {
+                return resources.text_PRank;
+            }
+        }
+    }
+}
 
 function subSymbolsTypeString(subSymbolsLength, geometry,index) {
     if(subSymbolsLength<index+1){
@@ -878,7 +930,12 @@ function symbolPropertyObject(selectfeature, styleObject) {
     lineStyleObj.group = group[4];
     lineStyleObj.name = displayLineStyleName[2];
     if (styleObject.lineSymbolID !== undefined) {
-        lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getLineStyleRows() } };
+        if(selectfeature.symbolType === 1){
+            lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getDotLineStyleRows() } };
+        }else{
+            lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getLineStyleRows() } };
+        }
+        
         lineStyleObj.value = lineStyleToString(styleObject.lineSymbolID);
     } else {
         lineStyleObj.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": get8CLineStyleRows() } };

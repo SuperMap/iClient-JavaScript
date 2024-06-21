@@ -85,7 +85,8 @@
             <div class='input-group' style="width: 220px;margin-bottom: 15px;">
                 <span class='input-group-addon' data-i18n="resources.text_number"></span>
                 <input type='text' class='form-control' id='count' value='15' style="width: 110px;" />
-                <input type="button" class="btn btn-default" data-i18n="[value]resources.text_drawGraphics" onclick="drawGraphics()" />
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.text_drawGraphics"
+                    onclick="drawGraphics()" />
             </div>
         </div>
     </div>
@@ -164,7 +165,8 @@
     </div>
     <div id="plottingMenu" class="plotting-menu">
         <li>
-            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect" onclick="multiSelectModel()"></span>
+            <span class="icon iconfont icon-quanxuan" data-i18n="[title]resources.title_rectselect"
+                onclick="multiSelectModel()"></span>
         </li>
     </div>
     <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
@@ -214,7 +216,6 @@
                 plotMapManager.loadFrom(JSON.parse(reader.result));
                 drawControl.setDrawingLayer(plotMapManager.getActivePlottingLayer());
                 plottingLayer = plotMapManager.getActivePlottingLayer();
-                L.supermap.plotting.initSpecialEffectTreePanel("specialEffectTree", specialEffectManager);
             }
         });
         document.getElementById("symbol").value = "0";
@@ -283,9 +284,9 @@
             document.getElementById("onlyInCulsterInfoVisible").value = 0;
 
             diabledPropertyPanel();
-            
+
         }
-        function diabledPropertyPanel(){
+        function diabledPropertyPanel() {
             document.getElementById("rangeColor").disabled = true;
             document.getElementById("fontBackgroundColor").disabled = true;
             document.getElementById("fontBackgroundBorderColor").disabled = true;
@@ -322,10 +323,52 @@
             var code = 2;
             var e = 15;
             var num = document.getElementById("count").value;
-            for (var i = 0; i < num; i++) {
-                var latlngs = [new L.latLng(map.getCenter().lat + (2 * e * Math.random() - e), map.getCenter().lng + (2 * e * Math.random() - e))];
-                plottingLayer.createSymbol(libID, code, latlngs);
-            }
+            // for (var i = 0; i < num; i++) {
+            //     var latlngs = [new L.latLng(map.getCenter().lat + (2 * e * Math.random() - e), map.getCenter().lng + (2 * e * Math.random() - e))];
+            //     plottingLayer.createSymbol(libID, code, latlngs);
+            // }
+
+            var features = [];
+            var options = {};
+
+            var params = new SuperMap.GetSymbolInfoParameters({
+                libID: 421,
+                code: 2
+            });
+            L.supermap.symbolInfoService(serverUrl).getSymbolInfo(params, function (serviceResult) {
+
+                for (var i = 0; i < num; ++i) {
+
+                    options.symbolData = SuperMap.Plot.PlottingUtil.cloneObject(serviceResult.result);
+                    options.serverUrl = serverUrl;
+
+                    // options.specialEffects = [new SuperMap.Plot.ScanRadar({})];
+                    // options.specialEffects.push(new SuperMap.Plot.SectorDetectionRange({}));
+
+                    // options.specialEffects = [new SuperMap.Plot.Boom({})];
+                    // options.specialEffects = [new SuperMap.Plot.Destroy({})];
+                    
+                    var associatedUuid = '';
+                    if(plottingLayer.features.length != 0){
+                        associatedUuid = plottingLayer.features[0].uuid;
+                    }
+                    // options.specialEffects = [new SuperMap.Plot.CommunicationLink({receiverUuid: associatedUuid})];
+                    // options.specialEffects = [new SuperMap.Plot.Aim({aimUuid: associatedUuid})];
+
+
+                    var coordinates = [map.getCenter().lat + (2 * e * Math.random() - e), map.getCenter().lng + (2 * e * Math.random() - e)];
+                    // var dotSymbol = L.supermap.plotting.PlottingObject.createSymbol(libID, code, L.latLng(coordinates[0], coordinates[1]), options, null, null);
+
+                    plottingObject = L.supermap.plotting.PlottingObject.createSymbol(libID, code, L.latLng(coordinates[0], coordinates[1]), options, null, null);
+                    features.push(plottingObject);
+                }
+
+
+                // if (typeof callback === "function") {
+                //     callback({ feature: plottingObject });
+                // }
+                plottingLayer.addFeatures(features);
+            }, this);
 
         }
         function createAirPlane() {
@@ -353,7 +396,7 @@
             }
         }
         function drawGraphics() {
-            plottingLayer.removeAllFeatures();
+            // plottingLayer.removeAllFeatures();
             if (currentSymbolType === resources.option_symbol) {
                 this.createRoomNumber();
             } else if (currentSymbolType === resources.option_model) {

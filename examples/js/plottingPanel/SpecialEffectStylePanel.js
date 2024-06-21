@@ -1,7 +1,7 @@
-
 L.supermap.plotting.initSpecialEffectStylePanel = function (div, specialEffectManager) {
     specialEffectManager.on(SuperMap.Plot.Event.specialeffectselected, function (event) {
         selectedSpecialEffectUuid = event.specialEffect.uuid;
+        selectedSpecialEffect = event.specialEffect;
         showSpecialEffectProperty(event.specialEffect);
     });
     specialEffectManager.on(SuperMap.Plot.Event.specialeffectunselected, function (event) {
@@ -13,12 +13,12 @@ L.supermap.plotting.initSpecialEffectStylePanel = function (div, specialEffectMa
             var _this = this;
             new Promise(function (resolve, reject) {
                 if (updated.length !== 0) {
-                    updateSelectSpecialEffect(updated[0], specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid));
+                    updateSelectSpecialEffect(updated[0], selectedSpecialEffect);
                 }
-                $('#pg_specialeffect').propertygrid('loadData', collectionSpecialEffectPropertyGridRows(specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid)));
+                $('#pg_specialeffect').propertygrid('loadData', collectionSpecialEffectPropertyGridRows(selectedSpecialEffect));
                 return;
             }).then(function (selectFeatures) {
-                $('#pg_specialeffect').propertygrid('loadData', specialEffectManager.getSpecialEffectByUuid(selectedSpecialEffectUuid));
+                $('#pg_specialeffect').propertygrid('loadData', selectedSpecialEffect);
                 return;
 
             })
@@ -120,7 +120,7 @@ function updateSelectSpecialEffect(updated, specialEffect) {
             break;
         case boomPropsName[0]:
             transInfo.functionName = "setLoop";
-            transInfo.undoParams = [specialEffect._loop];
+            transInfo.undoParams = [specialEffect.loop];
             transInfo.redoParams = [fromCheckboxValue(updated.value)];
             specialEffect.setLoop(fromCheckboxValue(updated.value));
             break;
@@ -403,7 +403,7 @@ L.supermap.plotting.initSpecialEffectTreePanel = function (divId, specialEffectM
     updateSpecialEffectTree();
 }
 
-var currentSelectedSpecialEffectUuid = null;
+var currentSelectedSpecialEffectUuid = null, curSelectEffect = null;
 function updateSpecialEffectTree() {
 
     function beforeClickSpecialEffectTreeNode(treeId, treeNode) {
@@ -413,15 +413,32 @@ function updateSpecialEffectTree() {
             var specialEffectManager = L.supermap.plotting.getControl().getSpecialEffectManager();
             var effect = specialEffectManager.getSpecialEffectByUuid(currentSelectedSpecialEffectUuid);
 
+            var plottingLayers = window.map.getPlottingLayers();
+            for (var i = 0; i < plottingLayers.length; i++) {
+                var features = plottingLayers[i].features;
+                for (var j = 0; j < features.length; j++) {
+                    var specialEffects = features[j].getSpecialEffects();
+                    for(var k = 0; k < specialEffects.length; k++){
+                        if(specialEffects[k].uuid == currentSelectedSpecialEffectUuid){
+                            effect = specialEffects[k];
+                        }
+                    }
+                }
+            }
+
             specialEffectManager.fire(SuperMap.Plot.Event.specialeffectselected, { specialEffect: effect });
+            if(curSelectEffect){
+                specialEffectManager.unSelectedSpecialEffect(curSelectEffect);
+            }
             specialEffectManager.selectedSpecialEffect(effect);
+
             curSelectEffect = effect;
         } else {
             var tree = $.fn.zTree.getZTreeObj("specialEffecttree");
             if (currentSelectedSpecialEffectUuid) {
                 var treeData = tree.transformToArray(tree.getNodes());
                 var node;
-                for (let i in treeData) {
+                for (let i = 0; i< treeData.length; i++) {
                     if (treeData[i].uuid && treeData[i].uuid == currentSelectedSpecialEffectUuid) {
                         node = treeData[i]
                     }
@@ -430,7 +447,7 @@ function updateSpecialEffectTree() {
                     tree.selectNode(node);
                     clearTimeout(timer);
                 }, 5);
-            }else{
+            } else {
                 tree.cancelSelectedNode();
             }
 
@@ -470,6 +487,18 @@ function getSpecialEffectTreeData() {
     var childid = 5000;
     var specialEffectList = L.supermap.plotting.getControl().getSpecialEffectManager().getSpecialEffectList();
 
+    var plottingLayers = window.map.getPlottingLayers();
+    for (var i = 0; i < plottingLayers.length; i++) {
+        var features = plottingLayers[i].features;
+        for (var j = 0; j < features.length; j++) {
+            var specialEffects = features[j].getSpecialEffects();
+            if (specialEffects.length != 0) {
+
+                specialEffectList = specialEffectList.concat(specialEffects);
+            }
+        }
+    }
+
     var cellRootNode = new Object();
     cellRootNode.id = rootid - 1;
     cellRootNode.pId = 0;
@@ -488,41 +517,21 @@ function getSpecialEffectTreeData() {
         var name = "";
         switch (specialEffect.getType()) {
             case SuperMap.Plot.SpecialEffectType.COMMUNICATIONLINK:
-                // if (specialEffect.senderUuid && specialEffect.receiverUuid) {
-                //     features.push(map.getFeatureByUuid(specialEffect.senderUuid));
-                //     features.push(map.getFeatureByUuid(specialEffect.receiverUuid));
-                // }
                 name = resources.option_communication;
                 break;
             case SuperMap.Plot.SpecialEffectType.AIM:
-                // if (specialEffect.viewUuid && specialEffect.aimUuid) {
-                //     features.push(map.getFeatureByUuid(specialEffect.viewUuid));
-                //     features.push(map.getFeatureByUuid(specialEffect.aimUuid));
-                // }
                 name = resources.text_aim;
                 break;
             case SuperMap.Plot.SpecialEffectType.BOOM:
-                // if (specialEffect.associatedUuid) {
-                //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
-                // }
                 name = resources.text_boom;
                 break;
             case SuperMap.Plot.SpecialEffectType.DESTROY:
-                // if (specialEffect.associatedUuid) {
-                //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
-                // }
                 name = resources.text_destroy;
                 break;
             case SuperMap.Plot.SpecialEffectType.SCANRADAR:
-                // if (specialEffect.associatedUuid) {
-                //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
-                // }
                 name = resources.text_scanRadar;
                 break;
             case SuperMap.Plot.SpecialEffectType.SECTORDETECTIONRANGE:
-                // if (specialEffect.associatedUuid) {
-                //     features.push(map.getFeatureByUuid(specialEffect.associatedUuid));
-                // }
                 name = resources.text_sectorDetectionRange;
                 break;
 
