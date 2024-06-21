@@ -959,7 +959,7 @@ export class WebMap extends mapboxgl.Evented {
    * 1) 无数据驱动时；
    * 2) 只有一个颜色数据驱动，且性线数据驱动时
    * 以上两种情况图例中需要单独的显示符号项
-   * @returns
+   * @returns {boolean} 是否显示图例单项
    */
   _isShowLegendSingleItem(dataKeys, isLinearColor) {
     return dataKeys.length === 0 || (dataKeys.length === 1 && dataKeys[0] === 'color' && isLinearColor);
@@ -975,7 +975,7 @@ export class WebMap extends mapboxgl.Evented {
    * 目前webSymbol为false， 基本符号为true， 雪碧图从json中获取sdf的状态
    * @param id
    * @param spriteJson
-   * @returns
+   * @returns {boolean} sdf状态
    */
   _getSymbolSDFStatus(id, spriteJson) {
     if (this._isWebsymbolById(id)) {
