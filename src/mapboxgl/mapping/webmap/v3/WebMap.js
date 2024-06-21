@@ -966,7 +966,7 @@ export class WebMap extends mapboxgl.Evented {
 
   _isWebsymbolById(id){
     const a = ['line-', 'polygon-', 'point-'];
-    return a.some((el) => id?.startsWith(el));
+    return a.some((el) => id && id.startsWith(el));
   }
 
   /**
@@ -983,17 +983,14 @@ export class WebMap extends mapboxgl.Evented {
     if (this._getIconById(id)) {
       return true;
     }
-    return spriteJson?.[id]?.sdf || false;
+    return spriteJson[id] && spriteJson[id].sdf || false;
   }
 
   _isAllPicturePoint(symbolsContent, spriteJson) {
-      if (!symbolsContent) {
-        return false;
-      }
       if (symbolsContent.type === 'simple') {
-        return !this._getSymbolSDFStatus(symbolsContent?.value.symbolId, spriteJson);
+        return !this._getSymbolSDFStatus(symbolsContent.value.symbolId, spriteJson);
       } else {
-          return [...symbolsContent?.values, { value: symbolsContent?.defaultValue }]
+          return [...symbolsContent.values, { value: symbolsContent.defaultValue }]
               .filter((v) => v.value.symbolId)
               .every((v) => {
                   return !this._getSymbolSDFStatus(v.value.symbolId, spriteJson);
@@ -1002,15 +999,15 @@ export class WebMap extends mapboxgl.Evented {
   }
 
   _isAllPictureSymbolSaved(symbolType, symbolsContent, spriteJson) {
+    if (!symbolsContent) {
+      return false;
+    }
     if (symbolType === 'point') {
       return this._isAllPicturePoint(symbolsContent, spriteJson);
     }
-    if (!symbolsContent || !symbolsContent.value) {
-      return false;
-    }
     const currentType = symbolsContent.type;
     if (currentType === 'simple') {
-      return !!this._getImageIdFromValue(symbolsContent?.value?.style, SymbolType[symbolType]).length;
+      return !!this._getImageIdFromValue(symbolsContent.value.style, SymbolType[symbolType]).length;
     }
     const styles = (symbolsContent.values).map((v) => v.value).concat(symbolsContent.defaultValue);
     return styles.every((v) => {
@@ -1059,16 +1056,24 @@ export class WebMap extends mapboxgl.Evented {
     const simpleStyle = this._getLegendSimpleStyle(styleSetting, keys);
     const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle });
     let dataKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type !== 'simple');
-    // isReplaceLineColor: 3D线,动画线:使用符号替换线颜色，图例中将不再显示线颜色
-    const isReplaceLineColor = styleSetting.textureBlend?.value === 'replace';
-    const hasTexture = !!styleSetting.symbolsContent?.value?.symbolId;
-    // isAllPic: 如果符号为图片，图例中将不再显示颜色
-    const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[layer.type];
-    const isAllPic = this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
-    if((isReplaceLineColor && hasTexture) || isAllPic) {
-      dataKeys = dataKeys.filter((key) => key !== 'color')
+    // 3D线,动画线
+    if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE) {
+      // isReplaceLineColor: 3D线,动画线:使用符号替换线颜色，图例中将不再显示线颜色
+      const isReplaceLineColor = styleSetting.textureBlend.value === 'replace';
+      const hasTexture = !!(styleSetting.symbolsContent.value && styleSetting.symbolsContent.value.symbolId);
+      if (isReplaceLineColor && hasTexture) {
+        dataKeys = dataKeys.filter((key) => key !== 'color')
+      }
+    } else {
+      // 其他
+      // isAllPic: 如果符号为图片，图例中将不再显示颜色
+      const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[layer.type];
+      const isAllPic = this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
+      if(isAllPic) {
+        dataKeys = dataKeys.filter((key) => key !== 'color')
+      }
     }
-    const isLinearColor = styleSetting.color?.interpolateInfo?.type === 'linear';
+    const isLinearColor = styleSetting.color.interpolateInfo && styleSetting.color.interpolateInfo.type === 'linear';
     const isShowSingleItem = this._isShowLegendSingleItem(dataKeys, isLinearColor);
     const resultList = [];
     if (isShowSingleItem) {
@@ -1362,11 +1367,11 @@ export class WebMap extends mapboxgl.Evented {
     const styles = Array.isArray(style) ? style : [style];
     const imageKey = imageKeys[type];
     if (type === 'symbol') {
-        const imageIds = styles.map((item) => item.layout?.[imageKey]);
+        const imageIds = styles.map((item) => item.layout && item.layout[imageKey]);
         return imageIds.filter((id) => id);
     }
     // 'line' 'fill'  'fill-extrusion'
-    const imageIds = styles.map((item) => item.paint?.[imageKey]);
+    const imageIds = styles.map((item) => item.paint && item.paint[imageKey]);
     return imageIds.filter((id) => id);
 }
 
