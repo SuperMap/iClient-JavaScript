@@ -117,6 +117,23 @@ const SymbolType = {
   polygon: 'polygon'
 };
 
+const MAP_LAYER_TYPE_2_SYMBOL_TYPE = {
+  circle: 'point',
+  line: 'line',
+  symbol: 'point',
+  fill: 'polygon',
+  'fill-extrusion': 'polygon',
+  heatmap: 'point',
+  // background: 'background',//无此符号类型
+  // L7
+  radar: 'point',
+  'point-extrusion': 'point',
+  'heatmap-extrusion': 'point',
+  'line-extrusion': 'line',
+  'line-curve': 'line',
+  'line-curve-extrusion': 'line'
+};
+
 const LEGEND_LINE_WIDTH = 100;
 const LINE_WIDTH_KEY = 'line-width';
 
@@ -362,6 +379,7 @@ export class WebMap extends mapboxgl.Evented {
       this._sendMapToUser();
     } catch (error) {
       this.fire('getlayersfailed', { error, map: this.map });
+      console.error(error);
     }
   }
 
@@ -936,6 +954,70 @@ export class WebMap extends mapboxgl.Evented {
     }
   }
 
+  /**
+   * 1) 无数据驱动时；
+   * 2) 只有一个颜色数据驱动，且性线数据驱动时
+   * 以上两种情况图例中需要单独的显示符号项
+   * @returns
+   */
+  _isShowLegendSingleItem(dataKeys, isLinearColor) {
+    return dataKeys.length === 0 || (dataKeys.length === 1 && dataKeys[0] === 'color' && isLinearColor);
+  }
+
+  _isWebsymbolById(id){
+    const a = ['line-', 'polygon-', 'point-'];
+    return a.some((el) => id?.startsWith(el));
+  }
+
+  /**
+   * 获取icon-image 的sdf状态
+   * 目前webSymbol为false， 基本符号为true， 雪碧图从json中获取sdf的状态
+   * @param id
+   * @param spriteJson
+   * @returns
+   */
+  _getSymbolSDFStatus(id, spriteJson) {
+    if (this._isWebsymbolById(id)) {
+      return false;
+    }
+    if (this._getIconById(id)) {
+      return true;
+    }
+    return spriteJson?.[id]?.sdf || false;
+  }
+
+  _isAllPicturePoint(symbolsContent, spriteJson) {
+      if (!symbolsContent) {
+        return false;
+      }
+      if (symbolsContent.type === 'simple') {
+        return !this._getSymbolSDFStatus(symbolsContent?.value.symbolId, spriteJson);
+      } else {
+          return [...symbolsContent?.values, { value: symbolsContent?.defaultValue }]
+              .filter((v) => v.value.symbolId)
+              .every((v) => {
+                  return !this._getSymbolSDFStatus(v.value.symbolId, spriteJson);
+              });
+      }
+  }
+
+  _isAllPictureSymbolSaved(symbolType, symbolsContent, spriteJson) {
+    if (symbolType === 'point') {
+      return this._isAllPicturePoint(symbolsContent, spriteJson);
+    }
+    if (!symbolsContent || !symbolsContent.value) {
+      return false;
+    }
+    const currentType = symbolsContent.type;
+    if (currentType === 'simple') {
+      return !!this._getImageIdFromValue(symbolsContent?.value?.style, SymbolType[symbolType]).length;
+    }
+    const styles = (symbolsContent.values).map((v) => v.value).concat(symbolsContent.defaultValue);
+    return styles.every((v) => {
+      return !!this._getImageIdFromValue(v.style, SymbolType[symbolType]).length;
+    });
+  }
+
   _createLayerLegendList(layer, styleSetting) {
     const layerId = layer.id;
     const layerTitle = layer.title;
@@ -976,25 +1058,20 @@ export class WebMap extends mapboxgl.Evented {
     this._transStyleSetting(renderType, styleSetting);
     const simpleStyle = this._getLegendSimpleStyle(styleSetting, keys);
     const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle });
-    const dataKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type !== 'simple');
-    if (!dataKeys.length) {
-      return [
-        {
-          ...commonStyleOptions,
-          styleGroup: [
-            {
-              fieldValue: layerTitle || layerId,
-              style: {
-                ...simpleResData,
-                shape
-              }
-            }
-          ]
-        }
-      ];
+    let dataKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type !== 'simple');
+    // isReplaceLineColor: 3D线,动画线:使用符号替换线颜色，图例中将不再显示线颜色
+    const isReplaceLineColor = styleSetting.textureBlend?.value === 'replace';
+    const hasTexture = !!styleSetting.symbolsContent?.value?.symbolId;
+    // isAllPic: 如果符号为图片，图例中将不再显示颜色
+    const symbolTypes = MAP_LAYER_TYPE_2_SYMBOL_TYPE[layer.type];
+    const isAllPic = this._isAllPictureSymbolSaved(symbolTypes, styleSetting.symbolsContent, this._spriteDatas);
+    if((isReplaceLineColor && hasTexture) || isAllPic) {
+      dataKeys = dataKeys.filter((key) => key !== 'color')
     }
+    const isLinearColor = styleSetting.color?.interpolateInfo?.type === 'linear';
+    const isShowSingleItem = this._isShowLegendSingleItem(dataKeys, isLinearColor);
     const resultList = [];
-    if (!dataKeys.includes('symbolsContent')) {
+    if (isShowSingleItem) {
       resultList.push({
         ...commonStyleOptions,
         styleGroup: [
@@ -1274,6 +1351,24 @@ export class WebMap extends mapboxgl.Evented {
     const BaseIcons = [{ id: 'circle', name: 'circle' }];
     return BaseIcons.find((icon) => icon.id === id);
   }
+
+  _getImageIdFromValue(style, type){
+    const imageKeys = {
+        symbol: 'icon-image',
+        line: 'line-pattern',
+        fill: 'fill-pattern',
+        'fill-extrusion': 'fill-pattern'
+    };
+    const styles = Array.isArray(style) ? style : [style];
+    const imageKey = imageKeys[type];
+    if (type === 'symbol') {
+        const imageIds = styles.map((item) => item.layout?.[imageKey]);
+        return imageIds.filter((id) => id);
+    }
+    // 'line' 'fill'  'fill-extrusion'
+    const imageIds = styles.map((item) => item.paint?.[imageKey]);
+    return imageIds.filter((id) => id);
+}
 
   _getImageIdByLegendType(symbol, legendType) {
     const symbolTypes = {

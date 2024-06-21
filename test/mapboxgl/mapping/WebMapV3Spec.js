@@ -508,7 +508,7 @@ describe('mapboxgl-webmap3.0', () => {
       const appreciableLayers = webmapInstance.getAppreciableLayers();
       const layerCatalogs = webmapInstance.getLayerCatalog();
       expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
-      expect(webmapInstance.getLegendInfo().length).toBe(11);
+      expect(webmapInstance.getLegendInfo().length).toBe(8);
       expect(mapOptions.transformRequest.calls.count()).toBeGreaterThan(0);
       delete mapboxgl.Map.prototype.getCRS;
       delete mapboxgl.CRS;
@@ -618,5 +618,54 @@ describe('mapboxgl-webmap3.0', () => {
     transformed = mapstudioWebmap.map.options.transformRequest(mockTileUrl, 'Tile');
     expect(transformed.credentials).toBeUndefined();
     done();
+  });
+
+  it('filter legend', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_L7Layers2));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers2));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapboxgl.CRS = function () {};
+    mapboxgl.CRS.set = function () {};
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      const webmapInstance = mapstudioWebmap._getWebMapInstance();
+      expect(webmapInstance.getLegendInfo().length).toBe(4);
+      delete mapboxgl.Map.prototype.getCRS;
+      delete mapboxgl.CRS;
+      done();
+    });
   });
 });
