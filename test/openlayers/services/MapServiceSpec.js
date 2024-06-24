@@ -1,7 +1,7 @@
-import { mapService } from '../../../src/leaflet/services/MapService';
+import { MapService } from '../../../src/openlayers/services/MapService';
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
 var url = GlobeParameter.ChinaURL;
-describe('leaflet_MapService', () => {
+describe('openlayers_MapService', () => {
   var originalTimeout;
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -15,7 +15,7 @@ describe('leaflet_MapService', () => {
     var options = {
       projection: 'EPSG:3857'
     };
-    var service = mapService(url, options);
+    var service = new MapService(url, options);
     expect(service.options.projection).toBe('EPSG:3857');
     expect(service.url).toEqual(url);
   });
@@ -29,7 +29,8 @@ describe('leaflet_MapService', () => {
         )
       );
     });
-    mapService(url).getMapInfo((serviceResult) => {
+    const mapService = new MapService(url);
+    mapService.getMapInfo((serviceResult) => {
       try {
         expect(serviceResult).not.toBeNull();
         expect(serviceResult.type).toBe('processCompleted');
@@ -54,8 +55,8 @@ describe('leaflet_MapService', () => {
         )
       );
     });
-    mapService(url)
-      .getMapInfo()
+    const mapService = new MapService(url);
+    mapService.getMapInfo()
       .then((serviceResult) => {
         try {
           expect(serviceResult).not.toBeNull();
@@ -72,49 +73,43 @@ describe('leaflet_MapService', () => {
       });
   });
   it('getWKT promise', (done) => {
-    const wkt = `GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]]`
+    const wkt = `GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]]`;
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
       expect(testUrl).toBe(`${url}/prjCoordSys.wkt`);
-      return Promise.resolve(
-        new Response(wkt)
-      );
+      return Promise.resolve(new Response(wkt));
     });
-    mapService(url)
-      .getWKT()
-      .then((serviceResult) => {
-        try {
-          expect(serviceResult.result.data).toEqual(wkt)
-          expect(serviceResult.options.method).toBe('GET');
-          done();
-        } catch (exception) {
-          expect(false).toBeTruthy();
-          console.log("getWKT案例失败：" + exception.name + ':' + exception.message);
-          mapService.destroy();
-          done();
-        }
-      });
+    const mapService = new MapService(url);
+    mapService.getWKT().then((serviceResult) => {
+      try {
+        expect(serviceResult.result.data).toEqual(wkt);
+        expect(serviceResult.options.method).toBe('GET');
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('getWKT案例失败：' + exception.name + ':' + exception.message);
+        mapService.destroy();
+        done();
+      }
+    });
   });
   it('getWKT customQueryParam', (done) => {
-    const wkt = `GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]]`
+    const wkt = `GEOGCS["GCS_China_2000",DATUM["D_China_2000",SPHEROID["CGCS2000",6378137.0,298.257222101,AUTHORITY["EPSG","7044"]]],PRIMEM["Greenwich",0.0,AUTHORITY["EPSG","8901"]],UNIT["DEGREE",0.017453292519943295],AUTHORITY["EPSG","4490"]]`;
     spyOn(FetchRequest, 'get').and.callFake((testUrl) => {
       expect(testUrl).toBe(`${url}/prjCoordSys.wkt?token=111`);
-      return Promise.resolve(
-        new Response(wkt)
-      );
+      return Promise.resolve(new Response(wkt));
     });
-    mapService(`${url}?token=111`)
-      .getWKT()
-      .then((serviceResult) => {
-        try {
-          expect(serviceResult.result.data).toEqual(wkt)
-          expect(serviceResult.options.method).toBe('GET');
-          done();
-        } catch (exception) {
-          expect(false).toBeTruthy();
-          console.log("getWKT案例失败：" + exception.name + ':' + exception.message);
-          mapService.destroy();
-          done();
-        }
-      });
+    const mapService = new MapService(`${url}?token=111`);
+    mapService.getWKT().then((serviceResult) => {
+      try {
+        expect(serviceResult.result.data).toEqual(wkt);
+        expect(serviceResult.options.method).toBe('GET');
+        done();
+      } catch (exception) {
+        expect(false).toBeTruthy();
+        console.log('getWKT案例失败：' + exception.name + ':' + exception.message);
+        mapService.destroy();
+        done();
+      }
+    });
   });
 });
