@@ -58,6 +58,74 @@ describe('GeometryAnalysis', () => {
     expect(result).toBeTruthy();
   });
 
+  it('hasIntersection', () => {
+    const poly1 = {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              69.05078125000003,
+              64.94452997268957
+            ],
+            [
+              69.05078125000003,
+              52.72637398699237
+            ],
+            [
+              90.14453124999983,
+              52.72637398699237
+            ],
+            [
+              90.14453124999983,
+              64.94452997268957
+            ],
+            [
+              69.05078125000003,
+              64.94452997268957
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "id": 0
+    };
+    const poly2 =  {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              80.87563161140378,
+              57.45030784568206
+            ],
+            [
+              80.87563161140378,
+              43.6194265865916
+            ],
+            [
+              110.40688161140469,
+              43.6194265865916
+            ],
+            [
+              110.40688161140469,
+              57.45030784568206
+            ],
+            [
+              80.87563161140378,
+              57.45030784568206
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    };
+    const result = instance.hasIntersection(poly1, poly2);
+    expect(result).toBeTruthy();
+  });
+
 
   it('isIdentical multilinestring', () => {
     const line1 = {

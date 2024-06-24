@@ -72,6 +72,21 @@ export class GeometryAnalysis extends Events {
     const result = this.module._UGCWasm_Geometrist_IsIdentical(ugFeature1, ugFeature2, tolerance);
     return result === 1;
   }
+   /**
+   * @function GeometryAnalysis.prototype.hasIntersection
+   * @version 11.2.0
+   * @description 几何对象是否相交分析。
+   * @param {GeoJSONFeature} feature - geojson 要素。
+   * @param {GeoJSONFeature} compareFeature - geojson 对比要素。
+   * @param {number} [tolerance=1e-6] - 容限。
+   * @returns {boolean} 要素是否相交。
+   */
+  hasIntersection(feature, compareFeature, tolerance = 1e-6) {
+    const ugFeature1 = geojson2UGGeometry(feature);
+    const ugFeature2 = geojson2UGGeometry(compareFeature);
+    const result = this.module._UGCWasm_Geometrist_HasIntersection(ugFeature1, ugFeature2, tolerance);
+    return result === 1;
+  }
   /**
      * @function GeometryAnalysis.prototype.hasTouch
      * @version 11.2.0
