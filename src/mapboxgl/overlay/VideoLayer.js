@@ -34,6 +34,21 @@
   * @param {Array} [options.clipRegion] -裁剪范围
   * @extends {mapboxgl.Evented}
   * @usage
+  * ```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script type="text/javascript" src="https://iclient.supermap.io/web/libs/opencv/3.4/opencv.js"></script>
+  * <script>
+  *   new {namespace}.VideoLayer(options);
+  * 
+  * </script>
+  *
+  *  // ES6 Import
+  * import { VideoLayer } from "{npm}";
+  * // 将上面 opencv 源码拷贝到本地路径引用
+  * options.opencv = "your opencv path";
+  * new VideoLayer(options);
+  * ```
   */
  export class VideoLayer extends mapboxgl.Evented {
  

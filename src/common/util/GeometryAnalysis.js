@@ -1,5 +1,6 @@
 import { geojson2UGGeometry, geojsonCoordsToPoint2Ds, ugGeometry2Geojson, getJSArrayFromUGDoubleArray, geojsonCoords2UGDoubleArray } from '../wasm/util';
 import { Events } from '../commontypes/Events';
+import * as defaultModule from './UGCWasmAll';
 
 /**
  * @class GeometryAnalysis
@@ -7,12 +8,29 @@ import { Events } from '../commontypes/Events';
  * @classdesc 几何分析。
  * @param {Object} [Module] - 几何分析模块。
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script type="text/javascript" src="https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js"></script>
+ * <script>
+ *   new {namespace}.GeometryAnalysis(Module);
+ *   
+ * </script>
+ *
+ * // ES6 Import
+ * import { GeometryAnalysis } from "{npm}";
+ *
+ * new GeometryAnalysis();
+ * ```
  */
 export class GeometryAnalysis extends Events {
   constructor(Module) {
     super();
     if (Module) {
       window.Module = Module;
+    }
+    if (!window.Module) {
+      window.Module = defaultModule;
     }
     this.module = window.Module;
     this.addEventType('loaded');

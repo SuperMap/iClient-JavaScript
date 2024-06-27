@@ -77,6 +77,21 @@ const MAP_EVENTS = [
  * @param {string} [options.loop=true] - 视频是否循环播放
  * @extends {mapboxgl.Evented}
  * @usage
+ *```
+  * // 浏览器
+  * <script type="text/javascript" src="{cdn}"></script>
+  * <script type="text/javascript" src="https://iclient.supermap.io/web/libs/opencv/3.4/opencv.js"></script>
+  * <script>
+  *   new {namespace}.VideoMap(options);
+  * 
+  * </script>
+  *
+  *  // ES6 Import
+  * import { VideoMap } from "{npm}";
+  * // 将上面 opencv 源码拷贝到本地路径引用
+  * options.opencv = "your opencv path";
+  * new VideoMap(options);
+  * ```
  */
 
 export class VideoMap extends mapboxgl.Evented {
