@@ -99,7 +99,7 @@
 	}
 
 	function drawGraphics() {
-		var count = 5;
+		var count = 2000;
 		var randomCode = [9, 80101, 80102, 80103, 80104, 80105, 80106, 80107, 80108, 80109];
 		var randomDir = [[0, 1], [0, -1], [-1, 0], [1, 0], [1, 1], [-1, -1], [1, -1], [-1, 1]];
 		var randomSymbolData = [];
@@ -124,24 +124,23 @@
 							serverUrl: serverUrl,
 							symbolData: randomSymbolData[randomIndex],
 							symbolSize:  new SuperMap.Size(20, 20),
-							// symbolTexts: [new SuperMap.Plot.SymbolText("速度_米 每秒:500", SuperMap.Plot.AnnoPosition.ANCHOR, {
-							// 	fontSize: 15,
-							// 	fillSymbolID: 0,
-							// 	fillColor: "#00ff00",
-							// 	fillOpacity: 0.8,
-							// 	color: "#ffffff"
+							symbolTexts: [new SuperMap.Plot.SymbolText("速度_米 每秒:500", SuperMap.Plot.AnnoPosition.ANCHOR, {
+								fontSize: 15,
+								fillSymbolID: 0,
+								fillColor: "#00ff00",
+								fillOpacity: 0.8,
+								color: "#ffffff"
 
-							// }, {
-							// 	border: true,
-							// 	offsetX: 20,
-							// 	offsetY: -30,
-							// 	paddingX: 5,
-							// 	paddingY: 7,
-							// 	lineStyle: {
-							// 		color: "#00ff00"
-							// 	}
-							// })],
-							specialEffects: [new SuperMap.Plot.ScanRadar({})],
+							}, {
+								border: true,
+								offsetX: 20,
+								offsetY: -30,
+								paddingX: 5,
+								paddingY: 7,
+								lineStyle: {
+									color: "#00ff00"
+								}
+							})],
 								// bloodVolumes:[ new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.TOP, {remainingVolumeColor: "#ff0000", consumeVolumeColor:"#ffffff"}), new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.BOTTOM),
 								// 	new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.LEFT, null, {offsetX: -20, width: 80, height: 15}), new SuperMap.Plot.BloodVolume(0.5, SuperMap.Plot.Position.RIGHT, null, {offsetX:20})
 								// ],

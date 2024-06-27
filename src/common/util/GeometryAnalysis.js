@@ -1,5 +1,6 @@
 import { geojson2UGGeometry, geojsonCoordsToPoint2Ds, ugGeometry2Geojson, getJSArrayFromUGDoubleArray, geojsonCoords2UGDoubleArray } from '../wasm/util';
 import { Events } from '../commontypes/Events';
+import * as defaultModule from './UGCWasmAll';
 
 /**
  * @class GeometryAnalysis
@@ -7,12 +8,29 @@ import { Events } from '../commontypes/Events';
  * @classdesc 几何分析。
  * @param {Object} [Module] - 几何分析模块。
  * @usage
+ * ```
+ * // 浏览器
+ * <script type="text/javascript" src="{cdn}"></script>
+ * <script type="text/javascript" src="https://iclient.supermap.io/web/libs/ugcwasm/1.0.0/UGCWasmAll.js"></script>
+ * <script>
+ *   new {namespace}.GeometryAnalysis(Module);
+ *   
+ * </script>
+ *
+ * // ES6 Import
+ * import { GeometryAnalysis } from "{npm}";
+ *
+ * new GeometryAnalysis();
+ * ```
  */
 export class GeometryAnalysis extends Events {
   constructor(Module) {
     super();
     if (Module) {
       window.Module = Module;
+    }
+    if (!window.Module) {
+      window.Module = defaultModule;
     }
     this.module = window.Module;
     this.addEventType('loaded');
@@ -70,6 +88,21 @@ export class GeometryAnalysis extends Events {
     const ugFeature1 = geojson2UGGeometry(feature);
     const ugFeature2 = geojson2UGGeometry(compareFeature);
     const result = this.module._UGCWasm_Geometrist_IsIdentical(ugFeature1, ugFeature2, tolerance);
+    return result === 1;
+  }
+   /**
+   * @function GeometryAnalysis.prototype.hasIntersection
+   * @version 11.2.0
+   * @description 几何对象是否相交分析。
+   * @param {GeoJSONFeature} feature - geojson 要素。
+   * @param {GeoJSONFeature} compareFeature - geojson 对比要素。
+   * @param {number} [tolerance=1e-6] - 容限。
+   * @returns {boolean} 要素是否相交。
+   */
+  hasIntersection(feature, compareFeature, tolerance = 1e-6) {
+    const ugFeature1 = geojson2UGGeometry(feature);
+    const ugFeature2 = geojson2UGGeometry(compareFeature);
+    const result = this.module._UGCWasm_Geometrist_HasIntersection(ugFeature1, ugFeature2, tolerance);
     return result === 1;
   }
   /**

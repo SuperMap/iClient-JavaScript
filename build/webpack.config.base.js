@@ -89,7 +89,8 @@ module.exports = {
         '@tensorflow/tfjs': 'function(){try{return tf}catch(e){return {}}}()',
         'video.js': 'function(){try{return videojs}catch(e){return {}}}()',
         'flv.js': 'function(){try{return flvjs}catch(e){return {}}}()',
-        'videojs-flvjs-es6': 'function(){try{return;}catch(e){return {}}}()'
+        'videojs-flvjs-es6': 'function(){try{return;}catch(e){return {}}}()',
+        './UGCWasmAll': 'function(){try{return Module}catch(e){return {}}}()'
     },
 
     module: {
