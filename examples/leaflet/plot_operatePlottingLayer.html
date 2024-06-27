@@ -173,7 +173,7 @@
 
     function plotSymbol(){
         widgets.alert.clearAlert();
-        if(drawControl.drawingLayer != null){
+        if(plotMapManager.activePlottingLayer && drawControl.drawingLayer != null){
             drawControl.handler.libID = 421;
             drawControl.handler.code = 10100;
             drawControl.handler.serverUrl = serverUrl;

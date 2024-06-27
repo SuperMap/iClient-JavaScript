@@ -176,25 +176,28 @@ function updateSelectFeature(updated, selectfeatures) {
                         if (parseInt(updated.value) === 999) {
                             openDialog(selectfeatures[i]);
                         } else {
-                            if (parseInt(updated.value) == 5) {
-                                selectfeatures[i].setDashLine([0.3, 0.05]);
-                            } else if (parseInt(updated.value) == 6) {
-                                selectfeatures[i].setDashLine([0.23, 0.06]);
+                            if(selectfeatures[i].symbolType != 1){
+                                if (parseInt(updated.value) == 5) {
+                                    selectfeatures[i].setDashLine([0.3, 0.05]);
+                                } else if (parseInt(updated.value) == 6) {
+                                    selectfeatures[i].setDashLine([0.23, 0.06]);
+                                }
+                                else if (parseInt(updated.value) == 7) {
+                                    selectfeatures[i].setDashLine([0.16, 0.05]);
+                                }
+                                else if (parseInt(updated.value) == 8) {
+                                    selectfeatures[i].setDashLine([0.14, 0.032]);
+                                } else if (parseInt(updated.value) == 0) {
+                                    selectfeatures[i].setDashLine([]);
+                                } else if (parseInt(updated.value) == 888) {
+                                    selectfeatures[i].setDashLine([0]);
+                                }
+                                if (selectfeatures[i].style.lineSymbolID == 888) {
+                                    selectfeatures[i].setDashLine([]);
+                                    selectfeatures[i].setStyle({ lineSymbolID: 0 });
+                                }
                             }
-                            else if (parseInt(updated.value) == 7) {
-                                selectfeatures[i].setDashLine([0.16, 0.05]);
-                            }
-                            else if (parseInt(updated.value) == 8) {
-                                selectfeatures[i].setDashLine([0.14, 0.032]);
-                            } else if (parseInt(updated.value) == 0) {
-                                selectfeatures[i].setDashLine([]);
-                            } else if (parseInt(updated.value) == 888) {
-                                selectfeatures[i].setDashLine([0]);
-                            }
-                            if (selectfeatures[i].style.lineSymbolID == 888) {
-                                selectfeatures[i].setDashLine([]);
-                                selectfeatures[i].setStyle({ lineSymbolID: 0 });
-                            }
+                            
                             selectfeatures[i].setStyle({ lineSymbolID: updated.value });
                         }
                         //         this.dashLines = [0.3,0.05];两段虚线
