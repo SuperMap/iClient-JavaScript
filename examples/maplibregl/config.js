@@ -1609,6 +1609,193 @@ var exampleConfig = {
         ]
       }
     }
+  },
+  multiCoordSys: {
+    name: '多坐标系',
+    name_en: 'Multiple CRS',
+    version: '11.2.0',
+    // localIgnore: true,
+    content: {
+        Multi_coordinate_Map: {
+            name: '地图',
+            name_en: 'Map service',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '地图_WGS84',
+                    name_en: 'Map WGS84',
+                    version: '11.2.0',
+                    thumbnail: '01_tiledMapLayer_4326.png',
+                    fileName: '01_tiledMapLayer_4326'
+                },
+                {
+                    name: '地图_China2000',
+                    name_en: 'Map China2000',
+                    localIgnore: true,
+                    version: '11.2.0',
+                    thumbnail: '01_tiledMapLayer.png',
+                    fileName: '01_tiledMapLayer_4490'
+                },
+                {
+                    name: '地图_Beijing54',
+                    name_en: 'Map Beijing54',
+                    version: '11.2.0',
+                    localIgnore: true,
+                    thumbnail: '01_tiledMapLayer.png',
+                    fileName: '01_tiledMapLayer_4214'
+                },
+                {
+                    name: '地图_Xian80',
+                    name_en: 'Map Xian80',
+                    localIgnore: true,
+                    version: '11.2.0',
+                    thumbnail: '01_tiledMapLayer.png',
+                    fileName: '01_tiledMapLayer_4610'
+                },
+                {
+                    name: '绘图控件_WGS84',
+                    name_en: 'Draw control WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'control_drawControl_4326.png',
+                    fileName: 'control_drawControl_4326'
+                },
+                {
+                    name: '矢量瓦片_WGS84',
+                    name_en: 'MVT WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'mvt_4326.png',
+                    fileName: 'mvtVectorTile_4326'
+                },
+                {
+                    name: '矢量瓦片_EPSG2362',
+                    name_en: 'MVT EPSG2362',
+                    version: '11.2.0',
+                    thumbnail: 'mvtvectorlayer_mbstyle_landuse.png',
+                    fileName: 'mvtVectorTile_2362'
+                },
+                {
+                    name: '经纬网_WGS84',
+                    name_en: 'graticule_WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'graticule.png',
+                    fileName: 'graticuleLayer_4326'
+                }
+            ]
+        },
+        Multi_coordinate_cluster: {
+            name: '聚合',
+            name_en: 'Cluster',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '点聚合_WGS84',
+                    name_en: 'Marker Cluster WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'markerCluster_4326.png',
+                    fileName: 'markerCluster_4326'
+                }
+            ]
+        },
+        Multi_coordinate_DeckGL: {
+            name: 'DeckGL',
+            name_en: 'DeckGL',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '路径图_WGS84',
+                    name_en: 'Path-layer WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'deckglLayer_pathLayer_4326.png',
+                    fileName: 'deckglLayer_pathLayer_4326'
+                }
+            ]
+        },
+        Multi_coordinate_ECharts: {
+            name: 'ECharts',
+            name_en: 'ECharts',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '迁徙图_WGS84',
+                    name_en: 'Mock migration WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'echarts_geoline_4326.png',
+                    fileName: 'echarts_geoline_4326'
+                },
+                {
+                    name: '微博签到图_WGS84',
+                    name_en: 'Scatter of Weibo user WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'echarts_scatterWeibo_4326.png',
+                    fileName: 'echarts_scatterWeibo_4326'
+                },
+                {
+                    name: '全国铁路网络图（400万点数据绘制）_WGS84',
+                    name_en: 'Use lines to draw 4 millions Chinese railways WGS84',
+                    localIgnore: true,
+                    version: '11.2.0',
+                    thumbnail: 'echarts_linesDrawMillionsRailwaysNetwork_4326.png',
+                    fileName: 'echarts_linesDrawMillionsRailwaysNetwork_4326'
+                }
+            ]
+        },
+        Multi_coordinate_graphicLayer: {
+            name: '高效率点图层',
+            name_en: 'High efficiency point layer',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '纽约出租车145万上车点_WGS84',
+                    name_en: 'Points of 1.45 million NYC taxis WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'graphicLayer_4326.png',
+                    fileName: 'graphicLayer_4326'
+                }
+            ]
+        },
+        Multi_coordinate_heatMap: {
+            name: '热力图',
+            name_en: 'Heat map',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '地震数据_WGS84',
+                    name_en: 'Earthquake Data WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'heatMapLayer_earthQuake_4326.png',
+                    fileName: 'earthquakeHeatMap'
+                },
+                {
+                    name: '地震数据（Classic）_WGS84',
+                    name_en: 'Earthquake Data WGS84(Classic)',
+                    version: '11.2.0',
+                    thumbnail: 'heatMapLayer_earthQuake_iclient_4326.png',
+                    fileName: 'earthquakeHeatMapIclient'
+                }
+            ]
+        },
+        Multi_coordinate_MapV: {
+            name: 'MapV',
+            name_en: 'MapV',
+            version: '11.2.0',
+            content: [
+                {
+                    name: '通勤图_WGS84',
+                    name_en: 'OD WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'mapvCsvcar_4326.png',
+                    fileName: 'mapvCsvcar_4326'
+                },
+                {
+                    name: '面_WGS84',
+                    name_en: 'Simple polygon WGS84',
+                    version: '11.2.0',
+                    thumbnail: 'mapvLayerPolyon_4326.png',
+                    fileName: 'mapvLayerPolyon_4326'
+                }
+            ]
+        }
+    }
   }
 };
 /**

@@ -58,6 +58,10 @@
       inputCSS(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.css');
       inputScript(libsurl + '/maplibre-gl-js/4.3.2/maplibre-gl.min.js');
     }
+    if (inArray(includes, 'maplibre-gl-enhance')) {
+      inputCSS(libsurl +  '/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.css');
+      inputScript(libsurl +  '/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.js');
+    }
     if (inArray(includes, 'L7')) {
       inputScript(libsurl + '/maplibregl-l7-render/0.0.1/maplibregl-l7-render.js');
     }

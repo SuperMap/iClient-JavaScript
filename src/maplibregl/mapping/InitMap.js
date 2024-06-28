@@ -43,7 +43,7 @@ export function initMap(url, options = {}) {
           reject(new Error('maplibre-gl cannot support plane coordinate system.'));
           return;
         }
-        if (epsgCode !== 3857 && !dynamicProjection) {
+        if (epsgCode !== 3857 && !dynamicProjection && !maplibregl.CRS) {
           reject(new Error(`The EPSG code ${epsgCode} is not yet supported`));
           return;
         }
