@@ -205,6 +205,7 @@ describe('MapExtend mapboxgl', () => {
     map.overlayLayersManager = { l7_layer_1: { id: 'l7_layer_1' }, heatmap_1: { id: 'heatmap_1' } };
     const layers = map.listLayers();
     expect(layers).toEqual(['raster', 'fill-1', 'circle-1', 'l7_layer_1', 'heatmap_1']);
+    map.remove();
     done();
   });
 
@@ -405,6 +406,7 @@ describe('MapExtend mapboxgl', () => {
       map.off('click', 'l7_layer_1', cb);
       map.off('click', cb);
       expect(options.off.calls.count()).toEqual(1);
+      map.remove();
       done();
     });
   });
