@@ -422,7 +422,7 @@ export class KnowledgeGraph {
         this.graphRender.setCenter({ x: this.config.center[0], y: this.config.center[1] });
       }
     };
-    this.graph.on('beforelayout', cb);
+    this.graph.on('afterlayout', cb);
     return graph;
   }
 
