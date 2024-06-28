@@ -62,7 +62,7 @@ export class GraphMap extends maplibregl.Evented {
     const res = await this.knowledgeGraphService.getGraphMapData(graphMapName);
     const result = KnowledgeGraph.dataFromGraphMap(res.data, res.graphMap);
     this.graph = new KnowledgeGraph(options && options.config);
-    this.graph.on('beforelayout', () => {
+    this.graph.on('afterlayout', () => {
       /**
        * @event GraphMap#loaded
        * @description 渲染完成时触发。
