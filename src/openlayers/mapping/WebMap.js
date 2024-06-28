@@ -37,6 +37,7 @@ import * as olGeometry from 'ol/geom';
 import Vector from 'ol/source/Vector';
 import XYZ from 'ol/source/XYZ';
 import WMTS from 'ol/source/WMTS';
+import BingMaps from 'ol/source/BingMaps';
 import TileWMS from 'ol/source/TileWMS';
 import Feature from 'ol/Feature';
 import olRenderFeature from 'ol/render/Feature';
@@ -86,6 +87,7 @@ const dpiConfig = {
  * @param {boolean} [options.excludePortalProxyUrl] - server 传递过来的 URL 是否带有代理。
  * @param {Object} [options.serviceProxy] - SuperMap iPortal 内置代理信息，仅矢量瓦片图层上图才会使用。
  * @param {string} [options.tiandituKey] - 天地图的 key。
+ * @param {string} [options.bingMapsKey] - 必应地图的 key。
  * @param {string} [options.googleMapsAPIKey] - 谷歌底图需要的 key。
  * @param {string} [options.proxy] - 代理地址，当域名不一致，请求会加上代理。避免跨域。
  * @param {string} [options.tileFormat] - 地图瓦片出图格式，png/webp。
@@ -118,6 +120,7 @@ export class WebMap extends Observable {
     this.excludePortalProxyUrl = options.excludePortalProxyUrl || false;
     this.serviceProxy = options.serviceProxy || null;
     this.tiandituKey = options.tiandituKey;
+    this.bingMapsKey = options.bingMapsKey || '';
     this.googleMapsAPIKey = options.googleMapsAPIKey || '';
     this.proxy = options.proxy;
     //计数叠加图层，处理过的数量（成功和失败都会计数）
@@ -953,7 +956,7 @@ export class WebMap extends Observable {
         source = this.createBaiduSource();
         break;
       case 'BING':
-        source = this.createBingSource(layerInfo, layerInfo.projection);
+        source = this.createBingSource();
         break;
       case 'WMS':
         source = this.createWMSSource(layerInfo);
@@ -1292,32 +1295,14 @@ export class WebMap extends Observable {
    * @private
    * @function WebMap.prototype.createBingSource
    * @description 创建bing地图的source。
-   * @returns {ol.source.XYZ} bing地图的source
+   * @returns {ol.source.BingMaps} bing地图的source
    */
-  createBingSource(layerInfo, projection) {
-    let url =
-      'https://dynamic.t0.tiles.ditu.live.com/comp/ch/{quadKey}?it=G,TW,L,LA&mkt=zh-cn&og=109&cstl=w4c&ur=CN&n=z';
-    return new XYZ({
-      wrapX: false,
-      projection: projection,
-      crossOrigin: 'anonymous',
-      tileUrlFunction: function (coordinates) {
-        let /*quadDigits = '', */ [z, x, y] = [...coordinates];
-        y = y > 0 ? y - 1 : -y - 1;
-        let index = '';
-        for (let i = z; i > 0; i--) {
-          let b = 0;
-          let mask = 1 << (i - 1);
-          if ((x & mask) !== 0) {
-            b++;
-          }
-          if ((y & mask) !== 0) {
-            b += 2;
-          }
-          index += b.toString();
-        }
-        return url.replace('{quadKey}', index);
-      }
+  createBingSource() {
+    return new BingMaps({
+      key: this.bingMapsKey,
+      imagerySet: 'RoadOnDemand',
+      culture: 'zh-cn',
+      wrapX: false
     });
   }
 
