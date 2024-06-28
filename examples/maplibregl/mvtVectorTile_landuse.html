@@ -28,10 +28,9 @@
 <body>
   <div id='map'></div>
   <script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
 
     // 方式一：1.调用 maplibregl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
-    maplibregl.supermap.initMap(host + '/iserver/services/map-mvt-landuse2/rest/maps/landuse', {
+    maplibregl.supermap.initMap('https://iserver.supermap.io/iserver/services/map-mvt-landuse2/rest/maps/landuse', {
       type: 'vector-tile',
       mapOptions: {
         zoom: 13
@@ -44,8 +43,7 @@
     // 方法二： 直接用 maplibregl.Map 初始化
     // var map = new maplibregl.Map({
     //   container: 'map', // container id
-    //   style: host +
-    //     '/iserver/services/map-mvt-landuse2/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
+    //   style: 'https://iserver.supermap.io/iserver/services/map-mvt-landuse2/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
     //   center: [108.913171372641, 23.8262192695701], // starting position
     //   zoom: 13
     //   attributionControl: false

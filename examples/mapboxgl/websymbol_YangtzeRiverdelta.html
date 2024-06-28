@@ -28,9 +28,7 @@
   <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
   <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var serverUrl =
-      host + "/iserver/services/map-YangtzeRiverDelta/restjsr/v1/vectortile/maps/长江三角洲发展结构图";
+    var serverUrl = "https://iserver.supermap.io/iserver/services/map-YangtzeRiverDelta/restjsr/v1/vectortile/maps/长江三角洲发展结构图";
     var map = new mapboxgl.Map({
       container: "map",
       style: {

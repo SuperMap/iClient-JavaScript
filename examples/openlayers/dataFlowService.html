@@ -64,9 +64,8 @@
                 }
             });
             var resultLayer,
-                urlQuery = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326",
-                wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
-            var urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
+                urlQuery = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326";
+            var urlDataFlow = "wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow";
             var timer, featureResult, dataFlowBroadcast, source;
             new ol.supermap.MapService(urlQuery).getMapInfo(function(serviceResult) {
                 var mapJSONObj = serviceResult.result;

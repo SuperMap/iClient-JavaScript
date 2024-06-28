@@ -48,8 +48,7 @@
             });
             new L.supermap.TiledMapLayer(url).addTo(map);
             $.get(
-                host +
-                    '/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
+                'https://iserver.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
                 function (style) {
                     style.layers[0].paint['background-color'] = 'rgba(168,209,221,0)';
                     var gl = L.mapboxGL({

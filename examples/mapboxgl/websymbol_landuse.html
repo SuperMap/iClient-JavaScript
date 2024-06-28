@@ -28,8 +28,7 @@
   <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
   <script type="text/javascript" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
   <script>
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-    var serverUrl = host + "/iserver/services/map-mvt-landuse2/rest/maps/landuse";
+    var serverUrl = "https://iserver.supermap.io/iserver/services/map-mvt-landuse2/rest/maps/landuse";
     var map = new mapboxgl.Map({
       container: "map",
       style: {

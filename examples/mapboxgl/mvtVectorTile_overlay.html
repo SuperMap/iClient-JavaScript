@@ -35,8 +35,7 @@
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
         var map = new mapboxgl.Map({
             container: 'map',
-            style: host +
-                '/iserver/services/map-mvt-China/rest/maps/China/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
+            style: 'https://iserver.supermap.io/iserver/services/map-mvt-China/rest/maps/China/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true',
             center: [120.143, 30.236],
             zoom: 3,
             attributionControl: false

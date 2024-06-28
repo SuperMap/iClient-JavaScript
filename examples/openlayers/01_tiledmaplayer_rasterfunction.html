@@ -9,9 +9,8 @@
   <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%; position: absolute;top: 0;">
     <div id="map" style="width: 100%;height:100%"></div>
     <script type="text/javascript">
-      var host = window.isLocal ? window.server : "https://iserver.supermap.io";
       var map,
-        url = host + '/iserver/services/map-ndvi/rest/maps/hainanImage';
+        url = 'https://iserver.supermap.io/iserver/services/map-ndvi/rest/maps/hainanImage';
       map = new ol.Map({
         target: 'map',
         // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults

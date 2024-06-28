@@ -31,7 +31,6 @@
     <div id="main"></div>
     <script type="text/babel">
       var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
-      var wsHost = 'wss:\//' + (window.isLocal ? document.location.hostname + ':8800' : 'iclsvrws.supermap.io');
       var attribution =
         "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
@@ -63,7 +62,7 @@
         center: [120.143, 30.236],
         zoom: 0
       };
-      var serviceUrl = wsHost + '/iserver/services/dataflowTest/dataflow';
+      var serviceUrl = 'wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow';
       var layerStyle = {
         circle: new SuperMap.Components.commontypes.CircleStyle({
           'circle-color': '#3fb1e3',
@@ -101,7 +100,7 @@
         ).queryBySQL(param, function(serviceResult) {
           featureResult = serviceResult.result && serviceResult.result.recordsets[0].features.features;
           dataFlowBroadcast = new mapboxgl.supermap.DataFlowService(
-            wsHost + '/iserver/services/dataflowTest/dataflow'
+            'wss://iclsvrws.supermap.io/iserver/services/dataflowTest/dataflow'
           ).initBroadcast();
           dataFlowBroadcast.on('broadcastSocketConnected', function(e) {
             timer = window.setInterval(broadcast, 2000);

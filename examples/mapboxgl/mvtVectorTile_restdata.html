@@ -37,12 +37,10 @@
                 " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
                 " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
             var tile1 =
-                host +
-                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/railways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
+                'https://iserver.supermap.io/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/railways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
                 encodeURIComponent('{x:-180,y:90}');
             var tile2 =
-                host +
-                '/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/waterways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
+                'https://iserver.supermap.io/iserver/services/data-osm-line/rest/data/datasources/osm-line/datasets/waterways/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=' +
                 encodeURIComponent('{x:-180,y:90}');
             var map = new mapboxgl.Map({
                 container: 'map',

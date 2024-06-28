@@ -105,9 +105,8 @@
     </div>
     <script type="text/javascript" include="g6" src="../../dist/ol/include-ol.js"></script>
     <script type="text/javascript">
-      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
       const graphmap = new ol.supermap.GraphMap(
-        host + '/iserver/services/knowledgeGraph-budongchan/restjsr/graph/graphmaps/图谱',
+        "https://iserver.supermap.io/iserver/services/knowledgeGraph-budongchan/restjsr/graph/graphmaps/图谱",
         { config: { dragNode: false } }
       );
       graphmap.on('loaded', () => {

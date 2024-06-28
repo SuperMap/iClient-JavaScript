@@ -350,9 +350,8 @@
   <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
   <script type="text/javascript" src="../../dist/ol/include-ol.js"></script>
   <script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
-        url = host + "/iserver/services/map-Chart9FU/rest/maps/Chart9Fu"
-    map = new ol.Map({
+    var url = "https://iserver.supermap.io/iserver/services/map-chart/rest/maps/GB4X0000_52000";
+    var map = new ol.Map({
       target: 'map',
       // ol v7版本用法为ol.control.defaults.defaults； v6版本以下用法为ol.control.defaults
       controls: ol.control.defaults.defaults({
@@ -364,7 +363,7 @@
         link: "https://iclient.supermap.io"
       })]),
       view: new ol.View({
-        center: [-94.9, 29.5],
+        center: [61.0, -32.51],
         zoom: 13,
         projection: 'EPSG:4326',
         multiWorld: true

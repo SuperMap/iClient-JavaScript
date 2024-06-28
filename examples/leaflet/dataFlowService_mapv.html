@@ -15,11 +15,10 @@
     <script type="text/javascript" include='mapv' src="../../dist/leaflet/include-leaflet.js"></script>
     <script type="text/javascript">
         var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-        var wsHost = "wss:\//" + (window.isLocal ? document.location.hostname + ":8800" : "iclsvrws.supermap.io");
         var map,
             urlMap = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
             urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
-            urlDataFlow = wsHost + "/iserver/services/dataflowTest2/dataflow";
+            urlDataFlow = "wss://iclsvrws.supermap.io/iserver/services/dataflowTest2/dataflow";
         map = L.map('map', {
             preferCanvas: true,
             crs: L.CRS.EPSG3857,

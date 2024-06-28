@@ -222,8 +222,7 @@
 
     <script type="text/javascript">
 
-        var url = (window.isLocal ? window.server : "https://iserver.supermap.io") +
-            "/iserver/services/map-mvt-California/rest/maps/California";
+        var url = "https://iserver.supermap.io/iserver/services/map-mvt-California/rest/maps/California";
         getResolutions = function (zoom, scale, targetMinZoom, targetMaxZoom) {
             var res = scaleToResolution(scale);
             var minRes = res * Math.pow(2, zoom - targetMinZoom);

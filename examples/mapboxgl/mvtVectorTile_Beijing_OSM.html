@@ -25,7 +25,6 @@
 <body>
 <div id='map'></div>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         " with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a> | </span>" +
        " Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> ";
@@ -38,11 +37,11 @@
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
             "sprite": "https://iclient.supermap.io/web/styles/osm/sprite",
-            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": "https://iserver.supermap.io/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": []
         },
         center: [116.4, 39.9],

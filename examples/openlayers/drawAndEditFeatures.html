@@ -315,7 +315,7 @@
         draw,
         url = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/map-china400/rest/maps/China_4326";
       var isUpdate = false;
-      var dataUrl = (window.isLocal ? window.server : "https://iserver.supermap.io") + "/iserver/services/data-building/rest/data";
+      var dataUrl = "https://iserver.supermap.io/iserver/services/data-building/rest/data";
       var dataSourceName = 'building';
       var editFeaturesService = new ol.supermap.FeatureService(dataUrl);
       var currentShowPanel = '';

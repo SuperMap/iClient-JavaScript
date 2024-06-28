@@ -348,12 +348,11 @@
   </div>
 <script type="text/javascript" src="../../dist/leaflet/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "https://iserver.supermap.io",
-    url = host + "/iserver/services/map-Chart9FU/rest/maps/Chart9Fu",
-    map = L.map('map', {
+    var url = "https://iserver.supermap.io/iserver/services/map-chart/rest/maps/GB4X0000_52000";
+    var map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: {lon: -94.9, lat: 29.5},
+        center: {lon: 61.0, lat: -32.51},
         maxZoom: 18,
         zoom: 12
     });

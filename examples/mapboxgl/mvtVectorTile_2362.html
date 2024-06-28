@@ -31,11 +31,10 @@
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
     <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
     <script type="text/javascript">
-      var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
 
       // 方式一：1.调用 mapboxgl.supermap.initMap，根据 SuperMap iServer 地图服务的地图信息，创建地图和底图
       mapboxgl.supermap
-        .initMap(host + '/iserver/services/map-mvt-landuse/rest/maps/landuse', {
+        .initMap('https://iserver.supermap.io/iserver/services/map-mvt-landuse/rest/maps/landuse', {
           type: 'vector-tile',
           mapOptions: {
             zoom: 13
@@ -55,7 +54,7 @@
       // var WKT = 'PROJCS["Xian 1980 / 3-degree Gauss-Kruger zone 38",GEOGCS["Xian 1980",DATUM["Xian_1980",SPHEROID["IAG 1975",6378140,298.257,AUTHORITY["EPSG","7049"]],AUTHORITY["EPSG","6610"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4610"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",114],PARAMETER["scale_factor",1],PARAMETER["false_easting",38500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2362"]]'
       // var map = new mapboxgl.Map({
       //     container: 'map',
-      //     style: host+'/iserver/services/map-mvt-landuse/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
+      //     style: 'https://iserver.supermap.io/iserver/services/map-mvt-landuse/rest/maps/landuse/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
       //     // mapboxgl.CRS(name,wkt,extent);
       //     // name：坐标系名称，必填
       //     // wkt：坐标系的WKT或者Proj4表述，必填。
