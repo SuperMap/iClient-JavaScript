@@ -139,7 +139,8 @@ export class G6Render {
     };
     const defaultLayout = {
       type: 'fruchterman',
-      gravity: 5
+      gravity: 5,
+      workerEnabled: true
     };
     const defaultNode = {};
     const defaultEdge = {
