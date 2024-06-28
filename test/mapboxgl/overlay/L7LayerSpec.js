@@ -369,4 +369,137 @@ describe('mapboxgl L7Layer', () => {
     expect(layer.reRender).toHaveBeenCalled();
     done();
   });
+
+  it('mvt layer', (done) => {
+    var layer = new L7Layer({ type: 'PointLayer' });
+    var l7Layer = layer.getL7Layer();
+    l7Layer
+      .source('http://localhost:8190/zhejiang.mbtiles/{z}/{x}/{y}.pbf', {
+        parser: {
+          type: 'mvt',
+          tileSize: 256,
+          zoomOffset: 0,
+          maxZoom: 9,
+          extent: [-180, -85.051129, 179, 85.051129]
+        }
+      })
+      .shape('circle')
+      .color('#4cfd47');
+    map.addLayer(layer);
+    map.style.fire = () => {};
+    map.style.setLayoutProperty = () => {};
+
+    map.overlayLayersManager = { [layer.id]: layer };
+    expect(layer.sourceId).toBe(layer.id);
+    const layerSource = layer.getSource(layer.id);
+    expect(layerSource.type).toBe('vector');
+    let features;
+    const result = {
+      cb: function(data) { features = data; }
+    };
+    spyOn(result, 'cb').and.callThrough();
+    layer.queryRenderedFeatures([0, 0], {}, result.cb);
+    expect(result.cb.calls.count()).toBe(1);
+    expect(features).not.toBeUndefined();
+    expect(layer.querySourceFeatures().length).toBeGreaterThan(0)
+
+    layer = new L7Layer({ type: 'PointLayer', options: { layerID: 'empty-test' } });
+    l7Layer = layer.getL7Layer();
+    l7Layer
+      .source('http://localhost:8190/zhejiang.mbtiles/{z}/{x}/{y}.pbf', {
+        parser: {
+          type: 'mvt',
+          tileSize: 256,
+          zoomOffset: 0,
+          maxZoom: 9,
+          extent: [-180, -85.051129, 179, 85.051129]
+        }
+      })
+      .shape('circle')
+      .color('#4cfd47');
+    map.addLayer(layer);
+
+    map.overlayLayersManager = { [layer.id]: layer };
+    l7Layer.rawConfig.name = 'empty-test';
+    expect(layer.querySourceFeatures().length).toBe(0);
+    done();
+  });
+
+  it('extend custom overlayLayer base', (done) => {
+    const paint = {
+      'point-extrusion-width': 12,
+      'point-extrusion-height': 20,
+      'point-extrusion-opacity': 0.9,
+      'point-extrusion-length': 12,
+      'point-extrusion-color': '#EE4D5A'
+    };
+    const layout = {
+      visibility: 'visible',
+      'point-extrusion-shape': 'cylinder'
+    };
+    const filter = ['all', ['<=', 'smpid', 6]];
+    const options = { paint, minZoom: 0, maxZoom: 20, layout, filter };
+    const layer = new L7Layer({ type: 'PointLayer', options });
+    const l7Layer = layer.getL7Layer();
+    const geoData = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {
+            city: '北京',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [100.0, 0.0]
+          }
+        }
+      ]
+    };
+    l7Layer.source(geoData).shape('circle').color('#4cfd47');
+    map.addLayer(layer);
+    map.style.fire = () => {};
+    map.overlayLayersManager = { [layer.id]: layer };
+    const layerOnMap = layer.getLayer(layer.id);
+    expect(layerOnMap.minzoom).toBe(options.minzoom);
+    expect(layerOnMap.maxzoom).toBe(options.maxzoom);
+    expect(layerOnMap.paint).toEqual(options.paint);
+    expect(layerOnMap.layout.visibility).toBeTruthy();
+    expect(layerOnMap.filter).toEqual(filter);
+    expect(layer.getPaintProperty('point-extrusion-width')).toBe(paint['point-extrusion-width']);
+    expect(layer.getLayoutProperty('point-extrusion-shape')).toBe(layout['point-extrusion-shape']);
+    const layerFilter = layer.getFilter();
+    expect(layerFilter.field).toEqual(['smpid']);
+    expect(layerFilter.values).toBeTruthy();
+    spyOn(l7Layer, 'filter').and.callThrough();
+    layer.setFilter(null);
+    expect(l7Layer.filter.calls.count()).toBe(1);
+    layer.setFilter(filter);
+    expect(l7Layer.filter.calls.count()).toBe(2);
+    layer.setFilter(layerFilter);
+    expect(l7Layer.filter.calls.count()).toBe(3);
+    expect(layer.sourceId).toBe(layer.id);
+    const layerSource = layer.getSource(layer.id);
+    expect(layerSource.type).toBe('geojson');
+    expect(layerSource.hasOwnProperty('_data')).toBeTruthy();
+    expect(layerSource.getData).toBeTruthy();
+    expect(layerSource.setData).toBeTruthy();
+    const sourceData = layer.querySourceFeatures();
+    expect(sourceData.length).toEqual(geoData.features.length);
+    expect(layer.selectedDatas).toEqual([]);
+    layer.setSelectedDatas(geoData.features);
+    expect(layer.selectedDatas.length).toEqual(geoData.features.length);
+    expect(layerFilter.values('北京')).toBeFalsy();
+    spyOn(l7Layer, 'on');
+    spyOn(l7Layer, 'once');
+    spyOn(l7Layer, 'off');
+    const cb = () => {}
+    layer.on('mouseleave', cb);
+    layer.once('mouseleave', cb);
+    layer.off('mouseleave', cb);
+    expect(l7Layer.on).toHaveBeenCalled();
+    expect(l7Layer.once).toHaveBeenCalled();
+    expect(l7Layer.off).toHaveBeenCalled();
+    done();
+  });
 });

@@ -4,6 +4,8 @@ import { getL7Scene } from '@supermap/iclient-common/overlay/l7/util';
 import mapboxgl from 'mapbox-gl';
 import * as L7 from './L7/l7-render';
 import { Scene, Mapbox } from './L7/l7-render';
+import { CustomOverlayLayer } from './Base';
+import { getL7Filter } from '../mapping/utils/L7LayerUtil';
 
 /**
  * @class L7Layer
@@ -14,18 +16,42 @@ import { Scene, Mapbox } from './L7/l7-render';
  * @param {string} options.type - @antv/L7的图层类型，详情参见: {@link https://l7.antv.antgroup.com/api/point_layer/pointlayer}。
  * @param {Object} options.options - @antv/L7图层的配置项，详情参见: {@link https://l7.antv.antgroup.com/api/point_layer/options}。
  * @param {string} [options.layerID] - 图层 ID。默认使用 CommonUtil.createUniqueID("l7_layer_") 创建图层 ID。
+ * @param {string} [options.source] - source ID。
  * @usage
  */
 
-export class L7Layer {
-  constructor({ type, options }) {
-    this.type = 'custom';
-    this.id = options && options.layerID ? options.layerID : CommonUtil.createUniqueID('l7_layer_');
-    const _options = { ...(options || {}) };
+export class L7Layer extends CustomOverlayLayer {
+  constructor({ type, options = {} }) {
+    const id = options.layerID ? options.layerID : CommonUtil.createUniqueID('l7_layer_');
+    const events = [
+      'click',
+      'dblclick',
+      'mousemove',
+      'mouseout',
+      'mouseup',
+      'mousedown',
+      'mouseenter',
+      'mouseleave',
+      'contextmenu',
+      'dblclick',
+      'unclick',
+      'unmousemove',
+      'unmouseup',
+      'unmousedown',
+      'uncontextmenu',
+      'unpick',
+      'touchstart',
+      'touchend'
+    ];
+    super({ sourceId: options.source || id, query: true, interaction: true, events });
+    this.id = id;
     if (type !== 'ThreeLayer') {
-      this.l7layer = new L7[type]({ ..._options, name: this.id });
+      this.l7layer = new L7[type]({ ...options, name: this.id });
+      this.setDataFn = this.l7layer.setData.bind(this.l7layer);
     }
-    this.overlay = true;
+    this.eventListeners = {};
+    this.selectedDatas = [];
+    this.setSelectedDatasFn = this.setSelectedDatas.bind(this);
   }
   /**
    * @function L7Layer.prototype.getL7Layer
@@ -72,6 +98,105 @@ export class L7Layer {
       });
   }
 
+  getLayer() {
+    if (!this.l7layer) {
+      return;
+    }
+    const rawConfig = this.l7layer.rawConfig;
+    const layerInfo = {
+      ...rawConfig,
+      layout: { ...rawConfig.layout, visibility: rawConfig.visible ? 'visible' : 'none' },
+      minzoom: this.l7layer.minZoom,
+      maxzoom: this.l7layer.maxZoom,
+      id: this.id,
+      l7layer: this.l7layer,
+      scene: this.scene,
+      setSelectedDatas: this.setSelectedDatasFn
+    };
+    delete layerInfo.sourceId;
+    delete layerInfo.layerID;
+    delete layerInfo.minZoom;
+    delete layerInfo.maxZoom;
+    return layerInfo;
+  }
+
+  getPaintProperty(name) {
+    if (!this.l7layer) {
+      return;
+    }
+    const { paint = {} } = this.l7layer.rawConfig;
+    return paint[name];
+  }
+
+  getLayoutProperty(name) {
+    if (!this.l7layer) {
+      return;
+    }
+    const { layout = {} } = this.l7layer.rawConfig;
+    return layout[name];
+  }
+
+  // 目前只支持显示或隐藏图层操作
+  setLayoutProperty(name, value) {
+    if (name === 'visibility') {
+      this.setVisibility(value === 'visible');
+    }
+  }
+
+  getFilter() {
+    if (!this.l7layer) {
+      return;
+    }
+    const { filter } = this.l7layer.rawConfig;
+    const { field: filterFields, values } = getL7Filter(filter, this.id) || {};
+    const fields = filterFields || ['SmID', 'smpid'];
+    const transformFilterValuesFn = this._transformFilterValues.bind(this, { fields, values, selectedDatas: this.selectedDatas });
+    return {
+      field: fields,
+      values: transformFilterValuesFn
+    }
+  }
+
+  setFilter(filter) {
+    if (!this.l7layer) {
+      return;
+    }
+    if (!filter) {
+      this.l7layer.filter(true);
+      return;
+    }
+    if (filter instanceof Array) {
+      const { field: filterFields, values: filterValues } = getL7Filter(filter);
+      this.l7layer.filter(filterFields, filterValues);
+      return;
+    }
+    this.l7layer.filter(filter.field, filter.values);
+  }
+
+  getSource() {
+    if (!this.l7layer) {
+      return;
+    }
+    const layerSource = this.l7layer.layerSource;
+    const { parser } = layerSource;
+    const sourceInfo = {
+      id: this.sourceId,
+      type: parser.type,
+      map: this.map
+    };
+    switch (parser.type) {
+      case 'mvt':
+        sourceInfo.type = 'vector';
+        break;
+      case 'geojson':
+        sourceInfo._data = layerSource.originData;
+        sourceInfo.getData = () => layerSource.originData;
+        sourceInfo.setData = this.setDataFn;
+        break;
+    }
+    return sourceInfo;
+  }
+
   onAdd(map) {
     this.map = map;
     if (!map.$l7scene) {
@@ -111,6 +236,127 @@ export class L7Layer {
     } else {
       this.cancelAnimationFrame();
     }
+  }
+
+  on(type, listener) {
+    if (!this.l7layer) {
+      return;
+    }
+    const _this = this;
+    this.eventListeners[listener] = function (e) {
+      listener(_this._formateEvent(e));
+    };
+    this.l7layer.on(this._formatListenType(type), this.eventListeners[listener]);
+  }
+
+  once(type, listener) {
+    if (!this.l7layer) {
+      return;
+    }
+    const _this = this;
+    this.eventListeners[listener] = function (e) {
+      listener(_this._formateEvent(e));
+    };
+    this.l7layer.once(this._formatListenType(type), this.eventListeners[listener]);
+  }
+
+  off(type, listener) {
+    if (!this.l7layer) {
+      return;
+    }
+    this.l7layer.off(this._formatListenType(type), this.eventListeners[listener]);
+  }
+
+  queryRenderedFeatures(geometry, options, cb) {
+    if (!this.l7layer) {
+      return cb([]);
+    }
+    let box = geometry;
+    if (geometry instanceof mapboxgl.Point || typeof geometry[0] === 'number') {
+      const point = mapboxgl.Point.convert(geometry);
+      // fix 两个点一样查出来的结果不对
+      box = [point, [point.x - 1, point.y - 1]];
+    }
+    box = box.map((item) => {
+      const point = mapboxgl.Point.convert(item);
+      return [point.x, point.y];
+    });
+    const [x1, y1, x2, y2] = box.flat();
+    const _this = this;
+    this.l7layer.boxSelect([Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2), Math.max(y1, y2)], (features) => {
+      const nextFeatures = features || [];
+      cb(
+        nextFeatures.map((item) => {
+          return {
+            ...item,
+            layer: _this.getLayer()
+          };
+        })
+      );
+    });
+  }
+
+  querySourceFeatures() {
+    if (!this.l7layer) {
+      return [];
+    }
+    const layerSource = this.l7layer.layerSource;
+    let datas = layerSource.data.dataArray;
+    const { parser: { type } } = layerSource;
+    if (type === 'mvt') {
+      const { tileset: { cacheTiles = [] } = {} } = layerSource;
+      const { sourceLayer, featureId = 'id' } = this.l7layer.rawConfig;
+      const mvtDatas = [];
+      cacheTiles.forEach((sourceTile) => {
+        const cacheFeatures = (sourceTile.data && sourceTile.data.vectorLayerCache[sourceLayer]) || [];
+        const features = cacheFeatures.filter(
+          (item) =>
+            (!item[featureId] || !mvtDatas.some((feature) => feature[featureId] === item[featureId])) &&
+            (!item.properties[featureId] ||
+              !mvtDatas.some((feature) => feature.properties[featureId] === item.properties[featureId]))
+        );
+        mvtDatas.push(...features);
+      });
+      datas = datas.length > mvtDatas.length ? datas : mvtDatas;
+    }
+    if (!datas.length) {
+      const cb = (result = []) => {
+        datas = result;
+      };
+      const bounds = [
+        [0, 0],
+        [this.map.transform.width - 1, this.map.transform.height - 1] // -1 是解决报错问题
+      ];
+      this.queryRenderedFeatures(bounds, undefined, cb);
+    }
+    return datas;
+  }
+
+  setSelectedDatas(datas) {
+    this.selectedDatas = datas instanceof Array ? datas : [datas];
+  }
+
+  _formatListenType(type) {
+    const listenType = type === 'mouseleave' ? 'mouseout' : type;
+    return listenType;
+  }
+
+  _formateEvent(e) {
+    return {
+      ...e,
+      originalEvent: e.target,
+      target: this.map,
+      point: mapboxgl.Point.convert([e.x, e.y])
+    };
+  }
+
+  _transformFilterValues(options, ...args) {
+    const { fields, values, selectedDatas } = options;
+    const argValues = args.filter(item => item !== void 0);
+    const selectedValues = selectedDatas.map(feature => {
+      return fields.map(name => (feature.properties || {})[name]).filter(item => item !== void 0);
+    });
+    return (!values || values(...args)) && !selectedValues.some(values => JSON.stringify(values) === JSON.stringify(argValues));
   }
 }
 

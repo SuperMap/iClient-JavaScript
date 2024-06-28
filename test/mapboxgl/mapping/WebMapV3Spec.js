@@ -669,41 +669,115 @@ describe('mapboxgl-webmap3.0', () => {
     });
   });
 
-  it('layercatalog order in layerManerger', (done) => {
+  it('copy l7Layer', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
+    };
     spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
       if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapboxgl.CRS = function () {};
+    mapboxgl.CRS.set = function () {};
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    });
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      const webmapInstance = mapstudioWebmap._getWebMapInstance();
+      expect(map).not.toBeUndefined();
+      expect(webmapInstance.map).toEqual(map);
+      let appreciableLayers = webmapInstance.getAppreciableLayers();
+      let overlayLayers = Object.keys(map.overlayLayersManager);
+      const idToCopy = 'ms_站点3_1715739627423_909';
+      webmapInstance.copyLayer(idToCopy, { id: `${idToCopy}-SM-` }).then(() => {
+        const currentOverlayLayers = Object.keys(map.overlayLayersManager);
+        const currentAppreciableLayers = webmapInstance.getAppreciableLayers();
+        expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
+        expect(currentAppreciableLayers.length).toBe(appreciableLayers.length);
+        appreciableLayers = currentAppreciableLayers;
+        overlayLayers = currentOverlayLayers;
+        webmapInstance.copyLayer(idToCopy).then(() => {
+          const currentOverlayLayers = Object.keys(map.overlayLayersManager);
+          const currentAppreciableLayers = webmapInstance.getAppreciableLayers();
+          expect(currentOverlayLayers.length).toBe(overlayLayers.length + 1);
+          expect(currentAppreciableLayers.length).toBe(appreciableLayers.length + 1);
+          delete mapboxgl.Map.prototype.getCRS;
+          delete mapboxgl.CRS;
+          done();
+        });
+      });
+    });
+  });
+  
+  it('copy raster layer', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_symbol));
+      } else if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_symbol));
+      } else if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
       return Promise.resolve();
     });
-    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
-    mapstudioWebmap = new WebMapV3(mapInfo, {
-      server: server,
-      target: 'map'
+    mapstudioWebmap = new WebMap(id, {
+      server: server
     });
-    mapstudioWebmap.initializeMap(mapInfo);
 
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
-      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
-      map.addSource('testsource', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: []
-        }
+      const webmapInstance = mapstudioWebmap._getWebMapInstance();
+      expect(map).not.toBeUndefined();
+      expect(mapstudioWebmap.map).toEqual(map);
+      const style = map.getStyle();
+      const webMapV3 = mapstudioWebmap._getWebMapInstance();
+      const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+      expect(style.layers.length).toBe(mapInfo.layers.length);
+      let layersOnMap = mapInfo.layers;
+      let sourcesOnMap = mapInfo.sources;
+      let appreciableLayers = webMapV3.getAppreciableLayers();
+      expect(webMapV3.getLayerCatalog().length).toBeLessThanOrEqual(appreciableLayers.length);
+      const idToCopy = 'CHINA_DARK';
+      const nextSource = {
+        tiles: [
+          'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
+        ],
+        tileSize: 512,
+        type: 'raster'
+      };
+      webmapInstance.copyLayer(idToCopy, { source: nextSource }).then(() => {
+        const { layers, sources } = map.getStyle();
+        expect(layers.length).toBe(layersOnMap.length + 1);
+        expect(Object.keys(sources).length).toBe(Object.keys(sourcesOnMap).length + 1);
+        expect(sources[`${idToCopy}_copy`]).not.toBeUndefined();
+        done();
       });
-      map.addLayer({
-        metadata: {},
-        paint: {
-          'circle-color': '#f75564'
-        },
-        id: 'testlayer',
-        source: 'testsource',
-        type: 'circle'
-      });
-      expect(mapstudioWebmap.getLayerCatalog().length).toBe(layerCatalogs.length + 1);
-      expect(mapstudioWebmap.getLayerCatalog()[layerCatalogs.length].id).toBe('testlayer');
-      done();
     });
   });
 });

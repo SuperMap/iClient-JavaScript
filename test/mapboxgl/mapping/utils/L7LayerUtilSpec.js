@@ -1,4 +1,4 @@
-import { addL7Layers, isL7Layer } from '../../../../src/mapboxgl/mapping/utils/L7LayerUtil';
+import { addL7Layers, isL7Layer, getL7Filter } from '../../../../src/mapboxgl/mapping/utils/L7LayerUtil';
 import * as mockL7 from '../../../tool/mock_l7';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
@@ -9,7 +9,8 @@ describe('L7LayerUtil', () => {
   const map = {
     getL7Scene: () => Promise.resolve(scene),
     addLayer: () => {},
-    getZoom: () => 3
+    getZoom: () => 3,
+    getLayer: (layerId) => layerId.includes('-highlight')
   };
 
   const options = {
@@ -187,6 +188,32 @@ describe('L7LayerUtil', () => {
         'source-layer': 'New_LINE@newBuilding',
         id: 'ms_New_LINE_1716864449916_8',
         type: 'line-extrusion'
+      },
+      {
+        layout: {
+          visibility: 'visible',
+          'line-extrusion-pattern-interval': 20,
+          'line-extrusion-animate-duration': 6,
+          'line-extrusion-pattern-blend': 'normal',
+          'line-extrusion-animate-trailLength': 1.5,
+          'line-extrusion-animate-interval': 0.6
+        },
+        metadata: {
+          MapStudio: {
+            title: 'New_LINE'
+          }
+        },
+        paint: {
+          'line-extrusion-base': 0,
+          'line-extrusion-opacity': 1,
+          'line-extrusion-width': 12,
+          'line-extrusion-base-fixed': false,
+          'line-extrusion-color': '#4CC8A3'
+        },
+        source: 'ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10',
+        'source-layer': 'New_LINE@newBuilding',
+        id: 'ms_New_LINE_1716864449916_8-highlight',
+        type: 'line-extrusion'
       }
     ];
     const sources = {
@@ -301,5 +328,12 @@ describe('L7LayerUtil', () => {
       spy.calls.reset();
       done();
     });
+  });
+
+  it('filter expression', () => {
+    const expr = ['any', ['all', ['==', ['get', 'smpid'], 5], ['==', ['get', '新建字段'], '']]];
+    const result = getL7Filter(expr);
+    expect(result.field).toEqual(['smpid', '新建字段']);
+    expect(result.values).not.toBeUndefined();
   });
 });

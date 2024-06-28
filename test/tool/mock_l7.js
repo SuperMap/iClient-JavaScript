@@ -44,14 +44,48 @@ const Maplibre = ({ mapInstance }) => {
   return mapInstance;
 };
 class Layer {
-  constructor() {
+  constructor(options) {
     this.animateStatus = false;
     this.layerModel = {
       spriteAnimate: false
     };
     this.stacks = {};
+    this.rawConfig = options;
+    this.layerSource = {
+      originData: [],
+      data: {
+        dataArray: []
+      }
+    };
   }
-  source() {
+  source(data, options = {}) {
+    const parser = options.parser || { type: "geojson" };
+    this.layerSource = {
+      ...options,
+      parser,
+      originData: data.features ? data.features : data,
+      data: {
+        dataArray: parser.type === "geojson" ? data : []
+      }
+    };
+    if (parser.type === "mvt") {
+      this.layerSource.tileset = {
+        cacheTiles: this.rawConfig.name.includes("empty")
+          ? new Map()
+          : new Map([
+              [
+                "0",
+                {
+                  data: {
+                    vectorLayerCache: {
+                      [options.sourceLayer]: [{ properties: {} }]
+                    }
+                  }
+                }
+              ]
+            ])
+      };
+    }
     return this;
   }
   style() {
@@ -75,7 +109,7 @@ class Layer {
   }
   shape(type) {
     this.shape = type;
-    if (this.shape === 'sprite') {
+    if (this.shape === "sprite") {
       this.layerModel = {
         spriteAnimate: true
       };
@@ -96,15 +130,28 @@ class Layer {
       on: (type, cb) => {
         this.stacks[type] = [cb];
       },
-      emit: (type) => {
-        this.stacks[type].forEach((cb) => {
+      emit: type => {
+        this.stacks[type].forEach(cb => {
           cb();
         });
       }
     };
   }
   setData() {
-    this.getSource().emit('update');
+    this.getSource().emit("update");
+  }
+
+  on() {}
+
+  once() {}
+
+  off() {}
+
+  boxSelect(bbox, cb) {
+    if (!(this.layerSource.originData instanceof Array)) {
+      return cb();
+    }
+    return cb(this.layerSource.originData);
   }
 }
 const PointLayer = Layer;

@@ -194,6 +194,31 @@ export class WebMap extends mapboxgl.Evented {
     return this._legendList;
   }
 
+  async copyLayer(id, layerInfo = {}) {
+    const matchLayer = this._mapInfo.layers.find(layer => layer.id === id);
+    if (!matchLayer || this.map.getLayer(layerInfo.id)) {
+      return;
+    }
+    const copyLayerId = layerInfo.id || `${matchLayer.id}_copy`;
+    const copyLayer = { ...matchLayer, ...layerInfo, id: copyLayerId };
+    if (isL7Layer(copyLayer)) {
+      const layers = [copyLayer];
+      await addL7Layers({
+        map: this.map,
+        webMapInfo: { ...this._mapInfo, layers, sources: this._mapInfo.sources },
+        l7Layers: layers,
+        spriteDatas: this._spriteDatas,
+        options: this.options
+      });
+      return;
+    }
+    if (typeof copyLayer.source === 'object') {
+      this.map.addSource(copyLayer.id, copyLayer.source);
+      copyLayer.source = copyLayer.id;
+    }
+    this.map.addLayer(copyLayer);
+  }
+
   /**
    * @private
    * @function WebMap.prototype._createMap

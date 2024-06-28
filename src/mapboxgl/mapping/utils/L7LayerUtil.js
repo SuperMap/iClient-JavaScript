@@ -649,7 +649,24 @@ function WebMapSourceToL7Source(source, sourceLayer, options) {
   return rules[type] && rules[type](source, sourceLayer, options);
 }
 
-function getL7Filter(filter) {
+function getFilterFields(filter) {
+  const result = [];
+  for (const exp of filter) {
+    if (exp instanceof Array && exp[1] && typeof exp[1] === 'string') {
+      result.push(exp[1]);
+      continue;
+    }
+    if (exp instanceof Array) {
+      const subResult = getFilterFields(exp);
+      if (subResult && subResult.length > 0) {
+        result.push(...subResult);
+      }
+    }
+  }
+  return result;
+}
+
+export function getL7Filter(filter) {
   if (!filter) {
     return;
   }
@@ -661,7 +678,7 @@ function getL7Filter(filter) {
     }
     return true;
   });
-  const field = newExpressions.map((exp) => exp[1]);
+  const field = Array.from(new Set(getFilterFields(newExpressions)));
   const fFilter = featureFilter([condition, ...newExpressions]);
   const filterFunc = fFilter.filter.bind(fFilter);
   return {
@@ -687,14 +704,19 @@ function getL7Filter(filter) {
  * @param layer
  */
 function getL7LayerCommonInfo(layer) {
-  const { id, minzoom, maxzoom, layout, filter } = layer;
+  const { type, id, minzoom, maxzoom, layout, paint, filter, source } = layer;
   return {
     id,
     options: {
+      type,
       name: layer.id,
       sourceLayer: layer['source-layer'],
-      minzoom,
-      maxzoom,
+      source,
+      layout,
+      paint,
+      filter,
+      minZoom: minzoom,
+      maxZoom: maxzoom,
       visible: layout.visibility === 'none' ? false : true
     },
     filter: getL7Filter(filter)
@@ -1908,15 +1930,15 @@ function getL7Layer(l) {
     [MSLayerType.polygon]: 'PolygonLayer',
     [MSLayerType.heatmap]: 'HeatmapLayer'
   };
+  const source = l.source || {};
   const layer = new L7Layer({
     type: typeRule[l.type],
-    options: { ...l.options, layerID: (l.options || {}).name }
+    options: { ...l.options, layerID: (l.options || {}).name, featureId: (source.parser || {}).type === 'mvt' ? 'smpid' :  undefined } // 解决L7结构化数据监听click事件会返回多个features问题
   });
   // getL7Layer返回原生antv l7 layer的实例
   const l7Layer = layer.getL7Layer();
   // 调用原生antv l7 layer的方法，构建图层
   const sourceOptions = {};
-  const source = l.source || {};
   const shape = l.shape || {};
   if (source.parser) {
     sourceOptions.parser = l.source.parser;
@@ -1982,7 +2004,9 @@ export async function addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, opti
       ChartController.setSceneChartLayer(l.id, actionLayer);
     } else {
       const layer = getL7Layer(l);
-      map.addLayer(layer, beforeLayer && beforeLayer.id);
+      if (!map.getLayer(layer.id)) {
+        map.addLayer(layer, beforeLayer && beforeLayer.id);
+      }
     }
   }
 }

@@ -21,6 +21,7 @@ function functor(x) {
 const Map = function (options) {
   const evented = new mapboxgl.Evented();
   this.on = evented.on;
+  this.once = evented.once;
   this._update = ()=>{};
   this.fire = evented.fire;
   this.listens = evented.listens;
@@ -267,6 +268,10 @@ const Map = function (options) {
     return [];
   };
 
+  this.querySourceFeatures = function (sourceId, queryParams) {
+    return [];
+  };
+
   this.remove = function () {
     this._events = [];
     this.sources = [];
@@ -291,6 +296,7 @@ const Map = function (options) {
     return true;
   };
   this.getPaintProperty = function () {};
+  this.getLayoutProperty = function () {};
   this.removeImage = function () {};
   this.getCanvasContainer = () => {
     if (typeof this._container === 'string') {
