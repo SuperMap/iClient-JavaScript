@@ -47,7 +47,7 @@ export class GeometryAnalysis extends Events {
    * @version 11.2.0
    * @description 缓冲区分析。
    * @param {GeoJSONFeature} feature - geojson 要素。
-   * @param {number} radius - 缓冲区距离。
+   * @param {number} radius - 缓冲区距离，单位与数据单位一致。
    * @returns {GeoJSONFeature} 结果要素。
    */
   buffer(feature, radius) {
@@ -347,7 +347,7 @@ export class GeometryAnalysis extends Events {
    * @version 11.2.0
    * @description 计算经纬度面积。
    * @param {GeoJSONFeature} feature - geojson 面要素。
-   * @returns {number} 经纬度面积。
+   * @returns {number} 经纬度面积，结果单位与参数单位一致。
    */
   computeGeodesicArea(feature) {
     const ugFeature = geojson2UGGeometry(feature);
@@ -376,9 +376,9 @@ export class GeometryAnalysis extends Events {
    * @description 计算测地线长度。
    * @param {Array} xArray - x 坐标数组。
    * @param {Array} yArray - y 坐标数组。
-   * @param {number} majorAxis - 测地线所在椭球体的长轴。
+   * @param {number} majorAxis - 测地线所在椭球体的长轴，单位为米。
    * @param {number} flatten - 测地线所在椭球体的扁率。
-   * @returns {number} 测地线的长度。
+   * @returns {number} 测地线的长度，结果单位为米。
    */
   computeGeodesicDistance(xArray, yArray, majorAxis, flatten) {
     let pXArray = geojsonCoords2UGDoubleArray(xArray);
@@ -390,7 +390,7 @@ export class GeometryAnalysis extends Events {
    * @version 11.2.0
    * @description 根据距离获取线要素的平行线。
    * @param {GeoJSONFeature} feature - geojson 要素。
-   * @param {number} distance - 平行线距离。
+   * @param {number} distance - 平行线距离，单位与数据单位一致。
    * @returns {GeoJSONFeature} 结果要素。
    */
   computeParallel(feature, distance) {

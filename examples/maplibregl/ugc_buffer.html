@@ -40,8 +40,8 @@
       <div class="panel-body content">
         <div class="panel">
           <div class="input-group">
-            <span class="input-group-addon">缓冲区半径(米)</span>
-            <input class="form-control" id="radius" type="number" value="30000" />
+            <span class="input-group-addon">缓冲区半径(度)</span>
+            <input class="form-control" id="radius" type="number" value="2" />
           </div>
         </div>
         <input type="button" class="btn btn-default" value="分析" onclick="createBuffer()" />&nbsp;
@@ -102,7 +102,7 @@
         clearLayer();
         var radius = parseFloat(document.getElementById('radius').value);
         var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
-        var res = geometryAnalysis.buffer(pointGeometryData, radius / 100000);
+        var res = geometryAnalysis.buffer(pointGeometryData, radius);
         var bufferSource = {
           type: 'geojson',
           data: res
