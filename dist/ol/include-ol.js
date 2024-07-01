@@ -109,7 +109,7 @@
           inputScript(libsurl + '/openlayers/plugins/ol-layerswitcher/3.8.3/ol-layerswitcher.js');
         }
         if (inArray(includes, 'jsonsql')) {
-          inputScript(libsurl + '/jsonsql/0.2.5/jsonsql.min.js');
+          inputScript(libsurl + '/jsonsql/jsonsql.js');
         }
         if (inArray(includes, 'geostats')) {
             inputScript(libsurl + '/geostats/geostats.js');

@@ -123,7 +123,7 @@
       inputScript(libsurl + '/deck.gl/5.1.3/deck.gl.min.js');
     }
     if (inArray(includes, 'jsonsql')) {
-      inputScript(libsurl + '/jsonsql/0.2.5/jsonsql.min.js');
+      inputScript(libsurl + '/jsonsql/jsonsql.js');
     }
     if (inArray(includes, 'geostats')) {
       inputScript(libsurl + '/geostats/geostats.js');
