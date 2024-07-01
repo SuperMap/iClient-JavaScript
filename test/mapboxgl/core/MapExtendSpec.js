@@ -328,9 +328,7 @@ describe('MapExtend mapboxgl', () => {
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: [
-              'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
-            ],
+            tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
             tileSize: 256
           }
         },
