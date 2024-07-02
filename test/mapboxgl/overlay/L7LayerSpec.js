@@ -494,12 +494,18 @@ describe('mapboxgl L7Layer', () => {
     spyOn(l7Layer, 'once');
     spyOn(l7Layer, 'off');
     const cb = () => {}
+    layer.on('mouseover', cb);
+    layer.once('mouseover', cb);
+    layer.off('mouseover', cb);
     layer.on('mouseleave', cb);
     layer.once('mouseleave', cb);
     layer.off('mouseleave', cb);
-    expect(l7Layer.on).toHaveBeenCalled();
-    expect(l7Layer.once).toHaveBeenCalled();
-    expect(l7Layer.off).toHaveBeenCalled();
+    layer.on('click', cb);
+    layer.once('click', cb);
+    layer.off('click', cb);
+    expect(l7Layer.on).toHaveBeenCalledTimes(3);
+    expect(l7Layer.once).toHaveBeenCalledTimes(3);
+    expect(l7Layer.off).toHaveBeenCalledTimes(3);
     done();
   });
 });

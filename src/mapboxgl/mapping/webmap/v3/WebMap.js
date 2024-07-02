@@ -454,7 +454,10 @@ export class WebMap extends mapboxgl.Evented {
           webMapInfo: { ...this._mapInfo, layers, sources },
           l7Layers,
           spriteDatas: this._spriteDatas,
-          options: this.options
+          options: {
+            ...this.options,
+            emitterEvent: this.fire.bind(this)
+          }
         });
       }
       this._createLegendInfo();

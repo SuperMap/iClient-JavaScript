@@ -27,6 +27,7 @@ export class L7Layer extends CustomOverlayLayer {
       'click',
       'dblclick',
       'mousemove',
+      'mouseover',
       'mouseout',
       'mouseup',
       'mousedown',
@@ -337,8 +338,14 @@ export class L7Layer extends CustomOverlayLayer {
   }
 
   _formatListenType(type) {
-    const listenType = type === 'mouseleave' ? 'mouseout' : type;
-    return listenType;
+    switch (type) {
+      case 'mouseover':
+        return 'mouseenter';
+      case 'mouseleave':
+        return 'mouseout';
+      default:
+        return type;
+    }
   }
 
   _formateEvent(e) {

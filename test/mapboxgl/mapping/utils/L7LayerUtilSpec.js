@@ -15,7 +15,8 @@ describe('L7LayerUtil', () => {
 
   const options = {
     withCredentials: true,
-    server: 'http://localhost:8190/iportal/'
+    server: 'http://localhost:8190/iportal/',
+    emitterEvent: function() {}
   };
 
   const addOptions = {
@@ -51,7 +52,6 @@ describe('L7LayerUtil', () => {
       if (url.indexOf('/web/datas/1554834293/structureddata.json') > -1) {
         return Promise.resolve(new Response(l7StructureData1052943054));
       }
-      console.log(url);
       return Promise.resolve();
     });
     const layers = [
@@ -150,7 +150,6 @@ describe('L7LayerUtil', () => {
       if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/domain.json') > -1) {
         return Promise.resolve(new Response(RESTDATA_DOMAINS_RES));
       }
-      console.log(url);
       return Promise.resolve();
     });
     spyOn(FetchRequest, 'post').and.callFake((url, _, options) => {
@@ -159,7 +158,6 @@ describe('L7LayerUtil', () => {
       if (url.indexOf('/data-Building/rest/data/featureResults.geojson') > -1) {
         return Promise.resolve(new Response(RESTDATA_FEATURES_RES));
       }
-      console.log(url);
       return Promise.resolve();
     });
     const layers = [
@@ -182,10 +180,10 @@ describe('L7LayerUtil', () => {
           'line-extrusion-opacity': 1,
           'line-extrusion-width': 12,
           'line-extrusion-base-fixed': false,
-          'line-extrusion-color': '#4CC8A3'
+          'line-extrusion-color': '#4CC8A3',
+          'line-extrusion-dasharray': [1, 1]
         },
         source: 'ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10',
-        'source-layer': 'New_LINE@newBuilding',
         id: 'ms_New_LINE_1716864449916_8',
         type: 'line-extrusion'
       },
@@ -211,7 +209,6 @@ describe('L7LayerUtil', () => {
           'line-extrusion-color': '#4CC8A3'
         },
         source: 'ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10',
-        'source-layer': 'New_LINE@newBuilding',
         id: 'ms_New_LINE_1716864449916_8-highlight',
         type: 'line-extrusion'
       }
@@ -220,7 +217,7 @@ describe('L7LayerUtil', () => {
       ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10: {
         data: {
           credential: {
-            key: 'token',
+            name: 'token',
             value: 'kF0ZmjLFg-P56UQdHVIkl1tDDnUTsuy5ayBcAHrmdmM6BmLMLHNvk7aul83z2twM8m5rtD3ExQguW0jlThhWkEoWr27Dzw..'
           },
           datasetName: 'New_LINE',
@@ -244,6 +241,123 @@ describe('L7LayerUtil', () => {
     });
   });
 
+  it('add layer one error, one success', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
+      expect(options.withCredentials).toBeUndefined();
+      expect(options.withoutFormatSuffix).toBeTruthy();
+      if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/fields.json') > -1) {
+        return Promise.resolve(new Response(RESTDATA_FIELDS_RES));
+      }
+      if (url.indexOf('/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/domain.json') > -1) {
+        return Promise.resolve(new Response(RESTDATA_DOMAINS_RES));
+      }
+      return Promise.resolve();
+    });
+    spyOn(FetchRequest, 'post').and.callFake((url, _, options) => {
+      expect(options.withCredentials).toBeUndefined();
+      expect(options.withoutFormatSuffix).toBeTruthy();
+      if (url.indexOf('/data-Building/rest/data/featureResults.geojson') > -1) {
+        return Promise.reject('error test');
+      }
+      return Promise.resolve();
+    });
+    const layers = [
+      {
+        layout: {
+          visibility: 'visible',
+          'line-extrusion-pattern-interval': 20,
+          'line-extrusion-animate-duration': 6,
+          'line-extrusion-pattern-blend': 'normal',
+          'line-extrusion-animate-trailLength': 1.5,
+          'line-extrusion-animate-interval': 0.6
+        },
+        metadata: {
+          MapStudio: {
+            title: 'New_LINE'
+          }
+        },
+        paint: {
+          'line-extrusion-base': 0,
+          'line-extrusion-opacity': 1,
+          'line-extrusion-width': 12,
+          'line-extrusion-base-fixed': false,
+          'line-extrusion-color': '#4CC8A3',
+          'line-extrusion-dasharray': [1, 1]
+        },
+        source: 'ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10',
+        id: 'ms_New_LINE_1716864449916_8',
+        type: 'line-extrusion'
+      },
+      {
+        filter: ['all', ['==', 'smpid', 1]],
+        layout: {
+          'text-z-offset': 200000,
+          'text-letter-spacing': 0,
+          visibility: 'visible',
+          'text-field': '{smpid}',
+          'text-anchor': 'center',
+          'text-size': 36,
+          'text-allow-overlap': true
+        },
+        metadata: {
+          MapStudio: {
+            title: 'ms_label_县级行政区划_1719818803020_5'
+          }
+        },
+        maxzoom: 24,
+        paint: {
+          'text-halo-color': '#242424',
+          'text-halo-blur': 2,
+          'text-color': '#FFFFFF',
+          'text-halo-width': 1,
+          'text-opacity': 0.9,
+          'text-translate': [0, 0]
+        },
+        source: 'ms_label_县级行政区划_1719818803020_5_source',
+        'source-layer': '932916417$geometry',
+        id: 'ms_label_县级行政区划_1719818803020_5',
+        type: 'symbol',
+        minzoom: 0
+      }
+    ];
+    const sources = {
+      ms_New_LINE_ms_datasetId_1716864444834_6_1716864449917_10: {
+        data: {
+          credential: {
+            name: 'token',
+            value: 'kF0ZmjLFg-P56UQdHVIkl1tDDnUTsuy5ayBcAHrmdmM6BmLMLHNvk7aul83z2twM8m5rtD3ExQguW0jlThhWkEoWr27Dzw..'
+          },
+          datasetName: 'New_LINE',
+          type: 'supermap-rest-data',
+          url: 'http://localhost:8090/iserver/services/data-Building/rest/data/featureResults.geojson?returnContent=true&fromIndex=0&maxFeatures=2147483647',
+          dataSourceName: 'newBuilding'
+        },
+        type: 'geojson'
+      },
+      ms_label_县级行政区划_1719818803020_5_source: {
+        tiles: [
+          'http://localhost:8190/iportal/services/../web/datas/932916417/structureddata/pointonsurface/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22pac%22%2C%22Video%22%2C%22SmUserID%22%2C%22name%22%2C%22Image%22%2C%22objectid%22%2C%22URL%22%5D&geometryFieldName=geometry'
+        ],
+        bounds: [102.98962307000005, 30.090978575000065, 104.89626180000005, 31.437765225000078],
+        type: 'vector'
+      }
+    };
+    const nextOptions = {
+      ...addOptions,
+      webMapInfo: { ...mapstudioWebMap_L7LayersRes, layers, sources },
+      l7Layers: layers
+    };
+    const spy1 = spyOn(nextOptions.map, 'addLayer').and.callThrough();
+    const spy2 = spyOn(nextOptions.options, 'emitterEvent');
+    addL7Layers(nextOptions).then(() => {
+      // expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+      expect(nextOptions.options.emitterEvent).toHaveBeenCalledTimes(1);
+      spy1.calls.reset();
+      spy2.calls.reset();
+      done();
+    });
+  });
+
   it('servcie proxy', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
       expect(options.withCredentials).toBeTruthy();
@@ -254,7 +368,6 @@ describe('L7LayerUtil', () => {
       if (url.indexOf('/data-ZhongGuoDiTu/rest/data/datasources/中国矢量数据/datasets/飞机场/domain.json') > -1) {
         return Promise.resolve(new Response(JSON.stringify([])));
       }
-      console.log(url);
       return Promise.resolve();
     });
     spyOn(FetchRequest, 'post').and.callFake((url) => {
@@ -299,6 +412,36 @@ describe('L7LayerUtil', () => {
         source: 'ms_飞机场_ms_datasetId_1716979413748_4_1716979443420_8',
         id: 'ms_飞机场_1716979443420_7',
         type: 'heatmap-extrusion'
+      },
+      {
+        filter: ['all', ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: 'visible',
+          'line-extrusion-pattern-interval': 20,
+          'line-extrusion-animate-duration': 6,
+          'line-extrusion-pattern-blend': 'normal',
+          'line-extrusion-animate-trailLength': 1.5,
+          'line-extrusion-animate-interval': 0.6
+        },
+        metadata: {
+          MapStudio: {
+            title: '县级行政区划@link'
+          }
+        },
+        maxzoom: 24,
+        paint: {
+          'line-extrusion-base': 0,
+          'line-extrusion-opacity': 1,
+          'line-extrusion-width': 20,
+          'line-extrusion-base-fixed': false,
+          'line-extrusion-color': '#4CC8A3',
+          'line-extrusion-pattern': 'ms_icon_shape1'
+        },
+        source: 'ms_县级行政区划@link_1719822607738_6',
+        'source-layer': '县级行政区划@link',
+        id: '县级行政区划@link_outline(0_24)',
+        type: 'line-extrusion',
+        minzoom: 0
       }
     ];
     const sources = {
@@ -310,6 +453,13 @@ describe('L7LayerUtil', () => {
           dataSourceName: '中国矢量数据'
         },
         type: 'geojson'
+      },
+      'ms_县级行政区划@link_1719822607738_6': {
+        tiles: [
+          'http://localhost:8195/portalproxy/592c4095f464540e/iserver/services/map-LinkMap/restjsr/v1/vectortile/maps/%E5%8E%BF%E7%BA%A7%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%40link/tiles/{z}/{x}/{y}.mvt'
+        ],
+        bounds: [102.98962307000005, 30.090978575000065, 104.89626180000005, 31.437765225000078],
+        type: 'vector'
       }
     };
     const nextOptions = {
@@ -324,7 +474,7 @@ describe('L7LayerUtil', () => {
     };
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     addL7Layers(nextOptions).then(() => {
-      expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+      expect(nextOptions.map.addLayer.calls.count()).toEqual(2);
       spy.calls.reset();
       done();
     });

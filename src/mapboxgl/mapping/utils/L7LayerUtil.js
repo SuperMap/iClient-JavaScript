@@ -181,7 +181,7 @@ function addCredentialToUrl(url, credential) {
   if (!credential) {
     return url;
   }
-  const tokenInfo = `${credential.key}=${credential.value}`;
+  const tokenInfo = `${credential.key || credential.name}=${credential.value}`;
   const newUrl = url.includes('?') ? `${url}&${tokenInfo}` : `${url}?${tokenInfo}`;
   return newUrl;
 }
@@ -375,8 +375,12 @@ function transformFeaturesNameAndType(originFeatures, fieldNames, fieldTypes) {
   return formatFeatures(features, fieldInfo);
 }
 
+function isIportalProxyServiceUrl(url, options) {
+  return options.iportalServiceProxyUrl && url.indexOf(options.iportalServiceProxyUrl) >= 0;
+}
+
 function handleWithRequestOptions(url, options) {
-  if (options.iportalServiceProxyUrl && url.indexOf(options.iportalServiceProxyUrl) >= 0) {
+  if (isIportalProxyServiceUrl(url, options)) {
     return { ...options, withCredentials: true };
   }
   return { ...options, withCredentials: undefined };
@@ -398,7 +402,8 @@ async function getRestDataGeojsonByWebMap(data, options) {
   const datasetUrl = `${url.split('featureResults')[0]}datasources/${dataSourceName}/datasets/${datasetName}`;
   const nextOptions = handleWithRequestOptions(datasetUrl, options);
   const { fieldNames, fieldTypes } = await getRestDataFieldInfo(datasetUrl, credential, nextOptions);
-  const attrDataInfo = await FetchRequest.post(url, JSON.stringify(SQLParams), nextOptions);
+  const nextUrl = addCredentialToUrl(url, credential);
+  const attrDataInfo = await FetchRequest.post(nextUrl, JSON.stringify(SQLParams), nextOptions);
   const featuresRes = await attrDataInfo.json();
 
   return {
@@ -623,8 +628,8 @@ async function geoJSONSourceToL7Source(source, sourceLayer, options) {
  * @param source
  * @returns {Object} L7 mvt source
  */
-function vectorSourceToL7Source(source, sourceLayer) {
-  return {
+function vectorSourceToL7Source(source, sourceLayer, options) {
+  const result = {
     data: ((source || {}).tiles || [])[0],
     parser: {
       type: 'mvt',
@@ -632,6 +637,14 @@ function vectorSourceToL7Source(source, sourceLayer) {
       sourceLayer
     }
   };
+  if (isIportalProxyServiceUrl(result.data, options)) {
+    Object.assign(result.parser, {
+        requestParameters: {
+            credentials: 'include'
+        }
+    });
+  }
+  return result;
 }
 
 /**
@@ -959,6 +972,21 @@ function pickAttrs(obj, includeKeys) {
   return obj;
 }
 
+function isSolidDasharray(dasharray) {
+  return dasharray.length === 2 && dasharray[0] === 1 && dasharray[1] === 0;
+}
+
+/**
+* 根据dasharray获取线型
+* @param dasharray
+*/
+function getLineTypeByDashArray(dasharray) {
+  if (dasharray && dasharray.length > 1 && !isSolidDasharray(dasharray)) {
+      return 'dash';
+  }
+  return 'solid';
+}
+
 /**
  * WebMap动画点 转换成sceneLayer
  * @param layer
@@ -1052,7 +1080,7 @@ function transformWebmapODLayerToSceneLayer(layer, source, map) {
       values: shape
     },
     style: {
-      lineType: dashArray ? 'dash' : 'solid'
+      lineType: getLineTypeByDashArray(dashArray)
     }
   };
   for (const key in paint) {
@@ -1155,7 +1183,7 @@ function transformWebmapLineLayerToSceneLayer(layer, source, map) {
       values: 'line'
     },
     style: {
-      lineType: dashArray ? 'dash' : 'solid'
+      lineType: getLineTypeByDashArray(dashArray)
     }
   };
   for (const key in paint) {
@@ -1371,13 +1399,13 @@ function transformWebmapHeatExtrusionBasicLayerToSceneLayer(layer, source) {
 }
 
 /**
- * 将Webmaplayer中的带有高度的symbollayer转换成sceneLayer
+ * 将Webmaplayer中的文本图层转换成sceneLayer
  * @param layer
  * @param source
  * @param visible
  * @returns
  */
-function transformWebmapTextLayerToSceneLayer(layer, source, visible) {
+function transformWebmapTextLayerToSceneLayer(layer, source, visible, map) {
   const { paint, layout } = layer;
   const field = layout['text-field'].split('{')[1].split('}')[0];
   const style = {};
@@ -1386,20 +1414,12 @@ function transformWebmapTextLayerToSceneLayer(layer, source, visible) {
     value !== undefined && (style[TEXT_MAPBOXGL_ANTVL7_KEY[k]] = value);
   });
   return {
+    ...getL7LayerCommonInfo(layer),
     type: MSLayerType.point,
     id: layer.id,
-    options: {
-      name: layer.id,
-      visible,
-      sourceLayer: layer['source-layer']
-    },
     source,
-    color: {
-      values: paint['text-color']
-    },
-    size: {
-      values: layout['text-size']
-    },
+    color: expressionToFunction({ value: paint['text-color'], property: 'color', map }),
+    size: expressionToFunction({ value: layout['text-size'], property: 'size', map }),
     shape: {
       field,
       values: 'text'
@@ -1411,25 +1431,30 @@ function transformWebmapTextLayerToSceneLayer(layer, source, visible) {
 async function restoreL7Layers({ layers, sources, map, options }) {
   const result = [];
   for (const currentLayer of layers) {
-    const originSource = sources[currentLayer.source];
-    const rules = {
-      [SelectStyleTypes.animatePoint]: transformCircleLayerToSceneLayer,
-      [SelectStyleTypes.radarPoint]: transformWebmapRadarLayerToSceneLayer,
-      [SelectStyleTypes.od]: transformWebmapODLayerToSceneLayer,
-      [SelectStyleTypes.column]: transfromPointExtrusionLayerToSceneLayer,
-      [SelectStyleTypes.line]: transformWebmapLineLayerToSceneLayer,
-      [SelectStyleTypes.bar]: transformWebmapChartLineLayerToSceneLayer,
-      [SelectStyleTypes.pie]: transformWebmapChartPieLayerToSceneLayer,
-      [SelectStyleTypes.heatGrid]: transformWebmapHeatLayerToSceneLayer,
-      [SelectStyleTypes.heat3DGrid]: transformWebmapHeatExtrusionLayerToSceneLayer,
-      [SelectStyleTypes.heat3D]: transformWebmapHeatExtrusionBasicLayerToSceneLayer
-    };
-    const source = await WebMapSourceToL7Source(originSource, currentLayer['source-layer'], options);
-    const selectedType = getSelectType(currentLayer);
-    result.push(
-      (rules[selectedType] || {})(currentLayer, source, map) ||
-        transformWebmapTextLayerToSceneLayer(currentLayer, source, (currentLayer || {}).visible)
-    );
+    try {
+      const originSource = sources[currentLayer.source];
+      const rules = {
+        [SelectStyleTypes.animatePoint]: transformCircleLayerToSceneLayer,
+        [SelectStyleTypes.radarPoint]: transformWebmapRadarLayerToSceneLayer,
+        [SelectStyleTypes.od]: transformWebmapODLayerToSceneLayer,
+        [SelectStyleTypes.column]: transfromPointExtrusionLayerToSceneLayer,
+        [SelectStyleTypes.line]: transformWebmapLineLayerToSceneLayer,
+        [SelectStyleTypes.bar]: transformWebmapChartLineLayerToSceneLayer,
+        [SelectStyleTypes.pie]: transformWebmapChartPieLayerToSceneLayer,
+        [SelectStyleTypes.heatGrid]: transformWebmapHeatLayerToSceneLayer,
+        [SelectStyleTypes.heat3DGrid]: transformWebmapHeatExtrusionLayerToSceneLayer,
+        [SelectStyleTypes.heat3D]: transformWebmapHeatExtrusionBasicLayerToSceneLayer
+      };
+      const source = await WebMapSourceToL7Source(originSource, currentLayer['source-layer'], options);
+      const selectedType = getSelectType(currentLayer);
+      result.push(
+        (rules[selectedType] && rules[selectedType](currentLayer, source, map)) ||
+          transformWebmapTextLayerToSceneLayer(currentLayer, source, (currentLayer || {}).visible, map)
+      );
+    } catch (error) {
+      console.error(error);
+      options.emitterEvent('getlayersfailed', { error, map });
+    }
   }
   return result;
 }
@@ -1986,13 +2011,18 @@ export async function addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, opti
   // 批量处理L7纹理
   const scene = await getScene(map);
   if (Object.keys(spriteDatas).length > 0) {
-    await addTextures({
-      layers: formateL7Layers.filter((l) => !!l.texture),
-      spriteJson: spriteDatas,
-      sprite,
-      scene,
-      options
-    });
+    try {
+      await addTextures({
+        layers: formateL7Layers.filter((l) => !!l.texture),
+        spriteJson: spriteDatas,
+        sprite,
+        scene,
+        options
+      });
+    } catch (error) {
+      console.error(error);
+      options.emitterEvent('getlayersfailed', { error, map });
+    }
   }
   for (const l of formateL7Layers) {
     const layerIndex = layers.findIndex((wLayer) => wLayer.id === l.id);
