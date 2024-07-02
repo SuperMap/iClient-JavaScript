@@ -856,4 +856,25 @@ describe('mapboxgl-webmap3.0', () => {
       done();
     });
   });
+
+  it('test group', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    const mapInfo = JSON.parse(mapstudioWebMap_group);
+    const mapstudioWebmap = new WebMapV3(mapInfo, {
+      server: server,
+      target: 'map'
+    });
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      const appreciableLayers = mapstudioWebmap.getAppreciableLayers();
+      const layerCatalogs = mapstudioWebmap.getLayerCatalog();
+      expect(layerCatalogs.length).toBeLessThanOrEqual(appreciableLayers.length);
+      done();
+    });
+    mapstudioWebmap.initializeMap(mapInfo);
+  });
 });

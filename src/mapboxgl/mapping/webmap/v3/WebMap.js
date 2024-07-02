@@ -546,7 +546,7 @@ export class WebMap extends mapboxgl.Evented {
       if (catalog[catalogTypeField] === 'group') {
         this._updateLayerCatalogsId({
           loopData: children,
-          catalogs,
+          catalogs: children,
           layerIdMapList,
           catalogTypeField,
           layerIdsField,
@@ -635,7 +635,7 @@ export class WebMap extends mapboxgl.Evented {
         delete layer['source-layer'];
       }
       return layer;
-    }).filter(item => this.map.getLayer(item.id));
+    });
     if (this._appendLayers) {
       return selfLayers;
     }
@@ -768,7 +768,7 @@ export class WebMap extends mapboxgl.Evented {
     }, []);
     const allLayersOnMap = this._getLayersOnMap();
     const extraLayers = allLayersOnMap.filter((layer) => !layerIdsFromCatalog.some((id) => id === layer.id));
-    const layerCatalogs = layerCatalog.concat(extraLayers).filter(item => this.map.getLayer(item.id));
+    const layerCatalogs = layerCatalog.concat(extraLayers);
     const appreciableLayers = this.getAppreciableLayers();
     const formatLayerCatalog = this._createFormatCatalogs(layerCatalogs, appreciableLayers);
     return formatLayerCatalog;

@@ -2299,3 +2299,103 @@ var msProjectINfo_layerData = JSON.stringify({
   status: null,
   favoriteCount: 0
 });
+
+var mapstudioWebMap_group = JSON.stringify({
+  metadata: {
+      layerCatalog: [
+          {
+              visible: true, 
+              children: [
+                  {
+                      visible: true, 
+                      id: "四川省市级边界", 
+                      title: "四川省市级边界", 
+                      type: "basic"
+                  }
+              ], 
+              id: "ms_group_1719799741965_7", 
+              title: "未命名分组", 
+              type: "group"
+          }, 
+          {
+              visible: true, 
+              id: "CHINA_DARK", 
+              title: "中国暗色地图", 
+              type: "basic"
+          }
+      ]
+  }, 
+  sources: {
+      ms_10451348_1719799738109_6: {
+          tiles: [
+              "http://172.16.15.94:8080/iportal/web/datas/10451348/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22parent%22%2C%22adcode%22%2C%22level%22%2C%22centroid%22%2C%22childrenNum%22%2C%22center%22%2C%22subFeatureIndex%22%2C%22name%22%2C%22acroutes%22%5D&geometryFieldName=geometry"
+          ], 
+          bounds: [
+              97.350096, 
+              26.045865, 
+              108.546488, 
+              34.312446
+          ], 
+          type: "vector"
+      }, 
+      CHINA_DARK: {
+          tiles: [
+              "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true"
+          ], 
+          tileSize: 256, 
+          attribution: "", 
+          bounds: [
+              -180, 
+              -90, 
+              180, 
+              90
+          ], 
+          type: "raster"
+      }
+  }, 
+  crs: "EPSG:3857", 
+  center: [
+      101.12284196390647, 
+      30.26608027222483
+  ], 
+  zoom: 5.9855446883732935, 
+  glyphs: { }, 
+  version: "3.2.1", 
+  rootUrl: "http://172.16.15.94:8080/iportal/", 
+  maxzoom: 12, 
+  name: "无标题地图group1", 
+  viewExtent: [
+      94.1151112782352, 
+      34.31244599999984, 
+      108.13057264957897, 
+      26.045864999999523
+  ], 
+  layers: [
+      {
+          maxzoom: 12, 
+          id: "CHINA_DARK", 
+          source: "CHINA_DARK", 
+          type: "raster", 
+          minzoom: 0
+      }, 
+      {
+          layout: {
+              visibility: "visible"
+          }, 
+          metadata: { }, 
+          maxzoom: 24, 
+          paint: {
+              'fill-outline-color': "#FFFFFF", 
+              'fill-color': "#826DBA", 
+              'fill-opacity': 0.9
+          }, 
+          id: "四川省市级边界", 
+          source: "ms_10451348_1719799738109_6", 
+          'source-layer': "10451348$geometry", 
+          type: "fill", 
+          minzoom: 0
+      }
+  ], 
+  pitch: 0, 
+  minzoom: 0
+})
