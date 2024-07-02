@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-ol",
   "description": "",
-  "version": "11.2.0-beta2",
+  "version": "11.2.0",
   "keywords": [
     "SuperMap",
     "OpenLayers"
@@ -18,7 +18,7 @@
     "@turf/turf": "6.5.0",
     "mapv": "2.0.62",
     "ol": "7.5.2",
-    "@supermap/iclient-common": "11.2.0-beta2",
+    "@supermap/iclient-common": "11.2.0",
     "proj4": "2.11.0",
     "canvg": "3.0.10",
     "lodash.remove": "^4.7.0",
