@@ -52,7 +52,7 @@ class Layer {
     this.stacks = {};
     this.rawConfig = options;
     this.layerSource = {
-      originData: [],
+      originData: {type: 'FeatureCollection', features: []},
       data: {
         dataArray: []
       }
@@ -63,7 +63,7 @@ class Layer {
     this.layerSource = {
       ...options,
       parser,
-      originData: data.features ? data.features : data,
+      originData: data.features ? data : {type: 'FeatureCollection', features: data},
       data: {
         dataArray: parser.type === "geojson" ? data : []
       }
@@ -126,7 +126,7 @@ class Layer {
     return this;
   }
   getSource() {
-    return {
+    const sourceInfo = {
       on: (type, cb) => {
         this.stacks[type] = [cb];
       },
@@ -136,8 +136,13 @@ class Layer {
         });
       }
     };
+    sourceInfo._data = this.layerSource.originData;
+    sourceInfo.getData = () => this.layerSource.originData;
+    sourceInfo.setData = this.setData;
+    return sourceInfo;
   }
-  setData() {
+  setData(data) {
+    this.layerSource.originData = data;
     this.getSource().emit("update");
   }
 

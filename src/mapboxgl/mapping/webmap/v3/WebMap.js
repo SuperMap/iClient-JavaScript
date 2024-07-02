@@ -219,6 +219,63 @@ export class WebMap extends mapboxgl.Evented {
     this.map.addLayer(copyLayer);
   }
 
+  updateOverlayLayer(layerInfo, features, mergeByField) {
+    if (layerInfo.renderSource.type === 'geojson') {
+      const sourceId = layerInfo.renderSource.id;
+      features = this._mergeFeatures(sourceId, features, mergeByField);
+      const featureCollection = {
+        type: 'FeatureCollection',
+        features
+      };
+      this.map.getSource(sourceId).setData(featureCollection);
+    }
+  }
+
+  _mergeFeatures(sourceId, features, mergeByField) {
+    if (!(features instanceof Array)) {
+      return features;
+    }
+    features = features.map((feature, index) => {
+      if (!Object.prototype.hasOwnProperty.call(feature.properties, 'index')) {
+        feature.properties.index = index;
+      }
+      return feature;
+    });
+    if (!features.length || !mergeByField && features[0].geometry) {
+      return features;
+    }
+    const source = this.map.getSource(sourceId);
+    if ((!source || !source._data.features) && features[0].geometry) {
+      return features;
+    }
+    const prevFeatures = source && source._data && source._data.features;
+    const nextFeatures = [];
+    if (!mergeByField && prevFeatures) {
+      return prevFeatures;
+    }
+    features.forEach((feature) => {
+      const prevFeature = prevFeatures.find((item) => {
+        if (isNaN(+item.properties[mergeByField]) && isNaN(+feature.properties[mergeByField])) {
+          return (
+            JSON.stringify(item.properties[mergeByField] || '') ===
+            JSON.stringify(feature.properties[mergeByField] || '')
+          );
+        } else {
+          return +item.properties[mergeByField] === +feature.properties[mergeByField];
+        }
+      });
+      if (prevFeature) {
+        nextFeatures.push({
+          ...prevFeature,
+          ...feature
+        });
+      } else if (feature.geometry) {
+        nextFeatures.push(feature);
+      }
+    });
+    return nextFeatures;
+  }
+
   /**
    * @private
    * @function WebMap.prototype._createMap

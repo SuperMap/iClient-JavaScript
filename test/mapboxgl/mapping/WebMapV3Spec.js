@@ -780,4 +780,78 @@ describe('mapboxgl-webmap3.0', () => {
       });
     });
   });
+
+  it('updateOverlayLayer', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_L7Layers);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: mapInfo.crs.name, getExtent: () => {} };
+    };
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('map.json') > -1) {
+        return Promise.resolve(new Response(mapstudioWebMap_L7Layers));
+      }
+      if (url.indexOf('617580084.json') > -1) {
+        return Promise.resolve(new Response(msProjectINfo_L7Layers));
+      }
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054Items));
+      }
+      if (url.indexOf('/web/datas/1052943054/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1052943054));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata/ogc-features/collections/all/items.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124Items));
+      }
+      if (url.indexOf('/web/datas/1767084124/structureddata.json') > -1) {
+        return Promise.resolve(new Response(l7StructureData1767084124));
+      }
+      return Promise.resolve();
+    });
+    mapboxgl.CRS = function () {};
+    mapboxgl.CRS.set = function () {};
+    const mapOptions = {
+      transformRequest: function(url) { return { url }; }
+    }
+    spyOn(mapOptions, 'transformRequest').and.callThrough();
+    mapstudioWebmap = new WebMap(id, {
+      server: server
+    }, mapOptions);
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      const webmapInstance = mapstudioWebmap._getWebMapInstance();
+      const layerInfo = {
+        id: '北京市轨道交通线路减',
+        renderSource: {
+          id: 'ms_1052943054_1715672103742_8',
+          type: 'geojson'
+        }
+      }
+      const features = [{
+        id: '1',
+        type: 'Feature',
+        properties: {
+          终点y: '39.948990864179734',
+          SmID: 1,
+          标准名称: '地铁二号线',
+          起点x: '116.38050072430798',
+          smpid: 1,
+          起点y: '39.94888011518407',
+          testID: 1,
+          终点x: '116.39553809862188'
+        }
+      }]
+      webmapInstance.updateOverlayLayer(layerInfo, features, '标准名称');
+      const newFeatures = map.getSource('ms_1052943054_1715672103742_8').getData().features;
+      expect(newFeatures.length).toBe(1);
+      done();
+    });
+  });
 });
