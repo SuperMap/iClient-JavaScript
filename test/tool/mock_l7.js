@@ -153,6 +153,9 @@ class Layer {
   off() {}
 
   boxSelect(bbox, cb) {
+    if (this.layerSource.originData.features instanceof Array) {
+      return cb(this.layerSource.originData.features);
+    }
     if (!(this.layerSource.originData instanceof Array)) {
       return cb();
     }

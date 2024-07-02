@@ -851,6 +851,8 @@ describe('mapboxgl-webmap3.0', () => {
       webmapInstance.updateOverlayLayer(layerInfo, features, '标准名称');
       const newFeatures = map.getSource('ms_1052943054_1715672103742_8').getData().features;
       expect(newFeatures.length).toBe(1);
+      delete mapboxgl.Map.prototype.getCRS;
+      delete mapboxgl.CRS;
       done();
     });
   });
