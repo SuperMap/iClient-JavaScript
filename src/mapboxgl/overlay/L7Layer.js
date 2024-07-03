@@ -24,6 +24,11 @@ export class L7Layer extends CustomOverlayLayer {
   constructor({ type, options = {} }) {
     const id = options.layerID ? options.layerID : CommonUtil.createUniqueID('l7_layer_');
     const events = [
+      'inited',
+      'add',
+      'remove',
+      'legend:color',
+      'legend:size',
       'click',
       'dblclick',
       'mousemove',
@@ -149,8 +154,11 @@ export class L7Layer extends CustomOverlayLayer {
       return;
     }
     const { filter } = this.l7layer.rawConfig;
-    const { field: filterFields, values } = getL7Filter(filter, this.id) || {};
-    const fields = filterFields || ['SmID', 'smpid'];
+    let { field: filterFields = [], values } = getL7Filter(filter, this.id) || {};
+    if (!filterFields.length && this.selectedDatas[0]) {
+      filterFields = Object.keys(this.selectedDatas[0].properties);
+    }
+    const fields = filterFields;
     const transformFilterValuesFn = this._transformFilterValues.bind(this, { fields, values, selectedDatas: this.selectedDatas });
     return {
       field: fields,
