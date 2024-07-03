@@ -173,7 +173,7 @@ export var MapExtend = (function () {
       const overlayLayer = this.overlayLayersManager[layerId];
       if (overlayLayer) {
         if (overlayLayer.setFilter) {
-          return overlayLayer.setFilter(filter, options);
+          overlayLayer.setFilter(filter, options);
         }
         return this;
       }
