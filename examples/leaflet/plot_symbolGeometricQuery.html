@@ -153,9 +153,12 @@
     var queryResult = [];
 
     function resetGeometryStyle() {
-        for (var i = 0; i < queryResult.length; i++) {
+        if(queryResult){
+            for (var i = 0; i < queryResult.length; i++) {
             queryResult[i].setStyle({color: "#FF0000"});
         }
+        }
+
         queryResult = [];
     }
 

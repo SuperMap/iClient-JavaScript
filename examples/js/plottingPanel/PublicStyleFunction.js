@@ -193,7 +193,7 @@ function getLineStyleRows() {
     rows.push({ "value": "6", "text": resources.text_threeSegDashline });
     rows.push({ "value": "7", "text": resources.text_fourSegDashline });
     rows.push({ "value": "8", "text": resources.text_fiveSegDashline });
-    rows.push({ "value": "999", "text": resources.text_selfDefinedDashline });
+    // rows.push({ "value": "999", "text": resources.text_selfDefinedDashline });
     return rows;
 }
 

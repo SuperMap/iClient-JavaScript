@@ -74,10 +74,12 @@ L.supermap.plotting.initStylePanel = function (div, serverUrl, editControl) {
 }
 
 function showFeatureProperty(event) {
-    for (var index = 0; index < event.features.length; index++) {
-        var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
-        if (sIndex === -1) {
-            selectFeatures.push(event.features[index]);
+    if (event.features) {
+        for (var index = 0; index < event.features.length; index++) {
+            var sIndex = SuperMap.Util.indexOf(selectFeatures, event.features[index]);
+            if (sIndex === -1) {
+                selectFeatures.push(event.features[index]);
+            }
         }
     }
 
