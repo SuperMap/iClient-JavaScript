@@ -543,6 +543,7 @@ describe('mapboxgl-webmap3.0', () => {
   });
 
   it('layerdatas', (done) => {
+    const spyTest = spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(apstudioWebMap_layerData));
@@ -554,10 +555,8 @@ describe('mapboxgl-webmap3.0', () => {
       return Promise.resolve();
     });
     mapstudioWebmap = new WebMap(id, {
-      server: server,
-      iportalServiceProxyUrl: 'layerdatas'
+      server: server
     });
-
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
       expect(map).not.toBeUndefined();
       expect(mapstudioWebmap.map).toEqual(map);
@@ -567,8 +566,8 @@ describe('mapboxgl-webmap3.0', () => {
       expect(style.layers.length).toBe(mapInfo.layers.length);
       const appreciableLayers = webMapV3.getAppreciableLayers();
       const layerList = webMapV3.getLayerCatalog();
-      expect(layerList.length).toBe(4);
-      expect(appreciableLayers.length).toBe(4);
+      expect(layerList.length).toBe(5);
+      expect(appreciableLayers.length).toBe(5);
       expect(
         appreciableLayers.some(
           (item) =>
@@ -585,13 +584,23 @@ describe('mapboxgl-webmap3.0', () => {
           (item) =>
             item.id === 'ms_New_LINE_1718091329989_7' &&
             item.dataSource.type === 'REST_DATA' &&
-            item.dataSource.url === 'http://172.16.14.44:8090/iserver/services/data-Building/rest/data' &&
+            item.dataSource.url.match(/\/iserver\/services\/data-Building\/rest\/data$/) &&
             item.dataSource.serverId === void 0
+        )
+      ).toBeTruthy();
+      expect(
+        appreciableLayers.some(
+          (item) =>
+            item.renderSource.id === 'ms_M_3857_1719917169016_4' &&
+            item.dataSource.type === 'REST_MAP' &&
+            item.dataSource.url.match(/\/iserver\/services\/map-multi0508\/rest\/maps$/) &&
+            item.dataSource.mapName === 'M_3857'
         )
       ).toBeTruthy();
       expect(
         appreciableLayers.some((item) => item.id === 'CHINA_DARK' && !Object.keys(item.dataSource).length)
       ).toBeTruthy();
+      spyTest.calls.reset();
       done();
     });
   });

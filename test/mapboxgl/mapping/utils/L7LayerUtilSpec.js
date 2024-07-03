@@ -459,7 +459,8 @@ describe('L7LayerUtil', () => {
           'http://localhost:8195/portalproxy/592c4095f464540e/iserver/services/map-LinkMap/restjsr/v1/vectortile/maps/%E5%8E%BF%E7%BA%A7%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%40link/tiles/{z}/{x}/{y}.mvt'
         ],
         bounds: [102.98962307000005, 30.090978575000065, 104.89626180000005, 31.437765225000078],
-        type: 'vector'
+        type: 'vector',
+        promoteId: 'spmid'
       }
     };
     const nextOptions = {

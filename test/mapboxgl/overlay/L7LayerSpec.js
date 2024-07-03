@@ -448,6 +448,7 @@ describe('mapboxgl L7Layer', () => {
           type: 'Feature',
           properties: {
             city: '北京',
+            spmid: 1
           },
           geometry: {
             type: 'Point',
@@ -490,6 +491,11 @@ describe('mapboxgl L7Layer', () => {
     layer.setSelectedDatas(geoData.features);
     expect(layer.selectedDatas.length).toEqual(geoData.features.length);
     expect(layerFilter.values('北京')).toBeFalsy();
+    layer.setSelectedDatas([]);
+    layer.l7layer.rawConfig.filter = ['all', ['==', '$type', 'LineString']];
+    const nextLayerFilter = layer.getFilter();
+    expect(nextLayerFilter.field).toEqual([]);
+    expect(nextLayerFilter.values('1')).toBeTruthy();
     spyOn(l7Layer, 'on');
     spyOn(l7Layer, 'once');
     spyOn(l7Layer, 'off');

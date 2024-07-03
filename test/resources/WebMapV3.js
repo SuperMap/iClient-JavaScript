@@ -92,13 +92,13 @@ var masBackgroundAppInfo = JSON.stringify({
 var mapstudioWebMap_raster = JSON.stringify({
   sources: {
     PopulationDistribution_1635401107248_1: {
-      tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+      tiles: ['base/resources/img/baiduTileTest.png'],
       tileSize: 256,
       bounds: [71.94738367915619, 3.4373340998870576, 135.08727119000017, 53.56026110410313],
       type: 'raster'
     },
     CHINA_DARK: {
-      tiles: ['https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark'],
+      tiles: ['base/resources/img/baiduTileTest.png'],
       tileSize: 256,
       attribution: '',
       bounds: [-180, -90, 180, 90],
@@ -349,9 +349,7 @@ var mapstudioWebMap_symbol = JSON.stringify({
       type: 'vector'
     },
     CHINA_DARK: {
-      tiles: [
-        'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
-      ],
+      tiles: ['base/resources/img/baiduTileTest.png'],
       tileSize: 256,
       attribution: '',
       bounds: [-180, -90, 180, 90],
@@ -1073,307 +1071,229 @@ var msProjectINfo_L7Layers = JSON.stringify({
 
 var msProjectINfo_L7Layers2 = JSON.stringify({
   extent: {
-      top: 39.59816416039695, 
-      left: 115.18399681228337, 
-      bottom: 41.19689764172645, 
-      leftBottom: {
-          x: 115.18399681228337, 
-          y: 41.19689764172645
-      }, 
-      right: 117.6072209745858, 
-      rightTop: {
-          x: 117.6072209745858, 
-          y: 39.59816416039695
-      }
-  }, 
-  controls: null, 
-  extentString: '{"top":39.59816416039695,"left":115.18399681228337,"bottom":41.19689764172645,"leftBottom":{"x":115.18399681228337,"y":41.19689764172645},"right":117.6072209745858,"rightTop":{"x":117.6072209745858,"y":39.59816416039695}}', 
-  description: "", 
-  verifyReason: null, 
-  units: null, 
-  title: "无标题地图-le11", 
-  resolution: 0, 
-  checkStatus: "SUCCESSFUL", 
-  projectInfo: '{"images":"http://127.0.0.1:8089/iportal/web/maps/2045572978/sprites/sprite","catalogs":[{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":17}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"lineGapWidth":{"type":"simple","value":0},"symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718247414231_51","bounds":[116.10214436813241,39.6703694682177,116.68907341874268,40.20693349910421],"showLegend":true,"id":"北京市轨道交通线路-打印","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路-打印"},"title":"北京市轨道交通线路","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":241}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":""},"styleRenderMode":"mapboxgl","textHaloBlur":{"type":"simple","value":2},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"point-907605","style":{"layout":{"icon-image":"point-907605"}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"type":"simple","value":"#FFFFFF"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":1},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718246071547_196","bounds":[115.7011413574,39.67036946821771,116.68625288435837,40.20693349910422],"showLegend":true,"id":"北京市轨道交通站点(13)(2)(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通站点(13)(2)(1)"},"title":"北京市轨道交通站点(13)(2)(1)","layerSourceType":"Data"},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"textureBlend":{"type":"simple","value":"replace"},"symbolsContent":{"type":"simple","value":{"symbolId":"ms_icon_point-8310","style":{"layout":{"icon-image":"ms_icon_point-8310"}}}},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":17}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"iconStep":{"type":"simple","value":20},"width":{"type":"simple","value":2},"heightfixed":{"type":"simple","value":false},"opacity":{"type":"simple","value":1},"type":"line3D","height":{"type":"simple","value":100},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718241075083_4","bounds":[116.10214436813241,39.6703694682177,116.68907341874268,40.20693349910421],"showLegend":true,"id":"北京市轨道交通线路-打印(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路-打印(1)"},"title":"北京市轨道交通线路-打印(1)","layerSourceType":"Data","layersContent":[]}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印(1)","msDatasetId":"ms_datasetId_1718241075083_4","datasetId":"720626591","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印(1)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通站点(13)(2)(1)","msDatasetId":"ms_datasetId_1718246071547_196","datasetId":"248323554","geometryField":"geometry"}],"title":"北京市轨道交通站点(13)(2)(1)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印","msDatasetId":"ms_datasetId_1718247414231_51","datasetId":"1832028287","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}', 
-  visitCount: 4, 
-  centerString: '{"x":116.39560889343761,"y":39.939177386003514}', 
-  epsgCode: 3857, 
-  nickname: "admin_123", 
-  layers: null, 
-  id: 617580084, 
-  searchSetting: null, 
-  thumbnail: "http://127.0.0.1:8089/iportal/resources/thumbnail/map/map2045572978.png", 
-  level: 9, 
+    top: 39.59816416039695,
+    left: 115.18399681228337,
+    bottom: 41.19689764172645,
+    leftBottom: {
+      x: 115.18399681228337,
+      y: 41.19689764172645
+    },
+    right: 117.6072209745858,
+    rightTop: {
+      x: 117.6072209745858,
+      y: 39.59816416039695
+    }
+  },
+  controls: null,
+  extentString:
+    '{"top":39.59816416039695,"left":115.18399681228337,"bottom":41.19689764172645,"leftBottom":{"x":115.18399681228337,"y":41.19689764172645},"right":117.6072209745858,"rightTop":{"x":117.6072209745858,"y":39.59816416039695}}',
+  description: '',
+  verifyReason: null,
+  units: null,
+  title: '无标题地图-le11',
+  resolution: 0,
+  checkStatus: 'SUCCESSFUL',
+  projectInfo:
+    '{"images":"http://127.0.0.1:8089/iportal/web/maps/2045572978/sprites/sprite","catalogs":[{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":17}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"lineGapWidth":{"type":"simple","value":0},"symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718247414231_51","bounds":[116.10214436813241,39.6703694682177,116.68907341874268,40.20693349910421],"showLegend":true,"id":"北京市轨道交通线路-打印","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路-打印"},"title":"北京市轨道交通线路","layerSourceType":"Data","layersContent":[]},{"visualization":{"renderer":[{"rotate":{"type":"simple","value":0},"textLetterSpacing":{"type":"simple","value":0},"textTranslate":{"type":"simple","value":[0,0]},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":241}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"symbolPlacement":{"type":"simple","value":"point"},"textAnchor":{"type":"simple","value":"center"},"translate":{"type":"simple","value":[0,0]},"textRotate":{"type":"simple","value":0},"textField":{"type":"simple","value":""},"styleRenderMode":"mapboxgl","textHaloBlur":{"type":"simple","value":2},"transform":{"type":"simple","value":"none"},"symbolsContent":{"type":"simple","value":{"symbolId":"point-907605","style":{"layout":{"icon-image":"point-907605"}}}},"textTranslateAnchor":{"type":"simple","value":"map"},"justify":{"type":"simple","value":"center"},"ignorePlacement":{"type":"simple","value":false},"textAllowOverlap":{"type":"simple","value":true},"maxWidth":{"type":"simple","value":10},"textSize":{"type":"simple","value":16},"textHaloColor":{"type":"simple","value":"#242424"},"textColor":{"type":"simple","value":"#FFFFFF"},"size":{"type":"simple","value":8},"allowOverlap":{"type":"simple","value":true},"translateAnchor":{"type":"simple","value":"map"},"anchor":{"type":"simple","value":"center"},"textOpacity":{"type":"simple","value":1},"textHaloWidth":{"type":"simple","value":1},"lineHeight":{"type":"simple","value":1.2},"textFont":{"type":"simple","value":["Microsoft YaHei"]},"textIgnorePlacement":{"type":"simple","value":false},"opacity":{"type":"simple","value":0.9}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718246071547_196","bounds":[115.7011413574,39.67036946821771,116.68625288435837,40.20693349910422],"showLegend":true,"id":"北京市轨道交通站点(13)(2)(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"1111标准名称","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmGeometrySize","type":"FIELD"},{"fieldName":"1111SmUserID","type":"FIELD"},{"fieldName":"SmY","type":"FIELD"},{"fieldName":"SmGeoPosition","type":"FIELD"},{"fieldName":"SmX","type":"FIELD"},{"fieldName":"SmLibTileID","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通站点(13)(2)(1)"},"title":"北京市轨道交通站点(13)(2)(1)","layerSourceType":"Data"},{"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"textureBlend":{"type":"simple","value":"replace"},"symbolsContent":{"type":"simple","value":{"symbolId":"ms_icon_point-8310","style":{"layout":{"icon-image":"ms_icon_point-8310"}}}},"color":{"field":["smpid"],"defaultValue":"#ffffff","values":[{"value":"#d53e4f","key":1},{"value":"#3288bd","key":17}],"ribbon":["#d53e4f","#fc8d59","#fee08b","#ffffbf","#e6f598","#99d594","#3288bd"],"interpolateInfo":{"type":"linear"},"type":"unique"},"iconStep":{"type":"simple","value":20},"width":{"type":"simple","value":2},"heightfixed":{"type":"simple","value":false},"opacity":{"type":"simple","value":1},"type":"line3D","height":{"type":"simple","value":100},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718241075083_4","bounds":[116.10214436813241,39.6703694682177,116.68907341874268,40.20693349910421],"showLegend":true,"id":"北京市轨道交通线路-打印(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路-打印(1)"},"title":"北京市轨道交通线路-打印(1)","layerSourceType":"Data","layersContent":[]}],"datas":[{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印(1)","msDatasetId":"ms_datasetId_1718241075083_4","datasetId":"720626591","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印(1)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通站点(13)(2)(1)","msDatasetId":"ms_datasetId_1718246071547_196","datasetId":"248323554","geometryField":"geometry"}],"title":"北京市轨道交通站点(13)(2)(1)"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印","msDatasetId":"ms_datasetId_1718247414231_51","datasetId":"1832028287","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
+  visitCount: 4,
+  centerString: '{"x":116.39560889343761,"y":39.939177386003514}',
+  epsgCode: 3857,
+  nickname: 'admin_123',
+  layers: null,
+  id: 617580084,
+  searchSetting: null,
+  thumbnail: 'http://127.0.0.1:8089/iportal/resources/thumbnail/map/map2045572978.png',
+  level: 9,
   center: {
-      x: 116.39560889343761, 
-      y: 39.939177386003514
-  }, 
+    x: 116.39560889343761,
+    y: 39.939177386003514
+  },
   authorizeSetting: [
-      {
-          permissionType: "DELETE", 
-          aliasName: "admin_123", 
-          entityRoles: [
-              "ADMIN", 
-              "SYSTEM"
-          ], 
-          entityType: "USER", 
-          entityName: "admin_123", 
-          entityId: null
-      }
-  ], 
-  updateTime: 1718247455503, 
-  userName: "admin_123", 
-  tags: [ ], 
-  checkUser: null, 
-  checkUserNick: null, 
-  checkTime: null, 
-  sourceType: "MAPSTUDIO", 
-  createTime: 1718241097421, 
-  controlsString: "", 
-  isDefaultBottomMap: false, 
-  status: null, 
+    {
+      permissionType: 'DELETE',
+      aliasName: 'admin_123',
+      entityRoles: ['ADMIN', 'SYSTEM'],
+      entityType: 'USER',
+      entityName: 'admin_123',
+      entityId: null
+    }
+  ],
+  updateTime: 1718247455503,
+  userName: 'admin_123',
+  tags: [],
+  checkUser: null,
+  checkUserNick: null,
+  checkTime: null,
+  sourceType: 'MAPSTUDIO',
+  createTime: 1718241097421,
+  controlsString: '',
+  isDefaultBottomMap: false,
+  status: null,
   favoriteCount: 0
 });
 
 var mapstudioWebMap_L7Layers2 = JSON.stringify({
-  "metadata": {
-      "layerCatalog": [
-          {
-              "visible": true,
-              "id": "北京市轨道交通线路-打印",
-              "title": "北京市轨道交通线路",
-              "type": "basic"
-          },
-          {
-              "visible": true,
-              "id": "北京市轨道交通站点(13)(2)(1)",
-              "title": "北京市轨道交通站点(13)(2)(1)",
-              "type": "basic"
-          },
-          {
-              "visible": true,
-              "id": "北京市轨道交通线路-打印(1)",
-              "title": "北京市轨道交通线路-打印(1)",
-              "type": "basic"
-          },
-          {
-              "visible": true,
-              "id": "CHINA_DARK",
-              "title": "中国暗色地图",
-              "type": "basic"
-          }
-      ]
-  },
-  "sources": {
-      "ms_248323554_1718246071602_200": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/248323554/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              115.7011413574,
-              39.67036946821771,
-              116.68625288435837,
-              40.20693349910422
-          ],
-          "type": "vector"
+  metadata: {
+    layerCatalog: [
+      {
+        visible: true,
+        id: '北京市轨道交通线路-打印',
+        title: '北京市轨道交通线路',
+        type: 'basic'
       },
-      "ms_720626591_1718241075102_6": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/720626591/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              116.10214436813241,
-              39.6703694682177,
-              116.68907341874268,
-              40.20693349910421
-          ],
-          "type": "vector"
+      {
+        visible: true,
+        id: '北京市轨道交通站点(13)(2)(1)',
+        title: '北京市轨道交通站点(13)(2)(1)',
+        type: 'basic'
       },
-      "CHINA_DARK": {
-          "tiles": [
-              "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true"
-          ],
-          "tileSize": 256,
-          "attribution": "",
-          "bounds": [
-              -180,
-              -90,
-              180,
-              90
-          ],
-          "type": "raster"
+      {
+        visible: true,
+        id: '北京市轨道交通线路-打印(1)',
+        title: '北京市轨道交通线路-打印(1)',
+        type: 'basic'
       },
-      "ms_1832028287_1718247414276_56": {
-          "tiles": [
-              "http://127.0.0.1:8089/iportal/web/datas/1832028287/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry"
-          ],
-          "bounds": [
-              116.10214436813241,
-              39.6703694682177,
-              116.68907341874268,
-              40.20693349910421
-          ],
-          "type": "vector"
+      {
+        visible: true,
+        id: 'CHINA_DARK',
+        title: '中国暗色地图',
+        type: 'basic'
       }
+    ]
   },
-  "crs": "EPSG:3857",
-  "center": [
-      116.39560889343761,
-      39.939177386003514
-  ],
-  "zoom": 9.760029715326183,
-  "glyphs": {},
-  "version": "3.2.1",
-  "rootUrl": "http://127.0.0.1:8089/iportal/",
-  "maxzoom": 12,
-  "name": "无标题地图-le11",
-  "viewExtent": [
-      115.18399681228337,
-      41.19689764172645,
-      117.6072209745858,
-      39.59816416039695
-  ],
-  "layers": [
-      {
-          "maxzoom": 12,
-          "id": "CHINA_DARK",
-          "source": "CHINA_DARK",
-          "type": "raster",
-          "minzoom": 0
+  sources: {
+    ms_248323554_1718246071602_200: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/248323554/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%221111%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%2C%22SmID%22%2C%22SmGeometrySize%22%2C%221111SmUserID%22%2C%22SmY%22%2C%22SmGeoPosition%22%2C%22SmX%22%2C%22SmLibTileID%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [115.7011413574, 39.67036946821771, 116.68625288435837, 40.20693349910422],
+      type: 'vector'
+    },
+    ms_720626591_1718241075102_6: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/720626591/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [116.10214436813241, 39.6703694682177, 116.68907341874268, 40.20693349910421],
+      type: 'vector'
+    },
+    CHINA_DARK: {
+      tiles: ['base/resources/img/baiduTileTest.png'],
+      tileSize: 256,
+      attribution: '',
+      bounds: [-180, -90, 180, 90],
+      type: 'raster'
+    },
+    ms_1832028287_1718247414276_56: {
+      tiles: [
+        'http://127.0.0.1:8089/iportal/web/datas/1832028287/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [116.10214436813241, 39.6703694682177, 116.68907341874268, 40.20693349910421],
+      type: 'vector'
+    }
+  },
+  crs: 'EPSG:3857',
+  center: [116.39560889343761, 39.939177386003514],
+  zoom: 9.760029715326183,
+  glyphs: {},
+  version: '3.2.1',
+  rootUrl: 'http://127.0.0.1:8089/iportal/',
+  maxzoom: 12,
+  name: '无标题地图-le11',
+  viewExtent: [115.18399681228337, 41.19689764172645, 117.6072209745858, 39.59816416039695],
+  layers: [
+    {
+      maxzoom: 12,
+      id: 'CHINA_DARK',
+      source: 'CHINA_DARK',
+      type: 'raster',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible',
+        'line-extrusion-pattern-interval': 20,
+        'line-extrusion-pattern-blend': 'replace'
       },
-      {
-          "layout": {
-              "visibility": "visible",
-              "line-extrusion-pattern-interval": 20,
-              "line-extrusion-pattern-blend": "replace"
-          },
-          "metadata": {
-              "MapStudio": {
-                  "title": "北京市轨道交通线路-打印(1)"
-              }
-          },
-          "paint": {
-              "line-extrusion-base": 100,
-              "line-extrusion-opacity": 1,
-              "line-extrusion-width": 2,
-              "line-extrusion-base-fixed": false,
-              "line-extrusion-color": [
-                  "interpolate",
-                  [
-                      "linear"
-                  ],
-                  [
-                      "get",
-                      "smpid"
-                  ],
-                  1,
-                  "#d53e4f",
-                  17,
-                  "#3288bd"
-              ],
-              "line-extrusion-pattern": "ms_icon_point-8310"
-          },
-          "source": "ms_720626591_1718241075102_6",
-          "source-layer": "720626591$geometry",
-          "id": "北京市轨道交通线路-打印(1)",
-          "type": "line-extrusion"
+      metadata: {
+        MapStudio: {
+          title: '北京市轨道交通线路-打印(1)'
+        }
       },
-      {
-          "layout": {
-              "icon-allow-overlap": true,
-              "text-line-height": 1.2,
-              "visibility": "visible",
-              "text-field": "",
-              "text-anchor": "center",
-              "text-size": 16,
-              "text-allow-overlap": true,
-              "icon-size": 0.08,
-              "symbol-placement": "point",
-              "icon-image": "point-907605",
-              "icon-ignore-placement": false,
-              "text-font": [
-                  "Microsoft YaHei"
-              ],
-              "text-rotate": 0,
-              "text-transform": "none",
-              "text-justify": "center",
-              "text-letter-spacing": 0,
-              "text-max-width": 10,
-              "icon-anchor": "center",
-              "text-ignore-placement": false,
-              "icon-rotate": 0
-          },
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "icon-translate": [
-                  0,
-                  0
-              ],
-              "text-halo-color": "#242424",
-              "text-translate-anchor": "map",
-              "icon-color": [
-                  "interpolate",
-                  [
-                      "linear"
-                  ],
-                  [
-                      "get",
-                      "smpid"
-                  ],
-                  1,
-                  "#d53e4f",
-                  241,
-                  "#3288bd"
-              ],
-              "text-halo-blur": 2,
-              "icon-translate-anchor": "map",
-              "text-color": "#FFFFFF",
-              "text-halo-width": 1,
-              "icon-opacity": 0.9,
-              "text-opacity": 1,
-              "text-translate": [
-                  0,
-                  0
-              ]
-          },
-          "id": "北京市轨道交通站点(13)(2)(1)",
-          "source": "ms_248323554_1718246071602_200",
-          "source-layer": "248323554$geometry",
-          "type": "symbol",
-          "minzoom": 0
+      paint: {
+        'line-extrusion-base': 100,
+        'line-extrusion-opacity': 1,
+        'line-extrusion-width': 2,
+        'line-extrusion-base-fixed': false,
+        'line-extrusion-color': ['interpolate', ['linear'], ['get', 'smpid'], 1, '#d53e4f', 17, '#3288bd'],
+        'line-extrusion-pattern': 'ms_icon_point-8310'
       },
-      {
-          "metadata": {},
-          "maxzoom": 24,
-          "paint": {
-              "line-width": 2,
-              "line-opacity": 1,
-              "line-color": [
-                  "interpolate",
-                  [
-                      "linear"
-                  ],
-                  [
-                      "get",
-                      "smpid"
-                  ],
-                  1,
-                  "#d53e4f",
-                  17,
-                  "#3288bd"
-              ]
-          },
-          "id": "北京市轨道交通线路-打印",
-          "source": "ms_1832028287_1718247414276_56",
-          "source-layer": "1832028287$geometry",
-          "type": "line",
-          "minzoom": 0
-      }
+      source: 'ms_720626591_1718241075102_6',
+      'source-layer': '720626591$geometry',
+      id: '北京市轨道交通线路-打印(1)',
+      type: 'line-extrusion'
+    },
+    {
+      layout: {
+        'icon-allow-overlap': true,
+        'text-line-height': 1.2,
+        visibility: 'visible',
+        'text-field': '',
+        'text-anchor': 'center',
+        'text-size': 16,
+        'text-allow-overlap': true,
+        'icon-size': 0.08,
+        'symbol-placement': 'point',
+        'icon-image': 'point-907605',
+        'icon-ignore-placement': false,
+        'text-font': ['Microsoft YaHei'],
+        'text-rotate': 0,
+        'text-transform': 'none',
+        'text-justify': 'center',
+        'text-letter-spacing': 0,
+        'text-max-width': 10,
+        'icon-anchor': 'center',
+        'text-ignore-placement': false,
+        'icon-rotate': 0
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'icon-translate': [0, 0],
+        'text-halo-color': '#242424',
+        'text-translate-anchor': 'map',
+        'icon-color': ['interpolate', ['linear'], ['get', 'smpid'], 1, '#d53e4f', 241, '#3288bd'],
+        'text-halo-blur': 2,
+        'icon-translate-anchor': 'map',
+        'text-color': '#FFFFFF',
+        'text-halo-width': 1,
+        'icon-opacity': 0.9,
+        'text-opacity': 1,
+        'text-translate': [0, 0]
+      },
+      id: '北京市轨道交通站点(13)(2)(1)',
+      source: 'ms_248323554_1718246071602_200',
+      'source-layer': '248323554$geometry',
+      type: 'symbol',
+      minzoom: 0
+    },
+    {
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'line-width': 2,
+        'line-opacity': 1,
+        'line-color': ['interpolate', ['linear'], ['get', 'smpid'], 1, '#d53e4f', 17, '#3288bd']
+      },
+      id: '北京市轨道交通线路-打印',
+      source: 'ms_1832028287_1718247414276_56',
+      'source-layer': '1832028287$geometry',
+      type: 'line',
+      minzoom: 0
+    }
   ],
-  "sprite": "http://127.0.0.1:8089/iportal/web/maps/2045572978/sprites/sprite",
-  "pitch": 60,
-  "minzoom": 0
+  sprite: 'http://127.0.0.1:8089/iportal/web/maps/2045572978/sprites/sprite',
+  pitch: 60,
+  minzoom: 0
 });
 
 var mapstudioWebMap_L7Layers = JSON.stringify({
@@ -1432,9 +1352,7 @@ var mapstudioWebMap_L7Layers = JSON.stringify({
       type: 'vector'
     },
     CHINA_DARK: {
-      tiles: [
-        'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
-      ],
+      tiles: ['base/resources/img/baiduTileTest.png'],
       tileSize: 256,
       attribution: '',
       bounds: [-180, -90, 180, 90],
@@ -2099,7 +2017,7 @@ var RESTDATA_FEATURES_RES = JSON.stringify({
       type: 'Feature',
       properties: {
         SMLENGTH: '3295.723073587066',
-        IMG: 'http://172.16.14.44:8190/iportal/apps/mapdashboard/v2/static/component-thumbnail/container.png',
+        IMG: 'http://localhost:8190/iportal/apps/mapdashboard/v2/static/component-thumbnail/container.png',
         SMID: '1',
         VIDEO: 'https://iclient.supermap.io/web/data/video/VID_1.mp4',
         SMTOPOERROR: '0',
@@ -2138,6 +2056,12 @@ var apstudioWebMap_layerData = JSON.stringify({
         id: 'CHINA_DARK',
         title: '中国暗色地图',
         type: 'basic'
+      },
+      {
+        visible: true,
+        id: 'D_3857_P@multi(0_24)',
+        title: 'D_3857_P@multi',
+        type: 'basic'
       }
     ]
   },
@@ -2150,10 +2074,15 @@ var apstudioWebMap_layerData = JSON.stringify({
       bounds: [0, 0, 0, 0],
       type: 'raster'
     },
-    CHINA_DARK: {
+    ms_M_3857_1719917169016_4: {
       tiles: [
-        'https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true'
+        'http://localhost:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature.mvt?returnAttributes=true&width=512&height=512&z={z}&x={x}&y={y}'
       ],
+      bounds: [-180.00000000000003, -88, 180.00000000000003, 83.62359619140625],
+      type: 'vector'
+    },
+    CHINA_DARK: {
+      tiles: ['base/resources/img/baiduTileTest.png'],
       tileSize: 256,
       attribution: '',
       bounds: [-180, -90, 180, 90],
@@ -2161,14 +2090,14 @@ var apstudioWebMap_layerData = JSON.stringify({
     },
     ms_720626591_1718099782613_8: {
       tiles: [
-        'http://localhost:8080/iportal/web/datas/720626591/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry'
+        'http://localhost:8190/iportal/web/datas/720626591/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22SmID%22%2C%22%E6%A0%87%E5%87%86%E5%90%8D%E7%A7%B0%22%5D&geometryFieldName=geometry'
       ],
       bounds: [116.10214436813241, 39.6703694682177, 116.68907341874268, 40.20693349910421],
       type: 'vector'
     },
     ms_New_LINE_ms_datasetId_1718091328992_4_1718091329990_8: {
       tiles: [
-        'http://172.16.14.44:8090/iserver/services/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=%7B%22x%22%3A-20037508.3427892%2C%22y%22%3A20037508.3427892%7D'
+        'http://localhost:8090/iserver/services/data-Building/rest/data/datasources/newBuilding/datasets/New_LINE/tileFeature.mvt?returnAttributes=true&width=512&height=512&x={x}&y={y}&scale={scale}&origin=%7B%22x%22%3A-20037508.3427892%2C%22y%22%3A20037508.3427892%7D'
       ],
       bounds: [106.44543352643626, 29.46270920536568, 106.51524799939585, 29.515272642718454],
       type: 'vector'
@@ -2177,9 +2106,11 @@ var apstudioWebMap_layerData = JSON.stringify({
   crs: 'EPSG:3857',
   center: [116.39560889343761, 39.939177386003514],
   zoom: 9.789811175067591,
-  glyphs: {},
+  glyphs: {
+    "ms_M_3857_1719917169016_4": "http://172.16.14.44:8090/iserver/services/map-multi0508/rest/maps/M_3857/tileFeature/sdffonts/{fontstack}/{range}.pbf"
+  },
   version: '3.2.1',
-  rootUrl: 'http://localhost:8080/iportal/',
+  rootUrl: 'http://localhost:8190/iportal/',
   maxzoom: 12,
   name: 'ms_restdata_dataset',
   viewExtent: [116.0580149440603, 40.20693349910433, 116.73320284281802, 39.67036946821758],
@@ -2223,6 +2154,26 @@ var apstudioWebMap_layerData = JSON.stringify({
       'source-layer': '720626591$geometry',
       type: 'line',
       minzoom: 0
+    },
+    {
+      filter: ['all', ['==', '$type', 'Point']],
+      layout: {
+        visibility: 'visible'
+      },
+      metadata: {
+        MapStudio: {
+          title: 'D_3857_P@multi'
+        }
+      },
+      maxzoom: 24,
+      paint: {
+        'circle-color': '#EE4D5A'
+      },
+      source: 'ms_M_3857_1719917169016_4',
+      'source-layer': 'D_3857_P@multi',
+      id: 'D_3857_P@multi(0_24)',
+      type: 'circle',
+      minzoom: 0
     }
   ],
   pitch: 0,
@@ -2254,7 +2205,7 @@ var msProjectINfo_layerData = JSON.stringify({
   resolution: 0,
   checkStatus: 'SUCCESSFUL',
   projectInfo:
-    '{"catalogs":[{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"lineGapWidth":{"type":"simple","value":0},"symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718099782604_6","bounds":[116.10214436813241,39.6703694682177,116.68907341874268,40.20693349910421],"id":"北京市轨道交通线路-打印(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路-打印(1)"},"title":"北京市轨道交通线路-打印(1)","layerSourceType":"Data"},{"visible":true,"catalogType":"layer","id":"Buildings_R_3857@Buildings","title":"Buildings_R_3857@Buildings","layerSourceType":"TileService"},{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"styleRenderMode":"mapboxgl","symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineGapWidth":{"type":"simple","value":0},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"catalogType":"layer","msDatasetId":"ms_datasetId_1718091328992_4","bounds":[106.44543352643626,29.46270920536568,106.51524799939585,29.515272642718454],"id":"ms_New_LINE_1718091329989_7","popupInfo":{"elements":[{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmLength","type":"FIELD"},{"fieldName":"SmTopoError","type":"FIELD"},{"fieldName":"SmGeoParam","type":"FIELD"},{"fieldName":"SmGeometry","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"Field_SmUserID","type":"FIELD"},{"fieldName":"Name","type":"FIELD"},{"fieldName":"VIDEO","type":"FIELD"},{"fieldName":"IMG","type":"FIELD"}],"title":"New_LINE"},"title":"New_LINE","layerSourceType":"DataService"}],"datas":[{"sourceType":"REST_DATA","datasets":[{"datasetTitle":"New_LINE","msDatasetId":"ms_datasetId_1718091328992_4","datasetName":"New_LINE"}],"title":"newBuilding","url":"http://172.16.14.44:8090/iserver/services/data-Building/rest/data/datasources/newBuilding"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印(1)","msDatasetId":"ms_datasetId_1718099782604_6","datasetId":"720626591","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印(1)"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
+    '{"catalogs":[{"filter":["all",["==","$type","Point"]],"visualization":{"renderer":[{"heightMultiple":{"type":"simple","value":1},"shape":{"type":"simple","value":"cylinder"},"color":{"type":"simple","value":"#EE4D5A"},"size":{"type":"simple","value":12},"opacity":{"type":"simple","value":0.9},"type":"column","height":{"type":"simple","value":20},"styleRenderMode":"antvL7"}]},"visible":true,"catalogType":"layer","labelsContent":[],"serviceLayerId":"D_3857_P@multi","id":"D_3857_P@multi(0_24)","popupInfo":{"elements":[{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"USERID","type":"FIELD"},{"fieldName":"CAPITAL_LO","type":"FIELD"},{"fieldName":"CAPITAL_EN","type":"FIELD"},{"fieldName":"COUNTRY_EN","type":"FIELD"},{"fieldName":"CAP_POP","type":"FIELD"}],"title":"D_3857_P@multi"},"title":"D_3857_P@multi","layerSourceType":"VectorTileService","zoomRange":[0,24],"layersContent":[]},{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"lineGapWidth":{"type":"simple","value":0},"symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"visible":true,"catalogType":"layer","msDatasetId":"ms_datasetId_1718099782604_6","bounds":[116.10214436813241,39.6703694682177,116.68907341874268,40.20693349910421],"id":"北京市轨道交通线路-打印(1)","popupInfo":{"elements":[{"fieldName":"smpid","type":"FIELD"},{"fieldName":"SmID","type":"FIELD"},{"fieldName":"标准名称","type":"FIELD"},{"fieldName":"geometry","type":"FIELD"}],"title":"北京市轨道交通线路-打印(1)"},"title":"北京市轨道交通线路-打印(1)","layerSourceType":"Data"},{"visible":true,"catalogType":"layer","id":"Buildings_R_3857@Buildings","title":"Buildings_R_3857@Buildings","layerSourceType":"TileService"},{"visualization":{"renderer":[{"lineDasharray":{"type":"simple","value":[1,0]},"color":{"type":"simple","value":"#4CC8A3"},"lineTranslateAnchor":{"type":"simple","value":"map"},"lineMiterLimit":{"type":"simple","value":2},"lineOffset":{"type":"simple","value":0},"lineJoin":{"type":"simple","value":"miter"},"lineRoundLimit":{"type":"simple","value":1.05},"lineTranslate":{"type":"simple","value":[0,0]},"styleRenderMode":"mapboxgl","symbolsContent":{"type":"simple","value":{"symbolId":"line-0","style":{"paint":{"line-width":2,"line-color":"#4CC8A3"}}}},"lineGapWidth":{"type":"simple","value":0},"lineCap":{"type":"simple","value":"butt"},"width":{"type":"simple","value":2},"opacity":{"type":"simple","value":1}}]},"catalogType":"layer","msDatasetId":"ms_datasetId_1718091328992_4","bounds":[106.44543352643626,29.46270920536568,106.51524799939585,29.515272642718454],"id":"ms_New_LINE_1718091329989_7","popupInfo":{"elements":[{"fieldName":"SmID","type":"FIELD"},{"fieldName":"SmLength","type":"FIELD"},{"fieldName":"SmTopoError","type":"FIELD"},{"fieldName":"SmGeoParam","type":"FIELD"},{"fieldName":"SmGeometry","type":"FIELD"},{"fieldName":"SmUserID","type":"FIELD"},{"fieldName":"Field_SmUserID","type":"FIELD"},{"fieldName":"Name","type":"FIELD"},{"fieldName":"VIDEO","type":"FIELD"},{"fieldName":"IMG","type":"FIELD"}],"title":"New_LINE"},"title":"New_LINE","layerSourceType":"DataService"}],"datas":[{"sourceType":"REST_DATA","datasets":[{"datasetTitle":"New_LINE","msDatasetId":"ms_datasetId_1718091328992_4","datasetName":"New_LINE"}],"title":"newBuilding","url":"http://localhost:8090/iserver/services/data-Building/rest/data/datasources/newBuilding"},{"sourceType":"STRUCTURE_DATA","datasets":[{"datasetTitle":"北京市轨道交通线路-打印(1)","msDatasetId":"ms_datasetId_1718099782604_6","datasetId":"720626591","geometryField":"geometry"}],"title":"北京市轨道交通线路-打印(1)"}],"baseLayer":{"internetMapName":"CHINA_DARK","type":"INTERNET_MAP"},"version":"3.0.4"}',
   visitCount: 11,
   centerString: '{"x":116.39560889343761,"y":39.939177386003514}',
   epsgCode: 3857,
@@ -2262,7 +2213,7 @@ var msProjectINfo_layerData = JSON.stringify({
   layers: null,
   id: 617580084,
   searchSetting: null,
-  thumbnail: 'http://localhost:8080/iportal/resources/thumbnail/map/map1093493210.png',
+  thumbnail: 'http://localhost:8190/iportal/resources/thumbnail/map/map1093493210.png',
   level: 9,
   center: {
     x: 116.39560889343761,
@@ -2302,100 +2253,80 @@ var msProjectINfo_layerData = JSON.stringify({
 
 var mapstudioWebMap_group = JSON.stringify({
   metadata: {
-      layerCatalog: [
+    layerCatalog: [
+      {
+        visible: true,
+        children: [
           {
-              visible: true, 
-              children: [
-                  {
-                      visible: true, 
-                      id: "四川省市级边界", 
-                      title: "四川省市级边界", 
-                      type: "basic"
-                  }
-              ], 
-              id: "ms_group_1719799741965_7", 
-              title: "未命名分组", 
-              type: "group"
-          }, 
-          {
-              visible: true, 
-              id: "CHINA_DARK", 
-              title: "中国暗色地图", 
-              type: "basic"
+            visible: true,
+            id: '四川省市级边界',
+            title: '四川省市级边界',
+            type: 'basic'
           }
-      ]
-  }, 
+        ],
+        id: 'ms_group_1719799741965_7',
+        title: '未命名分组',
+        type: 'group'
+      },
+      {
+        visible: true,
+        id: 'CHINA_DARK',
+        title: '中国暗色地图',
+        type: 'basic'
+      }
+    ]
+  },
   sources: {
-      ms_10451348_1719799738109_6: {
-          tiles: [
-              "http://172.16.15.94:8080/iportal/web/datas/10451348/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22parent%22%2C%22adcode%22%2C%22level%22%2C%22centroid%22%2C%22childrenNum%22%2C%22center%22%2C%22subFeatureIndex%22%2C%22name%22%2C%22acroutes%22%5D&geometryFieldName=geometry"
-          ], 
-          bounds: [
-              97.350096, 
-              26.045865, 
-              108.546488, 
-              34.312446
-          ], 
-          type: "vector"
-      }, 
-      CHINA_DARK: {
-          tiles: [
-              "https://maptiles.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/tileimage.png?scale={scale}&x={x}&y={y}&width={width}&height={height}&transparent=true&redirect=false&cacheEnabled=true"
-          ], 
-          tileSize: 256, 
-          attribution: "", 
-          bounds: [
-              -180, 
-              -90, 
-              180, 
-              90
-          ], 
-          type: "raster"
-      }
-  }, 
-  crs: "EPSG:3857", 
-  center: [
-      101.12284196390647, 
-      30.26608027222483
-  ], 
-  zoom: 5.9855446883732935, 
-  glyphs: { }, 
-  version: "3.2.1", 
-  rootUrl: "http://172.16.15.94:8080/iportal/", 
-  maxzoom: 12, 
-  name: "无标题地图group1", 
-  viewExtent: [
-      94.1151112782352, 
-      34.31244599999984, 
-      108.13057264957897, 
-      26.045864999999523
-  ], 
+    ms_10451348_1719799738109_6: {
+      tiles: [
+        'http://localhost:8190/iportal/web/datas/10451348/structureddata/tiles/{z}/{x}/{y}.mvt?epsgCode=3857&returnedFieldNames=%5B%22smpid%22%2C%22parent%22%2C%22adcode%22%2C%22level%22%2C%22centroid%22%2C%22childrenNum%22%2C%22center%22%2C%22subFeatureIndex%22%2C%22name%22%2C%22acroutes%22%5D&geometryFieldName=geometry'
+      ],
+      bounds: [97.350096, 26.045865, 108.546488, 34.312446],
+      type: 'vector'
+    },
+    CHINA_DARK: {
+      tiles: ['base/resources/img/baiduTileTest.png'],
+      tileSize: 256,
+      attribution: '',
+      bounds: [-180, -90, 180, 90],
+      type: 'raster'
+    }
+  },
+  crs: 'EPSG:3857',
+  center: [101.12284196390647, 30.26608027222483],
+  zoom: 5.9855446883732935,
+  glyphs: {},
+  version: '3.2.1',
+  rootUrl: 'http://localhost:8190/iportal/',
+  maxzoom: 12,
+  name: '无标题地图group1',
+  viewExtent: [94.1151112782352, 34.31244599999984, 108.13057264957897, 26.045864999999523],
   layers: [
-      {
-          maxzoom: 12, 
-          id: "CHINA_DARK", 
-          source: "CHINA_DARK", 
-          type: "raster", 
-          minzoom: 0
-      }, 
-      {
-          layout: {
-              visibility: "visible"
-          }, 
-          metadata: { }, 
-          maxzoom: 24, 
-          paint: {
-              'fill-outline-color': "#FFFFFF", 
-              'fill-color': "#826DBA", 
-              'fill-opacity': 0.9
-          }, 
-          id: "四川省市级边界", 
-          source: "ms_10451348_1719799738109_6", 
-          'source-layer': "10451348$geometry", 
-          type: "fill", 
-          minzoom: 0
-      }
-  ], 
-  pitch: 0, 
+    {
+      maxzoom: 12,
+      id: 'CHINA_DARK',
+      source: 'CHINA_DARK',
+      type: 'raster',
+      minzoom: 0
+    },
+    {
+      layout: {
+        visibility: 'visible'
+      },
+      metadata: {},
+      maxzoom: 24,
+      paint: {
+        'fill-outline-color': '#FFFFFF',
+        'fill-color': '#826DBA',
+        'fill-opacity': 0.9
+      },
+      id: '四川省市级边界',
+      source: 'ms_10451348_1719799738109_6',
+      'source-layer': '10451348$geometry',
+      type: 'fill',
+      minzoom: 0
+    }
+  ],
+  pitch: 0,
   minzoom: 0
-})
+});

@@ -1948,7 +1948,7 @@ function addL7MarkerLayer(actionLayer, scene) {
   return layer;
 }
 
-function getL7Layer(l) {
+function getL7Layer(l, sourceInfo) {
   const typeRule = {
     [MSLayerType.line]: 'LineLayer',
     [MSLayerType.point]: 'PointLayer',
@@ -1958,7 +1958,7 @@ function getL7Layer(l) {
   const source = l.source || {};
   const layer = new L7Layer({
     type: typeRule[l.type],
-    options: { ...l.options, layerID: (l.options || {}).name, featureId: (source.parser || {}).type === 'mvt' ? 'smpid' :  undefined } // 解决L7结构化数据监听click事件会返回多个features问题
+    options: { ...l.options, layerID: (l.options || {}).name, featureId: sourceInfo.promoteId } // 解决L7结构化数据监听click事件会返回多个features问题
   });
   // getL7Layer返回原生antv l7 layer的实例
   const l7Layer = layer.getL7Layer();
@@ -2033,7 +2033,7 @@ export async function addL7Layers({ map, webMapInfo, l7Layers, spriteDatas, opti
       (l.options || {}).visible !== false && addL7MarkerLayer(actionLayer, scene);
       ChartController.setSceneChartLayer(l.id, actionLayer);
     } else {
-      const layer = getL7Layer(l);
+      const layer = getL7Layer(l, sources[layers[layerIndex].source]);
       if (!map.getLayer(layer.id)) {
         map.addLayer(layer, beforeLayer && beforeLayer.id);
       }

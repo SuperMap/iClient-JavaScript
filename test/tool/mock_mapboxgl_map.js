@@ -49,7 +49,10 @@ const Map = function (options) {
       : new mapboxgl.LngLat(0, 0);
   }
   this.resize = function () {};
-  this.style = options.style;
+  this.style = {
+    ...options.style,
+    addGlyphs: function() {}
+  };
   this.setStyle = function (style, options) {
     if (style.layers) {
       for (let i = 0, list = style.layers; i < list.length; i += 1) {
@@ -131,12 +134,12 @@ const Map = function (options) {
   };
 
   this.getSource = function (name) {
-    this._sources[name];
     if (this._sources[name]?.type === 'video') {
       return {
         play: function () {}
       };
     }
+    return this._sources[name];
   };
 
   this.loaded = function () {
@@ -320,6 +323,7 @@ const Map = function (options) {
   };
   this.getCRS = () => {
     return {
+      epsgCode: this.options.crs,
       getExtent: () => jest.fn()
     };
   };

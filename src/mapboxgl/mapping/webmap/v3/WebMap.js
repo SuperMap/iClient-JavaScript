@@ -717,6 +717,17 @@ export class WebMap extends mapboxgl.Evented {
         }
       }
       const sourceOnMap = this.map.getSource(layer.source);
+      if (!Object.keys(dataSource).length && sourceOnMap && sourceOnMap.type === 'vector') {
+        const matchSource = this._mapInfo.sources[layer.source] || sourceOnMap;
+        if (matchSource.tiles && matchSource.tiles[0].includes('/rest/maps/')) {
+          const tileUrl = matchSource.tiles[0];
+          const [serverUrl, leftParts] = tileUrl.split('/rest/maps/');
+          const [mapName] = leftParts.split('/tileFeature');
+          dataSource.url = `${serverUrl}/rest/maps`;
+          dataSource.mapName = mapName;
+          dataSource.type = 'REST_MAP';
+        }
+      }
       const layout = layer.layout || {};
       const overlayLayers = this._formatLayer({
         id: layer.id,
