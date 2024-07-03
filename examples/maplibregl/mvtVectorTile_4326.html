@@ -3,7 +3,7 @@
 *********************************************************************-->
 <!--********************************************************************
 * 该示例需要引入 
-* mapbox-gl-enhance (https://iclient.supermap.io/web/libs/mapbox-gl-js-enhance/4.3.0-1/mapbox-gl-enhance.js)
+* maplibre-gl-enhance (https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/4.3.0-1/maplibre-gl-enhance.js)
 *********************************************************************-->
 <!DOCTYPE html>
 <html>
@@ -30,21 +30,21 @@
 <body>
     <div id='map'></div>
     <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
-    <script type="text/javascript" include="mapbox-gl-enhance" src="../../dist/mapboxgl/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="maplibre-gl-enhance" src="../../dist/maplibregl/include-maplibregl.js"></script>
     <script type="text/javascript">
         $.get(
             'https://iserver.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
             function (style) {
                 var host = window.isLocal ? window.server : "https://iserver.supermap.io";
-                style.layers[0].paint["background-color"] = "rgba(168,209,221,=00)";
-                map = new mapboxgl.Map({
+                style.layers[0].paint["background-color"] = "rgba(168,209,221,0)";
+                map = new maplibregl.Map({
                     container: 'map', 
                     renderWorldCopies: false,
                     isConstrain: true,
                     style: style,
                     center: [-122.2543440112645, 38.236059513982674],
                     zoom: 13,
-                    crs: mapboxgl.CRS.EPSG4326
+                    crs: maplibregl.CRS.EPSG4326
                 });
                 map.on('load', function () {
                     map.addLayer({

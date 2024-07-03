@@ -70,6 +70,13 @@ var exampleConfig = {
             version: '11.1.1',
             thumbnail: "layersLegend.png",
             fileName: "01_layersLegend"
+          },
+          {
+            name: "海图",
+            name_en: "Chart",
+            version: '11.2.0',
+            thumbnail: "chart.png",
+            fileName: "01_chartService"
           }
         ]
       },
@@ -470,6 +477,19 @@ var exampleConfig = {
           // }
         ]
       },
+      image: {
+        name: "影像服务",
+        name_en: "Image service",
+        content: [
+          {
+            name: "影像服务",
+            name_en: "Image Service",
+            version: "11.2.0",
+            thumbnail: "imageService.png",
+            fileName: "imageService"
+          }
+        ]
+      },
       KnowledgeGraph: {
         name: '知识图谱',
         name_en: 'KnowledgeGraph',
@@ -683,7 +703,31 @@ var exampleConfig = {
             localIgnore: true,
             thumbnail: 'mvtVectorTile_landuse.png',
             fileName: 'mvtVectorTile_landuse'
-          }
+          },
+          {
+            name: '矢量瓦片叠加',
+            name_en: 'MVT overlay',
+            localIgnore: true,
+            version: '11.2.0',
+            thumbnail: 'mvtVectorTile_overlay.png',
+            fileName: 'mvtVectorTile_overlay'
+          },
+          {
+            name: 'iServer数据服务矢量瓦片(2000万点)',
+            name_en: 'iServer REST Data VectorTile(20 million Point)',
+            version: '11.2.0',
+            localIgnore: true,
+            thumbnail: 'mvtVectorTile_restdata.png',
+            fileName: 'mvtVectorTile_restdata'
+          },
+          {
+            name: 'POI 标签高亮',
+            name_en: 'POI Label Highlight',
+            version: '11.2.0',
+            localIgnore: true,
+            thumbnail: 'mvt_poi_highlight.png',
+            fileName: 'mvtVectorTile_poi_highlight'
+        }
         ]
       },
       cluster: {
@@ -1089,6 +1133,12 @@ var exampleConfig = {
           thumbnail: 'websymbol_customWebSymbol.png',
           fileName: 'websymbol_customWebSymbol'
         }, {
+          name: '京津地区土地利用现状图',
+          name_en: 'Land Use of Jingjin ',
+          version: '11.2.0',
+          thumbnail: 'websymbol_landuseOfJingjin.png',
+          fileName: 'websymbol_landuseOfJingjin'
+        },{
           name: '2019年中国各省GDP',
           name_en: "2019 China's GDP by Province",
           version: '11.1.0',

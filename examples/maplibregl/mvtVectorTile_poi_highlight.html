@@ -1,0 +1,149 @@
+<!--********************************************************************
+* 该示例需要引入 
+* maplibre-gl-enhance (https://iclient.supermap.io/web/libs/maplibre-gl-js-enhance/1.12.1/maplibre-gl-enhance.js)
+*********************************************************************-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title data-i18n="resources.title_mvtVectorLayer_poi_highlight"></title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+        <script
+            type="text/javascript"
+            include="maplibre-gl-enhance"
+            src="../../dist/maplibregl/include-maplibregl.js"
+        ></script>
+        <script type="text/javascript">
+            $.get(
+                'https://iserver.supermap.io/iserver/services/map-mvt-California/rest/maps/California/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY',
+                function (style) {
+                    var host = window.isLocal ? window.server : 'https://iserver.supermap.io';
+                    style.layers[0].paint['background-color'] = 'rgba(168,209,221,0)';
+                    map = new maplibregl.Map({
+                        container: 'map',
+                        renderWorldCopies: false,
+                        isConstrain: true,
+                        style: style,
+                        center: [-122.2543440112645, 38.236059513982674],
+                        zoom: 12,
+                        minZoom:12,
+                        maxZoom:12,
+                        crs: maplibregl.CRS.EPSG4326
+                    });
+                    map.on('load', function () {
+                        map.loadImage('../img/poi-bg.png', function (error, image) {
+                            if (error) throw error;
+                            if (!map.hasImage('poi-bg')) {
+                                map.addImage('poi-bg', image, {
+                                    stretchX: [[14, 190]],
+                                    stretchY: [[14, 90]],
+                                    content: [14, 14, 190, 90],
+                                    pixelRatio: 1
+                                });
+                            }
+                        });
+                        map.addLayer(
+                            {
+                                id: 'simple-tiles',
+                                type: 'raster',
+                                source: {
+                                    type: 'raster',
+                                    tiles: [host + '/iserver/services/map-world/rest/maps/World'],
+                                    rasterSource: 'iserver',
+                                    tileSize: 256
+                                },
+                                minzoom: 0,
+                                maxzoom: 22
+                            },
+                            'background'
+                        );
+                        // 可以高亮的图层
+                        var highlightLayers = [
+                            'Peak_P@California#3',
+                            'Reservoir_R@California#6',
+                            'Town_P@California#4',
+                            'City_P@California#7',
+                            'NatureReserve_R@California#11'
+                        ];
+                        // 为每个图层增加对应的高亮图层
+                        highlightLayers.forEach(function (layerId) {
+                            var layerStyle = map.getStyle().layers.filter(function (layer) {
+                                return layer.id === layerId;
+                            })[0];
+                            if (layerStyle.type === 'symbol') {
+                                // 高亮图层叠加在原始图层上，原始图层需要允许压盖
+                                map.setLayoutProperty(layerId, 'text-allow-overlap', true);
+                                map.setLayoutProperty(layerId, 'icon-allow-overlap', true);
+                                layerStyle.id = layerId + '-highlighted';
+                                layerStyle.layout['icon-image'] = 'poi-bg';
+                                layerStyle.layout['icon-allow-overlap'] = true;
+                                layerStyle.layout['icon-text-fit'] = 'both';
+                                layerStyle.paint['text-color'] = 'rgba(0,0,0,0)';
+                                layerStyle.paint['text-halo-color'] = 'rgba(0,0,0,0)';
+                                // 根据feature state控制高亮效果是否显示（透明度）
+                                layerStyle.paint['icon-opacity'] = [
+                                    'case',
+                                    ['boolean', ['feature-state', 'hover'], false],
+                                    1,
+                                    0
+                                ];
+                                map.addLayer(layerStyle);
+                            }
+                        });
+                        var hoveredFeature;
+                        // 鼠标hover事件改变feature state
+                        map.on('mousemove', function (e) {
+                            var bbox = [
+                                [e.point.x - 5, e.point.y - 5],
+                                [e.point.x + 5, e.point.y + 5]
+                            ];
+                            var features = map.queryRenderedFeatures(bbox, {
+                                layers: highlightLayers
+                            });
+                            if (hoveredFeature) {
+                                map.setFeatureState(
+                                    {
+                                        source: hoveredFeature.source,
+                                        sourceLayer: hoveredFeature.sourceLayer,
+                                        id: hoveredFeature.id
+                                    },
+                                    { hover: false }
+                                );
+                                hoveredFeature = null;
+                            }
+                            if (features.length > 0) {
+                                var feature = features[0];
+                                hoveredFeature = feature;
+                                map.setFeatureState(
+                                    {
+                                        source: hoveredFeature.source,
+                                        sourceLayer: hoveredFeature.sourceLayer,
+                                        id: hoveredFeature.id
+                                    },
+                                    { hover: true }
+                                );
+                            }
+                        });
+                    });
+                }
+            );
+        </script>
+    </body>
+</html>
