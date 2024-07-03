@@ -74,14 +74,14 @@
                 style=" font-size: 16px;color: #ffffff;"></h5>
         </div>
         <div style="margin: 10px;">
-            <div class='input-group' style="width: 220px;margin-bottom: 15px;">
+            <!-- <div class='input-group' style="width: 220px;margin-bottom: 15px;">
                 <span class='input-group-addon' data-i18n="resources.text_checkType"></span>
                 <select type='text' class='form-control' id='symbol' onchange="symbolChanged(event)">
                     <option id="10001" data-i18n="resources.option_symbol" value="0"></option>
                     <option id="10002" data-i18n="resources.option_picture" value="1"></option>
                     <option id="10003" data-i18n="resources.option_model" value="2"></option>
                 </select>
-            </div>
+            </div> -->
             <div class='input-group' style="width: 220px;margin-bottom: 15px;">
                 <span class='input-group-addon' data-i18n="resources.text_number"></span>
                 <input type='text' class='form-control' id='count' value='15' style="width: 110px;" />
@@ -92,7 +92,7 @@
     </div>
     </div>
     <div id="toolbar" class="panel panel-primary"
-        style="position: absolute;top: 280px;right: 10px;text-align: center;z-index: 800;border-radius: 4px;">
+        style="position: absolute;top: 230px;right: 10px;text-align: center;z-index: 800;border-radius: 4px;">
         <div class='panel-heading' id="panelheading">
             <h5 class='panel-title text-center' data-i18n="resources.title_symbolGroup"
                 style="font-size: 16px;font-weight: normal;color: #fff;"></h5>
@@ -218,8 +218,8 @@
                 plottingLayer = plotMapManager.getActivePlottingLayer();
             }
         });
-        document.getElementById("symbol").value = "0";
-        currentSymbolType = resources.option_symbol;
+        // document.getElementById("symbol").value = "0";
+        // currentSymbolType = resources.option_symbol;
         document.getElementById("createOrUnSymbolGroup").value = resources.btn_createSymbolGroup;
 
         function featuresSelected() {
@@ -301,22 +301,22 @@
             document.getElementById("culsterInfoVisible").disabled = true;
             document.getElementById("onlyInCulsterInfoVisible").disabled = true;
         }
-        function symbolChanged(event) {
-            switch (event.target.value) {
-                case '0':
-                    currentSymbolType = resources.option_symbol;
-                    break;
-                case '1':
-                    currentSymbolType = resources.option_picture;
-                    break;
-                case '2':
-                    currentSymbolType = resources.option_model;
-                    break;
+        // function symbolChanged(event) {
+        //     switch (event.target.value) {
+        //         case '0':
+        //             currentSymbolType = resources.option_symbol;
+        //             break;
+        //         case '1':
+        //             currentSymbolType = resources.option_picture;
+        //             break;
+        //         case '2':
+        //             currentSymbolType = resources.option_model;
+        //             break;
 
-                default:
-                    break;
-            }
-        }
+        //         default:
+        //             break;
+        //     }
+        // }
 
         function createRoomNumber() {
             var libID = 421;
@@ -396,14 +396,14 @@
             }
         }
         function drawGraphics() {
-            // plottingLayer.removeAllFeatures();
-            if (currentSymbolType === resources.option_symbol) {
-                this.createRoomNumber();
-            } else if (currentSymbolType === resources.option_model) {
-                this.createAirPlane();
-            } else if (currentSymbolType === resources.option_picture) {
-                this.createPicture();
-            }
+            this.createRoomNumber();
+            // if (currentSymbolType === resources.option_symbol) {
+            //     this.createRoomNumber();
+            // } else if (currentSymbolType === resources.option_model) {
+            //     this.createAirPlane();
+            // } else if (currentSymbolType === resources.option_picture) {
+            //     this.createPicture();
+            // }
         }
         function multiSelectModel() {
             editControl.multiSelect();
