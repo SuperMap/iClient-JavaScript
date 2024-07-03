@@ -223,4 +223,35 @@ describe('mapboxgl_InitMap', () => {
     delete mapboxgl.CRS;
     delete mapboxgl.proj4;
   });
+
+  it('with tilesets', (done) => {
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 4326
+      }
+    };
+    var tilesetServeRequest = 'http://supermapiserver:8090/iserver/services/map-world/rest/maps/Jinjing111';
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('Jinjing111') > -1 && url.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(mapInfo_2));
+      }
+      if (url.indexOf('Jinjing111/tilesets') > -1) {
+        return Promise.resolve(new Response(tilesetInfo_1));
+      }
+      return Promise.resolve();
+    });
+    mapboxgl.CRS = function () {
+      return {
+        code: mapServiceInfo.prjCoordSys.epsgCode
+      };
+    };
+    mapboxgl.proj4 = function () {
+      return [0, 0];
+    };
+    initMap(tilesetServeRequest).then(({ map }) => {
+      expect(map).not.toBeNull();
+      done();
+    });
+  });
 });

@@ -1,7 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import { MapService } from '../services/MapService';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { InitMapServiceBase, isPlaneProjection, getZoom  } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermap/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 
 /**
@@ -180,6 +180,9 @@ async function createMapOptions(url, resetServiceInfo, options) {
       : url;
   let nonEnhanceExtraInfo = {};
   let enhanceExtraInfo = {};
+  let zoom;
+  let tileSize = 512;
+  let tileFormat = 'png';
   if (mapboxgl.CRS) {
     const baseProjection = crs;
     const wkt = await options.initMapService.getWKT();
@@ -197,6 +200,27 @@ async function createMapOptions(url, resetServiceInfo, options) {
     } else {
       mapCenter = transformMapCenter(mapCenter, baseProjection);
     }
+    
+    const tilesets = await options.initMapService.getTilesets();
+    const tileset = getTileset(tilesets.result, { prjCoordSys: resetServiceInfo.prjCoordSys, tileType: 'Image' });
+  
+    if (tileset) {
+      tileFormat = getTileFormat(tileset);
+      const maxWidth = Math.max(tileset.bounds.right - tileset.originalPoint.x, tileset.originalPoint.y - tileset.bounds.bottom);
+      const tileCount = maxWidth / (tileset.resolutions[0] * 256);
+      zoom = Math.ceil(Math.log2(tileCount));
+      const closestTileCount = Math.pow(2, zoom);
+      const width =  closestTileCount * 256 * tileset.resolutions[0];
+      const crsBounds = [
+        tileset.originalPoint.x,
+        tileset.originalPoint.y - width,
+        tileset.originalPoint.x + width,
+        tileset.originalPoint.y
+      ];
+      crs = new mapboxgl.CRS(baseProjection, crsBounds);
+      zoom = zoom - 1;
+      tileSize = tileset.tileWidth;
+    }
   } else {
     crs = 'EPSG:3857';
     mapCenter = transformMapCenter(mapCenter, crs);
@@ -207,7 +231,9 @@ async function createMapOptions(url, resetServiceInfo, options) {
       tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
     }
   }
-  const zoom = getZoom({ scale, dpi, coordUnit }, extent);
+  if (zoom === undefined) {
+    zoom = getZoom({ scale, dpi, coordUnit }, extent);
+  }
   return {
     container: 'map',
     crs,
@@ -219,6 +245,8 @@ async function createMapOptions(url, resetServiceInfo, options) {
             version: 8,
             sources: {
               'smaples-source': {
+                format: tileFormat,
+                tileSize,
                 type: 'raster',
                 tiles: [tileUrl],
                 ...nonEnhanceExtraInfo,

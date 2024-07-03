@@ -1,6 +1,7 @@
 import maplibregl from 'maplibre-gl';
+import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 import { MapService } from '../services/MapService';
-import { InitMapServiceBase, isPlaneProjection, getZoom } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermap/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 /**
  * @function initMap
@@ -44,7 +45,11 @@ export function initMap(url, options = {}) {
           return;
         }
         if (epsgCode !== 3857 && !dynamicProjection && !maplibregl.CRS) {
-          reject(new Error(`The EPSG code ${epsgCode} is not yet supported`));
+          reject(
+            new Error(
+              `The EPSG code ${epsgCode} needs to include maplibre-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/maplibregl/editor.html#mvtVectorTile_2362`
+            )
+          );
           return;
         }
         const mapOptions = await createMapOptions(url, res.result, { ...options, initMapService });
@@ -57,6 +62,80 @@ export function initMap(url, options = {}) {
       reject(error);
     }
   });
+}
+
+/**
+ * @private
+ * @function getCrsExtent
+ * @description 获取当前坐标系范围，[左，下，右，上]。
+ * @param {Object|Array} extent -坐标系范围。
+ * @returns {Array}
+ */
+function getCRSExtent(extent) {
+  if (extent instanceof Array) {
+    return extent;
+  }
+  if (extent.leftBottom && extent.rightTop) {
+    return [extent.leftBottom.x, extent.leftBottom.y, extent.rightTop.x, extent.rightTop.y];
+  }
+  return [extent.left, extent.bottom, extent.right, extent.top];
+}
+
+/**
+ * @private
+ * @function defineCRSByWKT
+ * @description 定义crs。
+ * @param {string} crsName - 投影名称。
+ * @param {string} wkt - wkt。
+ * @param {Object} extent - 坐标系范围。
+ * @returns {string}
+ */
+function defineCRSByWKT(crsName, wkt, extent) {
+  const crsExtent = getCRSExtent(extent);
+  const defineCRS = new maplibregl.CRS(crsName, wkt, crsExtent);
+  return defineCRS;
+}
+
+/**
+ * @private
+ * @function transformMapCenter
+ * @description 转换center。
+ * @param {Object} mapInfoCenter - 中心点。
+ * @param {string} baseProjection - 坐标投影。
+ * @returns {Array}
+ */
+function transformMapCenter(mapInfoCenter, sourceProjection) {
+  let center = mapInfoCenter;
+  if (sourceProjection === 'EPSG:3857') {
+    return proj4(sourceProjection, 'EPSG:4326', mapInfoCenter);
+  }
+  if (sourceProjection !== 'EPSG:4326') {
+    return maplibregl.proj4(sourceProjection, 'EPSG:4326', mapInfoCenter);
+  }
+  return center;
+}
+
+/**
+ * @private
+ * @function getVectorTileCRSExtent
+ * @description 获取矢量瓦片坐标系范围。
+ * @param {string} vectorStyleUrl - 矢量瓦片 style json 服务地址。
+ * @param {string} restMapUrl - 矢量瓦片 rest 地图服务地址。
+ * @returns {Object}
+ */
+async function getVectorTileCRSExtent(vectorStyleUrl, restMapUrl) {
+  try {
+    const vectorStyleDataRes = await FetchRequest.get(vectorStyleUrl);
+    const vectorStyleData = await vectorStyleDataRes.json();
+    if (vectorStyleData.metadata && vectorStyleData.metadata.indexbounds) {
+      return { extent: vectorStyleData.metadata.indexbounds };
+    }
+    const vectorExtentDataRes = await FetchRequest.get(`${restMapUrl}/prjCoordSys/projection/extent.json`);
+    const vectorExtentData = await vectorExtentDataRes.json();
+    return { extent: vectorExtentData, center: vectorStyleData.center };
+  } catch (error) {
+    return { extent: [] };
+  }
 }
 
 /**
@@ -77,22 +156,80 @@ async function createMapOptions(url, resetServiceInfo, options) {
   }
   const sourceType = options.type || 'raster';
   const mapOptions = options.mapOptions || {};
-  const { center, bounds, scale, dpi, coordUnit } = resetServiceInfo;
-  const mapCenter = center ? proj4('EPSG:3857', 'EPSG:4326', [center.x, center.y]) : [0, 0];
+  const {
+    prjCoordSys: { epsgCode },
+    bounds,
+    center,
+    dpi,
+    coordUnit,
+    scale
+  } = resetServiceInfo;
+  let mapCenter = center ? [center.x, center.y] : [0, 0];
+  let crs = `EPSG:${epsgCode}`;
+  let extent = bounds;
   let tileUrl =
     sourceType === 'vector-tile'
       ? url + '/tileFeature/vectorstyles.json?type=MapBox_GL&styleonly=true&tileURLTemplate=ZXY'
       : url;
-  let rasterExtraInfo = {};
-  if (sourceType === 'raster') {
-    const tileSize = 256;
-    rasterExtraInfo.tileSize = tileSize;
-    const transparent = mapOptions.transparent !== false;
-    tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
+  let nonEnhanceExtraInfo = {};
+  let enhanceExtraInfo = {};
+  let zoom;
+  let tileSize = 512;
+  let tileFormat = 'png';
+  if (maplibregl.CRS) {
+    const baseProjection = crs;
+    const wkt = await options.initMapService.getWKT();
+    let vectorTileInfo;
+    if (sourceType === 'vector-tile') {
+      vectorTileInfo = await getVectorTileCRSExtent(tileUrl, url);
+      extent = vectorTileInfo.extent;
+    }
+    crs = defineCRSByWKT(baseProjection, wkt, extent);
+    if (sourceType === 'raster') {
+      enhanceExtraInfo.rasterSource = 'iserver';
+    }
+    if (vectorTileInfo && vectorTileInfo.center) {
+      mapCenter = vectorTileInfo.center;
+    } else {
+      mapCenter = transformMapCenter(mapCenter, baseProjection);
+    }
+    
+    const tilesets = await options.initMapService.getTilesets();
+    const tileset = getTileset(tilesets.result, { prjCoordSys: resetServiceInfo.prjCoordSys, tileType: 'Image' });
+  
+    if (tileset) {
+      tileFormat = getTileFormat(tileset);
+      const maxWidth = Math.max(tileset.bounds.right - tileset.originalPoint.x, tileset.originalPoint.y - tileset.bounds.bottom);
+      const tileCount = maxWidth / (tileset.resolutions[0] * 256);
+      zoom = Math.ceil(Math.log2(tileCount));
+      const closestTileCount = Math.pow(2, zoom);
+      const width =  closestTileCount * 256 * tileset.resolutions[0];
+      const crsBounds = [
+        tileset.originalPoint.x,
+        tileset.originalPoint.y - width,
+        tileset.originalPoint.x + width,
+        tileset.originalPoint.y
+      ];
+      crs = new maplibregl.CRS(baseProjection, crsBounds);
+      zoom = zoom - 1;
+      tileSize = tileset.tileWidth;
+    }
+  } else {
+    crs = 'EPSG:3857';
+    mapCenter = transformMapCenter(mapCenter, crs);
+    if (sourceType === 'raster') {
+      const tileSize = 256;
+      nonEnhanceExtraInfo.tileSize = tileSize;
+      const transparent = mapOptions.transparent !== false;
+      tileUrl += `/zxyTileImage.png?z={z}&x={x}&y={y}&width=${tileSize}&height=${tileSize}&transparent=${transparent}`;
+    }
   }
-  const zoom = getZoom({ scale, dpi, coordUnit }, bounds);
+  if (zoom === undefined) {
+    zoom = getZoom({ scale, dpi, coordUnit }, extent);
+  }
   return {
     container: 'map',
+    crs,
     center: mapCenter,
     zoom,
     style:
@@ -101,9 +238,12 @@ async function createMapOptions(url, resetServiceInfo, options) {
             version: 8,
             sources: {
               'smaples-source': {
+                format: tileFormat,
+                tileSize,
                 type: 'raster',
                 tiles: [tileUrl],
-                ...rasterExtraInfo
+                ...nonEnhanceExtraInfo,
+                ...enhanceExtraInfo
               }
             },
             layers: [

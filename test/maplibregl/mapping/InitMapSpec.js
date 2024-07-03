@@ -41,12 +41,30 @@ describe('maplibregl_InitMap', () => {
     }
   });
 
-  it('initMap 4490, dynamicProjection false', async () => {
-    const url = GlobeParameter.ChinaURL;
+  it('initMap 4490, dynamicProjection false, non mapbox-gl-enhance', async () => {
+    const url = 'http:/fake:8090/iserver/iserver/services/map-china400/rest/maps/China';
     const mapServiceInfo = {
       dynamicProjection: false,
       prjCoordSys: {
         epsgCode: 4490
+      },
+      bounds: {
+        top: 20037508.342789087,
+        left: -20037508.342789248,
+        bottom: -20037508.34278914,
+        leftBottom: {
+          x: -20037508.342789248,
+          y: -20037508.34278914
+        },
+        right: 20037508.342789244,
+        rightTop: {
+          x: 20037508.342789244,
+          y: 20037508.342789087
+        }
+      },
+      center: {
+        x: -7.450580596923828e-9,
+        y: -2.60770320892334e-8
       }
     };
     spyOn(FetchRequest, 'get').and.callFake(() => {
@@ -55,7 +73,11 @@ describe('maplibregl_InitMap', () => {
     try {
       await initMap(url);
     } catch (error) {
-      expect(error).toEqual(new Error('The EPSG code 4490 is not yet supported'));
+      expect(error).toEqual(
+        new Error(
+          'The EPSG code 4490 needs to include maplibre-gl-enhance.js. Refer to the example: https://iclient.supermap.io/examples/maplibregl/editor.html#mvtVectorTile_2362'
+        )
+      );
     }
   });
 
@@ -162,5 +184,38 @@ describe('maplibregl_InitMap', () => {
     const map = resData.map;
     expect(map).not.toBeUndefined();
     expect(map.getCenter()).not.toEqual([mapServiceInfo.center.x, mapServiceInfo.center.y]);
+  });
+
+  it('with tilesets', (done) => {
+    const mapServiceInfo = {
+      dynamicProjection: false,
+      prjCoordSys: {
+        epsgCode: 4326
+      }
+    };
+    var tilesetServeRequest = 'http://supermapiserver:8090/iserver/services/map-world/rest/maps/Jinjing111';
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('Jinjing111') > -1 && url.indexOf('tilesets') === -1) {
+        return Promise.resolve(new Response(mapInfo_2));
+      }
+      if (url.indexOf('Jinjing111/tilesets') > -1) {
+        return Promise.resolve(new Response(tilesetInfo_1));
+      }
+      return Promise.resolve();
+    });
+    maplibregl.CRS = function () {
+      return {
+        code: mapServiceInfo.prjCoordSys.epsgCode
+      };
+    };
+    maplibregl.proj4 = function () {
+      return [0, 0];
+    };
+    initMap(tilesetServeRequest).then(({ map }) => {
+      expect(map).not.toBeNull();
+      delete maplibregl.CRS;
+      delete maplibregl.proj4;
+      done();
+    });
   });
 });

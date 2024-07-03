@@ -140,10 +140,10 @@ export function getTileFormat(tileset) {
  */
 
 export function getTileset(tilesets = [], targets) {
-  const imageTilesets = tilesets.filter((i) => {
+  const imageTilesets = Array.isArray(tilesets) && tilesets.filter((i) => {
     return i.metaData.tileType === targets.tileType || 'Image' && getEpsgCode(i.metaData.prjCoordSys) === getEpsgCode(targets.prjCoordSys);
   });
-  return imageTilesets[0] && imageTilesets[0].metaData;
+  return imageTilesets && imageTilesets[0] && imageTilesets[0].metaData;
 }
 
 

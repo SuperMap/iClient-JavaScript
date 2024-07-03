@@ -878,7 +878,7 @@ export class WebMap extends mapboxgl.Evented {
    * @description 获取图层字体类型。
    */
   _getLabelFontFamily() {
-    const fonts = [];
+    const fonts = ['sans-serif'];
     const layers = this._mapInfo.layers;
     if (layers && layers.length > 0) {
       layers.forEach((layer) => {
