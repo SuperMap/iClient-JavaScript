@@ -156,14 +156,18 @@ export class L7Layer extends CustomOverlayLayer {
     const { filter } = this.l7layer.rawConfig;
     let { field: filterFields = [], values } = getL7Filter(filter, this.id) || {};
     if (!filterFields.length && this.selectedDatas[0]) {
-      filterFields = Object.keys(this.selectedDatas[0].properties);
+      filterFields = Object.keys(this.selectedDatas[0].properties || {});
     }
     const fields = filterFields;
-    const transformFilterValuesFn = this._transformFilterValues.bind(this, { fields, values, selectedDatas: this.selectedDatas });
+    const transformFilterValuesFn = this._transformFilterValues.bind(this, {
+      fields,
+      values,
+      selectedDatas: this.selectedDatas
+    });
     return {
       field: fields,
       values: transformFilterValuesFn
-    }
+    };
   }
 
   setFilter(filter) {
@@ -321,7 +325,7 @@ export class L7Layer extends CustomOverlayLayer {
         const features = cacheFeatures.filter(
           (item) =>
             (!item[featureId] || !mvtDatas.some((feature) => feature[featureId] === item[featureId])) &&
-            (!item.properties[featureId] ||
+            (!(item.properties || {})[featureId] ||
               !mvtDatas.some((feature) => feature.properties[featureId] === item.properties[featureId]))
         );
         mvtDatas.push(...features);
@@ -367,11 +371,14 @@ export class L7Layer extends CustomOverlayLayer {
 
   _transformFilterValues(options, ...args) {
     const { fields, values, selectedDatas } = options;
-    const argValues = args.filter(item => item !== void 0);
-    const selectedValues = selectedDatas.map(feature => {
-      return fields.map(name => (feature.properties || {})[name]).filter(item => item !== void 0);
+    const argValues = args.filter((item) => item !== void 0);
+    const selectedValues = selectedDatas.map((feature) => {
+      return fields.map((name) => (feature.properties || {})[name]).filter((item) => item !== void 0);
     });
-    return (!values || values(...args)) && !selectedValues.some(values => JSON.stringify(values) === JSON.stringify(argValues));
+    return (
+      (!values || values(...args)) &&
+      !selectedValues.some((values) => JSON.stringify(values) === JSON.stringify(argValues))
+    );
   }
 }
 
