@@ -196,7 +196,7 @@ export class WebMap extends mapboxgl.Evented {
 
   async copyLayer(id, layerInfo = {}) {
     const matchLayer = this._mapInfo.layers.find(layer => layer.id === id);
-    if (!matchLayer || this.map.getLayer(layerInfo.id)) {
+    if (!matchLayer || this.getLayerOnMap(layerInfo.id)) {
       return;
     }
     const copyLayerId = layerInfo.id || `${matchLayer.id}_copy`;
@@ -496,7 +496,7 @@ export class WebMap extends mapboxgl.Evented {
     }
     for (const layer of layersToMap) {
       const originId = layer.id;
-      if (this.map.getLayer(layer.id)) {
+      if (this.getLayerOnMap(layer.id)) {
         const layerId = layer.id + timestamp;
         layer.id = layerId;
       }
@@ -526,6 +526,34 @@ export class WebMap extends mapboxgl.Evented {
     };
   }
 
+  getLayerOnMap(layerId) {
+    const overlayLayer = this.map.overlayLayersManager[layerId];
+    if (overlayLayer) {
+      return overlayLayer;
+    }
+    const l7MarkerLayers = getL7MarkerLayers();
+    const l7MarkerLayer = l7MarkerLayers[layerId];
+    if (l7MarkerLayer) {
+      return l7MarkerLayer;
+    }
+    return this.map.getLayer(layerId);
+  }
+
+  _findLayerCatalog(items, id) {
+    for (const item of items) {
+      if (item.id === id) {
+        return item;
+      }
+      if (item.children) {
+        const found = this._findLayerCatalog(item.children, id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null; 
+  }
+
   _deleteLayerCatalog(catalogs, id) {
     for (let index = 0; index < catalogs.length; index++) {
       const catalog = catalogs[index];
@@ -539,14 +567,20 @@ export class WebMap extends mapboxgl.Evented {
     }
   }
 
-  _updateLayerCatalogsId({ loopData, catalogs, layerIdMapList, catalogTypeField = 'type', layerIdsField = 'parts', unspportedLayers }) {
+  _updateLayerCatalogsId({
+    loopData,
+    catalogs,
+    layerIdMapList,
+    catalogTypeField = 'type',
+    layerIdsField = 'parts',
+    unspportedLayers
+  }) {
     loopData.forEach((loopItem) => {
-      const catalog = catalogs.find(item => item.id === loopItem.id);
-      const { id, children } = catalog;
-      if (catalog[catalogTypeField] === 'group') {
+      const { id, children } = loopItem;
+      if (loopItem[catalogTypeField] === 'group') {
         this._updateLayerCatalogsId({
           loopData: children,
-          catalogs: children,
+          catalogs,
           layerIdMapList,
           catalogTypeField,
           layerIdsField,
@@ -556,6 +590,7 @@ export class WebMap extends mapboxgl.Evented {
       }
       const matchLayer = layerIdMapList.find((item) => item.originId === id);
       if (matchLayer) {
+        const catalog = this._findLayerCatalog(catalogs, id);
         catalog.id = matchLayer.renderId;
         if (catalog[layerIdsField]) {
           catalog[layerIdsField] = this._renameLayerIdsContent(catalog[layerIdsField], layerIdMapList);
@@ -683,6 +718,7 @@ export class WebMap extends mapboxgl.Evented {
     const { catalogs = [], datas = [] } = this._mapResourceInfo;
     const projectCataglogs = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
     const metadataCatalogs = this._getLayerInfosFromCatalogs(this._mapInfo.metadata.layerCatalog);
+    const l7MarkerLayers = getL7MarkerLayers();
     const layers = allLayersOnMap.reduce((layersList, layer) => {
       const containLayer = metadataCatalogs.find((item) => {
         if (item.parts && item.id !== layer.id) {
@@ -743,6 +779,9 @@ export class WebMap extends mapboxgl.Evented {
         dataSource,
         themeSetting: {}
       });
+      if (l7MarkerLayers[layer.id]) {
+        overlayLayers.l7MarkerLayer = l7MarkerLayers[layer.id];
+      }
       if (isL7Layer(layer)) {
         overlayLayers.l7Layer = true;
       }
@@ -812,6 +851,9 @@ export class WebMap extends mapboxgl.Evented {
         });
         if (l7MarkerLayers[id]) {
           formatItem.l7MarkerLayer = l7MarkerLayers[id];
+        }
+        if (matchLayer.l7Layer) {
+          formatItem.l7Layer = matchLayer.l7Layer;
         }
       }
       return formatItem;
@@ -1106,7 +1148,7 @@ export class WebMap extends mapboxgl.Evented {
     if (currentType === 'simple') {
       return !!this._getImageIdFromValue(symbolsContent.value.style, SymbolType[symbolType]).length;
     }
-    const styles = (symbolsContent.values).map((v) => v.value).concat(symbolsContent.defaultValue);
+    const styles = symbolsContent.values.map((v) => v.value).concat(symbolsContent.defaultValue);
     return styles.every((v) => {
       return !!this._getImageIdFromValue(v.style, SymbolType[symbolType]).length;
     });

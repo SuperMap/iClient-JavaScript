@@ -104,7 +104,10 @@ class Layer {
   texture() {
     return this;
   }
-  filter() {
+  filter(field, values) {
+    if (typeof values === 'function') {
+      values([]);
+    }
     return this;
   }
   shape(type) {

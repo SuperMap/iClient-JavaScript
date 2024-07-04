@@ -1,5 +1,6 @@
 import { addL7Layers, isL7Layer, getL7Filter } from '../../../../src/mapboxgl/mapping/utils/L7LayerUtil';
 import * as mockL7 from '../../../tool/mock_l7';
+import * as L7 from '../../../../src/mapboxgl/overlay/L7/l7-render';
 import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
 
 describe('L7LayerUtil', () => {
@@ -478,6 +479,72 @@ describe('L7LayerUtil', () => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(2);
       spy.calls.reset();
       done();
+    });
+  });
+
+  it('filter reRender', (done) => {
+    spyOn(FetchRequest, 'post').and.callFake((url) => {
+      if (url.indexOf('/data-ZhongGuoDiTu/rest/data/featureResults.geojson') > -1) {
+        return Promise.resolve(new Response(RESTDATA_FEATURES_RES));
+      }
+      return Promise.resolve();
+    });
+    const layers = [
+      {
+        filter: ['all', ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: 'visible',
+          'line-extrusion-pattern-interval': 20,
+          'line-extrusion-animate-duration': 6,
+          'line-extrusion-pattern-blend': 'normal',
+          'line-extrusion-animate-trailLength': 1.5,
+          'line-extrusion-animate-interval': 0.6
+        },
+        metadata: {
+          MapStudio: {
+            title: '县级行政区划@link'
+          }
+        },
+        maxzoom: 24,
+        paint: {
+          'line-extrusion-base': 0,
+          'line-extrusion-opacity': 1,
+          'line-extrusion-width': 20,
+          'line-extrusion-base-fixed': false,
+          'line-extrusion-color': '#4CC8A3',
+          'line-extrusion-pattern': 'ms_icon_shape1'
+        },
+        source: 'ms_县级行政区划@link_1719822607738_6',
+        'source-layer': '县级行政区划@link',
+        id: '县级行政区划@link_outline(0_24)',
+        type: 'line-extrusion',
+        minzoom: 0
+      }
+    ];
+    const sources = {
+      'ms_县级行政区划@link_1719822607738_6': {
+        tiles: [
+          'http://localhost:8195/portalproxy/592c4095f464540e/iserver/services/map-LinkMap/restjsr/v1/vectortile/maps/%E5%8E%BF%E7%BA%A7%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%40link/tiles/{z}/{x}/{y}.mvt'
+        ],
+        bounds: [102.98962307000005, 30.090978575000065, 104.89626180000005, 31.437765225000078],
+        type: 'vector',
+        promoteId: 'spmid'
+      }
+    };
+    const nextOptions = {
+      ...addOptions,
+      webMapInfo: { ...mapstudioWebMap_L7LayersRes, layers, sources },
+      l7Layers: layers
+    };
+    const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
+    const spy1 = spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    addL7Layers(nextOptions).then(() => {
+      setTimeout(() => {
+        expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+        spy.calls.reset();
+        spy1.calls.reset();
+        done();
+      }, 1100);
     });
   });
 

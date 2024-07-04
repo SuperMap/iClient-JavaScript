@@ -7,6 +7,7 @@ import * as G2 from '@antv/g2';
 import { Util } from '../../core/Util';
 import { L7Layer, L7 } from '../../overlay/L7Layer';
 import Color from './Color';
+import debounce from 'lodash.debounce';
 
 const SelectStyleTypes = {
   basic: 'base',
@@ -1990,7 +1991,16 @@ function getL7Layer(l, sourceInfo) {
     l7Layer.animate(l.animate);
   }
   if (l.filter) {
-    l7Layer.filter(l.filter.field, l.filter.values);
+    const refresh = debounce(function () {
+      layer.reRender();
+    }, 500);
+    l7Layer.filter(l.filter.field, (...args) => {
+      const result = l.filter.values(...args);
+      if (result) {
+        refresh();
+      }
+      return result;
+    });
   }
   return layer;
 }

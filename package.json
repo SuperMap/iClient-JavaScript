@@ -154,6 +154,7 @@
     "jsonsql": "0.2.5",
     "leaflet": "1.9.4",
     "lodash.clonedeep": "^4.5.0",
+    "lodash.debounce": "^4.0.8",
     "lodash.difference": "^4.5.0",
     "lodash.remove": "^4.7.0",
     "lodash.topairs": "4.3.0",
