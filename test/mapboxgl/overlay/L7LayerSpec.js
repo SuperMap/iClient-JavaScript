@@ -116,6 +116,7 @@ describe('mapboxgl L7Layer', () => {
       map.$l7scene = null;
       done();
     });
+    expect(layer.isSourceLoaded()).toBeTruthy();
   });
 
   it('PointLayer', (done) => {
@@ -420,6 +421,7 @@ describe('mapboxgl L7Layer', () => {
       .shape('circle')
       .color('#4cfd47');
     map.addLayer(layer);
+    expect(layer.isSourceLoaded()).toBeFalsy();
 
     map.overlayLayersManager = { [layer.id]: layer };
     l7Layer.rawConfig.name = 'empty-test';

@@ -212,6 +212,15 @@ export class L7Layer extends CustomOverlayLayer {
     return sourceInfo;
   }
 
+  isSourceLoaded() {
+    if (!this.l7layer) {
+      return;
+    }
+    const layerSource = this.l7layer.layerSource;
+    return !layerSource.tileset ? true : layerSource.tileset.isLoaded;
+  }
+
+
   onAdd(map) {
     this.map = map;
     if (!map.$l7scene) {

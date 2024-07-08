@@ -33,12 +33,37 @@ export var MapExtend = (function () {
 
     getSource(sourceId) {
       const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
-      if (customOverlayerLayer && customOverlayerLayer.getSource) {
-        return customOverlayerLayer.getSource();
+      if (customOverlayerLayer) {
+        if (customOverlayerLayer.getSource) {
+          return customOverlayerLayer.getSource();
+        }
+        return;
       }
       return originMapProto.getSource.call(this, sourceId);
     }
 
+    removeSource(sourceId) {
+      const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
+      if (customOverlayerLayer) {
+        if (customOverlayerLayer.removeSource) {
+          return customOverlayerLayer.removeSource();
+        }
+        return;
+      }
+      return originMapProto.removeSource.call(this, sourceId);
+    }
+
+    isSourceLoaded(sourceId) {
+      const customOverlayerLayer = Object.values(this.overlayLayersManager).find(item => item.sourceId === sourceId);
+      if (customOverlayerLayer) {
+        if (customOverlayerLayer.isSourceLoaded) {
+          return customOverlayerLayer.isSourceLoaded();
+        }
+        return;
+      }
+      return originMapProto.isSourceLoaded.call(this, sourceId);
+    }
+    
     getLayer(id) {
       const overlayLayer = this.overlayLayersManager[id];
       if (overlayLayer) {

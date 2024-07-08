@@ -45,9 +45,9 @@ describe('L7LayerUtil', () => {
   });
 
   it('add od layer', (done) => {
-    spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
-      expect(options.withCredentials).toBe(options.withCredentials);
-      expect(options.withoutFormatSuffix).toBeTruthy();
+    spyOn(FetchRequest, 'get').and.callFake((url, _, nextOptions) => {
+      expect(nextOptions.withCredentials).toBe(options.withCredentials);
+      expect(nextOptions.withoutFormatSuffix).toBeTruthy();
       if (url.indexOf('/sprite') > -1) {
         return Promise.resolve(new Response(msSpriteInfo));
       }
@@ -143,6 +143,8 @@ describe('L7LayerUtil', () => {
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     addL7Layers(nextOptions).then(() => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(2);
+      expect(layerMaplist['国内航班数据_100']).toBeTruthy();
+      expect(layerMaplist['ms_composite_国内航班数据_100']).toBeTruthy();
       spy.calls.reset();
       done();
     });

@@ -328,7 +328,7 @@ describe('MapExtend mapboxgl', () => {
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: [GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}'],
+            tiles: ['base/resources/img/baiduTileTest.png'],
             tileSize: 256
           }
         },
@@ -351,6 +351,8 @@ describe('MapExtend mapboxgl', () => {
         getSource: function () {
           return {};
         },
+        removeSource: function() {},
+        isSourceLoaded: function() { return true; },
         getLayer: function () {
           return {};
         },
@@ -382,6 +384,8 @@ describe('MapExtend mapboxgl', () => {
       expect(map.getSource('l7_layer_1')).not.toBeUndefined();
       expect(map.getSource('raster-tiles')).not.toBeUndefined();
       expect(options.getSource.calls.count()).toEqual(1);
+      expect(map.isSourceLoaded('l7_layer_1')).toBeTruthy();
+      expect(map.isSourceLoaded('raster-tiles')).toBeTruthy();
       expect(map.getLayer('l7_layer_1')).not.toBeUndefined();
       expect(map.getLayer('simple-tiles')).not.toBeUndefined();
       expect(map.getLayer('heatmap_1')).toEqual(map.overlayLayersManager['heatmap_1']);
@@ -404,6 +408,10 @@ describe('MapExtend mapboxgl', () => {
       map.off('click', 'l7_layer_1', cb);
       map.off('click', cb);
       expect(options.off.calls.count()).toEqual(1);
+      map.removeSource('l7_layer_1');
+      map.removeLayer('simple-tiles');
+      map.removeSource('raster-tiles');
+      expect(options.removeSource.calls.count()).toEqual(1);
       map.remove();
       done();
     });

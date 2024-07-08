@@ -19,6 +19,14 @@ export class CustomOverlayLayer {
   // 获取 layer source的信息，如 id，type 等
   getSource() {}
 
+  // 删除 layer source
+  removeSource() {}
+
+  // 返回指定source 是否加载完成
+  isSourceLoaded() {
+    return true;
+  }
+
   // 返回指定样式图层中绘制属性的值
   getPaintProperty() {}
 

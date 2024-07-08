@@ -83,7 +83,8 @@ class Layer {
                   }
                 }
               ]
-            ])
+            ]),
+        isLoaded: false
       };
     }
     return this;
