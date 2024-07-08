@@ -47,17 +47,27 @@
                         maxZoom:12,
                         crs: maplibregl.CRS.EPSG4326
                     });
-                    map.on('load', function () {
-                        map.loadImage('../img/poi-bg.png', function (error, image) {
-                            if (error) throw error;
-                            if (!map.hasImage('poi-bg')) {
-                                map.addImage('poi-bg', image, {
-                                    stretchX: [[14, 190]],
-                                    stretchY: [[14, 90]],
-                                    content: [14, 14, 190, 90],
-                                    pixelRatio: 1
-                                });
-                            }
+                    map.on('load', async function () {
+                        // maplibre-gl v3版本用法：
+                        // map.loadImage('../img/poi-bg.png', function (error, image) {
+                        //     if (error) throw error;
+                        //     if (!map.hasImage('poi-bg')) {
+                        //         map.addImage('poi-bg', image, {
+                        //             stretchX: [[14, 190]],
+                        //             stretchY: [[14, 90]],
+                        //             content: [14, 14, 190, 90],
+                        //             pixelRatio: 1
+                        //         });
+                        //     }
+                        // });
+
+                        // maplibre-gl v4版本用法：
+                        const image = await map.loadImage('../img/poi-bg.png');
+                        map.addImage('poi-bg', image.data,{
+                            stretchX: [[14, 190]],
+                            stretchY: [[14, 90]],
+                            content: [14, 14, 190, 90],
+                            pixelRatio: 1
                         });
                         map.addLayer(
                             {

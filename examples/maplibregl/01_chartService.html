@@ -643,11 +643,16 @@
           }
       }
 
-      map.loadImage(
-        '../img/point2.png', 
-        function(error, image) {
-        if (error) throw error;
-          map.addImage('icon_name', image);
+      // maplibre-gl v3版本用法：
+      // map.loadImage(
+      //   '../img/point2.png', 
+      //   function(error, image) {
+      //   if (error) throw error;
+      //     map.addImage('icon_name', image);
+      // });
+      // maplibre-gl v4版本用法：
+      map.loadImage('../img/point2.png').then(function(image) {
+        map.addImage('icon_name', image.data);
       });
       function sqlQuery() { 
         var chartLayerNames = document.getElementById("chartLayers").value;
