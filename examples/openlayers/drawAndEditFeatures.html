@@ -868,9 +868,8 @@
           var itemArr = Array.prototype.slice.call(item.children);
           properties[itemArr[0].textContent] = itemArr[1].value;
         });
-        console.log('properties', properties);
         currentFeature.data.properties = properties;
-        currentAddFeature.setProperties(properties);
+        currentAddFeature && currentAddFeature.setProperties(properties);
         var olFeature = new ol.format.GeoJSON().readFeature(currentFeature.data);
         if (!olFeature.getId()) {
           datasetInfoList[currentDataset].uniqueId++;
@@ -884,7 +883,6 @@
         if (!properties['SMUSERID']) {
           olFeature.set('SMUSERID', olFeature.getId());
         }
-        console.log('olFeature', olFeature);
         currentFeature.origin = olFeature;
         commit(isUpdate);
         switchPanel('edit', true);
