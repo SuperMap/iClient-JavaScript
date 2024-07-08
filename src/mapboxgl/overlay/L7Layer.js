@@ -58,6 +58,7 @@ export class L7Layer extends CustomOverlayLayer {
     this.eventListeners = {};
     this.selectedDatas = [];
     this.setSelectedDatasFn = this.setSelectedDatas.bind(this);
+    this.reRenderFn = this.reRender.bind(this);
   }
   /**
    * @function L7Layer.prototype.getL7Layer
@@ -117,7 +118,8 @@ export class L7Layer extends CustomOverlayLayer {
       id: this.id,
       l7layer: this.l7layer,
       scene: this.scene,
-      setSelectedDatas: this.setSelectedDatasFn
+      setSelectedDatas: this.setSelectedDatasFn,
+      reRender: this.reRenderFn
     };
     delete layerInfo.sourceId;
     delete layerInfo.layerID;

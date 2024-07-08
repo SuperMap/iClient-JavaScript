@@ -7,9 +7,12 @@ describe('L7LayerUtil', () => {
   const mapstudioWebMap_L7LayersRes = JSON.parse(mapstudioWebMap_L7Layers);
 
   const scene = new mockL7.Scene();
+  let layerMaplist = {};
   const map = {
     getL7Scene: () => Promise.resolve(scene),
-    addLayer: () => {},
+    addLayer: (layer) => {
+      layerMaplist[layer.id] = layer;
+    },
     getZoom: () => 3,
     getLayer: (layerId) => layerId.includes('-highlight')
   };
@@ -36,6 +39,10 @@ describe('L7LayerUtil', () => {
     },
     options
   };
+
+  afterEach(() => {
+    layerMaplist = {};
+  });
 
   it('add od layer', (done) => {
     spyOn(FetchRequest, 'get').and.callFake((url, _, options) => {
@@ -351,8 +358,11 @@ describe('L7LayerUtil', () => {
     const spy1 = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     const spy2 = spyOn(nextOptions.options, 'emitterEvent');
     addL7Layers(nextOptions).then(() => {
-      // expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+      expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
       expect(nextOptions.options.emitterEvent).toHaveBeenCalledTimes(1);
+      expect(layerMaplist['ms_New_LINE_1716864449916_8']).toBeUndefined();
+      expect(layerMaplist['ms_label_县级行政区划_1719818803020_5']).toBeTruthy();
+      expect(layerMaplist['ms_label_县级行政区划_1719818803020_5'].getLayer().featureId).toBe('smpid');
       spy1.calls.reset();
       spy2.calls.reset();
       done();
@@ -461,7 +471,7 @@ describe('L7LayerUtil', () => {
         ],
         bounds: [102.98962307000005, 30.090978575000065, 104.89626180000005, 31.437765225000078],
         type: 'vector',
-        promoteId: 'spmid'
+        promoteId: 'SmID'
       }
     };
     const nextOptions = {
@@ -477,6 +487,7 @@ describe('L7LayerUtil', () => {
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     addL7Layers(nextOptions).then(() => {
       expect(nextOptions.map.addLayer.calls.count()).toEqual(2);
+      expect(layerMaplist['县级行政区划@link_outline(0_24)'].getLayer().featureId).toBe('SmID');
       spy.calls.reset();
       done();
     });
@@ -539,10 +550,14 @@ describe('L7LayerUtil', () => {
     const spy = spyOn(nextOptions.map, 'addLayer').and.callThrough();
     const spy1 = spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
     addL7Layers(nextOptions).then(() => {
+      const iclientL7Layer = layerMaplist['县级行政区划@link_outline(0_24)'];
+      const spy2 = spyOn(iclientL7Layer, 'reRender').and.callThrough();
       setTimeout(() => {
         expect(nextOptions.map.addLayer.calls.count()).toEqual(1);
+        expect(iclientL7Layer.reRender.calls.count()).toEqual(1);
         spy.calls.reset();
         spy1.calls.reset();
+        spy2.calls.reset();
         done();
       }, 1100);
     });

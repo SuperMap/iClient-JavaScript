@@ -640,9 +640,9 @@ function vectorSourceToL7Source(source, sourceLayer, options) {
   };
   if (isIportalProxyServiceUrl(result.data, options)) {
     Object.assign(result.parser, {
-        requestParameters: {
-            credentials: 'include'
-        }
+      requestParameters: {
+        credentials: 'include'
+      }
     });
   }
   return result;
@@ -978,12 +978,12 @@ function isSolidDasharray(dasharray) {
 }
 
 /**
-* 根据dasharray获取线型
-* @param dasharray
-*/
+ * 根据dasharray获取线型
+ * @param dasharray
+ */
 function getLineTypeByDashArray(dasharray) {
   if (dasharray && dasharray.length > 1 && !isSolidDasharray(dasharray)) {
-      return 'dash';
+    return 'dash';
   }
   return 'solid';
 }
@@ -1957,9 +1957,18 @@ function getL7Layer(l, sourceInfo) {
     [MSLayerType.heatmap]: 'HeatmapLayer'
   };
   const source = l.source || {};
+  // 解决L7结构化数据监听click事件会返回多个features问题
+  let promoteId = sourceInfo.promoteId;
+  if (!promoteId) {
+    promoteId = sourceInfo.tiles && sourceInfo.tiles[0].includes('/structureddata/') ? 'smpid' : undefined;
+  }
   const layer = new L7Layer({
     type: typeRule[l.type],
-    options: { ...l.options, layerID: (l.options || {}).name, featureId: sourceInfo.promoteId } // 解决L7结构化数据监听click事件会返回多个features问题
+    options: {
+      ...l.options,
+      layerID: (l.options || {}).name,
+      featureId: promoteId
+    }
   });
   // getL7Layer返回原生antv l7 layer的实例
   const l7Layer = layer.getL7Layer();

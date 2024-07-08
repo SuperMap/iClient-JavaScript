@@ -395,13 +395,15 @@ describe('mapboxgl L7Layer', () => {
     expect(layerSource.type).toBe('vector');
     let features;
     const result = {
-      cb: function(data) { features = data; }
+      cb: function (data) {
+        features = data;
+      }
     };
     spyOn(result, 'cb').and.callThrough();
     layer.queryRenderedFeatures([0, 0], {}, result.cb);
     expect(result.cb.calls.count()).toBe(1);
     expect(features).not.toBeUndefined();
-    expect(layer.querySourceFeatures().length).toBeGreaterThan(0)
+    expect(layer.querySourceFeatures().length).toBeGreaterThan(0);
 
     layer = new L7Layer({ type: 'PointLayer', options: { layerID: 'empty-test' } });
     l7Layer = layer.getL7Layer();
@@ -467,6 +469,13 @@ describe('mapboxgl L7Layer', () => {
     expect(layerOnMap.paint).toEqual(options.paint);
     expect(layerOnMap.layout.visibility).toBeTruthy();
     expect(layerOnMap.filter).toEqual(filter);
+    spyOn(map, 'triggerRepaint');
+    layerOnMap.reRender();
+    expect(map.triggerRepaint).toHaveBeenCalled();
+    const activeFeature = { properties: { name: 'test' } };
+    layerOnMap.setSelectedDatas(activeFeature);
+    expect(layer.selectedDatas).toEqual([activeFeature]);
+    layer.setSelectedDatas([]);
     expect(layer.getPaintProperty('point-extrusion-width')).toBe(paint['point-extrusion-width']);
     expect(layer.getLayoutProperty('point-extrusion-shape')).toBe(layout['point-extrusion-shape']);
     const layerFilter = layer.getFilter();
@@ -499,7 +508,7 @@ describe('mapboxgl L7Layer', () => {
     spyOn(l7Layer, 'on');
     spyOn(l7Layer, 'once');
     spyOn(l7Layer, 'off');
-    const cb = () => {}
+    const cb = () => {};
     layer.on('mouseover', cb);
     layer.once('mouseover', cb);
     layer.off('mouseover', cb);
