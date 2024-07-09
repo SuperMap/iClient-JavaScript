@@ -35,7 +35,7 @@
         <script>
             var data;
             $.get("../data/data671MeteorologicalStations.geojson", function(res) {
-                data = JSON.parse(res);
+                data = res;
                 new Vue({
                     el: "#main",
                     data() {
