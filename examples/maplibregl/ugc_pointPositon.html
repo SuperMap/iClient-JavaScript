@@ -259,6 +259,10 @@
           map.removeLayer('line1');
           map.removeSource('line1');
         }
+        if (map.getLayer('nearestPoint')) {
+          map.removeLayer('nearestPoint');
+          map.removeSource('nearestPoint');
+        }
       }
       initMap(url).then((map) => {
         addFeatures();

@@ -135,6 +135,7 @@
       }
 
       function search() {
+        clearLayer();
         let intersectCount;
         var geometryAnalysis = new maplibregl.supermap.GeometryAnalysis();
         [polygon1, polygon2].forEach((polygon) => {
@@ -160,6 +161,16 @@
           },
           paint
         });
+      }
+
+      function clearLayer() {
+        if (!map) {
+          return;
+        }
+        if (map.getLayer('fill3')) {
+          map.removeLayer('fill3');
+          map.removeSource('fill3');
+        }
       }
 
       initMap(url).then((map) => {
