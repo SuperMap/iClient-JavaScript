@@ -70,10 +70,9 @@
           scene.addImage('plane', '../img/0ca1668e-38c2-4010-8568-b57cb33839b9.svg');
         });
         Promise.all([
-          fetch('https://iclient.supermap.io/web/data/L7/2960e1fc-b543-480f-a65e-d14c229dd777.json').then((d) => d.json()),
           fetch('https://iclient.supermap.io/web/data/L7/4472780b-fea1-4fc2-9e4b-3ca716933dc7.json').then((d) => d.text()),
           fetch('https://iclient.supermap.io/web/data/L7/a5ac7bce-181b-40d1-8a16-271356264ad8.json').then((d) => d.text())
-        ]).then(function onLoad([world, dot, flyline]) {
+        ]).then(function onLoad([dot, flyline]) {
           const dotData = eval(dot);
           const flydata = eval(flyline).map((item) => {
             const latlng1 = item.from.split(',').map((e) => {
@@ -84,12 +83,6 @@
             });
             return { coord: [latlng1, latlng2] };
           });
-          var worldLine = new mapboxgl.supermap.L7Layer({ type: 'LineLayer' });
-          var l7Layer = worldLine.getL7Layer();
-          l7Layer.source(world).color('#41fc9d').size(0.5).style({
-            opacity: 0.4
-          });
-          map.addLayer(worldLine);
 
           var dotPoint = new mapboxgl.supermap.L7Layer({ type: 'PointLayer' });
           dotPoint
