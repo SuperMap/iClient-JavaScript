@@ -174,9 +174,10 @@
       }
 
       map.on('load', function () {
+        var layer, l7Layer;
         map.getL7Scene().then((scene) => {
-          var layer = new maplibregl.supermap.L7Layer({ type: 'CanvasLayer' });
-          var l7Layer = layer.getL7Layer();
+          layer = new maplibregl.supermap.L7Layer({ type: 'CanvasLayer' });
+          l7Layer = layer.getL7Layer();
           l7Layer
             .style({
               update: 'always',
@@ -189,10 +190,10 @@
         });
         setInterval(() => {
           x += 0.1;
-          layer.style({
+          l7Layer.style({
             drawingOnCanvas: draw
           });
-          scene.render();
+          l7Layer.reRender();
           return '';
         }, 30);
       });
