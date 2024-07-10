@@ -99,11 +99,11 @@ export var MapExtend = (function () {
           : this._moveToHandler(id, beforeId);
         return this;
       }
-      if (this.style._layers[id]) {
+      if (this.style._layers[id] && this.style._layers[beforeId]) {
         this.style.moveLayer(id, beforeId);
         this._update(true);
-        return this;
       }
+      return this;
     }
 
     removeLayer(id) {
@@ -305,11 +305,13 @@ export var MapExtend = (function () {
           });
         }
       }
-      if (layer && beforeLayer) {
-        beforeLayer.parentNode.insertBefore(layer, beforeLayer);
-      } else {
-        //当没有传入beforeLayerID ，则默认将图层移动到最上面
-        layer.parentNode.appendChild(layer);
+      if (layer) {
+        if (beforeLayer) {
+          beforeLayer.parentNode.insertBefore(layer, beforeLayer);
+        } else {
+          //当没有传入beforeLayerID ，则默认将图层移动到最上面
+          layer.parentNode.appendChild(layer);
+        }
       }
     }
 

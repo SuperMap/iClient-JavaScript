@@ -129,7 +129,10 @@
         var lineLayer = new ol.layer.Vector({
           source: lineSource,
           style: new ol.style.Style({
-            stroke: new ol.style.Stroke(style)
+            stroke: new ol.style.Stroke(style),
+            fill: new ol.style.Fill({
+                color: style.color
+            })
           })
         });
         map.addLayer(lineLayer);

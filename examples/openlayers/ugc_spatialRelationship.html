@@ -157,8 +157,11 @@
           source: polygonSource,
           style: new ol.style.Style({
             stroke: new ol.style.Stroke({
-              color: style.color || 'blue',
+              color: style.color || 'rgba(0, 0, 255, 0.6)',
               width: 3
+            }),
+            fill: new ol.style.Fill({
+                color: style.color || 'rgba(0, 0, 255, 0.6)',
             })
           })
         });
