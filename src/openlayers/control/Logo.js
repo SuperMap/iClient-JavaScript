@@ -63,10 +63,8 @@ export class Logo extends Control {
                     styleSize = "";
                 }
             }
-
-
-            div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
-                "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap;margin-bottom: 2px'></a>";
+            var imgElement = "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap;margin-bottom: 2px'>";
+            div.innerHTML = link ? "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" + imgElement + "</a>" : imgElement;
             return div;
         }
 

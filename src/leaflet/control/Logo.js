@@ -76,8 +76,8 @@ export var Logo = L.Control.extend({
             }
         }
         var link = this.options.link;
-        div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
-            "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
+        var imgElement = "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'>";
+        div.innerHTML = link ? "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" + imgElement + "</a>" : imgElement;
         return div;
     }
 });

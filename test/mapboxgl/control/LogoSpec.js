@@ -63,8 +63,10 @@ describe('mapboxgl_Logo', () => {
         var onAdd = logo1.onAdd(map);
         expect(onAdd).not.toBeNull();
         expect(onAdd.nodeName).toBe("DIV");
+        expect(onAdd.querySelector('a')).toBeNull;
         // options2 - imageUrl,width
         var options2 = {
+            link: "http://test.com",
             imageUrl: "http://test.com/test.png",
             width: 20
         };
@@ -75,5 +77,6 @@ describe('mapboxgl_Logo', () => {
         var onAdd2 = logo2.onAdd(map);
         expect(onAdd2).not.toBeNull();
         expect(onAdd2.nodeName).toBe("DIV");
+        expect(onAdd2.querySelector('a')).not.toBeNull;
     });
 });

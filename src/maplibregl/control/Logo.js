@@ -69,8 +69,8 @@
              }
          }
          var link = this.link;
-         this._container.innerHTML = "<a href='" + link + "' target='_blank'>" +
-             "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
+         var imgElement = "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'>";
+         this._container.innerHTML = link ? "<a href='" + link + "' target='_blank'>" + imgElement + "</a>" : imgElement;
          this._createStyleSheet();
          return this._container;
      }
