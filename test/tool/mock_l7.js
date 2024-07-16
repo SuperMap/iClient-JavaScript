@@ -57,12 +57,54 @@ class Layer {
         dataArray: []
       }
     };
+    this.pickingService = {
+      handleRawFeature: function (rawFeature) {
+        rawFeature = rawFeature instanceof Array ? rawFeature : [rawFeature];
+        const res = rawFeature.map((item) => {
+          if (item === 'null') {
+            return item;
+          }
+          if (item.type === 'Feature') {
+            return item;
+          }
+          const newFeature = {
+            properties: {},
+            geometry: { type: '', coordinates: [] },
+          };
+          const coordinates = item.coordinates;
+          delete item.coordinates;
+          newFeature.properties = item;
+          if (coordinates) {
+            newFeature.geometry = { type: '', coordinates };
+          }
+          return newFeature;
+        });
+        return res;
+      }
+    }
     if (this.rawConfig.visible === void 0) {
       this.rawConfig.visible = true;
     }
   }
   source(data, options = {}) {
     const parser = options.parser || { type: "geojson" };
+    let dataArray = [];
+    if (parser.type === "geojson") {
+      dataArray = data;
+    }
+    if (parser.type === 'json') {
+      dataArray = [
+        {
+          航班有效期结束: 2016.11,
+          到达城市: '北京',
+          smpid: 1,
+          coordinates: [
+            [80.30091874, 41.26940127],
+            [116.395645, 39.92998578]
+          ]
+        }
+      ];
+    }
     this.layerSource = {
       ...options,
       parser,

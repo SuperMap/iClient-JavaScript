@@ -519,7 +519,14 @@ describe('mapboxgl L7Layer', () => {
     expect(queryResult.cb.calls.count()).toBe(1);
     expect(queryFeatures).not.toBeUndefined();
     expect(queryFeatures.length).toBeGreaterThan(0);
-    expect(layer.querySourceFeatures().length).toBeGreaterThan(0);
+    expect(queryFeatures[0].geometry).not.toBeUndefined();
+    expect(queryFeatures[0].properties).not.toBeUndefined();
+    expect(queryFeatures[0].layer).not.toBeUndefined();
+    const sourceFeatures = layer.querySourceFeatures();
+    expect(sourceFeatures.length).toBeGreaterThan(0);
+    expect(sourceFeatures[0].geometry).not.toBeUndefined();
+    expect(sourceFeatures[0].properties).not.toBeUndefined();
+    expect(sourceFeatures[0].layer).toBeUndefined();
     expect(layer.getLayer().layout.visibility).toBe('visible');
     layer.setLayoutProperty('visibility', 'none');
     expect(layer.getLayer().layout.visibility).toBe('none');

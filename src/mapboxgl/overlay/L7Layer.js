@@ -309,14 +309,19 @@ export class L7Layer extends CustomOverlayLayer {
     const _this = this;
     this.l7layer.boxSelect([Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2), Math.max(y1, y2)], (features) => {
       const nextFeatures = features || [];
-      cb(
-        nextFeatures.map((item) => {
-          return {
-            ...item,
-            layer: _this.getLayer()
-          };
-        })
-      );
+      const { layerCapture = true } = options || {};
+      if (layerCapture) {
+        cb(
+          nextFeatures.map((item) => {
+            return {
+              ...item,
+              layer: _this.getLayer()
+            };
+          })
+        );
+        return;
+      }
+      cb(nextFeatures);
     });
   }
 
@@ -324,8 +329,8 @@ export class L7Layer extends CustomOverlayLayer {
     if (!this.l7layer || !this.l7layer.rawConfig.visible) {
       return [];
     }
-    const layerSource = this.l7layer.layerSource;
-    let datas = layerSource.data.dataArray;
+    const { layerSource, pickingService } = this.l7layer;
+    let datas = pickingService.handleRawFeature(layerSource.data.dataArray);
     const { parser: { type } } = layerSource;
     if (type === 'mvt') {
       const { tileset: { cacheTiles = [] } = {} } = layerSource;
@@ -339,7 +344,7 @@ export class L7Layer extends CustomOverlayLayer {
             (!(item.properties || {})[featureId] ||
               !mvtDatas.some((feature) => feature.properties[featureId] === item.properties[featureId]))
         );
-        mvtDatas.push(...features);
+        mvtDatas.push(...pickingService.handleRawFeature(features));
       });
       datas = datas.length > mvtDatas.length ? datas : mvtDatas;
     }
@@ -351,7 +356,7 @@ export class L7Layer extends CustomOverlayLayer {
         [0, 0],
         [this.map.transform.width - 1, this.map.transform.height - 1] // -1 是解决报错问题
       ];
-      this.queryRenderedFeatures(bounds, undefined, cb);
+      this.queryRenderedFeatures(bounds, { layerCapture: false }, cb);
     }
     return datas;
   }
