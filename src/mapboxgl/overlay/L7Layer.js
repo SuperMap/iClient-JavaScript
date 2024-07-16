@@ -292,7 +292,7 @@ export class L7Layer extends CustomOverlayLayer {
   }
 
   queryRenderedFeatures(geometry, options, cb) {
-    if (!this.l7layer) {
+    if (!this.l7layer || !this.l7layer.rawConfig.visible) {
       return cb([]);
     }
     let box = geometry;
@@ -321,7 +321,7 @@ export class L7Layer extends CustomOverlayLayer {
   }
 
   querySourceFeatures() {
-    if (!this.l7layer) {
+    if (!this.l7layer || !this.l7layer.rawConfig.visible) {
       return [];
     }
     const layerSource = this.l7layer.layerSource;

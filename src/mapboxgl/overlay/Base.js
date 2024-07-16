@@ -60,9 +60,9 @@ export class CustomOverlayLayer {
   // 移除 layer 事件
   off() {}
 
-  // 查询足查询参数的可见要素的 GeoJSON 要素对象数组
+  // 查询足查询参数的可见要素的 GeoJSON 要素对象数组，如果图层不可见则返回空
   queryRenderedFeatures() {}
 
-  // 查询满足查询参数的指定矢量切片或 GeoJSON 源中的要素
+  // 查询满足查询参数的指定矢量切片或 GeoJSON 源中的要素，如果图层不可见则返回空
   querySourceFeatures() {}
 }

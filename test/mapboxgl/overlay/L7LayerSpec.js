@@ -507,6 +507,28 @@ describe('mapboxgl L7Layer', () => {
     const nextLayerFilter = layer.getFilter();
     expect(nextLayerFilter.field).toEqual([]);
     expect(nextLayerFilter.values('1')).toBeTruthy();
+
+    let queryFeatures;
+    const queryResult = {
+      cb: function (data) {
+        queryFeatures = data;
+      }
+    };
+    spyOn(queryResult, 'cb').and.callThrough();
+    layer.queryRenderedFeatures([0, 0], {}, queryResult.cb);
+    expect(queryResult.cb.calls.count()).toBe(1);
+    expect(queryFeatures).not.toBeUndefined();
+    expect(queryFeatures.length).toBeGreaterThan(0);
+    expect(layer.querySourceFeatures().length).toBeGreaterThan(0);
+    expect(layer.getLayer().layout.visibility).toBe('visible');
+    layer.setLayoutProperty('visibility', 'none');
+    expect(layer.getLayer().layout.visibility).toBe('none');
+    expect(layer.querySourceFeatures().length).toBe(0);
+    layer.queryRenderedFeatures([0, 0], {}, queryResult.cb);
+    expect(queryResult.cb.calls.count()).toBe(2);
+    expect(queryFeatures.length).toBe(0);
+    layer.setLayoutProperty('visibility', 'visible');
+
     spyOn(l7Layer, 'on');
     spyOn(l7Layer, 'once');
     spyOn(l7Layer, 'off');

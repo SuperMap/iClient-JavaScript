@@ -57,6 +57,9 @@ class Layer {
         dataArray: []
       }
     };
+    if (this.rawConfig.visible === void 0) {
+      this.rawConfig.visible = true;
+    }
   }
   source(data, options = {}) {
     const parser = options.parser || { type: "geojson" };
@@ -124,9 +127,11 @@ class Layer {
     return this;
   }
   show() {
+    this.rawConfig.visible = true;
     return this;
   }
   hide() {
+    this.rawConfig.visible = false;
     return this;
   }
   getSource() {
