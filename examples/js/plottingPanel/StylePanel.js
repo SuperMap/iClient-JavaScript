@@ -170,7 +170,7 @@ function updateSelectFeature(updated, selectfeatures) {
                     if (selectfeatures[i].symbolType === SuperMap.Plot.SymbolType.LITERATESIGN) {
                         selectfeatures[i].route.applyTextStyle({ lineSymbolID: updated.value });
                     } else {
-                        if(selectfeatures[i].symbolType != 1){
+                        if(selectfeatures[i].symbolType != 1 && selectfeatures[i].setDashLine){
                             selectfeatures[i].setDashLine([]);
                             selectfeatures[i].setStyle({ lineSymbolID: 0 });
                         }
@@ -703,6 +703,9 @@ function updateSelectFeature(updated, selectfeatures) {
                     }
                     else if (code !== null) {
 
+                        var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
+                        var subCode = symbolLibManager.findSymbolByCode(code);
+
                         transInfo.functionName = "setSubSymbol";
                         if (selectfeatures[i].getSubSymbols()[updated.index]) {
                             transInfo.undoParams = [selectfeatures[i].getSubSymbols()[updated.index].code, updated.index, selectfeatures[i].getSubSymbols()[updated.index].libID];
@@ -712,16 +715,18 @@ function updateSelectFeature(updated, selectfeatures) {
                         var subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
 
                         transInfo.redoParams = [code, updated.index];
-                        selectfeatures[i].setSubSymbol(code, updated.index, 100);
+                        selectfeatures[i].setSubSymbol(code, updated.index, subCode[0].libID);
                     }
                 }
+                var symbolLibManager = L.supermap.plotting.symbolLibManager(serverUrl);
+                var subCode = symbolLibManager.findSymbolByCode(subSymbol.code);
                 if (updated.name == resources.text_subSymbolLineWidth) {
                     let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
-                    selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, 100, subSymbol.lineColor, parseFloat(updated.value));
+                    selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subCode[0].libID, subSymbol.lineColor, parseFloat(updated.value));
                 }
                 if (updated.name == resources.text_subSymbolLineColor) {
                     let subSymbol = selectfeatures[i].getSubSymbols()[updated.index];
-                    selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, 100, updated.value, subSymbol.width2D);
+                    selectfeatures[i].setSubSymbol(subSymbol.code, updated.index, subCode[0].libID, updated.value, subSymbol.width2D);
                 }
             }
             transaction.transInfos.push(transInfo);

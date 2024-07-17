@@ -1371,7 +1371,8 @@ function symbolPropertyObject(selectfeature, styleObject) {
                 var objectSubCode1 = new Object();
                 objectSubCode1.group = group[8];
                 objectSubCode1.name = displayName[3];
-                objectSubCode1.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
+                objectSubCode1.editor = "text";
+                //objectSubCode1.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
                 objectSubCode1.index = i;
                 objectSubCode1.value = subSymbolsTypeString(selectfeature.getSubSymbols().length, selectfeature,i);
                 algoSymbolRows.push(objectSubCode1);
@@ -1395,7 +1396,8 @@ function symbolPropertyObject(selectfeature, styleObject) {
                 var objectSubCode = new Object();
                 objectSubCode.group = group[8];
                 objectSubCode.name = displayName[3];
-                objectSubCode.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
+                objectSubCode.editor = "text";
+                //objectSubCode.editor = { "type": 'combobox', "options": { "valueField": 'value', "textField": 'text', "data": getSubSymbolsTypeRows(selectfeature) } };
                 objectSubCode.index = i;
                 objectSubCode.value = selectfeature.getSubSymbols()[i].code;
                 algoSymbolRows.push(objectSubCode);

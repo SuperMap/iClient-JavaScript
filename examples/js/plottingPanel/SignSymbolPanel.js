@@ -274,7 +274,11 @@ function updateSelectSignSymbol(updated, signSymbol) {
                 values = updated.value.split(";")
             } else if (updated.value.includes("；")) {
                 values = updated.value.split("；")
-            } else {
+            } else if (updated.value.includes(",")) {
+                values = updated.value.split(",")
+            }  else if (updated.value.includes("，")) {
+                values = updated.value.split("，")
+            }  else {
                 values = [updated.value];
             }
             signSymbol.setTexts(values);
@@ -525,7 +529,7 @@ function updateSelectSignSymbol(updated, signSymbol) {
             transInfo.redoParams = [updated.value];
             c = signSymbol.getIndecatorLineStyle().color;
             if (c.includes("#")) {
-                signSymbol.setIndecatorLineStyle({ lineColor: hexToRgb(c, updated.value) });
+                signSymbol.setIndecatorLineStyle({ lineColor: hexToRgb(c, updated.value), opacity: parseFloat(updated.value) });
             } else {
                 color = colorConvert(c);
                 let hexColor = rgbToHex(color.red, color.green, color.blue);
