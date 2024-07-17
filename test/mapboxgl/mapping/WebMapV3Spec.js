@@ -886,4 +886,65 @@ describe('mapboxgl-webmap3.0', () => {
     });
     mapstudioWebmap.initializeMap(mapInfo);
   });
+
+  it('add sprite when map instance as param', (done) => {
+    spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.indexOf('/sprite') > -1) {
+        return Promise.resolve(new Response(msSpriteInfo));
+      }
+      return Promise.resolve();
+    });
+    spyOn(mapboxgl, 'Map').and.callFake(mbglmap);
+    const mapInfo = JSON.parse(mapstudioWebMap_symbol);
+    const nextMapInfo = {
+      ...mapInfo,
+      crs: {
+        name: 'EPSG:4490',
+        extent: [-180, -270, 180, 90],
+        wkt: 'GEOGCS["China Geodetic Coordinate System 2000", DATUM["China 2000", SPHEROID["CGCS2000", 6378137.0, 298.257222101, AUTHORITY["EPSG","1024"]], AUTHORITY["EPSG","1043"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST], AUTHORITY["EPSG","4490"]]'
+      }
+    };
+    mapboxgl.CRS = function (epsgCode, wkt, bounds, unit) {
+      expect(epsgCode).toBe(nextMapInfo.crs.name);
+      expect(wkt).toBe(nextMapInfo.crs.wkt);
+      expect(bounds).toEqual(nextMapInfo.crs.extent);
+      expect(unit).toBe(nextMapInfo.crs.extent[2] > 180 ? 'meter' : 'degree');
+    };
+    mapboxgl.CRS.set = function () {};
+    mapstudioWebmap = new WebMapV3(nextMapInfo, {
+      server: server,
+      target: 'map'
+    });
+    const existedMap = new mapboxgl.Map({
+      container: testDiv,
+      style: {
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            paint: {
+              'background-color': '#242424'
+            },
+            id: 'background1',
+            type: 'background'
+          }
+        ]
+      },
+      crs: 'EPSG:4490',
+      center: [116.640545, 40.531714],
+      zoom: 7
+    });
+    const addSprite = spyOn(existedMap.style, 'addSprite');
+    existedMap.on('load', function () {
+      mapstudioWebmap.initializeMap(nextMapInfo, existedMap);
+    });
+    mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
+      expect(mapstudioWebmap._appendLayers).toBe(true);
+      expect(map).toEqual(existedMap);
+      expect(mapstudioWebmap.map).toEqual(map);
+      expect(addSprite).toHaveBeenCalledTimes(6);
+      delete mapboxgl.CRS;
+      done();
+    });
+  });
 });

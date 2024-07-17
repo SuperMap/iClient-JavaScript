@@ -51,7 +51,8 @@ const Map = function (options) {
   this.resize = function () {};
   this.style = {
     ...options.style,
-    addGlyphs: function() {}
+    addGlyphs: function() {},
+    addSprite: function() {}
   };
   this.setStyle = function (style, options) {
     if (style.layers) {

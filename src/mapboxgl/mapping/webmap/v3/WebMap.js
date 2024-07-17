@@ -172,6 +172,15 @@ export class WebMap extends mapboxgl.Evented {
     if (map) {
       this._appendLayers = true;
       this.map = map;
+       // 处理图层管理添加 sprite
+       const { sources, sprite } = this._mapInfo;
+       if (sprite && sources) {
+         Object.keys(sources).forEach((sourceName) => {
+           if (sources[sourceName].type === 'vector') {
+             this.map.style.addSprite(sourceName, sprite);
+           }
+         });
+       }
       this._initLayers();
       return;
     }
