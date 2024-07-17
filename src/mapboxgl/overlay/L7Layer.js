@@ -330,7 +330,7 @@ export class L7Layer extends CustomOverlayLayer {
       return [];
     }
     const { layerSource, pickingService } = this.l7layer;
-    let datas = pickingService.handleRawFeature(layerSource.data.dataArray);
+    let datas = pickingService.handleRawFeature(layerSource.data.dataArray, this.l7layer);
     const { parser: { type } } = layerSource;
     if (type === 'mvt') {
       const { tileset: { cacheTiles = [] } = {} } = layerSource;
@@ -344,7 +344,7 @@ export class L7Layer extends CustomOverlayLayer {
             (!(item.properties || {})[featureId] ||
               !mvtDatas.some((feature) => feature.properties[featureId] === item.properties[featureId]))
         );
-        mvtDatas.push(...pickingService.handleRawFeature(features));
+        mvtDatas.push(...pickingService.handleRawFeature(features, this.l7layer));
       });
       datas = datas.length > mvtDatas.length ? datas : mvtDatas;
     }
