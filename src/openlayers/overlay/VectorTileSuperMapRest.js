@@ -17,7 +17,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import * as olSize from 'ol/size';
 import Projection from 'ol/proj/Projection';
 import TileGrid from 'ol/tilegrid/TileGrid';
-import decryptTileUtil from '@supermap/tile-decryptor';
+import decryptTileUtil from '@supermapgis/tile-decryptor';
 
 /**
  * @class VectorTileSuperMapRest
@@ -34,7 +34,8 @@ import decryptTileUtil from '@supermap/tile-decryptor';
  * @param {(string|Object)} [options.attributions='Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='https://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>'] - 版权描述信息。
  * @param {Object} [options.format] - 瓦片的要素格式化。
  * @param {boolean} [options.withCredentials] - 请求是否携带 cookie。
- * @param {boolean} [options.decrypt] - 瓦片是否需要解密。
+ * @param {boolean|Function} [options.decrypt] - 瓦片解密。如果是 true 表示用内置的解密方法， 如 decrypt: true；如果是function 则是自定义解密如 decrypt: function ({ key, bytes })。
+ * @param {Function} [options.decryptCompletedFunction] - 解密完成后触发。如 decryptCompletedFunction(completeData)。
  * @extends {ol.source.VectorTile}
  * @usage
  */
@@ -386,15 +387,23 @@ export class VectorTileSuperMapRest extends VectorTile {
           const firstSource = Object.keys(options.style.sources)[0];
           serviceUrl = options.style.sources[firstSource].tiles[0];
         }
-        this.serviceKey = await getServiceKey(serviceUrl);
+        const res = await getServiceKey(serviceUrl);
+        if (res) {
+          this.decryptOptions = {
+            key: res.serviceKey,
+            algorithm: res.algorithm,
+            decrypt: typeof options.decrypt === 'boolean' ? undefined : options.decrypt,
+            decryptCompletedFunction: options.decryptCompletedFunction
+          };
+        }
       } catch (error) {
         console.error(error);
       }
     }
 
     _decryptMvt(mvtData) {
-      if (this.serviceKey) {
-        return decryptTileUtil(mvtData, this.serviceKey);
+      if (this.decryptOptions) {
+        return decryptTileUtil({ ...this.decryptOptions, arrayBuffer: mvtData });
       }
       return mvtData;
     }

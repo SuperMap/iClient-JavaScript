@@ -236,7 +236,8 @@ describe('MapExtend mapboxgl', () => {
       decryptSources.add('B');
       expect(decryptSources.values).toEqual(['A', 'B']);
       await vectorSource.beforeLoad('A', source);
-      expect(vectorSource.decryptKey).toEqual('P8h08GonNjuCB4+CAykAGmLYwNsiv4G6H8KFrFi7Afk=');
+      expect(vectorSource.decryptOptions.key).toBe('P8h08GonNjuCB4+CAykAGmLYwNsiv4G6H8KFrFi7Afk=');
+      expect(vectorSource.decryptOptions.algorithm).toBe('AES');
     } catch (error) {
       expect(error).toEqual(new Error('mapbox-gl cannot support plane coordinate system.'));
     }

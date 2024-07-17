@@ -1,5 +1,5 @@
 import { FetchRequest } from '../../../src/common/util/FetchRequest';
-import { EncryptRequest } from '../../../src/common/util/EncryptRequest';
+import { EncryptRequest, getServiceKey } from '../../../src/common/util/EncryptRequest';
 
 describe('EncryptRequest', () => {
   const serverUrl = 'http://fake.iserver.com/iserver';
@@ -67,6 +67,65 @@ describe('EncryptRequest', () => {
         spyGet.calls.reset();
         spyPost.calls.reset();
         spyCommit.calls.reset();
+        done();
+      });
+    });
+  });
+
+  it('getServiceKey', (done) => {
+    const serviceKey = 'l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=';
+    const encrptSpec = {
+      keyLength: 256,
+      attributes: 'abcd',
+      version: '1.1',
+      algorithm: 'AES'
+    };
+    const spyEncrypt = spyOn(EncryptRequest.prototype, 'request').and.callFake((options) => {
+      if (options.url.includes('keyID1')) {
+        return { json: () => Promise.resolve(serviceKey)};
+      }
+      return { json: () => Promise.resolve(null)};
+    });
+    const spyGet = spyOn(FetchRequest, 'get').and.callFake((url) => {
+      if (url.includes('map-China100')) { 
+        return Promise.resolve(
+          new Response(
+            JSON.stringify([
+              {
+                serviceEncryptInfo: {
+                  encrptSpec,
+                  updateTime: 'Fri Mar 15 08:52:15 CST 2024',
+                  encrptKeyID: 'keyID1'
+                },
+                name: 'map-China100/rest'
+              }
+            ])
+          )
+        );
+      }
+      return Promise.resolve(
+        new Response(
+          JSON.stringify([
+            {
+              serviceEncryptInfo: {
+                encrptSpec,
+                updateTime: 'Fri Mar 15 08:52:15 CST 2024',
+                encrptKeyID: 'keyID2'
+              },
+              name: 'data-china100/rest'
+            }
+          ])
+        )
+      );
+    });
+    getServiceKey('http://localhost:8090/iserver/services/map-China100/rest/maps/China').then(res => {
+      expect(res).not.toBeUndefined();
+      expect(res.serviceKey).toBe(serviceKey);
+      expect(res.algorithm).toBe(encrptSpec.algorithm);
+      getServiceKey('http://localhost:8090/iserver/services/data-China100/rest/data/datasources/China/datasets/Airport_pt').then(res => {
+        expect(res).toBeUndefined();
+        spyGet.calls.reset();
+        spyEncrypt.calls.reset();
         done();
       });
     });

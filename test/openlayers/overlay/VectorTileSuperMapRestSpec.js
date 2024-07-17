@@ -59,6 +59,12 @@ const mapObject = {
 };
 describe('openlayers_VectorTileSuperMapRest', () => {
   var testDiv, map, vectorTileOptions, vectorTileSource, originalTimeout, vectorLayer, spyGet, spyPost, spyCommit;
+  const encrptSpec = {
+    keyLength: 256,
+    attributes: 'abcd',
+    version: '1.1',
+    algorithm: 'AES'
+  };
   const mockCallback = (testUrl) => {
     if ((url.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/))/) || [])[0] === testUrl) {
       return Promise.resolve(
@@ -66,12 +72,7 @@ describe('openlayers_VectorTileSuperMapRest', () => {
           JSON.stringify([
             {
               serviceEncryptInfo: {
-                encrptSpec: {
-                  keyLength: 256,
-                  attributes: 'abcd',
-                  version: '1.1',
-                  algorithm: 'AES'
-                },
+                encrptSpec,
                 updateTime: 'Fri Mar 15 08:52:15 CST 2024',
                 encrptKeyID: 'keyIDNAME'
               },
@@ -175,7 +176,8 @@ describe('openlayers_VectorTileSuperMapRest', () => {
 
   it('mvt_decrypt ', (done) => {
     const spy = jasmine.createSpy('test');
-    const spyEncrypt = spyOn(EncryptRequest.prototype, 'request').and.callFake(() => ({ json: () => Promise.resolve('l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=')}));
+    const serviceKey = 'l3nQtAUM4li87qMfO68exInHVFQ5gS3a6pb8ySIbib8=';
+    const spyEncrypt = spyOn(EncryptRequest.prototype, 'request').and.callFake(() => ({ json: () => Promise.resolve(serviceKey)}));
     new MapService(url).getMapInfo((serviceResult) => {
       map = new Map({
         target: 'map',
@@ -185,10 +187,11 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         })
       });
       vectorTileOptions = VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
-      vectorTileOptions.decrypt = true;
       vectorTileOptions.format = new MVT({
         featureClass: Feature
       });
+      vectorTileOptions.decrypt = function() { return []};
+      vectorTileOptions.decryptCompletedFunction = function() {};
       vectorTileOptions.tileLoadFunction = (tile) => {
         tile.setLoader(() => {
           spy();
@@ -204,7 +207,18 @@ describe('openlayers_VectorTileSuperMapRest', () => {
         expect(vectorTileOptions).not.toBeNull();
         expect(spy.calls.count()).toBe(1);
         expect(spyEncrypt).toHaveBeenCalled();
-        expect(vectorTileSource.serviceKey).not.toBeUndefined();
+        expect(vectorTileSource.decryptOptions).not.toBeUndefined();
+        expect(vectorTileSource.decryptOptions.key).toBe(serviceKey);
+        expect(vectorTileSource.decryptOptions.algorithm).toEqual(encrptSpec.algorithm);
+        expect(vectorTileSource.decryptOptions.decrypt).not.toBeUndefined();
+        expect(vectorTileSource.decryptOptions.decryptCompletedFunction).not.toBeUndefined();
+        let testData = new Uint8Array();
+        let resultData = vectorTileSource._decryptMvt(testData);
+        expect(resultData.slice(0).join(',')).toEqual(testData.slice(0).join(','));
+        vectorTileSource.decryptOptions = null;
+        testData = new Uint8Array([5, 10]);
+        resultData = vectorTileSource._decryptMvt(testData);
+        expect(resultData.slice(0).join(',')).toEqual(testData.slice(0).join(','));
         spy.calls.reset();
         spyEncrypt.calls.reset();
         done();

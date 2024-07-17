@@ -147,7 +147,7 @@ export class EncryptRequest {
  * @category  iServer Core
  * @description 获取矢量瓦片解密密钥
  * @param {string} serviceUrl - iServer 服务地址。例如：http://127.0.0.1:8090/iserver/services/xxx、http://127.0.0.1:8090/iserver/services/xxx/rest/maps、http://127.0.0.1:8090/iserver/services/xxx/restjsr/v1/vectortile。
- * @return {Promise} key - 矢量瓦片密钥。
+ * @return {Promise} options - 矢量瓦片密钥和加密算法类型。例如 { serviceKey, algorithm }。
  * @usage
  * ```
  * // 浏览器
@@ -166,7 +166,7 @@ export class EncryptRequest {
 export async function getServiceKey(serviceUrl) {
   try {
     const workspaceServerUrl = ((serviceUrl &&
-      serviceUrl.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/))/)) ||
+      serviceUrl.match(/.+(?=(\/restjsr\/v1\/vectortile\/|\/rest\/maps\/|\/rest\/data\/))/)) ||
       [])[0];
     if (!workspaceServerUrl) {
       return;
@@ -187,7 +187,14 @@ export async function getServiceKey(serviceUrl) {
       method: 'get',
       url: svckeyUrl
     });
-    return svcReponse.json();
+    const serviceKey = await svcReponse.json();
+    if (!serviceKey) {
+      return;
+    }
+    return {
+      serviceKey,
+      algorithm: matchRestData.serviceEncryptInfo.encrptSpec.algorithm
+    };
   } catch (error) {
     console.error(error);
   }

@@ -15,10 +15,11 @@
   "author": "SuperMap",
   "license": "Apache-2.0",
   "dependencies": {
+    "@supermap/iclient-common": "11.2.0",
+    "@supermapgis/tile-decryptor": "^1.0.0",
     "@turf/turf": "6.5.0",
     "mapv": "2.0.62",
     "ol": "7.5.2",
-    "@supermap/iclient-common": "11.2.0",
     "proj4": "2.11.0",
     "canvg": "3.0.10",
     "lodash.remove": "^4.7.0",

@@ -16,8 +16,13 @@ export var MapExtend = (function () {
     mapboxgl.VectorTileSource.prototype.beforeLoad = async function (id, options) {
       const url = options && options.tiles && options.tiles[0];
       if (decryptSources.values.includes(id) && url) {
-        const decryptKey = await getServiceKey(url);
-        this.decryptKey = decryptKey;
+        const res = await getServiceKey(url);
+        if (res) {
+          this.decryptOptions = {
+            key: res.serviceKey,
+            algorithm: res.algorithm
+          };
+        }
       }
       this.beforeLoadBak(id, options);
     };
