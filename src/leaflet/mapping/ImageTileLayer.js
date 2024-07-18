@@ -4,8 +4,8 @@
 import L, { Util as LUtil } from 'leaflet';
 import '../core/Base';
 import Attributions from '../core/Attributions';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
 
 /**
  * @class ImageTileLayer

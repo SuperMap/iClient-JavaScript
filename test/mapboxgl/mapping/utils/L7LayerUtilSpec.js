@@ -1,7 +1,7 @@
 import { addL7Layers, isL7Layer, getL7Filter } from '../../../../src/mapboxgl/mapping/utils/L7LayerUtil';
 import * as mockL7 from '../../../tool/mock_l7';
 import * as L7 from '../../../../src/mapboxgl/overlay/L7/l7-render';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 describe('L7LayerUtil', () => {
   const mapstudioWebMap_L7LayersRes = JSON.parse(mapstudioWebMap_L7Layers);

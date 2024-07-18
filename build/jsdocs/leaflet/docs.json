@@ -88,7 +88,7 @@
             "outputSourceFiles": false
         },
         "namespace": "L.supermap",
-        "npm":"@supermap/iclient-leaflet",
+        "npm":"@supermapgis/iclient-leaflet",
         "cdn":"https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"
     }
 }

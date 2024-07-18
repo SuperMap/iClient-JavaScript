@@ -1,6 +1,6 @@
 # SuperMap iClient JavaScript
 
-[![npm version](https://img.shields.io/npm/v/@supermap/iclient-common.svg)](https://www.npmjs.com/~supermap)
+[![npm version](https://img.shields.io/npm/v/@supermap/iclient-common.svg)](https://www.npmjs.com/org/supermapgis)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSuperMap%2FiClient-JavaScript?ref=badge_shield)
 
 ## 简介 | [ENGLISH](https://github.com/SuperMap/iClient-JavaScript/blob/master/README_EN.md)

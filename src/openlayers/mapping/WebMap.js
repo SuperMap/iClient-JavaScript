@@ -2,13 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import proj4 from 'proj4';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { ArrayStatistic } from '@supermap/iclient-common/util/ArrayStatistic';
-import { ColorsPickerUtil } from '@supermap/iclient-common/util/ColorsPickerUtil';
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
-import { Events } from '@supermap/iclient-common/commontypes/Events';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { parseCondition, parseConditionFeature } from '@supermap/iclient-common/util/FilterCondition';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { ArrayStatistic } from '@supermapgis/iclient-common/util/ArrayStatistic';
+import { ColorsPickerUtil } from '@supermapgis/iclient-common/util/ColorsPickerUtil';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { Events } from '@supermapgis/iclient-common/commontypes/Events';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { parseCondition, parseConditionFeature } from '@supermapgis/iclient-common/util/FilterCondition';
 import { Util } from '../core/Util';
 import { getFeatureBySQL, queryFeatureBySQL, getFeatureProperties } from './webmap/Util';
 import { StyleUtils } from '../core/StyleUtils';

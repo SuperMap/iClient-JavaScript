@@ -1,4 +1,4 @@
-import { ImageStretchOption } from '@supermap/iclient-common/iServer';
+import { ImageStretchOption } from '@supermapgis/iclient-common/iServer';
 
 var option = {
     stretchType: 'Gaussian',

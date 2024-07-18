@@ -1,6 +1,6 @@
-# @supermap/iclient-leaflet
+# @supermapgis/iclient-leaflet
 
-@supermap/iclient-leaflet 是一套基于 Leaflet 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
+@supermapgis/iclient-leaflet 是一套基于 Leaflet 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
 * 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
@@ -9,7 +9,7 @@
 ## 安装
 
 ```
- npm install @supermap/iclient-leaflet
+ npm install @supermapgis/iclient-leaflet
 ```
 
 ## 开发
@@ -26,7 +26,7 @@
 
 ```
 import L from 'leaflet';
-import {tiledMapLayer} from '@supermap/iclient-leaflet';
+import {tiledMapLayer} from '@supermapgis/iclient-leaflet';
 
 var url = "https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
 var map = L.map('map', {

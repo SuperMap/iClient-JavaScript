@@ -6,9 +6,9 @@ import '../core/Base';
 import {
     ServiceBase
 } from './ServiceBase';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
-import { MapService as CommonMapService } from '@supermap/iclient-common/iServer/MapService';
-import { TilesetsService } from '@supermap/iclient-common/iServer/TilesetsService';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
+import { MapService as CommonMapService } from '@supermapgis/iclient-common/iServer/MapService';
+import { TilesetsService } from '@supermapgis/iclient-common/iServer/TilesetsService';
 /**
  * @class  MapService
  * @deprecatedclassinstance L.supermap.mapService

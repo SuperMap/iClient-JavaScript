@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Plugin = require('@supermap/babel-plugin-import/lib/Plugin.js');
+const Plugin = require('@supermapgis/babel-plugin-import/lib/Plugin.js');
 
 // 检测epoxrt * 重名问题， 会在控制台输出
 const lintExportRepeat = function (libraryName) {

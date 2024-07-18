@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import { decryptSources } from './decryptSource';
-import { getServiceKey } from '@supermap/iclient-common/util/EncryptRequest';
+import { getServiceKey } from '@supermapgis/iclient-common/util/EncryptRequest';
 
 /**
  * @function MapExtend

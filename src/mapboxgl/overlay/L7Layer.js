@@ -1,6 +1,6 @@
 import '../core/Base';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { getL7Scene } from '@supermap/iclient-common/overlay/l7/util';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { getL7Scene } from '@supermapgis/iclient-common/overlay/l7/util';
 import mapboxgl from 'mapbox-gl';
 import * as L7 from './L7/l7-render';
 import { Scene, Mapbox } from './L7/l7-render';

@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
 import { WebMap as WebMapV3 } from '../../../src/mapboxgl/mapping/webmap/v3/WebMap';
 import '../../resources/WebMapV3.js';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import * as L7 from '../../../src/mapboxgl/overlay/L7/l7-render';
 import * as mockL7 from '../../tool/mock_l7';
 import mbglmap from '../../tool/mock_mapboxgl_map';

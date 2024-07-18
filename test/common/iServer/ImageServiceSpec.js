@@ -1,5 +1,5 @@
-import { ImageSearchParameter, ImageService } from '@supermap/iclient-common/iServer';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { ImageSearchParameter, ImageService } from '@supermapgis/iclient-common/iServer';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 describe('ImageService', () => {
     var originalTimeout;

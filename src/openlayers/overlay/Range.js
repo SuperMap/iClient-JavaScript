@@ -1,9 +1,9 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { ShapeFactory } from '@supermap/iclient-common/overlay/feature/ShapeFactory';
-import { ThemeVector } from '@supermap/iclient-common/overlay/ThemeVector';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { ShapeFactory } from '@supermapgis/iclient-common/overlay/feature/ShapeFactory';
+import { ThemeVector } from '@supermapgis/iclient-common/overlay/ThemeVector';
 import {GeoFeature} from './theme/GeoFeature';
 
 /**

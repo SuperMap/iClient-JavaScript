@@ -2,8 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
-import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { WebPrintingService } from '@supermapgis/iclient-common/iServer/WebPrintingService';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 import Point from 'ol/geom/Point';
 
 /**

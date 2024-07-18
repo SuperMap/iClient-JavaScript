@@ -1,6 +1,6 @@
 import {TransferPathService} from '../../../src/common/iServer/TransferPathService';
 import {TransferPathParameters} from '../../../src/common/iServer/TransferPathParameters';
-import {FetchRequest} from "@supermap/iclient-common";
+import {FetchRequest} from "@supermapgis/iclient-common";
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var analystEventArgsSystem = null;

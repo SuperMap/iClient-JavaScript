@@ -2,11 +2,11 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import maplibregl from 'maplibre-gl';
-import { MapvRenderer } from '@supermap/iclient-common/overlay/mapv/MapvRenderer';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
+import { MapvRenderer } from '@supermapgis/iclient-common/overlay/mapv/MapvRenderer';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
 import {
   getMeterPerMapUnit
-} from '@supermap/iclient-common/util/MapCalculateUtil';
+} from '@supermapgis/iclient-common/util/MapCalculateUtil';
 /**
  * @class MapvLayer
  * @category  Visualization MapV

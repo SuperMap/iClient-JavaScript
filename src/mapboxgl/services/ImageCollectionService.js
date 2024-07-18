@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { ServiceBase } from './ServiceBase';
 import '../core/Base';
-import CommonMatchImageCollectionService from '@supermap/iclient-common/iServer/ImageCollectionService';
+import CommonMatchImageCollectionService from '@supermapgis/iclient-common/iServer/ImageCollectionService';
 
 /**
  * @class ImageCollectionService

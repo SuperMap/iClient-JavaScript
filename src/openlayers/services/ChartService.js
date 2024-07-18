@@ -2,10 +2,10 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { DataFormat } from '@supermap/iclient-common/REST';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
 import {ServiceBase} from './ServiceBase';
-import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
+import { ChartService as CommonChartService } from '@supermapgis/iclient-common/iServer/ChartService';
 
 /**
  * @class ChartService

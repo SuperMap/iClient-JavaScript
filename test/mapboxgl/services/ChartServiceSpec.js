@@ -1,6 +1,6 @@
 import { ChartService } from '../../../src/mapboxgl/services/ChartService';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermap/iclient-common';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { ChartQueryFilterParameter, ChartQueryParameters } from '@supermapgis/iclient-common';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
 
 var url = GlobeParameter.chartServiceURL;

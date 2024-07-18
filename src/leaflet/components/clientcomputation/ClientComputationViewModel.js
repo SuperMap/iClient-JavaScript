@@ -6,7 +6,7 @@
  import '../../core/Base';
  import { GeoJSONLayerWithName } from '../commonmodels/GeoJSONLayerWithName';
  import { GeoJsonLayersDataModel } from '../commonmodels/GeoJsonLayersModel';
- import { AttributesPopContainer } from '@supermap/iclient-common/components/templates/AttributesPopContainer';
+ import { AttributesPopContainer } from '@supermapgis/iclient-common/components/templates/AttributesPopContainer';
  
 
 /**

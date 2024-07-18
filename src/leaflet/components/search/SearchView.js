@@ -4,12 +4,12 @@
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { config } from './CityConfig';
- import { NavTabsPage } from '@supermap/iclient-common/components/templates/NavTabsPage';
- import { CityTabsPage } from '@supermap/iclient-common/components/templates/CityTabsPage';
- import { PaginationContainer } from '@supermap/iclient-common/components/templates/PaginationContainer';
- import { AttributesPopContainer } from '@supermap/iclient-common/components/templates/AttributesPopContainer';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { NavTabsPage } from '@supermapgis/iclient-common/components/templates/NavTabsPage';
+ import { CityTabsPage } from '@supermapgis/iclient-common/components/templates/CityTabsPage';
+ import { PaginationContainer } from '@supermapgis/iclient-common/components/templates/PaginationContainer';
+ import { AttributesPopContainer } from '@supermapgis/iclient-common/components/templates/AttributesPopContainer';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
  import { SearchViewModel } from './SearchViewModel';
 
 /**

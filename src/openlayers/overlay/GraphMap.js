@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import Observable from 'ol/Observable';
 import { KnowledgeGraphService } from '../services/KnowledgeGraphService';
-import { KnowledgeGraph } from '@supermap/iclient-common/overlay/KnowledgeGraph';
-import { transformExpandCollapseHiddenData } from '@supermap/iclient-common/overlay/knowledge-graph/format';
+import { KnowledgeGraph } from '@supermapgis/iclient-common/overlay/KnowledgeGraph';
+import { transformExpandCollapseHiddenData } from '@supermapgis/iclient-common/overlay/knowledge-graph/format';
 
 /**
  * @class GraphMap

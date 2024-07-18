@@ -4,15 +4,15 @@
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { DataServiceQueryViewModel } from './DataServiceQueryViewModel';
- import { GetFeaturesByIDsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByIDsParameters';
- import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
- import { GetFeaturesByBoundsParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBoundsParameters';
- import { GetFeaturesByBufferParameters } from '@supermap/iclient-common/iServer/GetFeaturesByBufferParameters';
- import { GetFeaturesByGeometryParameters } from '@supermap/iclient-common/iServer/GetFeaturesByGeometryParameters';
- import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
- import { Select } from '@supermap/iclient-common/components/templates/Select';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { GetFeaturesByIDsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByIDsParameters';
+ import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+ import { GetFeaturesByBoundsParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBoundsParameters';
+ import { GetFeaturesByBufferParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByBufferParameters';
+ import { GetFeaturesByGeometryParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesByGeometryParameters';
+ import { CommonContainer } from '@supermapgis/iclient-common/components/templates/CommonContainer';
+ import { Select } from '@supermapgis/iclient-common/components/templates/Select';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 /**
  * @class DataServiceQueryView

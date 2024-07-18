@@ -4,10 +4,10 @@
 import L from "leaflet";
 import '../../core/Base';
 import { DistributedAnalysisModel } from "./DistributedAnalysisModel";
-import { KernelDensityJobParameter } from '@supermap/iclient-common/iServer/KernelDensityJobParameter';
+import { KernelDensityJobParameter } from '@supermapgis/iclient-common/iServer/KernelDensityJobParameter';
 import { ProcessingService } from '../../services/ProcessingService';
 import { tiledMapLayer } from '../../mapping/TiledMapLayer';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 /**
  * @class DistributedAnalysisViewModel

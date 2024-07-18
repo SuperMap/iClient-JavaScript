@@ -4,8 +4,8 @@
  import L from 'leaflet';
  import '../core/Base';
  import { ServiceBase } from './ServiceBase';
- import { WebPrintingService } from '@supermap/iclient-common/iServer/WebPrintingService';
- import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+ import { WebPrintingService } from '@supermapgis/iclient-common/iServer/WebPrintingService';
+ import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 
 /**
  * @class WebPrintingJobService

@@ -2,7 +2,7 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
-import { Theme as FeatureTheme } from '@supermap/iclient-common/overlay/feature/Theme';
+import { Theme as FeatureTheme } from '@supermapgis/iclient-common/overlay/feature/Theme';
 import {
     GraphThemeLayer
 } from './GraphThemeLayer';

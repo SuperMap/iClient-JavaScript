@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermap/iclient-common/iServer/SpatialAnalystService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermapgis/iclient-common/iServer/SpatialAnalystService';
 
 /**
  * @class SpatialAnalystService

@@ -13,7 +13,7 @@ import {
     getEpsgCode,
     getTileFormat,
     getTileset
-} from '@supermap/iclient-common/iServer/InitMapServiceBase';
+} from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 
 /**
