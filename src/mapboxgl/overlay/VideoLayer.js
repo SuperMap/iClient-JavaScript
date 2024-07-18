@@ -117,7 +117,7 @@
      });
      let maxX = 0;
      let maxY = 0;
-     if (bbox) {
+     if (bbox && !this.allContained) {
        let pixelLeftBottom = this.map.project([bbox[0], bbox[1]]);
        let pixelRightTop = this.map.project([bbox[2], bbox[3]]);
        maxX = Math.min(Math.abs(minX - pixelLeftBottom.x), Math.abs(minX - pixelRightTop.x));
@@ -148,7 +148,6 @@
        [...this.extent, this.extent[0]]
      ]);
      const result = bbox(poly);
- 
      let that = this;
      let realHeight = this.videoHeight;
      let srcPixelCoords = [0, 0, that.videoWidth, 0, that.videoWidth, that.videoHeight, 0, that.videoHeight];
@@ -169,10 +168,14 @@
      this._initParameters(this.videoParameters).then((coordTransfer) => {
        this.coordTransfer = coordTransfer;
        let latlng = [];
+       this.allContained = true;
        temp.forEach((point) => {
          let coord = this.coordTransfer.toSpatialCoordinate(point);
          let tcoord = [coord[0], coord[1]];
          const pcoord = proj4('EPSG:3857', 'EPSG:4326', tcoord);
+         if (!this._contain(pcoord, result)) {
+           this.allContained = false;
+         }
          latlng.push(pcoord);
        });
        let originBounds = [];
@@ -234,8 +237,13 @@
            let dst = new that.cv.Mat();
            let M = that.cv.findHomography(srcTri, dstTri);
            that.cv.warpPerspective(src, dst, M, that.dsize);
-           dst.copyTo(dst1, clipMat);
-           let newFrame = new ImageData(new Uint8ClampedArray(dst1.data), dst1.cols, dst1.rows);
+           let newFrame;
+           if (that.allContained) {
+            newFrame = new ImageData(new Uint8ClampedArray(dst.data), dst.cols, dst.rows);
+           } else {
+            dst.copyTo(dst1, clipMat);
+            newFrame = new ImageData(new Uint8ClampedArray(dst1.data), dst1.cols, dst1.rows);
+           }
            src.delete();
            dst.delete();
            M.delete();
@@ -257,6 +265,10 @@
          }
        );
      });
+   }
+
+   _contain(coord, bounds) {
+     return coord[0] >= bounds[0] && coord[0] <= bounds[2] && coord[1] >= bounds[1] && coord[1] <= bounds[3];
    }
  
    /**

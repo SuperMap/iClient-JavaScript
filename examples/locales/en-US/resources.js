@@ -736,6 +736,7 @@ window.examplesResources = {
         "title_websymbol_customWebSymbol": "Custom WebSymbol",
         "title_dataAttributes": "Attributes",
         "title_videoLayer":"Video Layer",
+        "title_videoMap":"Video Map",
         "title_knowledgeGraphMap": "KnowledgeGraph",
         "title_l7_grid_map": "Grid Map",
         "title_l7_circular_sweeping_city": "Circular Sweeping City",

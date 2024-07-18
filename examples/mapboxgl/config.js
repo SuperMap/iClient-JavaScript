@@ -1848,6 +1848,27 @@ var exampleConfig = {
                   fileName: 'l7_rain_particle'
                 }
               ]
+            },
+            Video: {
+              name: 'Video',
+              name_en: 'Video',
+              version: '11.2.0',
+              content: [
+                  {
+                      name: '视频图层',
+                      name_en: 'VideoLayer',
+                      version: '11.2.0',
+                      thumbnail: 'videoLayer.png',
+                      fileName: 'videoLayer'
+                  },
+                  {
+                    name: '视频地图',
+                    name_en: 'Video Map',
+                    version: '11.2.0',
+                    thumbnail: 'videoMap.png',
+                    fileName: 'videoMap'
+                  }
+                ]
             }
         }
     },
