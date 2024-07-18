@@ -7,6 +7,7 @@ import { Util } from '../../../core/Util';
 import { addL7Layers, getL7MarkerLayers, isL7Layer } from '../../utils/L7LayerUtil';
 
 const LEGEND_RENDER_TYPE = {
+  TEXT: 'TEXT',
   POINT: 'POINT',
   LINE: 'LINE',
   FILL: 'FILL',
@@ -18,6 +19,7 @@ const LEGEND_RENDER_TYPE = {
 };
 
 const LEGEND_SHAPE_TYPE = {
+  TEXT: 'TEXT',
   POINT: 'POINT',
   LINE: 'LINE',
   RECTANGLE: 'RECTANGLE',
@@ -35,6 +37,15 @@ const LEGEND_CSS_STATE_KEY = {
 };
 
 const LEGEND_CSS_DEFAULT = {
+  [LEGEND_RENDER_TYPE.TEXT]: {
+    textSize: '16px',
+    textColor: '#FFFFFF',
+    textOpacity: 1,
+    textHaloColor: '#242424',
+    textHaloBlur: 1,
+    textHaloWidth: 1,
+    textFont: 'Microsoft YaHei'
+  },
   [LEGEND_RENDER_TYPE.POINT]: {
     fontSize: '8px',
     color: '#FFFFFF',
@@ -86,8 +97,15 @@ const LEGEND_CSS_DEFAULT = {
     speed: 3
   }
 };
+const LegendTextDataDrivenStyleKey = [
+  'textSize',
+  'textColor',
+  'textOpacity',
+  'textHaloColor'
+];
 
 const LEGEND_STYLE_KEYS = {
+  [LEGEND_RENDER_TYPE.TEXT]: [...LegendTextDataDrivenStyleKey, 'symbolsContent', 'textField', 'textFont', 'textHaloBlur', 'textHaloWidth'],
   [LEGEND_RENDER_TYPE.POINT]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.BUILTINSYMBOL]: ['symbolsContent', 'size', 'color', 'opacity'],
   [LEGEND_RENDER_TYPE.LINE]: ['width', 'color', 'opacity', 'lineDasharray', 'symbolsContent'],
@@ -979,7 +997,7 @@ export class WebMap extends mapboxgl.Evented {
     const { catalogs = [] } = this._mapResourceInfo;
     const originLayers = this._getLayerInfosFromCatalogs(catalogs, 'catalogType');
     for (const layer of originLayers) {
-      const { renderer } = layer.visualization || {};
+      const { renderer, label } = layer.visualization || {};
       if (!renderer) {
         continue;
       }
@@ -993,6 +1011,20 @@ export class WebMap extends mapboxgl.Evented {
       }
       const nextLayer = Object.assign({}, layerFromMapInfo, { title: layer.title, themeField });
       const styleSettings = this._parseRendererStyleData(renderer);
+      // 线面文本标签
+      if (label) {
+        styleSettings.push({...label, type: 'text'});
+        if (label.symbolsContent.value.symbolId) {
+          styleSettings.push({...label, type: 'symbol'});
+        }
+      }
+      // 点文本标签
+      if (styleSettings[0].textField && styleSettings[0].textField.value) {
+        styleSettings.push({
+          ...styleSettings[0],
+          type: 'text'
+        });
+      }
       const layerLegends = styleSettings.reduce((legends, styleSetting) => {
         const legendItems = this._createLayerLegendList(nextLayer, styleSetting);
         legendItems && legends.push(...legendItems);
@@ -1038,6 +1070,8 @@ export class WebMap extends mapboxgl.Evented {
 
   _getLegendRenderType(renderType) {
     switch (renderType) {
+      case 'text':
+        return LEGEND_RENDER_TYPE.TEXT;
       case 'circle':
       case 'symbol':
       case 'column':
@@ -1066,6 +1100,8 @@ export class WebMap extends mapboxgl.Evented {
 
   _getLegendShape(renderType, styleSetting) {
     switch (renderType) {
+      case 'text':
+        return LEGEND_SHAPE_TYPE.TEXT;
       case 'circle':
       case 'symbol':
         return LEGEND_SHAPE_TYPE.POINT;
@@ -1163,6 +1199,17 @@ export class WebMap extends mapboxgl.Evented {
     });
   }
 
+  _getDataDrivenStyleKeys(legendType, keys, styleSetting) {
+    const DataDrivenStyleKeyObj = {
+        [LEGEND_RENDER_TYPE.TEXT]: LegendTextDataDrivenStyleKey
+    };
+    const porpertyKeys = DataDrivenStyleKeyObj[legendType] || keys;
+    const dataKeys = porpertyKeys.filter(
+        (k) => styleSetting[k] && styleSetting[k].type !== 'simple'
+    );
+    return dataKeys;
+  }
+
   _createLayerLegendList(layer, styleSetting) {
     const layerId = layer.id;
     const layerTitle = layer.title;
@@ -1203,7 +1250,7 @@ export class WebMap extends mapboxgl.Evented {
     this._transStyleSetting(renderType, styleSetting);
     const simpleStyle = this._getLegendSimpleStyle(styleSetting, keys);
     const simpleResData = this._parseLegendtyle({ legendRenderType, customValue: simpleStyle });
-    let dataKeys = keys.filter((k) => styleSetting[k] && styleSetting[k].type !== 'simple');
+    let dataKeys = this._getDataDrivenStyleKeys(legendRenderType, keys, styleSetting);
     // 3D线,动画线
     if (legendRenderType === LEGEND_RENDER_TYPE.ANIMATELINE) {
       // isReplaceLineColor: 3D线,动画线:使用符号替换线颜色，图例中将不再显示线颜色
@@ -1401,6 +1448,13 @@ export class WebMap extends mapboxgl.Evented {
     });
     let { symbolId = LEGEND_SYMBOL_DEFAULT[legendRenderType], style } = customValue.symbolsContent || {};
     switch (legendRenderType) {
+      case LEGEND_RENDER_TYPE.TEXT: {
+        return {
+          type: LEGEND_STYLE_TYPES.STYLE,
+          icon: 'supermapol-icons-text-layer',
+          ...cssStyle
+        }
+      }
       case LEGEND_RENDER_TYPE.POINT: {
         const icon = this._getIconById(symbolId);
         const iconType = icon ? 'BASE' : 'SERVICE';
