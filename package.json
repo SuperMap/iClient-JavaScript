@@ -76,7 +76,7 @@
     "@elastic/elasticsearch": "^5.6.22",
     "@geoman-io/leaflet-geoman-free": "^2.14.2",
     "@sinonjs/text-encoding": "^0.7.2",
-    "@supermapgis/babel-plugin-import": "^0.0.1",
+    "@supermapgis/babel-plugin-import": "^0.0.2",
     "@tensorflow/tfjs": "^3.9.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
