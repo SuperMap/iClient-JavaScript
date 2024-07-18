@@ -9,8 +9,8 @@
  * thanks dereklieu, cloudybay
  */
 
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { GraticuleLayerRenderer } from '@supermap/iclient-common/overlay/graticule/GraticuleLayerRenderer';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { GraticuleLayerRenderer } from '@supermapgis/iclient-common/overlay/graticule/GraticuleLayerRenderer';
 import maplibregl from 'maplibre-gl';
 /**
  * @class GraticuleLayer

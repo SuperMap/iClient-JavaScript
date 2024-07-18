@@ -2,13 +2,13 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
- import { LonLat } from '@supermap/iclient-common/commontypes/LonLat';
- import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
- import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
- import { Vector } from '@supermap/iclient-common/commontypes/Vector';
- import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
- import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+ import { LonLat } from '@supermapgis/iclient-common/commontypes/LonLat';
+ import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
+ import { ServerFeature } from '@supermapgis/iclient-common/iServer/ServerFeature';
+ import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
+ import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+ import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
  import Attributions from '../core/Attributions';
 
 /**

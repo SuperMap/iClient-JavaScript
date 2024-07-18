@@ -1,5 +1,5 @@
 
-import { ImageGFAspect } from '@supermap/iclient-common/iServer';
+import { ImageGFAspect } from '@supermapgis/iclient-common/iServer';
 
 var option = {
   "girdFuncName": "GFAspect",

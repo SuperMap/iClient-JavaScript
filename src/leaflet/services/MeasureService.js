@@ -4,9 +4,9 @@
 import {ServiceBase} from './ServiceBase';
 import '../core/Base';
 import * as Util from '../core/Util';
-import { MeasureMode } from '@supermap/iclient-common/REST';
-import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
-import { MeasureParameters } from '@supermap/iclient-common/iServer/MeasureParameters';
+import { MeasureMode } from '@supermapgis/iclient-common/REST';
+import { MeasureService as CommonMeasureService } from '@supermapgis/iclient-common/iServer/MeasureService';
+import { MeasureParameters } from '@supermapgis/iclient-common/iServer/MeasureParameters';
 
 /**
  * @class MeasureService

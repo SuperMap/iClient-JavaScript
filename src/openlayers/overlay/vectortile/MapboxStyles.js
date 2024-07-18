@@ -1,9 +1,9 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
 import { olExtends } from './olExtends';
 import remove from 'lodash.remove';
 import Observable from 'ol/Observable';

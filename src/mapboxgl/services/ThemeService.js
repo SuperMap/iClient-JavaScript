@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import { ThemeService as CommonThemeService } from '@supermap/iclient-common/iServer/ThemeService';
+import { ThemeService as CommonThemeService } from '@supermapgis/iclient-common/iServer/ThemeService';
 
 /**
  * @class ThemeService

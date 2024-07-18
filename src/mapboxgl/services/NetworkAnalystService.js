@@ -5,8 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import '../core/Base';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/iclient-common/iServer/NetworkAnalystService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermapgis/iclient-common/iServer/NetworkAnalystService';
 /**
  * @class NetworkAnalystService
  * @category  iServer NetworkAnalyst

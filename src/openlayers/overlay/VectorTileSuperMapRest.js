@@ -2,14 +2,14 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import { Util } from '../core/Util';
-import { SecurityManager } from '@supermap/iclient-common/security/SecurityManager';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { getServiceKey } from '@supermap/iclient-common/util/EncryptRequest';
-import { Unit } from '@supermap/iclient-common/REST';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { Size } from '@supermap/iclient-common/commontypes/Size';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { SecurityManager } from '@supermapgis/iclient-common/security/SecurityManager';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { getServiceKey } from '@supermapgis/iclient-common/util/EncryptRequest';
+import { Unit } from '@supermapgis/iclient-common/REST';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+import { Size } from '@supermapgis/iclient-common/commontypes/Size';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 import { VectorTileStyles } from './vectortile/VectorTileStyles';
 import VectorTile from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';

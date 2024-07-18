@@ -1,7 +1,7 @@
 import {DatasetService} from '../../../src/leaflet/services/DatasetService';
-import {CreateDatasetParameters} from '@supermap/iclient-common/iServer/CreateDatasetParameters';
-import {UpdateDatasetParameters} from '@supermap/iclient-common/iServer/UpdateDatasetParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import {CreateDatasetParameters} from '@supermapgis/iclient-common/iServer/CreateDatasetParameters';
+import {UpdateDatasetParameters} from '@supermapgis/iclient-common/iServer/UpdateDatasetParameters';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {

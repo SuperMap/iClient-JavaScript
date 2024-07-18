@@ -1,6 +1,6 @@
 import {DatasourceService} from '../../../src/openlayers/services/DatasourceService';
-import { SetDatasourceParameters } from '@supermap/iclient-common/iServer/SetDatasourceParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { SetDatasourceParameters } from '@supermapgis/iclient-common/iServer/SetDatasourceParameters';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 var url = GlobeParameter.dataServiceURL;
 var options = {

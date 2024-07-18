@@ -206,7 +206,7 @@ export {
     dataServiceQueryViewModel
 };
 
-export * from '@supermap/iclient-common/index.common';
+export * from '@supermapgis/iclient-common/index.common';
 export { Logo, logo, ChangeTileVersion, changeTileVersion };
 export {
     CommontypesConversion,

@@ -3,9 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import { Vector } from '@supermap/iclient-common/commontypes/Vector';
-import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { GeoText } from '@supermap/iclient-common/commontypes/geometry/GeoText';
+import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
+import { Point } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { GeoText } from '@supermapgis/iclient-common/commontypes/geometry/GeoText';
 import {Util} from '../../core/Util';
 
 /**

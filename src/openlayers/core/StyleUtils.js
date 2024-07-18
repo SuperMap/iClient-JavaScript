@@ -1,8 +1,8 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermap/iclient-common/commontypes/Util';
-import { StringExt } from '@supermap/iclient-common/commontypes/BaseTypes';
+import { Util as CommonUtil, DOTS_PER_INCH, INCHES_PER_UNIT } from '@supermapgis/iclient-common/commontypes/Util';
+import { StringExt } from '@supermapgis/iclient-common/commontypes/BaseTypes';
 import { StyleMap } from '../overlay/vectortile/StyleMap';
 import { DeafultCanvasStyle } from '../overlay/vectortile/DeafultCanvasStyle';
 import { Util } from '../core/Util';

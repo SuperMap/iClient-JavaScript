@@ -4,8 +4,8 @@
 import '../core/Base';
 import {Util} from '../core/Util';
 import { ServiceBase } from './ServiceBase';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { ChartService as CommonChartService } from '@supermapgis/iclient-common/iServer/ChartService';
 
 /**
  * @class ChartService

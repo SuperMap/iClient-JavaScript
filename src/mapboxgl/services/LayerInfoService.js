@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import { LayerInfoService as CommonLayerInfoService } from '@supermap/iclient-common/iServer/LayerInfoService';
+import { LayerInfoService as CommonLayerInfoService } from '@supermapgis/iclient-common/iServer/LayerInfoService';
 /**
  * @class LayerInfoService
  * @category  iServer Map Layer

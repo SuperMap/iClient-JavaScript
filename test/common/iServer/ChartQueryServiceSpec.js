@@ -1,7 +1,7 @@
 import { ChartQueryService } from '../../../src/common/iServer/ChartQueryService';
 import { ChartQueryParameters } from '../../../src/common/iServer/ChartQueryParameters';
 import {Bounds} from '../../../src/common/commontypes/Bounds';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 describe('ChartQueryService', () => {
   var url = GlobeParameter.chartServiceURL;

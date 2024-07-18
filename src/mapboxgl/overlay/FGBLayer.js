@@ -9,9 +9,9 @@
  * thanks dereklieu, cloudybay
  */
 import '../core/Base';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
-import { FGBLayerRenderer } from '@supermap/iclient-common/overlay/fgb/FGBLayerRenderer';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { getIntersection } from '@supermapgis/iclient-common/util/MapCalculateUtil';
+import { FGBLayerRenderer } from '@supermapgis/iclient-common/overlay/fgb/FGBLayerRenderer';
 
 /**
  * @class FGBLayer

@@ -1,4 +1,4 @@
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { featureFilter, expression } from '@mapbox/mapbox-gl-style-spec';
 import spec from '@mapbox/mapbox-gl-style-spec/reference/v8';
 import proj4 from 'proj4';

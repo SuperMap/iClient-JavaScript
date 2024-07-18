@@ -80,7 +80,7 @@
             "outputSourceFiles": false
         },
         "namespace": "mapboxgl.supermap",
-        "npm":"@supermap/iclient-mapboxgl",
+        "npm":"@supermapgis/iclient-mapboxgl",
         "cdn":"https://iclient.supermap.io/dist/mapboxgl/iclient-mapboxgl.js"
     }
 }

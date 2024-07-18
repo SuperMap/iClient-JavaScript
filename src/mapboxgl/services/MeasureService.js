@@ -4,8 +4,8 @@
 import '../core/Base';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { Geometry } from '@supermap/iclient-common/commontypes/Geometry';
-import { MeasureService as CommonMeasureService } from '@supermap/iclient-common/iServer/MeasureService';
+import { Geometry } from '@supermapgis/iclient-common/commontypes/Geometry';
+import { MeasureService as CommonMeasureService } from '@supermapgis/iclient-common/iServer/MeasureService';
 
 /**
  * @class MeasureService

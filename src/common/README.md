@@ -1,6 +1,6 @@
-# @supermap/iclient-common
+# @supermapgis/iclient-common
 
-@supermap/iclient-common 是 @supermap/iclient-leaflet、@supermap/iclient-openlayers、@supermap/iclient-mapboxgl、@supermap/iclient-classic 的共用依赖。
+@supermapgis/iclient-common 是 @supermapgis/iclient-leaflet、@supermapgis/iclient-openlayers、@supermapgis/iclient-mapboxgl、@supermapgis/iclient-classic 的共用依赖。
 
 ## 简介
 * 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
@@ -9,5 +9,5 @@
 ## 安装
 
 ```
- npm install @supermap/iclient-common
+ npm install @supermapgis/iclient-common
 ```

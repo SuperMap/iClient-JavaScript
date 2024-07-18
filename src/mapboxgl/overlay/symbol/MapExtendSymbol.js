@@ -3,8 +3,8 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import mapboxgl from 'mapbox-gl';
 import SymbolHandler from './SymbolHandler';
-import { FetchRequest } from "@supermap/iclient-common/util/FetchRequest";
-import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { FetchRequest } from "@supermapgis/iclient-common/util/FetchRequest";
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
 
 /**
  * @function MapExtendSymbol

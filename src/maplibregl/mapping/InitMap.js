@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { MapService } from '../services/MapService';
-import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermap/iclient-common/iServer/InitMapServiceBase';
+import { InitMapServiceBase, isPlaneProjection, getZoom, getTileset, getTileFormat } from '@supermapgis/iclient-common/iServer/InitMapServiceBase';
 import proj4 from 'proj4';
 /**
  * @function initMap

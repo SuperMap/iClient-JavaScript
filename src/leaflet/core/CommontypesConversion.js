@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import './Base';
- import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
+ import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
 
  const isArray = function(obj) {
   return Object.prototype.toString.call(obj) == '[object Array]';

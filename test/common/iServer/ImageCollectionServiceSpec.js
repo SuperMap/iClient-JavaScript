@@ -1,5 +1,5 @@
-import { ImageRenderingRule, ImageCollectionService } from '@supermap/iclient-common/iServer';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { ImageRenderingRule, ImageCollectionService } from '@supermapgis/iclient-common/iServer';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 describe('ImageCollectionService', () => {
     var originalTimeout;

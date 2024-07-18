@@ -4,7 +4,7 @@
 import L from "leaflet";
 import {VectorFeatureType} from "./VectorFeatureType";
 import * as Util from "../../core/Util";
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 /**
  * @class VectorTileJSON

@@ -1,10 +1,10 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import { Unit } from '@supermap/iclient-common/REST';
-import { CartoCSS } from '@supermap/iclient-common/style/CartoCSS';
-import { JSONFormat } from '@supermap/iclient-common/format/JSON';
+import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
+import { Unit } from '@supermapgis/iclient-common/REST';
+import { CartoCSS } from '@supermapgis/iclient-common/style/CartoCSS';
+import { JSONFormat } from '@supermapgis/iclient-common/format/JSON';
 import {StyleUtils} from '../../core/StyleUtils';
 import {Util} from '../../core/Util';
 import Observable from 'ol/Observable';

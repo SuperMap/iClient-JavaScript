@@ -8,15 +8,15 @@ import "../core/Base";
 import { BaiduCRS, TianDiTu_WGS84CRS, TianDiTu_MercatorCRS} from '../core/ExtendsCRS'
 import { crs as CRS } from '../core/Proj4Leaflet'
 import { toGeoJSON, getResolutionFromScaleDpi } from '../core/Util'
-import { FetchRequest as Request } from '@supermap/iclient-common/util/FetchRequest';
-import { GeoJSON as GeoJSONFormat } from '@supermap/iclient-common/format/GeoJSON';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { ServerFeature } from '@supermap/iclient-common/iServer/ServerFeature';
-import { GetFeaturesBySQLParameters } from '@supermap/iclient-common/iServer/GetFeaturesBySQLParameters';
-import { ThemeStyle } from '@supermap/iclient-common/style/ThemeStyle';
-import { Vector } from '@supermap/iclient-common/commontypes/Vector';
-import { Point } from '@supermap/iclient-common/commontypes/geometry/Point';
-import { Util } from '@supermap/iclient-common/commontypes/Util';
+import { FetchRequest as Request } from '@supermapgis/iclient-common/util/FetchRequest';
+import { GeoJSON as GeoJSONFormat } from '@supermapgis/iclient-common/format/GeoJSON';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { ServerFeature } from '@supermapgis/iclient-common/iServer/ServerFeature';
+import { GetFeaturesBySQLParameters } from '@supermapgis/iclient-common/iServer/GetFeaturesBySQLParameters';
+import { ThemeStyle } from '@supermapgis/iclient-common/style/ThemeStyle';
+import { Vector } from '@supermapgis/iclient-common/commontypes/Vector';
+import { Point } from '@supermapgis/iclient-common/commontypes/geometry/Point';
+import { Util } from '@supermapgis/iclient-common/commontypes/Util';
 import {
     CartoCSSToLeaflet
 } from '../overlay/carto/CartoCSSToLeaflet';

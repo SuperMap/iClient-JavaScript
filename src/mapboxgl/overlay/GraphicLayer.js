@@ -2,8 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import mapboxgl from 'mapbox-gl';
- import { GraphicLayerRenderer } from '@supermap/iclient-common/overlay/graphic/GraphicLayerRenderer';
- import { Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+ import { GraphicLayerRenderer } from '@supermapgis/iclient-common/overlay/graphic/GraphicLayerRenderer';
+ import { Util as CommonUtil} from '@supermapgis/iclient-common/commontypes/Util';
 
  /**
   * @class GraphicLayer

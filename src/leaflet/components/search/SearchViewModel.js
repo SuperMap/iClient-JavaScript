@@ -3,7 +3,7 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../../core/Base';
- import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+ import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
  import { GeoJsonLayersDataModel } from '../commonmodels/GeoJsonLayersModel';
 
 /**

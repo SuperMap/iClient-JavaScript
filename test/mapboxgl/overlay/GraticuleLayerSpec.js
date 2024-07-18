@@ -1,6 +1,6 @@
 import { GraticuleLayer } from '../../../src/mapboxgl/overlay/GraticuleLayer';
 import mapboxgl from 'mapbox-gl';
-import { Feature } from '@supermap/iclient-common';
+import { Feature } from '@supermapgis/iclient-common';
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 
 describe('mapboxgl_GraticuleLayer', () => {

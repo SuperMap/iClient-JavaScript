@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
-import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
-import { VideoLayerRenderer } from '@supermap/iclient-common/overlay/video/VideoLayerRenderer';
+import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+import { VideoLayerRenderer } from '@supermapgis/iclient-common/overlay/video/VideoLayerRenderer';
 
 /**
  * @class VideoMapLayer

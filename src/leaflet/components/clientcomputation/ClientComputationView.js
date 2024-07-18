@@ -4,11 +4,11 @@
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { ClientComputationViewModel } from './ClientComputationViewModel';
- import { CommonContainer } from '@supermap/iclient-common/components/templates/CommonContainer';
- import { DropDownBox } from '@supermap/iclient-common/components/templates/DropDownBox';
- import { Select } from '@supermap/iclient-common/components/templates/Select';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { CommonContainer } from '@supermapgis/iclient-common/components/templates/CommonContainer';
+ import { DropDownBox } from '@supermapgis/iclient-common/components/templates/DropDownBox';
+ import { Select } from '@supermapgis/iclient-common/components/templates/Select';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 /**
  * @class ClientComputationView
  * @aliasclass Components.ClientComputationView

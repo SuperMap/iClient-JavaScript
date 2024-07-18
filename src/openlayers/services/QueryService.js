@@ -1,11 +1,11 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { Bounds } from '@supermap/iclient-common/commontypes/Bounds';
-import { Point as GeometryPoint } from '@supermap/iclient-common/commontypes/geometry/Point';
+import { Bounds } from '@supermapgis/iclient-common/commontypes/Bounds';
+import { Point as GeometryPoint } from '@supermapgis/iclient-common/commontypes/geometry/Point';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
-import { QueryService as CommonQueryService } from '@supermap/iclient-common/iServer/QueryService';
+import { QueryService as CommonQueryService } from '@supermapgis/iclient-common/iServer/QueryService';
 import Point from 'ol/geom/Point';
 import GeoJSON from 'ol/format/GeoJSON';
 

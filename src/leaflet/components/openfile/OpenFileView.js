@@ -4,8 +4,8 @@
  import L from 'leaflet';
  import { ComponentsViewBase } from '../ComponentsViewBase';
  import { OpenFileViewModel } from './OpenFileViewModel';
- import { MessageBox } from '@supermap/iclient-common/components/messagebox/MessageBox';
- import { Lang } from '@supermap/iclient-common/lang/Lang';
+ import { MessageBox } from '@supermapgis/iclient-common/components/messagebox/MessageBox';
+ import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 
 /**
  * @class OpenFileView

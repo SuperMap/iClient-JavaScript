@@ -1,6 +1,6 @@
 import {SpatialAnalystService} from '../../../src/openlayers/services/SpatialAnalystService';
 import {TerrainCutFillCalculationParameters} from '../../../src/common/iServer/TerrainCutFillCalculationParameters';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 
 
 var url = GlobeParameter.spatialAnalystURL;

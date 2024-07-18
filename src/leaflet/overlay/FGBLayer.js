@@ -4,8 +4,8 @@
 import L from 'leaflet';
 import '../core/Base';
 import RBush from 'rbush';
-import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { getIntersection } from '@supermapgis/iclient-common/util/MapCalculateUtil';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
 
 /**

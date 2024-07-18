@@ -1,8 +1,8 @@
 /* Copyright© 2000 - 2024 SuperMap Software Co.Ltd. All rights reserved.
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermap/iclient-common/iServer/NetworkAnalystService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { NetworkAnalystService as CommonNetworkAnalystService } from '@supermapgis/iclient-common/iServer/NetworkAnalystService';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import Point from 'ol/geom/Point';

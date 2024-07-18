@@ -1,8 +1,8 @@
 import mapboxgl from 'mapbox-gl';
 import mbglmap from '../../tool/mock_mapboxgl_map';
 import { WebMap } from '../../../src/mapboxgl/mapping/WebMap';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
-import { Lang } from '@supermap/iclient-common/lang/Lang';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
+import { Lang } from '@supermapgis/iclient-common/lang/Lang';
 import { ArrayStatistic } from '../../../src/common/util/ArrayStatistic';
 import '../../resources/WebMapV5.js';
 window.jsonsql = { query: () => { } };

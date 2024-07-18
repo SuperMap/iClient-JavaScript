@@ -2,8 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import mapboxgl from 'mapbox-gl';
- import { Util as CommonUtil } from '@supermap/iclient-common/commontypes/Util';
- import { VideoLayerRenderer } from '@supermap/iclient-common/overlay/video/VideoLayerRenderer';
+ import { Util as CommonUtil } from '@supermapgis/iclient-common/commontypes/Util';
+ import { VideoLayerRenderer } from '@supermapgis/iclient-common/overlay/video/VideoLayerRenderer';
  import { bbox, polygon } from '@turf/turf';
  import CoordTransfer from '../mapping/CoordTransfer';
  import { fovXToFx, fovYToFy } from '../mapping/utils/VideoMapUtil';

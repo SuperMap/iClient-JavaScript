@@ -6,8 +6,8 @@ import '../core/Base';
 import { ServiceBase } from './ServiceBase';
 import * as Util from '../core/Util';
 import { CommontypesConversion } from '../core/CommontypesConversion';
-import { DataFormat } from '@supermap/iclient-common/REST';
-import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermap/iclient-common/iServer/SpatialAnalystService';
+import { DataFormat } from '@supermapgis/iclient-common/REST';
+import { SpatialAnalystService as CommonSpatialAnalystService } from '@supermapgis/iclient-common/iServer/SpatialAnalystService';
 
 /**
  * @class SpatialAnalystService

@@ -3,10 +3,10 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import L from 'leaflet';
  import '../core/Base';
- import { DataFormat } from '@supermap/iclient-common/REST';
+ import { DataFormat } from '@supermapgis/iclient-common/REST';
  import { ServiceBase } from './ServiceBase';
  import { CommontypesConversion } from '../core/CommontypesConversion';
- import { ChartService as CommonChartService } from '@supermap/iclient-common/iServer/ChartService';
+ import { ChartService as CommonChartService } from '@supermapgis/iclient-common/iServer/ChartService';
 /**
  * @class ChartService
  * @deprecatedclassinstance L.supermap.chartService

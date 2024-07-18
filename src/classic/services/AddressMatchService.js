@@ -2,8 +2,8 @@
  * This program are made available under the terms of the Apache License, Version 2.0
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
  import {SuperMap} from '../SuperMap';
- import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
-import { AddressMatchService as CommonAddressMatchService } from '@supermap/iclient-common/iServer/AddressMatchService';
+ import {CommonServiceBase} from '@supermapgis/iclient-common/iServer/CommonServiceBase';
+import { AddressMatchService as CommonAddressMatchService } from '@supermapgis/iclient-common/iServer/AddressMatchService';
 
 /**
  * @class SuperMap.REST.AddressMatchService

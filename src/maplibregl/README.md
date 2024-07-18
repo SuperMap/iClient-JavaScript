@@ -1,6 +1,6 @@
-# @supermap/iclient-maplibregl
+# @supermapgis/iclient-maplibregl
 
-@supermap/iclient-maplibregl 是一套基于 Maplibre GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
+@supermapgis/iclient-maplibregl 是一套基于 Maplibre GL 的云 GIS 网络客户端开发平台， 支持访问 SuperMap iServer / iEdge / iPortal / iManager / Online 的地图、服务和资源，为用户提供了完整专业的 GIS 能力， 同时提供了优秀的可视化功能。
 
 ## 简介
 * 官网：[https://iclient.supermap.io](https://iclient.supermap.io)
@@ -9,7 +9,7 @@
 ## 安装
 
 ```
- npm install @supermap/iclient-maplibregl
+ npm install @supermapgis/iclient-maplibregl
 ```
 
 ## 开发
@@ -25,7 +25,7 @@
 
 ```
 import maplibre from 'maplibre-gl';
-import {Logo, QueryByBoundsParameters, QueryService} from '@supermap/iclient-maplibregl';
+import {Logo, QueryByBoundsParameters, QueryService} from '@supermapgis/iclient-maplibregl';
 
 var map, host = "https://iserver.supermap.io";
 var url = host + "/iserver/services/map-world/rest/maps/World";

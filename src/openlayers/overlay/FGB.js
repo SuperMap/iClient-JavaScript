@@ -3,9 +3,9 @@
  * which accompanies this distribution and is available at http://www.apache.org/licenses/LICENSE-2.0.html.*/
 import VectorSource from 'ol/source/Vector';
 import { deserialize } from 'flatgeobuf/lib/mjs/geojson';
-import { FetchRequest } from '@supermap/iclient-common/util/FetchRequest';
+import { FetchRequest } from '@supermapgis/iclient-common/util/FetchRequest';
 import { all, bbox } from 'ol/loadingstrategy';
-import { getIntersection } from '@supermap/iclient-common/util/MapCalculateUtil';
+import { getIntersection } from '@supermapgis/iclient-common/util/MapCalculateUtil';
 import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @class FGB
