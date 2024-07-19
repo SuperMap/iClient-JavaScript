@@ -1014,7 +1014,7 @@ export class WebMap extends mapboxgl.Evented {
       // 线面文本标签
       if (label) {
         styleSettings.push({...label, type: 'text'});
-        if (label.symbolsContent.value.symbolId) {
+        if (label.symbolsContent && label.symbolsContent.value.symbolId) {
           styleSettings.push({...label, type: 'symbol'});
         }
       }
@@ -1268,7 +1268,7 @@ export class WebMap extends mapboxgl.Evented {
         dataKeys = dataKeys.filter((key) => key !== 'color')
       }
     }
-    const isLinearColor = styleSetting.color.interpolateInfo && styleSetting.color.interpolateInfo.type === 'linear';
+    const isLinearColor = styleSetting.color && styleSetting.color.interpolateInfo && styleSetting.color.interpolateInfo.type === 'linear';
     const isShowSingleItem = this._isShowLegendSingleItem(dataKeys, isLinearColor);
     const resultList = [];
     if (isShowSingleItem) {

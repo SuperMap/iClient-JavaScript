@@ -949,6 +949,13 @@ describe('mapboxgl-webmap3.0', () => {
   });
 
   it('label legend', (done) => {
+    const mapInfo = JSON.parse(mapstudioWebMap_labelLegend);
+    spyOn(L7, 'PointLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'LineLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'PolygonLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'HeatmapLayer').and.callFake(mockL7.PointLayer);
+    spyOn(L7, 'Scene').and.callFake(mockL7.Scene);
+    spyOn(L7, 'Mapbox').and.callFake(mockL7.Mapbox);
     spyOn(FetchRequest, 'get').and.callFake((url) => {
       if (url.indexOf('map.json') > -1) {
         return Promise.resolve(new Response(mapstudioWebMap_labelLegend));
@@ -959,6 +966,9 @@ describe('mapboxgl-webmap3.0', () => {
       }
       return Promise.resolve();
     });
+    mapboxgl.Map.prototype.getCRS = function () {
+      return { epsgCode: 'EPSG:3857', getExtent: () => {} };
+    };
     mapstudioWebmap = new WebMap(id, {
       server: server
     });
@@ -966,7 +976,8 @@ describe('mapboxgl-webmap3.0', () => {
     mapstudioWebmap.on('addlayerssucceeded', ({ map }) => {
       const webMapV3 = mapstudioWebmap._getWebMapInstance();
       expect(map).not.toBeUndefined();
-      expect(webMapV3.getLegendInfo().length).toBe(6);
+      expect(webMapV3.getLegendInfo().length).toBe(9);
+      delete mapboxgl.Map.prototype.getCRS;
       done();
     });
   });
