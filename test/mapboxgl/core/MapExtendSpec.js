@@ -417,4 +417,36 @@ describe('MapExtend mapboxgl', () => {
       done();
     });
   });
+
+  it('_inherit flag', (done) => {
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'raster-tiles': {
+            type: 'raster',
+            tiles: ['base/resources/img/baiduTileTest.png'],
+            tileSize: 256
+          }
+        },
+        layers: [
+          {
+            id: 'simple-tiles',
+            type: 'raster',
+            source: 'raster-tiles',
+            minzoom: 0,
+            maxzoom: 22
+          }
+        ]
+      },
+      center: [116.4, 39.79],
+      zoom: 3
+    });
+    map.on('load', () => {
+      expect(map._inherit).toBeTruthy();
+      map.remove();
+      done();
+    });
+  });
 });
