@@ -63,7 +63,7 @@ export class FGBLayer {
   constructor(options = {}) {
     this.id = options.layerID ? options.layerID : CommonUtil.createUniqueID('FGBLayer_');
     this.layerId = this.id + 'outer';
-    this.sourceId = this.layerId;
+    this._sourceId = this.layerId;
     this.options = options;
     this.strategy = options.strategy || 'bbox';
     this.url = options.url;
@@ -134,20 +134,20 @@ export class FGBLayer {
   async _handleFeatures(bounds) {
     let iter = await this.renderer._loadData(bounds);
     const features = await this.renderer.iterateFeatures(iter);
-    if (!this.map.getSource(this.sourceId)) {
-      this.map.addSource(this.sourceId, {
+    if (!this.map.getSource(this._sourceId)) {
+      this.map.addSource(this._sourceId, {
         type: 'geojson',
         data: features
       });
     } else {
-      this.map.getSource(this.sourceId).setData(features);
+      this.map.getSource(this._sourceId).setData(features);
     }
     if (!this.map.getLayer(this.layerId)) {
       this.layerType = this.renderer.layerType;
       const layer = Object.assign({
         id: this.layerId,
         type: this.layerType,
-        source: this.sourceId,
+        source: this._sourceId,
         paint: Object.assign(PAINT_MAP[this.layerType], this.options.paint) || {},
         layout: this.options.layout || {}
       });
@@ -164,7 +164,7 @@ export class FGBLayer {
     if (!alreadyLoaded) {
       let iter = await this.renderer._loadData(extentToLoad);
       const features = await this.renderer.iterateFeatures(iter);
-      this.map.getSource(this.sourceId).setData(features);
+      this.map.getSource(this._sourceId).setData(features);
     }
   }
 }
